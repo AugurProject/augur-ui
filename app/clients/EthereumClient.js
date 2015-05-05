@@ -276,7 +276,7 @@ EthereumClient.prototype.getOutcome = function (marketId, outcomeId, currentPart
     })
   ];
 
-  // Merge all the attributes pass the result to the callback.
+  // Merge all the attributes and pass the result to the callback.
   Promise.all(outcomeAttributePromises).then((attributesList) => {
     callback(_.reduce(attributesList, _.merge));
   });
@@ -344,7 +344,7 @@ EthereumClient.prototype.getMarket = function (branchId, marketId, callback) {
     })
   ];
 
-  // Merge all the attributes pass the result to the callback.
+  // Merge all the attributes and pass the result to the callback.
   Promise.all(marketAttributePromises).then(function (attributesList) {
     var market = _.reduce(attributesList, _.merge);
     market.id = marketId;
