@@ -38,7 +38,7 @@ function EthereumClient(host) {
   try {
     Augur = require('augur.js');
   } catch (err) {
-    
+
   }
 }
 
@@ -242,73 +242,137 @@ EthereumClient.prototype.getBranches = function () {
 };
 
 /**
+ * Get information about a single outcome in a market.
+ *
+ * @param marketId - The market's ID
+ * @param outcomeId - The outcome's ID
+ * @param currentParticipant - The account of the viewing user
+ * @param callback - A function to be called with the outcome data
+ */
+EthereumClient.prototype.getOutcome = function (marketId, outcomeId, currentParticipant, callback) {
+  var outcomeAttributePromises = [
+    // Build a list of promises for each outcome contract call.
+    new Promise((resolve) => {
+      Augur.getSharesPurchased(marketId, outcomeId, resolve);
+    }).then((totalSharesPurchased) => {
+      return {volume: totalSharesPurchased};
+    }),
+
+    new Promise((resolve) => {
+      Augur.price(marketId, outcomeId, resolve);
+    }).then(function (price) {
+      return {price: price};
+    }),
+
+    new Promise((resolve) => {
+      Augur.getParticipantSharesPurchased(
+        marketId,
+        currentParticipant,
+        outcomeId,
+        resolve
+      );
+    }).then((accountSharesPurchased) => {
+      return {sharesPurchased: accountSharesPurchased};
+    })
+  ];
+
+  // Merge all the attributes pass the result to the callback.
+  Promise.all(outcomeAttributePromises).then((attributesList) => {
+    callback(_.reduce(attributesList, _.merge));
+  });
+}
+
+/**
+ * Get information about a market.
+ *
+ * @param branchId - The market's branch ID
+ * @param marketId - The market's ID
+ * @param callback - A function to be called with the market data
+ */
+EthereumClient.prototype.getMarket = function (branchId, marketId, callback) {
+  var marketAttributePromises = [
+    // Build a list of promises for each contract call that populates a subset of
+    // a market's attributes.
+    new Promise((resolve) => {
+      Augur.getMarketEvents(marketId, resolve);
+    }).then((events) => {
+      return new Promise((resolve) => {
+        if (events.length) {
+          Augur.getExpiration(events[0], resolve);
+        } else {
+          resolve();
+        }
+      }).then((expiration) => {
+        var endDate;
+        if (expiration) {
+          endDate = utilities.blockToDate((new BigNumber(expiration)).toNumber());
+        }
+        return {
+          events: events,
+          endDate: endDate
+        };
+      })
+    }),
+
+    new Promise((resolve) => {
+      Augur.getCreator(marketId, resolve);
+    }).then((author) => {
+      return {author: author};
+    }),
+
+    new Promise((resolve) => {
+      Augur.getMarketInfo(marketId, resolve);
+    }).then((marketInfo) => {
+      var outcomePromises = _.range(1, marketInfo.numOutcomes + 1).map((outcomeId) => {
+        return new Promise((resolve) => {
+          this.getOutcome(marketId, outcomeId, marketInfo.currentParticipant, resolve);
+        });
+      });
+
+      return Promise.all(outcomePromises).then((outcomes) => {
+        return {
+          traderId: marketInfo.currentParticipant,
+          alpha: marketInfo.alpha,
+          description: marketInfo.description,
+          numOutcomes: marketInfo.numOutcomes,
+          tradingFee: marketInfo.tradingFee,
+          tradingPeriod: marketInfo.tradingPeriod,
+          outcomes: outcomes,
+          totalVolume: _.sum(_.map(outcomes, (o) => { o.volume }))
+        };
+      });
+    })
+  ];
+
+  // Merge all the attributes pass the result to the callback.
+  Promise.all(marketAttributePromises).then(function (attributesList) {
+    var market = _.reduce(attributesList, _.merge);
+    market.id = marketId;
+    market.branchId = branchId;
+    market.comments = [];
+    callback(market);
+  });
+};
+
+/**
  * Get a list of all the market data for the given branch.
  *
  * @param branchId - The ID of the branch to get markets for.
- * @returns {object} Market information keyed by market ID.
- * @returns {Number} object.$id.price - The price of the primary outcome of
- *   the market (the positive outcome in binary markets).
- * @returns {BigNumber} object.$id.author - The account hash of the market
- *   creator. Convert to hexadecimal for display purposes.
+ * @param callback - The function to to pass the markets to.
  */
-EthereumClient.prototype.getMarketsAsync = function (branchId) {
-  var markets = {};
-  Augur.getMarkets(branchId, function (marketList) {
-    marketList.loop(function (market, nextMarket) {
-      markets[market] = { id: market, comments: [], endDate: null };
-      Augur.getMarketEvents(market, function (events) {
-        markets[market].events = events;
-        Augur.getMarketInfo(market, function (marketInfo) {
-          /**
-           * marketInfo: {
-           *    currentParticipant: BigNumber
-           *    alpha: BigNumber
-           *    cumulativeScale: BigNumber
-           *    description: string (ASCII)
-           *    numOutcomes: int
-           *    tradingFee: BigNumber
-           *    tradingPeriod: BigNumber
-           * }
-           */
-          markets[market].traderId = marketInfo.currentParticipant;
-          markets[market].alpha = marketInfo.alpha;
-          markets[market].description = marketInfo.description;
-          markets[market].numOutcomes = marketInfo.numOutcomes;
-          markets[market].tradingFee = marketInfo.tradingFee;
-          markets[market].tradingPeriod = marketInfo.tradingPeriod;
-          if (!markets[market].outcomes) {
-            markets[market].outcomes = Array(marketInfo.numOutcomes);
-          }
-          Augur.getCreator(market, function (author) {
-            markets[market].author = author;
-            markets[market].totalVolume = new BigNumber(0);
-            _.range(1, marketInfo.numOutcomes + 1).loop(function (outcome, nextOutcome) {
-              markets[market].outcomes[outcome] = { id: outcome };
-              Augur.getSharesPurchased(market, outcome, function (allShares) {
-                markets[market].volume = markets[market].outcomes[outcome].volume = allShares;
-                markets[market].totalVolume = markets[market].totalVolume.plus(markets[market].volume);
-                Augur.price(market, outcome, function (price) {
-                  markets[market].price = price;
-                  Augur.getParticipantSharesPurchased(market, marketInfo.currentParticipant, outcome, function (myShares) {
-                    markets[market].outcomes[outcome].sharesPurchased = myShares;
-                    Augur.getExpiration(events[0], function (expiration) {
-                      if (events.length) {
-                        markets[market].endDate = utilities.blockToDate((new BigNumber(expiration)).toNumber());
-                        // markets[market] is ready to append to the DOM -- is there a way to do that
-                        // on-the-fly instead of doing it all-at-once thru the dispatcher?
-                        console.log(markets[market]);
-                      }
-                    });
-                  });
-                });
-              });
-              nextOutcome();
-            });
-          });
-        });
+EthereumClient.prototype.getMarketsAsync = function (branchId, callback) {
+  new Promise((resolve) => {
+    Augur.getMarkets(branchId, resolve);
+  }).then((marketIds) => {
+    var marketPromises = _.map(marketIds, (marketId) => {
+      return new Promise((resolve) => {
+        this.getMarket(branchId, marketId);
       });
-      nextMarket();
     });
+
+    return Promise.all(marketPromises);
+  }).then((markets) => {
+    callback(_.indexBy(markets, 'id'));
   });
 };
 
@@ -465,7 +529,7 @@ EthereumClient.prototype.addMarket = function(params, onSuccess) {
         utilities.log('new market successfully added');
         if (onSuccess) onSuccess();
       },
-      
+
       onFailed: function (newMarket) {
         utilities.error("error adding new market")
         utilities.error(newMarket);
