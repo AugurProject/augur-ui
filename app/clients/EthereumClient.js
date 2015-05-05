@@ -366,7 +366,7 @@ EthereumClient.prototype.getMarketsAsync = function (branchId, callback) {
   }).then((marketIds) => {
     var marketPromises = _.map(marketIds, (marketId) => {
       return new Promise((resolve) => {
-        this.getMarket(branchId, marketId);
+        this.getMarket(branchId, marketId, resolve);
       });
     });
 
