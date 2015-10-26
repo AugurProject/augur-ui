@@ -51,23 +51,46 @@ var MarketActions = {
     }
   },
 
-  parseCache: function (cached) {
+  
+//Toggles Mature Markets Switch from Branch.jsx Control Button
+  mMarkets: function() {
+    this.flux.actions.market.mMarkets = true;
+  },
+  
+
+  parseCache: function (cached, mMarkets) {
     var self = this;
     var block = self.flux.store('network').getState().blockNumber;
     var account = self.flux.store('config').getAccount();
     var branchId = self.flux.store('branch').getCurrentBranch().id;
     var blackmarkets = blacklist.markets[augur.network_id][branchId];
     var markets = {};
+    
+    mMarkets = self.flux.actions.market.mMarkets;
+    
+    var mktsToggler; 
+
     async.eachSeries(cached, function (thisMarket, nextMarket) {
       var marketId = abi.bignum(thisMarket._id);
+      var endDate = thisMarket.endDate;
+       
+      //Filters markets to either active or matured on mktsToggler
+      if (mMarkets) mktsToggler = endDate - block > 0 ? true : false;
+      else mktsToggler = endDate - block < 0 ? true : false;
+
+
       if (abi.bignum(thisMarket.branchId).eq(abi.bignum(branchId)) &&
-          !_.contains(blackmarkets, marketId.toString(16)) &&
-          !thisMarket.invalid && thisMarket.price && thisMarket.description) {
+      !_.contains(
+           blackmarkets, marketId.toString(16)) &&
+          !thisMarket.invalid && mktsToggler
+         && thisMarket.price && thisMarket.description)
+
+      {
         thisMarket.id = marketId;
-        thisMarket.endDate = utils.blockToDate(thisMarket.endDate, block);
+        thisMarket.endDate = utils.blockToDate(thisMarket.endDate, block);    
         if (thisMarket.creationBlock) {
           thisMarket.creationDate = utils.blockToDate(thisMarket.creationBlock, block);
-        }
+        } 
         thisMarket.price = abi.bignum(thisMarket.price);
         thisMarket.tradingFee = abi.bignum(thisMarket.tradingFee);
         thisMarket.creationFee = abi.bignum(thisMarket.creationFee);
@@ -76,6 +99,7 @@ var MarketActions = {
         thisMarket.numOutcomes = parseInt(thisMarket.numOutcomes);
         thisMarket.tradingPeriod = abi.bignum(thisMarket.tradingPeriod);
         thisMarket.traderId = abi.bignum(thisMarket.participants[account]);
+
         if (thisMarket.outcomes && thisMarket.outcomes.length) {
           async.each(thisMarket.outcomes, function (thisOutcome, nextOutcome) {
             if (thisOutcome.outstandingShares) {
@@ -114,6 +138,7 @@ var MarketActions = {
       self.flux.actions.config.updatePercentLoaded(100);
     });
   },
+
 
   loadMarketCache: function (got, pulse, xhr, startNode) {
     var self = this;
