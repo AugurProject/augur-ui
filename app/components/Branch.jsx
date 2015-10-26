@@ -25,6 +25,9 @@ var Branch = React.createClass({
       addMarketModalOpen: false,
       marketsPerPage: constants.MARKETS_PER_PAGE,
       visiblePages: 3,
+      showMatures: false, 
+      toggleIcon: "fa fa-toggle-off",
+      toggleInfo: "Swap Between Open and Closed Markets with this Button",
       pageNum: this.props.params.page ? this.props.params.page - 1 : 0
     };
   },
@@ -44,7 +47,22 @@ var Branch = React.createClass({
       account: account
     }
   },
+toggleMatures: function(event) {
 
+  //All the magic that swaps the icons the toggle state
+  if (!this.state.showMatures) {
+    this.setState({ toggleIcon: 'fa fa-toggle-on' , toggleInfo: 'Mature Mkts', showMatures: true });
+    window.flux.actions.market.mMarkets = true;
+  } 
+  else {
+    this.setState({ toggleIcon: 'fa fa-toggle-off', toggleInfo: 'Open Mkts', showMatures: false });
+    window.flux.actions.market.mMarkets = false;
+  }
+  window.flux.actions.market.loadMarketCache();
+  console.log("Swapped the Open Markets for the Matured Markets");
+  
+  },
+  
   toggleAddMarketModal: function(event) {
 
     this.setState({ addMarketModalOpen: !this.state.addMarketModalOpen });
@@ -99,7 +117,7 @@ var Branch = React.createClass({
     return (
       <div id="branch">
         { pendingMarketsSection }
-        <h3 className="clearfix">Markets { submitMarketAction }</h3>
+        <h3 className="clearfix">Markets <a href="javascript:void(0);" onClick={ this.toggleMatures } ><i className= { this.state.toggleIcon } title = {this.state.toggleInfo} /></a>{ submitMarketAction }</h3>
             
 				<input type="search"
 					className="markets-search-input"
