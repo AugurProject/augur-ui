@@ -26859,8 +26859,8 @@ module.exports = _react2.default.createClass({
 				p.tags.map(function (tag) {
 					return _react2.default.createElement(
 						'li',
-						{ key: tag, className: 'tag' },
-						tag
+						{ key: tag.name, className: 'tag', onClick: tag.onClick },
+						tag.name
 					);
 				})
 			),
