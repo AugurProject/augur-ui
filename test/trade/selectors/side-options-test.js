@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import selectors from '../../../src/selectors'
 import { BID, ASK } from '../../../src/modules/bids-asks/constants/bids-asks-types';
-import { assertions } from 'augur-ui-react-components';
+import assertions from 'augur-ui-react-components/src/assertions';
 
 describe('modules/trade/selectors/side-options.js', () => {
 	let actual = selectors.sideOptions,

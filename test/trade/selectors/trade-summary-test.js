@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import { selectTradeSummary } from '../../../src/modules/trade/selectors/trade-summary';
-import { assertions } from 'augur-ui-react-components';
+import assertions from 'augur-ui-react-components/src/assertions';
 
 describe(`modules/trade/selectors/trade-summary.js`, () => {
 	let tradeSummary;

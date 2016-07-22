@@ -1,5 +1,5 @@
 import * as selector from '../../../src/modules/positions/selectors/positions-summary';
-import { assertions } from 'augur-ui-react-components';
+import assertions from 'augur-ui-react-components/src/assertions';
 
 describe(`modules/positions/selectors/positions-summary.js`, () => {
 	let expected, actual;
