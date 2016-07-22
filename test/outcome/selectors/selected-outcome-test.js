@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import selector from '../../../src/selectors'
-import { assertions } from 'augur-ui-react-components';
+import assertions from 'augur-ui-react-components/src/assertions';
 
 describe('modules/outcome/selectors/selected-outcome.js', () => {
 	let actual = selector.selectedOutcome;
