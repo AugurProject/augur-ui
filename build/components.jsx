@@ -26336,12 +26336,14 @@ var AuthForm = function (_Component) {
 		_this.handlePasswordInput = function (e) {
 			e.preventDefault();
 			var name = _this.refs.name.value;
+			var loginID = _this.state.loginID;
 			var password = _this.refs.password.value;
 			var password2 = _this.refs.password2.value;
+			var rememberMe = _this.state.rememberMe;
 
 			if (password === password2 && password.length >= 6) {
 				setTimeout(function () {
-					return _this.props.onSubmit(name, password, password2, undefined, false, undefined, function (loginAccount) {
+					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, function (loginAccount) {
 						_this.setState({ loginID: loginAccount.loginID, disableInputs: true });
 					});
 				}, 100);
@@ -26365,7 +26367,7 @@ var AuthForm = function (_Component) {
 	_createClass(AuthForm, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			this.setState({ msg: nextProps.msg, loginID: nextProps.loginID });
+			this.setState({ msg: nextProps.msg, showID: nextProps.isVisibleID });
 		}
 	}, {
 		key: 'componentDidUpdate',
