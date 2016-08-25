@@ -26331,6 +26331,7 @@ var AuthForm = function (_Component) {
 				}, 100);
 			}
 			_this.setState({ msg: '', disableInputs: false });
+			return false;
 		};
 
 		_this.handlePasswordInput = function (e) {
@@ -26393,7 +26394,7 @@ var AuthForm = function (_Component) {
 
 			return _react2.default.createElement(
 				'form',
-				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data' },
+				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data', autoComplete: 'on' },
 				_react2.default.createElement(
 					'h1',
 					{ className: 'title' },
