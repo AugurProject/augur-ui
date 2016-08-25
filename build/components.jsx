@@ -26122,7 +26122,7 @@ var AccountPage = function (_Component) {
 										_react2.default.createElement(
 											'th',
 											{ className: 'title' },
-											'Secure Login ID:'
+											'Login ID:'
 										),
 										_react2.default.createElement(
 											'td',
@@ -26130,9 +26130,9 @@ var AccountPage = function (_Component) {
 											!s.showFullID && _react2.default.createElement(
 												'span',
 												null,
-												p.account.prettySecureLoginID
+												p.account.prettyLoginID
 											),
-											s.showFullID && _react2.default.createElement('textarea', { className: 'full-secure-login-id', value: p.account.secureLoginID, readOnly: true }),
+											s.showFullID && _react2.default.createElement('textarea', { className: 'full-secure-login-id', value: p.account.loginID, readOnly: true }),
 											_react2.default.createElement(
 												'button',
 												{
