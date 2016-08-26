@@ -26316,21 +26316,20 @@ var AuthForm = function (_Component) {
 			var password2 = _this.refs.password2.value;
 			var rememberMe = _this.state.rememberMe;
 			var file = _this.refs.form[1].files[0] !== undefined;
-
+			_this.setState({ msg: '', disableInputs: false });
 			if (file && _this.fileReader) {
 				_this.fileReader.readAsText(_this.refs.form[1].files[0]);
 				_this.fileReader.onload = function (e) {
 					var importAccount = JSON.parse(e.target.result);
 					setTimeout(function () {
 						return _this.props.onSubmit(name, password, password2, loginID, rememberMe, importAccount, undefined);
-					}, 100);
+					}, 300);
 				};
 			} else {
 				setTimeout(function () {
 					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, undefined);
-				}, 100);
+				}, 300);
 			}
-			_this.setState({ msg: '', disableInputs: false });
 			return false;
 		};
 
@@ -26347,7 +26346,7 @@ var AuthForm = function (_Component) {
 					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, function (loginAccount) {
 						_this.setState({ loginID: loginAccount.loginID, disableInputs: true });
 					});
-				}, 100);
+				}, 300);
 			}
 		};
 
@@ -26394,7 +26393,7 @@ var AuthForm = function (_Component) {
 
 			return _react2.default.createElement(
 				'form',
-				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data', autoComplete: 'on' },
+				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data' },
 				_react2.default.createElement(
 					'h1',
 					{ className: 'title' },
