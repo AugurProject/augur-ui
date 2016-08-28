@@ -26317,6 +26317,7 @@ var AuthForm = function (_Component) {
 			var rememberMe = _this.state.rememberMe;
 			var file = _this.refs.form[1].files[0] !== undefined;
 			_this.setState({ msg: '', disableInputs: false });
+
 			if (file && _this.fileReader) {
 				_this.fileReader.readAsText(_this.refs.form[1].files[0]);
 				_this.fileReader.onload = function (e) {
@@ -26407,6 +26408,11 @@ var AuthForm = function (_Component) {
 						},
 						p.topLinkText
 					)
+				),
+				p.instruction && _react2.default.createElement(
+					'p',
+					{ className: (0, _classnames2.default)('instruction') },
+					p.instruction
 				),
 				s.msg && _react2.default.createElement(
 					'span',
@@ -26503,6 +26509,11 @@ var AuthForm = function (_Component) {
 						onClick: p.closeLink.onClick
 					},
 					''
+				),
+				_react2.default.createElement(
+					'p',
+					{ className: (0, _classnames2.default)('instruction') },
+					'Passwords must be at least 6 characters in length. Passwords should contain at least one number, one lowercase letter, one uppercase letter, and one special character.'
 				)
 			);
 		}
