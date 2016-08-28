@@ -26513,7 +26513,7 @@ var AuthForm = function (_Component) {
 				_react2.default.createElement(
 					'p',
 					{ className: (0, _classnames2.default)('instruction') },
-					'Passwords must be at least 6 characters in length. Passwords should contain at least one number, one lowercase letter, one uppercase letter, and one special character.'
+					'Passwords must be at least 6 characters in length. Passwords should contain at least one number, one lowercase letter, and one uppercase letter.'
 				)
 			);
 		}
