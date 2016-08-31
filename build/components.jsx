@@ -26284,10 +26284,6 @@ var _link = _dereq_('../../link/components/link');
 
 var _link2 = _interopRequireDefault(_link);
 
-var _input = _dereq_('../../common/components/input');
-
-var _input2 = _interopRequireDefault(_input);
-
 var _checkbox = _dereq_('../../common/components/checkbox');
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
@@ -26317,6 +26313,7 @@ var AuthForm = function (_Component) {
 			var password = _this.refs.password.value;
 			var password2 = _this.refs.password2.value;
 			var rememberMe = _this.state.rememberMe;
+			var loginAccount = _this.state.loginAccount;
 			var file = _this.refs.form[1].files[0] !== undefined;
 
 			if (file && _this.fileReader) {
@@ -26324,12 +26321,12 @@ var AuthForm = function (_Component) {
 				_this.fileReader.onload = function (e) {
 					var importAccount = JSON.parse(e.target.result);
 					setTimeout(function () {
-						return _this.props.onSubmit(name, password, password2, loginID, rememberMe, importAccount, undefined);
+						return _this.props.onSubmit(name, password, password2, loginID, rememberMe, importAccount, loginAccount, undefined);
 					}, 300);
 				};
 			} else {
 				setTimeout(function () {
-					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, undefined);
+					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, loginAccount, undefined);
 				}, 300);
 			}
 			_this.setState({ msg: '', loginID: undefined, disableInputs: false });
@@ -26348,20 +26345,19 @@ var AuthForm = function (_Component) {
 
 			if (password !== '' && password2 !== '') {
 				setTimeout(function () {
-					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, function (loginAccount) {
-						_this.setState({ loginID: loginAccount.loginID, disableInputs: true });
+					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, undefined, function (loginAccount) {
+						_this.setState({ loginID: loginAccount.loginID, disableInputs: true, loginAccount: loginAccount });
 					});
 				}, 300);
 			}
 		};
 
-		_this.loginIDcp = function (e) {
-			var loginIDInput = e.target;
+		_this.loginIDCopy = function (e) {
+			var loginIDDisplay = _this.refs.loginIDDisplay;
 
 			try {
-				loginIDInput.select();
+				loginIDDisplay.select();
 				document.execCommand('copy');
-				loginIDInput.blur();
 			} catch (err) {
 				console.log(err);
 			}
@@ -26369,7 +26365,7 @@ var AuthForm = function (_Component) {
 
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 		_this.handlePasswordInput = _this.handlePasswordInput.bind(_this);
-		_this.loginIDcp = _this.loginIDcp.bind(_this);
+		_this.loginIDCopy = _this.loginIDCopy.bind(_this);
 		if (new FileReader()) {
 			_this.fileReader = new FileReader();
 		}
@@ -26377,7 +26373,8 @@ var AuthForm = function (_Component) {
 			msg: _this.props.msg,
 			loginID: undefined,
 			rememberMe: _this.props.rememberMe,
-			disableInputs: false
+			disableInputs: false,
+			loginAccount: {}
 		};
 		return _this;
 	}
@@ -26454,7 +26451,12 @@ var AuthForm = function (_Component) {
 					placeholder: 'Import Account',
 					autoFocus: 'autofocus'
 				}),
-				p.loginID && _react2.default.createElement('textarea', { className: (0, _classnames2.default)('loginID-generated'), readOnly: true, value: p.loginID, onClick: this.loginIDcp }),
+				p.loginID && _react2.default.createElement('textarea', { ref: 'loginIDDisplay', className: (0, _classnames2.default)('loginID-generated'), readOnly: true, value: p.loginID, onClick: this.loginIDCopy }),
+				p.loginID && _react2.default.createElement(
+					'button',
+					{ type: 'button', className: (0, _classnames2.default)('button submit-button'), onClick: this.loginIDCopy },
+					'Copy Login ID'
+				),
 				_react2.default.createElement('input', {
 					name: 'username',
 					id: 'username',
@@ -26570,7 +26572,7 @@ AuthForm.defaultProps = {
 };
 exports.default = AuthForm;
 
-},{"../../common/components/checkbox":188,"../../common/components/input":192,"../../link/components/link":209,"classnames":1,"react":181}],186:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":188,"../../link/components/link":209,"classnames":1,"react":181}],186:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
