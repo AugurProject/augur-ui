@@ -26479,7 +26479,8 @@ var AuthForm = function (_Component) {
 					placeholder: p.passwordPlaceholder || 'password',
 					maxLength: '256',
 					onChange: this.handlePasswordInput,
-					required: p.isVisiblePassword
+					required: p.isVisiblePassword,
+					autoComplete: true
 				}),
 				_react2.default.createElement('input', {
 					ref: 'password2',
