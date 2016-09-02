@@ -26525,7 +26525,7 @@ var AuthForm = function (_Component) {
 					{
 						type: 'button',
 						className: 'button x-button',
-						title: 'Close',
+						title: 'Back to Markets Page',
 						href: p.closeLink.href,
 						onClick: p.closeLink.onClick
 					},
