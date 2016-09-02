@@ -26410,7 +26410,7 @@ var AuthForm = function (_Component) {
 
 			return _react2.default.createElement(
 				'form',
-				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data' },
+				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data', autoComplete: true },
 				_react2.default.createElement(
 					'h1',
 					{ className: 'title' },
@@ -26472,6 +26472,8 @@ var AuthForm = function (_Component) {
 					required: p.isVisibleID
 				}),
 				_react2.default.createElement('input', {
+					name: 'password',
+					id: 'password',
 					ref: 'password',
 					className: (0, _classnames2.default)('auth-input', { displayNone: !p.isVisiblePassword }),
 					type: 'password',
