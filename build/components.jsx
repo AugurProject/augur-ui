@@ -29140,8 +29140,8 @@ MarketInfo.propTypes = {
 	outstandingShares: _react.PropTypes.object,
 	creationTime: _react.PropTypes.object,
 	type: _react.PropTypes.string,
-	minValue: _react.PropTypes.number,
-	maxValue: _react.PropTypes.number
+	minValue: _react.PropTypes.string,
+	maxValue: _react.PropTypes.string
 };
 
 exports.default = MarketInfo;
@@ -31375,8 +31375,8 @@ var ReportForm = function (_React$Component) {
 
 ReportForm.propTypes = {
 	type: _react2.default.PropTypes.string,
-	minValue: _react2.default.PropTypes.number,
-	maxValue: _react2.default.PropTypes.number,
+	minValue: _react2.default.PropTypes.string,
+	maxValue: _react2.default.PropTypes.string,
 	reportableOutcomes: _react2.default.PropTypes.array,
 	reportedOutcomeID: _react2.default.PropTypes.any,
 	isIndeterminate: _react2.default.PropTypes.bool,
@@ -31427,8 +31427,8 @@ var ReportPanel = function ReportPanel(p) {
 
 ReportPanel.propTypes = {
 	type: _react2.default.PropTypes.string,
-	minValue: _react2.default.PropTypes.number,
-	maxValue: _react2.default.PropTypes.number,
+	minValue: _react2.default.PropTypes.string,
+	maxValue: _react2.default.PropTypes.string,
 	className: _react2.default.PropTypes.string,
 	numPendingReports: _react2.default.PropTypes.number,
 	outcomes: _react2.default.PropTypes.array,
