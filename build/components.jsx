@@ -32130,7 +32130,7 @@ var Transaction = function Transaction(p) {
 					'@'
 				),
 				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.data.noFeePrice, { postfix: '(average)' })),
-				_react2.default.createElement('br', null),
+				_react2.default.createElement('br', { className: 'hide-in-tx-display' }),
 				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.data.avgPrice, { prefix: 'including trading fees:', postfix: '/ share' })),
 				_react2.default.createElement('br', null),
 				marketDescription()
