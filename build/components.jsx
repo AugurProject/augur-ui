@@ -27383,7 +27383,7 @@ var ValueDenomination = function ValueDenomination(p) {
 		),
 		p.formatted && _react2.default.createElement(
 			'span',
-			{ className: 'value' },
+			{ className: 'value', title: p.fullPrecision },
 			p.formatted
 		),
 		p.denomination && _react2.default.createElement(
@@ -27404,6 +27404,7 @@ ValueDenomination.propTypes = {
 	value: _react.PropTypes.number,
 	formattedValue: _react.PropTypes.number,
 	formatted: _react.PropTypes.string,
+	fullPrecision: _react.PropTypes.string,
 	denomination: _react.PropTypes.string,
 	prefix: _react.PropTypes.string,
 	postfix: _react.PropTypes.string,
@@ -31631,6 +31632,7 @@ var TradeBuilderBidAsk = function TradeBuilderBidAsk(p) {
 		_react2.default.createElement(_valueDenomination2.default, _extends({}, p.bidAsk.shares, {
 			className: (0, _classnames2.default)('shares'),
 			formatted: p.bidAsk.shares.rounded,
+			fullPrecision: p.bidAsk.shares.fullPrecision,
 			denomination: undefined
 		})),
 		_react2.default.createElement(
