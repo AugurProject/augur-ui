@@ -32139,6 +32139,23 @@ var Transaction = function Transaction(p) {
 			);
 
 			break;
+
+		case _types.SELL_COMPLETE_SETS:
+			nodes.action = 'AUTOMATIC SELL';
+			nodes.description = _react2.default.createElement(
+				'span',
+				{ className: 'description' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'action' },
+					nodes.action
+				),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.numShares, { postfix: 'of each outcome' })),
+				_react2.default.createElement('br', null),
+				marketDescription()
+			);
+			break;
+
 		case _authTypes.LOGIN:
 			nodes.description = _react2.default.createElement(
 				'span',
@@ -32250,6 +32267,11 @@ var Transaction = function Transaction(p) {
 						p.data.order.type,
 						' order'
 					),
+					_react2.default.createElement(
+						'span',
+						{ className: 'at' },
+						'for'
+					),
 					_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.order.shares)),
 					_react2.default.createElement(
 						'span',
@@ -32261,12 +32283,6 @@ var Transaction = function Transaction(p) {
 						{ className: 'outcome-name' },
 						p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
 					),
-					_react2.default.createElement(
-						'span',
-						{ className: 'at' },
-						'@'
-					),
-					_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.data.order.price)),
 					_react2.default.createElement('br', null),
 					marketDescription()
 				);
@@ -32484,6 +32500,7 @@ var COMMIT_REPORT = exports.COMMIT_REPORT = 'commit_report';
 var REGISTER_ACCOUNT = exports.REGISTER_ACCOUNT = 'register_account';
 var GENERATE_ORDER_BOOK = exports.GENERATE_ORDER_BOOK = 'generate_order_book';
 var CANCEL_ORDER = exports.CANCEL_ORDER = 'cancel_order';
+var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 
 },{}],252:[function(_dereq_,module,exports){
 'use strict';
