@@ -25911,7 +25911,7 @@ var _loginMessagePage2 = _interopRequireDefault(_loginMessagePage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./modules/account/components/account-page":184,"./modules/auth/components/auth-page":186,"./modules/auth/constants/auth-types":187,"./modules/balances/components/balances-page":188,"./modules/create-market/components/create-market-page":209,"./modules/login-message/components/login-message-page":212,"./modules/market/components/market-page":218,"./modules/markets/components/markets-page":224,"./modules/portfolio/components/portfolio-page":237,"./modules/site/constants/pages":244,"./modules/transactions/components/transactions-page":251,"react":181,"react-dom":38}],183:[function(_dereq_,module,exports){
+},{"./modules/account/components/account-page":184,"./modules/auth/components/auth-page":186,"./modules/auth/constants/auth-types":187,"./modules/balances/components/balances-page":188,"./modules/create-market/components/create-market-page":209,"./modules/login-message/components/login-message-page":212,"./modules/market/components/market-page":218,"./modules/markets/components/markets-page":224,"./modules/portfolio/components/portfolio-page":238,"./modules/site/constants/pages":245,"./modules/transactions/components/transactions-page":252,"react":181,"react-dom":38}],183:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25956,7 +25956,7 @@ exports.default = components;
 exports.App = _app2.default;
 exports.constants = constants;
 
-},{"./app":182,"./modules/auth/constants/auth-types":187,"./modules/site/constants/pages":244,"./modules/transactions/constants/types":253}],184:[function(_dereq_,module,exports){
+},{"./app":182,"./modules/auth/constants/auth-types":187,"./modules/site/constants/pages":245,"./modules/transactions/constants/types":254}],184:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26337,7 +26337,7 @@ AccountPage.propTypes = {
 };
 exports.default = AccountPage;
 
-},{"../../common/components/input":193,"../../link/components/link":211,"../../site/components/site-footer":242,"../../site/components/site-header":243,"classnames":1,"react":181}],185:[function(_dereq_,module,exports){
+},{"../../common/components/input":193,"../../link/components/link":211,"../../site/components/site-footer":243,"../../site/components/site-header":244,"classnames":1,"react":181}],185:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26701,7 +26701,7 @@ AuthPage.propTypes = {
 
 exports.default = AuthPage;
 
-},{"../../auth/components/auth-form":185,"../../site/components/site-footer":242,"../../site/components/site-header":243,"react":181}],187:[function(_dereq_,module,exports){
+},{"../../auth/components/auth-form":185,"../../site/components/site-footer":243,"../../site/components/site-header":244,"react":181}],187:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26780,7 +26780,7 @@ BalancesPage.propTypes = {
 
 exports.default = BalancesPage;
 
-},{"../../site/components/site-footer":242,"../../site/components/site-header":243,"classnames":1,"react":181}],189:[function(_dereq_,module,exports){
+},{"../../site/components/site-footer":243,"../../site/components/site-header":244,"classnames":1,"react":181}],189:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27188,7 +27188,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"../../../utils/should-component-update-pure":255,"classnames":1,"react":181}],194:[function(_dereq_,module,exports){
+},{"../../../utils/should-component-update-pure":256,"classnames":1,"react":181}],194:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28413,7 +28413,7 @@ CreateMarketForm4.propTypes = {
 
 exports.default = CreateMarketForm4;
 
-},{"../../../modules/common/components/checkbox":189,"../../../utils/get":254,"../../common/components/input":193,"../../create-market/components/create-market-form-buttons":207,"classnames":1,"react":181}],206:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/checkbox":189,"../../../utils/get":255,"../../common/components/input":193,"../../create-market/components/create-market-form-buttons":207,"classnames":1,"react":181}],206:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28667,7 +28667,7 @@ CreateMarketPage.propTypes = {
 
 exports.default = CreateMarketPage;
 
-},{"../../create-market/components/create-market-form":208,"../../site/components/site-footer":242,"../../site/components/site-header":243,"react":181}],210:[function(_dereq_,module,exports){
+},{"../../create-market/components/create-market-form":208,"../../site/components/site-footer":243,"../../site/components/site-header":244,"react":181}],210:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28919,7 +28919,7 @@ LoginMessagePage.propTypes = {
 
 exports.default = LoginMessagePage;
 
-},{"../../link/components/link":211,"../../site/components/site-footer":242,"../../site/components/site-header":243,"react":181}],213:[function(_dereq_,module,exports){
+},{"../../link/components/link":211,"../../site/components/site-footer":243,"../../site/components/site-header":244,"react":181}],213:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29394,7 +29394,7 @@ MarketItem.propTypes = {
 };
 exports.default = MarketItem;
 
-},{"../../../modules/market/components/order-book-parameters":221,"../../../utils/should-component-update-pure":255,"../../link/components/link":211,"../../market/components/basics":213,"../../market/components/outcomes":222,"classnames":1,"react":181}],217:[function(_dereq_,module,exports){
+},{"../../../modules/market/components/order-book-parameters":221,"../../../utils/should-component-update-pure":256,"../../link/components/link":211,"../../market/components/basics":213,"../../market/components/outcomes":222,"classnames":1,"react":181}],217:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29448,7 +29448,7 @@ OpenOrders.propTypes = {
 
 exports.default = OpenOrders;
 
-},{"../../common/components/value-denomination":198,"../../open-orders/components/open-orders-group":235,"react":181}],218:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":198,"../../open-orders/components/open-orders-group":236,"react":181}],218:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29638,7 +29638,7 @@ MarketPage.propTypes = {
 };
 exports.default = MarketPage;
 
-},{"../../../modules/trade/components/trade-panel":248,"../../../utils/should-component-update-pure":255,"../../market/components/basics":213,"../../market/components/chart":214,"../../market/components/market-info":215,"../../market/components/market-open-orders":217,"../../market/components/market-positions":219,"../../reports/components/report-panel":241,"../../site/components/site-footer":242,"../../site/components/site-header":243,"./market-summary":220,"react":181}],219:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-panel":249,"../../../utils/should-component-update-pure":256,"../../market/components/basics":213,"../../market/components/chart":214,"../../market/components/market-info":215,"../../market/components/market-open-orders":217,"../../market/components/market-positions":219,"../../reports/components/report-panel":242,"../../site/components/site-footer":243,"../../site/components/site-header":244,"./market-summary":220,"react":181}],219:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29707,7 +29707,7 @@ MarketPositions.propTypes = {
 };
 exports.default = MarketPositions;
 
-},{"../../../modules/my-positions/components/my-positions":232,"../../../modules/my-positions/components/my-positions-summary":231,"../../../utils/should-component-update-pure":255,"react":181}],220:[function(_dereq_,module,exports){
+},{"../../../modules/my-positions/components/my-positions":233,"../../../modules/my-positions/components/my-positions-summary":232,"../../../utils/should-component-update-pure":256,"react":181}],220:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29780,7 +29780,7 @@ MarketSummary.propTypes = {
 };
 exports.default = MarketSummary;
 
-},{"../../../modules/my-markets/components/my-market":229,"../../../modules/my-markets/components/my-market-summary-header":228,"../../../utils/should-component-update-pure":255,"react":181}],221:[function(_dereq_,module,exports){
+},{"../../../modules/my-markets/components/my-market":229,"../../../modules/my-markets/components/my-market-summary-header":228,"../../../utils/should-component-update-pure":256,"react":181}],221:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29959,7 +29959,7 @@ Outcomes.propTypes = {
 };
 exports.default = Outcomes;
 
-},{"../../../utils/should-component-update-pure":255,"../../common/components/value-denomination":198,"react":181}],223:[function(_dereq_,module,exports){
+},{"../../../utils/should-component-update-pure":256,"../../common/components/value-denomination":198,"react":181}],223:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30069,7 +30069,7 @@ MarketsHeader.propTypes = {
 };
 exports.default = MarketsHeader;
 
-},{"../../../utils/should-component-update-pure":255,"../../markets/constants/markets-headers":227,"classnames":1,"react":181}],224:[function(_dereq_,module,exports){
+},{"../../../utils/should-component-update-pure":256,"../../markets/constants/markets-headers":227,"classnames":1,"react":181}],224:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30169,7 +30169,7 @@ MarketsPage.propTypes = {
 };
 exports.default = MarketsPage;
 
-},{"../../../modules/common/components/search-sort":194,"../../../utils/should-component-update-pure":255,"../../markets/components/markets":225,"../../site/components/site-footer":242,"../../site/components/site-header":243,"react":181}],225:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/search-sort":194,"../../../utils/should-component-update-pure":256,"../../markets/components/markets":225,"../../site/components/site-footer":243,"../../site/components/site-header":244,"react":181}],225:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30446,8 +30446,6 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -30476,11 +30474,7 @@ var Position = function Position(p) {
 				{ className: 'position-name' },
 				p.name
 			),
-			_react2.default.createElement(_valueDenomination2.default, p.qtyShares),
-			_react2.default.createElement(_valueDenomination2.default, _extends({}, p.gainPercent, {
-				formatted: p.gainPercent.minimized,
-				denomination: p.gainPercent.denomination + ' return'
-			}))
+			_react2.default.createElement(_valueDenomination2.default, p.qtyShares)
 		),
 		_react2.default.createElement(
 			'div',
@@ -30491,7 +30485,7 @@ var Position = function Position(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'title' },
-					'avg. purchase price'
+					'avg. trade price'
 				),
 				_react2.default.createElement(_valueDenomination2.default, p.purchasePrice)
 			),
@@ -30504,16 +30498,6 @@ var Position = function Position(p) {
 					'last trade price'
 				),
 				_react2.default.createElement(_valueDenomination2.default, p.lastPrice)
-			),
-			_react2.default.createElement(
-				'div',
-				{ className: 'position-pair per-share-gain' },
-				_react2.default.createElement(
-					'span',
-					{ className: 'title' },
-					'per share gain/loss'
-				),
-				_react2.default.createElement(_valueDenomination2.default, p.shareChange)
 			)
 		),
 		_react2.default.createElement(
@@ -30521,33 +30505,33 @@ var Position = function Position(p) {
 			{ className: 'position-group' },
 			_react2.default.createElement(
 				'div',
-				{ className: 'position-pair total-cost' },
+				{ className: 'position-pair realized-net' },
 				_react2.default.createElement(
 					'span',
 					{ className: 'title' },
-					'total cost'
+					'realized P/L'
 				),
-				_react2.default.createElement(_valueDenomination2.default, p.totalCost)
+				_react2.default.createElement(_valueDenomination2.default, p.realizedNet)
 			),
 			_react2.default.createElement(
 				'div',
-				{ className: 'position-pair total-value' },
+				{ className: 'position-pair unrealized-net' },
 				_react2.default.createElement(
 					'span',
 					{ className: 'title' },
-					'total value'
+					'unrealized P/L'
 				),
-				_react2.default.createElement(_valueDenomination2.default, p.totalValue)
+				_react2.default.createElement(_valueDenomination2.default, p.unrealizedNet)
 			),
 			_react2.default.createElement(
 				'div',
-				{ className: 'position-pair net-change' },
+				{ className: 'position-pair total-net' },
 				_react2.default.createElement(
 					'span',
 					{ className: 'title' },
-					'net gain/loss'
+					'total P/L'
 				),
-				_react2.default.createElement(_valueDenomination2.default, p.netChange)
+				_react2.default.createElement(_valueDenomination2.default, p.totalNet)
 			)
 		)
 	);
@@ -30564,12 +30548,89 @@ Position.propTypes = {
 	purchasePrice: _react2.default.PropTypes.object,
 	shareChange: _react2.default.PropTypes.object,
 	totalCost: _react2.default.PropTypes.object,
-	netChange: _react2.default.PropTypes.object
+	realizedNet: _react2.default.PropTypes.object,
+	unrealizedNet: _react2.default.PropTypes.object,
+	totalNet: _react2.default.PropTypes.object
 };
 
 exports.default = Position;
 
 },{"../../common/components/value-denomination":198,"../../markets/constants/market-types":226,"react":181}],231:[function(_dereq_,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _valueDenomination = _dereq_('../../common/components/value-denomination');
+
+var _valueDenomination2 = _interopRequireDefault(_valueDenomination);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PositionsMarketOverview = function PositionsMarketOverview(p) {
+	return _react2.default.createElement(
+		'section',
+		{ className: 'positions-market-overview' },
+		_react2.default.createElement(
+			'div',
+			{ className: 'position' },
+			_react2.default.createElement(
+				'span',
+				{ className: 'description' },
+				p.description
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'position-group' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'position-pair realized-net' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'title' },
+						'total realized P/L'
+					),
+					_react2.default.createElement(_valueDenomination2.default, p.realizedNet)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'position-pair unrealized-net' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'title' },
+						'total unrealized P/L'
+					),
+					_react2.default.createElement(_valueDenomination2.default, p.unrealizedNet)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'position-pair total-net' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'title' },
+						'total P/L'
+					),
+					_react2.default.createElement(_valueDenomination2.default, p.totalNet)
+				)
+			)
+		)
+	);
+};
+
+PositionsMarketOverview.propTypes = {
+	description: _react2.default.PropTypes.string.isRequired,
+	unrealizedNet: _react2.default.PropTypes.object.isRequired,
+	realizedNet: _react2.default.PropTypes.object.isRequired
+};
+
+exports.default = PositionsMarketOverview;
+
+},{"../../common/components/value-denomination":198,"react":181}],232:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30604,7 +30665,7 @@ PositionsSummary.propTypes = {
 
 exports.default = PositionsSummary;
 
-},{"classnames":1,"react":181}],232:[function(_dereq_,module,exports){
+},{"classnames":1,"react":181}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30643,7 +30704,7 @@ Positions.propTypes = {
 };
 exports.default = Positions;
 
-},{"./my-position":230,"react":181}],233:[function(_dereq_,module,exports){
+},{"./my-position":230,"react":181}],234:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30776,7 +30837,7 @@ Report.propTypes = {
 
 exports.default = Report;
 
-},{"../../../modules/common/components/value-date":197,"../../../modules/common/components/value-denomination":198,"react":181}],234:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-date":197,"../../../modules/common/components/value-denomination":198,"react":181}],235:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30897,7 +30958,7 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 
 exports.default = OpenOrder;
 
-},{"../../common/components/value-denomination":198,"classnames":1,"react":181}],235:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":198,"classnames":1,"react":181}],236:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30981,7 +31042,7 @@ OpenOrdersGroup.propTypes = {
 
 exports.default = OpenOrdersGroup;
 
-},{"../../open-orders/components/open-order":234,"react":181}],236:[function(_dereq_,module,exports){
+},{"../../open-orders/components/open-order":235,"react":181}],237:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31037,7 +31098,7 @@ PortfolioMarkets.propTypes = {
 
 exports.default = PortfolioMarkets;
 
-},{"../../../modules/my-markets/components/my-market":229,"../../link/components/link":211,"react":181}],237:[function(_dereq_,module,exports){
+},{"../../../modules/my-markets/components/my-market":229,"../../link/components/link":211,"react":181}],238:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31132,7 +31193,7 @@ PortfolioPage.propTypes = {
 
 exports.default = PortfolioPage;
 
-},{"../../../modules/common/components/tab-navigation":195,"../../../modules/portfolio/components/markets":236,"../../../modules/portfolio/components/positions":238,"../../../modules/portfolio/components/reports":239,"../../../modules/site/components/site-footer":242,"../../../modules/site/components/site-header":243,"../../../modules/site/constants/pages":244,"react":181}],238:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/tab-navigation":195,"../../../modules/portfolio/components/markets":237,"../../../modules/portfolio/components/positions":239,"../../../modules/portfolio/components/reports":240,"../../../modules/site/components/site-footer":243,"../../../modules/site/components/site-header":244,"../../../modules/site/constants/pages":245,"react":181}],239:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31148,6 +31209,10 @@ var _react2 = _interopRequireDefault(_react);
 var _myPositions = _dereq_('../../../modules/my-positions/components/my-positions');
 
 var _myPositions2 = _interopRequireDefault(_myPositions);
+
+var _myPositionsMarketOverview = _dereq_('../../my-positions/components/my-positions-market-overview');
+
+var _myPositionsMarketOverview2 = _interopRequireDefault(_myPositionsMarketOverview);
 
 var _link = _dereq_('../../link/components/link');
 
@@ -31166,11 +31231,9 @@ var PortfolioPositions = function PortfolioPositions(p) {
 				_react2.default.createElement(
 					'div',
 					{ className: 'positions-container' },
-					_react2.default.createElement(
-						'span',
-						{ className: 'description' },
-						market.description
-					),
+					_react2.default.createElement(_myPositionsMarketOverview2.default, _extends({
+						description: market.description
+					}, market.myPositionsSummary)),
 					!!market.myPositionOutcomes && !!market.myPositionOutcomes.length && _react2.default.createElement(_myPositions2.default, {
 						className: 'page-content positions-content',
 						type: market.type,
@@ -31188,7 +31251,7 @@ PortfolioPositions.propTypes = {
 
 exports.default = PortfolioPositions;
 
-},{"../../../modules/my-positions/components/my-positions":232,"../../link/components/link":211,"react":181}],239:[function(_dereq_,module,exports){
+},{"../../../modules/my-positions/components/my-positions":233,"../../link/components/link":211,"../../my-positions/components/my-positions-market-overview":231,"react":181}],240:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31260,7 +31323,7 @@ PortfolioReports.propTypes = {
 
 exports.default = PortfolioReports;
 
-},{"../../../modules/my-reports/components/my-report":233,"../../link/components/link":211,"react":181}],240:[function(_dereq_,module,exports){
+},{"../../../modules/my-reports/components/my-report":234,"../../link/components/link":211,"react":181}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31480,7 +31543,7 @@ ReportForm.propTypes = {
 };
 exports.default = ReportForm;
 
-},{"../../common/components/checkbox":189,"../../markets/constants/market-types":226,"classnames":1,"react":181}],241:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":189,"../../markets/constants/market-types":226,"classnames":1,"react":181}],242:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31536,7 +31599,7 @@ ReportPanel.propTypes = {
 
 exports.default = ReportPanel;
 
-},{"../../reports/components/report-form":240,"classnames":1,"react":181}],242:[function(_dereq_,module,exports){
+},{"../../reports/components/report-form":241,"classnames":1,"react":181}],243:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31598,7 +31661,7 @@ var SiteFooter = function SiteFooter(props) {
 
 exports.default = SiteFooter;
 
-},{"react":181}],243:[function(_dereq_,module,exports){
+},{"react":181}],244:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31707,7 +31770,7 @@ SiteHeader.propTypes = {
 
 exports.default = SiteHeader;
 
-},{"../../auth/constants/auth-types":187,"../../common/components/value-denomination":198,"../../link/components/link":211,"../../site/constants/pages":244,"classnames":1,"react":181}],244:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":187,"../../common/components/value-denomination":198,"../../link/components/link":211,"../../site/constants/pages":245,"classnames":1,"react":181}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31725,7 +31788,7 @@ var MY_REPORTS = exports.MY_REPORTS = 'my-reports';
 var LOGIN_MESSAGE = exports.LOGIN_MESSAGE = 'login-message';
 var DEFAULT_PAGE = exports.DEFAULT_PAGE = MARKETS;
 
-},{}],245:[function(_dereq_,module,exports){
+},{}],246:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31776,7 +31839,7 @@ TradeBuilderBidAsk.propTypes = {
 
 exports.default = TradeBuilderBidAsk;
 
-},{"../../../modules/common/components/value-denomination":198,"classnames":1,"react":181}],246:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-denomination":198,"classnames":1,"react":181}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31926,7 +31989,7 @@ TradeBuilderRow.propTypes = {
 
 exports.default = TradeBuilderRow;
 
-},{"../../../modules/common/components/input":193,"../../../modules/common/components/toggler":196,"../../../modules/common/components/value-denomination":198,"../../../modules/trade/components/trade-builder-bid-ask":245,"../../markets/constants/market-types":226,"classnames":1,"react":181}],247:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/input":193,"../../../modules/common/components/toggler":196,"../../../modules/common/components/value-denomination":198,"../../../modules/trade/components/trade-builder-bid-ask":246,"../../markets/constants/market-types":226,"classnames":1,"react":181}],248:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32019,7 +32082,7 @@ TradePanel.propTypes = {
 
 exports.default = TradePanel;
 
-},{"../../../modules/trade/components/trade-builder-row":246,"react":181}],248:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-builder-row":247,"react":181}],249:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32084,7 +32147,7 @@ TradePanel.propTypes = {
 
 exports.default = TradePanel;
 
-},{"../../../modules/trade/components/trade-builder":247,"../../../modules/trade/components/trade-summary":249,"react":181}],249:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-builder":248,"../../../modules/trade/components/trade-summary":250,"react":181}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32129,7 +32192,7 @@ TradeSummary.propTypes = {
 
 exports.default = TradeSummary;
 
-},{"../../transactions/components/transaction":250,"react":181}],250:[function(_dereq_,module,exports){
+},{"../../transactions/components/transaction":251,"react":181}],251:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32502,7 +32565,7 @@ Transaction.propTypes = {
 
 exports.default = Transaction;
 
-},{"../../auth/constants/auth-types":187,"../../common/components/value-denomination":198,"../../common/components/value-timestamp":199,"../../link/components/link":211,"../../markets/constants/market-types":226,"../../transactions/constants/types":253,"classnames":1,"react":181}],251:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":187,"../../common/components/value-denomination":198,"../../common/components/value-timestamp":199,"../../link/components/link":211,"../../markets/constants/market-types":226,"../../transactions/constants/types":254,"classnames":1,"react":181}],252:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32570,7 +32633,7 @@ TransactionsPage.propTypes = {
 
 exports.default = TransactionsPage;
 
-},{"../../site/components/site-footer":242,"../../site/components/site-header":243,"../../transactions/components/transactions":252,"react":181}],252:[function(_dereq_,module,exports){
+},{"../../site/components/site-footer":243,"../../site/components/site-header":244,"../../transactions/components/transactions":253,"react":181}],253:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32622,7 +32685,7 @@ Transactions.propTypes = {
 };
 exports.default = Transactions;
 
-},{"./transaction":250,"classnames":1,"react":181}],253:[function(_dereq_,module,exports){
+},{"./transaction":251,"classnames":1,"react":181}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32642,7 +32705,7 @@ var GENERATE_ORDER_BOOK = exports.GENERATE_ORDER_BOOK = 'generate_order_book';
 var CANCEL_ORDER = exports.CANCEL_ORDER = 'cancel_order';
 var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 
-},{}],254:[function(_dereq_,module,exports){
+},{}],255:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32655,7 +32718,7 @@ function get(obj, target) {
 	}, obj);
 }
 
-},{}],255:[function(_dereq_,module,exports){
+},{}],256:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
