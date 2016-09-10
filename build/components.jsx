@@ -32389,14 +32389,15 @@ var Transaction = function Transaction(p) {
 			break;
 		case _types.COMMIT_REPORT:
 			{
+				nodes.action = 'Commit report';
 				if (p.data.market.type === _marketTypes.SCALAR) {
 					nodes.description = _react2.default.createElement(
 						'span',
 						{ className: 'description' },
 						_react2.default.createElement(
 							'span',
-							null,
-							'Report'
+							{ className: 'action' },
+							nodes.action
 						),
 						_react2.default.createElement(
 							'strong',
@@ -32419,8 +32420,8 @@ var Transaction = function Transaction(p) {
 						{ className: 'description' },
 						_react2.default.createElement(
 							'span',
-							null,
-							'Report'
+							{ className: 'action' },
+							nodes.action
 						),
 						_react2.default.createElement(
 							'strong',
@@ -32441,13 +32442,14 @@ var Transaction = function Transaction(p) {
 				break;
 			}
 		case _types.GENERATE_ORDER_BOOK:
+			nodes.action = 'Generate order book';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
 				_react2.default.createElement(
 					'span',
-					null,
-					'Generate Order Book'
+					{ className: 'action' },
+					nodes.action
 				),
 				_react2.default.createElement('br', null),
 				marketDescription(),
