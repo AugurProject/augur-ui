@@ -26747,7 +26747,7 @@ var _siteFooter2 = _interopRequireDefault(_siteFooter);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var BalancePage = function BalancePage(p) {
+var BalancesPage = function BalancesPage(p) {
 	return _react2.default.createElement(
 		'main',
 		{ className: (0, _classnames2.default)('page account') },
@@ -26774,11 +26774,11 @@ var BalancePage = function BalancePage(p) {
 	);
 };
 
-BalancePage.propTypes = {
-	className: _react.PropTypes.string
+BalancesPage.propTypes = {
+	className: _react2.default.PropTypes.string
 };
 
-exports.default = BalancePage;
+exports.default = BalancesPage;
 
 },{"../../site/components/site-footer":242,"../../site/components/site-header":243,"classnames":1,"react":181}],189:[function(_dereq_,module,exports){
 'use strict';
@@ -30456,6 +30456,8 @@ var _valueDenomination = _dereq_('../../common/components/value-denomination');
 
 var _valueDenomination2 = _interopRequireDefault(_valueDenomination);
 
+var _marketTypes = _dereq_('../../markets/constants/market-types');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Position = function Position(p) {
@@ -30465,7 +30467,11 @@ var Position = function Position(p) {
 		_react2.default.createElement(
 			'div',
 			{ className: 'position-group main-group' },
-			_react2.default.createElement(
+			p.type === _marketTypes.SCALAR ? _react2.default.createElement(
+				'span',
+				{ className: 'position-name' },
+				p.lastPricePercent.rounded
+			) : _react2.default.createElement(
 				'span',
 				{ className: 'position-name' },
 				p.name
@@ -30549,10 +30555,12 @@ var Position = function Position(p) {
 
 Position.propTypes = {
 	name: _react2.default.PropTypes.string,
+	type: _react2.default.PropTypes.string,
 	qtyShares: _react2.default.PropTypes.object,
 	totalValue: _react2.default.PropTypes.object,
 	gainPercent: _react2.default.PropTypes.object,
 	lastPrice: _react2.default.PropTypes.object,
+	lastPricePercent: _react2.default.PropTypes.object,
 	purchasePrice: _react2.default.PropTypes.object,
 	shareChange: _react2.default.PropTypes.object,
 	totalCost: _react2.default.PropTypes.object,
@@ -30561,7 +30569,7 @@ Position.propTypes = {
 
 exports.default = Position;
 
-},{"../../common/components/value-denomination":198,"react":181}],231:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":198,"../../markets/constants/market-types":226,"react":181}],231:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30621,7 +30629,8 @@ var Positions = function Positions(p) {
 		{ className: 'positions-list' },
 		(p.outcomes || []).map(function (outcome) {
 			return _react2.default.createElement(_myPosition2.default, _extends({
-				key: outcome.id
+				key: outcome.id,
+				type: p.type
 			}, outcome, outcome.position));
 		})
 	);
@@ -30629,6 +30638,7 @@ var Positions = function Positions(p) {
 
 Positions.propTypes = {
 	className: _react2.default.PropTypes.string,
+	type: _react2.default.PropTypes.string,
 	outcomes: _react2.default.PropTypes.array
 };
 exports.default = Positions;
@@ -31163,6 +31173,7 @@ var PortfolioPositions = function PortfolioPositions(p) {
 					),
 					!!market.myPositionOutcomes && !!market.myPositionOutcomes.length && _react2.default.createElement(_myPositions2.default, {
 						className: 'page-content positions-content',
+						type: market.type,
 						outcomes: market.myPositionOutcomes
 					})
 				)
