@@ -27027,7 +27027,6 @@ var InputList = function (_Component) {
 							type: 'text',
 							maxLength: p.itemMaxLength,
 							value: item,
-							debounceMS: 0,
 							onChange: function onChange(newValue) {
 								return _this2.handleChange(i, newValue);
 							}
@@ -27151,7 +27150,7 @@ var Input = function (_Component) {
 
 			return _react2.default.createElement(
 				'div',
-				{ className: (0, _classnames2.default)('input', { clearable: p.isClearable }, this.props.className) },
+				{ className: (0, _classnames2.default)('input', this.props.className) },
 				!p.isMultiline && _react2.default.createElement('input', _extends({}, p, {
 					className: 'box',
 					value: s.value,
@@ -28036,7 +28035,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 			_react2.default.createElement(_input2.default, {
 				className: 'details-text-input',
 				value: p.detailsText,
-				isMultiline: true,
 				maxLength: 500,
 				placeholder: 'Optional: enter a more detailed description of your market.',
 				onChange: function onChange(value) {
@@ -28125,7 +28123,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 			_react2.default.createElement(_input2.default, {
 				type: 'text',
 				value: p.takerFee,
-				isClearable: false,
 				onChange: function onChange(value) {
 					return p.onValuesUpdated({ takerFee: value });
 				}
@@ -28157,7 +28154,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 			_react2.default.createElement(_input2.default, {
 				type: 'text',
 				value: p.makerFee,
-				isClearable: false,
 				onChange: function onChange(value) {
 					return p.onValuesUpdated({ makerFee: value });
 				}
@@ -28221,7 +28217,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 					_react2.default.createElement(_input2.default, {
 						type: 'text',
 						value: p.initialLiquidity,
-						isClearable: false,
 						onChange: function onChange(value) {
 							return p.onValuesUpdated({ initialLiquidity: value });
 						}
@@ -28257,7 +28252,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 							_react2.default.createElement(_input2.default, {
 								type: 'text',
 								value: p.initialFairPrices.values[i].value,
-								isClearable: false,
 								onChange: function onChange(onChangeValue) {
 									var prices = p.initialFairPrices.values;
 									var raw = p.initialFairPrices.raw;
@@ -28301,7 +28295,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 					_react2.default.createElement(_input2.default, {
 						type: 'text',
 						value: p.bestStartingQuantity,
-						isClearable: false,
 						onChange: function onChange(value) {
 							return p.onValuesUpdated({ bestStartingQuantity: value });
 						}
@@ -28333,7 +28326,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 					_react2.default.createElement(_input2.default, {
 						type: 'text',
 						value: p.startingQuantity,
-						isClearable: false,
 						onChange: function onChange(value) {
 							return p.onValuesUpdated({ startingQuantity: value });
 						}
@@ -28365,7 +28357,6 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 					_react2.default.createElement(_input2.default, {
 						type: 'text',
 						value: p.priceWidth,
-						isClearable: false,
 						onChange: function onChange(value) {
 							return p.onValuesUpdated({ priceWidth: value });
 						}
