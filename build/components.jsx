@@ -28848,7 +28848,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 						' system, if you lose your login credentials it is impossible to recover them. Please ',
 						_react2.default.createElement(
 							'a',
-							{ className: 'link', href: 'http://blog.augur.net/faq/how-do-i-savebackup-my-wallet/' },
+							{ className: 'link', href: 'http://blog.augur.net/faq/how-do-i-savebackup-my-wallet/', target: '_blank' },
 							'take appropriate measures'
 						),
 						' to protect the safety of your password, and create a way to recover your credentials if you forget them.'
@@ -28864,7 +28864,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 						'Reputation (REP) is a unique and important part of the Augur trading platform. If you own REP tokens, you must visit the site periodically to fulfill your reporting obligations. During beta testing, each new account will receive 47 testnet REP (they have no value except for testing). Each reporting cycle will last 2 days. Every two-day cycle will consist of a commit phase, a reveal phase, and a challenge phase. Because the test cycle is dramatically compressed (the main net cycle will be 60 days long) it is recommended that users visit the site at least every 2 days to maintain your REP and simulate “real money” trading, resolution, and reporting conditions. Learn ',
 						_react2.default.createElement(
 							'a',
-							{ className: 'link', href: 'https://www.youtube.com/watch?v=sCms-snzHk4' },
+							{ className: 'link', href: 'https://www.youtube.com/watch?v=sCms-snzHk4', target: '_blank' },
 							'how Augur\'s Reputation tokens work'
 						),
 						'.'
@@ -32533,12 +32533,59 @@ var Transaction = function Transaction(p) {
 				{ className: 'status-and-message' },
 				_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
 				_react2.default.createElement('br', null),
-				p.data && p.data.gasFees && _react2.default.createElement(
+				p.tradingFees && _react2.default.createElement(
 					'span',
 					null,
 					_react2.default.createElement(_valueDenomination2.default, _extends({
-						className: 'gas-message'
-					}, p.data.gasFees, {
+						className: 'tradingFees-message'
+					}, p.data.tradingFees, {
+						prefix: 'trading fees:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				p.freeze && _react2.default.createElement(
+					'span',
+					{ className: 'freeze-message' },
+					p.freeze.noFeeCost && _react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'freeze-noFeeCost-message'
+					}, p.freeze.noFeeCost, {
+						prefix: p.freeze.verb,
+						postfix: '+'
+					})),
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'freeze-tradingFees-message'
+					}, p.freeze.tradingFees, {
+						prefix: !p.freeze.noFeeCost && p.freeze.verb,
+						postfix: 'in potential trading fees'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				p.totalCost && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'totalCost-message'
+					}, p.totalCost, {
+						prefix: 'total cost:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				p.totalReturn && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'totalReturn-message'
+					}, p.totalReturn, {
+						prefix: 'total return:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				p.gasFees && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'gasFees-message'
+					}, p.gasFees, {
 						prefix: 'gas cost:'
 					})),
 					_react2.default.createElement('br', null)
@@ -32573,6 +32620,11 @@ Transaction.propTypes = {
 	ether: _react2.default.PropTypes.object,
 	gas: _react2.default.PropTypes.object,
 	hash: _react2.default.PropTypes.string,
+	freeze: _react2.default.PropTypes.object,
+	gasFees: _react2.default.PropTypes.object,
+	tradingFees: _react2.default.PropTypes.object,
+	totalCost: _react2.default.PropTypes.object,
+	totalReturn: _react2.default.PropTypes.object,
 	timestamp: _react2.default.PropTypes.object
 };
 
