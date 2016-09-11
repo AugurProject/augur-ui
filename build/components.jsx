@@ -32533,16 +32533,16 @@ var Transaction = function Transaction(p) {
 				{ className: 'status-and-message' },
 				_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
 				_react2.default.createElement('br', null),
-				p.data && p.data.gasFees && p.status === 'success' ? _react2.default.createElement(_valueDenomination2.default, _extends({
-					className: 'gas-message'
-				}, p.data.gasFees, {
-					prefix: 'gas cost:'
-				})) : _react2.default.createElement(_valueDenomination2.default, _extends({
-					className: 'gas-message'
-				}, p.data.gasFees, {
-					prefix: 'estimated gas cost:'
-				})),
-				_react2.default.createElement('br', null),
+				p.data && p.data.gasFees && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'gas-message'
+					}, p.data.gasFees, {
+						prefix: 'gas cost:'
+					})),
+					_react2.default.createElement('br', null)
+				),
 				_react2.default.createElement(
 					'span',
 					{ className: 'status' },
