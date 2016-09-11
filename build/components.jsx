@@ -32289,7 +32289,7 @@ var Transaction = function Transaction(p) {
 					{ className: 'action' },
 					nodes.action
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.numShares)),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.numShares)),
 				p.data.marketType !== _marketTypes.SCALAR && _react2.default.createElement(
 					'span',
 					null,
@@ -32310,9 +32310,9 @@ var Transaction = function Transaction(p) {
 					{ className: 'at' },
 					'@'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.data.noFeePrice, { postfix: '(average)' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.noFeePrice, { postfix: '(average)' })),
 				_react2.default.createElement('br', { className: 'hide-in-tx-display' }),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.data.avgPrice, { prefix: 'including trading fees:', postfix: '/ share' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.avgPrice, { prefix: 'including trading fees:', postfix: '/ share' })),
 				_react2.default.createElement('br', null),
 				marketDescription(),
 				_react2.default.createElement('br', { className: 'hide-in-trade-summary-display' }),
@@ -32331,7 +32331,7 @@ var Transaction = function Transaction(p) {
 					{ className: 'action' },
 					nodes.action
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.numShares, { postfix: 'of each outcome' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.numShares, { postfix: 'of each outcome' })),
 				_react2.default.createElement('br', null),
 				marketDescription(),
 				_react2.default.createElement('br', null),
@@ -32514,16 +32514,15 @@ var Transaction = function Transaction(p) {
 		_react2.default.createElement(
 			'span',
 			{ className: 'value-changes' },
-			!!p.data && !!p.data.tradingFees && p.data.tradingFees.value !== null && p.data.tradingFees.value !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change tradingFees' }, p.data.tradingFees, { prefix: 'trading fees:' })),
+			!!p.tradingFees && p.tradingFees.value !== null && p.tradingFees.value !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change tradingFees' }, p.tradingFees, { prefix: 'trading fees:' })),
 			_react2.default.createElement(
 				'span',
 				{ className: 'spacer' },
 				' '
 			),
-			!!p.data && !!p.data.feePercent && p.data.feePercent.value !== null && p.data.feePercent !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change feePercent' }, p.data.feePercent, { prefix: '[', postfix: ']' })),
+			!!p.feePercent && p.feePercent.value !== null && p.feePercent !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change feePercent' }, p.feePercent, { prefix: '[', postfix: ']' })),
 			_react2.default.createElement('br', null),
-			!!p.data && !!p.data.gasFees && !!p.data.gasFees.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change gasFees' }, p.data.gasFees, { prefix: 'estimated gas cost:' })),
-			!!p.ether && !!p.ether.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change ether' }, p.ether, { prefix: 'total:' }))
+			!!p.gasFees && !!p.gasFees.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change gasFees' }, p.gasFees, { prefix: 'estimated gas cost:' }))
 		),
 		p.status && p.hash ? _react2.default.createElement(
 			_link2.default,
@@ -32533,17 +32532,17 @@ var Transaction = function Transaction(p) {
 				{ className: 'status-and-message' },
 				_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
 				_react2.default.createElement('br', null),
-				p.tradingFees && _react2.default.createElement(
+				!!p.tradingFees && p.tradingFees.value !== null && p.tradingFees.value !== undefined && _react2.default.createElement(
 					'span',
 					null,
 					_react2.default.createElement(_valueDenomination2.default, _extends({
 						className: 'tradingFees-message'
-					}, p.data.tradingFees, {
+					}, p.tradingFees, {
 						prefix: 'trading fees:'
 					})),
 					_react2.default.createElement('br', null)
 				),
-				p.freeze && _react2.default.createElement(
+				!!p.freeze && _react2.default.createElement(
 					'span',
 					{ className: 'freeze-message' },
 					p.freeze.noFeeCost && _react2.default.createElement(_valueDenomination2.default, _extends({
@@ -32560,7 +32559,7 @@ var Transaction = function Transaction(p) {
 					})),
 					_react2.default.createElement('br', null)
 				),
-				p.totalCost && _react2.default.createElement(
+				!!p.totalCost && p.totalCost.value !== null && p.totalCost.value !== undefined && _react2.default.createElement(
 					'span',
 					null,
 					_react2.default.createElement(_valueDenomination2.default, _extends({
@@ -32570,7 +32569,7 @@ var Transaction = function Transaction(p) {
 					})),
 					_react2.default.createElement('br', null)
 				),
-				p.totalReturn && _react2.default.createElement(
+				!!p.totalReturn && p.totalReturn.value !== null && p.totalReturn.value !== undefined && _react2.default.createElement(
 					'span',
 					null,
 					_react2.default.createElement(_valueDenomination2.default, _extends({
@@ -32580,7 +32579,7 @@ var Transaction = function Transaction(p) {
 					})),
 					_react2.default.createElement('br', null)
 				),
-				p.gasFees && _react2.default.createElement(
+				!!p.gasFees && p.gasFees.value !== null && p.gasFees.value !== undefined && _react2.default.createElement(
 					'span',
 					null,
 					_react2.default.createElement(_valueDenomination2.default, _extends({
@@ -32601,6 +32600,63 @@ var Transaction = function Transaction(p) {
 			{ className: 'status-and-message' },
 			_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
 			_react2.default.createElement('br', null),
+			!!p.tradingFees && p.tradingFees.value !== null && p.tradingFees.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'tradingFees-message'
+				}, p.tradingFees, {
+					prefix: 'trading fees:'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.freeze && _react2.default.createElement(
+				'span',
+				{ className: 'freeze-message' },
+				p.freeze.noFeeCost && _react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'freeze-noFeeCost-message'
+				}, p.freeze.noFeeCost, {
+					prefix: p.freeze.verb,
+					postfix: '+'
+				})),
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'freeze-tradingFees-message'
+				}, p.freeze.tradingFees, {
+					prefix: !p.freeze.noFeeCost && p.freeze.verb,
+					postfix: 'in potential trading fees'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.totalCost && p.totalCost.value !== null && p.totalCost.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'totalCost-message'
+				}, p.totalCost, {
+					prefix: 'total cost:'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.totalReturn && p.totalReturn.value !== null && p.totalReturn.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'totalReturn-message'
+				}, p.totalReturn, {
+					prefix: 'total return:'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.gasFees && p.gasFees.value !== null && p.gasFees.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'gasFees-message'
+				}, p.gasFees, {
+					prefix: 'gas cost:'
+				})),
+				_react2.default.createElement('br', null)
+			),
 			_react2.default.createElement(
 				'span',
 				{ className: 'status' },
@@ -32617,7 +32673,6 @@ Transaction.propTypes = {
 	status: _react2.default.PropTypes.string,
 	data: _react2.default.PropTypes.object,
 	shares: _react2.default.PropTypes.object,
-	ether: _react2.default.PropTypes.object,
 	gas: _react2.default.PropTypes.object,
 	hash: _react2.default.PropTypes.string,
 	freeze: _react2.default.PropTypes.object,
