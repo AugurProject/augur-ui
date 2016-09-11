@@ -32378,60 +32378,70 @@ var Transaction = function Transaction(p) {
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
+
 		case _types.COMMIT_REPORT:
-			{
-				nodes.action = 'Commit report';
-				if (p.data.market.type === _marketTypes.SCALAR) {
-					nodes.description = _react2.default.createElement(
-						'span',
-						{ className: 'description' },
-						_react2.default.createElement(
-							'span',
-							{ className: 'action' },
-							nodes.action
-						),
-						_react2.default.createElement(
-							'strong',
-							null,
-							p.data.market.reportedOutcome || ''
-						),
-						!!p.data.isUnethical && _react2.default.createElement(
-							'strong',
-							{ className: 'unethical' },
-							' and Unethical'
-						),
-						_react2.default.createElement('br', null),
-						marketDescription(),
-						_react2.default.createElement('br', null),
-						p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
-					);
-				} else {
-					nodes.description = _react2.default.createElement(
-						'span',
-						{ className: 'description' },
-						_react2.default.createElement(
-							'span',
-							{ className: 'action' },
-							nodes.action
-						),
-						_react2.default.createElement(
-							'strong',
-							null,
-							p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
-						),
-						!!p.data.isUnethical && _react2.default.createElement(
-							'strong',
-							{ className: 'unethical' },
-							' and Unethical'
-						),
-						_react2.default.createElement('br', null),
-						marketDescription(),
-						_react2.default.createElement('br', null),
-						p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
-					);
-				}
-				break;
+		case _types.REVEAL_REPORT:
+			switch (p.type) {
+				case _types.REVEAL_REPORT:
+					nodes.action = 'Reveal report';
+					break;
+				case _types.COMMIT_REPORT:
+					nodes.action = 'Commit report';
+					break;
+				default:
+					break;
 			}
+			if (p.data.isScalar || p.data.market.type === _marketTypes.SCALAR) {
+				nodes.description = _react2.default.createElement(
+					'span',
+					{ className: 'description' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'action' },
+						nodes.action
+					),
+					_react2.default.createElement(
+						'strong',
+						null,
+						p.data.market.reportedOutcome || ''
+					),
+					!!p.data.isUnethical && _react2.default.createElement(
+						'strong',
+						{ className: 'unethical' },
+						' and Unethical'
+					),
+					_react2.default.createElement('br', null),
+					marketDescription(),
+					_react2.default.createElement('br', null),
+					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
+				);
+			} else {
+				nodes.description = _react2.default.createElement(
+					'span',
+					{ className: 'description' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'action' },
+						nodes.action
+					),
+					_react2.default.createElement(
+						'strong',
+						null,
+						p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
+					),
+					!!p.data.isUnethical && _react2.default.createElement(
+						'strong',
+						{ className: 'unethical' },
+						' and Unethical'
+					),
+					_react2.default.createElement('br', null),
+					marketDescription(),
+					_react2.default.createElement('br', null),
+					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
+				);
+			}
+			break;
+
 		case _types.GENERATE_ORDER_BOOK:
 			nodes.action = 'Generate order book';
 			nodes.description = _react2.default.createElement(
@@ -32522,6 +32532,16 @@ var Transaction = function Transaction(p) {
 				'div',
 				{ className: 'status-and-message' },
 				_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
+				_react2.default.createElement('br', null),
+				p.data && p.data.gasFees && p.status === 'success' ? _react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'gas-message'
+				}, p.data.gasFees, {
+					prefix: 'gas cost:'
+				})) : _react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'gas-message'
+				}, p.data.gasFees, {
+					prefix: 'estimated gas cost:'
+				})),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(
 					'span',
