@@ -1,9 +1,12 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
 =======
 <<<<<<< HEAD
 >>>>>>> master
+=======
+>>>>>>> 349-tooltip-max-shares
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.augurReactComponents = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 /*!
   Copyright (c) 2016 Jed Watson.
@@ -25828,9 +25831,12 @@ exports.default = function (appElement, selectors) {
 				numPendingReports: p.marketsTotals.numPendingReports,
 				isTradeCommitLocked: p.tradeCommitLock.isLocked
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> master
+=======
+>>>>>>> 349-tooltip-max-shares
 			});
 			break;
 
@@ -25861,11 +25867,15 @@ exports.default = function (appElement, selectors) {
 				selectedSort: p.searchSort.selectedSort,
 				sortOptions: p.searchSort.sortOptions,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				onChangeSort: p.searchSort.onChangeSort
 =======
 				onChangeSort: p.searchSort.onChangeSort,
 				loginAccount: p.loginAccount
 >>>>>>> master
+=======
+				onChangeSort: p.searchSort.onChangeSort
+>>>>>>> 349-tooltip-max-shares
 			});
 			break;
 	}
@@ -28761,10 +28771,14 @@ var Link = function (_Component) {
 			}
 			e.preventDefault();
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (_this.props.onClick) {
 =======
 			if (_this.props.onClick && !_this.props.disabled) {
 >>>>>>> master
+=======
+			if (_this.props.onClick) {
+>>>>>>> 349-tooltip-max-shares
 				_this.props.onClick(_this.props.href);
 			}
 		};
@@ -28788,11 +28802,15 @@ Link.propTypes = {
 	href: _react.PropTypes.string,
 	target: _react.PropTypes.string,
 <<<<<<< HEAD
+<<<<<<< HEAD
 	onClick: _react.PropTypes.func
 =======
 	onClick: _react.PropTypes.func,
 	disabled: _react.PropTypes.bool
 >>>>>>> master
+=======
+	onClick: _react.PropTypes.func
+>>>>>>> 349-tooltip-max-shares
 };
 exports.default = Link;
 
@@ -30144,9 +30162,12 @@ var MarketsPage = function (_Component) {
 		value: function render() {
 			var p = this.props;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> master
+=======
+>>>>>>> 349-tooltip-max-shares
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page markets' },
@@ -30176,9 +30197,12 @@ MarketsPage.propTypes = {
 	siteHeader: _react.PropTypes.object,
 	createMarketLink: _react.PropTypes.object,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	loginAccount: _react.PropTypes.object,
 >>>>>>> master
+=======
+>>>>>>> 349-tooltip-max-shares
 	markets: _react.PropTypes.array,
 	favoriteMarkets: _react.PropTypes.array,
 	marketsHeader: _react.PropTypes.object,
@@ -30233,10 +30257,14 @@ var Markets = function Markets(p) {
 			_react2.default.createElement(
 				_link2.default,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				_extends({ className: 'button make' }, p.createMarketLink),
 =======
 				_extends({ className: 'button make' }, p.createMarketLink, { disabled: !p.loginAccount.id }),
 >>>>>>> master
+=======
+				_extends({ className: 'button make' }, p.createMarketLink),
+>>>>>>> 349-tooltip-max-shares
 				'Make a Market'
 			),
 			_react2.default.createElement(_marketsHeader2.default, p.marketsHeader)
@@ -31729,10 +31757,14 @@ var SiteHeader = function SiteHeader(p) {
 			_react2.default.createElement(
 				_link2.default,
 <<<<<<< HEAD
+<<<<<<< HEAD
 				_extends({ className: (0, _classnames2.default)('site-nav-link', 'augur') }, p.marketsLink),
 =======
 				_extends({ className: (0, _classnames2.default)('site-nav-link', 'augur', { active: p.activePage === _pages.MARKETS }) }, p.marketsLink),
 >>>>>>> master
+=======
+				_extends({ className: (0, _classnames2.default)('site-nav-link', 'augur') }, p.marketsLink),
+>>>>>>> 349-tooltip-max-shares
 				'augur'
 			),
 			_react2.default.createElement(
@@ -31965,10 +31997,16 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 			_react2.default.createElement(_input2.default, {
 				type: 'number',
 <<<<<<< HEAD
+<<<<<<< HEAD
 				step: '0.1',
 =======
 >>>>>>> master
 				value: p.trade.numShares,
+=======
+				value: p.trade.numShares,
+				title: p.trade.maxNumShares && p.trade.maxNumShares.minimized + ' shares max at this price',
+				min: '0', max: p.trade.maxNumShares, step: 'any',
+>>>>>>> 349-tooltip-max-shares
 				onChange: function onChange(value) {
 					return p.trade.updateTradeOrder(value, undefined, p.trade.side);
 				},
@@ -31986,10 +32024,15 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 			_react2.default.createElement(_input2.default, {
 				type: 'number',
 <<<<<<< HEAD
+<<<<<<< HEAD
 				step: '0.1',
 =======
 >>>>>>> master
 				value: p.trade.limitPrice,
+=======
+				value: p.trade.limitPrice,
+				step: 'any',
+>>>>>>> 349-tooltip-max-shares
 				onChange: function onChange(value) {
 					return p.trade.updateTradeOrder(undefined, value, p.trade.side);
 				},
@@ -32807,6 +32850,7 @@ function isShallowUnEqual(obj1, obj2, log) {
 
 },{}]},{},[183])(183)
 <<<<<<< HEAD
+<<<<<<< HEAD
 });
 =======
 });
@@ -32840,3 +32884,6 @@ tooltip:{pointFormat:'<span style="color:{series.color}">{series.name}</span>: <
 >>>>>>> master
 >>>>>>> master
 >>>>>>> master
+=======
+});
+>>>>>>> 349-tooltip-max-shares
