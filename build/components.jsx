@@ -28851,7 +28851,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 						' system, if you lose your login credentials it is impossible to recover them. Please ',
 						_react2.default.createElement(
 							'a',
-							{ className: 'link', href: 'http://blog.augur.net/faq/how-do-i-savebackup-my-wallet/' },
+							{ className: 'link', href: 'http://blog.augur.net/faq/how-do-i-savebackup-my-wallet/', target: '_blank' },
 							'take appropriate measures'
 						),
 						' to protect the safety of your password, and create a way to recover your credentials if you forget them.'
@@ -28867,7 +28867,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 						'Reputation (REP) is a unique and important part of the Augur trading platform. If you own REP tokens, you must visit the site periodically to fulfill your reporting obligations. During beta testing, each new account will receive 47 testnet REP (they have no value except for testing). Each reporting cycle will last 2 days. Every two-day cycle will consist of a commit phase, a reveal phase, and a challenge phase. Because the test cycle is dramatically compressed (the main net cycle will be 60 days long) it is recommended that users visit the site at least every 2 days to maintain your REP and simulate “real money” trading, resolution, and reporting conditions. Learn ',
 						_react2.default.createElement(
 							'a',
-							{ className: 'link', href: 'https://www.youtube.com/watch?v=sCms-snzHk4' },
+							{ className: 'link', href: 'https://www.youtube.com/watch?v=sCms-snzHk4', target: '_blank' },
 							'how Augur\'s Reputation tokens work'
 						),
 						'.'
@@ -32295,7 +32295,7 @@ var Transaction = function Transaction(p) {
 					{ className: 'action' },
 					nodes.action
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.numShares)),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.numShares)),
 				p.data.marketType !== _marketTypes.SCALAR && _react2.default.createElement(
 					'span',
 					null,
@@ -32316,9 +32316,9 @@ var Transaction = function Transaction(p) {
 					{ className: 'at' },
 					'@'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.data.noFeePrice, { postfix: '(average)' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.noFeePrice, { postfix: '(average)' })),
 				_react2.default.createElement('br', { className: 'hide-in-tx-display' }),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.data.avgPrice, { prefix: 'including trading fees:', postfix: '/ share' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.avgPrice, { prefix: 'including trading fees:', postfix: '/ share' })),
 				_react2.default.createElement('br', null),
 				marketDescription(),
 				_react2.default.createElement('br', { className: 'hide-in-trade-summary-display' }),
@@ -32328,7 +32328,7 @@ var Transaction = function Transaction(p) {
 			break;
 
 		case _types.SELL_COMPLETE_SETS:
-			nodes.action = 'AUTOMATIC SELL';
+			nodes.action = 'CLOSE POSITION';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
@@ -32337,7 +32337,7 @@ var Transaction = function Transaction(p) {
 					{ className: 'action' },
 					nodes.action
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.numShares, { postfix: 'of each outcome' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.numShares, { postfix: 'of each outcome' })),
 				_react2.default.createElement('br', null),
 				marketDescription(),
 				_react2.default.createElement('br', null),
@@ -32384,60 +32384,70 @@ var Transaction = function Transaction(p) {
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
+
 		case _types.COMMIT_REPORT:
-			{
-				nodes.action = 'Commit report';
-				if (p.data.market.type === _marketTypes.SCALAR) {
-					nodes.description = _react2.default.createElement(
-						'span',
-						{ className: 'description' },
-						_react2.default.createElement(
-							'span',
-							{ className: 'action' },
-							nodes.action
-						),
-						_react2.default.createElement(
-							'strong',
-							null,
-							p.data.market.reportedOutcome || ''
-						),
-						!!p.data.isUnethical && _react2.default.createElement(
-							'strong',
-							{ className: 'unethical' },
-							' and Unethical'
-						),
-						_react2.default.createElement('br', null),
-						marketDescription(),
-						_react2.default.createElement('br', null),
-						p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
-					);
-				} else {
-					nodes.description = _react2.default.createElement(
-						'span',
-						{ className: 'description' },
-						_react2.default.createElement(
-							'span',
-							{ className: 'action' },
-							nodes.action
-						),
-						_react2.default.createElement(
-							'strong',
-							null,
-							p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
-						),
-						!!p.data.isUnethical && _react2.default.createElement(
-							'strong',
-							{ className: 'unethical' },
-							' and Unethical'
-						),
-						_react2.default.createElement('br', null),
-						marketDescription(),
-						_react2.default.createElement('br', null),
-						p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
-					);
-				}
-				break;
+		case _types.REVEAL_REPORT:
+			switch (p.type) {
+				case _types.REVEAL_REPORT:
+					nodes.action = 'Reveal report';
+					break;
+				case _types.COMMIT_REPORT:
+					nodes.action = 'Commit report';
+					break;
+				default:
+					break;
 			}
+			if (p.data.isScalar || p.data.market.type === _marketTypes.SCALAR) {
+				nodes.description = _react2.default.createElement(
+					'span',
+					{ className: 'description' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'action' },
+						nodes.action
+					),
+					_react2.default.createElement(
+						'strong',
+						null,
+						p.data.market.reportedOutcome || ''
+					),
+					!!p.data.isUnethical && _react2.default.createElement(
+						'strong',
+						{ className: 'unethical' },
+						' and Unethical'
+					),
+					_react2.default.createElement('br', null),
+					marketDescription(),
+					_react2.default.createElement('br', null),
+					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
+				);
+			} else {
+				nodes.description = _react2.default.createElement(
+					'span',
+					{ className: 'description' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'action' },
+						nodes.action
+					),
+					_react2.default.createElement(
+						'strong',
+						null,
+						p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
+					),
+					!!p.data.isUnethical && _react2.default.createElement(
+						'strong',
+						{ className: 'unethical' },
+						' and Unethical'
+					),
+					_react2.default.createElement('br', null),
+					marketDescription(),
+					_react2.default.createElement('br', null),
+					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
+				);
+			}
+			break;
+
 		case _types.GENERATE_ORDER_BOOK:
 			nodes.action = 'Generate order book';
 			nodes.description = _react2.default.createElement(
@@ -32510,16 +32520,15 @@ var Transaction = function Transaction(p) {
 		_react2.default.createElement(
 			'span',
 			{ className: 'value-changes' },
-			!!p.data && !!p.data.tradingFees && p.data.tradingFees.value !== null && p.data.tradingFees.value !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change tradingFees' }, p.data.tradingFees, { prefix: 'trading fees:' })),
+			!!p.tradingFees && p.tradingFees.value !== null && p.tradingFees.value !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change tradingFees' }, p.tradingFees, { prefix: 'trading fees:' })),
 			_react2.default.createElement(
 				'span',
 				{ className: 'spacer' },
 				' '
 			),
-			!!p.data && !!p.data.feePercent && p.data.feePercent.value !== null && p.data.feePercent !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change feePercent' }, p.data.feePercent, { prefix: '[', postfix: ']' })),
+			!!p.feePercent && p.feePercent.value !== null && p.feePercent !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change feePercent' }, p.feePercent, { prefix: '[', postfix: ']' })),
 			_react2.default.createElement('br', null),
-			!!p.data && !!p.data.gasFees && !!p.data.gasFees.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change gasFees' }, p.data.gasFees, { prefix: 'estimated gas cost:' })),
-			!!p.ether && !!p.ether.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change ether' }, p.ether, { prefix: 'total:' }))
+			!!p.gasFees && !!p.gasFees.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change gasFees' }, p.gasFees, { prefix: 'estimated gas cost:' }))
 		),
 		p.status && p.hash ? _react2.default.createElement(
 			_link2.default,
@@ -32529,6 +32538,63 @@ var Transaction = function Transaction(p) {
 				{ className: 'status-and-message' },
 				_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
 				_react2.default.createElement('br', null),
+				!!p.tradingFees && p.tradingFees.value !== null && p.tradingFees.value !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'tradingFees-message'
+					}, p.tradingFees, {
+						prefix: 'trading fees:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.freeze && _react2.default.createElement(
+					'span',
+					{ className: 'freeze-message' },
+					p.freeze.noFeeCost && _react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'freeze-noFeeCost-message'
+					}, p.freeze.noFeeCost, {
+						prefix: p.freeze.verb,
+						postfix: '+ '
+					})),
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'freeze-tradingFees-message'
+					}, p.freeze.tradingFees, {
+						prefix: !p.freeze.noFeeCost && p.freeze.verb,
+						postfix: 'in potential trading fees'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.totalCost && p.totalCost.value !== null && p.totalCost.value !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'totalCost-message'
+					}, p.totalCost, {
+						prefix: 'total cost:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.totalReturn && p.totalReturn.value !== null && p.totalReturn.value !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'totalReturn-message'
+					}, p.totalReturn, {
+						prefix: 'total return:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.gasFees && p.gasFees.value !== null && p.gasFees.value !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'gasFees-message'
+					}, p.gasFees, {
+						prefix: 'gas cost:'
+					})),
+					_react2.default.createElement('br', null)
+				),
 				_react2.default.createElement(
 					'span',
 					{ className: 'status' },
@@ -32540,6 +32606,63 @@ var Transaction = function Transaction(p) {
 			{ className: 'status-and-message' },
 			_react2.default.createElement('span', { className: 'message', dangerouslySetInnerHTML: liveDangerously(p.message) }),
 			_react2.default.createElement('br', null),
+			!!p.tradingFees && p.tradingFees.value !== null && p.tradingFees.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'tradingFees-message'
+				}, p.tradingFees, {
+					prefix: 'trading fees:'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.freeze && _react2.default.createElement(
+				'span',
+				{ className: 'freeze-message' },
+				p.freeze.noFeeCost && _react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'freeze-noFeeCost-message'
+				}, p.freeze.noFeeCost, {
+					prefix: p.freeze.verb,
+					postfix: '+'
+				})),
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'freeze-tradingFees-message'
+				}, p.freeze.tradingFees, {
+					prefix: !p.freeze.noFeeCost && p.freeze.verb,
+					postfix: 'in potential trading fees'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.totalCost && p.totalCost.value !== null && p.totalCost.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'totalCost-message'
+				}, p.totalCost, {
+					prefix: 'total cost:'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.totalReturn && p.totalReturn.value !== null && p.totalReturn.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'totalReturn-message'
+				}, p.totalReturn, {
+					prefix: 'total return:'
+				})),
+				_react2.default.createElement('br', null)
+			),
+			!!p.gasFees && p.gasFees.value !== null && p.gasFees.value !== undefined && _react2.default.createElement(
+				'span',
+				null,
+				_react2.default.createElement(_valueDenomination2.default, _extends({
+					className: 'gasFees-message'
+				}, p.gasFees, {
+					prefix: 'gas cost:'
+				})),
+				_react2.default.createElement('br', null)
+			),
 			_react2.default.createElement(
 				'span',
 				{ className: 'status' },
@@ -32556,9 +32679,13 @@ Transaction.propTypes = {
 	status: _react2.default.PropTypes.string,
 	data: _react2.default.PropTypes.object,
 	shares: _react2.default.PropTypes.object,
-	ether: _react2.default.PropTypes.object,
 	gas: _react2.default.PropTypes.object,
 	hash: _react2.default.PropTypes.string,
+	freeze: _react2.default.PropTypes.object,
+	gasFees: _react2.default.PropTypes.object,
+	tradingFees: _react2.default.PropTypes.object,
+	totalCost: _react2.default.PropTypes.object,
+	totalReturn: _react2.default.PropTypes.object,
 	timestamp: _react2.default.PropTypes.object
 };
 
