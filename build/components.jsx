@@ -26005,7 +26005,7 @@ var AccountPage = function (_Component) {
 	function AccountPage(props) {
 		_classCallCheck(this, AccountPage);
 
-		var _this = _possibleConstructorReturn(this, (AccountPage.__proto__ || Object.getPrototypeOf(AccountPage)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AccountPage).call(this, props));
 
 		_this.handleTransfer = function (e) {
 			e.preventDefault();
@@ -26376,7 +26376,7 @@ var AuthForm = function (_Component) {
 	function AuthForm(props) {
 		_classCallCheck(this, AuthForm);
 
-		var _this = _possibleConstructorReturn(this, (AuthForm.__proto__ || Object.getPrototypeOf(AuthForm)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AuthForm).call(this, props));
 
 		_this.handleSubmit = function (e) {
 			e.preventDefault();
@@ -26958,7 +26958,7 @@ var InputList = function (_Component) {
 	function InputList(props) {
 		_classCallCheck(this, InputList);
 
-		var _this = _possibleConstructorReturn(this, (InputList.__proto__ || Object.getPrototypeOf(InputList)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InputList).call(this, props));
 
 		_this.handleChange = function (i, val) {
 			var newList = (_this.state.list || []).slice();
@@ -27093,7 +27093,7 @@ var Input = function (_Component) {
 	function Input(props) {
 		_classCallCheck(this, Input);
 
-		var _this = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Input).call(this, props));
 
 		_this.handleOnChange = function (e) {
 			var newValue = e.target.value;
@@ -28733,7 +28733,7 @@ var Link = function (_Component) {
 	function Link(props) {
 		_classCallCheck(this, Link);
 
-		var _this = _possibleConstructorReturn(this, (Link.__proto__ || Object.getPrototypeOf(Link)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Link).call(this, props));
 
 		_this.handleClick = function (e) {
 			// if target is set (e.g. to "_blank"), let the browser handle it
@@ -29046,7 +29046,7 @@ var Chart = function (_Component) {
 	function Chart() {
 		_classCallCheck(this, Chart);
 
-		return _possibleConstructorReturn(this, (Chart.__proto__ || Object.getPrototypeOf(Chart)).apply(this, arguments));
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(Chart).apply(this, arguments));
 	}
 
 	_createClass(Chart, [{
@@ -29312,7 +29312,7 @@ var MarketItem = function (_Component) {
 	function MarketItem(props) {
 		_classCallCheck(this, MarketItem);
 
-		var _this = _possibleConstructorReturn(this, (MarketItem.__proto__ || Object.getPrototypeOf(MarketItem)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketItem).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29512,7 +29512,7 @@ var MarketPage = function (_Component) {
 	function MarketPage(props) {
 		_classCallCheck(this, MarketPage);
 
-		var _this = _possibleConstructorReturn(this, (MarketPage.__proto__ || Object.getPrototypeOf(MarketPage)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketPage).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29670,7 +29670,7 @@ var MarketPositions = function (_Component) {
 	function MarketPositions(props) {
 		_classCallCheck(this, MarketPositions);
 
-		var _this = _possibleConstructorReturn(this, (MarketPositions.__proto__ || Object.getPrototypeOf(MarketPositions)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketPositions).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29739,7 +29739,7 @@ var MarketSummary = function (_Component) {
 	function MarketSummary(props) {
 		_classCallCheck(this, MarketSummary);
 
-		var _this = _possibleConstructorReturn(this, (MarketSummary.__proto__ || Object.getPrototypeOf(MarketSummary)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketSummary).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29908,7 +29908,7 @@ var Outcomes = function (_Component) {
 	function Outcomes(props) {
 		_classCallCheck(this, Outcomes);
 
-		var _this = _possibleConstructorReturn(this, (Outcomes.__proto__ || Object.getPrototypeOf(Outcomes)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Outcomes).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29987,7 +29987,7 @@ var MarketsHeader = function (_Component) {
 	function MarketsHeader(props) {
 		_classCallCheck(this, MarketsHeader);
 
-		var _this = _possibleConstructorReturn(this, (MarketsHeader.__proto__ || Object.getPrototypeOf(MarketsHeader)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketsHeader).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -30109,7 +30109,7 @@ var MarketsPage = function (_Component) {
 	function MarketsPage(props) {
 		_classCallCheck(this, MarketsPage);
 
-		var _this = _possibleConstructorReturn(this, (MarketsPage.__proto__ || Object.getPrototypeOf(MarketsPage)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketsPage).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -31351,7 +31351,7 @@ var ReportForm = function (_React$Component) {
 	function ReportForm(props) {
 		_classCallCheck(this, ReportForm);
 
-		var _this = _possibleConstructorReturn(this, (ReportForm.__proto__ || Object.getPrototypeOf(ReportForm)).call(this, props));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReportForm).call(this, props));
 
 		_this.handleOutcomeChange = function (e) {
 			return _this.setState({ reportedOutcomeID: e.target.value });
@@ -32322,7 +32322,7 @@ var Transaction = function Transaction(p) {
 			break;
 
 		case _types.SELL_COMPLETE_SETS:
-			nodes.action = 'AUTOMATIC SELL';
+			nodes.action = 'CLOSE POSITION';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
@@ -32549,7 +32549,7 @@ var Transaction = function Transaction(p) {
 						className: 'freeze-noFeeCost-message'
 					}, p.freeze.noFeeCost, {
 						prefix: p.freeze.verb,
-						postfix: '+'
+						postfix: '+ '
 					})),
 					_react2.default.createElement(_valueDenomination2.default, _extends({
 						className: 'freeze-tradingFees-message'
