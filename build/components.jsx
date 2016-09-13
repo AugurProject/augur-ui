@@ -25821,6 +25821,7 @@ exports.default = function (appElement, selectors) {
 				market: p.market,
 				numPendingReports: p.marketsTotals.numPendingReports,
 				isTradeCommitLocked: p.tradeCommitLock.isLocked
+
 			});
 			break;
 
@@ -25850,7 +25851,8 @@ exports.default = function (appElement, selectors) {
 				pagination: p.pagination,
 				selectedSort: p.searchSort.selectedSort,
 				sortOptions: p.searchSort.sortOptions,
-				onChangeSort: p.searchSort.onChangeSort
+				onChangeSort: p.searchSort.onChangeSort,
+				loginAccount: p.loginAccount
 			});
 			break;
 	}
@@ -26156,7 +26158,7 @@ var AccountPage = function (_Component) {
 											_react2.default.createElement(
 												'span',
 												null,
-												p.account.id
+												p.account.id && p.account.id.replace('0x', '')
 											)
 										)
 									),
@@ -28745,7 +28747,7 @@ var Link = function (_Component) {
 				return;
 			}
 			e.preventDefault();
-			if (_this.props.onClick) {
+			if (_this.props.onClick && !_this.props.disabled) {
 				_this.props.onClick(_this.props.href);
 			}
 		};
@@ -28768,7 +28770,8 @@ Link.propTypes = {
 	className: _react.PropTypes.string,
 	href: _react.PropTypes.string,
 	target: _react.PropTypes.string,
-	onClick: _react.PropTypes.func
+	onClick: _react.PropTypes.func,
+	disabled: _react.PropTypes.bool
 };
 exports.default = Link;
 
@@ -30119,6 +30122,7 @@ var MarketsPage = function (_Component) {
 		key: 'render',
 		value: function render() {
 			var p = this.props;
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page markets' },
@@ -30147,6 +30151,7 @@ MarketsPage.propTypes = {
 	className: _react.PropTypes.string,
 	siteHeader: _react.PropTypes.object,
 	createMarketLink: _react.PropTypes.object,
+	loginAccount: _react.PropTypes.object,
 	markets: _react.PropTypes.array,
 	favoriteMarkets: _react.PropTypes.array,
 	marketsHeader: _react.PropTypes.object,
@@ -30200,7 +30205,7 @@ var Markets = function Markets(p) {
 			{ className: 'component-header' },
 			_react2.default.createElement(
 				_link2.default,
-				_extends({ className: 'button make' }, p.createMarketLink),
+				_extends({ className: 'button make' }, p.createMarketLink, { disabled: !p.loginAccount.id }),
 				'Make a Market'
 			),
 			_react2.default.createElement(_marketsHeader2.default, p.marketsHeader)
@@ -31692,7 +31697,7 @@ var SiteHeader = function SiteHeader(p) {
 			{ className: 'site-nav' },
 			_react2.default.createElement(
 				_link2.default,
-				_extends({ className: (0, _classnames2.default)('site-nav-link', 'augur', { active: p.activePage === _pages.MARKETS }) }, p.marketsLink),
+				_extends({ className: (0, _classnames2.default)('site-nav-link', 'augur') }, p.marketsLink),
 				'augur'
 			),
 			_react2.default.createElement(
@@ -31867,7 +31872,11 @@ var _marketTypes = _dereq_('../../markets/constants/market-types');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var TradeBuilderRow = function TradeBuilderRow(p) {
+	var _React$createElement, _React$createElement2;
+
 	var bids = !p.showFullOrderBook ? p.orderBook.bids.slice(0, 1) : p.orderBook.bids;
 	var asks = !p.showFullOrderBook ? p.orderBook.asks.slice(0, 1) : p.orderBook.asks;
 
@@ -31922,36 +31931,33 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 		_react2.default.createElement(
 			'td',
 			{ className: (0, _classnames2.default)('num-shares', { fade: p.isFaded && !p.trade.numShares }) },
-			_react2.default.createElement(_input2.default, {
+			_react2.default.createElement(_input2.default, (_React$createElement = {
 				type: 'number',
+				step: '0.1',
 				value: p.trade.numShares,
-				onChange: function onChange(value) {
-					return p.trade.updateTradeOrder(value, undefined, p.trade.side);
-				},
-				onClick: function onClick(e) {
-					e.stopPropagation();p.updateSelectedOutcome(p.id);
-				},
-				onFocus: function onFocus() {
-					return p.updateSelectedOutcome(p.id);
-				}
-			})
+				title: p.trade.maxNumShares && p.trade.maxNumShares.minimized + ' shares max at this price',
+				min: '0', max: p.trade.maxNumShares }, _defineProperty(_React$createElement, 'step', 'any'), _defineProperty(_React$createElement, 'onChange', function onChange(value) {
+				return p.trade.updateTradeOrder(value, undefined, p.trade.side);
+			}), _defineProperty(_React$createElement, 'onClick', function onClick(e) {
+				e.stopPropagation();p.updateSelectedOutcome(p.id);
+			}), _defineProperty(_React$createElement, 'onFocus', function onFocus() {
+				return p.updateSelectedOutcome(p.id);
+			}), _React$createElement))
 		),
 		_react2.default.createElement(
 			'td',
 			{ className: (0, _classnames2.default)('limit-price', { fade: p.isFaded && !p.trade.numShares }) },
-			_react2.default.createElement(_input2.default, {
+			_react2.default.createElement(_input2.default, (_React$createElement2 = {
 				type: 'number',
-				value: p.trade.limitPrice,
-				onChange: function onChange(value) {
-					return p.trade.updateTradeOrder(undefined, value, p.trade.side);
-				},
-				onClick: function onClick(e) {
-					e.stopPropagation();p.updateSelectedOutcome(p.id);
-				},
-				onFocus: function onFocus() {
-					return p.updateSelectedOutcome(p.id);
-				}
-			})
+				step: '0.1',
+				value: p.trade.limitPrice
+			}, _defineProperty(_React$createElement2, 'step', 'any'), _defineProperty(_React$createElement2, 'onChange', function onChange(value) {
+				return p.trade.updateTradeOrder(undefined, value, p.trade.side);
+			}), _defineProperty(_React$createElement2, 'onClick', function onClick(e) {
+				e.stopPropagation();p.updateSelectedOutcome(p.id);
+			}), _defineProperty(_React$createElement2, 'onFocus', function onFocus() {
+				return p.updateSelectedOutcome(p.id);
+			}), _React$createElement2))
 		),
 		_react2.default.createElement(
 			'td',
