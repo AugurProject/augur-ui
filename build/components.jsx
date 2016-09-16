@@ -32553,10 +32553,6 @@ var Transaction = function Transaction(p) {
 			),
 			!!p.feePercent && p.feePercent.value !== null && p.feePercent !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change feePercent' }, p.feePercent, { prefix: '[', postfix: ']' })),
 			_react2.default.createElement('br', null),
-			!!p.marketCreationFee && p.marketCreationFee.value !== null && p.marketCreationFee !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change marketCreationFee' }, p.marketCreationFee, { prefix: 'market creation fee:' })),
-			_react2.default.createElement('br', null),
-			!!p.eventBond && p.eventBond.value !== null && p.eventBond !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change eventBond' }, p.eventBond, { prefix: 'bond (refundable):' })),
-			_react2.default.createElement('br', null),
 			!!p.gasFees && !!p.gasFees.value && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change gasFees' }, p.gasFees, { prefix: 'estimated gas cost:' }))
 		),
 		p.status && p.hash ? _react2.default.createElement(
@@ -32611,6 +32607,26 @@ var Transaction = function Transaction(p) {
 						className: 'totalReturn-message'
 					}, p.totalReturn, {
 						prefix: 'total return:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.marketCreationFee && p.marketCreationFee.value !== null && p.marketCreationFee !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'marketCreationFee-message'
+					}, p.marketCreationFee, {
+						prefix: 'market creation fee:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.eventBond && p.eventBond.value !== null && p.eventBond !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'eventBond-message'
+					}, p.eventBond, {
+						prefix: 'event creation bond:'
 					})),
 					_react2.default.createElement('br', null)
 				),
