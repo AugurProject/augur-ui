@@ -26007,7 +26007,7 @@ var AccountPage = function (_Component) {
 	function AccountPage(props) {
 		_classCallCheck(this, AccountPage);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AccountPage).call(this, props));
+		var _this = _possibleConstructorReturn(this, (AccountPage.__proto__ || Object.getPrototypeOf(AccountPage)).call(this, props));
 
 		_this.handleTransfer = function (e) {
 			e.preventDefault();
@@ -26378,7 +26378,7 @@ var AuthForm = function (_Component) {
 	function AuthForm(props) {
 		_classCallCheck(this, AuthForm);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AuthForm).call(this, props));
+		var _this = _possibleConstructorReturn(this, (AuthForm.__proto__ || Object.getPrototypeOf(AuthForm)).call(this, props));
 
 		_this.handleSubmit = function (e) {
 			e.preventDefault();
@@ -26960,7 +26960,7 @@ var InputList = function (_Component) {
 	function InputList(props) {
 		_classCallCheck(this, InputList);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(InputList).call(this, props));
+		var _this = _possibleConstructorReturn(this, (InputList.__proto__ || Object.getPrototypeOf(InputList)).call(this, props));
 
 		_this.handleChange = function (i, val) {
 			var newList = (_this.state.list || []).slice();
@@ -27095,7 +27095,7 @@ var Input = function (_Component) {
 	function Input(props) {
 		_classCallCheck(this, Input);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Input).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
 
 		_this.handleOnChange = function (e) {
 			var newValue = e.target.value;
@@ -28173,7 +28173,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 		),
 		_react2.default.createElement(
 			'div',
-			{ className: 'initial-order-book' },
+			{ className: 'initial-order-book displayNone' },
 			_react2.default.createElement(
 				'h4',
 				null,
@@ -28413,6 +28413,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -28424,6 +28426,10 @@ var _marketItem2 = _interopRequireDefault(_marketItem);
 var _createMarketFormButtons = _dereq_('../../create-market/components/create-market-form-buttons');
 
 var _createMarketFormButtons2 = _interopRequireDefault(_createMarketFormButtons);
+
+var _valueDenomination = _dereq_('../../common/components/value-denomination');
+
+var _valueDenomination2 = _interopRequireDefault(_valueDenomination);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28437,6 +28443,12 @@ var CreateMarketForm5 = function CreateMarketForm5(p) {
 			'Review and submit your new market'
 		),
 		_react2.default.createElement(_marketItem2.default, p),
+		_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'market-creation-fee' }, p.marketCreationFee, { prefix: 'Market creation fee:' })),
+		_react2.default.createElement('br', null),
+		_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'gas-fees' }, p.gasFees, { prefix: 'Gas cost:' })),
+		_react2.default.createElement('br', null),
+		_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'event-bond' }, p.eventBond, { prefix: 'Bond (refundable):' })),
+		_react2.default.createElement('br', null),
 		_react2.default.createElement(_createMarketFormButtons2.default, {
 			nextLabel: 'submit new market',
 			onNext: p.onSubmit,
@@ -28448,12 +28460,15 @@ var CreateMarketForm5 = function CreateMarketForm5(p) {
 };
 
 CreateMarketForm5.propTypes = {
+	marketCreationFee: _react.PropTypes.object,
+	gasCost: _react.PropTypes.object,
+	eventBond: _react.PropTypes.object,
 	onSubmit: _react.PropTypes.func
 };
 
 exports.default = CreateMarketForm5;
 
-},{"../../create-market/components/create-market-form-buttons":207,"../../market/components/market-item":216,"react":181}],207:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":198,"../../create-market/components/create-market-form-buttons":207,"../../market/components/market-item":216,"react":181}],207:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28735,7 +28750,7 @@ var Link = function (_Component) {
 	function Link(props) {
 		_classCallCheck(this, Link);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Link).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Link.__proto__ || Object.getPrototypeOf(Link)).call(this, props));
 
 		_this.handleClick = function (e) {
 			// if target is set (e.g. to "_blank"), let the browser handle it
@@ -29049,7 +29064,7 @@ var Chart = function (_Component) {
 	function Chart() {
 		_classCallCheck(this, Chart);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(Chart).apply(this, arguments));
+		return _possibleConstructorReturn(this, (Chart.__proto__ || Object.getPrototypeOf(Chart)).apply(this, arguments));
 	}
 
 	_createClass(Chart, [{
@@ -29315,7 +29330,7 @@ var MarketItem = function (_Component) {
 	function MarketItem(props) {
 		_classCallCheck(this, MarketItem);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketItem).call(this, props));
+		var _this = _possibleConstructorReturn(this, (MarketItem.__proto__ || Object.getPrototypeOf(MarketItem)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29515,7 +29530,7 @@ var MarketPage = function (_Component) {
 	function MarketPage(props) {
 		_classCallCheck(this, MarketPage);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketPage).call(this, props));
+		var _this = _possibleConstructorReturn(this, (MarketPage.__proto__ || Object.getPrototypeOf(MarketPage)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29673,7 +29688,7 @@ var MarketPositions = function (_Component) {
 	function MarketPositions(props) {
 		_classCallCheck(this, MarketPositions);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketPositions).call(this, props));
+		var _this = _possibleConstructorReturn(this, (MarketPositions.__proto__ || Object.getPrototypeOf(MarketPositions)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29742,7 +29757,7 @@ var MarketSummary = function (_Component) {
 	function MarketSummary(props) {
 		_classCallCheck(this, MarketSummary);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketSummary).call(this, props));
+		var _this = _possibleConstructorReturn(this, (MarketSummary.__proto__ || Object.getPrototypeOf(MarketSummary)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29911,7 +29926,7 @@ var Outcomes = function (_Component) {
 	function Outcomes(props) {
 		_classCallCheck(this, Outcomes);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Outcomes).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Outcomes.__proto__ || Object.getPrototypeOf(Outcomes)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -29990,7 +30005,7 @@ var MarketsHeader = function (_Component) {
 	function MarketsHeader(props) {
 		_classCallCheck(this, MarketsHeader);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketsHeader).call(this, props));
+		var _this = _possibleConstructorReturn(this, (MarketsHeader.__proto__ || Object.getPrototypeOf(MarketsHeader)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -30112,7 +30127,7 @@ var MarketsPage = function (_Component) {
 	function MarketsPage(props) {
 		_classCallCheck(this, MarketsPage);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MarketsPage).call(this, props));
+		var _this = _possibleConstructorReturn(this, (MarketsPage.__proto__ || Object.getPrototypeOf(MarketsPage)).call(this, props));
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 		return _this;
@@ -30537,13 +30552,10 @@ Position.propTypes = {
 	name: _react2.default.PropTypes.string,
 	type: _react2.default.PropTypes.string,
 	qtyShares: _react2.default.PropTypes.object,
-	totalValue: _react2.default.PropTypes.object,
 	gainPercent: _react2.default.PropTypes.object,
 	lastPrice: _react2.default.PropTypes.object,
 	lastPricePercent: _react2.default.PropTypes.object,
 	purchasePrice: _react2.default.PropTypes.object,
-	shareChange: _react2.default.PropTypes.object,
-	totalCost: _react2.default.PropTypes.object,
 	realizedNet: _react2.default.PropTypes.object,
 	unrealizedNet: _react2.default.PropTypes.object,
 	totalNet: _react2.default.PropTypes.object
@@ -31356,7 +31368,7 @@ var ReportForm = function (_React$Component) {
 	function ReportForm(props) {
 		_classCallCheck(this, ReportForm);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ReportForm).call(this, props));
+		var _this = _possibleConstructorReturn(this, (ReportForm.__proto__ || Object.getPrototypeOf(ReportForm)).call(this, props));
 
 		_this.handleOutcomeChange = function (e) {
 			return _this.setState({ reportedOutcomeID: e.target.value });
@@ -32353,10 +32365,23 @@ var Transaction = function Transaction(p) {
 			);
 			break;
 		case _authTypes.FUND_ACCOUNT:
+			nodes.action = 'REGISTER';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
-				'Load free beta ether and rep'
+				_react2.default.createElement(
+					'span',
+					{ className: 'action' },
+					nodes.action
+				),
+				_react2.default.createElement('br', null),
+				_react2.default.createElement(
+					'span',
+					{ className: 'market-description' },
+					'Request testnet Ether and Reputation'
+				),
+				_react2.default.createElement('br', null),
+				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
 		case _types.CREATE_MARKET:
@@ -32585,6 +32610,26 @@ var Transaction = function Transaction(p) {
 					})),
 					_react2.default.createElement('br', null)
 				),
+				!!p.marketCreationFee && p.marketCreationFee.value !== null && p.marketCreationFee !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'marketCreationFee-message'
+					}, p.marketCreationFee, {
+						prefix: 'market creation fee:'
+					})),
+					_react2.default.createElement('br', null)
+				),
+				!!p.eventBond && p.eventBond.value !== null && p.eventBond !== undefined && _react2.default.createElement(
+					'span',
+					null,
+					_react2.default.createElement(_valueDenomination2.default, _extends({
+						className: 'eventBond-message'
+					}, p.eventBond, {
+						prefix: 'event creation bond:'
+					})),
+					_react2.default.createElement('br', null)
+				),
 				!!p.gasFees && p.gasFees.value !== null && p.gasFees.value !== undefined && _react2.default.createElement(
 					'span',
 					null,
@@ -32684,6 +32729,8 @@ Transaction.propTypes = {
 	freeze: _react2.default.PropTypes.object,
 	gasFees: _react2.default.PropTypes.object,
 	tradingFees: _react2.default.PropTypes.object,
+	marketCreationFee: _react2.default.PropTypes.object,
+	eventBond: _react2.default.PropTypes.object,
 	totalCost: _react2.default.PropTypes.object,
 	totalReturn: _react2.default.PropTypes.object,
 	timestamp: _react2.default.PropTypes.object
