@@ -26158,7 +26158,7 @@ var AccountPage = function (_Component) {
 											_react2.default.createElement(
 												'span',
 												null,
-												p.account.id && p.account.id.replace('0x', '')
+												p.account.id && p.account.id.indexOf('0x') === 0 && p.account.id.replace('0x', '')
 											)
 										)
 									),
@@ -32365,7 +32365,7 @@ var Transaction = function Transaction(p) {
 			);
 			break;
 		case _authTypes.FUND_ACCOUNT:
-			nodes.action = 'REGISTER';
+			nodes.action = 'REGISTER NEW ACCOUNT';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
