@@ -32668,7 +32668,7 @@ var Transaction = function Transaction(p) {
 					className: 'freeze-noFeeCost-message'
 				}, p.freeze.noFeeCost, {
 					prefix: p.freeze.verb,
-					postfix: '+'
+					postfix: '+ '
 				})),
 				_react2.default.createElement(_valueDenomination2.default, _extends({
 					className: 'freeze-tradingFees-message'
