@@ -32370,23 +32370,14 @@ var Transaction = function Transaction(p) {
 			);
 			break;
 		case _types.CREATE_MARKET:
+			nodes.action = 'Create market';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
 				_react2.default.createElement(
 					'span',
-					null,
-					'Make'
-				),
-				_react2.default.createElement(
-					'strong',
-					null,
-					p.data.type
-				),
-				_react2.default.createElement(
-					'span',
-					null,
-					'market'
+					{ className: 'action' },
+					nodes.action
 				),
 				_react2.default.createElement('br', null),
 				marketDescription(),
