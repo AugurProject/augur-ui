@@ -32482,14 +32482,13 @@ var Transaction = function Transaction(p) {
 					_react2.default.createElement(
 						'span',
 						{ className: 'action' },
-						'Cancel ',
-						p.data.order.type,
-						' order'
+						'Cancel order'
 					),
 					_react2.default.createElement(
 						'span',
 						{ className: 'at' },
-						'for'
+						'to ',
+						p.data.order.type
 					),
 					_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'shares' }, p.data.order.shares)),
 					_react2.default.createElement(
