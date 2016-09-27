@@ -31723,8 +31723,7 @@ var SiteHeader = function SiteHeader(p) {
 			!!p.loginAccount && !!p.loginAccount.id && _react2.default.createElement(
 				_link2.default,
 				_extends({
-					className: (0, _classnames2.default)('site-nav-link', _pages.TRANSACTIONS, { active: p.activePage === _pages.TRANSACTIONS }, { working: p.isTransactionsWorking }),
-					title: p.loginAccount.realEther && 'real ether: ' + p.loginAccount.realEther.full
+					className: (0, _classnames2.default)('site-nav-link', _pages.TRANSACTIONS, { active: p.activePage === _pages.TRANSACTIONS }, { working: p.isTransactionsWorking })
 				}, p.transactionsLink),
 				p.transactionsTotals.title
 			),
@@ -31735,7 +31734,10 @@ var SiteHeader = function SiteHeader(p) {
 			),
 			p.loginAccount.id && _react2.default.createElement(
 				_link2.default,
-				_extends({ className: (0, _classnames2.default)('site-nav-link', _pages.ACCOUNT, { active: p.activePage === _pages.ACCOUNT }) }, p.accountLink),
+				_extends({
+					className: (0, _classnames2.default)('site-nav-link', _pages.ACCOUNT, { active: p.activePage === _pages.ACCOUNT }) }, p.accountLink, {
+					title: p.loginAccount.realEther && p.loginAccount.realEther.full + ' real ETH'
+				}),
 				_react2.default.createElement(_valueDenomination2.default, _extends({}, p.loginAccount.rep || {}, {
 					formatted: p.loginAccount.rep && p.loginAccount.rep.rounded,
 					formattedValue: p.loginAccount.rep && p.loginAccount.rep.roundedValue
@@ -31757,7 +31759,6 @@ SiteHeader.propTypes = {
 	marketsLink: _react2.default.PropTypes.object,
 	myPositionsLink: _react2.default.PropTypes.object,
 	transactionsLink: _react2.default.PropTypes.object,
-	balancesLink: _react2.default.PropTypes.object,
 	authLink: _react2.default.PropTypes.object,
 	portfolioTotals: _react2.default.PropTypes.object
 };
