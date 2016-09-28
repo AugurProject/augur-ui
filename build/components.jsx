@@ -32359,7 +32359,7 @@ var Transaction = function Transaction(p) {
 			break;
 
 		case _types.SELL_COMPLETE_SETS:
-			nodes.action = 'SELL ' + p.numShares.formatted + ' COMPLETE SETS';
+			nodes.action = 'SELL COMPLETE SETS (' + p.numShares.formatted + ')';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
