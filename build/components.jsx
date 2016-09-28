@@ -29574,7 +29574,7 @@ var MarketPage = function (_Component) {
 					}
 
 					// positions
-					if (p.market.myPositionsSummary && p.market.myPositionsSummary.numPositions && p.market.myPositionsSummary.numPositions.value) {
+					if (p.market.hasCompleteSet || p.market.myPositionsSummary && p.market.myPositionsSummary.numPositions && p.market.myPositionsSummary.numPositions.value) {
 						nodes.push(_react2.default.createElement(_marketPositions2.default, {
 							key: 'market-positions',
 							className: 'market-positions',
@@ -29693,7 +29693,7 @@ var MarketPositions = function (_Component) {
 			return _react2.default.createElement(
 				'section',
 				{ className: 'market-positions' },
-				_react2.default.createElement(_myPositionsSummary2.default, _extends({}, p.market.myPositionsSummary, { className: 'market-section-header' })),
+				p.market.myPositionsSummary && p.market.myPositionsSummary.numPositions && p.market.myPositionsSummary.numPositions.value && _react2.default.createElement(_myPositionsSummary2.default, _extends({}, p.market.myPositionsSummary, { className: 'market-section-header' })),
 				_react2.default.createElement(_myPositions2.default, { market: p.market })
 			);
 		}
@@ -30691,17 +30691,23 @@ var Positions = function Positions(p) {
 	return _react2.default.createElement(
 		'section',
 		{ className: 'positions-list' },
-		_react2.default.createElement(
+		p.marketLink && _react2.default.createElement(
 			_link2.default,
-			{ key: p.market.id, href: p.market.marketLink.href, onClick: p.market.marketLink.onClick },
+			{ key: p.market.id, href: p.marketLink.href, onClick: p.marketLink.onClick },
 			(p.market.myPositionOutcomes || []).map(function (outcome) {
 				return _react2.default.createElement(_myPosition2.default, _extends({
-					key: outcome.id,
+					key: p.market.id + '-' + outcome.id,
 					type: p.market.type
 				}, outcome, outcome.position));
 			})
 		),
-		p.market.hasCompleteSet && parseFloat(p.market.smallestPosition) === 1 && _react2.default.createElement(
+		!p.marketLink && (p.market.myPositionOutcomes || []).map(function (outcome) {
+			return _react2.default.createElement(_myPosition2.default, _extends({
+				key: outcome.id,
+				type: p.market.type
+			}, outcome, outcome.position));
+		}),
+		p.market.hasCompleteSet && _react2.default.createElement(
 			'div',
 			{ className: 'complete-sets' },
 			_react2.default.createElement(
@@ -30716,30 +30722,9 @@ var Positions = function Positions(p) {
 							p.market.onSubmitClosePosition();
 						}
 					},
-					'Sell ',
+					'Sell Complete Sets (',
 					p.market.smallestPosition,
-					' Complete Set'
-				)
-			)
-		),
-		p.market.hasCompleteSet && parseFloat(p.market.smallestPosition) !== 1 && _react2.default.createElement(
-			'div',
-			{ className: 'complete-sets' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'close-position-button' },
-				_react2.default.createElement(
-					'button',
-					{
-						className: 'button',
-						onClick: function onClick(event) {
-							event.stopPropagation();
-							p.market.onSubmitClosePosition();
-						}
-					},
-					'Sell ',
-					p.market.smallestPosition,
-					' Complete Sets'
+					')'
 				)
 			)
 		)
@@ -30748,7 +30733,8 @@ var Positions = function Positions(p) {
 
 Positions.propTypes = {
 	className: _react2.default.PropTypes.string,
-	market: _react2.default.PropTypes.object
+	market: _react2.default.PropTypes.object,
+	marketLink: _react2.default.PropTypes.object
 };
 exports.default = Positions;
 
@@ -31275,17 +31261,18 @@ var PortfolioPositions = function PortfolioPositions(p) {
 		!!p.markets && !!p.markets.length && p.markets.map(function (market) {
 			return _react2.default.createElement(
 				'div',
-				{ className: 'positions-container' },
+				{ key: market.id, className: 'positions-container' },
 				_react2.default.createElement(
 					_link2.default,
-					{ key: market.id, href: market.marketLink.href, onClick: market.marketLink.onClick },
+					{ href: market.marketLink.href, onClick: market.marketLink.onClick },
 					_react2.default.createElement(_myPositionsMarketOverview2.default, _extends({
 						description: market.description
 					}, market.myPositionsSummary))
 				),
 				!!market.myPositionOutcomes && !!market.myPositionOutcomes.length && _react2.default.createElement(_myPositions2.default, {
 					className: 'page-content positions-content',
-					market: market
+					market: market,
+					marketLink: market.marketLink
 				})
 			);
 		})
@@ -32360,7 +32347,7 @@ var Transaction = function Transaction(p) {
 					{ className: 'at' },
 					'@'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.noFeePrice, { postfix: '(average)' })),
+				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'noFeePrice' }, p.noFeePrice)),
 				_react2.default.createElement('br', { className: 'hide-in-tx-display' }),
 				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.avgPrice, { prefix: 'including trading fees:', postfix: '/ share' })),
 				_react2.default.createElement('br', null),
