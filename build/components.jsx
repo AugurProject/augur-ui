@@ -30723,7 +30723,7 @@ var Positions = function Positions(p) {
 						}
 					},
 					'Sell Complete Sets (',
-					p.market.smallestPosition,
+					p.market.smallestPosition.formatted,
 					')'
 				)
 			)
