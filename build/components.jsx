@@ -1165,7 +1165,8 @@ function is(x, y) {
   if (x === y) {
     // Steps 1-5, 7-10
     // Steps 6.b-6.e: +0 != -0
-    return x !== 0 || 1 / x === 1 / y;
+    // Added the nonzero y check to make Flow happy, but it is redundant
+    return x !== 0 || y !== 0 || 1 / x === 1 / y;
   } else {
     // Step 6.a: NaN == NaN
     return x !== x && y !== y;
@@ -26594,7 +26595,7 @@ var AuthForm = function (_Component) {
 						href: p.closeLink.href,
 						onClick: p.closeLink.onClick
 					},
-					''
+					'\uF057'
 				),
 				_react2.default.createElement(
 					'p',
@@ -26926,7 +26927,7 @@ var InputList = function (_Component) {
 		};
 
 		_this.fillMinElements = function () {
-			var list = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+			var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 			var minElements = arguments[1];
 
 			var len = void 0;
@@ -27115,7 +27116,7 @@ var Input = function (_Component) {
 				!p.isMultiline && p.isClearable && _react2.default.createElement(
 					'button',
 					{ type: 'button', className: 'clear', onClick: this.handleClear },
-					''
+					'\uF00D'
 				)
 			);
 		}
@@ -27197,11 +27198,11 @@ var SearchSort = function SearchSort(p) {
 					p.selectedSort.isDesc ? _react2.default.createElement(
 						'span',
 						null,
-						''
+						'\uF161'
 					) : _react2.default.createElement(
 						'span',
 						null,
-						''
+						'\uF160'
 					)
 				)
 			)
@@ -28826,7 +28827,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					_react2.default.createElement(
 						'li',
 						null,
-						'Reputation (REP) is a unique and important part of the Augur trading platform. If you own REP tokens, you must visit the site periodically to fulfill your reporting obligations. During beta testing, each new account will receive 47 testnet REP (they have no value except for testing). Each reporting cycle will last 2 days. Every two-day cycle will consist of a commit phase, a reveal phase, and a challenge phase. Because the test cycle is dramatically compressed (the main net cycle will be 60 days long) it is recommended that users visit the site at least every 2 days to maintain your REP and simulate “real money” trading, resolution, and reporting conditions. Learn ',
+						'Reputation (REP) is a unique and important part of the Augur trading platform. If you own REP tokens, you must visit the site periodically to fulfill your reporting obligations. During beta testing, each new account will receive 47 testnet REP (they have no value except for testing). Each reporting cycle will last 2 days. Every two-day cycle will consist of a commit phase, a reveal phase, and a challenge phase. Because the test cycle is dramatically compressed (the main net cycle will be 60 days long) it is recommended that users visit the site at least every 2 days to maintain your REP and simulate \u201Creal money\u201D trading, resolution, and reporting conditions. Learn ',
 						_react2.default.createElement(
 							'a',
 							{ className: 'link', href: 'https://www.youtube.com/watch?v=sCms-snzHk4', target: '_blank' },
@@ -29357,7 +29358,7 @@ var MarketItem = function (_Component) {
 						className: (0, _classnames2.default)('button', 'favorite-button', { on: p.isFavorite }),
 						onClick: p.onClickToggleFavorite
 					},
-					''
+					'\uF005'
 				)
 			);
 		}
@@ -30241,7 +30242,7 @@ var Markets = function Markets(p) {
 					_react2.default.createElement(
 						'button',
 						{ className: 'button prev' },
-						''
+						'\uF104'
 					)
 				),
 				_react2.default.createElement(
@@ -30257,7 +30258,7 @@ var Markets = function Markets(p) {
 					_react2.default.createElement(
 						'button',
 						{ className: 'button next' },
-						''
+						'\uF105'
 					)
 				)
 			)
@@ -30492,7 +30493,7 @@ var Position = function Position(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'title' },
-					'avg. trade price'
+					'average price of open position'
 				),
 				_react2.default.createElement(_valueDenomination2.default, p.purchasePrice)
 			),
@@ -30812,14 +30813,14 @@ var Report = function Report(p) {
 							className: 'fa report-equal',
 							title: 'Your report matches the consensus outcome'
 						},
-						''
+						'\uF058'
 					) : _react2.default.createElement(
 						'span',
 						{
 							className: 'fa report-unequal',
 							title: 'Your report does not match the consensus outcome'
 						},
-						''
+						'\uF057'
 					)
 				)
 			)
@@ -31305,7 +31306,7 @@ var PortfolioReports = function PortfolioReports(p) {
 								className: 'fa outcome-challenged',
 								title: 'This outcome is currently being challenged'
 							},
-							''
+							'\uF0E3'
 						),
 						!market.isChallenged && market.isChallengeable && _react2.default.createElement(
 							'span',
@@ -31313,7 +31314,7 @@ var PortfolioReports = function PortfolioReports(p) {
 								className: 'fa outcome-challengeable',
 								title: 'This outcome may be challenged'
 							},
-							''
+							'\uF06A'
 						)
 					),
 					!!market && _react2.default.createElement(
@@ -31717,7 +31718,7 @@ var SiteHeader = function SiteHeader(p) {
 			_react2.default.createElement(
 				'span',
 				{ className: 'spacer' },
-				' '
+				'\xA0'
 			),
 			_react2.default.createElement(
 				_link2.default,
@@ -31900,7 +31901,7 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 				_react2.default.createElement(
 					'span',
 					null,
-					' - '
+					'\xA0-\xA0'
 				)
 			),
 			_react2.default.createElement(_valueDenomination2.default, _extends({}, p.lastPricePercent, { formatted: p.lastPricePercent.rounded }))
@@ -32533,7 +32534,7 @@ var Transaction = function Transaction(p) {
 			_react2.default.createElement(
 				'span',
 				{ className: 'spacer' },
-				' '
+				'\xA0'
 			),
 			!!p.feePercent && p.feePercent.value !== null && p.feePercent !== undefined && _react2.default.createElement(_valueDenomination2.default, _extends({ className: 'value-change feePercent' }, p.feePercent, { prefix: '[', postfix: ']' })),
 			_react2.default.createElement('br', null),
@@ -32882,7 +32883,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.default = function (nextProps, nextState) {
 	return isShallowUnEqual(nextProps, this.props) || isShallowUnEqual(nextState, this.state);
