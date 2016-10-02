@@ -32542,7 +32542,7 @@ var Transaction = function Transaction(p) {
 		),
 		p.status && p.hash ? _react2.default.createElement(
 			_link2.default,
-			{ href: 'https://morden.ether.camp/transaction/' + p.hash, target: '_blank' },
+			{ href: 'https://testnet.etherscan.io/tx/transaction/' + p.hash, target: '_blank' },
 			_react2.default.createElement(
 				'div',
 				{ className: 'status-and-message' },
