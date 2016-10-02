@@ -28924,19 +28924,19 @@ var Basics = function Basics(p) {
 			p.isUpdaterVisible && _react2.default.createElement(
 				'div',
 				{ className: 'updater' },
-				'Last updated ',
+				'Market data loaded ',
 				p.marketDataAge.lastUpdatedBefore,
 				_react2.default.createElement(
 					'button',
 					{
 						className: 'button',
 						disabled: p.marketDataAge.isMarketDataLoading,
-						title: p.marketDataAge.isMarketDataLoading ? 'Updating' : 'Update market data',
+						title: p.marketDataAge.isMarketDataLoading ? 'Loading' : 'Reload market data',
 						onClick: function onClick() {
 							return p.updateData(p.id);
 						}
 					},
-					'Update'
+					'Reload'
 				)
 			)
 		),
@@ -32542,7 +32542,7 @@ var Transaction = function Transaction(p) {
 		),
 		p.status && p.hash ? _react2.default.createElement(
 			_link2.default,
-			{ href: 'https://testnet.etherscan.io/tx/transaction/' + p.hash, target: '_blank' },
+			{ href: 'https://testnet.etherscan.io/tx/' + p.hash, target: '_blank' },
 			_react2.default.createElement(
 				'div',
 				{ className: 'status-and-message' },
