@@ -1,6 +1,7 @@
 import memoizerific from 'memoizerific';
 import { listWordsUnderLength } from '../../../utils/list-words-under-length';
 import { makeLocation } from '../../../utils/parse-url';
+import { loginWithAirbitz } from '../../auth/actions/login-with-airbitz';
 
 import { ACCOUNT, M, MARKETS, MAKE, MY_POSITIONS, MY_MARKETS, MY_REPORTS, TRANSACTIONS, LOGIN_MESSAGE, REGISTER, LOGIN, IMPORT } from '../../app/constants/views';
 
@@ -80,6 +81,19 @@ export const selectAuthLink = memoizerific(1)((authType, alsoLogout, dispatch) =
 		}
 	};
 });
+
+
+export const selectAirbitzLink = memoizerific(1)((authType, dispatch) => ({
+	onClick: () => {
+		require('../../../selectors').abc.openLoginWindow((result, airbitzAccount) => {
+			if (airbitzAccount) {
+				dispatch(loginWithAirbitz(airbitzAccount));
+			} else {
+				console.log('error registering in: ' + result);
+			}
+		});
+	}
+}));
 
 export const selectMarketsLink = memoizerific(1)((keywords, selectedFilterSort, selectedTags, selectedPageNum, dispatch) => {
 	const params = {};
