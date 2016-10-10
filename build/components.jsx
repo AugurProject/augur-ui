@@ -25920,9 +25920,9 @@ var AccountPage = function (_Component) {
 				_react2.default.createElement(
 					'section',
 					{ className: 'page-content' },
-					_react2.default.createElement(
+					p.authLink && _react2.default.createElement(
 						_link2.default,
-						{ onClick: p.account.signOut },
+						p.authLink,
 						'Sign Out (Temporarily Here)'
 					),
 					_react2.default.createElement(
@@ -26252,7 +26252,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var AuthForm = function (_Component) {
 	_inherits(AuthForm, _Component);
 
-	// TODO -- Prop Validations
 	function AuthForm(props) {
 		_classCallCheck(this, AuthForm);
 
@@ -26261,17 +26260,16 @@ var AuthForm = function (_Component) {
 		_this.handleSubmit = function (e) {
 			e.preventDefault();
 			e.stopPropagation();
-
-			var name = _this.state.accountName;
-			var loginID = _this.state.loginID;
-			var password = _this.state.password;
-			var password2 = _this.state.password2;
+			var name = _this.refs.accountName.value;
+			var loginID = _this.refs.loginID.value;
+			var password = _this.refs.password.value;
+			var password2 = _this.refs.password2.value;
 			var rememberMe = _this.state.rememberMe;
 			var loginAccount = _this.state.loginAccount;
-			var file = _this.state.file;
+			var file = _this.refs.form[1].files[0] !== undefined;
 
 			if (_this.props.type === 'import' && file && _this.fileReader) {
-				_this.fileReader.readAsText(file);
+				_this.fileReader.readAsText(_this.refs.form[1].files[0]);
 				_this.fileReader.onload = function (e) {
 					var importAccount = JSON.parse(e.target.result);
 					setTimeout(function () {
@@ -26283,64 +26281,52 @@ var AuthForm = function (_Component) {
 					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, loginAccount, undefined);
 				}, 300);
 			}
-
-			_this.setState(_this.INITIAL_STATE);
-
+			_this.setState({ msg: '', loginID: undefined, disableInputs: false });
 			return false;
 		};
 
 		_this.handlePasswordInput = function (e) {
 			e.preventDefault();
 			e.stopPropagation();
+			var name = _this.refs.accountName.value;
+			var loginID = _this.refs.loginID.value;
+			var password = _this.refs.password.value;
+			var password2 = _this.refs.password2.value;
+			var rememberMe = _this.state.rememberMe;
 
-			var newState = {};
-			var target = e.target;
-			newState[target.name] = target.value;
-
-			_this.setState(newState, function () {
-				var password = _this.state.password;
-				var password2 = _this.state.password2;
-
-				if (password !== '' && password2 !== '') {
-					(function () {
-						var name = _this.state.accountName;
-						var loginID = _this.state.loginID;
-						var rememberMe = _this.state.rememberMe;
-
-						setTimeout(function () {
-							return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, undefined, function (loginAccount) {
-								console.log('loginAccount -- ', loginAccount);
-
-								_this.setState({
-									disableInputs: true,
-									loginID: loginAccount.loginID,
-									loginAccount: loginAccount
-								});
-							});
-						}, 300);
-					})();
-				}
-			});
+			if (password !== '' && password2 !== '') {
+				setTimeout(function () {
+					return _this.props.onSubmit(name, password, password2, loginID, rememberMe, undefined, undefined, function (loginAccount) {
+						_this.setState({ loginID: loginAccount.loginID, disableInputs: true, loginAccount: loginAccount });
+					});
+				}, 300);
+			}
 		};
 
-		_this.state = {
-			loginID: '',
-			accountName: '',
-			password: '',
-			password2: '',
-			rememberMe: _this.props.rememberMe || false,
-			disableInputs: false,
-			loginAccount: {},
-			msg: _this.props.msg,
-			file: null
-		};
+		_this.loginIDCopy = function (e) {
+			var loginIDDisplay = _this.refs.loginIDDisplay;
 
-		if (new FileReader()) {
-			_this.fileReader = new FileReader();
-		}
+			try {
+				loginIDDisplay.select();
+				document.execCommand('copy');
+			} catch (err) {
+				console.log(err);
+			}
+		};
 
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 		_this.handlePasswordInput = _this.handlePasswordInput.bind(_this);
+		_this.loginIDCopy = _this.loginIDCopy.bind(_this);
+		if (new FileReader()) {
+			_this.fileReader = new FileReader();
+		}
+		_this.state = {
+			msg: _this.props.msg,
+			loginID: undefined,
+			rememberMe: _this.props.rememberMe,
+			disableInputs: false,
+			loginAccount: {}
+		};
 		return _this;
 	}
 
@@ -26359,12 +26345,7 @@ var AuthForm = function (_Component) {
 
 			return _react2.default.createElement(
 				'form',
-				{
-					autoComplete: true,
-					className: p.className,
-					onSubmit: this.handleSubmit,
-					encType: 'multipart/form-data'
-				},
+				{ ref: 'form', className: p.className, onSubmit: this.handleSubmit, encType: 'multipart/form-data', autoComplete: true },
 				_react2.default.createElement(
 					'h1',
 					{ className: 'title' },
@@ -26381,7 +26362,7 @@ var AuthForm = function (_Component) {
 				),
 				p.instruction && _react2.default.createElement(
 					'p',
-					{ className: 'instruction' },
+					{ className: (0, _classnames2.default)('instruction') },
 					p.instruction
 				),
 				s.msg && _react2.default.createElement(
@@ -26389,63 +26370,62 @@ var AuthForm = function (_Component) {
 					{ className: (0, _classnames2.default)('msg', p.msgClass) },
 					s.msg
 				),
-				p.isVisibleName && _react2.default.createElement('input', {
-					className: 'auth-input',
+				_react2.default.createElement('input', {
+					ref: 'accountName',
+					className: (0, _classnames2.default)('auth-input', { displayNone: !p.isVisibleName }),
 					type: 'text',
 					placeholder: 'account name',
 					maxLength: '30',
 					autoFocus: 'autofocus',
-					disabled: s.disableInputs,
-					value: s.accountName,
-					onChange: function onChange(e) {
-						_this2.setState({ accountName: e.target.value });
-					}
+					disabled: s.disableInputs
 				}),
-				p.isVisibleFileInput && _react2.default.createElement('input', {
+				_react2.default.createElement('input', {
 					name: 'importAccount',
-					className: 'auth-input',
+					className: (0, _classnames2.default)('auth-input', { displayNone: !p.isVisibleFileInput }),
 					type: 'file',
 					placeholder: 'Import Account',
-					autoFocus: 'autofocus',
-					onChange: function onChange(file) {
-						return _this2.setState({ file: file });
-					}
+					autoFocus: 'autofocus'
 				}),
-				p.isVisibleID && _react2.default.createElement('input', {
-					autoComplete: true,
+				p.loginID && _react2.default.createElement('textarea', { ref: 'loginIDDisplay', className: (0, _classnames2.default)('loginID-generated'), readOnly: true, value: p.loginID, onClick: this.loginIDCopy }),
+				p.loginID && _react2.default.createElement(
+					'button',
+					{ type: 'button', className: (0, _classnames2.default)('button submit-button'), onClick: this.loginIDCopy },
+					'Copy Login ID'
+				),
+				_react2.default.createElement('input', {
 					name: 'username',
 					id: 'username',
-					className: 'auth-input',
+					ref: 'loginID',
+					className: (0, _classnames2.default)('auth-input', { displayNone: !p.isVisibleID }),
 					type: 'text',
 					placeholder: 'Login ID',
 					autoFocus: 'autofocus',
-					value: s.loginID,
+					autoComplete: true,
 					onChange: function onChange(loginID) {
 						return _this2.setState({ loginID: loginID });
 					},
 					required: p.isVisibleID
 				}),
-				p.isVisiblePassword && _react2.default.createElement('input', {
-					autoComplete: true,
+				_react2.default.createElement('input', {
 					name: 'password',
 					id: 'password',
-					className: 'auth-input',
+					ref: 'password',
+					className: (0, _classnames2.default)('auth-input', { displayNone: !p.isVisiblePassword }),
 					type: 'password',
 					defaultValue: p.password,
 					placeholder: p.passwordPlaceholder || 'password',
 					maxLength: '256',
-					value: s.password,
 					onChange: this.handlePasswordInput,
 					required: p.isVisiblePassword,
+					autoComplete: true,
 					disabled: s.disableInputs
 				}),
-				p.isVisiblePassword2 && _react2.default.createElement('input', {
-					className: 'auth-input',
+				_react2.default.createElement('input', {
+					ref: 'password2',
+					className: (0, _classnames2.default)('auth-input', { displayNone: !p.isVisiblePassword2 }),
 					type: 'password',
-					name: 'password2',
 					placeholder: p.password2Placeholder || 'confirm password',
 					maxLength: '256',
-					value: s.password2,
 					onChange: this.handlePasswordInput,
 					required: p.isVisiblePassword2,
 					disabled: s.disableInputs
@@ -26453,16 +26433,16 @@ var AuthForm = function (_Component) {
 				_react2.default.createElement(
 					'div',
 					{ className: (0, _classnames2.default)('bottom-container') },
-					p.bottomLink && _react2.default.createElement(
+					_react2.default.createElement(
 						_link2.default,
 						{
-							className: 'bottom-link',
+							className: (0, _classnames2.default)('bottom-link', { displayNone: !p.bottomLink }),
 							href: p.bottomLink.href,
 							onClick: p.bottomLink.onClick
 						},
 						p.bottomLinkText
 					),
-					p.isVisibleRememberMe && _react2.default.createElement(_checkbox2.default, {
+					_react2.default.createElement(_checkbox2.default, {
 						className: (0, _classnames2.default)({ displayNone: !p.isVisibleRememberMe }),
 						title: 'Click Here to remember your account information locally.',
 						text: 'Remember Me',
@@ -26486,11 +26466,7 @@ var AuthForm = function (_Component) {
 						href: p.closeLink.href,
 						onClick: p.closeLink.onClick
 					},
-					_react2.default.createElement(
-						'i',
-						null,
-						'\uF057'
-					)
+					'\uF057'
 				),
 				_react2.default.createElement(
 					'p',
@@ -26505,29 +26481,29 @@ var AuthForm = function (_Component) {
 }(_react.Component);
 
 AuthForm.propTypes = {
-	// 	className: PropTypes.string,
-	// 	title: PropTypes.string,
-	// 	loginID: PropTypes.string,
+	className: _react.PropTypes.string,
+	title: _react.PropTypes.string,
+	loginID: _react.PropTypes.string,
 	type: _react.PropTypes.string,
 	rememberMe: _react.PropTypes.bool,
-	// 	passwordPlaceholder: PropTypes.string,
-	// 	password2Placeholder: PropTypes.string,
-	// 	instruction: PropTypes.string,
-	// 	isVisibleName: PropTypes.bool,
-	// 	isVisiblePassword: PropTypes.bool,
-	// 	isVisiblePassword2: PropTypes.bool,
-	// 	isVisibleID: PropTypes.bool,
-	// 	isVisibleFileInput: PropTypes.bool,
-	// 	isVisibleRememberMe: PropTypes.bool,
+	passwordPlaceholder: _react.PropTypes.string,
+	password2Placeholder: _react.PropTypes.string,
+	instruction: _react.PropTypes.string,
+	isVisibleName: _react.PropTypes.bool,
+	isVisiblePassword: _react.PropTypes.bool,
+	isVisiblePassword2: _react.PropTypes.bool,
+	isVisibleID: _react.PropTypes.bool,
+	isVisibleFileInput: _react.PropTypes.bool,
+	isVisibleRememberMe: _react.PropTypes.bool,
 	msg: _react.PropTypes.string,
-	// 	msgClass: PropTypes.string,
-	// 	topLinkText: PropTypes.string,
-	// 	topLink: PropTypes.object,
-	// 	botttomLinkText: PropTypes.string,
-	// 	botttomLink: PropTypes.object,
-	// 	closeLink: PropTypes.object,
-	// 	submitButtonText: PropTypes.string,
-	// 	submitButtonClass: PropTypes.string,
+	msgClass: _react.PropTypes.string,
+	topLinkText: _react.PropTypes.string,
+	topLink: _react.PropTypes.object,
+	botttomLinkText: _react.PropTypes.string,
+	botttomLink: _react.PropTypes.object,
+	closeLink: _react.PropTypes.object,
+	submitButtonText: _react.PropTypes.string,
+	submitButtonClass: _react.PropTypes.string,
 	onSubmit: _react.PropTypes.func
 };
 AuthForm.defaultProps = {
@@ -28578,116 +28554,125 @@ Link.propTypes = {
 exports.default = Link;
 
 },{"react":181}],210:[function(_dereq_,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _react = _dereq_("react");
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _link = _dereq_('../../link/components/link');
 
-// import Link from '../../link/components/link'; // TODO -- will re-include once selector is fixed
+var _link2 = _interopRequireDefault(_link);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LoginMessagePage = function LoginMessagePage(p) {
 	return _react2.default.createElement(
-		"main",
-		{ className: "page login-message" },
+		'main',
+		{ className: 'page login-message' },
 		_react2.default.createElement(
-			"div",
-			{ className: "page-content" },
+			'div',
+			{ className: 'page-content' },
 			_react2.default.createElement(
-				"h1",
+				'h1',
 				null,
-				"Welcome to Augur's beta test v2!"
+				'Welcome to Augur\'s beta test v2!'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"This is a beta test in advance of Augur's live release. There are bugs. There are features being\n\t\t\t\tadded, improved, and re-designed. There are a few hundred enhancements scheduled to be added in the next few\n\t\t\t\tmonths. Your thoughtful feedback now is essential. Please use the feedback button at the bottom right of\n\t\t\t\tevery page to submit your feedback, or feel free to send an email to ",
+				'This is a beta test in advance of Augur\'s live release. There are bugs. There are features being\n\t\t\t\tadded, improved, and re-designed. There are a few hundred enhancements scheduled to be added in the next few\n\t\t\t\tmonths. Your thoughtful feedback now is essential. Please use the feedback button at the bottom right of\n\t\t\t\tevery page to submit your feedback, or feel free to send an email to ',
 				_react2.default.createElement(
-					"a",
+					'a',
 					{
-						className: "link",
-						href: "mailto:hugs@augur.net?subject=Beta Testing feedback"
+						className: 'link',
+						href: 'mailto:hugs@augur.net?subject=Beta Testing feedback'
 					},
 					'hugs@augur.net'
 				),
-				". From your submissions, the development team will coordinate fixes and new features. Changes and fixes will be\n\t\t\t\tdisplayed when you log in again."
+				'. From your submissions, the development team will coordinate fixes and new features. Changes and fixes will be\n\t\t\t\tdisplayed when you log in again.'
 			),
 			_react2.default.createElement(
-				"h2",
+				'h2',
 				null,
-				"Important Information:"
+				'Important Information:'
 			),
 			_react2.default.createElement(
-				"ol",
+				'ol',
 				null,
 				_react2.default.createElement(
-					"li",
+					'li',
 					null,
-					"Because Augur is a ",
+					'Because Augur is a ',
 					_react2.default.createElement(
-						"b",
+						'b',
 						null,
-						"completely decentralized"
+						'completely decentralized'
 					),
-					" system, if you lose your login credentials it is impossible to recover them. Please ",
+					' system, if you lose your login credentials it is impossible to recover them. Please ',
 					_react2.default.createElement(
-						"a",
-						{ className: "link", href: "http://blog.augur.net/faq/how-do-i-savebackup-my-wallet/", target: "_blank", rel: "noopener noreferrer" },
-						"take appropriate measures"
+						'a',
+						{ className: 'link', href: 'http://blog.augur.net/faq/how-do-i-savebackup-my-wallet/', target: '_blank', rel: 'noopener noreferrer' },
+						'take appropriate measures'
 					),
-					" to protect the safety of your password, and create a way to recover your credentials if you forget them."
+					' to protect the safety of your password, and create a way to recover your credentials if you forget them.'
 				),
 				_react2.default.createElement(
-					"li",
+					'li',
 					null,
-					"Do not send real Ether (ETH) to your Augur account while we are testing! Each account will be given 10,000 testnet ETH tokens for beta testing. Please note that testnet ETH has no value except for testing: it is merely an on-contract IOU (a token) for testnet Ether."
+					'Do not send real Ether (ETH) to your Augur account while we are testing! Each account will be given 10,000 testnet ETH tokens for beta testing. Please note that testnet ETH has no value except for testing: it is merely an on-contract IOU (a token) for testnet Ether.'
 				),
 				_react2.default.createElement(
-					"li",
+					'li',
 					null,
-					"Reputation (REP) is a unique and important part of the Augur trading platform. If you own REP tokens, you must visit\n\t\t\t\t\tthe site periodically to fulfill your reporting obligations. During beta testing, each new account will\n\t\t\t\t\treceive 47 testnet REP (they have no value except for testing). Each reporting cycle will last 2 days. Every\n\t\t\t\t\ttwo-day cycle will consist of a commit phase, a reveal phase, and a challenge phase. Because the test\n\t\t\t\t\tcycle is dramatically compressed (the main net cycle will be 60 days long) it is recommended that\n\t\t\t\t\tusers visit the site at least every 2 days to maintain your REP and simulate \u201Creal money\u201D trading,\n\t\t\t\t\tresolution, and reporting conditions. Learn ",
+					'Reputation (REP) is a unique and important part of the Augur trading platform. If you own REP tokens, you must visit\n\t\t\t\t\tthe site periodically to fulfill your reporting obligations. During beta testing, each new account will\n\t\t\t\t\treceive 47 testnet REP (they have no value except for testing). Each reporting cycle will last 2 days. Every\n\t\t\t\t\ttwo-day cycle will consist of a commit phase, a reveal phase, and a challenge phase. Because the test\n\t\t\t\t\tcycle is dramatically compressed (the main net cycle will be 60 days long) it is recommended that\n\t\t\t\t\tusers visit the site at least every 2 days to maintain your REP and simulate \u201Creal money\u201D trading,\n\t\t\t\t\tresolution, and reporting conditions. Learn ',
 					_react2.default.createElement(
-						"a",
+						'a',
 						{
-							className: "link",
-							href: "https://www.youtube.com/watch?v=sCms-snzHk4",
-							target: "_blank",
-							rel: "noopener noreferrer"
+							className: 'link',
+							href: 'https://www.youtube.com/watch?v=sCms-snzHk4',
+							target: '_blank',
+							rel: 'noopener noreferrer'
 						},
-						"how Augur's Reputation tokens work"
+						'how Augur\'s Reputation tokens work'
 					),
-					"."
+					'.'
 				),
 				_react2.default.createElement(
-					"li",
+					'li',
 					null,
-					"The site is only as fast as Ethereum blocks are mined. However, it is important to know that all orders\n\t\t\t\t\tare placed into order books according to best price, and in the order in which they are received. This\n\t\t\t\t\tpreserves price/time priority in Augur's markets."
+					'The site is only as fast as Ethereum blocks are mined. However, it is important to know that all orders\n\t\t\t\t\tare placed into order books according to best price, and in the order in which they are received. This\n\t\t\t\t\tpreserves price/time priority in Augur\'s markets.'
 				)
 			),
 			_react2.default.createElement(
-				"h2",
+				'h2',
 				null,
-				"Status:"
+				'Status:'
 			),
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"The following issues have been refined as of Sep 1, 2016:"
+				'The following issues have been refined as of Sep 1, 2016:'
 			),
-			"1/ 2/ 3/",
+			'1/ 2/ 3/',
 			_react2.default.createElement(
-				"p",
+				'p',
 				null,
-				"The following issues have been refined as of Aug 26, 2016"
+				'The following issues have been refined as of Aug 26, 2016'
 			),
-			"1/ 2/ 3/",
-			_react2.default.createElement("br", null)
+			'1/ 2/ 3/',
+			_react2.default.createElement('br', null),
+			p.marketsLink && _react2.default.createElement(
+				_link2.default,
+				_extends({ className: 'lets-do-this-button' }, p.marketsLink),
+				'Let\'s do this!'
+			)
 		)
 	);
 };
@@ -28698,11 +28683,7 @@ LoginMessagePage.propTypes = {
 
 exports.default = LoginMessagePage;
 
-/*
-<Link className="lets-do-this-button" {...p.siteHeader.marketsLink} >Let's do this!</Link>
-*/
-
-},{"react":181}],211:[function(_dereq_,module,exports){
+},{"../../link/components/link":209,"react":181}],211:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31462,6 +31443,10 @@ var _augurLogo = _dereq_('../../common/components/augur-logo');
 
 var _augurLogo2 = _interopRequireDefault(_augurLogo);
 
+var _valueDenomination = _dereq_('../../common/components/value-denomination');
+
+var _valueDenomination2 = _interopRequireDefault(_valueDenomination);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31537,18 +31522,24 @@ var SiteHeader = function (_Component) {
 							}, p.transactionsLink),
 							p.transactionsTotals.title
 						),
-						!!p.loginAccount && !!p.loginAccount.id && _react2.default.createElement(
+						p.loginAccount.id && _react2.default.createElement(
 							_link2.default,
 							_extends({
-								className: (0, _classnames2.default)('site-nav-link', _views.ACCOUNT, { active: p.activeView === _views.ACCOUNT })
+								className: (0, _classnames2.default)('site-nav-link', _views.ACCOUNT, { active: p.activeView === _views.ACCOUNT }),
+								title: p.loginAccount.realEther && p.loginAccount.realEther.full + ' real ETH'
 							}, p.accountLink),
-							'Account'
+							_react2.default.createElement(_valueDenomination2.default, _extends({}, p.loginAccount.rep || {}, {
+								formatted: p.loginAccount.rep && p.loginAccount.rep.rounded,
+								formattedValue: p.loginAccount.rep && p.loginAccount.rep.roundedValue
+							})),
+							_react2.default.createElement(_valueDenomination2.default, _extends({}, p.loginAccount.ether || {}, {
+								formatted: p.loginAccount.ether && p.loginAccount.ether.rounded,
+								formattedValue: p.loginAccount.ether && p.loginAccount.ether.roundedValue
+							}))
 						),
-						(!p.loginAccount || !p.loginAccount.id) && _react2.default.createElement(
+						!p.loginAccount.id && _react2.default.createElement(
 							_link2.default,
-							_extends({
-								className: (0, _classnames2.default)('site-nav-link', _authTypes.AUTH_TYPES[p.activeView], { active: !!_authTypes.AUTH_TYPES[p.activeView] })
-							}, p.authLink),
+							_extends({ className: (0, _classnames2.default)('site-nav-link', _authTypes.AUTH_TYPES[p.activeView], { active: !!_authTypes.AUTH_TYPES[p.activeView] }) }, p.authLink),
 							'Sign Up / Login'
 						)
 					)
@@ -31576,7 +31567,7 @@ var SiteHeader = function (_Component) {
 
 exports.default = SiteHeader;
 
-},{"../../auth/constants/auth-types":187,"../../common/components/augur-logo":188,"../../link/components/link":209,"../../site/constants/views":245,"classnames":1,"react":181}],245:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":187,"../../common/components/augur-logo":188,"../../common/components/value-denomination":197,"../../link/components/link":209,"../../site/constants/views":245,"classnames":1,"react":181}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32781,7 +32772,8 @@ var Router = function (_Component) {
 					node = _react2.default.createElement(_accountPage2.default, {
 						loginMessageLink: p.links.loginMessageLink,
 						account: p.loginAccount,
-						onChangePass: p.loginAccount.onChangePass
+						onChangePass: p.loginAccount.onChangePass,
+						authLink: p.links && p.links.authLink || null
 					});
 					break;
 
@@ -32818,7 +32810,9 @@ var Router = function (_Component) {
 					break;
 
 				case _views.LOGIN_MESSAGE:
-					node = _react2.default.createElement(_loginMessagePage2.default, null);
+					node = _react2.default.createElement(_loginMessagePage2.default, {
+						marketsLink: p.links && p.links.marketsLink || null
+					});
 					break;
 				default:
 					node = _react2.default.createElement(_marketsView2.default, {
