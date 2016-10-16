@@ -26550,6 +26550,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -26568,51 +26570,71 @@ var _link2 = _interopRequireDefault(_link);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var AuthPage = _react2.default.createClass({
-	displayName: 'AuthPage',
-	render: function render() {
-		var p = this.props;
-		return _react2.default.createElement(
-			'main',
-			{ className: 'page auth' },
-			_react2.default.createElement(
-				'header',
-				{ className: 'page-header' },
-				_react2.default.createElement(
-					'span',
-					{ className: 'big-line' },
-					'Augur is a completely decentralized system'
-				),
-				' including user accounts. Your credentials never leave the browser, and you are responsible for keeping them safe.',
-				_react2.default.createElement('br', null),
-				_react2.default.createElement(
-					'b',
-					null,
-					_react2.default.createElement(
-						'i',
-						{ className: 'negative' },
-						'It is impossible to recover your account if your credentials get lost!'
-					)
-				),
-				_react2.default.createElement('br', null),
-				'Click\xA0',
-				_react2.default.createElement(
-					_link2.default,
-					{
-						className: (0, _classnames2.default)('airbitz-button'),
-						onClick: p.authForm.airbitzLink.onClick
-					},
-					p.authForm.airbitzLinkText
-				),
-				'\xA0to create an encrypted and backed up account using a simple username and password.'
-			),
-			_react2.default.createElement(_authForm2.default, _extends({ className: 'auth-form' }, p.authForm))
-		);
-	},
-	componentDidMount: function componentDidMount() {
-		this.props.authForm.airbitzOnLoad.onLoad();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AuthPage = function (_React$Component) {
+	_inherits(AuthPage, _React$Component);
+
+	function AuthPage() {
+		_classCallCheck(this, AuthPage);
+
+		return _possibleConstructorReturn(this, (AuthPage.__proto__ || Object.getPrototypeOf(AuthPage)).apply(this, arguments));
 	}
-});
+
+	_createClass(AuthPage, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.props.authForm.airbitzOnLoad.onLoad();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var p = this.props;
+			return _react2.default.createElement(
+				'main',
+				{ className: 'page auth' },
+				_react2.default.createElement(
+					'header',
+					{ className: 'page-header' },
+					_react2.default.createElement(
+						'span',
+						{ className: 'big-line' },
+						'Augur is a completely decentralized system'
+					),
+					' including user accounts. Your credentials never leave the browser, and you are responsible for keeping them safe.',
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'b',
+						null,
+						_react2.default.createElement(
+							'i',
+							{ className: 'negative' },
+							'It is impossible to recover your account if your credentials get lost!'
+						)
+					),
+					_react2.default.createElement('br', null),
+					'Click\xA0',
+					_react2.default.createElement(
+						_link2.default,
+						{
+							className: (0, _classnames2.default)('airbitz-button'),
+							onClick: p.authForm.airbitzLink.onClick
+						},
+						p.authForm.airbitzLinkText
+					),
+					'\xA0to create an encrypted and backed up account using a simple username and password.'
+				),
+				_react2.default.createElement(_authForm2.default, _extends({ className: 'auth-form' }, p.authForm))
+			);
+		}
+	}]);
+
+	return AuthPage;
+}(_react2.default.Component);
 
 AuthPage.propTypes = {
 	className: _react.PropTypes.string,
