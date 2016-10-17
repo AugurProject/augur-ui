@@ -115727,12 +115727,11 @@ function updateTradesInProgress(marketID, outcomeID, side, numShares, limitPrice
 
 		var bignumShares = _augurjs.abi.bignum(numShares);
 		var bignumLimit = _augurjs.abi.bignum(limitPrice);
-
 		// clean num shares
-		var cleanNumShares = numShares && bignumShares.toFixed() === 0 ? 0 : numShares && bignumShares.abs().toFixed() || outcomeTradeInProgress.numShares || '0';
+		var cleanNumShares = numShares && bignumShares.toFixed() === '0' ? '0' : numShares && bignumShares.abs().toFixed() || outcomeTradeInProgress.numShares || '0';
 
 		// if shares exist, but no limit price, use top order
-		var cleanLimitPrice = limitPrice && bignumLimit.toFixed() === 0 ? 0 : limitPrice && bignumLimit.toFixed() || outcomeTradeInProgress.limitPrice;
+		var cleanLimitPrice = limitPrice && bignumLimit.toFixed() === '0' ? '0' : limitPrice && bignumLimit.toFixed() || outcomeTradeInProgress.limitPrice;
 
 		if (cleanNumShares && !cleanLimitPrice && cleanLimitPrice !== 0) {
 			cleanLimitPrice = topOrderPrice;
