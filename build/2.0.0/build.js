@@ -117863,7 +117863,7 @@ var consoleLog = function consoleLog(store) {
 		return function (action) {
 			var isIgnoreFlag = action.meta != null && action.meta.ignore === true;
 			if (typeof action !== 'function' && !isIgnoreFlag) {
-				// console.log(action);
+				console.log(action);
 			}
 			return next(action);
 		};
