@@ -31408,7 +31408,7 @@ var SiteFooter = function SiteFooter() {
 		null,
 		_react2.default.createElement(
 			"a",
-			{ className: "link", href: "http://augur.strikingly.com", target: "_blank", rel: "noopener noreferrer" },
+			{ className: "link", href: "https://augur.net", target: "_blank", rel: "noopener noreferrer" },
 			"About"
 		),
 		_react2.default.createElement(
