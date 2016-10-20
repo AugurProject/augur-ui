@@ -41441,7 +41441,7 @@ var abcuiloader =
 	          ),
 	          _react2.default.createElement(
 	            'a',
-	            { className: 'btn btn-block btn-social btn-reddit', onClick: this.callBackEmail },
+	            { className: 'btn btn-block btn-social btn-reddit', onClick: this.callBackEmailGeneric },
 	            _react2.default.createElement('span', { className: 'fa fa-envelope' }),
 	            String.format(strings.send_using_xx, 'Email App')
 	          ),
