@@ -25832,6 +25832,10 @@ var _input = _dereq_('../../common/components/input');
 
 var _input2 = _interopRequireDefault(_input);
 
+var _checkbox = _dereq_('../../common/components/checkbox');
+
+var _checkbox2 = _interopRequireDefault(_checkbox);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25880,7 +25884,8 @@ var AccountPage = function (_Component) {
 			msg: '',
 			sendAmount: '',
 			currency: 'eth',
-			recipientAddress: ''
+			recipientAddress: '',
+			settings: _this.props.settings
 		};
 
 		_this.handleTransfer = _this.handleTransfer.bind(_this);
@@ -26059,6 +26064,24 @@ var AccountPage = function (_Component) {
 					),
 					_react2.default.createElement(
 						'div',
+						{ className: 'account-section' },
+						_react2.default.createElement(
+							'h2',
+							{ className: 'heading' },
+							'Settings'
+						),
+						_react2.default.createElement(_checkbox2.default, {
+							text: 'Automatically sell complete sets',
+							isChecked: s.settings.autoSellCompleteSets || p.settings.autoSellCompleteSets,
+							onClick: function onClick() {
+								s.settings.autoSellCompleteSets = !s.settings.autoSellCompleteSets;
+								_this2.setState(s);
+								p.onUpdateSettings(s.settings);
+							}
+						})
+					),
+					_react2.default.createElement(
+						'div',
 						{ className: (0, _classnames2.default)('account-section') },
 						_react2.default.createElement(
 							'div',
@@ -26215,11 +26238,12 @@ var AccountPage = function (_Component) {
 
 AccountPage.propTypes = {
 	// loginMessageLink: PropTypes.object.isRequired,
-	account: _react.PropTypes.object
+	account: _react.PropTypes.object,
+	settings: _react.PropTypes.object
 };
 exports.default = AccountPage;
 
-},{"../../common/components/input":194,"../../link/components/link":210,"classnames":1,"react":181}],185:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":189,"../../common/components/input":194,"../../link/components/link":210,"classnames":1,"react":181}],185:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29406,7 +29430,7 @@ var MarketPositions = function (_Component) {
 				'section',
 				{ className: 'market-positions' },
 				p.market.myPositionsSummary && p.market.myPositionsSummary.numPositions && p.market.myPositionsSummary.numPositions.value && _react2.default.createElement(_myPositionsSummary2.default, _extends({}, p.market.myPositionsSummary, { className: 'market-section-header' })),
-				_react2.default.createElement(_myPositions2.default, { market: p.market })
+				_react2.default.createElement(_myPositions2.default, { market: p.market, settings: p.settings })
 			);
 		}
 	}]);
@@ -29722,7 +29746,8 @@ var MarketPage = function (_Component) {
 						nodes.push(_react2.default.createElement(_marketPositions2.default, {
 							key: 'market-positions',
 							className: 'market-positions',
-							market: p.market
+							market: p.market,
+							settings: p.settings
 						}));
 					}
 
@@ -30558,7 +30583,7 @@ var Positions = function Positions(p) {
 				type: p.market.type
 			}, outcome, outcome.position));
 		}),
-		p.market.hasCompleteSet && _react2.default.createElement(
+		!p.settings.autoSellCompleteSets && p.market.hasCompleteSet && _react2.default.createElement(
 			'div',
 			{ className: 'complete-sets' },
 			_react2.default.createElement(
@@ -30805,6 +30830,8 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 						className: 'button cancel-order-abort-confirmation',
 						title: 'No, don\'t cancel order',
 						onClick: function onClick(event) {
+							console.log(event);
+							console.log('clicked NO:', orderID, marketID, type);
 							abortCancelOrderConfirmation(orderID, marketID, type);
 						}
 					},
@@ -30816,6 +30843,8 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 						className: 'button cancel-order-action',
 						title: 'Yes, cancel order',
 						onClick: function onClick(event) {
+							console.log(event);
+							console.log('clicked YES:', orderID, marketID, type);
 							cancelOrder(orderID, marketID, type);
 						}
 					},
@@ -32928,6 +32957,8 @@ var Router = function (_Component) {
 						viewProps = {
 							loginMessageLink: p.links.loginMessageLink,
 							account: p.loginAccount,
+							settings: p.settings,
+							onUpdateSettings: p.loginAccount.onUpdateAccountSettings,
 							onChangePass: p.loginAccount.onChangePass,
 							authLink: p.links && p.links.authLink || null,
 							onAirbitzManageAccount: p.loginAccount.onAirbitzManageAccount
@@ -32953,7 +32984,8 @@ var Router = function (_Component) {
 				case _views.MY_REPORTS:
 					{
 						viewProps = _extends({
-							activeView: p.activeView
+							activeView: p.activeView,
+							settings: p.settings
 						}, p.portfolio);
 
 						return _react2.default.createElement(_portfolioView2.default, _extends({
@@ -32984,6 +33016,7 @@ var Router = function (_Component) {
 					{
 						viewProps = {
 							market: p.market,
+							settings: p.settings,
 							marketDataAge: p.marketDataAge,
 							selectedOutcome: p.selectedOutcome,
 							orderCancellation: p.orderCancellation,
