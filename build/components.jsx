@@ -26071,7 +26071,7 @@ var AccountPage = function (_Component) {
 							'Settings'
 						),
 						_react2.default.createElement(_checkbox2.default, {
-							text: 'Automatically sell complete sets',
+							text: 'If I own shares of every outcome in a market, automatically close out my position (1 ETH for 1 share of every outcome)',
 							isChecked: s.settings.autoSellCompleteSets || p.settings.autoSellCompleteSets,
 							onClick: function onClick() {
 								s.settings.autoSellCompleteSets = !s.settings.autoSellCompleteSets;
@@ -28817,20 +28817,93 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h2',
 				null,
-				'Status:'
+				'Technical updates:'
 			),
 			_react2.default.createElement(
 				'p',
 				null,
-				'The following issues have been refined as of Sep 1, 2016:'
+				'Oct 22, 2016 @ 2:09AM PST [',
+				_react2.default.createElement(
+					'a',
+					{ href: 'mailto:jack@augur.net' },
+					'Jack'
+				),
+				']:'
 			),
-			'1/ 2/ 3/',
 			_react2.default.createElement(
-				'p',
+				'ol',
 				null,
-				'The following issues have been refined as of Aug 26, 2016'
+				_react2.default.createElement(
+					'li',
+					null,
+					'"Sell Complete Sets" has been re-labeled to "Close Out Position" everywhere this concept is exposed to the user.  This is intended to avoid confusion for users attempting to close out a short position (which requires them, somewhat unintuitively, to sell a complete set).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'The label for the automatic sell complete sets checkbox on the Accounts page has been improved.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Buy and sell complete sets are now explicitly accounted for in the positions and P/L calculations.  (Testers: feedback / suggestions on the sell complete sets stuff is especially valuable, as I am finding this to be a somewhat tricky UX problem!)',
+					_react2.default.createElement(
+						'ol',
+						null,
+						_react2.default.createElement(
+							'li',
+							null,
+							'Shares acquired via buy complete sets (i.e., new shares issued) are included in the positions total.  However, since there is not a price for each outcome within the complete set, the shares from the complete set do ',
+							_react2.default.createElement(
+								'b',
+								null,
+								'not'
+							),
+							' contribute to the mean price of open position.  (Note: this only applies to complete sets bought manually by the user.  Complete sets bought as part of short selling are not included in the positions total.)'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Complete sets sold to close out a ',
+							_react2.default.createElement(
+								'b',
+								null,
+								'long'
+							),
+							' position are deducted from your total position.  Since there is not a price for each outcome within the complete set, selling the complete set does ',
+							_react2.default.createElement(
+								'b',
+								null,
+								'not'
+							),
+							' change realized P/L.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Motivating example: suppose you have short sold 2 shares of one outcome in a market.  The UI displays your position as -2 in that outcome, and 0 in the other outcomes.  To close out your short position, you buy 2 shares in the same outcome.  The UI now shows your position as 0 in all outcomes.  However, what has happened behind the scenes is, you were actually long the other outcomes (and 0 in the outcome you shorted), and when you bought back 2 shares, now you have 2 shares in all outcomes.  Therefore, to actually close out your position, you have to sell 2 complete sets.',
+							_react2.default.createElement('br', null),
+							'Complete sets sold to close out a ',
+							_react2.default.createElement(
+								'b',
+								null,
+								'short'
+							),
+							' position work as follows.  If you have a short position, shares bought back are added to your position, but they do not contribute to your realized P/L until you have actually sold the complete set(s) back.  Shares that have been bought back but not yet closed out (via sell complete sets) are "queued", and the system calculates a "queued P/L" for these shares.  (Currently, queued P/L is simply added to unrealized P/L, but it may help clarify things for the user to show it explicitly in the positions display.)  Also, note that if you have manually bought any complete sets, your complete sets sold are first netted with the complete sets bought; only the excess complete sets sold are used to close out queued shares.'
+						)
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Open orders are now sorted in descending order, asks first.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed a bug that was preventing the Portfolio page from loading.'
+				)
 			),
-			'1/ 2/ 3/',
 			_react2.default.createElement('br', null),
 			p.marketsLink && _react2.default.createElement(
 				_link2.default,
@@ -30592,15 +30665,14 @@ var Positions = function Positions(p) {
 				_react2.default.createElement(
 					'button',
 					{
+						title: p.market.smallestPosition.full,
 						className: 'button',
 						onClick: function onClick(event) {
 							event.stopPropagation();
 							p.market.onSubmitClosePosition();
 						}
 					},
-					'Sell Complete Sets (',
-					p.market.smallestPosition.formatted,
-					')'
+					'Close Out Position'
 				)
 			)
 		)
@@ -30991,6 +31063,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -31021,7 +31095,7 @@ var PortfolioView = function PortfolioView(p) {
 	switch (p.activeView) {
 		default:
 		case _views.MY_POSITIONS:
-			node = _react2.default.createElement(_positions2.default, p.positions);
+			node = _react2.default.createElement(_positions2.default, _extends({}, p.positions, { settings: p.settings }));
 			break;
 		case _views.MY_MARKETS:
 			node = _react2.default.createElement(_markets2.default, p.markets);
@@ -31059,7 +31133,8 @@ PortfolioView.propTypes = {
 	totals: _react.PropTypes.object.isRequired,
 	positions: _react.PropTypes.object.isRequired,
 	markets: _react.PropTypes.object.isRequired,
-	reports: _react.PropTypes.object.isRequired
+	reports: _react.PropTypes.object.isRequired,
+	settings: _react.PropTypes.object.isRequired
 };
 
 exports.default = PortfolioView;
@@ -31109,7 +31184,8 @@ var PortfolioPositions = function PortfolioPositions(p) {
 				!!market.myPositionOutcomes && !!market.myPositionOutcomes.length && _react2.default.createElement(_myPositions2.default, {
 					className: 'page-content positions-content',
 					market: market,
-					marketLink: market.marketLink
+					marketLink: market.marketLink,
+					settings: p.settings
 				})
 			);
 		})
@@ -32280,7 +32356,7 @@ var Transaction = function Transaction(p) {
 			break;
 
 		case _types.SELL_COMPLETE_SETS:
-			nodes.action = 'SELL COMPLETE SETS (' + p.numShares.formatted + ')';
+			nodes.action = 'CLOSE OUT POSITION';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
