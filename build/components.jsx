@@ -28822,7 +28822,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'p',
 				null,
-				'Oct 23, 2016 @ 12:18AM PST [',
+				'Oct 23, 2016 @ 2:38AM PST [',
 				_react2.default.createElement(
 					'a',
 					{ href: 'mailto:jack@augur.net' },
@@ -28833,6 +28833,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'ol',
 				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed P/L calculations for trades going from a net long to net short position, or vice-versa.'
+				),
 				_react2.default.createElement(
 					'li',
 					null,
