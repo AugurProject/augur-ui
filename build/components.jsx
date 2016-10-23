@@ -28820,114 +28820,125 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				'Technical updates:'
 			),
 			_react2.default.createElement(
-				'p',
-				null,
-				'Oct 23, 2016 @ 2:38AM PST [',
-				_react2.default.createElement(
-					'a',
-					{ href: 'mailto:jack@augur.net' },
-					'Jack'
-				),
-				']:'
-			),
-			_react2.default.createElement(
-				'ol',
+				'ul',
 				null,
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed P/L calculations for trades going from a net long to net short position, or vice-versa.'
+					'Oct 23, 2016 @ 2:38AM PST [',
+					_react2.default.createElement(
+						'a',
+						{ href: 'mailto:jack@augur.net' },
+						'Jack'
+					),
+					']:'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'"Close Out Position" has been re-labeled "Redeem X Complete Sets".'
-				)
-			),
-			_react2.default.createElement('br', null),
-			_react2.default.createElement(
-				'p',
-				null,
-				'Oct 22, 2016 @ 2:09AM PST [',
-				_react2.default.createElement(
-					'a',
-					{ href: 'mailto:jack@augur.net' },
-					'Jack'
-				),
-				']:'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'"Sell Complete Sets" has been re-labeled to "Close Out Position" everywhere this concept is exposed to the user.  This is intended to avoid confusion for users attempting to close out a short position (which requires them, somewhat unintuitively, to sell a complete set).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'The label for the automatic sell complete sets checkbox on the Accounts page has been improved.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Buy and sell complete sets are now explicitly accounted for in the positions and P/L calculations.  (Testers: feedback / suggestions on the sell complete sets stuff is especially valuable, as I am finding this to be a somewhat tricky UX problem!)',
 					_react2.default.createElement(
 						'ol',
 						null,
 						_react2.default.createElement(
 							'li',
 							null,
-							'Shares acquired via buy complete sets (i.e., new shares issued) are included in the positions total.  However, since there is not a price for each outcome within the complete set, the shares from the complete set do ',
-							_react2.default.createElement(
-								'b',
-								null,
-								'not'
-							),
-							' contribute to the mean price of open position.  (Note: this only applies to complete sets bought manually by the user.  Complete sets bought as part of short selling are not included in the positions total.)'
+							'Fixed P/L calculations for trades going from a net long to net short position, or vice-versa.'
 						),
 						_react2.default.createElement(
 							'li',
 							null,
-							'Complete sets sold to close out a ',
-							_react2.default.createElement(
-								'b',
-								null,
-								'long'
-							),
-							' position are deducted from your total position.  Since there is not a price for each outcome within the complete set, selling the complete set does ',
-							_react2.default.createElement(
-								'b',
-								null,
-								'not'
-							),
-							' change realized P/L.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Motivating example: suppose you have short sold 2 shares of one outcome in a market.  The UI displays your position as -2 in that outcome, and 0 in the other outcomes.  To close out your short position, you buy 2 shares in the same outcome.  The UI now shows your position as 0 in all outcomes.  However, what has happened behind the scenes is, you were actually long the other outcomes (and 0 in the outcome you shorted), and when you bought back 2 shares, now you have 2 shares in all outcomes.  Therefore, to actually close out your position, you have to sell 2 complete sets.',
-							_react2.default.createElement('br', null),
-							'Complete sets sold to close out a ',
-							_react2.default.createElement(
-								'b',
-								null,
-								'short'
-							),
-							' position work as follows.  If you have a short position, shares bought back are added to your position, but they do not contribute to your realized P/L until you have actually sold the complete set(s) back.  Shares that have been bought back but not yet closed out (via sell complete sets) are "queued", and the system calculates a "queued P/L" for these shares.  (Currently, queued P/L is simply added to unrealized P/L, but it may help clarify things for the user to show it explicitly in the positions display.)  Also, note that if you have manually bought any complete sets, your complete sets sold are first netted with the complete sets bought; only the excess complete sets sold are used to close out queued shares.'
+							'"Close Out Position" has been re-labeled "Redeem X Complete Sets".'
 						)
 					)
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Open orders are now sorted in descending order, asks first.'
+					'Oct 22, 2016 @ 2:09AM PST [',
+					_react2.default.createElement(
+						'a',
+						{ href: 'mailto:jack@augur.net' },
+						'Jack'
+					),
+					']:'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed a bug that was preventing the Portfolio page from loading.'
+					_react2.default.createElement(
+						'ol',
+						null,
+						_react2.default.createElement(
+							'li',
+							null,
+							'"Sell Complete Sets" has been re-labeled to "Close Out Position" everywhere this concept is exposed to the user.  This is intended to avoid confusion for users attempting to close out a short position (which requires them, somewhat unintuitively, to sell a complete set).'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'The label for the automatic sell complete sets checkbox on the Accounts page has been improved.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Buy and sell complete sets are now explicitly accounted for in the positions and P/L calculations.  (Testers: feedback / suggestions on the sell complete sets stuff is especially valuable, as I am finding this to be a somewhat tricky UX problem!)',
+							_react2.default.createElement(
+								'ol',
+								null,
+								_react2.default.createElement(
+									'li',
+									null,
+									'Shares acquired via buy complete sets (i.e., new shares issued) are included in the positions total.  However, since there is not a price for each outcome within the complete set, the shares from the complete set do ',
+									_react2.default.createElement(
+										'b',
+										null,
+										'not'
+									),
+									' contribute to the mean price of open position.  (Note: this only applies to complete sets bought manually by the user.  Complete sets bought as part of short selling are not included in the positions total.)'
+								),
+								_react2.default.createElement(
+									'li',
+									null,
+									'Complete sets sold to close out a ',
+									_react2.default.createElement(
+										'b',
+										null,
+										'long'
+									),
+									' position are deducted from your total position.  Since there is not a price for each outcome within the complete set, selling the complete set does ',
+									_react2.default.createElement(
+										'b',
+										null,
+										'not'
+									),
+									' change realized P/L.'
+								),
+								_react2.default.createElement(
+									'li',
+									null,
+									'Motivating example: suppose you have short sold 2 shares of one outcome in a market.  The UI displays your position as -2 in that outcome, and 0 in the other outcomes.  To close out your short position, you buy 2 shares in the same outcome.  The UI now shows your position as 0 in all outcomes.  However, what has happened behind the scenes is, you were actually long the other outcomes (and 0 in the outcome you shorted), and when you bought back 2 shares, now you have 2 shares in all outcomes.  Therefore, to actually close out your position, you have to sell 2 complete sets.',
+									_react2.default.createElement('br', null),
+									'Complete sets sold to close out a ',
+									_react2.default.createElement(
+										'b',
+										null,
+										'short'
+									),
+									' position work as follows.  If you have a short position, shares bought back are added to your position, but they do not contribute to your realized P/L until you have actually sold the complete set(s) back.  Shares that have been bought back but not yet closed out (via sell complete sets) are "queued", and the system calculates a "queued P/L" for these shares.  (Currently, queued P/L is simply added to unrealized P/L, but it may help clarify things for the user to show it explicitly in the positions display.)  Also, note that if you have manually bought any complete sets, your complete sets sold are first netted with the complete sets bought; only the excess complete sets sold are used to close out queued shares.'
+								)
+							)
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Open orders are now sorted in descending order, asks first.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Fixed a bug that was preventing the Portfolio page from loading.'
+						)
+					)
 				)
 			),
 			p.marketsLink && _react2.default.createElement(
