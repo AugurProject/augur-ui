@@ -28746,7 +28746,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h1',
 				null,
-				'Welcome to Augur\'s beta test v2!'
+				'Welcome to the Augur beta test!'
 			),
 			_react2.default.createElement(
 				'p',
@@ -28765,7 +28765,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h2',
 				null,
-				'Important Information:'
+				'Important information:'
 			),
 			_react2.default.createElement(
 				'ol',
@@ -28819,6 +28819,27 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				null,
 				'Technical updates:'
 			),
+			_react2.default.createElement(
+				'p',
+				null,
+				'Oct 23, 2016 @ 12:18AM PST [',
+				_react2.default.createElement(
+					'a',
+					{ href: 'mailto:jack@augur.net' },
+					'Jack'
+				),
+				']:'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'"Close Out Position" has been re-labeled "Redeem X Complete Sets".'
+				)
+			),
+			_react2.default.createElement('br', null),
 			_react2.default.createElement(
 				'p',
 				null,
@@ -28904,7 +28925,6 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					'Fixed a bug that was preventing the Portfolio page from loading.'
 				)
 			),
-			_react2.default.createElement('br', null),
 			p.marketsLink && _react2.default.createElement(
 				_link2.default,
 				_extends({ className: 'lets-do-this-button' }, p.marketsLink),
@@ -30672,7 +30692,9 @@ var Positions = function Positions(p) {
 							p.market.onSubmitClosePosition();
 						}
 					},
-					'Close Out Position'
+					'Redeem ',
+					p.market.smallestPosition.formatted,
+					' Complete Sets'
 				)
 			)
 		)
@@ -32356,7 +32378,7 @@ var Transaction = function Transaction(p) {
 			break;
 
 		case _types.SELL_COMPLETE_SETS:
-			nodes.action = 'CLOSE OUT POSITION';
+			nodes.action = 'REDEEM ' + p.numShares.formatted + ' COMPLETE SETS';
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
