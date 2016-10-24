@@ -28825,6 +28825,30 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Oct 23, 2016 @ 8:32PM PST [',
+					_react2.default.createElement(
+						'a',
+						{ href: 'mailto:jack@augur.net' },
+						'Jack'
+					),
+					']:'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					_react2.default.createElement(
+						'ol',
+						null,
+						_react2.default.createElement(
+							'li',
+							null,
+							'Buy/sell complete sets now have an implicit price assigned to them of 1/numOutcomes (that is, all outcomes are equally priced for the complete set).  The purpose behind this change is so that complete sets buy/sells can be included in per-outcome P/L calculations.  Note that, if this equal-price-per-outcome value differs from the market price at the time the complete set is bought or sold, the outcome realized P/L values may be somewhat different than if you executed an ordinary buy or sell trade!  However, the net realized P/L (for the entire market, across all outcomes) will be correct.'
+						)
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Oct 23, 2016 @ 2:38AM PST [',
 					_react2.default.createElement(
 						'a',
