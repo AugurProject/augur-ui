@@ -25762,7 +25762,7 @@ var _router2 = _interopRequireDefault(_router);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./router":257,"react":181,"react-dom":38}],183:[function(_dereq_,module,exports){
+},{"./router":258,"react":181,"react-dom":38}],183:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -25807,7 +25807,7 @@ exports.default = components;
 exports.App = _app2.default;
 exports.constants = constants;
 
-},{"./app":182,"./modules/auth/constants/auth-types":187,"./modules/site/constants/views":247,"./modules/transactions/constants/types":256}],184:[function(_dereq_,module,exports){
+},{"./app":182,"./modules/auth/constants/auth-types":187,"./modules/site/constants/views":248,"./modules/transactions/constants/types":257}],184:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26808,7 +26808,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var CoreStats = function CoreStats(p) {
 	return _react2.default.createElement(
 		'article',
-		{ className: 'core-stats ' + (p.className || '') },
+		{ className: 'core-stats' },
 		p.coreStats && p.coreStats.map(function (statGroup, i) {
 			return _react2.default.createElement(
 				'div',
@@ -27221,7 +27221,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"../../../utils/should-component-update-pure":259,"react":181}],195:[function(_dereq_,module,exports){
+},{"../../../utils/should-component-update-pure":260,"react":181}],195:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28373,7 +28373,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"../../../modules/common/components/checkbox":189,"../../../utils/get":258,"../../common/components/input":194,"../../create-market/components/create-market-form-buttons":207,"classnames":1,"react":181}],206:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/checkbox":189,"../../../utils/get":259,"../../common/components/input":194,"../../create-market/components/create-market-form-buttons":207,"classnames":1,"react":181}],206:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29573,7 +29573,7 @@ var MarketPositions = function (_Component) {
 
 exports.default = MarketPositions;
 
-},{"../../../modules/my-positions/components/my-positions":234,"../../../modules/my-positions/components/my-positions-summary":233,"../../../utils/should-component-update-pure":259,"react":181}],218:[function(_dereq_,module,exports){
+},{"../../../modules/my-positions/components/my-positions":234,"../../../modules/my-positions/components/my-positions-summary":233,"../../../utils/should-component-update-pure":260,"react":181}],218:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29725,7 +29725,7 @@ var MarketSummary = function (_Component) {
 
 exports.default = MarketSummary;
 
-},{"../../../modules/my-markets/components/my-market":230,"../../../modules/my-markets/components/my-market-summary-header":229,"../../../utils/should-component-update-pure":259,"react":181}],220:[function(_dereq_,module,exports){
+},{"../../../modules/my-markets/components/my-market":230,"../../../modules/my-markets/components/my-market-summary-header":229,"../../../utils/should-component-update-pure":260,"react":181}],220:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29913,7 +29913,7 @@ var MarketPage = function (_Component) {
 
 exports.default = MarketPage;
 
-},{"../../../modules/trade/components/trade-panel":251,"../../../utils/should-component-update-pure":259,"../../market/components/market-info":214,"../../market/components/market-open-orders":215,"../../market/components/market-positions":217,"../../reports/components/report-panel":243,"./market-basics":212,"./market-chart":213,"./market-summary":219,"react":181}],221:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-panel":252,"../../../utils/should-component-update-pure":260,"../../market/components/market-info":214,"../../market/components/market-open-orders":215,"../../market/components/market-positions":217,"../../reports/components/report-panel":243,"./market-basics":212,"./market-chart":213,"./market-summary":219,"react":181}],221:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31201,7 +31201,7 @@ PortfolioView.propTypes = {
 
 exports.default = PortfolioView;
 
-},{"../../../modules/common/components/tab-navigation":195,"../../../modules/portfolio/components/markets":238,"../../../modules/portfolio/components/positions":240,"../../../modules/portfolio/components/reports":241,"../../../modules/site/constants/views":247,"react":181}],240:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/tab-navigation":195,"../../../modules/portfolio/components/markets":238,"../../../modules/portfolio/components/positions":240,"../../../modules/portfolio/components/reports":241,"../../../modules/site/constants/views":248,"react":181}],240:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31639,12 +31639,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var SideBar = function SideBar(p) {
 	return _react2.default.createElement(
 		'article',
-		{ className: '' + p.className },
-		_react2.default.createElement(
-			'h3',
-			null,
-			'All Tags'
-		),
+		{ className: 'side-bar' },
 		_react2.default.createElement(
 			'div',
 			{ className: 'tags' },
@@ -31682,6 +31677,37 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var SideBarHeader = function SideBarHeader() {
+	return _react2.default.createElement(
+		"div",
+		{ className: "side-bar" },
+		_react2.default.createElement(
+			"div",
+			{ className: "header-container" },
+			_react2.default.createElement(
+				"h3",
+				null,
+				"All Tags"
+			)
+		)
+	);
+};
+
+exports.default = SideBarHeader;
+
+},{"react":181}],246:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var SiteFooter = function SiteFooter() {
 	return _react2.default.createElement(
 		"footer",
@@ -31705,7 +31731,7 @@ var SiteFooter = function SiteFooter() {
 
 exports.default = SiteFooter;
 
-},{"react":181}],246:[function(_dereq_,module,exports){
+},{"react":181}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31850,7 +31876,7 @@ exports.default = SiteHeader;
 // 	portfolioTotals: PropTypes.object
 // };
 
-},{"../../auth/constants/auth-types":187,"../../common/components/augur-logo":188,"../../link/components/link":210,"../../markets/constants/markets-headers":228,"../../site/constants/views":247,"classnames":1,"react":181}],247:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":187,"../../common/components/augur-logo":188,"../../link/components/link":210,"../../markets/constants/markets-headers":228,"../../site/constants/views":248,"classnames":1,"react":181}],248:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31868,7 +31894,7 @@ var LOGIN_MESSAGE = exports.LOGIN_MESSAGE = 'login-message';
 
 var DEFAULT_PAGE = exports.DEFAULT_PAGE = MARKETS;
 
-},{}],248:[function(_dereq_,module,exports){
+},{}],249:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31919,7 +31945,7 @@ TradeBuilderBidAsk.propTypes = {
 
 exports.default = TradeBuilderBidAsk;
 
-},{"../../../modules/common/components/value-denomination":198,"classnames":1,"react":181}],249:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-denomination":198,"classnames":1,"react":181}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32075,7 +32101,7 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 
 exports.default = TradeBuilderRow;
 
-},{"../../../modules/common/components/input":194,"../../../modules/common/components/toggler":196,"../../../modules/common/components/value-denomination":198,"../../../modules/trade/components/trade-builder-bid-ask":248,"../../markets/constants/market-types":227,"classnames":1,"react":181}],250:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/input":194,"../../../modules/common/components/toggler":196,"../../../modules/common/components/value-denomination":198,"../../../modules/trade/components/trade-builder-bid-ask":249,"../../markets/constants/market-types":227,"classnames":1,"react":181}],251:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32169,7 +32195,7 @@ var TradePanel = function TradePanel(p) {
 
 exports.default = TradePanel;
 
-},{"../../../modules/trade/components/trade-builder-row":249,"react":181}],251:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-builder-row":250,"react":181}],252:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32233,7 +32259,7 @@ var TradePanel = function TradePanel(p) {
 
 exports.default = TradePanel;
 
-},{"../../../modules/trade/components/trade-builder":250,"../../../modules/trade/components/trade-summary":252,"react":181}],252:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-builder":251,"../../../modules/trade/components/trade-summary":253,"react":181}],253:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32279,7 +32305,7 @@ var TradeSummary = function TradeSummary(p) {
 
 exports.default = TradeSummary;
 
-},{"../../transactions/components/transaction":253,"react":181}],253:[function(_dereq_,module,exports){
+},{"../../transactions/components/transaction":254,"react":181}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32805,7 +32831,7 @@ Transaction.propTypes = {
 
 exports.default = Transaction;
 
-},{"../../auth/constants/auth-types":187,"../../common/components/value-denomination":198,"../../common/components/value-timestamp":199,"../../link/components/link":210,"../../markets/constants/market-types":227,"../../transactions/constants/types":256,"classnames":1,"react":181}],254:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":187,"../../common/components/value-denomination":198,"../../common/components/value-timestamp":199,"../../link/components/link":210,"../../markets/constants/market-types":227,"../../transactions/constants/types":257,"classnames":1,"react":181}],255:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32854,7 +32880,7 @@ TransactionsPage.propTypes = {
 
 exports.default = TransactionsPage;
 
-},{"../../transactions/components/transactions":255,"react":181}],255:[function(_dereq_,module,exports){
+},{"../../transactions/components/transactions":256,"react":181}],256:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32902,7 +32928,7 @@ var Transactions = function Transactions(p) {
 // };
 exports.default = Transactions;
 
-},{"./transaction":253,"react":181}],256:[function(_dereq_,module,exports){
+},{"./transaction":254,"react":181}],257:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32922,7 +32948,7 @@ var GENERATE_ORDER_BOOK = exports.GENERATE_ORDER_BOOK = 'generate_order_book';
 var CANCEL_ORDER = exports.CANCEL_ORDER = 'cancel_order';
 var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 
-},{}],257:[function(_dereq_,module,exports){
+},{}],258:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32949,9 +32975,13 @@ var _siteFooter = _dereq_('./modules/site/components/site-footer');
 
 var _siteFooter2 = _interopRequireDefault(_siteFooter);
 
-var _sideBar = _dereq_('./modules/site/components/side-bar');
+var _sideBarHeader = _dereq_('./modules/site/components/side-bar-header');
 
-var _sideBar2 = _interopRequireDefault(_sideBar);
+var _sideBarHeader2 = _interopRequireDefault(_sideBarHeader);
+
+var _sideBarContent = _dereq_('./modules/site/components/side-bar-content');
+
+var _sideBarContent2 = _interopRequireDefault(_sideBarContent);
 
 var _marketsView = _dereq_('./modules/markets/components/markets-view');
 
@@ -33218,7 +33248,8 @@ var Router = function (_Component) {
 				portfolioTotals: p.portfolio && p.portfolio.totals || undefined
 			};
 			var sideBarProps = {
-				tags: p.tags
+				tags: p.tags,
+				loginAccount: p.loginAccount
 			};
 
 			return _react2.default.createElement(
@@ -33230,24 +33261,43 @@ var Router = function (_Component) {
 					_react2.default.createElement(_siteHeader2.default, siteHeaderProps),
 					_react2.default.createElement(
 						'div',
+						{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
+						_react2.default.createElement(
+							'div',
+							{ className: 'view-content-row' },
+							s.isSideBarAllowed && _react2.default.createElement(
+								'div',
+								{ className: (0, _classnames2.default)('view-content view-content-group-1', { collapsed: s.isSideBarCollapsed }) },
+								_react2.default.createElement(_sideBarHeader2.default, null)
+							),
+							_react2.default.createElement(
+								'div',
+								{ className: 'view-content view-content-group-2' },
+								p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
+							)
+						)
+					),
+					_react2.default.createElement(
+						'div',
 						{ id: 'view_container' },
 						_react2.default.createElement(
 							'div',
 							{ id: 'view_content_container' },
 							_react2.default.createElement(
 								'div',
-								{ className: 'view-content-row' },
-								s.isSideBarAllowed && p.tags && _react2.default.createElement(
+								{ className: (0, _classnames2.default)('view-content-row', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
+								s.isSideBarAllowed && _react2.default.createElement(
 									'div',
 									{ className: (0, _classnames2.default)('view-content view-content-group-1', { collapsed: s.isSideBarCollapsed }) },
-									_react2.default.createElement(_sideBar2.default, _extends({
-										className: 'side-bar'
-									}, sideBarProps))
+									p.tags ? _react2.default.createElement(_sideBarContent2.default, sideBarProps) : _react2.default.createElement(
+										'span',
+										null,
+										'No Tags'
+									)
 								),
 								_react2.default.createElement(
 									'div',
 									{ className: 'view-content view-content-group-2' },
-									_react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats }),
 									_react2.default.createElement(CurrentRoute, { className: 'view' })
 								)
 							),
@@ -33264,7 +33314,7 @@ var Router = function (_Component) {
 
 exports.default = Router;
 
-},{"./modules/account/components/account-view":184,"./modules/auth/components/auth-view":186,"./modules/auth/constants/auth-types":187,"./modules/common/components/core-stats":190,"./modules/create-market/components/create-market-view":209,"./modules/login-message/components/login-message-view":211,"./modules/market/components/market-view":220,"./modules/markets/components/markets-view":226,"./modules/portfolio/components/portfolio-view":239,"./modules/site/components/side-bar":244,"./modules/site/components/site-footer":245,"./modules/site/components/site-header":246,"./modules/site/constants/views":247,"./modules/transactions/components/transactions-view":254,"./utils/should-component-update-pure":259,"classnames":1,"react":181}],258:[function(_dereq_,module,exports){
+},{"./modules/account/components/account-view":184,"./modules/auth/components/auth-view":186,"./modules/auth/constants/auth-types":187,"./modules/common/components/core-stats":190,"./modules/create-market/components/create-market-view":209,"./modules/login-message/components/login-message-view":211,"./modules/market/components/market-view":220,"./modules/markets/components/markets-view":226,"./modules/portfolio/components/portfolio-view":239,"./modules/site/components/side-bar-content":244,"./modules/site/components/side-bar-header":245,"./modules/site/components/site-footer":246,"./modules/site/components/site-header":247,"./modules/site/constants/views":248,"./modules/transactions/components/transactions-view":255,"./utils/should-component-update-pure":260,"classnames":1,"react":181}],259:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33282,7 +33332,7 @@ function get(obj, target) {
 
 exports.default = get;
 
-},{}],259:[function(_dereq_,module,exports){
+},{}],260:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
