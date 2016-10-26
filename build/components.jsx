@@ -28998,6 +28998,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 							'li',
 							null,
 							'Chat input will no longer submit empty strings / strings containing only spaces.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Users are no longer required to login to chat.'
 						)
 					)
 				),
