@@ -28979,6 +28979,17 @@ var LoginMessagePage = function LoginMessagePage(p) {
 							'li',
 							null,
 							'Chat input text box now properly clears after sending.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Added mutex locks to ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'https://github.com/AugurProject/ethrpc' },
+								'ethrpc\'s'
+							),
+							' transaction objects.  These are locked while the onNewBlock listener callback is executing.  This should prevent the "callback-already-called" exception that was sometimes thrown if 2+ blocks arrived in short succession (common right after private chain resets, when block times are abnormally fast).  I believe this fixes the persistent "last trade price not updated" error (although I am not positive -- please ping me if it is observed again).'
 						)
 					)
 				),
