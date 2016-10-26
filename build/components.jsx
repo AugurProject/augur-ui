@@ -26717,7 +26717,10 @@ var ChatView = function (_Component) {
 
 		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ChatView.__proto__ || Object.getPrototypeOf(ChatView)).call.apply(_ref, [this].concat(args))), _this), _this.onSubmitChatMessage = function (e) {
 			e.preventDefault();
-			_this.props.onSubmitChatMessage('augur', _this.refs.chatMessageInput.value);
+			var chatMessage = _this.refs.chatMessageInput.value;
+			if (chatMessage && chatMessage.trim() !== '') {
+				_this.props.onSubmitChatMessage('augur', chatMessage.trim());
+			}
 			_this.refs.chatMessageForm.reset();
 		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
@@ -28956,7 +28959,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Oct 25, 2016 @ 4:08PM PST [',
+					'Oct 25, 2016 @ 6:01PM PST [',
 					_react2.default.createElement(
 						'a',
 						{ href: 'mailto:jack@augur.net' },
@@ -28990,6 +28993,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 								'ethrpc\'s'
 							),
 							' transaction objects.  These are locked while the onNewBlock listener callback is executing.  This should prevent the "callback-already-called" exception that was sometimes thrown if 2+ blocks arrived in short succession (common right after private chain resets, when block times are abnormally fast).  I believe this fixes the persistent "last trade price not updated" error (although I am not positive -- please ping me if it is observed again).'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Chat input will no longer submit empty strings / strings containing only spaces.'
 						)
 					)
 				),
