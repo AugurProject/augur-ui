@@ -26824,16 +26824,20 @@ var ChatView = function (_Component) {
 					_react2.default.createElement(
 						'form',
 						{ ref: 'chatMessageForm', name: 'chat-message-form', onSubmit: this.onSubmitChatMessage },
-						_react2.default.createElement('input', {
-							ref: 'chatMessageInput',
-							className: 'chat-message-input',
-							type: 'text',
-							placeholder: 'Say something!'
-						}),
 						_react2.default.createElement(
-							'button',
-							{ className: 'chat-message-button' },
-							'Chat'
+							'div',
+							{ className: 'chat-message-wrapper' },
+							_react2.default.createElement('input', {
+								ref: 'chatMessageInput',
+								className: 'chat-message-input',
+								type: 'text',
+								placeholder: 'Say something!'
+							}),
+							_react2.default.createElement(
+								'button',
+								{ className: 'chat-message-button' },
+								'Chat'
+							)
 						)
 					)
 				)
