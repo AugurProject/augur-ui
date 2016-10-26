@@ -26726,9 +26726,24 @@ var ChatView = function (_Component) {
 	}
 
 	_createClass(ChatView, [{
+		key: 'componentWillUpdate',
+		value: function componentWillUpdate() {
+			var node = this.refs.chatbox;
+			this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate() {
+			if (this.shouldScrollBottom) {
+				var node = this.refs.chatbox;
+				node.scrollTop = node.scrollHeight;
+			}
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var p = this.props;
+			var messageCount = 0;
 			var chatMessages = _react2.default.createElement(
 				'ul',
 				null,
@@ -26738,11 +26753,25 @@ var ChatView = function (_Component) {
 					'Welcome to Augur!'
 				),
 				p.messages && p.messages.map(function (payload) {
-					var key = payload.address + '_' + payload.timestamp.full;
+					var key = payload.address + '_' + payload.timestamp.full + '_' + messageCount;
+					messageCount += 1;
+					var userName = void 0;
+					var userPopupName = void 0;
+					if (payload.name === '') {
+						userName = payload.address;
+						userPopupName = null;
+					} else {
+						userName = payload.name;
+						userPopupName = payload.address;
+					}
 					return _react2.default.createElement(
 						'li',
 						{ key: key },
-						payload.name !== '' ? payload.name : payload.address,
+						_react2.default.createElement(
+							'span',
+							{ title: userPopupName },
+							userName
+						),
 						' [',
 						_react2.default.createElement(
 							'small',
@@ -26772,7 +26801,7 @@ var ChatView = function (_Component) {
 				),
 				_react2.default.createElement(
 					'div',
-					{ id: 'chatbox' },
+					{ id: 'chatbox', ref: 'chatbox' },
 					_react2.default.createElement(
 						'div',
 						{ id: 'babble' },
@@ -28959,7 +28988,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Oct 25, 2016 @ 6:01PM PST [',
+					'Oct 25, 2016 @ 7:12PM PST [',
 					_react2.default.createElement(
 						'a',
 						{ href: 'mailto:jack@augur.net' },
@@ -29003,6 +29032,21 @@ var LoginMessagePage = function LoginMessagePage(p) {
 							'li',
 							null,
 							'Users are no longer required to login to chat.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Chatbox now auto-scrolls all the way to the bottom (if user was already at the bottom).'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Fixed duplicate list key warning in chatbox.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Added address as popup text if user is chatting with their display name instead of address.'
 						)
 					)
 				),
