@@ -26719,7 +26719,7 @@ var ChatView = function (_Component) {
 			e.preventDefault();
 			var chatMessage = _this.refs.chatMessageInput.value;
 			if (chatMessage && chatMessage.trim() !== '') {
-				_this.props.onSubmitChatMessage('augur', chatMessage.trim());
+				_this.props.onSubmitChatMessage('augur', encodeURIComponent(chatMessage.trim()));
 			}
 			_this.refs.chatMessageForm.reset();
 		}, _temp), _possibleConstructorReturn(_this, _ret);
@@ -26789,7 +26789,7 @@ var ChatView = function (_Component) {
 							_react2.default.createElement(_valueTimestamp2.default, payload.timestamp)
 						),
 						']: ',
-						payload.message
+						decodeURIComponent(payload.message)
 					);
 				})
 			);
@@ -29057,6 +29057,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 							'li',
 							null,
 							'Added address as popup text if user is chatting with their display name instead of address.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Added Unicode support to chat.'
 						)
 					)
 				),
