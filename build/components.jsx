@@ -29002,6 +29002,36 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Oct 25, 2016 @ 11:33PM PST [',
+					_react2.default.createElement(
+						'a',
+						{ href: 'mailto:jack@augur.net' },
+						'Jack'
+					),
+					']:'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					_react2.default.createElement(
+						'ol',
+						null,
+						_react2.default.createElement(
+							'li',
+							null,
+							'If you create an account through our registration process, the block number in which you registered is saved (logged) to the blockchain.  The front-end now uses this registration blocknumber to intelligently set the lower bound (fromBlock) of ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getlogs' },
+								'event log lookups'
+							),
+							'.  This should help speed up the lookup of your trading activity, which can be a data-heavy request.'
+						)
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Oct 25, 2016 @ 7:12PM PST [',
 					_react2.default.createElement(
 						'a',
