@@ -26755,22 +26755,32 @@ var ChatView = function (_Component) {
 				p.messages && p.messages.map(function (payload) {
 					var key = payload.address + '_' + payload.timestamp.full + '_' + messageCount;
 					messageCount += 1;
-					var userName = void 0;
-					var userPopupName = void 0;
 					if (payload.name === '') {
-						userName = payload.address;
-						userPopupName = null;
-					} else {
-						userName = payload.name;
-						userPopupName = payload.address;
+						return _react2.default.createElement(
+							'li',
+							{ key: key },
+							_react2.default.createElement(
+								'span',
+								null,
+								payload.address
+							),
+							' [',
+							_react2.default.createElement(
+								'small',
+								null,
+								_react2.default.createElement(_valueTimestamp2.default, payload.timestamp)
+							),
+							']: ',
+							payload.message
+						);
 					}
 					return _react2.default.createElement(
 						'li',
 						{ key: key },
 						_react2.default.createElement(
 							'span',
-							{ title: userPopupName },
-							userName
+							{ title: payload.address },
+							payload.name
 						),
 						' [',
 						_react2.default.createElement(
