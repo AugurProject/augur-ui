@@ -29002,6 +29002,29 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Oct 27, 2016 @ 11:38PM PST'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					_react2.default.createElement(
+						'ol',
+						null,
+						_react2.default.createElement(
+							'li',
+							null,
+							'Added a popup displaying the "maximum number of shares" you can buy at a particular limit price (only visible after you have entered a limit price).'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Increased the lifetime of chat messages (Whisper TTL) to 1 week; plan is to decrease this if/when the chatbox starts seeing more use.'
+						)
+					)
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Oct 27, 2016 @ 3:31AM PST'
 				),
 				_react2.default.createElement(
@@ -29014,6 +29037,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 							'li',
 							null,
 							'Added extra blocknumber check and catch-up for missed blocks due to dropped websocket connections.'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'augur.js unit tests have been fixed/updated and are now working properly.'
 						)
 					)
 				),
@@ -32345,7 +32373,7 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 				type: 'number',
 				step: '0.1',
 				value: p.trade.numShares,
-				title: p.trade.maxNumShares && p.trade.maxNumShares.minimized + ' shares max at this price',
+				title: p.trade.limitPrice && p.trade.maxNumShares && p.trade.maxNumShares.minimized + ' shares max at this price',
 				min: '0',
 				max: p.trade.maxNumShares,
 				onChange: function onChange(value) {
