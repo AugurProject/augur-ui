@@ -29012,6 +29012,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'If you cannot afford to make a trade, the Place Trade button will be disabled.  (If you hover over it, a popup will inform you that you do not have enough funds to make the trade.)'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Re-introduced Doorbell.io "Feedback" button in the lower left-hand corner.'
 				),
 				_react2.default.createElement(
@@ -32363,7 +32368,8 @@ var TradePanel = function TradePanel(p) {
 				'button',
 				{
 					className: 'button place-trade',
-					disabled: !(!!p.tradeSummary && !!p.tradeSummary.tradeOrders && !!p.tradeSummary.tradeOrders.length) || p.isTradeCommitLocked,
+					disabled: !(!!p.tradeSummary && !!p.tradeSummary.tradeOrders && !!p.tradeSummary.tradeOrders.length) || p.isTradeCommitLocked || !p.tradeSummary.hasUserEnoughFunds,
+					title: !p.tradeSummary.hasUserEnoughFunds ? 'You don\'t have enough funds' : null,
 					onClick: function onClick(event) {
 						event.stopPropagation();
 						p.onSubmitPlaceTrade();
