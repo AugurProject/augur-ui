@@ -28928,7 +28928,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'p',
 				null,
-				'This is a beta test in advance of Augur\'s live release. There are bugs. There are features being\n\t\t\t\tadded, improved, and re-designed. There are a few hundred enhancements scheduled to be added in the next few\n\t\t\t\tmonths. Your thoughtful feedback now is essential. Please use the feedback button at the bottom right of\n\t\t\t\tevery page to submit your feedback, or feel free to send an email to ',
+				'This is a beta test in advance of Augur\'s live release. There are bugs. There are features being\n\t\t\t\tadded, improved, and re-designed. There are a few hundred enhancements scheduled to be added in the next few\n\t\t\t\tmonths. Your thoughtful feedback now is essential. Please use the feedback button at the bottom left of\n\t\t\t\tevery page to submit your feedback, or feel free to send an email to ',
 				_react2.default.createElement(
 					'a',
 					{
@@ -28997,93 +28997,101 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				'Technical updates:'
 			),
 			_react2.default.createElement(
-				'ul',
+				'h3',
+				null,
+				'October 28, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
 				null,
 				_react2.default.createElement(
 					'li',
 					null,
-					'Oct 28, 2016 @ 12:14AM PST'
+					'Re-organized this technical updates list a bit :)'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
+					'Re-introduced Doorbell.io "Feedback" button in the lower left-hand corner.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Pointed ',
 					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'Pointed ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'https://augur-dev.firebaseapp.com' },
-								'augur-dev'
-							),
-							' and ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'http://local.augur.net' },
-								'local.augur.net'
-							),
-							' at our private testing chain (geth JSON RPC endpoints: ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'https://eth9000.augur.net' },
-								'HTTPS'
-							),
-							', ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'wss://ws9000.augur.net' },
-								'websockets'
-							),
-							').  The public (Morden) testnet has been almost unusable for the past several weeks due to excessive network congestion.  Once things are moving on Morden again, our test instances will switch back.  (Note: ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'https://app.augur.net' },
-								'app.augur.net'
-							),
-							' remains pointed at the Morden testnet for now, although we may redirect that as well soon.)'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Percent fee now always displays as a positive number.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Added a popup displaying the "maximum number of shares" you can buy at a particular limit price (only visible after you have entered a limit price).'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Increased the lifetime of chat messages (Whisper TTL) to 1 week; plan is to decrease this if/when the chatbox starts seeing more use.'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 27, 2016 @ 3:31AM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
+						'a',
+						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'https://augur-dev.firebaseapp.com' },
+						'augur-dev'
+					),
+					' and ',
 					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'Added extra blocknumber check and catch-up for missed blocks due to dropped websocket connections.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'augur.js unit tests have been fixed/updated and are now working properly.'
-						)
-					)
+						'a',
+						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'http://local.augur.net' },
+						'local.augur.net'
+					),
+					' at our private testing chain (geth JSON RPC endpoints: ',
+					_react2.default.createElement(
+						'a',
+						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'https://eth9000.augur.net' },
+						'HTTPS'
+					),
+					', ',
+					_react2.default.createElement(
+						'a',
+						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'wss://ws9000.augur.net' },
+						'websockets'
+					),
+					').  The public (Morden) testnet has been almost unusable for the past several weeks due to excessive network congestion.  Once things are moving on Morden again, our test instances will switch back.  (Note: ',
+					_react2.default.createElement(
+						'a',
+						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'https://app.augur.net' },
+						'app.augur.net'
+					),
+					' remains pointed at the Morden testnet for now, although we may redirect that as well soon.)'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'There is now a popup displaying the "maximum number of shares" you can buy at a particular limit price (only visible after you have entered a limit price).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Increased the lifetime of chat messages (Whisper TTL) to 1 week; plan is to decrease this if/when the chatbox starts seeing more use.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'October 27, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Percent fee now always displays as a positive number.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Finished updating/fixing the augur.js integration tests.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Upgraded our private chain geth instance server (Linode) to support an expanded testing group.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added extra blocknumber check and catch-up for missed blocks due to dropped websocket connections.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'augur.js unit tests have been fixed/updated and are now working properly.'
 				)
 			),
 			p.marketsLink && _react2.default.createElement(
