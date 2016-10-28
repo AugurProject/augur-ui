@@ -29002,7 +29002,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Oct 27, 2016 @ 11:38PM PST'
+					'Oct 28, 2016 @ 12:14AM PST'
 				),
 				_react2.default.createElement(
 					'li',
@@ -29010,6 +29010,46 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					_react2.default.createElement(
 						'ol',
 						null,
+						_react2.default.createElement(
+							'li',
+							null,
+							'Pointed ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'https://augur-dev.firebaseapp.com' },
+								'augur-dev'
+							),
+							' and ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'http://local.augur.net' },
+								'local.augur.net'
+							),
+							' at our private testing chain (geth JSON RPC endpoints: ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'https://eth9000.augur.net' },
+								'HTTPS'
+							),
+							', ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'wss://ws9000.augur.net' },
+								'websockets'
+							),
+							').  The public (Morden) testnet has been almost unusable for the past several weeks due to excessive network congestion.  Once things are moving on Morden again, our test instances will switch back.  (Note: ',
+							_react2.default.createElement(
+								'a',
+								{ href: 'https://app.augur.net' },
+								'app.augur.net'
+							),
+							' remains pointed at the Morden testnet for now, although we may redirect that as well soon.)'
+						),
+						_react2.default.createElement(
+							'li',
+							null,
+							'Percent fee now always displays as a positive number.'
+						),
 						_react2.default.createElement(
 							'li',
 							null,
@@ -29042,257 +29082,6 @@ var LoginMessagePage = function LoginMessagePage(p) {
 							'li',
 							null,
 							'augur.js unit tests have been fixed/updated and are now working properly.'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 25, 2016 @ 11:33PM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'If you create an account through our registration process, the block number in which you registered is saved (logged) to the blockchain.  The front-end now uses this registration blocknumber to intelligently set the lower bound (fromBlock) of ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_getlogs' },
-								'event log lookups'
-							),
-							'.  This should help speed up the lookup of your trading activity, which can be a data-heavy request.'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 25, 2016 @ 7:12PM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'Fixed partial message chat input entry bug.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Chat input text box now properly clears after sending.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Added mutex locks to ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'https://github.com/AugurProject/ethrpc' },
-								'ethrpc\'s'
-							),
-							' transaction objects.  These are locked while the onNewBlock listener callback is executing.  This should prevent the "callback-already-called" exception that was sometimes thrown if 2+ blocks arrived in short succession (common right after private chain resets, when block times are abnormally fast).  I believe this fixes the persistent "last trade price not updated" error (although I am not positive -- please ping me if it is observed again).'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Chat input will no longer submit empty strings / strings containing only spaces.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Users are no longer required to login to chat.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Chatbox now auto-scrolls all the way to the bottom (if user was already at the bottom).'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Fixed duplicate list key warning in chatbox.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Added address as popup text if user is chatting with their display name instead of address.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Added Unicode support to chat.'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 25, 2016 @ 6:34AM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'Sprinkle fixed the Firefox scrolling bug.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Added chat box.  Right now there is just a single chat room for the entire site -- a "trollbox" ala Poloniex, Bittrex, et al.  The chat middleware is set up in a way that is trivially extensible, so if we decide we want separate chatboxes for each market, that is straightforward to add.  Note: the chat box uses ',
-							_react2.default.createElement(
-								'a',
-								{ href: 'https://github.com/ethereum/wiki/wiki/Whisper' },
-								'Whisper'
-							),
-							', a P2P messaging protocol that does not have any kind of persistence built-in.  Messages only last for a few minutes, and you have to be online to see new messages.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Removed Doorbell.io (Feedback button) as people were not using it.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Changed navbar/sidebar colors back to "Augur purple", just to see how it looks.  (If users prefer the blue, can definitely change it back!)'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 23, 2016 @ 8:32PM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'Buy/sell complete sets now have an implicit price assigned to them of 1/numOutcomes (that is, all outcomes are equally priced for the complete set).  The purpose behind this change is so that complete sets buy/sells can be included in per-outcome P/L calculations.  Note that, if this equal-price-per-outcome value differs from the market price at the time the complete set is bought or sold, the outcome realized P/L values may be somewhat different than if you executed an ordinary buy or sell trade!  However, the net realized P/L (for the entire market, across all outcomes) will be correct.'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 23, 2016 @ 2:38AM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'Fixed P/L calculations for trades going from a net long to net short position, or vice-versa.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'"Close Out Position" has been re-labeled "Redeem X Complete Sets".'
-						)
-					)
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Oct 22, 2016 @ 2:09AM PST'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					_react2.default.createElement(
-						'ol',
-						null,
-						_react2.default.createElement(
-							'li',
-							null,
-							'"Sell Complete Sets" has been re-labeled to "Close Out Position" everywhere this concept is exposed to the user.  This is intended to avoid confusion for users attempting to close out a short position (which requires them, somewhat unintuitively, to sell a complete set).'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'The label for the automatic sell complete sets checkbox on the Accounts page has been improved.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Buy and sell complete sets are now explicitly accounted for in the positions and P/L calculations.  (Testers: feedback / suggestions on the sell complete sets stuff is especially valuable, as I am finding this to be a somewhat tricky UX problem!)',
-							_react2.default.createElement(
-								'ol',
-								null,
-								_react2.default.createElement(
-									'li',
-									null,
-									'Shares acquired via buy complete sets (i.e., new shares issued) are included in the positions total.  However, since there is not a price for each outcome within the complete set, the shares from the complete set do ',
-									_react2.default.createElement(
-										'b',
-										null,
-										'not'
-									),
-									' contribute to the mean price of open position.  (Note: this only applies to complete sets bought manually by the user.  Complete sets bought as part of short selling are not included in the positions total.)'
-								),
-								_react2.default.createElement(
-									'li',
-									null,
-									'Complete sets sold to close out a ',
-									_react2.default.createElement(
-										'b',
-										null,
-										'long'
-									),
-									' position are deducted from your total position.  Since there is not a price for each outcome within the complete set, selling the complete set does ',
-									_react2.default.createElement(
-										'b',
-										null,
-										'not'
-									),
-									' change realized P/L.'
-								),
-								_react2.default.createElement(
-									'li',
-									null,
-									'Motivating example: suppose you have short sold 2 shares of one outcome in a market.  The UI displays your position as -2 in that outcome, and 0 in the other outcomes.  To close out your short position, you buy 2 shares in the same outcome.  The UI now shows your position as 0 in all outcomes.  However, what has happened behind the scenes is, you were actually long the other outcomes (and 0 in the outcome you shorted), and when you bought back 2 shares, now you have 2 shares in all outcomes.  Therefore, to actually close out your position, you have to sell 2 complete sets.',
-									_react2.default.createElement('br', null),
-									'Complete sets sold to close out a ',
-									_react2.default.createElement(
-										'b',
-										null,
-										'short'
-									),
-									' position work as follows.  If you have a short position, shares bought back are added to your position, but they do not contribute to your realized P/L until you have actually sold the complete set(s) back.  Shares that have been bought back but not yet closed out (via sell complete sets) are "queued", and the system calculates a "queued P/L" for these shares.  (Currently, queued P/L is simply added to unrealized P/L, but it may help clarify things for the user to show it explicitly in the positions display.)  Also, note that if you have manually bought any complete sets, your complete sets sold are first netted with the complete sets bought; only the excess complete sets sold are used to close out queued shares.'
-								)
-							)
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Open orders are now sorted in descending order, asks first.'
-						),
-						_react2.default.createElement(
-							'li',
-							null,
-							'Fixed a bug that was preventing the Portfolio page from loading.'
 						)
 					)
 				)
