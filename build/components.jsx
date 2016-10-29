@@ -29007,6 +29007,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Market detail page now displays market creation and ending date and time (instead of just the date).  Hovering displays the full UTC timestamp, including milliseconds and day of the week.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Added fixed-point conversions and result parser methods to the auto-generated API methods (as well as the associated static API data and back-end API maker script).'
 				),
 				_react2.default.createElement(
@@ -29184,7 +29189,10 @@ var MarketBasics = function MarketBasics(p) {
 							{ key: i, className: (0, _classnames2.default)('tag', { link: !!tag.name }) },
 							_react2.default.createElement(
 								'button',
-								{ className: 'unstyled', onClick: tag.onClick && tag.onClick },
+								{
+									className: 'unstyled',
+									onClick: tag.onClick && tag.onClick
+								},
 								tag.name ? tag.name : tag
 							)
 						);
@@ -29503,11 +29511,11 @@ var MarketInfo = function MarketInfo(p) {
 			),
 			_react2.default.createElement(
 				'li',
-				{ className: 'property creation-date' },
+				{ className: 'property creation-date', title: 'created: ' + p.creationTime.full },
 				_react2.default.createElement(
 					'span',
 					{ className: 'property-label' },
-					'creation date'
+					'created'
 				),
 				_react2.default.createElement(_valueDate2.default, _extends({ className: 'property-value' }, p.creationTime))
 			)
