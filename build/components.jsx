@@ -28999,6 +28999,30 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'October 29, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added fixed-point conversions and result parser methods to the auto-generated API methods (as well as the associated static API data and back-end API maker script).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Removed deprecated onConfirmed callbacks from augur.js.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Normalized market IDs received from get-market-ID-from-event-ID methods getMarket and getMarkets.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'October 28, 2016'
 			),
 			_react2.default.createElement(
@@ -29081,7 +29105,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Finished updating/fixing the augur.js integration tests.'
+					'Finished fixing/updating the integration tests for augur.js.'
 				),
 				_react2.default.createElement(
 					'li',
