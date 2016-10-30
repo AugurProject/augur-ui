@@ -28999,6 +28999,25 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'October 30, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Market ID is now looked up automatically when getting events that you are required to report on.  All reports you are required to fill out are now loaded during the initial markets loading (rather than only after you happen to browse to the page containing the associated markets).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Updated/fixed the middleware and UI reporting user-test setup functions, and successfully completed a run-thru of the UI reporting setup.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'October 29, 2016'
 			),
 			_react2.default.createElement(
