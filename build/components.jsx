@@ -29007,12 +29007,22 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Market detail page now displays market creation and ending date and time (instead of just the date).  Hovering displays the full UTC timestamp, including milliseconds and day of the week.'
+					'Fully automated to-fixed-point parameter conversions and from-fixed-point return value conversions.  Fixed-point parameter names (will) start with "fxp", and functions with fixed-point return values have "# @return fxp" on the line prior to the function definition.  To support these changes, I added fixed-point conversions to the auto-generated API (as well as the associated static API data and back-end API maker script).'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Added fixed-point conversions and result parser methods to the auto-generated API methods (as well as the associated static API data and back-end API maker script).'
+					'Added result parser method names to the auto-generated API.  In combination with automatic fixed-point conversion, nearly all the API will now be dynamically generated and can be updated automatically when new contracts are uploaded.  The only remaining manual API endpoints will be a handful of bindings that do a significant amount of pre- or post-request processing: the "big getters", the primary trading methods (buy, ask, and trade on the develop contracts), and a couple of the reporting methods.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Started full remove-and-resync of the Augur geth public testnet node (eth3.augur.net and wss.augur.net).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Market detail page now displays market creation and ending date and time (instead of just the date).  Hovering displays the full UTC timestamp, including milliseconds and day of the week.'
 				),
 				_react2.default.createElement(
 					'li',
