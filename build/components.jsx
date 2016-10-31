@@ -28999,6 +28999,50 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'October 31, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'The transaction display for reports on scalar events now shows the numerical outcome reported.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'After submitting a report, you are now automatically taken to the next available event for reporting (instead of to the associated market detail page).  After submitting your final report, you end up at the markets listing.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added (actual) gas fees to the commit report transaction display, and properly labeled the estimated gas fees as an estimate.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Report ethicality is now stored on-chain (with the encrypted report and salt), and is automatically looked up for events the user is required to report on.  The ethics field is simply added to submitReportHash as an extra argument.  (This way writing it to chain does not require an extra transaction, and reading it back can be done at the same time as looking up the encrypted report and salt, which would be done anyway.)'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Reset the private testing chain (private.augur.net, as well as temporarily augur-dev.firebaseapp.com and local.augur.net) due to minor contract changes.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Stored reports are now loaded directly from the blockchain, if available.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added a new "rootBranch" setting to the front-end config file (src/env.json).  If rootBranch is set to false, you start on the most recently created created branch (instead of the root branch 1010101, which is normally the default).  This can be useful for reporting testing because the test sequence spawns a new branch when it is run, so it can be used to continue an aborted reporting test.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'October 30, 2016'
 			),
 			_react2.default.createElement(
@@ -32702,17 +32746,28 @@ var Transaction = function Transaction(p) {
 
 		case _types.COMMIT_REPORT:
 		case _types.REVEAL_REPORT:
-			switch (p.type) {
-				case _types.REVEAL_REPORT:
-					nodes.action = 'Reveal report';
-					break;
-				case _types.COMMIT_REPORT:
-					nodes.action = 'Commit report';
-					break;
-				default:
-					break;
-			}
-			if (p.data.isScalar || p.data.market.type === _marketTypes.SCALAR) {
+			{
+				var isScalar = void 0;
+				var reportedOutcome = void 0;
+				switch (p.type) {
+					case _types.COMMIT_REPORT:
+						nodes.action = 'Commit report';
+						isScalar = p.data.market.type === _marketTypes.SCALAR;
+						if (isScalar) {
+							reportedOutcome = p.data.market.reportedOutcomeID;
+						}
+						break;
+					case _types.REVEAL_REPORT:
+						nodes.action = 'Reveal report';
+						isScalar = p.data.isScalar;
+						if (isScalar) reportedOutcome = p.data.reportedOutcomeID;
+						break;
+					default:
+						break;
+				}
+				if (!isScalar) {
+					reportedOutcome = p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
+				}
 				nodes.description = _react2.default.createElement(
 					'span',
 					{ className: 'description' },
@@ -32724,7 +32779,7 @@ var Transaction = function Transaction(p) {
 					_react2.default.createElement(
 						'strong',
 						null,
-						p.data.market.reportedOutcome || ''
+						reportedOutcome
 					),
 					!!p.data.isUnethical && _react2.default.createElement(
 						'strong',
@@ -32736,33 +32791,8 @@ var Transaction = function Transaction(p) {
 					_react2.default.createElement('br', null),
 					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 				);
-			} else {
-				nodes.description = _react2.default.createElement(
-					'span',
-					{ className: 'description' },
-					_react2.default.createElement(
-						'span',
-						{ className: 'action' },
-						nodes.action
-					),
-					_react2.default.createElement(
-						'strong',
-						null,
-						p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
-					),
-					!!p.data.isUnethical && _react2.default.createElement(
-						'strong',
-						{ className: 'unethical' },
-						' and Unethical'
-					),
-					_react2.default.createElement('br', null),
-					marketDescription(),
-					_react2.default.createElement('br', null),
-					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
-				);
+				break;
 			}
-			break;
-
 		case _types.GENERATE_ORDER_BOOK:
 			nodes.action = 'Generate order book';
 			nodes.description = _react2.default.createElement(
@@ -32779,6 +32809,7 @@ var Transaction = function Transaction(p) {
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
+
 		case _types.CANCEL_ORDER:
 			{
 				nodes.description = _react2.default.createElement(
@@ -33139,6 +33170,7 @@ var SHORT_SELL = exports.SHORT_SELL = 'short_sell';
 var SHORT_ASK = exports.SHORT_ASK = 'short_ask';
 var CREATE_MARKET = exports.CREATE_MARKET = 'create_market';
 var COMMIT_REPORT = exports.COMMIT_REPORT = 'commit_report';
+var REVEAL_REPORT = exports.REVEAL_REPORT = 'reveal_report';
 var REGISTER_ACCOUNT = exports.REGISTER_ACCOUNT = 'register_account';
 var GENERATE_ORDER_BOOK = exports.GENERATE_ORDER_BOOK = 'generate_order_book';
 var CANCEL_ORDER = exports.CANCEL_ORDER = 'cancel_order';
