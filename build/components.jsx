@@ -29007,6 +29007,35 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Added ',
+					_react2.default.createElement(
+						'a',
+						{ href: 'https://crypto.stanford.edu/sjcl/', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
+						'SJCL'
+					),
+					' to ',
+					_react2.default.createElement(
+						'a',
+						{ href: 'https://github.com/ethereumjs/keythereum', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
+						'keythereum'
+					),
+					' as a fallback implementation of PBKDF2, for cases where a build/browserify error deletes the built-in Node.js\'s built-in ',
+					_react2.default.createElement(
+						'a',
+						{ href: 'https://nodejs.org/api/crypto.html', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
+						'crypto module\'s'
+					),
+					' pbkdf2 and pbkdf2Sync methods.  Note: SJCL\'s ',
+					_react2.default.createElement(
+						'a',
+						{ href: 'https://github.com/bitwiseshiftleft/sjcl/blob/master/core/pbkdf2.js', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
+						'PBKDF2 implementation'
+					),
+					' is significantly slower than the crypto module\' implementation, so keythereum will use the crypto module methods if they are available.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'The transaction display for reports on scalar events now shows the numerical outcome reported.'
 				),
 				_react2.default.createElement(
@@ -29080,7 +29109,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Started full remove-and-resync of the Augur geth public testnet node (eth3.augur.net and wss.augur.net).'
+					'Full remove-and-resync of the Augur geth public testnet node (eth3.augur.net and ws.augur.net) as well as the separate geth instance on our faucet server.'
 				),
 				_react2.default.createElement(
 					'li',
