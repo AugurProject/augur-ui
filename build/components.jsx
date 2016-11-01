@@ -29031,7 +29031,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 						{ href: 'https://github.com/bitwiseshiftleft/sjcl/blob/master/core/pbkdf2.js', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
 						'PBKDF2 implementation'
 					),
-					' is significantly slower than the crypto module\' implementation, so keythereum will use the crypto module methods if they are available.'
+					' is significantly slower than the crypto module\'s implementation, so keythereum will use the crypto module methods if they are available.'
 				),
 				_react2.default.createElement(
 					'li',
