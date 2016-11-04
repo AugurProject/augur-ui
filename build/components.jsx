@@ -30614,6 +30614,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Added check that market outcome data has loaded before using it to calculate P/L.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Changed the tooltips in the market preview panel (in the main markets listing) to use click-to-show-and-hide tooltips, instead of hover-to-show, since hover is not available on mobile.  If these tooltips have the desired feel, the remainder of the tooltips can be converted to this form as well.  (There are only a few exceptions, in the case of elements that have both a tooltip and a click function.)'
 				),
 				_react2.default.createElement(
