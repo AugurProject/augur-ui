@@ -26451,7 +26451,7 @@ AccountPage.propTypes = {
 };
 exports.default = AccountPage;
 
-},{"../../common/components/checkbox":194,"../../common/components/input":199,"../../link/components/link":215,"classnames":1,"react":185}],189:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":195,"../../common/components/input":200,"../../link/components/link":216,"classnames":1,"react":185}],189:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26761,7 +26761,7 @@ AuthForm.defaultProps = {
 };
 exports.default = AuthForm;
 
-},{"../../common/components/checkbox":194,"../../link/components/link":215,"classnames":1,"react":185}],190:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":195,"../../link/components/link":216,"classnames":1,"react":185}],190:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26863,7 +26863,7 @@ AuthPage.propTypes = {
 
 exports.default = AuthPage;
 
-},{"../../auth/components/auth-form":189,"../../link/components/link":215,"classnames":1,"react":185}],191:[function(_dereq_,module,exports){
+},{"../../auth/components/auth-form":189,"../../link/components/link":216,"classnames":1,"react":185}],191:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26885,6 +26885,67 @@ var AUTH_TYPES = exports.AUTH_TYPES = (_AUTH_TYPES = {}, _defineProperty(_AUTH_T
 var DEFAULT_AUTH_TYPE = exports.DEFAULT_AUTH_TYPE = REGISTER;
 
 },{}],192:[function(_dereq_,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _rcProgress = _dereq_('rc-progress');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Branch = function Branch(p) {
+	return _react2.default.createElement(
+		'section',
+		{ className: 'branch-info' },
+		_react2.default.createElement(_rcProgress.Line, {
+			percent: p.currentPeriodProgress,
+			strokeWidth: '1',
+			strokeColor: '#5c2634'
+		}),
+		_react2.default.createElement('br', null),
+		_react2.default.createElement(
+			'span',
+			{ className: 'reporting-cycle-info' },
+			'Reporting Cycle ',
+			p.reportPeriod,
+			' \xB7 ',
+			Math.round(p.currentPeriodProgress),
+			'% complete \xB7 ',
+			p.phaseLabel,
+			' phase ends ',
+			p.phaseTimeRemaining
+		),
+		_react2.default.createElement('br', null),
+		_react2.default.createElement(
+			'span',
+			{ className: 'branch-description', title: p.id },
+			p.description
+		),
+		' \xB7 ',
+		p.periodLength,
+		' seconds per cycle'
+	);
+};
+
+Branch.propTypes = {
+	className: _react.PropTypes.string,
+	description: _react.PropTypes.string,
+	id: _react.PropTypes.string,
+	periodLength: _react.PropTypes.number,
+	phaseLabel: _react.PropTypes.string,
+	phaseTimeRemaining: _react.PropTypes.string,
+	currentPeriodProgress: _react.PropTypes.number
+};
+
+exports.default = Branch;
+
+},{"rc-progress":33,"react":185}],193:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27061,7 +27122,7 @@ ChatView.propTypes = {
 };
 exports.default = ChatView;
 
-},{"../../common/components/value-timestamp":204,"react":185}],193:[function(_dereq_,module,exports){
+},{"../../common/components/value-timestamp":205,"react":185}],194:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27119,7 +27180,7 @@ var AugurLogo = function AugurLogo() {
 
 exports.default = AugurLogo;
 
-},{"react":185}],194:[function(_dereq_,module,exports){
+},{"react":185}],195:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27171,7 +27232,7 @@ Checkbox.propTypes = {
 
 exports.default = Checkbox;
 
-},{"classnames":1,"react":185}],195:[function(_dereq_,module,exports){
+},{"classnames":1,"react":185}],196:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27234,7 +27295,7 @@ CoreStats.propTypes = {
 
 exports.default = CoreStats;
 
-},{"../../common/components/value-denomination":203,"react":185}],196:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"react":185}],197:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27279,7 +27340,7 @@ var DatePicker = function DatePicker(p) {
 
 exports.default = DatePicker;
 
-},{"react":185,"react-datetime":35}],197:[function(_dereq_,module,exports){
+},{"react":185,"react-datetime":35}],198:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -27332,7 +27393,7 @@ var Dropdown = function Dropdown(p) {
 
 exports.default = Dropdown;
 
-},{"react":185}],198:[function(_dereq_,module,exports){
+},{"react":185}],199:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27467,7 +27528,7 @@ InputList.propTypes = {
 };
 exports.default = InputList;
 
-},{"../../common/components/input":199,"classnames":1,"react":185}],199:[function(_dereq_,module,exports){
+},{"../../common/components/input":200,"classnames":1,"react":185}],200:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27606,7 +27667,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"../../../utils/should-component-update-pure":266,"react":185}],200:[function(_dereq_,module,exports){
+},{"../../../utils/should-component-update-pure":266,"react":185}],201:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27677,7 +27738,7 @@ var TabNavigation = function TabNavigation(p) {
 
 exports.default = TabNavigation;
 
-},{"../../../modules/common/components/value-denomination":203,"../../link/components/link":215,"classnames":1,"react":185}],201:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-denomination":204,"../../link/components/link":216,"classnames":1,"react":185}],202:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27727,7 +27788,7 @@ var findNextOption = function findNextOption(selected, options) {
 
 exports.default = Toggler;
 
-},{"classnames":1,"react":185}],202:[function(_dereq_,module,exports){
+},{"classnames":1,"react":185}],203:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27760,7 +27821,7 @@ ValueDate.propTypes = {
 
 exports.default = ValueDate;
 
-},{"classnames":1,"react":185}],203:[function(_dereq_,module,exports){
+},{"classnames":1,"react":185}],204:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27821,7 +27882,7 @@ ValueDenomination.propTypes = {
 
 exports.default = ValueDenomination;
 
-},{"classnames":1,"react":185}],204:[function(_dereq_,module,exports){
+},{"classnames":1,"react":185}],205:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27853,7 +27914,7 @@ ValueTimestamp.propTypes = {
 
 exports.default = ValueTimestamp;
 
-},{"classnames":1,"react":185}],205:[function(_dereq_,module,exports){
+},{"classnames":1,"react":185}],206:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27972,7 +28033,7 @@ var CreateMarketForm1 = function CreateMarketForm1(p) {
 
 exports.default = CreateMarketForm1;
 
-},{"../../markets/constants/market-types":233,"react":185}],206:[function(_dereq_,module,exports){
+},{"../../markets/constants/market-types":233,"react":185}],207:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28029,7 +28090,7 @@ var CreateMarketForm2Categorical = function CreateMarketForm2Categorical(p) {
 
 exports.default = CreateMarketForm2Categorical;
 
-},{"../../common/components/input-list":198,"react":185}],207:[function(_dereq_,module,exports){
+},{"../../common/components/input-list":199,"react":185}],208:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28124,7 +28185,7 @@ var CreateMarketForm2Scalar = function CreateMarketForm2Scalar(p) {
 
 exports.default = CreateMarketForm2Scalar;
 
-},{"../../common/components/input":199,"react":185}],208:[function(_dereq_,module,exports){
+},{"../../common/components/input":200,"react":185}],209:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28244,7 +28305,7 @@ var CreateMarketForm2 = function CreateMarketForm2(p) {
 exports.default = CreateMarketForm2;
 // 	expanded={true}
 
-},{"../../common/components/datepicker":196,"../../common/components/input":199,"../../create-market/components/create-market-form-buttons":212,"../../markets/constants/market-types":233,"./create-market-form-2-categorical":206,"./create-market-form-2-scalar":207,"react":185}],209:[function(_dereq_,module,exports){
+},{"../../common/components/datepicker":197,"../../common/components/input":200,"../../create-market/components/create-market-form-buttons":213,"../../markets/constants/market-types":233,"./create-market-form-2-categorical":207,"./create-market-form-2-scalar":208,"react":185}],210:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28419,7 +28480,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"../../common/components/input":199,"../../common/components/input-list":198,"../../create-market/components/create-market-form-buttons":212,"classnames":1,"react":185}],210:[function(_dereq_,module,exports){
+},{"../../common/components/input":200,"../../common/components/input-list":199,"../../create-market/components/create-market-form-buttons":213,"classnames":1,"react":185}],211:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28758,7 +28819,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"../../../modules/common/components/checkbox":194,"../../../utils/get":265,"../../common/components/input":199,"../../create-market/components/create-market-form-buttons":212,"classnames":1,"react":185}],211:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/checkbox":195,"../../../utils/get":265,"../../common/components/input":200,"../../create-market/components/create-market-form-buttons":213,"classnames":1,"react":185}],212:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28821,7 +28882,7 @@ var CreateMarketForm5 = function CreateMarketForm5(p) {
 
 exports.default = CreateMarketForm5;
 
-},{"../../common/components/value-denomination":203,"../../create-market/components/create-market-form-buttons":212,"../../market/components/market-preview":223,"react":185}],212:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"../../create-market/components/create-market-form-buttons":213,"../../market/components/market-preview":224,"react":185}],213:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28870,7 +28931,7 @@ CreateMarketFormButtons.propTypes = {
 
 exports.default = CreateMarketFormButtons;
 
-},{"react":185}],213:[function(_dereq_,module,exports){
+},{"react":185}],214:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28939,7 +29000,7 @@ CreateMarketForm.propTypes = {
 
 exports.default = CreateMarketForm;
 
-},{"./create-market-form-1":205,"./create-market-form-2":208,"./create-market-form-3":209,"./create-market-form-4":210,"./create-market-form-5":211,"react":185}],214:[function(_dereq_,module,exports){
+},{"./create-market-form-1":206,"./create-market-form-2":209,"./create-market-form-3":210,"./create-market-form-4":211,"./create-market-form-5":212,"react":185}],215:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29009,7 +29070,7 @@ CreateMarketPage.propTypes = {
 
 exports.default = CreateMarketPage;
 
-},{"../../create-market/components/create-market-form":213,"react":185}],215:[function(_dereq_,module,exports){
+},{"../../create-market/components/create-market-form":214,"react":185}],216:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29102,7 +29163,7 @@ Link.propTypes = {
 };
 exports.default = Link;
 
-},{"react":185}],216:[function(_dereq_,module,exports){
+},{"react":185}],217:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29207,7 +29268,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
-				'November 2, 2016'
+				'November 3, 2016'
 			),
 			_react2.default.createElement(
 				'ol',
@@ -29215,275 +29276,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Added reporting cycle info and progress bar display at the top of the markets listing if you are logged in.'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'November 1, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added support for ',
-					_react2.default.createElement(
-						'a',
-						{ href: 'https://github.com/AugurProject/augur-core/commit/7daf6441e3ba652aa7f19e1ec9e5587d90cd718e', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
-						'off-chain orders'
-					),
-					' to the back-end.  Off chain trading will allow users to place orders for the low low cost of zero! This means you can place limit orders on the book to buy and sell and update them at no cost and effectively instantly without waiting for blocks. The largest cost in trading on Augur was actually placing orders, not taking them interestingly enough, so this solves that problem. It will make the experience cheaper and faster. Trades taking orders off the book [or in other words filling them] however will still occur on chain until state channels progress further.',
-					_react2.default.createElement('br', null),
-					'The off chain order book can be stored anywhere, so something like Whisper [which has a PoW to mitigate DDoS] or IPFS or even using logs on Ethereum [which is still about 100x cheaper than the original on chain orderbook system].',
-					_react2.default.createElement('br', null),
-					'Off chain order placement allows people to trade more like they\'re used to, being able to add, remove, and update orders easily and quickly as opposed to waiting for their transaction to be mined as they have to do now.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed the logged return value (error code -3) in submitReport on-contract function that is generated when the computed report hash does not match the stored report hash.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Completed full contract re-upload to the public testnet (Morden).'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'October 31, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added ',
-					_react2.default.createElement(
-						'a',
-						{ href: 'https://crypto.stanford.edu/sjcl/', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
-						'SJCL'
-					),
-					' to ',
-					_react2.default.createElement(
-						'a',
-						{ href: 'https://github.com/ethereumjs/keythereum', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
-						'keythereum'
-					),
-					' as a fallback implementation of PBKDF2, for cases where a build/browserify error deletes the built-in Node.js\'s built-in ',
-					_react2.default.createElement(
-						'a',
-						{ href: 'https://nodejs.org/api/crypto.html', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
-						'crypto module\'s'
-					),
-					' pbkdf2 and pbkdf2Sync methods.  Note: SJCL\'s ',
-					_react2.default.createElement(
-						'a',
-						{ href: 'https://github.com/bitwiseshiftleft/sjcl/blob/master/core/pbkdf2.js', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
-						'PBKDF2 implementation'
-					),
-					' is significantly slower than the crypto module\'s implementation, so keythereum will use the crypto module methods if they are available.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'The transaction display for reports on scalar events now shows the numerical outcome reported.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'After submitting a report, you are now automatically taken to the next available event for reporting (instead of to the associated market detail page).  After submitting your final report, you end up at the markets listing.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added (actual) gas fees to the commit report transaction display, and properly labeled the estimated gas fees as an estimate.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Report ethicality is now stored on-chain (with the encrypted report and salt), and is automatically looked up for events the user is required to report on.  The ethics field is simply added to submitReportHash as an extra argument.  (This way writing it to chain does not require an extra transaction, and reading it back can be done at the same time as looking up the encrypted report and salt, which would be done anyway.)'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Reset the private testing chain (private.augur.net, as well as temporarily augur-dev.firebaseapp.com and local.augur.net) due to minor contract changes.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Stored reports are now loaded directly from the blockchain, if available.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added a new "rootBranch" setting to the front-end config file (src/env.json).  If rootBranch is set to false, you start on the most recently created created branch (instead of the root branch 1010101, which is normally the default).  This can be useful for reporting testing because the test sequence spawns a new branch when it is run, so it can be used to continue an aborted reporting test.'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'October 30, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Market ID is now looked up automatically when getting events that you are required to report on.  All reports you are required to fill out are now loaded during the initial markets loading (rather than only after you happen to browse to the page containing the associated markets).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Updated/fixed the middleware and UI reporting user-test setup functions, and successfully completed a run-thru of the UI reporting setup.'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'October 29, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fully automated to-fixed-point parameter conversions and from-fixed-point return value conversions.  Fixed-point parameter names (will) start with "fxp", and functions with fixed-point return values have "# @return fxp" on the line prior to the function definition.  To support these changes, I added fixed-point conversions to the auto-generated API (as well as the associated static API data and back-end API maker script).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added result parser method names to the auto-generated API.  In combination with automatic fixed-point conversion, nearly all the API will now be dynamically generated and can be updated automatically when new contracts are uploaded.  The only remaining manual API endpoints will be a handful of bindings that do a significant amount of pre- or post-request processing: the "big getters", the primary trading methods (buy, ask, and trade on the develop contracts), and a couple of the reporting methods.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Full remove-and-resync of the Augur geth public testnet node (eth3.augur.net and ws.augur.net) as well as the separate geth instance on our faucet server.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Market detail page now displays market creation and ending date and time (instead of just the date).  Hovering displays the full UTC timestamp, including milliseconds and day of the week.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Removed deprecated onConfirmed callbacks from augur.js.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Normalized market IDs received from get-market-ID-from-event-ID methods getMarket and getMarkets.'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'October 28, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Re-organized this technical updates list a bit :)'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'If you cannot afford to make a trade, the Place Trade button will be disabled.  (If you hover over it, a popup will inform you that you do not have enough funds to make the trade.)'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Re-introduced Doorbell.io "Feedback" button in the lower left-hand corner.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Pointed ',
-					_react2.default.createElement(
-						'a',
-						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'https://augur-dev.firebaseapp.com' },
-						'augur-dev'
-					),
-					' and ',
-					_react2.default.createElement(
-						'a',
-						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'http://local.augur.net' },
-						'local.augur.net'
-					),
-					' at our private testing chain (geth JSON RPC endpoints: ',
-					_react2.default.createElement(
-						'a',
-						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'https://eth9000.augur.net' },
-						'HTTPS'
-					),
-					', ',
-					_react2.default.createElement(
-						'a',
-						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'wss://ws9000.augur.net' },
-						'websockets'
-					),
-					').  The public (Morden) testnet has been almost unusable for the past several weeks due to excessive network congestion.  Once things are moving on Morden again, our test instances will switch back.  (Note: ',
-					_react2.default.createElement(
-						'a',
-						{ className: 'link', rel: 'noopener noreferrer', target: '_blank', href: 'https://app.augur.net' },
-						'app.augur.net'
-					),
-					' remains pointed at the Morden testnet for now, although we may redirect that as well soon.)'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'There is now a popup displaying the "maximum number of shares" you can buy at a particular limit price (only visible after you have entered a limit price).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Increased the lifetime of chat messages (Whisper TTL) to 1 week; plan is to decrease this if/when the chatbox starts seeing more use.'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'October 27, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Percent fee now always displays as a positive number.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Finished fixing/updating the integration tests for augur.js.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Upgraded our private chain geth instance server (Linode) to support an expanded testing group.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added extra blocknumber check and catch-up for missed blocks due to dropped websocket connections.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'augur.js unit tests have been fixed/updated and are now working properly.'
+					'Moved Branch component to its own module.'
 				)
 			),
 			p.marketsLink && _react2.default.createElement(
@@ -29501,7 +29294,7 @@ LoginMessagePage.propTypes = {
 
 exports.default = LoginMessagePage;
 
-},{"../../link/components/link":215,"react":185}],217:[function(_dereq_,module,exports){
+},{"../../link/components/link":216,"react":185}],218:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29670,7 +29463,7 @@ var MarketBasics = function MarketBasics(p) {
 
 exports.default = MarketBasics;
 
-},{"../../common/components/value-date":202,"../../common/components/value-denomination":203,"classnames":1,"react":185}],218:[function(_dereq_,module,exports){
+},{"../../common/components/value-date":203,"../../common/components/value-denomination":204,"classnames":1,"react":185}],219:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29761,7 +29554,7 @@ Chart.propTypes = {
 };
 exports.default = Chart;
 
-},{"react":185,"react-highcharts":43}],219:[function(_dereq_,module,exports){
+},{"react":185,"react-highcharts":43}],220:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29914,7 +29707,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"../../common/components/value-date":202,"../../common/components/value-denomination":203,"react":185}],220:[function(_dereq_,module,exports){
+},{"../../common/components/value-date":203,"../../common/components/value-denomination":204,"react":185}],221:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29974,7 +29767,7 @@ var OpenOrders = function OpenOrders(p) {
 
 exports.default = OpenOrders;
 
-},{"../../common/components/value-denomination":203,"../../open-orders/components/open-orders-group":243,"react":185}],221:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"../../open-orders/components/open-orders-group":243,"react":185}],222:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30027,7 +29820,7 @@ var MarketOutcomes = function MarketOutcomes(p) {
 
 exports.default = MarketOutcomes;
 
-},{"../../common/components/value-denomination":203,"react":185}],222:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"react":185}],223:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30097,7 +29890,7 @@ var MarketPositions = function (_Component) {
 
 exports.default = MarketPositions;
 
-},{"../../../modules/my-positions/components/my-positions":240,"../../../modules/my-positions/components/my-positions-summary":239,"../../../utils/should-component-update-pure":266,"react":185}],223:[function(_dereq_,module,exports){
+},{"../../../modules/my-positions/components/my-positions":240,"../../../modules/my-positions/components/my-positions-summary":239,"../../../utils/should-component-update-pure":266,"react":185}],224:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30174,7 +29967,7 @@ MarketPreview.propTypes = {
 
 exports.default = MarketPreview;
 
-},{"../../link/components/link":215,"./market-basics":217,"./market-outcomes":221,"classnames":1,"react":185}],224:[function(_dereq_,module,exports){
+},{"../../link/components/link":216,"./market-basics":218,"./market-outcomes":222,"classnames":1,"react":185}],225:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30249,7 +30042,7 @@ var MarketSummary = function (_Component) {
 
 exports.default = MarketSummary;
 
-},{"../../../modules/my-markets/components/my-market":236,"../../../modules/my-markets/components/my-market-summary-header":235,"../../../utils/should-component-update-pure":266,"react":185}],225:[function(_dereq_,module,exports){
+},{"../../../modules/my-markets/components/my-market":236,"../../../modules/my-markets/components/my-market-summary-header":235,"../../../utils/should-component-update-pure":266,"react":185}],226:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30437,68 +30230,7 @@ var MarketPage = function (_Component) {
 
 exports.default = MarketPage;
 
-},{"../../../modules/trade/components/trade-panel":258,"../../../utils/should-component-update-pure":266,"../../market/components/market-info":219,"../../market/components/market-open-orders":220,"../../market/components/market-positions":222,"../../reports/components/report-panel":249,"./market-basics":217,"./market-chart":218,"./market-summary":224,"react":185}],226:[function(_dereq_,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _react = _dereq_('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _rcProgress = _dereq_('rc-progress');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Branch = function Branch(p) {
-	return _react2.default.createElement(
-		'section',
-		{ className: 'branch-info' },
-		_react2.default.createElement(_rcProgress.Line, {
-			percent: p.currentPeriodProgress,
-			strokeWidth: '1',
-			strokeColor: '#5c2634'
-		}),
-		_react2.default.createElement('br', null),
-		_react2.default.createElement(
-			'span',
-			{ className: 'reporting-cycle-info' },
-			'Reporting Cycle ',
-			p.reportPeriod,
-			' \xB7 ',
-			Math.round(p.currentPeriodProgress),
-			'% complete \xB7 ',
-			p.phaseLabel,
-			' phase ends ',
-			p.phaseTimeRemaining
-		),
-		_react2.default.createElement('br', null),
-		_react2.default.createElement(
-			'span',
-			{ className: 'branch-description', title: p.id },
-			p.description
-		),
-		' \xB7 ',
-		p.periodLength,
-		' seconds per cycle'
-	);
-};
-
-Branch.propTypes = {
-	className: _react.PropTypes.string,
-	description: _react.PropTypes.string,
-	id: _react.PropTypes.string,
-	periodLength: _react.PropTypes.number,
-	phaseLabel: _react.PropTypes.string,
-	phaseTimeRemaining: _react.PropTypes.string,
-	currentPeriodProgress: _react.PropTypes.number
-};
-
-exports.default = Branch;
-
-},{"rc-progress":33,"react":185}],227:[function(_dereq_,module,exports){
+},{"../../../modules/trade/components/trade-panel":258,"../../../utils/should-component-update-pure":266,"../../market/components/market-info":220,"../../market/components/market-open-orders":221,"../../market/components/market-positions":223,"../../reports/components/report-panel":249,"./market-basics":218,"./market-chart":219,"./market-summary":225,"react":185}],227:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30582,7 +30314,7 @@ var MarketsFilterSort = function MarketsFilterSort(p) {
 
 exports.default = MarketsFilterSort;
 
-},{"../../common/components/dropdown":197,"../../markets/components/markets-search":231,"react":185}],228:[function(_dereq_,module,exports){
+},{"../../common/components/dropdown":198,"../../markets/components/markets-search":231,"react":185}],228:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30652,7 +30384,7 @@ MarketsHeaders.propTypes = {
 
 exports.default = MarketsHeaders;
 
-},{"../../link/components/link":215,"../../markets/components/markets-filter-sort":227,"react":185}],229:[function(_dereq_,module,exports){
+},{"../../link/components/link":216,"../../markets/components/markets-filter-sort":227,"react":185}],229:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30697,7 +30429,7 @@ var MarketsList = function MarketsList(p) {
 
 exports.default = MarketsList;
 
-},{"../../market/components/market-preview":223,"../../markets/components/markets-pagination":230,"react":185}],230:[function(_dereq_,module,exports){
+},{"../../market/components/market-preview":224,"../../markets/components/markets-pagination":230,"react":185}],230:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30772,7 +30504,7 @@ var MarketsPagination = function MarketsPagination(p) {
 
 exports.default = MarketsPagination;
 
-},{"../../link/components/link":215,"react":185}],231:[function(_dereq_,module,exports){
+},{"../../link/components/link":216,"react":185}],231:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30814,7 +30546,7 @@ MarketsSearch.propTypes = {
 
 exports.default = MarketsSearch;
 
-},{"../../common/components/input":199,"react":185}],232:[function(_dereq_,module,exports){
+},{"../../common/components/input":200,"react":185}],232:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30833,7 +30565,7 @@ var _marketsList = _dereq_('../../markets/components/markets-list');
 
 var _marketsList2 = _interopRequireDefault(_marketsList);
 
-var _branch = _dereq_('../../markets/components/branch');
+var _branch = _dereq_('../../branch/components/branch');
 
 var _branch2 = _interopRequireDefault(_branch);
 
@@ -30871,7 +30603,7 @@ MarketsView.propTypes = {
 
 exports.default = MarketsView;
 
-},{"../../markets/components/branch":226,"../../markets/components/markets-headers":228,"../../markets/components/markets-list":229,"react":185}],233:[function(_dereq_,module,exports){
+},{"../../branch/components/branch":192,"../../markets/components/markets-headers":228,"../../markets/components/markets-list":229,"react":185}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30934,7 +30666,7 @@ MyMarketsSummary.propTypes = {
 
 exports.default = MyMarketsSummary;
 
-},{"../../common/components/value-denomination":203,"react":185}],236:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"react":185}],236:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31041,7 +30773,7 @@ Market.propTypes = {
 
 exports.default = Market;
 
-},{"../../../modules/common/components/value-date":202,"../../../modules/common/components/value-denomination":203,"react":185}],237:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-date":203,"../../../modules/common/components/value-denomination":204,"react":185}],237:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31154,7 +30886,7 @@ Position.propTypes = {
 
 exports.default = Position;
 
-},{"../../common/components/value-denomination":203,"../../markets/constants/market-types":233,"react":185}],238:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"../../markets/constants/market-types":233,"react":185}],238:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31229,7 +30961,7 @@ PositionsMarketOverview.propTypes = {
 
 exports.default = PositionsMarketOverview;
 
-},{"../../common/components/value-denomination":203,"react":185}],239:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"react":185}],239:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31341,7 +31073,7 @@ var Positions = function Positions(p) {
 
 exports.default = Positions;
 
-},{"../../link/components/link":215,"./my-position":237,"react":185}],241:[function(_dereq_,module,exports){
+},{"../../link/components/link":216,"./my-position":237,"react":185}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31475,7 +31207,7 @@ var Report = function Report(p) {
 
 exports.default = Report;
 
-},{"../../../modules/common/components/value-date":202,"../../../modules/common/components/value-denomination":203,"react":185}],242:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-date":203,"../../../modules/common/components/value-denomination":204,"react":185}],242:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31599,7 +31331,7 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 
 exports.default = OpenOrder;
 
-},{"../../common/components/value-denomination":203,"classnames":1,"react":185}],243:[function(_dereq_,module,exports){
+},{"../../common/components/value-denomination":204,"classnames":1,"react":185}],243:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31709,7 +31441,7 @@ var PortfolioMarkets = function PortfolioMarkets(p) {
 
 exports.default = PortfolioMarkets;
 
-},{"../../../modules/my-markets/components/my-market":236,"../../link/components/link":215,"react":185}],245:[function(_dereq_,module,exports){
+},{"../../../modules/my-markets/components/my-market":236,"../../link/components/link":216,"react":185}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31792,7 +31524,7 @@ PortfolioView.propTypes = {
 
 exports.default = PortfolioView;
 
-},{"../../../modules/common/components/tab-navigation":200,"../../../modules/portfolio/components/markets":244,"../../../modules/portfolio/components/positions":246,"../../../modules/portfolio/components/reports":247,"../../../modules/site/constants/views":254,"react":185}],246:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/tab-navigation":201,"../../../modules/portfolio/components/markets":244,"../../../modules/portfolio/components/positions":246,"../../../modules/portfolio/components/reports":247,"../../../modules/site/constants/views":254,"react":185}],246:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31852,7 +31584,7 @@ var PortfolioPositions = function PortfolioPositions(p) {
 
 exports.default = PortfolioPositions;
 
-},{"../../../modules/my-positions/components/my-positions":240,"../../link/components/link":215,"../../my-positions/components/my-positions-market-overview":238,"react":185}],247:[function(_dereq_,module,exports){
+},{"../../../modules/my-positions/components/my-positions":240,"../../link/components/link":216,"../../my-positions/components/my-positions-market-overview":238,"react":185}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31925,7 +31657,7 @@ var PortfolioReports = function PortfolioReports(p) {
 
 exports.default = PortfolioReports;
 
-},{"../../../modules/my-reports/components/my-report":241,"../../link/components/link":215,"react":185}],248:[function(_dereq_,module,exports){
+},{"../../../modules/my-reports/components/my-report":241,"../../link/components/link":216,"react":185}],248:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32154,7 +31886,7 @@ ReportForm.propTypes = {
 };
 exports.default = ReportForm;
 
-},{"../../common/components/checkbox":194,"../../markets/constants/market-types":233,"classnames":1,"react":185}],249:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":195,"../../markets/constants/market-types":233,"classnames":1,"react":185}],249:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32255,7 +31987,7 @@ var SideBar = function SideBar(p) {
 
 exports.default = SideBar;
 
-},{"../../common/components/checkbox":194,"react":185}],251:[function(_dereq_,module,exports){
+},{"../../common/components/checkbox":195,"react":185}],251:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32467,7 +32199,7 @@ exports.default = SiteHeader;
 // 	portfolioTotals: PropTypes.object
 // };
 
-},{"../../auth/constants/auth-types":191,"../../common/components/augur-logo":193,"../../link/components/link":215,"../../markets/constants/markets-headers":234,"../../site/constants/views":254,"classnames":1,"react":185}],254:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":191,"../../common/components/augur-logo":194,"../../link/components/link":216,"../../markets/constants/markets-headers":234,"../../site/constants/views":254,"classnames":1,"react":185}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32536,7 +32268,7 @@ TradeBuilderBidAsk.propTypes = {
 
 exports.default = TradeBuilderBidAsk;
 
-},{"../../../modules/common/components/value-denomination":203,"classnames":1,"react":185}],256:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/value-denomination":204,"classnames":1,"react":185}],256:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32692,7 +32424,7 @@ var TradeBuilderRow = function TradeBuilderRow(p) {
 
 exports.default = TradeBuilderRow;
 
-},{"../../../modules/common/components/input":199,"../../../modules/common/components/toggler":201,"../../../modules/common/components/value-denomination":203,"../../../modules/trade/components/trade-builder-bid-ask":255,"../../markets/constants/market-types":233,"classnames":1,"react":185}],257:[function(_dereq_,module,exports){
+},{"../../../modules/common/components/input":200,"../../../modules/common/components/toggler":202,"../../../modules/common/components/value-denomination":204,"../../../modules/trade/components/trade-builder-bid-ask":255,"../../markets/constants/market-types":233,"classnames":1,"react":185}],257:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33410,7 +33142,7 @@ Transaction.propTypes = {
 
 exports.default = Transaction;
 
-},{"../../auth/constants/auth-types":191,"../../common/components/value-denomination":203,"../../common/components/value-timestamp":204,"../../link/components/link":215,"../../markets/constants/market-types":233,"../../transactions/constants/types":263,"classnames":1,"react":185}],261:[function(_dereq_,module,exports){
+},{"../../auth/constants/auth-types":191,"../../common/components/value-denomination":204,"../../common/components/value-timestamp":205,"../../link/components/link":216,"../../markets/constants/market-types":233,"../../transactions/constants/types":263,"classnames":1,"react":185}],261:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33921,7 +33653,7 @@ var Router = function (_Component) {
 
 exports.default = Router;
 
-},{"./modules/account/components/account-view":188,"./modules/auth/components/auth-view":190,"./modules/auth/constants/auth-types":191,"./modules/chat/components/chat-view":192,"./modules/common/components/core-stats":195,"./modules/create-market/components/create-market-view":214,"./modules/login-message/components/login-message-view":216,"./modules/market/components/market-view":225,"./modules/markets/components/markets-view":232,"./modules/portfolio/components/portfolio-view":245,"./modules/site/components/side-bar-content":250,"./modules/site/components/side-bar-header":251,"./modules/site/components/site-footer":252,"./modules/site/components/site-header":253,"./modules/site/constants/views":254,"./modules/transactions/components/transactions-view":261,"./utils/should-component-update-pure":266,"classnames":1,"react":185}],265:[function(_dereq_,module,exports){
+},{"./modules/account/components/account-view":188,"./modules/auth/components/auth-view":190,"./modules/auth/constants/auth-types":191,"./modules/chat/components/chat-view":193,"./modules/common/components/core-stats":196,"./modules/create-market/components/create-market-view":215,"./modules/login-message/components/login-message-view":217,"./modules/market/components/market-view":226,"./modules/markets/components/markets-view":232,"./modules/portfolio/components/portfolio-view":245,"./modules/site/components/side-bar-content":250,"./modules/site/components/side-bar-header":251,"./modules/site/components/site-footer":252,"./modules/site/components/site-header":253,"./modules/site/constants/views":254,"./modules/transactions/components/transactions-view":261,"./utils/should-component-update-pure":266,"classnames":1,"react":185}],265:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
