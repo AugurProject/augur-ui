@@ -30595,13 +30595,47 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'The site is only as fast as Ethereum blocks are mined. However, it is important to know that all orders\n\t\t\t\t\tare placed into order books according to best price, and in the order in which they are received. This\n\t\t\t\t\tpreserves price/time priority in Augur\'s markets.'
+					'A note on price/time priority on the blockchain.  The site is only as fast as Ethereum blocks are mined.  Augur\'s matching engine sorts order books by price, then by block number, then by transaction index. Within a single block, transactions are ordered by the miner who mines the block.  When constructing a block, miners typically order transactions first by gasprice (highest to lowest), and then by the order received (oldest to newest).  Instead of price/time priority, Augur uses "price/gasprice/time priority".  Presently, Augur does not attempt to adjust gasprices in response to other pending transactions, although, if desired, gasprice can be adjusted manually using the API, by changing the "gasPrice" field attached to every sendTransaction payload.'
 				)
 			),
 			_react2.default.createElement(
 				'h2',
 				null,
 				'Technical updates:'
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 5, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed transaction failure (error 500) edge case that failed (nulled) without retrying the transaction, even if retryDroppedTxs was set to true.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added extra on-chain market ID lookup and loadMarketsInfo action for the case where a commit report action has been sent but the eventID field of the market selector has not yet been assigned.  As far as I can tell, the click-thru-to-next-report functionality is now working properly.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed scalar report outcome displays on transactions page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added outcome names / IDs to transaction messages for commit report (submitReportHash) actions.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed initial trade-in-each-market setup for augur.js reporting-sequence tests.'
+				)
 			),
 			_react2.default.createElement(
 				'h3',
@@ -34378,26 +34412,19 @@ var Transaction = function Transaction(p) {
 		case _types.REVEAL_REPORT:
 			{
 				var isScalar = void 0;
-				var reportedOutcome = void 0;
 				switch (p.type) {
 					case _types.COMMIT_REPORT:
 						nodes.action = 'Commit report';
 						isScalar = p.data.market.type === _marketTypes.SCALAR;
-						if (isScalar) {
-							reportedOutcome = p.data.market.reportedOutcomeID;
-						}
 						break;
 					case _types.REVEAL_REPORT:
 						nodes.action = 'Reveal report';
 						isScalar = p.data.isScalar;
-						if (isScalar) reportedOutcome = p.data.reportedOutcomeID;
 						break;
 					default:
 						break;
 				}
-				if (!isScalar) {
-					reportedOutcome = p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
-				}
+				var reportedOutcome = isScalar ? p.data.reportedOutcomeID : p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
 				nodes.description = _react2.default.createElement(
 					'span',
 					{ className: 'description' },
