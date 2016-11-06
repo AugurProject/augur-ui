@@ -29175,7 +29175,10 @@ var ValueDenomination = function ValueDenomination(p) {
 		_react2.default.createElement(
 			'span',
 			{
-				className: (0, _classnames2.default)('value-denomination', p.className, { positive: p.formattedValue > 0, negative: p.formattedValue < 0 })
+				className: (0, _classnames2.default)('value-denomination', p.className, {
+					positive: p.formattedValue > 0,
+					negative: p.formattedValue < 0
+				})
 			},
 			p.prefix && _react2.default.createElement(
 				'span',
@@ -29184,7 +29187,11 @@ var ValueDenomination = function ValueDenomination(p) {
 			),
 			p.formatted && p.fullPrecision && _react2.default.createElement(
 				'span',
-				{ className: 'value pointer', 'data-tip': p.fullPrecision, 'data-event': 'click focus' },
+				{
+					className: 'value pointer',
+					'data-tip': p.fullPrecision,
+					'data-event': 'click focus'
+				},
 				p.formatted
 			),
 			p.formatted && !p.fullPrecision && _react2.default.createElement(
@@ -30606,6 +30613,35 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 6, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added a message to markets that have been reported on and closed out: "This market is closed. Reported outcome: X"'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Made a modified reporting test sequence script that goes through a second full reporting cycle on the same branch ID that has already successfully completed its initial reporting cycle.  Completed full test runs of both the initial reporting cycle sequence as well as multiple follow-up sequences.  These automated use-tests only use a single reporter, but the results are as expected for this reporter.  Next-up: automated reporting sequences using multiple accounts!'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Decoupled the UI reportingTestSetup method from its spawn-new-branch subroutine.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Refactored load-reports and associated methods.  load-reports is a group of functions that build the reports data structure (as well as update other related data) in the front-end.  They lookup what events you are required to report on, which of these you have already reported on, pull your encrypted report and salt from the chain (and decrypt them), lookup if you have submitted a report hash or plaintext report, collates this info and stows it in Redux (the front-end data store).  These methods did not have good unit test coverage (my fault -- they became more complicated over time and the tests did not keep up).  Since I have found multiple edge-case bugs over the past few days as I am user-testing reporting, I decided to take the time to pull these methods apart and added more thorough unit tests for them.  Coverage is now significantly improved for these methods.  (Note: to simplify mock creation for the unit tests, I split load-reports into several separate files/methods: load-reports, load-report, load-report-descriptors, and decrypt-reports.)'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 5, 2016'
 			),
 			_react2.default.createElement(
@@ -31212,6 +31248,18 @@ var MarketInfo = function MarketInfo(p) {
 				),
 				_react2.default.createElement(_valueDate2.default, _extends({ className: 'property-value' }, p.creationTime))
 			)
+		),
+		!!p.reportedOutcome && _react2.default.createElement(
+			'div',
+			{ className: 'reported-outcome' },
+			_react2.default.createElement('hr', null),
+			_react2.default.createElement(
+				'h4',
+				null,
+				'This market is closed.'
+			),
+			'Reported outcome: ',
+			p.reportedOutcome
 		)
 	);
 };
@@ -31224,7 +31272,8 @@ MarketInfo.propTypes = {
 	creationTime: _react.PropTypes.object,
 	type: _react.PropTypes.string,
 	minValue: _react.PropTypes.string,
-	maxValue: _react.PropTypes.string
+	maxValue: _react.PropTypes.string,
+	reportedOutcome: _react.PropTypes.string
 };
 
 exports.default = MarketInfo;
