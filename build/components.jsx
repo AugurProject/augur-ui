@@ -30632,6 +30632,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					'li',
 					null,
 					'Reordered checkPeriod callback sequences to allow for full reporter catch-up even if their REP redistribution is behind by multiple periods.  Also added an extra check for REP redistribution to the submitReportHash onSuccess callback, which should short-circuit failing submitReportHash loops, if they are caused by not being caught up on penalizations/redistributions.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed chat messages display sent by users who do not have a name set (address-only).'
 				)
 			),
 			_react2.default.createElement(
