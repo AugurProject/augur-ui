@@ -28314,7 +28314,7 @@ var ChatView = function (_Component) {
 								_react2.default.createElement(_valueTimestamp2.default, payload.timestamp)
 							),
 							']: ',
-							payload.message
+							decodeURIComponent(payload.message)
 						);
 					}
 					return _react2.default.createElement(
