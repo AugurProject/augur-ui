@@ -30613,11 +30613,45 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 7, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed the claim-proceeds action, which is the final bet-payout mechanism once markets are successfully reported on and closed.  This action was incorrectly firing claimMarketProceeds calls for some markets that were not yet closed.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added updateAssets and refreshMarkets calls after claim-proceeds completes successfully.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Reordered checkPeriod callback sequences to allow for full reporter catch-up even if their REP redistribution is behind by multiple periods.  Also added an extra check for REP redistribution to the submitReportHash onSuccess callback, which should short-circuit failing submitReportHash loops, if they are caused by not being caught up on penalizations/redistributions.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 6, 2016'
 			),
 			_react2.default.createElement(
 				'ol',
 				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Reports from previous periods are now properly cleared from your pending reports.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Refactored commit-report and its associated methods, and rewrote / greatly expanded the commit-report test suite.'
+				),
 				_react2.default.createElement(
 					'li',
 					null,
