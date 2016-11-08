@@ -31317,6 +31317,50 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 8, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added penalizationCatchup to checkPeriod callback sequence for users who are multiple reporting cycles behind.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added a constant (all-ones) initialization vector to the encryptReport and decryptReport middleware functions if a salt argument is not supplied.  Although the report needs to be encrypted with its salt, the (separately) encrypted salt does not need its own random salt.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Removed refund macro from collectFees contract, since the transaction value must be accessed (and is expected to be non-zero) in the body of the method.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed sufficient value check in collectFees contract.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Automatically add (500K wei)*gasPrice of value to the collectFees transaction payload in augur.js.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed final report market page link in next-report-page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed REP balance comparison at the beginning of check-period.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 7, 2016'
 			),
 			_react2.default.createElement(
