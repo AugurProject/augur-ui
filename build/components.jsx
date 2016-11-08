@@ -31330,6 +31330,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Fixed event description display for reveal-reports transactions.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Fixed the claim-proceeds action, which is the final bet-payout mechanism once markets are successfully reported on and closed.  This action was incorrectly firing claimMarketProceeds calls for some markets that were not yet closed.'
 				),
 				_react2.default.createElement(
