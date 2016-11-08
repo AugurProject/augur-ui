@@ -27175,7 +27175,7 @@ exports.default = components;
 exports.App = _app2.default;
 exports.constants = constants;
 
-},{"./modules/app/components/app":198,"./modules/app/constants/views":204,"./modules/auth/constants/auth-types":207,"./modules/transactions/constants/types":282}],197:[function(_dereq_,module,exports){
+},{"./modules/app/components/app":198,"./modules/app/constants/views":204,"./modules/auth/constants/auth-types":207,"./modules/transactions/constants/types":283}],197:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27641,7 +27641,7 @@ AccountPage.propTypes = {
 };
 exports.default = AccountPage;
 
-},{"./../../common/components/checkbox":211,"./../../common/components/input":217,"./../../link/components/link":233,"classnames":1,"react":195,"react-tooltip":49}],198:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":212,"./../../common/components/input":218,"./../../link/components/link":234,"classnames":1,"react":195,"react-tooltip":49}],198:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27864,7 +27864,7 @@ AppComponent.propTypes = {
 	url: _react.PropTypes.string
 };
 
-},{"./../../../utils/scroll-top-on-change":284,"./../../../utils/should-component-update-pure":286,"./../../chat/components/chat-view":209,"./core-stats":199,"./footer":200,"./header":201,"./routes":202,"./side-bar":203,"classnames":1,"react":195,"react-dom":42}],199:[function(_dereq_,module,exports){
+},{"./../../../utils/scroll-top-on-change":285,"./../../../utils/should-component-update-pure":287,"./../../chat/components/chat-view":209,"./core-stats":199,"./footer":200,"./header":201,"./routes":202,"./side-bar":203,"classnames":1,"react":195,"react-dom":42}],199:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27930,7 +27930,7 @@ CoreStats.propTypes = {
 
 exports.default = CoreStats;
 
-},{"./../../common/components/value-denomination":221,"react":195}],200:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":222,"react":195}],200:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -28109,7 +28109,7 @@ exports.default = Header;
 // 	portfolioTotals: PropTypes.object
 // };
 
-},{"./../../auth/constants/auth-types":207,"./../../common/components/augur-logo":210,"./../../link/components/link":233,"./../../markets/constants/markets-headers":259,"./../constants/views":204,"classnames":1,"react":195}],202:[function(_dereq_,module,exports){
+},{"./../../auth/constants/auth-types":207,"./../../common/components/augur-logo":210,"./../../link/components/link":234,"./../../markets/constants/markets-headers":260,"./../constants/views":204,"classnames":1,"react":195}],202:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28272,7 +28272,7 @@ var Routes = function Routes(p) {
 
 exports.default = Routes;
 
-},{"./../../../utils/get-value":283,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":232,"./../../login-message/components/login-message-view":234,"./../../market/components/market-view":250,"./../../markets/components/markets-view":257,"./../../portfolio/components/portfolio-view":276,"./../../transactions/components/transactions-view":280,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":251,"./../../markets/components/markets-view":258,"./../../portfolio/components/portfolio-view":277,"./../../transactions/components/transactions-view":281,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28326,7 +28326,7 @@ var SideBar = function SideBar(p) {
 
 exports.default = SideBar;
 
-},{"./../../common/components/checkbox":211,"react":195}],204:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":212,"react":195}],204:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28683,7 +28683,7 @@ AuthForm.defaultProps = {
 };
 exports.default = AuthForm;
 
-},{"./../../common/components/checkbox":211,"./../../link/components/link":233,"classnames":1,"react":195,"react-tooltip":49}],206:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":212,"./../../link/components/link":234,"classnames":1,"react":195,"react-tooltip":49}],206:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28785,7 +28785,7 @@ AuthPage.propTypes = {
 
 exports.default = AuthPage;
 
-},{"./../../link/components/link":233,"./auth-form":205,"classnames":1,"react":195}],207:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./auth-form":205,"classnames":1,"react":195}],207:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28823,6 +28823,10 @@ var _reactTooltip2 = _interopRequireDefault(_reactTooltip);
 
 var _rcProgress = _dereq_('rc-progress');
 
+var _bullet = _dereq_('./../../common/components/bullet');
+
+var _bullet2 = _interopRequireDefault(_bullet);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Branch = function Branch(p) {
@@ -28834,20 +28838,22 @@ var Branch = function Branch(p) {
 			strokeWidth: '1',
 			strokeColor: '#5c2634'
 		}),
-		_react2.default.createElement('br', null),
 		_react2.default.createElement(
 			'span',
 			{ className: 'reporting-cycle-info' },
 			'Reporting Cycle ',
 			p.reportPeriod,
-			' \xB7 ',
+			' ',
+			_react2.default.createElement(_bullet2.default, null),
+			' ',
 			Math.round(p.currentPeriodProgress),
-			'% complete \xB7 ',
+			'% complete ',
+			_react2.default.createElement(_bullet2.default, null),
+			' ',
 			p.phaseLabel,
 			' phase ends ',
 			p.phaseTimeRemaining
 		),
-		_react2.default.createElement('br', null),
 		_react2.default.createElement(
 			'span',
 			{
@@ -28856,17 +28862,19 @@ var Branch = function Branch(p) {
 				'data-event': 'click focus',
 				className: 'branch-description pointer'
 			},
-			p.description
+			p.description,
+			' ',
+			_react2.default.createElement(_bullet2.default, null),
+			' ',
+			p.periodLength / 3600,
+			' hours per cycle'
 		),
-		' \xB7 ',
-		p.periodLength / 3600,
-		' hours per cycle',
 		_react2.default.createElement(
 			_reactTooltip2.default,
 			{
 				id: 'branch-id-tooltip',
 				type: 'light',
-				effect: 'solid',
+				effect: 'float',
 				place: 'top',
 				globalEventOff: 'click'
 			},
@@ -28892,7 +28900,7 @@ Branch.propTypes = {
 
 exports.default = Branch;
 
-},{"rc-progress":33,"react":195,"react-tooltip":49}],209:[function(_dereq_,module,exports){
+},{"./../../common/components/bullet":211,"rc-progress":33,"react":195,"react-tooltip":49}],209:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29101,7 +29109,7 @@ ChatView.propTypes = {
 };
 exports.default = ChatView;
 
-},{"./../../common/components/value-timestamp":222,"react":195,"react-tooltip":49}],210:[function(_dereq_,module,exports){
+},{"./../../common/components/value-timestamp":223,"react":195,"react-tooltip":49}],210:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29163,6 +29171,29 @@ exports.default = AugurLogo;
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Bullet = function Bullet() {
+  return _react2.default.createElement(
+    'span',
+    null,
+    '\xB7'
+  );
+};
+
+exports.default = Bullet;
+
+},{"react":195}],212:[function(_dereq_,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
@@ -29220,7 +29251,7 @@ Checkbox.propTypes = {
 
 exports.default = Checkbox;
 
-},{"classnames":1,"react":195,"react-tooltip":49}],212:[function(_dereq_,module,exports){
+},{"classnames":1,"react":195,"react-tooltip":49}],213:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29263,7 +29294,7 @@ var ComponentNav = function ComponentNav(p) {
 
 exports.default = ComponentNav;
 
-},{"./../../link/components/link":233,"react":195}],213:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"react":195}],214:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29308,7 +29339,7 @@ var DatePicker = function DatePicker(p) {
 
 exports.default = DatePicker;
 
-},{"react":195,"react-datetime":35}],214:[function(_dereq_,module,exports){
+},{"react":195,"react-datetime":35}],215:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29361,7 +29392,7 @@ var Dropdown = function Dropdown(p) {
 
 exports.default = Dropdown;
 
-},{"react":195}],215:[function(_dereq_,module,exports){
+},{"react":195}],216:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29384,7 +29415,7 @@ var EmDash = function EmDash() {
 
 exports.default = EmDash;
 
-},{"react":195}],216:[function(_dereq_,module,exports){
+},{"react":195}],217:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29519,7 +29550,7 @@ InputList.propTypes = {
 };
 exports.default = InputList;
 
-},{"./input":217,"classnames":1,"react":195}],217:[function(_dereq_,module,exports){
+},{"./input":218,"classnames":1,"react":195}],218:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29657,7 +29688,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"./../../../utils/should-component-update-pure":286,"react":195}],218:[function(_dereq_,module,exports){
+},{"./../../../utils/should-component-update-pure":287,"react":195}],219:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -29688,7 +29719,7 @@ var NullStateMessage = function NullStateMessage(p) {
 
 exports.default = NullStateMessage;
 
-},{"react":195}],219:[function(_dereq_,module,exports){
+},{"react":195}],220:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29781,7 +29812,7 @@ var TabNavigation = function TabNavigation(p) {
 
 exports.default = TabNavigation;
 
-},{"./../../link/components/link":233,"./value-denomination":221,"classnames":1,"react":195,"react-tooltip":49}],220:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./value-denomination":222,"classnames":1,"react":195,"react-tooltip":49}],221:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29814,7 +29845,7 @@ ValueDate.propTypes = {
 
 exports.default = ValueDate;
 
-},{"classnames":1,"react":195}],221:[function(_dereq_,module,exports){
+},{"classnames":1,"react":195}],222:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29900,7 +29931,7 @@ ValueDenomination.propTypes = {
 
 exports.default = ValueDenomination;
 
-},{"./em-dash":215,"classnames":1,"react":195,"react-tooltip":49}],222:[function(_dereq_,module,exports){
+},{"./em-dash":216,"classnames":1,"react":195,"react-tooltip":49}],223:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29932,7 +29963,7 @@ ValueTimestamp.propTypes = {
 
 exports.default = ValueTimestamp;
 
-},{"classnames":1,"react":195}],223:[function(_dereq_,module,exports){
+},{"classnames":1,"react":195}],224:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30051,7 +30082,7 @@ var CreateMarketForm1 = function CreateMarketForm1(p) {
 
 exports.default = CreateMarketForm1;
 
-},{"./../../markets/constants/market-types":258,"react":195}],224:[function(_dereq_,module,exports){
+},{"./../../markets/constants/market-types":259,"react":195}],225:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30108,7 +30139,7 @@ var CreateMarketForm2Categorical = function CreateMarketForm2Categorical(p) {
 
 exports.default = CreateMarketForm2Categorical;
 
-},{"./../../common/components/input-list":216,"react":195}],225:[function(_dereq_,module,exports){
+},{"./../../common/components/input-list":217,"react":195}],226:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30203,7 +30234,7 @@ var CreateMarketForm2Scalar = function CreateMarketForm2Scalar(p) {
 
 exports.default = CreateMarketForm2Scalar;
 
-},{"./../../common/components/input":217,"react":195}],226:[function(_dereq_,module,exports){
+},{"./../../common/components/input":218,"react":195}],227:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30323,7 +30354,7 @@ var CreateMarketForm2 = function CreateMarketForm2(p) {
 exports.default = CreateMarketForm2;
 // 	expanded={true}
 
-},{"./../../common/components/datepicker":213,"./../../common/components/input":217,"./../../markets/constants/market-types":258,"./create-market-form-2-categorical":224,"./create-market-form-2-scalar":225,"./create-market-form-buttons":230,"react":195}],227:[function(_dereq_,module,exports){
+},{"./../../common/components/datepicker":214,"./../../common/components/input":218,"./../../markets/constants/market-types":259,"./create-market-form-2-categorical":225,"./create-market-form-2-scalar":226,"./create-market-form-buttons":231,"react":195}],228:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30498,7 +30529,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"./../../common/components/input":217,"./../../common/components/input-list":216,"./create-market-form-buttons":230,"classnames":1,"react":195}],228:[function(_dereq_,module,exports){
+},{"./../../common/components/input":218,"./../../common/components/input-list":217,"./create-market-form-buttons":231,"classnames":1,"react":195}],229:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30837,7 +30868,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"./../../../utils/get-value":283,"./../../common/components/checkbox":211,"./../../common/components/input":217,"./create-market-form-buttons":230,"classnames":1,"react":195}],229:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../common/components/checkbox":212,"./../../common/components/input":218,"./create-market-form-buttons":231,"classnames":1,"react":195}],230:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30900,7 +30931,7 @@ var CreateMarketForm5 = function CreateMarketForm5(p) {
 
 exports.default = CreateMarketForm5;
 
-},{"./../../common/components/value-denomination":221,"./../../market/components/market-preview":247,"./create-market-form-buttons":230,"react":195}],230:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":222,"./../../market/components/market-preview":248,"./create-market-form-buttons":231,"react":195}],231:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30949,7 +30980,7 @@ CreateMarketFormButtons.propTypes = {
 
 exports.default = CreateMarketFormButtons;
 
-},{"react":195}],231:[function(_dereq_,module,exports){
+},{"react":195}],232:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31018,7 +31049,7 @@ CreateMarketForm.propTypes = {
 
 exports.default = CreateMarketForm;
 
-},{"./create-market-form-1":223,"./create-market-form-2":226,"./create-market-form-3":227,"./create-market-form-4":228,"./create-market-form-5":229,"react":195}],232:[function(_dereq_,module,exports){
+},{"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31088,7 +31119,7 @@ CreateMarketPage.propTypes = {
 
 exports.default = CreateMarketPage;
 
-},{"./create-market-form":231,"react":195}],233:[function(_dereq_,module,exports){
+},{"./create-market-form":232,"react":195}],234:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31181,7 +31212,7 @@ Link.propTypes = {
 };
 exports.default = Link;
 
-},{"react":195}],234:[function(_dereq_,module,exports){
+},{"react":195}],235:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31291,6 +31322,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'ol',
 				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Reskinned the trade (market detail) page.  There are a few minor bugs remaining but the trade page is fully functional and has an immensely improved look-and-feel!'
+				),
 				_react2.default.createElement(
 					'li',
 					null,
@@ -31474,7 +31510,7 @@ LoginMessagePage.propTypes = {
 
 exports.default = LoginMessagePage;
 
-},{"./../../link/components/link":233,"react":195}],235:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"react":195}],236:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31667,7 +31703,7 @@ MarketActive.propTypes = {
 	})
 };
 
-},{"./../../../utils/get-value":283,"./../../markets/constants/market-types":258,"./../../order-book/components/order-book":268,"./../../outcomes/components/outcome-trade":272,"./../constants/share-denominations":251,"./market-data":239,"./market-user-data":249,"react":195}],236:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../markets/constants/market-types":259,"./../../order-book/components/order-book":269,"./../../outcomes/components/outcome-trade":273,"./../constants/share-denominations":252,"./market-data":240,"./market-user-data":250,"react":195}],237:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31946,7 +31982,7 @@ var MarketBasics = function MarketBasics(p) {
 
 exports.default = MarketBasics;
 
-},{"./../../common/components/value-date":220,"./../../common/components/value-denomination":221,"./../../link/components/link":233,"classnames":1,"react":195,"react-tooltip":49}],237:[function(_dereq_,module,exports){
+},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../../link/components/link":234,"classnames":1,"react":195,"react-tooltip":49}],238:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32039,7 +32075,7 @@ MarketChart.propTypes = {
 };
 exports.default = MarketChart;
 
-},{"./../../common/components/null-state-message":218,"react":195,"react-highcharts":43}],238:[function(_dereq_,module,exports){
+},{"./../../common/components/null-state-message":219,"react":195,"react-highcharts":43}],239:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32083,7 +32119,7 @@ var MarketDataHeader = function MarketDataHeader(p) {
 
 exports.default = MarketDataHeader;
 
-},{"./../../common/components/dropdown":214,"./../../markets/constants/market-types":258,"react":195}],239:[function(_dereq_,module,exports){
+},{"./../../common/components/dropdown":215,"./../../markets/constants/market-types":259,"react":195}],240:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32193,7 +32229,7 @@ var MarketData = function (_Component) {
 
 exports.default = MarketData;
 
-},{"./../../../utils/get-value":283,"./../../app/constants/views":204,"./../../common/components/component-nav":212,"./../../outcomes/components/outcomes":273,"./market-chart":237,"./market-data-header":238,"./market-details":240,"react":195}],240:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./../../outcomes/components/outcomes":274,"./market-chart":238,"./market-data-header":239,"./market-details":241,"react":195}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32359,7 +32395,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"./../../common/components/value-date":220,"./../../common/components/value-denomination":221,"react":195}],241:[function(_dereq_,module,exports){
+},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195}],242:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32403,7 +32439,7 @@ var MarketOpenOrdersGroup = function MarketOpenOrdersGroup(p) {
 
 exports.default = MarketOpenOrdersGroup;
 
-},{"./market-open-orders-row":242,"react":195}],242:[function(_dereq_,module,exports){
+},{"./market-open-orders-row":243,"react":195}],243:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32514,7 +32550,7 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 
 exports.default = MarketOpenOrdersRow;
 
-},{"./../../../utils/get-value":283,"./../../../utils/set-share-denomination":285,"./../../common/components/value-denomination":221,"./../../markets/constants/market-types":258,"react":195}],243:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../../utils/set-share-denomination":286,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":259,"react":195}],244:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32653,7 +32689,7 @@ var MarketOpenOrders = function (_Component) {
 
 exports.default = MarketOpenOrders;
 
-},{"./../../../utils/get-value":283,"./../../common/components/null-state-message":218,"./../../markets/constants/market-types":258,"./market-open-orders-group":241,"react":195}],244:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":259,"./market-open-orders-group":242,"react":195}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32711,7 +32747,7 @@ var MarketPositionsRow = function MarketPositionsRow(p) {
 
 exports.default = MarketPositionsRow;
 
-},{"./../../../utils/get-value":283,"./../../../utils/set-share-denomination":285,"./../../common/components/value-denomination":221,"./../../markets/constants/market-types":258,"react":195}],245:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../../utils/set-share-denomination":286,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":259,"react":195}],246:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32801,7 +32837,7 @@ var MarketPositions = function MarketPositions(p) {
 
 exports.default = MarketPositions;
 
-},{"./../../../utils/get-value":283,"./../../common/components/null-state-message":218,"./../../markets/constants/market-types":258,"./market-positions-row":244,"react":195}],246:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":259,"./market-positions-row":245,"react":195}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32854,7 +32890,7 @@ var MarketOutcomes = function MarketOutcomes(p) {
 
 exports.default = MarketOutcomes;
 
-},{"./../../common/components/value-denomination":221,"react":195}],247:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":222,"react":195}],248:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32930,7 +32966,7 @@ MarketPreview.propTypes = {
 
 exports.default = MarketPreview;
 
-},{"./../../link/components/link":233,"./market-basics":236,"./market-preview-outcomes":246,"classnames":1,"react":195}],248:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./market-basics":237,"./market-preview-outcomes":247,"classnames":1,"react":195}],249:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32969,7 +33005,7 @@ var MarketReported = function MarketReported(p) {
 
 exports.default = MarketReported;
 
-},{"./market-basics":236,"./market-details":240,"react":195}],249:[function(_dereq_,module,exports){
+},{"./market-basics":237,"./market-details":241,"react":195}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33071,7 +33107,7 @@ var MarketUserData = function (_Component) {
 
 exports.default = MarketUserData;
 
-},{"./../../../utils/get-value":283,"./../../app/constants/views":204,"./../../common/components/component-nav":212,"./market-open-orders":243,"./market-positions":245,"react":195}],250:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./market-open-orders":244,"./market-positions":246,"react":195}],251:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33090,17 +33126,19 @@ var _marketReported = _dereq_('./market-reported');
 
 var _marketReported2 = _interopRequireDefault(_marketReported);
 
+var _nullStateMessage = _dereq_('./../../common/components/null-state-message');
+
+var _nullStateMessage2 = _interopRequireDefault(_nullStateMessage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketView = function MarketView(p) {
+	var nullMessage = 'No Market Data';
+
 	return _react2.default.createElement(
 		'section',
 		{ id: 'market_view' },
-		(!p.market || !p.market.id) && _react2.default.createElement(
-			'span',
-			{ className: 'description' },
-			'No market'
-		),
+		(!p.market || !p.market.id) && _react2.default.createElement(_nullStateMessage2.default, { message: nullMessage }),
 		p.market && p.market.id && p.market.isOpen && _react2.default.createElement(_marketActive2.default, p),
 		p.market && p.market.id && !p.market.isOpen && _react2.default.createElement(_marketReported2.default, p)
 	);
@@ -33108,7 +33146,7 @@ var MarketView = function MarketView(p) {
 
 exports.default = MarketView;
 
-},{"./market-active":235,"./market-reported":248,"react":195}],251:[function(_dereq_,module,exports){
+},{"./../../common/components/null-state-message":219,"./market-active":236,"./market-reported":249,"react":195}],252:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33118,7 +33156,7 @@ var SHARE = exports.SHARE = 'share';
 var MILLI_SHARE = exports.MILLI_SHARE = 'milli-share';
 var MICRO_SHARE = exports.MICRO_SHARE = 'micro-share';
 
-},{}],252:[function(_dereq_,module,exports){
+},{}],253:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33202,7 +33240,7 @@ var MarketsFilterSort = function MarketsFilterSort(p) {
 
 exports.default = MarketsFilterSort;
 
-},{"./../../common/components/dropdown":214,"./markets-search":256,"react":195}],253:[function(_dereq_,module,exports){
+},{"./../../common/components/dropdown":215,"./markets-search":257,"react":195}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33272,7 +33310,7 @@ MarketsHeaders.propTypes = {
 
 exports.default = MarketsHeaders;
 
-},{"./../../link/components/link":233,"./markets-filter-sort":252,"react":195}],254:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./markets-filter-sort":253,"react":195}],255:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33317,7 +33355,7 @@ var MarketsList = function MarketsList(p) {
 
 exports.default = MarketsList;
 
-},{"./../../market/components/market-preview":247,"./markets-pagination":255,"react":195}],255:[function(_dereq_,module,exports){
+},{"./../../market/components/market-preview":248,"./markets-pagination":256,"react":195}],256:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33392,7 +33430,7 @@ var MarketsPagination = function MarketsPagination(p) {
 
 exports.default = MarketsPagination;
 
-},{"./../../link/components/link":233,"react":195}],256:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"react":195}],257:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33434,7 +33472,7 @@ MarketsSearch.propTypes = {
 
 exports.default = MarketsSearch;
 
-},{"./../../common/components/input":217,"react":195}],257:[function(_dereq_,module,exports){
+},{"./../../common/components/input":218,"react":195}],258:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33491,7 +33529,7 @@ MarketsView.propTypes = {
 
 exports.default = MarketsView;
 
-},{"./../../branch/components/branch":208,"./markets-headers":253,"./markets-list":254,"react":195}],258:[function(_dereq_,module,exports){
+},{"./../../branch/components/branch":208,"./markets-headers":254,"./markets-list":255,"react":195}],259:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33508,7 +33546,7 @@ var SCALAR = exports.SCALAR = 'scalar';
 
 var MARKET_TYPES = exports.MARKET_TYPES = (_MARKET_TYPES = {}, _defineProperty(_MARKET_TYPES, BINARY, BINARY), _defineProperty(_MARKET_TYPES, CATEGORICAL, CATEGORICAL), _defineProperty(_MARKET_TYPES, SCALAR, SCALAR), _MARKET_TYPES);
 
-},{}],259:[function(_dereq_,module,exports){
+},{}],260:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33517,7 +33555,7 @@ Object.defineProperty(exports, "__esModule", {
 var FAVORITES = exports.FAVORITES = 'favorites';
 var PENDING_REPORTS = exports.PENDING_REPORTS = 'pending reports';
 
-},{}],260:[function(_dereq_,module,exports){
+},{}],261:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33624,7 +33662,7 @@ Market.propTypes = {
 
 exports.default = Market;
 
-},{"./../../common/components/value-date":220,"./../../common/components/value-denomination":221,"react":195}],261:[function(_dereq_,module,exports){
+},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195}],262:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33737,7 +33775,7 @@ Position.propTypes = {
 
 exports.default = Position;
 
-},{"./../../common/components/value-denomination":221,"./../../markets/constants/market-types":258,"react":195}],262:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":259,"react":195}],263:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33812,7 +33850,7 @@ PositionsMarketOverview.propTypes = {
 
 exports.default = PositionsMarketOverview;
 
-},{"./../../common/components/value-denomination":221,"react":195}],263:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":222,"react":195}],264:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33894,7 +33932,7 @@ var Positions = function Positions(p) {
 
 exports.default = Positions;
 
-},{"./../../link/components/link":233,"./my-position":261,"react":195,"react-tooltip":49}],264:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./my-position":262,"react":195,"react-tooltip":49}],265:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34033,7 +34071,7 @@ var Report = function Report(p) {
 
 exports.default = Report;
 
-},{"./../../common/components/value-date":220,"./../../common/components/value-denomination":221,"react":195,"react-tooltip":49}],265:[function(_dereq_,module,exports){
+},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195,"react-tooltip":49}],266:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34075,7 +34113,7 @@ var OrderBookHeader = function OrderBookHeader() {
 
 exports.default = OrderBookHeader;
 
-},{"react":195}],266:[function(_dereq_,module,exports){
+},{"react":195}],267:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34134,7 +34172,7 @@ var OrderBookRowSide = function OrderBookRowSide(p) {
 
 exports.default = OrderBookRowSide;
 
-},{"./../../../utils/get-value":283,"./../../../utils/set-share-denomination":285,"./../../common/components/null-state-message":218,"./../../common/components/value-denomination":221,"react":195}],267:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../../utils/set-share-denomination":286,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"react":195}],268:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34168,7 +34206,7 @@ var OrderBookRows = function OrderBookRows(p) {
 
 exports.default = OrderBookRows;
 
-},{"./order-book-row-side":266,"react":195}],268:[function(_dereq_,module,exports){
+},{"./order-book-row-side":267,"react":195}],269:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34224,7 +34262,7 @@ var OrderBook = function OrderBook(p) {
 
 exports.default = OrderBook;
 
-},{"./../../common/components/em-dash":215,"./../../markets/constants/market-types":258,"./order-book-header":265,"./order-book-rows":267,"react":195}],269:[function(_dereq_,module,exports){
+},{"./../../common/components/em-dash":216,"./../../markets/constants/market-types":259,"./order-book-header":266,"./order-book-rows":268,"react":195}],270:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34292,7 +34330,7 @@ var OutcomeRow = function OutcomeRow(p) {
 
 exports.default = OutcomeRow;
 
-},{"./../../../utils/get-value":283,"./../../../utils/set-share-denomination":285,"./../../common/components/value-denomination":221,"./../../link/components/link":233,"./../../markets/constants/market-types":258,"classnames":1,"react":195}],270:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../../utils/set-share-denomination":286,"./../../common/components/value-denomination":222,"./../../link/components/link":234,"./../../markets/constants/market-types":259,"classnames":1,"react":195}],271:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34389,7 +34427,7 @@ var OutcomeTradeAction = function (_Component) {
 
 exports.default = OutcomeTradeAction;
 
-},{"react":195}],271:[function(_dereq_,module,exports){
+},{"react":195}],272:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34484,7 +34522,7 @@ var OutcomeTradeSummary = function OutcomeTradeSummary(p) {
 
 exports.default = OutcomeTradeSummary;
 
-},{"./../../../utils/get-value":283,"./../../common/components/value-denomination":221,"react":195}],272:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../common/components/value-denomination":222,"react":195}],273:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34580,7 +34618,7 @@ var OutcomeTrade = function (_Component) {
 
 			var trade = (0, _getValue2.default)(this.props, 'selectedOutcome.trade');
 			if (trade && trade.updateTradeOrder) {
-				trade.updateTradeOrder(undefined, undefined, selectedNav);
+				trade.updateTradeOrder(null, null, selectedNav);
 			}
 		}
 	}, {
@@ -34589,7 +34627,7 @@ var OutcomeTrade = function (_Component) {
 			var trade = (0, _getValue2.default)(this.props, 'selectedOutcome.trade');
 			var valueDenominated = denominateShares(value, this.props.selectedShareDenomination, _shareDenominations.SHARE);
 
-			trade.updateTradeOrder(valueDenominated, undefined, trade.side);
+			trade.updateTradeOrder(valueDenominated, null, trade.side);
 		}
 	}, {
 		key: 'render',
@@ -34661,7 +34699,7 @@ var OutcomeTrade = function (_Component) {
 							type: 'number',
 							value: trade.limitPrice,
 							onChange: function onChange(value) {
-								trade.updateTradeOrder(undefined, value, trade.side);
+								trade.updateTradeOrder(null, value, trade.side);
 							}
 						})
 					)
@@ -34736,7 +34774,7 @@ function generateShareInputPlaceholder(denomination) {
 	}
 }
 
-},{"./../../../utils/get-value":283,"./../../common/components/component-nav":212,"./../../common/components/em-dash":215,"./../../common/components/input":217,"./../../market/constants/share-denominations":251,"./../../markets/constants/market-types":258,"./../constants/trade-types":274,"./outcome-trade-action":270,"./outcome-trade-summary":271,"react":195}],273:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":284,"./../../common/components/component-nav":213,"./../../common/components/em-dash":216,"./../../common/components/input":218,"./../../market/constants/share-denominations":252,"./../../markets/constants/market-types":259,"./../constants/trade-types":275,"./outcome-trade-action":271,"./outcome-trade-summary":272,"react":195}],274:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34809,7 +34847,7 @@ var Outcomes = function Outcomes(p) {
 
 exports.default = Outcomes;
 
-},{"./../../markets/constants/market-types":258,"./outcome-row":269,"react":195}],274:[function(_dereq_,module,exports){
+},{"./../../markets/constants/market-types":259,"./outcome-row":270,"react":195}],275:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34818,7 +34856,7 @@ Object.defineProperty(exports, "__esModule", {
 var BUY = exports.BUY = 'buy';
 var SELL = exports.SELL = 'sell';
 
-},{}],275:[function(_dereq_,module,exports){
+},{}],276:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34875,7 +34913,7 @@ var PortfolioMarkets = function PortfolioMarkets(p) {
 
 exports.default = PortfolioMarkets;
 
-},{"./../../link/components/link":233,"./../../my-markets/components/my-market":260,"react":195}],276:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./../../my-markets/components/my-market":261,"react":195}],277:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34957,7 +34995,7 @@ PortfolioView.propTypes = {
 
 exports.default = PortfolioView;
 
-},{"./../../app/constants/views":204,"./../../common/components/tab-navigation":219,"./markets":275,"./positions":277,"./reports":278,"react":195}],277:[function(_dereq_,module,exports){
+},{"./../../app/constants/views":204,"./../../common/components/tab-navigation":220,"./markets":276,"./positions":278,"./reports":279,"react":195}],278:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35017,7 +35055,7 @@ var PortfolioPositions = function PortfolioPositions(p) {
 
 exports.default = PortfolioPositions;
 
-},{"./../../link/components/link":233,"./../../my-positions/components/my-positions":263,"./../../my-positions/components/my-positions-market-overview":262,"react":195}],278:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./../../my-positions/components/my-positions":264,"./../../my-positions/components/my-positions-market-overview":263,"react":195}],279:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35095,7 +35133,7 @@ var PortfolioReports = function PortfolioReports(p) {
 
 exports.default = PortfolioReports;
 
-},{"./../../link/components/link":233,"./../../my-reports/components/my-report":264,"react":195,"react-tooltip":49}],279:[function(_dereq_,module,exports){
+},{"./../../link/components/link":234,"./../../my-reports/components/my-report":265,"react":195,"react-tooltip":49}],280:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35609,7 +35647,7 @@ Transaction.propTypes = {
 
 exports.default = Transaction;
 
-},{"./../../auth/constants/auth-types":207,"./../../common/components/value-denomination":221,"./../../common/components/value-timestamp":222,"./../../link/components/link":233,"./../../markets/constants/market-types":258,"./../constants/types":282,"classnames":1,"react":195}],280:[function(_dereq_,module,exports){
+},{"./../../auth/constants/auth-types":207,"./../../common/components/value-denomination":222,"./../../common/components/value-timestamp":223,"./../../link/components/link":234,"./../../markets/constants/market-types":259,"./../constants/types":283,"classnames":1,"react":195}],281:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35658,7 +35696,7 @@ TransactionsPage.propTypes = {
 
 exports.default = TransactionsPage;
 
-},{"./transactions":281,"react":195}],281:[function(_dereq_,module,exports){
+},{"./transactions":282,"react":195}],282:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35706,7 +35744,7 @@ var Transactions = function Transactions(p) {
 // };
 exports.default = Transactions;
 
-},{"./transaction":279,"react":195}],282:[function(_dereq_,module,exports){
+},{"./transaction":280,"react":195}],283:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35727,7 +35765,7 @@ var GENERATE_ORDER_BOOK = exports.GENERATE_ORDER_BOOK = 'generate_order_book';
 var CANCEL_ORDER = exports.CANCEL_ORDER = 'cancel_order';
 var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 
-},{}],283:[function(_dereq_,module,exports){
+},{}],284:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35745,7 +35783,7 @@ function getValue(obj, target) {
 
 exports.default = getValue;
 
-},{}],284:[function(_dereq_,module,exports){
+},{}],285:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35759,7 +35797,7 @@ exports.default = function (url) {
 	}
 };
 
-},{}],285:[function(_dereq_,module,exports){
+},{}],286:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35818,7 +35856,7 @@ function formatValue(value, amount) {
 
 exports.default = setShareDenomination;
 
-},{"./../modules/market/constants/share-denominations":251}],286:[function(_dereq_,module,exports){
+},{"./../modules/market/constants/share-denominations":252}],287:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
