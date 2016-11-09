@@ -31328,6 +31328,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Fixed button-not-clickable bug in create market workflow.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Fixed report panel component and links.  Reporting should now work with the re-skinned market detail page!'
 				),
 				_react2.default.createElement(
@@ -31860,12 +31865,16 @@ var MarketBasics = function MarketBasics(p) {
 				)
 			)
 		),
-		_react2.default.createElement(
+		p.marketLink ? _react2.default.createElement(
 			_link2.default,
 			_extends({}, p.marketLink, {
 				onClick: p.marketLink.onClick,
 				className: 'market-description'
 			}),
+			p.description
+		) : _react2.default.createElement(
+			'span',
+			{ className: 'market-description' },
 			p.description
 		),
 		_react2.default.createElement(_marketProperties2.default, p)
@@ -32923,7 +32932,7 @@ var MarketProperties = function MarketProperties(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'property-label' },
-					p.endDateLabel,
+					p.endDateLabel || 'End Date',
 					':'
 				),
 				_react2.default.createElement(_valueDate2.default, _extends({ className: 'property-value' }, p.endDate))
