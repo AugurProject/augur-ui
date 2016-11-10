@@ -28208,7 +28208,8 @@ var Routes = function Routes(p) {
 			{
 				viewProps = _extends({
 					activeView: p.activeView,
-					settings: p.settings
+					settings: p.settings,
+					branch: p.branch
 				}, p.portfolio);
 
 				return _react2.default.createElement(_portfolioView2.default, viewProps);
@@ -31320,7 +31321,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
-				'November 8, 2016'
+				'November 10, 2016'
 			),
 			_react2.default.createElement(
 				'ol',
@@ -31328,58 +31329,18 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed button-not-clickable bug in create market workflow.'
+					'Your reported outcome is now displayed in bright red text when you have committed, but not yet revealed, your report.  It displays a tooltip telling you that you must remember to log back in to reveal your report.  (After the report is revealed, the reported outcome text reverts to a normal color.)'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed report panel component and links.  Reporting should now work with the re-skinned market detail page!'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'The Feedback tab now sends user feedback to UserVoice, instead of Doorbell.io.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added penalizationCatchup to checkPeriod callback sequence for users who are multiple reporting cycles behind.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added a constant (all-ones) initialization vector to the encryptReport and decryptReport middleware functions if a salt argument is not supplied.  Although the report needs to be encrypted with its salt, the (separately) encrypted salt does not need its own random salt.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Removed refund macro from collectFees contract, since the transaction value must be accessed (and is expected to be non-zero) in the body of the method.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed sufficient value check in collectFees contract.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Automatically add (500K wei)*gasPrice of value to the collectFees transaction payload in augur.js.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed final report market page link in next-report-page.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed REP balance comparison at the beginning of check-period.'
+					'Began refactoring the monolithic checkPeriod method in augur.ks.  Set up mocks and stubs for unit testing.'
 				)
 			),
 			_react2.default.createElement(
 				'h3',
 				null,
-				'November 7, 2016'
+				'November 9, 2016'
 			),
 			_react2.default.createElement(
 				'ol',
@@ -31387,179 +31348,37 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
-					'Reskinned the trade (market detail) page.  There are a few minor bugs remaining but the trade page is fully functional and has an immensely improved look-and-feel!'
+					'Fixed the My Reports (Portfolio) display.'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed event description display for reveal-reports transactions.'
+					'Added reporting cycle information (cycle number and how many cycles ago) to the My Reports display.'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed the claim-proceeds action, which is the final bet-payout mechanism once markets are successfully reported on and closed.  This action was incorrectly firing claimMarketProceeds calls for some markets that were not yet closed.'
+					'Added a red thumbs-down "unethical" icon to the My Reports display.  This appears by your reported outcome if you report a market unethical.'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Added updateAssets and refreshMarkets calls after claim-proceeds completes successfully.'
+					'Removed the fees collected column from My Reports, since this information is not yet accessible.'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Reordered checkPeriod callback sequences to allow for full reporter catch-up even if their REP redistribution is behind by multiple periods.  Also added an extra check for REP redistribution to the submitReportHash onSuccess callback, which should short-circuit failing submitReportHash loops, if they are caused by not being caught up on penalizations/redistributions.'
+					'Fixed the Ask / Ask Q. headers (switched positions).'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Fixed chat messages display sent by users who do not have a name set (address-only).'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'November 6, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Reports from previous periods are now properly cleared from your pending reports.'
+					'Improved load-events-with-submitted-report workflow: fixed penalize log-lookup, load event/report data from the reports state instead of the blockchain (where possible), and removed not-yet-implemented backend function calls.'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Refactored commit-report and its associated methods, and rewrote / greatly expanded the commit-report test suite.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added a message to markets that have been reported on and closed out: "This market is closed. Reported outcome: X"'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Made a modified reporting test sequence script that goes through a second full reporting cycle on the same branch ID that has already successfully completed its initial reporting cycle.  Completed full test runs of both the initial reporting cycle sequence as well as multiple follow-up sequences.  These automated use-tests only use a single reporter, but the results are as expected for this reporter.  Next-up: automated reporting sequences using multiple accounts!'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Decoupled the UI reportingTestSetup method from its spawn-new-branch subroutine.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Refactored load-reports and associated methods.  load-reports is a group of functions that build the reports data structure (as well as update other related data) in the front-end.  They lookup what events you are required to report on, which of these you have already reported on, pull your encrypted report and salt from the chain (and decrypt them), lookup if you have submitted a report hash or plaintext report, collates this info and stows it in Redux (the front-end data store).  These methods did not have good unit test coverage (my fault -- they became more complicated over time and the tests did not keep up).  Since I have found multiple edge-case bugs over the past few days as I am user-testing reporting, I decided to take the time to pull these methods apart and added more thorough unit tests for them.  Coverage is now significantly improved for these methods.  (Note: to simplify mock creation for the unit tests, I split load-reports into several separate files/methods: load-reports, load-report, load-report-descriptors, and decrypt-reports.)'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'November 5, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed transaction failure (error 500) edge case that failed (nulled) without retrying the transaction, even if retryDroppedTxs was set to true.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added extra on-chain market ID lookup and loadMarketsInfo action for the case where a commit report action has been sent but the eventID field of the market selector has not yet been assigned.  As far as I can tell, the click-thru-to-next-report functionality is now working properly.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed scalar report outcome displays on transactions page.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added outcome names / IDs to transaction messages for commit report (submitReportHash) actions.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Fixed initial trade-in-each-market setup for augur.js reporting-sequence tests.'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'November 4, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added check that market outcome data has loaded before using it to calculate P/L.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Changed the tooltips in the market preview panel (in the main markets listing) to use click-to-show-and-hide tooltips, instead of hover-to-show, since hover is not available on mobile.  If these tooltips have the desired feel, the remainder of the tooltips can be converted to this form as well.  (There are only a few exceptions, in the case of elements that have both a tooltip and a click function.)'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Market titles in the main markets listing now link to the trade page.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Clicking on tags in the market preview panel (in the main markets listing) now works correctly.'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added Real ETH (i.e., testnet Ether) balance display to the sub-navbar.  Previously this was displayed as a popup when hovering over the transactions button on the main navbar, which did not make sense.  Real ETH is an important value for users to know and to distinguish from the play-money "ETH" used for trading (i.e., Ether IOU tokens which will be tradeable one-to-one for Ether when Augur is live, but which are simply play-money during beta).'
-				)
-			),
-			_react2.default.createElement(
-				'h3',
-				null,
-				'November 3, 2016'
-			),
-			_react2.default.createElement(
-				'ol',
-				null,
-				_react2.default.createElement(
-					'li',
-					null,
-					'Added ',
-					_react2.default.createElement(
-						'a',
-						{ href: 'https://github.com/wwayne/react-tooltip', className: 'link', target: '_blank', rel: 'noopener noreferrer' },
-						'react-tooltip'
-					),
-					' module, and converted all "title" fields in the UI to instead use proper tooltips.  (Values in title fields are not viewable on mobile.)'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Only add market description tooltips to the transactions display if a market description is truncated (to 100 characters).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Changed currency abbreviations on the Account page to match those used elsewhere in the UI (REP for Reputation, real ETH for real Ether, and ETH for Ether).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Changed the units for reporting cycle length display (was seconds).'
-				),
-				_react2.default.createElement(
-					'li',
-					null,
-					'Moved the Branch component to its own module.'
+					'Added minValue, maxValue, and numOutcomes to the getMarketsInfo (compositeGetters contract) return array, and updated augur.js bindings.  augur.js now assigns a type field (scalar, binary, categorical) to each market object in getMarketsInfo.'
 				)
 			),
 			p.marketsLink && _react2.default.createElement(
@@ -34183,40 +34002,74 @@ var Report = function Report(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'report-main-group-title-outcome' },
-					p.reported,
-					p.isReportEqual ? _react2.default.createElement(
+					!!p.isCommitted && !p.isRevealed && _react2.default.createElement(
+						'span',
+						{
+							className: 'report-committed',
+							'data-tip': 'You have successfully committed to this report. Remember to login to reveal the report!'
+						},
+						p.reported
+					),
+					!!p.isRevealed && _react2.default.createElement(
+						'span',
+						{ className: 'report-revealed' },
+						p.reported
+					),
+					!p.isRevealed && !p.isCommitted && _react2.default.createElement(
+						'span',
+						null,
+						p.reported
+					),
+					!!p.outcome && p.isReportEqual && _react2.default.createElement(
 						'span',
 						{
 							className: 'fa report-equal',
 							'data-tip': 'Your report matches the consensus outcome'
 						},
 						'\uF058'
-					) : _react2.default.createElement(
+					),
+					!!p.outcome && !p.isReportEqual && _react2.default.createElement(
 						'span',
 						{
 							className: 'fa report-unequal',
 							'data-tip': 'Your report does not match the consensus outcome'
 						},
 						'\uF057'
+					),
+					!!p.isUnethical && _react2.default.createElement(
+						'span',
+						{
+							className: 'fa report-unethical',
+							'data-tip': 'You reported that this market is unethical'
+						},
+						'\uF165'
 					)
+				)
+			),
+			_react2.default.createElement(
+				'div',
+				{ className: 'portfolio-pair' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'report-main-group-title' },
+					'cycle: '
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'report-main-group-title-outcome' },
+					p.period ? _react2.default.createElement(
+						'span',
+						{
+							'data-tip': p.branch.currentPeriod - p.period + ' reporting cycles ago'
+						},
+						p.period
+					) : '-'
 				)
 			)
 		),
 		_react2.default.createElement(
 			'div',
 			{ className: 'portfolio-group' },
-			_react2.default.createElement(
-				'div',
-				{ className: 'portfolio-pair' },
-				_react2.default.createElement(
-					'span',
-					{ className: 'title' },
-					'fees gain/loss'
-				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({
-					className: 'colorize'
-				}, p.feesEarned))
-			),
 			_react2.default.createElement(
 				'div',
 				{ className: 'portfolio-pair' },
@@ -34286,12 +34139,12 @@ var OrderBookHeader = function OrderBookHeader() {
 		_react2.default.createElement(
 			"span",
 			null,
-			"Ask"
+			"Ask Q."
 		),
 		_react2.default.createElement(
 			"span",
 			null,
-			"Ask Q"
+			"Ask"
 		)
 	);
 };
@@ -35143,7 +34996,7 @@ var PortfolioView = function PortfolioView(p) {
 			node = _react2.default.createElement(_markets2.default, p.markets);
 			break;
 		case _views.MY_REPORTS:
-			node = _react2.default.createElement(_reports2.default, p.reports);
+			node = _react2.default.createElement(_reports2.default, _extends({}, p.reports, { branch: p.branch }));
 			break;
 	}
 	return _react2.default.createElement(
@@ -35274,10 +35127,10 @@ var PortfolioReports = function PortfolioReports(p) {
 		!!p.reports && !!p.reports.length && p.reports.map(function (market) {
 			return _react2.default.createElement(
 				_link2.default,
-				_extends({ key: market.id }, market.marketLink),
+				_extends({ key: '' + market.marketId }, market.marketLink),
 				_react2.default.createElement(
 					'div',
-					{ key: market.id },
+					{ key: market.marketId },
 					_react2.default.createElement(
 						'span',
 						{ className: 'description' },
@@ -35302,7 +35155,7 @@ var PortfolioReports = function PortfolioReports(p) {
 					!!market && _react2.default.createElement(
 						'article',
 						{ className: 'portfolio-list' },
-						_react2.default.createElement(_myReport2.default, market)
+						_react2.default.createElement(_myReport2.default, _extends({}, market, { branch: p.branch }))
 					)
 				)
 			);
