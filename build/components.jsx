@@ -31329,12 +31329,17 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'Added the first big batch of trading unit tests for the main augur repository.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
 					'Your reported outcome is now displayed in bright red text when you have committed, but not yet revealed, your report.  It displays a tooltip telling you that you must remember to log back in to reveal your report.  (After the report is revealed, the reported outcome text reverts to a normal color.)'
 				),
 				_react2.default.createElement(
 					'li',
 					null,
-					'Began refactoring the monolithic checkPeriod method in augur.ks.  Set up mocks and stubs for unit testing.'
+					'Began refactoring the monolithic checkPeriod method in augur.js.  Set up mocks and stubs for unit testing.'
 				)
 			),
 			_react2.default.createElement(
