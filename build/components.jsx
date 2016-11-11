@@ -31457,10 +31457,12 @@ var MarketActive = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (MarketActive.__proto__ || Object.getPrototypeOf(MarketActive)).call(this, props));
 
 		_this.state = {
-			selectedOutcome: _this.props.market.outcomes[0]
+			selectedOutcome: _this.props.market.outcomes[0],
+			selectedTradeSide: null
 		};
 
 		_this.updateSelectedOutcome = _this.updateSelectedOutcome.bind(_this);
+		_this.updateSelectedTradeSide = _this.updateSelectedTradeSide.bind(_this);
 		_this.determineDefaultShareDenomination = _this.determineDefaultShareDenomination.bind(_this);
 		return _this;
 	}
@@ -31490,6 +31492,11 @@ var MarketActive = function (_Component) {
 		key: 'updateSelectedOutcome',
 		value: function updateSelectedOutcome(selectedOutcome) {
 			this.setState({ selectedOutcome: selectedOutcome });
+		}
+	}, {
+		key: 'updateSelectedTradeSide',
+		value: function updateSelectedTradeSide(selectedTradeSide) {
+			this.setState({ selectedTradeSide: selectedTradeSide });
 		}
 
 		// NOTE -- only called if a market is of type SCALAR from `componentWillMount`
@@ -31545,6 +31552,7 @@ var MarketActive = function (_Component) {
 					_react2.default.createElement(_orderBook2.default, {
 						marketType: marketType,
 						outcome: s.selectedOutcome,
+						selectedTradeSide: s.selectedTradeSide,
 						selectedShareDenomination: selectedShareDenomination
 					}),
 					p.logged && _react2.default.createElement(_outcomeTrade2.default, {
@@ -31554,7 +31562,8 @@ var MarketActive = function (_Component) {
 						submitTrade: function submitTrade(id) {
 							_submitTrade(id);
 						},
-						selectedShareDenomination: selectedShareDenomination
+						selectedShareDenomination: selectedShareDenomination,
+						updateSelectedTradeSide: this.updateSelectedTradeSide
 					})
 				),
 				p.logged && _react2.default.createElement(
@@ -31572,7 +31581,8 @@ var MarketActive = function (_Component) {
 						submitTrade: function submitTrade(id) {
 							_submitTrade(id);
 						},
-						selectedShareDenomination: selectedShareDenomination
+						selectedShareDenomination: selectedShareDenomination,
+						updateSelectedTradeSide: this.updateSelectedTradeSide
 					})
 				)
 			);
@@ -31667,24 +31677,6 @@ var MarketBasics = function MarketBasics(p) {
 						'i',
 						null,
 						'\uF006'
-					)
-				),
-				p.isUpdaterVisible && _react2.default.createElement(
-					'div',
-					{ className: 'updater' },
-					'Market data loaded ',
-					p.marketDataAge.lastUpdatedBefore,
-					_react2.default.createElement(
-						'button',
-						{
-							className: 'button',
-							disabled: p.marketDataAge.isMarketDataLoading,
-							'data-tip': p.marketDataAge.isMarketDataLoading ? 'Loading' : 'Reload market data',
-							onClick: function onClick() {
-								return p.updateData(p.id);
-							}
-						},
-						'Reload'
 					)
 				)
 			)
@@ -31943,15 +31935,38 @@ var _valueDate = _dereq_('./../../common/components/value-date');
 
 var _valueDate2 = _interopRequireDefault(_valueDate);
 
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketDetails = function MarketDetails(p) {
+	var outcomeName = (0, _getValue2.default)(p, 'result.outcomeName');
+
 	return _react2.default.createElement(
 		'div',
 		{ className: 'market-details' },
 		_react2.default.createElement(
 			'ul',
 			{ className: 'properties' },
+			outcomeName && _react2.default.createElement(
+				'li',
+				{ className: 'property outcome' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-label' },
+					'Result'
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-value' },
+					outcomeName,
+					' (',
+					_react2.default.createElement(_valueDenomination2.default, p.result.proportionCorrect),
+					')'
+				)
+			),
 			p.author != null && _react2.default.createElement(
 				'li',
 				{ className: 'property author' },
@@ -31966,7 +31981,7 @@ var MarketDetails = function MarketDetails(p) {
 					p.author
 				)
 			),
-			p.outstandingShares != null && _react2.default.createElement(
+			p.isOpen && p.outstandingShares != null && _react2.default.createElement(
 				'li',
 				{ className: 'property outstanding-shares' },
 				_react2.default.createElement(
@@ -32088,7 +32103,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195}],241:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32128,7 +32143,7 @@ var MarketDataHeader = function MarketDataHeader(p) {
 		_react2.default.createElement(
 			'div',
 			{ className: 'market-header-actions' },
-			p.marketType === _marketTypes.SCALAR && !p.isPendingReport && _react2.default.createElement(_dropdown2.default, {
+			p.type === _marketTypes.SCALAR && !p.isPendingReport && _react2.default.createElement(_dropdown2.default, {
 				'default': p.selectedShareDenomination,
 				options: p.shareDenominations,
 				onChange: function onChange(denomination) {
@@ -32469,7 +32484,7 @@ var MarketPositionsRow = function MarketPositionsRow(p) {
 	var outcomeName = (0, _getValue2.default)(p, 'outcome.name');
 	var lastPricePercent = (0, _getValue2.default)(p, 'outcome.lastPricePercent.rounded');
 	var purchasePrice = (0, _getValue2.default)(p, 'outcome.position.purchasePrice.formatted');
-	var lastPrice = (0, _getValue2.default)(p, 'outcome.position.lastPrice.formatted');
+	var lastPrice = (0, _getValue2.default)(p, 'outcome.lastPrice.formatted');
 	var realizedNet = (0, _getValue2.default)(p, 'outcome.position.realizedNet.formatted');
 	var unrealizedNet = (0, _getValue2.default)(p, 'outcome.position.unrealizedNet.formatted');
 	var totalNet = (0, _getValue2.default)(p, 'outcome.position.totalNet.formatted');
@@ -32743,7 +32758,7 @@ var MarketProperties = function MarketProperties(p) {
 	return _react2.default.createElement(
 		'ul',
 		{ className: 'market-properties' },
-		!!p.endDate && _react2.default.createElement(
+		p.endDate && _react2.default.createElement(
 			'li',
 			{ className: 'property end-date' },
 			_react2.default.createElement(
@@ -32756,7 +32771,7 @@ var MarketProperties = function MarketProperties(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'property-label' },
-					p.endDateLabel || 'End Date',
+					p.isOpen && !p.isPendingReport ? p.endDateLabel || 'End Date' : 'Ended',
 					':'
 				),
 				_react2.default.createElement(_valueDate2.default, _extends({ className: 'property-value' }, p.endDate))
@@ -32958,13 +32973,21 @@ var MarketReported = function MarketReported(p) {
 	return _react2.default.createElement(
 		'article',
 		{ className: 'market-reported' },
-		_react2.default.createElement(_marketBasics2.default, _extends({}, p.market, {
-			isUpdaterVisible: true,
-			marketDataAge: p.marketDataAge,
-			updateData: p.marketDataUpdater.update,
-			updateIntervalSecs: p.marketDataUpdater.updateIntervalSecs
-		})),
-		_react2.default.createElement(_marketDetails2.default, _extends({ key: 'market-info' }, p.market))
+		_react2.default.createElement(
+			'div',
+			{ className: 'market-group' },
+			_react2.default.createElement(
+				'article',
+				{ className: 'market-reported-details' },
+				_react2.default.createElement(_marketBasics2.default, _extends({}, p.market, {
+					isUpdaterVisible: true,
+					marketDataAge: p.marketDataAge,
+					updateData: p.marketDataUpdater.update,
+					updateIntervalSecs: p.marketDataUpdater.updateIntervalSecs
+				})),
+				_react2.default.createElement(_marketDetails2.default, _extends({ key: 'market-info' }, p.market))
+			)
+		)
 	);
 };
 
@@ -33147,8 +33170,8 @@ var MarketView = function MarketView(p) {
 		'section',
 		{ id: 'market_view' },
 		!isAvailable && _react2.default.createElement(_nullStateMessage2.default, { message: nullMessage }),
-		isAvailable && isPendingReport && _react2.default.createElement(_marketReporting2.default, p),
 		isAvailable && isOpen && !isPendingReport && _react2.default.createElement(_marketActive2.default, p),
+		isAvailable && isPendingReport && _react2.default.createElement(_marketReporting2.default, p),
 		isAvailable && !isOpen && !isPendingReport && _react2.default.createElement(_marketReported2.default, p)
 	);
 };
@@ -34183,15 +34206,20 @@ var _setShareDenomination = _dereq_('./../../../utils/set-share-denomination');
 
 var _setShareDenomination2 = _interopRequireDefault(_setShareDenomination);
 
+var _tradeTypes = _dereq_('./../../outcomes/constants/trade-types');
+
+var _types = _dereq_('./../../transactions/constants/types');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var OrderBookRowSide = function OrderBookRowSide(p) {
 	var orders = (0, _getValue2.default)(p, 'orders');
 	var nullMessage = 'No Orders';
+	var shouldHighlight = p.type === _types.BID && p.selectedTradeSide === _tradeTypes.SELL || p.type !== _types.BID && p.selectedTradeSide === _tradeTypes.BUY;
 
 	return _react2.default.createElement(
 		'article',
-		{ className: 'order-book-row-side' },
+		{ className: 'order-book-row-side ' + (shouldHighlight ? 'order-book-row-side-trading' : '') },
 		!orders || !orders.length ? _react2.default.createElement(_nullStateMessage2.default, { message: nullMessage }) : _react2.default.createElement(
 			'div',
 			null,
@@ -34205,8 +34233,8 @@ var OrderBookRowSide = function OrderBookRowSide(p) {
 						key: i,
 						className: 'order-book-side-row not-selectable'
 					},
-					_react2.default.createElement(_valueDenomination2.default, { formatted: shares }),
-					_react2.default.createElement(_valueDenomination2.default, { formatted: price })
+					_react2.default.createElement(_valueDenomination2.default, { formatted: p.type === _types.BID ? shares : price }),
+					_react2.default.createElement(_valueDenomination2.default, { formatted: p.type === _types.BID ? price : shares })
 				);
 			})
 		)
@@ -34215,7 +34243,7 @@ var OrderBookRowSide = function OrderBookRowSide(p) {
 
 exports.default = OrderBookRowSide;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"react":195}],270:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"./../../outcomes/constants/trade-types":277,"./../../transactions/constants/types":287,"react":195}],270:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34230,6 +34258,8 @@ var _orderBookRowSide = _dereq_('./order-book-row-side');
 
 var _orderBookRowSide2 = _interopRequireDefault(_orderBookRowSide);
 
+var _types = _dereq_('./../../transactions/constants/types');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var OrderBookRows = function OrderBookRows(p) {
@@ -34237,19 +34267,22 @@ var OrderBookRows = function OrderBookRows(p) {
 		'article',
 		{ className: 'order-book-rows' },
 		_react2.default.createElement(_orderBookRowSide2.default, {
+			type: _types.BID,
 			orders: p.bids,
-			selectedShareDenomination: p.selectedShareDenomination
+			selectedShareDenomination: p.selectedShareDenomination,
+			selectedTradeSide: p.selectedTradeSide
 		}),
 		_react2.default.createElement(_orderBookRowSide2.default, {
 			orders: p.asks,
-			selectedShareDenomination: p.selectedShareDenomination
+			selectedShareDenomination: p.selectedShareDenomination,
+			selectedTradeSide: p.selectedTradeSide
 		})
 	);
 };
 
 exports.default = OrderBookRows;
 
-},{"./order-book-row-side":269,"react":195}],271:[function(_dereq_,module,exports){
+},{"./../../transactions/constants/types":287,"./order-book-row-side":269,"react":195}],271:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34282,7 +34315,7 @@ var OrderBook = function OrderBook(p) {
 	return _react2.default.createElement(
 		'article',
 		{ className: 'order-book' },
-		!p.marketType === _marketTypes.SCALAR ? _react2.default.createElement(
+		p.marketType !== _marketTypes.SCALAR ? _react2.default.createElement(
 			'h3',
 			null,
 			'Order Book ',
@@ -34298,6 +34331,7 @@ var OrderBook = function OrderBook(p) {
 		_react2.default.createElement(_orderBookRows2.default, {
 			bids: p.outcome.orderBook.bids,
 			asks: p.outcome.orderBook.asks,
+			selectedTradeSide: p.selectedTradeSide,
 			selectedShareDenomination: p.selectedShareDenomination
 		})
 	);
@@ -34658,6 +34692,8 @@ var OutcomeTrade = function (_Component) {
 		key: 'updateSelectedNav',
 		value: function updateSelectedNav(selectedNav) {
 			this.setState({ selectedNav: selectedNav });
+			console.log('this -- ', this);
+			this.props.updateSelectedTradeSide(selectedNav);
 
 			var trade = (0, _getValue2.default)(this.props, 'selectedOutcome.trade');
 			if (trade && trade.updateTradeOrder) {
@@ -34692,7 +34728,7 @@ var OutcomeTrade = function (_Component) {
 			return _react2.default.createElement(
 				'article',
 				{ className: 'outcome-trade' },
-				!p.marketType === _marketTypes.SCALAR ? _react2.default.createElement(
+				p.marketType !== _marketTypes.SCALAR ? _react2.default.createElement(
 					'h3',
 					null,
 					'Create Order ',
@@ -34728,6 +34764,7 @@ var OutcomeTrade = function (_Component) {
 							value: s.sharesDenominated,
 							min: '0',
 							max: s.maxSharesDenominated,
+							step: '0.1',
 							onChange: function onChange(value) {
 								_this2.handleSharesInput(value);
 							}
@@ -34741,6 +34778,8 @@ var OutcomeTrade = function (_Component) {
 							placeholder: 'Price',
 							type: 'number',
 							value: trade.limitPrice,
+							step: '0.1',
+							max: p.maxValue,
 							onChange: function onChange(value) {
 								trade.updateTradeOrder(null, value, trade.side);
 							}
@@ -34767,7 +34806,8 @@ exports.default = OutcomeTrade;
 
 
 OutcomeTrade.propTypes = {
-	selectedShareDenomination: _react.PropTypes.string
+	selectedShareDenomination: _react.PropTypes.string,
+	updateSelectedTradeSide: _react.PropTypes.function
 };
 
 function denominateShares(shares, fromDenomination, toDenomination) {
