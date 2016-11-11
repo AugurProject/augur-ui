@@ -27718,43 +27718,38 @@ var AppComponent = function (_Component) {
 			isSideBarAllowed: false,
 			isSideBarCollapsed: false,
 			isChatCollapsed: true,
-			doScrollTop: false
+			doScrollTop: false,
+			currentRoute: null
 		};
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 
-		_this.shouldDisplaySideBar = _this.shouldDisplaySideBar.bind(_this);
 		_this.toggleChat = _this.toggleChat.bind(_this);
+		_this.setSidebarAllowed = _this.setSidebarAllowed.bind(_this);
 		return _this;
 	}
 
 	_createClass(AppComponent, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			this.shouldDisplaySideBar();
-		}
-	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
 			(0, _scrollTopOnChange2.default)(this.props.url);
-			this.shouldDisplaySideBar();
 		}
-	}, {
-		key: 'shouldDisplaySideBar',
-		value: function shouldDisplaySideBar() {
-			var currentRoute = (0, _routes2.default)(this.props); // eslint-disable-line new-cap
 
-			if (currentRoute.props.sideBarAllowed) {
-				this.setState({ isSideBarAllowed: true });
-			} else {
-				this.setState({ isSideBarAllowed: false });
-			}
+		// Sidebar display related methods
+
+	}, {
+		key: 'setSidebarAllowed',
+		value: function setSidebarAllowed(isSideBarAllowed) {
+			this.setState({ isSideBarAllowed: isSideBarAllowed });
 		}
 	}, {
 		key: 'toggleSideBar',
 		value: function toggleSideBar() {
 			this.setState({ isSideBarCollapsed: !this.state.isSideBarCollapsed });
 		}
+
+		// chat display
+
 	}, {
 		key: 'toggleChat',
 		value: function toggleChat() {
@@ -27835,7 +27830,9 @@ var AppComponent = function (_Component) {
 									{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
 									p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
 								),
-								_react2.default.createElement(_routes2.default, p)
+								_react2.default.createElement(_routes2.default, _extends({}, p, {
+									setSidebarAllowed: this.setSidebarAllowed
+								}))
 							)
 						)
 					),
@@ -28118,6 +28115,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -28162,119 +28161,172 @@ var _getValue = _dereq_('./../../../utils/get-value');
 
 var _getValue2 = _interopRequireDefault(_getValue);
 
+var _shouldComponentUpdatePure = _dereq_('./../../../utils/should-component-update-pure');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Routes = function Routes(p) {
-	var viewProps = null;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	switch (p.activeView) {
-		case _authTypes.REGISTER:
-		case _authTypes.LOGIN:
-		case _authTypes.IMPORT:
-		case _authTypes.LOGOUT:
-			{
-				viewProps = {
-					authForm: p.authForm
-				};
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-				return _react2.default.createElement(_authView2.default, viewProps);
-			}
-		case _views.ACCOUNT:
-			{
-				viewProps = {
-					loginMessageLink: p.links.loginMessageLink,
-					account: p.loginAccount,
-					settings: p.settings,
-					onUpdateSettings: p.loginAccount.onUpdateAccountSettings,
-					onChangePass: p.loginAccount.onChangePass,
-					authLink: p.links && p.links.authLink || null,
-					onAirbitzManageAccount: p.loginAccount.onAirbitzManageAccount
-				};
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-				return _react2.default.createElement(_accountView2.default, viewProps);
-			}
-		case _views.TRANSACTIONS:
-			{
-				viewProps = {
-					transactions: p.transactions,
-					transactionsTotals: p.transactionsTotals
-				};
+var Routes = function (_Component) {
+	_inherits(Routes, _Component);
 
-				return _react2.default.createElement(_transactionsView2.default, viewProps);
-			}
-		case _views.MY_POSITIONS:
-		case _views.MY_MARKETS:
-		case _views.MY_REPORTS:
-			{
-				viewProps = _extends({
-					activeView: p.activeView,
-					settings: p.settings,
-					branch: p.branch
-				}, p.portfolio);
+	function Routes(props) {
+		_classCallCheck(this, Routes);
 
-				return _react2.default.createElement(_portfolioView2.default, viewProps);
-			}
-		case _views.LOGIN_MESSAGE:
-			{
-				viewProps = {
-					marketsLink: p.links && p.links.marketsLink || null
-				};
+		var _this = _possibleConstructorReturn(this, (Routes.__proto__ || Object.getPrototypeOf(Routes)).call(this, props));
 
-				return _react2.default.createElement(_loginMessageView2.default, viewProps);
-			}
-		case _views.MAKE:
-			{
-				viewProps = {
-					createMarketForm: p.createMarketForm
-				};
+		_this.state = {
+			viewProps: null,
+			viewComponent: null
+		};
 
-				return _react2.default.createElement(_createMarketView2.default, viewProps);
-			}
-		case _views.M:
-			{
-				var logged = (0, _getValue2.default)(p, 'loginAccount.address');
-
-				viewProps = {
-					logged: logged,
-					market: p.market,
-					settings: p.settings,
-					marketDataNavItems: p.marketDataNavItems,
-					marketUserDataNavItems: p.marketUserDataNavItems,
-					marketDataAge: p.marketDataAge,
-					selectedOutcome: p.selectedOutcome,
-					orderCancellation: p.orderCancellation,
-					marketDataUpdater: p.marketDataUpdater,
-					numPendingReports: p.marketsTotals.numPendingReports,
-					isTradeCommitLocked: p.tradeCommitLock.isLocked,
-					scalarShareDenomination: p.scalarShareDenomination,
-					marketReportingNavItems: p.marketReportingNavItems
-				};
-
-				return _react2.default.createElement(_marketView2.default, viewProps);
-			}
-		default:
-			{
-				viewProps = {
-					sideBarAllowed: true,
-					loginAccount: p.loginAccount,
-					createMarketLink: (p.links || {}).createMarketLink,
-					markets: p.markets,
-					marketsHeader: p.marketsHeader,
-					favoriteMarkets: p.favoriteMarkets,
-					pagination: p.pagination,
-					filterSort: p.filterSort,
-					keywords: p.keywords,
-					branch: p.branch
-				};
-
-				return _react2.default.createElement(_marketsView2.default, viewProps);
-			}
+		_this.shouldComponentUpdate = _shouldComponentUpdatePure.shouldComponentUpdateOnStateChangeOnly;
+		_this.handleRouting = _this.handleRouting.bind(_this);
+		return _this;
 	}
-};
+
+	_createClass(Routes, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.handleRouting(this.props);
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			this.handleRouting(nextProps);
+		}
+	}, {
+		key: 'handleRouting',
+		value: function handleRouting(p) {
+			var viewProps = void 0;
+			var viewComponent = void 0;
+
+			switch (p.activeView) {
+				case _authTypes.REGISTER:
+				case _authTypes.LOGIN:
+				case _authTypes.IMPORT:
+				case _authTypes.LOGOUT:
+					viewProps = {
+						authForm: p.authForm
+					};
+					viewComponent = _react2.default.createElement(_authView2.default, viewProps);
+					break;
+				case _views.ACCOUNT:
+					viewProps = {
+						loginMessageLink: p.links.loginMessageLink,
+						account: p.loginAccount,
+						settings: p.settings,
+						onUpdateSettings: p.loginAccount.onUpdateAccountSettings,
+						onChangePass: p.loginAccount.onChangePass,
+						authLink: p.links && p.links.authLink || null,
+						onAirbitzManageAccount: p.loginAccount.onAirbitzManageAccount
+					};
+					viewComponent = _react2.default.createElement(_accountView2.default, viewProps);
+					break;
+				case _views.TRANSACTIONS:
+					viewProps = {
+						transactions: p.transactions,
+						transactionsTotals: p.transactionsTotals
+					};
+					viewComponent = _react2.default.createElement(_transactionsView2.default, viewProps);
+					break;
+				case _views.MY_POSITIONS:
+				case _views.MY_MARKETS:
+				case _views.MY_REPORTS:
+					{
+						viewProps = _extends({
+							activeView: p.activeView,
+							settings: p.settings,
+							branch: p.branch
+						}, p.portfolio);
+						viewComponent = _react2.default.createElement(_portfolioView2.default, viewProps);
+						break;
+					}
+				case _views.LOGIN_MESSAGE:
+					{
+						viewProps = {
+							marketsLink: p.links && p.links.marketsLink || null
+						};
+						viewComponent = _react2.default.createElement(_loginMessageView2.default, viewProps);
+						break;
+					}
+				case _views.MAKE:
+					{
+						viewProps = {
+							createMarketForm: p.createMarketForm
+						};
+						viewComponent = _react2.default.createElement(_createMarketView2.default, viewProps);
+						break;
+					}
+				case _views.M:
+					{
+						viewProps = {
+							logged: (0, _getValue2.default)(p, 'loginAccount.address'),
+							market: p.market,
+							settings: p.settings,
+							marketDataNavItems: p.marketDataNavItems,
+							marketUserDataNavItems: p.marketUserDataNavItems,
+							marketDataAge: p.marketDataAge,
+							selectedOutcome: p.selectedOutcome,
+							orderCancellation: p.orderCancellation,
+							marketDataUpdater: p.marketDataUpdater,
+							numPendingReports: p.marketsTotals.numPendingReports,
+							isTradeCommitLocked: p.tradeCommitLock.isLocked,
+							scalarShareDenomination: p.scalarShareDenomination,
+							marketReportingNavItems: p.marketReportingNavItems
+						};
+						viewComponent = _react2.default.createElement(_marketView2.default, viewProps);
+						break;
+					}
+				default:
+					{
+						viewProps = {
+							isSideBarAllowed: true,
+							loginAccount: p.loginAccount,
+							createMarketLink: (p.links || {}).createMarketLink,
+							markets: p.markets,
+							marketsHeader: p.marketsHeader,
+							favoriteMarkets: p.favoriteMarkets,
+							pagination: p.pagination,
+							filterSort: p.filterSort,
+							keywords: p.keywords,
+							branch: p.branch
+						};
+						viewComponent = _react2.default.createElement(_marketsView2.default, viewProps);
+					}
+			}
+
+			if (viewProps.isSideBarAllowed) {
+				p.setSidebarAllowed(true);
+			} else {
+				p.setSidebarAllowed(false);
+			}
+
+			this.setState({ viewProps: viewProps, viewComponent: viewComponent });
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var s = this.state;
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				s.viewComponent
+			);
+		}
+	}]);
+
+	return Routes;
+}(_react.Component);
 
 exports.default = Routes;
 
-},{"./../../../utils/get-value":288,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":253,"./../../markets/components/markets-view":260,"./../../portfolio/components/portfolio-view":279,"./../../transactions/components/transactions-view":285,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../../utils/should-component-update-pure":291,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":253,"./../../markets/components/markets-view":260,"./../../portfolio/components/portfolio-view":279,"./../../transactions/components/transactions-view":285,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36292,16 +36344,23 @@ exports.default = function (nextProps, nextState) {
 };
 
 exports.shouldComponentUpdateLog = shouldComponentUpdateLog;
+exports.shouldComponentUpdateOnStateChangeOnly = shouldComponentUpdateOnStateChangeOnly;
 function shouldComponentUpdateLog(nextProps, nextState) {
 	return isShallowUnEqual(nextProps, this.props, true) || isShallowUnEqual(nextState, this.state, true);
 }
 
+function shouldComponentUpdateOnStateChangeOnly(nextProps, nextState) {
+	return isShallowUnEqual(nextState, this.state);
+}
+
 function isShallowUnEqual(obj1, obj2, log) {
+	// both arguments reference the same object
 	if (obj1 === obj2) {
 		return false;
 	}
 
-	if ((typeof obj1 === 'undefined' ? 'undefined' : _typeof(obj1)) !== 'object' || obj1 === null || (typeof obj2 === 'undefined' ? 'undefined' : _typeof(obj2)) !== 'object' || obj2 === null) {
+	// arguments are either not objects or undefined/null
+	if ((typeof obj1 === 'undefined' ? 'undefined' : _typeof(obj1)) !== 'object' || obj1 == null || (typeof obj2 === 'undefined' ? 'undefined' : _typeof(obj2)) !== 'object' || obj2 == null) {
 		return true;
 	}
 
@@ -36309,17 +36368,20 @@ function isShallowUnEqual(obj1, obj2, log) {
 	var keysB = Object.keys(obj2);
 	var keysALen = keysA.length;
 
+	// keys don't match
 	if (keysALen !== keysB.length) {
 		return true;
 	}
 
 	for (var i = 0; i < keysALen; i++) {
+		// actual values are different + not functions
 		if (obj1[keysA[i]] !== obj2[keysA[i]] && typeof obj1[keysA[i]] !== 'function') {
 			log && console.log('------->', keysA[i], obj1[keysA[i]], obj2[keysA[i]]);
 			return true;
 		}
 	}
 
+	// nothing needs to be updated
 	return false;
 }
 
