@@ -34167,12 +34167,12 @@ var OrderBookHeader = function OrderBookHeader() {
 		_react2.default.createElement(
 			"span",
 			null,
-			"Ask Q."
+			"Ask"
 		),
 		_react2.default.createElement(
 			"span",
 			null,
-			"Ask"
+			"Ask Q."
 		)
 	);
 };
