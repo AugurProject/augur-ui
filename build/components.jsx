@@ -28257,7 +28257,8 @@ var Routes = function (_Component) {
 				case _views.MAKE:
 					{
 						viewProps = {
-							createMarketForm: p.createMarketForm
+							createMarketForm: p.createMarketForm,
+							scalarShareDenomination: p.scalarShareDenomination
 						};
 						viewComponent = _react2.default.createElement(_createMarketView2.default, viewProps);
 						break;
@@ -28294,7 +28295,8 @@ var Routes = function (_Component) {
 							pagination: p.pagination,
 							filterSort: p.filterSort,
 							keywords: p.keywords,
-							branch: p.branch
+							branch: p.branch,
+							scalarShareDenomination: p.scalarShareDenomination
 						};
 						viewComponent = _react2.default.createElement(_marketsView2.default, viewProps);
 					}
@@ -31043,6 +31045,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -31067,10 +31071,18 @@ var _createMarketForm9 = _dereq_('./create-market-form-5');
 
 var _createMarketForm10 = _interopRequireDefault(_createMarketForm9);
 
+var _shareDenominations = _dereq_('./../../market/constants/share-denominations');
+
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var CreateMarketForm = function CreateMarketForm(p) {
 	var form = void 0;
+
+	var shareDenominations = (0, _getValue2.default)(p, 'scalarShareDenomination.denominations');
 
 	switch (p.step) {
 		case 1:
@@ -31087,7 +31099,10 @@ var CreateMarketForm = function CreateMarketForm(p) {
 			form = _react2.default.createElement(_createMarketForm8.default, p);
 			break;
 		case 5:
-			form = _react2.default.createElement(_createMarketForm10.default, p);
+			form = _react2.default.createElement(_createMarketForm10.default, _extends({}, p, {
+				selectedShareDenomination: _shareDenominations.SHARE,
+				shareDenominations: shareDenominations
+			}));
 			break;
 	}
 
@@ -31105,7 +31120,7 @@ CreateMarketForm.propTypes = {
 
 exports.default = CreateMarketForm;
 
-},{"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../market/constants/share-denominations":254,"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31163,7 +31178,9 @@ var CreateMarketPage = function CreateMarketPage(p) {
 			{ className: 'page-content' },
 			_react2.default.createElement(_createMarketForm2.default, _extends({
 				className: 'create-market-content'
-			}, p.createMarketForm))
+			}, p.createMarketForm, {
+				scalarShareDenomination: p.scalarShareDenomination
+			}))
 		)
 	);
 };
@@ -31369,6 +31386,64 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				'h2',
 				null,
 				'Technical updates:'
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 12, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added rescaling logic for categorical and scalar reports to augur.js fixReport and (new) unfixReport methods, and updated event / report loaders in UI accordingly.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Full reset of network 9000 (test chain) contracts.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 11, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Merged augur-core develop into master branch.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Changed tick size to tenths on trade page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added highlighting of the matching side of the order book when user clicks buy/sell.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed abnormally high CPU utilization on markets listing page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'The trade page for scalar markets now properly displays the unit selection drop-down menu.  The share amounts on the page are updated automatically when a new unit is chosen.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed scalar market labels (no longer improperly labeled as categorical markets).'
+				)
 			),
 			_react2.default.createElement(
 				'h3',
@@ -31956,7 +32031,10 @@ var MarketData = function (_Component) {
 					selectedShareDenomination: p.selectedShareDenomination
 				}),
 				s.selectedNav === _views.MARKET_DATA_NAV_CHARTS && _react2.default.createElement(_marketChart2.default, { series: p.market.priceTimeSeries }),
-				s.selectedNav === _views.MARKET_DATA_NAV_DETAILS && _react2.default.createElement(_marketDetails2.default, p.market)
+				s.selectedNav === _views.MARKET_DATA_NAV_DETAILS && _react2.default.createElement(_marketDetails2.default, _extends({}, p.market, {
+					selectedShareDenomination: p.selectedShareDenomination,
+					shareDenominations: p.shareDenominations
+				}))
 			);
 		}
 	}]);
@@ -31987,14 +32065,39 @@ var _valueDate = _dereq_('./../../common/components/value-date');
 
 var _valueDate2 = _interopRequireDefault(_valueDate);
 
+var _shareDenominations = _dereq_('./../constants/share-denominations');
+
 var _getValue = _dereq_('./../../../utils/get-value');
 
 var _getValue2 = _interopRequireDefault(_getValue);
+
+var _setShareDenomination = _dereq_('./../../../utils/set-share-denomination');
+
+var _setShareDenomination2 = _interopRequireDefault(_setShareDenomination);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketDetails = function MarketDetails(p) {
 	var outcomeName = (0, _getValue2.default)(p, 'result.outcomeName');
+
+	var outstandingShares = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'outstandingShares.formatted'), p.selectedShareDenomination);
+	var shareDenomination = function shareDenomination() {
+		switch (p.selectedShareDenomination) {
+			case _shareDenominations.MICRO_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MICRO_SHARE;
+				}).label;
+			case _shareDenominations.MILLI_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MILLI_SHARE;
+				}).label;
+			default:
+			case _shareDenominations.SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.SHARE;
+				}).label;
+		}
+	};
 
 	return _react2.default.createElement(
 		'div',
@@ -32041,7 +32144,7 @@ var MarketDetails = function MarketDetails(p) {
 					{ className: 'property-label' },
 					'outstanding shares'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'property-value' }, p.outstandingShares))
+				_react2.default.createElement(_valueDenomination2.default, { className: 'property-value', formatted: outstandingShares, denomination: shareDenomination() })
 			),
 			p.extraInfo != null && p.extraInfo !== '' && _react2.default.createElement(
 				'li',
@@ -32155,7 +32258,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"./../../../utils/get-value":288,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195}],241:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32199,7 +32302,7 @@ var MarketDataHeader = function MarketDataHeader(p) {
 				'default': p.selectedShareDenomination,
 				options: p.shareDenominations,
 				onChange: function onChange(denomination) {
-					p.updateSelectedShareDenomination(p.marketID, denomination);
+					p.updateSelectedShareDenomination(p.id, denomination);
 				}
 			})
 		)
@@ -32804,9 +32907,38 @@ var _valueDenomination = _dereq_('./../../common/components/value-denomination')
 
 var _valueDenomination2 = _interopRequireDefault(_valueDenomination);
 
+var _shareDenominations = _dereq_('./../constants/share-denominations');
+
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
+var _setShareDenomination = _dereq_('./../../../utils/set-share-denomination');
+
+var _setShareDenomination2 = _interopRequireDefault(_setShareDenomination);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketProperties = function MarketProperties(p) {
+	var shareVolume = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'volume.rounded'), p.selectedShareDenomination);
+	var shareDenomination = function shareDenomination() {
+		switch (p.selectedShareDenomination) {
+			case _shareDenominations.MICRO_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MICRO_SHARE;
+				}).label;
+			case _shareDenominations.MILLI_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MILLI_SHARE;
+				}).label;
+			default:
+			case _shareDenominations.SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.SHARE;
+				}).label;
+		}
+	};
+
 	return _react2.default.createElement(
 		'ul',
 		{ className: 'market-properties' },
@@ -32914,7 +33046,7 @@ var MarketProperties = function MarketProperties(p) {
 				)
 			)
 		),
-		_react2.default.createElement(
+		shareVolume && _react2.default.createElement(
 			'li',
 			{ className: 'property volume' },
 			_react2.default.createElement(
@@ -32929,7 +33061,7 @@ var MarketProperties = function MarketProperties(p) {
 					{ className: 'property-label' },
 					'Volume:'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'property-value' }, p.volume, { formatted: p.volume.rounded }))
+				_react2.default.createElement(_valueDenomination2.default, { className: 'property-value', formatted: shareVolume, denomination: shareDenomination() })
 			),
 			_react2.default.createElement(
 				_reactTooltip2.default,
@@ -32943,7 +33075,7 @@ var MarketProperties = function MarketProperties(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'tooltip-text' },
-					p.volume.fullPrecision || p.volume.formatted,
+					shareVolume,
 					' total ',
 					p.volume.denomination,
 					' traded'
@@ -32998,7 +33130,7 @@ var MarketProperties = function MarketProperties(p) {
 
 exports.default = MarketProperties;
 
-},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195,"react-tooltip":49}],250:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195,"react-tooltip":49}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33415,6 +33547,10 @@ var _marketsPagination = _dereq_('./markets-pagination');
 
 var _marketsPagination2 = _interopRequireDefault(_marketsPagination);
 
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketsList = function MarketsList(p) {
@@ -33422,10 +33558,16 @@ var MarketsList = function MarketsList(p) {
 		'article',
 		{ className: 'markets-list' },
 		(p.markets || []).map(function (market) {
+			var selectedShareDenomination = (0, _getValue2.default)(p, 'scalarShareDenomination.markets.' + market.id);
+			var shareDenominations = (0, _getValue2.default)(p, 'scalarShareDenomination.denominations');
+
 			return _react2.default.createElement(_marketPreview2.default, _extends({
 				key: market.id,
 				loginAccount: p.loginAccount
-			}, market));
+			}, market, {
+				selectedShareDenomination: selectedShareDenomination,
+				shareDenominations: shareDenominations
+			}));
 		}),
 		!!p.pagination && !!p.pagination.numUnpaginated && _react2.default.createElement(_marketsPagination2.default, { pagination: p.pagination })
 	);
@@ -33439,7 +33581,7 @@ var MarketsList = function MarketsList(p) {
 
 exports.default = MarketsList;
 
-},{"./../../market/components/market-preview":248,"./markets-pagination":258,"react":195}],258:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":288,"./../../market/components/market-preview":248,"./markets-pagination":258,"react":195}],258:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33596,7 +33738,8 @@ var MarketsView = function MarketsView(p) {
 		_react2.default.createElement(_marketsList2.default, {
 			loginAccount: p.loginAccount,
 			markets: p.markets,
-			pagination: p.pagination
+			pagination: p.pagination,
+			scalarShareDenomination: p.scalarShareDenomination
 		})
 	);
 };
@@ -34088,17 +34231,17 @@ var Report = function Report(p) {
 							className: 'report-committed',
 							'data-tip': 'You have successfully committed to this report. Remember to login to reveal the report!'
 						},
-						p.reported
+						p.reported || '-'
 					),
 					!!p.isRevealed && _react2.default.createElement(
 						'span',
 						{ className: 'report-revealed' },
-						p.reported
+						p.reported || '-'
 					),
 					!p.isRevealed && !p.isCommitted && _react2.default.createElement(
 						'span',
 						null,
-						p.reported
+						p.reported || '-'
 					),
 					!!p.outcome && p.isReportEqual && _react2.default.createElement(
 						'span',
@@ -34713,7 +34856,7 @@ var OutcomeTrade = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (OutcomeTrade.__proto__ || Object.getPrototypeOf(OutcomeTrade)).call(this, props));
 
 		_this.state = {
-			timestamp: Date.now(), // Utilized to force a re-render and subsequent update of the input fields' values
+			timestamp: Date.now(), // Utilized to force a re-render and subsequent update of the input fields' values on `selectedOutcome` change
 			selectedNav: _tradeTypes.BUY,
 			shareInputPlaceholder: generateShareInputPlaceholder(_this.props.selectedShareDenomination),
 			maxSharesDenominated: denominateShares((0, _getValue2.default)(_this.props, 'selectedOutcome.trade.maxNumShares.value', _shareDenominations.SHARE, _this.props.selectedShareDenomination)),
@@ -34733,18 +34876,23 @@ var OutcomeTrade = function (_Component) {
 
 			if (newTrade !== oldTrade || this.props.selectedShareDenomination !== nextProps.selectedShareDenomination) {
 				this.setState({
-					timestamp: Date.now(),
 					shareInputPlaceholder: generateShareInputPlaceholder(nextProps.selectedShareDenomination),
 					maxSharesDenominated: denominateShares((0, _getValue2.default)(nextProps, 'selectedOutcome.trade.maxNumShares.value', _shareDenominations.SHARE, nextProps.selectedShareDenomination)),
 					sharesDenominated: denominateShares((0, _getValue2.default)(nextProps, 'selectedOutcome.trade.numShares'), _shareDenominations.SHARE, nextProps.selectedShareDenomination)
 				});
+			}
+
+			var oldID = (0, _getValue2.default)(this.props, 'selectedOutcome.id');
+			var newID = (0, _getValue2.default)(nextProps, 'selectedOutcome.id');
+
+			if (oldID !== newID) {
+				this.setState({ timestamp: Date.now() }); // forces re-render of trade component via key value
 			}
 		}
 	}, {
 		key: 'updateSelectedNav',
 		value: function updateSelectedNav(selectedNav) {
 			this.setState({ selectedNav: selectedNav });
-			console.log('this -- ', this);
 			this.props.updateSelectedTradeSide(selectedNav);
 
 			var trade = (0, _getValue2.default)(this.props, 'selectedOutcome.trade');
@@ -36299,12 +36447,16 @@ function setShareDenomination(value, denomination) {
 }
 
 function formatValue(value, amount) {
-	// BIG assumption here re: amount is that the formatted value is always displayed out to hundreths
 	var valueArray = value.split('');
 
 	// remove dot
 	var dotIndex = valueArray.indexOf('.');
-	valueArray.splice(dotIndex, 1);
+	var zeroPadAmount = amount;
+	if (dotIndex !== -1) {
+		valueArray.splice(dotIndex, 1);
+	} else {
+		zeroPadAmount += 2;
+	}
 
 	// Strip leading 0's
 	var firstPositiveValue = 0;
@@ -36321,11 +36473,11 @@ function formatValue(value, amount) {
 	}
 
 	// Append 0's
-	for (var i = 0; i < amount; i++) {
+	for (var i = 0; i < zeroPadAmount; i++) {
 		valueArray.push('0');
 	}
 
-	return valueArray.join(''); // return joined string
+	return valueArray.join('').replace(/\B(?=(\d{3})+(?!\d))/g, ','); // return joined string w/ comma separating thousands, BIG assumption here is that we're always rounding to TWO decimal places
 }
 
 exports.default = setShareDenomination;
