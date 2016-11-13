@@ -31390,6 +31390,30 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 13, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Finished refactoring and thoroughly unit testing reporting timing methods (checkPeriod et al) in augur.js.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed/updated augur.js reporting-sequence integration tests to work properly with the refactored reporting tools.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed error on Reporting detail page.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 12, 2016'
 			),
 			_react2.default.createElement(
@@ -32922,6 +32946,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MarketProperties = function MarketProperties(p) {
 	var shareVolume = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'volume.rounded'), p.selectedShareDenomination);
 	var shareDenomination = function shareDenomination() {
+		// TODO be less hackish (sorry sprinkle)
+		if (!p.shareDenominations) return 'Shares';
 		switch (p.selectedShareDenomination) {
 			case _shareDenominations.MICRO_SHARE:
 				return p.shareDenominations.find(function (denomination) {
