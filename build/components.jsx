@@ -31409,6 +31409,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					'li',
 					null,
 					'Fixed error on Reporting detail page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed warning on trade (market detail) page.'
 				)
 			),
 			_react2.default.createElement(
@@ -31751,7 +31756,7 @@ MarketActive.propTypes = {
 		outcomes: _react.PropTypes.array
 	}),
 	scalarShareDenomination: _react.PropTypes.shape({
-		updateSelectedShareDenomination: _react.PropTypes.function
+		updateSelectedShareDenomination: _react.PropTypes.func
 	})
 };
 
