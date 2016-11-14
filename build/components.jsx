@@ -28541,6 +28541,7 @@ var AuthForm = function (_Component) {
 
 			var p = this.props;
 			var s = this.state;
+			var submitDisabled = p.type === 'login' ? false : s.submitDisabled;
 
 			return _react2.default.createElement(
 				'form',
@@ -28660,7 +28661,7 @@ var AuthForm = function (_Component) {
 					className: (0, _classnames2.default)('button', 'submit-button', p.submitButtonClass),
 					type: 'submit',
 					value: p.submitButtonText,
-					disabled: s.submitDisabled
+					disabled: submitDisabled
 				}),
 				_react2.default.createElement(
 					_link2.default,
@@ -31386,6 +31387,30 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				'h2',
 				null,
 				'Technical updates:'
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 14, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed a bug causing some reports to throw hash-mismatching errors during the reveal-report action.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Failed reveal report actions now render correctly on the transactions page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed a bug that sometimes caused the login button to be incorrectly disabled.'
+				)
 			),
 			_react2.default.createElement(
 				'h3',
@@ -36009,7 +36034,7 @@ var Transaction = function Transaction(p) {
 					default:
 						break;
 				}
-				var reportedOutcome = isScalar ? p.data.reportedOutcomeID : p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
+				var reportedOutcome = isScalar ? p.data.reportedOutcomeID : p.data.outcome && p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
 				nodes.description = _react2.default.createElement(
 					'span',
 					{ className: 'description' },
