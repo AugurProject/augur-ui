@@ -29721,7 +29721,7 @@ var Input = function (_Component) {
 				})),
 				isClearable && !p.isMultiline && !!s.value && _react2.default.createElement(
 					'button',
-					{ type: 'button', className: 'clear', onClick: this.handleClear },
+					{ type: 'button', className: 'button-text-only', onClick: this.handleClear },
 					_react2.default.createElement(
 						'i',
 						null,
@@ -31391,6 +31391,25 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 15, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed market selector isExpired property calculation, distinguished it from isOpen.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added result (reported outcome / proportion correct) object field to market(s) selectors.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 14, 2016'
 			),
 			_react2.default.createElement(
@@ -31405,6 +31424,26 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					'li',
 					null,
 					'Market preview tooltips now display non-truncated values for very large numbers.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Categorical outcomes are now correctly rounded to the nearest integer (on eventResolution contract).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added check to make sure event is on the specified branch before penalizing (on consensus contract).  Resolves the edge case of penalization of a reporter who is otherwise caught up when there are no events in a period.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added reporting proportion correct value to getMarketInfo array (on compositeGetters contract).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added event outcome to getMarketsInfo (on compositeGetters contract).'
 				),
 				_react2.default.createElement(
 					'li',
@@ -34927,7 +34966,7 @@ var OutcomeTrade = function (_Component) {
 			timestamp: Date.now(), // Utilized to force a re-render and subsequent update of the input fields' values on `selectedOutcome` change
 			selectedNav: _tradeTypes.BUY,
 			shareInputPlaceholder: generateShareInputPlaceholder(_this.props.selectedShareDenomination),
-			maxSharesDenominated: denominateShares((0, _getValue2.default)(_this.props, 'selectedOutcome.trade.maxNumShares.value', _shareDenominations.SHARE, _this.props.selectedShareDenomination)),
+			maxSharesDenominated: denominateShares((0, _getValue2.default)(_this.props, 'selectedOutcome.trade.maxNumShares.value', _shareDenominations.SHARE, _this.props.selectedShareDenomination)), // NOTE -- this value is not currently used in the component, but may be used later, so leaving here until this decision is finalized
 			sharesDenominated: denominateShares((0, _getValue2.default)(_this.props, 'selectedOutcome.trade.numShares'), _shareDenominations.SHARE, _this.props.selectedShareDenomination)
 		};
 
@@ -35031,7 +35070,6 @@ var OutcomeTrade = function (_Component) {
 							type: 'number',
 							value: s.sharesDenominated,
 							min: '0',
-							max: s.maxSharesDenominated,
 							step: '0.1',
 							onChange: function onChange(value) {
 								_this2.handleSharesInput(value);
@@ -35083,6 +35121,7 @@ function denominateShares(shares, fromDenomination, toDenomination) {
 		return shares;
 	}
 
+	// Determine numerical representation of from/to values for shares mutation calc
 	var options = [_shareDenominations.SHARE, _shareDenominations.MILLI_SHARE, _shareDenominations.MICRO_SHARE];
 	var fromValue = 0;
 	options.some(function (value, i) {
@@ -35104,10 +35143,13 @@ function denominateShares(shares, fromDenomination, toDenomination) {
 		return false;
 	});
 
-	if (fromValue < toValue) {
+	if (fromValue === toValue) {
+		return shares;
+	} else if (fromValue < toValue) {
 		return shares * Math.pow(1000, toValue - fromValue);
 	}
 
+	// fromValue > toValue
 	return shares / Math.pow(1000, Math.abs(toValue - fromValue));
 }
 
