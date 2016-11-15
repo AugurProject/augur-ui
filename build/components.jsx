@@ -27861,7 +27861,7 @@ AppComponent.propTypes = {
 	url: _react.PropTypes.string
 };
 
-},{"./../../../utils/scroll-top-on-change":289,"./../../../utils/should-component-update-pure":291,"./../../chat/components/chat-view":209,"./core-stats":199,"./footer":200,"./header":201,"./routes":202,"./side-bar":203,"classnames":1,"react":195,"react-dom":42}],199:[function(_dereq_,module,exports){
+},{"./../../../utils/scroll-top-on-change":290,"./../../../utils/should-component-update-pure":292,"./../../chat/components/chat-view":209,"./core-stats":199,"./footer":200,"./header":201,"./routes":202,"./side-bar":203,"classnames":1,"react":195,"react-dom":42}],199:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28328,7 +28328,7 @@ var Routes = function (_Component) {
 
 exports.default = Routes;
 
-},{"./../../../utils/get-value":288,"./../../../utils/should-component-update-pure":291,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":253,"./../../markets/components/markets-view":260,"./../../portfolio/components/portfolio-view":279,"./../../transactions/components/transactions-view":285,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/should-component-update-pure":292,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":253,"./../../markets/components/markets-view":260,"./../../portfolio/components/portfolio-view":279,"./../../transactions/components/transactions-view":285,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29747,7 +29747,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"./../../../utils/should-component-update-pure":291,"react":195}],219:[function(_dereq_,module,exports){
+},{"./../../../utils/should-component-update-pure":292,"react":195}],219:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30927,7 +30927,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"./../../../utils/get-value":288,"./../../common/components/checkbox":212,"./../../common/components/input":218,"./create-market-form-buttons":231,"classnames":1,"react":195}],230:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/checkbox":212,"./../../common/components/input":218,"./create-market-form-buttons":231,"classnames":1,"react":195}],230:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31121,7 +31121,7 @@ CreateMarketForm.propTypes = {
 
 exports.default = CreateMarketForm;
 
-},{"./../../../utils/get-value":288,"./../../market/constants/share-denominations":254,"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../market/constants/share-denominations":254,"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31396,6 +31396,16 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'ol',
 				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Scalar market order books now display "truncated" share quantities for very large quantities of millishares and microshares.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Market preview tooltips now display non-truncated values for very large numbers.'
+				),
 				_react2.default.createElement(
 					'li',
 					null,
@@ -31691,9 +31701,9 @@ var MarketActive = function (_Component) {
 			if (!shareDenomination) {
 				var maxValue = (0, _getValue2.default)(this.props, 'market.maxValue');
 
-				if (maxValue >= 1000000) {
+				if (maxValue >= 10000000) {
 					this.props.scalarShareDenomination.updateSelectedShareDenomination(marketID, _shareDenominations.MICRO_SHARE);
-				} else if (maxValue >= 1000) {
+				} else if (maxValue >= 10000) {
 					this.props.scalarShareDenomination.updateSelectedShareDenomination(marketID, _shareDenominations.MILLI_SHARE);
 				} else {
 					this.props.scalarShareDenomination.updateSelectedShareDenomination(marketID, _shareDenominations.SHARE);
@@ -31785,7 +31795,7 @@ MarketActive.propTypes = {
 	})
 };
 
-},{"./../../../utils/get-value":288,"./../../markets/constants/market-types":261,"./../../order-book/components/order-book":271,"./../../outcomes/components/outcome-trade":275,"./../constants/share-denominations":254,"./market-data":239,"./market-user-data":252,"react":195}],237:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../markets/constants/market-types":261,"./../../order-book/components/order-book":271,"./../../outcomes/components/outcome-trade":275,"./../constants/share-denominations":254,"./market-data":239,"./market-user-data":252,"react":195}],237:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32312,7 +32322,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195}],241:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32352,7 +32362,7 @@ var MarketDataHeader = function MarketDataHeader(p) {
 		_react2.default.createElement(
 			'div',
 			{ className: 'market-header-actions' },
-			p.type === _marketTypes.SCALAR && !p.isPendingReport && _react2.default.createElement(_dropdown2.default, {
+			p.type === _marketTypes.SCALAR && p.selectedShareDenomination && !p.isPendingReport && _react2.default.createElement(_dropdown2.default, {
 				'default': p.selectedShareDenomination,
 				options: p.shareDenominations,
 				onChange: function onChange(denomination) {
@@ -32520,7 +32530,7 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 
 exports.default = MarketOpenOrdersRow;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],244:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],244:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32659,7 +32669,7 @@ var MarketOpenOrders = function (_Component) {
 
 exports.default = MarketOpenOrders;
 
-},{"./../../../utils/get-value":288,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-open-orders-group":242,"react":195}],245:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-open-orders-group":242,"react":195}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32717,7 +32727,7 @@ var MarketPositionsRow = function MarketPositionsRow(p) {
 
 exports.default = MarketPositionsRow;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],246:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],246:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32807,7 +32817,7 @@ var MarketPositions = function MarketPositions(p) {
 
 exports.default = MarketPositions;
 
-},{"./../../../utils/get-value":288,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-positions-row":245,"react":195}],247:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-positions-row":245,"react":195}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32974,7 +32984,9 @@ var _setShareDenomination2 = _interopRequireDefault(_setShareDenomination);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketProperties = function MarketProperties(p) {
-	var shareVolume = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'volume.rounded'), p.selectedShareDenomination);
+	var shareVolumeRounded = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'volume.rounded'), p.selectedShareDenomination);
+	var shareVolumeFormatted = (0, _getValue2.default)(p, 'volume.formatted');
+
 	var shareDenomination = function shareDenomination() {
 		// TODO be less hackish (sorry sprinkle)
 		if (!p.shareDenominations) return 'Shares';
@@ -33102,7 +33114,7 @@ var MarketProperties = function MarketProperties(p) {
 				)
 			)
 		),
-		shareVolume && _react2.default.createElement(
+		shareVolumeRounded && _react2.default.createElement(
 			'li',
 			{ className: 'property volume' },
 			_react2.default.createElement(
@@ -33117,7 +33129,7 @@ var MarketProperties = function MarketProperties(p) {
 					{ className: 'property-label' },
 					'Volume:'
 				),
-				_react2.default.createElement(_valueDenomination2.default, { className: 'property-value', formatted: shareVolume, denomination: shareDenomination() })
+				_react2.default.createElement(_valueDenomination2.default, { className: 'property-value', formatted: shareVolumeRounded, denomination: shareDenomination() })
 			),
 			_react2.default.createElement(
 				_reactTooltip2.default,
@@ -33131,7 +33143,7 @@ var MarketProperties = function MarketProperties(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'tooltip-text' },
-					shareVolume,
+					shareVolumeFormatted,
 					' total ',
 					p.volume.denomination,
 					' traded'
@@ -33186,7 +33198,7 @@ var MarketProperties = function MarketProperties(p) {
 
 exports.default = MarketProperties;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195,"react-tooltip":49}],250:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195,"react-tooltip":49}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33366,7 +33378,7 @@ var MarketUserData = function (_Component) {
 
 exports.default = MarketUserData;
 
-},{"./../../../utils/get-value":288,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./market-open-orders":244,"./market-positions":246,"react":195}],253:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./market-open-orders":244,"./market-positions":246,"react":195}],253:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33418,7 +33430,7 @@ var MarketView = function MarketView(p) {
 
 exports.default = MarketView;
 
-},{"./../../../utils/get-value":288,"./../../common/components/null-state-message":219,"./market-active":236,"./market-reported":250,"./market-reporting":251,"react":195}],254:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/null-state-message":219,"./market-active":236,"./market-reported":250,"./market-reporting":251,"react":195}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33637,7 +33649,7 @@ var MarketsList = function MarketsList(p) {
 
 exports.default = MarketsList;
 
-},{"./../../../utils/get-value":288,"./../../market/components/market-preview":248,"./markets-pagination":258,"react":195}],258:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../market/components/market-preview":248,"./markets-pagination":258,"react":195}],258:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34494,7 +34506,7 @@ var OrderBookRowSide = function OrderBookRowSide(p) {
 
 exports.default = OrderBookRowSide;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"./../../outcomes/constants/trade-types":277,"./../../transactions/constants/types":287,"react":195}],270:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"./../../outcomes/constants/trade-types":277,"./../../transactions/constants/types":287,"react":195}],270:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34658,7 +34670,7 @@ var OutcomeRow = function OutcomeRow(p) {
 
 exports.default = OutcomeRow;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-denomination":222,"./../../link/components/link":234,"./../../markets/constants/market-types":261,"classnames":1,"react":195}],273:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-denomination":222,"./../../link/components/link":234,"./../../markets/constants/market-types":261,"classnames":1,"react":195}],273:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34850,7 +34862,7 @@ var OutcomeTradeSummary = function OutcomeTradeSummary(p) {
 
 exports.default = OutcomeTradeSummary;
 
-},{"./../../../utils/get-value":288,"./../../common/components/value-denomination":222,"react":195}],275:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/value-denomination":222,"react":195}],275:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35113,7 +35125,7 @@ function generateShareInputPlaceholder(denomination) {
 	}
 }
 
-},{"./../../../utils/get-value":288,"./../../common/components/component-nav":213,"./../../common/components/em-dash":216,"./../../common/components/input":218,"./../../market/constants/share-denominations":254,"./../../markets/constants/market-types":261,"./../constants/trade-types":277,"./outcome-trade-action":273,"./outcome-trade-summary":274,"react":195}],276:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/component-nav":213,"./../../common/components/em-dash":216,"./../../common/components/input":218,"./../../market/constants/share-denominations":254,"./../../markets/constants/market-types":261,"./../constants/trade-types":277,"./outcome-trade-action":273,"./outcome-trade-summary":274,"react":195}],276:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35811,7 +35823,7 @@ var ReportPanel = function (_Component) {
 
 exports.default = ReportPanel;
 
-},{"./../../../utils/get-value":288,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./../../market/components/market-details":240,"./../../market/components/market-header":241,"./report-form":282,"react":195}],284:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./../../market/components/market-details":240,"./../../market/components/market-header":241,"./report-form":282,"react":195}],284:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36449,6 +36461,22 @@ var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+exports.default = function (number) {
+	var sides = [];
+
+	sides = number.toString().split('.');
+	sides[0] = sides[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+	return sides.join('.');
+};
+
+},{}],289:[function(_dereq_,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 // Gets value of a arbitrarily deeply nested value by key path
 // @params {Object} obj - parent object
 // @params {String} target - string of path `this.is.the.target`
@@ -36461,7 +36489,7 @@ function getValue(obj, target) {
 
 exports.default = getValue;
 
-},{}],289:[function(_dereq_,module,exports){
+},{}],290:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36475,7 +36503,7 @@ exports.default = function (url) {
 	}
 };
 
-},{}],290:[function(_dereq_,module,exports){
+},{}],291:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36484,8 +36512,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _shareDenominations = _dereq_('./../modules/market/constants/share-denominations');
 
+var _addCommasToNumber = _dereq_('./add-commas-to-number');
+
+var _addCommasToNumber2 = _interopRequireDefault(_addCommasToNumber);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 // This helper method is very specific in scope
 // It takes in the formatted shares in string format and returns a string denominated as specified
+// The mutation of the shares is done this way so no actual re-calculation is done to the underlying
+// values, just string manipulation for presentation
 function setShareDenomination(value, denomination) {
 	if (value == null) {
 		return value;
@@ -36502,10 +36538,11 @@ function setShareDenomination(value, denomination) {
 	}
 }
 
+// The value is assumed to *always* be in 'SHARES' denomination
 function formatValue(value, amount) {
 	var valueArray = value.split('');
 
-	// remove dot
+	// remove dot + determine 0 pad amount
 	var dotIndex = valueArray.indexOf('.');
 	var zeroPadAmount = amount;
 	if (dotIndex !== -1) {
@@ -36514,8 +36551,8 @@ function formatValue(value, amount) {
 		zeroPadAmount += 2;
 	}
 
-	// Strip leading 0's
-	var firstPositiveValue = 0;
+	// Strip leading 0's OR returns original value if no values are positive
+	var firstPositiveValue = -1;
 	valueArray.some(function (value, i) {
 		if (parseInt(value, 10)) {
 			firstPositiveValue = i;
@@ -36524,21 +36561,83 @@ function formatValue(value, amount) {
 
 		return false;
 	});
-	if (firstPositiveValue) {
+	if (firstPositiveValue !== -1) {
 		valueArray.splice(0, firstPositiveValue);
+	} else {
+		return value; // Returns original value
 	}
 
-	// Append 0's
-	for (var i = 0; i < zeroPadAmount; i++) {
-		valueArray.push('0');
-	}
+	// Strip Commas (added back in at the end)
+	valueArray.forEach(function (value, i) {
+		if (value === ',') {
+			valueArray.splice(i, 1);
+		}
+	});
 
-	return valueArray.join('').replace(/\B(?=(\d{3})+(?!\d))/g, ','); // return joined string w/ comma separating thousands, BIG assumption here is that we're always rounding to TWO decimal places
+	// Handle postFixed denominations (part of the format-number method)
+	valueArray = handlePostfixedUnit(valueArray, zeroPadAmount);
+
+	return (0, _addCommasToNumber2.default)(valueArray.join('')); // return joined string w/ comma separating thousands
+}
+
+function handlePostfixedUnit(valueArray, zeroPadAmount) {
+	var step = zeroPadAmount < 4;
+	var gtTrillion = '> 1T'.split('');
+	var newValueArray = valueArray;
+
+	switch (valueArray[newValueArray.length - 1]) {
+		// Handle existing > 10000 values
+		case 'K':
+			{
+				newValueArray[newValueArray.length - 1] = step ? 'M' : 'B';
+				return newValueArray;
+			}
+		case 'M':
+			{
+				if (step) {
+					newValueArray[newValueArray.length - 1] = 'B';
+				} else {
+					newValueArray = gtTrillion;
+				}
+				return newValueArray;
+			}
+		case 'B':
+		case 'T':
+			{
+				newValueArray = gtTrillion;
+				return newValueArray;
+			}
+
+		// Handle values that become greater than 10000
+		default:
+			{
+				// Append 0's
+				for (var i = 0; i < zeroPadAmount; i++) {
+					newValueArray.push('0');
+				}
+
+				// Mirrors logic present in format-number
+				if (newValueArray.length >= 13) {
+					newValueArray = gtTrillion;
+				} else if (newValueArray.length >= 11) {
+					newValueArray.splice(newValueArray.length - 9);
+					newValueArray.push('B');
+				} else if (newValueArray.length >= 8) {
+					newValueArray.splice(newValueArray.length - 6);
+					newValueArray.push('M');
+				} else if (newValueArray.length >= 5) {
+					newValueArray.splice(newValueArray.length - 3);
+					newValueArray.push('K');
+				}
+
+				return newValueArray;
+			}
+	}
 }
 
 exports.default = setShareDenomination;
 
-},{"./../modules/market/constants/share-denominations":254}],291:[function(_dereq_,module,exports){
+},{"./../modules/market/constants/share-denominations":254,"./add-commas-to-number":288}],292:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
