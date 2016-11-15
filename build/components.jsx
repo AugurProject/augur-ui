@@ -31405,6 +31405,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					'li',
 					null,
 					'Added result (reported outcome / proportion correct) object field to market(s) selectors.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'For Airbitz logins, private keys are now stored in an Airbitz wallet instead of using the Airbitz dataKey as the Ethereum private key.  (This change only affects Airbitz accounts.)'
 				)
 			),
 			_react2.default.createElement(
