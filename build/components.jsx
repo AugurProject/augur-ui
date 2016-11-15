@@ -27718,43 +27718,38 @@ var AppComponent = function (_Component) {
 			isSideBarAllowed: false,
 			isSideBarCollapsed: false,
 			isChatCollapsed: true,
-			doScrollTop: false
+			doScrollTop: false,
+			currentRoute: null
 		};
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 
-		_this.shouldDisplaySideBar = _this.shouldDisplaySideBar.bind(_this);
 		_this.toggleChat = _this.toggleChat.bind(_this);
+		_this.setSidebarAllowed = _this.setSidebarAllowed.bind(_this);
 		return _this;
 	}
 
 	_createClass(AppComponent, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			this.shouldDisplaySideBar();
-		}
-	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
 			(0, _scrollTopOnChange2.default)(this.props.url);
-			this.shouldDisplaySideBar();
 		}
-	}, {
-		key: 'shouldDisplaySideBar',
-		value: function shouldDisplaySideBar() {
-			var currentRoute = (0, _routes2.default)(this.props); // eslint-disable-line new-cap
 
-			if (currentRoute.props.sideBarAllowed) {
-				this.setState({ isSideBarAllowed: true });
-			} else {
-				this.setState({ isSideBarAllowed: false });
-			}
+		// Sidebar display related methods
+
+	}, {
+		key: 'setSidebarAllowed',
+		value: function setSidebarAllowed(isSideBarAllowed) {
+			this.setState({ isSideBarAllowed: isSideBarAllowed });
 		}
 	}, {
 		key: 'toggleSideBar',
 		value: function toggleSideBar() {
 			this.setState({ isSideBarCollapsed: !this.state.isSideBarCollapsed });
 		}
+
+		// chat display
+
 	}, {
 		key: 'toggleChat',
 		value: function toggleChat() {
@@ -27835,7 +27830,9 @@ var AppComponent = function (_Component) {
 									{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
 									p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
 								),
-								_react2.default.createElement(_routes2.default, p)
+								_react2.default.createElement(_routes2.default, _extends({}, p, {
+									setSidebarAllowed: this.setSidebarAllowed
+								}))
 							)
 						)
 					),
@@ -27864,7 +27861,7 @@ AppComponent.propTypes = {
 	url: _react.PropTypes.string
 };
 
-},{"./../../../utils/scroll-top-on-change":289,"./../../../utils/should-component-update-pure":291,"./../../chat/components/chat-view":209,"./core-stats":199,"./footer":200,"./header":201,"./routes":202,"./side-bar":203,"classnames":1,"react":195,"react-dom":42}],199:[function(_dereq_,module,exports){
+},{"./../../../utils/scroll-top-on-change":290,"./../../../utils/should-component-update-pure":292,"./../../chat/components/chat-view":209,"./core-stats":199,"./footer":200,"./header":201,"./routes":202,"./side-bar":203,"classnames":1,"react":195,"react-dom":42}],199:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28118,6 +28115,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -28162,119 +28161,174 @@ var _getValue = _dereq_('./../../../utils/get-value');
 
 var _getValue2 = _interopRequireDefault(_getValue);
 
+var _shouldComponentUpdatePure = _dereq_('./../../../utils/should-component-update-pure');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Routes = function Routes(p) {
-	var viewProps = null;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	switch (p.activeView) {
-		case _authTypes.REGISTER:
-		case _authTypes.LOGIN:
-		case _authTypes.IMPORT:
-		case _authTypes.LOGOUT:
-			{
-				viewProps = {
-					authForm: p.authForm
-				};
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-				return _react2.default.createElement(_authView2.default, viewProps);
-			}
-		case _views.ACCOUNT:
-			{
-				viewProps = {
-					loginMessageLink: p.links.loginMessageLink,
-					account: p.loginAccount,
-					settings: p.settings,
-					onUpdateSettings: p.loginAccount.onUpdateAccountSettings,
-					onChangePass: p.loginAccount.onChangePass,
-					authLink: p.links && p.links.authLink || null,
-					onAirbitzManageAccount: p.loginAccount.onAirbitzManageAccount
-				};
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-				return _react2.default.createElement(_accountView2.default, viewProps);
-			}
-		case _views.TRANSACTIONS:
-			{
-				viewProps = {
-					transactions: p.transactions,
-					transactionsTotals: p.transactionsTotals
-				};
+var Routes = function (_Component) {
+	_inherits(Routes, _Component);
 
-				return _react2.default.createElement(_transactionsView2.default, viewProps);
-			}
-		case _views.MY_POSITIONS:
-		case _views.MY_MARKETS:
-		case _views.MY_REPORTS:
-			{
-				viewProps = _extends({
-					activeView: p.activeView,
-					settings: p.settings,
-					branch: p.branch
-				}, p.portfolio);
+	function Routes(props) {
+		_classCallCheck(this, Routes);
 
-				return _react2.default.createElement(_portfolioView2.default, viewProps);
-			}
-		case _views.LOGIN_MESSAGE:
-			{
-				viewProps = {
-					marketsLink: p.links && p.links.marketsLink || null
-				};
+		var _this = _possibleConstructorReturn(this, (Routes.__proto__ || Object.getPrototypeOf(Routes)).call(this, props));
 
-				return _react2.default.createElement(_loginMessageView2.default, viewProps);
-			}
-		case _views.MAKE:
-			{
-				viewProps = {
-					createMarketForm: p.createMarketForm
-				};
+		_this.state = {
+			viewProps: null,
+			viewComponent: null
+		};
 
-				return _react2.default.createElement(_createMarketView2.default, viewProps);
-			}
-		case _views.M:
-			{
-				var logged = (0, _getValue2.default)(p, 'loginAccount.address');
-
-				viewProps = {
-					logged: logged,
-					market: p.market,
-					settings: p.settings,
-					marketDataNavItems: p.marketDataNavItems,
-					marketUserDataNavItems: p.marketUserDataNavItems,
-					marketDataAge: p.marketDataAge,
-					selectedOutcome: p.selectedOutcome,
-					orderCancellation: p.orderCancellation,
-					marketDataUpdater: p.marketDataUpdater,
-					numPendingReports: p.marketsTotals.numPendingReports,
-					isTradeCommitLocked: p.tradeCommitLock.isLocked,
-					scalarShareDenomination: p.scalarShareDenomination,
-					marketReportingNavItems: p.marketReportingNavItems
-				};
-
-				return _react2.default.createElement(_marketView2.default, viewProps);
-			}
-		default:
-			{
-				viewProps = {
-					sideBarAllowed: true,
-					loginAccount: p.loginAccount,
-					createMarketLink: (p.links || {}).createMarketLink,
-					markets: p.markets,
-					marketsHeader: p.marketsHeader,
-					favoriteMarkets: p.favoriteMarkets,
-					pagination: p.pagination,
-					filterSort: p.filterSort,
-					keywords: p.keywords,
-					branch: p.branch
-				};
-
-				return _react2.default.createElement(_marketsView2.default, viewProps);
-			}
+		_this.shouldComponentUpdate = _shouldComponentUpdatePure.shouldComponentUpdateOnStateChangeOnly;
+		_this.handleRouting = _this.handleRouting.bind(_this);
+		return _this;
 	}
-};
+
+	_createClass(Routes, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.handleRouting(this.props);
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			this.handleRouting(nextProps);
+		}
+	}, {
+		key: 'handleRouting',
+		value: function handleRouting(p) {
+			var viewProps = void 0;
+			var viewComponent = void 0;
+
+			switch (p.activeView) {
+				case _authTypes.REGISTER:
+				case _authTypes.LOGIN:
+				case _authTypes.IMPORT:
+				case _authTypes.LOGOUT:
+					viewProps = {
+						authForm: p.authForm
+					};
+					viewComponent = _react2.default.createElement(_authView2.default, viewProps);
+					break;
+				case _views.ACCOUNT:
+					viewProps = {
+						loginMessageLink: p.links.loginMessageLink,
+						account: p.loginAccount,
+						settings: p.settings,
+						onUpdateSettings: p.loginAccount.onUpdateAccountSettings,
+						onChangePass: p.loginAccount.onChangePass,
+						authLink: p.links && p.links.authLink || null,
+						onAirbitzManageAccount: p.loginAccount.onAirbitzManageAccount
+					};
+					viewComponent = _react2.default.createElement(_accountView2.default, viewProps);
+					break;
+				case _views.TRANSACTIONS:
+					viewProps = {
+						transactions: p.transactions,
+						transactionsTotals: p.transactionsTotals
+					};
+					viewComponent = _react2.default.createElement(_transactionsView2.default, viewProps);
+					break;
+				case _views.MY_POSITIONS:
+				case _views.MY_MARKETS:
+				case _views.MY_REPORTS:
+					{
+						viewProps = _extends({
+							activeView: p.activeView,
+							settings: p.settings,
+							branch: p.branch
+						}, p.portfolio);
+						viewComponent = _react2.default.createElement(_portfolioView2.default, viewProps);
+						break;
+					}
+				case _views.LOGIN_MESSAGE:
+					{
+						viewProps = {
+							marketsLink: p.links && p.links.marketsLink || null
+						};
+						viewComponent = _react2.default.createElement(_loginMessageView2.default, viewProps);
+						break;
+					}
+				case _views.MAKE:
+					{
+						viewProps = {
+							createMarketForm: p.createMarketForm,
+							scalarShareDenomination: p.scalarShareDenomination
+						};
+						viewComponent = _react2.default.createElement(_createMarketView2.default, viewProps);
+						break;
+					}
+				case _views.M:
+					{
+						viewProps = {
+							logged: (0, _getValue2.default)(p, 'loginAccount.address'),
+							market: p.market,
+							settings: p.settings,
+							marketDataNavItems: p.marketDataNavItems,
+							marketUserDataNavItems: p.marketUserDataNavItems,
+							marketDataAge: p.marketDataAge,
+							selectedOutcome: p.selectedOutcome,
+							orderCancellation: p.orderCancellation,
+							marketDataUpdater: p.marketDataUpdater,
+							numPendingReports: p.marketsTotals.numPendingReports,
+							isTradeCommitLocked: p.tradeCommitLock.isLocked,
+							scalarShareDenomination: p.scalarShareDenomination,
+							marketReportingNavItems: p.marketReportingNavItems
+						};
+						viewComponent = _react2.default.createElement(_marketView2.default, viewProps);
+						break;
+					}
+				default:
+					{
+						viewProps = {
+							isSideBarAllowed: true,
+							loginAccount: p.loginAccount,
+							createMarketLink: (p.links || {}).createMarketLink,
+							markets: p.markets,
+							marketsHeader: p.marketsHeader,
+							favoriteMarkets: p.favoriteMarkets,
+							pagination: p.pagination,
+							filterSort: p.filterSort,
+							keywords: p.keywords,
+							branch: p.branch,
+							scalarShareDenomination: p.scalarShareDenomination
+						};
+						viewComponent = _react2.default.createElement(_marketsView2.default, viewProps);
+					}
+			}
+
+			if (viewProps.isSideBarAllowed) {
+				p.setSidebarAllowed(true);
+			} else {
+				p.setSidebarAllowed(false);
+			}
+
+			this.setState({ viewProps: viewProps, viewComponent: viewComponent });
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var s = this.state;
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				s.viewComponent
+			);
+		}
+	}]);
+
+	return Routes;
+}(_react.Component);
 
 exports.default = Routes;
 
-},{"./../../../utils/get-value":288,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":253,"./../../markets/components/markets-view":260,"./../../portfolio/components/portfolio-view":279,"./../../transactions/components/transactions-view":285,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/should-component-update-pure":292,"./../../account/components/account-view":197,"./../../auth/components/auth-view":206,"./../../auth/constants/auth-types":207,"./../../create-market/components/create-market-view":233,"./../../login-message/components/login-message-view":235,"./../../market/components/market-view":253,"./../../markets/components/markets-view":260,"./../../portfolio/components/portfolio-view":279,"./../../transactions/components/transactions-view":285,"./../constants/views":204,"react":195}],203:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28487,6 +28541,7 @@ var AuthForm = function (_Component) {
 
 			var p = this.props;
 			var s = this.state;
+			var submitDisabled = p.type === 'login' ? false : s.submitDisabled;
 
 			return _react2.default.createElement(
 				'form',
@@ -28606,7 +28661,7 @@ var AuthForm = function (_Component) {
 					className: (0, _classnames2.default)('button', 'submit-button', p.submitButtonClass),
 					type: 'submit',
 					value: p.submitButtonText,
-					disabled: s.submitDisabled
+					disabled: submitDisabled
 				}),
 				_react2.default.createElement(
 					_link2.default,
@@ -29692,7 +29747,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"./../../../utils/should-component-update-pure":291,"react":195}],219:[function(_dereq_,module,exports){
+},{"./../../../utils/should-component-update-pure":292,"react":195}],219:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -30872,7 +30927,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"./../../../utils/get-value":288,"./../../common/components/checkbox":212,"./../../common/components/input":218,"./create-market-form-buttons":231,"classnames":1,"react":195}],230:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/checkbox":212,"./../../common/components/input":218,"./create-market-form-buttons":231,"classnames":1,"react":195}],230:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30991,6 +31046,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -31015,10 +31072,18 @@ var _createMarketForm9 = _dereq_('./create-market-form-5');
 
 var _createMarketForm10 = _interopRequireDefault(_createMarketForm9);
 
+var _shareDenominations = _dereq_('./../../market/constants/share-denominations');
+
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var CreateMarketForm = function CreateMarketForm(p) {
 	var form = void 0;
+
+	var shareDenominations = (0, _getValue2.default)(p, 'scalarShareDenomination.denominations');
 
 	switch (p.step) {
 		case 1:
@@ -31035,7 +31100,10 @@ var CreateMarketForm = function CreateMarketForm(p) {
 			form = _react2.default.createElement(_createMarketForm8.default, p);
 			break;
 		case 5:
-			form = _react2.default.createElement(_createMarketForm10.default, p);
+			form = _react2.default.createElement(_createMarketForm10.default, _extends({}, p, {
+				selectedShareDenomination: _shareDenominations.SHARE,
+				shareDenominations: shareDenominations
+			}));
 			break;
 	}
 
@@ -31053,7 +31121,7 @@ CreateMarketForm.propTypes = {
 
 exports.default = CreateMarketForm;
 
-},{"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../market/constants/share-denominations":254,"./create-market-form-1":224,"./create-market-form-2":227,"./create-market-form-3":228,"./create-market-form-4":229,"./create-market-form-5":230,"react":195}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31111,7 +31179,9 @@ var CreateMarketPage = function CreateMarketPage(p) {
 			{ className: 'page-content' },
 			_react2.default.createElement(_createMarketForm2.default, _extends({
 				className: 'create-market-content'
-			}, p.createMarketForm))
+			}, p.createMarketForm, {
+				scalarShareDenomination: p.scalarShareDenomination
+			}))
 		)
 	);
 };
@@ -31321,6 +31391,127 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 14, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Scalar market order books now display "truncated" share quantities for very large quantities of millishares and microshares.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Market preview tooltips now display non-truncated values for very large numbers.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed a bug causing some reports to throw hash-mismatching errors during the reveal-report action.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Failed reveal report actions now render correctly on the transactions page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed a bug that sometimes caused the login button to be incorrectly disabled.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 13, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Finished refactoring and thoroughly unit testing reporting timing methods (checkPeriod et al) in augur.js.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed/updated augur.js reporting-sequence integration tests to work properly with the refactored reporting tools.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed error on Reporting detail page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed warning on trade (market detail) page.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 12, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added rescaling logic for categorical and scalar reports to augur.js fixReport and (new) unfixReport methods, and updated event / report loaders in UI accordingly.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Full reset of network 9000 (test chain) contracts.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 11, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Merged augur-core develop into master branch.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Changed tick size to tenths on trade page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added highlighting of the matching side of the order book when user clicks buy/sell.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed abnormally high CPU utilization on markets listing page.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'The trade page for scalar markets now properly displays the unit selection drop-down menu.  The share amounts on the page are updated automatically when a new unit is chosen.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed scalar market labels (no longer improperly labeled as categorical markets).'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 10, 2016'
 			),
 			_react2.default.createElement(
@@ -31510,9 +31701,9 @@ var MarketActive = function (_Component) {
 			if (!shareDenomination) {
 				var maxValue = (0, _getValue2.default)(this.props, 'market.maxValue');
 
-				if (maxValue >= 1000000) {
+				if (maxValue >= 10000000) {
 					this.props.scalarShareDenomination.updateSelectedShareDenomination(marketID, _shareDenominations.MICRO_SHARE);
-				} else if (maxValue >= 1000) {
+				} else if (maxValue >= 10000) {
 					this.props.scalarShareDenomination.updateSelectedShareDenomination(marketID, _shareDenominations.MILLI_SHARE);
 				} else {
 					this.props.scalarShareDenomination.updateSelectedShareDenomination(marketID, _shareDenominations.SHARE);
@@ -31600,11 +31791,11 @@ MarketActive.propTypes = {
 		outcomes: _react.PropTypes.array
 	}),
 	scalarShareDenomination: _react.PropTypes.shape({
-		updateSelectedShareDenomination: _react.PropTypes.function
+		updateSelectedShareDenomination: _react.PropTypes.func
 	})
 };
 
-},{"./../../../utils/get-value":288,"./../../markets/constants/market-types":261,"./../../order-book/components/order-book":271,"./../../outcomes/components/outcome-trade":275,"./../constants/share-denominations":254,"./market-data":239,"./market-user-data":252,"react":195}],237:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../markets/constants/market-types":261,"./../../order-book/components/order-book":271,"./../../outcomes/components/outcome-trade":275,"./../constants/share-denominations":254,"./market-data":239,"./market-user-data":252,"react":195}],237:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31904,7 +32095,10 @@ var MarketData = function (_Component) {
 					selectedShareDenomination: p.selectedShareDenomination
 				}),
 				s.selectedNav === _views.MARKET_DATA_NAV_CHARTS && _react2.default.createElement(_marketChart2.default, { series: p.market.priceTimeSeries }),
-				s.selectedNav === _views.MARKET_DATA_NAV_DETAILS && _react2.default.createElement(_marketDetails2.default, p.market)
+				s.selectedNav === _views.MARKET_DATA_NAV_DETAILS && _react2.default.createElement(_marketDetails2.default, _extends({}, p.market, {
+					selectedShareDenomination: p.selectedShareDenomination,
+					shareDenominations: p.shareDenominations
+				}))
 			);
 		}
 	}]);
@@ -31935,14 +32129,39 @@ var _valueDate = _dereq_('./../../common/components/value-date');
 
 var _valueDate2 = _interopRequireDefault(_valueDate);
 
+var _shareDenominations = _dereq_('./../constants/share-denominations');
+
 var _getValue = _dereq_('./../../../utils/get-value');
 
 var _getValue2 = _interopRequireDefault(_getValue);
+
+var _setShareDenomination = _dereq_('./../../../utils/set-share-denomination');
+
+var _setShareDenomination2 = _interopRequireDefault(_setShareDenomination);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketDetails = function MarketDetails(p) {
 	var outcomeName = (0, _getValue2.default)(p, 'result.outcomeName');
+
+	var outstandingShares = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'outstandingShares.formatted'), p.selectedShareDenomination);
+	var shareDenomination = function shareDenomination() {
+		switch (p.selectedShareDenomination) {
+			case _shareDenominations.MICRO_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MICRO_SHARE;
+				}).label;
+			case _shareDenominations.MILLI_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MILLI_SHARE;
+				}).label;
+			default:
+			case _shareDenominations.SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.SHARE;
+				}).label;
+		}
+	};
 
 	return _react2.default.createElement(
 		'div',
@@ -31989,7 +32208,7 @@ var MarketDetails = function MarketDetails(p) {
 					{ className: 'property-label' },
 					'outstanding shares'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'property-value' }, p.outstandingShares))
+				_react2.default.createElement(_valueDenomination2.default, { className: 'property-value', formatted: outstandingShares, denomination: shareDenomination() })
 			),
 			p.extraInfo != null && p.extraInfo !== '' && _react2.default.createElement(
 				'li',
@@ -32103,7 +32322,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"./../../../utils/get-value":288,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195}],241:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32143,11 +32362,11 @@ var MarketDataHeader = function MarketDataHeader(p) {
 		_react2.default.createElement(
 			'div',
 			{ className: 'market-header-actions' },
-			p.type === _marketTypes.SCALAR && !p.isPendingReport && _react2.default.createElement(_dropdown2.default, {
+			p.type === _marketTypes.SCALAR && p.selectedShareDenomination && !p.isPendingReport && _react2.default.createElement(_dropdown2.default, {
 				'default': p.selectedShareDenomination,
 				options: p.shareDenominations,
 				onChange: function onChange(denomination) {
-					p.updateSelectedShareDenomination(p.marketID, denomination);
+					p.updateSelectedShareDenomination(p.id, denomination);
 				}
 			})
 		)
@@ -32311,7 +32530,7 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 
 exports.default = MarketOpenOrdersRow;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],244:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],244:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32450,7 +32669,7 @@ var MarketOpenOrders = function (_Component) {
 
 exports.default = MarketOpenOrders;
 
-},{"./../../../utils/get-value":288,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-open-orders-group":242,"react":195}],245:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-open-orders-group":242,"react":195}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32508,7 +32727,7 @@ var MarketPositionsRow = function MarketPositionsRow(p) {
 
 exports.default = MarketPositionsRow;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],246:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-denomination":222,"./../../markets/constants/market-types":261,"react":195}],246:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32598,7 +32817,7 @@ var MarketPositions = function MarketPositions(p) {
 
 exports.default = MarketPositions;
 
-},{"./../../../utils/get-value":288,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-positions-row":245,"react":195}],247:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/null-state-message":219,"./../../markets/constants/market-types":261,"./market-positions-row":245,"react":195}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32752,9 +32971,42 @@ var _valueDenomination = _dereq_('./../../common/components/value-denomination')
 
 var _valueDenomination2 = _interopRequireDefault(_valueDenomination);
 
+var _shareDenominations = _dereq_('./../constants/share-denominations');
+
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
+var _setShareDenomination = _dereq_('./../../../utils/set-share-denomination');
+
+var _setShareDenomination2 = _interopRequireDefault(_setShareDenomination);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketProperties = function MarketProperties(p) {
+	var shareVolumeRounded = (0, _setShareDenomination2.default)((0, _getValue2.default)(p, 'volume.rounded'), p.selectedShareDenomination);
+	var shareVolumeFormatted = (0, _getValue2.default)(p, 'volume.formatted');
+
+	var shareDenomination = function shareDenomination() {
+		// TODO be less hackish (sorry sprinkle)
+		if (!p.shareDenominations) return 'Shares';
+		switch (p.selectedShareDenomination) {
+			case _shareDenominations.MICRO_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MICRO_SHARE;
+				}).label;
+			case _shareDenominations.MILLI_SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.MILLI_SHARE;
+				}).label;
+			default:
+			case _shareDenominations.SHARE:
+				return p.shareDenominations.find(function (denomination) {
+					return denomination.value === _shareDenominations.SHARE;
+				}).label;
+		}
+	};
+
 	return _react2.default.createElement(
 		'ul',
 		{ className: 'market-properties' },
@@ -32862,7 +33114,7 @@ var MarketProperties = function MarketProperties(p) {
 				)
 			)
 		),
-		_react2.default.createElement(
+		shareVolumeRounded && _react2.default.createElement(
 			'li',
 			{ className: 'property volume' },
 			_react2.default.createElement(
@@ -32877,7 +33129,7 @@ var MarketProperties = function MarketProperties(p) {
 					{ className: 'property-label' },
 					'Volume:'
 				),
-				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'property-value' }, p.volume, { formatted: p.volume.rounded }))
+				_react2.default.createElement(_valueDenomination2.default, { className: 'property-value', formatted: shareVolumeRounded, denomination: shareDenomination() })
 			),
 			_react2.default.createElement(
 				_reactTooltip2.default,
@@ -32891,7 +33143,7 @@ var MarketProperties = function MarketProperties(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'tooltip-text' },
-					p.volume.fullPrecision || p.volume.formatted,
+					shareVolumeFormatted,
 					' total ',
 					p.volume.denomination,
 					' traded'
@@ -32946,7 +33198,7 @@ var MarketProperties = function MarketProperties(p) {
 
 exports.default = MarketProperties;
 
-},{"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"react":195,"react-tooltip":49}],250:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-date":221,"./../../common/components/value-denomination":222,"./../constants/share-denominations":254,"react":195,"react-tooltip":49}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33126,7 +33378,7 @@ var MarketUserData = function (_Component) {
 
 exports.default = MarketUserData;
 
-},{"./../../../utils/get-value":288,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./market-open-orders":244,"./market-positions":246,"react":195}],253:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./market-open-orders":244,"./market-positions":246,"react":195}],253:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33178,7 +33430,7 @@ var MarketView = function MarketView(p) {
 
 exports.default = MarketView;
 
-},{"./../../../utils/get-value":288,"./../../common/components/null-state-message":219,"./market-active":236,"./market-reported":250,"./market-reporting":251,"react":195}],254:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/null-state-message":219,"./market-active":236,"./market-reported":250,"./market-reporting":251,"react":195}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33363,6 +33615,10 @@ var _marketsPagination = _dereq_('./markets-pagination');
 
 var _marketsPagination2 = _interopRequireDefault(_marketsPagination);
 
+var _getValue = _dereq_('./../../../utils/get-value');
+
+var _getValue2 = _interopRequireDefault(_getValue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MarketsList = function MarketsList(p) {
@@ -33370,10 +33626,16 @@ var MarketsList = function MarketsList(p) {
 		'article',
 		{ className: 'markets-list' },
 		(p.markets || []).map(function (market) {
+			var selectedShareDenomination = (0, _getValue2.default)(p, 'scalarShareDenomination.markets.' + market.id);
+			var shareDenominations = (0, _getValue2.default)(p, 'scalarShareDenomination.denominations');
+
 			return _react2.default.createElement(_marketPreview2.default, _extends({
 				key: market.id,
 				loginAccount: p.loginAccount
-			}, market));
+			}, market, {
+				selectedShareDenomination: selectedShareDenomination,
+				shareDenominations: shareDenominations
+			}));
 		}),
 		!!p.pagination && !!p.pagination.numUnpaginated && _react2.default.createElement(_marketsPagination2.default, { pagination: p.pagination })
 	);
@@ -33387,7 +33649,7 @@ var MarketsList = function MarketsList(p) {
 
 exports.default = MarketsList;
 
-},{"./../../market/components/market-preview":248,"./markets-pagination":258,"react":195}],258:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../market/components/market-preview":248,"./markets-pagination":258,"react":195}],258:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33544,7 +33806,8 @@ var MarketsView = function MarketsView(p) {
 		_react2.default.createElement(_marketsList2.default, {
 			loginAccount: p.loginAccount,
 			markets: p.markets,
-			pagination: p.pagination
+			pagination: p.pagination,
+			scalarShareDenomination: p.scalarShareDenomination
 		})
 	);
 };
@@ -34036,17 +34299,17 @@ var Report = function Report(p) {
 							className: 'report-committed',
 							'data-tip': 'You have successfully committed to this report. Remember to login to reveal the report!'
 						},
-						p.reported
+						p.reported || '-'
 					),
 					!!p.isRevealed && _react2.default.createElement(
 						'span',
 						{ className: 'report-revealed' },
-						p.reported
+						p.reported || '-'
 					),
 					!p.isRevealed && !p.isCommitted && _react2.default.createElement(
 						'span',
 						null,
-						p.reported
+						p.reported || '-'
 					),
 					!!p.outcome && p.isReportEqual && _react2.default.createElement(
 						'span',
@@ -34243,7 +34506,7 @@ var OrderBookRowSide = function OrderBookRowSide(p) {
 
 exports.default = OrderBookRowSide;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"./../../outcomes/constants/trade-types":277,"./../../transactions/constants/types":287,"react":195}],270:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/null-state-message":219,"./../../common/components/value-denomination":222,"./../../outcomes/constants/trade-types":277,"./../../transactions/constants/types":287,"react":195}],270:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34407,7 +34670,7 @@ var OutcomeRow = function OutcomeRow(p) {
 
 exports.default = OutcomeRow;
 
-},{"./../../../utils/get-value":288,"./../../../utils/set-share-denomination":290,"./../../common/components/value-denomination":222,"./../../link/components/link":234,"./../../markets/constants/market-types":261,"classnames":1,"react":195}],273:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../../utils/set-share-denomination":291,"./../../common/components/value-denomination":222,"./../../link/components/link":234,"./../../markets/constants/market-types":261,"classnames":1,"react":195}],273:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34599,7 +34862,7 @@ var OutcomeTradeSummary = function OutcomeTradeSummary(p) {
 
 exports.default = OutcomeTradeSummary;
 
-},{"./../../../utils/get-value":288,"./../../common/components/value-denomination":222,"react":195}],275:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/value-denomination":222,"react":195}],275:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34661,7 +34924,7 @@ var OutcomeTrade = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (OutcomeTrade.__proto__ || Object.getPrototypeOf(OutcomeTrade)).call(this, props));
 
 		_this.state = {
-			timestamp: Date.now(), // Utilized to force a re-render and subsequent update of the input fields' values
+			timestamp: Date.now(), // Utilized to force a re-render and subsequent update of the input fields' values on `selectedOutcome` change
 			selectedNav: _tradeTypes.BUY,
 			shareInputPlaceholder: generateShareInputPlaceholder(_this.props.selectedShareDenomination),
 			maxSharesDenominated: denominateShares((0, _getValue2.default)(_this.props, 'selectedOutcome.trade.maxNumShares.value', _shareDenominations.SHARE, _this.props.selectedShareDenomination)),
@@ -34681,18 +34944,23 @@ var OutcomeTrade = function (_Component) {
 
 			if (newTrade !== oldTrade || this.props.selectedShareDenomination !== nextProps.selectedShareDenomination) {
 				this.setState({
-					timestamp: Date.now(),
 					shareInputPlaceholder: generateShareInputPlaceholder(nextProps.selectedShareDenomination),
 					maxSharesDenominated: denominateShares((0, _getValue2.default)(nextProps, 'selectedOutcome.trade.maxNumShares.value', _shareDenominations.SHARE, nextProps.selectedShareDenomination)),
 					sharesDenominated: denominateShares((0, _getValue2.default)(nextProps, 'selectedOutcome.trade.numShares'), _shareDenominations.SHARE, nextProps.selectedShareDenomination)
 				});
+			}
+
+			var oldID = (0, _getValue2.default)(this.props, 'selectedOutcome.id');
+			var newID = (0, _getValue2.default)(nextProps, 'selectedOutcome.id');
+
+			if (oldID !== newID) {
+				this.setState({ timestamp: Date.now() }); // forces re-render of trade component via key value
 			}
 		}
 	}, {
 		key: 'updateSelectedNav',
 		value: function updateSelectedNav(selectedNav) {
 			this.setState({ selectedNav: selectedNav });
-			console.log('this -- ', this);
 			this.props.updateSelectedTradeSide(selectedNav);
 
 			var trade = (0, _getValue2.default)(this.props, 'selectedOutcome.trade');
@@ -34857,7 +35125,7 @@ function generateShareInputPlaceholder(denomination) {
 	}
 }
 
-},{"./../../../utils/get-value":288,"./../../common/components/component-nav":213,"./../../common/components/em-dash":216,"./../../common/components/input":218,"./../../market/constants/share-denominations":254,"./../../markets/constants/market-types":261,"./../constants/trade-types":277,"./outcome-trade-action":273,"./outcome-trade-summary":274,"react":195}],276:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../common/components/component-nav":213,"./../../common/components/em-dash":216,"./../../common/components/input":218,"./../../market/constants/share-denominations":254,"./../../markets/constants/market-types":261,"./../constants/trade-types":277,"./outcome-trade-action":273,"./outcome-trade-summary":274,"react":195}],276:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35555,7 +35823,7 @@ var ReportPanel = function (_Component) {
 
 exports.default = ReportPanel;
 
-},{"./../../../utils/get-value":288,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./../../market/components/market-details":240,"./../../market/components/market-header":241,"./report-form":282,"react":195}],284:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":289,"./../../app/constants/views":204,"./../../common/components/component-nav":213,"./../../market/components/market-details":240,"./../../market/components/market-header":241,"./report-form":282,"react":195}],284:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35778,7 +36046,7 @@ var Transaction = function Transaction(p) {
 					default:
 						break;
 				}
-				var reportedOutcome = isScalar ? p.data.reportedOutcomeID : p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
+				var reportedOutcome = isScalar ? p.data.reportedOutcomeID : p.data.outcome && p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '');
 				nodes.description = _react2.default.createElement(
 					'span',
 					{ className: 'description' },
@@ -36193,6 +36461,22 @@ var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
+
+exports.default = function (number) {
+	var sides = [];
+
+	sides = number.toString().split('.');
+	sides[0] = sides[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+	return sides.join('.');
+};
+
+},{}],289:[function(_dereq_,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 // Gets value of a arbitrarily deeply nested value by key path
 // @params {Object} obj - parent object
 // @params {String} target - string of path `this.is.the.target`
@@ -36205,7 +36489,7 @@ function getValue(obj, target) {
 
 exports.default = getValue;
 
-},{}],289:[function(_dereq_,module,exports){
+},{}],290:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36219,7 +36503,7 @@ exports.default = function (url) {
 	}
 };
 
-},{}],290:[function(_dereq_,module,exports){
+},{}],291:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36228,8 +36512,16 @@ Object.defineProperty(exports, "__esModule", {
 
 var _shareDenominations = _dereq_('./../modules/market/constants/share-denominations');
 
+var _addCommasToNumber = _dereq_('./add-commas-to-number');
+
+var _addCommasToNumber2 = _interopRequireDefault(_addCommasToNumber);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 // This helper method is very specific in scope
 // It takes in the formatted shares in string format and returns a string denominated as specified
+// The mutation of the shares is done this way so no actual re-calculation is done to the underlying
+// values, just string manipulation for presentation
 function setShareDenomination(value, denomination) {
 	if (value == null) {
 		return value;
@@ -36246,16 +36538,21 @@ function setShareDenomination(value, denomination) {
 	}
 }
 
+// The value is assumed to *always* be in 'SHARES' denomination
 function formatValue(value, amount) {
-	// BIG assumption here re: amount is that the formatted value is always displayed out to hundreths
 	var valueArray = value.split('');
 
-	// remove dot
+	// remove dot + determine 0 pad amount
 	var dotIndex = valueArray.indexOf('.');
-	valueArray.splice(dotIndex, 1);
+	var zeroPadAmount = amount;
+	if (dotIndex !== -1) {
+		valueArray.splice(dotIndex, 1);
+	} else {
+		zeroPadAmount += 2;
+	}
 
-	// Strip leading 0's
-	var firstPositiveValue = 0;
+	// Strip leading 0's OR returns original value if no values are positive
+	var firstPositiveValue = -1;
 	valueArray.some(function (value, i) {
 		if (parseInt(value, 10)) {
 			firstPositiveValue = i;
@@ -36264,21 +36561,83 @@ function formatValue(value, amount) {
 
 		return false;
 	});
-	if (firstPositiveValue) {
+	if (firstPositiveValue !== -1) {
 		valueArray.splice(0, firstPositiveValue);
+	} else {
+		return value; // Returns original value
 	}
 
-	// Append 0's
-	for (var i = 0; i < amount; i++) {
-		valueArray.push('0');
-	}
+	// Strip Commas (added back in at the end)
+	valueArray.forEach(function (value, i) {
+		if (value === ',') {
+			valueArray.splice(i, 1);
+		}
+	});
 
-	return valueArray.join(''); // return joined string
+	// Handle postFixed denominations (part of the format-number method)
+	valueArray = handlePostfixedUnit(valueArray, zeroPadAmount);
+
+	return (0, _addCommasToNumber2.default)(valueArray.join('')); // return joined string w/ comma separating thousands
+}
+
+function handlePostfixedUnit(valueArray, zeroPadAmount) {
+	var step = zeroPadAmount < 4;
+	var gtTrillion = '> 1T'.split('');
+	var newValueArray = valueArray;
+
+	switch (valueArray[newValueArray.length - 1]) {
+		// Handle existing > 10000 values
+		case 'K':
+			{
+				newValueArray[newValueArray.length - 1] = step ? 'M' : 'B';
+				return newValueArray;
+			}
+		case 'M':
+			{
+				if (step) {
+					newValueArray[newValueArray.length - 1] = 'B';
+				} else {
+					newValueArray = gtTrillion;
+				}
+				return newValueArray;
+			}
+		case 'B':
+		case 'T':
+			{
+				newValueArray = gtTrillion;
+				return newValueArray;
+			}
+
+		// Handle values that become greater than 10000
+		default:
+			{
+				// Append 0's
+				for (var i = 0; i < zeroPadAmount; i++) {
+					newValueArray.push('0');
+				}
+
+				// Mirrors logic present in format-number
+				if (newValueArray.length >= 13) {
+					newValueArray = gtTrillion;
+				} else if (newValueArray.length >= 11) {
+					newValueArray.splice(newValueArray.length - 9);
+					newValueArray.push('B');
+				} else if (newValueArray.length >= 8) {
+					newValueArray.splice(newValueArray.length - 6);
+					newValueArray.push('M');
+				} else if (newValueArray.length >= 5) {
+					newValueArray.splice(newValueArray.length - 3);
+					newValueArray.push('K');
+				}
+
+				return newValueArray;
+			}
+	}
 }
 
 exports.default = setShareDenomination;
 
-},{"./../modules/market/constants/share-denominations":254}],291:[function(_dereq_,module,exports){
+},{"./../modules/market/constants/share-denominations":254,"./add-commas-to-number":288}],292:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36292,16 +36651,23 @@ exports.default = function (nextProps, nextState) {
 };
 
 exports.shouldComponentUpdateLog = shouldComponentUpdateLog;
+exports.shouldComponentUpdateOnStateChangeOnly = shouldComponentUpdateOnStateChangeOnly;
 function shouldComponentUpdateLog(nextProps, nextState) {
 	return isShallowUnEqual(nextProps, this.props, true) || isShallowUnEqual(nextState, this.state, true);
 }
 
+function shouldComponentUpdateOnStateChangeOnly(nextProps, nextState) {
+	return isShallowUnEqual(nextState, this.state);
+}
+
 function isShallowUnEqual(obj1, obj2, log) {
+	// both arguments reference the same object
 	if (obj1 === obj2) {
 		return false;
 	}
 
-	if ((typeof obj1 === 'undefined' ? 'undefined' : _typeof(obj1)) !== 'object' || obj1 === null || (typeof obj2 === 'undefined' ? 'undefined' : _typeof(obj2)) !== 'object' || obj2 === null) {
+	// arguments are either not objects or undefined/null
+	if ((typeof obj1 === 'undefined' ? 'undefined' : _typeof(obj1)) !== 'object' || obj1 == null || (typeof obj2 === 'undefined' ? 'undefined' : _typeof(obj2)) !== 'object' || obj2 == null) {
 		return true;
 	}
 
@@ -36309,17 +36675,20 @@ function isShallowUnEqual(obj1, obj2, log) {
 	var keysB = Object.keys(obj2);
 	var keysALen = keysA.length;
 
+	// keys don't match
 	if (keysALen !== keysB.length) {
 		return true;
 	}
 
 	for (var i = 0; i < keysALen; i++) {
+		// actual values are different + not functions
 		if (obj1[keysA[i]] !== obj2[keysA[i]] && typeof obj1[keysA[i]] !== 'function') {
 			log && console.log('------->', keysA[i], obj1[keysA[i]], obj2[keysA[i]]);
 			return true;
 		}
 	}
 
+	// nothing needs to be updated
 	return false;
 }
 
