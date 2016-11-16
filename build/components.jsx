@@ -27730,6 +27730,15 @@ var AppComponent = function (_Component) {
 	}
 
 	_createClass(AppComponent, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			// Checks whether the app is currently in breakpoints 1 or 2 and will auto-hide the side-bar
+			if (window.getComputedStyle(this.main).getPropertyValue('will-change') === 'contents') {
+				this.main.style.willChange = 'auto'; // reset
+				this.toggleSideBar();
+			}
+		}
+	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate() {
 			(0, _scrollTopOnChange2.default)(this.props.url);
@@ -27795,7 +27804,9 @@ var AppComponent = function (_Component) {
 			// The duplicated components are `visibility: hidden` so that page flow is preserved since the actual elements are pulled from page flow via `position: fixed`
 			return _react2.default.createElement(
 				'main',
-				null,
+				{ id: 'main_responsive_state', ref: function ref(main) {
+						_this2.main = main;
+					} },
 				!!p && _react2.default.createElement(
 					'div',
 					{ id: 'app_container' },
