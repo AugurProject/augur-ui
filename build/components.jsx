@@ -28343,9 +28343,15 @@ var _checkbox = _dereq_('./../../common/components/checkbox');
 
 var _checkbox2 = _interopRequireDefault(_checkbox);
 
+var _nullStateMessage = _dereq_('./../../common/components/null-state-message');
+
+var _nullStateMessage2 = _interopRequireDefault(_nullStateMessage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var SideBar = function SideBar(p) {
+	var nullMessage = 'No Tags Available';
+
 	return _react2.default.createElement(
 		'article',
 		{ className: 'side-bar' },
@@ -28364,13 +28370,10 @@ var SideBar = function SideBar(p) {
 					text: tag.name,
 					text2: '(' + tag.numMatched + ')',
 					isChecked: tag.isSelected,
-					onClick: tag.onClick
+					onClick: tag.onClick,
+					isCheckboxVisible: false
 				});
-			}) : _react2.default.createElement(
-				'span',
-				{ className: 'null-state' },
-				'No Tags'
-			)
+			}) : _react2.default.createElement(_nullStateMessage2.default, { message: nullMessage })
 		)
 	);
 };
@@ -28382,7 +28385,7 @@ var SideBar = function SideBar(p) {
 
 exports.default = SideBar;
 
-},{"./../../common/components/checkbox":212,"react":195}],204:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":212,"./../../common/components/null-state-message":219,"react":195}],204:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29272,8 +29275,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Checkbox = function Checkbox(p) {
 	return _react2.default.createElement(
-		'span',
-		null,
+		'article',
+		{ className: 'checkbox-container' },
 		_react2.default.createElement(
 			'button',
 			{
@@ -29282,7 +29285,7 @@ var Checkbox = function Checkbox(p) {
 				'data-tip': p.title,
 				onClick: p.onClick
 			},
-			_react2.default.createElement('span', { className: 'checkbox-box' }),
+			p.isCheckboxVisible && _react2.default.createElement('span', { className: 'checkbox-box' }),
 			_react2.default.createElement(
 				'span',
 				{ className: 'checkbox-label', tabIndex: p.tabIndex },
@@ -29305,7 +29308,8 @@ Checkbox.propTypes = {
 	text2: _react.PropTypes.string,
 	isChecked: _react.PropTypes.bool,
 	tabIndex: _react.PropTypes.number,
-	onClick: _react.PropTypes.func
+	onClick: _react.PropTypes.func,
+	isCheckboxVisible: _react.PropTypes.bool
 };
 
 exports.default = Checkbox;
@@ -31396,6 +31400,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'ol',
 				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Removed checkboxes from sidebar.'
+				),
 				_react2.default.createElement(
 					'li',
 					null,
@@ -35118,7 +35127,7 @@ exports.default = OutcomeTrade;
 
 OutcomeTrade.propTypes = {
 	selectedShareDenomination: _react.PropTypes.string,
-	updateSelectedTradeSide: _react.PropTypes.function
+	updateSelectedTradeSide: _react.PropTypes.func
 };
 
 function denominateShares(shares, fromDenomination, toDenomination) {
