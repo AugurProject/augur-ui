@@ -34502,6 +34502,93 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 26, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed new-branch first-reporting-cycle edge case on collectFees contract: collectFees method now always returns a value.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Renewed augur.net wildcard SSL certificate (for eth2/3/9000 servers).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed trade page warning about minLimitPrice/maxLimitPrice types.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 25, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Event IDs retrieved during composite lookups (getMarketInfo, batchGetMarketInfo, and/or getMarketsInfo) are now uniformly formatted.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added market/event ID parser method to the static API data of several augur.js wrappers.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Combined first and second reporting test sequences into one method.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Default HTTP and websocket hosted node URLs are now attached to the ethrpc (augur.rpc) object / editable by the consumer.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 24, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Restructured augur.js tests: moved unit tests and integration tests to separate folders.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Updated UUID versions and package name in keythereum and augur.js.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Updated middleware Travis CI builds to only run on updates to the master branch.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Various fixes to augur UI unit tests.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Merged Sprinkle\'s mega-PRs!  (These include fixes/improvements made over the past week.)'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 23, 2016'
 			),
 			_react2.default.createElement(
@@ -38263,8 +38350,8 @@ OutcomeTrade.propTypes = {
 	selectedShareDenomination: _react.PropTypes.string,
 	updateSelectedTradeSide: _react.PropTypes.func,
 	marketType: _react.PropTypes.string,
-	minLimitPrice: _react.PropTypes.number,
-	maxLimitPrice: _react.PropTypes.number
+	minLimitPrice: _react.PropTypes.string,
+	maxLimitPrice: _react.PropTypes.string
 };
 
 function denominateShares(shares, fromDenomination, toDenomination) {
