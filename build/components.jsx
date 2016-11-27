@@ -34521,6 +34521,11 @@ var LoginMessagePage = function LoginMessagePage(p) {
 					'li',
 					null,
 					'Fixed trade page warning about minLimitPrice/maxLimitPrice types.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Removed the block number restriction on best bid/ask order tracking on trades contract.  Best bid/ask now represent the best prices in any block, for a given market and outcome.  (The block number restriction is no longer necessary since the crossed-orders check simply returns an error for the later-arriving order, which is not placed on the book.)'
 				)
 			),
 			_react2.default.createElement(
