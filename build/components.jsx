@@ -34510,6 +34510,30 @@ var LoginMessagePage = function LoginMessagePage(p) {
 				_react2.default.createElement(
 					'li',
 					null,
+					'The checkPeriod function now only looks up chain data on initial loading and when the reporting cycle phase changes.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Removed code related to the market data refresh timer, which is no longer used.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added a generic hook for transaction callbacks to ethrpc.  The UI (or augur.js) can now register a transaction relay function that is automatically called any time any transaction is sent, succeeds, or fails.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
+				'November 27, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
 					'Added answer-in-description reporting test markets for first 4 cycles on root branch.  (Example description: "Binary Reporting Test Market (Cycle 1): correct answer is Yes")'
 				),
 				_react2.default.createElement(
