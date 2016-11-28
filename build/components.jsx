@@ -34502,7 +34502,7 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
-				'November 27, 2016'
+				'November 28, 2016'
 			),
 			_react2.default.createElement(
 				'ol',
