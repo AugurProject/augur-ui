@@ -29957,7 +29957,7 @@ exports.default = components;
 exports.App = _app2.default;
 exports.constants = constants;
 
-},{"./modules/app/components/app":200,"./modules/app/constants/views":207,"./modules/auth/constants/auth-types":210,"./modules/transactions/constants/types":292}],199:[function(_dereq_,module,exports){
+},{"./modules/app/components/app":200,"./modules/app/constants/views":207,"./modules/auth/constants/auth-types":210,"./modules/transactions/constants/types":293}],199:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30423,7 +30423,7 @@ AccountPage.propTypes = {
 };
 exports.default = AccountPage;
 
-},{"./../../common/components/checkbox":216,"./../../common/components/input":222,"./../../link/components/link":238,"classnames":1,"react":197,"react-tooltip":51}],200:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":216,"./../../common/components/input":222,"./../../link/components/link":239,"classnames":1,"react":197,"react-tooltip":51}],200:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30476,6 +30476,10 @@ var _chatView = _dereq_('./../../chat/components/chat-view');
 
 var _chatView2 = _interopRequireDefault(_chatView);
 
+var _sideBarMask = _dereq_('./../../common/components/side-bar-mask');
+
+var _sideBarMask2 = _interopRequireDefault(_sideBarMask);
+
 var _shouldComponentUpdatePure = _dereq_('./../../../utils/should-component-update-pure');
 
 var _shouldComponentUpdatePure2 = _interopRequireDefault(_shouldComponentUpdatePure);
@@ -30509,14 +30513,20 @@ var AppComponent = function (_Component) {
 			isSideBarCollapsed: false,
 			isChatCollapsed: true,
 			doScrollTop: false,
-			currentRoute: null
+			currentRoute: null,
+			headerHeight: 0,
+			footerHeight: 0,
+			isFooterCollapsed: true
 		};
 
 		_this.shouldComponentUpdate = _shouldComponentUpdatePure2.default;
 
 		_this.toggleChat = _this.toggleChat.bind(_this);
 		_this.setSidebarAllowed = _this.setSidebarAllowed.bind(_this);
-		_this.handleSidebarSwipe = _this.handleSidebarSwipe.bind(_this);
+		_this.handleSwipe = _this.handleSwipe.bind(_this);
+		_this.updateHeaderHeight = _this.updateHeaderHeight.bind(_this);
+		_this.updateFooterHeight = _this.updateFooterHeight.bind(_this);
+		_this.updateIsFooterCollapsed = _this.updateIsFooterCollapsed.bind(_this);
 		return _this;
 	}
 
@@ -30530,11 +30540,11 @@ var AppComponent = function (_Component) {
 		}
 	}, {
 		key: 'componentDidUpdate',
-		value: function componentDidUpdate() {
+		value: function componentDidUpdate(pP, pS) {
 			(0, _scrollTopOnChange2.default)(this.props.url);
 		}
 
-		// Sidebar display related methods
+		// Sidebar
 
 	}, {
 		key: 'setSidebarAllowed',
@@ -30547,7 +30557,29 @@ var AppComponent = function (_Component) {
 			this.setState({ isSideBarCollapsed: !this.state.isSideBarCollapsed });
 		}
 
-		// chat display
+		//	Bounding Element Dimentions
+		//	NOTE -- used by mobile side-bar
+
+	}, {
+		key: 'updateHeaderHeight',
+		value: function updateHeaderHeight(headerHeight) {
+			this.setState({ headerHeight: headerHeight });
+		}
+	}, {
+		key: 'updateFooterHeight',
+		value: function updateFooterHeight(footerHeight) {
+			this.setState({ footerHeight: footerHeight });
+		}
+
+		//	Footer
+
+	}, {
+		key: 'updateIsFooterCollapsed',
+		value: function updateIsFooterCollapsed(isFooterCollapsed) {
+			this.setState({ isFooterCollapsed: isFooterCollapsed });
+		}
+
+		// Chat
 
 	}, {
 		key: 'toggleChat',
@@ -30555,14 +30587,22 @@ var AppComponent = function (_Component) {
 			this.setState({ isChatCollapsed: !this.state.isChatCollapsed });
 		}
 	}, {
-		key: 'handleSidebarSwipe',
-		value: function handleSidebarSwipe(swipe) {
+		key: 'handleSwipe',
+		value: function handleSwipe(swipe) {
+			var threshold = 50;
+
 			if (this.state.isSideBarAllowed) {
-				if (swipe.deltaX > 0) {
+				if (swipe.deltaX > threshold) {
 					this.setState({ isSideBarCollapsed: false });
 				} else {
 					this.setState({ isSideBarCollapsed: true });
 				}
+			}
+
+			if (swipe.deltaY > -threshold) {
+				this.setState({ isFooterCollapsed: true });
+			} else {
+				this.setState({ isFooterCollapsed: false });
 			}
 		}
 	}, {
@@ -30599,7 +30639,9 @@ var AppComponent = function (_Component) {
 			};
 
 			var sideBarProps = {
-				tags: p.tags
+				tags: p.tags,
+				headerHeight: s.headerHeight,
+				footerHeight: s.footerHeight
 			};
 
 			// NOTE -- A few implementation details:
@@ -30612,63 +30654,83 @@ var AppComponent = function (_Component) {
 						_this2.main = main;
 					} },
 				!!p && _react2.default.createElement(
-					'div',
-					{ id: 'app_container' },
+					_reactHammerjs2.default,
+					{
+						onSwipe: this.handleSwipe,
+						direction: 'DIRECTION_ALL'
+					},
 					_react2.default.createElement(
 						'div',
-						{ id: 'app_header' },
-						_react2.default.createElement(_header2.default, navProps),
+						{ id: 'app_container' },
+						s.isSideBarAllowed && !s.isSideBarCollapsed && _react2.default.createElement(_sideBarMask2.default, {
+							style: {
+								top: s.headerHeight,
+								bottom: s.footerHeight
+							}
+						}),
 						_react2.default.createElement(
 							'div',
-							{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
-							s.isSideBarAllowed && !s.isSideBarCollapsed && _react2.default.createElement('div', { className: 'core-stats-bumper' }),
-							p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ id: 'app_views' },
-						_react2.default.createElement(_header2.default, navProps),
-						_react2.default.createElement(
-							'div',
-							{ id: 'app_view_container' },
-							s.isSideBarAllowed && !s.isSideBarCollapsed && _react2.default.createElement(
-								'div',
-								{ id: 'side_bar' },
-								_react2.default.createElement(_sideBar2.default, sideBarProps)
-							),
+							{ id: 'app_header' },
+							_react2.default.createElement(_header2.default, _extends({}, navProps, {
+								updateHeaderHeight: this.updateHeaderHeight
+							})),
 							_react2.default.createElement(
 								'div',
-								{ id: 'app_view' },
-								_react2.default.createElement(
-									'div',
-									{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
-									p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
-								),
-								_react2.default.createElement(
+								{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
+								s.isSideBarAllowed && !s.isSideBarCollapsed && _react2.default.createElement('div', { className: 'core-stats-bumper' }),
+								p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
+							)
+						),
+						_react2.default.createElement(
+							'div',
+							{ id: 'app_views' },
+							_react2.default.createElement(_header2.default, navProps),
+							_react2.default.createElement(
+								'div',
+								{ id: 'app_view_container' },
+								s.isSideBarAllowed && !s.isSideBarCollapsed && _react2.default.createElement(
 									_reactHammerjs2.default,
 									{ onSwipe: this.handleSidebarSwipe, style: { overflow: 'hidden' } },
+									_react2.default.createElement(
+										'div',
+										{ id: 'side_bar' },
+										_react2.default.createElement(_sideBar2.default, sideBarProps)
+									)
+								),
+								_react2.default.createElement(
+									'div',
+									{ id: 'app_view' },
+									s.isSideBarAllowed && !s.isSideBarCollapsed && _react2.default.createElement('div', { className: 'core-stats-bumper' }),
+									_react2.default.createElement(
+										'div',
+										{ className: (0, _classnames2.default)('sub-header', (!p.loginAccount || !p.loginAccount.address) && 'logged-out') },
+										p.loginAccount && p.loginAccount.id && _react2.default.createElement(_coreStats2.default, { coreStats: p.coreStats })
+									),
 									_react2.default.createElement(_routes2.default, _extends({}, p, {
 										setSidebarAllowed: this.setSidebarAllowed
-									}))
-								),
-								_react2.default.createElement(_footer2.default, navProps)
+									})),
+									_react2.default.createElement(_footer2.default, navProps)
+								)
 							)
-						)
-					),
-					!s.isChatCollapsed && _react2.default.createElement(_chatView2.default, _extends({}, p.chat.augur, {
-						toggleChat: function toggleChat() {
-							_this2.toggleChat();
-						}
-					})),
-					_react2.default.createElement(
-						'button',
-						{ id: 'chat-button', onClick: function onClick() {
+						),
+						!s.isChatCollapsed && _react2.default.createElement(_chatView2.default, _extends({}, p.chat.augur, {
+							toggleChat: function toggleChat() {
 								_this2.toggleChat();
-							} },
-						'Chat'
-					),
-					_react2.default.createElement(_footer2.default, navProps)
+							}
+						})),
+						_react2.default.createElement(
+							'button',
+							{ id: 'chat-button', onClick: function onClick() {
+									_this2.toggleChat();
+								} },
+							'Chat'
+						),
+						_react2.default.createElement(_footer2.default, _extends({}, navProps, {
+							isFooterCollapsed: s.isFooterCollapsed,
+							updateFooterHeight: this.updateFooterHeight,
+							updateIsFooterCollapsed: this.updateIsFooterCollapsed
+						}))
+					)
 				)
 			);
 		}
@@ -30681,7 +30743,7 @@ AppComponent.propTypes = {
 	url: _react.PropTypes.string
 };
 
-},{"./../../../utils/get-value":295,"./../../../utils/scroll-top-on-change":296,"./../../../utils/should-component-update-pure":299,"./../../chat/components/chat-view":212,"./core-stats":201,"./footer":202,"./header":203,"./routes":205,"./side-bar":206,"classnames":1,"react":197,"react-dom":43,"react-hammerjs":44}],201:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/scroll-top-on-change":297,"./../../../utils/should-component-update-pure":300,"./../../chat/components/chat-view":212,"./../../common/components/side-bar-mask":224,"./core-stats":201,"./footer":202,"./header":203,"./routes":205,"./side-bar":206,"classnames":1,"react":197,"react-dom":43,"react-hammerjs":44}],201:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30747,7 +30809,7 @@ CoreStats.propTypes = {
 
 exports.default = CoreStats;
 
-},{"./../../common/components/value-denomination":226,"react":197}],202:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":227,"react":197}],202:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30761,10 +30823,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = _dereq_('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _reactHammerjs = _dereq_('react-hammerjs');
-
-var _reactHammerjs2 = _interopRequireDefault(_reactHammerjs);
 
 var _nav = _dereq_('./nav');
 
@@ -30791,14 +30849,13 @@ var Footer = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Footer.__proto__ || Object.getPrototypeOf(Footer)).call(this, props));
 
 		_this.state = {
-			isFooterCollapsed: true,
-			verticalOffset: 0
+			verticalOffset: 0,
+			footerHeight: 0
 		};
 
 		_this.handleWindowResize = (0, _debounce2.default)(_this.handleWindowResize.bind(_this));
 		_this.toggleFooter = _this.toggleFooter.bind(_this);
 		_this.slideFooter = _this.slideFooter.bind(_this);
-		_this.handleSwipe = _this.handleSwipe.bind(_this);
 		return _this;
 	}
 
@@ -30811,14 +30868,18 @@ var Footer = function (_Component) {
 	}, {
 		key: 'componentDidUpdate',
 		value: function componentDidUpdate(pP, pS) {
-			if (pS.isFooterCollapsed !== this.state.isFooterCollapsed) {
+			if (pP.logged !== this.props.logged || pP.isFooterCollapsed !== this.props.isFooterCollapsed) {
 				this.slideFooter();
+			}
+
+			if (pS.footerHeight !== this.state.footerHeight && this.props.updateFooterHeight) {
+				this.props.updateFooterHeight(this.state.footerHeight);
 			}
 		}
 	}, {
 		key: 'toggleFooter',
 		value: function toggleFooter() {
-			this.setState({ isFooterCollapsed: !this.state.isFooterCollapsed });
+			this.props.updateIsFooterCollapsed(!this.props.isFooterCollapsed);
 		}
 	}, {
 		key: 'handleWindowResize',
@@ -30831,34 +30892,34 @@ var Footer = function (_Component) {
 			}
 		}
 	}, {
-		key: 'handleSwipe',
-		value: function handleSwipe(swipe) {
-			if (swipe.deltaY > 0) {
-				this.setState({ isFooterCollapsed: true });
-			} else {
-				this.setState({ isFooterCollapsed: false });
-			}
-		}
-	}, {
 		key: 'slideFooter',
 		value: function slideFooter() {
-			var s = this.state;
+			var p = this.props;
 			var navHeight = this.navRef.offsetHeight;
 			var footerHeight = this.footer.offsetHeight;
 			var togglerHeight = this.toggler.offsetHeight;
 
 			if (navHeight) {
 				// navs are present
-				if (s.isFooterCollapsed) {
+				if (p.isFooterCollapsed) {
 					// collapse
-					this.setState({ verticalOffset: -(footerHeight - togglerHeight - navHeight) });
+					this.setState({
+						verticalOffset: -(footerHeight - togglerHeight - navHeight),
+						footerHeight: navHeight
+					});
 				} else {
 					// expand
-					this.setState({ verticalOffset: 0 });
+					this.setState({
+						verticalOffset: 0,
+						footerHeight: footerHeight - togglerHeight
+					});
 				}
 			} else {
 				// navs are absent
-				this.setState({ verticalOffset: 0 });
+				this.setState({
+					verticalOffset: 0,
+					footerHeight: footerHeight - togglerHeight
+				});
 			}
 		}
 	}, {
@@ -30870,55 +30931,51 @@ var Footer = function (_Component) {
 			var s = this.state;
 
 			return _react2.default.createElement(
-				_reactHammerjs2.default,
-				{ onSwipe: this.handleSwipe, direction: 'DIRECTION_VERTICAL' },
+				'footer',
+				{
+					ref: function ref(footer) {
+						_this2.footer = footer;
+					},
+					style: { bottom: s.verticalOffset }
+				},
 				_react2.default.createElement(
-					'footer',
+					'button',
 					{
-						ref: function ref(footer) {
-							_this2.footer = footer;
+						ref: function ref(toggler) {
+							_this2.toggler = toggler;
 						},
-						style: { bottom: s.verticalOffset }
+						className: 'nav-toggler unstyled',
+						onClick: this.toggleFooter
 					},
 					_react2.default.createElement(
-						'button',
-						{
-							ref: function ref(toggler) {
-								_this2.toggler = toggler;
-							},
-							className: 'nav-toggler unstyled',
-							onClick: this.toggleFooter
-						},
+						'span',
+						{ className: 'nav-toggler-button' },
 						_react2.default.createElement(
-							'span',
-							{ className: 'nav-toggler-button' },
-							_react2.default.createElement(
-								'i',
-								null,
-								s.isFooterCollapsed ? '' : ''
-							)
+							'i',
+							null,
+							p.isFooterCollapsed ? '' : ''
 						)
-					),
-					_react2.default.createElement(_nav2.default, _extends({
-						className: 'nav-footer',
-						navRef: function navRef(_navRef) {
-							_this2.navRef = _navRef;
-						},
-						toggleFooter: this.toggleFooter
-					}, p)),
+					)
+				),
+				_react2.default.createElement(_nav2.default, _extends({
+					className: 'nav-footer',
+					navRef: function navRef(_navRef) {
+						_this2.navRef = _navRef;
+					},
+					toggleFooter: this.toggleFooter
+				}, p)),
+				_react2.default.createElement(
+					'div',
+					{ id: 'footer_content' },
 					_react2.default.createElement(
-						'div',
-						{ id: 'footer_content' },
-						_react2.default.createElement(
-							'a',
-							{ className: 'link', href: 'https://augur.net', target: '_blank', rel: 'noopener noreferrer' },
-							'About'
-						),
-						_react2.default.createElement(
-							'a',
-							{ className: 'link', href: 'http://augur.link/augur-beta-ToS-v2.pdf', target: '_blank', rel: 'noopener noreferrer' },
-							'Terms of Service'
-						)
+						'a',
+						{ className: 'link', href: 'https://augur.net', target: '_blank', rel: 'noopener noreferrer' },
+						'About'
+					),
+					_react2.default.createElement(
+						'a',
+						{ className: 'link', href: 'http://augur.link/augur-beta-ToS-v2.pdf', target: '_blank', rel: 'noopener noreferrer' },
+						'Terms of Service'
 					)
 				)
 			);
@@ -30930,7 +30987,15 @@ var Footer = function (_Component) {
 
 exports.default = Footer;
 
-},{"./../../../utils/debounce":294,"./nav":204,"react":197,"react-hammerjs":44}],203:[function(_dereq_,module,exports){
+
+Footer.propTypes = {
+	updateFooterHeight: _react.PropTypes.func,
+	updateIsFooterCollapsed: _react.PropTypes.func,
+	logged: _react.PropTypes.string,
+	isFooterCollapsed: _react.PropTypes.bool
+};
+
+},{"./../../../utils/debounce":295,"./nav":204,"react":197}],203:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30938,6 +31003,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = _dereq_('react');
 
@@ -30947,21 +31014,85 @@ var _nav = _dereq_('./nav');
 
 var _nav2 = _interopRequireDefault(_nav);
 
+var _debounce = _dereq_('./../../../utils/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Header = function Header(p) {
-	return _react2.default.createElement(
-		'header',
-		{ className: 'app-header' },
-		_react2.default.createElement(_nav2.default, _extends({}, p, {
-			className: 'nav-header'
-		}))
-	);
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Header = function (_Component) {
+	_inherits(Header, _Component);
+
+	function Header(props) {
+		_classCallCheck(this, Header);
+
+		var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
+
+		_this.state = {
+			headerHeight: 0
+		};
+
+		_this.setHeaderHeight = (0, _debounce2.default)(_this.setHeaderHeight.bind(_this));
+		return _this;
+	}
+
+	_createClass(Header, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.setHeaderHeight();
+			window.addEventListener('resize', this.setHeaderHeight);
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(pP, pS) {
+			if (pS.headerHeight !== this.state.headerHeight && this.props.updateHeaderHeight) {
+				this.props.updateHeaderHeight(this.state.headerHeight);
+			}
+		}
+	}, {
+		key: 'setHeaderHeight',
+		value: function setHeaderHeight() {
+			var headerHeight = this.navRef.offsetHeight;
+
+			this.setState({ headerHeight: headerHeight });
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this2 = this;
+
+			var p = this.props;
+
+			return _react2.default.createElement(
+				'header',
+				{ className: 'app-header' },
+				_react2.default.createElement(_nav2.default, _extends({}, p, {
+					className: 'nav-header',
+					navRef: function navRef(_navRef) {
+						_this2.navRef = _navRef;
+					}
+				}))
+			);
+		}
+	}]);
+
+	return Header;
+}(_react.Component);
 
 exports.default = Header;
 
-},{"./nav":204,"react":197}],204:[function(_dereq_,module,exports){
+
+Header.propTypes = {
+	updateHeaderHeight: _react.PropTypes.func
+};
+
+},{"./../../../utils/debounce":295,"./nav":204,"react":197}],204:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31135,7 +31266,7 @@ var Nav = function Nav(p) {
 
 exports.default = Nav;
 
-},{"./../../auth/constants/auth-types":210,"./../../common/components/augur-logo-full":213,"./../../common/components/augur-logo-icon":214,"./../../link/components/link":238,"./../../markets/constants/markets-headers":266,"./../constants/views":207,"classnames":1,"react":197}],205:[function(_dereq_,module,exports){
+},{"./../../auth/constants/auth-types":210,"./../../common/components/augur-logo-full":213,"./../../common/components/augur-logo-icon":214,"./../../link/components/link":239,"./../../markets/constants/markets-headers":267,"./../constants/views":207,"classnames":1,"react":197}],205:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31358,7 +31489,7 @@ var Routes = function (_Component) {
 
 exports.default = Routes;
 
-},{"./../../../utils/get-value":295,"./../../../utils/should-component-update-pure":299,"./../../account/components/account-view":199,"./../../auth/components/auth-view":209,"./../../auth/constants/auth-types":210,"./../../create-market/components/create-market-view":237,"./../../login-message/components/login-message-view":239,"./../../market/components/market-view":257,"./../../markets/components/markets-view":264,"./../../portfolio/components/portfolio-view":284,"./../../transactions/components/transactions-view":290,"./../constants/views":207,"react":197}],206:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/should-component-update-pure":300,"./../../account/components/account-view":199,"./../../auth/components/auth-view":209,"./../../auth/constants/auth-types":210,"./../../create-market/components/create-market-view":238,"./../../login-message/components/login-message-view":240,"./../../market/components/market-view":258,"./../../markets/components/markets-view":265,"./../../portfolio/components/portfolio-view":285,"./../../transactions/components/transactions-view":291,"./../constants/views":207,"react":197}],206:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31383,8 +31514,14 @@ var SideBar = function SideBar(p) {
 	var nullMessage = 'No Tags Available';
 
 	return _react2.default.createElement(
-		'article',
-		{ className: 'side-bar' },
+		'aside',
+		{
+			className: 'side-bar',
+			style: {
+				top: p.headerHeight,
+				bottom: p.footerHeight
+			}
+		},
 		_react2.default.createElement(
 			'h3',
 			null,
@@ -31400,20 +31537,19 @@ var SideBar = function SideBar(p) {
 					text: tag.name,
 					text2: '(' + tag.numMatched + ')',
 					isChecked: tag.isSelected,
-					onClick: tag.onClick,
-					isCheckboxVisible: false
+					onClick: tag.onClick
 				});
 			}) : _react2.default.createElement(_nullStateMessage2.default, { message: nullMessage })
 		)
 	);
 };
 
+exports.default = SideBar;
+
 // TODO -- Prop Validations
 // SideBar.propTypes = {
 // 	filters: React.PropTypes.array
 // };
-
-exports.default = SideBar;
 
 },{"./../../common/components/checkbox":216,"./../../common/components/null-state-message":223,"react":197}],207:[function(_dereq_,module,exports){
 'use strict';
@@ -31776,7 +31912,7 @@ AuthForm.defaultProps = {
 };
 exports.default = AuthForm;
 
-},{"./../../common/components/checkbox":216,"./../../link/components/link":238,"classnames":1,"react":197,"react-tooltip":51}],209:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":216,"./../../link/components/link":239,"classnames":1,"react":197,"react-tooltip":51}],209:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -31878,7 +32014,7 @@ AuthPage.propTypes = {
 
 exports.default = AuthPage;
 
-},{"./../../link/components/link":238,"./auth-form":208,"classnames":1,"react":197}],210:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./auth-form":208,"classnames":1,"react":197}],210:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32202,7 +32338,7 @@ ChatView.propTypes = {
 };
 exports.default = ChatView;
 
-},{"./../../common/components/value-timestamp":227,"react":197,"react-tooltip":51}],213:[function(_dereq_,module,exports){
+},{"./../../common/components/value-timestamp":228,"react":197,"react-tooltip":51}],213:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32384,7 +32520,7 @@ var Checkbox = function Checkbox(p) {
 				'data-tip': p.title,
 				onClick: p.onClick
 			},
-			p.isCheckboxVisible && _react2.default.createElement('span', { className: 'checkbox-box' }),
+			_react2.default.createElement('span', { className: 'checkbox-box' }),
 			_react2.default.createElement(
 				'span',
 				{ className: 'checkbox-label', tabIndex: p.tabIndex },
@@ -32407,8 +32543,7 @@ Checkbox.propTypes = {
 	text2: _react.PropTypes.string,
 	isChecked: _react.PropTypes.bool,
 	tabIndex: _react.PropTypes.number,
-	onClick: _react.PropTypes.func,
-	isCheckboxVisible: _react.PropTypes.bool
+	onClick: _react.PropTypes.func
 };
 
 exports.default = Checkbox;
@@ -32460,7 +32595,7 @@ var ComponentNav = function ComponentNav(p) {
 
 exports.default = ComponentNav;
 
-},{"./../../link/components/link":238,"classnames":1,"react":197}],218:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"classnames":1,"react":197}],218:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32858,7 +32993,7 @@ Input.propTypes = {
 };
 exports.default = Input;
 
-},{"./../../../utils/should-component-update-pure":299,"classnames":1,"react":197}],223:[function(_dereq_,module,exports){
+},{"./../../../utils/should-component-update-pure":300,"classnames":1,"react":197}],223:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32890,6 +33025,28 @@ var NullStateMessage = function NullStateMessage(p) {
 exports.default = NullStateMessage;
 
 },{"react":197}],224:[function(_dereq_,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = _dereq_("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SidebarMask = function SidebarMask(p) {
+	return _react2.default.createElement("article", {
+		className: "side-bar-mask",
+		style: p.style
+	});
+};
+
+exports.default = SidebarMask;
+
+},{"react":197}],225:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -32982,7 +33139,7 @@ var TabNavigation = function TabNavigation(p) {
 
 exports.default = TabNavigation;
 
-},{"./../../link/components/link":238,"./value-denomination":226,"classnames":1,"react":197,"react-tooltip":51}],225:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./value-denomination":227,"classnames":1,"react":197,"react-tooltip":51}],226:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33015,7 +33172,7 @@ ValueDate.propTypes = {
 
 exports.default = ValueDate;
 
-},{"classnames":1,"react":197}],226:[function(_dereq_,module,exports){
+},{"classnames":1,"react":197}],227:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33101,7 +33258,7 @@ ValueDenomination.propTypes = {
 
 exports.default = ValueDenomination;
 
-},{"./em-dash":220,"classnames":1,"react":197,"react-tooltip":51}],227:[function(_dereq_,module,exports){
+},{"./em-dash":220,"classnames":1,"react":197,"react-tooltip":51}],228:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33133,7 +33290,7 @@ ValueTimestamp.propTypes = {
 
 exports.default = ValueTimestamp;
 
-},{"classnames":1,"react":197}],228:[function(_dereq_,module,exports){
+},{"classnames":1,"react":197}],229:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33252,7 +33409,7 @@ var CreateMarketForm1 = function CreateMarketForm1(p) {
 
 exports.default = CreateMarketForm1;
 
-},{"./../../markets/constants/market-types":265,"react":197}],229:[function(_dereq_,module,exports){
+},{"./../../markets/constants/market-types":266,"react":197}],230:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33309,7 +33466,7 @@ var CreateMarketForm2Categorical = function CreateMarketForm2Categorical(p) {
 
 exports.default = CreateMarketForm2Categorical;
 
-},{"./../../common/components/input-list":221,"react":197}],230:[function(_dereq_,module,exports){
+},{"./../../common/components/input-list":221,"react":197}],231:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33404,7 +33561,7 @@ var CreateMarketForm2Scalar = function CreateMarketForm2Scalar(p) {
 
 exports.default = CreateMarketForm2Scalar;
 
-},{"./../../common/components/input":222,"react":197}],231:[function(_dereq_,module,exports){
+},{"./../../common/components/input":222,"react":197}],232:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33524,7 +33681,7 @@ var CreateMarketForm2 = function CreateMarketForm2(p) {
 exports.default = CreateMarketForm2;
 // 	expanded={true}
 
-},{"./../../common/components/datepicker":218,"./../../common/components/input":222,"./../../markets/constants/market-types":265,"./create-market-form-2-categorical":229,"./create-market-form-2-scalar":230,"./create-market-form-buttons":235,"react":197}],232:[function(_dereq_,module,exports){
+},{"./../../common/components/datepicker":218,"./../../common/components/input":222,"./../../markets/constants/market-types":266,"./create-market-form-2-categorical":230,"./create-market-form-2-scalar":231,"./create-market-form-buttons":236,"react":197}],233:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -33699,7 +33856,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"./../../common/components/input":222,"./../../common/components/input-list":221,"./create-market-form-buttons":235,"classnames":1,"react":197}],233:[function(_dereq_,module,exports){
+},{"./../../common/components/input":222,"./../../common/components/input-list":221,"./create-market-form-buttons":236,"classnames":1,"react":197}],234:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34038,7 +34195,7 @@ var CreateMarketForm4 = function CreateMarketForm4(p) {
 
 exports.default = CreateMarketForm4;
 
-},{"./../../../utils/get-value":295,"./../../common/components/checkbox":216,"./../../common/components/input":222,"./create-market-form-buttons":235,"classnames":1,"react":197}],234:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../common/components/checkbox":216,"./../../common/components/input":222,"./create-market-form-buttons":236,"classnames":1,"react":197}],235:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34101,7 +34258,7 @@ var CreateMarketForm5 = function CreateMarketForm5(p) {
 
 exports.default = CreateMarketForm5;
 
-},{"./../../common/components/value-denomination":226,"./../../market/components/market-preview":252,"./create-market-form-buttons":235,"react":197}],235:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":227,"./../../market/components/market-preview":253,"./create-market-form-buttons":236,"react":197}],236:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -34150,7 +34307,7 @@ CreateMarketFormButtons.propTypes = {
 
 exports.default = CreateMarketFormButtons;
 
-},{"react":197}],236:[function(_dereq_,module,exports){
+},{"react":197}],237:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34232,7 +34389,7 @@ CreateMarketForm.propTypes = {
 
 exports.default = CreateMarketForm;
 
-},{"./../../../utils/get-value":295,"./../../market/constants/share-denominations":258,"./create-market-form-1":228,"./create-market-form-2":231,"./create-market-form-3":232,"./create-market-form-4":233,"./create-market-form-5":234,"react":197}],237:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../market/constants/share-denominations":259,"./create-market-form-1":229,"./create-market-form-2":232,"./create-market-form-3":233,"./create-market-form-4":234,"./create-market-form-5":235,"react":197}],238:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34304,7 +34461,7 @@ CreateMarketPage.propTypes = {
 
 exports.default = CreateMarketPage;
 
-},{"./create-market-form":236,"react":197}],238:[function(_dereq_,module,exports){
+},{"./create-market-form":237,"react":197}],239:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34397,7 +34554,7 @@ Link.propTypes = {
 };
 exports.default = Link;
 
-},{"react":197}],239:[function(_dereq_,module,exports){
+},{"react":197}],240:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -34843,7 +35000,7 @@ LoginMessagePage.propTypes = {
 
 exports.default = LoginMessagePage;
 
-},{"./../../link/components/link":238,"react":197}],240:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"react":197}],241:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35091,7 +35248,7 @@ MarketActive.propTypes = {
 	})
 };
 
-},{"./../../../utils/get-value":295,"./../../markets/constants/market-types":265,"./../../order-book/components/order-book":275,"./../../order-book/constants/order-book-value-types":276,"./../../outcomes/components/outcome-trade":279,"./../../outcomes/constants/trade-types":282,"./../../transactions/constants/types":292,"./../constants/share-denominations":258,"./market-data":243,"./market-user-data":256,"react":197}],241:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../markets/constants/market-types":266,"./../../order-book/components/order-book":276,"./../../order-book/constants/order-book-value-types":277,"./../../outcomes/components/outcome-trade":280,"./../../outcomes/constants/trade-types":283,"./../../transactions/constants/types":293,"./../constants/share-denominations":259,"./market-data":244,"./market-user-data":257,"react":197}],242:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35205,7 +35362,7 @@ var MarketBasics = function MarketBasics(p) {
 
 exports.default = MarketBasics;
 
-},{"./../../link/components/link":238,"./market-properties":253,"classnames":1,"react":197}],242:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./market-properties":254,"classnames":1,"react":197}],243:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35298,7 +35455,7 @@ MarketChart.propTypes = {
 };
 exports.default = MarketChart;
 
-},{"./../../common/components/null-state-message":223,"react":197,"react-highcharts":45}],243:[function(_dereq_,module,exports){
+},{"./../../common/components/null-state-message":223,"react":197,"react-highcharts":45}],244:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35423,7 +35580,7 @@ var MarketData = function (_Component) {
 
 exports.default = MarketData;
 
-},{"./../../app/constants/views":207,"./../../common/components/component-nav":217,"./../../order-book/components/order-book":275,"./../../outcomes/components/outcomes":281,"./market-chart":242,"./market-details":244,"./market-header":245,"react":197}],244:[function(_dereq_,module,exports){
+},{"./../../app/constants/views":207,"./../../common/components/component-nav":217,"./../../order-book/components/order-book":276,"./../../outcomes/components/outcomes":282,"./market-chart":243,"./market-details":245,"./market-header":246,"react":197}],245:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35579,12 +35736,14 @@ var MarketDetails = function MarketDetails(p) {
 			{ className: 'reported-outcome' },
 			_react2.default.createElement('hr', null),
 			_react2.default.createElement(
-				'h4',
+				'center',
 				null,
-				'This market is closed.'
-			),
-			'Reported outcome: ',
-			p.reportedOutcome
+				_react2.default.createElement(
+					'h4',
+					null,
+					'This market is closed.'
+				)
+			)
 		)
 	);
 };
@@ -35623,7 +35782,7 @@ function getResolutionNode(resolution) {
 	);
 }
 
-},{"./../../../utils/get-value":295,"./../../../utils/set-share-denomination":297,"./../../../utils/share-denomination-label":298,"./../../common/components/value-date":225,"./../../common/components/value-denomination":226,"react":197}],245:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/set-share-denomination":298,"./../../../utils/share-denomination-label":299,"./../../common/components/value-date":226,"./../../common/components/value-denomination":227,"react":197}],246:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35676,7 +35835,7 @@ var MarketDataHeader = function MarketDataHeader(p) {
 
 exports.default = MarketDataHeader;
 
-},{"./../../common/components/dropdown":219,"./../../markets/constants/market-types":265,"./market-properties":253,"react":197}],246:[function(_dereq_,module,exports){
+},{"./../../common/components/dropdown":219,"./../../markets/constants/market-types":266,"./market-properties":254,"react":197}],247:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35720,7 +35879,7 @@ var MarketOpenOrdersGroup = function MarketOpenOrdersGroup(p) {
 
 exports.default = MarketOpenOrdersGroup;
 
-},{"./market-open-orders-row":247,"react":197}],247:[function(_dereq_,module,exports){
+},{"./market-open-orders-row":248,"react":197}],248:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35831,7 +35990,7 @@ function renderCancelNode(orderID, marketID, type, status, cancellationStatuses,
 
 exports.default = MarketOpenOrdersRow;
 
-},{"./../../../utils/get-value":295,"./../../../utils/set-share-denomination":297,"./../../common/components/value-denomination":226,"./../../markets/constants/market-types":265,"react":197}],248:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/set-share-denomination":298,"./../../common/components/value-denomination":227,"./../../markets/constants/market-types":266,"react":197}],249:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -35974,7 +36133,7 @@ var MarketOpenOrders = function (_Component) {
 
 exports.default = MarketOpenOrders;
 
-},{"./../../../utils/get-value":295,"./../../common/components/null-state-message":223,"./../../markets/constants/market-types":265,"./market-open-orders-group":246,"react":197}],249:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../common/components/null-state-message":223,"./../../markets/constants/market-types":266,"./market-open-orders-group":247,"react":197}],250:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36032,7 +36191,7 @@ var MarketPositionsRow = function MarketPositionsRow(p) {
 
 exports.default = MarketPositionsRow;
 
-},{"./../../../utils/get-value":295,"./../../../utils/set-share-denomination":297,"./../../common/components/value-denomination":226,"./../../markets/constants/market-types":265,"react":197}],250:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/set-share-denomination":298,"./../../common/components/value-denomination":227,"./../../markets/constants/market-types":266,"react":197}],251:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36126,7 +36285,7 @@ var MarketPositions = function MarketPositions(p) {
 
 exports.default = MarketPositions;
 
-},{"./../../../utils/get-value":295,"./../../common/components/null-state-message":223,"./../../markets/constants/market-types":265,"./market-positions-row":249,"react":197}],251:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../common/components/null-state-message":223,"./../../markets/constants/market-types":266,"./market-positions-row":250,"react":197}],252:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36179,7 +36338,7 @@ var MarketOutcomes = function MarketOutcomes(p) {
 
 exports.default = MarketOutcomes;
 
-},{"./../../common/components/value-denomination":226,"react":197}],252:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":227,"react":197}],253:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36255,7 +36414,7 @@ MarketPreview.propTypes = {
 
 exports.default = MarketPreview;
 
-},{"./../../link/components/link":238,"./market-basics":241,"./market-preview-outcomes":251,"classnames":1,"react":197}],253:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./market-basics":242,"./market-preview-outcomes":252,"classnames":1,"react":197}],254:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36490,7 +36649,7 @@ var MarketProperties = function MarketProperties(p) {
 
 exports.default = MarketProperties;
 
-},{"./../../../utils/get-value":295,"./../../../utils/set-share-denomination":297,"./../../../utils/share-denomination-label":298,"./../../common/components/value-date":225,"./../../common/components/value-denomination":226,"react":197,"react-tooltip":51}],254:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/set-share-denomination":298,"./../../../utils/share-denomination-label":299,"./../../common/components/value-date":226,"./../../common/components/value-denomination":227,"react":197,"react-tooltip":51}],255:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36537,7 +36696,7 @@ var MarketReported = function MarketReported(p) {
 
 exports.default = MarketReported;
 
-},{"./market-basics":241,"./market-details":244,"react":197}],255:[function(_dereq_,module,exports){
+},{"./market-basics":242,"./market-details":245,"react":197}],256:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36568,7 +36727,7 @@ var MarketReporting = function MarketReporting(p) {
 
 exports.default = MarketReporting;
 
-},{"./../../reports/components/report-panel":288,"react":197}],256:[function(_dereq_,module,exports){
+},{"./../../reports/components/report-panel":289,"react":197}],257:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36670,7 +36829,7 @@ var MarketUserData = function (_Component) {
 
 exports.default = MarketUserData;
 
-},{"./../../../utils/get-value":295,"./../../app/constants/views":207,"./../../common/components/component-nav":217,"./market-open-orders":248,"./market-positions":250,"react":197}],257:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../app/constants/views":207,"./../../common/components/component-nav":217,"./market-open-orders":249,"./market-positions":251,"react":197}],258:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36722,7 +36881,7 @@ var MarketView = function MarketView(p) {
 
 exports.default = MarketView;
 
-},{"./../../../utils/get-value":295,"./../../common/components/null-state-message":223,"./market-active":240,"./market-reported":254,"./market-reporting":255,"react":197}],258:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../common/components/null-state-message":223,"./market-active":241,"./market-reported":255,"./market-reporting":256,"react":197}],259:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36732,7 +36891,7 @@ var SHARE = exports.SHARE = 'share';
 var MILLI_SHARE = exports.MILLI_SHARE = 'milli-share';
 var MICRO_SHARE = exports.MICRO_SHARE = 'micro-share';
 
-},{}],259:[function(_dereq_,module,exports){
+},{}],260:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36816,7 +36975,7 @@ var MarketsFilterSort = function MarketsFilterSort(p) {
 
 exports.default = MarketsFilterSort;
 
-},{"./../../common/components/dropdown":219,"./markets-search":263,"react":197}],260:[function(_dereq_,module,exports){
+},{"./../../common/components/dropdown":219,"./markets-search":264,"react":197}],261:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36885,7 +37044,7 @@ MarketsHeaders.propTypes = {
 
 exports.default = MarketsHeaders;
 
-},{"./../../link/components/link":238,"./markets-filter-sort":259,"react":197}],261:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./markets-filter-sort":260,"react":197}],262:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36940,7 +37099,7 @@ var MarketsList = function MarketsList(p) {
 
 exports.default = MarketsList;
 
-},{"./../../../utils/get-value":295,"./../../market/components/market-preview":252,"./markets-pagination":262,"react":197}],262:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../market/components/market-preview":253,"./markets-pagination":263,"react":197}],263:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37015,7 +37174,7 @@ var MarketsPagination = function MarketsPagination(p) {
 
 exports.default = MarketsPagination;
 
-},{"./../../link/components/link":238,"react":197}],263:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"react":197}],264:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37057,7 +37216,7 @@ MarketsSearch.propTypes = {
 
 exports.default = MarketsSearch;
 
-},{"./../../common/components/input":222,"react":197}],264:[function(_dereq_,module,exports){
+},{"./../../common/components/input":222,"react":197}],265:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37115,7 +37274,7 @@ MarketsView.propTypes = {
 
 exports.default = MarketsView;
 
-},{"./../../branch/components/branch":211,"./markets-headers":260,"./markets-list":261,"react":197}],265:[function(_dereq_,module,exports){
+},{"./../../branch/components/branch":211,"./markets-headers":261,"./markets-list":262,"react":197}],266:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37132,7 +37291,7 @@ var SCALAR = exports.SCALAR = 'scalar';
 
 var MARKET_TYPES = exports.MARKET_TYPES = (_MARKET_TYPES = {}, _defineProperty(_MARKET_TYPES, BINARY, BINARY), _defineProperty(_MARKET_TYPES, CATEGORICAL, CATEGORICAL), _defineProperty(_MARKET_TYPES, SCALAR, SCALAR), _MARKET_TYPES);
 
-},{}],266:[function(_dereq_,module,exports){
+},{}],267:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37141,7 +37300,7 @@ Object.defineProperty(exports, "__esModule", {
 var FAVORITES = exports.FAVORITES = 'favorites';
 var PENDING_REPORTS = exports.PENDING_REPORTS = 'pending reports';
 
-},{}],267:[function(_dereq_,module,exports){
+},{}],268:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37248,7 +37407,7 @@ Market.propTypes = {
 
 exports.default = Market;
 
-},{"./../../common/components/value-date":225,"./../../common/components/value-denomination":226,"react":197}],268:[function(_dereq_,module,exports){
+},{"./../../common/components/value-date":226,"./../../common/components/value-denomination":227,"react":197}],269:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37361,7 +37520,7 @@ Position.propTypes = {
 
 exports.default = Position;
 
-},{"./../../common/components/value-denomination":226,"./../../markets/constants/market-types":265,"react":197}],269:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":227,"./../../markets/constants/market-types":266,"react":197}],270:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37436,7 +37595,7 @@ PositionsMarketOverview.propTypes = {
 
 exports.default = PositionsMarketOverview;
 
-},{"./../../common/components/value-denomination":226,"react":197}],270:[function(_dereq_,module,exports){
+},{"./../../common/components/value-denomination":227,"react":197}],271:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37518,7 +37677,7 @@ var Positions = function Positions(p) {
 
 exports.default = Positions;
 
-},{"./../../link/components/link":238,"./my-position":268,"react":197,"react-tooltip":51}],271:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./my-position":269,"react":197,"react-tooltip":51}],272:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37691,7 +37850,7 @@ var Report = function Report(p) {
 
 exports.default = Report;
 
-},{"./../../common/components/value-date":225,"./../../common/components/value-denomination":226,"react":197,"react-tooltip":51}],272:[function(_dereq_,module,exports){
+},{"./../../common/components/value-date":226,"./../../common/components/value-denomination":227,"react":197,"react-tooltip":51}],273:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -37733,7 +37892,7 @@ var OrderBookHeader = function OrderBookHeader() {
 
 exports.default = OrderBookHeader;
 
-},{"react":197}],273:[function(_dereq_,module,exports){
+},{"react":197}],274:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37845,7 +38004,7 @@ var OrderBookRowSide = function OrderBookRowSide(p) {
 
 exports.default = OrderBookRowSide;
 
-},{"./../../../utils/get-value":295,"./../../../utils/set-share-denomination":297,"./../../common/components/null-state-message":223,"./../../common/components/value-denomination":226,"./../../outcomes/constants/trade-types":282,"./../../transactions/constants/types":292,"./../constants/order-book-value-types":276,"classnames":1,"react":197,"react-tooltip":51}],274:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/set-share-denomination":298,"./../../common/components/null-state-message":223,"./../../common/components/value-denomination":227,"./../../outcomes/constants/trade-types":283,"./../../transactions/constants/types":293,"./../constants/order-book-value-types":277,"classnames":1,"react":197,"react-tooltip":51}],275:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37890,7 +38049,7 @@ var OrderBookRows = function OrderBookRows(p) {
 
 exports.default = OrderBookRows;
 
-},{"./../../transactions/constants/types":292,"./order-book-row-side":273,"react":197}],275:[function(_dereq_,module,exports){
+},{"./../../transactions/constants/types":293,"./order-book-row-side":274,"react":197}],276:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37954,7 +38113,7 @@ var OrderBook = function OrderBook(p) {
 
 exports.default = OrderBook;
 
-},{"./../../common/components/em-dash":220,"./../../markets/constants/market-types":265,"./order-book-header":272,"./order-book-rows":274,"react":197}],276:[function(_dereq_,module,exports){
+},{"./../../common/components/em-dash":220,"./../../markets/constants/market-types":266,"./order-book-header":273,"./order-book-rows":275,"react":197}],277:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -37963,7 +38122,7 @@ Object.defineProperty(exports, "__esModule", {
 var PRICE = exports.PRICE = 'price';
 var SHARE = exports.SHARE = 'share';
 
-},{}],277:[function(_dereq_,module,exports){
+},{}],278:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -38060,7 +38219,7 @@ var OutcomeTradeAction = function (_Component) {
 
 exports.default = OutcomeTradeAction;
 
-},{"react":197}],278:[function(_dereq_,module,exports){
+},{"react":197}],279:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38155,7 +38314,7 @@ var OutcomeTradeSummary = function OutcomeTradeSummary(p) {
 
 exports.default = OutcomeTradeSummary;
 
-},{"./../../../utils/get-value":295,"./../../common/components/value-denomination":226,"react":197}],279:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../common/components/value-denomination":227,"react":197}],280:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38468,7 +38627,7 @@ function generateShareInputPlaceholder(denomination) {
 	}
 }
 
-},{"./../../../utils/get-value":295,"./../../common/components/component-nav":217,"./../../common/components/em-dash":220,"./../../common/components/input":222,"./../../market/constants/share-denominations":258,"./../../markets/constants/market-types":265,"./../constants/trade-types":282,"./outcome-trade-action":277,"./outcome-trade-summary":278,"classnames":1,"react":197}],280:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../common/components/component-nav":217,"./../../common/components/em-dash":220,"./../../common/components/input":222,"./../../market/constants/share-denominations":259,"./../../markets/constants/market-types":266,"./../constants/trade-types":283,"./outcome-trade-action":278,"./outcome-trade-summary":279,"classnames":1,"react":197}],281:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38660,7 +38819,7 @@ var Outcome = function Outcome(p) {
 
 exports.default = Outcome;
 
-},{"./../../../utils/get-value":295,"./../../../utils/set-share-denomination":297,"./../../common/components/value-denomination":226,"./../../link/components/link":238,"./../../markets/constants/market-types":265,"./../../order-book/constants/order-book-value-types":276,"./../../transactions/constants/types":292,"./outcome-trade":279,"classnames":1,"react":197}],281:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../../utils/set-share-denomination":298,"./../../common/components/value-denomination":227,"./../../link/components/link":239,"./../../markets/constants/market-types":266,"./../../order-book/constants/order-book-value-types":277,"./../../transactions/constants/types":293,"./outcome-trade":280,"classnames":1,"react":197}],282:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38769,7 +38928,7 @@ var Outcomes = function Outcomes(p) {
 
 exports.default = Outcomes;
 
-},{"./../../markets/constants/market-types":265,"./outcome":280,"react":197}],282:[function(_dereq_,module,exports){
+},{"./../../markets/constants/market-types":266,"./outcome":281,"react":197}],283:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38778,7 +38937,7 @@ Object.defineProperty(exports, "__esModule", {
 var BUY = exports.BUY = 'buy';
 var SELL = exports.SELL = 'sell';
 
-},{}],283:[function(_dereq_,module,exports){
+},{}],284:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38835,7 +38994,7 @@ var PortfolioMarkets = function PortfolioMarkets(p) {
 
 exports.default = PortfolioMarkets;
 
-},{"./../../link/components/link":238,"./../../my-markets/components/my-market":267,"react":197}],284:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./../../my-markets/components/my-market":268,"react":197}],285:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38917,7 +39076,7 @@ PortfolioView.propTypes = {
 
 exports.default = PortfolioView;
 
-},{"./../../app/constants/views":207,"./../../common/components/tab-navigation":224,"./markets":283,"./positions":285,"./reports":286,"react":197}],285:[function(_dereq_,module,exports){
+},{"./../../app/constants/views":207,"./../../common/components/tab-navigation":225,"./markets":284,"./positions":286,"./reports":287,"react":197}],286:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -38977,7 +39136,7 @@ var PortfolioPositions = function PortfolioPositions(p) {
 
 exports.default = PortfolioPositions;
 
-},{"./../../link/components/link":238,"./../../my-positions/components/my-positions":270,"./../../my-positions/components/my-positions-market-overview":269,"react":197}],286:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./../../my-positions/components/my-positions":271,"./../../my-positions/components/my-positions-market-overview":270,"react":197}],287:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39055,7 +39214,7 @@ var PortfolioReports = function PortfolioReports(p) {
 
 exports.default = PortfolioReports;
 
-},{"./../../link/components/link":238,"./../../my-reports/components/my-report":271,"react":197,"react-tooltip":51}],287:[function(_dereq_,module,exports){
+},{"./../../link/components/link":239,"./../../my-reports/components/my-report":272,"react":197,"react-tooltip":51}],288:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39293,7 +39452,7 @@ ReportForm.propTypes = {
 };
 exports.default = ReportForm;
 
-},{"./../../common/components/checkbox":216,"./../../markets/constants/market-types":265,"classnames":1,"react":197}],288:[function(_dereq_,module,exports){
+},{"./../../common/components/checkbox":216,"./../../markets/constants/market-types":266,"classnames":1,"react":197}],289:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39394,7 +39553,7 @@ var ReportPanel = function (_Component) {
 
 exports.default = ReportPanel;
 
-},{"./../../../utils/get-value":295,"./../../app/constants/views":207,"./../../common/components/component-nav":217,"./../../market/components/market-details":244,"./../../market/components/market-header":245,"./report-form":287,"react":197}],289:[function(_dereq_,module,exports){
+},{"./../../../utils/get-value":296,"./../../app/constants/views":207,"./../../common/components/component-nav":217,"./../../market/components/market-details":245,"./../../market/components/market-header":246,"./report-form":288,"react":197}],290:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39908,7 +40067,7 @@ Transaction.propTypes = {
 
 exports.default = Transaction;
 
-},{"./../../auth/constants/auth-types":210,"./../../common/components/value-denomination":226,"./../../common/components/value-timestamp":227,"./../../link/components/link":238,"./../../markets/constants/market-types":265,"./../constants/types":292,"classnames":1,"react":197}],290:[function(_dereq_,module,exports){
+},{"./../../auth/constants/auth-types":210,"./../../common/components/value-denomination":227,"./../../common/components/value-timestamp":228,"./../../link/components/link":239,"./../../markets/constants/market-types":266,"./../constants/types":293,"classnames":1,"react":197}],291:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39957,7 +40116,7 @@ TransactionsPage.propTypes = {
 
 exports.default = TransactionsPage;
 
-},{"./transactions":291,"react":197}],291:[function(_dereq_,module,exports){
+},{"./transactions":292,"react":197}],292:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40005,7 +40164,7 @@ var Transactions = function Transactions(p) {
 // };
 exports.default = Transactions;
 
-},{"./transaction":289,"react":197}],292:[function(_dereq_,module,exports){
+},{"./transaction":290,"react":197}],293:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40026,7 +40185,7 @@ var GENERATE_ORDER_BOOK = exports.GENERATE_ORDER_BOOK = 'generate_order_book';
 var CANCEL_ORDER = exports.CANCEL_ORDER = 'cancel_order';
 var SELL_COMPLETE_SETS = exports.SELL_COMPLETE_SETS = 'sell_complete_sets';
 
-},{}],293:[function(_dereq_,module,exports){
+},{}],294:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40042,7 +40201,7 @@ exports.default = function (number) {
 	return sides.join('.');
 };
 
-},{}],294:[function(_dereq_,module,exports){
+},{}],295:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40077,7 +40236,7 @@ function debounce(func, wait) {
 	};
 }
 
-},{}],295:[function(_dereq_,module,exports){
+},{}],296:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40095,7 +40254,7 @@ function getValue(obj, target) {
 
 exports.default = getValue;
 
-},{}],296:[function(_dereq_,module,exports){
+},{}],297:[function(_dereq_,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40109,7 +40268,7 @@ exports.default = function (url) {
 	}
 };
 
-},{}],297:[function(_dereq_,module,exports){
+},{}],298:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40243,7 +40402,7 @@ function handlePostfixedUnit(valueArray, zeroPadAmount) {
 
 exports.default = setShareDenomination;
 
-},{"./../modules/market/constants/share-denominations":258,"./add-commas-to-number":293}],298:[function(_dereq_,module,exports){
+},{"./../modules/market/constants/share-denominations":259,"./add-commas-to-number":294}],299:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -40279,7 +40438,7 @@ exports.default = function (selectedDenomination, shareDenominations) {
 
 var _shareDenominations = _dereq_('./../modules/market/constants/share-denominations');
 
-},{"./../modules/market/constants/share-denominations":258}],299:[function(_dereq_,module,exports){
+},{"./../modules/market/constants/share-denominations":259}],300:[function(_dereq_,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
