@@ -34659,6 +34659,50 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 29, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Attached the initial transact payload and full Ethereum network response data objects to the txRelay callback argument in ethrpc.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Percentage reporting on correct outcome is now only displayed for binary markets, since we do not presently have access to this information for categorical and scalar markets.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed an array indexing error in getMarketInfo function on the compositeGetters contract.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Reports are now revealed in parallel (up to 5 at a time).'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Registered sell error codes for the shortAsk method.  This fixes the bug where a short ask order would correctly fail (due to orders being "crossed"), but the transactions display would incorrectly show the short ask as successful.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Removed deprecated callbacks from augur.js.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Fixed augur.js sendEther method to correctly include an onFailed callback.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 28, 2016'
 			),
 			_react2.default.createElement(
