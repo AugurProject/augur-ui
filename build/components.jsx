@@ -35627,13 +35627,13 @@ var MarketDetails = function MarketDetails(p) {
 		_react2.default.createElement(
 			'ul',
 			{ className: 'properties' },
-			outcomeName && _react2.default.createElement(
+			p.type === 'binary' && outcomeName && _react2.default.createElement(
 				'li',
 				{ className: 'property outcome' },
 				_react2.default.createElement(
 					'span',
 					{ className: 'property-label' },
-					'Result'
+					'result'
 				),
 				_react2.default.createElement(
 					'span',
@@ -35642,6 +35642,51 @@ var MarketDetails = function MarketDetails(p) {
 					' (',
 					_react2.default.createElement(_valueDenomination2.default, p.result.proportionCorrect),
 					')'
+				)
+			),
+			p.type !== 'binary' && outcomeName && _react2.default.createElement(
+				'li',
+				{ className: 'property outcome' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-label' },
+					'result'
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-value' },
+					outcomeName
+				)
+			),
+			p.type === 'binary' && !outcomeName && p.reportedOutcome && _react2.default.createElement(
+				'li',
+				{ className: 'property outcome' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-label' },
+					'result'
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-value' },
+					p.reportedOutcome,
+					' (',
+					_react2.default.createElement(_valueDenomination2.default, p.result.proportionCorrect),
+					')'
+				)
+			),
+			p.type !== 'binary' && !outcomeName && p.reportedOutcome && _react2.default.createElement(
+				'li',
+				{ className: 'property outcome' },
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-label' },
+					'result'
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'property-value' },
+					p.reportedOutcome
 				)
 			),
 			p.author != null && _react2.default.createElement(
@@ -35743,7 +35788,8 @@ var MarketDetails = function MarketDetails(p) {
 					null,
 					'This market is closed.'
 				)
-			)
+			),
+			_react2.default.createElement('hr', null)
 		)
 	);
 };
@@ -37722,14 +37768,20 @@ var Report = function Report(p) {
 				_react2.default.createElement(
 					'span',
 					{ className: 'report-main-group-title-outcome' },
-					p.outcome ? _react2.default.createElement(
+					p.outcome && p.outcomePercentage && p.outcomePercentage.value && _react2.default.createElement(
 						'span',
 						null,
 						p.outcome,
 						'  (',
 						_react2.default.createElement(_valueDenomination2.default, p.outcomePercentage),
 						')'
-					) : '-'
+					),
+					p.outcome && !p.outcomePercentage && _react2.default.createElement(
+						'span',
+						null,
+						p.outcome
+					),
+					!p.outcome && '-'
 				)
 			),
 			_react2.default.createElement(
@@ -39598,6 +39650,7 @@ var Transaction = function Transaction(p) {
 	var nodes = {};
 
 	var marketDescription = function marketDescription() {
+		if (!p.data.description && !p.data.marketDescription) return _react2.default.createElement('span', null);
 		var shortDescription = p.data.description ? p.data.description.substring(0, 100) + (p.data.description.length > 100 && '...' || '') : p.data.marketDescription.substring(0, 100) + (p.data.marketDescription.length > 100 && '...' || '');
 		var fullDescription = p.data.description || p.data.marketDescription;
 		var description = function description(isShortened) {
