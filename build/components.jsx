@@ -34659,6 +34659,30 @@ var LoginMessagePage = function LoginMessagePage(p) {
 			_react2.default.createElement(
 				'h3',
 				null,
+				'November 30, 2016'
+			),
+			_react2.default.createElement(
+				'ol',
+				null,
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added human-readable "label" and "description" fields to static API data.  Added "label maker" to augur-core API maker script.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'The following things are now included in the auto-generated transaction display: formatted label, description, timestamp, and gas fees.'
+				),
+				_react2.default.createElement(
+					'li',
+					null,
+					'Added a "no-relay" list to the UI, which has the names of methods for which the transaction relay should not be triggered.  This will allow the old manually-constructed "transactions" to peacefully coexist with relay-generated transactions in the transaction display.'
+				)
+			),
+			_react2.default.createElement(
+				'h3',
+				null,
 				'November 29, 2016'
 			),
 			_react2.default.createElement(
@@ -39693,10 +39717,9 @@ function liveDangerously(thisBetterBeSanitized) {
 var Transaction = function Transaction(p) {
 	var nodes = {};
 
-	var marketDescription = function marketDescription() {
-		if (!p.data.description && !p.data.marketDescription) return _react2.default.createElement('span', null);
-		var shortDescription = p.data.description ? p.data.description.substring(0, 100) + (p.data.description.length > 100 && '...' || '') : p.data.marketDescription.substring(0, 100) + (p.data.marketDescription.length > 100 && '...' || '');
-		var fullDescription = p.data.description || p.data.marketDescription;
+	var buildDescription = function buildDescription(fullDescription) {
+		if (!fullDescription) return _react2.default.createElement('span', null);
+		var shortDescription = fullDescription.substring(0, 100) + (fullDescription.length > 100 && '...' || '');
 		var description = function description(isShortened) {
 			if (isShortened) {
 				return _react2.default.createElement(
@@ -39789,7 +39812,7 @@ var Transaction = function Transaction(p) {
 				_react2.default.createElement('br', { className: 'hide-in-tx-display' }),
 				_react2.default.createElement(_valueDenomination2.default, _extends({ className: 'avgPrice' }, p.avgPrice, { prefix: 'estimated total (including trading fees):', postfix: '/ share' })),
 				_react2.default.createElement('br', null),
-				marketDescription(),
+				buildDescription(p.data.description),
 				_react2.default.createElement('br', { className: 'hide-in-trade-summary-display' }),
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
@@ -39807,19 +39830,12 @@ var Transaction = function Transaction(p) {
 					nodes.action
 				),
 				_react2.default.createElement('br', null),
-				marketDescription(),
+				buildDescription(p.data.description),
 				_react2.default.createElement('br', null),
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
 
-		case _authTypes.LOGIN:
-			nodes.description = _react2.default.createElement(
-				'span',
-				{ className: 'description' },
-				'Login'
-			);
-			break;
 		case _authTypes.FUND_ACCOUNT:
 			nodes.action = 'REGISTER NEW ACCOUNT';
 			nodes.description = _react2.default.createElement(
@@ -39840,6 +39856,7 @@ var Transaction = function Transaction(p) {
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
+
 		case _types.CREATE_MARKET:
 			nodes.action = 'Create market';
 			nodes.description = _react2.default.createElement(
@@ -39851,7 +39868,7 @@ var Transaction = function Transaction(p) {
 					nodes.action
 				),
 				_react2.default.createElement('br', null),
-				marketDescription(),
+				buildDescription(p.data.description),
 				_react2.default.createElement('br', null),
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
@@ -39893,7 +39910,7 @@ var Transaction = function Transaction(p) {
 						' and Unethical'
 					),
 					_react2.default.createElement('br', null),
-					marketDescription(),
+					buildDescription(p.data.description || p.data.marketDescription),
 					_react2.default.createElement('br', null),
 					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 				);
@@ -39910,7 +39927,7 @@ var Transaction = function Transaction(p) {
 					nodes.action
 				),
 				_react2.default.createElement('br', null),
-				marketDescription(),
+				buildDescription(p.data.description),
 				_react2.default.createElement('br', null),
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
@@ -39944,7 +39961,7 @@ var Transaction = function Transaction(p) {
 						p.data.outcome.name && p.data.outcome.name.substring(0, 35) + (p.data.outcome.name.length > 35 && '...' || '')
 					),
 					_react2.default.createElement('br', null),
-					marketDescription(),
+					buildDescription(p.data.description),
 					_react2.default.createElement('br', null),
 					p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 				);
@@ -39960,7 +39977,7 @@ var Transaction = function Transaction(p) {
 					p.type
 				),
 				_react2.default.createElement('br', null),
-				marketDescription(),
+				buildDescription(p.data.description),
 				_react2.default.createElement('br', null),
 				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
