@@ -39954,7 +39954,15 @@ var Transaction = function Transaction(p) {
 			nodes.description = _react2.default.createElement(
 				'span',
 				{ className: 'description' },
-				p.type
+				_react2.default.createElement(
+					'span',
+					{ className: 'action' },
+					p.type
+				),
+				_react2.default.createElement('br', null),
+				marketDescription(),
+				_react2.default.createElement('br', null),
+				p.timestamp && _react2.default.createElement(_valueTimestamp2.default, _extends({ className: 'property-value' }, p.timestamp))
 			);
 			break;
 	}
