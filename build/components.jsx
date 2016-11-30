@@ -39719,7 +39719,23 @@ var Transaction = function Transaction(p) {
 
 	var buildDescription = function buildDescription(fullDescription) {
 		if (!fullDescription) return _react2.default.createElement('span', null);
-		var shortDescription = fullDescription.substring(0, 100) + (fullDescription.length > 100 && '...' || '');
+		var shortDescription = void 0;
+		if (fullDescription.indexOf('\n') > -1) {
+			shortDescription = fullDescription.split('\n').map(function (text) {
+				return _react2.default.createElement(
+					'li',
+					{ key: text },
+					text
+				);
+			});
+			shortDescription = _react2.default.createElement(
+				'ul',
+				null,
+				shortDescription
+			);
+		} else {
+			shortDescription = fullDescription.substring(0, 100) + (fullDescription.length > 100 && '...' || '');
+		}
 		var description = function description(isShortened) {
 			if (isShortened) {
 				return _react2.default.createElement(
