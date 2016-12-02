@@ -40,7 +40,7 @@ var abcui =
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 246);
+/******/ 	return __webpack_require__(__webpack_require__.s = 227);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -243,9 +243,9 @@ var abcui =
 
 	'use strict'
 
-	var base64 = __webpack_require__(101)
-	var ieee754 = __webpack_require__(145)
-	var isArray = __webpack_require__(104)
+	var base64 = __webpack_require__(82)
+	var ieee754 = __webpack_require__(126)
+	var isArray = __webpack_require__(85)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -2066,276 +2066,22 @@ var abcui =
 
 	var elliptic = exports;
 
-	elliptic.version = __webpack_require__(148).version;
-	elliptic.utils = __webpack_require__(134);
-	elliptic.rand = __webpack_require__(103);
-	elliptic.hmacDRBG = __webpack_require__(132);
-	elliptic.curve = __webpack_require__(31);
-	elliptic.curves = __webpack_require__(125);
+	elliptic.version = __webpack_require__(129).version;
+	elliptic.utils = __webpack_require__(115);
+	elliptic.rand = __webpack_require__(84);
+	elliptic.hmacDRBG = __webpack_require__(113);
+	elliptic.curve = __webpack_require__(26);
+	elliptic.curves = __webpack_require__(106);
 
 	// Protocols
-	elliptic.ec = __webpack_require__(126);
-	elliptic.eddsa = __webpack_require__(129);
+	elliptic.ec = __webpack_require__(107);
+	elliptic.eddsa = __webpack_require__(110);
 
 
 /***/ },
 /* 8 */,
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var require;/* WEBPACK VAR INJECTION */(function(Buffer) {var AesCbc = __webpack_require__(91).ModeOfOperation.cbc
-	var scryptsy = __webpack_require__(181)
-	var hashjs = __webpack_require__(13)
-	var Hmac = __webpack_require__(144)
-
-	var userIdSnrp = {
-	  'salt_hex': 'b5865ffb9fa7b3bfe4b2384d47ce831ee22a4a9d5c34c7ef7d21467cc758f81b',
-	  'n': 16384,
-	  'r': 1,
-	  'p': 1
-	}
-	exports.userIdSnrp = userIdSnrp
-	exports.passwordAuthSnrp = userIdSnrp
-
-	var timedSnrp = null
-
-	var timerNow
-	if (typeof window === 'undefined') {
-	  timerNow = function () {
-	    return Date.now()
-	  }
-	} else {
-	  timerNow = function () {
-	    return window.performance.now()
-	  }
-	}
-
-	/**
-	 * @param data A `Buffer` or byte-array object.
-	 * @param snrp A JSON SNRP structure.
-	 * @return A Buffer with the hash.
-	 */
-	function scrypt (data, snrp) {
-	  var dklen = 32
-	  var salt = new Buffer(snrp.salt_hex, 'hex')
-	  return scryptsy(data, salt, snrp.n, snrp.r, snrp.p, dklen)
-	}
-	exports.scrypt = scrypt
-
-	function timeSnrp (snrp) {
-	  var startTime = 0
-	  var endTime = 0
-	  startTime = timerNow()
-
-	  scrypt('random string', snrp)
-
-	  endTime = timerNow()
-
-	  var timeElapsed = endTime - startTime
-	  return timeElapsed
-	}
-
-	exports.timeSnrp = timeSnrp
-
-	function calcSnrpForTarget (targetHashTimeMilliseconds) {
-	  var snrp = {
-	    'salt_hex': random(32).toString('hex'),
-	    n: 16384,
-	    r: 1,
-	    p: 1
-	  }
-	  var timeElapsed = timeSnrp(snrp)
-
-	  var estTargetTimeElapsed = timeElapsed
-	  var nUnPowered = 0
-	  var r = (targetHashTimeMilliseconds / estTargetTimeElapsed)
-	  if (r > 8) {
-	    snrp.r = 8
-
-	    estTargetTimeElapsed *= 8
-	    var n = (targetHashTimeMilliseconds / estTargetTimeElapsed)
-
-	    if (n > 4) {
-	      nUnPowered = 4
-
-	      estTargetTimeElapsed *= 4
-	      var p = (targetHashTimeMilliseconds / estTargetTimeElapsed)
-	      snrp.p = Math.floor(p)
-	    } else {
-	      nUnPowered = Math.floor(n)
-	    }
-	  } else {
-	    snrp.r = r > 4 ? Math.floor(r) : 4
-	  }
-	  nUnPowered = nUnPowered >= 1 ? nUnPowered : 1
-	  snrp.n = Math.pow(2, nUnPowered + 13)
-
-	  // Actually time the new snrp:
-	  // var newTimeElapsed = timeSnrp(snrp)
-	  // console.log('timedSnrp: ' + snrp.n + ' ' + snrp.r + ' ' + snrp.p + ' oldTime:' + timeElapsed + ' newTime:' + newTimeElapsed)
-	  console.log('timedSnrp: ' + snrp.n + ' ' + snrp.r + ' ' + snrp.p + ' oldTime:' + timeElapsed)
-
-	  return snrp
-	}
-
-	function makeSnrp () {
-	  if (!timedSnrp) {
-	    // Shoot for a 2s hash time:
-	    timedSnrp = calcSnrpForTarget(2000)
-	  }
-
-	  // Return a copy of the timed version with a fresh salt:
-	  return {
-	    'salt_hex': random(32).toString('hex'),
-	    'n': timedSnrp.n,
-	    'r': timedSnrp.r,
-	    'p': timedSnrp.p
-	  }
-	}
-	exports.makeSnrp = makeSnrp
-
-	function random (bytes) {
-	  bytes |= 0
-	  try {
-	    var out = new Buffer(bytes)
-	    window.crypto.getRandomValues(out)
-	  } catch (e) {
-	    // Alternative using node.js crypto:
-	    var hiddenRequire = require
-	    return __webpack_require__(117).randomBytes(bytes)
-	  }
-	  return out
-	}
-	exports.random = random
-
-	/**
-	 * @param box an Airbitz JSON encryption box
-	 * @param key a key, as an ArrayBuffer
-	 */
-	function decrypt (box, key) {
-	  // Check JSON:
-	  if (box['encryptionType'] !== 0) {
-	    throw new Error('Unknown encryption type')
-	  }
-	  var iv = new Buffer(box['iv_hex'], 'hex')
-	  var cyphertext = new Buffer(box['data_base64'], 'base64')
-
-	  // Decrypt:
-	  var cypher = new AesCbc(key, iv)
-	  var raw = cypher.decrypt(cyphertext)
-	  // Alternative using node.js crypto:
-	  // var decipher = crypto.createDecipheriv('AES-256-CBC', key, iv);
-	  // var x = decipher.update(box.data_base64, 'base64', 'hex')
-	  // x += decipher.final('hex')
-	  // var data = new Buffer(x, 'hex')
-
-	  // Calculate field locations:
-	  var headerSize = raw[0]
-	  var dataSize =
-	    raw[1 + headerSize] << 24 |
-	    raw[2 + headerSize] << 16 |
-	    raw[3 + headerSize] << 8 |
-	    raw[4 + headerSize]
-	  var dataStart = 1 + headerSize + 4
-	  var footerSize = raw[dataStart + dataSize]
-	  var hashStart = dataStart + dataSize + 1 + footerSize
-
-	  // Verify SHA-256 checksum:
-	  var hash = hashjs.sha256().update(raw.slice(0, hashStart)).digest()
-	  var hashSize = hash.length
-	  for (let i = 0; i < hashSize; ++i) {
-	    if (raw[hashStart + i] !== hash[i]) {
-	      throw new Error('Invalid checksum')
-	    }
-	  }
-
-	  // Verify pkcs7 padding (if any):
-	  var paddingStart = hashStart + hashSize
-	  var paddingSize = raw.length - paddingStart
-	  for (let i = paddingStart; i < raw.length; ++i) {
-	    if (raw[i] !== paddingSize) {
-	      throw new Error('Invalid PKCS7 padding')
-	    }
-	  }
-
-	  // Return the payload:
-	  return raw.slice(dataStart, dataStart + dataSize)
-	}
-	exports.decrypt = decrypt
-
-	/**
-	 * @param payload an ArrayBuffer of data
-	 * @param key a key, as an ArrayBuffer
-	 */
-	function encrypt (data, key) {
-	  // Calculate sizes and locations:
-	  var headerSize = random(1)[0] & 0x1f
-	  var dataStart = 1 + headerSize + 4
-	  var dataSize = data.length
-	  var footerStart = dataStart + dataSize + 1
-	  var footerSize = random(1)[0] & 0x1f
-	  var hashStart = footerStart + footerSize
-	  var hashSize = 32
-	  var paddingStart = hashStart + hashSize
-	  var paddingSize = 16 - (paddingStart & 0xf)
-	  var raw = new Buffer(paddingStart + paddingSize)
-
-	  // Random header:
-	  var header = random(headerSize)
-	  raw[0] = headerSize
-	  for (let i = 0; i < headerSize; ++i) {
-	    raw[1 + i] = header[i]
-	  }
-
-	  // Payload data:
-	  raw[1 + headerSize] = (dataSize >> 24) & 0xff
-	  raw[2 + headerSize] = (dataSize >> 16) & 0xff
-	  raw[3 + headerSize] = (dataSize >> 8) & 0xff
-	  raw[4 + headerSize] = dataSize & 0xff
-	  for (let i = 0; i < dataSize; ++i) {
-	    raw[dataStart + i] = data[i]
-	  }
-
-	  // Random footer:
-	  var footer = random(footerSize)
-	  raw[dataStart + dataSize] = footerSize
-	  for (let i = 0; i < footerSize; ++i) {
-	    raw[footerStart + i] = footer[i]
-	  }
-
-	  // SHA-256 checksum:
-	  var hash = hashjs.sha256().update(raw.slice(0, hashStart)).digest()
-	  for (let i = 0; i < hashSize; ++i) {
-	    raw[hashStart + i] = hash[i]
-	  }
-
-	  // Add PKCS7 padding:
-	  for (let i = 0; i < paddingSize; ++i) {
-	    raw[paddingStart + i] = paddingSize
-	  }
-
-	  // Encrypt to JSON:
-	  var iv = random(16)
-	  var cypher = new AesCbc(key, iv)
-	  return {
-	    'encryptionType': 0,
-	    'iv_hex': iv.toString('hex'),
-	    'data_base64': new Buffer(cypher.encrypt(raw)).toString('base64')
-	  }
-	}
-	exports.encrypt = encrypt
-
-	function hmacSha256 (data, key) {
-	  var hmac = new Hmac(hashjs.sha256, 64, key)
-	  return hmac.update(data).digest()
-	}
-	exports.hmacSha256 = hmacSha256
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 10 */,
-/* 11 */
+/* 9 */,
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {(function (module, exports) {
@@ -5766,20 +5512,20 @@ var abcui =
 	  };
 	})(typeof module === 'undefined' || module, this);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(190)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(171)(module)))
 
 /***/ },
-/* 12 */,
-/* 13 */
+/* 11 */,
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var hash = exports;
 
-	hash.utils = __webpack_require__(140);
-	hash.common = __webpack_require__(136);
-	hash.sha = __webpack_require__(139);
-	hash.ripemd = __webpack_require__(138);
-	hash.hmac = __webpack_require__(137);
+	hash.utils = __webpack_require__(121);
+	hash.common = __webpack_require__(117);
+	hash.sha = __webpack_require__(120);
+	hash.ripemd = __webpack_require__(119);
+	hash.hmac = __webpack_require__(118);
 
 	// Proxy hash functions to the main object
 	hash.sha1 = hash.sha.sha1;
@@ -5791,69 +5537,9 @@ var abcui =
 
 
 /***/ },
+/* 13 */,
 /* 14 */,
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var crypto = __webpack_require__(9)
-
-	/**
-	 * Returns the user map, which goes from usernames to userId's
-	 */
-	function load (localStorage) {
-	  try {
-	    var userMap = JSON.parse(localStorage.getItem('airbitz.users'))
-	    return userMap || {}
-	  } catch (e) {
-	    return {}
-	  }
-	}
-	exports.load = load
-
-	/**
-	 * Ensures that the userMap contains the given user. Adds the user if not.
-	 */
-	function insert (localStorage, username, userId) {
-	  var userMap = load(localStorage)
-	  userMap[username] = userId
-	  localStorage.setItem('airbitz.users', JSON.stringify(userMap))
-	}
-	exports.insert = insert
-
-	/**
-	 * Computes the userId (L1) for the given username.
-	 */
-	function getUserId (localStorage, username) {
-	  var userMap = load(localStorage)
-	  return userMap[username] ||
-	    crypto.scrypt(username, crypto.userIdSnrp).toString('base64')
-	}
-	exports.getUserId = getUserId
-
-	/**
-	 * Normalizes a username, and checks for invalid characters.
-	 */
-	function normalize (username) {
-	  var out = username + ''
-	  out = out.toLowerCase()
-	    .replace(/[ \f\r\n\t\v]+/g, ' ')
-	    .replace(/ $/, '')
-	    .replace(/^ /, '')
-
-	  for (var i = 0; i < out.length; ++i) {
-	    var c = out.charCodeAt(i)
-	    if (c < 0x20 || c > 0x7e) {
-	      throw new Error('Bad characters in username')
-	    }
-	  }
-	  return out
-	}
-	exports.normalize = normalize
-
-
-/***/ },
-/* 16 */,
-/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -5894,12 +5580,12 @@ var abcui =
 
 
 	/*<replacement>*/
-	var util = __webpack_require__(25);
+	var util = __webpack_require__(21);
 	util.inherits = __webpack_require__(4);
 	/*</replacement>*/
 
-	var Readable = __webpack_require__(73);
-	var Writable = __webpack_require__(43);
+	var Readable = __webpack_require__(60);
+	var Writable = __webpack_require__(37);
 
 	util.inherits(Duplex, Readable);
 
@@ -5949,7 +5635,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ },
-/* 18 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {// prototype class for hash functions
@@ -6025,9 +5711,9 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 19 */,
-/* 20 */,
-/* 21 */
+/* 17 */,
+/* 18 */,
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -6053,15 +5739,15 @@ var abcui =
 
 	module.exports = Stream;
 
-	var EE = __webpack_require__(63).EventEmitter;
+	var EE = __webpack_require__(50).EventEmitter;
 	var inherits = __webpack_require__(4);
 
 	inherits(Stream, EE);
-	Stream.Readable = __webpack_require__(177);
-	Stream.Writable = __webpack_require__(179);
-	Stream.Duplex = __webpack_require__(175);
-	Stream.Transform = __webpack_require__(178);
-	Stream.PassThrough = __webpack_require__(176);
+	Stream.Readable = __webpack_require__(158);
+	Stream.Writable = __webpack_require__(160);
+	Stream.Duplex = __webpack_require__(156);
+	Stream.Transform = __webpack_require__(159);
+	Stream.PassThrough = __webpack_require__(157);
 
 	// Backwards-compat with node 0.4.x
 	Stream.Stream = Stream;
@@ -6160,47 +5846,8 @@ var abcui =
 
 
 /***/ },
-/* 22 */,
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var ScopedStorage = __webpack_require__(58).ScopedStorage
-
-	/**
-	 * Returns a wrapped version of `localStorage` keyed to a specific user.
-	 */
-	function UserStorage (localStorage, username) {
-	  return ScopedStorage.call(this, localStorage, 'airbitz.user.' + username)
-	}
-	UserStorage.prototype = ScopedStorage.prototype
-
-	exports.UserStorage = UserStorage
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var baseX = __webpack_require__(100)
-	var base58 = baseX('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz')
-
-	function base58Decode (text) {
-	  return new Buffer(base58.decode(text))
-	}
-
-	function base58Encode (data) {
-	  return base58.encode(data)
-	}
-
-	exports.base58 = {
-	  decode: base58Decode,
-	  encode: base58Encode
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 25 */
+/* 20 */,
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -6314,204 +5961,26 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var base58 = __webpack_require__(24).base58
-	var crypto = __webpack_require__(9)
-	var server = __webpack_require__(56)
-	var UserStorage = __webpack_require__(23).UserStorage
-	var userMap = __webpack_require__(15)
-
-	/**
-	 * Unpacks a login v2 reply package, and stores the contents locally.
-	 */
-	function loginReplyStore (localStorage, username, dataKey, loginReply) {
-	  var userStorage = new UserStorage(localStorage, username)
-	  var keys = [
-	    // Password login:
-	    'passwordKeySnrp', 'passwordBox',
-	    // Key boxes:
-	    'passwordAuthBox', 'rootKeyBox', 'syncKeyBox', 'repos'
-	  ]
-
-	  // Store any keys the reply may contain:
-	  for (var i = 0; i < keys.length; ++i) {
-	    var key = keys[i]
-	    if (loginReply[key]) {
-	      userStorage.setJson(key, loginReply[key])
-	    }
-	  }
-
-	  // Store the pin key unencrypted:
-	  var pin2KeyBox = loginReply['pin2KeyBox']
-	  if (pin2KeyBox) {
-	    var pin2Key = crypto.decrypt(pin2KeyBox, dataKey)
-	    userStorage.setItem('pin2Key', base58.encode(pin2Key))
-	  }
-
-	  // Store the recovery key unencrypted:
-	  var recovery2KeyBox = loginReply['recovery2KeyBox']
-	  if (recovery2KeyBox) {
-	    var recovery2Key = crypto.decrypt(recovery2KeyBox, dataKey)
-	    userStorage.setItem('recovery2Key', base58.encode(recovery2Key))
-	  }
-	}
-
-	/**
-	 * Access to the logged-in user data.
-	 *
-	 * This type has following powers:
-	 * - Access to the auth server
-	 * - A list of account repos
-	 * - The legacy BitID rootKey
-	 */
-	function Login (localStorage, username, dataKey) {
-	  // Identity:
-	  this.username = username
-	  this.userId = userMap.getUserId(localStorage, username)
-
-	  // Access to the login data:
-	  this.dataKey = dataKey
-	  this.userStorage = new UserStorage(localStorage, username)
-
-	  // Return access to the server:
-	  var passwordAuthBox = this.userStorage.getJson('passwordAuthBox')
-	  if (!passwordAuthBox) {
-	    throw new Error('Missing passwordAuthBox')
-	  }
-	  this.passwordAuth = crypto.decrypt(passwordAuthBox, dataKey)
-
-	  // Account repo:
-	  this.repos = this.userStorage.getJson('repos') || []
-	  var syncKeyBox = this.userStorage.getJson('syncKeyBox')
-	  if (syncKeyBox) {
-	    this.syncKey = crypto.decrypt(syncKeyBox, dataKey)
-	  }
-
-	  // Legacy BitID key:
-	  var rootKeyBox = this.userStorage.getJson('rootKeyBox')
-	  if (rootKeyBox) {
-	    this.rootKey = crypto.decrypt(rootKeyBox, dataKey)
-	  }
-	}
-
-	/**
-	 * Returns a new login object, populated with data from the server.
-	 */
-	Login.online = function (localStorage, username, dataKey, loginReply) {
-	  loginReplyStore(localStorage, username, dataKey, loginReply)
-	  return new Login(localStorage, username, dataKey)
-	}
-
-	/**
-	 * Returns a new login object, populated with data from the local storage.
-	 */
-	Login.offline = function (localStorage, username, dataKey) {
-	  return new Login(localStorage, username, dataKey)
-	}
-
-	/**
-	 * Sets up a login v2 server authorization JSON.
-	 */
-	Login.prototype.authJson = function () {
-	  return {
-	    'userId': this.userId,
-	    'passwordAuth': this.passwordAuth.toString('base64')
-	  }
-	}
-
-	/**
-	 * Searches for the given account type in the provided login object.
-	 * Returns the repo keys in the JSON bundle format.
-	 */
-	Login.prototype.accountFind = function (type) {
-	  // Search the repos array:
-	  for (var i = 0; i < this.repos.length; ++i) {
-	    if (this.repos[i]['type'] === type) {
-	      var keysBox = this.repos[i]['keysBox'] || this.repos[i]['info']
-	      return JSON.parse(crypto.decrypt(keysBox, this.dataKey).toString('utf-8'))
-	    }
-	  }
-
-	  // Handle the legacy Airbitz repo:
-	  if (type === 'account:repo:co.airbitz.wallet') {
-	    return {
-	      'syncKey': this.syncKey.toString('hex'),
-	      'dataKey': this.dataKey.toString('hex')
-	    }
-	  }
-
-	  throw new Error('Cannot find a \'' + type + '\' repo')
-	}
-
-	/**
-	 * Creates and attaches new account repo.
-	 */
-	Login.prototype.accountCreate = function (ctx, type, callback) {
-	  var login = this
-
-	  server.repoCreate(ctx, login, {}, function (err, keysJson) {
-	    if (err) return callback(err)
-	    login.accountAttach(ctx, type, keysJson, function (err) {
-	      if (err) return callback(err)
-	      server.repoActivate(ctx, login, keysJson, function (err) {
-	        if (err) return callback(err)
-	        callback(null)
-	      })
-	    })
-	  })
-	}
-
-	/**
-	 * Attaches an account repo to the login.
-	 */
-	Login.prototype.accountAttach = function (ctx, type, info, callback) {
-	  var login = this
-
-	  var infoBlob = new Buffer(JSON.stringify(info), 'utf-8')
-	  var data = {
-	    'type': type,
-	    'info': crypto.encrypt(infoBlob, login.dataKey)
-	  }
-
-	  var request = login.authJson()
-	  request['data'] = data
-	  ctx.authRequest('POST', '/v2/login/repos', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    login.repos.push(data)
-	    login.userStorage.setJson('repos', login.repos)
-
-	    callback(null)
-	  })
-	}
-
-	module.exports = Login
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 31 */
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var curve = exports;
 
-	curve.base = __webpack_require__(121);
-	curve.short = __webpack_require__(124);
-	curve.mont = __webpack_require__(123);
-	curve.edwards = __webpack_require__(122);
+	curve.base = __webpack_require__(102);
+	curve.short = __webpack_require__(105);
+	curve.mont = __webpack_require__(104);
+	curve.edwards = __webpack_require__(103);
 
 
 /***/ },
-/* 32 */,
-/* 33 */
+/* 27 */,
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -7039,7 +6508,7 @@ var abcui =
 	}
 	exports.isPrimitive = isPrimitive;
 
-	exports.isBuffer = __webpack_require__(189);
+	exports.isBuffer = __webpack_require__(170);
 
 	function objectToString(o) {
 	  return Object.prototype.toString.call(o);
@@ -7083,7 +6552,7 @@ var abcui =
 	 *     prototype.
 	 * @param {function} superCtor Constructor function to inherit prototype from.
 	 */
-	exports.inherits = __webpack_require__(188);
+	exports.inherits = __webpack_require__(169);
 
 	exports._extend = function(origin, add) {
 	  // Don't do anything if add isn't an object
@@ -7104,117 +6573,14 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(0)))
 
 /***/ },
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var base58 = __webpack_require__(24).base58
-	var crypto = __webpack_require__(9)
-	var userMap = __webpack_require__(15)
-	var UserStorage = __webpack_require__(23).UserStorage
-	var Login = __webpack_require__(30)
-
-	function pin2Id (pin2Key, username) {
-	  return new Buffer(crypto.hmacSha256(username, pin2Key))
-	}
-
-	function pin2Auth (pin2Key, pin) {
-	  return new Buffer(crypto.hmacSha256(pin, pin2Key))
-	}
-
-	/**
-	 * Returns true if the local device has a copy of the PIN login key.
-	 */
-	function getKey (ctx, username) {
-	  username = userMap.normalize(username)
-
-	  // Extract stuff from storage:
-	  var userStorage = new UserStorage(ctx.localStorage, username)
-	  return userStorage.getItem('pin2Key')
-	}
-	exports.getKey = getKey
-
-	/**
-	 * Logs a user in using their PIN.
-	 * @param username string
-	 * @param pin2Key the recovery key, as a base58 string.
-	 * @param pin the PIN, as a string.
-	 * @param callback function (err, login)
-	 */
-	function login (ctx, pin2Key, username, pin, callback) {
-	  pin2Key = base58.decode(pin2Key)
-	  username = userMap.normalize(username)
-
-	  var request = {
-	    'pin2Id': pin2Id(pin2Key, username).toString('base64'),
-	    'pin2Auth': pin2Auth(pin2Key, pin).toString('base64')
-	    // "otp": null
-	  }
-	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    try {
-	      // PIN login:
-	      var pin2Box = reply['pin2Box']
-	      if (!pin2Box) {
-	        return callback(Error('Missing data for PIN v2 login'))
-	      }
-
-	      // Decrypt the dataKey:
-	      var dataKey = crypto.decrypt(pin2Box, pin2Key)
-
-	      // Cache everything for future logins:
-	      var userId = userMap.getUserId(ctx.localStorage, username)
-	      userMap.insert(ctx.localStorage, username, userId)
-	    } catch (e) {
-	      return callback(e)
-	    }
-	    return callback(null, Login.online(ctx.localStorage, username, dataKey, reply))
-	  })
-	}
-	exports.login = login
-
-	/**
-	 * Sets up PIN login v2.
-	 */
-	function setup (ctx, login, pin, callback) {
-	  var pin2Key = login.userStorage.getItem('pin2Key')
-	  if (pin2Key) {
-	    pin2Key = base58.decode(pin2Key)
-	  } else {
-	    pin2Key = crypto.random(32)
-	  }
-
-	  var pin2Box = crypto.encrypt(login.dataKey, pin2Key)
-	  var pin2KeyBox = crypto.encrypt(pin2Key, login.dataKey)
-
-	  var request = login.authJson()
-	  request['data'] = {
-	    'pin2Id': pin2Id(pin2Key, login.username).toString('base64'),
-	    'pin2Auth': pin2Auth(pin2Key, pin).toString('base64'),
-	    'pin2Box': pin2Box,
-	    'pin2KeyBox': pin2KeyBox
-	  }
-	  ctx.authRequest('PUT', '/v2/login/pin2', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    pin2Key = base58.encode(pin2Key)
-	    login.userStorage.setItem('pin2Key', pin2Key)
-	    return callback(null, pin2Key)
-	  })
-	}
-	exports.setup = setup
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -7283,10 +6649,10 @@ var abcui =
 
 	module.exports = Transform;
 
-	var Duplex = __webpack_require__(17);
+	var Duplex = __webpack_require__(15);
 
 	/*<replacement>*/
-	var util = __webpack_require__(25);
+	var util = __webpack_require__(21);
 	util.inherits = __webpack_require__(4);
 	/*</replacement>*/
 
@@ -7429,7 +6795,7 @@ var abcui =
 
 
 /***/ },
-/* 43 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -7467,11 +6833,11 @@ var abcui =
 
 
 	/*<replacement>*/
-	var util = __webpack_require__(25);
+	var util = __webpack_require__(21);
 	util.inherits = __webpack_require__(4);
 	/*</replacement>*/
 
-	var Stream = __webpack_require__(21);
+	var Stream = __webpack_require__(19);
 
 	util.inherits(Writable, Stream);
 
@@ -7482,7 +6848,7 @@ var abcui =
 	}
 
 	function WritableState(options, stream) {
-	  var Duplex = __webpack_require__(17);
+	  var Duplex = __webpack_require__(15);
 
 	  options = options || {};
 
@@ -7570,7 +6936,7 @@ var abcui =
 	}
 
 	function Writable(options) {
-	  var Duplex = __webpack_require__(17);
+	  var Duplex = __webpack_require__(15);
 
 	  // Writable ctor is applied to Duplexes, though they're not
 	  // instanceof Writable, they're instanceof Readable.
@@ -7913,7 +7279,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ },
-/* 44 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -8140,529 +7506,286 @@ var abcui =
 
 
 /***/ },
-/* 45 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Context = __webpack_require__(94).Context
-	var userMap = __webpack_require__(15)
-	var abcc = __webpack_require__(52)
-	var abce = __webpack_require__(92)
+	var require;/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
 
-	exports.Context = Context
-	exports.usernameFix = userMap.normalize
-	exports.ABCConditionCode = abcc
-	exports.ABCError = abce.ABCError
+	Object.defineProperty(exports, '__esModule', { value: true });
 
-	/**
-	 * Creates a context object.
-	 */
-	exports.makeABCContext = function makeContext (opts) {
-	  return new Context(opts)
-	}
+	function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+	var aesjs = _interopDefault(__webpack_require__(78));
+	var hashjs = _interopDefault(__webpack_require__(12));
+	var Hmac = _interopDefault(__webpack_require__(125));
+	var scryptsy = _interopDefault(__webpack_require__(162));
+	var baseX = _interopDefault(__webpack_require__(81));
+	var bip39 = _interopDefault(__webpack_require__(83));
+	var elliptic = _interopDefault(__webpack_require__(7));
 
-/***/ },
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */
-/***/ function(module, exports) {
+	var AesCbc = aesjs.ModeOfOperation.cbc;
 
-	/**
-	 * ABCConditionCode
-	 * Error codes for ABCError object
-	 */
+	var userIdSnrp = {
+	  'salt_hex': 'b5865ffb9fa7b3bfe4b2384d47ce831ee22a4a9d5c34c7ef7d21467cc758f81b',
+	  'n': 16384,
+	  'r': 1,
+	  'p': 1
+	};
+	var passwordAuthSnrp = userIdSnrp;
 
-	var abcc = {}
+	var timedSnrp = null;
 
-	abcc.ABCConditionCodeOk = 0
-	abcc.ABCConditionCodeError = 1
-	abcc.ABCConditionCodeNULLPtr = 2
-	abcc.ABCConditionCodeNoAvailAccountSpace = 3
-	abcc.ABCConditionCodeDirReadError = 4
-	abcc.ABCConditionCodeFileOpenError = 5
-	abcc.ABCConditionCodeFileReadError = 6
-	abcc.ABCConditionCodeFileWriteError = 7
-	abcc.ABCConditionCodeFileDoesNotExist = 8
-	abcc.ABCConditionCodeUnknownCryptoType = 9
-	abcc.ABCConditionCodeInvalidCryptoType = 10
-	abcc.ABCConditionCodeDecryptError = 11
-	abcc.ABCConditionCodeDecryptFailure = 12
-	abcc.ABCConditionCodeEncryptError = 13
-	abcc.ABCConditionCodeScryptError = 14
-	abcc.ABCConditionCodeAccountAlreadyExists = 15
-	abcc.ABCConditionCodeAccountDoesNotExist = 16
-	abcc.ABCConditionCodeJSONError = 17
-	abcc.ABCConditionCodeBadPassword = 18
-	abcc.ABCConditionCodeWalletAlreadyExists = 19
-	abcc.ABCConditionCodeURLError = 20
-	abcc.ABCConditionCodeSysError = 21
-	abcc.ABCConditionCodeNotInitialized = 22
-	abcc.ABCConditionCodeReinitialization = 23
-	abcc.ABCConditionCodeServerError = 24
-	abcc.ABCConditionCodeNoRecoveryQuestions = 25
-	abcc.ABCConditionCodeNotSupported = 26
-	abcc.ABCConditionCodeMutexError = 27
-	abcc.ABCConditionCodeNoTransaction = 28
-	abcc.ABCConditionCodeEmpty_Wallet = 28
-	abcc.ABCConditionCodeParseError = 29
-	abcc.ABCConditionCodeInvalidWalletID = 30
-	abcc.ABCConditionCodeNoRequest = 31
-	abcc.ABCConditionCodeInsufficientFunds = 32
-	abcc.ABCConditionCodeSynchronizing = 33
-	abcc.ABCConditionCodeNonNumericPin = 34
-	abcc.ABCConditionCodeNoAvailableAddress = 35
-	abcc.ABCConditionCodeInvalidPinWait = 36
-	abcc.ABCConditionCodePinExpired = 36
-	abcc.ABCConditionCodeInvalidOTP = 37
-	abcc.ABCConditionCodeSpendDust = 38
-	abcc.ABCConditionCodeObsolete = 1000
-
-	exports = abcc
-
-
-/***/ },
-/* 53 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var bip39 = __webpack_require__(102)
-	var crypto = __webpack_require__(9)
-	var userMap = __webpack_require__(15)
-	var UserStorage = __webpack_require__(23).UserStorage
-	var Login = __webpack_require__(30)
-
-	/**
-	 * Determines whether or not a username is available.
-	 */
-	function usernameAvailable (ctx, username, callback) {
-	  username = userMap.normalize(username)
-
-	  var userId = userMap.getUserId(ctx.localStorage, username)
-	  var request = {
-	    'l1': userId
-	  }
-	  ctx.authRequest('POST', '/v1/account/available', request, function (err, reply) {
-	    if (err) return callback(err)
-	    return callback(null)
-	  })
-	}
-	exports.usernameAvailable = usernameAvailable
-
-	/**
-	 * Creates a new login on the auth server.
-	 */
-	function create (ctx, username, password, opts, callback) {
-	  username = userMap.normalize(username)
-	  var userId = userMap.getUserId(ctx.localStorage, username)
-
-	  // Create random key material:
-	  var passwordKeySnrp = crypto.makeSnrp()
-	  var dataKey = crypto.random(32)
-	  var syncKey = opts.syncKey || crypto.random(20)
-
-	  // Derive keys from password:
-	  var passwordAuth = crypto.scrypt(username + password, crypto.passwordAuthSnrp)
-	  var passwordKey = crypto.scrypt(username + password, passwordKeySnrp)
-
-	  // Encrypt:
-	  var passwordBox = crypto.encrypt(dataKey, passwordKey)
-	  var passwordAuthBox = crypto.encrypt(passwordAuth, dataKey)
-	  var syncKeyBox = crypto.encrypt(syncKey, dataKey)
-
-	  // Package:
-	  var carePackage = {
-	    'SNRP2': passwordKeySnrp
-	  }
-	  var loginPackage = {
-	    'EMK_LP2': passwordBox,
-	    'ESyncKey': syncKeyBox,
-	    'ELP1': passwordAuthBox
-	  }
-	  var request = {
-	    'l1': userId,
-	    'lp1': passwordAuth.toString('base64'),
-	    'care_package': JSON.stringify(carePackage),
-	    'login_package': JSON.stringify(loginPackage),
-	    'repo_account_key': syncKey.toString('hex')
-	  }
-
-	  ctx.authRequest('POST', '/v1/account/create', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    // Cache everything for future logins:
-	    userMap.insert(ctx.localStorage, username, userId)
-	    var userStorage = new UserStorage(ctx.localStorage, username)
-	    userStorage.setJson('passwordKeySnrp', passwordKeySnrp)
-	    userStorage.setJson('passwordBox', passwordBox)
-	    userStorage.setJson('passwordAuthBox', passwordAuthBox)
-	    userStorage.setJson('syncKeyBox', syncKeyBox)
-
-	    // Now upgrade:
-	    upgrade(ctx, userStorage, userId, passwordAuth, dataKey, function (err) {
-	      if (err) return callback(err)
-
-	      // Now activate:
-	      var request = {
-	        'l1': userId,
-	        'lp1': passwordAuth.toString('base64')
-	      }
-	      ctx.authRequest('POST', '/v1/account/activate', request, function (err, reply) {
-	        if (err) return callback(err)
-	        return callback(null, Login.offline(ctx.localStorage, username, dataKey))
-	      })
-	    })
-	  })
-	}
-	exports.create = create
-
-	function upgrade (ctx, userStorage, userId, passwordAuth, dataKey, callback) {
-	  // Create a BIP39 mnemonic, and use it to derive the rootKey:
-	  var entropy = crypto.random(256 / 8)
-	  var mnemonic = bip39.entropyToMnemonic(entropy.toString('hex'))
-	  var rootKey = bip39.mnemonicToSeed(mnemonic)
-	  var infoKey = crypto.hmacSha256(rootKey, 'infoKey')
-
-	  // Pack the keys into various boxes:
-	  var rootKeyBox = crypto.encrypt(rootKey, dataKey)
-	  var mnemonicBox = crypto.encrypt(new Buffer(mnemonic, 'utf-8'), infoKey)
-	  var dataKeyBox = crypto.encrypt(dataKey, infoKey)
-
-	  var request = {
-	    'l1': userId,
-	    'lp1': passwordAuth.toString('base64'),
-	    'rootKeyBox': rootKeyBox,
-	    'mnemonicBox': mnemonicBox,
-	    'syncDataKeyBox': dataKeyBox
-	  }
-	  ctx.authRequest('POST', '/v1/account/upgrade', request, function (err, reply) {
-	    if (err) return callback(err)
-	    userStorage.setJson('rootKeyBox', rootKeyBox)
-	    return callback(null)
-	  })
-	}
-	exports.upgrade = upgrade
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var crypto = __webpack_require__(9)
-	var userMap = __webpack_require__(15)
-	var UserStorage = __webpack_require__(23).UserStorage
-	var Login = __webpack_require__(30)
-
-	function loginOffline (ctx, username, userId, password, callback) {
-	  // Extract stuff from storage:
-	  var userStorage = new UserStorage(ctx.localStorage, username)
-	  var passwordKeySnrp = userStorage.getJson('passwordKeySnrp')
-	  var passwordBox = userStorage.getJson('passwordBox')
-	  if (!passwordKeySnrp || !passwordBox) {
-	    return callback(Error('Missing data for offline login'))
-	  }
-
-	  try {
-	    // Decrypt the dataKey:
-	    var passwordKey = crypto.scrypt(username + password, passwordKeySnrp)
-	    var dataKey = crypto.decrypt(passwordBox, passwordKey)
-	  } catch (e) {
-	    return callback(e)
-	  }
-	  return callback(null, Login.offline(ctx.localStorage, username, dataKey))
-	}
-
-	function loginOnline (ctx, username, userId, password, callback) {
-	  var passwordAuth = crypto.scrypt(username + password, crypto.passwordAuthSnrp)
-
-	  // Encode the username:
-	  var request = {
-	    'userId': userId,
-	    'passwordAuth': passwordAuth.toString('base64')
-	    // "otp": null
-	  }
-	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    try {
-	      // Password login:
-	      var passwordKeySnrp = reply['passwordKeySnrp']
-	      var passwordBox = reply['passwordBox']
-	      if (!passwordKeySnrp || !passwordBox) {
-	        return callback(Error('Missing data for password login'))
-	      }
-
-	      // Decrypt the dataKey:
-	      var passwordKey = crypto.scrypt(username + password, passwordKeySnrp)
-	      var dataKey = crypto.decrypt(passwordBox, passwordKey)
-
-	      // Cache everything for future logins:
-	      userMap.insert(ctx.localStorage, username, userId)
-	    } catch (e) {
-	      return callback(e)
-	    }
-	    return callback(null, Login.online(ctx.localStorage, username, dataKey, reply))
-	  })
+	var timerNow = null;
+	if (typeof window === 'undefined') {
+	  timerNow = function () {
+	    return Date.now()
+	  };
+	} else {
+	  timerNow = function () {
+	    return window.performance.now()
+	  };
 	}
 
 	/**
-	 * Logs a user in using a password.
-	 * @param username string
-	 * @param password string
-	 * @param callback function (err, keys)
+	 * @param data A `Buffer` or byte-array object.
+	 * @param snrp A JSON SNRP structure.
+	 * @return A Buffer with the hash.
 	 */
-	function login (ctx, username, password, callback) {
-	  username = userMap.normalize(username)
-	  var userId = userMap.getUserId(ctx.localStorage, username)
-
-	  loginOffline(ctx, username, userId, password, function (err, account) {
-	    if (!err) return callback(null, account)
-	    return loginOnline(ctx, username, userId, password, callback)
-	  })
-	}
-	exports.login = login
-
-	/**
-	 * Returns true if the given password is correct.
-	 */
-	function check (ctx, login, password) {
-	  // Extract stuff from storage:
-	  var passwordKeySnrp = login.userStorage.getJson('passwordKeySnrp')
-	  var passwordBox = login.userStorage.getJson('passwordBox')
-	  if (!passwordKeySnrp || !passwordBox) {
-	    throw new Error('Keys missing from local storage')
-	  }
-
-	  try {
-	    // Decrypt the dataKey:
-	    var passwordKey = crypto.scrypt(login.username + password, passwordKeySnrp)
-	    crypto.decrypt(passwordBox, passwordKey)
-	  } catch (e) {
-	    return false
-	  }
-	  return true
-	}
-	exports.check = check
-
-	/**
-	 * Sets up a password for the login.
-	 */
-	function setup (ctx, login, password, callback) {
-	  var up = login.username + password
-
-	  // Create new keys:
-	  var passwordAuth = crypto.scrypt(up, crypto.passwordAuthSnrp)
-	  var passwordKeySnrp = crypto.makeSnrp()
-	  var passwordKey = crypto.scrypt(up, passwordKeySnrp)
-
-	  // Encrypt:
-	  var passwordBox = crypto.encrypt(login.dataKey, passwordKey)
-	  var passwordAuthBox = crypto.encrypt(passwordAuth, login.dataKey)
-
-	  var request = login.authJson()
-	  request['data'] = {
-	    'passwordAuth': passwordAuth.toString('base64'),
-	    'passwordAuthSnrp': crypto.passwordAuthSnrp, // TODO: Not needed
-	    'passwordKeySnrp': passwordKeySnrp,
-	    'passwordBox': passwordBox,
-	    'passwordAuthBox': passwordAuthBox
-	  }
-	  ctx.authRequest('PUT', '/v2/login/password', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    login.userStorage.setJson('passwordKeySnrp', passwordKeySnrp)
-	    login.userStorage.setJson('passwordBox', passwordBox)
-	    login.userStorage.setJson('passwordAuthBox', passwordAuthBox)
-	    login.passwordAuth = passwordAuth
-
-	    return callback(null)
-	  })
-	}
-	exports.setup = setup
-
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var base58 = __webpack_require__(24).base58
-	var crypto = __webpack_require__(9)
-	var userMap = __webpack_require__(15)
-	var Login = __webpack_require__(30)
-
-	function recovery2Id (recovery2Key, username) {
-	  return new Buffer(crypto.hmacSha256(username, recovery2Key))
+	function scrypt (data, snrp) {
+	  var dklen = 32;
+	  var salt = new Buffer(snrp.salt_hex, 'hex');
+	  return scryptsy(data, salt, snrp.n, snrp.r, snrp.p, dklen)
 	}
 
-	function recovery2Auth (recovery2Key, answers) {
-	  if (!(Object.prototype.toString.call(answers) === '[object Array]')) {
-	    throw new TypeError('Answers must be an array of strings')
-	  }
+	function timeSnrp (snrp) {
+	  var startTime = timerNow();
+	  scrypt('random string', snrp);
+	  var endTime = timerNow();
 
-	  var recovery2Auth = []
-	  for (var i = 0; i < answers.length; ++i) {
-	    var data = new Buffer(answers[i], 'utf-8')
-	    var auth = crypto.hmacSha256(data, recovery2Key)
-	    recovery2Auth[i] = new Buffer(auth).toString('base64')
-	  }
-	  return recovery2Auth
+	  return endTime - startTime
 	}
 
-	/**
-	 * Logs a user in using recovery answers.
-	 * @param username string
-	 * @param recovery2Key an ArrayBuffer recovery key
-	 * @param array of answer strings
-	 * @param callback function (err, login)
-	 */
-	function login (ctx, recovery2Key, username, answers, callback) {
-	  recovery2Key = base58.decode(recovery2Key)
-	  username = userMap.normalize(username)
+	function calcSnrpForTarget (targetHashTimeMilliseconds) {
+	  var snrp = {
+	    'salt_hex': random(32).toString('hex'),
+	    n: 16384,
+	    r: 1,
+	    p: 1
+	  };
+	  var timeElapsed = timeSnrp(snrp);
 
-	  var request = {
-	    'recovery2Id': recovery2Id(recovery2Key, username).toString('base64'),
-	    'recovery2Auth': recovery2Auth(recovery2Key, answers)
-	    // "otp": null
-	  }
-	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
-	    if (err) return callback(err)
+	  var estTargetTimeElapsed = timeElapsed;
+	  var nUnPowered = 0;
+	  var r = (targetHashTimeMilliseconds / estTargetTimeElapsed);
+	  if (r > 8) {
+	    snrp.r = 8;
 
-	    try {
-	      // Recovery login:
-	      var recovery2Box = reply['recovery2Box']
-	      if (!recovery2Box) {
-	        return callback(Error('Missing data for recovery v2 login'))
-	      }
+	    estTargetTimeElapsed *= 8;
+	    var n = (targetHashTimeMilliseconds / estTargetTimeElapsed);
 
-	      // Decrypt the dataKey:
-	      var dataKey = crypto.decrypt(recovery2Box, recovery2Key)
+	    if (n > 4) {
+	      nUnPowered = 4;
 
-	      // Cache everything for future logins:
-	      var userId = userMap.getUserId(ctx.localStorage, username)
-	      userMap.insert(ctx.localStorage, username, userId)
-	    } catch (e) {
-	      return callback(e)
-	    }
-	    return callback(null, Login.online(ctx.localStorage, username, dataKey, reply))
-	  })
-	}
-	exports.login = login
-
-	/**
-	 * Fetches the questions for a login
-	 * @param username string
-	 * @param recovery2Key an ArrayBuffer recovery key
-	 * @param callback function (err, question array)
-	 */
-	function questions (ctx, recovery2Key, username, callback) {
-	  recovery2Key = base58.decode(recovery2Key)
-	  username = userMap.normalize(username)
-
-	  var request = {
-	    'recovery2Id': recovery2Id(recovery2Key, username).toString('base64')
-	    // "otp": null
-	  }
-	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    try {
-	      // Recovery login:
-	      var question2Box = reply['question2Box']
-	      if (!question2Box) {
-	        return callback(Error('Login has no recovery questions'))
-	      }
-
-	      // Decrypt the dataKey:
-	      var questions = crypto.decrypt(question2Box, recovery2Key)
-	      questions = JSON.parse(questions.toString('utf8'))
-	    } catch (e) {
-	      return callback(e)
-	    }
-	    return callback(null, questions)
-	  })
-	}
-	exports.questions = questions
-
-	/**
-	 * Sets up recovery questions for the login.
-	 */
-	function setup (ctx, login, questions, answers, callback) {
-	  if (!(Object.prototype.toString.call(questions) === '[object Array]')) {
-	    throw new TypeError('Questions must be an array of strings')
-	  }
-	  if (!(Object.prototype.toString.call(answers) === '[object Array]')) {
-	    throw new TypeError('Answers must be an array of strings')
-	  }
-
-	  var recovery2Key = login.userStorage.getItem('recovery2Key')
-	  if (recovery2Key) {
-	    recovery2Key = base58.decode(recovery2Key)
-	  } else {
-	    recovery2Key = crypto.random(32)
-	  }
-
-	  var question2Box = crypto.encrypt(new Buffer(JSON.stringify(questions), 'utf8'), recovery2Key)
-	  var recovery2Box = crypto.encrypt(login.dataKey, recovery2Key)
-	  var recovery2KeyBox = crypto.encrypt(recovery2Key, login.dataKey)
-
-	  var request = login.authJson()
-	  request['data'] = {
-	    'recovery2Id': recovery2Id(recovery2Key, login.username).toString('base64'),
-	    'recovery2Auth': recovery2Auth(recovery2Key, answers),
-	    'recovery2Box': recovery2Box,
-	    'recovery2KeyBox': recovery2KeyBox,
-	    'question2Box': question2Box
-	  }
-	  ctx.authRequest('PUT', '/v2/login/recovery2', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    recovery2Key = base58.encode(recovery2Key)
-	    login.userStorage.setItem('recovery2Key', recovery2Key)
-	    return callback(null, recovery2Key)
-	  })
-	}
-	exports.setup = setup
-
-	function listRecoveryQuestionChoices (ctx, callback) {
-	  ctx.authRequest('POST', '/v1/questions', '', function (err, reply) {
-	    if (err) {
-	      return callback(21)
+	      estTargetTimeElapsed *= 4;
+	      var p = (targetHashTimeMilliseconds / estTargetTimeElapsed);
+	      snrp.p = Math.floor(p);
 	    } else {
-	      callback(null, reply)
+	      nUnPowered = Math.floor(n);
 	    }
-	  })
+	  } else {
+	    snrp.r = r > 4 ? Math.floor(r) : 4;
+	  }
+	  nUnPowered = nUnPowered >= 1 ? nUnPowered : 1;
+	  snrp.n = Math.pow(2, nUnPowered + 13);
+
+	  // Actually time the new snrp:
+	  // const newTimeElapsed = timeSnrp(snrp)
+	  // console.log('timedSnrp: ' + snrp.n + ' ' + snrp.r + ' ' + snrp.p + ' oldTime:' + timeElapsed + ' newTime:' + newTimeElapsed)
+	  console.log('timedSnrp: ' + snrp.n + ' ' + snrp.r + ' ' + snrp.p + ' oldTime:' + timeElapsed);
+
+	  return snrp
 	}
-	exports.listRecoveryQuestionChoices = listRecoveryQuestionChoices
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+	function makeSnrp () {
+	  if (!timedSnrp) {
+	    // Shoot for a 2s hash time:
+	    timedSnrp = calcSnrpForTarget(2000);
+	  }
 
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
+	  // Return a copy of the timed version with a fresh salt:
+	  return {
+	    'salt_hex': random(32).toString('hex'),
+	    'n': timedSnrp.n,
+	    'r': timedSnrp.r,
+	    'p': timedSnrp.p
+	  }
+	}
 
-	var crypto = __webpack_require__(9)
+	function random (bytes) {
+	  bytes |= 0;
+	  try {
+	    var out = new Buffer(bytes);
+	    window.crypto.getRandomValues(out);
+	  } catch (e) {
+	    // Alternative using node.js crypto:
+	    var hiddenRequire = require;
+	    return __webpack_require__(98).randomBytes(bytes)
+	  }
+	  return out
+	}
+
+	/**
+	 * @param box an Airbitz JSON encryption box
+	 * @param key a key, as an ArrayBuffer
+	 */
+	function decrypt (box, key) {
+	  // Check JSON:
+	  if (box['encryptionType'] !== 0) {
+	    throw new Error('Unknown encryption type')
+	  }
+	  var iv = new Buffer(box['iv_hex'], 'hex');
+	  var cyphertext = new Buffer(box['data_base64'], 'base64');
+
+	  // Decrypt:
+	  var cypher = new AesCbc(key, iv);
+	  var raw = cypher.decrypt(cyphertext);
+	  // Alternative using node.js crypto:
+	  // const decipher = crypto.createDecipheriv('AES-256-CBC', key, iv);
+	  // let x = decipher.update(box.data_base64, 'base64', 'hex')
+	  // x += decipher.final('hex')
+	  // const data = new Buffer(x, 'hex')
+
+	  // Calculate field locations:
+	  var headerSize = raw[0];
+	  var dataSize =
+	    raw[1 + headerSize] << 24 |
+	    raw[2 + headerSize] << 16 |
+	    raw[3 + headerSize] << 8 |
+	    raw[4 + headerSize];
+	  var dataStart = 1 + headerSize + 4;
+	  var footerSize = raw[dataStart + dataSize];
+	  var hashStart = dataStart + dataSize + 1 + footerSize;
+
+	  // Verify SHA-256 checksum:
+	  var hash = hashjs.sha256().update(raw.slice(0, hashStart)).digest();
+	  var hashSize = hash.length;
+	  for (var i = 0; i < hashSize; ++i) {
+	    if (raw[hashStart + i] !== hash[i]) {
+	      throw new Error('Invalid checksum')
+	    }
+	  }
+
+	  // Verify pkcs7 padding (if any):
+	  var paddingStart = hashStart + hashSize;
+	  var paddingSize = raw.length - paddingStart;
+	  for (var i$1 = paddingStart; i$1 < raw.length; ++i$1) {
+	    if (raw[i$1] !== paddingSize) {
+	      throw new Error('Invalid PKCS7 padding')
+	    }
+	  }
+
+	  // Return the payload:
+	  return raw.slice(dataStart, dataStart + dataSize)
+	}
+
+	/**
+	 * @param payload an ArrayBuffer of data
+	 * @param key a key, as an ArrayBuffer
+	 */
+	function encrypt (data, key) {
+	  // Calculate sizes and locations:
+	  var headerSize = random(1)[0] & 0x1f;
+	  var dataStart = 1 + headerSize + 4;
+	  var dataSize = data.length;
+	  var footerStart = dataStart + dataSize + 1;
+	  var footerSize = random(1)[0] & 0x1f;
+	  var hashStart = footerStart + footerSize;
+	  var hashSize = 32;
+	  var paddingStart = hashStart + hashSize;
+	  var paddingSize = 16 - (paddingStart & 0xf);
+	  var raw = new Buffer(paddingStart + paddingSize);
+
+	  // Random header:
+	  var header = random(headerSize);
+	  raw[0] = headerSize;
+	  for (var i = 0; i < headerSize; ++i) {
+	    raw[1 + i] = header[i];
+	  }
+
+	  // Payload data:
+	  raw[1 + headerSize] = (dataSize >> 24) & 0xff;
+	  raw[2 + headerSize] = (dataSize >> 16) & 0xff;
+	  raw[3 + headerSize] = (dataSize >> 8) & 0xff;
+	  raw[4 + headerSize] = dataSize & 0xff;
+	  for (var i$1 = 0; i$1 < dataSize; ++i$1) {
+	    raw[dataStart + i$1] = data[i$1];
+	  }
+
+	  // Random footer:
+	  var footer = random(footerSize);
+	  raw[dataStart + dataSize] = footerSize;
+	  for (var i$2 = 0; i$2 < footerSize; ++i$2) {
+	    raw[footerStart + i$2] = footer[i$2];
+	  }
+
+	  // SHA-256 checksum:
+	  var hash = hashjs.sha256().update(raw.slice(0, hashStart)).digest();
+	  for (var i$3 = 0; i$3 < hashSize; ++i$3) {
+	    raw[hashStart + i$3] = hash[i$3];
+	  }
+
+	  // Add PKCS7 padding:
+	  for (var i$4 = 0; i$4 < paddingSize; ++i$4) {
+	    raw[paddingStart + i$4] = paddingSize;
+	  }
+
+	  // Encrypt to JSON:
+	  var iv = random(16);
+	  var cypher = new AesCbc(key, iv);
+	  return {
+	    'encryptionType': 0,
+	    'iv_hex': iv.toString('hex'),
+	    'data_base64': new Buffer(cypher.encrypt(raw)).toString('base64')
+	  }
+	}
+
+	function hmacSha256 (data, key) {
+	  var hmac = new Hmac(hashjs.sha256, 64, key);
+	  return hmac.update(data).digest()
+	}
+
+	var base58Codec = baseX('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz');
+
+	function base58Decode (text) {
+	  return new Buffer(base58Codec.decode(text))
+	}
+
+	function base58Encode (data) {
+	  return base58Codec.encode(data)
+	}
+
+	var base58 = {
+	  decode: base58Decode,
+	  encode: base58Encode
+	};
 
 	/**
 	 * Creates a blank repo on the sync server.
 	 */
 	function repoCreate (ctx, login, keysJson, callback) {
-	  keysJson.dataKey = keysJson.dataKey || crypto.random(32).toString('hex')
-	  keysJson.syncKey = keysJson.syncKey || crypto.random(20).toString('hex')
+	  keysJson.dataKey = keysJson.dataKey || random(32).toString('hex');
+	  keysJson.syncKey = keysJson.syncKey || random(20).toString('hex');
 
 	  var request = {
 	    'l1': login.userId,
 	    'lp1': login.passwordAuth.toString('base64'),
 	    'repo_wallet_key': keysJson.syncKey
-	  }
+	  };
 	  ctx.authRequest('POST', '/v1/wallet/create', request, function (err, reply) {
-	    if (err) return callback(err)
-	    callback(null, keysJson)
-	  })
+	    if (err) { return callback(err) }
+	    callback(null, keysJson);
+	  });
 	}
-	exports.repoCreate = repoCreate
 
 	/**
 	 * Marks a repo as being used.
@@ -8674,40 +7797,657 @@ var abcui =
 	    'l1': login.userId,
 	    'lp1': login.passwordAuth.toString('base64'),
 	    'repo_wallet_key': keysJson.syncKey
-	  }
+	  };
 	  ctx.authRequest('POST', '/v1/wallet/activate', request, function (err, reply) {
-	    if (err) return callback(err)
-	    callback(null)
-	  })
+	    if (err) { return callback(err) }
+	    callback(null);
+	  });
 	}
-	exports.repoActivate = repoActivate
 
+	/**
+	 * Returns the user map, which goes from usernames to userId's
+	 */
+	function load (localStorage) {
+	  try {
+	    var userMap = JSON.parse(localStorage.getItem('airbitz.users'));
+	    return userMap || {}
+	  } catch (e) {
+	    return {}
+	  }
+	}
 
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
+	/**
+	 * Ensures that the userMap contains the given user. Adds the user if not.
+	 */
+	function insert (localStorage, username, userId) {
+	  var userMap = load(localStorage);
+	  userMap[username] = userId;
+	  localStorage.setItem('airbitz.users', JSON.stringify(userMap));
+	}
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var base58 = __webpack_require__(24).base58
-	var crypto = __webpack_require__(9)
-	var ScopedStorage = __webpack_require__(58).ScopedStorage
+	/**
+	 * Computes the userId (L1) for the given username.
+	 */
+	function getUserId (localStorage, username) {
+	  var userMap = load(localStorage);
+	  return userMap[username] ||
+	    scrypt(username, userIdSnrp).toString('base64')
+	}
+
+	/**
+	 * Normalizes a username, and checks for invalid characters.
+	 */
+	function normalize (username) {
+	  var out = username + '';
+	  out = out.toLowerCase()
+	    .replace(/[ \f\r\n\t\v]+/g, ' ')
+	    .replace(/ $/, '')
+	    .replace(/^ /, '');
+
+	  for (var i = 0; i < out.length; ++i) {
+	    var c = out.charCodeAt(i);
+	    if (c < 0x20 || c > 0x7e) {
+	      throw new Error('Bad characters in username')
+	    }
+	  }
+	  return out
+	}
+
+	/**
+	 * Wraps `LocalStorage` with a namespace and other extra goodies.
+	 */
+	function ScopedStorage (localStorage, prefix) {
+	  this.localStorage = localStorage;
+	  this.prefix = prefix + '.';
+	}
+
+	ScopedStorage.prototype.getItem = function (key) {
+	  return this.localStorage.getItem(this.prefix + key)
+	};
+
+	ScopedStorage.prototype.setItem = function (key, value) {
+	  return this.localStorage.setItem(this.prefix + key, value)
+	};
+
+	ScopedStorage.prototype.removeItem = function (key) {
+	  return this.localStorage.removeItem(this.prefix + key)
+	};
+
+	ScopedStorage.prototype.getJson = function (key) {
+	  var text = this.getItem(key);
+	  return text == null ? null : JSON.parse(text)
+	};
+
+	ScopedStorage.prototype.setJson = function (key, value) {
+	  return this.setItem(key, JSON.stringify(value))
+	};
+
+	ScopedStorage.prototype.subStore = function (prefix) {
+	  return new ScopedStorage(this.localStorage, this.prefix + prefix)
+	};
+
+	ScopedStorage.prototype.keys = function () {
+	  var this$1 = this;
+
+	  var keys = [];
+	  var search = new RegExp('^' + this.prefix);
+	  for (var i = 0; i < this.localStorage.length; ++i) {
+	    var key = this$1.localStorage.key(i);
+	    if (search.test(key)) {
+	      keys.push(key.replace(search, ''));
+	    }
+	  }
+	  return keys
+	};
+
+	/**
+	 * Returns a wrapped version of `localStorage` keyed to a specific user.
+	 */
+	function UserStorage (localStorage, username) {
+	  return ScopedStorage.call(this, localStorage, 'airbitz.user.' + username)
+	}
+	UserStorage.prototype = ScopedStorage.prototype;
+
+	/**
+	 * Unpacks a login v2 reply package, and stores the contents locally.
+	 */
+	function loginReplyStore (localStorage, username, dataKey, loginReply) {
+	  var userStorage = new UserStorage(localStorage, username);
+	  var keys = [
+	    // Password login:
+	    'passwordKeySnrp', 'passwordBox',
+	    // Key boxes:
+	    'passwordAuthBox', 'rootKeyBox', 'syncKeyBox', 'repos'
+	  ];
+
+	  // Store any keys the reply may contain:
+	  for (var i = 0, list = keys; i < list.length; i += 1) {
+	    var key = list[i];
+
+	    if (loginReply[key]) {
+	      userStorage.setJson(key, loginReply[key]);
+	    }
+	  }
+
+	  // Store the pin key unencrypted:
+	  var pin2KeyBox = loginReply['pin2KeyBox'];
+	  if (pin2KeyBox) {
+	    var pin2Key = decrypt(pin2KeyBox, dataKey);
+	    userStorage.setItem('pin2Key', base58.encode(pin2Key));
+	  }
+
+	  // Store the recovery key unencrypted:
+	  var recovery2KeyBox = loginReply['recovery2KeyBox'];
+	  if (recovery2KeyBox) {
+	    var recovery2Key = decrypt(recovery2KeyBox, dataKey);
+	    userStorage.setItem('recovery2Key', base58.encode(recovery2Key));
+	  }
+	}
+
+	/**
+	 * Access to the logged-in user data.
+	 *
+	 * This type has following powers:
+	 * - Access to the auth server
+	 * - A list of account repos
+	 * - The legacy BitID rootKey
+	 */
+	function Login (localStorage, username, dataKey) {
+	  // Identity:
+	  this.username = username;
+	  this.userId = getUserId(localStorage, username);
+
+	  // Access to the login data:
+	  this.dataKey = dataKey;
+	  this.userStorage = new UserStorage(localStorage, username);
+
+	  // Return access to the server:
+	  var passwordAuthBox = this.userStorage.getJson('passwordAuthBox');
+	  if (!passwordAuthBox) {
+	    throw new Error('Missing passwordAuthBox')
+	  }
+	  this.passwordAuth = decrypt(passwordAuthBox, dataKey);
+
+	  // Account repo:
+	  this.repos = this.userStorage.getJson('repos') || [];
+	  var syncKeyBox = this.userStorage.getJson('syncKeyBox');
+	  if (syncKeyBox) {
+	    this.syncKey = decrypt(syncKeyBox, dataKey);
+	  }
+
+	  // Legacy BitID key:
+	  var rootKeyBox = this.userStorage.getJson('rootKeyBox');
+	  if (rootKeyBox) {
+	    this.rootKey = decrypt(rootKeyBox, dataKey);
+	  }
+	}
+
+	/**
+	 * Returns a new login object, populated with data from the server.
+	 */
+	Login.online = function (localStorage, username, dataKey, loginReply) {
+	  loginReplyStore(localStorage, username, dataKey, loginReply);
+	  return new Login(localStorage, username, dataKey)
+	};
+
+	/**
+	 * Returns a new login object, populated with data from the local storage.
+	 */
+	Login.offline = function (localStorage, username, dataKey) {
+	  return new Login(localStorage, username, dataKey)
+	};
+
+	/**
+	 * Sets up a login v2 server authorization JSON.
+	 */
+	Login.prototype.authJson = function () {
+	  return {
+	    'userId': this.userId,
+	    'passwordAuth': this.passwordAuth.toString('base64')
+	  }
+	};
+
+	/**
+	 * Searches for the given account type in the provided login object.
+	 * Returns the repo keys in the JSON bundle format.
+	 */
+	Login.prototype.accountFind = function (type) {
+	  var this$1 = this;
+
+	  // Search the repos array:
+	  for (var i = 0, list = this.repos; i < list.length; i += 1) {
+	    var repo = list[i];
+
+	    if (repo['type'] === type) {
+	      var keysBox = repo['keysBox'] || repo['info'];
+	      return JSON.parse(decrypt(keysBox, this$1.dataKey).toString('utf-8'))
+	    }
+	  }
+
+	  // Handle the legacy Airbitz repo:
+	  if (type === 'account:repo:co.airbitz.wallet') {
+	    return {
+	      'syncKey': this.syncKey.toString('hex'),
+	      'dataKey': this.dataKey.toString('hex')
+	    }
+	  }
+
+	  throw new Error('Cannot find a \'' + type + '\' repo')
+	};
+
+	/**
+	 * Creates and attaches new account repo.
+	 */
+	Login.prototype.accountCreate = function (ctx, type, callback) {
+	  var login = this;
+
+	  repoCreate(ctx, login, {}, function (err, keysJson) {
+	    if (err) { return callback(err) }
+	    login.accountAttach(ctx, type, keysJson, function (err) {
+	      if (err) { return callback(err) }
+	      repoActivate(ctx, login, keysJson, function (err) {
+	        if (err) { return callback(err) }
+	        callback(null);
+	      });
+	    });
+	  });
+	};
+
+	/**
+	 * Attaches an account repo to the login.
+	 */
+	Login.prototype.accountAttach = function (ctx, type, info, callback) {
+	  var login = this;
+
+	  var infoBlob = new Buffer(JSON.stringify(info), 'utf-8');
+	  var data = {
+	    'type': type,
+	    'info': encrypt(infoBlob, login.dataKey)
+	  };
+
+	  var request = login.authJson();
+	  request['data'] = data;
+	  ctx.authRequest('POST', '/v2/login/repos', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    login.repos.push(data);
+	    login.userStorage.setJson('repos', login.repos);
+
+	    callback(null);
+	  });
+	};
+
+	function loginOffline (ctx, username, userId, password, callback) {
+	  // Extract stuff from storage:
+	  var userStorage = new UserStorage(ctx.localStorage, username);
+	  var passwordKeySnrp = userStorage.getJson('passwordKeySnrp');
+	  var passwordBox = userStorage.getJson('passwordBox');
+	  if (!passwordKeySnrp || !passwordBox) {
+	    return callback(Error('Missing data for offline login'))
+	  }
+
+	  try {
+	    // Decrypt the dataKey:
+	    var passwordKey = scrypt(username + password, passwordKeySnrp);
+	    var dataKey = decrypt(passwordBox, passwordKey);
+	  } catch (e) {
+	    return callback(e)
+	  }
+	  return callback(null, Login.offline(ctx.localStorage, username, dataKey))
+	}
+
+	function loginOnline (ctx, username, userId, password, callback) {
+	  var passwordAuth = scrypt(username + password, passwordAuthSnrp);
+
+	  // Encode the username:
+	  var request = {
+	    'userId': userId,
+	    'passwordAuth': passwordAuth.toString('base64')
+	    // "otp": null
+	  };
+	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    try {
+	      // Password login:
+	      var passwordKeySnrp = reply['passwordKeySnrp'];
+	      var passwordBox = reply['passwordBox'];
+	      if (!passwordKeySnrp || !passwordBox) {
+	        return callback(Error('Missing data for password login'))
+	      }
+
+	      // Decrypt the dataKey:
+	      var passwordKey = scrypt(username + password, passwordKeySnrp);
+	      var dataKey = decrypt(passwordBox, passwordKey);
+
+	      // Cache everything for future logins:
+	      insert(ctx.localStorage, username, userId);
+	    } catch (e) {
+	      return callback(e)
+	    }
+	    return callback(null, Login.online(ctx.localStorage, username, dataKey, reply))
+	  });
+	}
+
+	/**
+	 * Logs a user in using a password.
+	 * @param username string
+	 * @param password string
+	 * @param callback function (err, keys)
+	 */
+	function login (ctx, username, password, callback) {
+	  username = normalize(username);
+	  var userId = getUserId(ctx.localStorage, username);
+
+	  loginOffline(ctx, username, userId, password, function (err, account) {
+	    if (!err) { return callback(null, account) }
+	    return loginOnline(ctx, username, userId, password, callback)
+	  });
+	}
+
+	/**
+	 * Returns true if the given password is correct.
+	 */
+	function check (ctx, login, password) {
+	  // Extract stuff from storage:
+	  var passwordKeySnrp = login.userStorage.getJson('passwordKeySnrp');
+	  var passwordBox = login.userStorage.getJson('passwordBox');
+	  if (!passwordKeySnrp || !passwordBox) {
+	    throw new Error('Keys missing from local storage')
+	  }
+
+	  try {
+	    // Decrypt the dataKey:
+	    var passwordKey = scrypt(login.username + password, passwordKeySnrp);
+	    decrypt(passwordBox, passwordKey);
+	  } catch (e) {
+	    return false
+	  }
+	  return true
+	}
+
+	/**
+	 * Sets up a password for the login.
+	 */
+	function setup (ctx, login, password, callback) {
+	  var up = login.username + password;
+
+	  // Create new keys:
+	  var passwordAuth = scrypt(up, passwordAuthSnrp);
+	  var passwordKeySnrp = makeSnrp();
+	  var passwordKey = scrypt(up, passwordKeySnrp);
+
+	  // Encrypt:
+	  var passwordBox = encrypt(login.dataKey, passwordKey);
+	  var passwordAuthBox = encrypt(passwordAuth, login.dataKey);
+
+	  var request = login.authJson();
+	  request['data'] = {
+	    'passwordAuth': passwordAuth.toString('base64'),
+	    'passwordAuthSnrp': passwordAuthSnrp, // TODO: Not needed
+	    'passwordKeySnrp': passwordKeySnrp,
+	    'passwordBox': passwordBox,
+	    'passwordAuthBox': passwordAuthBox
+	  };
+	  ctx.authRequest('PUT', '/v2/login/password', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    login.userStorage.setJson('passwordKeySnrp', passwordKeySnrp);
+	    login.userStorage.setJson('passwordBox', passwordBox);
+	    login.userStorage.setJson('passwordAuthBox', passwordAuthBox);
+	    login.passwordAuth = passwordAuth;
+
+	    return callback(null)
+	  });
+	}
+
+	function pin2Id (pin2Key, username) {
+	  return new Buffer(hmacSha256(username, pin2Key))
+	}
+
+	function pin2Auth (pin2Key, pin) {
+	  return new Buffer(hmacSha256(pin, pin2Key))
+	}
+
+	/**
+	 * Returns true if the local device has a copy of the PIN login key.
+	 */
+	function getKey (ctx, username) {
+	  username = normalize(username);
+
+	  // Extract stuff from storage:
+	  var userStorage = new UserStorage(ctx.localStorage, username);
+	  return userStorage.getItem('pin2Key')
+	}
+
+	/**
+	 * Logs a user in using their PIN.
+	 * @param username string
+	 * @param pin2Key the recovery key, as a base58 string.
+	 * @param pin the PIN, as a string.
+	 * @param callback function (err, login)
+	 */
+	function login$1 (ctx, pin2Key, username, pin, callback) {
+	  pin2Key = base58.decode(pin2Key);
+	  username = normalize(username);
+
+	  var request = {
+	    'pin2Id': pin2Id(pin2Key, username).toString('base64'),
+	    'pin2Auth': pin2Auth(pin2Key, pin).toString('base64')
+	    // "otp": null
+	  };
+	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    try {
+	      // PIN login:
+	      var pin2Box = reply['pin2Box'];
+	      if (!pin2Box) {
+	        return callback(Error('Missing data for PIN v2 login'))
+	      }
+
+	      // Decrypt the dataKey:
+	      var dataKey = decrypt(pin2Box, pin2Key);
+
+	      // Cache everything for future logins:
+	      var userId = getUserId(ctx.localStorage, username);
+	      insert(ctx.localStorage, username, userId);
+	    } catch (e) {
+	      return callback(e)
+	    }
+	    return callback(null, Login.online(ctx.localStorage, username, dataKey, reply))
+	  });
+	}
+
+	/**
+	 * Sets up PIN login v2.
+	 */
+	function setup$1 (ctx, login, pin, callback) {
+	  var pin2Key = login.userStorage.getItem('pin2Key');
+	  if (pin2Key) {
+	    pin2Key = base58.decode(pin2Key);
+	  } else {
+	    pin2Key = random(32);
+	  }
+
+	  var pin2Box = encrypt(login.dataKey, pin2Key);
+	  var pin2KeyBox = encrypt(pin2Key, login.dataKey);
+
+	  var request = login.authJson();
+	  request['data'] = {
+	    'pin2Id': pin2Id(pin2Key, login.username).toString('base64'),
+	    'pin2Auth': pin2Auth(pin2Key, pin).toString('base64'),
+	    'pin2Box': pin2Box,
+	    'pin2KeyBox': pin2KeyBox
+	  };
+	  ctx.authRequest('PUT', '/v2/login/pin2', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    pin2Key = base58.encode(pin2Key);
+	    login.userStorage.setItem('pin2Key', pin2Key);
+	    return callback(null, pin2Key)
+	  });
+	}
+
+	function recovery2Id (recovery2Key, username) {
+	  return new Buffer(hmacSha256(username, recovery2Key))
+	}
+
+	function recovery2Auth (recovery2Key, answers) {
+	  if (!(Object.prototype.toString.call(answers) === '[object Array]')) {
+	    throw new TypeError('Answers must be an array of strings')
+	  }
+
+	  var recovery2Auth = [];
+	  for (var i = 0, list = answers; i < list.length; i += 1) {
+	    var answer = list[i];
+
+	    var data = new Buffer(answer, 'utf-8');
+	    var auth = hmacSha256(data, recovery2Key);
+	    recovery2Auth.push(new Buffer(auth).toString('base64'));
+	  }
+	  return recovery2Auth
+	}
+
+	/**
+	 * Logs a user in using recovery answers.
+	 * @param username string
+	 * @param recovery2Key an ArrayBuffer recovery key
+	 * @param array of answer strings
+	 * @param callback function (err, login)
+	 */
+	function login$2 (ctx, recovery2Key, username, answers, callback) {
+	  recovery2Key = base58.decode(recovery2Key);
+	  username = normalize(username);
+
+	  var request = {
+	    'recovery2Id': recovery2Id(recovery2Key, username).toString('base64'),
+	    'recovery2Auth': recovery2Auth(recovery2Key, answers)
+	    // "otp": null
+	  };
+	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    try {
+	      // Recovery login:
+	      var recovery2Box = reply['recovery2Box'];
+	      if (!recovery2Box) {
+	        return callback(Error('Missing data for recovery v2 login'))
+	      }
+
+	      // Decrypt the dataKey:
+	      var dataKey = decrypt(recovery2Box, recovery2Key);
+
+	      // Cache everything for future logins:
+	      var userId = getUserId(ctx.localStorage, username);
+	      insert(ctx.localStorage, username, userId);
+	    } catch (e) {
+	      return callback(e)
+	    }
+	    return callback(null, Login.online(ctx.localStorage, username, dataKey, reply))
+	  });
+	}
+
+	/**
+	 * Fetches the questions for a login
+	 * @param username string
+	 * @param recovery2Key an ArrayBuffer recovery key
+	 * @param callback function (err, question array)
+	 */
+	function questions (ctx, recovery2Key, username, callback) {
+	  recovery2Key = base58.decode(recovery2Key);
+	  username = normalize(username);
+
+	  var request = {
+	    'recovery2Id': recovery2Id(recovery2Key, username).toString('base64')
+	    // "otp": null
+	  };
+	  ctx.authRequest('POST', '/v2/login', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    try {
+	      // Recovery login:
+	      var question2Box = reply['question2Box'];
+	      if (!question2Box) {
+	        return callback(Error('Login has no recovery questions'))
+	      }
+
+	      // Decrypt the dataKey:
+	      var questions = decrypt(question2Box, recovery2Key);
+	      questions = JSON.parse(questions.toString('utf8'));
+	    } catch (e) {
+	      return callback(e)
+	    }
+	    return callback(null, questions)
+	  });
+	}
+
+	/**
+	 * Sets up recovery questions for the login.
+	 */
+	function setup$2 (ctx, login, questions, answers, callback) {
+	  if (!(Object.prototype.toString.call(questions) === '[object Array]')) {
+	    throw new TypeError('Questions must be an array of strings')
+	  }
+	  if (!(Object.prototype.toString.call(answers) === '[object Array]')) {
+	    throw new TypeError('Answers must be an array of strings')
+	  }
+
+	  var recovery2Key = login.userStorage.getItem('recovery2Key');
+	  if (recovery2Key) {
+	    recovery2Key = base58.decode(recovery2Key);
+	  } else {
+	    recovery2Key = random(32);
+	  }
+
+	  var question2Box = encrypt(new Buffer(JSON.stringify(questions), 'utf8'), recovery2Key);
+	  var recovery2Box = encrypt(login.dataKey, recovery2Key);
+	  var recovery2KeyBox = encrypt(recovery2Key, login.dataKey);
+
+	  var request = login.authJson();
+	  request['data'] = {
+	    'recovery2Id': recovery2Id(recovery2Key, login.username).toString('base64'),
+	    'recovery2Auth': recovery2Auth(recovery2Key, answers),
+	    'recovery2Box': recovery2Box,
+	    'recovery2KeyBox': recovery2KeyBox,
+	    'question2Box': question2Box
+	  };
+	  ctx.authRequest('PUT', '/v2/login/recovery2', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    recovery2Key = base58.encode(recovery2Key);
+	    login.userStorage.setItem('recovery2Key', recovery2Key);
+	    return callback(null, recovery2Key)
+	  });
+	}
+
+	function listRecoveryQuestionChoices (ctx, callback) {
+	  ctx.authRequest('POST', '/v1/questions', '', function (err, reply) {
+	    if (err) {
+	      return callback(21)
+	    } else {
+	      callback(null, reply);
+	    }
+	  });
+	}
 
 	var syncServers = [
 	  'https://git-js.airbitz.co',
 	  'https://git4-js.airbitz.co'
-	]
+	];
 
 	/**
 	 * Fetches some resource from a sync server.
 	 */
 	function syncRequest (authFetch, method, uri, body, callback) {
-	  syncRequestInner(authFetch, method, uri, body, callback, 0)
+	  syncRequestInner(authFetch, method, uri, body, callback, 0);
 	}
 
 	function syncRequestInner (authFetch, method, uri, body, callback, serverIndex) {
-	  console.log('syncRequestInner: Connecting to ' + syncServers[serverIndex])
+	  console.log('syncRequestInner: Connecting to ' + syncServers[serverIndex]);
 	  authFetch(method, syncServers[serverIndex] + uri, body, function (err, status, result) {
 	    if (err) {
-	      console.log('syncRequestInner: Failed connecting to ' + syncServers[serverIndex])
+	      console.log('syncRequestInner: Failed connecting to ' + syncServers[serverIndex]);
 	      if (serverIndex < syncServers.length - 1) {
 	        return syncRequestInner(authFetch, method, uri, body, callback, (serverIndex + 1))
 	      } else {
@@ -8715,9 +8455,9 @@ var abcui =
 	      }
 	    }
 	    try {
-	      var reply = JSON.parse(result)
+	      var reply = JSON.parse(result);
 	    } catch (e) {
-	      console.log('syncRequestInner: Failed parsing response from ' + syncServers[serverIndex])
+	      console.log('syncRequestInner: Failed parsing response from ' + syncServers[serverIndex]);
 	      if (serverIndex < syncServers.length - 1) {
 	        return syncRequestInner(authFetch, method, uri, body, callback, (serverIndex + 1))
 	      } else {
@@ -8726,7 +8466,7 @@ var abcui =
 	    }
 
 	    return callback(null, reply)
-	  })
+	  });
 	}
 
 	/**
@@ -8746,101 +8486,98 @@ var abcui =
 	  for (var key in changes) {
 	    if (changes.hasOwnProperty(key)) {
 	      // Normalize the path:
-	      var path = pathSplit(key)
+	      var path = pathSplit(key);
 	      if (!path.length) {
 	        continue
 	      }
 
 	      // Remove the `.json` extension from the filename:
-	      var filename = path[path.length - 1]
+	      var filename = path[path.length - 1];
 	      if (filename.slice(-5) !== '.json') {
 	        continue
 	      }
-	      path[path.length - 1] = filename.slice(0, -5)
+	      path[path.length - 1] = filename.slice(0, -5);
 
 	      // Write the value to storage:
-	      store.setJson(path.join('.'), changes[key])
+	      store.setJson(path.join('.'), changes[key]);
 	    }
 	  }
 	}
-	exports.mergeChanges = mergeChanges
 
 	/**
 	 * Creates an ID string from a repo's dataKey.
 	 */
 	function repoId (dataKey) {
-	  return base58.encode(crypto.hmacSha256(dataKey, dataKey))
+	  return base58.encode(hmacSha256(dataKey, dataKey))
 	}
-	exports.repoId = repoId
 
 	/**
 	 * Creates a data storage and syncing object.
 	 * The data inside the repo is encrypted with `dataKey`.
 	 */
 	function Repo (ctx, dataKey, syncKey) {
-	  this.authFetch = ctx.authFetch
-	  this.dataKey = dataKey
-	  this.syncKey = syncKey
+	  this.authFetch = ctx.authFetch;
+	  this.dataKey = dataKey;
+	  this.syncKey = syncKey;
 
-	  var prefix = 'airbitz.repo.' + repoId(dataKey)
-	  this.store = new ScopedStorage(ctx.localStorage, prefix)
-	  this.changeStore = this.store.subStore('changes')
-	  this.dataStore = this.store.subStore('data')
+	  var prefix = 'airbitz.repo.' + repoId(dataKey);
+	  this.store = new ScopedStorage(ctx.localStorage, prefix);
+	  this.changeStore = this.store.subStore('changes');
+	  this.dataStore = this.store.subStore('data');
 	}
-	exports.Repo = Repo
 
 	/**
 	 * Creates a secure file name by hashing
 	 * the provided binary data with the repo's dataKey.
 	 */
 	Repo.prototype.secureFilename = function (data) {
-	  return base58.encode(crypto.hmacSha256(data, this.dataKey))
-	}
+	  return base58.encode(hmacSha256(data, this.dataKey))
+	};
 
 	/**
 	 * Decrypts and returns the file at the given path.
 	 * The return value will either be a byte buffer or null.
 	 */
 	Repo.prototype.getData = function (path) {
-	  path = pathSplit(path).join('.')
+	  path = pathSplit(path).join('.');
 
 	  var box =
 	    this.changeStore.getJson(path) ||
-	    this.dataStore.getJson(path)
-	  return box ? crypto.decrypt(box, this.dataKey) : null
-	}
+	    this.dataStore.getJson(path);
+	  return box ? decrypt(box, this.dataKey) : null
+	};
 
 	/**
 	 * Decrypts and returns the file at the given path,
 	 * treating the contents as text.
 	 */
 	Repo.prototype.getText = function (path) {
-	  var data = this.getData(path)
+	  var data = this.getData(path);
 	  if (data == null) {
 	    return null
 	  }
 	  // Due to a legacy bug, some Airbitz data contains trailing nulls:
 	  if (data.length && data[data.length - 1] === 0) {
-	    data = data.slice(0, data.length - 1)
+	    data = data.slice(0, data.length - 1);
 	  }
 	  return data.toString('utf-8')
-	}
+	};
 
 	/**
 	 * Decrypts and returns the file at the given path,
 	 * treating the contents as JSON.
 	 */
 	Repo.prototype.getJson = function (path) {
-	  var text = this.getText(path)
+	  var text = this.getText(path);
 	  return text == null ? null : JSON.parse(text)
-	}
+	};
 
 	/**
 	 * Lists the files (not folders) contained in the given path.
 	 */
 	Repo.prototype.keys = function (path) {
-	  path = path ? pathSplit(path).join('.') + '.' : ''
-	  var search = new RegExp('^' + path + '([^\\.]+)$')
+	  path = path ? pathSplit(path).join('.') + '.' : '';
+	  var search = new RegExp('^' + path + '([^\\.]+)$');
 	  function filter (key) {
 	    return search.test(key)
 	  }
@@ -8848,22 +8585,22 @@ var abcui =
 	    return key.replace(search, '$1')
 	  }
 
-	  var changeKeys = this.changeStore.keys().filter(filter).map(strip)
-	  var dataKeys = this.dataStore.keys().filter(filter).map(strip)
-	  var keys = changeKeys.concat(dataKeys)
+	  var changeKeys = this.changeStore.keys().filter(filter).map(strip);
+	  var dataKeys = this.dataStore.keys().filter(filter).map(strip);
+	  var keys = changeKeys.concat(dataKeys);
 
 	  // Remove duplicates:
 	  return keys.sort().filter(function (item, i, array) {
 	    return !i || item !== array[i - 1]
 	  })
-	}
+	};
 
 	/**
 	 * Deletes a particular file path.
 	 */
 	Repo.prototype.removeItem = function (path) {
-	  this.set(path, null)
-	}
+	  this.set(path, null);
+	};
 
 	/**
 	 * Encrypts a value and saves it at the provided file path.
@@ -8873,153 +8610,999 @@ var abcui =
 	  if (/\./.test(path)) {
 	    throw new Error('Dots are not allowed in paths')
 	  }
-	  path += '.json'
+	  path += '.json';
 
-	  var changes = {}
-	  changes[path] = value ? crypto.encrypt(value, this.dataKey) : null
-	  mergeChanges(this.changeStore, changes)
-	}
+	  var changes = {};
+	  changes[path] = value ? encrypt(value, this.dataKey) : null;
+	  mergeChanges(this.changeStore, changes);
+	};
 
 	/**
 	 * Encrypts a text string and saves it as the provided file path.
 	 */
 	Repo.prototype.setText = function (path, value) {
 	  return this.setData(path, new Buffer(value, 'utf-8'))
-	}
+	};
 
 	/**
 	 * Encrypts a JSON object and saves it as the provided file path.
 	 */
 	Repo.prototype.setJson = function (path, value) {
 	  return this.setText(path, JSON.stringify(value))
-	}
+	};
 
 	/**
 	 * Synchronizes the local store with the remote server.
 	 */
 	Repo.prototype.sync = function (callback) {
-	  var self = this
+	  var this$1 = this;
+
+	  var self = this;
 
 	  // If we have local changes, we need to bundle those:
-	  var request = {}
-	  var changeKeys = this.changeStore.keys()
+	  var request = {};
+	  var changeKeys = this.changeStore.keys();
 	  if (changeKeys.length) {
-	    request.changes = {}
-	    for (var i = 0; i < changeKeys.length; ++i) {
-	      var key = changeKeys[i]
-	      var path = key.replace(/\./g, '/') + '.json'
+	    request.changes = {};
+	    for (var i = 0, list = changeKeys; i < list.length; i += 1) {
+	      var key = list[i];
 
-	      request.changes[path] = this.changeStore.getJson(key)
+	      var path = key.replace(/\./g, '/') + '.json';
+
+	      request.changes[path] = this$1.changeStore.getJson(key);
 	    }
 	  }
 
 	  // Calculate the URI:
-	  var uri = '/api/v2/store/' + this.syncKey.toString('hex')
-	  var lastHash = this.store.getItem('lastHash')
+	  var uri = '/api/v2/store/' + this.syncKey.toString('hex');
+	  var lastHash = this.store.getItem('lastHash');
 	  if (lastHash) {
-	    uri = uri + '/' + lastHash
+	    uri = uri + '/' + lastHash;
 	  }
 
 	  // Make the request:
 	  syncRequest(this.authFetch, request.changes ? 'POST' : 'GET', uri, request, function (err, reply) {
-	    if (err) return callback(err)
+	    if (err) { return callback(err) }
 
+	    var changed = false;
 	    try {
-	      var changed = false
-
 	      // Delete any changed keys (since the upload is done):
-	      for (var i = 0; i < changeKeys.length; ++i) {
-	        self.changeStore.removeItem(changeKeys[i])
+	      for (var i = 0, list = changeKeys; i < list.length; i += 1) {
+	        var key = list[i];
+
+	        self.changeStore.removeItem(key);
 	      }
 
 	      // Process the change list:
-	      var changes = reply['changes']
+	      var changes = reply['changes'];
 	      if (changes) {
 	        for (var change in changes) {
 	          if (changes.hasOwnProperty(change)) {
-	            changed = true
+	            changed = true;
 	            break
 	          }
 	        }
-	        mergeChanges(self.dataStore, changes)
+	        mergeChanges(self.dataStore, changes);
 	      }
 
 	      // Save the current hash:
-	      var hash = reply['hash']
+	      var hash = reply['hash'];
 	      if (hash) {
-	        self.store.setItem('lastHash', hash)
+	        self.store.setItem('lastHash', hash);
 	      }
 	    } catch (e) {
 	      return callback(e)
 	    }
-	    callback(null, changed)
-	  })
+	    callback(null, changed);
+	  });
+	};
+
+	function Wallet (type, keysJson) {
+	  this.type = type;
+	  this.keys = keysJson;
 	}
+
+	function walletType (walletJson) {
+	  return walletJson['type'] || 'wallet:repo:bitcoin:bip32'
+	}
+
+	function walletKeys (walletJson) {
+	  return walletJson['keys'] || {
+	    dataKey: walletJson['MK'],
+	    syncKey: walletJson['SyncKey'],
+	    bitcoinKey: walletJson['BitcoinSeed']
+	  }
+	}
+
+	function walletId (walletJson) {
+	  return repoId(new Buffer(walletKeys(walletJson)['dataKey'], 'hex'))
+	}
+
+	/**
+	 * An list of wallets stored in a repo.
+	 * Uses a write-through cache to avoid repeated encryption and decryption.
+	 */
+	function WalletList (repo, folder) {
+	  this.folder = folder || 'Wallets';
+	  this.repo = repo;
+
+	  this.wallets = {};
+	  this.load();
+	}
+
+	/**
+	 * Loads the list of wallets into the cache.
+	 */
+	WalletList.prototype.load = function () {
+	  var this$1 = this;
+
+	  for (var i = 0, list = this.repo.keys(this.folder); i < list.length; i += 1) {
+	    var key = list[i];
+
+	    var walletJson = this$1.repo.getJson(this$1.folder + '/' + key);
+	    this$1.wallets[walletId(walletJson)] = walletJson;
+	  }
+	};
+
+	/**
+	 * Lists the wallets id's in the repo, sorted by index.
+	 */
+	WalletList.prototype.listIds = function () {
+	  var this$1 = this;
+
+	  // Load the ids and their sort indices:
+	  var ids = [];
+	  var indices = {};
+	  for (var id in this.wallets) {
+	    if (this$1.wallets.hasOwnProperty(id)) {
+	      ids.push(id);
+	      indices[id] = this$1.wallets[id]['SortIndex'];
+	    }
+	  }
+
+	  // Do the sort:
+	  return ids.sort(function (a, b) {
+	    return indices[a] < indices[b]
+	  })
+	};
+
+	/**
+	 * Returns the type of a particular wallet.
+	 */
+	WalletList.prototype.getType = function (id) {
+	  var walletJson = this.wallets[id];
+	  if (!walletJson) { throw new Error('No such wallet ' + id) }
+
+	  return walletType(walletJson)
+	};
+
+	/**
+	 * Obtains the keys JSON for a particular wallet.
+	 */
+	WalletList.prototype.getKeys = function (id) {
+	  var walletJson = this.wallets[id];
+	  if (!walletJson) { throw new Error('No such wallet ' + id) }
+
+	  return walletKeys(walletJson)
+	};
+
+	/**
+	 * Inserts a wallet into the list.
+	 * @param type: The data type for the wallet, like 'wallet:repo:bitcoin.bip32'
+	 * @param keys: A JSON object with arbitrary keys to the wallet.
+	 * This will typically include `dataKey`, `syncKey`,
+	 * and some type of crytpocurrency key.
+	 */
+	WalletList.prototype.addWallet = function (type, keysJson) {
+	  var walletJson = {
+	    'type': type,
+	    'keys': keysJson,
+	    'Archived': false,
+	    'SortIndex': 0
+	  };
+
+	  var dataKey = new Buffer(keysJson['dataKey'], 'hex');
+	  var filename = this.repo.secureFilename(dataKey);
+	  this.repo.setJson(this.folder + '/' + filename, walletJson);
+
+	  var id = walletId(walletJson);
+	  this.wallets[id] = walletJson;
+	  return id
+	};
+
+	/**
+	 * This is a thin shim object,
+	 * which wraps the core implementation in a more OOP-style API.
+	 */
+	function Account (ctx, login$$1) {
+	  this.ctx = ctx;
+	  this.login = login$$1;
+	  this.keys = login$$1.accountFind(ctx.accountType);
+	  this.repoInfo = this.keys; // Deprecated name
+	  this.loggedIn = true;
+	  this.edgeLogin = false;
+	  this.pinLogin = false;
+	  this.passwordLogin = false;
+	  this.newAccount = false;
+	  this.recoveryLogin = false;
+	  this.username = login$$1.username;
+
+	  this.repo = new Repo(ctx, new Buffer(this.keys.dataKey, 'hex'), new Buffer(this.keys.syncKey, 'hex'));
+	  this.walletList = new WalletList(this.repo);
+	}
+
+	Account.prototype.logout = function () {
+	  this.login = null;
+	  this.loggedIn = false;
+	};
+
+	Account.prototype.passwordOk = function (password) {
+	  return check(this.ctx, this.login, password)
+	};
+	Account.prototype.checkPassword = Account.prototype.passwordOk;
+
+	Account.prototype.passwordSetup = function (password, callback) {
+	  return setup(this.ctx, this.login, password, callback)
+	};
+	Account.prototype.changePassword = Account.prototype.passwordSetup;
+
+	Account.prototype.pinSetup = function (pin, callback) {
+	  return setup$1(this.ctx, this.login, pin, callback)
+	};
+	Account.prototype.changePIN = Account.prototype.pinSetup;
+
+	Account.prototype.recovery2Set = function (questions$$1, answers, callback) {
+	  return setup$2(this.ctx, this.login, questions$$1, answers, callback)
+	};
+
+	Account.prototype.setupRecovery2Questions = Account.prototype.recovery2Set;
+
+	Account.prototype.isLoggedIn = function () {
+	  return this.loggedIn
+	};
+
+	Account.prototype.sync = function (callback) {
+	  var account = this;
+	  this.repo.sync(function (err, changed) {
+	    if (err) { return callback(err) }
+	    if (changed) {
+	      account.walletList.load();
+	    }
+	    callback(null, changed);
+	  });
+	};
+
+	Account.prototype.listWalletIds = function () {
+	  return this.walletList.listIds()
+	};
+
+	Account.prototype.getWallet = function (id) {
+	  return new Wallet(this.walletList.getType(id), this.walletList.getKeys(id))
+	};
+
+	/**
+	 * Gets the first wallet in an account (the first by sort order).
+	 * If type is a string, finds the first wallet with the same type.
+	 * Might return null if there are no wallets.
+	 */
+	Account.prototype.getFirstWallet = function (type) {
+	  var this$1 = this;
+
+	  var ids = this.walletList.listIds();
+
+	  for (var i = 0, list = ids; i < list.length; i += 1) {
+	    var id = list[i];
+
+	    if (type == null || this$1.walletList.getType(id) === type) {
+	      return this$1.getWallet(id)
+	    }
+	  }
+	  return null
+	};
+
+	/**
+	 * Creates a new wallet repo, and attaches it to the account.
+	 * @param keysJson An object with any user-provided keys
+	 * that should be stored along with the wallet. For example,
+	 * Airbitz Bitcoin wallets would place their `bitcoinKey` here.
+	 */
+	Account.prototype.createWallet = function (type, keysJson, callback) {
+	  var account = this;
+	  repoCreate(account.ctx, account.login, keysJson, function (err, keysJson) {
+	    if (err) { return callback(err) }
+	    var id = account.walletList.addWallet(type, keysJson);
+	    account.sync(function (err, dirty) {
+	      if (err) { return callback(err) }
+	      repoActivate(account.ctx, account.login, keysJson, function (err) {
+	        if (err) { return callback(err) }
+	        callback(null, id);
+	      });
+	    });
+	  });
+	};
+
+	/**
+	 * Determines whether or not a username is available.
+	 */
+	function usernameAvailable (ctx, username, callback) {
+	  username = normalize(username);
+
+	  var userId = getUserId(ctx.localStorage, username);
+	  var request = {
+	    'l1': userId
+	  };
+	  ctx.authRequest('POST', '/v1/account/available', request, function (err, reply) {
+	    if (err) { return callback(err) }
+	    return callback(null)
+	  });
+	}
+
+	/**
+	 * Creates a new login on the auth server.
+	 */
+	function create (ctx, username, password, opts, callback) {
+	  username = normalize(username);
+	  var userId = getUserId(ctx.localStorage, username);
+
+	  // Create random key material:
+	  var passwordKeySnrp = makeSnrp();
+	  var dataKey = random(32);
+	  var syncKey = opts.syncKey || random(20);
+
+	  // Derive keys from password:
+	  var passwordAuth = scrypt(username + password, passwordAuthSnrp);
+	  var passwordKey = scrypt(username + password, passwordKeySnrp);
+
+	  // Encrypt:
+	  var passwordBox = encrypt(dataKey, passwordKey);
+	  var passwordAuthBox = encrypt(passwordAuth, dataKey);
+	  var syncKeyBox = encrypt(syncKey, dataKey);
+
+	  // Package:
+	  var carePackage = {
+	    'SNRP2': passwordKeySnrp
+	  };
+	  var loginPackage = {
+	    'EMK_LP2': passwordBox,
+	    'ESyncKey': syncKeyBox,
+	    'ELP1': passwordAuthBox
+	  };
+	  var request = {
+	    'l1': userId,
+	    'lp1': passwordAuth.toString('base64'),
+	    'care_package': JSON.stringify(carePackage),
+	    'login_package': JSON.stringify(loginPackage),
+	    'repo_account_key': syncKey.toString('hex')
+	  };
+
+	  ctx.authRequest('POST', '/v1/account/create', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    // Cache everything for future logins:
+	    insert(ctx.localStorage, username, userId);
+	    var userStorage = new UserStorage(ctx.localStorage, username);
+	    userStorage.setJson('passwordKeySnrp', passwordKeySnrp);
+	    userStorage.setJson('passwordBox', passwordBox);
+	    userStorage.setJson('passwordAuthBox', passwordAuthBox);
+	    userStorage.setJson('syncKeyBox', syncKeyBox);
+
+	    // Now upgrade:
+	    upgrade(ctx, userStorage, userId, passwordAuth, dataKey, function (err) {
+	      if (err) { return callback(err) }
+
+	      // Now activate:
+	      var request = {
+	        'l1': userId,
+	        'lp1': passwordAuth.toString('base64')
+	      };
+	      ctx.authRequest('POST', '/v1/account/activate', request, function (err, reply) {
+	        if (err) { return callback(err) }
+	        return callback(null, Login.offline(ctx.localStorage, username, dataKey))
+	      });
+	    });
+	  });
+	}
+
+	function upgrade (ctx, userStorage, userId, passwordAuth, dataKey, callback) {
+	  // Create a BIP39 mnemonic, and use it to derive the rootKey:
+	  var entropy = random(256 / 8);
+	  var mnemonic = bip39.entropyToMnemonic(entropy.toString('hex'));
+	  var rootKey = bip39.mnemonicToSeed(mnemonic);
+	  var infoKey = hmacSha256(rootKey, 'infoKey');
+
+	  // Pack the keys into various boxes:
+	  var rootKeyBox = encrypt(rootKey, dataKey);
+	  var mnemonicBox = encrypt(new Buffer(mnemonic, 'utf-8'), infoKey);
+	  var dataKeyBox = encrypt(dataKey, infoKey);
+
+	  var request = {
+	    'l1': userId,
+	    'lp1': passwordAuth.toString('base64'),
+	    'rootKeyBox': rootKeyBox,
+	    'mnemonicBox': mnemonicBox,
+	    'syncDataKeyBox': dataKeyBox
+	  };
+	  ctx.authRequest('POST', '/v1/account/upgrade', request, function (err, reply) {
+	    if (err) { return callback(err) }
+	    userStorage.setJson('rootKeyBox', rootKeyBox);
+	    return callback(null)
+	  });
+	}
+
+	var EllipticCurve = elliptic.ec;
+	var secp256k1 = new EllipticCurve('secp256k1');
+
+	function ABCEdgeLoginRequest (id) {
+	  this.id = id;
+	  this.done_ = false;
+	}
+
+	ABCEdgeLoginRequest.prototype.cancelRequest = function () {
+	  this.done_ = true;
+	};
+
+	/**
+	 * Creates a new login object, and attaches the account repo info to it.
+	 */
+	function createLogin (ctx, accountReply, callback) {
+	  var username = accountReply.username + '-' + base58.encode(random(4));
+	  var password = base58.encode(random(24));
+	  var pin = accountReply.pinString;
+
+	  var opts = {};
+	  if (accountReply.type === 'account:repo:co.airbitz.wallet') {
+	    opts.syncKey = new Buffer(accountReply.info['syncKey'], 'hex');
+	  }
+
+	  create(ctx, username, password, opts, function (err, login$$1) {
+	    if (err) { return callback(err) }
+	    login$$1.accountAttach(ctx, accountReply.type, accountReply.info, function (err) {
+	      if (err) { return callback(err) }
+
+	      if (typeof pin === 'string' && pin.length === 4) {
+	        if (getKey(ctx, username) == null) {
+	          setup$1(ctx, login$$1, pin, function (err) {
+	            if (err) {
+	              // Do nothing
+	            }
+	            callback(null, login$$1);
+	          });
+	          return
+	        }
+	      }
+	      callback(null, login$$1);
+	    });
+	  });
+	}
+
+	/**
+	 * Opens a lobby object to determine if it contains a resolved account request.
+	 * Returns the account info if so, or null otherwise.
+	 */
+	function decodeAccountReply (keys, lobby) {
+	  var accountRequest = lobby['accountRequest'];
+	  var replyBox = accountRequest['replyBox'];
+	  var replyKey = accountRequest['replyKey'];
+
+	  // If the reply is missing, just return false:
+	  if (!replyBox || !replyKey) {
+	    return null
+	  }
+
+	  var replyPubkey = secp256k1.keyFromPublic(replyKey, 'hex').getPublic();
+	  var secret = keys.derive(replyPubkey).toArray('be');
+	  var dataKey = new Buffer(hmacSha256('dataKey', new Uint8Array(secret)));
+	  var reply = JSON.parse(decrypt(replyBox, dataKey).toString('utf-8'));
+
+	  var returnObj = {
+	    type: accountRequest['type'],
+	    info: reply['keys'] || reply['info'],
+	    username: reply['username']
+	  };
+	  if (typeof reply.pinString === 'string') {
+	    returnObj.pinString = reply['pinString'];
+	  }
+
+	  return returnObj
+	}
+
+	/**
+	 * Polls the lobby every second or so,
+	 * looking for a reply to our account request.
+	 */
+	function pollServer (ctx, edgeLogin, keys, onLogin, onProcessLogin) {
+	  // Don't do anything if the user has cancelled this request:
+	  if (edgeLogin.done_) {
+	    return
+	  }
+
+	  setTimeout(function () {
+	    ctx.authRequest('GET', '/v2/lobby/' + edgeLogin.id, '', function (err, reply) {
+	      if (err) { return onLogin(err) }
+
+	      try {
+	        var accountReply = decodeAccountReply(keys, reply);
+	        if (!accountReply) {
+	          return pollServer(ctx, edgeLogin, keys, onLogin, onProcessLogin)
+	        }
+	        if (onProcessLogin !== null) {
+	          onProcessLogin(accountReply.username);
+	        }
+	        createLogin(ctx, accountReply, onLogin);
+	      } catch (e) {
+	        return onLogin(e)
+	      }
+	    });
+	  }, 1000);
+	}
+
+	/**
+	 * Creates a new account request lobby on the server.
+	 */
+	function create$1 (ctx, opts, callback) {
+	  var keys = secp256k1.genKeyPair();
+
+	  var data = {
+	    'accountRequest': {
+	      'displayName': opts['displayName'] || '',
+	      'requestKey': keys.getPublic().encodeCompressed('hex'),
+	      'type': opts.type
+	    }
+	  };
+
+	  if (typeof opts.displayImageUrl === 'string') {
+	    data.accountRequest.displayImageUrl = opts.displayImageUrl;
+	  } else {
+	    data.accountRequest.displayImageUrl = '';
+	  }
+
+	  var request = {
+	    'expires': 300,
+	    'data': data
+	  };
+
+	  ctx.authRequest('POST', '/v2/lobby', request, function (err, reply) {
+	    if (err) { return callback(err) }
+
+	    try {
+	      var edgeLogin = new ABCEdgeLoginRequest(reply.id);
+	      var onProcessLogin = null;
+	      if (opts.hasOwnProperty('onProcessLogin')) {
+	        onProcessLogin = opts.onProcessLogin;
+	      }
+	      pollServer(ctx, edgeLogin, keys, opts.onLogin, onProcessLogin);
+	    } catch (e) {
+	      return callback(e)
+	    }
+	    return callback(null, edgeLogin)
+	  });
+	}
+
+	var serverRoot = 'https://auth.airbitz.co/api';
+	// const serverRoot = 'https://test-auth.airbitz.co/api'
+
+	var DomWindow = null;
+	if (typeof (window) === 'undefined') {
+	  DomWindow = {
+	    localStorage: null,
+	    XMLHttpRequest: function () {
+	      console.log('XMLHttpRequest: Error browser routine used in non-browser environment');
+	    },
+	    performance: {
+	      now: function () {
+	        console.log('performance: Error browser routine used in non-browser environment');
+	      }
+	    }
+	  };
+	} else {
+	  DomWindow = window;
+	}
+
+	/**
+	 * @param authRequest function (method, uri, body, callback (err, status, body))
+	 * @param localStorage an object compatible with the Web Storage API.
+	 */
+	function Context (opts) {
+	  opts = opts || {};
+	  this.accountType = opts.accountType || 'account:repo:co.airbitz.wallet';
+	  this.localStorage = opts.localStorage || DomWindow.localStorage;
+
+	  function webFetch (method, uri, body, callback) {
+	    var xhr = new DomWindow.XMLHttpRequest();
+	    xhr.addEventListener('load', function () {
+	      callback(null, this.status, this.responseText);
+	    });
+	    xhr.addEventListener('error', function () {
+	      callback(Error('Cannot reach auth server'));
+	    });
+	    xhr.open(method, uri);
+	    xhr.setRequestHeader('Authorization', 'Token ' + opts.apiKey);
+	    xhr.setRequestHeader('Content-Type', 'application/json');
+	    xhr.setRequestHeader('Accept', 'application/json');
+	    xhr.send(JSON.stringify(body));
+	    console.log('Visit ' + uri);
+	  }
+	  this.authFetch = opts.authRequest || webFetch;
+
+	  /**
+	   * Wraps the raw authRequest function in something more friendly.
+	   * @param body JSON object
+	   * @param callback function (err, reply JSON object)
+	   */
+	  this.authRequest = function (method, uri, body, callback) {
+	    this.authFetch(method, serverRoot + uri, body, function (err, status, body) {
+	      if (err) { return callback(err) }
+	      try {
+	        var reply = JSON.parse(body);
+	      } catch (e) {
+	        return callback(Error('Non-JSON reply, HTTP status ' + status))
+	      }
+
+	      // Look at the Airbitz status code:
+	      switch (reply['status_code']) {
+	        case 0:
+	          return callback(null, reply.results)
+	        default:
+	          return callback(Error(body))
+	      }
+	    });
+	  };
+	}
+
+	Context.prototype.usernameList = function () {
+	  var map = load(this.localStorage);
+	  var out = [];
+	  for (var username in map) {
+	    if (map.hasOwnProperty(username)) {
+	      out.push(username);
+	    }
+	  }
+	  return out
+	};
+	Context.prototype.listUsernames = Context.prototype.usernameList;
+
+	Context.prototype.fixUsername = normalize;
+
+	Context.prototype.usernameAvailable = function (username, callback) {
+	  return usernameAvailable(this, username, callback)
+	};
+
+	/**
+	 * Creates a login, then creates and attaches an account to it.
+	 */
+	Context.prototype.createAccount = function (username, password, pin, callback) {
+	  var ctx = this;
+	  return create(ctx, username, password, {}, function (err, login$$1) {
+	    if (err) { return callback(err) }
+	    try {
+	      login$$1.accountFind(ctx.accountType);
+	    } catch (e) {
+	      // If the login doesn't have the correct account type, add it first:
+	      return login$$1.accountCreate(ctx, ctx.accountType, function (err) {
+	        if (err) { return callback(err) }
+	        setup$1(ctx, login$$1, pin, function (err) {
+	          if (err) { return callback(err) }
+	          var account = new Account(ctx, login$$1);
+	          account.newAccount = true;
+	          account.sync(function (err, dirty) {
+	            if (err) { return callback(err) }
+	            callback(null, account);
+	          });
+	        });
+	      })
+	    }
+
+	    // Otherwise, we have the correct account type, and can simply return:
+	    setup$1(ctx, login$$1, pin, function (err) {
+	      if (err) { return callback(err) }
+	      var account = new Account(ctx, login$$1);
+	      account.newAccount = true;
+	      account.sync(function (err, dirty) {
+	        if (err) { return callback(err) }
+	        callback(null, account);
+	      });
+	    });
+	  })
+	};
+
+	Context.prototype.loginWithPassword = function (username, password, otp, opts, callback) {
+	  var ctx = this;
+	  return login(ctx, username, password, function (err, login$$1) {
+	    if (err) { return callback(err) }
+	    var account = new Account(ctx, login$$1);
+	    account.passwordLogin = true;
+	    account.sync(function (err, dirty) {
+	      if (err) { return callback(err) }
+	      callback(null, account);
+	    });
+	  })
+	};
+
+	Context.prototype.pinExists = function (username) {
+	  return getKey(this, username) != null
+	};
+	Context.prototype.pinLoginEnabled = function (username) {
+	  return getKey(this, username) != null
+	};
+
+	Context.prototype.loginWithPIN = function (username, pin, callback) {
+	  var ctx = this;
+	  var pin2Key = getKey(this, username);
+	  if (!pin2Key) {
+	    throw new Error('No PIN set locally for this account')
+	  }
+	  return login$1(ctx, pin2Key, username, pin, function (err, login$$1) {
+	    if (err) { return callback(err) }
+	    var account = new Account(ctx, login$$1);
+	    account.pinLogin = true;
+	    account.sync(function (err, dirty) {
+	      if (err) { return callback(err) }
+	      callback(null, account);
+	    });
+	  })
+	};
+
+	Context.prototype.getRecovery2Key = function (username, callback) {
+	  var userStorage = new UserStorage(this.localStorage, username);
+	  var recovery2Key = userStorage.getItem('recovery2Key');
+	  if (recovery2Key) {
+	    callback(null, recovery2Key);
+	  } else {
+	    callback(new Error('No recovery key stored locally.'));
+	  }
+	};
+
+	Context.prototype.loginWithRecovery2 = function (recovery2Key, username, answers, otp, options, callback) {
+	  var ctx = this;
+	  return login$2(ctx, recovery2Key, username, answers, function (err, login$$1) {
+	    if (err) { return callback(err) }
+	    var account = new Account(ctx, login$$1);
+	    account.recoveryLogin = true;
+	    account.sync(function (err, dirty) {
+	      if (err) { return callback(err) }
+	      callback(null, account);
+	    });
+	  })
+	};
+
+	Context.prototype.fetchRecovery2Questions = function (recovery2Key, username, callback) {
+	  return questions(this, recovery2Key, username, callback)
+	};
+
+	Context.prototype.runScryptTimingWithParameters = function (n, r, p) {
+	  var snrp = makeSnrp();
+	  // const snrp = {
+	  //   'salt_hex': crypto.random(32).toString('hex'),
+	  //   'n': 16384,
+	  //   'r': 1,
+	  //   'p': 1
+	  // }
+	  snrp.n = Math.pow(2, n);
+	  snrp.r = r;
+	  snrp.p = p;
+
+	  var hashTime = timeSnrp(snrp);
+
+	  return {
+	    time: hashTime
+	  }
+	};
+
+	Context.prototype.checkPasswordRules = function (password) {
+	  var tooShort = password.length < 10;
+	  var noNumber = password.match(/\d/) == null;
+	  var noUpperCase = password.match(/[A-Z]/) == null;
+	  var noLowerCase = password.match(/[a-z]/) == null;
+	  var extraLong = password.length >= 16;
+
+	  return {
+	    'tooShort': tooShort,
+	    'noNumber': noNumber,
+	    'noUpperCase': noUpperCase,
+	    'noLowerCase': noLowerCase,
+	    'passed': extraLong || !(tooShort || noNumber || noUpperCase || noLowerCase)
+	  }
+	};
+
+	Context.prototype.requestEdgeLogin = function (opts, callback) {
+	  var ctx = this;
+	  var onLogin = opts.onLogin;
+	  opts.onLogin = function (err, login$$1) {
+	    if (err) { return onLogin(err) }
+	    var account = new Account(ctx, login$$1);
+	    account.edgeLogin = true;
+	    account.sync(function (err, dirty) {
+	      if (err) { return onLogin(err) }
+	      onLogin(null, account);
+	    });
+	  };
+	  opts.type = opts.type || ctx.accountType;
+	  create$1(this, opts, callback);
+	};
+
+	Context.prototype.listRecoveryQuestionChoices = function (callback) {
+	  listRecoveryQuestionChoices(this, function (error, questions$$1) {
+	    callback(error, questions$$1);
+	  });
+	};
+
+	/**
+	 * ABCConditionCode
+	 * Error codes for ABCError object
+	 */
+
+	var abcc = {
+	  ABCConditionCodeOk: 0,
+	  ABCConditionCodeError: 1,
+	  ABCConditionCodeNULLPtr: 2,
+	  ABCConditionCodeNoAvailAccountSpace: 3,
+	  ABCConditionCodeDirReadError: 4,
+	  ABCConditionCodeFileOpenError: 5,
+	  ABCConditionCodeFileReadError: 6,
+	  ABCConditionCodeFileWriteError: 7,
+	  ABCConditionCodeFileDoesNotExist: 8,
+	  ABCConditionCodeUnknownCryptoType: 9,
+	  ABCConditionCodeInvalidCryptoType: 10,
+	  ABCConditionCodeDecryptError: 11,
+	  ABCConditionCodeDecryptFailure: 12,
+	  ABCConditionCodeEncryptError: 13,
+	  ABCConditionCodeScryptError: 14,
+	  ABCConditionCodeAccountAlreadyExists: 15,
+	  ABCConditionCodeAccountDoesNotExist: 16,
+	  ABCConditionCodeJSONError: 17,
+	  ABCConditionCodeBadPassword: 18,
+	  ABCConditionCodeWalletAlreadyExists: 19,
+	  ABCConditionCodeURLError: 20,
+	  ABCConditionCodeSysError: 21,
+	  ABCConditionCodeNotInitialized: 22,
+	  ABCConditionCodeReinitialization: 23,
+	  ABCConditionCodeServerError: 24,
+	  ABCConditionCodeNoRecoveryQuestions: 25,
+	  ABCConditionCodeNotSupported: 26,
+	  ABCConditionCodeMutexError: 27,
+	  ABCConditionCodeNoTransaction: 28,
+	  ABCConditionCodeEmpty_Wallet: 28,
+	  ABCConditionCodeParseError: 29,
+	  ABCConditionCodeInvalidWalletID: 30,
+	  ABCConditionCodeNoRequest: 31,
+	  ABCConditionCodeInsufficientFunds: 32,
+	  ABCConditionCodeSynchronizing: 33,
+	  ABCConditionCodeNonNumericPin: 34,
+	  ABCConditionCodeNoAvailableAddress: 35,
+	  ABCConditionCodeInvalidPinWait: 36,
+	  ABCConditionCodePinExpired: 36,
+	  ABCConditionCodeInvalidOTP: 37,
+	  ABCConditionCodeSpendDust: 38,
+	  ABCConditionCodeObsolete: 1000
+	};
+
+	/**
+	 * ABCError
+	 *
+	 * Error structure returned in all ABC callbacks
+	 *   code: ABCConditionCode
+	 *   message: Error message
+	 *   message2 (optional):
+	 *   message3 (optional):
+	 */
+
+	function errorMap (cc) {
+	  if (cc === abcc.ABCConditionCodeOk) { return 'The function completed without an error' }
+	  if (cc === abcc.ABCConditionCodeError) { return 'An error occured' }
+	  if (cc === abcc.ABCConditionCodeNULLPtr) { return 'Unexpected NULL pointer' }
+	  if (cc === abcc.ABCConditionCodeNoAvailAccountSpace) { return 'Max number of accounts have been created' }
+	  if (cc === abcc.ABCConditionCodeDirReadError) { return 'Could not read directory' }
+	  if (cc === abcc.ABCConditionCodeFileOpenError) { return 'Could not open file' }
+	  if (cc === abcc.ABCConditionCodeFileReadError) { return 'Could not read from file' }
+	  if (cc === abcc.ABCConditionCodeFileWriteError) { return 'Could not write to file' }
+	  if (cc === abcc.ABCConditionCodeFileDoesNotExist) { return 'No such file' }
+	  if (cc === abcc.ABCConditionCodeUnknownCryptoType) { return 'Unknown crypto type' }
+	  if (cc === abcc.ABCConditionCodeInvalidCryptoType) { return 'Invalid crypto type' }
+	  if (cc === abcc.ABCConditionCodeDecryptError) { return 'Decryption error' }
+	  if (cc === abcc.ABCConditionCodeDecryptFailure) { return 'Decryption failure due to incorrect key' }
+	  if (cc === abcc.ABCConditionCodeEncryptError) { return 'Encryption error' }
+	  if (cc === abcc.ABCConditionCodeScryptError) { return 'Scrypt error' }
+	  if (cc === abcc.ABCConditionCodeAccountAlreadyExists) { return 'Account already exists' }
+	  if (cc === abcc.ABCConditionCodeAccountDoesNotExist) { return 'Account does not exist' }
+	  if (cc === abcc.ABCConditionCodeJSONError) { return 'JSON parsing error' }
+	  if (cc === abcc.ABCConditionCodeBadPassword) { return 'Incorrect password' }
+	  if (cc === abcc.ABCConditionCodeWalletAlreadyExists) { return 'Wallet already exists' }
+	  if (cc === abcc.ABCConditionCodeURLError) { return 'URL call failure' }
+	  if (cc === abcc.ABCConditionCodeSysError) { return 'An call to an external API failed' }
+	  if (cc === abcc.ABCConditionCodeNotInitialized) { return 'No required initialization made' }
+	  if (cc === abcc.ABCConditionCodeReinitialization) { return 'Initialization after already initializing' }
+	  if (cc === abcc.ABCConditionCodeServerError) { return 'Server error' }
+	  if (cc === abcc.ABCConditionCodeNoRecoveryQuestions) { return 'The user has not set recovery questions' }
+	  if (cc === abcc.ABCConditionCodeNotSupported) { return 'Functionality not supported' }
+	  if (cc === abcc.ABCConditionCodeMutexError) { return 'Mutex error if some type' }
+	  if (cc === abcc.ABCConditionCodeNoTransaction) { return 'Transaction not found' }
+	  if (cc === abcc.ABCConditionCodeEmpty_Wallet) { return 'Wallet is Empty' }
+	  if (cc === abcc.ABCConditionCodeParseError) { return 'Failed to parse input text' }
+	  if (cc === abcc.ABCConditionCodeInvalidWalletID) { return 'Invalid wallet ID' }
+	  if (cc === abcc.ABCConditionCodeNoRequest) { return 'Request (address) not found' }
+	  if (cc === abcc.ABCConditionCodeInsufficientFunds) { return 'Not enough money to send transaction' }
+	  if (cc === abcc.ABCConditionCodeSynchronizing) { return 'We are still sync-ing' }
+	  if (cc === abcc.ABCConditionCodeNonNumericPin) { return 'Problem with the PIN' }
+	  if (cc === abcc.ABCConditionCodeNoAvailableAddress) { return 'Unable to find an address' }
+	  if (cc === abcc.ABCConditionCodeInvalidPinWait) { return 'The user has entered a bad PIN, and must wait.' }
+	  if (cc === abcc.ABCConditionCodePinExpired) { return 'Server expired PIN. (Deprecated)' }
+	  if (cc === abcc.ABCConditionCodeInvalidOTP) { return 'Two Factor required' }
+	  if (cc === abcc.ABCConditionCodeSpendDust) { return 'Trying to send too little money.' }
+	  if (cc === abcc.ABCConditionCodeObsolete) { return 'The server says app is obsolete and needs to be upgraded.' }
+	  return null
+	}
+
+	function ABCErrorObject (code, message) {
+	  this.code = code;
+	  this.message = message;
+	}
+
+	function ABCError (code, message) {
+	  var conditionCode = 1;
+	  var msg = null;
+	  var json = null;
+	  if (code === null) {
+	    return null
+	  } else if (typeof code.message === 'string') {
+	    try {
+	      json = JSON.parse(code.message);
+	      conditionCode = json.status_code;
+	      msg = json.message;
+	    } catch (e) {
+	      conditionCode = 1;
+	      msg = message;
+	    }
+	  } else if (typeof code === 'number') {
+	    conditionCode = code;
+	  } else {
+	    conditionCode = 1;
+	    msg = message;
+	  }
+
+	  if (msg === null) {
+	    msg = errorMap(conditionCode);
+	  }
+
+	  if (msg === null) {
+	    msg = message;
+	  }
+	  return new ABCErrorObject(conditionCode, msg)
+	  // return {'code': conditionCode, 'message': msg}
+	}
+
+	/**
+	 * Creates a context object.
+	 */
+	function makeContext (opts) {
+	  return new Context(opts)
+	}
+
+	exports.Context = Context;
+	exports.makeContext = makeContext;
+	exports.ABCConditionCode = abcc;
+	exports.ABCError = ABCError;
+	exports.usernameFix = normalize;
+	//# sourceMappingURL=abc.cjs.js.map
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 58 */
-/***/ function(module, exports) {
-
-	/**
-	 * Wraps `LocalStorage` with a namespace and other extra goodies.
-	 */
-	function ScopedStorage (localStorage, prefix) {
-	  this.localStorage = localStorage
-	  this.prefix = prefix + '.'
-	}
-	exports.ScopedStorage = ScopedStorage
-
-	ScopedStorage.prototype.getItem = function (key) {
-	  return this.localStorage.getItem(this.prefix + key)
-	}
-
-	ScopedStorage.prototype.setItem = function (key, value) {
-	  return this.localStorage.setItem(this.prefix + key, value)
-	}
-
-	ScopedStorage.prototype.removeItem = function (key) {
-	  return this.localStorage.removeItem(this.prefix + key)
-	}
-
-	ScopedStorage.prototype.getJson = function (key) {
-	  var text = this.getItem(key)
-	  return text == null ? null : JSON.parse(text)
-	}
-
-	ScopedStorage.prototype.setJson = function (key, value) {
-	  return this.setItem(key, JSON.stringify(value))
-	}
-
-	ScopedStorage.prototype.subStore = function (prefix) {
-	  return new ScopedStorage(this.localStorage, this.prefix + prefix)
-	}
-
-	ScopedStorage.prototype.keys = function () {
-	  var keys = []
-	  var search = new RegExp('^' + this.prefix)
-	  for (var i = 0; i < this.localStorage.length; ++i) {
-	    var key = this.localStorage.key(i)
-	    if (search.test(key)) {
-	      keys.push(key.replace(search, ''))
-	    }
-	  }
-	  return keys
-	}
-
-
-/***/ },
-/* 59 */
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
 	var inherits = __webpack_require__(4)
-	var md5 = __webpack_require__(107)
-	var rmd160 = __webpack_require__(108)
-	var sha = __webpack_require__(109)
+	var md5 = __webpack_require__(88)
+	var rmd160 = __webpack_require__(89)
+	var sha = __webpack_require__(90)
 
-	var Base = __webpack_require__(105)
+	var Base = __webpack_require__(86)
 
 	function HashNoConstructor(hash) {
 	  Base.call(this, 'digest')
@@ -9069,7 +9652,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 60 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -9081,7 +9664,7 @@ var abcui =
 	 */
 
 	var inherits = __webpack_require__(4)
-	var Hash = __webpack_require__(18)
+	var Hash = __webpack_require__(16)
 
 	var K = [
 	  0x428A2F98, 0x71374491, 0xB5C0FBCF, 0xE9B5DBA5,
@@ -9210,11 +9793,11 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 61 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(4)
-	var Hash = __webpack_require__(18)
+	var Hash = __webpack_require__(16)
 
 	var K = [
 	  0x428a2f98, 0xd728ae22, 0x71374491, 0x23ef65cd,
@@ -9476,13 +10059,13 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 62 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(183)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(164)
 
-	var md5 = toConstructor(__webpack_require__(118))
-	var rmd160 = toConstructor(__webpack_require__(180))
+	var md5 = toConstructor(__webpack_require__(99))
+	var rmd160 = toConstructor(__webpack_require__(161))
 
 	function toConstructor (fn) {
 	  return function () {
@@ -9513,7 +10096,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 63 */
+/* 50 */
 /***/ function(module, exports) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -9821,14 +10404,14 @@ var abcui =
 
 
 /***/ },
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process, Buffer) {var createHmac = __webpack_require__(114)
-	var checkParameters = __webpack_require__(150)
+	/* WEBPACK VAR INJECTION */(function(process, Buffer) {var createHmac = __webpack_require__(95)
+	var checkParameters = __webpack_require__(131)
 
 	exports.pbkdf2 = function (password, salt, iterations, keylen, digest, callback) {
 	  if (typeof digest === 'function') {
@@ -9899,11 +10482,11 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0), __webpack_require__(1).Buffer))
 
 /***/ },
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// Copyright Joyent, Inc. and other Node contributors.
@@ -9933,10 +10516,10 @@ var abcui =
 
 	module.exports = PassThrough;
 
-	var Transform = __webpack_require__(42);
+	var Transform = __webpack_require__(36);
 
 	/*<replacement>*/
-	var util = __webpack_require__(25);
+	var util = __webpack_require__(21);
 	util.inherits = __webpack_require__(4);
 	/*</replacement>*/
 
@@ -9955,7 +10538,7 @@ var abcui =
 
 
 /***/ },
-/* 73 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -9982,7 +10565,7 @@ var abcui =
 	module.exports = Readable;
 
 	/*<replacement>*/
-	var isArray = __webpack_require__(146);
+	var isArray = __webpack_require__(127);
 	/*</replacement>*/
 
 
@@ -9992,7 +10575,7 @@ var abcui =
 
 	Readable.ReadableState = ReadableState;
 
-	var EE = __webpack_require__(63).EventEmitter;
+	var EE = __webpack_require__(50).EventEmitter;
 
 	/*<replacement>*/
 	if (!EE.listenerCount) EE.listenerCount = function(emitter, type) {
@@ -10000,10 +10583,10 @@ var abcui =
 	};
 	/*</replacement>*/
 
-	var Stream = __webpack_require__(21);
+	var Stream = __webpack_require__(19);
 
 	/*<replacement>*/
-	var util = __webpack_require__(25);
+	var util = __webpack_require__(21);
 	util.inherits = __webpack_require__(4);
 	/*</replacement>*/
 
@@ -10011,7 +10594,7 @@ var abcui =
 
 
 	/*<replacement>*/
-	var debug = __webpack_require__(193);
+	var debug = __webpack_require__(174);
 	if (debug && debug.debuglog) {
 	  debug = debug.debuglog('stream');
 	} else {
@@ -10023,7 +10606,7 @@ var abcui =
 	util.inherits(Readable, Stream);
 
 	function ReadableState(options, stream) {
-	  var Duplex = __webpack_require__(17);
+	  var Duplex = __webpack_require__(15);
 
 	  options = options || {};
 
@@ -10084,14 +10667,14 @@ var abcui =
 	  this.encoding = null;
 	  if (options.encoding) {
 	    if (!StringDecoder)
-	      StringDecoder = __webpack_require__(44).StringDecoder;
+	      StringDecoder = __webpack_require__(38).StringDecoder;
 	    this.decoder = new StringDecoder(options.encoding);
 	    this.encoding = options.encoding;
 	  }
 	}
 
 	function Readable(options) {
-	  var Duplex = __webpack_require__(17);
+	  var Duplex = __webpack_require__(15);
 
 	  if (!(this instanceof Readable))
 	    return new Readable(options);
@@ -10194,7 +10777,7 @@ var abcui =
 	// backwards compatibility.
 	Readable.prototype.setEncoding = function(enc) {
 	  if (!StringDecoder)
-	    StringDecoder = __webpack_require__(44).StringDecoder;
+	    StringDecoder = __webpack_require__(38).StringDecoder;
 	  this._readableState.decoder = new StringDecoder(enc);
 	  this._readableState.encoding = enc;
 	  return this;
@@ -10913,24 +11496,24 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ },
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
 /* 74 */,
 /* 75 */,
 /* 76 */,
 /* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {"use strict";
@@ -11676,779 +12259,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 92 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var abcc = __webpack_require__(52)
-
-	/**
-	 * ABCError
-	 *
-	 * Error structure returned in all ABC callbacks
-	 *   code: ABCConditionCode
-	 *   message: Error message
-	 *   message2 (optional):
-	 *   message3 (optional):
-	 */
-
-	function errorMap (cc) {
-	  if (cc === abcc.ABCConditionCodeOk) return 'The function completed without an error'
-	  if (cc === abcc.ABCConditionCodeError) return 'An error occured'
-	  if (cc === abcc.ABCConditionCodeNULLPtr) return 'Unexpected NULL pointer'
-	  if (cc === abcc.ABCConditionCodeNoAvailAccountSpace) return 'Max number of accounts have been created'
-	  if (cc === abcc.ABCConditionCodeDirReadError) return 'Could not read directory'
-	  if (cc === abcc.ABCConditionCodeFileOpenError) return 'Could not open file'
-	  if (cc === abcc.ABCConditionCodeFileReadError) return 'Could not read from file'
-	  if (cc === abcc.ABCConditionCodeFileWriteError) return 'Could not write to file'
-	  if (cc === abcc.ABCConditionCodeFileDoesNotExist) return 'No such file'
-	  if (cc === abcc.ABCConditionCodeUnknownCryptoType) return 'Unknown crypto type'
-	  if (cc === abcc.ABCConditionCodeInvalidCryptoType) return 'Invalid crypto type'
-	  if (cc === abcc.ABCConditionCodeDecryptError) return 'Decryption error'
-	  if (cc === abcc.ABCConditionCodeDecryptFailure) return 'Decryption failure due to incorrect key'
-	  if (cc === abcc.ABCConditionCodeEncryptError) return 'Encryption error'
-	  if (cc === abcc.ABCConditionCodeScryptError) return 'Scrypt error'
-	  if (cc === abcc.ABCConditionCodeAccountAlreadyExists) return 'Account already exists'
-	  if (cc === abcc.ABCConditionCodeAccountDoesNotExist) return 'Account does not exist'
-	  if (cc === abcc.ABCConditionCodeJSONError) return 'JSON parsing error'
-	  if (cc === abcc.ABCConditionCodeBadPassword) return 'Incorrect password'
-	  if (cc === abcc.ABCConditionCodeWalletAlreadyExists) return 'Wallet already exists'
-	  if (cc === abcc.ABCConditionCodeURLError) return 'URL call failure'
-	  if (cc === abcc.ABCConditionCodeSysError) return 'An call to an external API failed'
-	  if (cc === abcc.ABCConditionCodeNotInitialized) return 'No required initialization made'
-	  if (cc === abcc.ABCConditionCodeReinitialization) return 'Initialization after already initializing'
-	  if (cc === abcc.ABCConditionCodeServerError) return 'Server error'
-	  if (cc === abcc.ABCConditionCodeNoRecoveryQuestions) return 'The user has not set recovery questions'
-	  if (cc === abcc.ABCConditionCodeNotSupported) return 'Functionality not supported'
-	  if (cc === abcc.ABCConditionCodeMutexError) return 'Mutex error if some type'
-	  if (cc === abcc.ABCConditionCodeNoTransaction) return 'Transaction not found'
-	  if (cc === abcc.ABCConditionCodeEmpty_Wallet) return 'Wallet is Empty'
-	  if (cc === abcc.ABCConditionCodeParseError) return 'Failed to parse input text'
-	  if (cc === abcc.ABCConditionCodeInvalidWalletID) return 'Invalid wallet ID'
-	  if (cc === abcc.ABCConditionCodeNoRequest) return 'Request (address) not found'
-	  if (cc === abcc.ABCConditionCodeInsufficientFunds) return 'Not enough money to send transaction'
-	  if (cc === abcc.ABCConditionCodeSynchronizing) return 'We are still sync-ing'
-	  if (cc === abcc.ABCConditionCodeNonNumericPin) return 'Problem with the PIN'
-	  if (cc === abcc.ABCConditionCodeNoAvailableAddress) return 'Unable to find an address'
-	  if (cc === abcc.ABCConditionCodeInvalidPinWait) return 'The user has entered a bad PIN, and must wait.'
-	  if (cc === abcc.ABCConditionCodePinExpired) return 'Server expired PIN. (Deprecated)'
-	  if (cc === abcc.ABCConditionCodeInvalidOTP) return 'Two Factor required'
-	  if (cc === abcc.ABCConditionCodeSpendDust) return 'Trying to send too little money.'
-	  if (cc === abcc.ABCConditionCodeObsolete) return 'The server says app is obsolete and needs to be upgraded.'
-	  return null
-	}
-
-	function ABCErrorObject (code, message) {
-	  this.code = code
-	  this.message = message
-	}
-
-	function ABCError (code, message) {
-	  var conditionCode = 1
-	  var msg = null
-	  var json = null
-	  if (code === null) {
-	    return null
-	  } else if (typeof code.message === 'string') {
-	    try {
-	      json = JSON.parse(code.message)
-	      conditionCode = json.status_code
-	      msg = json.message
-	    } catch (e) {
-	      conditionCode = 1
-	      msg = message
-	    }
-	  } else if (typeof code === 'number') {
-	    conditionCode = code
-	  } else {
-	    conditionCode = 1
-	    msg = message
-	  }
-
-	  if (msg === null) {
-	    msg = errorMap(conditionCode)
-	  }
-
-	  if (msg === null) {
-	    msg = message
-	  }
-	  return new ABCErrorObject(conditionCode, msg)
-	  // return {'code': conditionCode, 'message': msg}
-	}
-
-	exports.ABCError = ABCError
-
-
-/***/ },
-/* 93 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var loginPassword = __webpack_require__(54)
-	var loginPin2 = __webpack_require__(36)
-	var loginRecovery2 = __webpack_require__(55)
-	var Repo = __webpack_require__(57).Repo
-	var server = __webpack_require__(56)
-	var Wallet = __webpack_require__(97).Wallet
-	var WalletList = __webpack_require__(96).WalletList
-
-	/**
-	 * This is a thin shim object,
-	 * which wraps the core implementation in a more OOP-style API.
-	 */
-	function Account (ctx, login) {
-	  this.ctx = ctx
-	  this.login = login
-	  this.keys = login.accountFind(ctx.accountType)
-	  this.repoInfo = this.keys // Deprecated name
-	  this.loggedIn = true
-	  this.edgeLogin = false
-	  this.pinLogin = false
-	  this.passwordLogin = false
-	  this.newAccount = false
-	  this.recoveryLogin = false
-	  this.username = login.username
-
-	  this.repo = new Repo(ctx, new Buffer(this.keys.dataKey, 'hex'), new Buffer(this.keys.syncKey, 'hex'))
-	  this.walletList = new WalletList(this.repo)
-	}
-
-	Account.prototype.logout = function () {
-	  this.login = null
-	  this.loggedIn = false
-	}
-
-	Account.prototype.passwordOk = function (password) {
-	  return loginPassword.check(this.ctx, this.login, password)
-	}
-	Account.prototype.checkPassword = Account.prototype.passwordOk
-
-	Account.prototype.passwordSetup = function (password, callback) {
-	  return loginPassword.setup(this.ctx, this.login, password, callback)
-	}
-	Account.prototype.changePassword = Account.prototype.passwordSetup
-
-	Account.prototype.pinSetup = function (pin, callback) {
-	  return loginPin2.setup(this.ctx, this.login, pin, callback)
-	}
-	Account.prototype.changePIN = Account.prototype.pinSetup
-
-	Account.prototype.recovery2Set = function (questions, answers, callback) {
-	  return loginRecovery2.setup(this.ctx, this.login, questions, answers, callback)
-	}
-
-	Account.prototype.setupRecovery2Questions = Account.prototype.recovery2Set
-
-	Account.prototype.isLoggedIn = function () {
-	  return this.loggedIn
-	}
-
-	Account.prototype.sync = function (callback) {
-	  var account = this
-	  this.repo.sync(function (err, changed) {
-	    if (err) return callback(err)
-	    if (changed) {
-	      account.walletList.load()
-	    }
-	    callback(null, changed)
-	  })
-	}
-
-	Account.prototype.listWalletIds = function () {
-	  return this.walletList.listIds()
-	}
-
-	Account.prototype.getWallet = function (id) {
-	  return new Wallet(this.walletList.getType(id), this.walletList.getKeys(id))
-	}
-
-	/**
-	 * Gets the first wallet in an account (the first by sort order).
-	 * If type is a string, finds the first wallet with the same type.
-	 * Might return null if there are no wallets.
-	 */
-	Account.prototype.getFirstWallet = function (type) {
-	  var ids = this.walletList.listIds()
-
-	  for (var i = 0; i < ids.length; ++i) {
-	    if (type == null || this.walletList.getType(ids[i]) === type) {
-	      return this.getWallet(ids[i])
-	    }
-	  }
-	  return null
-	}
-
-	/**
-	 * Creates a new wallet repo, and attaches it to the account.
-	 * @param keysJson An object with any user-provided keys
-	 * that should be stored along with the wallet. For example,
-	 * Airbitz Bitcoin wallets would place their `bitcoinKey` here.
-	 */
-	Account.prototype.createWallet = function (type, keysJson, callback) {
-	  var account = this
-	  server.repoCreate(account.ctx, account.login, keysJson, function (err, keysJson) {
-	    if (err) return callback(err)
-	    var id = account.walletList.addWallet(type, keysJson)
-	    account.sync(function (err, dirty) {
-	      if (err) return callback(err)
-	      server.repoActivate(account.ctx, account.login, keysJson, function (err) {
-	        if (err) return callback(err)
-	        callback(null, id)
-	      })
-	    })
-	  })
-	}
-
-	exports.Account = Account
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 94 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Account = __webpack_require__(93).Account
-	var loginEdge = __webpack_require__(95)
-	var loginCreate = __webpack_require__(53)
-	var loginPassword = __webpack_require__(54)
-	var loginPin2 = __webpack_require__(36)
-	var loginRecovery2 = __webpack_require__(55)
-	var userMap = __webpack_require__(15)
-	var UserStorage = __webpack_require__(23).UserStorage
-	var crypto = __webpack_require__(9)
-
-	var serverRoot = 'https://auth.airbitz.co/api'
-	// var serverRoot = 'https://test-auth.airbitz.co/api'
-
-	var DomWindow
-	if (typeof (window) === 'undefined') {
-	  DomWindow = {
-	    localStorage: null,
-	    XMLHttpRequest: function () {
-	      console.log('XMLHttpRequest: Error browser routine used in non-browser environment')
-	    },
-	    performance: {
-	      now: function () {
-	        console.log('performance: Error browser routine used in non-browser environment')
-	      }
-	    }
-	  }
-	} else {
-	  DomWindow = window
-	}
-
-	/**
-	 * @param authRequest function (method, uri, body, callback (err, status, body))
-	 * @param localStorage an object compatible with the Web Storage API.
-	 */
-	function Context (opts) {
-	  opts = opts || {}
-	  this.accountType = opts.accountType || 'account:repo:co.airbitz.wallet'
-	  this.localStorage = opts.localStorage || DomWindow.localStorage
-
-	  function webFetch (method, uri, body, callback) {
-	    var xhr = new DomWindow.XMLHttpRequest()
-	    xhr.addEventListener('load', function () {
-	      callback(null, this.status, this.responseText)
-	    })
-	    xhr.addEventListener('error', function () {
-	      callback(Error('Cannot reach auth server'))
-	    })
-	    xhr.open(method, uri)
-	    xhr.setRequestHeader('Authorization', 'Token ' + opts.apiKey)
-	    xhr.setRequestHeader('Content-Type', 'application/json')
-	    xhr.setRequestHeader('Accept', 'application/json')
-	    xhr.send(JSON.stringify(body))
-	    console.log('Visit ' + uri)
-	  }
-	  this.authFetch = opts.authRequest || webFetch
-
-	  /**
-	   * Wraps the raw authRequest function in something more friendly.
-	   * @param body JSON object
-	   * @param callback function (err, reply JSON object)
-	   */
-	  this.authRequest = function (method, uri, body, callback) {
-	    this.authFetch(method, serverRoot + uri, body, function (err, status, body) {
-	      if (err) return callback(err)
-	      try {
-	        var reply = JSON.parse(body)
-	      } catch (e) {
-	        return callback(Error('Non-JSON reply, HTTP status ' + status))
-	      }
-
-	      // Look at the Airbitz status code:
-	      switch (reply['status_code']) {
-	        case 0:
-	          return callback(null, reply.results)
-	        default:
-	          return callback(Error(body))
-	      }
-	    })
-	  }
-	}
-
-	Context.prototype.usernameList = function () {
-	  var map = userMap.load(this.localStorage)
-	  var out = []
-	  for (var username in map) {
-	    if (map.hasOwnProperty(username)) {
-	      out.push(username)
-	    }
-	  }
-	  return out
-	}
-	Context.prototype.listUsernames = Context.prototype.usernameList
-
-	Context.prototype.fixUsername = userMap.normalize
-
-	Context.prototype.usernameAvailable = function (username, callback) {
-	  return loginCreate.usernameAvailable(this, username, callback)
-	}
-
-	/**
-	 * Creates a login, then creates and attaches an account to it.
-	 */
-	Context.prototype.createAccount = function (username, password, pin, callback) {
-	  var ctx = this
-	  return loginCreate.create(ctx, username, password, {}, function (err, login) {
-	    if (err) return callback(err)
-	    try {
-	      login.accountFind(ctx.accountType)
-	    } catch (e) {
-	      // If the login doesn't have the correct account type, add it first:
-	      return login.accountCreate(ctx, ctx.accountType, function (err) {
-	        if (err) return callback(err)
-	        loginPin2.setup(ctx, login, pin, function (err) {
-	          if (err) return callback(err)
-	          var account = new Account(ctx, login)
-	          account.newAccount = true
-	          account.sync(function (err, dirty) {
-	            if (err) return callback(err)
-	            callback(null, account)
-	          })
-	        })
-	      })
-	    }
-
-	    // Otherwise, we have the correct account type, and can simply return:
-	    loginPin2.setup(ctx, login, pin, function (err) {
-	      if (err) return callback(err)
-	      var account = new Account(ctx, login)
-	      account.newAccount = true
-	      account.sync(function (err, dirty) {
-	        if (err) return callback(err)
-	        callback(null, account)
-	      })
-	    })
-	  })
-	}
-
-	Context.prototype.loginWithPassword = function (username, password, otp, opts, callback) {
-	  var ctx = this
-	  return loginPassword.login(ctx, username, password, function (err, login) {
-	    if (err) return callback(err)
-	    var account = new Account(ctx, login)
-	    account.passwordLogin = true
-	    account.sync(function (err, dirty) {
-	      if (err) return callback(err)
-	      callback(null, account)
-	    })
-	  })
-	}
-
-	Context.prototype.pinExists = function (username) {
-	  return loginPin2.getKey(this, username) != null
-	}
-	Context.prototype.pinLoginEnabled = function (username) {
-	  return loginPin2.getKey(this, username) != null
-	}
-
-	Context.prototype.loginWithPIN = function (username, pin, callback) {
-	  var ctx = this
-	  var pin2Key = loginPin2.getKey(this, username)
-	  return loginPin2.login(ctx, pin2Key, username, pin, function (err, login) {
-	    if (err) return callback(err)
-	    var account = new Account(ctx, login)
-	    account.pinLogin = true
-	    account.sync(function (err, dirty) {
-	      if (err) return callback(err)
-	      callback(null, account)
-	    })
-	  })
-	}
-
-	Context.prototype.getRecovery2Key = function (username, callback) {
-	  var userStorage = new UserStorage(this.localStorage, username)
-	  var recovery2Key = userStorage.getItem('recovery2Key')
-	  if (recovery2Key) {
-	    callback(null, recovery2Key)
-	  } else {
-	    callback(new Error('No recovery key stored locally.'))
-	  }
-	}
-
-	Context.prototype.loginWithRecovery2 = function (recovery2Key, username, answers, otp, options, callback) {
-	  var ctx = this
-	  return loginRecovery2.login(ctx, recovery2Key, username, answers, function (err, login) {
-	    if (err) return callback(err)
-	    var account = new Account(ctx, login)
-	    account.recoveryLogin = true
-	    account.sync(function (err, dirty) {
-	      if (err) return callback(err)
-	      callback(null, account)
-	    })
-	  })
-	}
-
-	Context.prototype.fetchRecovery2Questions = function (recovery2Key, username, callback) {
-	  return loginRecovery2.questions(this, recovery2Key, username, callback)
-	}
-
-	Context.prototype.runScryptTimingWithParameters = function (n, r, p) {
-	  var snrp = crypto.makeSnrp()
-	  // var snrp = {
-	  //   'salt_hex': crypto.random(32).toString('hex'),
-	  //   'n': 16384,
-	  //   'r': 1,
-	  //   'p': 1
-	  // }
-	  snrp.n = Math.pow(2, n)
-	  snrp.r = r
-	  snrp.p = p
-
-	  var hashTime = crypto.timeSnrp(snrp)
-
-	  return {
-	    time: hashTime
-	  }
-	}
-
-	Context.prototype.checkPasswordRules = function (password) {
-	  var tooShort = password.length < 10
-	  var noNumber = password.match(/\d/) == null
-	  var noUpperCase = password.match(/[A-Z]/) == null
-	  var noLowerCase = password.match(/[a-z]/) == null
-	  var extraLong = password.length >= 16
-
-	  return {
-	    'tooShort': tooShort,
-	    'noNumber': noNumber,
-	    'noUpperCase': noUpperCase,
-	    'noLowerCase': noLowerCase,
-	    'passed': extraLong || !(tooShort || noNumber || noUpperCase || noLowerCase)
-	  }
-	}
-
-	Context.prototype.requestEdgeLogin = function (opts, callback) {
-	  var ctx = this
-	  var onLogin = opts.onLogin
-	  opts.onLogin = function (err, login) {
-	    if (err) return onLogin(err)
-	    var account = new Account(ctx, login)
-	    account.edgeLogin = true
-	    account.sync(function (err, dirty) {
-	      if (err) return onLogin(err)
-	      onLogin(null, account)
-	    })
-	  }
-	  opts.type = opts.type || ctx.accountType
-	  loginEdge.create(this, opts, callback)
-	}
-
-	Context.prototype.listRecoveryQuestionChoices = function (callback) {
-	  loginRecovery2.listRecoveryQuestionChoices(this, function (error, questions) {
-	    callback(error, questions)
-	  })
-	}
-	exports.Context = Context
-
-
-/***/ },
-/* 95 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var loginCreate = __webpack_require__(53)
-	var base58 = __webpack_require__(24).base58
-	var crypto = __webpack_require__(9)
-	var loginPin2 = __webpack_require__(36)
-
-	var Elliptic = __webpack_require__(7).ec
-	var secp256k1 = new Elliptic('secp256k1')
-
-	function ABCEdgeLoginRequest (id) {
-	  this.id = id
-	  this.done_ = false
-	}
-
-	ABCEdgeLoginRequest.prototype.cancelRequest = function () {
-	  this.done_ = true
-	}
-
-	/**
-	 * Creates a new login object, and attaches the account repo info to it.
-	 */
-	function createLogin (ctx, accountReply, callback) {
-	  var username = accountReply.username + '-' + base58.encode(crypto.random(4))
-	  var password = base58.encode(crypto.random(24))
-	  var pin = accountReply.pinString
-
-	  var opts = {}
-	  if (accountReply.type === 'account:repo:co.airbitz.wallet') {
-	    opts.syncKey = new Buffer(accountReply.info['syncKey'], 'hex')
-	  }
-
-	  loginCreate.create(ctx, username, password, opts, function (err, login) {
-	    if (err) return callback(err)
-	    login.accountAttach(ctx, accountReply.type, accountReply.info, function (err) {
-	      if (err) return callback(err)
-
-	      if (typeof pin === 'string' && pin.length === 4) {
-	        if (loginPin2.getKey(ctx, username) == null) {
-	          loginPin2.setup(ctx, login, pin, function (err) {
-	            if (err) {
-	              // Do nothing
-	            }
-	            callback(null, login)
-	          })
-	          return
-	        }
-	      }
-	      callback(null, login)
-	    })
-	  })
-	}
-
-	/**
-	 * Opens a lobby object to determine if it contains a resolved account request.
-	 * Returns the account info if so, or null otherwise.
-	 */
-	function decodeAccountReply (keys, lobby) {
-	  var accountRequest = lobby['accountRequest']
-	  var replyBox = accountRequest['replyBox']
-	  var replyKey = accountRequest['replyKey']
-
-	  // If the reply is missing, just return false:
-	  if (!replyBox || !replyKey) {
-	    return null
-	  }
-
-	  var replyPubkey = secp256k1.keyFromPublic(replyKey, 'hex').getPublic()
-	  var secret = keys.derive(replyPubkey).toArray('be')
-	  var dataKey = new Buffer(crypto.hmacSha256('dataKey', new Uint8Array(secret)))
-	  var reply = JSON.parse(crypto.decrypt(replyBox, dataKey).toString('utf-8'))
-
-	  var returnObj = {
-	    type: accountRequest['type'],
-	    info: reply['keys'] || reply['info'],
-	    username: reply['username']
-	  }
-	  if (typeof reply.pinString === 'string') {
-	    returnObj.pinString = reply['pinString']
-	  }
-
-	  return returnObj
-	}
-	exports.decodeAccountReply = decodeAccountReply
-
-	/**
-	 * Polls the lobby every second or so,
-	 * looking for a reply to our account request.
-	 */
-	function pollServer (ctx, edgeLogin, keys, onLogin, onProcessLogin) {
-	  // Don't do anything if the user has cancelled this request:
-	  if (edgeLogin.done_) {
-	    return
-	  }
-
-	  setTimeout(function () {
-	    ctx.authRequest('GET', '/v2/lobby/' + edgeLogin.id, '', function (err, reply) {
-	      if (err) return onLogin(err)
-
-	      try {
-	        var accountReply = decodeAccountReply(keys, reply)
-	        if (!accountReply) {
-	          return pollServer(ctx, edgeLogin, keys, onLogin, onProcessLogin)
-	        }
-	        if (onProcessLogin !== null) {
-	          onProcessLogin(accountReply.username)
-	        }
-	        createLogin(ctx, accountReply, onLogin)
-	      } catch (e) {
-	        return onLogin(e)
-	      }
-	    })
-	  }, 1000)
-	}
-
-	/**
-	 * Creates a new account request lobby on the server.
-	 */
-	function create (ctx, opts, callback) {
-	  var keys = secp256k1.genKeyPair()
-
-	  var data = {
-	    'accountRequest': {
-	      'displayName': opts['displayName'] || '',
-	      'requestKey': keys.getPublic().encodeCompressed('hex'),
-	      'type': opts.type
-	    }
-	  }
-
-	  if (typeof opts.displayImageUrl === 'string') {
-	    data.accountRequest.displayImageUrl = opts.displayImageUrl
-	  } else {
-	    data.accountRequest.displayImageUrl = ''
-	  }
-
-	  var request = {
-	    'expires': 300,
-	    'data': data
-	  }
-
-	  ctx.authRequest('POST', '/v2/lobby', request, function (err, reply) {
-	    if (err) return callback(err)
-
-	    try {
-	      var edgeLogin = new ABCEdgeLoginRequest(reply.id)
-	      var onProcessLogin = null
-	      if (opts.hasOwnProperty('onProcessLogin')) {
-	        onProcessLogin = opts.onProcessLogin
-	      }
-	      pollServer(ctx, edgeLogin, keys, opts.onLogin, onProcessLogin)
-	    } catch (e) {
-	      return callback(e)
-	    }
-	    return callback(null, edgeLogin)
-	  })
-	}
-	exports.create = create
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var repoId = __webpack_require__(57).repoId
-
-	function walletType (walletJson) {
-	  return walletJson['type'] || 'wallet:repo:bitcoin:bip32'
-	}
-
-	function walletKeys (walletJson) {
-	  return walletJson['keys'] || {
-	    dataKey: walletJson['MK'],
-	    syncKey: walletJson['SyncKey'],
-	    bitcoinKey: walletJson['BitcoinSeed']
-	  }
-	}
-
-	function walletId (walletJson) {
-	  return repoId(new Buffer(walletKeys(walletJson)['dataKey'], 'hex'))
-	}
-
-	/**
-	 * An list of wallets stored in a repo.
-	 * Uses a write-through cache to avoid repeated encryption and decryption.
-	 */
-	function WalletList (repo, folder) {
-	  this.folder = folder || 'Wallets'
-	  this.repo = repo
-
-	  this.wallets = {}
-	  this.load()
-	}
-	exports.WalletList = WalletList
-
-	/**
-	 * Loads the list of wallets into the cache.
-	 */
-	WalletList.prototype.load = function () {
-	  var keys = this.repo.keys(this.folder)
-	  for (var i = 0; i < keys.length; ++i) {
-	    var walletJson = this.repo.getJson(this.folder + '/' + keys[i])
-	    this.wallets[walletId(walletJson)] = walletJson
-	  }
-	}
-
-	/**
-	 * Lists the wallets id's in the repo, sorted by index.
-	 */
-	WalletList.prototype.listIds = function () {
-	  // Load the ids and their sort indices:
-	  var ids = []
-	  var indices = {}
-	  for (var id in this.wallets) {
-	    if (this.wallets.hasOwnProperty(id)) {
-	      ids.push(id)
-	      indices[id] = this.wallets[id]['SortIndex']
-	    }
-	  }
-
-	  // Do the sort:
-	  return ids.sort(function (a, b) {
-	    return indices[a] < indices[b]
-	  })
-	}
-
-	/**
-	 * Returns the type of a particular wallet.
-	 */
-	WalletList.prototype.getType = function (id) {
-	  var walletJson = this.wallets[id]
-	  if (!walletJson) throw new Error('No such wallet ' + id)
-
-	  return walletType(walletJson)
-	}
-
-	/**
-	 * Obtains the keys JSON for a particular wallet.
-	 */
-	WalletList.prototype.getKeys = function (id) {
-	  var walletJson = this.wallets[id]
-	  if (!walletJson) throw new Error('No such wallet ' + id)
-
-	  return walletKeys(walletJson)
-	}
-
-	/**
-	 * Inserts a wallet into the list.
-	 * @param type: The data type for the wallet, like 'wallet:repo:bitcoin.bip32'
-	 * @param keys: A JSON object with arbitrary keys to the wallet.
-	 * This will typically include `dataKey`, `syncKey`,
-	 * and some type of crytpocurrency key.
-	 */
-	WalletList.prototype.addWallet = function (type, keysJson) {
-	  var walletJson = {
-	    'type': type,
-	    'keys': keysJson,
-	    'Archived': false,
-	    'SortIndex': 0
-	  }
-
-	  var dataKey = new Buffer(keysJson['dataKey'], 'hex')
-	  var filename = this.repo.secureFilename(dataKey)
-	  this.repo.setJson(this.folder + '/' + filename, walletJson)
-
-	  var id = walletId(walletJson)
-	  this.wallets[id] = walletJson
-	  return id
-	}
-
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ },
-/* 97 */
-/***/ function(module, exports) {
-
-	function Wallet (type, keysJson) {
-	  this.type = type
-	  this.keys = keysJson
-	}
-	exports.Wallet = Wallet
-
-
-/***/ },
-/* 98 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -12519,7 +12330,7 @@ var abcui =
 	// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 	// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-	var util = __webpack_require__(33);
+	var util = __webpack_require__(28);
 	var hasOwn = Object.prototype.hasOwnProperty;
 	var pSlice = Array.prototype.slice;
 	var functionsHaveNames = (function () {
@@ -12945,8 +12756,8 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 99 */,
-/* 100 */
+/* 80 */,
+/* 81 */
 /***/ function(module, exports) {
 
 	// base-x encoding
@@ -13038,7 +12849,7 @@ var abcui =
 
 
 /***/ },
-/* 101 */
+/* 82 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -13158,16 +12969,16 @@ var abcui =
 
 
 /***/ },
-/* 102 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var assert = __webpack_require__(98)
-	var createHash = __webpack_require__(59)
-	var pbkdf2 = __webpack_require__(67).pbkdf2Sync
-	var randomBytes = __webpack_require__(151)
-	var unorm = __webpack_require__(187)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var assert = __webpack_require__(79)
+	var createHash = __webpack_require__(46)
+	var pbkdf2 = __webpack_require__(54).pbkdf2Sync
+	var randomBytes = __webpack_require__(132)
+	var unorm = __webpack_require__(168)
 
-	var DEFAULT_WORDLIST = __webpack_require__(147)
+	var DEFAULT_WORDLIST = __webpack_require__(128)
 
 	function mnemonicToSeed(mnemonic, password) {
 	  var mnemonicBuffer = new Buffer(mnemonic, 'utf8')
@@ -13294,7 +13105,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 103 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var r;
@@ -13339,7 +13150,7 @@ var abcui =
 	} else {
 	  // Node.js or Web worker
 	  try {
-	    var crypto = __webpack_require__(191);
+	    var crypto = __webpack_require__(172);
 
 	    Rand.prototype._rand = function _rand(n) {
 	      return crypto.randomBytes(n);
@@ -13357,7 +13168,7 @@ var abcui =
 
 
 /***/ },
-/* 104 */
+/* 85 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -13368,12 +13179,12 @@ var abcui =
 
 
 /***/ },
-/* 105 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var Transform = __webpack_require__(21).Transform
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var Transform = __webpack_require__(19).Transform
 	var inherits = __webpack_require__(4)
-	var StringDecoder = __webpack_require__(44).StringDecoder
+	var StringDecoder = __webpack_require__(38).StringDecoder
 	module.exports = CipherBase
 	inherits(CipherBase, Transform)
 	function CipherBase (hashMode) {
@@ -13465,7 +13276,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 106 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -13505,7 +13316,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 107 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -13518,7 +13329,7 @@ var abcui =
 	 * See http://pajhome.org.uk/crypt/md5 for more info.
 	 */
 
-	var helpers = __webpack_require__(106);
+	var helpers = __webpack_require__(87);
 
 	/*
 	 * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -13666,7 +13477,7 @@ var abcui =
 	};
 
 /***/ },
-/* 108 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -13883,7 +13694,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 109 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var exports = module.exports = function SHA (algorithm) {
@@ -13895,16 +13706,16 @@ var abcui =
 	  return new Algorithm()
 	}
 
-	exports.sha = __webpack_require__(110)
-	exports.sha1 = __webpack_require__(111)
-	exports.sha224 = __webpack_require__(112)
-	exports.sha256 = __webpack_require__(60)
-	exports.sha384 = __webpack_require__(113)
-	exports.sha512 = __webpack_require__(61)
+	exports.sha = __webpack_require__(91)
+	exports.sha1 = __webpack_require__(92)
+	exports.sha224 = __webpack_require__(93)
+	exports.sha256 = __webpack_require__(47)
+	exports.sha384 = __webpack_require__(94)
+	exports.sha512 = __webpack_require__(48)
 
 
 /***/ },
-/* 110 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -13916,7 +13727,7 @@ var abcui =
 	 */
 
 	var inherits = __webpack_require__(4)
-	var Hash = __webpack_require__(18)
+	var Hash = __webpack_require__(16)
 
 	var K = [
 	  0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
@@ -14004,7 +13815,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 111 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/*
@@ -14017,7 +13828,7 @@ var abcui =
 	 */
 
 	var inherits = __webpack_require__(4)
-	var Hash = __webpack_require__(18)
+	var Hash = __webpack_require__(16)
 
 	var K = [
 	  0x5a827999, 0x6ed9eba1, 0x8f1bbcdc | 0, 0xca62c1d6 | 0
@@ -14109,7 +13920,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 112 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {/**
@@ -14121,8 +13932,8 @@ var abcui =
 	 */
 
 	var inherits = __webpack_require__(4)
-	var Sha256 = __webpack_require__(60)
-	var Hash = __webpack_require__(18)
+	var Sha256 = __webpack_require__(47)
+	var Hash = __webpack_require__(16)
 
 	var W = new Array(64)
 
@@ -14168,12 +13979,12 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 113 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {var inherits = __webpack_require__(4)
-	var SHA512 = __webpack_require__(61)
-	var Hash = __webpack_require__(18)
+	var SHA512 = __webpack_require__(48)
+	var Hash = __webpack_require__(16)
 
 	var W = new Array(160)
 
@@ -14231,14 +14042,14 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 114 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
-	var createHash = __webpack_require__(59);
+	var createHash = __webpack_require__(46);
 	var inherits = __webpack_require__(4)
 
-	var Transform = __webpack_require__(21).Transform
+	var Transform = __webpack_require__(19).Transform
 
 	var ZEROS = new Buffer(128)
 	ZEROS.fill(0)
@@ -14306,10 +14117,10 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 115 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(62)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var createHash = __webpack_require__(49)
 
 	var zeroBuffer = new Buffer(128)
 	zeroBuffer.fill(0)
@@ -14356,7 +14167,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 116 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {var intSize = 4;
@@ -14397,10 +14208,10 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 117 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var rng = __webpack_require__(120)
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var rng = __webpack_require__(101)
 
 	function error () {
 	  var m = [].slice.call(arguments).join(' ')
@@ -14411,9 +14222,9 @@ var abcui =
 	    ].join('\n'))
 	}
 
-	exports.createHash = __webpack_require__(62)
+	exports.createHash = __webpack_require__(49)
 
-	exports.createHmac = __webpack_require__(115)
+	exports.createHmac = __webpack_require__(96)
 
 	exports.randomBytes = function(size, callback) {
 	  if (callback && callback.call) {
@@ -14434,7 +14245,7 @@ var abcui =
 	  return ['sha1', 'sha256', 'sha512', 'md5', 'rmd160']
 	}
 
-	var p = __webpack_require__(119)(exports)
+	var p = __webpack_require__(100)(exports)
 	exports.pbkdf2 = p.pbkdf2
 	exports.pbkdf2Sync = p.pbkdf2Sync
 
@@ -14457,7 +14268,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 118 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -14469,7 +14280,7 @@ var abcui =
 	 * See http://pajhome.org.uk/crypt/md5 for more info.
 	 */
 
-	var helpers = __webpack_require__(116);
+	var helpers = __webpack_require__(97);
 
 	/*
 	 * Calculate the MD5 of an array of little-endian words, and a bit length
@@ -14618,10 +14429,10 @@ var abcui =
 
 
 /***/ },
-/* 119 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var pbkdf2Export = __webpack_require__(149)
+	var pbkdf2Export = __webpack_require__(130)
 
 	module.exports = function (crypto, exports) {
 	  exports = exports || {}
@@ -14636,13 +14447,13 @@ var abcui =
 
 
 /***/ },
-/* 120 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, Buffer) {(function() {
 	  var g = ('undefined' === typeof window ? global : window) || {}
 	  _crypto = (
-	    g.crypto || g.msCrypto || __webpack_require__(192)
+	    g.crypto || g.msCrypto || __webpack_require__(173)
 	  )
 	  module.exports = function(size) {
 	    // Modern Browsers
@@ -14669,12 +14480,12 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(1).Buffer))
 
 /***/ },
-/* 121 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 	var elliptic = __webpack_require__(7);
 	var utils = elliptic.utils;
 	var getNAF = utils.getNAF;
@@ -15050,14 +14861,14 @@ var abcui =
 
 
 /***/ },
-/* 122 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var curve = __webpack_require__(31);
+	var curve = __webpack_require__(26);
 	var elliptic = __webpack_require__(7);
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 	var inherits = __webpack_require__(4);
 	var Base = curve.base;
 
@@ -15489,13 +15300,13 @@ var abcui =
 
 
 /***/ },
-/* 123 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var curve = __webpack_require__(31);
-	var BN = __webpack_require__(11);
+	var curve = __webpack_require__(26);
+	var BN = __webpack_require__(10);
 	var inherits = __webpack_require__(4);
 	var Base = curve.base;
 
@@ -15675,14 +15486,14 @@ var abcui =
 
 
 /***/ },
-/* 124 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var curve = __webpack_require__(31);
+	var curve = __webpack_require__(26);
 	var elliptic = __webpack_require__(7);
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 	var inherits = __webpack_require__(4);
 	var Base = curve.base;
 
@@ -16619,14 +16430,14 @@ var abcui =
 
 
 /***/ },
-/* 125 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var curves = exports;
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var elliptic = __webpack_require__(7);
 
 	var assert = elliptic.utils.assert;
@@ -16791,7 +16602,7 @@ var abcui =
 
 	var pre;
 	try {
-	  pre = __webpack_require__(133);
+	  pre = __webpack_require__(114);
 	} catch (e) {
 	  pre = undefined;
 	}
@@ -16830,18 +16641,18 @@ var abcui =
 
 
 /***/ },
-/* 126 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 	var elliptic = __webpack_require__(7);
 	var utils = elliptic.utils;
 	var assert = utils.assert;
 
-	var KeyPair = __webpack_require__(127);
-	var Signature = __webpack_require__(128);
+	var KeyPair = __webpack_require__(108);
+	var Signature = __webpack_require__(109);
 
 	function EC(options) {
 	  if (!(this instanceof EC))
@@ -17073,12 +16884,12 @@ var abcui =
 
 
 /***/ },
-/* 127 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 
 	function KeyPair(ec, options) {
 	  this.ec = ec;
@@ -17186,12 +16997,12 @@ var abcui =
 
 
 /***/ },
-/* 128 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 
 	var elliptic = __webpack_require__(7);
 	var utils = elliptic.utils;
@@ -17327,18 +17138,18 @@ var abcui =
 
 
 /***/ },
-/* 129 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var elliptic = __webpack_require__(7);
 	var utils = elliptic.utils;
 	var assert = utils.assert;
 	var parseBytes = utils.parseBytes;
-	var KeyPair = __webpack_require__(130);
-	var Signature = __webpack_require__(131);
+	var KeyPair = __webpack_require__(111);
+	var Signature = __webpack_require__(112);
 
 	function EDDSA(curve) {
 	  assert(curve === 'ed25519', 'only tested with ed25519 so far');
@@ -17451,7 +17262,7 @@ var abcui =
 
 
 /***/ },
-/* 130 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17553,12 +17364,12 @@ var abcui =
 
 
 /***/ },
-/* 131 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 	var elliptic = __webpack_require__(7);
 	var utils = elliptic.utils;
 	var assert = utils.assert;
@@ -17625,12 +17436,12 @@ var abcui =
 
 
 /***/ },
-/* 132 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var elliptic = __webpack_require__(7);
 	var utils = elliptic.utils;
 	var assert = utils.assert;
@@ -17745,7 +17556,7 @@ var abcui =
 
 
 /***/ },
-/* 133 */
+/* 114 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -18531,13 +18342,13 @@ var abcui =
 
 
 /***/ },
-/* 134 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var utils = exports;
-	var BN = __webpack_require__(11);
+	var BN = __webpack_require__(10);
 
 	utils.assert = function assert(val, msg) {
 	  if (!val)
@@ -18709,11 +18520,11 @@ var abcui =
 
 
 /***/ },
-/* 135 */,
-/* 136 */
+/* 116 */,
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var utils = hash.utils;
 	var assert = utils.assert;
 
@@ -18807,12 +18618,12 @@ var abcui =
 
 
 /***/ },
-/* 137 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var hmac = exports;
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var utils = hash.utils;
 	var assert = utils.assert;
 
@@ -18861,10 +18672,10 @@ var abcui =
 
 
 /***/ },
-/* 138 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var utils = hash.utils;
 
 	var rotl32 = utils.rotl32;
@@ -19011,10 +18822,10 @@ var abcui =
 
 
 /***/ },
-/* 139 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var hash = __webpack_require__(13);
+	var hash = __webpack_require__(12);
 	var utils = hash.utils;
 	var assert = utils.assert;
 
@@ -19581,7 +19392,7 @@ var abcui =
 
 
 /***/ },
-/* 140 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var utils = exports;
@@ -19844,10 +19655,10 @@ var abcui =
 
 
 /***/ },
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -19899,7 +19710,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 145 */
+/* 126 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -19989,7 +19800,7 @@ var abcui =
 
 
 /***/ },
-/* 146 */
+/* 127 */
 /***/ function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -19998,7 +19809,7 @@ var abcui =
 
 
 /***/ },
-/* 147 */
+/* 128 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -22053,7 +21864,7 @@ var abcui =
 	];
 
 /***/ },
-/* 148 */
+/* 129 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -22112,7 +21923,7 @@ var abcui =
 	};
 
 /***/ },
-/* 149 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {module.exports = function(crypto) {
@@ -22203,7 +22014,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 150 */
+/* 131 */
 /***/ function(module, exports) {
 
 	var MAX_ALLOC = Math.pow(2, 30) - 1 // default in iojs
@@ -22227,7 +22038,7 @@ var abcui =
 
 
 /***/ },
-/* 151 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global, Buffer, process) {'use strict'
@@ -22270,75 +22081,75 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(1).Buffer, __webpack_require__(0)))
 
 /***/ },
+/* 133 */,
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
 /* 152 */,
 /* 153 */,
 /* 154 */,
 /* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(17)
+	module.exports = __webpack_require__(15)
 
 
 /***/ },
-/* 176 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(72)
+	module.exports = __webpack_require__(59)
 
 
 /***/ },
-/* 177 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {exports = module.exports = __webpack_require__(73);
-	exports.Stream = __webpack_require__(21);
+	/* WEBPACK VAR INJECTION */(function(process) {exports = module.exports = __webpack_require__(60);
+	exports.Stream = __webpack_require__(19);
 	exports.Readable = exports;
-	exports.Writable = __webpack_require__(43);
-	exports.Duplex = __webpack_require__(17);
-	exports.Transform = __webpack_require__(42);
-	exports.PassThrough = __webpack_require__(72);
+	exports.Writable = __webpack_require__(37);
+	exports.Duplex = __webpack_require__(15);
+	exports.Transform = __webpack_require__(36);
+	exports.PassThrough = __webpack_require__(59);
 	if (!process.browser && process.env.READABLE_STREAM === 'disable') {
-	  module.exports = __webpack_require__(21);
+	  module.exports = __webpack_require__(19);
 	}
 
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ },
-/* 178 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(42)
+	module.exports = __webpack_require__(36)
 
 
 /***/ },
-/* 179 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(43)
+	module.exports = __webpack_require__(37)
 
 
 /***/ },
-/* 180 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {
@@ -22550,10 +22361,10 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 181 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(Buffer) {var pbkdf2Sync = __webpack_require__(67).pbkdf2Sync
+	/* WEBPACK VAR INJECTION */(function(Buffer) {var pbkdf2Sync = __webpack_require__(54).pbkdf2Sync
 
 	var MAX_VALUE = 0x7fffffff
 
@@ -22736,7 +22547,7 @@ var abcui =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ },
-/* 182 */
+/* 163 */
 /***/ function(module, exports) {
 
 	module.exports = function (Buffer) {
@@ -22819,7 +22630,7 @@ var abcui =
 
 
 /***/ },
-/* 183 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var exports = module.exports = function (alg) {
@@ -22829,15 +22640,15 @@ var abcui =
 	}
 
 	var Buffer = __webpack_require__(1).Buffer
-	var Hash   = __webpack_require__(182)(Buffer)
+	var Hash   = __webpack_require__(163)(Buffer)
 
-	exports.sha1 = __webpack_require__(184)(Buffer, Hash)
-	exports.sha256 = __webpack_require__(185)(Buffer, Hash)
-	exports.sha512 = __webpack_require__(186)(Buffer, Hash)
+	exports.sha1 = __webpack_require__(165)(Buffer, Hash)
+	exports.sha256 = __webpack_require__(166)(Buffer, Hash)
+	exports.sha512 = __webpack_require__(167)(Buffer, Hash)
 
 
 /***/ },
-/* 184 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -22849,7 +22660,7 @@ var abcui =
 	 * See http://pajhome.org.uk/crypt/md5 for details.
 	 */
 
-	var inherits = __webpack_require__(33).inherits
+	var inherits = __webpack_require__(28).inherits
 
 	module.exports = function (Buffer, Hash) {
 
@@ -22981,7 +22792,7 @@ var abcui =
 
 
 /***/ },
-/* 185 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
@@ -22993,7 +22804,7 @@ var abcui =
 	 *
 	 */
 
-	var inherits = __webpack_require__(33).inherits
+	var inherits = __webpack_require__(28).inherits
 
 	module.exports = function (Buffer, Hash) {
 
@@ -23134,10 +22945,10 @@ var abcui =
 
 
 /***/ },
-/* 186 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var inherits = __webpack_require__(33).inherits
+	var inherits = __webpack_require__(28).inherits
 
 	module.exports = function (Buffer, Hash) {
 	  var K = [
@@ -23384,7 +23195,7 @@ var abcui =
 
 
 /***/ },
-/* 187 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (root) {
@@ -23832,7 +23643,7 @@ var abcui =
 
 
 /***/ },
-/* 188 */
+/* 169 */
 /***/ function(module, exports) {
 
 	if (typeof Object.create === 'function') {
@@ -23861,7 +23672,7 @@ var abcui =
 
 
 /***/ },
-/* 189 */
+/* 170 */
 /***/ function(module, exports) {
 
 	module.exports = function isBuffer(arg) {
@@ -23872,7 +23683,7 @@ var abcui =
 	}
 
 /***/ },
-/* 190 */
+/* 171 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -23888,24 +23699,43 @@ var abcui =
 
 
 /***/ },
-/* 191 */
+/* 172 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 192 */
+/* 173 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 193 */
+/* 174 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */,
+/* 192 */,
+/* 193 */,
 /* 194 */,
 /* 195 */,
 /* 196 */,
@@ -23939,31 +23769,12 @@ var abcui =
 /* 224 */,
 /* 225 */,
 /* 226 */,
-/* 227 */,
-/* 228 */,
-/* 229 */,
-/* 230 */,
-/* 231 */,
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var abc = __webpack_require__(45);
+	var abc = __webpack_require__(39);
 
 	var DomWindow;
 	var DomDocument;
@@ -24008,7 +23819,7 @@ var abcui =
 	  if (!apiKey) {
 	    throw Error('Missing api key');
 	  }
-	  DomWindow.abcContext = this.abcContext = abc.makeABCContext({ 'apiKey': args.apiKey, 'accountType': args.accountType });
+	  DomWindow.abcContext = this.abcContext = abc.makeContext({ 'apiKey': args.apiKey, 'accountType': args.accountType });
 	  if (args['bundlePath']) {
 	    this.bundlePath = args.bundlePath;
 	  } else {
