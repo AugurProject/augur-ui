@@ -28,7 +28,7 @@ export default function () {
 			if (marketOutcome !== '0') {
 				outcome = selectMarketOutcome(eventsWithAccountReport[eventId].marketOutcome, marketId);
 			}
-			const outcomePercentage = eventsWithAccountReport[eventId].proportionCorrect && formatPercent(eventsWithAccountReport[eventId].proportionCorrect) || null;
+			const outcomePercentage = eventsWithAccountReport[eventId].proportionCorrect && formatPercent(abi.bignum(eventsWithAccountReport[eventId].proportionCorrect).times(100)) || null;
 			const reported = selectMarketOutcome(eventsWithAccountReport[eventId].accountReport, marketId);
 			const isReportEqual = outcome != null && reported != null && outcome === reported || null; // Can be done here
 			const feesEarned = calculateFeesEarned(eventsWithAccountReport[eventId]);
@@ -101,11 +101,6 @@ export const selectMarketOutcome = memoizerific(1000)((outcomeID, marketID) => {
 	const filteredMarket = allMarkets.find(market => market.id === marketID);
 	if (!filteredMarket) return null;
 	if (filteredMarket.type === SCALAR) return outcomeID;
-	let filterResult;
-	for (let i = 0, n = filteredMarket.outcomes.length; i < n; ++i) {
-		if (filteredMarket.outcomes[i].id === outcomeID) {
-			filterResult = filteredMarket.outcomes[i];
-		}
-	}
-	return filterResult ? filterResult.name : null;
+	const outcome = filteredMarket.reportableOutcomes.find(outcome => outcome.id === outcomeID);
+	return outcome ? outcome.name : null;
 });

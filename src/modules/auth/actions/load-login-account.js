@@ -6,9 +6,8 @@ import { updateLoginAccount } from '../../auth/actions/update-login-account';
 import { updateAssets } from '../../auth/actions/update-assets';
 import { clearAccountTrades } from '../../my-positions/actions/clear-account-trades';
 import { loadAccountTrades } from '../../my-positions/actions/load-account-trades';
-import { loadMarketsInfo } from '../../markets/actions/load-markets-info';
 import { updateReports, clearReports } from '../../reports/actions/update-reports';
-import { checkPeriod } from '../../reports/actions/check-period';
+import { syncBranch } from '../../app/actions/update-branch';
 import { updateFavorites } from '../../markets/actions/update-favorites';
 import { updateAccountTradesData } from '../../../modules/my-positions/actions/update-account-trades-data';
 import { updateTransactionsData } from '../../transactions/actions/update-transactions-data';
@@ -21,22 +20,21 @@ export function loadLoginAccountDependents(cb) {
 	return (dispatch, getState) => {
 		const { loginAccount } = getState();
 		dispatch(updateAssets(cb));
-		AugurJS.augur.getRegisterBlockNumber(loginAccount.id, (err, blockNumber) => {
+		AugurJS.augur.getRegisterBlockNumber(loginAccount.address, (err, blockNumber) => {
 			if (!err && blockNumber) {
 				loginAccount.registerBlockNumber = blockNumber;
 				dispatch(updateLoginAccount(loginAccount));
 			}
 			dispatch(clearAccountTrades());
 			dispatch(loadAccountTrades());
-			dispatch(loadEventsWithSubmittedReport());
-
-			const { selectedMarketID } = getState();
-			if (selectedMarketID) dispatch(loadMarketsInfo([selectedMarketID]));
 
 			// clear and load reports for any markets that have been loaded
 			// (partly to handle signing out of one account and into another)
 			dispatch(clearReports());
-			dispatch(checkPeriod());
+			dispatch(syncBranch((err) => {
+				if (err) console.error('syncBranch:', err);
+				dispatch(loadEventsWithSubmittedReport());
+			}));
 		});
 	};
 }
@@ -108,12 +106,12 @@ export function loadLoginAccount() {
 				}
 			}
 
-			if (!localLoginAccount || !localLoginAccount.id) {
+			if (!localLoginAccount || !localLoginAccount.address) {
 				return;
 			}
 			localLoginAccount.onUpdateAccountSettings = (settings) => dispatch(updateAccountSettings(settings));
 
-			dispatch(loadLoginAccountLocalStorage(localLoginAccount.id));
+			dispatch(loadLoginAccountLocalStorage(localLoginAccount.address));
 			dispatch(updateLoginAccount(localLoginAccount));
 			dispatch(loadLoginAccountDependents());
 			return;

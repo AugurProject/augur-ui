@@ -1,11 +1,12 @@
 import { formatRealEther, formatRealEtherEstimate } from '../../../utils/format-number';
-import { SCALAR } from '../../markets/constants/market-types';
+import { augur } from '../../../services/augurjs';
+import { BINARY, SCALAR } from '../../markets/constants/market-types';
+import { CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID, INDETERMINATE_OUTCOME_NAME, BINARY_NO_OUTCOME_NAME, BINARY_YES_OUTCOME_NAME } from '../../markets/constants/market-outcomes';
 import { SUBMITTED, SUCCESS, FAILED } from '../../transactions/constants/statuses';
 import { REVEAL_REPORT } from '../../transactions/constants/types';
 import { addTransaction } from '../../transactions/actions/add-transactions';
 import { updateExistingTransaction } from '../../transactions/actions/update-existing-transaction';
 import { updateAssets } from '../../auth/actions/update-assets';
-import { augur } from '../../../services/augurjs';
 
 export function addRevealReportTransaction(eventID, marketID, reportedOutcomeID, salt, minValue, maxValue, type, isUnethical, isIndeterminate, callback) {
 	return (dispatch, getState) => {
@@ -13,10 +14,24 @@ export function addRevealReportTransaction(eventID, marketID, reportedOutcomeID,
 			const outcomesData = getState().outcomesData[marketID];
 			const isScalar = type === SCALAR;
 			let outcome;
-			if (isScalar) {
-				outcome = outcomesData ? outcomesData[1] : {};
+			if (type === BINARY) {
+				if (reportedOutcomeID === '1') {
+					outcome = { name: BINARY_NO_OUTCOME_NAME };
+				} else if (reportedOutcomeID === '2') {
+					outcome = { name: BINARY_YES_OUTCOME_NAME };
+				} else {
+					outcome = { name: INDETERMINATE_OUTCOME_NAME };
+				}
 			} else {
-				outcome = outcomesData ? outcomesData[reportedOutcomeID] : {};
+				if (reportedOutcomeID === CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID) {
+					outcome = { name: INDETERMINATE_OUTCOME_NAME };
+				} else {
+					if (isScalar) {
+						outcome = outcomesData ? outcomesData[1] : {};
+					} else {
+						outcome = outcomesData ? outcomesData[reportedOutcomeID] : {};
+					}
+				}
 			}
 			const description = eventDescription && eventDescription.length ?
 				eventDescription.split('~|>')[0] :

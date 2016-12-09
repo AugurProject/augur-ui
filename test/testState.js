@@ -41,7 +41,6 @@ const testState = {
 	env,
 	loginAccount: {
 		address: '0x0000000000000000000000000000000000000001',
-		id: '0x0000000000000000000000000000000000000001',
 		name: 'testTesterson',
 		loginID: 'testSecureID',
 		localNode: false,
@@ -89,14 +88,34 @@ const testState = {
 					price: '0.42',
 					type: 'buy'
 				},
-				'order2': {
+				'buyOrder2ID': {
 					amount: '10',
 					block: 1234,
-					id: 'order2',
+					id: 'buyOrder2ID',
 					market: 'testMarketID',
 					outcome: '2',
 					owner: '0x0000000000000000000000000000000000000001',
 					price: '0.42',
+					type: 'buy'
+				},
+				'buyOrder3ID': {
+					amount: '10',
+					block: 1234,
+					id: 'buyOrder3ID',
+					market: 'testMarketID',
+					outcome: '1',
+					owner: '0x0000000000000000000000000000000000000001',
+					price: '0.42',
+					type: 'buy'
+				},
+				'buyOrder4ID': {
+					amount: '10',
+					block: 1234,
+					id: 'buyOrder4ID',
+					market: 'testMarketID',
+					outcome: '1',
+					owner: '0x0000000000000000000000000000000000000001',
+					price: '0.44',
 					type: 'buy'
 				}
 			},
@@ -109,6 +128,16 @@ const testState = {
 					outcome: '1',
 					owner: '0x457435fbcd49475847f64898f933ffefc33388fc',
 					price: '0.58',
+					type: 'sell'
+				},
+				'sellOrder2ID': {
+					amount: '20',
+					block: 1235,
+					id: 'sellOrder2ID',
+					market: 'testMarketID',
+					outcome: '1',
+					owner: '0x457435fbcd49475847f64898f933ffefc33388fc',
+					price: '0.59',
 					type: 'sell'
 				}
 			}

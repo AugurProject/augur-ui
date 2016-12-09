@@ -6,7 +6,7 @@ import { CATEGORICAL, SCALAR } from '../../markets/constants/market-types';
 import { SUCCESS, FAILED, SUBMITTED } from '../../transactions/constants/statuses';
 import { addCommitReportTransaction } from '../../transactions/actions/add-commit-report-transaction';
 import { updateExistingTransaction } from '../../transactions/actions/update-existing-transaction';
-import { updateReport, updateReports } from '../../reports/actions/update-reports';
+import { updateReport } from '../../reports/actions/update-reports';
 import { nextReportPage } from '../../reports/actions/next-report-page';
 
 export function commitReport(market, reportedOutcomeID, isUnethical, isIndeterminate) {
@@ -14,6 +14,7 @@ export function commitReport(market, reportedOutcomeID, isUnethical, isIndetermi
 		const { branch, loginAccount } = getState();
 		const salt = bytesToHex(secureRandom(32));
 		const fixedReport = augur.fixReport(reportedOutcomeID, market.minValue, market.maxValue, market.type, isIndeterminate);
+		console.log('[commitReport] fixedReport:', fixedReport);
 		dispatch(updateReport(branch.id, market.eventID, {
 			eventID: market.eventID,
 			marketID: market.id,
@@ -38,7 +39,8 @@ export function sendCommitReport(transactionID, market, reportedOutcomeID, isUne
 		const { loginAccount, branch, reports } = getState();
 		const eventID = market.eventID;
 		const report = reports[branch.id][eventID];
-		console.log('reporting on market', market.id, 'event', eventID, report);
+		console.log('reporting on market', market.id, 'event', eventID);
+		console.log('report:', report);
 		const branchID = branch.id;
 		if (!loginAccount || !loginAccount.address || !eventID || !event || !market || !reportedOutcomeID) {
 			return dispatch(updateExistingTransaction(transactionID, {
@@ -47,6 +49,7 @@ export function sendCommitReport(transactionID, market, reportedOutcomeID, isUne
 			}));
 		}
 		const fixedReport = augur.fixReport(reportedOutcomeID, market.minValue, market.maxValue, market.type, isIndeterminate);
+		console.log('fixedReport:', fixedReport);
 		let encryptedReport = 0;
 		let encryptedSalt = 0;
 		if (loginAccount.derivedKey) {
@@ -54,19 +57,11 @@ export function sendCommitReport(transactionID, market, reportedOutcomeID, isUne
 			encryptedReport = augur.encryptReport(fixedReport, derivedKey, report.salt);
 			encryptedSalt = augur.encryptReport(report.salt, derivedKey, loginAccount.keystore.crypto.kdfparams.salt);
 		}
+		console.log('encryptedReport:', encryptedReport, encryptedSalt);
 		const outcomeName = report.isScalar ?
 			reportedOutcomeID :
 			(market.reportableOutcomes.find(outcome => outcome.id === reportedOutcomeID) || {}).name;
-		console.log('submitReportHash params:', {
-			event: eventID,
-			reportHash: report.reportHash,
-			encryptedReport,
-			encryptedSalt,
-			ethics: Number(!isUnethical),
-			branch: branchID,
-			period: report.reportPeriod,
-			periodLength: branch.periodLength
-		});
+		dispatch(updateReport(branchID, eventID, { ...report }));
 		augur.submitReportHash({
 			event: eventID,
 			reportHash: report.reportHash,
@@ -74,17 +69,15 @@ export function sendCommitReport(transactionID, market, reportedOutcomeID, isUne
 			encryptedSalt,
 			ethics: Number(!isUnethical),
 			branch: branchID,
-			period: report.reportPeriod,
+			period: report.period,
 			periodLength: branch.periodLength,
 			onSent: (res) => {
-				console.debug('submitReportHash sent:', res);
 				dispatch(updateExistingTransaction(transactionID, {
 					status: SUBMITTED,
 					message: `committing to report outcome ${outcomeName}`
 				}));
 			},
 			onSuccess: (res) => {
-				console.debug('submitReportHash successful:', res.callReturn);
 				console.log('eventID:', eventID);
 				console.log('marketID:', market.id);
 				dispatch(updateExistingTransaction(transactionID, {
@@ -95,14 +88,10 @@ export function sendCommitReport(transactionID, market, reportedOutcomeID, isUne
 					gasFees: formatRealEther(res.gasFees)
 				}));
 				const branchReports = getState().reports[branch.id] || {};
-				console.log('branchReports:', branchReports, branchReports[eventID]);
-				dispatch(updateReports({
-					[branchID]: {
-						[eventID]: {
-							...branchReports[eventID],
-							isCommitted: true
-						}
-					}
+				console.log('updating branchReports:', branchReports);
+				dispatch(updateReport(branch.id, eventID, {
+					...branchReports[eventID],
+					isCommitted: true
 				}));
 			},
 			onFailed: (err) => {
@@ -110,6 +99,11 @@ export function sendCommitReport(transactionID, market, reportedOutcomeID, isUne
 				dispatch(updateExistingTransaction(transactionID, {
 					status: FAILED,
 					message: err.message
+				}));
+				const branchReports = getState().reports[branch.id] || {};
+				dispatch(updateReport(branch.id, eventID, {
+					...branchReports[eventID],
+					isCommitted: false
 				}));
 			}
 		});

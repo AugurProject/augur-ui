@@ -40,10 +40,7 @@ ex.loadLoginAccount = function loadLoginAccount(env, cb) {
 	// if available, use the client-side account
 	if (augur.web.account.address && augur.web.account.privateKey) {
 		console.log('using client-side account:', augur.web.account.address);
-		return cb(null, {
-			...augur.web.account,
-			id: augur.web.account.address
-		});
+		return cb(null, { ...augur.web.account });
 	}
 	// if the user has a persistent login, use it
 	if (localStorageRef && localStorageRef.getItem && localStorageRef.getItem('account')) {
@@ -51,10 +48,7 @@ ex.loadLoginAccount = function loadLoginAccount(env, cb) {
 		if (account && account.privateKey) {
 			// local storage account exists, load it spawn the callback using augur.web.account
 			augur.web.loadLocalLoginAccount(account, (loginAccount) =>
-				cb(null, {
-					...augur.web.account,
-					id: augur.web.account.address
-				})
+				cb(null, { ...augur.web.account })
 			);
 			//	break out of ex.loadLoginAccount as we don't want to login the local geth node.
 			return;
@@ -74,7 +68,7 @@ ex.loadLoginAccount = function loadLoginAccount(env, cb) {
 		if (unlocked && !unlocked.error) {
 			augur.web.logout();
 			console.log('using unlocked account:', augur.from);
-			return cb(null, { address: augur.from, id: augur.from });
+			return cb(null, { address: augur.from });
 		}
 
 		// otherwise, no account available
@@ -138,36 +132,29 @@ ex.reportingMarketsSetup = function reportingMarketsSetup(periodLength, branchID
 
 		// make a single trade in each new market
 		const password = process.env.GETH_PASSWORD;
-		tools.top_up(augur, branchID, accounts, password, (err, unlocked) => {
+		tools.make_order_in_each_market(augur, 1, markets, accounts[1], accounts[2], password, (err) => {
 			if (err) return callback(err);
-			console.log('Unlocked:', unlocked);
-			tools.trade_in_each_market(augur, 1, markets, unlocked[0], unlocked[1], password, (err) => {
+			callback(null, 3);
+
+			// wait until the period after the new events expire
+			tools.wait_until_expiration(augur, events.binary, (err) => {
 				if (err) return callback(err);
-				callback(null, 3);
+				callback(null, 4);
+				const periodLength = augur.getPeriodLength(augur.getBranch(eventID));
+				const expirationPeriod = Math.floor(augur.getExpiration(eventID) / periodLength);
+				tools.print_reporting_status(augur, eventID, 'Wait complete');
+				console.log('Current period:', augur.getCurrentPeriod(periodLength));
+				console.log('Expiration period + 1:', expirationPeriod + 1);
+				callback(null, 5);
 
-				// wait until the period after the new events expire
-				tools.wait_until_expiration(augur, events.binary, (err) => {
-					if (err) return callback(err);
-					callback(null, 4);
-					const periodLength = augur.getPeriodLength(augur.getBranch(eventID));
-					const expirationPeriod = Math.floor(augur.getExpiration(eventID) / periodLength);
-					tools.print_reporting_status(augur, eventID, 'Wait complete');
-					console.log('Current period:', augur.getCurrentPeriod(periodLength));
-					console.log('Expiration period + 1:', expirationPeriod + 1);
-					callback(null, 5);
-
-					// wait for second period to start
-					tools.top_up(augur, branchID, unlocked, password, (err, unlocked) => {
-						if (err) console.error('top_up failed:', err);
-						augur.checkPeriod(branchID, periodLength, sender, (err, votePeriod) => {
-							if (err) console.error('checkVotePeriod failed:', err);
-							callback(null, 6);
-							tools.print_reporting_status(augur, eventID, 'After checkVotePeriod');
-							augur.checkTime(branchID, eventID, periodLength, (err) => {
-								if (err) console.error('checkTime failed:', err);
-								callback(null, 7);
-							});
-						});
+				// wait for second period to start
+				augur.checkPeriod(branchID, periodLength, sender, (err, votePeriod) => {
+					if (err) console.error('checkVotePeriod failed:', err);
+					callback(null, 6);
+					tools.print_reporting_status(augur, eventID, 'After checkVotePeriod');
+					augur.checkTime(branchID, eventID, periodLength, (err) => {
+						if (err) console.error('checkTime failed:', err);
+						callback(null, 7);
 					});
 				});
 			});
