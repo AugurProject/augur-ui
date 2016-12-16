@@ -21,12 +21,19 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - gcc-4.8
-    - g++-4.8
+    - gcc-4.8
+
+matrix:
+  include:
+    - env: BUILD=1
+      sudo: required
+      services: [docker]
 
 before_script:
-  - npm install
+  - if [ -z "$BUILD" ]; then npm install; fi
 
 script:
-  - npm run lint
-  - npm run test
-  - npm run coverage
+  - if [ -z "$BUILD" ]; then npm run lint; fi
+  - if [ -z "$BUILD" ]; then npm run test; fi
+  - if [ -z "$BUILD" ]; then npm run coverage; fi
+  - if [ ! -z "$BUILD" ]; then docker run -v $(pwd):/cwd snapcore/snapcraft sh -c 'cd /cwd && apt update && apt install -y snapcraft && snapcraft'; fi
