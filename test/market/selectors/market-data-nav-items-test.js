@@ -1,10 +1,11 @@
+import { describe, it } from 'mocha';
 import { assert } from 'chai';
 
-import assertions from 'augur-ui-react-components/lib/assertions';
+import marketDataNavItemsAssertions from 'assertions/market-data-nav-items';
 
-import { MARKET_DATA_NAV_OUTCOMES, MARKET_DATA_ORDERS, MARKET_DATA_NAV_CHARTS, MARKET_DATA_NAV_DETAILS } from '../../../src/modules/app/constants/views';
+import { MARKET_DATA_NAV_OUTCOMES, MARKET_DATA_ORDERS, MARKET_DATA_NAV_CHARTS, MARKET_DATA_NAV_DETAILS, MARKET_DATA_NAV_REPORT } from 'modules/app/constants/views';
 
-import selector from '../../../src/modules/market/selectors/market-data-nav-items';
+import selector from 'modules/market/selectors/market-data-nav-items';
 
 describe('modules/market/selectors/market-data-nav-items.js', () => {
 	const actual = selector();
@@ -14,14 +15,18 @@ describe('modules/market/selectors/market-data-nav-items.js', () => {
 			label: 'Outcomes'
 		},
 		[MARKET_DATA_ORDERS]: {
-			label: 'Orders',
-			mobileOnly: true
+			label: 'Order Book',
+			isMobile: true
 		},
 		[MARKET_DATA_NAV_CHARTS]: {
 			label: 'Charts'
 		},
 		[MARKET_DATA_NAV_DETAILS]: {
 			label: 'Details'
+		},
+		[MARKET_DATA_NAV_REPORT]: {
+			label: 'Report',
+			isPendingReport: true
 		}
 	};
 
@@ -30,6 +35,6 @@ describe('modules/market/selectors/market-data-nav-items.js', () => {
 	});
 
 	it('should delivery the correct object shape to the components', () => {
-		assertions.marketDataNavItems(actual);
+		marketDataNavItemsAssertions(actual);
 	});
 });

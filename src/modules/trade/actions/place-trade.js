@@ -6,7 +6,6 @@ import { addTradeTransaction } from '../../transactions/actions/add-trade-transa
 import { selectMarket } from '../../market/selectors/market';
 import { clearTradeInProgress } from '../../trade/actions/update-trades-in-progress';
 import { updateTradeCommitLock } from '../../trade/actions/update-trade-commit-lock';
-import { selectTransactionsLink } from '../../link/selectors/links';
 import { calculateSellTradeIDs, calculateBuyTradeIDs } from '../../trade/actions/helpers/calculate-trade-ids';
 import { addBidTransaction } from '../../transactions/actions/add-bid-transaction';
 import { addAskTransaction } from '../../transactions/actions/add-ask-transaction';
@@ -130,10 +129,22 @@ export function placeTrade(marketID, outcomeID) {
 									outcomeTradeInProgress.gasFeesRealEth));
 							}
 						}
+					} else if (tradeIDs && tradeIDs.length) {
+						dispatch(updateTradeCommitLock(true));
+						dispatch(addShortSellTransaction(
+								marketID,
+								outcomeID,
+								market.type,
+								market.description,
+								outcomesData[marketID][outcomeID].name,
+								outcomeTradeInProgress.numShares,
+								outcomeTradeInProgress.limitPrice,
+								totalCost,
+								outcomeTradeInProgress.tradingFeesEth,
+								outcomeTradeInProgress.feePercent,
+								outcomeTradeInProgress.gasFeesRealEth));
 					} else {
-						if (tradeIDs && tradeIDs.length) {
-							dispatch(updateTradeCommitLock(true));
-							dispatch(addShortSellTransaction(
+						dispatch(addShortAskTransaction(
 								marketID,
 								outcomeID,
 								market.type,
@@ -145,26 +156,11 @@ export function placeTrade(marketID, outcomeID) {
 								outcomeTradeInProgress.tradingFeesEth,
 								outcomeTradeInProgress.feePercent,
 								outcomeTradeInProgress.gasFeesRealEth));
-						} else {
-							dispatch(addShortAskTransaction(
-								marketID,
-								outcomeID,
-								market.type,
-								market.description,
-								outcomesData[marketID][outcomeID].name,
-								outcomeTradeInProgress.numShares,
-								outcomeTradeInProgress.limitPrice,
-								totalCost,
-								outcomeTradeInProgress.tradingFeesEth,
-								outcomeTradeInProgress.feePercent,
-								outcomeTradeInProgress.gasFeesRealEth));
-						}
 					}
 					nextOutcome();
 				});
 			}
 		});
 		dispatch(clearTradeInProgress(marketID));
-		selectTransactionsLink(dispatch).onClick();
 	};
 }

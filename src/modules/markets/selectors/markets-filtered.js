@@ -1,8 +1,8 @@
 import memoizerific from 'memoizerific';
 import { cleanKeywordsArray } from '../../../utils/clean-keywords';
 import store from '../../../store';
-import { FILTER_TYPE_OPEN, FILTER_TYPE_CLOSED, FILTER_TYPE_REPORTED } from '../../markets/constants/filter-sort';
-import { isMarketDataExpired } from '../../../utils/is-market-data-open';
+import { FILTER_TYPE_OPEN, FILTER_TYPE_CLOSED, FILTER_TYPE_REPORTING } from '../../markets/constants/filter-sort';
+import { isMarketDataExpired, isMarketDataOpen } from '../../../utils/is-market-data-open';
 
 export default function () {
 	const { keywords, selectedFilterSort, selectedTags } = store.getState();
@@ -34,13 +34,13 @@ export const isMarketFiltersMatch = (market, keywords, selectedFilterSort, selec
 
 	function isOfType(market, type) {
 		switch (type) {
-		case (FILTER_TYPE_CLOSED):
-			return isMarketDataExpired(market, currentTime);
-		case (FILTER_TYPE_REPORTED):
-			return isMarketDataExpired(market, currentTime) && !!market.result;
-		case (FILTER_TYPE_OPEN):
-		default:
-			return !isMarketDataExpired(market, currentTime);
+			case (FILTER_TYPE_CLOSED):
+				return !isMarketDataOpen(market, currentTime);
+			case (FILTER_TYPE_REPORTING):
+				return isMarketDataExpired(market, currentTime) && isMarketDataOpen(market);
+			case (FILTER_TYPE_OPEN):
+			default:
+				return isMarketDataOpen(market, currentTime);
 		}
 	}
 

@@ -39,5 +39,5 @@ build/Release
 .idea
 *.iml
 
-# yarn lock file
-yarn.lock
+# webpack build stats
+stats.json

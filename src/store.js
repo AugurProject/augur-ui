@@ -1,15 +1,14 @@
 import {
 	createStore,
-	combineReducers,
 	applyMiddleware
 } from 'redux';
 import thunk from 'redux-thunk';
 
-import reducers from './reducers';
+import { createReducer } from './reducers';
 
 const windowRef = typeof window === 'undefined' ? {} : window;
 // console log middleware
-const consoleLog = store => next => action => {
+const consoleLog = store => next => (action) => {
 	const isIgnoreFlag = action.meta != null && action.meta.ignore === true;
 	if (typeof action !== 'function' && !isIgnoreFlag) {
 		// console.log(action);
@@ -18,7 +17,7 @@ const consoleLog = store => next => action => {
 };
 
 // local storage middleware
-const localStorageMiddleware = store => next => action => {
+const localStorageMiddleware = store => next => (action) => {
 	next(action);
 	const state = store.getState();
 
@@ -44,4 +43,13 @@ if (process.env.NODE_ENV !== 'production') {
 	middleWare = applyMiddleware(thunk, localStorageMiddleware);
 }
 // middleware
-export default createStore(combineReducers(reducers), middleWare);
+const store = createStore(createReducer(), middleWare);
+
+if (module.hot) {
+	module.hot.accept('./reducers', (changed) => {
+		const hotReducer = require('./reducers').createReducer;
+		store.replaceReducer(hotReducer());
+	});
+}
+
+export default store;

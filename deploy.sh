@@ -1,7 +1,13 @@
 #!/bin/bash
+# Augur deployment for incredibly lazy people.
+# (c) Jack Peterson (jack@tinybike.net)
 
-cp src/sitemap.xml build/sitemap.xml
-git commit -am "${1}"
+yarn
+yarn build
+git add build/*
+git commit -S -am "${1}"
+yarn lint
+yarn test
 git push origin master
 firebase deploy
 $AUGUR_CORE/load_contracts/update_private_chain_augur.sh
