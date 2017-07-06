@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import NullStateMessage from 'modules/common/components/null-state-message';
 import TopicRows from 'modules/topics/components/topic-rows';
-import CategoriesHeader from 'modules/topics/components/categories-header';
+import TopicsHeader from 'modules/topics/components/topics-header';
 import Input from 'modules/common/components/input';
 import Link from 'modules/link/components/link';
 
@@ -39,16 +39,19 @@ export default class TopicsView extends Component {
   }
 
   componentDidMount() {
+    this.setSortedTopicsState(this.props);
   }
 
   componentWillUpdate(nextProps, nextState) {
     //  topics must be sorted here by openOrderVolume or we must compare more deeply here
     if (this.props.topics !== nextProps.topics) {
-      this.setSortedTopicsState(topics, s);
+      this.setSortedTopicsState(nextProps.topics);
     }
   }
 
-  setSortedTopicsState(topics, s) {
+  setSortedTopicsState(topics) {
+    console.log(`Updating topics state`);
+    console.log(`Num topics: ${topics.length}`);
     const maxNumTopics = this.state.numberOfRows * this.state.topicsPerRow + 1; // +1 because it seems like there's one at the top as well
     topics.sort(function (a, b) {
       return a.openOrderVolume - b.openOrderVolume;
@@ -57,6 +60,7 @@ export default class TopicsView extends Component {
     this.setState({
       sortedTopics
     });
+    console.log(`sortedTopics length: ${this.state.sortedTopics}`);
   }
 
   render() {
@@ -66,6 +70,7 @@ export default class TopicsView extends Component {
     return (
       <section id="topics_view">
         <div id="topics_container">
+          <TopicsHeader />
           {s.sortedTopics.length ?
             <div className="topics">
               <TopicRows

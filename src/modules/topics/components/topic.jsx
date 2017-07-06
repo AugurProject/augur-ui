@@ -33,10 +33,8 @@ export default class Topic extends Component {
         key={`${p.topic}`}
         ref={(topicNameContainer) => { this.topicNameContainer = topicNameContainer; }}
         className="unstyled topic-button"
-        // TODO original line: do we still want/need this? className={classNames('unstyled topic-button', {'search-result': p.isSearchResult })}
         onClick={() => p.selectTopic(p.topic)}
       >
-        {!p.isSpacer &&
           <div className="topic-content">
             <div className="topic-name" >
               <span ref={(topicName) => { this.topicName = topicName; }}>
@@ -46,11 +44,10 @@ export default class Topic extends Component {
             <div className="topic-popularity">
               <span
               >
-                230     34,000 ETH
+                {p.topic.popularity}
               </span>
             </div>
           </div>
-        }
         <ReactTooltip id="topic-volume-tooltip" type="light" effect="solid" place="top">
           <span className="tooltip-text">Total Volume (TODO)</span>
         </ReactTooltip>

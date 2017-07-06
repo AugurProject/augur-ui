@@ -4,14 +4,14 @@ import classNames from 'classnames';
 
 import Link from 'modules/link/components/link';
 
-const CategoriesHeader = p => (
+const TopicsHeader = p => (
   <article className="topics-header">
-    <h1>Bet on...</h1>
+    <span className="topics-header-title">BET ON ANYTHING</span>
   </article>
 );
 
-export default CategoriesHeader;
+export default TopicsHeader;
 
-CategoriesHeader.propTypes = {
+TopicsHeader.propTypes = {
 
 };

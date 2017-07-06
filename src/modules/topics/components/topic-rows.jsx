@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Topic from 'modules/topics/components/topic';
 
 const TopicRows = (p) => {
+  // console.log(`TopicRows topics length: ${p.topics.length}`);
   let row = 0;
   let itemCount = 0;
 
@@ -15,24 +16,6 @@ const TopicRows = (p) => {
     accum[row].push(topic);
 
     itemCount += 1;
-
-    if (i === p.topics.length - 1 && accum[row].length < p.topicsPerRow && (row !== 0 || p.isSearchResult || !p.hasHeroRow)) {
-      const pushEmptyTopic = () => {
-        accum[row].push({});
-        if (accum[row].length < p.topicsPerRow) {
-          pushEmptyTopic();
-        }
-      };
-
-      pushEmptyTopic();
-
-      return accum;
-    }
-
-    if ((p.hasHeroRow && itemCount === p.topicsPerHeroRow && row === 0 && !p.isSearchResult) || itemCount === p.topicsPerRow) {
-      row += 1;
-      itemCount = 0;
-    }
 
     return accum;
   }, {});
@@ -47,7 +30,7 @@ const TopicRows = (p) => {
           {rowItems[row].map((topic, topicIndex) => (
             <Topic
               key={topic.topic}
-              isSpacer={!Object.keys(topic).length}
+              // isSpacer={!Object.keys(topic).length}
               topic={topic.topic}
               popularity={topic.popularity}
               selectTopic={p.selectTopic}
