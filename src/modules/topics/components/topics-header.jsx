@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import Link from 'modules/link/components/link';
 
 const CategoriesHeader = p => (
-  <article>
-    <h1 className="categories-header">Bet on...</h1>
+  <article className="topics-header">
+    <h1>Bet on...</h1>
   </article>
 );
 
