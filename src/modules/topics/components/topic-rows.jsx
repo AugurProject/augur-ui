@@ -4,21 +4,24 @@ import classNames from 'classnames';
 import Topic from 'modules/topics/components/topic';
 
 const TopicRows = (p) => {
-  // console.log(`TopicRows topics length: ${p.topics.length}`);
-  let row = 0;
-  let itemCount = 0;
 
-  const rowItems = p.topics.reduce((accum, topic, i) => {
+  let row = 0;
+  let itemCount = 1;
+
+  const rowItems = p.topics.reduce((accum, topic) => {
     if (!accum[row]) {
       accum[row] = [];
     }
 
     accum[row].push(topic);
 
+    if (itemCount % 3 === 0) row += 1;
     itemCount += 1;
 
     return accum;
   }, {});
+
+  // console.log(`${Object.keys(rowItems).length}`);
 
   return (
     <div className="topic-rows">
