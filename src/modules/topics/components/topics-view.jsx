@@ -29,23 +29,23 @@ export default class TopicsView extends Component {
       // Adjust these to change topic layout
       numberOfRows: 3,
       topicsPerHeroRow: 2,
-      topicsPerRow: 4,
+      topicsPerRow: 3,
       // ---
       filteredTopics: props.topics || [],
-      paginatedTopics: [],
-      pagination: {},
+      // paginatedTopics: [],
+      // pagination: {},
       fontAwesomeClasses: [],
       icoFontClasses: []
     };
 
-    this.updatePagination = this.updatePagination.bind(this);
     this.filterByKeywords = this.filterByKeywords.bind(this);
-    this.paginateFilteredTopics = this.paginateFilteredTopics.bind(this);
     this.filterOutIconClassesFromStylesheets = this.filterOutIconClassesFromStylesheets.bind(this);
+    // this.updatePagination = this.updatePagination.bind(this);
+    // this.paginateFilteredTopics = this.paginateFilteredTopics.bind(this);
   }
 
   componentWillMount() {
-    this.updatePagination(this.props, this.state);
+    // this.updatePagination(this.props, this.state);
   }
 
   componentDidMount() {
@@ -63,7 +63,7 @@ export default class TopicsView extends Component {
       this.state.filteredTopics !== nextState.filteredTopics ||
       this.state.currentPage !== nextState.currentPage
     ) {
-      this.updatePagination(nextProps, nextState);
+      // this.updatePagination(nextProps, nextState);
     }
   }
 
@@ -81,54 +81,6 @@ export default class TopicsView extends Component {
         filteredTopics
       });
     }
-  }
-
-  paginateFilteredTopics(s) {
-    // Filter Based on Pagination
-    const paginatedTopics = s.filteredTopics.slice(s.lowerIndex, s.upperIndex === s.filteredTopics.length - 1 ? undefined : s.upperIndex + 1);
-
-    if (paginatedTopics !== s.paginatedTopics) {
-      this.setState({ paginatedTopics });
-    }
-  }
-
-  updatePagination(p, s) {
-    const range = s.currentPage === 1 && !s.keywords ? (((s.numberOfRows - 1) * s.topicsPerRow) + s.topicsPerHeroRow) - 1 : (s.numberOfRows * s.topicsPerRow) - 1;
-    const keywordsLowerBump = (s.keywords && s.currentPage === 2) ? 1 : 0;
-    const lowerBump = s.currentPage < 3 ? keywordsLowerBump : (s.currentPage - 2);
-    const lowerIndex = ((s.currentPage - 1) * range) + lowerBump;
-    const upperIndex = s.filteredTopics.length - 1 >= lowerIndex + range ?
-      lowerIndex + range :
-      s.filteredTopics.length - 1;
-
-    this.setState({
-      lowerIndex,
-      upperIndex,
-      pagination: {
-        ...s.pagination,
-        startItemNum: lowerIndex + 1,
-        endItemNum: upperIndex + 1,
-        numUnpaginated: s.filteredTopics.length,
-        previousPageNum: s.currentPage > 1 ? s.currentPage - 1 : null,
-        previousPageLink: {
-          onClick: () => {
-            if (s.currentPage > 1) {
-              this.setState({ currentPage: s.currentPage - 1 });
-            }
-          }
-        },
-        nextPageNum: upperIndex < s.filteredTopics.length - 1 ? s.currentPage + 1 : null,
-        nextPageLink: {
-          onClick: () => {
-            if (upperIndex < s.filteredTopics.length - 1) {
-              this.setState({ currentPage: s.currentPage + 1 });
-            }
-          }
-        }
-      }
-    }, () => {
-      this.paginateFilteredTopics(this.state);
-    });
   }
 
   filterOutIconClassesFromStylesheets() {
@@ -185,25 +137,6 @@ export default class TopicsView extends Component {
           {!!p.loginAccount && !!p.loginAccount.rep && !!p.loginAccount.rep.value && !!p.branch.id &&
             <Branch {...p.branch} />
           }
-          <div className="topics-header">
-            <div className={classNames('topics-search', { 'only-search': !p.loginAccount || !p.loginAccount.address })}>
-              <Input
-                isSearch
-                isClearable
-                placeholder="Search Topics"
-                onChange={keywords => this.setState({ keywords })}
-              />
-            </div>
-            {p.loginAccount && p.loginAccount.address &&
-              <Link
-                className="button imperative navigational"
-                disabled={!p.loginAccount.address}
-                {...p.createMarketLink}
-              >
-                + Create New Market
-              </Link>
-            }
-          </div>
           {s.filteredTopics.length ?
             <div className="topics">
               <TopicRows
@@ -218,9 +151,6 @@ export default class TopicsView extends Component {
               />
             </div> :
             <NullStateMessage message={s.nullMessage} />
-          }
-          {!!s.filteredTopics.length &&
-            <Paginator {...s.pagination} />
           }
         </div>
       </section>
