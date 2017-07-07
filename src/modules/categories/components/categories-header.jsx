@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import CategoryTItle from 'modules/category/components/category-rows';
+import CategoryTItle from 'modules/categories/components/category-title';
 
 export default class CategoriesHeader extends Component {
   static propTypes = {
-    allCategorys: PropTypes.array,
-    mainCategorys: PropTypes.array
+    allCategories: PropTypes.array,
+    mainCategories: PropTypes.array
   }
 
   constructor(props) {
@@ -16,7 +16,7 @@ export default class CategoriesHeader extends Component {
       currentCategory: ''
     };
     this.setHeaderCategory = this.setHeaderCategory.bind(this);
-    this.filterUnusedCategorys = this.filterUnusedCategories.bind(this);
+    this.filterUnusedCategories = this.filterUnusedCategories.bind(this);
   }
 
   componentDidMount() {
@@ -25,30 +25,31 @@ export default class CategoriesHeader extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.allCategories !== nextProps.allCategories || this.props.usedCategories !== nextProps.usedCategorys) {
+    if (this.props.allCategories !== nextProps.allCategories || this.props.usedCategories !== nextProps.usedCategories) {
       this.setState({
-        categories: nextProps.categories
+        topics: nextProps.topics
       });
     }
   }
 
-  //  Filter categorys that can be used in categorys-header from the ones used in the 9 boxes
-  filterUnusedCategorys() {
-    const allCategorys = this.props.allCategories;
-    const usedCategorys = this.props.mainCategories;
-    const unusedCategorys = allCategories.filter(category => {
-      return usedCategorys.indexOf(category) < 0;
+  //  Filter topics that can be used in topics-header from the ones used in the 9 boxes
+  filterUnusedCategories() {
+    /* TODO fix the consts below
+    const allCategories = this.props.allCategories;
+    const mainCategories = this.props.mainCategories;
+    const usedCategories = allCategories.filter(category => {
+      return mainCategories.indexOf(category) < 0;
     });
-    console.log(`setting unused categorys`);
+    console.log(`setting unused categories`);
     this.setState({
-      unusedCategorys
-    });
+      usedCategories
+    });*/
   }
 
   setHeaderCategory() {
-    const unusedCategorys = this.state.unusedCategories;
+    const usedCategories = this.state.usedCategories;
     this.setState({
-      currentCategory: unusedCategories[Math.floor(Math.random() * unusedCategories.length)]
+      usedCategory: usedCategories[Math.floor(Math.random() * usedCategories.length)]
     });
   }
 
@@ -57,12 +58,9 @@ export default class CategoriesHeader extends Component {
     const s = this.state;
 
     return (
-      <div className="categorys-header-container">
-        <span className="categorys-header">BET ON...</span>
+      <div className="categories-header-container">
+        <span className="categories-header">BET ON...</span>
         <CategoryTitle category={s.currentCategory} />
-
-
-
       </div>
     );
   }

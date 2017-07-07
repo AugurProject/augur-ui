@@ -1,8 +1,8 @@
 import { loadFullMarket } from 'modules/market/actions/load-full-market';
 import { loadMarkets } from 'modules/markets/actions/load-markets';
-import { loadMarketsByTopic } from 'modules/markets/actions/load-markets-by-topic';
+import { loadMarketsByCategory } from 'modules/markets/actions/load-markets-by-category';
 
-import { MARKETS, AUTHENTICATION, TOPICS } from 'modules/app/constants/views';
+import { MARKETS, AUTHENTICATION, CATEGORIES } from 'modules/app/constants/views';
 import authenticatedViews from 'modules/app/constants/authenticated-views';
 
 import getValue from 'utils/get-value';
@@ -44,10 +44,10 @@ export function updateURL(url, title, branchID) {
     //  Load respective markets (all or topic constrained)
     if (parsedURL.searchParams.page === MARKETS && connection.isConnected && (branchID || branch.id)) {
       const parsedURL = parseURL(url);
-      const topic = getValue(parsedURL, 'searchParams.topic');
+      const category = getValue(parsedURL, 'searchParams.category');
 
-      if (!topic && !hasLoadedMarkets) dispatch(loadMarkets(branchID || branch.id));
-      if (topic && !hasLoadedTopic[topic]) dispatch(loadMarketsByTopic(topic, branchID || branch.id));
+      if (!category && !hasLoadedMarkets) dispatch(loadMarkets(branchID || branch.id));
+      if (category && !hasLoadedTopic[category]) dispatch(loadMarketsByCategory(category, branchID || branch.id));
     }
   };
 }
