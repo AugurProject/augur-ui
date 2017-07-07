@@ -35,8 +35,8 @@ export default class TopicsView extends Component {
   }
 
   componentDidMount() {
-    if (this.props.length) {
-      this.setSortedTopicsState(this.props);
+    if (this.props.topics.length) {
+      this.setSortedTopicsState(this.props.topics);
     }
   }
 
