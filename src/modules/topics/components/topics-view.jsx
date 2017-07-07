@@ -35,8 +35,9 @@ export default class TopicsView extends Component {
   }
 
   componentDidMount() {
-    if (this.props.length)
+    if (this.props.length) {
       this.setSortedTopicsState(this.props);
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -47,14 +48,16 @@ export default class TopicsView extends Component {
   }
 
   setSortedTopicsState(topics) {
-    const maxNumTopics = this.state.numberOfRows * this.state.topicsPerRow;
-    topics.sort(function (a, b) {
-      return a.openOrderVolume - b.openOrderVolume;
-    });
-    const sortedTopics = topics.slice(0, maxNumTopics);
-    this.setState({
-      sortedTopics
-    });
+    if (topics.length) {
+      const maxNumTopics = this.state.numberOfRows * this.state.topicsPerRow;
+      topics.sort(function (a, b) {
+        return a.popularity - b.popularity;
+      });
+      const sortedTopics = topics.slice(0, maxNumTopics);
+      this.setState({
+        sortedTopics
+      });
+    }
   }
 
   render() {
