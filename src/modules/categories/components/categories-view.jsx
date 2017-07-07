@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import NullStateMessage from 'modules/common/components/null-state-message';
+import TopicsHeader from 'modules/topics/components/topics-header';
 import TopicRows from 'modules/topics/components/topic-rows';
 
 
 export default class TopicsView extends Component {
   static propTypes = {
     topics: PropTypes.array,
-    branch: PropTypes.object,
     loginAccount: PropTypes.object,
     createMarketLink: PropTypes.object
   }
@@ -17,7 +17,7 @@ export default class TopicsView extends Component {
     super(props);
 
     this.state = {
-      nullMessage: 'No Topics Available',
+      nullMessage: 'No Categories Available',
       keywords: '',
       // TODO what are these for?
       lowerIndex: 0,
@@ -25,51 +25,47 @@ export default class TopicsView extends Component {
       // Adjust these to change topic layout
       numberOfRows: 3,
       topicsPerRow: 3,
-      sortedTopics: props.topics || []
+      sortedTopics: []
     };
 
     this.setSortedTopicsState = this.setSortedTopicsState.bind(this);
   }
 
-  componentWillMount() {
-  }
-
   componentDidMount() {
-    if (this.props.topics.length) {
-      this.setSortedTopicsState(this.props.topics);
-    }
+    this.setSortedTopicsState(this.props.topics);
   }
 
   componentWillUpdate(nextProps, nextState) {
-    //  topics must be sorted here by openOrderVolume or we must compare more deeply here
     if (this.props.topics !== nextProps.topics) {
       this.setSortedTopicsState(nextProps.topics);
     }
   }
 
   setSortedTopicsState(topics) {
-    if (topics.length) {
-      const maxNumTopics = this.state.numberOfRows * this.state.topicsPerRow;
-      topics.sort(function (a, b) {
-        return a.popularity - b.popularity;
-      });
-      const sortedTopics = topics.slice(0, maxNumTopics);
-      this.setState({
-        sortedTopics
-      });
-    }
+    const maxNumTopics = this.state.numberOfRows * this.state.topicsPerRow;
+    // topics.sort(function (a, b) {
+    //   return a.popularity - b.popularity;
+    // });
+    const sortedTopics = topics.slice(0, maxNumTopics);
+    this.setState({
+      sortedTopics
+    });
+    console.log(`sortedTopics.length: ${sortedTopics.length}`);
   }
 
   render() {
+
     const p = this.props;
     const s = this.state;
 
+    if (s.sortedTopics.length) console.log(`yesyesyesyesyesyesyesyesyes`);
     return (
       <section id="topics_view">
         <div id="topics_container">
-          <div className="topics-header-container">
-            <span className="topics-header">BET ON...</span>
-          </div>
+          <TopicsHeader
+            mainTopics={s.sortedTopics}
+            allTopics={p.topics}
+          />
           {s.sortedTopics.length ?
             <div className="topics">
               <TopicRows

@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import Topic from 'modules/topics/components/topic';
+import Category from 'modules/categories/components/category';
 
-const TopicRows = (p) => {
+const CategoryRows = (p) => {
 
   let row = 0;
   let itemCount = 1;
 
-  const rowItems = p.topics.reduce((accum, topic) => {
+  const rowItems = p.categories.reduce((accum, topic) => {
     if (!accum[row]) {
       accum[row] = [];
     }
@@ -21,8 +21,6 @@ const TopicRows = (p) => {
     return accum;
   }, {});
 
-  // console.log(`${Object.keys(rowItems).length}`);
-
   return (
     <div className="topic-rows">
       {Object.keys(rowItems).map((row, rowIndex) => (
@@ -33,7 +31,6 @@ const TopicRows = (p) => {
           {rowItems[row].map((topic, topicIndex) => (
             <Topic
               key={topic.topic}
-              // isSpacer={!Object.keys(topic).length}
               topic={topic.topic}
               popularity={topic.popularity}
               selectTopic={p.selectTopic}
