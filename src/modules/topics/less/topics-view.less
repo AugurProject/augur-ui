@@ -15,9 +15,34 @@
       display: flex;
       flex-direction: column;
       height: 600px;
+      padding: 5px;
 
       @media @breakpoint-1 {
         height: auto;
+      }
+    }
+
+    .topics-header-container {
+      margin: 0 auto;
+    }
+
+    .topics-header {
+      display: flex;
+      font-size: @font-size-massive;
+      margin: 40px 0 50px;
+
+      @media @breakpoint-1 {
+        flex-wrap: wrap-reverse;
+      }
+
+      .link {
+        align-self: center;
+
+        @media @breakpoint-1 {
+          flex-basis: 100%;
+          margin-bottom: 1em;
+          text-align: center;
+        }
       }
     }
   }

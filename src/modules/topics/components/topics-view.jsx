@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 import NullStateMessage from 'modules/common/components/null-state-message';
 import TopicRows from 'modules/topics/components/topic-rows';
-import TopicsHeader from 'modules/topics/components/topics-header';
-import Input from 'modules/common/components/input';
-import Link from 'modules/link/components/link';
 
 
 export default class TopicsView extends Component {
@@ -68,7 +64,9 @@ export default class TopicsView extends Component {
     return (
       <section id="topics_view">
         <div id="topics_container">
-          <TopicsHeader />
+          <div className="topics-header-container">
+            <span className="topics-header">BET ON...</span>
+          </div>
           {s.sortedTopics.length ?
             <div className="topics">
               <TopicRows

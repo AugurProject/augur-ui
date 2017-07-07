@@ -18,15 +18,8 @@ export default class Topic extends Component {
 
   }
 
-  componentDidUpdate() {
-  }
-
-  componentWillUnmount() {
-  }
-
   render() {
     const p = this.props;
-    // const s = this.state;
 
     return (
       <button
@@ -41,10 +34,10 @@ export default class Topic extends Component {
                 {p.topic.toUpperCase()}
               </span>
             </div>
-            <div className="topic-popularity">
-              <span
-              >
-                {p.topic.popularity}
+            <span className="topic-content-border"></span>
+            <div className="topic-order-volume">
+              <span>
+                {p.popularity}
               </span>
             </div>
           </div>
