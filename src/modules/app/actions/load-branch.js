@@ -4,7 +4,7 @@ import { syncBranch } from 'modules/branch/actions/sync-branch';
 import getReportingCycle from 'modules/branch/selectors/reporting-cycle';
 import { syncBlockchain } from 'modules/app/actions/sync-blockchain';
 import { listenToUpdates } from 'modules/app/actions/listen-to-updates';
-import { loadTopics } from 'modules/topics/actions/load-topics';
+import { loadCategories } from 'modules/categories/actions/load-categories';
 import { clearMarketsData } from 'modules/markets/actions/update-markets-data';
 import { updateURL } from 'modules/link/actions/update-url';
 
@@ -19,7 +19,7 @@ export const loadBranch = branchID => (dispatch, getState) => {
       if (err) console.error('syncBranch:', err);
       dispatch(listenToUpdates());
     }));
-    dispatch(loadTopics(branchID));
+    dispatch(loadCategories(branchID));
     dispatch(updateURL(window.location.pathname + window.location.search, null, branchID));
   });
 };
