@@ -4,9 +4,9 @@ import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 
 
-export default class TopicTitle extends Component {
+export default class CategoryTitle extends Component {
   static propTypes = {
-    topic: PropTypes.object
+    category: PropTypes.object
   }
 
   constructor(props) {
@@ -18,11 +18,11 @@ export default class TopicTitle extends Component {
     const p = this.props;
 
     return (
-      <div className="topic-title">
-        <span ref={(topicName) => {
-          this.topicName = topicName;
+      <div className="category-title">
+        <span ref={(categoryName) => {
+          this.categoryName = categoryName;
         }}>
-          {p.topic.toUpperCase()}
+          {p.category.toUpperCase()}
         </span>
       </div>
     );

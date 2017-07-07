@@ -8,7 +8,7 @@ import CategoryRows from 'modules/categories/components/category-rows';
 
 export default class CategoriesView extends Component {
   static propTypes = {
-    topics: PropTypes.array,
+    categories: PropTypes.array,
     loginAccount: PropTypes.object,
     createMarketLink: PropTypes.object
   }
@@ -45,7 +45,7 @@ export default class CategoriesView extends Component {
     // categories.sort(function (a, b) {
     //   return a.popularity - b.popularity;
     // });
-    const sortedCategories = topics.slice(0, maxNumCategories);
+    const sortedCategories = categories.slice(0, maxNumCategories);
     this.setState({
       sortedCategories
     });

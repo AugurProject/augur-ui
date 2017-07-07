@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 
-import TopicTitle from 'modules/topics/components/topic-rows';
+import CategoryTitle from 'modules/categories/components/category-rows';
 // import debounce from 'utils/debounce';
 // import fitText from 'utils/fit-text';
 
-export default class Topic extends Component {
+export default class Category extends Component {
   static propTypes = {
     popularity: PropTypes.number
   }
@@ -22,22 +22,22 @@ export default class Topic extends Component {
 
     return (
       <button
-        key={`${p.topic}`}
-        ref={(topicNameContainer) => { this.topicNameContainer = topicNameContainer; }}
-        className="unstyled topic-button"
-        onClick={() => p.selectTopic(p.topic)}
+        key={`${p.category}`}
+        ref={(categoryNameContainer) => { this.categoryNameContainer = categoryNameContainer; }}
+        className="unstyled category-button"
+        onClick={() => p.selectCategory(p.category)}
       >
-          <div className="topic-content">
-            <TopicTitle topic={p.topic} />
-            <span className="topic-content-border"></span>
-            <div className="topic-order-volume">
+          <div className="category-content">
+            <CategoryTitle category={p.category} />
+            <span className="category-content-border"></span>
+            <div className="category-order-volume">
               <span>
                 {p.popularity}
               </span>
             </div>
           </div>
-        <ReactTooltip id="topic-volume-tooltip" type="light" effect="solid" place="top">
-          <span className="tooltip-text">Open Order Volume</span>
+        <ReactTooltip id="category-volume-tooltip" type="light" effect="solid" place="top">
+          <span className="tooltip-text">Total Markets Volume</span>
         </ReactTooltip>
       </button>
     );

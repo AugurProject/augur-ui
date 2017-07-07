@@ -260,7 +260,7 @@ export const selectMyReportsLink = memoize((dispatch) => {
   };
 }, { max: 1 });
 
-export const selectTopicsLink = memoize((dispatch) => {
+export const selectCategoriesLink = memoize((dispatch) => {
   const href = makeLocation({}).url;
   return {
     href,
@@ -270,10 +270,10 @@ export const selectTopicsLink = memoize((dispatch) => {
   };
 }, { max: 1 });
 
-export const selectTopicLink = memoize((topic, dispatch) => {
+export const selectCategoryLink = memoize((category, dispatch) => {
   const href = makeLocation({
     page: MARKETS,
-    [TOPIC_PARAM_NAME]: topic
+    [CATEGORY_PARAM_NAME]: category
   }).url;
 
   return {
