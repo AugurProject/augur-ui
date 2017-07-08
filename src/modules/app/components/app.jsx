@@ -163,7 +163,7 @@ export default class AppView extends Component {
       authLink: getValue(p, 'links.authLink'),
       accountLink: getValue(p, 'links.accountLink'),
       myPositionsLink: getValue(p, 'links.myPositionsLink'),
-      topicsLink: getValue(p, 'links.topicsLink'),
+      categoriesLink: getValue(p, 'links.categoriesLink'),
       notifications: p.notifications
     };
 
