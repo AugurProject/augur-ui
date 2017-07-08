@@ -8,12 +8,12 @@ const CategoryRows = (p) => {
   let row = 0;
   let itemCount = 1;
 
-  const rowItems = p.categories.reduce((accum, topic) => {
+  const rowItems = p.categories.reduce((accum, category) => {
     if (!accum[row]) {
       accum[row] = [];
     }
 
-    accum[row].push(topic);
+    accum[row].push(category);
 
     if (itemCount % 3 === 0) row += 1;
     itemCount += 1;
@@ -22,18 +22,18 @@ const CategoryRows = (p) => {
   }, {});
 
   return (
-    <div className="topic-rows">
+    <div className="category-rows">
       {Object.keys(rowItems).map((row, rowIndex) => (
         <div
           key={JSON.stringify(row)}
           className={classNames('topic-row')}
         >
-          {rowItems[row].map((topic, topicIndex) => (
-            <Topic
-              key={topic.topic}
-              topic={topic.topic}
-              popularity={topic.popularity}
-              selectTopic={p.selectTopic}
+          {rowItems[row].map((category, categoryIndex) => (
+            <Category
+              key={category.category}
+              category={category.category}
+              popularity={category.popularity}
+              selectCategory={p.selectCategory}
               isSearchResult={p.isSearchResult}
             />
           ))}
@@ -43,4 +43,4 @@ const CategoryRows = (p) => {
   );
 };
 
-export default TopicRows;
+export default CategoryRows;

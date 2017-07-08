@@ -27,7 +27,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
       const UpdateLoginAccount = { updateLoginAccount: () => {} };
       const action = proxyquire('../../../src/modules/auth/actions/load-account-data.js', {
         '../../../services/augurjs': AugurJS,
-        '../../link/actions/display-topics-page': DisplayTopicsPage,
+        '../../link/actions/display-categories-page': DisplayTopicsPage,
         './fund-new-account': FundNewAccount,
         './load-account-data-from-local-storage': LoadAccountDataFromLocalStorage,
         './load-register-block-number': LoadRegisterBlockNumber,

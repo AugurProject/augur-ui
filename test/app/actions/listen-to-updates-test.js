@@ -81,7 +81,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
     '../../markets/actions/update-outcome-price': OutcomePrice,
     '../../markets/actions/load-markets-info': LoadMarketsInfo,
     '../../bids-asks/actions/update-market-order-book': UpdateMarketOrderBook,
-    '../../topics/actions/update-topics': UpdateTopics,
+    '../../categories/actions/update-categories': UpdateTopics,
     '../../transactions/actions/convert-logs-to-transactions': ConverLogsToTransactions,
     '../../my-positions/actions/update-account-trades-data': UpdateAccountTradesData
   });

@@ -9,7 +9,7 @@ describe('modules/app/constants/views', () => {
   test({
     description: `should return the expected value 'DEFAULT_VIEW'`,
     assertions: () => {
-      const expected = 'topics';
+      const expected = 'categories';
 
       assert.strictEqual(views.DEFAULT_VIEW, expected, `didn't return the expected string`);
     }
@@ -72,7 +72,7 @@ describe('modules/app/constants/views', () => {
   test({
     description: `should return the expected value 'TOPICS'`,
     assertions: () => {
-      const expected = 'topics';
+      const expected = 'categories';
 
       assert.strictEqual(views.TOPICS, expected, `didn't return the expected string`);
     }
