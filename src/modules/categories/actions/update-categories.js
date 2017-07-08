@@ -1,12 +1,12 @@
 import { augur } from 'services/augurjs';
 import { updateMarketCategory } from 'modules/markets/actions/update-markets-data';
 
-export const UPDATE_CATEGORIES = 'UPDATE_CATEGORIESS';
-export const CLEAR_CATEGORYS = 'CLEAR_CATEGORIES';
+export const UPDATE_CATEGORIES = 'UPDATE_CATEGORIES';
+export const CLEAR_CATEGORIES = 'CLEAR_CATEGORIES';
 export const UPDATE_CATEGORY_POPULARITY = 'UPDATE_CATEGORY_POPULARITY';
 
-export const updateCategories = categorys => ({ type: UPDATE_CATEGORYS, categories});
-export const clearCategories = () => ({ type: CLEAR_CATEGORYS });
+export const updateCategories = categories => ({ type: UPDATE_CATEGORIES, categories});
+export const clearCategories = () => ({ type: CLEAR_CATEGORIES });
 export const updateCategoryPopularity = (category, amount) => ({ type: UPDATE_CATEGORY_POPULARITY, category, amount });
 
 export const updateMarketCategoryPopularity = (marketID, amount) => (dispatch, getState) => {

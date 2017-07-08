@@ -21,13 +21,13 @@ export default function (marketsData = {}, action) {
           return p;
         }, {})
       };
-    case UPDATE_MARKET_TOPIC:
+    case UPDATE_MARKET_CATEGORY:
       if (!action.marketID) return marketsData;
       return {
         ...marketsData,
         [action.marketID]: {
           ...marketsData[action.marketID],
-          topic: action.topic
+          category: action.category
         }
       };
     case CLEAR_MARKETS_DATA:

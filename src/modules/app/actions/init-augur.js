@@ -51,7 +51,7 @@ export function initAugur(cb) {
                     onSuccess: () => {
                       dispatch(updateAssets());
                       dispatch(loadBranch(env.branchID || BRANCH_ID));
-                      dispatch(displayTopicsPage());
+                      dispatch(displayCategoriesPage());
                     },
                     onFailed: logError
                   });
@@ -65,7 +65,7 @@ export function initAugur(cb) {
             }
           } else {
             dispatch(loadBranch(env.branchID || BRANCH_ID));
-            dispatch(displayTopicsPage());
+            dispatch(displayCategoriesPage());
           }
           cb && cb();
         });
