@@ -59,7 +59,7 @@ export default function () {
     myPositionsLink: selectMyPositionsLink(store.dispatch),
     myMarketsLink: selectMyMarketsLink(store.dispatch),
     myReportsLink: selectMyReportsLink(store.dispatch),
-    topicsLink: selectTopicsLink(store.dispatch)
+    categoriesLink: selectCategoriesLink(store.dispatch)
   };
   // NOTE -- pagination links are a special case.  Reference the pagination selector for how those work.
 }
@@ -125,7 +125,7 @@ export const selectAirbitzOnLoad = memoize(dispatch => ({
   }
 }), { max: 1 });
 
-export const selectMarketsLink = memoize((keywords, selectedFilterSort, selectedTags, selectedPageNum, subSet, selectedTopic, dispatch) => {
+export const selectMarketsLink = memoize((keywords, selectedFilterSort, selectedTags, selectedPageNum, subSet, selectedCategory, dispatch) => {
   const params = {};
 
   // page
@@ -159,8 +159,8 @@ export const selectMarketsLink = memoize((keywords, selectedFilterSort, selected
   }
 
   // Topic
-  if (selectedTopic) {
-    params[TOPIC_PARAM_NAME] = selectedTopic;
+  if (selectedCategory) {
+    params[CATEGORY_PARAM_NAME] = selectedCategory;
   }
 
   // Subset
