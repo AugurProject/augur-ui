@@ -1,11 +1,11 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 
-import hasLoadedTopic from 'modules/topics/reducers/has-loaded-topic';
+import hasLoadedTopic from 'modules/categories/reducers/has-loaded-category';
 
-import { UPDATE_HAS_LOADED_TOPIC } from 'modules/topics/actions/update-has-loaded-topic';
+import { UPDATE_HAS_LOADED_TOPIC } from 'modules/categories/actions/update-has-loaded-category';
 
-describe('modules/topics/reducers/has-loaded-topic.js', () => {
+describe('modules/categories/reducers/has-loaded-category.js', () => {
   const test = (t) => {
     it(t.describe, () => {
       t.assertions();
@@ -26,9 +26,9 @@ describe('modules/topics/reducers/has-loaded-topic.js', () => {
   test({
     describe: 'should return the existing value',
     assertions: () => {
-      const actual = hasLoadedTopic({ topic: true }, { type: null });
+      const actual = hasLoadedTopic({ category: true }, { type: null });
 
-      const expected = { topic: true };
+      const expected = { category: true };
 
       assert.deepEqual(actual, expected, `Didn't return the expected existing value`);
     }
@@ -37,17 +37,17 @@ describe('modules/topics/reducers/has-loaded-topic.js', () => {
   test({
     describe: 'should return the updated value',
     assertions: () => {
-      const actual = hasLoadedTopic({ topic: true }, {
+      const actual = hasLoadedTopic({ category: true }, {
         type: UPDATE_HAS_LOADED_TOPIC,
         hasLoadedTopic: {
-          topic: false,
-          topic2: true
+          category: false,
+          category2: true
         }
       });
 
       const expected = {
-        topic: false,
-        topic2: true
+        category: false,
+        category2: true
       };
 
       assert.deepEqual(actual, expected, `Didn't return the expected updated value`);

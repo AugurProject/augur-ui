@@ -42,14 +42,15 @@ export default class CategoriesView extends Component {
 
   setSortedCategoriesState(categories) {
     const maxNumCategories = this.state.numberOfRows * this.state.categoriesPerRow;
-    // categories.sort(function (a, b) {
-    //   return a.popularity - b.popularity;
-    // });
+    categories.sort(function (a, b) {
+      return a.popularity - b.popularity;
+    });
     const sortedCategories = categories.slice(0, maxNumCategories);
+    console.log(`sortedCategories.length: ${sortedCategories.length}`);
     this.setState({
       sortedCategories
     });
-    console.log(`sortedCategories.length: ${sortedCategories.length}`);
+
   }
 
   render() {

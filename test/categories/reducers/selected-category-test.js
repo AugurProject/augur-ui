@@ -1,11 +1,11 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 
-import selectedTopic from 'modules/topics/reducers/selected-topic';
+import selectedTopic from 'modules/categories/reducers/selected-category';
 
 import { UPDATE_URL } from 'modules/link/actions/update-url';
 
-describe('modules/topics/reducers/selected-topic.js', () => {
+describe('modules/categories/reducers/selected-category.js', () => {
   const test = (t) => {
     it(t.describe, () => {
       t.assertions();
@@ -26,9 +26,9 @@ describe('modules/topics/reducers/selected-topic.js', () => {
   test({
     describe: 'should return the existing value',
     assertions: () => {
-      const actual = selectedTopic('topic', { type: null });
+      const actual = selectedTopic('category', { type: null });
 
-      const expected = 'topic';
+      const expected = 'category';
 
       assert.equal(actual, expected, `Didn't return the expected existing value`);
     }
@@ -37,16 +37,16 @@ describe('modules/topics/reducers/selected-topic.js', () => {
   test({
     describe: 'should return the updated value',
     assertions: () => {
-      const actual = selectedTopic('topic', {
+      const actual = selectedTopic('category', {
         type: UPDATE_URL,
         parsedURL: {
           searchParams: {
-            topic: 'new topic'
+            category: 'new category'
           }
         }
       });
 
-      const expected = 'new topic';
+      const expected = 'new category';
 
       assert.equal(actual, expected, `Didn't return the expected updated value`);
     }
