@@ -9,7 +9,7 @@ export default function () {
 export const selectCategories = createSelector(
   selectCategoriesState,
   categories => Object.keys(categories || {})
-                  .map(category => ({ category, openOrderVolume: categories[category] }))
+                  .map(category => ({ category, popularity: categories[category] }))
                   .sort(popularityDifference )
 );
 
