@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import CategoryTItle from 'modules/categories/components/category-title';
+import CategoryTitle from 'modules/categories/components/category-title';
 
 export default class CategoriesHeader extends Component {
   static propTypes = {

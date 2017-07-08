@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 export default class CategoryTitle extends Component {
   static propTypes = {
-    category: PropTypes.object
+    category: PropTypes.string
   }
 
   constructor(props) {
