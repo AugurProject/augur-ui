@@ -8,11 +8,13 @@ export const loadMarketsByCategory = (category, branchID) => (dispatch, getState
     if (err) {
       console.error('ERROR findMarketsWithCategory()', err);
       dispatch(updateHasLoadedCategory({ [category]: false }));
-    } else if (!marketIDs) {
+    }
+    else if (!marketIDs) {
       console.warn('WARN findMarketsWithCategory()', `no market id's returned`);
       dispatch(updateHasLoadedCategory({ [category]: false }));
-    } else if (marketIDs.length) {
+    }
+    else if (marketIDs.length) {
       dispatch(loadMarketsInfo(marketIDs));
     }
   });
-;
+}

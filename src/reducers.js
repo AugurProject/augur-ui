@@ -41,9 +41,9 @@ import transactionsLoading from 'modules/transactions/reducers/transactions-load
 import scalarMarketsShareDenomination from 'modules/market/reducers/scalar-markets-share-denomination';
 import closePositionTradeGroups from 'modules/my-positions/reducers/close-position-trade-groups';
 
-import topics from 'modules/topics/reducers/topics-data';
-import hasLoadedTopic from 'modules/topics/reducers/has-loaded-topic';
-import selectedTopic from 'modules/topics/reducers/selected-topic';
+import categories from 'modules/categories/reducers/categories-data';
+import hasLoadedCategory from 'modules/categories/reducers/has-loaded-category';
+import selectedCategory from 'modules/categories/reducers/selected-category';
 
 import selectedMarketID from 'modules/markets/reducers/selected-market-id';
 import selectedMarketsHeader from 'modules/markets/reducers/selected-markets-header';

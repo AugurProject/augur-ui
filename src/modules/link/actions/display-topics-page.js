@@ -1,6 +1,6 @@
-import { selectTopicsLink } from 'modules/link/selectors/links';
+import { selectCategoriesLink } from 'modules/link/selectors/links';
 
-export const displayTopicsPage = redirect => (dispatch) => {
-  const topicsLink = selectTopicsLink(dispatch);
-  if (topicsLink && redirect) topicsLink.onClick();
+export const displayCategoriesPage = redirect => (dispatch) => {
+  const categoriesLink = selectCategoriesLink(dispatch);
+  if (categoriesLink && redirect) categoriesLink.onClick();
 };
