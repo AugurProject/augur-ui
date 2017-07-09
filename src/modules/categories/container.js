@@ -6,7 +6,7 @@ import { selectCategories } from 'modules/categories/selectors/categories';
 
 const mapStateToProps = state => ({
   branch: state.branch,
-  topics: selectCategories(state),
+  categories: selectCategories(state),
   loginAccount: selectLoginAccount(state)
 });
 
@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => ({
   selectCategory: category => selectCategoryLink(category, dispatch).onClick(),
   createMarketLink: selectCreateMarketLink(dispatch)
 });
+
 
 const Categories = connect(mapStateToProps, mapDispatchToProps)(CategoriesView);
 

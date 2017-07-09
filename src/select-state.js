@@ -23,7 +23,7 @@ export const selectSelectedMarketIDState = state => state.selectedMarketID;
 export const selectSelectedMarketsSubsetState = state => state.selectedMarketsSubset;
 export const selectSelectedMarketsHeaderState = state => state.selectedMarketsHeader;
 export const selectKeywordsState = state => state.keywords;
-export const selectCategoriesState = state => state.topics;
+export const selectCategoriesState = state => state.categories;
 export const selectHasLoadedCategoryState = state => state.hasLoadedCategory;
 export const selectSelectedCategoryState = state => state.selectedCategory;
 export const selectSelectedTagsState = state => state.selectedTags;
