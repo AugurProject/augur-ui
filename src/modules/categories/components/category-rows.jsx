@@ -8,6 +8,8 @@ const CategoryRows = (p) => {
   let row = 0;
   let itemCount = 1;
 
+  // shows 50 first then throws cannot read property reduce of undefined so CategoriesView is rerendering I believe.
+  console.log(`p.categories.length: ${p.categories.length}`);
   const rowItems = p.categories.reduce((accum, category) => {
     if (!accum[row]) {
       accum[row] = [];

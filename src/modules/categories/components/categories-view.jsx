@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import NullStateMessage from 'modules/common/components/null-state-message';
-import CategoriesHeader from 'modules/categories/components/categories-header';
 import CategoryRows from 'modules/categories/components/category-rows';
 
 
@@ -17,33 +16,29 @@ export default class CategoriesView extends Component {
     super(props);
 
     this.state = {
-      lowerIndex: 0,
-      upperIndex: 4,
       categoriesPerRow: 3,
-      categories: props.categories || []
+      categories: props.categories || [],
+      headerCategory: '',
+      nullMessage: 'No Categories Available'
     };
 
+    this.setHeaderCategory = this.setHeaderCategory.bind(this);
   }
 
   componentDidMount() {
-    this.setHeaderCategory();
   }
 
   componentWillUpdate(nextProps) {
     if (this.props.categories !== nextProps.categories) {
-      this.setState({
-        categories: nextProps.categories
-      });
+      this.setState({categories: nextProps.categories});
+      // this.setHeaderCategory(nextCategories);
     }
   }
 
-  setHeaderCategory() {
-    if (this.state.categories.length) {
-      const categories = this.state.categories;
-      this.setState({
-        headerCategory: categories[Math.floor(Math.random() * categories.length)]
-      });
-    }
+  setHeaderCategory(categories) {
+    // this.setState({
+    //   headerCategory: categories[Math.floor(Math.random() * categories.length)]
+    // });
   }
 
   render() {
@@ -56,23 +51,19 @@ export default class CategoriesView extends Component {
         <div id="categories_container">
           <div className="categories-header-container">
             <span className="categories-header">BET ON...</span>
-            <div className="category-title">
-              {s.headerCategory.toUpperCase()}
-            </div>
-            {p.categories.length ?
-              <div className="topics">
-                <TopicRows
-                  topics={s.paginatedTopics}
-                  topicsPerRow={s.topicsPerRow}
-                  hasHeroRow={s.currentPage === 1}
-                  topicsPerHeroRow={s.topicsPerHeroRow}
-                  selectTopic={p.selectTopic}
-                  isSearchResult={!!s.keywords}
-                  fontAwesomeClasses={s.fontAwesomeClasses}
-                  icoFontClasses={s.icoFontClasses}
+            {/*<div className="category-title">*/}
+              {/*{s.headerCategory.toUpperCase()}*/}
+            {/*</div>*/}
+            {s.categories.length ? (
+              <div className="categories">
+                <CategoryRows
+                  categories={s.categories}
+                  topicsPerRow={this.state.categoriesPerRow}
                 />
-              </div> :
+              </div>
+            ) : (
               <NullStateMessage message={s.nullMessage} />
+              )
             }
           </div>
         </div>
