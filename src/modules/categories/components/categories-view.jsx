@@ -17,40 +17,33 @@ export default class CategoriesView extends Component {
     super(props);
 
     this.state = {
-      nullMessage: 'No Categories Available',
-      keywords: '',
-      // TODO what are these for?
       lowerIndex: 0,
       upperIndex: 4,
-      numberOfRows: 3,
       categoriesPerRow: 3,
-      sortedCategories: []
+      categories: props.categories || []
     };
 
-    this.setSortedCategoriesState = this.setSortedCategoriesState.bind(this);
   }
 
   componentDidMount() {
-    this.setSortedCategoriesState(this.props.categories);
+    this.setHeaderCategory();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps) {
     if (this.props.categories !== nextProps.categories) {
-      this.setSortedCategoriesState(nextProps.categories);
+      this.setState({
+        categories: nextProps.categories
+      });
     }
   }
 
-  setSortedCategoriesState(categories) {
-    const maxNumCategories = this.state.numberOfRows * this.state.categoriesPerRow;
-    categories.sort(function (a, b) {
-      return a.popularity - b.popularity;
-    });
-    const sortedCategories = categories.slice(0, maxNumCategories);
-    console.log(`sortedCategories.length: ${sortedCategories.length}`);
-    this.setState({
-      sortedCategories
-    });
-
+  setHeaderCategory() {
+    if (this.state.categories.length) {
+      const categories = this.state.categories;
+      this.setState({
+        headerCategory: categories[Math.floor(Math.random() * categories.length)]
+      });
+    }
   }
 
   render() {
@@ -61,20 +54,27 @@ export default class CategoriesView extends Component {
     return (
       <section id="categories_view">
         <div id="categories_container">
-          <CategoriesHeader
-            mainCategories={s.sortedCategories}
-            allCategories={p.categories}
-          />
-          {s.sortedCategories.length ?
-            <div className="categories">
-              <CategoryRows
-                categories={s.sortedCategories}
-                categoriesPerRow={s.categoriesPerRow}
-                selectCategory={p.selectCategory}
-              />
-            </div> :
-            <NullStateMessage message={s.nullMessage} />
-          }
+          <div className="categories-header-container">
+            <span className="categories-header">BET ON...</span>
+            <div className="category-title">
+              {s.headerCategory.toUpperCase()}
+            </div>
+            {p.categories.length ?
+              <div className="topics">
+                <TopicRows
+                  topics={s.paginatedTopics}
+                  topicsPerRow={s.topicsPerRow}
+                  hasHeroRow={s.currentPage === 1}
+                  topicsPerHeroRow={s.topicsPerHeroRow}
+                  selectTopic={p.selectTopic}
+                  isSearchResult={!!s.keywords}
+                  fontAwesomeClasses={s.fontAwesomeClasses}
+                  icoFontClasses={s.icoFontClasses}
+                />
+              </div> :
+              <NullStateMessage message={s.nullMessage} />
+            }
+          </div>
         </div>
       </section>
     );
