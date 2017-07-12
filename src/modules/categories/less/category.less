@@ -7,8 +7,9 @@
   flex: 1 1 0;
   flex-direction: column;
   font-size: 3em;
-  margin: 20px;
+  margin: 4rem 2rem;
   overflow: hidden;
+  padding: 1rem;
 
   @media @breakpoint-1 {
     flex: 1 1 100%;
@@ -30,19 +31,7 @@
       z-index: 2;
     }
 
-    .category-popularity {
-      align-self: flex-end;
-      flex: 10;
-      font-size: 0.6em;
-      margin: 0 auto;
-
-      span {
-        display: flex; // Allows for it to be animated
-        padding: 0.2em;
-      }
-    }
-
-    .category-title {
+    .category-name {
       align-content: center;
       align-items: flex-end;
       color: @color-text-light;
@@ -54,14 +43,30 @@
 
       span {
         align-items: center;
+        letter-spacing: 2px;
+        line-height: 50px;
         padding: 0 0.5em;
       }
     }
 
-    .category-content-border {
+    .category-separator {
       .border(true, @border-bottom);
 
-      margin: 2rem 1rem;
+      //height: 0.5px;  // thin it
+      margin: 1rem;
+      width: 90%;
+    }
+
+    .category-popularity {
+      align-self: flex-end;
+      flex: 10;
+      font-size: 0.6em;
+      margin: 0 auto;
+
+      span {
+        display: flex; // Allows for it to be animated
+        padding: 0.2em;
+      }
     }
   }
 }

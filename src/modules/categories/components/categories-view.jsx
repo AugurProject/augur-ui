@@ -19,18 +19,19 @@ export default class CategoriesView extends Component {
       categoriesPerRow: 3,
       categories: props.categories || [],
       headerCategoryTitle: '',
-      nullMessage: 'No categories available'
+      nullMessage: 'No Categories Available'
     };
 
     this.setHeaderCategoryTitle = this.setHeaderCategoryTitle.bind(this);
   }
 
   componentDidMount() {
-    setInterval(function () {
-      if (this.state.categories.length) {
-        this.setHeaderCategoryTitle(this.state.categories);
+    const that = this;
+    setInterval(() => {
+      if (that.state.categories.length) {
+        that.setHeaderCategoryTitle(that.state.categories);
       }
-    }.bind(this), 3000);
+    }, 3000);
   }
 
   componentWillUpdate(nextProps) {
@@ -53,8 +54,14 @@ export default class CategoriesView extends Component {
       <section id="categories_view">
         <div id="categories_container">
           <div className="categories-header">
-            <div className="categories-header">BET ON...</div>
-            {s.categories && s.headerCategoryTitle && <CategoryTitle category={s.headerCategoryTitle} />}
+              <h1>BET ON...</h1>
+            {s.categories && s.headerCategoryTitle &&
+            <CategoryTitle
+              category={s.headerCategoryTitle}
+              className="categories-header-title"
+            />
+            }
+            <hr className="categories-header-bottom-border"/>
           </div>
           {s.categories.length ?
             <div className="categories">

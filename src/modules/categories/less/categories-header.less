@@ -1,7 +1,9 @@
 .categories-header {
   display: flex;
-  font-size: @font-size-massive;
-  margin: 0 auto;
+  flex-direction: column;
+  letter-spacing: 0.2rem;
+  margin-top: 2rem;
+  text-align: center;
 
   @media @breakpoint-1 {
     flex-wrap: wrap-reverse;
@@ -15,5 +17,10 @@
       margin-bottom: 1em;
       text-align: center;
     }
+  }
+
+  .categories-header-bottom-border {
+    //TODO here
+    //.border(true, @border-bottom, @border-light);
   }
 }

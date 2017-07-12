@@ -18,26 +18,35 @@ export default class Category extends Component {
   }
 
   handleFitText() {
-    // TODO
+    console.log(`handling fitText()`);
     fitText(this.categoryNameContainer, this.categoryName);
   }
 
   render() {
     const p = this.props;
+    const popularity = p.popularity > 999 ? (Math.ceil(p.popularity / 1000)).toLocaleString() :
+      p.popularity;
 
     return (
       <button
         key={`${p.category}-${p.popularity}`}
-        ref={(categoryNameContainer) => { this.categoryNameContainer = categoryNameContainer; }}
+        ref={(categoryNameContainer) => {
+          this.categoryNameContainer = categoryNameContainer;
+        }}
         className="unstyled category-button"
         onClick={() => p.selectCategory(p.category)}
       >
         <div className="category-content">
-          <CategoryTitle category={p.category} />
-          <span className="category-content-border"></span>
-          <div className="category-order-volume">
+          <CategoryTitle
+            ref={(categoryName) => {
+              this.categoryName = categoryName;
+            }}
+            category={p.category.toUpperCase()}
+          />
+          <hr className="category-separator"/>
+          <div className="category-popularity">
             <span>
-              {Math.floor(p.popularity).toLocaleString()}
+              {popularity}K Shares
             </span>
           </div>
         </div>
