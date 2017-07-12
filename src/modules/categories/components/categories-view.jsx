@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import NullStateMessage from 'modules/common/components/null-state-message';
 import CategoryRows from 'modules/categories/components/category-rows';
-import CategoryTitle from 'modules/categories/components/category-title'
+import CategoryTitle from 'modules/categories/components/category-title';
 
 export default class CategoriesView extends Component {
   static propTypes = {
@@ -31,7 +31,7 @@ export default class CategoriesView extends Component {
   componentWillUpdate(nextProps) {
     if (this.props.categories !== nextProps.categories) {
       const nextCategories = nextProps.categories;
-      this.setState({categories: nextCategories});
+      this.setState({ categories: nextCategories });
       this.setHeaderCategory(nextCategories);
     }
   }
@@ -59,9 +59,9 @@ export default class CategoriesView extends Component {
                 topicsPerRow={this.state.categoriesPerRow}
               />
             </div> :
-            <NullStateMessage message={s.nullMessage}/>
+            <NullStateMessage message={s.nullMessage} />
           }
-          </div>
+        </div>
       </section>
     );
   }

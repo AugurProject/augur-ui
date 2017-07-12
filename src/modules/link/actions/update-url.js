@@ -23,7 +23,7 @@ export function updateURL(url, title, branchID) {
     if (!loginAccount.address && authenticatedViews.indexOf(parsedURL.searchParams.page) !== -1) { //  Reroute the user if they are unauthenticated and attempting to traverse to authenticated views
       dispatch(updateURL(makeLocation({ page: AUTHENTICATION }).url));
     } else if (loginAccount.address && parsedURL.searchParams.page === AUTHENTICATION) { // Reroute the user if they are authenticated and attempting to traverse to auth view
-      dispatch(updateURL(makeLocation({ page: TOPICS }).url));
+      dispatch(updateURL(makeLocation({ page: CATEGORIES }).url));
     } else {
       dispatch({ type: UPDATE_URL, parsedURL });
 

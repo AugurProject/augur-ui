@@ -31,15 +31,15 @@ export default class Category extends Component {
         className="unstyled category-button"
         onClick={() => p.selectCategory(p.category)}
       >
-          <div className="category-content">
-            <CategoryTitle category={p.category} />
-            <span className="category-content-border"></span>
-            <div className="category-order-volume">
-              <span>
-                {Math.floor(p.popularity).toLocaleString()}
-              </span>
-            </div>
+        <div className="category-content">
+          <CategoryTitle category={p.category} />
+          <span className="category-content-border"></span>
+          <div className="category-order-volume">
+            <span>
+              {Math.floor(p.popularity).toLocaleString()}
+            </span>
           </div>
+        </div>
         <ReactTooltip id="category-volume-tooltip" type="light" effect="solid" place="top">
           <span className="tooltip-text">Total Markets Volume</span>
         </ReactTooltip>

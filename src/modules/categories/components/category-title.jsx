@@ -6,6 +6,6 @@ const CategoryTitle = (p) => {
       {p.category.toUpperCase()}
     </div>
   );
-}
+};
 
 export default CategoryTitle;
