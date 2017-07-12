@@ -18,7 +18,7 @@ export const UPDATE_URL = 'UPDATE_URL';
 export function updateURL(url, title, branchID) {
   return (dispatch, getState) => {
     const parsedURL = parseURL(url);
-    const { branch, hasLoadedMarkets, hasLoadedTopic, loginAccount, selectedMarketID, connection } = getState();
+    const { branch, hasLoadedMarkets, hasLoadedCategory, loginAccount, selectedMarketID, connection } = getState();
 
     if (!loginAccount.address && authenticatedViews.indexOf(parsedURL.searchParams.page) !== -1) { //  Reroute the user if they are unauthenticated and attempting to traverse to authenticated views
       dispatch(updateURL(makeLocation({ page: AUTHENTICATION }).url));
@@ -41,13 +41,13 @@ export function updateURL(url, title, branchID) {
     if (selectedMarketID) {
       dispatch(loadFullMarket(selectedMarketID));
     }
-    //  Load respective markets (all or topic constrained)
+    //  Load respective markets (all or category constrained)
     if (parsedURL.searchParams.page === MARKETS && connection.isConnected && (branchID || branch.id)) {
       const parsedURL = parseURL(url);
       const category = getValue(parsedURL, 'searchParams.category');
 
       if (!category && !hasLoadedMarkets) dispatch(loadMarkets(branchID || branch.id));
-      if (category && !hasLoadedTopic[category]) dispatch(loadMarketsByCategory(category, branchID || branch.id));
+      if (category && !hasLoadedCategory[category]) dispatch(loadMarketsByCategory(category, branchID || branch.id));
     }
   };
 }
