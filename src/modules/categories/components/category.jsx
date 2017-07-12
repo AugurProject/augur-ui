@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
-import CategoryTitle from 'modules/categories/components/category-title'
+import CategoryTitle from 'modules/categories/components/category-title';
 
 import fitText from 'utils/fit-text';
 import debounce from 'utils/debounce';
@@ -18,7 +18,8 @@ export default class Category extends Component {
   }
 
   handleFitText() {
-    fitText(this.categoryNameContainer, this.topicName);
+    // TODO
+    fitText(this.categoryNameContainer, this.categoryName);
   }
 
   render() {
@@ -41,7 +42,7 @@ export default class Category extends Component {
           </div>
         </div>
         <ReactTooltip id="category-volume-tooltip" type="light" effect="solid" place="top">
-          <span className="tooltip-text">Total Markets Volume</span>
+          <span className="tooltip-text">Total Market Volume</span>
         </ReactTooltip>
       </button>
     );
