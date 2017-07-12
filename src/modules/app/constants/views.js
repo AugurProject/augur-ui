@@ -8,9 +8,9 @@ export const CREATE_MARKET = 'create-market';
 export const TRANSACTIONS = 'transactions';
 export const ACCOUNT = 'account';
 export const AUTHENTICATION = 'authentication';
-export const TOPICS = 'topics';
+export const CATEGORIES = 'categories';
 
-export const DEFAULT_VIEW = TOPICS;
+export const DEFAULT_VIEW = CATEGORIES;
 
 // Internal Navigation
 
