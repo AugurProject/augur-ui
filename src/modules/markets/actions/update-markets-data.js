@@ -8,4 +8,4 @@ export const updateMarketsData = marketsData => ({ type: UPDATE_MARKETS_DATA, ma
 export const clearMarketsData = () => ({ type: CLEAR_MARKETS_DATA });
 export const updateEventMarketsMap = (eventID, marketIDs) => ({ type: UPDATE_EVENT_MARKETS_MAP, eventID, marketIDs });
 export const updateMarketsLoadingStatus = (marketIDs, isLoading) => ({ type: UPDATE_MARKETS_LOADING_STATUS, marketIDs, isLoading });
-export const updateMarketCategory = (marketID, topic) => ({ type: UPDATE_MARKET_CATEGORY, marketID, category });
+export const updateMarketCategory = (marketID, category) => ({ type: UPDATE_MARKET_CATEGORY, marketID, category });

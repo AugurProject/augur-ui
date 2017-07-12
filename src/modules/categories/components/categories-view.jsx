@@ -22,23 +22,27 @@ export default class CategoriesView extends Component {
       nullMessage: 'No categories available'
     };
 
-    this.setHeaderCategory = this.setHeaderCategory.bind(this);
+    this.setHeaderCategoryTitle = this.setHeaderCategoryTitle.bind(this);
   }
 
   componentDidMount() {
+    setInterval(function () {
+      if (this.state.categories.length) {
+        this.setHeaderCategoryTitle(this.state.categories);
+      }
+    }.bind(this), 3000);
   }
 
   componentWillUpdate(nextProps) {
-    if (this.props.categories !== nextProps.categories) {
-      const nextCategories = nextProps.categories;
-      this.setState({ categories: nextCategories });
-      this.setHeaderCategory(nextCategories);
+    if (this.props.categories !== nextProps.categories && nextProps.categories.length) {
+      this.setState({ categories: nextProps.categories });
+      this.setHeaderCategoryTitle(nextProps.categories);
     }
   }
 
-  setHeaderCategory(categories) {
+  setHeaderCategoryTitle(categories) {
     this.setState({
-      headerCategory: categories[Math.floor(Math.random() * categories.length)]
+      headerCategoryTitle: categories[Math.floor(Math.random() * categories.length)].category
     });
   }
 
@@ -50,13 +54,13 @@ export default class CategoriesView extends Component {
         <div id="categories_container">
           <div className="categories-header">
             <div className="categories-header">BET ON...</div>
-            <CategoryTitle category={s.headerCategoryTitle} />
+            {s.categories && s.headerCategoryTitle && <CategoryTitle category={s.headerCategoryTitle} />}
           </div>
           {s.categories.length ?
             <div className="categories">
               <CategoryRows
                 categories={s.categories}
-                topicsPerRow={this.state.categoriesPerRow}
+                topicsPerRow={s.categoriesPerRow}
               />
             </div> :
             <NullStateMessage message={s.nullMessage} />
