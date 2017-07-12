@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-// import classNames from 'classnames';
 
-import CategoryTitle from 'modules/categories/components/category-rows';
-// import debounce from 'utils/debounce';
-// import fitText from 'utils/fit-text';
+import CategoryTitle from 'modules/categories/components/category-title'
+
+import fitText from 'utils/fit-text';
+import debounce from 'utils/debounce';
 
 export default class Category extends Component {
   static propTypes = {
@@ -14,7 +14,11 @@ export default class Category extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.handleFitText = debounce(this.handleFitText.bind(this));
+  }
+
+  handleFitText() {
+    fitText(this.categoryNameContainer, this.topicName);
   }
 
   render() {
@@ -22,7 +26,7 @@ export default class Category extends Component {
 
     return (
       <button
-        key={`${p.category}`}
+        key={`${p.category}-${p.popularity}`}
         ref={(categoryNameContainer) => { this.categoryNameContainer = categoryNameContainer; }}
         className="unstyled category-button"
         onClick={() => p.selectCategory(p.category)}
@@ -32,7 +36,7 @@ export default class Category extends Component {
             <span className="category-content-border"></span>
             <div className="category-order-volume">
               <span>
-                {p.popularity}
+                {Math.floor(p.popularity).toLocaleString()}
               </span>
             </div>
           </div>

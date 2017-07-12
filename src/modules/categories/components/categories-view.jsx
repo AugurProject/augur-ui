@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import NullStateMessage from 'modules/common/components/null-state-message';
 import CategoryRows from 'modules/categories/components/category-rows';
-
+import CategoryTitle from 'modules/categories/components/category-title'
 
 export default class CategoriesView extends Component {
   static propTypes = {
@@ -18,8 +18,8 @@ export default class CategoriesView extends Component {
     this.state = {
       categoriesPerRow: 3,
       categories: props.categories || [],
-      headerCategory: '',
-      nullMessage: 'No Categories Available'
+      headerCategoryTitle: '',
+      nullMessage: 'No categories available'
     };
 
     this.setHeaderCategory = this.setHeaderCategory.bind(this);
@@ -30,43 +30,38 @@ export default class CategoriesView extends Component {
 
   componentWillUpdate(nextProps) {
     if (this.props.categories !== nextProps.categories) {
-      this.setState({categories: nextProps.categories});
-      // this.setHeaderCategory(nextCategories);
+      const nextCategories = nextProps.categories;
+      this.setState({categories: nextCategories});
+      this.setHeaderCategory(nextCategories);
     }
   }
 
   setHeaderCategory(categories) {
-    // this.setState({
-    //   headerCategory: categories[Math.floor(Math.random() * categories.length)]
-    // });
+    this.setState({
+      headerCategory: categories[Math.floor(Math.random() * categories.length)]
+    });
   }
 
   render() {
-
-    const p = this.props;
     const s = this.state;
 
     return (
       <section id="categories_view">
         <div id="categories_container">
-          <div className="categories-header-container">
-            <span className="categories-header">BET ON...</span>
-            {/*<div className="category-title">*/}
-              {/*{s.headerCategory.toUpperCase()}*/}
-            {/*</div>*/}
-            {s.categories.length ? (
-              <div className="categories">
-                <CategoryRows
-                  categories={s.categories}
-                  topicsPerRow={this.state.categoriesPerRow}
-                />
-              </div>
-            ) : (
-              <NullStateMessage message={s.nullMessage} />
-              )
-            }
+          <div className="categories-header">
+            <div className="categories-header">BET ON...</div>
+            <CategoryTitle category={s.headerCategoryTitle} />
           </div>
-        </div>
+          {s.categories.length ?
+            <div className="categories">
+              <CategoryRows
+                categories={s.categories}
+                topicsPerRow={this.state.categoriesPerRow}
+              />
+            </div> :
+            <NullStateMessage message={s.nullMessage}/>
+          }
+          </div>
       </section>
     );
   }
