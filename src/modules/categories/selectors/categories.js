@@ -10,7 +10,7 @@ export const selectCategories = createSelector(
   selectCategoriesState,
   categories => Object.keys(categories || {})
                   .map(category => ({ category, popularity: categories[category] }))
-                  .sort(popularityDifference )
+                  .sort(popularityDifference)
 );
 
 const popularityDifference = (category1, category2) => category2.popularity - category1.popularity;
