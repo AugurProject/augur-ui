@@ -1,4 +1,4 @@
-// NOTE --  Each topic must be uniquely mapped to an icon
+// NOTE --  Each category must be uniquely mapped to an icon
 //          Each icon can have multiple categories via an array of strings
 //          Two icon font sets are availble:
 //            All Font Awesome icons (v4.7.0) are available -- http://fontawesome.io/cheatsheet/
