@@ -22,7 +22,7 @@ import {
   NEW_MARKET_EXPIRY_SOURCE,
   NEW_MARKET_END_DATE,
   NEW_MARKET_DETAILS,
-  NEW_MARKET_TOPIC,
+  NEW_MARKET_CATEGORY,
   NEW_MARKET_KEYWORDS,
   NEW_MARKET_FEES,
   NEW_MARKET_ORDER_BOOK,
@@ -179,8 +179,8 @@ export default class CreateMarketForm extends Component {
         />
         <CreateMarketFormTopic
           className={classNames({
-            'display-form-part': s.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC),
-            'hide-form-part': s.currentStep !== newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC) && s.lastStep === newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC)
+            'display-form-part': s.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY),
+            'hide-form-part': s.currentStep !== newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY) && s.lastStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY)
           })}
           topic={p.newMarket.topic}
           keywords={p.newMarket.keywords}

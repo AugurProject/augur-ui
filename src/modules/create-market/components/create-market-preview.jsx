@@ -14,7 +14,7 @@ import {
   NEW_MARKET_EXPIRY_SOURCE,
   NEW_MARKET_END_DATE,
   NEW_MARKET_DETAILS,
-  NEW_MARKET_TOPIC,
+  NEW_MARKET_CATEGORY,
   NEW_MARKET_KEYWORDS,
   NEW_MARKET_FEES,
   NEW_MARKET_ORDER_BOOK,
@@ -202,14 +202,14 @@ export default class CreateMarketPreview extends Component {
               <ul className="create-market-tags">
                 <li
                   className={classNames('prop-container create-market-tag', {
-                    'is-editing': newMarketCreationOrder[newMarket.currentStep] === NEW_MARKET_TOPIC,
+                    'is-editing': newMarketCreationOrder[newMarket.currentStep] === NEW_MARKET_CATEGORY,
                     'is-null': !newMarket.topic,
                     'has-value': !!newMarket.topic
                   })}
                 >
                   <button
                     className="unstyled"
-                    onClick={() => p.updateNewMarket({ currentStep: newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC) })}
+                    onClick={() => p.updateNewMarket({ currentStep: newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY) })}
                   >
                     <span className="null-mask" />
                     <span className="prop-value">{newMarket.topic || '\u00a0'}</span>

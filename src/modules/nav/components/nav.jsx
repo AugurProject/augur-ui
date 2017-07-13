@@ -76,7 +76,7 @@ export default class Nav extends Component {
           </button>
         }
         <div className="augur-brand">
-          <Link {...p.topicsLink} >
+          <Link {...p.categoriesLink} >
             <AugurLogoIcon />
           </Link>
         </div>

@@ -5,7 +5,7 @@ import Input from 'modules/common/components/input';
 import CreateMarketFormInputNotifications from 'modules/create-market/components/create-market-form-input-notifications';
 
 import newMarketCreationOrder from 'modules/create-market/constants/new-market-creation-order';
-import { NEW_MARKET_TOPIC } from 'modules/create-market/constants/new-market-creation-steps';
+import { NEW_MARKET_CATEGORY } from 'modules/create-market/constants/new-market-creation-steps';
 import { TAGS_MAX_LENGTH } from 'modules/create-market/constants/new-market-constraints';
 
 export default class CreateMarketFormTopic extends Component {
@@ -30,12 +30,12 @@ export default class CreateMarketFormTopic extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.currentStep !== nextProps.currentStep && newMarketCreationOrder[nextProps.currentStep] === NEW_MARKET_TOPIC) this.validateForm(nextProps.topic);
+    if (this.props.currentStep !== nextProps.currentStep && newMarketCreationOrder[nextProps.currentStep] === NEW_MARKET_CATEGORY) this.validateForm(nextProps.topic);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.currentStep !== this.props.currentStep &&
-      this.props.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC)
+      this.props.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY)
     ) {
       this.defaultFormToFocus.getElementsByTagName('input')[0].focus();
     }
