@@ -19,7 +19,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
           }
         }
       };
-      const DisplayTopicsPage = {};
+      const DisplayCategoriesPage = {};
       const FundNewAccount = { fundNewAccount: () => {} };
       const LoadAccountDataFromLocalStorage = {};
       const LoadRegisterBlockNumber = {};
@@ -27,7 +27,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
       const UpdateLoginAccount = { updateLoginAccount: () => {} };
       const action = proxyquire('../../../src/modules/auth/actions/load-account-data.js', {
         '../../../services/augurjs': AugurJS,
-        '../../link/actions/display-categories-page': DisplayTopicsPage,
+        '../../link/actions/display-categories-page': DisplayCategoriesPage,
         './fund-new-account': FundNewAccount,
         './load-account-data-from-local-storage': LoadAccountDataFromLocalStorage,
         './load-register-block-number': LoadRegisterBlockNumber,
@@ -35,8 +35,8 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
         './update-login-account': UpdateLoginAccount
       });
 
-      DisplayTopicsPage.displayTopicsPage = sinon.stub().returns({
-        type: 'DISPLAY_TOPICS_PAGE'
+      DisplayCategoriesPage.displayCategoresPage = sinon.stub().returns({
+        type: 'DISPLAY_CATEGORIES_PAGE'
       });
       sinon.stub(AugurJS.augur.Register, 'register', params => params.onSuccess({ callReturn: '1' }));
       sinon.stub(AugurJS.augur, 'getRegisterBlockNumber', (address, callback) => {
@@ -101,7 +101,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
         type: 'UPDATE_LOGIN_ACCOUNT',
         data: { address: '0xb0b' }
       }, {
-        type: 'DISPLAY_TOPICS_PAGE'
+        type: 'DISPLAY_CATEGORIES_PAGE'
       }, {
         type: 'UPDATE_ASSETS'
       }, {
@@ -126,7 +126,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
         type: 'UPDATE_LOGIN_ACCOUNT',
         data: { address: '0xb0b' }
       }, {
-        type: 'DISPLAY_TOPICS_PAGE'
+        type: 'DISPLAY_CATEGORIES_PAGE'
       }, {
         type: 'UPDATE_ASSETS'
       }, {
@@ -151,7 +151,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
         type: 'UPDATE_LOGIN_ACCOUNT',
         data: { address: '0xb0b' }
       }, {
-        type: 'DISPLAY_TOPICS_PAGE'
+        type: 'DISPLAY_CATEGORIES_PAGE'
       }, {
         type: 'UPDATE_ASSETS'
       }, {
@@ -186,7 +186,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
           airbitzAccount: { username: 'jack' }
         }
       }, {
-        type: 'DISPLAY_TOPICS_PAGE'
+        type: 'DISPLAY_CATEGORIES_PAGE'
       }, {
         type: 'UPDATE_ASSETS'
       }, {
@@ -215,7 +215,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
           loginID: 'loginID'
         }
       }, {
-        type: 'DISPLAY_TOPICS_PAGE'
+        type: 'DISPLAY_CATEGORIES_PAGE'
       }, {
         type: 'UPDATE_ASSETS'
       }, {

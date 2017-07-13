@@ -58,8 +58,8 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
     removeOrder: sinon.stub().returns({ type: 'REMOVE_ORDER' })
   };
 
-  const UpdateTopics = {
-    updateMarketTopicPopularity: sinon.stub().returns({ type: 'UPDATE_MARKET_TOPIC_POPULARITY' })
+  const UpdateCategories = {
+    updateMarketCategoryPopularity: sinon.stub().returns({ type: 'UPDATE_MARKET_CATEGORY_POPULARITY' })
   };
 
   const ConverLogsToTransactions = {
@@ -81,7 +81,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
     '../../markets/actions/update-outcome-price': OutcomePrice,
     '../../markets/actions/load-markets-info': LoadMarketsInfo,
     '../../bids-asks/actions/update-market-order-book': UpdateMarketOrderBook,
-    '../../categories/actions/update-categories': UpdateTopics,
+    '../../categories/actions/update-categories': UpdateCategories,
     '../../transactions/actions/convert-logs-to-transactions': ConverLogsToTransactions,
     '../../my-positions/actions/update-account-trades-data': UpdateAccountTradesData
   });
@@ -512,7 +512,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
           type: 'UPDATE_OUTCOME_PRICE'
         },
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         },
         {
           type: 'FILL_ORDER'
@@ -543,7 +543,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
           type: 'UPDATE_OUTCOME_PRICE'
         },
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         },
         {
           type: 'UPDATE_ACCOUNT_TRADES_DATA'
@@ -580,7 +580,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
           type: 'UPDATE_OUTCOME_PRICE'
         },
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         },
         {
           type: 'FILL_ORDER'
@@ -635,7 +635,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
           type: 'UPDATE_OUTCOME_PRICE'
         },
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         },
         {
           type: 'FILL_ORDER'
@@ -666,7 +666,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
           type: 'UPDATE_OUTCOME_PRICE'
         },
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         },
         {
           type: 'UPDATE_ACCOUNT_TRADES_DATA'
@@ -703,7 +703,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
           type: 'UPDATE_OUTCOME_PRICE'
         },
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         },
         {
           type: 'FILL_ORDER'
@@ -774,7 +774,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
 
       const expected = [
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         }
       ];
 
@@ -924,7 +924,7 @@ describe(`modules/app/actions/listen-to-updates.js`, () => {
 
       const expected = [
         {
-          type: 'UPDATE_MARKET_TOPIC_POPULARITY'
+          type: 'UPDATE_MARKET_CATEGORY_POPULARITY'
         }
       ];
 

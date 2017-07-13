@@ -1,10 +1,10 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
-import { selectTopics } from 'modules/categories/selectors/categories';
+import { selectCategories } from 'modules/categories/selectors/categories';
 
 describe(`modules/categories/selectors/select-order-book.js`, () => {
   const test = t => it(t.description, () => (
-    t.assertions(selectTopics({ categories: t.categories }))
+    t.assertions(selectCategories({ categories: t.categories }))
   ));
   test({
     description: 'no categories',

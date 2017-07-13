@@ -70,11 +70,11 @@ describe('modules/app/constants/views', () => {
   });
 
   test({
-    description: `should return the expected value 'TOPICS'`,
+    description: `should return the expected value 'CATEGORIES'`,
     assertions: () => {
       const expected = 'categories';
 
-      assert.strictEqual(views.TOPICS, expected, `didn't return the expected string`);
+      assert.strictEqual(views.CATEGORIES, expected, `didn't return the expected string`);
     }
   });
 

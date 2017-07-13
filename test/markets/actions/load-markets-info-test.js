@@ -40,7 +40,7 @@ describe(`modules/markets/actions/load-markets-info.js`, () => {
         maxValue: 3,
         numOutcomes: 3,
         consensus: null,
-        topic: 'test',
+        category: 'test',
         tags: ['test', 'testtag'],
         outcomes: [{
           id: 1
@@ -75,7 +75,7 @@ describe(`modules/markets/actions/load-markets-info.js`, () => {
           maxValue: 3,
           numOutcomes: 3,
           consensus: null,
-          topic: 'test',
+          category: 'test',
           tags: ['test', 'testtag'],
           outcomes: [{
             id: 1

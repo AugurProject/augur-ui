@@ -1,7 +1,7 @@
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 
-import selectedTopic from 'modules/categories/reducers/selected-category';
+import selectedCategory from 'modules/categories/reducers/selected-category';
 
 import { UPDATE_URL } from 'modules/link/actions/update-url';
 
@@ -15,7 +15,7 @@ describe('modules/categories/reducers/selected-category.js', () => {
   test({
     describe: 'should return the default value',
     assertions: () => {
-      const actual = selectedTopic(undefined, { type: null });
+      const actual = selectedCategory(undefined, { type: null });
 
       const expected = null;
 
@@ -26,7 +26,7 @@ describe('modules/categories/reducers/selected-category.js', () => {
   test({
     describe: 'should return the existing value',
     assertions: () => {
-      const actual = selectedTopic('category', { type: null });
+      const actual = selectedCategory('category', { type: null });
 
       const expected = 'category';
 
@@ -37,7 +37,7 @@ describe('modules/categories/reducers/selected-category.js', () => {
   test({
     describe: 'should return the updated value',
     assertions: () => {
-      const actual = selectedTopic('category', {
+      const actual = selectedCategory('category', {
         type: UPDATE_URL,
         parsedURL: {
           searchParams: {

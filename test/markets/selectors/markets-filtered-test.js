@@ -10,7 +10,7 @@ describe(`modules/markets/selectors/markets-filtered.js`, () => {
   proxyquire.noPreserveCache().noCallThru();
   const { store } = mockStore.default;
 
-  store.selectedTopic = 'testtag';
+  store.selectedCategory = 'testtag';
 
   const mockSelectors = {
     allMarkets: [

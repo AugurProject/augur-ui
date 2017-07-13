@@ -123,7 +123,7 @@ describe(`modules/trade/actions/place-trade.js`, () => {
           minValue: '1',
           network: '2',
           numOutcomes: 2,
-          topic: 'binary',
+          category: 'binary',
           tags: ['binary', 'markets', null],
           takerFee: '0.01',
           tradingFee: '0.008',

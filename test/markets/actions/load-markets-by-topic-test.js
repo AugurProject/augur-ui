@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import testState from 'test/testState';
 
-describe('modules/markets/actions/load-markets-by-topic.js', () => {
+describe('modules/markets/actions/load-markets-by-category.js', () => {
   proxyquire.noPreserveCache().noCallThru();
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
@@ -17,7 +17,7 @@ describe('modules/markets/actions/load-markets-by-topic.js', () => {
       const store = mockStore(state);
       const AugurJS = {
         augur: {
-          categories: { findMarketsWithTopic: () => {} }
+          categories: { findMarketsWithCategory: () => {} }
         }
       };
 
@@ -25,18 +25,18 @@ describe('modules/markets/actions/load-markets-by-topic.js', () => {
 
       mockLoadMarketsInfo.loadMarketsInfo = sinon.stub().returns(() => {});
 
-      AugurJS.augur.categories.findMarketsWithTopic = sinon.stub();
-      if (t.toTest === 'err') AugurJS.augur.categories.findMarketsWithTopic.yields('failed with err', null);
-      if (t.toTest === 'null-markets') AugurJS.augur.categories.findMarketsWithTopic.yields(null, null);
-      if (t.toTest === 'array') AugurJS.augur.categories.findMarketsWithTopic.yields(null, ['0x1, 0x2']);
-      if (t.toTest === 'empty-array') AugurJS.augur.categories.findMarketsWithTopic.yields(null, []);
+      AugurJS.augur.categories.findMarketsWithCategory = sinon.stub();
+      if (t.toTest === 'err') AugurJS.augur.categories.findMarketsWithCategory.yields('failed with err', null);
+      if (t.toTest === 'null-markets') AugurJS.augur.categories.findMarketsWithCategory.yields(null, null);
+      if (t.toTest === 'array') AugurJS.augur.categories.findMarketsWithCategory.yields(null, ['0x1, 0x2']);
+      if (t.toTest === 'empty-array') AugurJS.augur.categories.findMarketsWithCategory.yields(null, []);
 
-      const action = proxyquire('../../../src/modules/markets/actions/load-markets-by-topic', {
+      const action = proxyquire('../../../src/modules/markets/actions/load-markets-by-category', {
         '../../../services/augurjs': AugurJS,
         './load-markets-info': mockLoadMarketsInfo
       });
 
-      store.dispatch(action.loadMarketsByTopic());
+      store.dispatch(action.loadMarketsByCategory());
 
       t.assertions(store.getActions(), mockLoadMarketsInfo.loadMarketsInfo);
     });
@@ -48,12 +48,12 @@ describe('modules/markets/actions/load-markets-by-topic.js', () => {
     assertions: (actions) => {
       const expected = [
         {
-          type: 'UPDATE_HAS_LOADED_TOPIC',
-          hasLoadedTopic: { 'fail-err': true }
+          type: 'UPDATE_HAS_LOADED_CATEGORY',
+          hasLoadedCategory: { 'fail-err': true }
         },
         {
-          type: 'UPDATE_HAS_LOADED_TOPIC',
-          hasLoadedTopic: { 'fail-err': false }
+          type: 'UPDATE_HAS_LOADED_CATEGORY',
+          hasLoadedCategory: { 'fail-err': false }
         }
       ];
 
@@ -67,12 +67,12 @@ describe('modules/markets/actions/load-markets-by-topic.js', () => {
     assertions: (actions) => {
       const expected = [
         {
-          type: 'UPDATE_HAS_LOADED_TOPIC',
-          hasLoadedTopic: { 'fail-err': true }
+          type: 'UPDATE_HAS_LOADED_CATEGORY',
+          hasLoadedCategory: { 'fail-err': true }
         },
         {
-          type: 'UPDATE_HAS_LOADED_TOPIC',
-          hasLoadedTopic: { 'fail-err': false }
+          type: 'UPDATE_HAS_LOADED_CATEGORY',
+          hasLoadedCategory: { 'fail-err': false }
         }
       ];
 
@@ -86,8 +86,8 @@ describe('modules/markets/actions/load-markets-by-topic.js', () => {
     assertions: (actions, loadMarketsInfo) => {
       const expected = [
         {
-          type: 'UPDATE_HAS_LOADED_TOPIC',
-          hasLoadedTopic: { 'fail-err': true }
+          type: 'UPDATE_HAS_LOADED_CATEGORY',
+          hasLoadedCategory: { 'fail-err': true }
         }
       ];
 
@@ -102,8 +102,8 @@ describe('modules/markets/actions/load-markets-by-topic.js', () => {
     assertions: (actions, loadMarketsInfo) => {
       const expected = [
         {
-          type: 'UPDATE_HAS_LOADED_TOPIC',
-          hasLoadedTopic: { 'fail-err': true }
+          type: 'UPDATE_HAS_LOADED_CATEGORY',
+          hasLoadedCategory: { 'fail-err': true }
         }
       ];
 
