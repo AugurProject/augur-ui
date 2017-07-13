@@ -5,7 +5,7 @@ export default function (hasLoadedCategory = {}, action) {
     case UPDATE_HAS_LOADED_CATEGORY:
       return ({
         ...hasLoadedCategory,
-        ...action.hasLoadeCategory
+        ...action.hasLoadedCategory
       });
     default:
       return hasLoadedCategory;

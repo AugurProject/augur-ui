@@ -5,9 +5,9 @@ import getValue from 'utils/get-value';
 export default function (category = null, action) {
   switch (action.type) {
     case UPDATE_URL: {
-      const paramTopic = getValue(action, 'parsedURL.searchParams.category');
-      if (paramTopic) {
-        return paramTopic;
+      const paramCategory = getValue(action, 'parsedURL.searchParams.category');
+      if (paramCategory) {
+        return paramCategory;
       }
       return null;
     }
