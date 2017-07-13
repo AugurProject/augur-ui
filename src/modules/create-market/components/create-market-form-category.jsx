@@ -8,7 +8,7 @@ import newMarketCreationOrder from 'modules/create-market/constants/new-market-c
 import { NEW_MARKET_CATEGORY } from 'modules/create-market/constants/new-market-creation-steps';
 import { TAGS_MAX_LENGTH } from 'modules/create-market/constants/new-market-constraints';
 
-export default class CreateMarketFormTopic extends Component {
+export default class CreateMarketFormCategory extends Component {
   static propTypes = {
     currentStep: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
@@ -46,7 +46,7 @@ export default class CreateMarketFormTopic extends Component {
     const warnings = [];
 
     if (this.props.keywords.indexOf(category) !== -1) {
-      errors.push('Topic cannot be the same as a keyword');
+      errors.push('Category cannot be the same as a keyword');
     }
 
     // Error Check
@@ -73,7 +73,7 @@ export default class CreateMarketFormTopic extends Component {
         <div className="create-market-form-part-content">
           <div className="create-market-form-part-input">
             <aside>
-              <h3>Event Topic</h3>
+              <h3>Event Category</h3>
               <span>Specify the general category of the event the market is for.</span>
             </aside>
             <div className="vertical-form-divider" />
