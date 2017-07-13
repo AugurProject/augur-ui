@@ -35,7 +35,7 @@ describe(`modules/auth/actions/load-account-data.js`, () => {
         './update-login-account': UpdateLoginAccount
       });
 
-      DisplayCategoriesPage.displayCategoresPage = sinon.stub().returns({
+      DisplayCategoriesPage.displayCategoriesPage = sinon.stub().returns({
         type: 'DISPLAY_CATEGORIES_PAGE'
       });
       sinon.stub(AugurJS.augur.Register, 'register', params => params.onSuccess({ callReturn: '1' }));

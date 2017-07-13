@@ -43,12 +43,12 @@ import { listWordsUnderLength } from 'utils/list-words-under-length';
 import { makeLocation } from 'utils/parse-url';
 
 export default function () {
-  const { keywords, selectedFilterSort, selectedTags, selectedTopic, pagination, loginAccount, auth } = store.getState();
+  const { keywords, selectedFilterSort, selectedTags, selectedCategory, pagination, loginAccount, auth } = store.getState();
   const market = require('modules/market/selectors/market');
   return {
     authLink: selectAuthLink(auth.selectedAuthType, !!loginAccount.address, store.dispatch),
     createMarketLink: selectCreateMarketLink(store.dispatch),
-    marketsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, null, selectedTopic, store.dispatch),
+    marketsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, null, selectedCategory, store.dispatch),
     allMarketsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, null, null, store.dispatch),
     favoritesLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, FAVORITES, null, store.dispatch),
     pendingReportsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, PENDING_REPORTS, null, store.dispatch),
@@ -158,7 +158,7 @@ export const selectMarketsLink = memoize((keywords, selectedFilterSort, selected
     params[TAGS_PARAM_NAME] = tagsParams;
   }
 
-  // Topic
+  // Category
   if (selectedCategory) {
     params[CATEGORY_PARAM_NAME] = selectedCategory;
   }

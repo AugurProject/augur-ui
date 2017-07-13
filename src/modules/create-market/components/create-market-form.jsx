@@ -8,7 +8,7 @@ import CreateMarketFormOutcomes from 'modules/create-market/components/create-ma
 import CreateMarketFormExpirySource from 'modules/create-market/components/create-market-form-expiry-source';
 import CreateMarketFormEndDate from 'modules/create-market/components/create-market-form-end-date';
 import CreateMarketFormDetails from 'modules/create-market/components/create-market-form-details';
-import CreateMarketFormTopic from 'modules/create-market/components/create-market-form-category';
+import CreateMarketFormCategory from 'modules/create-market/components/create-market-form-category';
 import CreateMarketFormKeywords from 'modules/create-market/components/create-market-form-keywords';
 import CreateMarketFormFees from 'modules/create-market/components/create-market-form-fees';
 import CreateMarketFormOrderBook from 'modules/create-market/components/create-market-form-order-book';
@@ -177,7 +177,7 @@ export default class CreateMarketForm extends Component {
           updateValidity={this.updateValidity}
           updateNewMarket={p.updateNewMarket}
         />
-        <CreateMarketFormTopic
+        <CreateMarketFormCategory
           className={classNames({
             'display-form-part': s.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY),
             'hide-form-part': s.currentStep !== newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY) && s.lastStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY)
