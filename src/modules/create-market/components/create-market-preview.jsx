@@ -203,8 +203,8 @@ export default class CreateMarketPreview extends Component {
                 <li
                   className={classNames('prop-container create-market-tag', {
                     'is-editing': newMarketCreationOrder[newMarket.currentStep] === NEW_MARKET_CATEGORY,
-                    'is-null': !newMarket.topic,
-                    'has-value': !!newMarket.topic
+                    'is-null': !newMarket.category,
+                    'has-value': !!newMarket.category
                   })}
                 >
                   <button
@@ -212,7 +212,7 @@ export default class CreateMarketPreview extends Component {
                     onClick={() => p.updateNewMarket({ currentStep: newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY) })}
                   >
                     <span className="null-mask" />
-                    <span className="prop-value">{newMarket.topic || '\u00a0'}</span>
+                    <span className="prop-value">{newMarket.category || '\u00a0'}</span>
                   </button>
                 </li>
                 <li className="grouped-tags">

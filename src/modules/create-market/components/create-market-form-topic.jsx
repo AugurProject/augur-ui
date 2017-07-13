@@ -11,7 +11,7 @@ import { TAGS_MAX_LENGTH } from 'modules/create-market/constants/new-market-cons
 export default class CreateMarketFormTopic extends Component {
   static propTypes = {
     currentStep: PropTypes.number.isRequired,
-    topic: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
     keywords: PropTypes.array.isRequired,
     updateValidity: PropTypes.func.isRequired,
     updateNewMarket: PropTypes.func.isRequired
@@ -23,14 +23,14 @@ export default class CreateMarketFormTopic extends Component {
     this.state = {
       errors: [],
       warnings: [],
-      topic: ''
+      category: ''
     };
 
     this.validateForm = this.validateForm.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.currentStep !== nextProps.currentStep && newMarketCreationOrder[nextProps.currentStep] === NEW_MARKET_CATEGORY) this.validateForm(nextProps.topic);
+    if (this.props.currentStep !== nextProps.currentStep && newMarketCreationOrder[nextProps.currentStep] === NEW_MARKET_CATEGORY) this.validateForm(nextProps.category);
   }
 
   componentDidUpdate(prevProps) {
@@ -41,27 +41,27 @@ export default class CreateMarketFormTopic extends Component {
     }
   }
 
-  validateForm(topic) {
+  validateForm(category) {
     const errors = [];
     const warnings = [];
 
-    if (this.props.keywords.indexOf(topic) !== -1) {
+    if (this.props.keywords.indexOf(category) !== -1) {
       errors.push('Topic cannot be the same as a keyword');
     }
 
     // Error Check
-    if (!topic.length || errors.length) {
+    if (!category.length || errors.length) {
       this.props.updateValidity(false);
-      this.props.updateNewMarket({ topic: '' });
+      this.props.updateNewMarket({ category: '' });
     } else {
       this.props.updateValidity(true);
-      this.props.updateNewMarket({ topic });
+      this.props.updateNewMarket({ category });
     }
 
     // Warnings Check
-    if (topic.length === TAGS_MAX_LENGTH) warnings.push(`Maximum tag length is: ${TAGS_MAX_LENGTH}`);
+    if (category.length === TAGS_MAX_LENGTH) warnings.push(`Maximum tag length is: ${TAGS_MAX_LENGTH}`);
 
-    this.setState({ errors, warnings, topic });
+    this.setState({ errors, warnings, category });
   }
 
   render() {
@@ -83,10 +83,10 @@ export default class CreateMarketFormTopic extends Component {
             >
               <Input
                 type="text"
-                value={s.topic}
+                value={s.category}
                 debounceMS={0}
                 maxLength={TAGS_MAX_LENGTH}
-                onChange={topic => this.validateForm(topic)}
+                onChange={category => this.validateForm(category)}
               />
               <CreateMarketFormInputNotifications
                 errors={s.errors}
