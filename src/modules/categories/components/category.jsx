@@ -47,7 +47,7 @@ export default class Category extends Component {
           this.categoryNameContainer = categoryNameContainer;
         }}
         className="unstyled category-button"
-        onClick={() => p.selectCategory(p.category)}
+        //onClick={() => } // TODO sprinkle reimplement link properly
       >
         <div className="category-content">
           <CategoryTitle
