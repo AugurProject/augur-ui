@@ -54,7 +54,7 @@ export default class CategoriesView extends Component {
       <section id="categories_view">
         <div id="categories_container">
           <div className="categories-header">
-              <h1>BET ON...</h1>
+            <h1>BET ON...</h1>
             {s.categories && s.headerCategoryTitle &&
             <CategoryTitle
               category={s.headerCategoryTitle}
@@ -62,7 +62,7 @@ export default class CategoriesView extends Component {
             />
             //  TODO sprinkle bottom border per new design
             }
-            <hr className="categories-header-bottom-border"/>
+            <hr className="categories-header-bottom-border" />
           </div>
           {s.categories.length ?
             <div className="categories">

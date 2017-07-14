@@ -56,7 +56,7 @@ export default class Category extends Component {
             }}
             category={p.category.toUpperCase()}
           />
-          <hr className="category-separator"/>
+          <hr className="category-separator" />
           <div className="category-popularity">
             <span>
               {popularity} Shares
