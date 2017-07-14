@@ -17,14 +17,27 @@ export default class Category extends Component {
     this.handleFitText = debounce(this.handleFitText.bind(this));
   }
 
+  componentDidMount() {
+    fitText(this.categoryNameContainer, this.categoryName);
+
+    window.addEventListener('resize', this.handleFitText);
+  }
+
+  componentDidUpdate() {
+    fitText(this.categoryNameContainer, this.categoryName);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleFitText);
+  }
+
   handleFitText() {
-    console.log(`handling fitText()`);
     fitText(this.categoryNameContainer, this.categoryName);
   }
 
   render() {
     const p = this.props;
-    const popularity = p.popularity > 999 ? (Math.ceil(p.popularity / 1000)).toLocaleString() :
+    const popularity = p.popularity > 999 ? (Math.ceil(p.popularity / 1000)).toLocaleString() + 'K' :
       p.popularity;
 
     return (
@@ -46,7 +59,7 @@ export default class Category extends Component {
           <hr className="category-separator"/>
           <div className="category-popularity">
             <span>
-              {popularity}K Shares
+              {popularity} Shares
             </span>
           </div>
         </div>
