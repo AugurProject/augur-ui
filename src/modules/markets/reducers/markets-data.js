@@ -1,5 +1,5 @@
 import { abi } from 'services/augurjs';
-import { UPDATE_MARKETS_DATA, CLEAR_MARKETS_DATA, UPDATE_MARKETS_LOADING_STATUS, UPDATE_MARKET_TOPIC } from 'modules/markets/actions/update-markets-data';
+import { UPDATE_MARKETS_DATA, CLEAR_MARKETS_DATA, UPDATE_MARKETS_LOADING_STATUS, UPDATE_MARKET_CATEGORY } from 'modules/markets/actions/update-markets-data';
 import { CATEGORICAL, BINARY } from 'modules/markets/constants/market-types';
 import { CATEGORICAL_OUTCOMES_SEPARATOR } from 'modules/markets/constants/market-outcomes';
 
@@ -21,13 +21,13 @@ export default function (marketsData = {}, action) {
           return p;
         }, {})
       };
-    case UPDATE_MARKET_TOPIC:
+    case UPDATE_MARKET_CATEGORY:
       if (!action.marketID) return marketsData;
       return {
         ...marketsData,
         [action.marketID]: {
           ...marketsData[action.marketID],
-          topic: action.topic
+          category: action.category
         }
       };
     case CLEAR_MARKETS_DATA:

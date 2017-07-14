@@ -78,9 +78,9 @@ export default class Routes extends Component {
           .then(module => this.setState({ currentView: <module.default /> }))
           .catch(err => asyncModuleLoadError('markets', err));
       default:
-        return import(/* webpackChunkName: 'topics' */ 'modules/topics/container')
+        return import(/* webpackChunkName: 'categories' */ 'modules/categories/container')
           .then(module => this.setState({ currentView: <module.default /> }))
-          .catch(err => asyncModuleLoadError('topics', err));
+          .catch(err => asyncModuleLoadError('categories', err));
     }
   }
 

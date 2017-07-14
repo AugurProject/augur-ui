@@ -9,8 +9,8 @@ export default function (selectedMarketsHeader = null, action) {
       const paramSubset = getValue(action, 'parsedURL.searchParams.subset');
       if (paramSubset) return paramSubset;
 
-      const paramTopic = getValue(action, 'parsedURL.searchParams.topic');
-      if (paramTopic) return paramTopic;
+      const paramCategory = getValue(action, 'parsedURL.searchParams.category');
+      if (paramCategory) return paramCategory;
 
       return null;
     }

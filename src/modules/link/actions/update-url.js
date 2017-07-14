@@ -1,8 +1,8 @@
 import { loadFullMarket } from 'modules/market/actions/load-full-market';
 import { loadMarkets } from 'modules/markets/actions/load-markets';
-import { loadMarketsByTopic } from 'modules/markets/actions/load-markets-by-topic';
+import { loadMarketsByCategory } from 'modules/markets/actions/load-markets-by-category';
 
-import { MARKETS, AUTHENTICATION, TOPICS } from 'modules/app/constants/views';
+import { MARKETS, AUTHENTICATION, CATEGORIES } from 'modules/app/constants/views';
 import authenticatedViews from 'modules/app/constants/authenticated-views';
 
 import getValue from 'utils/get-value';
@@ -18,12 +18,12 @@ export const UPDATE_URL = 'UPDATE_URL';
 export function updateURL(url, title, branchID) {
   return (dispatch, getState) => {
     const parsedURL = parseURL(url);
-    const { branch, hasLoadedMarkets, hasLoadedTopic, loginAccount, selectedMarketID, connection } = getState();
+    const { branch, hasLoadedMarkets, hasLoadedCategory, loginAccount, selectedMarketID, connection } = getState();
 
     if (!loginAccount.address && authenticatedViews.indexOf(parsedURL.searchParams.page) !== -1) { //  Reroute the user if they are unauthenticated and attempting to traverse to authenticated views
       dispatch(updateURL(makeLocation({ page: AUTHENTICATION }).url));
     } else if (loginAccount.address && parsedURL.searchParams.page === AUTHENTICATION) { // Reroute the user if they are authenticated and attempting to traverse to auth view
-      dispatch(updateURL(makeLocation({ page: TOPICS }).url));
+      dispatch(updateURL(makeLocation({ page: CATEGORIES }).url));
     } else {
       dispatch({ type: UPDATE_URL, parsedURL });
 
@@ -41,13 +41,13 @@ export function updateURL(url, title, branchID) {
     if (selectedMarketID) {
       dispatch(loadFullMarket(selectedMarketID));
     }
-    //  Load respective markets (all or topic constrained)
+    //  Load respective markets (all or category constrained)
     if (parsedURL.searchParams.page === MARKETS && connection.isConnected && (branchID || branch.id)) {
       const parsedURL = parseURL(url);
-      const topic = getValue(parsedURL, 'searchParams.topic');
+      const category = getValue(parsedURL, 'searchParams.category');
 
-      if (!topic && !hasLoadedMarkets) dispatch(loadMarkets(branchID || branch.id));
-      if (topic && !hasLoadedTopic[topic]) dispatch(loadMarketsByTopic(topic, branchID || branch.id));
+      if (!category && !hasLoadedMarkets) dispatch(loadMarkets(branchID || branch.id));
+      if (category && !hasLoadedCategory[category]) dispatch(loadMarketsByCategory(category, branchID || branch.id));
     }
   };
 }

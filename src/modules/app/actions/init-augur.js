@@ -9,7 +9,7 @@ import { loadChatMessages } from 'modules/chat/actions/load-chat-messages';
 import { setLoginAccount } from 'modules/auth/actions/set-login-account';
 import { loadBranch } from 'modules/app/actions/load-branch';
 import { registerTransactionRelay } from 'modules/transactions/actions/register-transaction-relay';
-import { displayTopicsPage } from 'modules/link/actions/display-topics-page';
+import { displayCategoriesPage } from 'modules/link/actions/display-categories-page';
 import logError from 'utils/log-error';
 import noop from 'utils/noop';
 
@@ -51,7 +51,7 @@ export function initAugur(cb) {
                     onSuccess: () => {
                       dispatch(updateAssets());
                       dispatch(loadBranch(env.branchID || BRANCH_ID));
-                      dispatch(displayTopicsPage());
+                      dispatch(displayCategoriesPage());
                     },
                     onFailed: logError
                   });
@@ -65,7 +65,7 @@ export function initAugur(cb) {
             }
           } else {
             dispatch(loadBranch(env.branchID || BRANCH_ID));
-            dispatch(displayTopicsPage());
+            dispatch(displayCategoriesPage());
           }
           cb && cb();
         });

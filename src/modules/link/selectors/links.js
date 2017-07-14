@@ -36,19 +36,19 @@ import {
 } from 'modules/app/constants/views';
 import { FAVORITES, PENDING_REPORTS } from 'modules/markets/constants/markets-subset';
 
-import { SEARCH_PARAM_NAME, FILTER_SORT_TYPE_PARAM_NAME, FILTER_SORT_SORT_PARAM_NAME, FILTER_SORT_ISDESC_PARAM_NAME, PAGE_PARAM_NAME, TAGS_PARAM_NAME, TOPIC_PARAM_NAME, SUBSET_PARAM_NAME } from 'modules/link/constants/param-names';
+import { SEARCH_PARAM_NAME, FILTER_SORT_TYPE_PARAM_NAME, FILTER_SORT_SORT_PARAM_NAME, FILTER_SORT_ISDESC_PARAM_NAME, PAGE_PARAM_NAME, TAGS_PARAM_NAME, CATEGORY_PARAM_NAME, SUBSET_PARAM_NAME } from 'modules/link/constants/param-names';
 import { FILTER_SORT_TYPE, FILTER_SORT_SORT, FILTER_SORT_ISDESC } from 'modules/markets/constants/filter-sort';
 
 import { listWordsUnderLength } from 'utils/list-words-under-length';
 import { makeLocation } from 'utils/parse-url';
 
 export default function () {
-  const { keywords, selectedFilterSort, selectedTags, selectedTopic, pagination, loginAccount, auth } = store.getState();
+  const { keywords, selectedFilterSort, selectedTags, selectedCategory, pagination, loginAccount, auth } = store.getState();
   const market = require('modules/market/selectors/market');
   return {
     authLink: selectAuthLink(auth.selectedAuthType, !!loginAccount.address, store.dispatch),
     createMarketLink: selectCreateMarketLink(store.dispatch),
-    marketsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, null, selectedTopic, store.dispatch),
+    marketsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, null, selectedCategory, store.dispatch),
     allMarketsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, null, null, store.dispatch),
     favoritesLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, FAVORITES, null, store.dispatch),
     pendingReportsLink: selectMarketsLink(keywords, selectedFilterSort, selectedTags, pagination.selectedPageNum, PENDING_REPORTS, null, store.dispatch),
@@ -59,7 +59,7 @@ export default function () {
     myPositionsLink: selectMyPositionsLink(store.dispatch),
     myMarketsLink: selectMyMarketsLink(store.dispatch),
     myReportsLink: selectMyReportsLink(store.dispatch),
-    topicsLink: selectTopicsLink(store.dispatch)
+    categoriesLink: selectCategoriesLink(store.dispatch)
   };
   // NOTE -- pagination links are a special case.  Reference the pagination selector for how those work.
 }
@@ -125,7 +125,7 @@ export const selectAirbitzOnLoad = memoize(dispatch => ({
   }
 }), { max: 1 });
 
-export const selectMarketsLink = memoize((keywords, selectedFilterSort, selectedTags, selectedPageNum, subSet, selectedTopic, dispatch) => {
+export const selectMarketsLink = memoize((keywords, selectedFilterSort, selectedTags, selectedPageNum, subSet, selectedCategory, dispatch) => {
   const params = {};
 
   // page
@@ -158,9 +158,9 @@ export const selectMarketsLink = memoize((keywords, selectedFilterSort, selected
     params[TAGS_PARAM_NAME] = tagsParams;
   }
 
-  // Topic
-  if (selectedTopic) {
-    params[TOPIC_PARAM_NAME] = selectedTopic;
+  // Category
+  if (selectedCategory) {
+    params[CATEGORY_PARAM_NAME] = selectedCategory;
   }
 
   // Subset
@@ -260,7 +260,7 @@ export const selectMyReportsLink = memoize((dispatch) => {
   };
 }, { max: 1 });
 
-export const selectTopicsLink = memoize((dispatch) => {
+export const selectCategoriesLink = memoize((dispatch) => {
   const href = makeLocation({}).url;
   return {
     href,
@@ -270,16 +270,16 @@ export const selectTopicsLink = memoize((dispatch) => {
   };
 }, { max: 1 });
 
-export const selectTopicLink = memoize((topic, dispatch) => {
+export const selectCategoryLink = memoize((category, dispatch) => {
   const href = makeLocation({
     page: MARKETS,
-    [TOPIC_PARAM_NAME]: topic
+    [CATEGORY_PARAM_NAME]: category
   }).url;
 
   return {
     href,
     onClick: () => {
-      dispatch(updateSelectedMarketsHeader(topic));
+      dispatch(updateSelectedMarketsHeader(category));
       dispatch(updateURL(href));
     }
   };

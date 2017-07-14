@@ -33,7 +33,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: CATEGORICAL,
         outcomes: [
@@ -70,7 +70,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 0.02,
         makerFee: 0.01,
         extraInfo: '',
-        tags: ['test topic'],
+        tags: ['test category'],
         minValue: 1,
         maxValue: 2,
         numOutcomes: 2
@@ -96,7 +96,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: BINARY
       }
@@ -129,7 +129,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 0.02,
         makerFee: 0.01,
         extraInfo: '',
-        tags: ['test topic'],
+        tags: ['test category'],
         minValue: 1,
         maxValue: 2,
         numOutcomes: 2
@@ -155,7 +155,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: SCALAR,
         scalarSmallNum: '-10', // String for the test case, normally a BigNumber
@@ -190,7 +190,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 0.02,
         makerFee: 0.01,
         extraInfo: '',
-        tags: ['test topic'],
+        tags: ['test category'],
         minValue: '-10',
         maxValue: '10',
         numOutcomes: 2
@@ -216,7 +216,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: BINARY
       }
@@ -275,7 +275,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: BINARY
       }
@@ -326,7 +326,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: BINARY,
         orderBook: {}
@@ -370,7 +370,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: CATEGORICAL,
         outcomes: [
@@ -598,7 +598,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
         takerFee: 2,
         makerFee: 1,
         detailsText: '',
-        topic: 'test topic',
+        category: 'test category',
         keywords: [],
         type: BINARY
       }

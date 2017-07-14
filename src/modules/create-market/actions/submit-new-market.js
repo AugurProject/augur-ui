@@ -26,7 +26,7 @@ export function submitNewMarket(newMarket) {
       makerFee: newMarket.makerFee / 100,
       extraInfo: newMarket.detailsText,
       tags: [
-        newMarket.topic,
+        newMarket.category,
         ...(newMarket.keywords || [])
       ]
     };

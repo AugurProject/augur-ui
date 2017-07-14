@@ -8,7 +8,7 @@ import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info';
 import { updateOutcomePrice } from 'modules/markets/actions/update-outcome-price';
 import { claimProceeds } from 'modules/my-positions/actions/claim-proceeds';
 import { convertLogsToTransactions } from 'modules/transactions/actions/convert-logs-to-transactions';
-import { updateMarketTopicPopularity } from 'modules/topics/actions/update-topics';
+import { updateMarketCategoryPopularity } from 'modules/categories/actions/update-categories';
 import { SELL } from 'modules/outcomes/constants/trade-types';
 import * as TYPES from 'modules/transactions/constants/types';
 import { updateAccountBidsAsksData, updateAccountCancelsData, updateAccountTradesData } from 'modules/my-positions/actions/update-account-trades-data';
@@ -95,7 +95,7 @@ export function listenToUpdates() {
         console.log('log_fill_tx:', msg);
         if (msg && msg.market && msg.price && msg.outcome != null) {
           dispatch(updateOutcomePrice(msg.market, msg.outcome, abi.bignum(msg.price)));
-          dispatch(updateMarketTopicPopularity(msg.market, msg.amount));
+          dispatch(updateMarketCategoryPopularity(msg.market, msg.amount));
           const { address } = getState().loginAccount;
           if (msg.sender !== address) dispatch(fillOrder(msg));
           if (msg.sender === address || msg.owner === address) {
@@ -117,7 +117,7 @@ export function listenToUpdates() {
         console.log('log_short_fill_tx:', msg);
         if (msg && msg.market && msg.price && msg.outcome != null) {
           dispatch(updateOutcomePrice(msg.market, msg.outcome, abi.bignum(msg.price)));
-          dispatch(updateMarketTopicPopularity(msg.market, msg.amount));
+          dispatch(updateMarketCategoryPopularity(msg.market, msg.amount));
 
           const { address } = getState().loginAccount;
           if (msg.sender !== address) dispatch(fillOrder({ ...msg, type: SELL }));
@@ -144,12 +144,12 @@ export function listenToUpdates() {
           if (msg.isShortAsk) {
             const market = getState().marketsData[msg.market];
             if (market && market.numOutcomes) {
-              dispatch(updateMarketTopicPopularity(msg.market, new BigNumber(msg.amount, 10).times(market.numOutcomes)));
+              dispatch(updateMarketCategoryPopularity(msg.market, new BigNumber(msg.amount, 10).times(market.numOutcomes)));
             } else {
               dispatch(loadMarketsInfo([msg.market], () => {
                 const market = getState().marketsData[msg.market];
                 if (market && market.numOutcomes) {
-                  dispatch(updateMarketTopicPopularity(msg.market, new BigNumber(msg.amount, 10).times(market.numOutcomes)));
+                  dispatch(updateMarketCategoryPopularity(msg.market, new BigNumber(msg.amount, 10).times(market.numOutcomes)));
                 }
               }));
             }
@@ -186,7 +186,7 @@ export function listenToUpdates() {
           console.log('completeSets_logReturn:', msg);
           let amount = new BigNumber(msg.amount, 10).times(msg.numOutcomes);
           if (msg.type === SELL) amount = amount.neg();
-          dispatch(updateMarketTopicPopularity(msg.market, amount.toFixed()));
+          dispatch(updateMarketCategoryPopularity(msg.market, amount.toFixed()));
         }
       },
 
@@ -270,7 +270,7 @@ export function listenToUpdates() {
           if (branch.id === msg.branch) {
             dispatch(loadMarketsInfo([msg.market], () => {
               const { volume } = getState().marketsData[msg.market];
-              dispatch(updateMarketTopicPopularity(msg.market, abi.bignum(volume).neg().toNumber()));
+              dispatch(updateMarketCategoryPopularity(msg.market, abi.bignum(volume).neg().toNumber()));
               if (loginAccount.address) dispatch(claimProceeds());
             }));
           }

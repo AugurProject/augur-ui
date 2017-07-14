@@ -32,8 +32,8 @@ export default function (links) {
       assertLink(links.createMarketLink, 'createMarketLink');
     });
 
-    it('topicsLink', () => {
-      assertLink(links.topicsLink, 'topicsLink');
+    it('categoriesLink', () => {
+      assertLink(links.categoriesLink, 'categoriesLink');
     });
   });
 }

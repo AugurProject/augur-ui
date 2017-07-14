@@ -8,7 +8,7 @@ import CreateMarketFormOutcomes from 'modules/create-market/components/create-ma
 import CreateMarketFormExpirySource from 'modules/create-market/components/create-market-form-expiry-source';
 import CreateMarketFormEndDate from 'modules/create-market/components/create-market-form-end-date';
 import CreateMarketFormDetails from 'modules/create-market/components/create-market-form-details';
-import CreateMarketFormTopic from 'modules/create-market/components/create-market-form-topic';
+import CreateMarketFormCategory from 'modules/create-market/components/create-market-form-category';
 import CreateMarketFormKeywords from 'modules/create-market/components/create-market-form-keywords';
 import CreateMarketFormFees from 'modules/create-market/components/create-market-form-fees';
 import CreateMarketFormOrderBook from 'modules/create-market/components/create-market-form-order-book';
@@ -22,7 +22,7 @@ import {
   NEW_MARKET_EXPIRY_SOURCE,
   NEW_MARKET_END_DATE,
   NEW_MARKET_DETAILS,
-  NEW_MARKET_TOPIC,
+  NEW_MARKET_CATEGORY,
   NEW_MARKET_KEYWORDS,
   NEW_MARKET_FEES,
   NEW_MARKET_ORDER_BOOK,
@@ -177,12 +177,12 @@ export default class CreateMarketForm extends Component {
           updateValidity={this.updateValidity}
           updateNewMarket={p.updateNewMarket}
         />
-        <CreateMarketFormTopic
+        <CreateMarketFormCategory
           className={classNames({
-            'display-form-part': s.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC),
-            'hide-form-part': s.currentStep !== newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC) && s.lastStep === newMarketCreationOrder.indexOf(NEW_MARKET_TOPIC)
+            'display-form-part': s.currentStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY),
+            'hide-form-part': s.currentStep !== newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY) && s.lastStep === newMarketCreationOrder.indexOf(NEW_MARKET_CATEGORY)
           })}
-          topic={p.newMarket.topic}
+          category={p.newMarket.category}
           keywords={p.newMarket.keywords}
           currentStep={p.newMarket.currentStep}
           updateValidity={this.updateValidity}
@@ -196,7 +196,7 @@ export default class CreateMarketForm extends Component {
           isValid={p.newMarket.isValid}
           currentStep={p.newMarket.currentStep}
           keywords={p.newMarket.keywords}
-          topic={p.newMarket.topic}
+          category={p.newMarket.category}
           validations={p.newMarket.validations}
           updateValidity={this.updateValidity}
           updateNewMarket={p.updateNewMarket}

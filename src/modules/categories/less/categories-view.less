@@ -1,0 +1,25 @@
+#categories_view {
+  flex-direction: row;
+  justify-content: center;
+
+  #categories_container {
+    .constrained-view();
+
+    color: @color-white;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+
+    .categories {
+      display: flex;
+      flex-direction: column;
+      margin-top: 1.2rem;
+      padding: 5px;
+
+      @media @breakpoint-1 {
+        height: auto;
+      }
+    }
+  }
+}

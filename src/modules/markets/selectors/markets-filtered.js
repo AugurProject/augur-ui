@@ -1,5 +1,5 @@
 import store from 'src/store';
-import { selectKeywordsState, selectSelectedFilterSortState, selectSelectedTagsState, selectSelectedTopicState, selectBranchReportPeriod } from 'src/select-state';
+import { selectKeywordsState, selectSelectedFilterSortState, selectSelectedTagsState, selectSelectedCategoryState, selectBranchReportPeriod } from 'src/select-state';
 import selectAllMarkets from 'modules/markets/selectors/markets-all';
 
 import { FILTER_TYPE_OPEN, FILTER_TYPE_CLOSED, FILTER_TYPE_REPORTING } from 'modules/markets/constants/filter-sort';
@@ -16,28 +16,28 @@ export const selectFilteredMarkets = createBigCacheSelector(3)(
   selectAllMarkets,
   selectKeywordsState,
   selectSelectedTagsState,
-  selectSelectedTopicState,
+  selectSelectedCategoryState,
   selectSelectedFilterSortState,
   selectBranchReportPeriod,
-  (markets, keywords, selectedTags, selectedTopic, selectedFilterSort, reportPeriod) => (
+  (markets, keywords, selectedTags, selectedCategory, selectedFilterSort, reportPeriod) => (
     markets.filter(market => isMarketFiltersMatch(
       market,
       keywords,
       selectedFilterSort,
       selectedTags,
-      selectedTopic,
+      selectedCategory,
       reportPeriod
     ))
   )
 );
 
-export const isMarketFiltersMatch = (market, keywords, selectedFilterSort, selectedTags, selectedTopic, reportPeriod) => {
+export const isMarketFiltersMatch = (market, keywords, selectedFilterSort, selectedTags, selectedCategory, reportPeriod) => {
 
   const selectedTagsList = Object.keys(selectedTags);
   return isMatchKeywords(market, keywords) &&
     isMatchTags(market, selectedTagsList) &&
     isOfType(market, selectedFilterSort.type) &&
-    isMatchTopic(market, selectedTopic) &&
+    isMatchCategory(market, selectedCategory) &&
     isDisplayable(market);
 
   function isMatchKeywords(market, keys) {
@@ -71,12 +71,12 @@ export const isMarketFiltersMatch = (market, keywords, selectedFilterSort, selec
     return selectedTagsList.every(tag => market.tags.some(marketTag => marketTag.name === tag));
   }
 
-  function isMatchTopic(market, selectedTopic) {
-    if (!selectedTopic) {
+  function isMatchCategory(market, selectedCategory) {
+    if (!selectedCategory) {
       return true;
     }
 
-    return market.tags.length && market.tags[0].name === selectedTopic;
+    return market.tags.length && market.tags[0].name === selectedCategory;
   }
 
   function isDisplayable(market) {

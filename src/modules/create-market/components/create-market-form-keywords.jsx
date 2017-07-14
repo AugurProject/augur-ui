@@ -12,7 +12,7 @@ export default class CreateMarketFormKeywords extends Component {
     isValid: PropTypes.bool.isRequired,
     currentStep: PropTypes.number.isRequired,
     keywords: PropTypes.array.isRequired,
-    topic: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
     validations: PropTypes.array.isRequired,
     updateValidity: PropTypes.func.isRequired,
     updateNewMarket: PropTypes.func.isRequired
@@ -58,8 +58,8 @@ export default class CreateMarketFormKeywords extends Component {
     warnings.fill('');
 
     keywords.forEach((keyword, i) => {
-      if (keyword === this.props.topic) {
-        errors[i] = 'Keyword identical to topic';
+      if (keyword === this.props.category) {
+        errors[i] = 'Keyword identical to category';
       } else if (keywords.indexOf(keyword) > -1 && keywords.indexOf(keyword) !== i) {
         errors[i] = 'Keyword must be unique';
       } else if (keyword.length === TAGS_MAX_LENGTH) {
