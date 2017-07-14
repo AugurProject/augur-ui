@@ -26,7 +26,7 @@ const CategoryRows = (p) => {
       {Object.keys(rowItems).map((row, rowIndex) => (
         <div
           key={JSON.stringify(row)}
-          className={classNames('topic-row')}
+          className={classNames('category-row')}
         >
           {rowItems[row].map((category, categoryIndex) => (
             <Category

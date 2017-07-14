@@ -67,7 +67,7 @@ export default class CategoriesView extends Component {
             <div className="categories">
               <CategoryRows
                 categories={s.categories}
-                topicsPerRow={s.categoriesPerRow}
+                categoresPerRow={s.categoriesPerRow}
               />
             </div> :
             <NullStateMessage message={s.nullMessage} />
