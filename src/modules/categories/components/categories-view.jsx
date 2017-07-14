@@ -60,6 +60,7 @@ export default class CategoriesView extends Component {
               category={s.headerCategoryTitle}
               className="categories-header-title"
             />
+            //  TODO sprinkle bottom border per new design
             }
             <hr className="categories-header-bottom-border"/>
           </div>
