@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import NullStateMessage from 'modules/common/components/null-state-message';
 import TopicRows from 'modules/topics/components/topic-rows';
 import Paginator from 'modules/common/components/paginator';
+import Spinner from 'modules/common/components/spinner';
 import Branch from 'modules/branch/components/branch';
 import FilterSort from 'modules/filter-sort/container';
 
@@ -47,6 +48,7 @@ export default class TopicsView extends Component {
       filteredTopics: [],
       filteredTopicsLength: 0,
       hasKeywords: false,
+      loaded: false,
       paginatedTopics: [],
       pagination: {},
       fontAwesomeClasses: [],
@@ -149,6 +151,7 @@ export default class TopicsView extends Component {
 
   updateFilteredItems(filteredTopics) {
     this.setState({
+      loaded: true,
       filteredTopics,
       filteredTopicsLength: filteredTopics.length,
       hasKeywords: filteredTopics.length !== getValue(this.props, 'topics.length') // Inferred
@@ -156,8 +159,10 @@ export default class TopicsView extends Component {
   }
 
   render() {
+
     const p = this.props;
     const s = this.state;
+
 
     return (
       <section id="topics_view">
@@ -185,7 +190,16 @@ export default class TopicsView extends Component {
               </Link>
             }
           </div>
-          {s.filteredTopicsLength && s.boundedLength ?
+          {!s.loaded ?
+            <section id="topics_view">
+              <div id="topics_container">
+                <div className="loading-spinner" >
+                  <Spinner />
+                </div>
+              </div>
+            </section> : ''
+          }
+          {s.loaded && s.filteredTopicsLength && s.boundedLength ?
             <div className="topics">
               <TopicRows
                 topics={p.topics}
@@ -203,7 +217,7 @@ export default class TopicsView extends Component {
             </div> :
             <NullStateMessage message={'No Topics Available'} />
           }
-          {!!s.filteredTopicsLength &&
+          {s.loaded && !!s.filteredTopicsLength &&
             <Paginator
               itemsLength={s.filteredTopicsLength}
               itemsPerPage={s.itemsPerPage}

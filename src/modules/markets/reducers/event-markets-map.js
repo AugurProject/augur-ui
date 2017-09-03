@@ -4,12 +4,19 @@ export default function (eventMarketsMap = {}, action) {
   switch (action.type) {
     case UPDATE_EVENT_MARKETS_MAP: {
       if (eventMarketsMap[action.eventID]) {
-        const isUnique = {};
+
+        const elements = (eventMarketsMap[action.eventID].concat(action.marketIDs))
+        .reduce((agg, el) => {
+          if (!agg.isUnique.hasOwnProperty(el)) {
+            agg.isUnique[el] = true;
+            agg.values.push(el);
+          }
+          return agg;
+        }, { values: [], isUnique: {} });
+
         return {
           ...eventMarketsMap,
-          [action.eventID]: (eventMarketsMap[action.eventID].concat(action.marketIDs)).filter(el => (
-            isUnique.hasOwnProperty(el) ? false : (isUnique[el] = true))
-          )
+          [action.eventID]: elements.values
         };
       }
       return {
