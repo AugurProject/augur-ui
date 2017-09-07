@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		11: 0
+/******/ 		12: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"transactions","2":"portfolio","3":"account","4":"market","5":"auth","6":"create-market","7":"topics","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"5d456a4fcf1e505a8404","1":"5d4e0c87cee0a357dca8","2":"520ea69cb0b08d19d93c","3":"fec3c931897da763db56","4":"5f4435903d35d982bb22","5":"91f1fd554308ba0c32b7","6":"ff4c079aebc48ca74fc5","7":"df24d69bae5b2bda8fe0","8":"97b8343dd4b015d92168","9":"0b4b02f0d708310b9ac8","10":"7c91efae746bec2033c4"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"transactions","2":"portfolio","3":"account","4":"market","5":"auth","6":"create-market","7":"topics","8":"style-sandbox","9":"main","10":"assets/scripts/vendor","11":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"a42d11dc3e36d66bf9f3","1":"11897de6565aaa07b9fb","2":"976d10b99ed0afcfb0fa","3":"a8a199d7ea64dab345bd","4":"a5af79f8eb494f2430ca","5":"21ebe34a33161c9b7e84","6":"88c7535c8a572145c91c","7":"10928334c476bbf08186","8":"c15fe6a202f1203c0e75","9":"1c4267762d5be23ae6d8","10":"7ef364713e30be0dc9ce","11":"529f6e87be7cc41da3e6"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
