@@ -91,11 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-<<<<<<< HEAD
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"topics","2":"transactions","3":"account","4":"market","5":"portfolio","6":"create-market","7":"auth","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"2d5c0cd235878d7f5035","1":"f1fc1fd2181b26735a63","2":"5adea744d638d5ce2727","3":"b481b73bdb0c8bbccf33","4":"8e991245650840b15c5c","5":"9276917a6d96ec2824e0","6":"a019f6609582f747e3b4","7":"3db7bc67186d776e4e08","8":"03dec8fc95e09fc1fa65","9":"e40f7aae926ce4ea33a8","10":"4f8c38807bd8493448f0"}[chunkId] + ".js";
-=======
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"topics","2":"transactions","3":"account","4":"market","5":"create-market","6":"portfolio","7":"auth","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"65620530df558c8f750a","1":"18b7df87e2df4f01c3ac","2":"3c407511780d33b6bd0a","3":"1c9808a043ab33e8a921","4":"5bdd3ae1744ccff30343","5":"fe1fd85377456176b837","6":"476fdf1a6747f7dce243","7":"863b4bee14f429da406f","8":"79b7f9e43a10ff3d8217","9":"066a55b449c044fc67e0","10":"5a44794256fd24944ded"}[chunkId] + ".js";
->>>>>>> master
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"topics","2":"transactions","3":"account","4":"market","5":"portfolio","6":"create-market","7":"auth","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"da377350e45054f61a22","1":"4931b38ba4d86f73e3ca","2":"bfa8ef83324efe3677c0","3":"d4a543cf4c4fcfd65342","4":"9106de157d612731f291","5":"51dba6123bc4ce32b437","6":"2db0fcceefa54ab3cd7d","7":"f98d19cf6aaedb4cba23","8":"ec4979bfce2e7eaf724e","9":"9a296e81d4212b71c2ce","10":"062a4d8510037a615c71"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
