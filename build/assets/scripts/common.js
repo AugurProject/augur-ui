@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		11: 0
+/******/ 		14: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"transactions","2":"portfolio","3":"account","4":"market","5":"auth","6":"create-market","7":"topics","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"c39856b05774ed96beae","1":"bf789d9dff46862c1568","2":"973dcd6db48d2c4261d0","3":"0e9b7fb2e137c635dad0","4":"ed35c003291ef94798f1","5":"b502714254279b824270","6":"5ef6e273645bb7c22eed","7":"0a69165d392a5a29ad60","8":"01f0411a94de94590306","9":"7d00ef210b3850d843aa","10":"8ad806f4a51717c2c1ac"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"transactions","2":"portfolio","3":"account","4":"market","5":"create-market","6":"topics","7":"auth","8":"style-sandbox","9":"signup","10":"login","11":"main","12":"assets/scripts/vendor","13":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"8d67a60988b799f2cbae","1":"14cca0c7ea8e885f940b","2":"3dd75eea1a8adeb249d0","3":"878f24040f30fb016d72","4":"913e55edaa47162024a9","5":"09c3ad5f9ffb97904765","6":"921cfe667b1dcfd36b62","7":"87e2b033ab84713f5e6b","8":"097b4fa1f2826d9dedab","9":"35920b6cd2ccb415bb09","10":"a2cb93f03355899bdd27","11":"3ae106b6a13e4ea4182e","12":"d3d078bf4cddc5eee82c","13":"efeeaf2b973ac6b0ac01"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -144,7 +144,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/";
+/******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
