@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		14: 0
+/******/ 		15: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"transactions","2":"portfolio","3":"account","4":"market","5":"create-market","6":"topics","7":"auth","8":"style-sandbox","9":"signup","10":"login","11":"main","12":"assets/scripts/vendor","13":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"87c18a66c8039ad8d2b6","1":"0268e5c49e63f765c2ee","2":"85683980a5553b6e76ea","3":"791e2cb096572442ce2c","4":"9c0d63d1ecbe3cae1bdd","5":"a0172b8983565065b02d","6":"99255237d39e787b51b0","7":"83b145413d341bf5a1f3","8":"450734876ab9e4853d7d","9":"da198bfb49a5d5480807","10":"c85766a0062ffeddfa3f","11":"748a4eead414c1d162cb","12":"4ddc305f361d7158be12","13":"4b331adf81c9e11b7c5e"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"auth-connect","1":"auth-create","2":"markets","3":"transactions","4":"portfolio","5":"account","6":"market","7":"create-market","8":"topics","9":"auth-lander","10":"style-sandbox","11":"auth","12":"main","13":"assets/scripts/vendor","14":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"6a4cc32047bbb07a9a63","1":"315705d66f1e4bd58c80","2":"3af5e2261aa831338396","3":"f9d7007f1d40584e2c10","4":"bec39640c48a6a60bab0","5":"1c59aa2ed4e6d3d6361f","6":"d9a64414e3245e329334","7":"7ca26c9d4ba2cc3a7ad5","8":"96bde4630792ea642971","9":"48bcd19574cde39fe3fa","10":"58040ed4d0f98fcc8be5","11":"f129de2f3c16ad2874bf","12":"005ec219da9fd4d28cd1","13":"b9d911b26239e1e76cae","14":"97c75700809202a867d1"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
