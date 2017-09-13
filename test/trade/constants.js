@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { abi } from 'services/augurjs';
+import speedomatic from 'speedomatic';
 
 export { BINARY, SCALAR, CATEGORICAL } from 'modules/markets/constants/market-types';
 export { BUY, SELL } from 'modules/transactions/constants/types';
@@ -29,15 +29,13 @@ export const tradeTestState = {
       eventID: 'testEventID1',
       consensus: null,
       isLoadedMarketInfo: true,
-      makerFee: '0.002',
-      maxValue: '2',
-      minValue: '1',
+      maxPrice: '2',
+      minPrice: '1',
       network: '2',
       numOutcomes: 2,
       topic: 'binary',
       tags: ['binary', 'markets', null],
-      takerFee: '0.01',
-      tradingFee: '0.008',
+      settlementFee: '0.01',
       tradingPeriod: 8653,
       type: 'binary',
       volume: '3030'
@@ -54,16 +52,14 @@ export const tradeTestState = {
       extraInfo: 'extra info',
       consensus: null,
       isLoadedMarketInfo: true,
-      makerFee: '0.001000000000000000006',
-      maxValue: '2',
-      minValue: '1',
+      maxPrice: '2',
+      minPrice: '1',
       network: '2',
       numOutcomes: 4,
       resolution: 'http://lmgtfy.com',
       topic: 'categorical',
       tags: ['categorical', 'markets', 'test'],
-      takerFee: '0.019999999999999999994',
-      tradingFee: '0.014',
+      settlementFee: '0.019999999999999999994',
       tradingPeriod: 11959,
       type: 'categorical',
       volume: '0'
@@ -79,16 +75,14 @@ export const tradeTestState = {
       eventID: 'testEventID3',
       consensus: null,
       isLoadedMarketInfo: true,
-      makerFee: '0.01',
-      maxValue: '120',
-      minValue: '-10',
+      maxPrice: '120',
+      minPrice: '-10',
       network: '2',
       numOutcomes: 2,
       resolution: 'https://www.resolution-of-market.com',
       topic: 'scalar',
       tags: ['scalar', 'markets', 'test'],
-      takerFee: '0.02',
-      tradingFee: '0.02',
+      settlementFee: '0.02',
       tradingPeriod: 8544,
       type: 'scalar',
       volume: '0'
@@ -463,7 +457,7 @@ export const tradeConstOrderBooks = {
     }
   }
 };
-// lifted directly from augur.js with a slight change to use abi.bignum instead of BigNumber
+// lifted directly from augur.js with a slight change to use speedomatic.bignum instead of BigNumber
 const filterByPriceAndOutcomeAndUserSortByPrice = (orders, traderOrderType, limitPrice, outcomeId, userAddress) => {
   if (!orders) return [];
   const isMarketOrder = limitPrice === null || limitPrice === undefined;
@@ -474,7 +468,7 @@ const filterByPriceAndOutcomeAndUserSortByPrice = (orders, traderOrderType, limi
   if (isMarketOrder) {
     isMatchingPrice = true;
   } else {
-    isMatchingPrice = traderOrderType === 'buy' ? new abi.bignum(order.price, 10).lte(limitPrice) : new abi.bignum(order.price, 10).gte(limitPrice); // eslint-disable-line new-cap
+    isMatchingPrice = traderOrderType === 'buy' ? new speedomatic.bignum(order.price, 10).lte(limitPrice) : new speedomatic.bignum(order.price, 10).gte(limitPrice); // eslint-disable-line new-cap
   }
   return order.outcome === outcomeId && order.owner !== userAddress && isMatchingPrice;
 })

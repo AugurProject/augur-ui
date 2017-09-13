@@ -8,12 +8,12 @@ import Bullet from 'modules/common/components/bullet';
 const Branch = p => (
   <article className="branch-info">
     <Line
-      percent={p.currentPeriodProgress}
+      percent={p.currentReportingPeriodPercentComplete}
       strokeWidth="1"
       strokeColor="#5c2634"
     />
     <span className="reporting-cycle-info">
-      Reporting Cycle {p.reportPeriod} <Bullet /> {Math.round(p.currentPeriodProgress)}% complete <Bullet /> {p.phaseLabel} phase ends {p.phaseTimeRemaining}
+      Reporting Period {p.currentReportingWindowAddress} <Bullet /> {Math.round(p.currentReportingPeriodPercentComplete)}% complete <Bullet /> period ends {p.reportingCycleTimeRemaining}
     </span>
     <span
       data-tip
@@ -21,7 +21,7 @@ const Branch = p => (
       data-event="click focus"
       className="branch-description pointer"
     >
-      {p.description} <Bullet /> {p.periodLength / 3600} hours per cycle
+      {p.description} <Bullet /> {p.reportingPeriodDurationInSeconds / 3600} hours per period
     </span>
     <ReactTooltip
       id="branch-id-tooltip"
@@ -41,10 +41,9 @@ Branch.propTypes = {
   className: PropTypes.string,
   description: PropTypes.string,
   id: PropTypes.string,
-  periodLength: PropTypes.number,
-  phaseLabel: PropTypes.string,
-  phaseTimeRemaining: PropTypes.string,
-  currentPeriodProgress: PropTypes.number
+  reportingPeriodDurationInSeconds: PropTypes.number,
+  reportingCycleTimeRemaining: PropTypes.string,
+  currentReportingPeriodPercentComplete: PropTypes.number
 };
 
 export default Branch;

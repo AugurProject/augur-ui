@@ -1,8 +1,9 @@
+import BigNumber from 'bignumber.js';
 import { createSelector } from 'reselect';
 import moment from 'moment';
 import store from 'src/store';
-import { selectBlockchainCurrentBlockTimestamp, selectBranchPeriodLength } from 'src/select-state';
-import { augur, abi } from 'services/augurjs';
+import { selectBlockchainCurrentBlockTimestamp, selectBranchReportingPeriodDurationInSeconds } from 'src/select-state';
+import { augur } from 'services/augurjs';
 import { ONE } from 'modules/trade/constants/numbers';
 
 export default function () {
@@ -10,29 +11,15 @@ export default function () {
 }
 
 export const selectReportingCycle = createSelector(
-  selectBranchPeriodLength,
+  selectBranchReportingPeriodDurationInSeconds,
   selectBlockchainCurrentBlockTimestamp,
-  (periodLength, timestamp) => {
-    const currentPeriod = augur.reporting.getCurrentPeriod(periodLength, timestamp);
-    const currentPeriodProgress = augur.reporting.getCurrentPeriodProgress(periodLength, timestamp);
-    const isReportRevealPhase = currentPeriodProgress > 50;
-    const bnPeriodLength = abi.bignum(periodLength);
-    const secondsRemaining = ONE.minus(abi.bignum(currentPeriodProgress).dividedBy(100)).times(bnPeriodLength);
-    let phaseLabel;
-    let phaseTimeRemaining;
-    if (isReportRevealPhase) {
-      phaseLabel = 'Reveal';
-      phaseTimeRemaining = moment.duration(secondsRemaining.toNumber(), 'seconds').humanize(true);
-    } else {
-      phaseLabel = 'Commit';
-      phaseTimeRemaining = moment.duration(secondsRemaining.minus(bnPeriodLength.dividedBy(2)).toNumber(), 'seconds').humanize(true);
-    }
+  (reportingPeriodDurationInSeconds, timestamp) => {
+    const currentReportingPeriodPercentComplete = augur.reporting.getCurrentPeriodProgress(reportingPeriodDurationInSeconds, timestamp);
+    const bnReportingPeriodDurationInSeconds = new BigNumber(reportingPeriodDurationInSeconds, 10);
+    const secondsRemaining = ONE.minus(new BigNumber(currentReportingPeriodPercentComplete, 10).dividedBy(100)).times(bnReportingPeriodDurationInSeconds);
     return {
-      currentPeriod,
-      currentPeriodProgress,
-      isReportRevealPhase,
-      phaseLabel,
-      phaseTimeRemaining
+      currentReportingPeriodPercentComplete,
+      reportingCycleTimeRemaining: moment.duration(secondsRemaining, 'seconds').humanize(true)
     };
   }
 );

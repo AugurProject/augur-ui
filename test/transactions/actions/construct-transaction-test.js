@@ -6,29 +6,22 @@ import proxyquire from 'proxyquire';
 import thunk from 'redux-thunk';
 import configureMockStore from 'redux-mock-store';
 
-import { abi, augur, constants } from 'services/augurjs';
+import speedomatic from 'speedomatic';
 
-import { formatEther, formatEtherTokens, formatRep, formatPercent, formatShares } from 'utils/format-number';
+import { formatEther, formatEtherTokens, formatRep, formatShares } from 'utils/format-number';
 import { formatDate } from 'utils/format-date';
 
 import {
   constructBasicTransaction,
   constructDefaultTransaction,
   constructApprovalTransaction,
-  constructCollectedFeesTransaction,
-  constructDepositTransaction,
+  // constructCollectedFeesTransaction,
   constructRegistrationTransaction,
-  constructPenalizationCaughtUpTransaction,
-  constructWithdrawTransaction,
-  constructSentEtherTransaction,
-  constructSentCashTransaction,
-  constructTransferTransaction,
-  constructFundedAccountTransaction
+  constructTransferTransaction
 } from 'modules/transactions/actions/construct-transaction';
 
-import { CREATE_MARKET, COMMIT_REPORT, REVEAL_REPORT, BUY, SELL, MATCH_BID, MATCH_ASK, SHORT_SELL, BID, ASK, SHORT_ASK, CANCEL_ORDER } from 'modules/transactions/constants/types';
-import { BINARY, SCALAR } from 'modules/markets/constants/market-types';
-import { ZERO } from 'modules/trade/constants/numbers';
+import { CREATE_MARKET, SUBMIT_REPORT, SELL, CANCEL_ORDER } from 'modules/transactions/constants/types';
+import { BINARY } from 'modules/markets/constants/market-types';
 
 chai.use(chaiSubset);
 
@@ -42,10 +35,9 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     LOAD_MARKET_THEN_RETRY_CONVERSION: 'LOAD_MARKET_THEN_RETRY_CONVERSION',
     LOOKUP_EVENT_MARKETS_THEN_RETRY_CONVERSION: 'LOOKUP_EVENT_MARKETS_THEN_RETRY_CONVERSION',
     UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA: 'UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA',
-    CONSTRUCT_LOG_FILL_TX_TRANSACTION: 'CONSTRUCT_LOG_FILL_TX_TRANSACTION',
-    CONSTRUCT_LOG_SHORT_FILL_TX_TRANSACTIONS: 'CONSTRUCT_LOG_SHORT_FILL_TX_TRANSACTIONS',
-    CONSTRUCT_LOG_ADD_TX_TRANSACTION: 'CONSTRUCT_LOG_ADD_TX_TRANSACTION',
-    CONSTRUCT_LOG_CANCEL_TRANSACTION: 'CONSTRUCT_LOG_CANCEL_TRANSACTION',
+    CONSTRUCT_TAKE_ORDER_TRANSACTION: 'CONSTRUCT_TAKE_ORDER_TRANSACTION',
+    CONSTRUCT_MAKE_ORDER_TRANSACTION: 'CONSTRUCT_MAKE_ORDER_TRANSACTION',
+    CONSTRUCT_CANCEL_ORDER_TRANSACTION: 'CONSTRUCT_CANCEL_ORDER_TRANSACTION',
     CONSTRUCT_PAYOUT_TRANSACTION: 'CONSTRUCT_PAYOUT_TRANSACTION',
     CONSTRUCT_MARKET_TRANSACTION: 'CONSTRUCT_MARKET_TRANSACTION',
     CONSTRUCT_REPORTING_TRANSACTION: 'CONSTRUCT_REPORTING_TRANSACTION'
@@ -54,17 +46,8 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
   const mockRetryConversion = {
     loadMarketThenRetryConversion: sinon.stub().returns({
       type: MOCK_ACTION_TYPES.LOAD_MARKET_THEN_RETRY_CONVERSION
-    }),
-    lookupEventMarketsThenRetryConversion: sinon.stub().returns({
-      type: MOCK_ACTION_TYPES.LOOKUP_EVENT_MARKETS_THEN_RETRY_CONVERSION
     })
   };
-
-  const mockMarket = {
-    selectMarketIDFromEventID: sinon.stub()
-  };
-  mockMarket.selectMarketIDFromEventID.withArgs(undefined).returns(null);
-  mockMarket.selectMarketIDFromEventID.withArgs('0xEVENTID').returns('0xMARKETID');
 
   describe('loadDataForMarketTransaction', () => {
     const action = proxyquire('../../../src/modules/transactions/actions/construct-transaction', {
@@ -157,8 +140,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
 
   describe('loadDataForReportingTransaction', () => {
     const action = proxyquire('../../../src/modules/transactions/actions/construct-transaction', {
-      './retry-conversion': mockRetryConversion,
-      '../../market/selectors/market': mockMarket
+      './retry-conversion': mockRetryConversion
     });
 
     const test = (t) => {
@@ -190,7 +172,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
 
         const expected = [
           {
-            type: MOCK_ACTION_TYPES.LOOKUP_EVENT_MARKETS_THEN_RETRY_CONVERSION
+            type: MOCK_ACTION_TYPES.LOAD_MARKET_THEN_RETRY_CONVERSION
           }
         ];
 
@@ -439,274 +421,228 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
   });
 
-  describe('constructCollectedFeesTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
+  // describe('constructCollectedFeesTransaction', () => {
+  //   const test = t => it(t.description, () => t.assertions());
 
-    test({
-      description: `should return the expected object with initialRepBalance undefined and no totalReportingRep and no cashFeesCollected and inProgress false`,
-      assertions: () => {
-        const log = {
-          repGain: '1',
-          inProgress: false,
-          newRepBalance: '1',
-          period: 1234,
-          notReportingBond: '1'
-        };
+  //   test({
+  //     description: `should return the expected object with initialRepBalance undefined and no totalReportingRep and no cashFeesCollected and inProgress false`,
+  //     assertions: () => {
+  //       const log = {
+  //         repGain: '1',
+  //         inProgress: false,
+  //         newRepBalance: '1',
+  //         period: 1234,
+  //         notReportingBond: '1'
+  //       };
 
-        const actual = constructCollectedFeesTransaction(log);
+  //       const actual = constructCollectedFeesTransaction(log);
 
-        const repGain = abi.bignum(log.repGain);
-        const initialRepBalance = abi.bignum(log.newRepBalance).minus(repGain).toFixed();
+  //       const repGain = speedomatic.bignum(log.repGain);
+  //       const initialRepBalance = speedomatic.bignum(log.newRepBalance).minus(repGain).toFixed();
 
-        const expected = {
-          data: {},
-          type: 'Reporting Payment',
-          description: `Reporting cycle #${log.period}`,
-          bond: {
-            label: 'reporting',
-            value: formatEther(log.notReportingBond)
-          },
-          message: `reported with ${formatRep(initialRepBalance).full}`
-        };
+  //       const expected = {
+  //         data: {},
+  //         type: 'Reporting Payment',
+  //         description: `Reporting cycle #${log.period}`,
+  //         bond: {
+  //           label: 'reporting',
+  //           value: formatEther(log.notReportingBond)
+  //         },
+  //         message: `reported with ${formatRep(initialRepBalance).full}`
+  //       };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //     }
+  //   });
 
-    test({
-      description: `should return the expected object with initialRepBalance and no totalReportingRep and no cashFeesCollected and inProgress false`,
-      assertions: () => {
-        const log = {
-          repGain: '1',
-          inProgress: false,
-          newRepBalance: '1',
-          period: 1234,
-          notReportingBond: '1',
-          initialRepBalance: '1'
-        };
+  //   test({
+  //     description: `should return the expected object with initialRepBalance and no totalReportingRep and no cashFeesCollected and inProgress false`,
+  //     assertions: () => {
+  //       const log = {
+  //         repGain: '1',
+  //         inProgress: false,
+  //         newRepBalance: '1',
+  //         period: 1234,
+  //         notReportingBond: '1',
+  //         initialRepBalance: '1'
+  //       };
 
-        const actual = constructCollectedFeesTransaction(log);
+  //       const actual = constructCollectedFeesTransaction(log);
 
-        const expected = {
-          data: {},
-          type: 'Reporting Payment',
-          description: `Reporting cycle #${log.period}`,
-          bond: {
-            label: 'reporting',
-            value: formatEther(log.notReportingBond)
-          },
-          message: `reported with ${formatRep(log.initialRepBalance).full}`
-        };
+  //       const expected = {
+  //         data: {},
+  //         type: 'Reporting Payment',
+  //         description: `Reporting cycle #${log.period}`,
+  //         bond: {
+  //           label: 'reporting',
+  //           value: formatEther(log.notReportingBond)
+  //         },
+  //         message: `reported with ${formatRep(log.initialRepBalance).full}`
+  //       };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //     }
+  //   });
 
-    test({
-      description: `should return the expected object with initialRepBalance and totalReportingRep equals zero and no cashFeesCollected and inProgress false`,
-      assertions: () => {
-        const log = {
-          repGain: '1',
-          inProgress: false,
-          newRepBalance: '1',
-          period: 1234,
-          notReportingBond: '1',
-          initialRepBalance: '1',
-          totalReportingRep: '0'
-        };
+  //   test({
+  //     description: `should return the expected object with initialRepBalance and totalReportingRep equals zero and no cashFeesCollected and inProgress false`,
+  //     assertions: () => {
+  //       const log = {
+  //         repGain: '1',
+  //         inProgress: false,
+  //         newRepBalance: '1',
+  //         period: 1234,
+  //         notReportingBond: '1',
+  //         initialRepBalance: '1',
+  //         totalReportingRep: '0'
+  //       };
 
-        const actual = constructCollectedFeesTransaction(log);
+  //       const actual = constructCollectedFeesTransaction(log);
 
-        const expected = {
-          data: {},
-          type: 'Reporting Payment',
-          description: `Reporting cycle #${log.period}`,
-          bond: {
-            label: 'reporting',
-            value: formatEther(log.notReportingBond)
-          },
-          message: `reported with ${formatRep(log.initialRepBalance).full}`
-        };
+  //       const expected = {
+  //         data: {},
+  //         type: 'Reporting Payment',
+  //         description: `Reporting cycle #${log.period}`,
+  //         bond: {
+  //           label: 'reporting',
+  //           value: formatEther(log.notReportingBond)
+  //         },
+  //         message: `reported with ${formatRep(log.initialRepBalance).full}`
+  //       };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //     }
+  //   });
 
-    test({
-      description: `should return the expected object with initialRepBalance and totalReportingRep and no cashFeesCollected and inProgress false`,
-      assertions: () => {
-        const log = {
-          repGain: '1',
-          inProgress: false,
-          newRepBalance: '1',
-          period: 1234,
-          notReportingBond: '1',
-          initialRepBalance: '1',
-          totalReportingRep: '100'
-        };
+  //   test({
+  //     description: `should return the expected object with initialRepBalance and totalReportingRep and no cashFeesCollected and inProgress false`,
+  //     assertions: () => {
+  //       const log = {
+  //         repGain: '1',
+  //         inProgress: false,
+  //         newRepBalance: '1',
+  //         period: 1234,
+  //         notReportingBond: '1',
+  //         initialRepBalance: '1',
+  //         totalReportingRep: '100'
+  //       };
 
-        const actual = constructCollectedFeesTransaction(log);
+  //       const actual = constructCollectedFeesTransaction(log);
 
-        const totalReportingRep = abi.bignum(log.totalReportingRep);
-        const percentRep = formatPercent(abi.bignum(log.initialRepBalance).dividedBy(totalReportingRep).times(100), { decimals: 0 });
+  //       const totalReportingRep = speedomatic.bignum(log.totalReportingRep);
+  //       const percentRep = formatPercent(speedomatic.bignum(log.initialRepBalance).dividedBy(totalReportingRep).times(100), { decimals: 0 });
 
-        const expected = {
-          data: {},
-          type: 'Reporting Payment',
-          description: `Reporting cycle #${log.period}`,
-          bond: {
-            label: 'reporting',
-            value: formatEther(log.notReportingBond)
-          },
-          message: `reported with ${formatRep(log.initialRepBalance).full} (${percentRep.full})`
-        };
+  //       const expected = {
+  //         data: {},
+  //         type: 'Reporting Payment',
+  //         description: `Reporting cycle #${log.period}`,
+  //         bond: {
+  //           label: 'reporting',
+  //           value: formatEther(log.notReportingBond)
+  //         },
+  //         message: `reported with ${formatRep(log.initialRepBalance).full} (${percentRep.full})`
+  //       };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //     }
+  //   });
 
-    test({
-      description: `should return the expected object with initialRepBalance and totalReportingRep and cashFeesCollected and inProgress false`,
-      assertions: () => {
-        const log = {
-          repGain: '1',
-          inProgress: false,
-          period: 1234,
-          notReportingBond: '1',
-          initialRepBalance: '1',
-          newRepBalance: '1',
-          totalReportingRep: '100',
-          cashFeesCollected: '100',
-          newCashBalance: '101'
-        };
+  //   test({
+  //     description: `should return the expected object with initialRepBalance and totalReportingRep and cashFeesCollected and inProgress false`,
+  //     assertions: () => {
+  //       const log = {
+  //         repGain: '1',
+  //         inProgress: false,
+  //         period: 1234,
+  //         notReportingBond: '1',
+  //         initialRepBalance: '1',
+  //         newRepBalance: '1',
+  //         totalReportingRep: '100',
+  //         cashFeesCollected: '100',
+  //         newCashBalance: '101'
+  //       };
 
-        const actual = constructCollectedFeesTransaction(log);
+  //       const actual = constructCollectedFeesTransaction(log);
 
-        const repGain = abi.bignum(log.repGain);
+  //       const repGain = speedomatic.bignum(log.repGain);
 
-        const totalReportingRep = abi.bignum(log.totalReportingRep);
-        const percentRep = formatPercent(abi.bignum(log.initialRepBalance).dividedBy(totalReportingRep).times(100), { decimals: 0 });
+  //       const totalReportingRep = speedomatic.bignum(log.totalReportingRep);
+  //       const percentRep = formatPercent(speedomatic.bignum(log.initialRepBalance).dividedBy(totalReportingRep).times(100), { decimals: 0 });
 
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(log.cashFeesCollected, { positiveSign: true }),
-                balance: formatEtherTokens(log.newCashBalance)
-              },
-              {
-                change: formatRep(repGain, { positiveSign: true }),
-                balance: formatRep(log.newRepBalance)
-              }
-            ]
-          },
-          type: 'Reporting Payment',
-          description: `Reporting cycle #${log.period}`,
-          bond: {
-            label: 'reporting',
-            value: formatEther(log.notReportingBond)
-          },
-          message: `reported with ${formatRep(log.initialRepBalance).full} (${percentRep.full})`
-        };
+  //       const expected = {
+  //         data: {
+  //           balances: [
+  //             {
+  //               change: formatEtherTokens(log.cashFeesCollected, { positiveSign: true }),
+  //               balance: formatEtherTokens(log.newCashBalance)
+  //             },
+  //             {
+  //               change: formatRep(repGain, { positiveSign: true }),
+  //               balance: formatRep(log.newRepBalance)
+  //             }
+  //           ]
+  //         },
+  //         type: 'Reporting Payment',
+  //         description: `Reporting cycle #${log.period}`,
+  //         bond: {
+  //           label: 'reporting',
+  //           value: formatEther(log.notReportingBond)
+  //         },
+  //         message: `reported with ${formatRep(log.initialRepBalance).full} (${percentRep.full})`
+  //       };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //     }
+  //   });
 
-    test({
-      description: `should return the expected object with initialRepBalance and totalReportingRep and cashFeesCollected and inProgress true`,
-      assertions: () => {
-        const log = {
-          repGain: '1',
-          inProgress: true,
-          period: 1234,
-          notReportingBond: '1',
-          initialRepBalance: '1',
-          newRepBalance: '1',
-          totalReportingRep: '100',
-          cashFeesCollected: '100',
-          newCashBalance: '101'
-        };
+  //   test({
+  //     description: `should return the expected object with initialRepBalance and totalReportingRep and cashFeesCollected and inProgress true`,
+  //     assertions: () => {
+  //       const log = {
+  //         repGain: '1',
+  //         inProgress: true,
+  //         period: 1234,
+  //         notReportingBond: '1',
+  //         initialRepBalance: '1',
+  //         newRepBalance: '1',
+  //         totalReportingRep: '100',
+  //         cashFeesCollected: '100',
+  //         newCashBalance: '101'
+  //       };
 
-        const actual = constructCollectedFeesTransaction(log);
+  //       const actual = constructCollectedFeesTransaction(log);
 
-        const repGain = abi.bignum(log.repGain);
+  //       const repGain = speedomatic.bignum(log.repGain);
 
-        const totalReportingRep = abi.bignum(log.totalReportingRep);
-        const percentRep = formatPercent(abi.bignum(log.initialRepBalance).dividedBy(totalReportingRep).times(100), { decimals: 0 });
+  //       const totalReportingRep = speedomatic.bignum(log.totalReportingRep);
+  //       const percentRep = formatPercent(speedomatic.bignum(log.initialRepBalance).dividedBy(totalReportingRep).times(100), { decimals: 0 });
 
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(log.cashFeesCollected, { positiveSign: true }),
-                balance: formatEtherTokens(log.newCashBalance)
-              },
-              {
-                change: formatRep(repGain, { positiveSign: true }),
-                balance: formatRep(log.newRepBalance)
-              }
-            ]
-          },
-          type: 'Reporting Payment',
-          description: `Reporting cycle #${log.period}`,
-          bond: {
-            label: 'reporting',
-            value: formatEther(log.notReportingBond)
-          },
-          message: `reporting with ${formatRep(log.initialRepBalance).full} (${percentRep.full})`
-        };
+  //       const expected = {
+  //         data: {
+  //           balances: [
+  //             {
+  //               change: formatEtherTokens(log.cashFeesCollected, { positiveSign: true }),
+  //               balance: formatEtherTokens(log.newCashBalance)
+  //             },
+  //             {
+  //               change: formatRep(repGain, { positiveSign: true }),
+  //               balance: formatRep(log.newRepBalance)
+  //             }
+  //           ]
+  //         },
+  //         type: 'Reporting Payment',
+  //         description: `Reporting cycle #${log.period}`,
+  //         bond: {
+  //           label: 'reporting',
+  //           value: formatEther(log.notReportingBond)
+  //         },
+  //         message: `reporting with ${formatRep(log.initialRepBalance).full} (${percentRep.full})`
+  //       };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructDepositTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with inProgress false`,
-      assertions: () => {
-        const log = {
-          inProgress: false,
-          value: '10'
-        };
-
-        const actual = constructDepositTransaction(log);
-
-        const expected = {
-          data: {},
-          type: 'Deposit Ether',
-          description: 'Convert Ether to tradeable Ether token',
-          message: `deposited ${formatEtherTokens(log.value).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with inProgress`,
-      assertions: () => {
-        const log = {
-          inProgress: true,
-          value: '10'
-        };
-
-        const actual = constructDepositTransaction(log);
-
-        const expected = {
-          data: {},
-          type: 'Deposit Ether',
-          description: 'Convert Ether to tradeable Ether token',
-          message: `depositing ${formatEtherTokens(log.value).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //     }
+  //   });
+  // });
 
   describe('constructRegistrationTransaction', () => {
     const test = t => it(t.description, () => t.assertions());
@@ -754,348 +690,6 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
   });
 
-  describe('constructPenalizationCaughtUpTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with no repLost and no newRepBalance and inProgress false`,
-      assertions: () => {
-        const log = {
-          penalizedFrom: 1233,
-          penalizedUpTo: 1235,
-          inProgress: false
-        };
-
-        const actual = constructPenalizationCaughtUpTransaction(log);
-
-        const expected = {
-          data: {},
-          type: 'Reporting Cycle Catch-Up',
-          description: `Missed Reporting cycles ${log.penalizedFrom} to cycle ${log.penalizedUpTo}`,
-          message: `caught up ${parseInt(log.penalizedUpTo, 10) - parseInt(log.penalizedFrom, 10)} cycles`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with repLost and newRepBalance and inProgress false`,
-      assertions: () => {
-        const log = {
-          penalizedFrom: 1233,
-          penalizedUpTo: 1235,
-          inProgress: false,
-          repLost: '10',
-          newRepBalance: '90'
-        };
-
-        const actual = constructPenalizationCaughtUpTransaction(log);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatRep(log.repLost, { positiveSign: true }),
-                balance: formatRep(log.newRepBalance)
-              }
-            ]
-          },
-          type: 'Reporting Cycle Catch-Up',
-          description: `Missed Reporting cycles ${log.penalizedFrom} to cycle ${log.penalizedUpTo}`,
-          message: `caught up ${parseInt(log.penalizedUpTo, 10) - parseInt(log.penalizedFrom, 10)} cycles`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with repLost and newRepBalance and inProgress false`,
-      assertions: () => {
-        const log = {
-          penalizedFrom: 1233,
-          penalizedUpTo: 1235,
-          inProgress: true,
-          repLost: '10',
-          newRepBalance: '90'
-        };
-
-        const actual = constructPenalizationCaughtUpTransaction(log);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatRep(log.repLost, { positiveSign: true }),
-                balance: formatRep(log.newRepBalance)
-              }
-            ]
-          },
-          type: 'Reporting Cycle Catch-Up',
-          description: `Missed Reporting cycles ${log.penalizedFrom} to cycle ${log.penalizedUpTo}`,
-          message: `catching up ${parseInt(log.penalizedUpTo, 10) - parseInt(log.penalizedFrom, 10)} cycles`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructWithdrawTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with inProgress false`,
-      assertions: () => {
-        const log = {
-          inProgress: false,
-          value: '10'
-        };
-
-        const actual = constructWithdrawTransaction(log);
-
-        const expected = {
-          data: {},
-          type: 'Withdraw Ether',
-          description: 'Convert tradeable Ether token to Ether',
-          message: `withdrew ${formatEtherTokens(log.value).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with inProgress`,
-      assertions: () => {
-        const log = {
-          inProgress: true,
-          value: '10'
-        };
-
-        const actual = constructWithdrawTransaction(log);
-
-        const expected = {
-          data: {},
-          type: 'Withdraw Ether',
-          description: 'Convert tradeable Ether token to Ether',
-          message: `withdrawing ${formatEtherTokens(log.value).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructSentEtherTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with address not equal and inProgress false`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xNOTUSERADDRESS',
-          inProgress: false
-        };
-
-        const actual = constructSentEtherTransaction(log, address);
-
-        const expected = {
-          data: {},
-          message: 'undefined ETH'
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with address equal and inProgress false`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xUSERADDRESS',
-          _to: '0xOTHERUSERADDRESS',
-          inProgress: false,
-          _value: '10'
-        };
-
-        const actual = constructSentEtherTransaction(log, address);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEther(abi.bignum(log._value).neg(), { positiveSign: true })
-              }
-            ]
-          },
-          type: 'Send Ether',
-          description: `Send Ether to ${abi.strip_0x(log._to)}`,
-          message: `sent ETH`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with address equal and inProgress`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xUSERADDRESS',
-          _to: '0xOTHERUSERADDRESS',
-          inProgress: true,
-          _value: '10'
-        };
-
-        const actual = constructSentEtherTransaction(log, address);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEther(abi.bignum(log._value).neg(), { positiveSign: true })
-              }
-            ]
-          },
-          type: 'Send Ether',
-          description: `Send Ether to ${abi.strip_0x(log._to)}`,
-          message: `sending ETH`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructSentCashTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with _from equal to address and _to not equal to address and inProgress false`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xUSERADDRESS',
-          _to: '0xNOTUSERADDRESS',
-          inProgress: false,
-          _value: '10'
-        };
-
-        const actual = constructSentCashTransaction(log, address);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(abi.bignum(log._value).neg(), { positiveSign: true })
-              }
-            ]
-          },
-          type: 'Send Ether Tokens',
-          description: `Send Ether Tokens to ${abi.strip_0x(log._to)}`,
-          message: 'sent ETH Tokens'
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with _from equal to address and _to not equal to address and inProgress`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xUSERADDRESS',
-          _to: '0xNOTUSERADDRESS',
-          inProgress: true,
-          _value: '10'
-        };
-
-        const actual = constructSentCashTransaction(log, address);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(abi.bignum(log._value).neg(), { positiveSign: true })
-              }
-            ]
-          },
-          type: 'Send Ether Tokens',
-          description: `Send Ether Tokens to ${abi.strip_0x(log._to)}`,
-          message: 'sending ETH Tokens'
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with _from equal to address and _to not equal to address and inProgress false`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xNOTUSERADDRESS',
-          _to: '0xUSERADDRESS',
-          inProgress: false,
-          _value: '10'
-        };
-
-        const actual = constructSentCashTransaction(log, address);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(abi.bignum(log._value), { positiveSign: true })
-              }
-            ]
-          },
-          type: 'Receive Ether Tokens',
-          description: `Receive Ether Tokens from ${abi.strip_0x(log._from)}`,
-          message: 'received ETH Tokens'
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with _from equal to address and _to not equal to address and inProgress`,
-      assertions: () => {
-        const address = '0xUSERADDRESS';
-        const log = {
-          _from: '0xNOTUSERADDRESS',
-          _to: '0xUSERADDRESS',
-          inProgress: true,
-          _value: '10'
-        };
-
-        const actual = constructSentCashTransaction(log, address);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(abi.bignum(log._value), { positiveSign: true })
-              }
-            ]
-          },
-          type: 'Receive Ether Tokens',
-          description: `Receive Ether Tokens from ${abi.strip_0x(log._from)}`,
-          message: 'receiving ETH Tokens'
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
   describe('constructTransferTransaction', () => {
     const test = t => it(t.description, () => t.assertions());
 
@@ -1116,12 +710,12 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
           data: {
             balances: [
               {
-                change: formatRep(abi.bignum(log._value).neg(), { positiveSign: true })
+                change: formatRep(speedomatic.bignum(log._value).neg(), { positiveSign: true })
               }
             ]
           },
           type: 'Send Reputation',
-          description: `Send Reputation to ${abi.strip_0x(log._to)}`,
+          description: `Send Reputation to ${speedomatic.strip0xPrefix(log._to)}`,
           message: 'sent REP'
         };
 
@@ -1146,12 +740,12 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
           data: {
             balances: [
               {
-                change: formatRep(abi.bignum(log._value).neg(), { positiveSign: true })
+                change: formatRep(speedomatic.bignum(log._value).neg(), { positiveSign: true })
               }
             ]
           },
           type: 'Send Reputation',
-          description: `Send Reputation to ${abi.strip_0x(log._to)}`,
+          description: `Send Reputation to ${speedomatic.strip0xPrefix(log._to)}`,
           message: 'sending REP'
         };
 
@@ -1176,12 +770,12 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
           data: {
             balances: [
               {
-                change: formatRep(abi.bignum(log._value), { positiveSign: true })
+                change: formatRep(speedomatic.bignum(log._value), { positiveSign: true })
               }
             ]
           },
           type: 'Receive Reputation',
-          description: `Receive Reputation from ${abi.strip_0x(log._from)}`,
+          description: `Receive Reputation from ${speedomatic.strip0xPrefix(log._from)}`,
           message: 'received REP'
         };
 
@@ -1206,12 +800,12 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
           data: {
             balances: [
               {
-                change: formatRep(abi.bignum(log._value), { positiveSign: true })
+                change: formatRep(speedomatic.bignum(log._value), { positiveSign: true })
               }
             ]
           },
           type: 'Receive Reputation',
-          description: `Receive Reputation from ${abi.strip_0x(log._from)}`,
+          description: `Receive Reputation from ${speedomatic.strip0xPrefix(log._from)}`,
           message: 'receiving REP'
         };
 
@@ -1220,92 +814,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
   });
 
-  describe('constructFundedAccountTransaction', () => {
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with no cashBalance and no repBalance and inProgress false`,
-      assertions: () => {
-        const log = {
-          inProgress: false
-        };
-
-        const actual = constructFundedAccountTransaction(log);
-
-        const expected = {
-          data: {},
-          type: 'fund_account',
-          message: ''
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with no cashBalance and no repBalance and inProgress false`,
-      assertions: () => {
-        const log = {
-          inProgress: false,
-          cashBalance: '10',
-          repBalance: '100'
-        };
-
-        const actual = constructFundedAccountTransaction(log);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(log.cashBalance, { positiveSign: true }),
-                balance: formatEtherTokens(log.cashBalance)
-              }, {
-                change: formatRep(log.repBalance, { positiveSign: true }),
-                balance: formatRep(log.repBalance)
-              }
-            ]
-          },
-          type: 'fund_account',
-          message: ''
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with no cashBalance and no repBalance and inProgress`,
-      assertions: () => {
-        const log = {
-          inProgress: true,
-          cashBalance: '10',
-          repBalance: '100'
-        };
-
-        const actual = constructFundedAccountTransaction(log);
-
-        const expected = {
-          data: {
-            balances: [
-              {
-                change: formatEtherTokens(log.cashBalance, { positiveSign: true }),
-                balance: formatEtherTokens(log.cashBalance)
-              }, {
-                change: formatRep(log.repBalance, { positiveSign: true }),
-                balance: formatRep(log.repBalance)
-              }
-            ]
-          },
-          type: 'fund_account',
-          message: 'requesting testnet funding'
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructMarketCreatedTransaction', () => {
+  describe('constructCreateMarketTransaction', () => {
     const action = require('../../../src/modules/transactions/actions/construct-transaction');
 
     const test = t => it(t.description, () => t.assertions());
@@ -1322,7 +831,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
         };
         const description = 'test description~|>one|two|three';
 
-        const actual = action.constructMarketCreatedTransaction(log, description);
+        const actual = action.constructCreateMarketTransaction(log, description);
 
         const expected = {
           data: {
@@ -1355,7 +864,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
         };
         const description = 'test description~|>one|two|three';
 
-        const actual = action.constructMarketCreatedTransaction(log, description);
+        const actual = action.constructCreateMarketTransaction(log, description);
 
         const expected = {
           data: {
@@ -1474,485 +983,254 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
   });
 
-  describe('constructTradingFeeUpdatedTransaction', () => {
-    const action = require('../../../src/modules/transactions/actions/construct-transaction');
-
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with no marketID`,
-      assertions: () => {
-        const log = {
-          tradingFee: '0.01'
-        };
-        const market = {
-          description: 'test description'
-        };
-
-        const actual = action.constructTradingFeeUpdatedTransaction(log, market);
-
-        const expected = {
-          data: {
-            marketID: null
-          },
-          description: 'test description',
-          message: `updated trading fee: ${formatPercent(abi.bignum(log.tradingFee).times(100)).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with marketID`,
-      assertions: () => {
-        const log = {
-          marketID: '0xMARKETID',
-          tradingFee: '0.01'
-        };
-        const market = {
-          description: 'test description'
-        };
-
-        const actual = action.constructTradingFeeUpdatedTransaction(log, market);
-
-        const expected = {
-          data: {
-            marketID: '0xMARKETID'
-          },
-          description: 'test description',
-          message: `updated trading fee: ${formatPercent(abi.bignum(log.tradingFee).times(100)).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructPenalizeTransaction', () => {
-    const mockReportableOutcomes = {
-      formatReportedOutcome: sinon.stub().returns('formatted reported outcome')
-    };
-
-    const mockUpdateEventsWithAccountReportData = {
-      updateEventsWithAccountReportData: sinon.stub().returns({
-        type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-      })
-    };
-
-    const action = proxyquire('../../../src/modules/transactions/actions/construct-transaction', {
-      '../../reports/selectors/reportable-outcomes': mockReportableOutcomes,
-      '../../my-reports/actions/update-events-with-account-report-data': mockUpdateEventsWithAccountReportData
-    });
-
-    const test = (t) => {
-      const store = mockStore();
-      it(t.description, () => {
-        t.assertions(store);
-      });
-    };
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with no repChange and inProgress false and reportValue !== log.outcome`,
-      assertions: (store) => {
-        const log = {
-          reportValue: '1',
-          outcome: '2'
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID
-          },
-          type: 'Compare Report To Consensus',
-          description: 'test description',
-          message: `✘ report formatted reported outcome does not match consensus formatted reported outcome`
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          }
-        ];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with repChange equals 0 and inProgress false and reportValue !== log.outcome`,
-      assertions: (store) => {
-        const log = {
-          reportValue: '1',
-          outcome: '2',
-          repchange: '0',
-          oldrep: '2'
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            balances: [
-              {
-                change: formatRep(abi.bignum(log.repchange), { positiveSign: true }),
-                balance: formatRep(2)
-              }
-            ]
-          },
-          type: 'Compare Report To Consensus',
-          description: 'test description',
-          message: `✘ report formatted reported outcome does not match consensus formatted reported outcome`
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          },
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          }
-        ];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with repChange not equal to 0 and inProgress false and reportValue !== log.outcome`,
-      assertions: (store) => {
-        const log = {
-          reportValue: '1',
-          outcome: '2',
-          repchange: '0',
-          oldrep: '2'
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            balances: [
-              {
-                change: formatRep(constants.ZERO, { positiveSign: true }),
-                balance: formatRep('2')
-              }
-            ]
-          },
-          type: 'Compare Report To Consensus',
-          description: 'test description',
-          message: `✘ report formatted reported outcome does not match consensus formatted reported outcome`
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          },
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          }
-        ];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with repChange not equal to 0 and inProgress false and reportValue === log.outcome`,
-      assertions: (store) => {
-        const log = {
-          reportValue: '1',
-          outcome: '1',
-          repchange: '0',
-          oldrep: '2'
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            balances: [
-              {
-                change: formatRep(constants.ZERO, { positiveSign: true }),
-                balance: formatRep('2')
-              }
-            ]
-          },
-          type: 'Compare Report To Consensus',
-          description: 'test description',
-          message: `✔ report formatted reported outcome matches consensus`
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          },
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          }
-        ];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with repChange not equal to 0 and inProgress and reportValue === log.outcome`,
-      assertions: (store) => {
-        const log = {
-          reportValue: '1',
-          outcome: '1',
-          repchange: '0',
-          oldrep: '2',
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            balances: [
-              {
-                change: formatRep(constants.ZERO, { positiveSign: true }),
-                balance: formatRep('2')
-              }
-            ]
-          },
-          type: 'Compare Report To Consensus',
-          description: 'test description',
-          message: 'comparing report to consensus'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-  });
-
-  describe('constructSubmittedReportHashTransaction', () => {
-    proxyquire.callThru();
-
-    const mockAugur = {
-      augur: {
-        reporting: {
-          crypto: {
-            parseAndDecryptReport: sinon.stub().returns({
-              report: 'testing'
-            })
-          }
-        }
-      }
-    };
-
-    const mockReportableOutcomes = {
-      formatReportedOutcome: sinon.stub().returns('formatted reported outcome')
-    };
-
-    const mockUpdateEventsWithAccountReportData = {
-      updateEventsWithAccountReportData: sinon.stub().returns({
-        type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-      })
-    };
-
-    const action = proxyquire('../../../src/modules/transactions/actions/construct-transaction', {
-      '../../../services/augurjs': mockAugur,
-      '../../reports/selectors/reportable-outcomes': mockReportableOutcomes,
-      '../../my-reports/actions/update-events-with-account-report-data': mockUpdateEventsWithAccountReportData
-    });
-
-    after(() => {
-      proxyquire.noCallThru();
-    });
-
-    const test = (t) => {
-      const store = mockStore();
-      it(t.description, () => {
-        t.assertions(store);
-      });
-    };
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with no decryptionKey and no ethics and inProgress`,
-      assertions: (store) => {
-        const log = {
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportHashTransaction(log, marketID, market, null, null, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: true
-          },
-          type: COMMIT_REPORT,
-          description: market.description,
-          message: 'committing to report'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with no decryptionKey and ethics and inProgress`,
-      assertions: (store) => {
-        const log = {
-          ethics: '1',
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportHashTransaction(log, marketID, market, null, null, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: false
-          },
-          type: COMMIT_REPORT,
-          description: market.description,
-          message: 'committing to report'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with decryptionKey and ethics and inProgress`,
-      assertions: (store) => {
-        const log = {
-          ethics: '1',
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportHashTransaction(log, marketID, market, null, '123DECRYPTIONKEY', store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: false,
-            reportedOutcomeID: 'formatted reported outcome',
-            outcome: {
-              name: 'formatted reported outcome'
-            },
-          },
-          type: COMMIT_REPORT,
-          description: market.description,
-          message: 'committing to report: formatted reported outcome'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object and dispatch the expected actions with decryptionKey and ethics and inProgress false`,
-      assertions: (store) => {
-        const log = {
-          ethics: '1',
-          inProgress: false
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportHashTransaction(log, marketID, market, null, '123DECRYPTIONKEY', store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: false,
-            reportedOutcomeID: 'formatted reported outcome',
-            outcome: {
-              name: 'formatted reported outcome'
-            },
-          },
-          type: COMMIT_REPORT,
-          description: market.description,
-          message: 'committed to report: formatted reported outcome'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          }
-        ];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-  });
-
-  describe('constructSubmittedReportTransaction', () => {
+  // describe('constructPenalizeTransaction', () => {
+  //   const mockReportableOutcomes = {
+  //     formatReportedOutcome: sinon.stub().returns('formatted reported outcome')
+  //   };
+
+  //   const mockUpdateEventsWithAccountReportData = {
+  //     updateEventsWithAccountReportData: sinon.stub().returns({
+  //       type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //     })
+  //   };
+
+  //   const action = proxyquire('../../../src/modules/transactions/actions/construct-transaction', {
+  //     '../../reports/selectors/reportable-outcomes': mockReportableOutcomes,
+  //     '../../my-reports/actions/update-events-with-account-report-data': mockUpdateEventsWithAccountReportData
+  //   });
+
+  //   const test = (t) => {
+  //     const store = mockStore();
+  //     it(t.description, () => {
+  //       t.assertions(store);
+  //     });
+  //   };
+
+  //   test({
+  //     description: `should return the expected object and dispatch the expected actions with no repChange and inProgress false and reportValue !== log.outcome`,
+  //     assertions: (store) => {
+  //       const log = {
+  //         reportValue: '1',
+  //         outcome: '2'
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const market = {
+  //         description: 'test description'
+  //       };
+
+  //       const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
+
+  //       const expectedResult = {
+  //         data: {
+  //           marketID
+  //         },
+  //         type: 'Compare Report To Consensus',
+  //         description: 'test description',
+  //         message: `✘ report formatted reported outcome does not match consensus formatted reported outcome`
+  //       };
+
+  //       assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
+
+  //       const actions = store.getActions();
+
+  //       const expectedActions = [
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         }
+  //       ];
+
+  //       assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected object and dispatch the expected actions with repChange equals 0 and inProgress false and reportValue !== log.outcome`,
+  //     assertions: (store) => {
+  //       const log = {
+  //         reportValue: '1',
+  //         outcome: '2',
+  //         repchange: '0',
+  //         oldrep: '2'
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const market = {
+  //         description: 'test description'
+  //       };
+
+  //       const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
+
+  //       const expectedResult = {
+  //         data: {
+  //           marketID,
+  //           balances: [
+  //             {
+  //               change: formatRep(speedomatic.bignum(log.repchange), { positiveSign: true }),
+  //               balance: formatRep(2)
+  //             }
+  //           ]
+  //         },
+  //         type: 'Compare Report To Consensus',
+  //         description: 'test description',
+  //         message: `✘ report formatted reported outcome does not match consensus formatted reported outcome`
+  //       };
+
+  //       assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
+
+  //       const actions = store.getActions();
+
+  //       const expectedActions = [
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         },
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         }
+  //       ];
+
+  //       assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected object and dispatch the expected actions with repChange not equal to 0 and inProgress false and reportValue !== log.outcome`,
+  //     assertions: (store) => {
+  //       const log = {
+  //         reportValue: '1',
+  //         outcome: '2',
+  //         repchange: '0',
+  //         oldrep: '2'
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const market = {
+  //         description: 'test description'
+  //       };
+
+  //       const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
+
+  //       const expectedResult = {
+  //         data: {
+  //           marketID,
+  //           balances: [
+  //             {
+  //               change: formatRep(constants.ZERO, { positiveSign: true }),
+  //               balance: formatRep('2')
+  //             }
+  //           ]
+  //         },
+  //         type: 'Compare Report To Consensus',
+  //         description: 'test description',
+  //         message: `✘ report formatted reported outcome does not match consensus formatted reported outcome`
+  //       };
+
+  //       assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
+
+  //       const actions = store.getActions();
+
+  //       const expectedActions = [
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         },
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         }
+  //       ];
+
+  //       assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected object and dispatch the expected actions with repChange not equal to 0 and inProgress false and reportValue === log.outcome`,
+  //     assertions: (store) => {
+  //       const log = {
+  //         reportValue: '1',
+  //         outcome: '1',
+  //         repchange: '0',
+  //         oldrep: '2'
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const market = {
+  //         description: 'test description'
+  //       };
+
+  //       const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
+
+  //       const expectedResult = {
+  //         data: {
+  //           marketID,
+  //           balances: [
+  //             {
+  //               change: formatRep(constants.ZERO, { positiveSign: true }),
+  //               balance: formatRep('2')
+  //             }
+  //           ]
+  //         },
+  //         type: 'Compare Report To Consensus',
+  //         description: 'test description',
+  //         message: `✔ report formatted reported outcome matches consensus`
+  //       };
+
+  //       assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
+
+  //       const actions = store.getActions();
+
+  //       const expectedActions = [
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         },
+  //         {
+  //           type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
+  //         }
+  //       ];
+
+  //       assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected object and dispatch the expected actions with repChange not equal to 0 and inProgress and reportValue === log.outcome`,
+  //     assertions: (store) => {
+  //       const log = {
+  //         reportValue: '1',
+  //         outcome: '1',
+  //         repchange: '0',
+  //         oldrep: '2',
+  //         inProgress: true
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const market = {
+  //         description: 'test description'
+  //       };
+
+  //       const result = action.constructPenalizeTransaction(log, marketID, market, {}, store.dispatch);
+
+  //       const expectedResult = {
+  //         data: {
+  //           marketID,
+  //           balances: [
+  //             {
+  //               change: formatRep(constants.ZERO, { positiveSign: true }),
+  //               balance: formatRep('2')
+  //             }
+  //           ]
+  //         },
+  //         type: 'Compare Report To Consensus',
+  //         description: 'test description',
+  //         message: 'comparing report to consensus'
+  //       };
+
+  //       assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
+
+  //       const actions = store.getActions();
+
+  //       const expectedActions = [];
+
+  //       assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
+  //     }
+  //   });
+  // });
+
+  describe('constructSubmitReportTransaction', () => {
     const mockReportableOutcomes = {
       formatReportedOutcome: sinon.stub().returns('formatted reported outcome')
     };
@@ -1971,1395 +1249,955 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     const test = t => it(t.description, () => {
       const store = mockStore();
       t.assertions(store);
-    });
-
-    test({
-      description: `should return the expected object with no ethics and inProgress`,
-      assertions: () => {
-        const log = {
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportTransaction(log, marketID, market);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: true,
-            reportedOutcomeID: 'formatted reported outcome',
-            outcome: {
-              name: 'formatted reported outcome'
-            }
-          },
-          type: REVEAL_REPORT,
-          description: market.description,
-          message: 'revealing report: formatted reported outcome'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with ethics and inProgress`,
-      assertions: () => {
-        const log = {
-          inProgress: true,
-          ethics: '1'
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportTransaction(log, marketID, market);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: false,
-            reportedOutcomeID: 'formatted reported outcome',
-            outcome: {
-              name: 'formatted reported outcome'
-            }
-          },
-          type: REVEAL_REPORT,
-          description: market.description,
-          message: 'revealing report: formatted reported outcome'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with ethics and inProgress false`,
-      assertions: (store) => {
-        const log = {
-          ethics: '1'
-        };
-        const marketID = '0xMARKETID';
-        const market = {
-          description: 'test description'
-        };
-
-        const result = action.constructSubmittedReportTransaction(log, marketID, market, null, store.dispatch);
-
-        const expectedResult = {
-          data: {
-            marketID,
-            market,
-            isUnethical: false,
-            reportedOutcomeID: 'formatted reported outcome',
-            outcome: {
-              name: 'formatted reported outcome'
-            }
-          },
-          type: REVEAL_REPORT,
-          description: market.description,
-          message: 'revealed report: formatted reported outcome'
-        };
-
-        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
-
-        const actions = store.getActions();
-
-        const expectedActions = [
-          {
-            type: MOCK_ACTION_TYPES.UPDATE_EVENTS_WITH_ACCOUNT_REPORT_DATA
-          }
-        ];
-
-        assert.deepEqual(actions, expectedActions, `Didn't dispatch the expected actions`);
-      }
-    });
-  });
-
-  describe('constructSlashedRepTransaction', () => {
-    const action = require('../../../src/modules/transactions/actions/construct-transaction');
-
-    const test = t => it(t.description, () => t.assertions());
-
-    test({
-      description: `should return the expected object with sender not equal to user and repSlashed false and inProgress false`,
-      assertions: () => {
-        const log = {
-          reporter: '0xREPORTER',
-          sender: '0xSENDER'
-        };
-        const market = {
-          id: '0xMARKETID',
-          description: 'test description'
-        };
-
-        const actual = action.constructSlashedRepTransaction(log, market);
-
-        const expected = {
-          data: {
-            marketID: '0xMARKETID',
-            market
-          },
-          description: market.description,
-          type: 'Pay Collusion Fine',
-          message: `fined by ${abi.strip_0x(log.sender)}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with sender equal to user and repSlashed false and inProgress false`,
-      assertions: () => {
-        const log = {
-          reporter: '0xREPORTER',
-          sender: '0xSENDER'
-        };
-        const market = {
-          id: '0xMARKETID',
-          description: 'test description'
-        };
-        const address = '0xSENDER';
-
-        const actual = action.constructSlashedRepTransaction(log, market, null, address);
-
-        const expected = {
-          data: {
-            marketID: '0xMARKETID',
-            market
-          },
-          description: market.description,
-          type: 'Snitch Reward',
-          message: `fined ${abi.strip_0x(log.reporter)} ${formatRep(log.repSlashed).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with sender equal to user and repSlashed and inProgress false`,
-      assertions: () => {
-        const log = {
-          reporter: '0xREPORTER',
-          sender: '0xSENDER',
-          repSlashed: '10',
-          slasherBalance: '20'
-        };
-        const market = {
-          id: '0xMARKETID',
-          description: 'test description'
-        };
-        const address = '0xSENDER';
-
-        const actual = action.constructSlashedRepTransaction(log, market, null, address);
-
-        const expected = {
-          data: {
-            marketID: '0xMARKETID',
-            market,
-            balances: [
-              {
-                change: formatRep(5, { positiveSign: true }),
-                balance: formatRep(log.slasherBalance)
-              }
-            ]
-          },
-          description: market.description,
-          type: 'Snitch Reward',
-          message: `fined ${abi.strip_0x(log.reporter)} ${formatRep(log.repSlashed).full}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-
-    test({
-      description: `should return the expected object with sender equal to user and repSlashed and inProgress`,
-      assertions: () => {
-        const log = {
-          reporter: '0xREPORTER',
-          sender: '0xSENDER',
-          repSlashed: '10',
-          slasherBalance: '20',
-          inProgress: true
-        };
-        const market = {
-          id: '0xMARKETID',
-          description: 'test description'
-        };
-        const address = '0xSENDER';
-
-        const actual = action.constructSlashedRepTransaction(log, market, null, address);
-
-        const expected = {
-          data: {
-            marketID: '0xMARKETID',
-            market,
-            balances: [
-              {
-                change: formatRep(5, { positiveSign: true }),
-                balance: formatRep(log.slasherBalance)
-              }
-            ]
-          },
-          description: market.description,
-          type: 'Snitch Reward',
-          message: `fining ${abi.strip_0x(log.reporter)}`
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
-  });
-
-  describe('constructLogFillTxTransaction', () => {
-    const action = require('../../../src/modules/transactions/actions/construct-transaction');
-
-    const test = t => it(t.description, () => {
-      const store = mockStore();
-      t.assertions(store);
-    });
-
-    test({
-      description: `should return the expected transaction object with necessary data missing`,
-      assertions: (store) => {
-        const trade = {};
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade));
-
-        const expected = null;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with maker and type BUY and inProgress false`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: true,
-          makerFee: '0.01',
-          type: BUY,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: MATCH_ASK,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `sold ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: undefined,
-            totalReturn: formatEtherTokens(totalReturn),
-            gasFees: trade.gasFees && abi.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with maker and type BUY and inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: true,
-          makerFee: '0.01',
-          type: BUY,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: MATCH_ASK,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `${MATCH_ASK} ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: undefined,
-            totalReturn: formatEtherTokens(totalReturn),
-            gasFees: trade.gasFees && abi.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with maker and type SELL and inProgress false`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: true,
-          makerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalReturnPerShare = totalReturn.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: MATCH_BID,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `bought ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            totalReturn: undefined,
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with maker and type SELL and inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: true,
-          makerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalReturnPerShare = totalReturn.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: MATCH_BID,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `${MATCH_BID} ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            totalReturn: undefined,
-            gasFees: trade.gasFees && abi.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with taker and type BUY and inProgress false`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: BUY,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: BUY,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `bought ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            totalReturn: undefined,
-            gasFees: trade.gasFees && abi.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with taker and type BUY and inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: BUY,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: BUY,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `${BUY} ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            totalReturn: undefined,
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with taker and type SELL and inProgress false`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalReturnPerShare = totalReturn.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: SELL,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `sold ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: undefined,
-            totalReturn: formatEtherTokens(totalReturn),
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with taker and type SELL and inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = marketType === SCALAR ? abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price)) : abi.bignum(trade.price);
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalReturnPerShare = totalReturn.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: SELL,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `${SELL} ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: undefined,
-            totalReturn: formatEtherTokens(totalReturn),
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should return the expected transaction object with type scalar and taker and type SELL and inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const marketType = SCALAR;
-        const minValue = '0';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const tradingFees = trade.maker ? abi.bignum(trade.makerFee) : abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const bnPrice = abi.bignum(augur.trading.shrinkScalarPrice(minValue, trade.price));
-        const totalCost = bnPrice.times(bnShares).plus(tradingFees);
-        const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
-        const totalReturnPerShare = totalReturn.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogFillTxTransaction(trade, marketID, marketType, minValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: SELL,
-            hash: trade.transactionHash,
-            tradeGroupID: trade.tradeGroupID,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `${SELL} ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: price,
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: undefined,
-            totalReturn: formatEtherTokens(totalReturn),
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-  });
-
-  describe('constructLogFillTxTransaction', () => {
-    const action = require('../../../src/modules/transactions/actions/construct-transaction');
-
-    const test = t => it(t.description, () => {
-      const store = mockStore();
-      t.assertions(store);
-    });
-
-    test({
-      description: `should return the expected object with inProgress false`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001
-        };
-        const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const maxValue = '1';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const bnPrice = abi.bignum(trade.price);
-        const tradingFees = abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const totalCost = bnShares.minus(bnPrice.times(bnShares).plus(tradingFees));
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogShortFillTxTransaction(trade, marketID, marketType, maxValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: SHORT_SELL,
-            hash: trade.transactionHash,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `short sold ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: formatEtherTokens(totalCost.minus(bnShares).dividedBy(bnShares).abs()),
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
-        };
-
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
     });
 
     test({
       description: `should return the expected object with inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
+      assertions: () => {
+        const log = {
           inProgress: true
         };
         const marketID = '0xMARKETID';
-        const marketType = BINARY;
-        const maxValue = '1';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const bnPrice = abi.bignum(trade.price);
-        const tradingFees = abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const totalCost = bnShares.minus(bnPrice.times(bnShares).plus(tradingFees));
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogShortFillTxTransaction(trade, marketID, marketType, maxValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: SHORT_SELL,
-            hash: trade.transactionHash,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `short selling ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: formatEtherTokens(totalCost.minus(bnShares).dividedBy(bnShares).abs()),
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
+        const market = {
+          description: 'test description'
         };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
-      }
-    });
+        const result = action.constructSubmitReportTransaction(log, marketID, market);
 
-    test({
-      description: `should return the expected object with type scalar and inProgress`,
-      assertions: (store) => {
-        const trade = {
-          transactionHash: '0xHASH',
-          tradeid: '0xTRADEID',
-          tradeGroupID: '0xTRADEGROUPID',
-          price: '0.1',
-          amount: '2',
-          maker: false,
-          takerFee: '0.01',
-          type: SELL,
-          timestamp: 1491843278,
-          blockNumber: 123456,
-          gasFees: 0.001,
-          inProgress: true
-        };
-        const marketID = '0xMARKETID';
-        const marketType = SCALAR;
-        const maxValue = '1';
-        const description = 'test description';
-        const outcomeID = '1';
-        const status = 'testing';
-
-        const price = formatEtherTokens(trade.price);
-        const shares = formatShares(trade.amount);
-        const bnPrice = abi.bignum(trade.price);
-        const tradingFees = abi.bignum(trade.takerFee);
-        const bnShares = abi.bignum(trade.amount);
-        const totalCost = abi.bignum(maxValue).times(bnShares).minus(bnPrice.times(bnShares).plus(tradingFees));
-        const totalCostPerShare = totalCost.dividedBy(bnShares);
-
-        const actual = store.dispatch(action.constructLogShortFillTxTransaction(trade, marketID, marketType, maxValue, description, outcomeID, null, status));
-
-        const expected = {
-          '0xHASH-0xTRADEID': {
-            type: SHORT_SELL,
-            hash: trade.transactionHash,
-            status,
-            description,
-            data: {
-              marketType,
-              outcomeName: outcomeID,
-              outcomeID,
-              marketID
-            },
-            message: `short selling ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
-            numShares: shares,
-            noFeePrice: price,
-            avgPrice: formatEtherTokens(totalCost.minus(bnShares).dividedBy(bnShares).abs()),
-            timestamp: formatDate(new Date(trade.timestamp * 1000)),
-            tradingFees: formatEtherTokens(tradingFees),
-            feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
-            totalCost: formatEtherTokens(totalCost),
-            gasFees: formatEther(trade.gasFees),
-            blockNumber: trade.blockNumber
-          }
+        const expectedResult = {
+          data: {
+            marketID,
+            market,
+            reportedOutcomeID: 'formatted reported outcome',
+            outcome: {
+              name: 'formatted reported outcome'
+            }
+          },
+          type: SUBMIT_REPORT,
+          description: market.description,
+          message: 'revealing report: formatted reported outcome'
         };
 
-        assert.deepEqual(actual, expected, `Didn't return the expected object`);
+        assert.deepEqual(result, expectedResult, `Didn't return the expected object`);
       }
     });
   });
 
-  describe('constructLogFillTxTransaction', () => {
-    const action = require('../../../src/modules/transactions/actions/construct-transaction');
+  // describe('constructTakeOrderTransaction', () => {
+  //   const action = require('../../../src/modules/transactions/actions/construct-transaction');
 
-    const test = t => it(t.description, () => {
-      const store = mockStore();
-      t.assertions(store);
-    });
+  //   const test = t => it(t.description, () => {
+  //     const store = mockStore();
+  //     t.assertions(store);
+  //   });
 
-    describe('related conditionals: trade type, isShortAsk, and inProgress', () => {
-      let trade = {
-        transactionHash: '0xHASH',
-        tradeid: '0xTRADEID',
-        tradeGroupID: '0xTRADEGROUPID',
-        price: '0.1',
-        amount: '2',
-        maker: false,
-        takerFee: '0.01',
-        type: SELL,
-        timestamp: 1491843278,
-        blockNumber: 123456,
-        gasFees: 0.001
-      };
-      const marketID = '0xMARKETID';
-      const marketType = BINARY;
-      const description = 'test description';
-      const outcomeID = '1';
-      const market = {
-        makerFee: '0.025',
-        takerFee: '0.05',
-        minValue: '0',
-        maxValue: '1'
-      };
-      const status = 'testing';
+  //   test({
+  //     description: `should return the expected transaction object with necessary data missing`,
+  //     assertions: (store) => {
+  //       const trade = {};
 
-      test({
-        description: `BUY, false, false`,
-        assertions: (store) => {
-          trade = {
-            ...trade,
-            type: BUY,
-            isShortAsk: false,
-            inProgress: false
-          };
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade));
 
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       const expected = null;
 
-          const expected = {
-            '0xHASH': {
-              type: BID,
-              message: 'bid 2 shares for 0.1009 ETH Tokens / share',
-              freeze: {
-                verb: 'froze',
-                noFeeCost: formatEtherTokens(0.2)
-              },
-              totalCost: formatEtherTokens(0.2018),
-              totalReturn: undefined
-            }
-          };
+  //       assert.strictEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
+  //   test({
+  //     description: `should return the expected transaction object with maker and type BUY and inProgress false`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: true,
+  //         makerFee: '0.01',
+  //         type: BUY,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
 
-      test({
-        description: `BUY, false, true`,
-        assertions: (store) => {
-          trade = {
-            ...trade,
-            type: BUY,
-            isShortAsk: false,
-            inProgress: true
-          };
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalCostPerShare = totalCost.dividedBy(bnShares);
 
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
 
-          const expected = {
-            '0xHASH': {
-              type: BID,
-              message: 'bidding 2 shares for 0.1009 ETH Tokens / share',
-              freeze: {
-                verb: 'freezing',
-                noFeeCost: formatEtherTokens(0.2)
-              },
-              totalCost: formatEtherTokens(0.2018),
-              totalReturn: undefined
-            }
-          };
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: MATCH_ASK,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `sold ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: undefined,
+  //           totalReturn: formatEtherTokens(totalReturn),
+  //           gasFees: trade.gasFees && speedomatic.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
 
-      test({
-        description: `SELL, false, false`,
-        assertions: (store) => {
-          trade = {
-            ...trade,
-            type: SELL,
-            isShortAsk: false,
-            inProgress: false
-          };
+  //   test({
+  //     description: `should return the expected transaction object with maker and type BUY and inProgress`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: true,
+  //         makerFee: '0.01',
+  //         type: BUY,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001,
+  //         inProgress: true
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
 
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalCostPerShare = totalCost.dividedBy(bnShares);
 
-          const expected = {
-            '0xHASH': {
-              type: ASK,
-              message: 'ask 2 shares for 0.0991 ETH Tokens / share',
-              freeze: {
-                verb: 'froze',
-                noFeeCost: undefined
-              },
-              totalCost: undefined,
-              totalReturn: formatEtherTokens(0.1982)
-            }
-          };
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: MATCH_ASK,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `${MATCH_ASK} ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: undefined,
+  //           totalReturn: formatEtherTokens(totalReturn),
+  //           gasFees: trade.gasFees && speedomatic.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
 
-      test({
-        description: `SELL, false, true`,
-        assertions: (store) => {
-          trade = {
-            ...trade,
-            type: SELL,
-            isShortAsk: false,
-            inProgress: true
-          };
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
 
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //   test({
+  //     description: `should return the expected transaction object with maker and type SELL and inProgress false`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: true,
+  //         makerFee: '0.01',
+  //         type: SELL,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
 
-          const expected = {
-            '0xHASH': {
-              type: ASK,
-              message: 'asking 2 shares for 0.0991 ETH Tokens / share',
-              freeze: {
-                verb: 'freezing',
-                noFeeCost: undefined
-              },
-              totalCost: undefined,
-              totalReturn: formatEtherTokens(0.1982)
-            }
-          };
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalReturnPerShare = totalReturn.dividedBy(bnShares);
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
 
-      test({
-        description: `SELL, true, false`,
-        assertions: (store) => {
-          trade = {
-            ...trade,
-            type: SELL,
-            isShortAsk: true,
-            inProgress: true
-          };
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: MATCH_BID,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `bought ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: formatEtherTokens(totalCost),
+  //           totalReturn: undefined,
+  //           gasFees: formatEther(trade.gasFees),
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
 
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
 
-          const expected = {
-            '0xHASH': {
-              type: SHORT_ASK,
-              message: 'short asking 2 shares for 0.0991 ETH Tokens / share',
-              freeze: {
-                verb: 'freezing',
-                noFeeCost: formatEtherTokens(2)
-              },
-              totalCost: undefined,
-              totalReturn: undefined
-            }
-          };
+  //   test({
+  //     description: `should return the expected transaction object with maker and type SELL and inProgress`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: true,
+  //         makerFee: '0.01',
+  //         type: SELL,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001,
+  //         inProgress: true
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
-    });
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalReturnPerShare = totalReturn.dividedBy(bnShares);
 
-    describe('conditionals: market type', () => {
-      const trade = {
-        transactionHash: '0xHASH',
-        tradeid: '0xTRADEID',
-        tradeGroupID: '0xTRADEGROUPID',
-        price: '0.1',
-        amount: '2',
-        maker: false,
-        takerFee: '0.01',
-        type: SELL,
-        timestamp: 1491843278,
-        blockNumber: 123456,
-        gasFees: 0.001
-      };
-      const marketID = '0xMARKETID';
-      let marketType = BINARY;
-      const description = 'test description';
-      const outcomeID = '1';
-      let market = {
-        makerFee: '0.025',
-        takerFee: '0.05',
-        minValue: '0',
-        maxValue: '1'
-      };
-      const status = 'testing';
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
 
-      test({
-        description: 'BINARY',
-        assertions: (store) => {
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: MATCH_BID,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `${MATCH_BID} ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: formatEtherTokens(totalCost),
+  //           totalReturn: undefined,
+  //           gasFees: trade.gasFees && speedomatic.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
 
-          const expected = {
-            '0xHASH': {
-              noFeePrice: formatEtherTokens(0.1),
-              freeze: {
-                tradingFees: formatEtherTokens(0.0018)
-              },
-              feePercent: formatPercent(0.8919722497522299),
-              message: 'ask 2 shares for 0.0991 ETH Tokens / share'
-            }
-          };
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
+  //   test({
+  //     description: `should return the expected transaction object with taker and type BUY and inProgress false`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: false,
+  //         settlementFee: '0.01',
+  //         type: BUY,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
 
-      test({
-        description: 'SCALAR',
-        assertions: (store) => {
-          marketType = SCALAR;
-          market = {
-            ...market,
-            minValue: -1,
-            maxValue: 1
-          };
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalCostPerShare = totalCost.dividedBy(bnShares);
 
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
 
-          const expected = {
-            '0xHASH': {
-              noFeePrice: formatEtherTokens(-0.9),
-              freeze: {
-                tradingFees: formatEtherTokens(0.00095)
-              },
-              feePercent: formatPercent(0.4727544165215227),
-              message: 'ask 2 shares for 0.0995 ETH Tokens / share'
-            }
-          };
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: BUY,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `bought ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: formatEtherTokens(totalCost),
+  //           totalReturn: undefined,
+  //           gasFees: trade.gasFees && speedomatic.bignum(trade.gasFees).gt(ZERO) ? formatEther(trade.gasFees) : null,
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
 
-          assert.containSubset(actual, expected, `Didn't contain the expected subset`);
-        }
-      });
-    });
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
 
-    describe('general calculations', () => {
-      const trade = {
-        transactionHash: '0xHASH',
-        tradeid: '0xTRADEID',
-        tradeGroupID: '0xTRADEGROUPID',
-        price: '0.1',
-        amount: '2',
-        maker: false,
-        takerFee: '0.01',
-        type: SELL,
-        timestamp: 1491843278,
-        blockNumber: 123456,
-        gasFees: 0.001,
-        inProgress: false
-      };
-      const marketID = '0xMARKETID';
-      const marketType = BINARY;
-      const description = 'test description';
-      const outcomeID = '1';
-      const market = {
-        makerFee: '0.025',
-        takerFee: '0.05',
-        minValue: '0',
-        maxValue: '1'
-      };
-      const status = 'testing';
+  //   test({
+  //     description: `should return the expected transaction object with taker and type BUY and inProgress`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: false,
+  //         settlementFee: '0.01',
+  //         type: BUY,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001,
+  //         inProgress: true
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
 
-      test({
-        description: `should return the expected object`,
-        assertions: (store) => {
-          const actual = store.dispatch(action.constructLogAddTxTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalCostPerShare = totalCost.dividedBy(bnShares);
 
-          const expected = {
-            '0xHASH': {
-              type: ASK,
-              status,
-              description,
-              data: {
-                marketType,
-                outcomeName: outcomeID,
-                outcomeID,
-                marketID
-              },
-              message: 'ask 2 shares for 0.0991 ETH Tokens / share',
-              numShares: formatShares(trade.amount),
-              noFeePrice: formatEtherTokens(trade.price),
-              freeze: {
-                verb: 'froze',
-                noFeeCost: undefined,
-                tradingFees: formatEtherTokens(0.0018)
-              },
-              avgPrice: formatEtherTokens(trade.price),
-              timestamp: formatDate(new Date(trade.timestamp * 1000)),
-              hash: trade.transactionHash,
-              feePercent: formatPercent(0.8919722497522299),
-              totalCost: undefined,
-              totalReturn: formatEtherTokens(0.1982),
-              gasFees: formatEther(trade.gasFees),
-              blockNumber: trade.blockNumber,
-              tradeID: trade.tradeid
-            }
-          };
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
 
-          assert.deepEqual(actual, expected, `Didn't return the expected object`);
-        }
-      });
-    });
-  });
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: BUY,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `${BUY} ${shares.full} for ${formatEtherTokens(totalCostPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: formatEtherTokens(totalCost),
+  //           totalReturn: undefined,
+  //           gasFees: formatEther(trade.gasFees),
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
 
-  describe('constructLogCancelTransaction', () => {
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected transaction object with taker and type SELL and inProgress false`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: false,
+  //         settlementFee: '0.01',
+  //         type: SELL,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
+
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalReturnPerShare = totalReturn.dividedBy(bnShares);
+
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
+
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: SELL,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `sold ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: undefined,
+  //           totalReturn: formatEtherTokens(totalReturn),
+  //           gasFees: formatEther(trade.gasFees),
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
+
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected transaction object with taker and type SELL and inProgress`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: false,
+  //         settlementFee: '0.01',
+  //         type: SELL,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001,
+  //         inProgress: true
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = BINARY;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
+
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = marketType === SCALAR ? speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price)) : speedomatic.bignum(trade.price);
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalReturnPerShare = totalReturn.dividedBy(bnShares);
+
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
+
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: SELL,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `${SELL} ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: undefined,
+  //           totalReturn: formatEtherTokens(totalReturn),
+  //           gasFees: formatEther(trade.gasFees),
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
+
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
+
+  //   test({
+  //     description: `should return the expected transaction object with type scalar and taker and type SELL and inProgress`,
+  //     assertions: (store) => {
+  //       const trade = {
+  //         transactionHash: '0xHASH',
+  //         orderId: '0xORDERID',
+  //         tradeGroupID: '0xTRADEGROUPID',
+  //         price: '0.1',
+  //         amount: '2',
+  //         maker: false,
+  //         settlementFee: '0.01',
+  //         type: SELL,
+  //         timestamp: 1491843278,
+  //         blockNumber: 123456,
+  //         gasFees: 0.001,
+  //         inProgress: true
+  //       };
+  //       const marketID = '0xMARKETID';
+  //       const marketType = SCALAR;
+  //       const minPrice = '0';
+  //       const description = 'test description';
+  //       const outcomeID = '1';
+  //       const status = 'testing';
+
+  //       const price = formatEtherTokens(trade.price);
+  //       const shares = formatShares(trade.amount);
+  //       const tradingFees = trade.maker ? speedomatic.bignum(trade.makerFee) : speedomatic.bignum(trade.settlementFee);
+  //       const bnShares = speedomatic.bignum(trade.amount);
+  //       const bnPrice = speedomatic.bignum(augur.trading.shrinkScalarPrice(minPrice, trade.price));
+  //       const totalCost = bnPrice.times(bnShares).plus(tradingFees);
+  //       const totalReturn = bnPrice.times(bnShares).minus(tradingFees);
+  //       const totalReturnPerShare = totalReturn.dividedBy(bnShares);
+
+  //       const actual = store.dispatch(action.constructTakeOrderTransaction(trade, marketID, marketType, minPrice, description, outcomeID, null, status));
+
+  //       const expected = {
+  //         '0xHASH-0xORDERID': {
+  //           type: SELL,
+  //           hash: trade.transactionHash,
+  //           tradeGroupID: trade.tradeGroupID,
+  //           status,
+  //           description,
+  //           data: {
+  //             marketType,
+  //             outcomeName: outcomeID,
+  //             outcomeID,
+  //             marketID
+  //           },
+  //           message: `${SELL} ${shares.full} for ${formatEtherTokens(totalReturnPerShare).full} / share`,
+  //           numShares: shares,
+  //           noFeePrice: price,
+  //           avgPrice: price,
+  //           timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //           tradingFees: formatEtherTokens(tradingFees),
+  //           feePercent: formatPercent(tradingFees.dividedBy(totalCost).times(100)),
+  //           totalCost: undefined,
+  //           totalReturn: formatEtherTokens(totalReturn),
+  //           gasFees: formatEther(trade.gasFees),
+  //           blockNumber: trade.blockNumber
+  //         }
+  //       };
+
+  //       assert.deepEqual(actual, expected, `Didn't return the expected value`);
+  //     }
+  //   });
+  // });
+
+  // describe('constructMakeOrderTransaction', () => {
+  //   const action = require('../../../src/modules/transactions/actions/construct-transaction');
+
+  //   const test = t => it(t.description, () => {
+  //     const store = mockStore();
+  //     t.assertions(store);
+  //   });
+
+  //   describe('related conditionals: trade type, isShortAsk, and inProgress', () => {
+  //     let trade = {
+  //       transactionHash: '0xHASH',
+  //       orderId: '0xORDERID',
+  //       tradeGroupID: '0xTRADEGROUPID',
+  //       price: '0.1',
+  //       amount: '2',
+  //       maker: false,
+  //       settlementFee: '0.01',
+  //       type: SELL,
+  //       timestamp: 1491843278,
+  //       blockNumber: 123456,
+  //       gasFees: 0.001
+  //     };
+  //     const marketID = '0xMARKETID';
+  //     const marketType = BINARY;
+  //     const description = 'test description';
+  //     const outcomeID = '1';
+  //     const market = {
+  //       makerFee: '0.025',
+  //       settlementFee: '0.05',
+  //       minPrice: '0',
+  //       maxPrice: '1'
+  //     };
+  //     const status = 'testing';
+
+  //     test({
+  //       description: `BUY, false, false`,
+  //       assertions: (store) => {
+  //         trade = {
+  //           ...trade,
+  //           type: BUY,
+  //           isShortAsk: false,
+  //           inProgress: false
+  //         };
+
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             type: BID,
+  //             message: 'bid 2 shares for 0.1009 ETH Tokens / share',
+  //             freeze: {
+  //               verb: 'froze',
+  //               noFeeCost: formatEtherTokens(0.2)
+  //             },
+  //             totalCost: formatEtherTokens(0.2018),
+  //             totalReturn: undefined
+  //           }
+  //         };
+
+  //         assert.containSubset(actual, expected, `Didn't contain the expected subset`);
+  //       }
+  //     });
+
+  //     test({
+  //       description: `BUY, false, true`,
+  //       assertions: (store) => {
+  //         trade = {
+  //           ...trade,
+  //           type: BUY,
+  //           isShortAsk: false,
+  //           inProgress: true
+  //         };
+
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             type: BID,
+  //             message: 'bidding 2 shares for 0.1009 ETH Tokens / share',
+  //             freeze: {
+  //               verb: 'freezing',
+  //               noFeeCost: formatEtherTokens(0.2)
+  //             },
+  //             totalCost: formatEtherTokens(0.2018),
+  //             totalReturn: undefined
+  //           }
+  //         };
+
+  //         assert.containSubset(actual, expected, `Didn't contain the expected subset`);
+  //       }
+  //     });
+
+  //     test({
+  //       description: `SELL, false, false`,
+  //       assertions: (store) => {
+  //         trade = {
+  //           ...trade,
+  //           type: SELL,
+  //           isShortAsk: false,
+  //           inProgress: false
+  //         };
+
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             type: ASK,
+  //             message: 'ask 2 shares for 0.0991 ETH Tokens / share',
+  //             freeze: {
+  //               verb: 'froze',
+  //               noFeeCost: undefined
+  //             },
+  //             totalCost: undefined,
+  //             totalReturn: formatEtherTokens(0.1982)
+  //           }
+  //         };
+
+  //         assert.containSubset(actual, expected, `Didn't contain the expected subset`);
+  //       }
+  //     });
+
+  //     test({
+  //       description: `SELL, false, true`,
+  //       assertions: (store) => {
+  //         trade = {
+  //           ...trade,
+  //           type: SELL,
+  //           isShortAsk: false,
+  //           inProgress: true
+  //         };
+
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             type: ASK,
+  //             message: 'asking 2 shares for 0.0991 ETH Tokens / share',
+  //             freeze: {
+  //               verb: 'freezing',
+  //               noFeeCost: undefined
+  //             },
+  //             totalCost: undefined,
+  //             totalReturn: formatEtherTokens(0.1982)
+  //           }
+  //         };
+
+  //         assert.containSubset(actual, expected, `Didn't contain the expected subset`);
+  //       }
+  //     });
+  //   });
+
+  //   describe('conditionals: market type', () => {
+  //     const trade = {
+  //       transactionHash: '0xHASH',
+  //       orderId: '0xORDERID',
+  //       tradeGroupID: '0xTRADEGROUPID',
+  //       price: '0.1',
+  //       amount: '2',
+  //       maker: false,
+  //       settlementFee: '0.01',
+  //       type: SELL,
+  //       timestamp: 1491843278,
+  //       blockNumber: 123456,
+  //       gasFees: 0.001
+  //     };
+  //     const marketID = '0xMARKETID';
+  //     let marketType = BINARY;
+  //     const description = 'test description';
+  //     const outcomeID = '1';
+  //     let market = {
+  //       makerFee: '0.025',
+  //       settlementFee: '0.05',
+  //       minPrice: '0',
+  //       maxPrice: '1'
+  //     };
+  //     const status = 'testing';
+
+  //     test({
+  //       description: 'BINARY',
+  //       assertions: (store) => {
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             noFeePrice: formatEtherTokens(0.1),
+  //             freeze: {
+  //               tradingFees: formatEtherTokens(0.0018)
+  //             },
+  //             feePercent: formatPercent(0.8919722497522299),
+  //             message: 'ask 2 shares for 0.0991 ETH Tokens / share'
+  //           }
+  //         };
+
+  //         assert.containSubset(actual, expected, `Didn't contain the expected subset`);
+  //       }
+  //     });
+
+  //     test({
+  //       description: 'SCALAR',
+  //       assertions: (store) => {
+  //         marketType = SCALAR;
+  //         market = {
+  //           ...market,
+  //           minPrice: -1,
+  //           maxPrice: 1
+  //         };
+
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             noFeePrice: formatEtherTokens(-0.9),
+  //             freeze: {
+  //               tradingFees: formatEtherTokens(0.00095)
+  //             },
+  //             feePercent: formatPercent(0.4727544165215227),
+  //             message: 'ask 2 shares for 0.0995 ETH Tokens / share'
+  //           }
+  //         };
+
+  //         assert.containSubset(actual, expected, `Didn't contain the expected subset`);
+  //       }
+  //     });
+  //   });
+
+  //   describe('general calculations', () => {
+  //     const trade = {
+  //       transactionHash: '0xHASH',
+  //       orderId: '0xORDERID',
+  //       tradeGroupID: '0xTRADEGROUPID',
+  //       price: '0.1',
+  //       amount: '2',
+  //       maker: false,
+  //       settlementFee: '0.01',
+  //       type: SELL,
+  //       timestamp: 1491843278,
+  //       blockNumber: 123456,
+  //       gasFees: 0.001,
+  //       inProgress: false
+  //     };
+  //     const marketID = '0xMARKETID';
+  //     const marketType = BINARY;
+  //     const description = 'test description';
+  //     const outcomeID = '1';
+  //     const market = {
+  //       makerFee: '0.025',
+  //       settlementFee: '0.05',
+  //       minPrice: '0',
+  //       maxPrice: '1'
+  //     };
+  //     const status = 'testing';
+
+  //     test({
+  //       description: `should return the expected object`,
+  //       assertions: (store) => {
+  //         const actual = store.dispatch(action.constructMakeOrderTransaction(trade, marketID, marketType, description, outcomeID, null, market, status));
+
+  //         const expected = {
+  //           '0xHASH': {
+  //             type: ASK,
+  //             status,
+  //             description,
+  //             data: {
+  //               marketType,
+  //               outcomeName: outcomeID,
+  //               outcomeID,
+  //               marketID
+  //             },
+  //             message: 'ask 2 shares for 0.0991 ETH Tokens / share',
+  //             numShares: formatShares(trade.amount),
+  //             noFeePrice: formatEtherTokens(trade.price),
+  //             freeze: {
+  //               verb: 'froze',
+  //               noFeeCost: undefined,
+  //               tradingFees: formatEtherTokens(0.0018)
+  //             },
+  //             avgPrice: formatEtherTokens(trade.price),
+  //             timestamp: formatDate(new Date(trade.timestamp * 1000)),
+  //             hash: trade.transactionHash,
+  //             feePercent: formatPercent(0.8919722497522299),
+  //             totalCost: undefined,
+  //             totalReturn: formatEtherTokens(0.1982),
+  //             gasFees: formatEther(trade.gasFees),
+  //             blockNumber: trade.blockNumber,
+  //             orderId: trade.orderId
+  //           }
+  //         };
+
+  //         assert.deepEqual(actual, expected, `Didn't return the expected object`);
+  //       }
+  //     });
+  //   });
+  // });
+
+  describe('constructCancelOrderTransaction', () => {
     const action = require('../../../src/modules/transactions/actions/construct-transaction');
 
     let trade = {
       transactionHash: '0xHASH',
-      tradeid: '0xTRADEID',
+      orderId: '0xORDERID',
       tradeGroupID: '0xTRADEGROUPID',
       price: '0.1',
       amount: '2',
       maker: false,
-      takerFee: '0.01',
+      settlementFee: '0.01',
       type: SELL,
       timestamp: 1491843278,
       blockNumber: 123456,
@@ -3381,7 +2219,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     test({
       description: `should return the expected object with inProgress false`,
       assertions: (store) => {
-        const actual = store.dispatch(action.constructLogCancelTransaction(trade, marketID, marketType, description, outcomeID, null, status));
+        const actual = store.dispatch(action.constructCancelOrderTransaction(trade, marketID, marketType, description, outcomeID, null, status));
 
         const price = formatEtherTokens(trade.price);
         const shares = formatShares(trade.amount);
@@ -3412,7 +2250,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
             totalReturn: formatEtherTokens(trade.cashRefund),
             gasFees: formatEther(trade.gasFees),
             blockNumber: trade.blockNumber,
-            tradeID: trade.tradeid
+            orderId: trade.orderId
           }
         };
 
@@ -3428,7 +2266,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
           inProgress: true
         };
 
-        const actual = store.dispatch(action.constructLogCancelTransaction(trade, marketID, marketType, description, outcomeID, null, status));
+        const actual = store.dispatch(action.constructCancelOrderTransaction(trade, marketID, marketType, description, outcomeID, null, status));
 
         const price = formatEtherTokens(trade.price);
         const shares = formatShares(trade.amount);
@@ -3459,7 +2297,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
             totalReturn: null,
             gasFees: formatEther(trade.gasFees),
             blockNumber: trade.blockNumber,
-            tradeID: trade.tradeid
+            orderId: trade.orderId
           }
         };
 
@@ -3471,17 +2309,14 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
   describe('constructTradingTransaction', () => {
     const constructTransaction = require('../../../src/modules/transactions/actions/construct-transaction');
 
-    constructTransaction.__set__('constructLogFillTxTransaction', sinon.stub().returns({
-      type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_FILL_TX_TRANSACTION
+    constructTransaction.__set__('constructTakeOrderTransaction', sinon.stub().returns({
+      type: MOCK_ACTION_TYPES.CONSTRUCT_TAKE_ORDER_TRANSACTION
     }));
-    constructTransaction.__set__('constructLogShortFillTxTransaction', sinon.stub().returns({
-      type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_SHORT_FILL_TX_TRANSACTIONS
+    constructTransaction.__set__('constructMakeOrderTransaction', sinon.stub().returns({
+      type: MOCK_ACTION_TYPES.CONSTRUCT_MAKE_ORDER_TRANSACTION
     }));
-    constructTransaction.__set__('constructLogAddTxTransaction', sinon.stub().returns({
-      type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_ADD_TX_TRANSACTION
-    }));
-    constructTransaction.__set__('constructLogCancelTransaction', sinon.stub().returns({
-      type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_CANCEL_TRANSACTION
+    constructTransaction.__set__('constructCancelOrderTransaction', sinon.stub().returns({
+      type: MOCK_ACTION_TYPES.CONSTRUCT_CANCEL_ORDER_TRANSACTION
     }));
 
     const test = t => it(t.description, () => {
@@ -3490,7 +2325,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
 
     test({
-      description: `should dispatch the expected actions for label 'log_fill_tx'`,
+      description: `should dispatch the expected actions for label 'TakeOrder'`,
       state: {
         marketsData: {
           '0xMARKETID': {}
@@ -3498,13 +2333,13 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
         outcomesData: {}
       },
       assertions: (store) => {
-        store.dispatch(constructTransaction.constructTradingTransaction('log_fill_tx', {}, '0xMARKETID'));
+        store.dispatch(constructTransaction.constructTradingTransaction('TakeOrder', {}, '0xMARKETID'));
 
         const actual = store.getActions();
 
         const expected = [
           {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_FILL_TX_TRANSACTION
+            type: MOCK_ACTION_TYPES.CONSTRUCT_TAKE_ORDER_TRANSACTION
           }
         ];
 
@@ -3513,7 +2348,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
 
     test({
-      description: `should dispatch the expected actions for label 'log_short_fill_tx'`,
+      description: `should dispatch the expected actions for label 'MakeOrder'`,
       state: {
         marketsData: {
           '0xMARKETID': {}
@@ -3521,13 +2356,13 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
         outcomesData: {}
       },
       assertions: (store) => {
-        store.dispatch(constructTransaction.constructTradingTransaction('log_short_fill_tx', {}, '0xMARKETID'));
+        store.dispatch(constructTransaction.constructTradingTransaction('MakeOrder', {}, '0xMARKETID'));
 
         const actual = store.getActions();
 
         const expected = [
           {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_SHORT_FILL_TX_TRANSACTIONS
+            type: MOCK_ACTION_TYPES.CONSTRUCT_MAKE_ORDER_TRANSACTION
           }
         ];
 
@@ -3536,7 +2371,7 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
 
     test({
-      description: `should dispatch the expected actions for label 'log_add_tx'`,
+      description: `should dispatch the expected actions for label 'CancelOrder'`,
       state: {
         marketsData: {
           '0xMARKETID': {}
@@ -3544,36 +2379,13 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
         outcomesData: {}
       },
       assertions: (store) => {
-        store.dispatch(constructTransaction.constructTradingTransaction('log_add_tx', {}, '0xMARKETID'));
+        store.dispatch(constructTransaction.constructTradingTransaction('CancelOrder', {}, '0xMARKETID'));
 
         const actual = store.getActions();
 
         const expected = [
           {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_ADD_TX_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'log_cancel'`,
-      state: {
-        marketsData: {
-          '0xMARKETID': {}
-        },
-        outcomesData: {}
-      },
-      assertions: (store) => {
-        store.dispatch(constructTransaction.constructTradingTransaction('log_cancel', {}, '0xMARKETID'));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_LOG_CANCEL_TRANSACTION
+            type: MOCK_ACTION_TYPES.CONSTRUCT_CANCEL_ORDER_TRANSACTION
           }
         ];
 
@@ -3591,26 +2403,13 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
     });
 
     test({
-      description: `should call the expected method for label 'payout'`,
+      description: `should call the expected method for label 'Payout'`,
       assertions: (store) => {
         __RewireAPI__.__set__('constructPayoutTransaction', () => 'constructPayoutTransaction');
 
-        const actual = store.dispatch(constructMarketTransaction('payout'));
+        const actual = store.dispatch(constructMarketTransaction('Payout'));
 
         const expected = 'constructPayoutTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should call the expected method for label 'tradingFeeUpdated'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructTradingFeeUpdatedTransaction', () => 'constructTradingFeeUpdatedTransaction');
-
-        const actual = store.dispatch(constructMarketTransaction('tradingFeeUpdated'));
-
-        const expected = 'constructTradingFeeUpdatedTransaction';
 
         assert.strictEqual(actual, expected, `Didn't call the expected method`);
       }
@@ -3624,565 +2423,6 @@ describe('modules/transactions/actions/contruct-transaction.js', () => {
         const expected = null;
 
         assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-  });
-
-  describe('constructReportingTransaction', () => {
-    const { __RewireAPI__, constructReportingTransaction } = require('../../../src/modules/transactions/actions/construct-transaction');
-
-    const test = t => it(t.description, () => {
-      const store = mockStore({
-        loginAccount: {
-          address: '',
-          derivedKey: ''
-        }
-      });
-      t.assertions(store);
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'penalize'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructPenalizeTransaction', () => 'constructPenalizeTransaction');
-
-        const actual = store.dispatch(constructReportingTransaction('penalize'));
-
-        const expected = 'constructPenalizeTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'submittedReport'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructSubmittedReportTransaction', () => 'constructSubmittedReportTransaction');
-
-        const actual = store.dispatch(constructReportingTransaction('submittedReport'));
-
-        const expected = 'constructSubmittedReportTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'submittedReportHash'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructSubmittedReportHashTransaction', () => 'constructSubmittedReportHashTransaction');
-
-        const actual = store.dispatch(constructReportingTransaction('submittedReportHash'));
-
-        const expected = 'constructSubmittedReportHashTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'slashedRep'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructSlashedRepTransaction', () => 'constructSlashedRepTransaction');
-
-        const actual = store.dispatch(constructReportingTransaction('slashedRep'));
-
-        const expected = 'constructSlashedRepTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected method for default label`,
-      assertions: (store) => {
-        const actual = store.dispatch(constructReportingTransaction(undefined));
-
-        const expected = null;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-  });
-
-  describe('constructTransaction', () => {
-    const { __RewireAPI__, constructTransaction } = require('../../../src/modules/transactions/actions/construct-transaction');
-
-    const test = t => it(t.description, () => {
-      const store = mockStore(t.state || {});
-      t.assertions(store);
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'Approval'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructApprovalTransaction', () => 'constructApprovalTransaction');
-
-        const actual = store.dispatch(constructTransaction('Approval'));
-
-        const expected = 'constructApprovalTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'collectedFees'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructCollectedFeesTransaction', () => 'constructCollectedFeesTransaction');
-
-        const actual = store.dispatch(constructTransaction('collectedFees'));
-
-        const expected = 'constructCollectedFeesTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'depositEther'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructConvertEthToEthTokenTransaction', () => 'constructConvertEthToEthTokenTransaction');
-
-        const actual = store.dispatch(constructTransaction('depositEther'));
-
-        const expected = 'constructConvertEthToEthTokenTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'fundedAccount'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructFundedAccountTransaction', () => 'constructFundedAccountTransaction');
-
-        const actual = store.dispatch(constructTransaction('fundedAccount'));
-
-        const expected = 'constructFundedAccountTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'penalizationCaughtUp'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructPenalizationCaughtUpTransaction', () => 'constructPenalizationCaughtUpTransaction');
-
-        const actual = store.dispatch(constructTransaction('penalizationCaughtUp'));
-
-        const expected = 'constructPenalizationCaughtUpTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'registration'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructRegistrationTransaction', () => 'constructRegistrationTransaction');
-
-        const actual = store.dispatch(constructTransaction('registration'));
-
-        const expected = 'constructRegistrationTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'withdraw'`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructWithdrawTransaction', () => 'constructWithdrawTransaction');
-
-        const actual = store.dispatch(constructTransaction('withdraw'));
-
-        const expected = 'constructWithdrawTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'sentCash' with trasnactionHash in state`,
-      state: {
-        transactionsData: {
-          '0xHASH': {}
-        }
-      },
-      assertions: (store) => {
-        const actual = store.dispatch(constructTransaction('sentCash', {
-          transactionHash: '0xHASH'
-        }));
-
-        const expected = null;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'sentCash' without trasnactionHash in state`,
-      state: {
-        transactionsData: {},
-        loginAccount: {}
-      },
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructSentCashTransaction', () => 'constructSentCashTransaction');
-
-        const actual = store.dispatch(constructTransaction('sentCash', {
-          transactionHash: '0xHASH'
-        }));
-
-        const expected = 'constructSentCashTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'sentEther' with trasnactionHash in state`,
-      state: {
-        transactionsData: {
-          '0xHASH': {}
-        }
-      },
-      assertions: (store) => {
-        const actual = store.dispatch(constructTransaction('sentEther', {
-          transactionHash: '0xHASH'
-        }));
-
-        const expected = null;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'sentEther' without trasnactionHash in state`,
-      state: {
-        transactionsData: {},
-        loginAccount: {}
-      },
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructSentEtherTransaction', () => 'constructSentEtherTransaction');
-
-        const actual = store.dispatch(constructTransaction('sentEther', {
-          transactionHash: '0xHASH'
-        }));
-
-        const expected = 'constructSentEtherTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'Transfer' with trasnactionHash in state`,
-      state: {
-        transactionsData: {
-          '0xHASH': {}
-        }
-      },
-      assertions: (store) => {
-        const actual = store.dispatch(constructTransaction('Transfer', {
-          transactionHash: '0xHASH'
-        }));
-
-        const expected = null;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'Transfer' without trasnactionHash in state`,
-      state: {
-        transactionsData: {},
-        loginAccount: {}
-      },
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructTransferTransaction', () => 'constructTransferTransaction');
-
-        const actual = store.dispatch(constructTransaction('Transfer', {
-          transactionHash: '0xHASH'
-        }));
-
-        const expected = 'constructTransferTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'marketCreated' without description in log`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructMarketCreatedTransaction', () => 'constructMarketCreatedTransaction');
-
-        const actual = store.dispatch(constructTransaction('marketCreated', {
-          description: 'testing'
-        }));
-
-        const expected = 'constructMarketCreatedTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'marketCreated' without description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForMarketTransaction', () => dispatch => ({}));
-
-        const actual = store.dispatch(constructTransaction('marketCreated', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'marketCreated' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForMarketTransaction', () => dispatch => ({
-          description: 'testing'
-        }));
-        __RewireAPI__.__set__('constructMarketCreatedTransaction', () => 'constructMarketCreatedTransaction');
-
-        const actual = store.dispatch(constructTransaction('marketCreated', {}));
-
-        const expected = 'constructMarketCreatedTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'payout' without description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForMarketTransaction', () => dispatch => ({}));
-
-        const actual = store.dispatch(constructTransaction('payout', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'payout' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForMarketTransaction', () => dispatch => ({
-          description: 'testing'
-        }));
-        __RewireAPI__.__set__('constructMarketTransaction', sinon.stub().returns({
-          type: MOCK_ACTION_TYPES.CONSTRUCT_MARKET_TRANSACTION
-        }));
-
-        store.dispatch(constructTransaction('payout', {}));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_MARKET_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'tradingFeeUpdated' without description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForMarketTransaction', () => dispatch => ({}));
-
-        const actual = store.dispatch(constructTransaction('payout', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'tradingFeeUpdated' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForMarketTransaction', () => dispatch => ({
-          description: 'testing'
-        }));
-        __RewireAPI__.__set__('constructMarketTransaction', sinon.stub().returns({
-          type: MOCK_ACTION_TYPES.CONSTRUCT_MARKET_TRANSACTION
-        }));
-
-        store.dispatch(constructTransaction('payout', {}));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_MARKET_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'penalize' without aux`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => undefined);
-
-        const actual = store.dispatch(constructTransaction('penalize', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'penalize' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => ({}));
-        __RewireAPI__.__set__('constructReportingTransaction', sinon.stub().returns({
-          type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-        }));
-
-        store.dispatch(constructTransaction('penalize', {}));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'slashedRep' without aux`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => undefined);
-
-        const actual = store.dispatch(constructTransaction('penalize', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'slashedRep' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => ({}));
-        __RewireAPI__.__set__('constructReportingTransaction', sinon.stub().returns({
-          type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-        }));
-
-        store.dispatch(constructTransaction('penalize', {}));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'submittedReport' without aux`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => undefined);
-
-        const actual = store.dispatch(constructTransaction('penalize', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'submittedReport' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => ({}));
-        __RewireAPI__.__set__('constructReportingTransaction', sinon.stub().returns({
-          type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-        }));
-
-        store.dispatch(constructTransaction('penalize', {}));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'submittedReportHash' without aux`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => undefined);
-
-        const actual = store.dispatch(constructTransaction('penalize', {}));
-
-        const expected = undefined;
-
-        assert.strictEqual(actual, expected, `Didn't return the expected value`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for label 'submittedReportHash' with description in returned market`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('loadDataForReportingTransaction', () => dispatch => ({}));
-        __RewireAPI__.__set__('constructReportingTransaction', sinon.stub().returns({
-          type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-        }));
-
-        store.dispatch(constructTransaction('penalize', {}));
-
-        const actual = store.getActions();
-
-        const expected = [
-          {
-            type: MOCK_ACTION_TYPES.CONSTRUCT_REPORTING_TRANSACTION
-          }
-        ];
-
-        assert.deepEqual(actual, expected, `Didn't dispatch the expected actions`);
-      }
-    });
-
-    test({
-      description: `should dispatch the expected actions for default label`,
-      assertions: (store) => {
-        __RewireAPI__.__set__('constructDefaultTransaction', () => 'constructDefaultTransaction');
-
-        const actual = store.dispatch(constructTransaction(undefined));
-
-        const expected = 'constructDefaultTransaction';
-
-        assert.strictEqual(actual, expected, `Didn't call the expected method`);
       }
     });
   });

@@ -1,50 +1,22 @@
-import async from 'async';
-import { augur } from 'services/augurjs';
-import { loadReport } from 'modules/reports/actions/load-report';
-import { loadReportDescriptors } from 'modules/reports/actions/load-report-descriptors';
-import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info';
-import { updateEventMarketsMap } from 'modules/markets/actions/update-markets-data';
-import { selectMarketIDFromEventID } from 'modules/market/selectors/market';
+import loadDataFromAugurNode from 'modules/app/actions/load-data-from-augur-node';
+import { updateHasLoadedReports } from 'modules/reports/actions/update-has-loaded-reports';
+import { clearReports, updateReports } from 'modules/reports/actions/update-reports';
+import logError from 'utils/log-error';
 
-export function loadReports(cb) {
-  return (dispatch, getState) => {
-    const callback = cb || (e => e && console.error('loadReports:', e));
-    const { loginAccount, branch, reports } = getState();
-    if (!loginAccount || !loginAccount.address || !branch.id || !branch.reportPeriod) {
-      return;
+export const loadReports = (options, callback = logError) => (dispatch, getState) => {
+  const { branch, env, loginAccount } = getState();
+  if (!loginAccount.address) return callback(null);
+  if (!branch.id) return callback(null);
+  const query = { ...options, branch: branch.id, reporter: loginAccount.address };
+  loadDataFromAugurNode(env.augurNodeURL, 'getReports', query, (err, reports) => {
+    if (err) return callback(err);
+    if (reports == null) {
+      dispatch(updateHasLoadedReports(false));
+      return callback(`no reports data received from ${env.augurNodeURL}`);
     }
-    const period = branch.reportPeriod;
-    const account = loginAccount.address;
-    const branchID = branch.id;
-    const branchReports = reports[branchID];
-    augur.api.ReportingThreshold.getEventsToReportOn({
-      branch: branchID,
-      period,
-      sender: account,
-      start: 0
-    }, (eventsToReportOn) => {
-      console.log('eventsToReportOn:', eventsToReportOn);
-      async.eachSeries(eventsToReportOn, (eventID, nextEvent) => {
-        if (!eventID || !parseInt(eventID, 16)) return nextEvent();
-        if (branchReports && branchReports[eventID] && branchReports[eventID].reportedOutcomeID) {
-          console.log('report already loaded:', eventID, branchReports[eventID]);
-          return nextEvent();
-        }
-        const marketID = selectMarketIDFromEventID(eventID);
-        if (marketID) {
-          return dispatch(loadReport(branchID, period, eventID, marketID, nextEvent));
-        }
-        augur.api.Events.getMarkets({ event: eventID }, (markets) => {
-          dispatch(updateEventMarketsMap(eventID, markets));
-          const marketID = markets[0];
-          dispatch(loadMarketsInfo([marketID], () => {
-            dispatch(loadReport(branchID, period, eventID, marketID, nextEvent));
-          }));
-        });
-      }, (err) => {
-        if (err) return callback(err);
-        dispatch(loadReportDescriptors(e => callback(e)));
-      });
-    });
-  };
-}
+    dispatch(clearReports());
+    dispatch(updateReports(reports));
+    dispatch(updateHasLoadedReports(true));
+    callback(null, reports);
+  });
+};

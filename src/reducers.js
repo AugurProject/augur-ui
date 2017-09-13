@@ -17,20 +17,19 @@ import marketsData from 'modules/markets/reducers/markets-data';
 import marketLoading from 'modules/market/reducers/market-loading';
 import hasLoadedMarkets from 'modules/markets/reducers/has-loaded-markets';
 import outcomesData from 'modules/markets/reducers/outcomes-data';
-import eventMarketsMap from 'modules/markets/reducers/event-markets-map';
 import favorites from 'modules/markets/reducers/favorites';
 import marketsFilteredSorted from 'modules/markets/reducers/markets-filtered-sorted';
 
 import reports from 'modules/reports/reducers/reports';
+import hasLoadedReports from 'modules/reports/reducers/has-loaded-reports';
 import eventsWithAccountReport from 'modules/my-reports/reducers/events-with-account-report';
 
 import orderBooks from 'modules/bids-asks/reducers/order-books';
+import isFirstOrderBookChunkLoaded from 'modules/bids-asks/reducers/is-first-order-book-chunk-loaded';
 import orderCancellation from 'modules/bids-asks/reducers/order-cancellation';
-import marketTrades from 'modules/portfolio/reducers/market-trades';
 import accountTrades from 'modules/my-positions/reducers/account-trades';
 import accountPositions from 'modules/my-positions/reducers/account-positions';
 import completeSetsBought from 'modules/my-positions/reducers/complete-sets-bought';
-import netEffectiveTrades from 'modules/my-positions/reducers/net-effective-trades';
 import transactionsData from 'modules/transactions/reducers/transactions-data';
 import transactionsOldestLoadedBlock from 'modules/transactions/reducers/transactions-oldest-loaded-block';
 import transactionsLoading from 'modules/transactions/reducers/transactions-loading';
@@ -42,15 +41,8 @@ import hasLoadedTopic from 'modules/topics/reducers/has-loaded-topic';
 
 import selectedMarketID from 'modules/market/reducers/selected-market-id';
 import tradesInProgress from 'modules/trade/reducers/trades-in-progress';
-import tradeCommitLock from 'modules/trade/reducers/trade-commit-lock';
-import reportCommitLock from 'modules/reports/reducers/report-commit-lock';
-import tradeCommitment from 'modules/trade/reducers/trade-commitment';
-import sellCompleteSetsLock from 'modules/my-positions/reducers/sell-complete-sets-lock';
-import smallestPositions from 'modules/my-positions/reducers/smallest-positions';
 // import createMarketInProgress from 'modules/create-market/reducers/create-market-in-progress';
 import priceHistory from 'modules/markets/reducers/price-history';
-
-import chatMessages from 'modules/chat/reducers/chat-messages';
 
 import marketCreatorFees from 'modules/my-markets/reducers/market-creator-fees';
 
@@ -80,11 +72,11 @@ export function createReducer() {
     marketLoading,
     hasLoadedMarkets,
     outcomesData,
-    eventMarketsMap,
     favorites,
     marketsFilteredSorted,
 
     reports,
+    hasLoadedReports,
     eventsWithAccountReport,
 
     selectedMarketID,
@@ -93,26 +85,18 @@ export function createReducer() {
     priceHistory,
 
     tradesInProgress,
-    tradeCommitLock,
-    reportCommitLock,
-    tradeCommitment,
-    sellCompleteSetsLock,
-    smallestPositions,
 
     orderBooks,
+    isFirstOrderBookChunkLoaded,
     orderCancellation,
-    marketTrades,
     accountTrades,
     accountPositions,
     completeSetsBought,
-    netEffectiveTrades,
     transactionsData,
     transactionsOldestLoadedBlock,
     transactionsLoading,
     scalarMarketsShareDenomination,
     closePositionTradeGroups,
-
-    chatMessages,
 
     marketCreatorFees,
 

@@ -518,37 +518,29 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-augur-abi@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/augur-abi/-/augur-abi-1.2.1.tgz#f099dc136a61cff196540cb830dc5128b8228493"
-  dependencies:
-    bignumber.js "2.3.0"
-    ethereumjs-abi "0.6.2"
-    js-sha3 "0.3.1"
+augur-contracts@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/augur-contracts/-/augur-contracts-3.0.1.tgz#fa648d8353593e4dcc55d1b3d2e346143d312734"
 
-augur-contracts@2.11.4:
-  version "2.11.4"
-  resolved "https://registry.yarnpkg.com/augur-contracts/-/augur-contracts-2.11.4.tgz#0209c298480aa1a0b0974fb301491a6d2563dc71"
-  dependencies:
-    clone "1.0.2"
-
-augur.js@4.0.6:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-4.0.6.tgz#2362b8a2aae17f0cc711a306ac4c0797b3f8e5b5"
+augur.js@4.1.7:
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-4.1.7.tgz#bbe33eebd1f026d71058a6cacdbd48e7518b254b"
   dependencies:
     async "1.5.2"
-    augur-abi "1.2.1"
-    augur-contracts "2.11.4"
+    augur-contracts "3.0.1"
     bignumber.js "2.3.0"
     browser-request "0.3.3"
     chalk "1.1.1"
     clone "1.0.2"
-    ethereumjs-connect "4.1.2"
-    ethrpc "4.1.2"
+    ethereumjs-connect "4.2.2"
+    ethrpc "4.2.3"
     immutable-delete "1.0.1"
-    keythereum "0.5.1"
+    keccak "1.2.0"
+    keythereum "1.0.2"
     lodash.assign "4.2.0"
+    lodash.isequal "4.5.0"
     request "2.74.0"
+    speedomatic "2.0.0"
     uuid "3.0.0"
     uuid-parse "1.0.0"
   optionalDependencies:
@@ -2578,6 +2570,10 @@ decamelize@^1.0.0, decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
 
+decode-uri-component@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+
 decompress-response@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-3.3.0.tgz#80a4dd323748384bfa248083622aedec982adff3"
@@ -3242,9 +3238,9 @@ ethereum-common@^0.0.18:
   version "0.0.18"
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
 
-ethereumjs-abi@0.6.2:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.2.tgz#9ffa54403d9255540c6cc9a8ff7d32705c1f3373"
+ethereumjs-abi@0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/ethereumjs-abi/-/ethereumjs-abi-0.6.4.tgz#9ba1bb056492d00c27279f6eccd4d58275912c1a"
   dependencies:
     bn.js "^4.10.0"
     ethereumjs-util "^4.3.0"
@@ -3259,13 +3255,13 @@ ethereumjs-blockstream@2.0.4:
     source-map-support "0.4.14"
     uuid "3.0.1"
 
-ethereumjs-connect@4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/ethereumjs-connect/-/ethereumjs-connect-4.1.2.tgz#39bde9de8790609130e5bcdedfc7643b7a31bb88"
+ethereumjs-connect@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/ethereumjs-connect/-/ethereumjs-connect-4.2.2.tgz#455aafe7533fd8dc1fc02b92b8e62c59c2be8b7a"
   dependencies:
     async "1.5.2"
     clone "1.0.2"
-    ethrpc "4.1.2"
+    ethrpc "4.2.3"
 
 ethereumjs-tx@1.3.1:
   version "1.3.1"
@@ -3304,15 +3300,15 @@ ethjs-util@^0.1.3:
     is-hex-prefixed "1.0.0"
     strip-hex-prefix "1.0.0"
 
-ethrpc@4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/ethrpc/-/ethrpc-4.1.2.tgz#49a956c384d8866bd1af722f99a3173c19df25b6"
+ethrpc@4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/ethrpc/-/ethrpc-4.2.3.tgz#c71a0e7f71a47032723c4d3b6d34e34405bb05d3"
   dependencies:
     async "1.5.2"
-    augur-abi "1.2.1"
     bignumber.js "2.3.0"
     browser-request "0.3.3"
     clone "1.0.2"
+    ethereumjs-abi "0.6.4"
     ethereumjs-blockstream "2.0.4"
     ethereumjs-tx "1.3.1"
     immutable-delete "1.0.1"
@@ -3324,6 +3320,7 @@ ethrpc@4.1.2:
     oboe "2.1.3"
     redux "3.6.0"
     redux-thunk-subscribe "1.0.3"
+    speedomatic "2.0.0"
     sync-request "2.0.1"
     uuid "^3.0.1"
   optionalDependencies:
@@ -4256,16 +4253,6 @@ highcharts@5.0.12, highcharts@^5.0.0:
   version "5.0.12"
   resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-5.0.12.tgz#f73b970fe5c7f04100220b64aa7bd7fb019d11e2"
 
-history@4.6.3, history@^4.5.1, history@^4.6.0:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/history/-/history-4.6.3.tgz#6d723a8712c581d6bef37e8c26f4aedc6eb86967"
-  dependencies:
-    invariant "^2.2.1"
-    loose-envify "^1.2.0"
-    resolve-pathname "^2.0.0"
-    value-equal "^0.2.0"
-    warning "^3.0.0"
-
 history@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/history/-/history-2.1.2.tgz#4aa2de897a0e4867e4539843be6ecdb2986bfdec"
@@ -4274,6 +4261,16 @@ history@^2.1.2:
     invariant "^2.0.0"
     query-string "^3.0.0"
     warning "^2.0.0"
+
+history@^4.5.1, history@^4.6.0:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/history/-/history-4.6.3.tgz#6d723a8712c581d6bef37e8c26f4aedc6eb86967"
+  dependencies:
+    invariant "^2.2.1"
+    loose-envify "^1.2.0"
+    resolve-pathname "^2.0.0"
+    value-equal "^0.2.0"
+    warning "^3.0.0"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -4969,7 +4966,7 @@ js-base64@^2.1.9:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.1.9.tgz#f0e80ae039a4bd654b5f281fc93f04a914a7fcce"
 
-js-sha3@0.3.1, js-sha3@^0.3.1:
+js-sha3@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/js-sha3/-/js-sha3-0.3.1.tgz#86122802142f0828502a0d1dee1d95e253bb0243"
 
@@ -5149,18 +5146,9 @@ keycode@^2.1.0:
   version "2.1.9"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.1.9.tgz#964a23c54e4889405b4861a5c9f0480d45141dfa"
 
-keythereum@0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/keythereum/-/keythereum-0.5.1.tgz#2d6a186a1cad5886ec6ba9378a214f651509f191"
-  dependencies:
-    keccak "1.2.0"
-    secp256k1 "3.2.5"
-    sjcl "1.0.6"
-    uuid "3.0.0"
-
-keythereum@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/keythereum/-/keythereum-1.0.0.tgz#4ebe7f59b4b5e600349ca8db45a308abd7f7115a"
+keythereum@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/keythereum/-/keythereum-1.0.2.tgz#612ba41cde254b17dd7737e75237ae6ee5162992"
   dependencies:
     keccak "1.2.0"
     secp256k1 "3.2.5"
@@ -5444,6 +5432,10 @@ lodash.isarguments@^3.0.0:
 lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
+
+lodash.isequal@4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
 
 lodash.isobject@^2.4.1, lodash.isobject@~2.4.1:
   version "2.4.1"
@@ -7058,6 +7050,14 @@ qs@~6.3.0:
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.3.2.tgz#e75bd5f6e268122a2a0e0bda630b2550c166502c"
 
+query-string@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/query-string/-/query-string-5.0.0.tgz#fbdf7004b4d2aff792f9871981b7a2794f555947"
+  dependencies:
+    decode-uri-component "^0.2.0"
+    object-assign "^4.1.0"
+    strict-uri-encode "^1.0.0"
+
 query-string@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-3.0.3.tgz#ae2e14b4d05071d4e9b9eb4873c35b0dcd42e638"
@@ -7251,14 +7251,6 @@ react-router-dom@4.1.1:
   dependencies:
     history "^4.5.1"
     loose-envify "^1.3.1"
-    prop-types "^15.5.4"
-    react-router "^4.1.1"
-
-react-router-redux@next:
-  version "5.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/react-router-redux/-/react-router-redux-5.0.0-alpha.6.tgz#7418663c2ecd3c51be856fcf28f3d1deecc1a576"
-  dependencies:
-    history "^4.5.1"
     prop-types "^15.5.4"
     react-router "^4.1.1"
 
@@ -8219,6 +8211,13 @@ spdx-license-ids@^1.0.2:
 specificity@^0.3.0:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/specificity/-/specificity-0.3.1.tgz#f1b068424ce317ae07478d95de3c21cf85e8d567"
+
+speedomatic@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/speedomatic/-/speedomatic-2.0.0.tgz#5a00687e8c3b1291a1e1035f4b4bb9cc16f14106"
+  dependencies:
+    bignumber.js "2.3.0"
+    ethereumjs-abi "0.6.4"
 
 split-array-stream@^1.0.0:
   version "1.0.3"

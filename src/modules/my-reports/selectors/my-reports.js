@@ -1,6 +1,6 @@
 import { formatEtherTokens, formatPercent, formatRep } from 'utils/format-number';
 import { formatDate } from 'utils/format-date';
-import { abi } from 'services/augurjs';
+import speedomatic from 'speedomatic';
 import { TWO } from 'modules/trade/constants/numbers';
 import store from 'src/store';
 
@@ -20,7 +20,7 @@ export default function () {
       const description = eventsWithAccountReport[eventID].description || null;
       const formattedDescription = eventsWithAccountReport[eventID].formattedDescription || null;
       const outcome = eventsWithAccountReport[eventID].marketOutcome || null;
-      const outcomePercentage = (eventsWithAccountReport[eventID].proportionCorrect && formatPercent(abi.bignum(eventsWithAccountReport[eventID].proportionCorrect).times(100))) || null;
+      const outcomePercentage = (eventsWithAccountReport[eventID].proportionCorrect && formatPercent(speedomatic.bignum(eventsWithAccountReport[eventID].proportionCorrect).times(100))) || null;
       const reported = eventsWithAccountReport[eventID].accountReport || null;
       const isReportEqual = (outcome != null && reported != null && outcome === reported) || null; // Can be done here
       const feesEarned = calculateFeesEarned(eventsWithAccountReport[eventID]);
@@ -29,10 +29,7 @@ export default function () {
       const isChallenged = eventsWithAccountReport[eventID].isChallenged || null;
       const isChallengeable = isFinal != null && isChallenged != null && !isFinal && !isChallenged;
       const period = eventsWithAccountReport[eventID].period || null;
-      const reportHash = eventsWithAccountReport[eventID].reportHash || null;
-      const isCommitted = eventsWithAccountReport[eventID].isCommitted;
-      const isRevealed = eventsWithAccountReport[eventID].isRevealed;
-      const isUnethical = eventsWithAccountReport[eventID].isUnethical;
+      const isSubmitted = eventsWithAccountReport[eventID].isSubmitted;
 
       return {
         ...marketsData[marketID] || {}, // TODO -- clean up this object
@@ -50,10 +47,7 @@ export default function () {
         isChallenged,
         isChallengeable,
         period,
-        reportHash,
-        isCommitted,
-        isRevealed,
-        isUnethical
+        isSubmitted
       };
     })
     .sort((a, b) => {
@@ -69,9 +63,9 @@ export default function () {
 export const calculateFeesEarned = (event) => {
   if (!event.marketFees || !event.repBalance || !event.eventWeight) return null;
   return formatEtherTokens(
-    abi.bignum(event.marketFees)
-      .times(abi.bignum(event.repBalance))
+    speedomatic.bignum(event.marketFees)
+      .times(speedomatic.bignum(event.repBalance))
       .dividedBy(TWO)
-      .dividedBy(abi.bignum(event.eventWeight))
+      .dividedBy(speedomatic.bignum(event.eventWeight))
   );
 };
