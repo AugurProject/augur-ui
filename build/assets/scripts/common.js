@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"auth-connect","1":"auth-create","2":"markets","3":"transactions","4":"account","5":"market","6":"portfolio","7":"create-market","8":"topics","9":"auth-lander","10":"style-sandbox","11":"auth","12":"main","13":"assets/scripts/vendor","14":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"bc8619f7ea7069dd0827","1":"1cafe4bf890ec1a4ab82","2":"7353e26826ed074d4893","3":"c3ce177105c7fa28b70a","4":"8009f0691d5549368b23","5":"cb7e342e9ee941aeb747","6":"2ac36038a5c3f1ec4ede","7":"5ebddd8fa50c68fd7fbe","8":"abb9f2186d9a1e782303","9":"aaceee0a6f916391bece","10":"8bbde8bb30baf53d0c04","11":"6eaac220feb04b29d182","12":"6cb055000bbb475cc9c8","13":"e2eb17550bbd9b3df4d6","14":"736764ddcab2820ed578"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"auth-create","1":"auth-connect","2":"markets","3":"transactions","4":"account","5":"market","6":"portfolio","7":"create-market","8":"topics","9":"auth-lander","10":"style-sandbox","11":"auth","12":"main","13":"assets/scripts/vendor","14":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"951c238e637b4b0e4d02","1":"9b2fb194ce31c9d0ef6c","2":"4d746f6b9333bec6532e","3":"36fbb43abfa9f0810426","4":"666deb113634943f7575","5":"1ac53c073a8e856fa886","6":"b20b00f747c9833206a5","7":"81566d0f4d23d9ceeda1","8":"f7f3916c9881e511d8dd","9":"3bf3b92a368413e22684","10":"61012de77be034ad3ca1","11":"c2366ac03dfa7782adc4","12":"2297e0280132226deb7a","13":"5e16bf7928c5644545df","14":"aa77d29b395b25ff8fb9"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -116,9 +116,6 @@
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
