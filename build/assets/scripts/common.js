@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"topics","2":"transactions","3":"account","4":"market","5":"portfolio","6":"create-market","7":"auth","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"cec6084f7abed1060ebd","1":"1e3f12c45fb71afbb8e4","2":"fb0d99afe6e7e31de0f3","3":"5273cea8d98eefd25f5d","4":"102063dfa3930742320f","5":"6b59d45de678a14f76a0","6":"20b4ec524feffbb7b295","7":"ab261f50f0fa029dfeda","8":"de1ef80b0aa510250f24","9":"0809c1275db222ee0b91","10":"87ae12908a413f6ecdb0"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"topics","2":"transactions","3":"account","4":"market","5":"portfolio","6":"create-market","7":"auth","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"cec6084f7abed1060ebd","1":"1e3f12c45fb71afbb8e4","2":"fb0d99afe6e7e31de0f3","3":"5273cea8d98eefd25f5d","4":"102063dfa3930742320f","5":"6b59d45de678a14f76a0","6":"20b4ec524feffbb7b295","7":"ab261f50f0fa029dfeda","8":"800eed2a1132fd3ac8ad","9":"0809c1275db222ee0b91","10":"87ae12908a413f6ecdb0"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
