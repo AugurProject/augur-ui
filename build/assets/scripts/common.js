@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		15: 0
+/******/ 		11: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"auth-create","1":"auth-connect","2":"markets","3":"transactions","4":"account","5":"market","6":"portfolio","7":"create-market","8":"style-sandbox","9":"topics","10":"auth-lander","11":"auth","12":"main","13":"assets/scripts/vendor","14":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"9c4d72a7835e1664fd8a","1":"c9e3692a0c25c41fd79c","2":"a6641d03044d406e0b27","3":"b6a78c009d913733882d","4":"0fe569720f16473b20cd","5":"341db53c5f843464a42d","6":"39733e271321e39340ab","7":"df966bf6267d5463c461","8":"33e45b0038e6e7f80def","9":"12ca43598039803af38d","10":"fa656fc346a3a09ad337","11":"ac02316ec399264bc17e","12":"84d8d4965ef9f39f6691","13":"b18b019d7a5922a47007","14":"f8ddb5bb6b59ef59f217"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"markets","1":"topics","2":"transactions","3":"account","4":"market","5":"portfolio","6":"create-market","7":"auth","8":"main","9":"assets/scripts/vendor","10":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"03ad499f06d44c29928a","1":"88d863358fa6a794a365","2":"7b58424859756871ab4b","3":"54f5f1be7780d9683609","4":"7f3f6f330fe65705c540","5":"a17b12d03f07e5a0d6d6","6":"cf73ac2f989823a58cae","7":"db0580d6130cf72774b9","8":"e6984a234be9c37df9ca","9":"d436659d9e3fd54fc95b","10":"b28d7159edc491dd09b6"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -117,6 +117,9 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -141,7 +144,7 @@
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// on error function for async loading
 /******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
