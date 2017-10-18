@@ -47,3 +47,5 @@ stats.json
 
 # New Relic
 src/newrelic.js
+
+build/
