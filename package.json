@@ -138,6 +138,7 @@
     "webpack-merge": "4.1.0"
   },
   "buildDependencies": [
+    "airbitz-core-js-ui",
     "autoprefixer",
     "babel-core",
     "babel-eslint",
