@@ -137,7 +137,7 @@
     "webpack-hot-middleware": "2.19.1",
     "webpack-merge": "4.1.0"
   },
-  "buildDependencies",
+  "buildDependencies": [
     "autoprefixer",
     "babel-core",
     "babel-eslint",
