@@ -1,97 +1,105 @@
-import { eachOfSeries, eachLimit } from 'async';
-import { augur, constants } from 'services/augurjs';
+import { eachOfSeries, eachLimit } from 'async'
+import { augur, constants } from 'services/augurjs'
 
-import { invalidateMarketCreation, clearNewMarket } from 'modules/create-market/actions/update-new-market';
-import { updateTradesInProgress } from 'modules/trade/actions/update-trades-in-progress';
-import { placeTrade } from 'modules/trade/actions/place-trade';
+import { invalidateMarketCreation, clearNewMarket } from 'modules/create-market/actions/update-new-market'
+import { updateTradesInProgress } from 'modules/trade/actions/update-trades-in-progress'
+import { placeTrade } from 'modules/trade/actions/place-trade'
 
-import makePath from 'modules/app/helpers/make-path';
+import makePath from 'modules/routes/helpers/make-path'
 
-import { BUY, SELL } from 'modules/transactions/constants/types';
-import { BINARY, CATEGORICAL, SCALAR } from 'modules/markets/constants/market-types';
-import { CATEGORICAL_OUTCOMES_SEPARATOR, CATEGORICAL_OUTCOME_SEPARATOR } from 'modules/markets/constants/market-outcomes';
-import { TRANSACTIONS } from 'modules/app/constants/views';
+import { BUY, SELL } from 'modules/transactions/constants/types'
+import { BINARY, CATEGORICAL, SCALAR } from 'modules/markets/constants/market-types'
+import { TRANSACTIONS } from 'modules/routes/constants/views'
 
 export function submitNewMarket(newMarket, history) {
   return (dispatch, getState) => {
-    const { branch, loginAccount } = getState();
+    const { universe, loginAccount, contractAddresses } = getState()
 
     // General Properties
     const formattedNewMarket = {
-      branch: branch.id,
-      description: newMarket.description,
-      expDate: newMarket.endDate.timestamp / 1000,
-      resolution: newMarket.expirySource,
-      takerFee: newMarket.takerFee / 100,
-      makerFee: newMarket.makerFee / 100,
-      extraInfo: newMarket.detailsText,
-      tags: [
-        newMarket.topic,
-        ...(newMarket.keywords || [])
-      ]
-    };
-
-    // Type Specific Properties
-    switch (newMarket.type) {
-      case CATEGORICAL:
-        formattedNewMarket.minValue = 1;
-        formattedNewMarket.maxValue = newMarket.outcomes.length;
-        formattedNewMarket.numOutcomes = newMarket.outcomes.length;
-        formattedNewMarket.description = newMarket.description + CATEGORICAL_OUTCOMES_SEPARATOR + newMarket.outcomes.map(outcome => outcome).join(CATEGORICAL_OUTCOME_SEPARATOR);
-        break;
-      case SCALAR:
-        formattedNewMarket.minValue = newMarket.scalarSmallNum;
-        formattedNewMarket.maxValue = newMarket.scalarBigNum;
-        formattedNewMarket.numOutcomes = 2;
-        break;
-      case BINARY:
-      default:
-        formattedNewMarket.minValue = 1;
-        formattedNewMarket.maxValue = 2;
-        formattedNewMarket.numOutcomes = 2;
+      _universe: universe.id,
+      _endTime: parseInt(newMarket.endDate.timestamp / 1000, 10),
+      settlementFee: (newMarket.settlementFee / 100).toString(),
+      _denominationToken: contractAddresses.Cash,
+      _automatedReporterAddress: loginAccount.address, // FIXME prompt user for actual automated reporter address
+      _topic: newMarket.topic,
+      _extraInfo: {
+        description: newMarket.description,
+        longDescription: newMarket.detailsText,
+        resolution: newMarket.expirySource,
+        tags: (newMarket.keywords || [])
+      }
     }
 
-    augur.create.createSingleEventMarket({
+    // Type Specific Properties
+    let createMarket
+    switch (newMarket.type) {
+      case CATEGORICAL:
+        formattedNewMarket._minDisplayPrice = '0'
+        formattedNewMarket._maxDisplayPrice = '1'
+        formattedNewMarket._numOutcomes = newMarket.outcomes.length
+        formattedNewMarket._numTicks = newMarket.outcomes.length
+        formattedNewMarket._extraInfo.outcomeNames = newMarket.outcomes
+        createMarket = augur.createMarket.createCategoricalMarket
+        break
+      case SCALAR:
+        formattedNewMarket._minDisplayPrice = newMarket.scalarSmallNum.toString()
+        formattedNewMarket._maxDisplayPrice = newMarket.scalarBigNum.toString()
+        formattedNewMarket._numOutcomes = 2
+        formattedNewMarket._numTicks = 2 // TODO make this a user-specifiable value, can be any multiple of 2
+        createMarket = augur.createMarket.createScalarMarket
+        break
+      case BINARY:
+      default:
+        formattedNewMarket._minDisplayPrice = '0'
+        formattedNewMarket._maxDisplayPrice = '1'
+        formattedNewMarket._numOutcomes = 2
+        formattedNewMarket._numTicks = 2
+        createMarket = augur.createMarket.createCategoricalMarket
+    }
+
+    createMarket({
       ...formattedNewMarket,
-      _signer: loginAccount.privateKey,
+      meta: loginAccount.meta,
       onSent: (res) => {
-        history.push(makePath(TRANSACTIONS));
-        dispatch(clearNewMarket());
+        history.push(makePath(TRANSACTIONS))
+        dispatch(clearNewMarket())
       },
       onSuccess: (res) => {
+        const marketID = res.callReturn
         if (Object.keys(newMarket.orderBook).length) {
           eachOfSeries(Object.keys(newMarket.orderBook), (outcome, index, seriesCB) => {
             eachLimit(newMarket.orderBook[outcome], constants.PARALLEL_LIMIT, (order, orderCB) => {
-              const outcomeID = newMarket.type === CATEGORICAL ? index + 1 : 2; // NOTE -- Both Scalar + Binary only trade against one outcome, that of outcomeID 2
+              const outcomeID = newMarket.type === CATEGORICAL ? index + 1 : 2 // NOTE -- Both Scalar + Binary only trade against one outcome, that of outcomeID 2
 
-              dispatch(updateTradesInProgress(res.callReturn, outcomeID, order.type === BUY ? BUY : SELL, order.quantity, order.price, null, (tradingActions) => {
+              dispatch(updateTradesInProgress(marketID, outcomeID, order.type === BUY ? BUY : SELL, order.quantity, order.price, null, (tradingActions) => {
                 const tradeToExecute = {
                   [outcomeID]: tradingActions
-                };
+                }
 
                 if (tradeToExecute) {
-                  dispatch(placeTrade(res.callReturn, outcomeID, tradeToExecute, null, (err) => {
-                    if (err) return console.error('ERROR: ', err);
+                  dispatch(placeTrade(marketID, outcomeID, tradeToExecute, null, (err) => {
+                    if (err) return console.error('ERROR: ', err)
 
-                    orderCB();
-                  }));
+                    orderCB()
+                  }))
                 }
-              }));
+              }))
             }, (err) => {
-              if (err !== null) return console.error('ERROR: ', err);
+              if (err !== null) return console.error('ERROR: ', err)
 
-              seriesCB();
-            });
+              seriesCB()
+            })
           }, (err) => {
-            if (err !== null) console.error('ERROR: ', err);
-          });
+            if (err !== null) console.error('ERROR: ', err)
+          })
         }
       },
       onFailed: (err) => {
-        console.error('ERROR createSingleEventMarket failed:', err);
+        console.error('ERROR createSingleEventMarket failed:', err)
 
-        dispatch(invalidateMarketCreation(err.message));
+        dispatch(invalidateMarketCreation(err.message))
       }
-    });
-  };
+    })
+  }
 }

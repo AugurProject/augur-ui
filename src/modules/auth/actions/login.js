@@ -1,24 +1,27 @@
-import { augur } from 'services/augurjs';
-import { base58Decode } from 'utils/base-58';
-import { loadAccountData } from 'modules/auth/actions/load-account-data';
-import { updateIsLoggedIn } from 'modules/auth/actions/update-is-logged-in';
-import logError from 'utils/log-error';
+import { augur } from 'services/augurjs'
+import { loadAccountData } from 'modules/auth/actions/load-account-data'
+import { updateIsLogged } from 'modules/auth/actions/update-is-logged'
+import { constants as ETHRPC_CONSTANTS } from 'ethrpc'
 
-export const login = (loginID, password, callback = logError) => (dispatch, getState) => {
-  const accountObject = base58Decode(loginID);
-  if (!accountObject || !accountObject.keystore) {
-    return callback({ code: 0, message: 'could not decode login ID' });
-  }
-  augur.accounts.login(accountObject.keystore, password, (account) => {
-    if (!account) {
-      return callback({ code: 0, message: 'failed to login' });
-    } else if (account.error) {
-      return callback({ code: account.error, message: account.message });
-    } else if (!account.address) {
-      return callback(account);
-    }
-    dispatch(updateIsLoggedIn(true));
-    dispatch(loadAccountData({ ...account, loginID, name: accountObject.name }, true));
-    callback(null);
-  });
-};
+import logError from 'utils/log-error'
+import getValue from 'utils/get-value'
+
+export const login = (keystore, password, callback = logError) => (dispatch, getState) => {
+  augur.accounts.login({ keystore, password }, (err, account) => {
+    console.log('account -- ', err, account)
+
+    if (err) return callback(err)
+    if (!getValue(account, 'keystore.address')) return callback(null, account)
+
+    dispatch(updateIsLogged(true))
+    dispatch(loadAccountData({
+      ...account,
+      meta: {
+        signer: account.privateKey,
+        accountType: ETHRPC_CONSTANTS.ACCOUNT_TYPES.PRIVATE_KEY
+      }
+    }, true))
+
+    callback(null)
+  })
+}

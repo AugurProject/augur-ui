@@ -1,0 +1,50 @@
+@import (reference) '~assets/styles/shared';
+
+.Auth {
+  &:extend(.view);
+
+  display: flex;
+  justify-content: center;
+}
+
+.Auth--constrained {
+  &:extend(.view--constrained);
+
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Auth__header {
+  h1 {
+    &:extend(.caps);
+
+    color: @color-text-light;
+  }
+
+  margin-top: 5rem;
+
+  @media @breakpoint-mobile {
+    padding-left: 2em;
+  }
+}
+
+.Auth__content {
+  display: flex;
+  min-height: 500px;
+  width: 100%;
+
+  @media @breakpoint-mobile {
+    & {
+      flex-direction: column;
+    }
+  }
+}
+
+.Auth__connections {
+  background: @color-white;
+  display: flex;
+  flex: 1;
+}

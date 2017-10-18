@@ -1,0 +1,47 @@
+@import (reference) '~assets/styles/shared';
+
+.CreateMarketDefine__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  > label {
+    width: 100%;
+  }
+
+  > input {
+    width: 48%;
+  }
+}
+
+.CreateMarketDefine__suggested-categories {
+  color: @color-white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  position: absolute;
+  top: 2.5rem;
+
+  > li {
+    display: inline-block;
+    margin-right: 0.25rem;
+
+    &:not(:last-child)::after {
+      content: ",";
+    }
+  }
+}
+
+@media @breakpoint-mobile-medium {
+  .CreateMarketDefine__suggested-categories {
+    min-height: 1.375rem;
+    position: static;
+  }
+
+  .CreateMarketDefine__tags > input {
+    width: 100%;
+
+    &:not(:last-child) {
+      margin-bottom: 0.75rem;
+    }
+  }
+}

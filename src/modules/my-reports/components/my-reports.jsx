@@ -1,47 +1,46 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import ReactTooltip from 'react-tooltip';
-import { Helmet } from 'react-helmet';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import ReactTooltip from 'react-tooltip'
+import { Helmet } from 'react-helmet'
 
-import NullStateMessage from 'modules/common/components/null-state-message';
-import MyReport from 'modules/my-reports/components/my-report';
-import TransactionsLoadingActions from 'modules/transactions/components/transactions-loading-actions';
-import FilterSort from 'modules/filter-sort/container';
+import NullStateMessage from 'modules/common/components/null-state-message'
+import MyReport from 'modules/my-reports/components/my-report'
+import TransactionsLoadingActions from 'modules/transactions/components/transactions-loading-actions'
+// import FilterSort from 'modules/filter-sort/container'
 
-import makePath from 'modules/app/helpers/make-path';
-import makeQuery from 'modules/app/helpers/make-query';
-import getValue from 'utils/get-value';
+import makePath from 'modules/routes/helpers/make-path'
+import makeQuery from 'modules/routes/helpers/make-query'
+import getValue from 'utils/get-value'
 
-import { MARKET } from 'modules/app/constants/views';
-import { MARKET_DESCRIPTION_PARAM_NAME, MARKET_ID_PARAM_NAME } from 'modules/app/constants/param-names';
+import { MARKET } from 'modules/routes/constants/views'
+import { MARKET_DESCRIPTION_PARAM_NAME, MARKET_ID_PARAM_NAME } from 'modules/routes/constants/param-names'
 
 export default class MyReports extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    branch: PropTypes.object.isRequired,
+    universe: PropTypes.object.isRequired,
     reports: PropTypes.array.isRequired,
-    registerBlockNumber: PropTypes.number,
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.searchKeys = [
       'description',
       ['outcomes', 'name'],
       ['tags', 'name']
-    ];
+    ]
 
     this.state = {
       filteredMarkets: []
-    };
+    }
   }
 
   render() {
-    const p = this.props;
-    const s = this.state;
+    const p = this.props
+    const s = this.state
 
     return (
       <article className="my-reports">
@@ -57,21 +56,10 @@ export default class MyReports extends Component {
               transactionsLoading={p.transactionsLoading}
               hasAllTransactionsLoaded={p.hasAllTransactionsLoaded}
               triggerTransactionsExport={p.triggerTransactionsExport}
-              registerBlockNumber={p.registerBlockNumber}
             />
           </div>
         </div>
-        <FilterSort
-          locaiton={p.location}
-          history={p.history}
-          items={p.reports}
-          updateFilteredItems={filteredMarkets => this.setState({ filteredMarkets })}
-          searchPlaceholder="Search Created Markets"
-          searchKeys={this.searchKeys}
-          filterBySearch
-          filterByMarketState
-          sortByMarketParam
-        />
+
         {s.filteredMarkets && s.filteredMarkets.length ?
           <div>
             {s.filteredMarkets.map(marketIndex => (
@@ -110,7 +98,7 @@ export default class MyReports extends Component {
                 </div>
                 <MyReport
                   {...p.reports[marketIndex]}
-                  branch={p.branch}
+                  universe={p.universe}
                 />
               </div>
             ))}
@@ -119,6 +107,18 @@ export default class MyReports extends Component {
         }
         <ReactTooltip type="light" effect="solid" place="top" />
       </article>
-    );
+    )
   }
 }
+//
+// <FilterSort
+//   locaiton={p.location}
+//   history={p.history}
+//   items={p.reports}
+//   updateFilteredItems={filteredMarkets => this.setState({ filteredMarkets })}
+//   searchPlaceholder="Search Created Markets"
+//   searchKeys={this.searchKeys}
+//   filterBySearch
+//   filterByMarketState
+//   sortByMarketParam
+// />

@@ -41,3 +41,11 @@ build/Release
 
 # webpack build stats
 stats.json
+
+# those pesky macs
+.DS_Store
+
+# New Relic
+src/newrelic.js
+
+build/

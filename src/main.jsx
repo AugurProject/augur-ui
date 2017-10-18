@@ -1,29 +1,29 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom';
-import { AppContainer } from 'react-hot-loader';
+import React from 'react'
+import { Provider } from 'react-redux'
+import ReactDOM from 'react-dom'
+import { AppContainer } from 'react-hot-loader'
+import { HashRouter } from 'react-router-dom'
 
-import { initAugur } from 'modules/app/actions/init-augur';
+import { initAugur } from 'modules/app/actions/init-augur'
 
-import { HashRouter } from 'react-router-dom';
+import App from 'modules/app/containers/app'
 
-import Routes from 'modules/app/components/routes';
+import store from 'src/store'
 
-import store from 'src/store';
+import { augur } from 'services/augurjs'
 
-import { augur } from 'services/augurjs';
-
-require('core-js/fn/array/find');
-require('core-js/fn/string/starts-with');
+require('core-js/fn/array/find')
+require('core-js/fn/string/starts-with')
 
 // NOTE --  These are attached for convenience when built for development or debug
 if (process.env.NODE_ENV === 'development') {
-  Object.defineProperty(window, 'state', { get: store.getState, enumerable: true });
-  window.augur = augur;
+  Object.defineProperty(window, 'state', { get: store.getState, enumerable: true })
+  window.augur = augur
 
   console.log(`
   *******************************************
-             DEVELOPMENT MODE
+          DEVELOPMENT MODE (v3)
+    window.app        -- root app element
     window.state      -- raw state data
     window.selectors  -- processed state data
     window.augur      -- augur.js API methods
@@ -31,48 +31,48 @@ if (process.env.NODE_ENV === 'development') {
           ADDITIONAL INFORMATION
     augur.js version: ${augur.version}
   *******************************************
-  `);
+  `)
 }
 
-store.dispatch(initAugur());
+store.dispatch(initAugur())
 
-function render() {
+function render(Root) {
   ReactDOM.render(
     <Provider store={store}>
       <AppContainer>
         <HashRouter>
-          <Routes />
+          <Root />
         </HashRouter>
       </AppContainer>
     </Provider>,
     document.getElementById('app')
-  );
+  )
 }
 
-handleRender();
+handleRender(App)
 
 if (module.hot) {
   module.hot.accept(
     [
       './selectors-raw',
-      './modules/app/container',
+      './modules/app/containers/app',
     ],
     () => {
-      handleRender();
+      handleRender()
     }
-  );
+  )
 }
 
 function handleRender() {
-  const App = require('modules/app/container').default;
+  const UpdatedRoot = require('modules/app/containers/app').default
 
   // NOTE --  These are attached for convenience when built for development or debug
   if (process.env.NODE_ENV === 'development') {
-    const selectors = require('src/selectors-raw');
+    const selectors = require('src/selectors-raw')
 
-    window.App = App;
-    window.selectors = selectors;
+    window.app = UpdatedRoot
+    window.selectors = selectors
   }
 
-  render();
+  render(UpdatedRoot)
 }

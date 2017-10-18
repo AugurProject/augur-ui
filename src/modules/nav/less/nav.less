@@ -51,9 +51,6 @@
 
     button.app-nav-link {
       i {
-
-        .font-size-medium();
-
         padding-right: 0.4em;
       }
 
@@ -71,14 +68,11 @@
         }
 
         .unseen-count {
-          .font-color-dark();
-          .font-size-small();
-          .font-weight-normal();
-
           background-color: @color-white-muted;
           border-radius: 50%;
           bottom: 50%;
           display: block;
+          font-weight: 400;
           padding: 0.25em 0.5em;
           position: absolute;
           right: 25%;
@@ -192,9 +186,6 @@
     }
 
     @media @breakpoint-mobile {
-
-      .font-color-light();
-
       background-color: @color-nav-background;
       display: flex;
       flex: 1;
@@ -226,9 +217,6 @@
     }
 
     .nav-count {
-
-      .font-color-dark();
-
       background-color: @color-white-muted;
       border-radius: 50%;
       padding: 0.25em 0.5em;

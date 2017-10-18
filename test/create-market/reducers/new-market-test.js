@@ -1,7 +1,7 @@
-import { describe, it } from 'mocha';
-import { assert } from 'chai';
+import { describe, it } from 'mocha'
+import { assert } from 'chai'
 
-import newMarket from 'modules/create-market/reducers/new-market';
+import newMarket from 'modules/create-market/reducers/new-market'
 
 import {
   ADD_VALIDATION_TO_NEW_MARKET,
@@ -10,65 +10,86 @@ import {
   REMOVE_ORDER_FROM_NEW_MARKET,
   UPDATE_NEW_MARKET,
   CLEAR_NEW_MARKET
-} from 'modules/create-market/actions/update-new-market';
+} from 'modules/create-market/actions/update-new-market'
 
-import { TAKER_FEE_DEFAULT, MAKER_FEE_DEFAULT } from 'modules/create-market/constants/new-market-constraints';
-
-import BigNumber from 'bignumber.js';
+import BigNumber from 'bignumber.js'
 
 describe('modules/create-market/reducers/new-market.js', () => {
   const test = (t) => {
     it(t.describe, () => {
-      t.assertions();
-    });
-  };
+      t.assertions()
+    })
+  }
 
   test({
     describe: 'should return the default state',
     assertions: () => {
-      const actual = newMarket(undefined, { type: null });
+      const actual = newMarket(undefined, { type: null })
 
       const expected = {
         isValid: false,
         holdForUserAction: false,
-        validations: [],
         currentStep: 0,
         type: '',
-        outcomes: [],
         scalarSmallNum: '',
         scalarBigNum: '',
         description: '',
         expirySourceType: '',
         expirySource: '',
         endDate: {},
+        hour: '',
+        minute: '',
+        meridiem: '',
         detailsText: '',
-        topic: '',
-        keywords: [],
-        takerFee: TAKER_FEE_DEFAULT,
-        makerFee: MAKER_FEE_DEFAULT,
+        category: '',
+        tag1: '',
+        tag2: '',
+        outcomes: Array(8).fill(''),
+        settlementFee: 2,
         orderBook: {},
         orderBookSorted: {},
         orderBookSeries: {},
         initialLiquidityEth: new BigNumber(0),
         initialLiquidityGas: new BigNumber(0),
         initialLiquidityFees: new BigNumber(0),
+        validations: [
+          {
+            description: false,
+            category: false,
+            tag1: false,
+            tag2: false,
+          },
+          {
+            type: false,
+          },
+          {
+            expirySourceType: false,
+            endDate: false,
+            hour: false,
+            minute: false,
+            meridiem: false,
+          },
+          {
+            settlementFee: false,
+          },
+        ],
         creationError: 'Unable to create market.  Ensure your market is unique and all values are valid.'
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected default value`);
+      assert.deepEqual(actual, expected, `Didn't return the expected default value`)
     }
-  });
+  })
 
   test({
     describe: 'should return the existing value',
     assertions: () => {
-      const actual = newMarket('testing', { type: null });
+      const actual = newMarket('testing', { type: null })
 
-      const expected = 'testing';
+      const expected = 'testing'
 
-      assert.equal(actual, expected, `Didn't return the expected existing value`);
+      assert.equal(actual, expected, `Didn't return the expected existing value`)
     }
-  });
+  })
 
   test({
     describe: 'should add validation',
@@ -79,12 +100,12 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid1',
           'valid2'
         ]
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: ADD_VALIDATION_TO_NEW_MARKET,
         data: 'valid3'
-      });
+      })
 
       const expected = {
         test: 'test',
@@ -93,11 +114,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid2',
           'valid3'
         ]
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected updated validations`);
+      assert.deepEqual(actual, expected, `Didn't return the expected updated validations`)
     }
-  });
+  })
 
   test({
     describe: 'should not add validation if already exists',
@@ -108,12 +129,12 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid1',
           'valid2'
         ]
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: ADD_VALIDATION_TO_NEW_MARKET,
         data: 'valid1'
-      });
+      })
 
       const expected = {
         test: 'test',
@@ -121,11 +142,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid1',
           'valid2'
         ]
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected validations array`);
+      assert.deepEqual(actual, expected, `Didn't return the expected validations array`)
     }
-  });
+  })
 
   test({
     describe: 'should remove validation',
@@ -136,23 +157,23 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid1',
           'valid2'
         ]
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: REMOVE_VALIDATION_FROM_NEW_MARKET,
         data: 'valid1'
-      });
+      })
 
       const expected = {
         test: 'test',
         validations: [
           'valid2'
         ]
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected validations array`);
+      assert.deepEqual(actual, expected, `Didn't return the expected validations array`)
     }
-  });
+  })
 
   test({
     describe: 'should not modify validations if value is not present',
@@ -163,12 +184,12 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid1',
           'valid2'
         ]
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: REMOVE_VALIDATION_FROM_NEW_MARKET,
         data: 'valid3'
-      });
+      })
 
       const expected = {
         test: 'test',
@@ -176,11 +197,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'valid1',
           'valid2'
         ]
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected validations array`);
+      assert.deepEqual(actual, expected, `Didn't return the expected validations array`)
     }
-  });
+  })
 
   test({
     describe: 'should add order to outcome with no previous orders',
@@ -188,7 +209,7 @@ describe('modules/create-market/reducers/new-market.js', () => {
       const newMarketState = {
         test: 'test',
         orderBook: {}
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: ADD_ORDER_TO_NEW_MARKET,
@@ -198,7 +219,7 @@ describe('modules/create-market/reducers/new-market.js', () => {
           price: new BigNumber(0.5),
           quantity: new BigNumber(1)
         }
-      });
+      })
 
       const expected = {
         test: 'test',
@@ -211,11 +232,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
             }
           ]
         }
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected orderBook object`);
+      assert.deepEqual(actual, expected, `Didn't return the expected orderBook object`)
     }
-  });
+  })
 
   test({
     describe: 'should add order to an existing outcome',
@@ -236,7 +257,7 @@ describe('modules/create-market/reducers/new-market.js', () => {
             }
           ]
         }
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: ADD_ORDER_TO_NEW_MARKET,
@@ -246,7 +267,7 @@ describe('modules/create-market/reducers/new-market.js', () => {
           price: new BigNumber(0.5),
           quantity: new BigNumber(1)
         }
-      });
+      })
 
       const expected = {
         test: 'test',
@@ -269,11 +290,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
             }
           ]
         }
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected orderBook object`);
+      assert.deepEqual(actual, expected, `Didn't return the expected orderBook object`)
     }
-  });
+  })
 
   test({
     describe: 'should remove order',
@@ -294,7 +315,7 @@ describe('modules/create-market/reducers/new-market.js', () => {
             }
           ]
         }
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: REMOVE_ORDER_FROM_NEW_MARKET,
@@ -302,7 +323,7 @@ describe('modules/create-market/reducers/new-market.js', () => {
           outcome: 'Outcome1',
           index: 0
         }
-      });
+      })
 
       const expected = {
         test: 'test',
@@ -315,11 +336,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
             }
           ]
         }
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected orderBook object`);
+      assert.deepEqual(actual, expected, `Didn't return the expected orderBook object`)
     }
-  });
+  })
 
   test({
     describe: `should update 'newMarket'`,
@@ -330,14 +351,14 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'test1',
           'test2'
         ]
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: UPDATE_NEW_MARKET,
         data: {
           test: 'updated test'
         }
-      });
+      })
 
       const expected = {
         test: 'updated test',
@@ -345,11 +366,11 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'test1',
           'test2'
         ]
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected newMarket object`);
+      assert.deepEqual(actual, expected, `Didn't return the expected newMarket object`)
     }
-  });
+  })
 
   test({
     describe: `should clear 'newMarket'`,
@@ -360,40 +381,63 @@ describe('modules/create-market/reducers/new-market.js', () => {
           'test1',
           'test2'
         ]
-      };
+      }
 
       const actual = newMarket(newMarketState, {
         type: CLEAR_NEW_MARKET
-      });
+      })
 
       const expected = {
         isValid: false,
         holdForUserAction: false,
-        validations: [],
         currentStep: 0,
         type: '',
-        outcomes: [],
         scalarSmallNum: '',
         scalarBigNum: '',
         description: '',
         expirySourceType: '',
         expirySource: '',
         endDate: {},
+        hour: '',
+        minute: '',
+        meridiem: '',
         detailsText: '',
-        topic: '',
-        keywords: [],
-        takerFee: TAKER_FEE_DEFAULT,
-        makerFee: MAKER_FEE_DEFAULT,
+        outcomes: Array(8).fill(''),
+        category: '',
+        tag1: '',
+        tag2: '',
+        settlementFee: 2,
         orderBook: {},
         orderBookSorted: {},
         orderBookSeries: {},
         initialLiquidityEth: new BigNumber(0),
         initialLiquidityGas: new BigNumber(0),
         initialLiquidityFees: new BigNumber(0),
+        validations: [
+          {
+            description: false,
+            category: false,
+            tag1: false,
+            tag2: false,
+          },
+          {
+            type: false,
+          },
+          {
+            expirySourceType: false,
+            endDate: false,
+            hour: false,
+            minute: false,
+            meridiem: false,
+          },
+          {
+            settlementFee: false,
+          },
+        ],
         creationError: 'Unable to create market.  Ensure your market is unique and all values are valid.'
-      };
+      }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected newMarket object`);
+      assert.deepEqual(actual, expected, `Didn't return the expected newMarket object`)
     }
-  });
-});
+  })
+})

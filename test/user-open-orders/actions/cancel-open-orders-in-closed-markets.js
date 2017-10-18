@@ -1,37 +1,37 @@
-import { describe, it } from 'mocha';
-import { assert } from 'chai';
-import proxyquire from 'proxyquire';
-import sinon from 'sinon';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import { describe, it } from 'mocha'
+import { assert } from 'chai'
+import proxyquire from 'proxyquire'
+import sinon from 'sinon'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.js`, () => {
-  proxyquire.noPreserveCache().noCallThru();
-  const mockStore = configureMockStore([thunk]);
+  proxyquire.noPreserveCache().noCallThru()
+  const mockStore = configureMockStore([thunk])
   const test = (t) => {
     it(t.description, () => {
-      const store = mockStore(t.state);
-      const CancelOrder = { cancelOrder: () => {} };
-      const openOrders = t.openOrders;
-      const action = proxyquire('../../../src/modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.js', {
+      const store = mockStore(t.state)
+      const CancelOrder = { cancelOrder: () => {} }
+      const openOrders = t.openOrders
+      const cancelOpenOrdersInClosedMarkets = proxyquire('../../../src/modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.js', {
         '../../bids-asks/actions/cancel-order': CancelOrder,
         '../selectors/open-orders': openOrders
-      });
-      sinon.stub(CancelOrder, 'cancelOrder', (orderID, marketID, type) => (dispatch, getState) => {
-        dispatch({ type: 'CANCEL_ORDER', params: { orderID, marketID, type } });
-      });
-      store.dispatch(action.cancelOpenOrdersInClosedMarkets());
-      t.assertions(store.getActions());
-      store.clearActions();
-    });
-  };
+      }).default
+      sinon.stub(CancelOrder, 'cancelOrder', (orderID, marketID, outcome, type) => (dispatch, getState) => {
+        dispatch({ type: 'CANCEL_ORDER', params: { orderID, marketID, outcome, type } })
+      })
+      store.dispatch(cancelOpenOrdersInClosedMarkets())
+      t.assertions(store.getActions())
+      store.clearActions()
+    })
+  }
   test({
     description: 'no open orders',
     openOrders: [],
     assertions: (actions) => {
-      assert.deepEqual(actions, []);
+      assert.deepEqual(actions, [])
     }
-  });
+  })
   test({
     description: '1 open order in 1 open market',
     openOrders: [{
@@ -46,9 +46,9 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
       }]
     }],
     assertions: (actions) => {
-      assert.deepEqual(actions, []);
+      assert.deepEqual(actions, [])
     }
-  });
+  })
   test({
     description: '1 open order in 1 closed market',
     openOrders: [{
@@ -68,11 +68,12 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd1',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'buy'
         }
-      }]);
+      }])
     }
-  });
+  })
   test({
     description: '2 open orders in 1 closed market',
     openOrders: [{
@@ -95,6 +96,7 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd1',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'buy'
         }
       }, {
@@ -102,11 +104,12 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd2',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'sell'
         }
-      }]);
+      }])
     }
-  });
+  })
   test({
     description: '2 open orders each in 2 closed markets',
     openOrders: [{
@@ -142,6 +145,7 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd1',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'buy'
         }
       }, {
@@ -149,6 +153,7 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd2',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'sell'
         }
       }, {
@@ -156,6 +161,7 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd3',
           marketID: '0xa2',
+          outcome: '0xc1',
           type: 'buy'
         }
       }, {
@@ -163,11 +169,12 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd4',
           marketID: '0xa2',
+          outcome: '0xc1',
           type: 'buy'
         }
-      }]);
+      }])
     }
-  });
+  })
   test({
     description: '2 open orders each in 1 closed and 1 open markets',
     openOrders: [{
@@ -203,6 +210,7 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd1',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'buy'
         }
       }, {
@@ -210,9 +218,10 @@ describe(`modules/user-open-orders/actions/cancel-open-orders-in-closed-markets.
         params: {
           orderID: '0xd2',
           marketID: '0xa1',
+          outcome: '0xc1',
           type: 'sell'
         }
-      }]);
+      }])
     }
-  });
-});
+  })
+})

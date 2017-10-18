@@ -1,47 +1,45 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import EmDash from 'modules/common/components/em-dash';
-
-import { BINARY, CATEGORICAL, SCALAR } from 'modules/markets/constants/market-types';
+import { BINARY, CATEGORICAL, SCALAR } from 'modules/markets/constants/market-types'
 
 const CreateMarketMainTitle = (p) => {
   const initialTitleClass = () => {
     if (p.currentStep === 0) {
       if (p.validations.length) {
-        return 'display-title';
+        return 'display-title'
       }
 
-      return '';
+      return ''
     }
 
-    return 'hide-title';
-  };
+    return 'hide-title'
+  }
 
   const previewTitleClass = () => {
     if (p.currentStep === 0) {
       if (p.validations.length) {
-        return 'hide-title';
+        return 'hide-title'
       }
 
-      return '';
+      return ''
     }
 
-    return 'display-title';
-  };
+    return 'display-title'
+  }
 
   const marketType = () => {
     switch (p.type) {
       case BINARY:
-        return 'Yes/No';
+        return 'Yes/No'
       case CATEGORICAL:
-        return 'Multiple Choice';
+        return 'Multiple Choice'
       case SCALAR:
-        return 'Numerical';
+        return 'Numerical'
       default:
-        return '';
+        return ''
     }
-  };
+  }
 
   return (
     <article className="create-market-main-title">
@@ -52,7 +50,7 @@ const CreateMarketMainTitle = (p) => {
         onClick={() => p.updateNewMarket({ currentStep: 0 })}
       >
         <h1 className={`preview-title ${previewTitleClass()}`}>
-          Market Preview <EmDash /> {marketType()}
+          Market Preview &mdash; {marketType()}
         </h1>
       </button>
       <button
@@ -62,13 +60,13 @@ const CreateMarketMainTitle = (p) => {
         Clear New Market
       </button>
     </article>
-  );
-};
+  )
+}
 
 CreateMarketMainTitle.propTypes = {
   type: PropTypes.string.isRequired,
   currentStep: PropTypes.number.isRequired,
   clearNewMarket: PropTypes.func.isRequired
-};
+}
 
-export default CreateMarketMainTitle;
+export default CreateMarketMainTitle

@@ -1,0 +1,116 @@
+@import (reference) '~assets/styles/shared';
+
+.SideNav {
+  background: @color-purple;
+}
+
+.SideNav__nav {
+  border: 0.0625rem solid #553580;
+  border-left: none;
+  border-right: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    border-bottom: 0.0625rem solid #553580;
+
+    &:last-child { border: none; }
+  }
+
+  > li a {
+    background: none;
+    display: block;
+    font-size: 0.625rem;
+    height: 4rem;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+
+    &.selected {
+      background: @color-lightpurple;
+    }
+
+    &:hover {
+      background: @color-lightpurple;
+      cursor: pointer;
+    }
+
+    &:last-child { border: none; }
+
+    span {
+      bottom: 0.8rem;
+      color: @color-white;
+      font-weight: 300;
+      left: 0;
+      letter-spacing: 0.01875rem;
+      position: absolute;
+      right: 0;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    svg {
+      height: 1.5rem;
+      transform: translateY(0.5rem);
+      width: 1.5rem;
+    }
+
+    svg.nav-create-icon {
+      margin-top: 0.125rem;
+      transform: translateY(0.5rem) scale(0.85);
+    }
+
+    svg.nav-portfolio-icon {
+      transform: translateY(0.5rem) scale(0.95);
+    }
+  }
+}
+
+@media @breakpoint-mobile {
+  .SideNav {
+    height: 100vh;
+    left: -12.5rem;
+    padding-top: 2.8125rem;
+    position: absolute;
+    transition: left 0.2s ease-in-out;
+    width: 12.5rem;
+
+    &.mobileShow {
+      left: 0;
+    }
+  }
+
+  .SideNav__nav {
+    border: none;
+    padding-left: 1rem;
+
+    > li {
+      border: none;
+      padding: 0;
+
+      a {
+        font-size: 0.75rem;
+        height: 3.75rem;
+        text-align: left;
+
+        &:hover { background: none; }
+
+        svg {
+          width: 1.875rem;
+        }
+
+        span {
+          display: inline-block;
+          font-weight: 400;
+          line-height: 3.75rem;
+          padding-left: 1rem;
+          position: static;
+          text-align: left;
+        }
+      }
+    }
+  }
+}

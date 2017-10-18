@@ -1,0 +1,46 @@
+@import (reference) '~assets/styles/shared';
+
+.TopBar {
+  background: @color-gray;
+  height: 100%;
+  padding-left: 18.4rem;
+}
+
+.TopBar__stat {
+  display: inline-block;
+  letter-spacing: 0.05em;
+  line-height: 2.6rem;
+  margin-right: 2.5rem;
+  width: 6.8rem;
+}
+
+.TopBar__stat-label {
+  color: rgba(255, 255, 255, 0.25);
+  margin-right: 0.62rem;
+}
+
+.TopBar__stat-value {
+  color: @color-white;
+}
+
+.TopBar__logo-text {
+  display: none;
+}
+
+@media @breakpoint-mobile {
+  .TopBar {
+    padding: 0;
+  }
+
+  .TopBar__stat { display: none; }
+
+  .TopBar__logo-text {
+    color: @color-white;
+    display: block;
+    float: right;
+    letter-spacing: 0.0625em;
+    line-height: 1.5rem;
+    margin-right: 0.625rem;
+    text-transform: uppercase;
+  }
+}
