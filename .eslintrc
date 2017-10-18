@@ -33,6 +33,7 @@
     "prefer-template": 0,
     "space-infix-ops": 0,
     "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": "**/abc.js"}],
     "no-underscore-dangle": 0,
     "react/require-default-props": 0,
     "no-prototype-builtins": 0, # This one should possibly be bumped up to 2 at some point, unsure at this point
