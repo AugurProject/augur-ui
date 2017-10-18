@@ -26,7 +26,6 @@
     "postinstall": "postinstall-build build"
   },
   "dependencies": {
-    "airbitz-core-js-ui": "0.1.7",
     "async": "2.4.1",
     "augur.js": "4.4.11",
     "bignumber.js": "4.0.2",
@@ -75,6 +74,7 @@
     "zxcvbn": "4.4.2"
   },
   "devDependencies": {
+    "airbitz-core-js-ui": "0.1.7",
     "autoprefixer": "7.1.1",
     "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",
