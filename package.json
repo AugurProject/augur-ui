@@ -22,7 +22,8 @@
     "link": "npm link augur.js && npm link keythereum",
     "----": "",
     "deploy": "node scripts/deploy.js",
-    "deploy-dev": "node scripts/deploy-dev.js"
+    "deploy-dev": "node scripts/deploy-dev.js",
+    "postinstall": "postinstall-build build"
   },
   "dependencies": {
     "airbitz-core-js-ui": "0.1.7",
@@ -44,6 +45,7 @@
     "memoizee": "0.4.5",
     "moment": "2.18.1",
     "p5": "0.5.11",
+    "postinstall-build": "^5.0.1",
     "prerender-node": "2.7.1",
     "prop-types": "15.5.10",
     "qrcode.react": "0.7.1",
@@ -134,5 +136,17 @@
     "webpack-dev-middleware": "1.12.0",
     "webpack-hot-middleware": "2.19.1",
     "webpack-merge": "4.1.0"
-  }
+  },
+  "buildDependencies": [
+    "copy-webpack-plugin",
+    "extract-text-webpack-plugin",
+    "file-loader",
+    "hrml-loader",
+    "html-webpack-plugin",
+    "listr",
+    "webpack",
+    "webpack-dev-middleware",
+    "webpack-hot-middleware",
+    "webpack-merge"
+  ]
 }
