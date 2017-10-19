@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		15: 0
+/******/ 		16: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "" + ({"0":"auth-create","1":"auth-connect","2":"create-market","3":"markets","4":"transactions","5":"market","6":"portfolio","7":"account","8":"style-sandbox","9":"topics","10":"auth-lander","11":"auth","12":"main","13":"assets/scripts/vendor","14":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"7cb42cd3b73eac739921","1":"8f4a12371f949b9aaede","2":"d18e09f0cf0a01eb0bd5","3":"6dc6da9ef72822d7031e","4":"995c6c14e35656f35fe3","5":"da5461fad6c80fe8e7f4","6":"bfc2a8c7e869221f1471","7":"7f392a5cbedc8ff36a7e","8":"733ba68ef2e1d6d0e232","9":"93c11eb17858124f7bdb","10":"f3121715a8002a0f26b6","11":"1d5015a4fd2aa37e8829","12":"7657ae346283e714d88e","13":"db6556db1e573a9c9d5b","14":"333386a0c6426fe506d3"}[chunkId] + ".js";
+/******/ 		script.src = __webpack_require__.p + "" + ({"0":"auth-create","1":"auth-connect","2":"create-market","3":"markets","4":"transactions","5":"reporting","6":"market","7":"account","8":"style-sandbox","9":"portfolio","10":"topics","11":"auth-lander","12":"auth","13":"main","14":"assets/scripts/vendor","15":"assets/styles/styles"}[chunkId]||chunkId) + "." + {"0":"d84ae06cc1745dbb5a0d","1":"f173e91a3928bd7a6563","2":"a33cdf2e031cd95a393c","3":"f46f202052829727bf7a","4":"06534a594d81c3b6b0dd","5":"7e6fc8de29a9e6424db9","6":"c00ff8ba56babaca168d","7":"79f62048e77a2587026a","8":"8b7d2274f7b0b13694cb","9":"a48b66d910253f47c85c","10":"0aaf8b1be712473fa11f","11":"8670c75f9569fc4b0fa1","12":"3def65e31e58123f8ebc","13":"3037420d048f83d314e1","14":"50302f3a0442833956aa","15":"1cf5062c4053f3ecee18"}[chunkId] + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
