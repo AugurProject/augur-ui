@@ -13,7 +13,7 @@ const AuthenticatedRoute = ({ component: Component, isLogged, ...rest }) => (
     render={props => (
       isLogged ?
         <Component {...props} /> :
-        <Redirect to={makePath(AUTHENTICATION)} />
+        <Redirect push to={makePath(AUTHENTICATION)} />
     )}
   />
 )
