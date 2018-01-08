@@ -22,6 +22,7 @@ COPY support/nginx-default.conf /etc/nginx/conf.d/default.conf
 COPY package.json /augur/package.json
 WORKDIR /augur
 RUN git init \
+  && yarn add require-from-string \
   && yarn \
   && rm -rf .git \
   && rm package.json \
@@ -43,7 +44,7 @@ RUN curl -O https://dist.ipfs.io/go-ipfs/v0.4.13/go-ipfs_v0.4.13_linux-amd64.tar
   && tar -xvf go-ipfs_v0.4.13_linux-amd64.tar.gz \
   && cd go-ipfs \
   && ./install.sh \
-  && ipfs init 
+  && ipfs init
 
 EXPOSE 8080
 
