@@ -38,13 +38,13 @@ describe('modules/auth/helpers/ledger-signer', () => {
           type: 'stubbedUpdateModal'
         },
         {
-          type: 'stubbedCloseModal'
+          type: 'stubbedUpdateModal'
         }
       ]
 
       ledgerLib.signTransactionByBip44Index.resolves()
 
-      await ledgerSigner('testing', ledgerLib, store.dispatch)
+      await ledgerSigner(['testing', () => {}], ledgerLib, store.dispatch)
         .then((res) => {
           actual = store.getActions()
         })
@@ -61,9 +61,6 @@ describe('modules/auth/helpers/ledger-signer', () => {
     assertions: async () => {
       let actual
       const expected = [
-        {
-          type: 'stubbedUpdateModal'
-        },
         {
           type: 'stubbedUpdateModal'
         }
