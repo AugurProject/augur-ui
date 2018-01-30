@@ -72,9 +72,13 @@ function parseOutcomes(newMarketsData, outcomesData) {
 
   function parseBinaryOutcomes(marketData, marketID) {
     return marketData.outcomes.reduce((p, outcome) => {
-      if (outcome.id !== BINARY_YES_ID) return p
-      p[outcome.id] = { ...outcome }
-      p[outcome.id].name = 'Yes'
+      if (outcome.id !== BINARY_YES_ID) {
+        p[outcome.id] = { ...outcome }
+        p[outcome.id].name = 'No'
+      } else {
+        p[outcome.id] = { ...outcome }
+        p[outcome.id].name = 'Yes'
+      }
       return p
     }, {})
   }
