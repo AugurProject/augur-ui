@@ -22,10 +22,9 @@ class MarketTradingWrapper extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
     isLogged: PropTypes.bool.isRequired,
-    selectedOutcomes: PropTypes.array.isRequired,
-    selectedOutcome: PropTypes.object.isRequired,
+    selectedOutcome: PropTypes.object,
     initialMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequied,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
     toggleForm: PropTypes.func.isRequired,
   }

@@ -25,7 +25,7 @@ class MarketTradingForm extends Component {
     isMobile: PropTypes.bool.isRequired,
     minPrice: PropTypes.number.isRequired,
     maxPrice: PropTypes.number.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequied
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired
   }
 
   constructor(props) {

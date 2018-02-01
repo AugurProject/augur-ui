@@ -14,7 +14,7 @@ import Styles from 'modules/market/components/market-trading/market-trading.styl
 class MarketTrading extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequied,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isLogged: PropTypes.bool.isRequired,
     selectedOutcomes: PropTypes.array.isRequired,
     isMobile: PropTypes.bool.isRequired,
