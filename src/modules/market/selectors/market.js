@@ -249,7 +249,6 @@ export function assembleMarket(
         }
 
         outcome.trade = generateTrade(market, outcome, outcomeTradeInProgress, orderBooks || {})
-        console.log('!!!!Selector outcome.trade!!!!', outcome.trade, outcome);
 
         const orderBook = selectAggregateOrderBook(outcome.id, orderBooks, orderCancellation)
         outcome.orderBook = orderBook
@@ -264,7 +263,6 @@ export function assembleMarket(
 
         return outcome
       }).sort((a, b) => (b.lastPrice.value - a.lastPrice.value) || (a.name < b.name ? -1 : 1))
-      console.log('!!!! == Selector Outcomes == !!!!', market.outcomes);
 
       market.tags = (market.tags || []).filter(tag => !!tag)
 

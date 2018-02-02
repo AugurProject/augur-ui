@@ -53,7 +53,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   } else {
     maxNumShares = formatShares(0)
   }
-  
+
   return {
     side,
     numShares,
@@ -117,7 +117,6 @@ export const generateTradeOrders = memoize((market, outcome, outcomeTradeInProgr
   if (!market || !outcome || !outcomeTradeInProgress || !tradeActions || !tradeActions.length) {
     return []
   }
-  console.log('generateTradeOrders', market, outcome)
   const marketID = market.id
   const outcomeID = outcome.id
   const marketType = market.marketType
@@ -127,7 +126,7 @@ export const generateTradeOrders = memoize((market, outcome, outcomeTradeInProgr
     const numShares = new BigNumber(tradeAction.shares, 10)
     const costEth = new BigNumber(tradeAction.costEth, 10).abs()
     const avgPrice = new BigNumber(costEth, 10).dividedBy(new BigNumber(numShares, 10))
-    const noFeePrice = market.type === 'scalar' ? outcomeTradeInProgress.limitPrice : tradeAction.noFeePrice
+    const noFeePrice = market.marketType === 'scalar' ? outcomeTradeInProgress.limitPrice : tradeAction.noFeePrice
     return {
       type: TRANSACTIONS_TYPES[tradeAction.action],
       data: {

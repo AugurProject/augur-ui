@@ -117,15 +117,15 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             data: { marketID, outcomeID, details: newTradeDetails }
           })
         }
-        console.log('abt to sim trade:', accountPositions, market, newTradeDetails);
-
-        let cleanAccountPositions = market.outcomes.map((outcome, i)=> {
+        let cleanAccountPositions = []
+        for (let i = 0; i < market.numOutcomes; i++) {
           if (accountPositions[i]) {
-            return accountPositions[i]
+            cleanAccountPositions.push(accountPositions[i])
+          } else {
+            cleanAccountPositions.push(0)
           }
-          return 0
-        })
-        console.log('cleanAccountPositions', cleanAccountPositions);
+        }
+        // console.log('cleanAccountPositions', cleanAccountPositions);
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
@@ -141,7 +141,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })
-        // console.log('simulated trade:', JSON.stringify(simulatedTrade, null, 2));
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
         newTradeDetails.totalCost = new BigNumber(simulatedTrade.tokensDepleted, 10).neg().toFixed()

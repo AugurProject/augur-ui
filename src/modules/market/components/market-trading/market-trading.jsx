@@ -33,7 +33,7 @@ class MarketTrading extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes)) {
+    if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes) || !isEqual(this.props.market.outcomes, nextProps.market.outcomes)) {
       if (nextProps.selectedOutcomes.length === 1) {
         this.setState({
           selectedOutcome: nextProps.market.outcomes.find(outcome => outcome.id === nextProps.selectedOutcomes[0])
@@ -75,7 +75,11 @@ class MarketTrading extends Component {
       default:
         initialMessage = false
     }
-
+    // console.log('marketTrading:', p, s, s.selectedOutcome);
+    // if (s.selectedOutcome && s.selectedOutcome.trade) {
+    //   console.log('marketTrading.selectedOutcome.trade.potentialEthLoss', s.selectedOutcome.trade.potentialEthLoss);
+    //   console.log('marketTrading.market.outcomes[0].trade.potentialEthLoss', p.market.outcomes[0].trade.potentialEthLoss);
+    // }
     return (
       <section className={Styles.Trading}>
         { (!p.isMobile || (p.isMobile && s.showForm)) &&

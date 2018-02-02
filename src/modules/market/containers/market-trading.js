@@ -8,7 +8,7 @@ import MarketTrading from 'modules/market/components/market-trading/market-tradi
 
 const mapStateToProps = state => ({
   availableFunds: new BigNumber(state.loginAccount.eth),
-  outcomes,
+  // outcomes,
   isLogged: state.isLogged,
   isMobile: state.isMobile,
 })
@@ -17,7 +17,13 @@ const mapDispatchToProps = dispatch => ({})
 
 const mergeProps = (sP, dP, oP) => {
   const market = selectMarket(oP.marketId)
-
+  // console.log('mergeProps', sP, oP, market);
+  // console.log('mergeProps Returns:', {
+  //   ...sP,
+  //   ...dP,
+  //   ...oP,
+  //   market
+  // });
   return {
     ...sP,
     ...dP,
