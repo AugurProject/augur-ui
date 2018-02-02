@@ -27,6 +27,7 @@ class MarketTradingWrapper extends Component {
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
     toggleForm: PropTypes.func.isRequired,
+    toggleShowOrderPlaced: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -151,6 +152,7 @@ class MarketTradingWrapper extends Component {
             prevPage={this.prevPage}
             trade={p.selectedOutcome.trade}
             isMobile={p.isMobile}
+            toggleShowOrderPlaced={p.toggleShowOrderPlaced}
           />
         }
       </section>

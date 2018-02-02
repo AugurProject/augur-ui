@@ -92,7 +92,11 @@ const MarketTradingConfirm = (p) => {
         </button>
         <button
           className={Styles['TradingConfirmation__button--submit']}
-          onClick={e => console.log('submit order')}
+          onClick={e => {
+            p.market.onSubmitPlaceTrade(p.selectedOutcome.id)
+            p.prevPage()
+            p.toggleShowOrderPlaced()
+          }}
         >Confirm
         </button>
       </div>
