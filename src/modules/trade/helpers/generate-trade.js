@@ -27,8 +27,8 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   const totalFee = (outcomeTradeInProgress && outcomeTradeInProgress.totalFee) || 0
   const gasFeesRealEth = (outcomeTradeInProgress && outcomeTradeInProgress.gasFeesRealEth) || 0
   const totalCost = (outcomeTradeInProgress && outcomeTradeInProgress.totalCost) || 0
-  const marketType = (market && market.type) || null
-  const minPrice = (market && market.minPrice) || null
+  const marketType = (market && market.marketType) || null
+  const minPrice = (market && typeof market.minPrice === 'number') ? market.minPrice : null
   const maxPrice = (market && market.maxPrice) || null
   const preOrderProfitLoss = calcOrderProfitLossPercents(numShares, limitPrice, side, minPrice, maxPrice, marketType)
 
@@ -53,7 +53,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   } else {
     maxNumShares = formatShares(0)
   }
-
+  
   return {
     side,
     numShares,
@@ -75,7 +75,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     ],
 
     tradeSummary: generateTradeSummary(generateTradeOrders(market, outcome, outcomeTradeInProgress)),
-    updateTradeOrder: (shares, limitPrice, side) => store.dispatch(updateTradesInProgress(market.id, outcome.id, side, shares, limitPrice)),
+    updateTradeOrder: (shares, limitPrice, side, maxCost) => store.dispatch(updateTradesInProgress(market.id, outcome.id, side, shares, limitPrice, maxCost)),
     totalSharesUpToOrder: (orderIndex, side) => totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks)
   }
 }, { max: 5 })
@@ -117,9 +117,10 @@ export const generateTradeOrders = memoize((market, outcome, outcomeTradeInProgr
   if (!market || !outcome || !outcomeTradeInProgress || !tradeActions || !tradeActions.length) {
     return []
   }
+  console.log('generateTradeOrders', market, outcome)
   const marketID = market.id
   const outcomeID = outcome.id
-  const marketType = market.type
+  const marketType = market.marketType
   const outcomeName = outcome.name
   const { description } = market
   return tradeActions.map((tradeAction) => {

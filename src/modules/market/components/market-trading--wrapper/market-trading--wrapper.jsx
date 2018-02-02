@@ -38,7 +38,7 @@ class MarketTradingWrapper extends Component {
       orderQuantity: '',
       orderEstimate: '',
       marketOrderTotal: '',
-      marketQuantity: '8.0219',
+      marketQuantity: '',
       selectedNav: BUY,
       currentPage: 0,
     }
@@ -85,7 +85,8 @@ class MarketTradingWrapper extends Component {
     const p = this.props
 
     const lastPrice = getValue(p, 'selectedOutcome.lastPrice.formatted')
-
+    // console.log('r tw:', p, s)
+    if (p.selectedOutcome) console.log('selecteOutcome:', Object.assign({}, p.selectedOutcome.trade));
     return (
       <section className={Styles.TradingWrapper}>
         { p.isMobile &&

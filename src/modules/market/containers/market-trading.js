@@ -17,7 +17,7 @@ const mapDispatchToProps = dispatch => ({})
 
 const mergeProps = (sP, dP, oP) => {
   const market = selectMarket(oP.marketId)
-
+  console.log('merging props:', market.outcomes);
   return {
     ...sP,
     ...dP,

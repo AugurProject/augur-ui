@@ -249,6 +249,7 @@ export function assembleMarket(
         }
 
         outcome.trade = generateTrade(market, outcome, outcomeTradeInProgress, orderBooks || {})
+        console.log('!!!!Selector outcome.trade!!!!', outcome.trade);
 
         const orderBook = selectAggregateOrderBook(outcome.id, orderBooks, orderCancellation)
         outcome.orderBook = orderBook

@@ -21,7 +21,8 @@ BigNumber.config({ ERRORS: false })
  */
 
 export default function (numShares, limitPrice, side, minPrice, maxPrice, type) {
-  if (!numShares || !limitPrice || !side || !minPrice || !maxPrice || !type) return null
+  if (!numShares || !limitPrice || !side|| !type) return null
+  if (type === SCALAR && (typeof minPrice !== 'number' || typeof maxPrice !== 'number')) return null
 
   const max = new BigNumber(type === SCALAR ? maxPrice : 1)
   const min = new BigNumber(type === SCALAR ? minPrice : 0)

@@ -117,10 +117,19 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             data: { marketID, outcomeID, details: newTradeDetails }
           })
         }
+        console.log('abt to sim trade:', accountPositions, market, newTradeDetails);
+
+        let cleanAccountPositions = market.outcomes.map((outcome, i)=> {
+          if (accountPositions[i]) {
+            return accountPositions[i]
+          }
+          return 0
+        })
+        console.log('cleanAccountPositions', cleanAccountPositions);
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
-          shareBalances: accountPositions,
+          shareBalances: cleanAccountPositions,
           tokenBalance: (loginAccount.ethTokens && loginAccount.ethTokens.toString()) || '0',
           userAddress: loginAccount.address,
           minPrice: market.minPrice,

@@ -14,6 +14,7 @@ import Styles from 'modules/market/components/market-trading--confirm/market-tra
 const MarketTradingConfirm = (p) => {
   const tradingFees = '0.0023'
   const feePercent = '2.8'
+  console.log('marketConfirm: p', p);
   const potentialEthProfit = getValue(p, 'trade.potentialEthProfit')
   const potentialProfitPercent = getValue(p, 'trade.potentialProfitPercent')
   const potentialEthLoss = getValue(p, 'trade.potentialEthLoss')

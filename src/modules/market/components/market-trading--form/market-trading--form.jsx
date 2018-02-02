@@ -32,9 +32,9 @@ class MarketTradingForm extends Component {
     super(props)
 
     this.INPUT_TYPES = {
-      QUANTITY: 'QUANTITY',
-      PRICE: 'PRICE',
-      MARKET_ORDER_SIZE: 'MARKET_ORDER_SIZE'
+      QUANTITY: 'orderQuantity',
+      PRICE: 'orderPrice',
+      MARKET_ORDER_SIZE: 'marketOrderTotal'
     }
 
     this.state = {
@@ -53,7 +53,7 @@ class MarketTradingForm extends Component {
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
-
+    let isOrderValid = true
     const errors = {}
 
     // TODO --
@@ -65,6 +65,7 @@ class MarketTradingForm extends Component {
         rawValue !== '' &&
         (value.lt(this.props.minPrice) || value.gt(this.props.maxPrice))
       ) {
+        isOrderValid = false
         errors[this.INPUT_TYPES.PRICE].push(`Price must be between ${this.props.minPrice} - ${this.props.maxPrice}`)
       }
     }
@@ -75,6 +76,7 @@ class MarketTradingForm extends Component {
         rawValue !== '' &&
         (value.lt(0))
       ) {
+        isOrderValid = false
         errors[this.INPUT_TYPES.QUANTITY].push('Quantity must be greater than 0')
       }
     }
@@ -85,22 +87,36 @@ class MarketTradingForm extends Component {
         if (
           value.gt(this.props.availableFunds)
         ) {
+          isOrderValid = false
           errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot exceed account ETH balance of ${this.props.availableFunds.toNumber()}`)
         }
         if (
           value.lt(0)
         ) {
+          isOrderValid = false
           errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot be a negative number`)
         }
       }
     }
-
+    if (isOrderValid) {
+      const updatedState = {
+        ...this.state,
+        [property]: value
+      }
+      const shares = updatedState[this.INPUT_TYPES.QUANTITY]
+      const limitPrice = updatedState[this.INPUT_TYPES.PRICE]
+      const side = this.props.selectedNav
+      const maxCost = updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
+      this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, maxCost)
+      this.props.updateState(property, value)
+    }
     this.setState({
       errors: {
         ...this.state.errors,
         ...errors
       },
-      [property]: value
+      [property]: value,
+      isOrderValid
     })
   }
 
@@ -110,7 +126,7 @@ class MarketTradingForm extends Component {
 
     const tickSize = parseFloat(p.market.tickSize)
     const errors = Array.from(new Set([...s.errors[this.INPUT_TYPES.QUANTITY], ...s.errors[this.INPUT_TYPES.PRICE], ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE]]))
-
+    // console.log('mtForm', p, s, tickSize, errors);
     return (
       <ul className={Styles['TradingForm__form-body']}>
         <li>
@@ -196,7 +212,7 @@ class MarketTradingForm extends Component {
         <li className={Styles['TradingForm__button--review']}>
           <button
             disabled={!s.isOrderValid}
-            onClick={p.isOrderValid && p.nextPage}
+            onClick={s.isOrderValid && p.nextPage}
           >Review
           </button>
         </li>
