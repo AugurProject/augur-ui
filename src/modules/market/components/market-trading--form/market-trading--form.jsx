@@ -38,9 +38,9 @@ class MarketTradingForm extends Component {
     }
 
     this.state = {
-      [this.INPUT_TYPES.QUANTITY]: '',
-      [this.INPUT_TYPES.PRICE]: '',
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: '',
+      [this.INPUT_TYPES.QUANTITY]: props[this.INPUT_TYPES.QUANTITY] || '',
+      [this.INPUT_TYPES.PRICE]: props[this.INPUT_TYPES.PRICE] || '',
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: props[this.INPUT_TYPES.MARKET_ORDER_SIZE] || '',
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
