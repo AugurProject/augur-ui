@@ -35,9 +35,6 @@ class MarketTrading extends Component {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes)) {
       if (nextProps.selectedOutcomes.length === 1) {
-        console.log('in componentWillReceiveProps', {
-          selectedOutcome: nextProps.market.outcomes.find(outcome => outcome.id === nextProps.selectedOutcomes[0])
-        });
         this.setState({
           selectedOutcome: nextProps.market.outcomes.find(outcome => outcome.id === nextProps.selectedOutcomes[0])
         })

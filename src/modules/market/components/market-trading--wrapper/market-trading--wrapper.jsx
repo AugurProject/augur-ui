@@ -86,7 +86,7 @@ class MarketTradingWrapper extends Component {
 
     const lastPrice = getValue(p, 'selectedOutcome.lastPrice.formatted')
     // console.log('r tw:', p, s)
-    if (p.selectedOutcome) console.log('selecteOutcome:', Object.assign({}, p.selectedOutcome.trade));
+    // if (p.selectedOutcome) console.log('selecteOutcome:', Object.assign({}, p.selectedOutcome));
     return (
       <section className={Styles.TradingWrapper}>
         { p.isMobile &&
