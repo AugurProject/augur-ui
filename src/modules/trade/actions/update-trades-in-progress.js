@@ -125,7 +125,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             cleanAccountPositions.push(0)
           }
         }
-        // console.log('cleanAccountPositions', cleanAccountPositions);
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),

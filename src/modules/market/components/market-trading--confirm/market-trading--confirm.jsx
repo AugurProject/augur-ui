@@ -12,15 +12,14 @@ import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import Styles from 'modules/market/components/market-trading--confirm/market-trading--confirm.styles'
 
 const MarketTradingConfirm = (p) => {
-  const tradingFees = '0.0023'
-  const feePercent = '2.8'
-  console.log('marketConfirm: p', p);
+  const tradingFees = getValue(p, 'trade.totalFee')
+  const feePercent = getValue(p, 'trade.totalFeePercent')
   const potentialEthProfit = getValue(p, 'trade.potentialEthProfit')
   const potentialProfitPercent = getValue(p, 'trade.potentialProfitPercent')
   const potentialEthLoss = getValue(p, 'trade.potentialEthLoss')
   const potentialLossPercent = getValue(p, 'trade.potentialLossPercent')
   const totalCost = getValue(p, 'trade.totalCost')
-
+  // console.log('mcp', p);
   return (
     <section className={Styles.TradingConfirm}>
       <div className={Styles.TradingConfirm__header}>
@@ -55,7 +54,7 @@ const MarketTradingConfirm = (p) => {
         }
         <li>
           <span>Fee</span>
-          <span>{tradingFees} <span>ETH ({feePercent}%)</span></span>
+          <span>{tradingFees.formattedValue} <span>ETH ({feePercent.formattedValue}%)</span></span>
         </li>
       </ul>
       { p.orderType === LIMIT &&
@@ -93,7 +92,7 @@ const MarketTradingConfirm = (p) => {
         <button
           className={Styles['TradingConfirmation__button--submit']}
           onClick={e => {
-            p.market.onSubmitPlaceTrade(p.selectedOutcome.id)
+            p.market.onSubmitPlaceTrade(p.selectedOutcome.id, (p.orderType === MARKET))
             p.prevPage()
             p.toggleShowOrderPlaced()
           }}

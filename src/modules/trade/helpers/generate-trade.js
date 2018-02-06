@@ -25,6 +25,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   const numShares = (outcomeTradeInProgress && outcomeTradeInProgress.numShares) || null
   const limitPrice = (outcomeTradeInProgress && outcomeTradeInProgress.limitPrice) || null
   const totalFee = (outcomeTradeInProgress && outcomeTradeInProgress.totalFee) || 0
+  const feePercent = (outcomeTradeInProgress && outcomeTradeInProgress.feePercent) || 0
   const gasFeesRealEth = (outcomeTradeInProgress && outcomeTradeInProgress.gasFeesRealEth) || 0
   const totalCost = (outcomeTradeInProgress && outcomeTradeInProgress.totalCost) || 0
   const marketType = (market && market.marketType) || null
@@ -66,6 +67,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     potentialProfitPercent: preOrderProfitLoss ? formatPercent(preOrderProfitLoss.potentialProfitPercent) : null,
 
     totalFee: formatEtherTokens(totalFee, { blankZero: true }),
+    totalFeePercent: formatEtherTokens(feePercent, { blankZero: true }),
     gasFeesRealEth: formatEther(gasFeesRealEth, { blankZero: true }),
     totalCost: formatEtherTokens(totalCost, { blankZero: false }),
 
