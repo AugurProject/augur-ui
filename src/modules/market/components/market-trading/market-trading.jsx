@@ -7,7 +7,7 @@ import { isEqual } from 'lodash'
 
 import BigNumber from 'bignumber.js'
 
-import { SCALAR } from 'modules/markets/constants/market-types'
+import { CATEGORICAL } from 'modules/markets/constants/market-types'
 
 import Styles from 'modules/market/components/market-trading/market-trading.styles'
 
@@ -22,11 +22,11 @@ class MarketTrading extends Component {
 
   constructor(props) {
     super(props)
-
+    console.log('marketTrading Constructor', (props.market.marketType === CATEGORICAL ? null : props.market.outcomes.find(outcome => outcome.id === '1')));
     this.state = {
       showForm: false,
       showOrderPlaced: false,
-      selectedOutcome: null
+      selectedOutcome: props.market.marketType === CATEGORICAL ? null : props.market.outcomes.find(outcome => outcome.id === '1')
     }
 
     this.toggleForm = this.toggleForm.bind(this)
@@ -35,13 +35,13 @@ class MarketTrading extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes) || !isEqual(this.props.market.outcomes, nextProps.market.outcomes)) {
-      if (nextProps.selectedOutcomes.length === 1) {
+      if (nextProps.selectedOutcomes.length === 1 && nextProps.market.marketType === CATEGORICAL) {
         this.setState({
           selectedOutcome: nextProps.market.outcomes.find(outcome => outcome.id === nextProps.selectedOutcomes[0])
         })
       } else {
         this.setState({
-          selectedOutcome: null
+          selectedOutcome: nextProps.market.marketType === CATEGORICAL ? null : nextProps.market.outcomes.find(outcome => outcome.id === '1')
         })
       }
     }
@@ -65,26 +65,22 @@ class MarketTrading extends Component {
     let initialMessage = ''
 
     switch (true) {
-      case p.market.marketType === SCALAR:
-        initialMessage = false
-        break
       case !p.isLogged:
         initialMessage = 'Log in to trade.'
         break
       case p.isLogged && !hasFunds:
         initialMessage = 'Add funds to begin trading.'
         break
+      case p.isLogged && hasFunds && p.market.marketType !== CATEGORICAL:
+        initialMessage = false
+        break;
       case p.isLogged && hasFunds && !hasSelectedOutcome:
         initialMessage = 'Select an outcome to begin placing an order.'
         break
       default:
         initialMessage = false
     }
-    // console.log('marketTrading:', p, s, s.selectedOutcome);
-    // if (s.selectedOutcome && s.selectedOutcome.trade) {
-    //   console.log('marketTrading.selectedOutcome.trade.potentialEthLoss', s.selectedOutcome.trade.potentialEthLoss);
-    //   console.log('marketTrading.market.outcomes[0].trade.potentialEthLoss', p.market.outcomes[0].trade.potentialEthLoss);
-    // }
+
     return (
       <section className={Styles.Trading}>
         { (!p.isMobile || (p.isMobile && s.showForm)) &&
