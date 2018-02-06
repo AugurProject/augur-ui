@@ -192,6 +192,20 @@ class MarketTradingForm extends Component {
             />
           </li>
         }
+        { p.market.marketType === SCALAR && p.orderType === MARKET &&
+          <li>
+            <label htmlFor="tr__input--limit-price-market">Price</label>
+            <input
+              className={classNames({ [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length })}
+              id="tr__input--limit-price-market"
+              type="number"
+              step={tickSize}
+              placeholder={`${tickSize} ETH`}
+              value={s[this.INPUT_TYPES.PRICE] instanceof BigNumber ? s[this.INPUT_TYPES.PRICE].toNumber() : s[this.INPUT_TYPES.PRICE]}
+              onChange={e => this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)}
+            />
+          </li>
+        }
         { p.orderType === LIMIT &&
           <li>
             <label>Est. Cost</label>
