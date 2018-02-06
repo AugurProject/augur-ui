@@ -22,11 +22,11 @@ class MarketTrading extends Component {
 
   constructor(props) {
     super(props)
-    console.log('marketTrading Constructor', (props.market.marketType === CATEGORICAL ? null : props.market.outcomes.find(outcome => outcome.id === '1')));
+
     this.state = {
       showForm: false,
       showOrderPlaced: false,
-      selectedOutcome: props.market.marketType === CATEGORICAL ? null : props.market.outcomes.find(outcome => outcome.id === '1')
+      selectedOutcome: props.selectedOutcomes.length ? props.market.outcomes.find(outcome => outcome.id === props.selectedOutcomes[0]) : null
     }
 
     this.toggleForm = this.toggleForm.bind(this)
@@ -34,14 +34,16 @@ class MarketTrading extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes) || !isEqual(this.props.market.outcomes, nextProps.market.outcomes)) {
-      if (nextProps.selectedOutcomes.length === 1 && nextProps.market.marketType === CATEGORICAL) {
+    if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes) || (!!this.state.selectedOutcome && !isEqual(this.state.selectedOutcome.id, nextProps.selectedOutcomes[0])) || !isEqual(this.props.market.outcomes, nextProps.market.outcomes)) {
+      if (nextProps.selectedOutcomes.length === 1) {
+        // && nextProps.market.marketType === CATEGORICAL
         this.setState({
           selectedOutcome: nextProps.market.outcomes.find(outcome => outcome.id === nextProps.selectedOutcomes[0])
         })
       } else {
+         // nextProps.market.marketType === CATEGORICAL ? null : nextProps.market.outcomes.find(outcome => outcome.id === '1')
         this.setState({
-          selectedOutcome: nextProps.market.marketType === CATEGORICAL ? null : nextProps.market.outcomes.find(outcome => outcome.id === '1')
+          selectedOutcome: null
         })
       }
     }
@@ -63,7 +65,6 @@ class MarketTrading extends Component {
     const hasSelectedOutcome = s.selectedOutcome !== null
 
     let initialMessage = ''
-
     switch (true) {
       case !p.isLogged:
         initialMessage = 'Log in to trade.'
@@ -71,9 +72,6 @@ class MarketTrading extends Component {
       case p.isLogged && !hasFunds:
         initialMessage = 'Add funds to begin trading.'
         break
-      case p.isLogged && hasFunds && p.market.marketType !== CATEGORICAL:
-        initialMessage = false
-        break;
       case p.isLogged && hasFunds && !hasSelectedOutcome:
         initialMessage = 'Select an outcome to begin placing an order.'
         break

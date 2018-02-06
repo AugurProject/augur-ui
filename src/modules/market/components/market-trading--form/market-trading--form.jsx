@@ -126,8 +126,7 @@ class MarketTradingForm extends Component {
 
     const tickSize = parseFloat(p.market.tickSize)
     const errors = Array.from(new Set([...s.errors[this.INPUT_TYPES.QUANTITY], ...s.errors[this.INPUT_TYPES.PRICE], ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE]]))
-    console.log(p.selectedOutcome)
-    // console.log('mtForm', p, s, tickSize, errors);
+
     return (
       <ul className={Styles['TradingForm__form-body']}>
         <li>
