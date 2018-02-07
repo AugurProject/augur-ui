@@ -15,8 +15,9 @@ const loadBidsAsks = (marketID, callback = logError) => (dispatch, getState) => 
     if (market.numOutcomes == null) {
       return callback(`market ${marketID} numOutcomes not found`)
     }
-    // const outcomes = Array.from(new Array(market.numOutcomes), (_, i) => i + 1)
-    async.eachSeries(market.numOutcomes, (outcome, nextOutcome) => {
+
+    const outcomes = Array.from(new Array(market.numOutcomes), (_, i) => i)
+    async.eachSeries(outcomes, (outcome, nextOutcome) => {
       dispatch(loadOneOutcomeBidsAsks(marketID, outcome, nextOutcome))
     }, callback)
   }))
