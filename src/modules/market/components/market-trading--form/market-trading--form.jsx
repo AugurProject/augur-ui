@@ -50,6 +50,8 @@ class MarketTradingForm extends Component {
     }
   }
 
+
+
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
@@ -126,7 +128,7 @@ class MarketTradingForm extends Component {
 
     const tickSize = parseFloat(p.market.tickSize)
     const errors = Array.from(new Set([...s.errors[this.INPUT_TYPES.QUANTITY], ...s.errors[this.INPUT_TYPES.PRICE], ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE]]))
-
+    console.log('marketTradeform', p, s);
     return (
       <ul className={Styles['TradingForm__form-body']}>
         <li>
@@ -225,7 +227,7 @@ class MarketTradingForm extends Component {
         }
         <li className={Styles['TradingForm__button--review']}>
           <button
-            disabled={!s.isOrderValid}
+            disabled={(!s.isOrderValid || p.orderEstimate === '')}
             onClick={s.isOrderValid ? p.nextPage : undefined}
           >Review
           </button>

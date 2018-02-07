@@ -200,7 +200,7 @@ export function assembleMarket(
       market.isReported = market.isRequiredToReportByAccount && !!marketReport.reportedOutcomeID // the user has reported on this market
       market.isReportTabVisible = market.isRequiredToReportByAccount
 
-      market.onSubmitPlaceTrade = (outcomeID, doNotCreateOrders = false) => dispatch(placeTrade(marketID, outcomeID, marketTradeInProgress[outcomeID], doNotCreateOrders))
+      market.onSubmitPlaceTrade = (outcomeID, callback, onComplete, doNotCreateOrders = false) => dispatch(placeTrade(marketID, outcomeID, marketTradeInProgress[outcomeID], doNotCreateOrders, callback, onComplete))
 
       market.report = {
         ...marketReport,

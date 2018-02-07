@@ -47,6 +47,7 @@ class MarketTradingWrapper extends Component {
     this.prevPage = this.prevPage.bind(this)
     this.nextPage = this.nextPage.bind(this)
     this.updateState = this.updateState.bind(this)
+    this.clearOrderForm = this.clearOrderForm.bind(this)
     this.updateOrderEstimate = this.updateOrderEstimate.bind(this)
   }
 
@@ -73,6 +74,17 @@ class MarketTradingWrapper extends Component {
 
   updateState(property, value) {
     this.setState({ [property]: value })
+  }
+
+  clearOrderForm() {
+    this.setState({
+      orderPrice: '',
+      orderQuantity: '',
+      orderEstimate: '',
+      marketOrderTotal: '',
+      marketQuantity: '',
+      currentPage: 0,
+    })
   }
 
   updateOrderEstimate(orderEstimate) {
@@ -152,6 +164,7 @@ class MarketTradingWrapper extends Component {
             prevPage={this.prevPage}
             trade={p.selectedOutcome.trade}
             isMobile={p.isMobile}
+            clearOrderForm={this.clearOrderForm}
             toggleShowOrderPlaced={p.toggleShowOrderPlaced}
           />
         }
