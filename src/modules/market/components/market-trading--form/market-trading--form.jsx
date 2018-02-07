@@ -7,6 +7,7 @@ import BigNumber from 'bignumber.js'
 
 import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import { SCALAR } from 'modules/markets/constants/market-types'
+import { isEqual } from 'lodash'
 
 import Styles from 'modules/market/components/market-trading--form/market-trading--form.styles'
 
@@ -50,16 +51,28 @@ class MarketTradingForm extends Component {
     }
   }
 
-
+  componentWillReceiveProps(nextProps) {
+    const props = {
+      [this.INPUT_TYPES.QUANTITY]: nextProps[this.INPUT_TYPES.QUANTITY],
+      [this.INPUT_TYPES.PRICE]: nextProps[this.INPUT_TYPES.PRICE],
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]
+    }
+    const state = {
+      [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
+      [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE]
+    }
+    console.log('compWillUpdate, props state', props, state)
+    if (!isEqual(props, state)) {
+      this.setState(props)
+    }
+  }
 
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
     let isOrderValid = true
     const errors = {}
-
-    // TODO --
-    // Update trade summary if valid
 
     if (property === this.INPUT_TYPES.PRICE) {
       errors[this.INPUT_TYPES.PRICE] = []

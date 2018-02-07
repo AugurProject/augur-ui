@@ -95,10 +95,10 @@ const MarketTradingConfirm = (p) => {
             p.market.onSubmitPlaceTrade(p.selectedOutcome.id, (err, tradeGroupID) => {
               console.log('onSent/failed', err, tradeGroupID)
               p.toggleShowOrderPlaced()
-              p.clearOrderForm()
             }, (err) => {
               console.log('onComplete', err)
             }, (p.orderType === MARKET))
+            p.clearOrderForm()
             p.prevPage()
           }}
         >Confirm
