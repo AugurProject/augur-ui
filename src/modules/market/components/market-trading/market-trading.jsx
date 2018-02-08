@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import MarketTradingWrapper from 'modules/market/components/market-trading--wrapper/market-trading--wrapper'
 import { Check, Close } from 'modules/common/components/icons/icons'
 import { isEqual } from 'lodash'
 
 import BigNumber from 'bignumber.js'
+import makePath from 'modules/routes/helpers/make-path'
 
 import { CATEGORICAL } from 'modules/markets/constants/market-types'
-
+import { ACCOUNT_DEPOSIT } from 'modules/routes/constants/views'
 import Styles from 'modules/market/components/market-trading/market-trading.styles'
 
 class MarketTrading extends Component {
@@ -79,6 +81,7 @@ class MarketTrading extends Component {
         initialMessage = false
     }
 
+
     return (
       <section className={Styles.Trading}>
         { (!p.isMobile || (p.isMobile && s.showForm)) &&
@@ -96,6 +99,13 @@ class MarketTrading extends Component {
         { p.isMobile && hasSelectedOutcome && initialMessage &&
           <div className={Styles['Trading__initial-message']}>
             <p>{ initialMessage }</p>
+            {!hasFunds &&
+              <Link
+                to={makePath(ACCOUNT_DEPOSIT)}
+              >
+                <span className={Styles['Trading__deposit-button']}>Add Funds</span>
+              </Link>
+            }
           </div>
         }
         { p.isMobile && hasSelectedOutcome && !initialMessage && !s.showForm && // this needs to be changed to use p.selectedOutcome (should only show on mobile when an outcome has been selected)
