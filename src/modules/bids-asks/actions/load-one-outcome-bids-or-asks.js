@@ -4,6 +4,7 @@ import insertOrderBookChunkToOrderBook from 'modules/bids-asks/actions/insert-or
 import { BINARY } from 'modules/markets/constants/market-types'
 import { translateBinaryOrders } from 'modules/bids-asks/actions/translate-binary-orders'
 import logError from 'utils/log-error'
+import { has } from 'lodash'
 
 const loadOneOutcomeBidsOrAsks = (marketId, outcome, orderTypeLabel, callback = logError) => (dispatch, getState) => {
   const { marketsData } = getState()
@@ -21,7 +22,7 @@ const loadOneOutcomeBidsOrAsks = (marketId, outcome, orderTypeLabel, callback = 
         newOrders = translateBinaryOrders([marketId], orders)
       }
       // TODO verify that orders is the correct shape for insertion
-      dispatch(insertOrderBookChunkToOrderBook(marketId, outcome, orderTypeLabel, newOrders))
+      dispatch(insertOrderBookChunkToOrderBook(marketId, outcome, orderTypeLabel, has(newOrders, [marketId, outcome, orderTypeLabel]) ? newOrders[marketId][outcome][orderTypeLabel] : {}))
     }
     callback(null)
   })
