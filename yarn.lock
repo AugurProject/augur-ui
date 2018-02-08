@@ -512,9 +512,9 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-augur.js@4.7.0-58:
-  version "4.7.0-58"
-  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-4.7.0-58.tgz#6564e63ceabc4687ad7adc279ccc558a743f8ae5"
+augur.js@4.7.0-60:
+  version "4.7.0-60"
+  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-4.7.0-60.tgz#fe9e742e04e731e80d90b4738529f8a87458201f"
   dependencies:
     async "1.5.2"
     bignumber.js "2.3.0"

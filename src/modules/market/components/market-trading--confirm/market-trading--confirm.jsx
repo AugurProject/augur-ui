@@ -94,7 +94,7 @@ const MarketTradingConfirm = (p) => {
           onClick={e => {
             p.market.onSubmitPlaceTrade(p.selectedOutcome.id, (err, tradeGroupID) => {
               console.log('onSent/failed', err, tradeGroupID)
-              p.toggleShowOrderPlaced()
+              if (!err) p.toggleShowOrderPlaced()
             }, (err) => {
               console.log('onComplete', err)
             }, (p.orderType === MARKET))

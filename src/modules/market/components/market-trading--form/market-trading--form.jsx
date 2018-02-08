@@ -62,7 +62,7 @@ class MarketTradingForm extends Component {
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE]
     }
-    console.log('compWillUpdate, props state', props, state)
+    // console.log('compWillUpdate, props state', props, state)
     if (!isEqual(props, state)) {
       this.setState(props)
     }
@@ -141,7 +141,7 @@ class MarketTradingForm extends Component {
 
     const tickSize = parseFloat(p.market.tickSize)
     const errors = Array.from(new Set([...s.errors[this.INPUT_TYPES.QUANTITY], ...s.errors[this.INPUT_TYPES.PRICE], ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE]]))
-    console.log('marketTradeform', p, s);
+    // console.log('marketTradeform', p, s);
     return (
       <ul className={Styles['TradingForm__form-body']}>
         <li>
