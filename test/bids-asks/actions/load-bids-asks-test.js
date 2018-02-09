@@ -6,13 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import testState from 'test/testState'
 import sinon from 'sinon'
 
-const marketsData = { MARKET_0: { numOutcomes: 3 } }
-
 describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
   proxyquire.noPreserveCache()
 
   const mockLoadMarketsInfo = {}
-
 
   const test = t => it(t.description, (done) => {
     const state = Object.assign({}, testState)
@@ -20,7 +17,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     const store = mockStore(state)
 
     mockLoadMarketsInfo.loadMarketsInfo = sinon.stub().callsFake((p, cb) => (dispatch, getState) => {
-      cb(null, t.marketData)
+      cb(null, t.data)
     })
 
     const loadBidsAsks = proxyquire('../../../src/modules/bids-asks/actions/load-bids-asks', {
@@ -39,9 +36,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     params: {
       marketID: undefined
     },
-    marketData: {
-      marketsData
-    },
+    data: { MARKET_0: { numOutcomes: 3 } },
     stub: {
       loadOneOutcomeBidsAsks: {
         default: () => () => assert.fail()
@@ -57,7 +52,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     params: {
       marketID: 'MARKET_0'
     },
-    marketData: {
+    data: {
 
     },
     stub: {
@@ -75,7 +70,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     params: {
       marketID: 'MARKET_0'
     },
-    marketData: {
+    data: {
       MARKET_0: { numOutcomes: undefined }
     },
     stub: {
@@ -93,7 +88,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     params: {
       marketID: 'MARKET_0'
     },
-    marketData: {
+    data: {
       MARKET_0: { numOutcomes: 2 }
     },
     stub: {
@@ -126,7 +121,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     params: {
       marketID: 'MARKET_0'
     },
-    marketData: { MARKET_0: { numOutcomes: 3 } },
+    data: { MARKET_0: { numOutcomes: 3 } },
     stub: {
       loadOneOutcomeBidsAsks: {
         default: (marketID, outcome, callback) => (dispatch) => {
@@ -161,7 +156,7 @@ describe(`modules/bids-asks/actions/load-bids-asks.js`, () => {
     params: {
       marketID: 'MARKET_0'
     },
-    marketData: { MARKET_0: { numOutcomes: 2 } },
+    data: { MARKET_0: { numOutcomes: 2 } },
     stub: {
       loadOneOutcomeBidsAsks: {
         default: (marketID, outcome, callback) => (dispatch) => {
