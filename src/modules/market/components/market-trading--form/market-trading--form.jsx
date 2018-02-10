@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import { SCALAR } from 'modules/markets/constants/market-types'
 import { isEqual } from 'lodash'
+import { BUY, SELL } from 'modules/transactions/constants/types'
 
 import Styles from 'modules/market/components/market-trading--form/market-trading--form.styles'
 
@@ -39,9 +40,9 @@ class MarketTradingForm extends Component {
     }
 
     this.state = {
-      [this.INPUT_TYPES.QUANTITY]: props[this.INPUT_TYPES.QUANTITY] || '',
-      [this.INPUT_TYPES.PRICE]: props[this.INPUT_TYPES.PRICE] || '',
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: props[this.INPUT_TYPES.MARKET_ORDER_SIZE] || '',
+      [this.INPUT_TYPES.QUANTITY]: '',
+      [this.INPUT_TYPES.PRICE]: '',
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: '',
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
@@ -73,6 +74,7 @@ class MarketTradingForm extends Component {
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
     let isOrderValid = true
     const errors = {}
+    const type = this.props.orderType
 
     if (property === this.INPUT_TYPES.PRICE) {
       errors[this.INPUT_TYPES.PRICE] = []
@@ -118,11 +120,20 @@ class MarketTradingForm extends Component {
         ...this.state,
         [property]: value
       }
-      const shares = updatedState[this.INPUT_TYPES.QUANTITY]
-      const limitPrice = updatedState[this.INPUT_TYPES.PRICE]
       const side = this.props.selectedNav
       const maxCost = updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
-      this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, maxCost)
+      let limitPrice = 0;
+      let shares = 0;
+
+      if (type === MARKET) {
+        this.props.selectedOutcome.trade.updateTradeOrder(shares, null, side, maxCost)
+      } else {
+        shares = updatedState[this.INPUT_TYPES.QUANTITY]
+        limitPrice = updatedState[this.INPUT_TYPES.PRICE]
+
+        this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side)
+        if (shares === "" || limitPrice === "") isOrderValid = false
+      }
       this.props.updateState(property, value)
     }
     this.setState({
@@ -240,7 +251,7 @@ class MarketTradingForm extends Component {
         }
         <li className={Styles['TradingForm__button--review']}>
           <button
-            disabled={(!s.isOrderValid || p.orderEstimate === '')}
+            disabled={(!s.isOrderValid)}
             onClick={s.isOrderValid ? p.nextPage : undefined}
           >Review
           </button>

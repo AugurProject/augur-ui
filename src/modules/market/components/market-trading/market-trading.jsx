@@ -80,7 +80,7 @@ class MarketTrading extends Component {
       default:
         initialMessage = false
     }
-
+    let orderBook = {}
 
     return (
       <section className={Styles.Trading}>
