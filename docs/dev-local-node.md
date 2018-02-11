@@ -15,7 +15,11 @@ You'll need to clone the following repositories prior to starting:
 
 ## running ethereum local node
 
-After pulling down all the code we'll spin up a docker container that runs a local geth node.
+After pulling down all the code we'll spin up a docker container that runs a local geth node. Make sure you have the latest version
+
+    docker pull augurproject/dev-node-geth:latest
+
+Run this docker command to spin up docker container
 
     docker run -it -p 8545:8545 -p 8546:8546 augurproject/dev-node-geth:latest
 
