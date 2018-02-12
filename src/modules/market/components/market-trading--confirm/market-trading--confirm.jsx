@@ -91,12 +91,12 @@ const MarketTradingConfirm = (p) => {
         </button>
         <button
           className={Styles['TradingConfirmation__button--submit']}
-          onClick={e => {
+          onClick={(e) => {
             p.market.onSubmitPlaceTrade(p.selectedOutcome.id, (err, tradeGroupID) => {
-              console.log('onSent/failed', err, tradeGroupID)
+              // console.log('onSent/failed', err, tradeGroupID)
               if (!err) p.toggleShowOrderPlaced()
             }, (err) => {
-              console.log('onComplete', err)
+              // console.log('onComplete', err)
             }, (p.orderType === MARKET))
             p.clearOrderForm()
             p.prevPage()

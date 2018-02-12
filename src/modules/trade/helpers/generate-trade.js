@@ -119,10 +119,9 @@ export const generateTradeOrders = memoize((market, outcome, outcomeTradeInProgr
     return []
   }
   const marketID = market.id
+  const { description, marketType } = market
   const outcomeID = outcome.id
-  const marketType = market.marketType
   const outcomeName = outcome.name
-  const { description } = market
   return tradeActions.map((tradeAction) => {
     const numShares = new BigNumber(tradeAction.shares, 10)
     const costEth = new BigNumber(tradeAction.costEth, 10).abs()

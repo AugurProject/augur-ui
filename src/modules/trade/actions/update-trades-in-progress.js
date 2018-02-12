@@ -153,7 +153,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             data: { marketID, outcomeID, details: newTradeDetails }
           })
         }
-        let cleanAccountPositions = []
+        const cleanAccountPositions = []
         for (let i = 0; i < market.numOutcomes; i++) {
           if (accountPositions[i]) {
             cleanAccountPositions.push(accountPositions[i].numShares)

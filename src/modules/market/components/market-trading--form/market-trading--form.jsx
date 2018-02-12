@@ -5,10 +5,9 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import BigNumber from 'bignumber.js'
 
-import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import { SCALAR } from 'modules/markets/constants/market-types'
 import { isEqual } from 'lodash'
-import { BUY, SELL } from 'modules/transactions/constants/types'
+import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 
 import Styles from 'modules/market/components/market-trading--form/market-trading--form.styles'
 
@@ -122,8 +121,8 @@ class MarketTradingForm extends Component {
       }
       const side = this.props.selectedNav
       const maxCost = updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
-      let limitPrice = 0;
-      let shares = 0;
+      let limitPrice = 0
+      let shares = 0
 
       if (type === MARKET) {
         this.props.selectedOutcome.trade.updateTradeOrder(shares, null, side, maxCost)
@@ -132,7 +131,7 @@ class MarketTradingForm extends Component {
         limitPrice = updatedState[this.INPUT_TYPES.PRICE]
 
         this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side)
-        if (shares === "" || limitPrice === "") isOrderValid = false
+        if (shares === '' || limitPrice === '') isOrderValid = false
       }
       this.props.updateState(property, value)
     }

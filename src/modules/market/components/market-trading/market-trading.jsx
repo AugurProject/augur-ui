@@ -9,7 +9,6 @@ import { isEqual } from 'lodash'
 import BigNumber from 'bignumber.js'
 import makePath from 'modules/routes/helpers/make-path'
 
-import { CATEGORICAL } from 'modules/markets/constants/market-types'
 import { ACCOUNT_DEPOSIT } from 'modules/routes/constants/views'
 import Styles from 'modules/market/components/market-trading/market-trading.styles'
 
@@ -38,15 +37,11 @@ class MarketTrading extends Component {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.selectedOutcomes, nextProps.selectedOutcomes) || (!!this.state.selectedOutcome && !isEqual(this.state.selectedOutcome.id, nextProps.selectedOutcomes[0])) || !isEqual(this.props.market.outcomes, nextProps.market.outcomes)) {
       if (nextProps.selectedOutcomes.length === 1) {
-        // && nextProps.market.marketType === CATEGORICAL
         this.setState({
           selectedOutcome: nextProps.market.outcomes.find(outcome => outcome.id === nextProps.selectedOutcomes[0])
         })
       } else {
-         // nextProps.market.marketType === CATEGORICAL ? null : nextProps.market.outcomes.find(outcome => outcome.id === '1')
-        this.setState({
-          selectedOutcome: null
-        })
+        this.setState({ selectedOutcome: null })
       }
     }
   }
@@ -80,7 +75,6 @@ class MarketTrading extends Component {
       default:
         initialMessage = false
     }
-    let orderBook = {}
 
     return (
       <section className={Styles.Trading}>
