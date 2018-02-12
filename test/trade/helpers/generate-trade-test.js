@@ -9,9 +9,25 @@ import { formatEtherTokens, formatPercent } from 'utils/format-number'
 describe('modules/trade/helpers/generate-trade.js', () => {
   const { state } = mocks
   const { generateTrade } = require('modules/trade/helpers/generate-trade')
+
   const trade = generateTrade(state.marketsData.testMarketID, state.outcomesData.testMarketID['1'], state.tradesInProgress.testMarketID, state.orderBooks.testMarketID)
 
   it('should generate trade object', () => {
+    // console.log('======= trade =============');
+    // console.log(trade);
+    // console.log('===========================');
+    // console.log('======== State ============');
+    // console.log(state);
+    // console.log('===========================');
+    // console.log('what was passed?: ===========');
+    // console.log('market:', state.marketsData.testMarketID);
+    // console.log('===========================');
+    // console.log('outcome:', state.outcomesData.testMarketID['1']);
+    // console.log('===========================');
+    // console.log('outcomeTradeInProgress:', state.tradesInProgress.testMarketID);
+    // console.log('===========================');
+    // console.log('orderBooks', state.orderBooks.testMarketID);
+    // console.log('======-----======----=====--=====');
     assert.deepEqual(trade, {
       gasFeesRealEth: {
         denomination: '',
