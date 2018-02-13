@@ -60,8 +60,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
 
     // find top order to default limit price to
     console.log('about to selectAggOrderbOkk');
-    console.log(outcomeID);
-    console.log(orderBooks[marketID])
+    console.log(orderBooks[marketID][outcomeID])
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
     console.log('marketOrderBook', marketOrderBook);
     const defaultPrice = market.type === SCALAR ?
@@ -110,31 +109,19 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       let sharesAmount = new BigNumber(0, 10)
       let amountLeftToFill = maxCost
       let orderLimitPrice = cleanLimitPrice
-      console.log('orderLimitPrice', orderLimitPrice);
       const orderBookSide = side === BUY ? marketOrderBook[ASKS] : marketOrderBook[BIDS]
-      console.log('orderBookSide', orderBookSide);
       for (let i = 0; i < orderBookSide.length; i++) {
         const orderPrice = new BigNumber(orderBookSide[i].price.value, 10)
         const orderShares = new BigNumber(orderBookSide[i].shares.value, 10)
-
-        console.log('orderPrice/Shares', orderPrice.toString(), orderShares.toString(), 'totalcostforOrder:', orderPrice.mul(orderShares).toString());
-
         const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(orderPrice)
-
-        console.log('amountOfSharesFillableAtPrice', amountOfSharesFillableAtPrice.toString());
-
         const sharesPurchasableAtPriceMinusOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
-
-        console.log('sharesPurchasableAtPriceMinusOrderMax', sharesPurchasableAtPriceMinusOrderMax.toString());
-
+        // update limitPrice
         orderLimitPrice = orderPrice
 
         if (sharesPurchasableAtPriceMinusOrderMax.eq(0)) {
-          console.log('breaking 1');
           sharesAmount = sharesAmount.plus(amountAtPrice)
           break
         } else if (sharesPurchasableAtPriceMinusOrderMax.lt(0)) {
-          console.log('breaking 2');
           sharesAmount = sharesAmount.plus(amountOfSharesFillableAtPrice)
           break
         }
@@ -144,8 +131,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       }
       cleanNumShares = sharesAmount.toFixed()
       cleanLimitPrice = orderLimitPrice.toFixed()
-      console.log('cleanNumShares', cleanNumShares);
-      console.log('orderLimitPrice', orderLimitPrice.toString());
     }
 
     const newTradeDetails = {
