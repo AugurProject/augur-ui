@@ -107,7 +107,7 @@ const selectAggregatePricePoints = memoize((outcomeID, side, orders, orderCancel
  * @return {Object} aggregateOrdersPerPrice
  */
 function reduceSharesCountByPrice(aggregateOrdersPerPrice, order) {
-  if (order && order.price && order.amount) {
+  if (order && !isNaN(order.price) && !isNaN(order.amount)) {
     const key = new BigNumber(order.price, 10).toFixed()
     if (aggregateOrdersPerPrice[key] == null) {
       aggregateOrdersPerPrice[key] = {

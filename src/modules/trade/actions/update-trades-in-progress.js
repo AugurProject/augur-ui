@@ -59,7 +59,11 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // find top order to default limit price to
+    console.log('about to selectAggOrderbOkk');
+    console.log(outcomeID);
+    console.log(orderBooks[marketID])
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
+    console.log('marketOrderBook', marketOrderBook);
     const defaultPrice = market.type === SCALAR ?
       new BigNumber(market.maxPrice, 10)
         .plus(new BigNumber(market.minPrice, 10))
@@ -100,12 +104,15 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     if (market.type !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
     }
-    // TODO: Refactor below if block
+    // TODO: Refactor the below if block
     if (maxCost) {
+      // maxCost defined indicates a Market Order
       let sharesAmount = new BigNumber(0, 10)
       let amountLeftToFill = maxCost
       if (side === BUY) {
+        // walk the buy side
         const askBook = marketOrderBook[ASKS]
+        console.log('askBook', askBook);
         for (let i = 0; i < askBook.length; i++) {
           const orderPrice = new BigNumber(askBook[i].price.value, 10)
           const orderShares = new BigNumber(askBook[i].shares.value, 10)
@@ -119,6 +126,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           sharesAmount = sharesAmount.plus(orderShares)
         }
       } else {
+        // walk the sell side
         const bidBook = marketOrderBook[BIDS]
         for (let i = 0; i < bidBook.length; i++) {
           const orderPrice = new BigNumber(bidBook[i].price.value, 10)
@@ -134,6 +142,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         }
       }
       cleanNumShares = sharesAmount.toFixed()
+      console.log(cleanNumShares);
     }
 
     const newTradeDetails = {
@@ -165,14 +174,14 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
           shareBalances: cleanAccountPositions,
-          tokenBalance: (loginAccount.ethTokens && loginAccount.ethTokens.toString()) || '0',
+          tokenBalance: (loginAccount.eth && loginAccount.eth.toString()) || '0',
           userAddress: loginAccount.address,
           minPrice: market.minPrice,
           maxPrice: market.maxPrice,
           price: newTradeDetails.limitPrice,
           shares: newTradeDetails.numShares,
           marketCreatorFeeRate: market.settlementFee,
-          singleOutcomeOrderBook: (orderBooks && orderBooks[marketID]) || {},
+          singleOutcomeOrderBook: (orderBooks && orderBooks[marketID] && orderBooks[marketID][outcomeID]) || {},
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })

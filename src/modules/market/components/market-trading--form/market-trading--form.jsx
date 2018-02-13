@@ -47,7 +47,7 @@ class MarketTradingForm extends Component {
         [this.INPUT_TYPES.PRICE]: [],
         [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
       },
-      isOrderValid: true
+      isOrderValid: false
     }
   }
 
@@ -62,9 +62,14 @@ class MarketTradingForm extends Component {
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE]
     }
-    // console.log('compWillUpdate, props state', props, state)
+
     if (!isEqual(props, state)) {
-      this.setState(props)
+      let isOrderValid = (nextProps.orderType === MARKET) ? !isNaN(nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]) : (!isNaN(nextProps[this.INPUT_TYPES.QUANTITY]) && !isNaN(nextProps[this.INPUT_TYPES.PRICE]))
+
+      if (nextProps.orderType === MARKET && nextProps.marketType === SCALAR) {
+        isOrderValid = (!isNaN(nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]) && !isNaN(nextProps[this.INPUT_TYPES.PRICE]))
+      }
+      this.setState({ ...props, isOrderValid })
     }
   }
 
@@ -73,7 +78,8 @@ class MarketTradingForm extends Component {
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
     let isOrderValid = true
     const errors = {}
-    const type = this.props.orderType
+    const orderType = this.props.orderType
+    const marketType = this.props.marketType
 
     if (property === this.INPUT_TYPES.PRICE) {
       errors[this.INPUT_TYPES.PRICE] = []
@@ -114,6 +120,7 @@ class MarketTradingForm extends Component {
         }
       }
     }
+
     if (isOrderValid) {
       const updatedState = {
         ...this.state,
@@ -124,8 +131,10 @@ class MarketTradingForm extends Component {
       let limitPrice = 0
       let shares = 0
 
-      if (type === MARKET) {
-        this.props.selectedOutcome.trade.updateTradeOrder(shares, null, side, maxCost)
+      if (orderType === MARKET) {
+        limitPrice = (marketType === SCALAR && !isNaN(updatedState[this.INPUT_TYPES.PRICE])) ? updatedState[this.INPUT_TYPES.PRICE] : null
+
+        this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, maxCost)
       } else {
         shares = updatedState[this.INPUT_TYPES.QUANTITY]
         limitPrice = updatedState[this.INPUT_TYPES.PRICE]
@@ -151,7 +160,7 @@ class MarketTradingForm extends Component {
 
     const tickSize = parseFloat(p.market.tickSize)
     const errors = Array.from(new Set([...s.errors[this.INPUT_TYPES.QUANTITY], ...s.errors[this.INPUT_TYPES.PRICE], ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE]]))
-    // console.log('marketTradeform', p, s);
+
     return (
       <ul className={Styles['TradingForm__form-body']}>
         <li>
