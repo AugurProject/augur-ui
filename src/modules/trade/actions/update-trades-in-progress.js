@@ -104,45 +104,48 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     if (market.type !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
     }
-    // TODO: Refactor the below if block
+
     if (maxCost) {
       // maxCost defined indicates a Market Order
       let sharesAmount = new BigNumber(0, 10)
       let amountLeftToFill = maxCost
-      if (side === BUY) {
-        // walk the buy side
-        const askBook = marketOrderBook[ASKS]
-        console.log('askBook', askBook);
-        for (let i = 0; i < askBook.length; i++) {
-          const orderPrice = new BigNumber(askBook[i].price.value, 10)
-          const orderShares = new BigNumber(askBook[i].shares.value, 10)
-          const amountAtPrice = maxCost.dividedBy(orderPrice)
-          const amountLessShares = amountAtPrice.minus(orderShares)
-          if (amountLessShares.lte(0)) {
-            sharesAmount = sharesAmount.plus(amountAtPrice)
-            break
-          }
-          amountLeftToFill = amountLeftToFill.minus((orderPrice.mul(orderShares)))
-          sharesAmount = sharesAmount.plus(orderShares)
+      let orderLimitPrice = cleanLimitPrice
+      console.log('orderLimitPrice', orderLimitPrice);
+      const orderBookSide = side === BUY ? marketOrderBook[ASKS] : marketOrderBook[BIDS]
+      console.log('orderBookSide', orderBookSide);
+      for (let i = 0; i < orderBookSide.length; i++) {
+        const orderPrice = new BigNumber(orderBookSide[i].price.value, 10)
+        const orderShares = new BigNumber(orderBookSide[i].shares.value, 10)
+
+        console.log('orderPrice/Shares', orderPrice.toString(), orderShares.toString(), 'totalcostforOrder:', orderPrice.mul(orderShares).toString());
+
+        const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(orderPrice)
+
+        console.log('amountOfSharesFillableAtPrice', amountOfSharesFillableAtPrice.toString());
+
+        const sharesPurchasableAtPriceMinusOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
+
+        console.log('sharesPurchasableAtPriceMinusOrderMax', sharesPurchasableAtPriceMinusOrderMax.toString());
+
+        orderLimitPrice = orderPrice
+
+        if (sharesPurchasableAtPriceMinusOrderMax.eq(0)) {
+          console.log('breaking 1');
+          sharesAmount = sharesAmount.plus(amountAtPrice)
+          break
+        } else if (sharesPurchasableAtPriceMinusOrderMax.lt(0)) {
+          console.log('breaking 2');
+          sharesAmount = sharesAmount.plus(amountOfSharesFillableAtPrice)
+          break
         }
-      } else {
-        // walk the sell side
-        const bidBook = marketOrderBook[BIDS]
-        for (let i = 0; i < bidBook.length; i++) {
-          const orderPrice = new BigNumber(bidBook[i].price.value, 10)
-          const orderShares = new BigNumber(bidBook[i].shares.value, 10)
-          const amountAtPrice = maxCost.dividedBy(orderPrice)
-          const amountLessShares = amountAtPrice.minus(orderShares)
-          if (amountLessShares.lte(0)) {
-            sharesAmount = sharesAmount.plus(amountAtPrice)
-            break
-          }
-          amountLeftToFill = amountLeftToFill.minus((orderPrice.mul(orderShares)))
-          sharesAmount = sharesAmount.plus(orderShares)
-        }
+
+        amountLeftToFill = amountLeftToFill.minus((orderPrice.mul(orderShares)))
+        sharesAmount = sharesAmount.plus(orderShares)
       }
       cleanNumShares = sharesAmount.toFixed()
-      console.log(cleanNumShares);
+      cleanLimitPrice = orderLimitPrice.toFixed()
+      console.log('cleanNumShares', cleanNumShares);
+      console.log('orderLimitPrice', orderLimitPrice.toString());
     }
 
     const newTradeDetails = {
