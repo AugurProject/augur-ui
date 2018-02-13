@@ -107,15 +107,15 @@ const selectAggregatePricePoints = memoize((outcomeID, side, orders, orderCancel
  * @return {Object} aggregateOrdersPerPrice
  */
 function reduceSharesCountByPrice(aggregateOrdersPerPrice, order) {
-  if (order && !isNaN(order.price) && !isNaN(order.amount)) {
-    const key = new BigNumber(order.price, 10).toFixed()
+  if (order && !isNaN(order.fullPrecisionPrice) && !isNaN(order.fullPrecisionAmount)) {
+    const key = new BigNumber(order.fullPrecisionPrice, 10).toFixed()
     if (aggregateOrdersPerPrice[key] == null) {
       aggregateOrdersPerPrice[key] = {
         shares: ZERO,
         isOfCurrentUser: false
       }
     }
-    aggregateOrdersPerPrice[key].shares = aggregateOrdersPerPrice[key].shares.plus(new BigNumber(order.amount, 10))
+    aggregateOrdersPerPrice[key].shares = aggregateOrdersPerPrice[key].shares.plus(new BigNumber(order.fullPrecisionAmount, 10))
     aggregateOrdersPerPrice[key].isOfCurrentUser = aggregateOrdersPerPrice[key].isOfCurrentUser || order.isOfCurrentUser // TODO -- we need to segregate orders @ the same price that are of user
   } else {
     console.debug('reduceSharesCountByPrice:', order)

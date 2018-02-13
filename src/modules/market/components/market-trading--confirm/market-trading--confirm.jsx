@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-
+import speedomatic from 'speedomatic'
 import { CreateMarketEdit } from 'modules/common/components/icons/icons'
 
 import ValueDenomination from 'modules/common/components/value-denomination/value-denomination'
@@ -94,7 +94,15 @@ const MarketTradingConfirm = (p) => {
           onClick={(e) => {
             p.market.onSubmitPlaceTrade(p.selectedOutcome.id, (err, tradeGroupID) => {
               if (!err) p.toggleShowOrderPlaced()
+              console.log('onSent/Failed:');
+              console.log(err);
+              if (err && err.input) {
+                console.log('failedTX:', JSON.stringify(err, null, 2))
+                console.log(speedomatic.fix(err.input, 'string'));
+                console.log(speedomatic.unfix(err.input, 'string'));
+              }
             }, (res) => {
+              console.log('Complete!', res);
             }, (p.orderType === MARKET))
             p.clearOrderForm()
             p.prevPage()

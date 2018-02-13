@@ -59,7 +59,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // find top order to default limit price to
-    console.log('about to selectAggOrderbOkk')
     if (orderBooks[marketID] && orderBooks[marketID][outcomeID]) console.log(orderBooks[marketID][outcomeID])
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
     console.log('marketOrderBook', marketOrderBook)
