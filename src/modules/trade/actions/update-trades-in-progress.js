@@ -59,10 +59,10 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // find top order to default limit price to
-    console.log('about to selectAggOrderbOkk');
-    console.log(orderBooks[marketID][outcomeID])
+    console.log('about to selectAggOrderbOkk')
+    if (orderBooks[marketID] && orderBooks[marketID][outcomeID]) console.log(orderBooks[marketID][outcomeID])
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
-    console.log('marketOrderBook', marketOrderBook);
+    console.log('marketOrderBook', marketOrderBook)
     const defaultPrice = market.type === SCALAR ?
       new BigNumber(market.maxPrice, 10)
         .plus(new BigNumber(market.minPrice, 10))
@@ -118,10 +118,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         // update limitPrice
         orderLimitPrice = orderPrice
 
-        if (sharesPurchasableAtPriceMinusOrderMax.eq(0)) {
-          sharesAmount = sharesAmount.plus(amountAtPrice)
-          break
-        } else if (sharesPurchasableAtPriceMinusOrderMax.lt(0)) {
+        if (sharesPurchasableAtPriceMinusOrderMax.lte(0)) {
           sharesAmount = sharesAmount.plus(amountOfSharesFillableAtPrice)
           break
         }

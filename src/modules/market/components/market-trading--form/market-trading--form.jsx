@@ -78,8 +78,7 @@ class MarketTradingForm extends Component {
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
     let isOrderValid = true
     const errors = {}
-    const orderType = this.props.orderType
-    const marketType = this.props.marketType
+    const { orderType, marketType } = this.props
 
     if (property === this.INPUT_TYPES.PRICE) {
       errors[this.INPUT_TYPES.PRICE] = []
