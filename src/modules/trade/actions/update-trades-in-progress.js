@@ -59,9 +59,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // find top order to default limit price to
-    if (orderBooks[marketID] && orderBooks[marketID][outcomeID]) console.log(orderBooks[marketID][outcomeID])
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
-    console.log('marketOrderBook', marketOrderBook)
     const defaultPrice = market.type === SCALAR ?
       new BigNumber(market.maxPrice, 10)
         .plus(new BigNumber(market.minPrice, 10))
