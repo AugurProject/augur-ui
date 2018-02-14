@@ -163,7 +163,7 @@ export function constructTransferTransaction(log, address) {
 }
 
 export const constructCancelOrderTransaction = (trade, marketID, marketType, description, outcomeID, outcomeName, minPrice, maxPrice, status) => (dispatch, getState) => {
-  const displayPrice = augur.trading.denormalizePrice({ normalizedPrice: trade.price, minPrice, maxPrice })
+  const displayPrice = (minPrice < trade.price < maxPrice) ? trade.price : augur.trading.denormalizePrice({ normalizedPrice: trade.price, minPrice, maxPrice })
   const formattedPrice = formatEtherTokens(displayPrice)
   const formattedShares = formatShares(trade.amount)
   const action = trade.inProgress ? 'canceling' : 'canceled'
@@ -203,7 +203,7 @@ export const constructCreateOrderTransaction = (trade, marketID, marketType, des
     orderType = TYPES.SELL
     action = trade.inProgress ? 'asking' : 'ask'
   }
-  const displayPrice = augur.trading.denormalizePrice({ normalizedPrice: trade.price, minPrice, maxPrice })
+  const displayPrice = (minPrice < trade.price < maxPrice) ? trade.price : augur.trading.denormalizePrice({ normalizedPrice: trade.price, minPrice, maxPrice })
   const formattedPrice = formatEtherTokens(displayPrice)
   const formattedShares = formatShares(trade.amount)
   const fxpShares = fix(trade.amount)
@@ -253,7 +253,7 @@ export const constructFillOrderTransaction = (trade, marketID, marketType, descr
   if (!trade.price) return null
   const transactionID = `${trade.transactionHash}-${trade.orderId}`
   const { tradeGroupID } = trade
-  const displayPrice = augur.trading.denormalizePrice({ normalizedPrice: trade.price, minPrice, maxPrice })
+  const displayPrice = (minPrice < trade.price < maxPrice) ? trade.price : augur.trading.denormalizePrice({ normalizedPrice: trade.price, minPrice, maxPrice })
   const formattedPrice = formatEtherTokens(displayPrice)
   const formattedShares = formatShares(trade.amount)
   const bnShares = new BigNumber(trade.amount, 10)

@@ -30,7 +30,7 @@ export function convertTradeLogsToTransactions(label, data, marketID) {
   return (dispatch, getState) => {
     const { marketsData } = getState()
     async.forEachOfSeries(data, (marketTrades, marketID, next) => {
-      if (marketsData[marketID] != null && marketsData[marketID].id != null) {
+      if (marketsData[marketID] && marketsData[marketID] != null && marketsData[marketID].id != null) {
         dispatch(convertTradeLogToTransaction(label, data, marketID))
         return next()
       }
