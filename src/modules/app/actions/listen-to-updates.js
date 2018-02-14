@@ -78,7 +78,6 @@ export function listenToUpdates(history) {
           console.log('OrderCreated:', log)
           // if this is the user's order, then add it to the transaction display
           if (log.orderCreator === getState().loginAccount.address) {
-            console.log('user address involved in created Order calling updateAccountBidsAsksData and updateAssets');
             dispatch(updateAccountBidsAsksData({
               [log.marketID]: {
                 [log.outcome]: [log]
