@@ -29,6 +29,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     // if new side not provided, use old side
     const cleanSide = side || outcomeTradeInProgress.side
     if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null && !maxCost) { // numShares cleared
+      console.log('a');
+      console.log(outcomeTradeInProgress);
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -44,6 +46,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     if ((limitPrice === '' || (parseFloat(limitPrice) === 0 && market.type !== SCALAR)) && numShares === null) { // limitPrice cleared
+      console.log('b');
+      console.log(outcomeTradeInProgress);
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -104,16 +108,19 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     if (maxCost) {
       // maxCost defined indicates a Market Order
       let sharesAmount = new BigNumber(0, 10)
-      let amountLeftToFill = maxCost
-      let orderLimitPrice = cleanLimitPrice
+      let amountLeftToFill = new BigNumber(maxCost, 10)
+      let orderLimitPrice = new BigNumber(cleanLimitPrice, 10)
       const orderBookSide = side === BUY ? marketOrderBook[ASKS] : marketOrderBook[BIDS]
+      console.log(marketOrderBook);
+      console.log(orderBookSide);
+      console.log(orderBooks);
       for (let i = 0; i < orderBookSide.length; i++) {
         const orderPrice = new BigNumber(orderBookSide[i].price.value, 10)
         const orderShares = new BigNumber(orderBookSide[i].shares.value, 10)
         const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(orderPrice)
         const sharesPurchasableAtPriceMinusOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
         // update limitPrice
-        orderLimitPrice = orderPrice
+        orderLimitPrice = new BigNumber(orderPrice)
 
         if (sharesPurchasableAtPriceMinusOrderMax.lte(0)) {
           sharesAmount = sharesAmount.plus(amountOfSharesFillableAtPrice)
@@ -124,6 +131,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         sharesAmount = sharesAmount.plus(orderShares)
       }
       cleanNumShares = sharesAmount.toFixed()
+      console.log('cleanNumShares', sharesAmount.toFixed())
+      console.log('orderLimitPrice', orderLimitPrice.toFixed())
       cleanLimitPrice = orderLimitPrice.toFixed()
     }
 
@@ -152,6 +161,21 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             cleanAccountPositions.push(0)
           }
         }
+        console.log({
+          orderType: newTradeDetails.side === BUY ? 0 : 1,
+          outcome: parseInt(outcomeID, 10),
+          shareBalances: cleanAccountPositions,
+          tokenBalance: (loginAccount.eth && loginAccount.eth.toString()) || '0',
+          userAddress: loginAccount.address,
+          minPrice: market.minPrice,
+          maxPrice: market.maxPrice,
+          price: newTradeDetails.limitPrice,
+          shares: newTradeDetails.numShares,
+          marketCreatorFeeRate: market.settlementFee,
+          singleOutcomeOrderBook: (orderBooks && orderBooks[marketID] && orderBooks[marketID][outcomeID]) || {},
+          shouldCollectReportingFees: !market.isDisowned,
+          reportingFeeRate: market.reportingFeeRate
+        });
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
