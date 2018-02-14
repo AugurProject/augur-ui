@@ -136,7 +136,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // trade actions
-    if (newTradeDetails.side && loginAccount.address) {
+    if (newTradeDetails.side && loginAccount.address && !isNaN(newTradeDetails.numShares)) {
       dispatch(loadAccountPositions({ market: marketID }, (err, accountPositions) => {
         if (err) {
           return dispatch({
@@ -146,7 +146,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         }
         const cleanAccountPositions = []
         for (let i = 0; i < market.numOutcomes; i++) {
-          if (accountPositions[i]) {
+          if (accountPositions[i] && !isNaN(accountPositions[i].numShares)) {
             cleanAccountPositions.push(accountPositions[i].numShares)
           } else {
             cleanAccountPositions.push(0)

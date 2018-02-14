@@ -46,7 +46,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
     const store = mockStore(state)
     const mockSelectMarket = {}
     const mockLoadAccountPositions = {
-      loadAccountPositions: (options, callback) => dispatch => callback(null, ['0', '0'])
+      loadAccountPositions: (options, callback) => dispatch => callback(null, [])
     }
     mockSelectMarket.selectMarket = sinon.stub().returns(state.marketsData.testBinaryMarketID)
 
@@ -289,7 +289,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
     const state = Object.assign({}, testState, tradeTestState)
     const store = mockStore(state)
     const mockLoadAccountPositions = {
-      loadAccountPositions: (options, callback) => dispatch => callback(null, ['0', '0'])
+      loadAccountPositions: (options, callback) => dispatch => callback(null, [])
     }
     const mockSelectMarket = {}
     mockSelectMarket.selectMarket = sinon.stub().returns(state.marketsData.testCategoricalMarketID)
@@ -332,7 +332,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -363,7 +363,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -452,7 +452,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '1.5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -478,7 +478,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '0',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -504,7 +504,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '12.5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -530,7 +530,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '12.5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -545,7 +545,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
     const state = Object.assign({}, testState, tradeTestState)
     const store = mockStore(state)
     const mockLoadAccountPositions = {
-      loadAccountPositions: (options, callback) => dispatch => callback(null, ['0', '0'])
+      loadAccountPositions: (options, callback) => dispatch => callback(null, [])
     }
     const mockSelectMarket = {}
     mockSelectMarket.selectMarket = sinon.stub().returns(state.marketsData.testScalarMarketID)

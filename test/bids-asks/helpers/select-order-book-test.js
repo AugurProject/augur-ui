@@ -259,29 +259,29 @@ describe('modules/bids-asks/helpers/select-order-book.js', () => {
           1: {
             buy: {
               '0xorder1': {
-                price: '0.1',
-                amount: '1'
+                fullPrecisionPrice: '0.1',
+                fullPrecisionAmount: '1'
               },
               '0xorder2': {
-                price: '0.1',
-                amount: '1'
+                fullPrecisionPrice: '0.1',
+                fullPrecisionAmount: '1'
               },
               '0xorder3': {
-                price: '0.2',
-                amount: '1'
+                fullPrecisionPrice: '0.2',
+                fullPrecisionAmount: '1'
               },
               '0xorder4': {
-                price: '0.2',
-                amount: '1'
+                fullPrecisionPrice: '0.2',
+                fullPrecisionAmount: '1'
               },
               '0xorder5': {
                 owner: '0xtest',
-                price: '0.2',
-                amount: '1'
+                fullPrecisionPrice: '0.2',
+                fullPrecisionAmount: '1'
               },
               '0xorder6': {
-                price: '0.3',
-                amount: '1'
+                fullPrecisionPrice: '0.3',
+                fullPrecisionAmount: '1'
               }
             }
           }
@@ -322,8 +322,8 @@ describe('modules/bids-asks/helpers/select-order-book.js', () => {
         const actual = reduceSharesCountByPrice({}, {
           isOfCurrentUser: false,
           outcome: '1',
-          price: '0.1',
-          amount: '1'
+          fullPrecisionPrice: '0.1',
+          fullPrecisionAmount: '1'
         })
 
         const expected = {
@@ -351,8 +351,8 @@ describe('modules/bids-asks/helpers/select-order-book.js', () => {
         }, {
           isOfCurrentUser: true,
           outcome: '1',
-          price: '0.1',
-          amount: '1'
+          fullPrecisionPrice: '0.1',
+          fullPrecisionAmount: '1'
         })
 
         const expected = {
@@ -380,8 +380,8 @@ describe('modules/bids-asks/helpers/select-order-book.js', () => {
         }, {
           isOfCurrentUser: false,
           outcome: '1',
-          price: '0.2',
-          amount: '1'
+          fullPrecisionPrice: '0.2',
+          fullPrecisionAmount: '1'
         })
 
         const expected = {
@@ -415,7 +415,7 @@ describe('modules/bids-asks/helpers/select-order-book.js', () => {
         }, {
           isOfCurrentUser: false,
           outcome: '1',
-          amount: '1'
+          fullPrecisionAmount: '1'
         })
 
         const expected = {

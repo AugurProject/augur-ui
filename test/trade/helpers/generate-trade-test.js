@@ -10,24 +10,9 @@ describe('modules/trade/helpers/generate-trade.js', () => {
   const { state } = mocks
   const { generateTrade } = require('modules/trade/helpers/generate-trade')
 
-  const trade = generateTrade(state.marketsData.testMarketID, state.outcomesData.testMarketID['1'], state.tradesInProgress.testMarketID, state.orderBooks.testMarketID)
+  const trade = generateTrade(state.marketsData.testMarketID, state.outcomesData.testMarketID['1'], state.tradesInProgress.testMarketID['1'], state.orderBooks.testMarketID)
 
   it('should generate trade object', () => {
-    // console.log('======= trade =============');
-    // console.log(trade);
-    // console.log('===========================');
-    // console.log('======== State ============');
-    // console.log(state);
-    // console.log('===========================');
-    // console.log('what was passed?: ===========');
-    // console.log('market:', state.marketsData.testMarketID);
-    // console.log('===========================');
-    // console.log('outcome:', state.outcomesData.testMarketID['1']);
-    // console.log('===========================');
-    // console.log('outcomeTradeInProgress:', state.tradesInProgress.testMarketID);
-    // console.log('===========================');
-    // console.log('orderBooks', state.orderBooks.testMarketID);
-    // console.log('======-----======----=====--=====');
     assert.deepEqual(trade, {
       gasFeesRealEth: {
         denomination: '',
@@ -51,13 +36,23 @@ describe('modules/trade/helpers/generate-trade.js', () => {
         roundedValue: 0,
         value: 0
       },
-      potentialEthProfit: formatEtherTokens(7500),
+      potentialEthProfit: formatEtherTokens(2500),
       potentialEthLoss: formatEtherTokens(2500),
-      potentialProfitPercent: formatPercent(300),
+      potentialProfitPercent: formatPercent(100),
       potentialLossPercent: formatPercent(100),
       side: 'buy',
       totalCost: formatEtherTokens(2500),
       totalFee: {
+        denomination: '',
+        formatted: '',
+        formattedValue: 0,
+        full: '',
+        minimized: '',
+        rounded: '',
+        roundedValue: 0,
+        value: 0
+      },
+      totalFeePercent: {
         denomination: '',
         formatted: '',
         formattedValue: 0,
