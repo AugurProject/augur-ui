@@ -17,7 +17,8 @@ export const tradeTestState = {
       universeID: '0x010101',
       creationFee: '22.5',
       creationTime: 1475951522,
-      cumulativeScale: '1',
+      numTicks: '10000',
+      tickSize: '0.0001',
       description: 'test binary market?',
       endDate: 1495317600,
       consensus: null,
@@ -40,7 +41,8 @@ export const tradeTestState = {
       universeID: '0x010101',
       creationFee: '12.857142857142857142',
       creationTime: 1476694751,
-      cumulativeScale: '1',
+      numTicks: '10000',
+      tickSize: '0.0001',
       description: 'test categorical market?',
       endDate: 2066554498,
       extraInfo: 'extra info',
@@ -65,12 +67,13 @@ export const tradeTestState = {
       universeID: '0x010101',
       creationFee: '9',
       creationTime: 1476486515,
-      cumulativeScale: '130',
+      tickSize: '0.0001',
+      numTicks: '100000',
       description: 'test scalar market?',
       endDate: 1496514800,
       consensus: null,
       isLoadedMarketInfo: true,
-      maxPrice: '120',
+      maxPrice: '90',
       minPrice: '-10',
       network: '2',
       numOutcomes: 2,
@@ -189,6 +192,102 @@ export const tradeTestState = {
             fullPrecisionPrice: '0.73',
             owner: '0xsomeoneElse',
             sharesEscrowed: '12',
+            tokensEscrowed: '0'
+          },
+        }
+      }
+    },
+    testCategoricalMarketID: {
+      1: {
+        buy: {
+          orderID1: {
+            orderID: 'orderID1',
+            amount: '10',
+            price: '0.5',
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '0.5',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '5'
+          },
+          orderID2: {
+            orderID: 'orderID2',
+            amount: '1',
+            price: '0.42',
+            fullPrecisionAmount: '1',
+            fullPrecisionPrice: '0.42',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '0.42'
+          },
+        },
+        sell: {
+          orderID3: {
+            orderID: 'orderID3',
+            amount: '.005',
+            price: '0.7',
+            fullPrecisionAmount: '0.005',
+            fullPrecisionPrice: '0.7',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0.005',
+            tokensEscrowed: '0'
+          },
+          orderID4: {
+            orderID: 'orderID4',
+            amount: '12',
+            price: '0.73',
+            fullPrecisionAmount: '12',
+            fullPrecisionPrice: '0.73',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '12',
+            tokensEscrowed: '0'
+          },
+        }
+      }
+    },
+    testScalarMarketID: {
+      1: {
+        buy: {
+          orderID1: {
+            orderID: 'orderID1',
+            amount: '15',
+            price: '50',
+            fullPrecisionAmount: '15',
+            fullPrecisionPrice: '50',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '900'
+          },
+          orderID2: {
+            orderID: 'orderID2',
+            amount: '100',
+            price: '-5',
+            fullPrecisionAmount: '100',
+            fullPrecisionPrice: '-5',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '500'
+          },
+        },
+        sell: {
+          orderID3: {
+            orderID: 'orderID3',
+            amount: '.005',
+            price: '65',
+            fullPrecisionAmount: '0.005',
+            fullPrecisionPrice: '65',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0.005',
+            tokensEscrowed: '0'
+          },
+          orderID4: {
+            orderID: 'orderID4',
+            amount: '7.2',
+            price: '89',
+            fullPrecisionAmount: '7.2',
+            fullPrecisionPrice: '89',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '7.2',
             tokensEscrowed: '0'
           },
         }

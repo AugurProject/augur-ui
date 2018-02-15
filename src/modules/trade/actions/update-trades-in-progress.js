@@ -29,8 +29,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     // if new side not provided, use old side
     const cleanSide = side || outcomeTradeInProgress.side
     if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null && !maxCost) { // numShares cleared
-      console.log('a');
-      console.log(outcomeTradeInProgress);
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -46,8 +44,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     if ((limitPrice === '' || (parseFloat(limitPrice) === 0 && market.type !== SCALAR)) && numShares === null) { // limitPrice cleared
-      console.log('b');
-      console.log(outcomeTradeInProgress);
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -79,7 +75,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     // clean num shares
     let cleanNumShares = numShares && bignumShares.toFixed() === '0' ? '0' : (numShares && bignumShares.abs().toFixed()) || outcomeTradeInProgress.numShares || '0'
 
-    // if current trade order limitPrice is equal to the best price, make sure it's equal to that; otherwise, use what the user has entered
+    // if current trade order limitPrice is equal to the best price, make sure it's equal to that otherwise, use what the user has entered
     let cleanLimitPrice
     const topAskPrice = ((selectTopAsk(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
     const topBidPrice = ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
@@ -104,42 +100,65 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     if (market.type !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
     }
-
+    // TODO: refactor to consider scalars with negative prices... Need to normalize the calcs, then denormalize before saving to cleanNumShares and cleanLimitPrice.
     if (maxCost) {
       // maxCost defined indicates a Market Order
       let sharesAmount = new BigNumber(0, 10)
       let amountLeftToFill = new BigNumber(maxCost, 10)
       let orderLimitPrice = new BigNumber(cleanLimitPrice, 10)
       const orderBookSide = side === BUY ? marketOrderBook[ASKS] : marketOrderBook[BIDS]
-      console.log(marketOrderBook);
-      console.log(orderBookSide);
-      console.log(orderBooks);
+
+      // console.log('about to loop')
+      // console.log(market)
+      // console.log('sharesAmount', sharesAmount.toString())
+      // console.log('amountLeftToFill', amountLeftToFill.toString())
+      // console.log('orderLimitPrice', orderLimitPrice.toString())
+      // console.log('orderBookSide', orderBookSide)
+
       for (let i = 0; i < orderBookSide.length; i++) {
+        // TODO: Change calcs to be normalized to handle scalars with negative prices
+        // console.log('inLoop', i)
+        // console.log('amountLeftToFill', amountLeftToFill.toString())
+        // console.log('start - amtltf', new BigNumber(maxCost, 10).minus(amountLeftToFill).toString())
+
         const orderPrice = new BigNumber(orderBookSide[i].price.value, 10)
+        const normalizedOrderPrice = new BigNumber(augur.trading.normalizePrice({
+          minPrice: market.minPrice,
+          maxPrice: market.maxPrice,
+          price: orderPrice.toString()
+        }), 10)
         const orderShares = new BigNumber(orderBookSide[i].shares.value, 10)
-        const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(orderPrice)
+
+        const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(normalizedOrderPrice)
+
         const sharesPurchasableAtPriceMinusOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
         // update limitPrice
         orderLimitPrice = new BigNumber(orderPrice)
+
+        // console.log('orderPrice', orderPrice.toString())
+        // console.log('normalizedOrderPrice', normalizedOrderPrice.toString())
+        // console.log('orderShares', orderShares.toString())
+        // console.log('amountOfSharesFillableAtPrice', amountOfSharesFillableAtPrice.toString())
+        // console.log('sharesPurchasableAtPriceMinusOrderMax', sharesPurchasableAtPriceMinusOrderMax.toString())
+        // console.log('orderLimitPrice', orderLimitPrice.toString())
 
         if (sharesPurchasableAtPriceMinusOrderMax.lte(0)) {
           sharesAmount = sharesAmount.plus(amountOfSharesFillableAtPrice)
           break
         }
 
-        amountLeftToFill = amountLeftToFill.minus((orderPrice.mul(orderShares)))
+        amountLeftToFill = amountLeftToFill.minus((normalizedOrderPrice.mul(orderShares)))
         sharesAmount = sharesAmount.plus(orderShares)
       }
+      // TODO: denomalize before saving after normalizing the above loop calculations
       cleanNumShares = sharesAmount.toFixed()
-      console.log('cleanNumShares', sharesAmount.toFixed())
-      console.log('orderLimitPrice', orderLimitPrice.toFixed())
       cleanLimitPrice = orderLimitPrice.toFixed()
     }
 
     const newTradeDetails = {
       side: cleanSide,
       numShares: cleanNumShares === '0' ? undefined : cleanNumShares,
-      limitPrice: cleanLimitPrice,
+      limitPrice: new BigNumber(cleanLimitPrice, 10).toString(),
       totalFee: '0',
       totalCost: '0'
     }
@@ -175,7 +194,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           singleOutcomeOrderBook: (orderBooks && orderBooks[marketID] && orderBooks[marketID][outcomeID]) || {},
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
-        });
+        })
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
@@ -200,9 +219,13 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           type: UPDATE_TRADE_IN_PROGRESS,
           data: { marketID, outcomeID, details: { ...newTradeDetails, ...simulatedTrade } }
         })
+        console.log('callingBack:')
+        console.log({ ...newTradeDetails, ...simulatedTrade })
         callback(null, { ...newTradeDetails, ...simulatedTrade })
       }))
     } else {
+      console.log('else dispatching')
+      console.log(newTradeDetails)
       dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: { marketID, outcomeID, details: newTradeDetails }
