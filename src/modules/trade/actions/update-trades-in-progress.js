@@ -43,7 +43,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       })
     }
 
-    if ((limitPrice === '' || (parseFloat(limitPrice) === 0 && market.type !== SCALAR)) && numShares === null) { // limitPrice cleared
+    if ((limitPrice === '' || (parseFloat(limitPrice) === 0 && market.marketType !== SCALAR)) && numShares === null) { // limitPrice cleared
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -60,7 +60,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
 
     // find top order to default limit price to
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
-    const defaultPrice = market.type === SCALAR ?
+    const defaultPrice = market.marketType === SCALAR ?
       new BigNumber(market.maxPrice, 10)
         .plus(new BigNumber(market.minPrice, 10))
         .dividedBy(TWO)
@@ -92,12 +92,12 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       cleanLimitPrice = outcomeTradeInProgress.limitPrice
     }
 
-    if (cleanNumShares && !cleanLimitPrice && (market.type === SCALAR || cleanLimitPrice !== '0')) {
+    if (cleanNumShares && !cleanLimitPrice && (market.marketType === SCALAR || cleanLimitPrice !== '0')) {
       cleanLimitPrice = topOrderPrice
     }
 
     // if this isn't a scalar market, limitPrice must be positive.
-    if (market.type !== SCALAR && limitPrice) {
+    if (market.marketType !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
     }
     // TODO: refactor to consider scalars with negative prices... Need to normalize the calcs, then denormalize before saving to cleanNumShares and cleanLimitPrice.
