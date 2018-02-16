@@ -32,7 +32,7 @@ export const tradeTestState = {
       settlementFee: '0.01',
       reportingFeeRate: '0.02',
       tradingPeriod: 8653,
-      type: 'binary',
+      marketType: 'binary',
       volume: '3030',
       isDisowned: false
     },
@@ -58,7 +58,7 @@ export const tradeTestState = {
       settlementFee: '0.019999999999999999994',
       reportingFeeRate: '0.02',
       tradingPeriod: 11959,
-      type: 'categorical',
+      marketType: 'categorical',
       volume: '0',
       isDisowned: false
     },
@@ -67,13 +67,13 @@ export const tradeTestState = {
       universeID: '0x010101',
       creationFee: '9',
       creationTime: 1476486515,
-      tickSize: '0.0001',
-      numTicks: '100000',
+      tickSize: '0.1',
+      numTicks: '1200',
       description: 'test scalar market?',
       endDate: 1496514800,
       consensus: null,
       isLoadedMarketInfo: true,
-      maxPrice: '90',
+      maxPrice: '110',
       minPrice: '-10',
       network: '2',
       numOutcomes: 2,
@@ -83,7 +83,7 @@ export const tradeTestState = {
       settlementFee: '0.02',
       reportingFeeRate: '0.02',
       tradingPeriod: 8544,
-      type: 'scalar',
+      marketType: 'scalar',
       volume: '0',
       isDisowned: false
     },
@@ -136,14 +136,14 @@ export const tradeTestState = {
         id: 0,
         name: '',
         outstandingShares: '0',
-        price: '65',
+        price: '50',
         sharesPurchased: '0'
       },
       1: {
         id: 1,
         name: '',
         outstandingShares: '0',
-        price: '65',
+        price: '50',
         sharesPurchased: '0'
       }
     },
@@ -250,45 +250,105 @@ export const tradeTestState = {
         buy: {
           orderID1: {
             orderID: 'orderID1',
-            amount: '15',
+            amount: '1.5',
             price: '50',
-            fullPrecisionAmount: '15',
+            fullPrecisionAmount: '1.5',
             fullPrecisionPrice: '50',
             owner: '0xsomeoneElse',
             sharesEscrowed: '0',
-            tokensEscrowed: '900'
+            tokensEscrowed: '90'
           },
           orderID2: {
             orderID: 'orderID2',
-            amount: '100',
-            price: '-5',
-            fullPrecisionAmount: '100',
-            fullPrecisionPrice: '-5',
+            amount: '5',
+            price: '25',
+            fullPrecisionAmount: '5',
+            fullPrecisionPrice: '25',
             owner: '0xsomeoneElse',
             sharesEscrowed: '0',
-            tokensEscrowed: '500'
+            tokensEscrowed: '175'
           },
-        },
-        sell: {
           orderID3: {
             orderID: 'orderID3',
-            amount: '.005',
-            price: '65',
-            fullPrecisionAmount: '0.005',
-            fullPrecisionPrice: '65',
+            amount: '3.5',
+            price: '0',
+            fullPrecisionAmount: '3.5',
+            fullPrecisionPrice: '0',
             owner: '0xsomeoneElse',
-            sharesEscrowed: '0.005',
-            tokensEscrowed: '0'
+            sharesEscrowed: '0',
+            tokensEscrowed: '35'
           },
           orderID4: {
             orderID: 'orderID4',
-            amount: '7.2',
-            price: '89',
-            fullPrecisionAmount: '7.2',
-            fullPrecisionPrice: '89',
+            amount: '10',
+            price: '-5',
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '-5',
             owner: '0xsomeoneElse',
-            sharesEscrowed: '7.2',
+            sharesEscrowed: '0',
+            tokensEscrowed: '50'
+          },
+          orderID5: {
+            orderID: 'orderID5',
+            amount: '10',
+            price: '-5',
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '-5',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '10',
             tokensEscrowed: '0'
+          },
+        },
+        sell: {
+          orderID6: {
+            orderID: 'orderID6',
+            amount: '0.5',
+            price: '55',
+            fullPrecisionAmount: '0.5',
+            fullPrecisionPrice: '55',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '27.5'
+          },
+          orderID7: {
+            orderID: 'orderID7',
+            amount: '7.5',
+            price: '70',
+            fullPrecisionAmount: '7.5',
+            fullPrecisionPrice: '70',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '300'
+          },
+          orderID8: {
+            orderID: 'orderID8',
+            amount: '2.5',
+            price: '70',
+            fullPrecisionAmount: '2.5',
+            fullPrecisionPrice: '70',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '2.5',
+            tokensEscrowed: '0'
+          },
+          orderID9: {
+            orderID: 'orderID9',
+            amount: '2',
+            price: '100',
+            fullPrecisionAmount: '2',
+            fullPrecisionPrice: '100',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '20'
+          },
+          orderID10: {
+            orderID: 'orderID10',
+            amount: '13.5',
+            price: '105',
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '105',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '67.5'
           },
         }
       }

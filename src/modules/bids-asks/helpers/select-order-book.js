@@ -95,7 +95,9 @@ const selectAggregatePricePoints = memoize((outcomeID, side, orders, orderCancel
       const obj = {
         isOfCurrentUser: shareCountPerPrice[price].isOfCurrentUser,
         shares: formatShares(shareCountPerPrice[price].shares),
-        price: formatEtherTokens(parseFloat(price))
+        price: formatEtherTokens(parseFloat(price)),
+        sharesEscrowed: formatShares(shareCountPerPrice[price].sharesEscrowed),
+        tokensEscrowed: formatEtherTokens(parseFloat(shareCountPerPrice[price].tokensEscrowed)),
       }
       return obj
     })
@@ -112,10 +114,14 @@ function reduceSharesCountByPrice(aggregateOrdersPerPrice, order) {
     if (aggregateOrdersPerPrice[key] == null) {
       aggregateOrdersPerPrice[key] = {
         shares: ZERO,
+        sharesEscrowed: ZERO,
+        tokensEscrowed: ZERO,
         isOfCurrentUser: false
       }
     }
     aggregateOrdersPerPrice[key].shares = aggregateOrdersPerPrice[key].shares.plus(new BigNumber(order.fullPrecisionAmount, 10))
+    aggregateOrdersPerPrice[key].sharesEscrowed = aggregateOrdersPerPrice[key].sharesEscrowed.plus(new BigNumber(order.sharesEscrowed, 10))
+    aggregateOrdersPerPrice[key].tokensEscrowed = aggregateOrdersPerPrice[key].tokensEscrowed.plus(new BigNumber(order.tokensEscrowed, 10))
     aggregateOrdersPerPrice[key].isOfCurrentUser = aggregateOrdersPerPrice[key].isOfCurrentUser || order.isOfCurrentUser // TODO -- we need to segregate orders @ the same price that are of user
   } else {
     console.debug('reduceSharesCountByPrice:', order)

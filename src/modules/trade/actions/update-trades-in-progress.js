@@ -70,8 +70,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       ((selectTopAsk(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice :
       ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
 
-    const bignumShares = new BigNumber(numShares, 10)
-    const bignumLimit = new BigNumber(limitPrice, 10)
+    const bignumShares = new BigNumber(numShares || 0, 10)
+    const bignumLimit = new BigNumber(limitPrice || 0, 10)
     // clean num shares
     let cleanNumShares = numShares && bignumShares.toFixed() === '0' ? '0' : (numShares && bignumShares.abs().toFixed()) || outcomeTradeInProgress.numShares || '0'
 
@@ -100,59 +100,135 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     if (market.marketType !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
     }
-    // TODO: refactor to consider scalars with negative prices... Need to normalize the calcs, then denormalize before saving to cleanNumShares and cleanLimitPrice.
+
     if (maxCost) {
       // maxCost defined indicates a Market Order
       let sharesAmount = new BigNumber(0, 10)
       let amountLeftToFill = new BigNumber(maxCost, 10)
+      let amountFilledSoFar = new BigNumber(0, 10)
       let orderLimitPrice = new BigNumber(cleanLimitPrice, 10)
+      const normalizedOrderLimitPrice =  new BigNumber(augur.trading.normalizePrice({
+        minPrice: market.minPrice,
+        maxPrice: market.maxPrice,
+        price: orderLimitPrice.toString()
+      }), 10)
       const orderBookSide = side === BUY ? marketOrderBook[ASKS] : marketOrderBook[BIDS]
+      const bignumMarketRange = new BigNumber(market.maxPrice, 10).minus(new BigNumber(market.minPrice, 10))
 
-      // console.log('about to loop')
-      // console.log(market)
-      // console.log('sharesAmount', sharesAmount.toString())
-      // console.log('amountLeftToFill', amountLeftToFill.toString())
-      // console.log('orderLimitPrice', orderLimitPrice.toString())
-      // console.log('orderBookSide', orderBookSide)
+      console.log('sharesAmount', sharesAmount.toString(), 'Shares')
+      console.log('amountLeftToFill', amountLeftToFill.toString(), 'ETH Tokens')
+      console.log('orderLimitPrice', orderLimitPrice.toString(), 'ETH Tokens')
+      console.log('normalizedOrderLimitPrice', normalizedOrderLimitPrice.toString(), 'ETH Tokens');
+      console.log('maxCost:', maxCost, 'ETH Tokens')
+      console.log('marketMinMax', market.minPrice, market.maxPrice, market.numTicks, market.tickSize);
+      console.log('bignumMarketRange:', bignumMarketRange.toString());
+      console.log('This is a', side, 'Order')
 
       for (let i = 0; i < orderBookSide.length; i++) {
-        // TODO: Change calcs to be normalized to handle scalars with negative prices
-        // console.log('inLoop', i)
-        // console.log('amountLeftToFill', amountLeftToFill.toString())
-        // console.log('start - amtltf', new BigNumber(maxCost, 10).minus(amountLeftToFill).toString())
+        amountFilledSoFar = new BigNumber(maxCost, 10).minus(amountLeftToFill)
+        console.log('                                       ');
+        console.log('inLoop', i)
+        console.log('amountLeftToFill', amountLeftToFill.toString(), 'ETH Tokens')
+        console.log('amountFilledSoFar', amountFilledSoFar.toString(), 'ETH Tokens');
+
+        console.log(orderBookSide[i].shares.full, orderBookSide[i].price.full);
+        console.log('escrowed:', orderBookSide[i].sharesEscrowed.full, orderBookSide[i].tokensEscrowed.full);
+
+        let orderAmountTaken = new BigNumber(0)
+        let orderSharesTaken = new BigNumber(0)
+
+        const sharesEscrowed = new BigNumber(orderBookSide[i].sharesEscrowed.value, 10)
+
+        const tokensEscrowed = new BigNumber(orderBookSide[i].tokensEscrowed.value, 10)
 
         const orderPrice = new BigNumber(orderBookSide[i].price.value, 10)
+
         const normalizedOrderPrice = new BigNumber(augur.trading.normalizePrice({
           minPrice: market.minPrice,
           maxPrice: market.maxPrice,
           price: orderPrice.toString()
         }), 10)
+        const normalizedPricePerShare = normalizedOrderPrice.times(bignumMarketRange)
+
         const orderShares = new BigNumber(orderBookSide[i].shares.value, 10)
 
-        const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(normalizedOrderPrice)
-
-        const sharesPurchasableAtPriceMinusOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
-        // update limitPrice
-        orderLimitPrice = new BigNumber(orderPrice)
-
-        // console.log('orderPrice', orderPrice.toString())
-        // console.log('normalizedOrderPrice', normalizedOrderPrice.toString())
-        // console.log('orderShares', orderShares.toString())
-        // console.log('amountOfSharesFillableAtPrice', amountOfSharesFillableAtPrice.toString())
-        // console.log('sharesPurchasableAtPriceMinusOrderMax', sharesPurchasableAtPriceMinusOrderMax.toString())
-        // console.log('orderLimitPrice', orderLimitPrice.toString())
-
-        if (sharesPurchasableAtPriceMinusOrderMax.lte(0)) {
-          sharesAmount = sharesAmount.plus(amountOfSharesFillableAtPrice)
-          break
+        // scalars have a limit to stop at, let's check if we break early
+        if (market.marketType === SCALAR) {
+          if ((side === BUY && normalizedOrderPrice.gt(normalizedOrderLimitPrice)) || (side === SELL && normalizedOrderPrice.lt(normalizedOrderLimitPrice))) {
+            // stop looping, we have hit our limitPrice for this marketOrder
+            break;
+          }
         }
 
-        amountLeftToFill = amountLeftToFill.minus((normalizedOrderPrice.mul(orderShares)))
-        sharesAmount = sharesAmount.plus(orderShares)
+        // update limitPrice for simulateTrade
+        orderLimitPrice = orderPrice
+
+        if (sharesEscrowed.gt('0')) {
+          console.log('****sharesEscrowed', sharesEscrowed.toString());
+          // order has shares to take
+          const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(normalizedPricePerShare)
+
+          const sharesFillableAtPriceLessOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
+
+          const amountOfShares = sharesFillableAtPriceLessOrderMax.lte(0) ? amountOfSharesFillableAtPrice : orderShares
+
+          const amountOfTokens = normalizedPricePerShare.times(amountOfShares)
+          console.log('amountOfSharesFillableAtPrice', amountOfSharesFillableAtPrice.toString());
+          console.log('sharesFillableAtPriceLessOrderMax', sharesFillableAtPriceLessOrderMax.toString());
+          console.log('amountOfShares', amountOfShares.toString());
+          console.log('amountOfTokens', amountOfTokens.toString());
+          sharesAmount = sharesAmount.plus(amountOfShares)
+          amountLeftToFill = amountLeftToFill.minus(amountOfTokens)
+          orderAmountTaken = orderAmountTaken.plus(amountOfTokens)
+          orderSharesTaken = orderSharesTaken.plus(amountOfShares)
+          console.log('exiting Shares');
+          console.log('sharesAmount', sharesAmount.toString());
+          console.log('amountLeftToFill', amountLeftToFill.toString());
+          console.log('orderAmountTaken', orderAmountTaken.toString());
+          console.log('orderSharesTaken', orderSharesTaken.toString());
+        }
+
+        if (tokensEscrowed.gt('0')) {
+          console.log('*****TokensEscrowed', tokensEscrowed.toString());
+          const orderSharesLeft = orderShares.minus(orderSharesTaken)
+          if (amountLeftToFill.gte(tokensEscrowed)) {
+            sharesAmount = sharesAmount.plus(orderSharesLeft)
+            amountLeftToFill = amountLeftToFill.minus(tokensEscrowed)
+            orderAmountTaken = orderAmountTaken.plus(tokensEscrowed)
+            orderSharesTaken = orderSharesTaken.plus(orderSharesLeft)
+            console.log('exiting Tokens First IF');
+            console.log('sharesAmount', sharesAmount.toString());
+            console.log('amountLeftToFill', amountLeftToFill.toString());
+            console.log('orderAmountTaken', orderAmountTaken.toString());
+            console.log('orderSharesTaken', orderSharesTaken.toString());
+          } else {
+            const sharesNotFilled = (tokensEscrowed.minus(amountLeftToFill)).dividedBy(normalizedOrderPrice)
+
+            const sharesAffordable = orderSharesLeft.minus(sharesNotFilled)
+            const amountToTake = amountLeftToFill
+            console.log('                       ');
+            console.log('in Tokens else');
+            console.log('orderSharesLeft', orderSharesLeft.toString());
+            console.log('amountToTake', amountToTake.toString());
+            console.log('sharesNotFilled', sharesNotFilled.toString());
+            console.log('sharesAffordable', sharesAffordable.toString());
+            console.log('                       ');
+            sharesAmount = sharesAmount.plus(sharesAffordable)
+            amountLeftToFill = amountLeftToFill.minus(amountToTake)
+            orderAmountTaken = orderAmountTaken.plus(amountToTake)
+            orderSharesTaken = orderSharesTaken.plus(sharesAffordable)
+            console.log('exiting Tokens Second IF');
+            console.log('sharesAmount', sharesAmount.toString());
+            console.log('amountLeftToFill', amountLeftToFill.toString());
+            console.log('orderAmountTaken', orderAmountTaken.toString());
+            console.log('orderSharesTaken', orderSharesTaken.toString());
+          }
+        }
       }
-      // TODO: denomalize before saving after normalizing the above loop calculations
-      cleanNumShares = sharesAmount.toFixed()
-      cleanLimitPrice = orderLimitPrice.toFixed()
+      console.log('setting cleanNumShares and limitPrice');
+      cleanNumShares = sharesAmount.toString()
+      cleanLimitPrice = orderLimitPrice.toString()
+      console.log(cleanNumShares, cleanLimitPrice);
     }
 
     const newTradeDetails = {
