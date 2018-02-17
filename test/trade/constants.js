@@ -164,6 +164,16 @@ export const tradeTestState = {
           },
           orderID2: {
             orderID: 'orderID2',
+            amount: '10',
+            price: '0.45',
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '0.45',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '10',
+            tokensEscrowed: '0'
+          },
+          orderID3: {
+            orderID: 'orderID3',
             amount: '1',
             price: '0.42',
             fullPrecisionAmount: '1',
@@ -174,8 +184,18 @@ export const tradeTestState = {
           },
         },
         sell: {
-          orderID3: {
-            orderID: 'orderID3',
+          orderID4: {
+            orderID: 'orderID4',
+            amount: '.5',
+            price: '0.65',
+            fullPrecisionAmount: '0.5',
+            fullPrecisionPrice: '0.65',
+            owner: '0xsomeoneElse',
+            sharesEscrowed: '0',
+            tokensEscrowed: '0.175'
+          },
+          orderID5: {
+            orderID: 'orderID5',
             amount: '.005',
             price: '0.7',
             fullPrecisionAmount: '0.005',
@@ -184,8 +204,8 @@ export const tradeTestState = {
             sharesEscrowed: '0.005',
             tokensEscrowed: '0'
           },
-          orderID4: {
-            orderID: 'orderID4',
+          orderID6: {
+            orderID: 'orderID6',
             amount: '12',
             price: '0.73',
             fullPrecisionAmount: '12',
