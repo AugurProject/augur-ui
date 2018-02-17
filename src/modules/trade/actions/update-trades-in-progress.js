@@ -126,10 +126,12 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
 
       for (let i = 0; i < orderBookSide.length; i++) {
         amountFilledSoFar = new BigNumber(maxCost, 10).minus(amountLeftToFill)
+        if (amountLeftToFill.eq('0')) break
         console.log('                                       ');
         console.log('inLoop', i)
         console.log('amountLeftToFill', amountLeftToFill.toString(), 'ETH Tokens')
         console.log('amountFilledSoFar', amountFilledSoFar.toString(), 'ETH Tokens');
+        console.log('amountOfSharesToTakeSoFar', sharesAmount.toString(), 'Shares');
 
         console.log(orderBookSide[i].shares.full, orderBookSide[i].price.full);
         console.log('escrowed:', orderBookSide[i].sharesEscrowed.full, orderBookSide[i].tokensEscrowed.full);
@@ -160,21 +162,18 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           }
         }
 
-        // update limitPrice for simulateTrade
-        orderLimitPrice = orderPrice
-
         if (sharesEscrowed.gt('0')) {
           console.log('****sharesEscrowed', sharesEscrowed.toString());
           // order has shares to take
           const amountOfSharesFillableAtPrice = amountLeftToFill.dividedBy(normalizedPricePerShare)
 
-          const sharesFillableAtPriceLessOrderMax = amountOfSharesFillableAtPrice.minus(orderShares)
+          const sharesFillableAtPriceLessSharesEscrowed = amountOfSharesFillableAtPrice.minus(sharesEscrowed)
 
-          const amountOfShares = sharesFillableAtPriceLessOrderMax.lte(0) ? amountOfSharesFillableAtPrice : orderShares
+          const amountOfShares = sharesFillableAtPriceLessSharesEscrowed.lte(0) ? amountOfSharesFillableAtPrice : sharesEscrowed
 
           const amountOfTokens = normalizedPricePerShare.times(amountOfShares)
           console.log('amountOfSharesFillableAtPrice', amountOfSharesFillableAtPrice.toString());
-          console.log('sharesFillableAtPriceLessOrderMax', sharesFillableAtPriceLessOrderMax.toString());
+          console.log('sharesFillableAtPriceLessSharesEscrowed', sharesFillableAtPriceLessSharesEscrowed.toString());
           console.log('amountOfShares', amountOfShares.toString());
           console.log('amountOfTokens', amountOfTokens.toString());
           sharesAmount = sharesAmount.plus(amountOfShares)
@@ -202,12 +201,14 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             console.log('orderAmountTaken', orderAmountTaken.toString());
             console.log('orderSharesTaken', orderSharesTaken.toString());
           } else {
-            const sharesNotFilled = (tokensEscrowed.minus(amountLeftToFill)).dividedBy(normalizedOrderPrice)
-
+            const sharesNotFilled = (tokensEscrowed.minus(amountLeftToFill)).dividedBy(normalizedPricePerShare)
             const sharesAffordable = orderSharesLeft.minus(sharesNotFilled)
             const amountToTake = amountLeftToFill
             console.log('                       ');
             console.log('in Tokens else');
+            console.log('tokensEscrowed -amountLeftToFill', tokensEscrowed.minus(amountLeftToFill).toString());
+            console.log('normalizedOrderPrice', normalizedOrderPrice.toString());
+            console.log('normalizedPricePerShare', normalizedPricePerShare.toString());
             console.log('orderSharesLeft', orderSharesLeft.toString());
             console.log('amountToTake', amountToTake.toString());
             console.log('sharesNotFilled', sharesNotFilled.toString());
@@ -224,6 +225,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             console.log('orderSharesTaken', orderSharesTaken.toString());
           }
         }
+        // update limitPrice for simulateTrade
+        orderLimitPrice = orderPrice
       }
       console.log('setting cleanNumShares and limitPrice');
       cleanNumShares = sharesAmount.toString()
