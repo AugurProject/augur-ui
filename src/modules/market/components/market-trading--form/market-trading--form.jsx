@@ -37,16 +37,17 @@ class MarketTradingForm extends Component {
       PRICE: 'orderPrice',
       MARKET_ORDER_SIZE: 'marketOrderTotal'
     }
+    this.DEFAULT_ERROR_STATE = {
+      [this.INPUT_TYPES.QUANTITY]: [],
+      [this.INPUT_TYPES.PRICE]: [],
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
+    }
 
     this.state = {
       [this.INPUT_TYPES.QUANTITY]: '',
       [this.INPUT_TYPES.PRICE]: '',
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: '',
-      errors: {
-        [this.INPUT_TYPES.QUANTITY]: [],
-        [this.INPUT_TYPES.PRICE]: [],
-        [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
-      },
+      errors: this.DEFAULT_ERROR_STATE,
       isOrderValid: false
     }
   }
@@ -64,12 +65,17 @@ class MarketTradingForm extends Component {
     }
 
     if (!isEqual(props, state)) {
+      let errors = this.state.errors
       let isOrderValid = (nextProps.orderType === MARKET) ? !isNaN(nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]) : (!isNaN(nextProps[this.INPUT_TYPES.QUANTITY]) && !isNaN(nextProps[this.INPUT_TYPES.PRICE]))
 
       if (nextProps.orderType === MARKET && nextProps.marketType === SCALAR) {
         isOrderValid = (!isNaN(nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]) && !isNaN(nextProps[this.INPUT_TYPES.PRICE]))
       }
-      this.setState({ ...props, isOrderValid })
+      if (nextProps.orderType !== this.props.orderType) {
+        isOrderValid = false
+        errors = this.DEFAULT_ERROR_STATE
+      }
+      this.setState({ ...props, errors, isOrderValid })
     }
   }
 
@@ -79,7 +85,6 @@ class MarketTradingForm extends Component {
     let isOrderValid = true
     const errors = {}
     const { orderType, marketType } = this.props
-
     if (property === this.INPUT_TYPES.PRICE) {
       errors[this.INPUT_TYPES.PRICE] = []
       if (

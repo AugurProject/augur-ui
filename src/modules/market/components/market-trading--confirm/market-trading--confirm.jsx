@@ -19,7 +19,7 @@ const MarketTradingConfirm = (p) => {
   const potentialEthLoss = getValue(p, 'trade.potentialEthLoss')
   const potentialLossPercent = getValue(p, 'trade.potentialLossPercent')
   const totalCost = getValue(p, 'trade.totalCost')
-  // console.log('mcp', p);
+
   return (
     <section className={Styles.TradingConfirm}>
       <div className={Styles.TradingConfirm__header}>
@@ -36,7 +36,7 @@ const MarketTradingConfirm = (p) => {
         { p.orderType === MARKET &&
           <li>
             <span>Total Cost</span>
-            <span>{ p.marketOrderTotal instanceof BigNumber ? p.marketOrderTotal.toNumber() : p.marketOrderTotal } ETH</span>
+            <span><ValueDenomination formatted={totalCost.formatted} /> ETH</span>
           </li>
         }
         { p.orderType === LIMIT &&

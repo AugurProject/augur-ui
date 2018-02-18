@@ -88,6 +88,7 @@ class MarketTrading extends Component {
             toggleForm={this.toggleForm}
             toggleShowOrderPlaced={this.toggleShowOrderPlaced}
             availableFunds={p.availableFunds}
+            clearTradeInProgress={p.clearTradeInProgress}
           />
         }
         { p.isMobile && hasSelectedOutcome && initialMessage &&

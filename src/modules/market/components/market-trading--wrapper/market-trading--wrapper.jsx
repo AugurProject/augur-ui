@@ -52,13 +52,15 @@ class MarketTradingWrapper extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.state.orderQuantity !== nextState.orderQuantity || this.state.orderPrice !== nextState.orderPrice) {
-      let orderEstimate = ''
-      if (nextState.orderQuantity instanceof BigNumber && nextState.orderPrice instanceof BigNumber) {
-        orderEstimate = `${nextState.orderQuantity.times(nextState.orderPrice).toNumber()} ETH`
-      }
-
-      this.updateOrderEstimate(orderEstimate)
+    const nextTotalCost = new BigNumber(nextProps.selectedOutcome.trade.totalCost.value)
+    const nextNumShares = nextProps.selectedOutcome.trade.numShares
+    if (`${nextTotalCost.abs().toString()} ETH` !== this.state.orderEstimate) {
+      const orderEstimate = `${nextTotalCost.abs().toString()} ETH`
+      const marketQuantity = nextNumShares ? `${nextNumShares} Shares` : ''
+      this.setState({
+        orderEstimate,
+        marketQuantity,
+      })
     }
   }
 
@@ -73,10 +75,23 @@ class MarketTradingWrapper extends Component {
   }
 
   updateState(property, value) {
-    this.setState({ [property]: value })
+    if (property !== 'orderType') {
+      this.setState({ [property]: value })
+    } else {
+      this.props.clearTradeInProgress(this.props.market.id)
+      this.setState({
+        [property]: value,
+        orderPrice: '',
+        orderQuantity: '',
+        orderEstimate: '',
+        marketOrderTotal: '',
+        marketQuantity: '',
+      })
+    }
   }
 
   clearOrderForm() {
+    this.props.clearTradeInProgress(this.props.market.id)
     this.setState({
       orderPrice: '',
       orderQuantity: '',

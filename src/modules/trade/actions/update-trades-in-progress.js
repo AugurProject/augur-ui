@@ -230,7 +230,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       totalFee: '0',
       totalCost: '0'
     }
-
     // trade actions
     if (newTradeDetails.side && loginAccount.address && !isNaN(newTradeDetails.numShares)) {
       dispatch(loadAccountPositions({ market: marketID }, (err, accountPositions) => {
@@ -263,6 +262,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })
+        // console.log('simtrade:', simulatedTrade);
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
         newTradeDetails.totalCost = new BigNumber(simulatedTrade.tokensDepleted, 10).neg().toFixed()

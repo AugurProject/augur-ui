@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 
 import { selectMarket } from 'modules/market/selectors/market'
 import MarketTrading from 'modules/market/components/market-trading/market-trading'
+import { clearTradeInProgress } from 'modules/trade/actions/update-trades-in-progress.js'
 
 const mapStateToProps = state => ({
   availableFunds: new BigNumber(state.loginAccount.eth),
@@ -12,7 +13,9 @@ const mapStateToProps = state => ({
   isMobile: state.isMobile,
 })
 
-const mapDispatchToProps = dispatch => ({})
+const mapDispatchToProps = dispatch => ({
+  clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
+})
 
 const mergeProps = (sP, dP, oP) => {
   const market = selectMarket(oP.marketId)
