@@ -27,7 +27,7 @@ class MarketTrading extends Component {
     this.state = {
       showForm: false,
       showOrderPlaced: false,
-      selectedOutcome: props.selectedOutcomes.length ? props.market.outcomes.find(outcome => outcome.id === props.selectedOutcomes[0]) : null
+      selectedOutcome: (props.selectedOutcomes.length && props.market.outcomes) ? props.market.outcomes.find(outcome => outcome.id === props.selectedOutcomes[0]) : null
     }
 
     this.toggleForm = this.toggleForm.bind(this)

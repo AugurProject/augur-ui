@@ -13,7 +13,7 @@ import ValueDenomination from 'modules/common/components/value-denomination/valu
 
 import getValue from 'utils/get-value'
 
-import { BUY, SELL, LIMIT } from 'modules/transactions/constants/types'
+import { BUY, SELL, LIMIT, MARKET } from 'modules/transactions/constants/types'
 import { ACCOUNT_DEPOSIT } from 'modules/routes/constants/views'
 
 import Styles from 'modules/market/components/market-trading--wrapper/market-trading--wrapper.styles'
@@ -52,11 +52,12 @@ class MarketTradingWrapper extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    if (!nextProps.selectedOutcome || !nextProps.selectedOutcome.trade) return
     const nextTotalCost = new BigNumber(nextProps.selectedOutcome.trade.totalCost.value)
     const nextNumShares = nextProps.selectedOutcome.trade.numShares
     if (`${nextTotalCost.abs().toString()} ETH` !== this.state.orderEstimate) {
       const orderEstimate = `${nextTotalCost.abs().toString()} ETH`
-      const marketQuantity = nextNumShares ? `${nextNumShares} Shares` : ''
+      const marketQuantity = (nextNumShares && nextState.orderType === MARKET) ? `${nextNumShares} Shares` : ''
       this.setState({
         orderEstimate,
         marketQuantity,

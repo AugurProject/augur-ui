@@ -50,82 +50,82 @@ class MarketTradingForm extends Component {
       errors: this.DEFAULT_ERROR_STATE,
       isOrderValid: false
     }
+    this.checkOrderValid = this.checkOrderValid.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
-    const props = {
+    const newOrderInfo = {
       [this.INPUT_TYPES.QUANTITY]: nextProps[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: nextProps[this.INPUT_TYPES.PRICE],
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE],
+      marketQuantity: nextProps.marketQuantity,
+      orderType: nextProps.orderType,
+      orderEstimate: nextProps.orderEstimate
     }
-    const state = {
+    const currentOrderInfo = {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE]
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE],
+      marketQuantity: this.props.marketQuantity,
+      orderType: this.props.orderType,
+      orderEstimate: this.props.orderEstimate
     }
-
-    if (!isEqual(props, state)) {
-      let errors = this.state.errors
-      let isOrderValid = (nextProps.orderType === MARKET) ? !isNaN(nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]) : (!isNaN(nextProps[this.INPUT_TYPES.QUANTITY]) && !isNaN(nextProps[this.INPUT_TYPES.PRICE]))
-
-      if (nextProps.orderType === MARKET && nextProps.marketType === SCALAR) {
-        isOrderValid = (!isNaN(nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE]) && !isNaN(nextProps[this.INPUT_TYPES.PRICE]))
-      }
-      if (nextProps.orderType !== this.props.orderType) {
-        isOrderValid = false
-        errors = this.DEFAULT_ERROR_STATE
-      }
-      this.setState({ ...props, errors, isOrderValid })
+    if (!isEqual(newOrderInfo, currentOrderInfo)) {
+      const isOrderValid = this.checkOrderValid(nextProps)
+      this.setState({ ...newOrderInfo, isOrderValid })
     }
+  }
+
+  checkOrderValid(props) {
+    const { orderEstimate, orderType } = props
+    let isOrderValid = (orderEstimate.length && orderEstimate !== 0 && orderEstimate !== '0 ETH')
+    if (isOrderValid && orderType === MARKET && props.marketType === SCALAR && props.orderPrice === '') {
+      // require scalar Market Orders to have an orderPrice set.
+      isOrderValid = false
+    }
+    return isOrderValid
   }
 
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
-    let isOrderValid = true
-    const errors = {}
+    const errors = this.DEFAULT_ERROR_STATE
     const { orderType, marketType } = this.props
+
     if (property === this.INPUT_TYPES.PRICE) {
-      errors[this.INPUT_TYPES.PRICE] = []
       if (
         rawValue !== '' &&
         (value.lt(this.props.minPrice) || value.gt(this.props.maxPrice))
       ) {
-        isOrderValid = false
         errors[this.INPUT_TYPES.PRICE].push(`Price must be between ${this.props.minPrice} - ${this.props.maxPrice}`)
       }
     }
 
     if (property === this.INPUT_TYPES.QUANTITY) {
-      errors[this.INPUT_TYPES.QUANTITY] = []
       if (
         rawValue !== '' &&
         (value.lt(0))
       ) {
-        isOrderValid = false
         errors[this.INPUT_TYPES.QUANTITY].push('Quantity must be greater than 0')
       }
     }
 
     if (property === this.INPUT_TYPES.MARKET_ORDER_SIZE) {
-      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE] = []
       if (rawValue !== '') {
         if (
           value.gt(this.props.availableFunds)
         ) {
-          isOrderValid = false
           errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot exceed account ETH balance of ${this.props.availableFunds.toNumber()}`)
         }
         if (
           value.lt(0)
         ) {
-          isOrderValid = false
           errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot be a negative number`)
         }
       }
     }
 
-    if (isOrderValid) {
+    if (isEqual(this.DEFAULT_ERROR_STATE, errors)) {
       const updatedState = {
         ...this.state,
         [property]: value
@@ -144,7 +144,6 @@ class MarketTradingForm extends Component {
         limitPrice = updatedState[this.INPUT_TYPES.PRICE]
 
         this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side)
-        if (shares === '' || limitPrice === '') isOrderValid = false
       }
       this.props.updateState(property, value)
     }
@@ -154,7 +153,6 @@ class MarketTradingForm extends Component {
         ...errors
       },
       [property]: value,
-      isOrderValid
     })
   }
 

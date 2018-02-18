@@ -12,6 +12,8 @@ import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import Styles from 'modules/market/components/market-trading--confirm/market-trading--confirm.styles'
 
 const MarketTradingConfirm = (p) => {
+  const numShares = getValue(p, 'trade.numShares')
+  const limitPrice = getValue(p, 'trade.limitPrice')
   const tradingFees = getValue(p, 'trade.totalFee')
   const feePercent = getValue(p, 'trade.totalFeePercent')
   const potentialEthProfit = getValue(p, 'trade.potentialEthProfit')
@@ -42,15 +44,14 @@ const MarketTradingConfirm = (p) => {
         { p.orderType === LIMIT &&
           <li>
             <span>Quantity</span>
-            <span>{ p.orderQuantity instanceof BigNumber ? p.orderQuantity.toNumber() : p.orderQuantity } Shares</span>
+            <span>{ numShares } Shares</span>
           </li>
         }
         { p.orderType === LIMIT &&
           <li>
             <span>Limit Price</span>
-            <span>{ p.orderPrice instanceof BigNumber ? p.orderPrice.toNumber() : p.orderPrice } ETH</span>
+            <span>{ limitPrice } ETH</span>
           </li>
-
         }
         <li>
           <span>Fee</span>
