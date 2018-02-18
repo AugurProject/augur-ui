@@ -28,6 +28,7 @@ class MarketTradingWrapper extends Component {
     isMobile: PropTypes.bool.isRequired,
     toggleForm: PropTypes.func.isRequired,
     toggleShowOrderPlaced: PropTypes.func.isRequired,
+    clearTradeInProgress: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -51,13 +52,13 @@ class MarketTradingWrapper extends Component {
     this.updateOrderEstimate = this.updateOrderEstimate.bind(this)
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillReceiveProps(nextProps) {
     if (!nextProps.selectedOutcome || !nextProps.selectedOutcome.trade) return
     const nextTotalCost = new BigNumber(nextProps.selectedOutcome.trade.totalCost.value)
     const nextNumShares = nextProps.selectedOutcome.trade.numShares
     if (`${nextTotalCost.abs().toString()} ETH` !== this.state.orderEstimate) {
       const orderEstimate = `${nextTotalCost.abs().toString()} ETH`
-      const marketQuantity = (nextNumShares && nextState.orderType === MARKET) ? `${nextNumShares} Shares` : ''
+      const marketQuantity = (nextNumShares && this.state.orderType === MARKET) ? `${nextNumShares} Shares` : ''
       this.setState({
         orderEstimate,
         marketQuantity,

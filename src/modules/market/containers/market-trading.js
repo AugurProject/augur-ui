@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 
 import { selectMarket } from 'modules/market/selectors/market'
 import MarketTrading from 'modules/market/components/market-trading/market-trading'
-import { clearTradeInProgress } from 'modules/trade/actions/update-trades-in-progress.js'
+import { clearTradeInProgress } from 'modules/trade/actions/update-trades-in-progress'
 
 const mapStateToProps = state => ({
   availableFunds: new BigNumber(state.loginAccount.eth),

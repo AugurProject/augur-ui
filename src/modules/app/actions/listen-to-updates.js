@@ -11,7 +11,7 @@ import { updateOutcomePrice } from 'modules/markets/actions/update-outcome-price
 import { removeCanceledOrder } from 'modules/bids-asks/actions/update-order-status'
 // import { fillOrder } from 'modules/bids-asks/actions/update-market-order-book'
 import { updateMarketCategoryPopularity } from 'modules/categories/actions/update-categories'
-import { updateAccountTradesData, updateAccountBidsAsksData, updateAccountCancelsData, updateAccountPositionsData } from 'modules/my-positions/actions/update-account-trades-data'
+import { updateAccountBidsAsksData, updateAccountCancelsData } from 'modules/my-positions/actions/update-account-trades-data'
 import { addNotification } from 'modules/notifications/actions/update-notifications'
 // import claimTradingProceeds from 'modules/my-positions/actions/claim-trading-proceeds'
 import makePath from 'modules/routes/helpers/make-path'

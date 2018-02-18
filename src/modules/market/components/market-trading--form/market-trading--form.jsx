@@ -11,6 +11,21 @@ import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 
 import Styles from 'modules/market/components/market-trading--form/market-trading--form.styles'
 
+const checkOrderValid = (props) => {
+  const {
+    orderEstimate,
+    orderType,
+    marketType,
+    orderPrice
+  } = props
+  let isOrderValid = (orderEstimate.length && orderEstimate !== 0 && orderEstimate !== '0 ETH')
+  if (isOrderValid && orderType === MARKET && marketType === SCALAR && orderPrice === '') {
+    // require scalar Market Orders to have an orderPrice set.
+    isOrderValid = false
+  }
+  return isOrderValid
+}
+
 class MarketTradingForm extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
@@ -19,6 +34,7 @@ class MarketTradingForm extends Component {
     orderType: PropTypes.string.isRequired,
     orderPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     orderQuantity: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    marketQuantity: PropTypes.string.isRequired,
     orderEstimate: PropTypes.string.isRequired,
     selectedOutcome: PropTypes.object.isRequired,
     nextPage: PropTypes.func.isRequired,
@@ -50,7 +66,6 @@ class MarketTradingForm extends Component {
       errors: this.DEFAULT_ERROR_STATE,
       isOrderValid: false
     }
-    this.checkOrderValid = this.checkOrderValid.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,19 +86,9 @@ class MarketTradingForm extends Component {
       orderEstimate: this.props.orderEstimate
     }
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
-      const isOrderValid = this.checkOrderValid(nextProps)
+      const isOrderValid = checkOrderValid(nextProps)
       this.setState({ ...newOrderInfo, isOrderValid })
     }
-  }
-
-  checkOrderValid(props) {
-    const { orderEstimate, orderType } = props
-    let isOrderValid = (orderEstimate.length && orderEstimate !== 0 && orderEstimate !== '0 ETH')
-    if (isOrderValid && orderType === MARKET && props.marketType === SCALAR && props.orderPrice === '') {
-      // require scalar Market Orders to have an orderPrice set.
-      isOrderValid = false
-    }
-    return isOrderValid
   }
 
   validateForm(property, rawValue) {
