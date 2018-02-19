@@ -11,21 +11,6 @@ import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 
 import Styles from 'modules/market/components/market-trading--form/market-trading--form.styles'
 
-const checkOrderValid = (props) => {
-  const {
-    orderEstimate,
-    orderType,
-    marketType,
-    orderPrice
-  } = props
-  let isOrderValid = (orderEstimate.length && orderEstimate !== 0 && orderEstimate !== '0 ETH')
-  if (isOrderValid && orderType === MARKET && marketType === SCALAR && orderPrice === '') {
-    // require scalar Market Orders to have an orderPrice set.
-    isOrderValid = false
-  }
-  return isOrderValid
-}
-
 class MarketTradingForm extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
@@ -66,75 +51,145 @@ class MarketTradingForm extends Component {
       errors: this.DEFAULT_ERROR_STATE,
       isOrderValid: false
     }
+    this.orderValidation = this.orderValidation.bind(this)
+    this.testQuantity = this.testQuantity.bind(this)
+    this.testPrice = this.testPrice.bind(this)
+    this.testMarketOrderSize = this.testMarketOrderSize.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
-    const newOrderInfo = {
+    const newStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: nextProps[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: nextProps[this.INPUT_TYPES.PRICE],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE],
-      marketQuantity: nextProps.marketQuantity,
-      orderType: nextProps.orderType,
-      orderEstimate: nextProps.orderEstimate
     }
-    const currentOrderInfo = {
+    const currentStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE],
+    }
+    const newInfo = {
+      marketQuantity: nextProps.marketQuantity,
+      orderType: nextProps.orderType,
+      orderEstimate: nextProps.orderEstimate,
+      ...newStateInfo,
+    }
+    const currentInfo = {
       marketQuantity: this.props.marketQuantity,
       orderType: this.props.orderType,
-      orderEstimate: this.props.orderEstimate
+      orderEstimate: this.props.orderEstimate,
+      ...currentStateInfo,
     }
-    if (!isEqual(newOrderInfo, currentOrderInfo)) {
-      const isOrderValid = checkOrderValid(nextProps)
-      this.setState({ ...newOrderInfo, isOrderValid })
+
+    if (!isEqual(newInfo, currentInfo)) {
+      const nextTrade = nextProps.selectedOutcome.trade
+      const prevTrade = this.props.selectedOutcome.trade
+      if ((nextProps.orderType === LIMIT || (nextProps.orderType === MARKET && nextProps.marketType === SCALAR)) && (prevTrade.limitPrice === null && nextTrade.limitPrice !== null)) {
+        // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user.
+        this.props.updateState(this.INPUT_TYPES.PRICE, new BigNumber(nextTrade.limitPrice))
+      }
+      // orderValidation
+      const { isOrderValid, errors } = this.orderValidation(newStateInfo, nextProps)
+      // update state
+      this.setState({ ...newStateInfo, errors, isOrderValid })
     }
+  }
+
+  testQuantity(value, errors, isOrderValid) {
+    let errorCount = 0
+    let passedTest = !!isOrderValid
+    if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
+    if (value.lt(0)) {
+      errorCount += 1
+      passedTest = false
+      errors[this.INPUT_TYPES.QUANTITY].push('Quantity must be greater than 0')
+    }
+    return { isOrderValid: passedTest, errors, errorCount }
+  }
+
+  testPrice(value, errors, isOrderValid) {
+    let errorCount = 0
+    let passedTest = !!isOrderValid
+    if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
+    if (value.lt(this.props.minPrice) || value.gt(this.props.maxPrice)) {
+      errorCount += 1
+      passedTest = false
+      errors[this.INPUT_TYPES.PRICE].push(`Price must be between ${this.props.minPrice} - ${this.props.maxPrice}`)
+    }
+    return { isOrderValid: passedTest, errors, errorCount }
+  }
+
+  testMarketOrderSize(value, errors, isOrderValid) {
+    let errorCount = 0
+    let passedTest = !!isOrderValid
+    if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
+    if (value.gt(this.props.availableFunds)) {
+      errorCount += 1
+      passedTest = false
+      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot exceed account ETH balance of ${this.props.availableFunds.toNumber()}`)
+    }
+    if (value.lt(0)) {
+      errorCount += 1
+      passedTest = false
+      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot be a negative number`)
+    }
+    return { isOrderValid: passedTest, errors, errorCount }
+  }
+
+  orderValidation(order, propsToUse) {
+    let { props } = this
+    if (!propsToUse) props = propsToUse
+    let cumulativeErrors = {
+      [this.INPUT_TYPES.QUANTITY]: [],
+      [this.INPUT_TYPES.PRICE]: [],
+      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
+    }
+    let cumulativeOrderValid = true
+    let cumulativeErrorCount = 0
+    const { orderType, marketType } = props
+    if (orderType === MARKET) {
+      let value = new BigNumber(order[this.INPUT_TYPES.MARKET_ORDER_SIZE])
+      const { isOrderValid, errors, errorCount } = this.testMarketOrderSize(value, cumulativeErrors, cumulativeOrderValid)
+      cumulativeOrderValid = isOrderValid
+      cumulativeErrorCount += errorCount
+      cumulativeErrors = { ...cumulativeErrors, ...errors }
+
+      if (marketType === SCALAR) {
+        value = new BigNumber(order[this.INPUT_TYPES.PRICE])
+        const { isOrderValid, errors, errorCount } = this.testPrice(value, cumulativeErrors, cumulativeOrderValid)
+        cumulativeOrderValid = isOrderValid
+        cumulativeErrorCount += errorCount
+        cumulativeErrors = { ...cumulativeErrors, ...errors }
+      }
+    } else {
+      let value = new BigNumber(order[this.INPUT_TYPES.QUANTITY])
+      const { isOrderValid, errors, errorCount } = this.testQuantity(value, cumulativeErrors, cumulativeOrderValid)
+      cumulativeOrderValid = isOrderValid
+      cumulativeErrorCount += errorCount
+      cumulativeErrors = { ...cumulativeErrors, ...errors }
+
+      value = new BigNumber(order[this.INPUT_TYPES.PRICE])
+
+      const { isOrderValid: priceValid, errors: priceErrors, errorCount: priceCount } = this.testPrice(value, cumulativeErrors, cumulativeOrderValid)
+      cumulativeOrderValid = priceValid
+      cumulativeErrorCount += priceCount
+      cumulativeErrors = { ...cumulativeErrors, ...priceErrors }
+    }
+    return { isOrderValid: cumulativeOrderValid, errors: cumulativeErrors, errorCount: cumulativeErrorCount }
   }
 
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
-    const errors = this.DEFAULT_ERROR_STATE
     const { orderType, marketType } = this.props
-
-    if (property === this.INPUT_TYPES.PRICE) {
-      if (
-        rawValue !== '' &&
-        (value.lt(this.props.minPrice) || value.gt(this.props.maxPrice))
-      ) {
-        errors[this.INPUT_TYPES.PRICE].push(`Price must be between ${this.props.minPrice} - ${this.props.maxPrice}`)
-      }
+    const updatedState = {
+      ...this.state,
+      [property]: value
     }
+    const { isOrderValid, errors, errorCount } = this.orderValidation(updatedState, this.props)
+    this.props.updateState(property, value)
 
-    if (property === this.INPUT_TYPES.QUANTITY) {
-      if (
-        rawValue !== '' &&
-        (value.lt(0))
-      ) {
-        errors[this.INPUT_TYPES.QUANTITY].push('Quantity must be greater than 0')
-      }
-    }
-
-    if (property === this.INPUT_TYPES.MARKET_ORDER_SIZE) {
-      if (rawValue !== '') {
-        if (
-          value.gt(this.props.availableFunds)
-        ) {
-          errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot exceed account ETH balance of ${this.props.availableFunds.toNumber()}`)
-        }
-        if (
-          value.lt(0)
-        ) {
-          errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot be a negative number`)
-        }
-      }
-    }
-
-    if (isEqual(this.DEFAULT_ERROR_STATE, errors)) {
-      const updatedState = {
-        ...this.state,
-        [property]: value
-      }
+    if (errorCount === 0) {
       const side = this.props.selectedNav
       const maxCost = updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
       let limitPrice = 0
@@ -150,7 +205,6 @@ class MarketTradingForm extends Component {
 
         this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side)
       }
-      this.props.updateState(property, value)
     }
     this.setState({
       errors: {
@@ -158,6 +212,7 @@ class MarketTradingForm extends Component {
         ...errors
       },
       [property]: value,
+      isOrderValid
     })
   }
 

@@ -106,6 +106,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       let sharesAmount = new BigNumber(0, 10)
       let amountLeftToFill = new BigNumber(maxCost, 10)
       let orderLimitPrice = new BigNumber(cleanLimitPrice, 10)
+      // exit early
       const normalizedOrderLimitPrice = new BigNumber(augur.trading.normalizePrice({
         minPrice: market.minPrice,
         maxPrice: market.maxPrice,
