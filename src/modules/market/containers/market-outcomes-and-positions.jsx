@@ -15,7 +15,7 @@ const mapStateToProps = state => ({
 const mergeProps = (sP, dP, oP) => {
   const market = selectMarket(oP.marketId)
 
-  console.log('market -- ', market)
+  // console.log('market -- ', market)
   let openOrders = []
   let positions = []
   if (market && market.outcomes && market.outcomes.length > 0) {

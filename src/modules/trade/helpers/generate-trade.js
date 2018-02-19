@@ -25,10 +25,11 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   const numShares = (outcomeTradeInProgress && outcomeTradeInProgress.numShares) || null
   const limitPrice = (outcomeTradeInProgress && outcomeTradeInProgress.limitPrice) || null
   const totalFee = (outcomeTradeInProgress && outcomeTradeInProgress.totalFee) || 0
+  const feePercent = (outcomeTradeInProgress && outcomeTradeInProgress.feePercent) || 0
   const gasFeesRealEth = (outcomeTradeInProgress && outcomeTradeInProgress.gasFeesRealEth) || 0
   const totalCost = (outcomeTradeInProgress && outcomeTradeInProgress.totalCost) || 0
-  const marketType = (market && market.type) || null
-  const minPrice = (market && market.minPrice) || null
+  const marketType = (market && market.marketType) || null
+  const minPrice = (market && typeof market.minPrice === 'number') ? market.minPrice : null
   const maxPrice = (market && market.maxPrice) || null
   const preOrderProfitLoss = calcOrderProfitLossPercents(numShares, limitPrice, side, minPrice, maxPrice, marketType)
 
@@ -65,6 +66,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     potentialProfitPercent: preOrderProfitLoss ? formatPercent(preOrderProfitLoss.potentialProfitPercent) : null,
 
     totalFee: formatEtherTokens(totalFee, { blankZero: true }),
+    totalFeePercent: formatEtherTokens(feePercent, { blankZero: true }),
     gasFeesRealEth: formatEther(gasFeesRealEth, { blankZero: true }),
     totalCost: formatEtherTokens(totalCost, { blankZero: false }),
 
@@ -74,7 +76,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     ],
 
     tradeSummary: generateTradeSummary(generateTradeOrders(market, outcome, outcomeTradeInProgress)),
-    updateTradeOrder: (shares, limitPrice, side) => store.dispatch(updateTradesInProgress(market.id, outcome.id, side, shares, limitPrice)),
+    updateTradeOrder: (shares, limitPrice, side, maxCost) => store.dispatch(updateTradesInProgress(market.id, outcome.id, side, shares, limitPrice, maxCost)),
     totalSharesUpToOrder: (orderIndex, side) => totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks)
   }
 }, { max: 5 })
@@ -117,15 +119,14 @@ export const generateTradeOrders = memoize((market, outcome, outcomeTradeInProgr
     return []
   }
   const marketID = market.id
+  const { description, marketType } = market
   const outcomeID = outcome.id
-  const marketType = market.type
   const outcomeName = outcome.name
-  const { description } = market
   return tradeActions.map((tradeAction) => {
     const numShares = new BigNumber(tradeAction.shares, 10)
     const costEth = new BigNumber(tradeAction.costEth, 10).abs()
     const avgPrice = new BigNumber(costEth, 10).dividedBy(new BigNumber(numShares, 10))
-    const noFeePrice = market.type === 'scalar' ? outcomeTradeInProgress.limitPrice : tradeAction.noFeePrice
+    const noFeePrice = market.marketType === 'scalar' ? outcomeTradeInProgress.limitPrice : tradeAction.noFeePrice
     return {
       type: TRANSACTIONS_TYPES[tradeAction.action],
       data: {

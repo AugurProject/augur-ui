@@ -3,17 +3,20 @@ import PropTypes from 'prop-types'
 
 import MarketHeader from 'modules/market/containers/market-header'
 // import MarketOutcomesChart from 'modules/market/containers/market-outcomes-chart'
-import MarketOutcomeCharts from 'modules/market/containers/market-outcome-charts'
+// import MarketOutcomeCharts from 'modules/market/containers/market-outcome-charts'
 import MarketOutcomesAndPositions from 'modules/market/containers/market-outcomes-and-positions'
 import MarketTrading from 'modules/market/containers/market-trading'
 
+import { CATEGORICAL } from 'modules/markets/constants/market-types'
+
 import Styles from 'modules/market/components/market-view/market-view.styles'
 
-console.log('marketOutcome -- ', MarketOutcomeCharts)
+// console.log('marketOutcome -- ', MarketOutcomeCharts)
 
 export default class MarketView extends Component {
   static propTypes = {
     marketId: PropTypes.string.isRequired,
+    marketType: PropTypes.string,
     isConnected: PropTypes.bool.isRequired,
     isMarketLoaded: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired
@@ -23,7 +26,7 @@ export default class MarketView extends Component {
     super(props)
 
     this.state = {
-      selectedOutcomes: []
+      selectedOutcomes: props.marketType === CATEGORICAL ? [] : ['1']
     }
 
     this.updateSelectedOutcomes = this.updateSelectedOutcomes.bind(this)
@@ -43,6 +46,7 @@ export default class MarketView extends Component {
     ) {
       nextProps.loadFullMarket()
     }
+
   }
 
   updateSelectedOutcomes(selectedOutcome) {

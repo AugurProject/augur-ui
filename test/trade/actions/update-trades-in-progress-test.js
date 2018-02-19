@@ -46,7 +46,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
     const store = mockStore(state)
     const mockSelectMarket = {}
     const mockLoadAccountPositions = {
-      loadAccountPositions: (options, callback) => dispatch => callback(null, ['0', '0'])
+      loadAccountPositions: (options, callback) => dispatch => callback(null, [])
     }
     mockSelectMarket.selectMarket = sinon.stub().returns(state.marketsData.testBinaryMarketID)
 
@@ -95,6 +95,63 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
       }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
     })
 
+    it('should pass shape tests for buying 10 ETH of YES as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, BUY, undefined, undefined, '10'))
+      updateTradesInProgressActionShapeAssertion(store.getActions()[0])
+    })
+
+    it('should pass calculation tests for buying 100 ETH worth of YES as a Market Order, final cost should be less', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, BUY, undefined, undefined, '100'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testBinaryMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '12.505',
+            limitPrice: '0.73',
+            totalFee: '0',
+            totalCost: '-9.0885',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '9.0885',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for buying 5 ETH worth of YES as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, BUY, undefined, undefined, '5'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testBinaryMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '6.90431506849315068493',
+            limitPrice: '0.73',
+            totalFee: '0',
+            totalCost: '-5',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '4.9999999999999999999989',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
     it('should pass shape tests for Selling 10 shares of YES at the default limitPrice', () => {
       store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, SELL, '10.0', undefined, undefined))
       updateTradesInProgressActionShapeAssertion(store.getActions()[0])
@@ -102,6 +159,89 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
 
     it('should pass calculation tests for selling 10 shares of YES at the default limitPrice', () => {
       store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, SELL, '10.0', undefined, undefined))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testBinaryMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '10',
+            limitPrice: '0.5',
+            totalFee: '0',
+            totalCost: '-5',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '5',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass shape tests for selling 10 ETH of YES as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, SELL, undefined, undefined, '10'))
+      updateTradesInProgressActionShapeAssertion(store.getActions()[0])
+    })
+
+    it('should pass calculation tests for selling 10 ETH worth of YES as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, SELL, undefined, undefined, '10'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testBinaryMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '19.09090909090909090909',
+            limitPrice: '0.45',
+            totalFee: '0',
+            totalCost: '-10',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '9.9999999999999999999995',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for selling 100 ETH worth of YES as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, SELL, undefined, undefined, '100'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testBinaryMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '21',
+            limitPrice: '0.42',
+            totalFee: '0',
+            totalCost: '-11.08',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '11.08',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for selling 5 ETH worth of YES as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testBinaryMarketID', 1, SELL, undefined, undefined, '5'))
       assert.deepEqual(store.getActions()[0], {
         type: 'UPDATE_TRADE_IN_PROGRESS',
         data: {
@@ -289,7 +429,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
     const state = Object.assign({}, testState, tradeTestState)
     const store = mockStore(state)
     const mockLoadAccountPositions = {
-      loadAccountPositions: (options, callback) => dispatch => callback(null, ['0', '0'])
+      loadAccountPositions: (options, callback) => dispatch => callback(null, [])
     }
     const mockSelectMarket = {}
     mockSelectMarket.selectMarket = sinon.stub().returns(state.marketsData.testCategoricalMarketID)
@@ -332,7 +472,64 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass shape tests for buying 10 ETH of Outcome 1 Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testCategoricalMarketID', 1, BUY, undefined, undefined, '10'))
+      updateTradesInProgressActionShapeAssertion(store.getActions()[0])
+    })
+
+    it('should pass calculation tests for buying 10 ETH of Outcome 1 Market Order, should be less than 10', () => {
+      store.dispatch(action.updateTradesInProgress('testCategoricalMarketID', 1, BUY, undefined, undefined, '10'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testCategoricalMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '12.005',
+            limitPrice: '0.73',
+            totalFee: '0',
+            totalCost: '-8.7635',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '8.7635',
+            shareBalances: ['0', '0', '0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for buying 5 ETH of Outcome 1 Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testCategoricalMarketID', 1, BUY, undefined, undefined, '5'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testCategoricalMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '6.84952054794520547945',
+            limitPrice: '0.73',
+            totalFee: '0',
+            totalCost: '-5',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '4.9999999999999999999985',
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -363,7 +560,64 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass shape tests for buying 10 ETH of Outcome 1 Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testCategoricalMarketID', 1, SELL, undefined, undefined, '10'))
+      updateTradesInProgressActionShapeAssertion(store.getActions()[0])
+    })
+
+    it('should pass calculation tests for selling 10 ETH of Outcome 1 Market Order, should be less than 10', () => {
+      store.dispatch(action.updateTradesInProgress('testCategoricalMarketID', 1, SELL, undefined, undefined, '10'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testCategoricalMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '11',
+            limitPrice: '0.42',
+            totalFee: '0',
+            totalCost: '-5.58',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '5.58',
+            shareBalances: ['0', '0', '0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for selling 5 ETH of Outcome 1 Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testCategoricalMarketID', 1, SELL, undefined, undefined, '5'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testCategoricalMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '10',
+            limitPrice: '0.5',
+            totalFee: '0',
+            totalCost: '-5',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '5',
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -452,7 +706,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '1.5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -478,7 +732,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '0',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -504,7 +758,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '12.5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -530,7 +784,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
             sharesDepleted: '0',
             otherSharesDepleted: '0',
             tokensDepleted: '12.5',
-            shareBalances: ['0', '0'],
+            shareBalances: ['0', '0', '0', '0'],
             worstCaseFees: '0'
           }
         }
@@ -545,7 +799,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
     const state = Object.assign({}, testState, tradeTestState)
     const store = mockStore(state)
     const mockLoadAccountPositions = {
-      loadAccountPositions: (options, callback) => dispatch => callback(null, ['0', '0'])
+      loadAccountPositions: (options, callback) => dispatch => callback(null, [])
     }
     const mockSelectMarket = {}
     mockSelectMarket.selectMarket = sinon.stub().returns(state.marketsData.testScalarMarketID)
@@ -564,12 +818,12 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
       store.clearActions()
     })
 
-    it('should pass shape tests for buying 10 shares of outcome1 at the default limitPrice', () => {
+    it('should pass shape tests for buying 10 shares of outcome0 at the default limitPrice', () => {
       store.dispatch(action.updateTradesInProgress('testScalarMarketID', 0, BUY, '10.0', undefined, undefined))
       updateTradesInProgressActionShapeAssertion(store.getActions()[0])
     })
 
-    it('should pass calculation tests for buying 10 shares of outcome1 at the default limitPrice', () => {
+    it('should pass calculation tests for buying 10 shares of outcome0 at the default limitPrice', () => {
       store.dispatch(action.updateTradesInProgress('testScalarMarketID', 0, BUY, '10.0', undefined, undefined))
       assert.deepEqual(store.getActions()[0], {
         type: 'UPDATE_TRADE_IN_PROGRESS',
@@ -579,15 +833,15 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
           details: {
             side: 'buy',
             numShares: '10',
-            limitPrice: '55',
+            limitPrice: '50',
             totalFee: '0',
-            totalCost: '-650',
+            totalCost: '-600',
             feePercent: '0',
             settlementFees: '0',
             gasFees: '0',
             sharesDepleted: '0',
             otherSharesDepleted: '0',
-            tokensDepleted: '650',
+            tokensDepleted: '600',
             shareBalances: ['0', '0'],
             worstCaseFees: '0'
           }
@@ -595,12 +849,95 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
       }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
     })
 
-    it('should pass shape tests for Selling 10 shares of outcome1 at the default limitPrice', () => {
+    it('should pass shape tests for buying 10 ETH of outcome1 at a limitPrice of 100 as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, BUY, undefined, '100', '10'))
+      updateTradesInProgressActionShapeAssertion(store.getActions()[0])
+    })
+
+    it('should pass calculation tests for buying 1000 ETH of outcome1 with a limitPrice of 100, as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, BUY, undefined, '100', '1000'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testScalarMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '12.02272727272727272723',
+            limitPrice: '100',
+            totalFee: '0',
+            totalCost: '-999.9999999999999999953',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '999.9999999999999999953',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for buying 10000 ETH of outcome1 with a limitPrice of 110, as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, BUY, undefined, '110', '10000'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testScalarMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '22.5',
+            limitPrice: '105',
+            totalFee: '0',
+            totalCost: '-2202.5',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '2202.5',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for buying 10 ETH of outcome1 with a -5 limitPrice as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, BUY, undefined, '60', '10'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testScalarMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'buy',
+            numShares: '0.15384615384615384615',
+            limitPrice: '55',
+            totalFee: '0',
+            totalCost: '-9.99999999999999999975',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '9.99999999999999999975',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass shape tests for Selling 10 shares of outcome0 at the default limitPrice', () => {
       store.dispatch(action.updateTradesInProgress('testScalarMarketID', 0, SELL, '10.0', undefined, undefined))
       updateTradesInProgressActionShapeAssertion(store.getActions()[0])
     })
 
-    it('should pass calculation tests for selling 10 shares of outcome1 at the default limitPrice', () => {
+    it('should pass calculation tests for selling 10 shares of outcome0 at the default limitPrice', () => {
       store.dispatch(action.updateTradesInProgress('testScalarMarketID', 0, SELL, '10.0', undefined, undefined))
       assert.deepEqual(store.getActions()[0], {
         type: 'UPDATE_TRADE_IN_PROGRESS',
@@ -610,15 +947,72 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
           details: {
             side: 'sell',
             numShares: '10',
-            limitPrice: '55',
+            limitPrice: '50',
             totalFee: '0',
-            totalCost: '-650',
+            totalCost: '-600',
             feePercent: '0',
             settlementFees: '0',
             gasFees: '0',
             sharesDepleted: '0',
             otherSharesDepleted: '0',
-            tokensDepleted: '650',
+            tokensDepleted: '600',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass shape tests for selling 10 ETH of outcome1 with a 0 limitPrice as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, SELL, undefined, '0', '10'))
+      updateTradesInProgressActionShapeAssertion(store.getActions()[0])
+    })
+
+    it('should pass calculation tests for selling 1000 ETH of outcome1 with a limit of -5 as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, SELL, undefined, '-5', '1000'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testScalarMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '10.86956521739130434783',
+            limitPrice: '-5',
+            totalFee: '0',
+            totalCost: '-1000.00000000000000000045',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '1000.00000000000000000045',
+            shareBalances: ['0', '0'],
+            worstCaseFees: '0'
+          }
+        }
+      }, `The tradeDetails dispatched didn't correctly calculate the trade as expected.`)
+    })
+
+    it('should pass calculation tests for selling 10 ETH of outcome1 as a Market Order', () => {
+      store.dispatch(action.updateTradesInProgress('testScalarMarketID', 1, SELL, undefined, '50', '10'))
+      assert.deepEqual(store.getActions()[0], {
+        type: 'UPDATE_TRADE_IN_PROGRESS',
+        data: {
+          marketID: 'testScalarMarketID',
+          outcomeID: 1,
+          details: {
+            side: 'sell',
+            numShares: '0.16666666666666666667',
+            limitPrice: '50',
+            totalFee: '0',
+            totalCost: '-10.0000000000000000002',
+            feePercent: '0',
+            settlementFees: '0',
+            gasFees: '0',
+            sharesDepleted: '0',
+            otherSharesDepleted: '0',
+            tokensDepleted: '10.0000000000000000002',
             shareBalances: ['0', '0'],
             worstCaseFees: '0'
           }
@@ -636,7 +1030,7 @@ describe('modules/trade/actions/update-trades-in-progress.js', () => {
           details: {
             side: BUY,
             numShares: undefined,
-            limitPrice: '55',
+            limitPrice: '50',
             totalFee: '0',
             totalCost: '0'
           }

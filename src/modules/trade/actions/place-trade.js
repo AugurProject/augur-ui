@@ -25,10 +25,10 @@ export const placeTrade = (marketID, outcomeID, tradeInProgress, doNotCreateOrde
     _tradeGroupId: tradeInProgress.tradeGroupID,
     doNotCreateOrders,
     onSent: () => callback(null, tradeInProgress.tradeGroupID),
-    onFailed: callback
-  }, (err) => {
-    if (err) return callback(err)
-    onComplete(err)
+    onFailed: callback,
+    onSuccess: (tradeOnChainAmountRemaining) => {
+      onComplete(tradeOnChainAmountRemaining)
+    }
   })
   dispatch(clearTradeInProgress(marketID))
 }

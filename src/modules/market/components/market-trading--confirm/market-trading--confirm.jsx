@@ -1,5 +1,4 @@
 import React from 'react'
-import BigNumber from 'bignumber.js'
 
 import { CreateMarketEdit } from 'modules/common/components/icons/icons'
 
@@ -12,8 +11,10 @@ import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import Styles from 'modules/market/components/market-trading--confirm/market-trading--confirm.styles'
 
 const MarketTradingConfirm = (p) => {
-  const tradingFees = '0.0023'
-  const feePercent = '2.8'
+  const numShares = getValue(p, 'trade.numShares')
+  const limitPrice = getValue(p, 'trade.limitPrice')
+  const tradingFees = getValue(p, 'trade.totalFee')
+  const feePercent = getValue(p, 'trade.totalFeePercent')
   const potentialEthProfit = getValue(p, 'trade.potentialEthProfit')
   const potentialProfitPercent = getValue(p, 'trade.potentialProfitPercent')
   const potentialEthLoss = getValue(p, 'trade.potentialEthLoss')
@@ -36,25 +37,24 @@ const MarketTradingConfirm = (p) => {
         { p.orderType === MARKET &&
           <li>
             <span>Total Cost</span>
-            <span>{ p.marketOrderTotal instanceof BigNumber ? p.marketOrderTotal.toNumber() : p.marketOrderTotal } ETH</span>
+            <span><ValueDenomination formatted={totalCost.formatted} /> ETH</span>
           </li>
         }
         { p.orderType === LIMIT &&
           <li>
             <span>Quantity</span>
-            <span>{ p.orderQuantity instanceof BigNumber ? p.orderQuantity.toNumber() : p.orderQuantity } Shares</span>
+            <span>{ numShares } Shares</span>
           </li>
         }
         { p.orderType === LIMIT &&
           <li>
             <span>Limit Price</span>
-            <span>{ p.orderPrice instanceof BigNumber ? p.orderPrice.toNumber() : p.orderPrice } ETH</span>
+            <span>{ limitPrice } ETH</span>
           </li>
-
         }
         <li>
           <span>Fee</span>
-          <span>{tradingFees} <span>ETH ({feePercent}%)</span></span>
+          <span>{tradingFees.formattedValue} <span>ETH ({feePercent.formattedValue}%)</span></span>
         </li>
       </ul>
       { p.orderType === LIMIT &&
@@ -91,7 +91,16 @@ const MarketTradingConfirm = (p) => {
         </button>
         <button
           className={Styles['TradingConfirmation__button--submit']}
-          onClick={e => console.log('submit order')}
+          onClick={(e) => {
+            p.market.onSubmitPlaceTrade(p.selectedOutcome.id, (err, tradeGroupID) => {
+              // onSent/onFailed CB
+              if (!err) p.toggleShowOrderPlaced()
+            }, (res) => {
+              // onComplete CB
+            }, (p.orderType === MARKET))
+            p.clearOrderForm()
+            p.prevPage()
+          }}
         >Confirm
         </button>
       </div>

@@ -61,6 +61,7 @@ const testState = {
   tags: 'test testtag',
   marketsData: {
     testMarketID: {
+      id: 'testMarketID',
       author: '0x0000000000000000000000000000000000000001',
       name: 'testMarket',
       description: 'some test description',
@@ -68,16 +69,22 @@ const testState = {
       type: 'scalar',
       minPrice: 1,
       maxPrice: 2,
-      settlementFee: 0.05,
       volume: 500,
       tags: ['tag1', 'tag2', 'tag3'],
       resolution: 'http://lmgtfy.com',
       creationTime: 100,
       creationBlock: 42,
+      numOutcomes: 2,
+      marketType: 'binary',
       outstandingShares: formatShares(10),
-      extraInfo: 'some extra info'
+      extraInfo: 'some extra info',
+      settlementFee: '0.000100000001193046',
+      reportingFeeRate: 0.0001,
+      creationFee: 0.025,
+      marketCreatorFeeRate: 0.00000000001193046
     },
     testMarketID2: {
+      id: 'testMarketID2',
       author: '0x0000000000000000000000000000000000000001',
       name: 'testMarket2',
       description: 'some test description',
@@ -85,7 +92,7 @@ const testState = {
       type: 'binary',
       minPrice: 1,
       maxPrice: 2,
-      settlementFee: 0.05,
+      marketType: 'binary',
       volume: 500,
       tags: ['tag1', 'tag2', 'tag3'],
       resolution: 'http://lmgtfy.com',
@@ -93,7 +100,11 @@ const testState = {
       creationBlock: 42,
       outstandingShares: formatShares(10),
       extraInfo: 'some extra info',
-      numOutcomes: 2
+      numOutcomes: 2,
+      settlementFee: '0.000100000001193046',
+      reportingFeeRate: 0.0001,
+      creationFee: 0.025,
+      marketCreatorFeeRate: 0.00000000001193046
     }
   },
   orderBooks: {
@@ -108,7 +119,9 @@ const testState = {
             outcome: '2',
             owner: '0x7c0d52faab596c08f423e3478aebc6205f3f5d8c',
             price: '0.42',
-            type: 'buy'
+            type: 'buy',
+            fullPrecisionAmount: 10,
+            fullPrecisionPrice: 0.42,
           },
           buyOrder2ID: {
             amount: '10',
@@ -118,7 +131,9 @@ const testState = {
             outcome: '2',
             owner: '0x0000000000000000000000000000000000000001',
             price: '0.42',
-            type: 'buy'
+            type: 'buy',
+            fullPrecisionAmount: 10,
+            fullPrecisionPrice: 0.42,
           }
         }
       },
@@ -132,7 +147,9 @@ const testState = {
             outcome: '1',
             owner: '0x0000000000000000000000000000000000000001',
             price: '0.42',
-            type: 'buy'
+            type: 'buy',
+            fullPrecisionAmount: 10,
+            fullPrecisionPrice: 0.42,
           },
           buyOrder4ID: {
             amount: '10',
@@ -142,7 +159,9 @@ const testState = {
             outcome: '1',
             owner: '0x0000000000000000000000000000000000000001',
             price: '0.44',
-            type: 'buy'
+            type: 'buy',
+            fullPrecisionAmount: 10,
+            fullPrecisionPrice: 0.44,
           }
         },
         sell: {
@@ -154,7 +173,9 @@ const testState = {
             outcome: '1',
             owner: '0x457435fbcd49475847f64898f933ffefc33388fc',
             price: '0.58',
-            type: 'sell'
+            type: 'sell',
+            fullPrecisionAmount: 20,
+            fullPrecisionPrice: 0.58,
           },
           sellOrder2ID: {
             amount: '20',
@@ -164,7 +185,9 @@ const testState = {
             outcome: '1',
             owner: '0x457435fbcd49475847f64898f933ffefc33388fc',
             price: '0.59',
-            type: 'sell'
+            type: 'sell',
+            fullPrecisionAmount: 20,
+            fullPrecisionPrice: 0.59,
           }
         }
       }
@@ -179,25 +202,13 @@ const testState = {
         id: '1',
         outstandingShares: '47',
         name: 'testOutcome',
-        price: 35
+        price: '0.5'
       },
       2: {
         id: '2',
         outstandingShares: '156',
         name: 'testOutcome 2',
-        price: 50
-      },
-      3: {
-        id: '3',
-        outstandingShares: '13',
-        name: 'testOutcome 3',
-        price: 48
-      },
-      4: {
-        id: '4',
-        outstandingShares: '156',
-        name: 'testOutcome 4',
-        price: 75
+        price: '0.5'
       }
     }
   },
@@ -255,11 +266,13 @@ const testState = {
   },
   tradesInProgress: {
     testMarketID: {
-      numShares: 5000,
-      limitPrice: '0.50',
-      totalCost: '2500',
-      type: 'binary',
-      side: BUY
+      1: {
+        numShares: 5000,
+        limitPrice: '0.50',
+        totalCost: '2500',
+        type: 'binary',
+        side: BUY
+      }
     }
   },
   transactionsData: {
