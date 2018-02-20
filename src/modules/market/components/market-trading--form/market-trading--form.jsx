@@ -82,11 +82,17 @@ class MarketTradingForm extends Component {
     }
 
     if (!isEqual(newInfo, currentInfo)) {
-      const nextTrade = nextProps.selectedOutcome.trade
-      const prevTrade = this.props.selectedOutcome.trade
-      if ((nextProps.orderType === LIMIT || (nextProps.orderType === MARKET && nextProps.marketType === SCALAR)) && (prevTrade.limitPrice === null && nextTrade.limitPrice !== null)) {
-        // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user.
-        this.props.updateState(this.INPUT_TYPES.PRICE, new BigNumber(nextTrade.limitPrice))
+      const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice
+      const prevTradePrice = this.props.selectedOutcome.trade.limitPrice
+      const isLimitOrder = nextProps.orderType === LIMIT
+      // limitPrice is being defaulted and we had no value in the input box
+      const priceChange = (prevTradePrice === null && nextTradePrice !== null)
+      // limitPrice is being updated in the background, but we have no limitPrice input set.
+      const forcePriceUpdate = (prevTradePrice === nextTradePrice) && (nextTradePrice !== null) && isNaN(new BigNumber(this.state[this.INPUT_TYPES.PRICE])) && isNaN(new BigNumber(nextProps[this.INPUT_TYPES.PRICE]))
+
+      if (isLimitOrder && (priceChange || forcePriceUpdate)) {
+        // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user as to where estimates are coming from.
+        this.props.updateState(this.INPUT_TYPES.PRICE, new BigNumber(nextTradePrice))
       }
       // orderValidation
       const { isOrderValid, errors } = this.orderValidation(newStateInfo, nextProps)
@@ -107,6 +113,18 @@ class MarketTradingForm extends Component {
     return { isOrderValid: passedTest, errors, errorCount }
   }
 
+  testMarketOrderSize(value, errors, isOrderValid) {
+    let errorCount = 0
+    let passedTest = !!isOrderValid
+    if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
+    if (value.lt(0)) {
+      errorCount += 1
+      passedTest = false
+      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push('Quantity must be greater than 0')
+    }
+    return { isOrderValid: passedTest, errors, errorCount }
+  }
+
   testPrice(value, errors, isOrderValid) {
     let errorCount = 0
     let passedTest = !!isOrderValid
@@ -115,23 +133,6 @@ class MarketTradingForm extends Component {
       errorCount += 1
       passedTest = false
       errors[this.INPUT_TYPES.PRICE].push(`Price must be between ${this.props.minPrice} - ${this.props.maxPrice}`)
-    }
-    return { isOrderValid: passedTest, errors, errorCount }
-  }
-
-  testMarketOrderSize(value, errors, isOrderValid) {
-    let errorCount = 0
-    let passedTest = !!isOrderValid
-    if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
-    if (value.gt(this.props.availableFunds)) {
-      errorCount += 1
-      passedTest = false
-      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot exceed account ETH balance of ${this.props.availableFunds.toNumber()}`)
-    }
-    if (value.lt(0)) {
-      errorCount += 1
-      passedTest = false
-      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push(`Cannot be a negative number`)
     }
     return { isOrderValid: passedTest, errors, errorCount }
   }
@@ -146,34 +147,24 @@ class MarketTradingForm extends Component {
     }
     let cumulativeOrderValid = true
     let cumulativeErrorCount = 0
-    const { orderType, marketType } = props
-    if (orderType === MARKET) {
-      let value = new BigNumber(order[this.INPUT_TYPES.MARKET_ORDER_SIZE])
-      const { isOrderValid, errors, errorCount } = this.testMarketOrderSize(value, cumulativeErrors, cumulativeOrderValid)
-      cumulativeOrderValid = isOrderValid
-      cumulativeErrorCount += errorCount
-      cumulativeErrors = { ...cumulativeErrors, ...errors }
+    const { orderType } = props
+    const isLimitOrder = orderType === LIMIT
 
-      if (marketType === SCALAR) {
-        value = new BigNumber(order[this.INPUT_TYPES.PRICE])
-        const { isOrderValid, errors, errorCount } = this.testPrice(value, cumulativeErrors, cumulativeOrderValid)
-        cumulativeOrderValid = isOrderValid
-        cumulativeErrorCount += errorCount
-        cumulativeErrors = { ...cumulativeErrors, ...errors }
-      }
-    } else {
-      let value = new BigNumber(order[this.INPUT_TYPES.QUANTITY])
-      const { isOrderValid, errors, errorCount } = this.testQuantity(value, cumulativeErrors, cumulativeOrderValid)
-      cumulativeOrderValid = isOrderValid
-      cumulativeErrorCount += errorCount
-      cumulativeErrors = { ...cumulativeErrors, ...errors }
+    const quantityKey = isLimitOrder ? this.INPUT_TYPES.QUANTITY : this.INPUT_TYPES.MARKET_ORDER_SIZE
+    const quantityTest = isLimitOrder ? this.testQuantity : this.testMarketOrderSize
 
+    let value = new BigNumber(order[quantityKey])
+    const { isOrderValid, errors, errorCount } = quantityTest(value, cumulativeErrors, cumulativeOrderValid)
+    cumulativeOrderValid = isOrderValid
+    cumulativeErrorCount += errorCount
+    cumulativeErrors = { ...cumulativeErrors, ...errors }
+
+    if (orderType === LIMIT) {
       value = new BigNumber(order[this.INPUT_TYPES.PRICE])
-
-      const { isOrderValid: priceValid, errors: priceErrors, errorCount: priceCount } = this.testPrice(value, cumulativeErrors, cumulativeOrderValid)
-      cumulativeOrderValid = priceValid
-      cumulativeErrorCount += priceCount
-      cumulativeErrors = { ...cumulativeErrors, ...priceErrors }
+      const { isOrderValid, errors, errorCount } = this.testPrice(value, cumulativeErrors, cumulativeOrderValid)
+      cumulativeOrderValid = isOrderValid
+      cumulativeErrorCount += errorCount
+      cumulativeErrors = { ...cumulativeErrors, ...errors }
     }
     return { isOrderValid: cumulativeOrderValid, errors: cumulativeErrors, errorCount: cumulativeErrorCount }
   }
@@ -181,7 +172,8 @@ class MarketTradingForm extends Component {
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
-    const { orderType, marketType } = this.props
+    const { orderType } = this.props
+    const isLimitOrder = orderType === LIMIT
     const updatedState = {
       ...this.state,
       [property]: value
@@ -191,20 +183,10 @@ class MarketTradingForm extends Component {
 
     if (errorCount === 0) {
       const side = this.props.selectedNav
-      const maxCost = updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
-      let limitPrice = 0
-      let shares = 0
+      const limitPrice = isLimitOrder ? updatedState[this.INPUT_TYPES.PRICE] : null
+      const shares = isLimitOrder ? updatedState[this.INPUT_TYPES.QUANTITY] : updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
 
-      if (orderType === MARKET) {
-        limitPrice = (marketType === SCALAR && !isNaN(updatedState[this.INPUT_TYPES.PRICE])) ? updatedState[this.INPUT_TYPES.PRICE] : null
-
-        this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, maxCost)
-      } else {
-        shares = updatedState[this.INPUT_TYPES.QUANTITY]
-        limitPrice = updatedState[this.INPUT_TYPES.PRICE]
-
-        this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side)
-      }
+      this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, null, orderType)
     }
     this.setState({
       errors: {
@@ -229,18 +211,18 @@ class MarketTradingForm extends Component {
           <label>Order Type</label>
           <div className={Styles.TradingForm__type}>
             <button
-              className={classNames({ [`${Styles.active}`]: p.orderType === MARKET })}
-              onClick={() => p.updateState('orderType', MARKET)}
-            >Market
-            </button>
-            <button
               className={classNames({ [`${Styles.active}`]: p.orderType === LIMIT })}
               onClick={() => p.updateState('orderType', LIMIT)}
             >Limit
             </button>
+            <button
+              className={classNames({ [`${Styles.active}`]: p.orderType === MARKET })}
+              onClick={() => p.updateState('orderType', MARKET)}
+            >Market
+            </button>
           </div>
         </li>
-        { p.orderType === LIMIT && !p.isMobile && p.market.marketType !== SCALAR &&
+        { !p.isMobile && p.market.marketType !== SCALAR &&
           <li>
             <label>Outcome</label>
             <div className={Styles['TradingForm__static-field']}>{ p.selectedOutcome.name }</div>
@@ -248,13 +230,13 @@ class MarketTradingForm extends Component {
         }
         { p.orderType === MARKET &&
           <li>
-            <label htmlFor="tr__input--total-cost">Total Cost</label>
+            <label htmlFor="tr__input--total-Quantity">Quantity</label>
             <input
               className={classNames({ [`${Styles.error}`]: s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].length })}
-              id="tr__input--total-cost"
+              id="tr__input--total-Quantity"
               type="number"
               step={tickSize}
-              placeholder={`${tickSize} ETH`}
+              placeholder={`${tickSize} Shares`}
               value={s[this.INPUT_TYPES.MARKET_ORDER_SIZE] instanceof BigNumber ? s[this.INPUT_TYPES.MARKET_ORDER_SIZE].toNumber() : s[this.INPUT_TYPES.MARKET_ORDER_SIZE]}
               onChange={e => this.validateForm(this.INPUT_TYPES.MARKET_ORDER_SIZE, e.target.value)}
             />
@@ -288,29 +270,13 @@ class MarketTradingForm extends Component {
             />
           </li>
         }
-        { p.market.marketType === SCALAR && p.orderType === MARKET &&
-          <li>
-            <label htmlFor="tr__input--limit-price-market">Price</label>
-            <input
-              className={classNames({ [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length })}
-              id="tr__input--limit-price-market"
-              type="number"
-              step={tickSize}
-              placeholder={`${tickSize} ETH`}
-              value={s[this.INPUT_TYPES.PRICE] instanceof BigNumber ? s[this.INPUT_TYPES.PRICE].toNumber() : s[this.INPUT_TYPES.PRICE]}
-              onChange={e => this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)}
-            />
-          </li>
-        }
-        { p.orderType === LIMIT &&
-          <li>
-            <label>Est. Cost</label>
-            <div className={Styles['TradingForm__static-field']}>{ p.orderEstimate }</div>
-          </li>
-        }
+        <li>
+          <label>Est. Cost</label>
+          <div className={Styles['TradingForm__static-field']}>{ p.orderEstimate }</div>
+        </li>
         { p.orderType === MARKET &&
           <li>
-            <label>Quantity</label>
+            <label>Est. Quantity</label>
             <div className={Styles['TradingForm__static-field']}>{ p.marketQuantity }</div>
           </li>
         }
@@ -330,5 +296,5 @@ class MarketTradingForm extends Component {
     )
   }
 }
-
+        // { p.orderType === LIMIT &&
 export default MarketTradingForm

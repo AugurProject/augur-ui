@@ -20,10 +20,14 @@ BigNumber.config({ ERRORS: false })
  *    potentialLossPercent:   number, the max percentage loss that can be lost with current numShares and limit price; for SELLs loss is always 100%
  */
 
-export default function (numShares, limitPrice, side, minPrice, maxPrice, type) {
-  if (!numShares || !limitPrice || !side|| !type) return null
+export default function (numShares, limitPrice, side, minPrice, maxPrice, type, sharesFilled, tradeTotalCost) {
+  if (!numShares || !sharesFilled || !side|| !type || (!limitPrice && !tradeTotalCost)) return null
+  if (!limitPrice && tradeTotalCost) {
+    // market order
+    limitPrice = new BigNumber(tradeTotalCost, 10).dividedBy(sharesFilled).toFixed()
+    numShares = sharesFilled
+  }
   if (type === SCALAR && (isNaN(minPrice) || isNaN(maxPrice))) return null
-
   const max = new BigNumber(type === SCALAR ? maxPrice : 1)
   const min = new BigNumber(type === SCALAR ? minPrice : 0)
   const limit = new BigNumber(limitPrice)
@@ -44,6 +48,6 @@ export default function (numShares, limitPrice, side, minPrice, maxPrice, type) 
     potentialEthProfit,
     potentialEthLoss,
     potentialProfitPercent,
-    potentialLossPercent
+    potentialLossPercent,
   }
 }

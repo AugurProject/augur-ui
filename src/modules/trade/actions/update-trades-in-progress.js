@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { augur } from 'services/augurjs'
-import { BUY, SELL } from 'modules/transactions/constants/types'
+import { BUY, SELL, LIMIT, MARKET } from 'modules/transactions/constants/types'
 import { BIDS, ASKS } from 'modules/order-book/constants/order-book-order-types'
 import { TWO } from 'modules/trade/constants/numbers'
 import { SCALAR } from 'modules/markets/constants/market-types'
@@ -13,7 +13,7 @@ export const UPDATE_TRADE_IN_PROGRESS = 'UPDATE_TRADE_IN_PROGRESS'
 export const CLEAR_TRADE_IN_PROGRESS = 'CLEAR_TRADE_IN_PROGRESS'
 
 // Updates user's trade. Only defined (i.e. !== null) parameters are updated
-export function updateTradesInProgress(marketID, outcomeID, side, numShares, limitPrice, maxCost, callback = logError) {
+export function updateTradesInProgress(marketID, outcomeID, side, numShares, limitPrice, maxCost, orderType = LIMIT, callback = logError) {
   return (dispatch, getState) => {
     const {
       tradesInProgress, marketsData, loginAccount, orderBooks, orderCancellation
@@ -27,8 +27,9 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // if new side not provided, use old side
+    // TODO: REMOVE MAX COST IN FAVOR OF NUMSHARES (needs update UI side)
     const cleanSide = side || outcomeTradeInProgress.side
-    if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null && !maxCost) { // numShares cleared
+    if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null && orderType !== MARKET) { // numShares cleared
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -101,138 +102,20 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
     }
 
-    if (maxCost) {
-      // maxCost defined indicates a Market Order
-      let sharesAmount = new BigNumber(0, 10)
-      let amountLeftToFill = new BigNumber(maxCost, 10)
-      let orderLimitPrice = new BigNumber(cleanLimitPrice, 10)
-      // exit early
-      const normalizedOrderLimitPrice = new BigNumber(augur.trading.normalizePrice({
-        minPrice: market.minPrice,
-        maxPrice: market.maxPrice,
-        price: orderLimitPrice.toString()
-      }), 10)
-      const orderBookSide = side === BUY ? marketOrderBook[ASKS] : marketOrderBook[BIDS]
-      const bignumMarketRange = new BigNumber(market.maxPrice, 10).minus(new BigNumber(market.minPrice, 10))
-
-      for (let i = 0; i < orderBookSide.length; i++) {
-        if (amountLeftToFill.eq('0')) {
-          break
-        }
-
-        let orderAmountTaken = new BigNumber(0)
-        let orderSharesTaken = new BigNumber(0)
-
-        const sharesEscrowed = new BigNumber(orderBookSide[i].sharesEscrowed.value, 10)
-
-        const tokensEscrowed = new BigNumber(orderBookSide[i].tokensEscrowed.value, 10)
-
-        const orderPrice = new BigNumber(orderBookSide[i].price.value, 10)
-
-        const normalizedOrderPrice = new BigNumber(augur.trading.normalizePrice({
-          minPrice: market.minPrice,
-          maxPrice: market.maxPrice,
-          price: orderPrice.toString()
-        }), 10)
-        const normalizedPricePerShare = normalizedOrderPrice.times(bignumMarketRange)
-
-        const orderShares = new BigNumber(orderBookSide[i].shares.value, 10)
-
-        // scalars have a limit to stop at, let's check if we break early
-        if (market.marketType === SCALAR) {
-          if ((side === BUY && normalizedOrderPrice.gt(normalizedOrderLimitPrice)) || (side === SELL && normalizedOrderPrice.lt(normalizedOrderLimitPrice))) {
-            // stop looping, we have hit our limitPrice for this marketOrder
-            break
-          }
-        }
-
-        if (sharesEscrowed.gt('0')) {
-          let sharesAffordable = new BigNumber(0)
-          let amountToTake = new BigNumber(0)
-          const orderSharesLeft = sharesEscrowed
-          const sharesLeftScaled = orderSharesLeft.times(bignumMarketRange)
-
-          if (side === BUY) {
-            const costOfFullOrder = sharesLeftScaled.times(normalizedPricePerShare)
-            const sharesAtAmountFillable = amountLeftToFill.dividedBy(normalizedPricePerShare)
-            if (amountLeftToFill.gt(costOfFullOrder)) {
-              sharesAffordable = orderSharesLeft
-              amountToTake = costOfFullOrder
-            } else {
-              sharesAffordable = sharesAtAmountFillable
-              amountToTake = amountLeftToFill
-            }
-          }
-          if (side === SELL) {
-            // if we are selling, we are walking the buy book, cost of shares should be
-            const costOfFullOrder = sharesLeftScaled.times((bignumMarketRange.minus(normalizedPricePerShare)))
-            const amountOfSharesAffordable = amountLeftToFill.dividedBy((bignumMarketRange.minus(normalizedPricePerShare)))
-            if (costOfFullOrder.gt(amountLeftToFill)) {
-              sharesAffordable = amountOfSharesAffordable
-              amountToTake = amountLeftToFill
-            } else {
-              sharesAffordable = orderSharesLeft
-              amountToTake = costOfFullOrder
-            }
-          }
-          sharesAmount = sharesAmount.plus(sharesAffordable)
-          amountLeftToFill = amountLeftToFill.minus(amountToTake)
-          orderAmountTaken = orderAmountTaken.plus(amountToTake)
-          orderSharesTaken = orderSharesTaken.plus(sharesAffordable)
-        }
-
-        if (tokensEscrowed.gt('0')) {
-          let sharesAffordable = new BigNumber(0)
-          let amountToTake = new BigNumber(0)
-          const orderSharesLeft = orderShares.minus(orderSharesTaken)
-          const sharesLeftScaled = orderSharesLeft.times(bignumMarketRange)
-
-          if (side === BUY) {
-            const costOfFullOrder = sharesLeftScaled.times(normalizedOrderPrice)
-            const sharesAtAmountFillable = amountLeftToFill.dividedBy(normalizedPricePerShare)
-            if (amountLeftToFill.gt(costOfFullOrder)) {
-              sharesAffordable = orderSharesLeft
-              amountToTake = costOfFullOrder
-            } else {
-              sharesAffordable = sharesAtAmountFillable
-              amountToTake = amountLeftToFill
-            }
-          }
-
-          if (side === SELL) {
-            const costOfFullOrder = sharesLeftScaled.minus(tokensEscrowed)
-            const costPerShare = costOfFullOrder.dividedBy(orderSharesLeft)
-            if (amountLeftToFill.gt(costOfFullOrder)) {
-              sharesAffordable = orderSharesLeft
-              amountToTake = costOfFullOrder
-            } else {
-              sharesAffordable = amountLeftToFill.dividedBy(costPerShare)
-              amountToTake = amountLeftToFill
-            }
-          }
-          // save values
-          sharesAmount = sharesAmount.plus(sharesAffordable)
-          amountLeftToFill = amountLeftToFill.minus(amountToTake)
-          orderAmountTaken = orderAmountTaken.plus(amountToTake)
-          orderSharesTaken = orderSharesTaken.plus(sharesAffordable)
-        }
-        // update limitPrice for simulateTrade
-        orderLimitPrice = orderPrice
-      }
-      // finished all marketOrder calculations, update clean values
-      cleanNumShares = sharesAmount.toString()
-      cleanLimitPrice = orderLimitPrice.toString()
+    // if market order limitPrice should be null
+    if (orderType === MARKET) {
+      cleanLimitPrice = null
     }
 
     const newTradeDetails = {
       side: cleanSide,
       numShares: cleanNumShares === '0' ? undefined : cleanNumShares,
-      limitPrice: new BigNumber(cleanLimitPrice, 10).toString(),
+      limitPrice: cleanLimitPrice,
       totalFee: '0',
       totalCost: '0'
     }
     // trade actions
-    if (newTradeDetails.side && loginAccount.address && !isNaN(newTradeDetails.numShares)) {
+    if (newTradeDetails.side && loginAccount.address) {
       dispatch(loadAccountPositions({ market: marketID }, (err, accountPositions) => {
         if (err) {
           return dispatch({
@@ -248,6 +131,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             cleanAccountPositions.push(0)
           }
         }
+        console.log('about to callSimTrade:', newTradeDetails);
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
@@ -263,12 +147,13 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })
-        // console.log('simtrade:', simulatedTrade);
+        console.log('simtrade:', simulatedTrade);
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
         newTradeDetails.totalCost = new BigNumber(simulatedTrade.tokensDepleted, 10).neg().toFixed()
         newTradeDetails.feePercent = totalFee.dividedBy(new BigNumber(simulatedTrade.tokensDepleted, 10)).toFixed()
         if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = '0'
+        console.log('updatedTradesInProgress', { ...newTradeDetails, ...simulatedTrade });
         dispatch({
           type: UPDATE_TRADE_IN_PROGRESS,
           data: { marketID, outcomeID, details: { ...newTradeDetails, ...simulatedTrade } }

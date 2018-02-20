@@ -32,7 +32,7 @@ export function closePosition(marketID, outcomeID) {
         dispatch(clearClosePositionOutcome(marketID, outcomeID))
         dispatch(addClosePositionTradeGroup(marketID, outcomeID, CLOSE_DIALOG_NO_ORDERS))
       } else {
-        dispatch(updateTradesInProgress(marketID, outcomeID, positionShares.toNumber() > 0 ? SELL : BUY, bestFill.amountOfShares.toNumber(), bestFill.price.toNumber(), null, () => {
+        dispatch(updateTradesInProgress(marketID, outcomeID, positionShares.toNumber() > 0 ? SELL : BUY, bestFill.amountOfShares.toNumber(), bestFill.price.toNumber(), null, null, () => {
           const { tradesInProgress } = getState()
           dispatch(placeTrade(marketID, outcomeID, tradesInProgress[marketID], true, (err, tradeGroupID) => {
             if (err) {

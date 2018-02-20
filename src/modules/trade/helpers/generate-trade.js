@@ -23,6 +23,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
 
   const side = (outcomeTradeInProgress && outcomeTradeInProgress.side) || TRANSACTIONS_TYPES.BUY
   const numShares = (outcomeTradeInProgress && outcomeTradeInProgress.numShares) || null
+  const sharesFilled = (outcomeTradeInProgress && outcomeTradeInProgress.sharesFilled) || null
   const limitPrice = (outcomeTradeInProgress && outcomeTradeInProgress.limitPrice) || null
   const totalFee = (outcomeTradeInProgress && outcomeTradeInProgress.totalFee) || 0
   const feePercent = (outcomeTradeInProgress && outcomeTradeInProgress.feePercent) || 0
@@ -31,7 +32,8 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   const marketType = (market && market.marketType) || null
   const minPrice = (market && typeof market.minPrice === 'number') ? market.minPrice : null
   const maxPrice = (market && market.maxPrice) || null
-  const preOrderProfitLoss = calcOrderProfitLossPercents(numShares, limitPrice, side, minPrice, maxPrice, marketType)
+  const adjustedTotalCost = (totalCost < 0) ? new BigNumber(outcomeTradeInProgress.totalCost, 10).minus(new BigNumber(outcomeTradeInProgress.totalFee, 10)).abs().toFixed() : null
+  const preOrderProfitLoss = calcOrderProfitLossPercents(numShares, limitPrice, side, minPrice, maxPrice, marketType, sharesFilled, adjustedTotalCost)
 
   let maxNumShares
   if (limitPrice != null) {
@@ -59,6 +61,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     numShares,
     limitPrice,
     maxNumShares,
+    sharesFilled,
 
     potentialEthProfit: preOrderProfitLoss ? formatEtherTokens(preOrderProfitLoss.potentialEthProfit) : null,
     potentialEthLoss: preOrderProfitLoss ? formatEtherTokens(preOrderProfitLoss.potentialEthLoss) : null,
@@ -76,7 +79,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     ],
 
     tradeSummary: generateTradeSummary(generateTradeOrders(market, outcome, outcomeTradeInProgress)),
-    updateTradeOrder: (shares, limitPrice, side, maxCost) => store.dispatch(updateTradesInProgress(market.id, outcome.id, side, shares, limitPrice, maxCost)),
+    updateTradeOrder: (shares, limitPrice, side, maxCost, orderType) => store.dispatch(updateTradesInProgress(market.id, outcome.id, side, shares, limitPrice, maxCost, orderType)),
     totalSharesUpToOrder: (orderIndex, side) => totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks)
   }
 }, { max: 5 })

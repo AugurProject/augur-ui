@@ -55,10 +55,10 @@ class MarketTradingWrapper extends Component {
   componentWillReceiveProps(nextProps) {
     if (!nextProps.selectedOutcome || !nextProps.selectedOutcome.trade) return
     const nextTotalCost = new BigNumber(nextProps.selectedOutcome.trade.totalCost.value)
-    const nextNumShares = nextProps.selectedOutcome.trade.numShares
+    const nextSharesFilled = nextProps.selectedOutcome.trade.sharesFilled
     if (`${nextTotalCost.abs().toString()} ETH` !== this.state.orderEstimate) {
       const orderEstimate = `${nextTotalCost.abs().toString()} ETH`
-      const marketQuantity = (nextNumShares && this.state.orderType === MARKET) ? `${nextNumShares} Shares` : ''
+      const marketQuantity = (this.state.orderType === MARKET) ? `${nextSharesFilled} Shares` : ''
       this.setState({
         orderEstimate,
         marketQuantity,

@@ -156,3 +156,9 @@ Here are misc. script to do operations on the local node and to change time. Mor
 ## Summary
 
 This should get the ball rolling
+
+
+
+904625697166532776746648320380374280103671755200316906558.262
+max gas cost:                                           0.006175
+max total supposedly:                                   7.006
