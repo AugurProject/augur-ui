@@ -1,18 +1,25 @@
 @import (reference) '~assets/styles/shared';
 
-.ReportDispute_noRepState {
+.ReportDisputeNoRep {
   align-items: center;
-  background: @color-darkgray;
-  color: @color-lightgray;
+  background: @color-darkpurple;
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
   margin: 2rem;
   padding: 0.5em 2em;
 
-  > button {
+  &__message {
+    color: @color-lightgray;
+    font-size: @font-size-large;
+    padding-right: 1em;
+  }
+
+  &__cta {
     &:extend(.button--white all);
 
+    color: @color-purple;
+    font-size: @font-size-large;
     white-space: nowrap;
   }
 
@@ -20,11 +27,11 @@
     justify-content: flex-end;
     padding: 0.5em 1em;
 
-    & > span {
+    &__message {
       width: 100%;
     }
 
-    & > button {
+    &__cta {
       border-radius: 0;
       margin-top: 1em;
       width: 100%;
