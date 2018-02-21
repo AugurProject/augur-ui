@@ -296,5 +296,5 @@ class MarketTradingForm extends Component {
     )
   }
 }
-        // { p.orderType === LIMIT &&
+
 export default MarketTradingForm
