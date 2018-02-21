@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { augur } from 'services/augurjs'
-import { BUY, SELL } from 'modules/transactions/constants/types'
+import { BUY, SELL, LIMIT, MARKET } from 'modules/transactions/constants/types'
 import { TWO } from 'modules/trade/constants/numbers'
 import { SCALAR } from 'modules/markets/constants/market-types'
 
@@ -12,11 +12,12 @@ export const UPDATE_TRADE_IN_PROGRESS = 'UPDATE_TRADE_IN_PROGRESS'
 export const CLEAR_TRADE_IN_PROGRESS = 'CLEAR_TRADE_IN_PROGRESS'
 
 // Updates user's trade. Only defined (i.e. !== null) parameters are updated
-export function updateTradesInProgress(marketID, outcomeID, side, numShares, limitPrice, maxCost, callback = logError) {
+export function updateTradesInProgress(marketID, outcomeID, side, numShares, limitPrice, maxCost, orderType = LIMIT, callback = logError) {
   return (dispatch, getState) => {
     const {
       tradesInProgress, marketsData, loginAccount, orderBooks, orderCancellation
     } = getState()
+
     const outcomeTradeInProgress = (tradesInProgress && tradesInProgress[marketID] && tradesInProgress[marketID][outcomeID]) || {}
     const market = marketsData[marketID]
     // if nothing changed, exit
@@ -26,7 +27,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
 
     // if new side not provided, use old side
     const cleanSide = side || outcomeTradeInProgress.side
-
     if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null) { // numShares cleared
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
@@ -42,7 +42,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       })
     }
 
-    if ((limitPrice === '' || (parseFloat(limitPrice) === 0 && market.type !== SCALAR)) && numShares === null) { // limitPrice cleared
+    if ((limitPrice === '' || (parseFloat(limitPrice) === 0 && market.marketType !== SCALAR)) && numShares === null) { // limitPrice cleared
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -59,22 +59,23 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
 
     // find top order to default limit price to
     const marketOrderBook = selectAggregateOrderBook(outcomeID, orderBooks[marketID], orderCancellation)
-    const defaultPrice = market.type === SCALAR ?
+    const defaultPrice = market.marketType === SCALAR ?
       new BigNumber(market.maxPrice, 10)
         .plus(new BigNumber(market.minPrice, 10))
         .dividedBy(TWO)
         .toFixed() :
       '0.5'
-    const topOrderPrice = cleanSide === BUY ?
+    // get topOrderPrice and make sure it's a string value
+    const topOrderPrice = new BigNumber(cleanSide === BUY ?
       ((selectTopAsk(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice :
-      ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
+      ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice).toFixed()
 
-    const bignumShares = new BigNumber(numShares, 10)
-    const bignumLimit = new BigNumber(limitPrice, 10)
+    const bignumShares = new BigNumber(numShares || 0, 10)
+    const bignumLimit = new BigNumber(limitPrice || 0, 10)
     // clean num shares
     const cleanNumShares = numShares && bignumShares.toFixed() === '0' ? '0' : (numShares && bignumShares.abs().toFixed()) || outcomeTradeInProgress.numShares || '0'
 
-    // if current trade order limitPrice is equal to the best price, make sure it's equal to that; otherwise, use what the user has entered
+    // if current trade order limitPrice is equal to the best price, make sure it's equal to that otherwise, use what the user has entered
     let cleanLimitPrice
     const topAskPrice = ((selectTopAsk(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
     const topBidPrice = ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
@@ -91,13 +92,17 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       cleanLimitPrice = outcomeTradeInProgress.limitPrice
     }
 
-    if (cleanNumShares && !cleanLimitPrice && (market.type === SCALAR || cleanLimitPrice !== '0')) {
+    if (cleanNumShares && !cleanLimitPrice && (market.marketType === SCALAR || cleanLimitPrice !== '0')) {
       cleanLimitPrice = topOrderPrice
     }
-
     // if this isn't a scalar market, limitPrice must be positive.
-    if (market.type !== SCALAR && limitPrice) {
+    if (market.marketType !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
+    }
+
+    // if market order limitPrice should be null
+    if (orderType === MARKET) {
+      cleanLimitPrice = null
     }
 
     const newTradeDetails = {
@@ -107,9 +112,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       totalFee: '0',
       totalCost: '0'
     }
-
     // trade actions
-    if (newTradeDetails.side && newTradeDetails.numShares && loginAccount.address) {
+    if (newTradeDetails.side && loginAccount.address && newTradeDetails.numShares) {
       dispatch(loadAccountPositions({ market: marketID }, (err, accountPositions) => {
         if (err) {
           return dispatch({
@@ -117,25 +121,32 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             data: { marketID, outcomeID, details: newTradeDetails }
           })
         }
+        const cleanAccountPositions = []
+        for (let i = 0; i < market.numOutcomes; i++) {
+          if (accountPositions[i] && !isNaN(accountPositions[i].numShares)) {
+            cleanAccountPositions.push(accountPositions[i].numShares)
+          } else {
+            cleanAccountPositions.push(0)
+          }
+        }
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
-          shareBalances: accountPositions,
-          tokenBalance: (loginAccount.ethTokens && loginAccount.ethTokens.toString()) || '0',
+          shareBalances: cleanAccountPositions,
+          tokenBalance: (loginAccount.eth && loginAccount.eth.toString()) || '0',
           userAddress: loginAccount.address,
           minPrice: market.minPrice,
           maxPrice: market.maxPrice,
           price: newTradeDetails.limitPrice,
           shares: newTradeDetails.numShares,
           marketCreatorFeeRate: market.settlementFee,
-          singleOutcomeOrderBook: (orderBooks && orderBooks[marketID]) || {},
+          singleOutcomeOrderBook: (orderBooks && orderBooks[marketID] && orderBooks[marketID][outcomeID]) || {},
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })
-        // console.log('simulated trade:', JSON.stringify(simulatedTrade, null, 2));
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
-        newTradeDetails.totalCost = new BigNumber(simulatedTrade.tokensDepleted, 10).neg().toFixed()
+        newTradeDetails.totalCost = simulatedTrade.tokensDepleted
         newTradeDetails.feePercent = totalFee.dividedBy(new BigNumber(simulatedTrade.tokensDepleted, 10)).toFixed()
         if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = '0'
         dispatch({

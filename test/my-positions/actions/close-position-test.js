@@ -21,7 +21,7 @@ describe('modules/my-positions/actions/close-position.js', () => {
   const mockUpdateTradesInProgress = {
     updateTradesInProgress: () => { }
   }
-  sinon.stub(mockUpdateTradesInProgress, 'updateTradesInProgress').callsFake((marketID, outcomeID, side, numShares, limitPrice, maxCost, cb) => (dispatch, getState) => cb())
+  sinon.stub(mockUpdateTradesInProgress, 'updateTradesInProgress').callsFake((marketID, outcomeID, side, numShares, limitPrice, maxCost, tradeType, cb) => (dispatch, getState) => cb())
   const mockClearClosePositionOutcome = {
     clearClosePositionOutcome: sinon.stub().returns({ type: MOCK_ACTION_TYPES.CLEAR_CLOSE_POSITION_OUTCOME })
   }

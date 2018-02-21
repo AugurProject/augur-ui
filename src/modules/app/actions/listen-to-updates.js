@@ -5,11 +5,14 @@ import { syncBlockchain } from 'modules/app/actions/sync-blockchain'
 import syncUniverse from 'modules/universe/actions/sync-universe'
 import { convertLogsToTransactions } from 'modules/transactions/actions/convert-logs-to-transactions'
 import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info'
+import { loadFullMarket } from 'modules/market/actions/load-full-market'
+import { loadAccountTrades } from 'modules/my-positions/actions/load-account-trades'
+// import loadBidsAsks from 'modules/bids-asks/actions/load-bids-asks'
 import { updateOutcomePrice } from 'modules/markets/actions/update-outcome-price'
 import { removeCanceledOrder } from 'modules/bids-asks/actions/update-order-status'
 // import { fillOrder } from 'modules/bids-asks/actions/update-market-order-book'
 import { updateMarketCategoryPopularity } from 'modules/categories/actions/update-categories'
-import { updateAccountTradesData, updateAccountBidsAsksData, updateAccountCancelsData, updateAccountPositionsData } from 'modules/my-positions/actions/update-account-trades-data'
+import { updateAccountBidsAsksData, updateAccountCancelsData } from 'modules/my-positions/actions/update-account-trades-data'
 import { addNotification } from 'modules/notifications/actions/update-notifications'
 // import claimTradingProceeds from 'modules/my-positions/actions/claim-trading-proceeds'
 import makePath from 'modules/routes/helpers/make-path'
@@ -43,7 +46,7 @@ export function listenToUpdates(history) {
         if (log) {
           console.log('MarketCreated:', log)
           // augur-node emitting log.market from raw contract logs.
-          dispatch(loadMarketsInfo([log.market]))
+          dispatch(loadFullMarket(log.marketID || log.market))
           if (log.sender === getState().loginAccount.address) {
             dispatch(updateAssets())
             dispatch(convertLogsToTransactions(TYPES.CREATE_MARKET, [log]))
@@ -55,7 +58,7 @@ export function listenToUpdates(history) {
         if (log) {
           console.log('TokensTransferred:', log)
           const { address } = getState().loginAccount
-          if (log._from === address || log._to === address) {
+          if (log.from === address || log.to === address) {
             dispatch(updateAssets())
             dispatch(convertLogsToTransactions(TYPES.TRANSFER, [log]))
           }
@@ -65,6 +68,7 @@ export function listenToUpdates(history) {
         if (err) return console.error('OrderCanceled:', err)
         if (log) {
           console.log('OrderCanceled:', log)
+          dispatch(loadFullMarket(log.marketID || log.market || log.marketId))
           // if this is the user's order, then add it to the transaction display
           if (log.sender === getState().loginAccount.address) {
             dispatch(updateAccountCancelsData({
@@ -79,8 +83,9 @@ export function listenToUpdates(history) {
         if (err) return console.error('OrderCreated:', err)
         if (log) {
           console.log('OrderCreated:', log)
+          dispatch(loadFullMarket(log.marketID || log.market || log.marketId))
           // if this is the user's order, then add it to the transaction display
-          if (log.sender === getState().loginAccount.address) {
+          if (log.orderCreator === getState().loginAccount.address) {
             dispatch(updateAccountBidsAsksData({
               [log.marketID]: {
                 [log.outcome]: [log]
@@ -94,27 +99,13 @@ export function listenToUpdates(history) {
         if (err) return console.error('OrderFilled:', err)
         if (log) {
           console.log('OrderFilled:', log)
-          dispatch(updateOutcomePrice(log.marketID, log.outcome, new BigNumber(log.price, 10)))
-          dispatch(updateMarketCategoryPopularity(log.market, log.amount))
+          dispatch(updateOutcomePrice(log.marketID || log.market || log.marketId, log.outcome, new BigNumber(log.price, 10)))
+          dispatch(updateMarketCategoryPopularity(log.marketID || log.market || log.marketId, log.amount))
+          dispatch(loadFullMarket(log.marketID || log.market || log.marketId))
           const { address } = getState().loginAccount
-          if (log.sender === address || log.owner === address) {
-            // dispatch(convertLogsToTransactions(TYPES.FILL_ORDER, [log]))
-            updateAccountTradesData(updateAccountTradesData({
-              [log.marketID]: {
-                [log.outcome]: [log]
-              }
-            }, log.marketID))
-            dispatch(updateAccountPositionsData({
-              [log.marketID]: {
-                [log.outcome]: [{
-                  ...log,
-                  maker: log.creator === address
-                }]
-              }
-            }))
+          if (log.filler === address || log.creator === address) {
+            dispatch(loadAccountTrades({ market: log.marketID }))
             dispatch(updateAssets())
-            dispatch(loadMarketsInfo([log.marketID]))
-            console.log('MSG -- ', log)
           }
         }
       },
