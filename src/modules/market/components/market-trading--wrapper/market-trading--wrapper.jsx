@@ -13,7 +13,7 @@ import ValueDenomination from 'modules/common/components/value-denomination/valu
 
 import getValue from 'utils/get-value'
 
-import { BUY, SELL, LIMIT, MARKET } from 'modules/transactions/constants/types'
+import { BUY, SELL, LIMIT } from 'modules/transactions/constants/types'
 import { ACCOUNT_DEPOSIT } from 'modules/routes/constants/views'
 
 import Styles from 'modules/market/components/market-trading--wrapper/market-trading--wrapper.styles'

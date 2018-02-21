@@ -27,7 +27,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
 
     // if new side not provided, use old side
     const cleanSide = side || outcomeTradeInProgress.side
-    if ((numShares === '' || parseFloat(numShares) === 0)) { // numShares cleared
+    if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null) { // numShares cleared
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {

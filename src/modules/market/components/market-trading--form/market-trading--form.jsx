@@ -1,5 +1,4 @@
 /* eslint jsx-a11y/label-has-for: 0 */
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
@@ -84,9 +83,8 @@ class MarketTradingForm extends Component {
     }
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
-      console.log('update!', currentOrderInfo, newOrderInfo);
       // trade has changed, lets update trade.
-      this.updateTrade(newStateInfo, nextProps);
+      this.updateTrade(newStateInfo, nextProps)
 
       const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice
       const prevTradePrice = this.props.selectedOutcome.trade.limitPrice
@@ -108,10 +106,11 @@ class MarketTradingForm extends Component {
     }
   }
 
-  testQuantity(value, errors, isOrderValid, quantityKey) {
+  testQuantity(value, errors, isOrderValid, isLimitOrder) {
     let errorCount = 0
     let passedTest = !!isOrderValid
     if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
+    const quantityKey = isLimitOrder ? this.INPUT_TYPES.QUANTITY : this.INPUT_TYPES.MARKET_ORDER_SIZE
     if (value.lt(0)) {
       errorCount += 1
       passedTest = false
@@ -148,7 +147,7 @@ class MarketTradingForm extends Component {
     const quantityKey = isLimitOrder ? this.INPUT_TYPES.QUANTITY : this.INPUT_TYPES.MARKET_ORDER_SIZE
 
     let value = new BigNumber(order[quantityKey])
-    const { isOrderValid, errors, errorCount } = this.testQuantity(value, cumulativeErrors, cumulativeOrderValid, quantityKey)
+    const { isOrderValid, errors, errorCount } = this.testQuantity(value, cumulativeErrors, cumulativeOrderValid, isLimitOrder)
     cumulativeOrderValid = isOrderValid
     cumulativeErrorCount += errorCount
     cumulativeErrors = { ...cumulativeErrors, ...errors }
@@ -189,8 +188,6 @@ class MarketTradingForm extends Component {
   validateForm(property, rawValue) {
     let value = rawValue
     if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
-    const { orderType } = this.props
-    const isLimitOrder = orderType === LIMIT
     const updatedState = {
       ...this.state,
       [property]: value
