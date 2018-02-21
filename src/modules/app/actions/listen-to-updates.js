@@ -5,8 +5,9 @@ import { syncBlockchain } from 'modules/app/actions/sync-blockchain'
 import syncUniverse from 'modules/universe/actions/sync-universe'
 import { convertLogsToTransactions } from 'modules/transactions/actions/convert-logs-to-transactions'
 import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info'
+import { loadFullMarket } from 'modules/market/actions/load-full-market'
 import { loadAccountTrades } from 'modules/my-positions/actions/load-account-trades'
-import loadBidsAsks from 'modules/bids-asks/actions/load-bids-asks'
+// import loadBidsAsks from 'modules/bids-asks/actions/load-bids-asks'
 import { updateOutcomePrice } from 'modules/markets/actions/update-outcome-price'
 import { removeCanceledOrder } from 'modules/bids-asks/actions/update-order-status'
 // import { fillOrder } from 'modules/bids-asks/actions/update-market-order-book'
@@ -45,7 +46,7 @@ export function listenToUpdates(history) {
         if (log) {
           console.log('MarketCreated:', log)
           // augur-node emitting log.market from raw contract logs.
-          dispatch(loadMarketsInfo([log.market]))
+          dispatch(loadFullMarket(log.marketID || log.market))
           if (log.sender === getState().loginAccount.address) {
             dispatch(updateAssets())
             dispatch(convertLogsToTransactions(TYPES.CREATE_MARKET, [log]))
@@ -67,7 +68,7 @@ export function listenToUpdates(history) {
         if (err) return console.error('OrderCanceled:', err)
         if (log) {
           console.log('OrderCanceled:', log)
-          dispatch(loadBidsAsks([log.marketID]))
+          dispatch(loadFullMarket(log.marketID || log.market || log.marketId))
           // if this is the user's order, then add it to the transaction display
           if (log.sender === getState().loginAccount.address) {
             dispatch(updateAccountCancelsData({
@@ -82,7 +83,7 @@ export function listenToUpdates(history) {
         if (err) return console.error('OrderCreated:', err)
         if (log) {
           console.log('OrderCreated:', log)
-          dispatch(loadBidsAsks([log.marketID]))
+          dispatch(loadFullMarket(log.marketID || log.market || log.marketId))
           // if this is the user's order, then add it to the transaction display
           if (log.orderCreator === getState().loginAccount.address) {
             dispatch(updateAccountBidsAsksData({
@@ -98,9 +99,9 @@ export function listenToUpdates(history) {
         if (err) return console.error('OrderFilled:', err)
         if (log) {
           console.log('OrderFilled:', log)
-          dispatch(updateOutcomePrice(log.marketID, log.outcome, new BigNumber(log.price, 10)))
-          dispatch(updateMarketCategoryPopularity(log.market, log.amount))
-          dispatch(loadBidsAsks([log.marketID]))
+          dispatch(updateOutcomePrice(log.marketID || log.market || log.marketId, log.outcome, new BigNumber(log.price, 10)))
+          dispatch(updateMarketCategoryPopularity(log.marketID || log.market || log.marketId, log.amount))
+          dispatch(loadFullMarket(log.marketID || log.market || log.marketId))
           const { address } = getState().loginAccount
           if (log.filler === address || log.creator === address) {
             dispatch(loadAccountTrades({ market: log.marketID }))

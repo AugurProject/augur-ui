@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { augur } from 'services/augurjs'
 import { BUY, SELL, LIMIT, MARKET } from 'modules/transactions/constants/types'
-import { BIDS, ASKS } from 'modules/order-book/constants/order-book-order-types'
 import { TWO } from 'modules/trade/constants/numbers'
 import { SCALAR } from 'modules/markets/constants/market-types'
 
@@ -74,7 +73,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     const bignumShares = new BigNumber(numShares || 0, 10)
     const bignumLimit = new BigNumber(limitPrice || 0, 10)
     // clean num shares
-    let cleanNumShares = numShares && bignumShares.toFixed() === '0' ? '0' : (numShares && bignumShares.abs().toFixed()) || outcomeTradeInProgress.numShares || '0'
+    const cleanNumShares = numShares && bignumShares.toFixed() === '0' ? '0' : (numShares && bignumShares.abs().toFixed()) || outcomeTradeInProgress.numShares || '0'
 
     // if current trade order limitPrice is equal to the best price, make sure it's equal to that otherwise, use what the user has entered
     let cleanLimitPrice
@@ -131,7 +130,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             cleanAccountPositions.push(0)
           }
         }
-        console.log('about to callSimTrade:', newTradeDetails);
+        // console.log('about to callSimTrade:', newTradeDetails);
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
@@ -147,13 +146,12 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })
-        console.log('simtrade:', simulatedTrade);
+        // console.log('simtrade:', simulatedTrade);
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
         newTradeDetails.totalCost = new BigNumber(simulatedTrade.tokensDepleted, 10).neg().toFixed()
         newTradeDetails.feePercent = totalFee.dividedBy(new BigNumber(simulatedTrade.tokensDepleted, 10)).toFixed()
         if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = '0'
-        console.log('updatedTradesInProgress', { ...newTradeDetails, ...simulatedTrade });
         dispatch({
           type: UPDATE_TRADE_IN_PROGRESS,
           data: { marketID, outcomeID, details: { ...newTradeDetails, ...simulatedTrade } }

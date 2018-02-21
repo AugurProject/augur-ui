@@ -71,7 +71,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
     totalFee: formatEtherTokens(totalFee, { blankZero: true }),
     totalFeePercent: formatEtherTokens(feePercent, { blankZero: true }),
     gasFeesRealEth: formatEther(gasFeesRealEth, { blankZero: true }),
-    totalCost: formatEtherTokens(totalCost, { blankZero: false }),
+    totalCost: formatEtherTokens(new BigNumber(totalCost).abs().toFixed(), { blankZero: false }),
 
     tradeTypeOptions: [
       { label: TRANSACTIONS_TYPES.BUY, value: TRANSACTIONS_TYPES.BUY },

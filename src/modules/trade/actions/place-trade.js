@@ -1,8 +1,7 @@
 import { augur } from 'services/augurjs'
-import { BUY, SELL } from 'modules/transactions/constants/types'
+import { BUY } from 'modules/transactions/constants/types'
 import { clearTradeInProgress } from 'modules/trade/actions/update-trades-in-progress'
 import logError from 'utils/log-error'
-import calcOrderProfitLossPercents from 'modules/trade/helpers/calc-order-profit-loss-percents'
 
 export const placeTrade = (marketID, outcomeID, tradeInProgress, doNotCreateOrders, callback = logError, onComplete = logError) => (dispatch, getState) => {
   if (!marketID) return null
