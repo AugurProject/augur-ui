@@ -132,6 +132,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           }
         }
         console.log('about to callSimTrade:', newTradeDetails);
+        console.log(cleanAccountPositions)
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
@@ -150,7 +151,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         console.log('simtrade:', simulatedTrade);
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
-        newTradeDetails.totalCost = new BigNumber(simulatedTrade.tokensDepleted, 10).neg().toFixed()
+        newTradeDetails.totalCost = simulatedTrade.tokensDepleted
         newTradeDetails.feePercent = totalFee.dividedBy(new BigNumber(simulatedTrade.tokensDepleted, 10)).toFixed()
         if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = '0'
         console.log('updatedTradesInProgress', { ...newTradeDetails, ...simulatedTrade });
