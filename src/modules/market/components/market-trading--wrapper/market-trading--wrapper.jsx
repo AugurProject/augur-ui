@@ -57,8 +57,8 @@ class MarketTradingWrapper extends Component {
     const nextTotalCost = new BigNumber(nextProps.selectedOutcome.trade.totalCost.value)
     const nextSharesFilled = nextProps.selectedOutcome.trade.sharesFilled
     if (`${nextTotalCost.abs().toString()} ETH` !== this.state.orderEstimate) {
-      const orderEstimate = `${nextTotalCost.abs().toString()} ETH`
-      const marketQuantity = (this.state.orderType === MARKET) ? `${nextSharesFilled} Shares` : ''
+      const orderEstimate = (isNaN(nextTotalCost) || nextTotalCost.abs().eq(0)) ? '' : `${nextTotalCost.abs().toString()} ETH`
+      const marketQuantity = (nextSharesFilled && nextSharesFilled !== '0') ? `${nextSharesFilled} Shares` : ''
       this.setState({
         orderEstimate,
         marketQuantity,

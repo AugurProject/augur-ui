@@ -26,9 +26,8 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     }
 
     // if new side not provided, use old side
-    // TODO: REMOVE MAX COST IN FAVOR OF NUMSHARES (needs update UI side)
     const cleanSide = side || outcomeTradeInProgress.side
-    if ((numShares === '' || parseFloat(numShares) === 0) && limitPrice === null && orderType !== MARKET) { // numShares cleared
+    if ((numShares === '' || parseFloat(numShares) === 0)) { // numShares cleared
       return dispatch({
         type: UPDATE_TRADE_IN_PROGRESS,
         data: {
@@ -66,6 +65,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         .dividedBy(TWO)
         .toFixed() :
       '0.5'
+    // get topOrderPrice and make sure it's a string value
     const topOrderPrice = new BigNumber(cleanSide === BUY ?
       ((selectTopAsk(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice :
       ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice).toFixed()

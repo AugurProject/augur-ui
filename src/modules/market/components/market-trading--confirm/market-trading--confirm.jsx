@@ -37,7 +37,7 @@ const MarketTradingConfirm = (p) => {
         { p.orderType === MARKET &&
           <li>
             <span>Total Cost</span>
-            <span><ValueDenomination formatted={totalCost.formatted} /> ETH</span>
+            <span><ValueDenomination formatted={totalCost ? totalCost.formatted : '0'} /> ETH</span>
           </li>
         }
         { p.orderType === LIMIT &&
@@ -54,14 +54,14 @@ const MarketTradingConfirm = (p) => {
         }
         <li>
           <span>Fee</span>
-          <span>{tradingFees.formattedValue} <span>ETH ({feePercent.formattedValue}%)</span></span>
+          <span>{tradingFees ? tradingFees.formattedValue : '0'} <span>ETH ({feePercent ? feePercent.formattedValue : '0'}%)</span></span>
         </li>
       </ul>
       { p.orderType === LIMIT &&
         <ul className={Styles.TradingConfirm__total}>
           <li>
             <span>Total Cost</span>
-            <span><ValueDenomination formatted={totalCost.formatted} /> <span>ETH</span></span>
+            <span><ValueDenomination formatted={totalCost ? totalCost.formatted : '0'} /> <span>ETH</span></span>
           </li>
         </ul>
       }
@@ -76,11 +76,11 @@ const MarketTradingConfirm = (p) => {
       <ul className={Styles.TradingConfirm__potential}>
         <li>
           <span>Potential Profit</span>
-          <span><ValueDenomination formatted={potentialEthProfit.formatted} /> <span>ETH ({potentialProfitPercent.formatted}%)</span></span>
+          <span><ValueDenomination formatted={potentialEthProfit ? potentialEthProfit.formatted : '0'} /> <span>ETH ({potentialProfitPercent ? potentialProfitPercent.formatted : '0'}%)</span></span>
         </li>
         <li>
           <span>Potential Loss</span>
-          <span><span><ValueDenomination formatted={potentialEthLoss.formatted} /> <span>ETH ({potentialLossPercent.formatted}%)</span></span></span>
+          <span><span><ValueDenomination formatted={potentialEthLoss ? potentialEthLoss.formatted : '0'} /> <span>ETH ({potentialLossPercent ? potentialLossPercent.formatted : '0'}%)</span></span></span>
         </li>
       </ul>
       <div className={Styles.TradingConfirmation__actions}>

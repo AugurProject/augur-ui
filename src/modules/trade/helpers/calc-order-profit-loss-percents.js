@@ -21,13 +21,13 @@ BigNumber.config({ ERRORS: false })
  */
 
 export default function (numShares, limitPrice, side, minPrice, maxPrice, type, sharesFilled, tradeTotalCost) {
-  if (!numShares || !sharesFilled || !side|| !type || (!limitPrice && !tradeTotalCost)) return null
+  if (!numShares || !sharesFilled || !side|| !type || (!limitPrice && tradeTotalCost == null)) return null
   let calculatedShares = numShares
   let calculatedPrice = limitPrice
   if (!limitPrice && tradeTotalCost) {
     // market order
-    calculatedShares = new BigNumber(tradeTotalCost, 10).dividedBy(sharesFilled).toFixed()
-    calculatedPrice = sharesFilled
+    calculatedPrice = new BigNumber(tradeTotalCost, 10).dividedBy(sharesFilled).toFixed()
+    calculatedShares = sharesFilled
   }
   if (type === SCALAR && (isNaN(minPrice) || isNaN(maxPrice))) return null
   const max = new BigNumber(type === SCALAR ? maxPrice : 1)

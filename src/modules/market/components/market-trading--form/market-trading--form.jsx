@@ -54,7 +54,7 @@ class MarketTradingForm extends Component {
     this.orderValidation = this.orderValidation.bind(this)
     this.testQuantity = this.testQuantity.bind(this)
     this.testPrice = this.testPrice.bind(this)
-    this.testMarketOrderSize = this.testMarketOrderSize.bind(this)
+    this.updateTrade = this.updateTrade.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,20 +68,26 @@ class MarketTradingForm extends Component {
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[this.INPUT_TYPES.MARKET_ORDER_SIZE],
     }
-    const newInfo = {
+    const newOrderInfo = {
       marketQuantity: nextProps.marketQuantity,
       orderType: nextProps.orderType,
       orderEstimate: nextProps.orderEstimate,
+      selectedNav: nextProps.selectedNav,
       ...newStateInfo,
     }
-    const currentInfo = {
+    const currentOrderInfo = {
       marketQuantity: this.props.marketQuantity,
       orderType: this.props.orderType,
       orderEstimate: this.props.orderEstimate,
+      selectedNav: this.props.selectedNav,
       ...currentStateInfo,
     }
 
-    if (!isEqual(newInfo, currentInfo)) {
+    if (!isEqual(newOrderInfo, currentOrderInfo)) {
+      console.log('update!', currentOrderInfo, newOrderInfo);
+      // trade has changed, lets update trade.
+      this.updateTrade(newStateInfo, nextProps);
+
       const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice
       const prevTradePrice = this.props.selectedOutcome.trade.limitPrice
       const isLimitOrder = nextProps.orderType === LIMIT
@@ -94,6 +100,7 @@ class MarketTradingForm extends Component {
         // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user as to where estimates are coming from.
         this.props.updateState(this.INPUT_TYPES.PRICE, new BigNumber(nextTradePrice))
       }
+
       // orderValidation
       const { isOrderValid, errors } = this.orderValidation(newStateInfo, nextProps)
       // update state
@@ -101,26 +108,14 @@ class MarketTradingForm extends Component {
     }
   }
 
-  testQuantity(value, errors, isOrderValid) {
+  testQuantity(value, errors, isOrderValid, quantityKey) {
     let errorCount = 0
     let passedTest = !!isOrderValid
     if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
     if (value.lt(0)) {
       errorCount += 1
       passedTest = false
-      errors[this.INPUT_TYPES.QUANTITY].push('Quantity must be greater than 0')
-    }
-    return { isOrderValid: passedTest, errors, errorCount }
-  }
-
-  testMarketOrderSize(value, errors, isOrderValid) {
-    let errorCount = 0
-    let passedTest = !!isOrderValid
-    if (isNaN(value)) return { isOrderValid: false, errors, errorCount }
-    if (value.lt(0)) {
-      errorCount += 1
-      passedTest = false
-      errors[this.INPUT_TYPES.MARKET_ORDER_SIZE].push('Quantity must be greater than 0')
+      errors[quantityKey].push('Quantity must be greater than 0')
     }
     return { isOrderValid: passedTest, errors, errorCount }
   }
@@ -139,7 +134,7 @@ class MarketTradingForm extends Component {
 
   orderValidation(order, propsToUse) {
     let { props } = this
-    if (!propsToUse) props = propsToUse
+    if (propsToUse) props = propsToUse
     let cumulativeErrors = {
       [this.INPUT_TYPES.QUANTITY]: [],
       [this.INPUT_TYPES.PRICE]: [],
@@ -151,10 +146,9 @@ class MarketTradingForm extends Component {
     const isLimitOrder = orderType === LIMIT
 
     const quantityKey = isLimitOrder ? this.INPUT_TYPES.QUANTITY : this.INPUT_TYPES.MARKET_ORDER_SIZE
-    const quantityTest = isLimitOrder ? this.testQuantity : this.testMarketOrderSize
 
     let value = new BigNumber(order[quantityKey])
-    const { isOrderValid, errors, errorCount } = quantityTest(value, cumulativeErrors, cumulativeOrderValid)
+    const { isOrderValid, errors, errorCount } = this.testQuantity(value, cumulativeErrors, cumulativeOrderValid, quantityKey)
     cumulativeOrderValid = isOrderValid
     cumulativeErrorCount += errorCount
     cumulativeErrors = { ...cumulativeErrors, ...errors }
@@ -166,7 +160,30 @@ class MarketTradingForm extends Component {
       cumulativeErrorCount += errorCount
       cumulativeErrors = { ...cumulativeErrors, ...errors }
     }
+
+    // finally double check props for orderValidity on MarketOrders (need to have shares getting filled, marketQuantity on form can't be blank)
+    if (!isLimitOrder) {
+      const bignumQuantity = new BigNumber(order[quantityKey])
+
+      cumulativeOrderValid = (props.selectedOutcome.trade.sharesFilled !== null && props.selectedOutcome.trade.sharesFilled !== '0')
+
+      cumulativeOrderValid = (isNaN(bignumQuantity) || bignumQuantity.eq(0)) ? false : cumulativeOrderValid
+    }
     return { isOrderValid: cumulativeOrderValid, errors: cumulativeErrors, errorCount: cumulativeErrorCount }
+  }
+
+  updateTrade(updatedState, propsToUse) {
+    let { props } = this
+    if (propsToUse) props = propsToUse
+    const { orderType } = props
+    const isLimitOrder = orderType === LIMIT
+    const side = props.selectedNav
+    const limitPrice = isLimitOrder ? updatedState[this.INPUT_TYPES.PRICE] : null
+    let shares = isLimitOrder ? updatedState[this.INPUT_TYPES.QUANTITY] : updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
+    if (shares === null || shares === undefined) {
+      shares = '0'
+    }
+    this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, null, orderType)
   }
 
   validateForm(property, rawValue) {
@@ -178,16 +195,15 @@ class MarketTradingForm extends Component {
       ...this.state,
       [property]: value
     }
-    const { isOrderValid, errors, errorCount } = this.orderValidation(updatedState, this.props)
+    const { isOrderValid, errors, errorCount } = this.orderValidation(updatedState, this.props, 'validateForm')
+    // update the state of the parent component to reflect new property/value
+    // only update the trade if there were no errors detected.
     this.props.updateState(property, value)
 
     if (errorCount === 0) {
-      const side = this.props.selectedNav
-      const limitPrice = isLimitOrder ? updatedState[this.INPUT_TYPES.PRICE] : null
-      const shares = isLimitOrder ? updatedState[this.INPUT_TYPES.QUANTITY] : updatedState[this.INPUT_TYPES.MARKET_ORDER_SIZE]
-
-      this.props.selectedOutcome.trade.updateTradeOrder(shares, limitPrice, side, null, orderType)
+      this.updateTrade(updatedState)
     }
+    // update the local state of this form
     this.setState({
       errors: {
         ...this.state.errors,
