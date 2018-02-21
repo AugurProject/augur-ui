@@ -66,7 +66,6 @@ const testState = {
       name: 'testMarket',
       description: 'some test description',
       endDate: 123,
-      type: 'scalar',
       minPrice: 1,
       maxPrice: 2,
       volume: 500,
@@ -89,7 +88,6 @@ const testState = {
       name: 'testMarket2',
       description: 'some test description',
       endDate: 123,
-      type: 'binary',
       minPrice: 1,
       maxPrice: 2,
       marketType: 'binary',
@@ -120,8 +118,10 @@ const testState = {
             owner: '0x7c0d52faab596c08f423e3478aebc6205f3f5d8c',
             price: '0.42',
             type: 'buy',
-            fullPrecisionAmount: 10,
-            fullPrecisionPrice: 0.42,
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '0.42',
+            sharesEscrowed: '10',
+            tokensEscrowed: '',
           },
           buyOrder2ID: {
             amount: '10',
@@ -132,8 +132,10 @@ const testState = {
             owner: '0x0000000000000000000000000000000000000001',
             price: '0.42',
             type: 'buy',
-            fullPrecisionAmount: 10,
-            fullPrecisionPrice: 0.42,
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '0.42',
+            sharesEscrowed: '0',
+            tokensEscrowed: '4.2',
           }
         }
       },
@@ -148,8 +150,10 @@ const testState = {
             owner: '0x0000000000000000000000000000000000000001',
             price: '0.42',
             type: 'buy',
-            fullPrecisionAmount: 10,
-            fullPrecisionPrice: 0.42,
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '0.42',
+            sharesEscrowed: '0',
+            tokensEscrowed: '4.2',
           },
           buyOrder4ID: {
             amount: '10',
@@ -160,8 +164,10 @@ const testState = {
             owner: '0x0000000000000000000000000000000000000001',
             price: '0.44',
             type: 'buy',
-            fullPrecisionAmount: 10,
-            fullPrecisionPrice: 0.44,
+            fullPrecisionAmount: '10',
+            fullPrecisionPrice: '0.44',
+            sharesEscrowed: '0',
+            tokensEscrowed: '4.4',
           }
         },
         sell: {
@@ -174,8 +180,10 @@ const testState = {
             owner: '0x457435fbcd49475847f64898f933ffefc33388fc',
             price: '0.58',
             type: 'sell',
-            fullPrecisionAmount: 20,
-            fullPrecisionPrice: 0.58,
+            fullPrecisionAmount: '20',
+            fullPrecisionPrice: '0.58',
+            sharesEscrowed: '20',
+            tokensEscrowed: '0',
           },
           sellOrder2ID: {
             amount: '20',
@@ -186,8 +194,10 @@ const testState = {
             owner: '0x457435fbcd49475847f64898f933ffefc33388fc',
             price: '0.59',
             type: 'sell',
-            fullPrecisionAmount: 20,
-            fullPrecisionPrice: 0.59,
+            fullPrecisionAmount: '20',
+            fullPrecisionPrice: '0.59',
+            sharesEscrowed: '0',
+            tokensEscrowed: '8.2',
           }
         }
       }
@@ -269,9 +279,10 @@ const testState = {
       1: {
         numShares: 5000,
         limitPrice: '0.50',
-        totalCost: '2500',
+        totalCost: '-2500',
         type: 'binary',
-        side: BUY
+        side: BUY,
+        sharesFilled: 5000
       }
     }
   },

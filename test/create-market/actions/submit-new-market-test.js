@@ -549,7 +549,7 @@ describe('modules/create-market/actions/submit-new-market', () => {
       const { submitNewMarket, __RewireAPI__ } = require('modules/create-market/actions/submit-new-market')
 
       // const mockUpdateTradesInProgress = sinon.stub().yields({});
-      __RewireAPI__.__Rewire__('updateTradesInProgress', (callReturn, outcomeID, type, quantity, price, nogo, cb) => {
+      __RewireAPI__.__Rewire__('updateTradesInProgress', (callReturn, outcomeID, type, quantity, price, nogo, LIMIT, cb) => {
         cb({})
         return {
           type: 'updateTradesInProgress',

@@ -66,7 +66,9 @@ describe('modules/trade/helpers/calc-order-profit-loss-percents.js', () => {
         BUY,
         '1',
         '2',
-        BINARY
+        BINARY,
+        '10',
+        '4'
       )
 
       const expected = {
@@ -89,7 +91,9 @@ describe('modules/trade/helpers/calc-order-profit-loss-percents.js', () => {
         SELL,
         '1',
         '2',
-        BINARY
+        BINARY,
+        '10',
+        '6'
       )
 
       const expected = {
@@ -112,7 +116,9 @@ describe('modules/trade/helpers/calc-order-profit-loss-percents.js', () => {
         BUY,
         '-5',
         '10',
-        SCALAR
+        SCALAR,
+        '10',
+        '60'
       )
 
       const expected = {
@@ -135,7 +141,9 @@ describe('modules/trade/helpers/calc-order-profit-loss-percents.js', () => {
         SELL,
         '-5',
         '10',
-        SCALAR
+        SCALAR,
+        '10',
+        '90'
       )
 
       const expected = {

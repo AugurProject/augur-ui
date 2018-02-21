@@ -11,8 +11,11 @@ export const placeTrade = (marketID, outcomeID, tradeInProgress, doNotCreateOrde
     console.error(`trade-in-progress not found for market ${marketID} outcome ${outcomeID}`)
     return dispatch(clearTradeInProgress(marketID))
   }
-  const isMarketOrder = tradeInProgress.limitPrice == null
-  const limitPrice = isMarketOrder ? tradeInProgress.side === BUY ? market.maxPrice : market.minPrice : tradeInProgress.limitPrice
+  let { limitPrice } = tradeInProgress
+  const isMarketOrder = limitPrice == null
+  if (isMarketOrder) {
+    limitPrice = tradeInProgress.side === BUY ? market.maxPrice : market.minPrice
+  }
   augur.trading.placeTrade({
     meta: loginAccount.meta,
     amount: tradeInProgress.numShares,

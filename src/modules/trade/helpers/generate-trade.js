@@ -32,7 +32,7 @@ export const generateTrade = memoize((market, outcome, outcomeTradeInProgress, o
   const marketType = (market && market.marketType) || null
   const minPrice = (market && typeof market.minPrice === 'number') ? market.minPrice : null
   const maxPrice = (market && market.maxPrice) || null
-  const adjustedTotalCost = (totalCost < 0) ? new BigNumber(outcomeTradeInProgress.totalCost, 10).minus(new BigNumber(outcomeTradeInProgress.totalFee, 10)).abs().toFixed() : null
+  const adjustedTotalCost = (totalCost > 0) ? new BigNumber(outcomeTradeInProgress.totalCost, 10).minus(new BigNumber(outcomeTradeInProgress.totalFee, 10)).abs().toFixed() : null
   const preOrderProfitLoss = calcOrderProfitLossPercents(numShares, limitPrice, side, minPrice, maxPrice, marketType, sharesFilled, adjustedTotalCost)
 
   let maxNumShares

@@ -40,6 +40,7 @@ describe('modules/trade/helpers/generate-trade.js', () => {
       potentialEthLoss: formatEtherTokens(2500),
       potentialProfitPercent: formatPercent(100),
       potentialLossPercent: formatPercent(100),
+      sharesFilled: 5000,
       side: 'buy',
       totalCost: formatEtherTokens(2500),
       totalFee: {

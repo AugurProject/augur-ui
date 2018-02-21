@@ -66,9 +66,9 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
         .dividedBy(TWO)
         .toFixed() :
       '0.5'
-    const topOrderPrice = cleanSide === BUY ?
+    const topOrderPrice = new BigNumber(cleanSide === BUY ?
       ((selectTopAsk(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice :
-      ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice
+      ((selectTopBid(marketOrderBook, true) || {}).price || {}).formattedValue || defaultPrice).toFixed()
 
     const bignumShares = new BigNumber(numShares || 0, 10)
     const bignumLimit = new BigNumber(limitPrice || 0, 10)
@@ -95,7 +95,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
     if (cleanNumShares && !cleanLimitPrice && (market.marketType === SCALAR || cleanLimitPrice !== '0')) {
       cleanLimitPrice = topOrderPrice
     }
-
     // if this isn't a scalar market, limitPrice must be positive.
     if (market.marketType !== SCALAR && limitPrice) {
       cleanLimitPrice = bignumLimit.abs().toFixed() || outcomeTradeInProgress.limitPrice || topOrderPrice
@@ -114,7 +113,7 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
       totalCost: '0'
     }
     // trade actions
-    if (newTradeDetails.side && loginAccount.address) {
+    if (newTradeDetails.side && loginAccount.address && newTradeDetails.numShares) {
       dispatch(loadAccountPositions({ market: marketID }, (err, accountPositions) => {
         if (err) {
           return dispatch({
@@ -130,7 +129,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
             cleanAccountPositions.push(0)
           }
         }
-        // console.log('about to callSimTrade:', newTradeDetails);
         const simulatedTrade = augur.trading.simulateTrade({
           orderType: newTradeDetails.side === BUY ? 0 : 1,
           outcome: parseInt(outcomeID, 10),
@@ -146,7 +144,6 @@ export function updateTradesInProgress(marketID, outcomeID, side, numShares, lim
           shouldCollectReportingFees: !market.isDisowned,
           reportingFeeRate: market.reportingFeeRate
         })
-        // console.log('simtrade:', simulatedTrade);
         const totalFee = new BigNumber(simulatedTrade.settlementFees, 10).plus(new BigNumber(simulatedTrade.gasFees, 10))
         newTradeDetails.totalFee = totalFee.toFixed()
         newTradeDetails.totalCost = simulatedTrade.tokensDepleted
