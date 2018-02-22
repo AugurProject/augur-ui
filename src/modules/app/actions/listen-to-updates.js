@@ -97,7 +97,7 @@ export function listenToUpdates(history) {
           dispatch(updateOutcomePrice(log.marketId, log.outcome, new BigNumber(log.price, 10)))
           dispatch(updateMarketCategoryPopularity(log.market, log.amount))
           const { address } = getState().loginAccount
-          if (log.filler === address || log.orderCreator === address) {
+          if (log.filler === address || log.creator === address) {
             // dispatch(convertLogsToTransactions(TYPES.FILL_ORDER, [log]))
             updateAccountTradesData(updateAccountTradesData({
               [log.marketId]: {
