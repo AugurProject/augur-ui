@@ -17,6 +17,13 @@ export default class AccountDeposit extends Component {
     const clipboard = new Clipboard('#copy_address') // eslint-disable-line
   }
 
+  shapeShiftClick(e) {
+    e.preventDefault();
+    var link=e.target.href;
+    window.open(link,'1418115287605','width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0');
+    return false;
+  }
+
   render() {
     const p = this.props
     const styleQR = {
@@ -35,7 +42,8 @@ export default class AccountDeposit extends Component {
             <p>
               DO NOT send real ETH or REP to this account. Augur is currently on Ethereum&#39;s Rinkeby testnet.
             </p>
-            <a href="https://shapeshift.io">Use Shapeshift</a>
+            <div><a onClick={(e) => {this.shapeShiftClick(e)}} href={"https://shapeshift.io/shifty.html?destination=" + p.address + "&output=ETH"}>ShapeShift to ETH</a></div>
+            <div><a onClick={(e) => {this.shapeShiftClick(e)}} href={"https://shapeshift.io/shifty.html?destination=" + p.address + "&output=REP"}>ShapeShift to REP</a></div>
           </div>
           <div className={Styles.AccountDeposit__address}>
             <h3 className={Styles.AccountDeposit__addressLabel}>
