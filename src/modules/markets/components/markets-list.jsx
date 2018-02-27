@@ -5,7 +5,6 @@ import MarketPreview from 'modules/market/components/market-preview/market-previ
 import Paginator from 'modules/common/components/paginator/paginator'
 import NullStateMessage from 'modules/common/components/null-state-message/null-state-message'
 
-import getValue from 'utils/get-value'
 import isEqual from 'lodash/isEqual'
 
 import debounce from 'utils/debounce'
@@ -17,7 +16,6 @@ export default class MarketsList extends Component {
     markets: PropTypes.array.isRequired,
     filteredMarkets: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
-    scalarShareDenomination: PropTypes.object.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
     loadMarketsInfo: PropTypes.func.isRequired,
     paginationPageParam: PropTypes.string,
@@ -39,7 +37,7 @@ export default class MarketsList extends Component {
     this.state = {
       lowerBound: this.props.showPagination ? null : 1,
       boundedLength: this.props.showPagination ? null : this.props.filteredMarkets.length,
-      marketIDsMissingInfo: [] // This is ONLY the currently displayed markets that are missing info
+      marketIdsMissingInfo: [] // This is ONLY the currently displayed markets that are missing info
     }
 
     this.setSegment = this.setSegment.bind(this)
@@ -60,7 +58,7 @@ export default class MarketsList extends Component {
       this.setMarketIDsMissingInfo(nextProps.markets, nextProps.filteredMarkets, nextState.lowerBound, nextState.boundedLength)
     }
 
-    if (!isEqual(this.state.marketIDsMissingInfo, nextState.marketIDsMissingInfo)) this.loadMarketsInfo(nextState.marketIDsMissingInfo)
+    if (!isEqual(this.state.marketIdsMissingInfo, nextState.marketIdsMissingInfo)) this.loadMarketsInfo(nextState.marketIdsMissingInfo)
   }
 
   setSegment(lowerBound, upperBound, boundedLength) {
@@ -68,21 +66,21 @@ export default class MarketsList extends Component {
   }
 
   setMarketIDsMissingInfo(markets, filteredMarkets, lowerBound, boundedLength) {
-    const marketIDsMissingInfo = []
+    const marketIdsMissingInfo = []
     if (filteredMarkets.length && boundedLength) {
       [...Array(boundedLength)].forEach((unused, i) => {
         const item = filteredMarkets[(lowerBound - 1) + i]
         const market = markets.find(market => market.id === item)
-        if (market && !market.hasLoadedMarketInfo) marketIDsMissingInfo.push(market.id)
+        if (market && !market.hasLoadedMarketInfo) marketIdsMissingInfo.push(market.id)
       })
     }
 
-    this.setState({ marketIDsMissingInfo })
+    this.setState({ marketIdsMissingInfo })
   }
 
   // debounced call
   loadMarketsInfo() {
-    this.props.loadMarketsInfo(this.state.marketIDsMissingInfo)
+    this.props.loadMarketsInfo(this.state.marketIdsMissingInfo)
   }
 
   // NOTE -- You'll notice the odd method used for rendering the previews, this is done for optimization reasons
@@ -91,7 +89,6 @@ export default class MarketsList extends Component {
     const s = this.state
 
     const marketsLength = p.markets.length
-    const shareDenominations = getValue(p, 'scalarShareDenomination.denominations')
 
     return (
       <article className="markets-list">
@@ -99,7 +96,6 @@ export default class MarketsList extends Component {
           [...Array(s.boundedLength)].map((unused, i) => {
             const id = p.filteredMarkets[(s.lowerBound - 1) + i]
             const market = p.markets.find(market => market.id === id)
-            const selectedShareDenomination = market ? getValue(p, `scalarShareDenomination.markets.${market.id}`) : null
 
             if (market && market.id) {
               return (
@@ -107,8 +103,6 @@ export default class MarketsList extends Component {
                   {...market}
                   key={`${market.id} - ${market.outcomes}`}
                   isLogged={p.isLogged}
-                  selectedShareDenomination={selectedShareDenomination}
-                  shareDenominations={shareDenominations}
                   toggleFavorite={p.toggleFavorite}
                   linkType={p.linkType}
                   location={p.location}
