@@ -37,6 +37,15 @@ export function listenToUpdates(history) {
       }
     })
     augur.events.startAugurNodeEventListeners({
+      InitialReportSubmitted: (err, log) => {
+        if (err) return console.error('InitialReportSubmitted:', err)
+        if (log) {
+          dispatch(loadMarketsInfo([log.market]))
+          if (log.reporter === getState().loginAccount.address) {
+            dispatch(updateAssets())
+          }
+        }
+      },
       MarketCreated: (err, log) => {
         if (err) return console.error('MarketCreated:', err)
         if (log) {
