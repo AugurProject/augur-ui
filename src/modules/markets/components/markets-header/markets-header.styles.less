@@ -2,11 +2,19 @@
 
 .MarketsHeader {
   font-size: 1rem;
-  padding: 2.5rem 2rem 2rem;
+  padding: 2.5rem 2rem 1.5rem;
 }
 
 .MarketsHeader__heading {
   &:extend(.h1--heavy);
+
+  color: @color-white;
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.MarketsHeader__subheading {
+  &:extend(.caps--large);
 
   color: @color-white;
   flex: 1;
@@ -38,9 +46,5 @@
 @media @breakpoint-mobile-small {
   .MarketsHeader__wrapper {
     display: block;
-  }
-
-  .MarketsHeader__heading {
-    margin-bottom: 1rem;
   }
 }

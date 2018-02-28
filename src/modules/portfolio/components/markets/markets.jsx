@@ -21,7 +21,6 @@ class MyMarkets extends Component {
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     myMarkets: PropTypes.array.isRequired,
-    scalarShareDenomination: PropTypes.object.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
     loadMarkets: PropTypes.func.isRequired,
     loadMarketsInfo: PropTypes.func.isRequired,
@@ -227,11 +226,7 @@ class MyMarkets extends Component {
           <div
             className={Styles.Markets__SortBar}
           >
-            <div
-              className={Styles['Markets__SortBar-title']}
-            >
-              Open
-            </div>
+            <h2 className={Styles['Markets__SortBar-title']}>Open</h2>
             <div
               className={Styles['Markets__SortBar-sort']}
             >
@@ -251,7 +246,6 @@ class MyMarkets extends Component {
             filteredMarkets={s.filteredMarketsOpen}
             location={p.location}
             history={p.history}
-            scalarShareDenomination={p.scalarShareDenomination}
             toggleFavorite={p.toggleFavorite}
             loadMarketsInfo={p.loadMarketsInfo}
             linkType={TYPE_TRADE}
@@ -290,7 +284,6 @@ class MyMarkets extends Component {
             filteredMarkets={s.filteredMarketsReporting}
             location={p.location}
             history={p.history}
-            scalarShareDenomination={p.scalarShareDenomination}
             toggleFavorite={p.toggleFavorite}
             loadMarketsInfo={p.loadMarketsInfo}
             linkType={TYPE_REPORT}
@@ -329,7 +322,6 @@ class MyMarkets extends Component {
             filteredMarkets={s.filteredMarketsFinal}
             location={p.location}
             history={p.history}
-            scalarShareDenomination={p.scalarShareDenomination}
             toggleFavorite={p.toggleFavorite}
             loadMarketsInfo={p.loadMarketsInfo}
             linkType={TYPE_CLOSED}

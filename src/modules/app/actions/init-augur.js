@@ -3,30 +3,32 @@ import { updateEnv } from 'modules/app/actions/update-env'
 import { updateConnectionStatus, updateAugurNodeConnectionStatus } from 'modules/app/actions/update-connection'
 import { updateContractAddresses } from 'modules/contracts/actions/update-contract-addresses'
 import { updateFunctionsAPI, updateEventsAPI } from 'modules/contracts/actions/update-contract-api'
-import { setLoginAccount } from 'modules/auth/actions/set-login-account'
+import { useUnlockedAccount } from 'modules/auth/actions/use-unlocked-account'
 import { logout } from 'modules/auth/actions/logout'
 import { loadUniverse } from 'modules/app/actions/load-universe'
 import { registerTransactionRelay } from 'modules/transactions/actions/register-transaction-relay'
 import { updateModal } from 'modules/modal/actions/update-modal'
 import { closeModal } from 'modules/modal/actions/close-modal'
+import getAllMarkets from 'modules/markets/selectors/markets-all'
 import logError from 'utils/log-error'
 
 import { isEmpty } from 'lodash'
 
-import { MODAL_NETWORK_MISMATCH } from 'modules/modal/constants/modal-types'
+import { MODAL_NETWORK_MISMATCH, MODAL_ESCAPE_HATCH } from 'modules/modal/constants/modal-types'
 
 const POLL_INTERVAL_DURATION = 250
+const ESCAPE_HATCH_POLL_INTERVAL_DURATION = 1000
 
 function pollForAccount(dispatch, getState) {
+  const { env } = getState()
   let account
 
   setInterval(() => {
     AugurJS.augur.rpc.eth.accounts((accounts) => {
       if (account !== accounts[0]) {
         account = accounts[0]
-
-        if (account) {
-          dispatch(setLoginAccount(true, account))
+        if (account && env['auto-login']) {
+          dispatch(useUnlockedAccount(account))
         } else {
           dispatch(logout())
         }
@@ -70,6 +72,31 @@ function pollForNetwork(dispatch, getState) {
   }, POLL_INTERVAL_DURATION)
 }
 
+function pollForEscapeHatch(dispatch, getState) {
+
+  setInterval(() => {
+    const { modal } = getState()
+
+    const modalShowing = !!modal.type && modal.type === MODAL_ESCAPE_HATCH
+
+    AugurJS.augur.api.Controller.stopped((err, stopped) => {
+      if (stopped && !modalShowing) {
+        dispatch(updateModal({
+          type: MODAL_ESCAPE_HATCH,
+          markets: getAllMarkets(),
+          disputeBonds: [],
+          initialReports: [],
+          shares: [],
+          participationTokens: []
+        }))
+      } else if (!stopped && modalShowing) {
+        dispatch(closeModal())
+      }
+    })
+
+  }, ESCAPE_HATCH_POLL_INTERVAL_DURATION)
+}
+
 export function connectAugur(history, env, isInitialConnection = false, callback = logError) {
   return (dispatch, getState) => {
     AugurJS.connect(env, (err, ConnectionInfo) => {
@@ -89,6 +116,7 @@ export function connectAugur(history, env, isInitialConnection = false, callback
       if (isInitialConnection) {
         pollForAccount(dispatch, getState)
         pollForNetwork(dispatch, getState)
+        pollForEscapeHatch(dispatch, getState)
       }
       callback()
     })
