@@ -37,8 +37,8 @@ export default class AccountDeposit extends Component {
       textTransform: 'uppercase',
     }
     let shapeShiftConverter = <a href="https://shapeshift.io">Use Shapeshift</a>
-    if (parseInt(window.augur.rpc.getNetworkID(), 10) === 4) {
-      shapeShiftConverter = <div><button onClick={(e) => { this.shapeShiftOnClick(e) }} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'} style={shapeShiftButton}>ShapeShift to ETH</button><button onClick={(e) => { this.shapeShiftOnClick(e) }} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'} style={shapeShiftButton}>ShapeShift to REP</button></div>
+    if (parseInt(window.augur.rpc.getNetworkID(), 10) === 1) {
+      shapeShiftConverter = <div><button onClick={(e) => this.shapeShiftOnClick(e)} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'} style={shapeShiftButton}>ShapeShift to ETH</button><button onClick={(e) => this.shapeShiftOnClick(e)} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'} style={shapeShiftButton}>ShapeShift to REP</button></div>
     }
 
     return (
