@@ -5,7 +5,8 @@ import ReactFauxDOM from 'react-faux-dom'
 
 import { isEqual } from 'lodash'
 
-import { ASKS } from 'modules/order-book/constants/order-book-order-types'
+import { BUY, SELL } from 'modules/transactions/constants/types'
+import { BIDS, ASKS } from 'modules/order-book/constants/order-book-order-types'
 
 import Styles from 'modules/market/components/market-outcome-charts--depth/market-outcome-charts--depth.styles'
 
@@ -16,6 +17,7 @@ export default class MarketOutcomeDepth extends Component {
     fixedPrecision: PropTypes.number.isRequired,
     updateHoveredPrice: PropTypes.func.isRequired,
     updateHoveredDepth: PropTypes.func.isRequired,
+    updateSeletedOrderProperties: PropTypes.func.isRequired,
     hoveredPrice: PropTypes.any,
   }
 
@@ -32,6 +34,7 @@ export default class MarketOutcomeDepth extends Component {
 
     this.drawChart = this.drawChart.bind(this)
     this.drawCrosshairs = this.drawCrosshairs.bind(this)
+    this.nearestCompletelyFillingOrder = this.nearestCompletelyFillingOrder.bind(this)
   }
 
   componentDidMount() {
@@ -40,10 +43,10 @@ export default class MarketOutcomeDepth extends Component {
     window.addEventListener('resize', this.drawChart)
   }
 
-  componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.marketDepth, this.props.marketDepth)) this.drawChart()
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.marketDepth, nextProps.marketDepth)) this.drawChart()
 
-    if (!isEqual(prevProps.hoveredPrice, this.props.hoveredPrice)) this.drawCrosshairs()
+    if (!isEqual(this.props.hoveredPrice, nextProps.hoveredPrice)) this.drawCrosshairs(nextProps.hoveredPrice)
   }
 
   componentWillUnmount() {
@@ -184,7 +187,20 @@ export default class MarketOutcomeDepth extends Component {
           this.props.updateHoveredPrice(hoveredPrice)
         })
         .on('click', () => {
-          console.log('TODO -- fill order form')
+          const mouse = d3.mouse(d3.select('#outcome_depth').node())
+          const orderPrice = this.state.yScale.invert(mouse[1])
+          const nearestOrder = this.nearestCompletelyFillingOrder(orderPrice)
+
+          if (
+            orderPrice <= marketDepth[ASKS][marketDepth[ASKS].length - 1][1] &&
+            orderPrice >= marketDepth[BIDS][marketDepth[BIDS].length - 1][1]
+          ) {
+            this.props.updateSeletedOrderProperties({
+              selectedNav: orderPrice > this.props.orderBookKeys.mid ? BUY : SELL,
+              orderPrice: nearestOrder[1],
+              orderQuantity: nearestOrder[0],
+            })
+          }
         })
 
       this.setState({
@@ -197,31 +213,13 @@ export default class MarketOutcomeDepth extends Component {
     }
   }
 
-  drawCrosshairs() {
+  drawCrosshairs(price) {
     if (this.props.hoveredPrice == null) {
       d3.select('#crosshairs').style('display', 'none')
       d3.select('#hovered_price_label').text('')
       this.props.updateHoveredDepth([])
     } else {
-      const nearestCompletelyFillingOrder = Object.keys(this.props.marketDepth).reduce((p, side) => {
-        let fillingSideOrder = this.props.marketDepth[side].reduce((p, order) => {
-          if (p === null) return order
-          if (side === ASKS) {
-            return (this.props.hoveredPrice > p[1] && this.props.hoveredPrice < order[1]) ? order: p
-          }
-
-          return (this.props.hoveredPrice < p[1] && this.props.hoveredPrice > order[1]) ? order : p
-        }, null)
-
-        if (p === null) return fillingSideOrder
-
-        if (fillingSideOrder == null) {
-          fillingSideOrder = [side]
-        } else {
-          fillingSideOrder.push(side)
-        }
-        return Math.abs(this.props.hoveredPrice - p[1]) < Math.abs(this.props.hoveredPrice - fillingSideOrder[1]) ? p : fillingSideOrder
-      }, null)
+      const nearestCompletelyFillingOrder = this.nearestCompletelyFillingOrder(price)
 
       if (nearestCompletelyFillingOrder === null) return
 
@@ -236,14 +234,36 @@ export default class MarketOutcomeDepth extends Component {
         .attr('y2', this.state.chartHeight)
       d3.select('#crosshairY')
         .attr('x1', 0)
-        .attr('y1', this.state.yScale(this.props.hoveredPrice))
+        .attr('y1', this.state.yScale(price))
         .attr('x2', this.state.chartWidth)
-        .attr('y2', this.state.yScale(this.props.hoveredPrice))
+        .attr('y2', this.state.yScale(price))
       d3.select('#hovered_price_label')
         .attr('x', 0)
-        .attr('y', this.state.yScale(this.props.hoveredPrice) + 12)
-        .text(this.props.hoveredPrice)
+        .attr('y', this.state.yScale(price) + 12)
+        .text(price)
     }
+  }
+
+  nearestCompletelyFillingOrder(price) {
+    return Object.keys(this.props.marketDepth).reduce((p, side) => {
+      let fillingSideOrder = this.props.marketDepth[side].reduce((p, order) => {
+        if (p === null) return order
+        if (side === ASKS) {
+          return (price > p[1] && price < order[1]) ? order: p
+        }
+
+        return (price < p[1] && price > order[1]) ? order : p
+      }, null)
+
+      if (p === null) return fillingSideOrder
+
+      if (fillingSideOrder == null) {
+        fillingSideOrder = [side]
+      } else {
+        fillingSideOrder.push(side)
+      }
+      return Math.abs(price - p[1]) < Math.abs(price - fillingSideOrder[1]) ? p : fillingSideOrder
+    }, null)
   }
 
   render() {
