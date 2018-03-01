@@ -68,8 +68,8 @@ export default class MarketView extends Component {
     this.setState({
       selectedOrderProperties: {
         ...this.state.selectedOrderProperties,
-        ...selectedOrderProperties
-      }
+        ...selectedOrderProperties,
+      },
     })
   }
 
