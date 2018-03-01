@@ -9,6 +9,8 @@ import ReactFauxDOM from 'react-faux-dom'
 
 import { isEqual } from 'lodash'
 
+import { BUY, SELL } from 'modules/transactions/constants/types'
+
 import Styles from 'modules/market/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles'
 
 export default class MarketOutcomeCandlestick extends Component {
@@ -23,6 +25,7 @@ export default class MarketOutcomeCandlestick extends Component {
     marketMax: PropTypes.number.isRequired,
     updateHoveredPrice: PropTypes.func.isRequired,
     updateHoveredPeriod: PropTypes.func.isRequired,
+    updateSeletedOrderProperties: PropTypes.func.isRequired,
     hoveredPrice: PropTypes.any,
   }
 
@@ -293,6 +296,20 @@ export default class MarketOutcomeCandlestick extends Component {
         .attr('height', height)
         .on('mousemove', () => this.props.updateHoveredPrice(yScale.invert(d3.mouse(d3.select('#outcome_candlestick').node())[1])))
         .on('mouseout', () => this.props.updateHoveredPrice(null))
+        .on('click', () => {
+          const mouse = d3.mouse(d3.select('#outcome_candlestick').node())
+          const orderPrice = yScale.invert(mouse[1])
+
+          if (
+            orderPrice > this.props.marketMin &&
+            orderPrice < this.props.marketMax
+          ) {
+            this.props.updateSeletedOrderProperties({
+              selectedNav: orderPrice > this.props.orderBookKeys.mid ? BUY : SELL,
+              orderPrice,
+            })
+          }
+        })
 
       chart.selectAll('rect.hover')
         .data(priceHistory)

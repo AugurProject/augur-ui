@@ -129,6 +129,8 @@ export default class MarketOutcomeCharts extends Component {
               fixedPrecision={s.fixedPrecision}
               orderBookKeys={p.orderBookKeys}
               marketDepth={p.marketDepth}
+              marketMax={p.maxPrice}
+              marketMin={p.minPrice}
               hoveredPrice={s.hoveredPrice}
               updateHoveredPrice={this.updateHoveredPrice}
               updateHoveredDepth={this.updateHoveredDepth}

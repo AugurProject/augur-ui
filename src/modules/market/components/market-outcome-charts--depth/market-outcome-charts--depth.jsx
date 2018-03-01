@@ -6,7 +6,7 @@ import ReactFauxDOM from 'react-faux-dom'
 import { isEqual } from 'lodash'
 
 import { BUY, SELL } from 'modules/transactions/constants/types'
-import { BIDS, ASKS } from 'modules/order-book/constants/order-book-order-types'
+import { ASKS } from 'modules/order-book/constants/order-book-order-types'
 
 import Styles from 'modules/market/components/market-outcome-charts--depth/market-outcome-charts--depth.styles'
 
@@ -18,6 +18,8 @@ export default class MarketOutcomeDepth extends Component {
     updateHoveredPrice: PropTypes.func.isRequired,
     updateHoveredDepth: PropTypes.func.isRequired,
     updateSeletedOrderProperties: PropTypes.func.isRequired,
+    marketMin: PropTypes.number.isRequired,
+    marketMax: PropTypes.number.isRequired,
     hoveredPrice: PropTypes.any,
   }
 
@@ -192,8 +194,8 @@ export default class MarketOutcomeDepth extends Component {
           const nearestOrder = this.nearestCompletelyFillingOrder(orderPrice)
 
           if (
-            orderPrice <= marketDepth[ASKS][marketDepth[ASKS].length - 1][1] &&
-            orderPrice >= marketDepth[BIDS][marketDepth[BIDS].length - 1][1]
+            orderPrice > this.props.marketMin &&
+            orderPrice < this.props.marketMax
           ) {
             this.props.updateSeletedOrderProperties({
               selectedNav: orderPrice > this.props.orderBookKeys.mid ? BUY : SELL,
