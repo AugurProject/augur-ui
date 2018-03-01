@@ -74,16 +74,12 @@ export default class MarketView extends Component {
   updateSeletedOrderProperties(selectedOrderProperties) {
     console.log('updateSeletedOrderProperties -- ', selectedOrderProperties)
 
-    // If price is the only thing present, just pass in price + side
-
-    // If amount is present, pass in total up to that point + price + side
-
-    // this.setState({
-    //   selectedOrderProperties: {
-    //     ...this.state.selectedOrderProperties,
-    //     ...selectedOrderProperties,
-    //   },
-    // })
+    this.setState({
+      selectedOrderProperties: {
+        ...this.DEFAULT_ORDER_PROPERTIES,
+        ...selectedOrderProperties,
+      },
+    })
   }
 
   clearSelectedOutcomes() {
