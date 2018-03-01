@@ -72,8 +72,6 @@ export default class MarketView extends Component {
   }
 
   updateSeletedOrderProperties(selectedOrderProperties) {
-    console.log('updateSeletedOrderProperties -- ', selectedOrderProperties)
-
     this.setState({
       selectedOrderProperties: {
         ...this.DEFAULT_ORDER_PROPERTIES,

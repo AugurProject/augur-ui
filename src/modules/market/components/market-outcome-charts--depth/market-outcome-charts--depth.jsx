@@ -184,13 +184,13 @@ export default class MarketOutcomeDepth extends Component {
           // const y = mouse[1]
 
           // Determine closest order
-          const hoveredPrice = this.state.yScale.invert(mouse[1])
+          const hoveredPrice = this.state.yScale.invert(mouse[1]).toFixed(this.props.fixedPrecision)
 
           this.props.updateHoveredPrice(hoveredPrice)
         })
         .on('click', () => {
           const mouse = d3.mouse(d3.select('#outcome_depth').node())
-          const orderPrice = this.state.yScale.invert(mouse[1])
+          const orderPrice = this.state.yScale.invert(mouse[1]).toFixed(this.props.fixedPrecision)
           const nearestOrder = this.nearestCompletelyFillingOrder(orderPrice)
 
           if (

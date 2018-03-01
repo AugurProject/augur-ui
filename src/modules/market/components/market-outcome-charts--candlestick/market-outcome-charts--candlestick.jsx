@@ -294,11 +294,11 @@ export default class MarketOutcomeCandlestick extends Component {
         .attr('class', 'overlay')
         .attr('width', width)
         .attr('height', height)
-        .on('mousemove', () => this.props.updateHoveredPrice(yScale.invert(d3.mouse(d3.select('#outcome_candlestick').node())[1])))
+        .on('mousemove', () => this.props.updateHoveredPrice(yScale.invert(d3.mouse(d3.select('#outcome_candlestick').node())[1]).toFixed(this.props.fixedPrecision)))
         .on('mouseout', () => this.props.updateHoveredPrice(null))
         .on('click', () => {
           const mouse = d3.mouse(d3.select('#outcome_candlestick').node())
-          const orderPrice = yScale.invert(mouse[1])
+          const orderPrice = yScale.invert(mouse[1]).toFixed(this.props.fixedPrecision)
 
           if (
             orderPrice > this.props.marketMin &&
@@ -320,7 +320,7 @@ export default class MarketOutcomeCandlestick extends Component {
         .attr('width', d => (0.5 * (width - (2 * margin.stick))) / priceHistory.length)
         .attr('class', 'period-hover')
         .on('mouseover', d => this.props.updateHoveredPeriod(d))
-        .on('mousemove', () => this.props.updateHoveredPrice(yScale.invert(d3.mouse(d3.select('#outcome_candlestick').node())[1])))
+        .on('mousemove', () => this.props.updateHoveredPrice(yScale.invert(d3.mouse(d3.select('#outcome_candlestick').node())[1]).toFixed(this.props.fixedPrecision)))
         .on('mouseout', () => {
           this.props.updateHoveredPeriod({})
           this.props.updateHoveredPrice(null)
