@@ -38,14 +38,14 @@ export default class AccountDeposit extends Component {
                               <button
                                 onClick={this.shapeShiftOnClick(p.address, 'ETH')}
                                 value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'}
-                                style={shapeShiftButton}
+                                className={Styles.AccountDeposit__shapeShiftEthButton}
                               >
                                 ShapeShift to ETH
                               </button>
                               <button
                                 onClick={this.shapeShiftOnClick(p.address, 'REP')}
                                 value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'}
-                                style={shapeShiftButton}
+                                className={Styles.AccountDeposit__shapeShiftRepButton}
                               >
                                 ShapeShift to REP
                               </button>
