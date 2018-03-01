@@ -18,11 +18,10 @@ export default class AccountDeposit extends Component {
     const clipboard = new Clipboard('#copy_address') // eslint-disable-line
   }
 
-  shapeShiftOnClick(address, output) {
-    return (e) => {
-      const link = `https://shapeshift.io/shifty.html?destination=${address}&output=${output}`
-      window.open(link, '1418115287605', 'width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0')
-    }
+  shapeShiftOnClick(e) {
+    e.preventDefault()
+    const link=e.target.value
+    window.open(link, '1418115287605', 'width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0')
   }
 
   render() {
@@ -35,10 +34,10 @@ export default class AccountDeposit extends Component {
     if (parseInt(augur.rpc.getNetworkID(), 10) === 1) {
       shapeShiftConverter = (
         <div>
-          <button onClick={this.shapeShiftOnClick(p.address, 'ETH')} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'} className={Styles.AccountDeposit__shapeShiftEthButton}>
+          <button onClick={e => this.shapeShiftOnClick(e)} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'} className={Styles.AccountDeposit__shapeShiftEthButton}>
             ShapeShift to ETH
           </button>
-          <button onClick={this.shapeShiftOnClick(p.address, 'REP')} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'} className={Styles.AccountDeposit__shapeShiftRepButton}>
+          <button onClick={e => this.shapeShiftOnClick(e)} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'} className={Styles.AccountDeposit__shapeShiftRepButton}>
             ShapeShift to REP
           </button>
         </div>
