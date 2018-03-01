@@ -4,6 +4,7 @@ import QRCode from 'qrcode.react'
 import Clipboard from 'clipboard'
 import TextFit from 'react-textfit'
 
+import { augur } from 'services/augurjs'
 import { Deposit as DepositIcon, Copy as CopyIcon } from 'modules/common/components/icons'
 
 import Styles from 'modules/account/components/account-deposit/account-deposit.styles'
@@ -13,11 +14,12 @@ export default class AccountDeposit extends Component {
     address: PropTypes.string.isRequired
   }
 
-  static shapeShiftOnClick(e) {
-    e.preventDefault()
-    const link=e.target.value
-    window.open(link, '1418115287605', 'width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0')
-    return false
+  shapeShiftOnClick(address, output) {
+    return (e) => {
+      e.preventDefault()
+      const link = `https://shapeshift.io/shifty.html?destination=${address}&output=${output}`
+      window.open(link, '1418115287605', 'width=700,height=500,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=0,left=0,top=0')
+    }
   }
 
   componentDidMount() {
@@ -30,15 +32,24 @@ export default class AccountDeposit extends Component {
       height: 'auto',
       width: '100%',
     }
-    const shapeShiftButton = {
-      clear: 'both',
-      float: 'left',
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-    }
     let shapeShiftConverter = <a href="https://shapeshift.io">Use Shapeshift</a>
-    if (parseInt(window.augur.rpc.getNetworkID(), 10) === 1) {
-      shapeShiftConverter = <div><button onClick={(e) => { AccountDeposit.shapeShiftOnClick(e) }} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'} style={shapeShiftButton}>ShapeShift to ETH</button><button onClick={(e) => { AccountDeposit.shapeShiftOnClick(e) }} value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'} style={shapeShiftButton}>ShapeShift to REP</button></div>
+    if (parseInt(augur.rpc.getNetworkID(), 10) === 1) {
+      shapeShiftConverter = <div>
+                              <button
+                                onClick={this.shapeShiftOnClick(p.address, 'ETH')}
+                                value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'}
+                                style={shapeShiftButton}
+                              >
+                                ShapeShift to ETH
+                              </button>
+                              <button
+                                onClick={this.shapeShiftOnClick(p.address, 'REP')}
+                                value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'}
+                                style={shapeShiftButton}
+                              >
+                                ShapeShift to REP
+                              </button>
+                            </div>
     }
 
     return (
