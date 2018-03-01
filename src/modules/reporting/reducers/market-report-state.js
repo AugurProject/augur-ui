@@ -36,13 +36,13 @@ export default function (marketReportState = DEFAULT_STATE, action) {
     case UPDATE_AWAITING_DISPUTE_MARKETS:
       return {
         ...marketReportState,
-        awaiting: action.data
+        awaiting: action.data,
       }
 
     case UPDATE_CROWD_DISPUTE_MARKETS:
       return {
         ...marketReportState,
-        dispute: action.data
+        dispute: action.data,
       }
 
     case RESET_STATE:

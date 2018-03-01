@@ -25,7 +25,7 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
       loadMarketsInfo(result)(dispatch, getState)
 
       dispatch(updateCrowdDisputeMarkets(result))
-    }
+    },
   )
 
   augur.augurNode.submitRequest(
@@ -42,6 +42,6 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
       loadMarketsInfo(result)(dispatch, getState)
 
       dispatch(updateAwaitingDisputeMarkets(result))
-    }
+    },
   )
 }

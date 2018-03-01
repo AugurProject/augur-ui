@@ -8,6 +8,6 @@ export const UPDATE_AWAITING_DISPUTE_MARKETS = 'UPDATE_AWAITING_DISPUTE_MARKETS'
 export default function updateAwaitingDisputeMarkets(marketIds) {
   return {
     type: UPDATE_AWAITING_DISPUTE_MARKETS,
-    data: marketIds
+    data: marketIds,
   }
 }

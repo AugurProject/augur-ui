@@ -36,8 +36,8 @@ describe('loadDisputing action', () => {
   beforeEach(() => {
     mockAugur = {
       augurNode: {
-        submitRequest: () => {}
-      }
+        submitRequest: () => {},
+      },
     }
 
     submitRequestStub = stub(mockAugur.augurNode, 'submitRequest')
@@ -60,13 +60,13 @@ describe('loadDisputing action', () => {
       const c = submitRequestStub.getCall(callIndex)
       assert.ok(c.calledWith(method, {
         reportingState,
-        ...expectedParams
+        ...expectedParams,
       }))
       c.args[2](null, callbackArgs)
     }
 
     checkCall(0, 'getMarkets', constants.REPORTING_STATE.CROWDSOURCING_DISPUTE, [
-      '1111'
+      '1111',
     ])
     checkCall(1, 'getMarkets', constants.REPORTING_STATE.AWAITING_NEXT_WINDOW, [
       '2222',
