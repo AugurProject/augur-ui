@@ -21,6 +21,7 @@ export default class MarketOutcomeCharts extends Component {
     marketDepth: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string.isRequired,
     currentBlock: PropTypes.number.isRequired,
+    updateSeletedOrderProperties: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -120,6 +121,7 @@ export default class MarketOutcomeCharts extends Component {
               hoveredPrice={s.hoveredPrice}
               updateHoveredPrice={this.updateHoveredPrice}
               updateHoveredPeriod={this.updateHoveredPeriod}
+              updateSeletedOrderProperties={p.updateSeletedOrderProperties}
             />
           </div>
           <div className={Styles.MarketOutcomeCharts__Depth}>
@@ -130,6 +132,7 @@ export default class MarketOutcomeCharts extends Component {
               hoveredPrice={s.hoveredPrice}
               updateHoveredPrice={this.updateHoveredPrice}
               updateHoveredDepth={this.updateHoveredDepth}
+              updateSeletedOrderProperties={p.updateSeletedOrderProperties}
             />
           </div>
           <div className={Styles.MarketOutcomeCharts__Orders}>
@@ -139,6 +142,7 @@ export default class MarketOutcomeCharts extends Component {
               marketMidpoint={p.orderBookKeys.mid}
               hoveredPrice={s.hoveredPrice}
               updateHoveredPrice={this.updateHoveredPrice}
+              updateSeletedOrderProperties={p.updateSeletedOrderProperties}
             />
           </div>
         </div>
