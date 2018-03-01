@@ -8,14 +8,14 @@ import Styles from 'modules/common/components/main-error-boundary/main-error-bou
 
 export default class MainErrorBoundary extends Component {
   static propTypes = {
-    children: PropTypes.element
+    children: PropTypes.element,
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      hasError: false
+      hasError: false,
     }
   }
 
@@ -42,7 +42,7 @@ export default class MainErrorBoundary extends Component {
           <Link
             className={Styles.MainErrorBoundary__button}
             to={{
-              pathname: makePath(DEFAULT_VIEW)
+              pathname: makePath(DEFAULT_VIEW),
             }}
             onClick={(e) => {
               // change location to DEFAULT_VIEW and update state.
