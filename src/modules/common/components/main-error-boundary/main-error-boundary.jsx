@@ -44,7 +44,10 @@ export default class MainErrorBoundary extends Component {
             to={{
               pathname: makePath(DEFAULT_VIEW)
             }}
-            onClick={() => window.location.reload()}
+            onClick={(e) => {
+              // change location to DEFAULT_VIEW and update state.
+              this.setState({ hasError: false })
+            }}
           >
             Return Home
           </Link>

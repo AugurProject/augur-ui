@@ -26,7 +26,8 @@ const mapStateToProps = state => ({
   marketsFilteredSorted: state.marketsFilteredSorted,
   categories: selectCategories(state),
   selectedCategory: state.selectedCategory,
-  modal: state.modal
+  modal: state.modal,
+  connection: state.connection
 })
 
 const mapDispatchToProps = dispatch => ({
