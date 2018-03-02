@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-import ReportingReport from 'modules/reporting/components/reporting-report/reporting-report'
+import ReportingDispute from 'modules/reporting/components/reporting-dispute/reporting-dispute'
 import { loadFullMarket } from 'modules/market/actions/load-full-market'
 import { MARKET_ID_PARAM_NAME } from 'modules/routes/constants/param-names'
 import { selectMarket } from 'modules/market/selectors/market'
@@ -44,6 +44,6 @@ const mergeProps = (sP, dP, oP) => {
   }
 }
 
-const Reporting = withRouter(connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReportingReport))
+const Reporting = withRouter(connect(mapStateToProps, mapDispatchToProps, mergeProps)(ReportingDispute))
 
 export default Reporting
