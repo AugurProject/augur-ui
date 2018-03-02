@@ -42,7 +42,7 @@ export const ACCOUNT_WITHDRAW = 'withdraw-funds'
 
 // Reporting
 export const REPORTING_DISPUTE_MARKETS = 'reporting-dispute-markets'
-export const REPORTING_REPORTING = 'reporting-reporting'
+export const REPORTING_REPORT_MARKETS = 'reporting-report-markets'
 export const REPORTING_REPORT = 'reporting-report' // NOTE -- Not currently used...but will be shortly
 
 // Dev only
