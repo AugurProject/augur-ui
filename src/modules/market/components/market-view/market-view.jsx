@@ -20,8 +20,9 @@ export default class MarketView extends Component {
     marketId: PropTypes.string.isRequired,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
+    description: PropTypes.string.isRequired,
     marketType: PropTypes.string,
-    marketLoadingState: PropTypes.any,
+    loadingState: PropTypes.any,
   }
 
   constructor(props) {
@@ -48,7 +49,7 @@ export default class MarketView extends Component {
   componentWillMount() {
     if (
       this.props.isConnected &&
-      this.props.marketLoadingState === null &&
+      this.props.loadingState === null &&
       !!this.props.marketId
     ) {
       this.props.loadFullMarket(this.props.marketId)
@@ -58,7 +59,7 @@ export default class MarketView extends Component {
   componentWillUpdate(nextProps, nextState) {
     if (
       nextProps.isConnected &&
-      nextProps.marketLoadingState === null &&
+      nextProps.loadingState === null &&
       !!this.props.marketId
     ) {
       nextProps.loadFullMarket(this.props.marketId)

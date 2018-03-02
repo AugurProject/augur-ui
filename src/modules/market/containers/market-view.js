@@ -17,17 +17,15 @@ const mapStateToProps = (state, ownProps) => {
     universe,
     orderBooks,
     isMobile,
-    marketLoading,
   } = state
   const marketId = parseQuery(ownProps.location.search)[MARKET_ID_PARAM_NAME]
-  const marketLoadingState = getValue(marketLoading, `${marketId}.state`)
   const market = selectMarket(marketId)
 
   return {
     isConnected: connection.isConnected && universe.id != null,
     marketType: getValue(market, `${marketId}.marketType`),
-    description: market.description,
-    marketLoadingState,
+    description: market.description || '',
+    loadingState: market.loadingState || null,
     isLogged,
     universe,
     orderBooks,
