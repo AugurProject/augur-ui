@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { encodeNumberAsBase10String, encodeNumberAsJSNumber } from 'speedomatic'
-import { constants } from 'services/augurjs'
+import { augur, constants } from 'services/augurjs'
 import { ZERO, TEN } from 'modules/trade/constants/numbers'
 import addCommas from 'utils/add-commas-to-number'
 
@@ -60,8 +60,8 @@ export function formatEtherTokens(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -76,8 +76,8 @@ export function formatEther(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -92,8 +92,8 @@ export function formatEtherTokensEstimate(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -108,8 +108,8 @@ export function formatEtherEstimate(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -124,8 +124,8 @@ export function formatPercent(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -141,8 +141,8 @@ export function formatShares(num, opts) {
       blankZero: false,
       roundDown: true,
       bigUnitPostfix: true,
-      ...opts
-    }
+      ...opts,
+    },
   )
 
   if (formattedShares.formattedValue === 1) {
@@ -163,8 +163,8 @@ export function formatRep(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -179,8 +179,8 @@ export function formatConfirmations(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
@@ -193,7 +193,7 @@ export function formatNone() {
     rounded: '-',
     minimized: '-',
     denomination: '',
-    full: '-'
+    full: '-',
   }
 }
 
@@ -206,8 +206,15 @@ export function formatBlank() {
     rounded: '',
     minimized: '',
     denomination: '',
-    full: ''
+    full: '',
   }
+}
+
+export function formatGasCostToEther(num, opts, gasPrice) {
+  const { ETHER } = augur.rpc.constants
+  const estimatedGasCost = new BigNumber(num).times(new BigNumber(gasPrice, 16))
+  const ethGasCost = estimatedGasCost.dividedBy(ETHER) // convert to ether
+  return formatGasCost(ethGasCost, opts).rounded
 }
 
 export function formatGasCost(num, opts) {
@@ -221,18 +228,18 @@ export function formatGasCost(num, opts) {
       zeroStyled: false,
       blankZero: false,
       bigUnitPostfix: false,
-      ...opts
-    }
+      ...opts,
+    },
   )
 }
 
 export function formatNumber(num, opts = {
-  decimals: 0, decimalsRounded: 0, denomination: '', roundUp: false, roundDown: false, positiveSign: false, zeroStyled: true, minimized: false, blankZero: false, bigUnitPostfix: false
+  decimals: 0, decimalsRounded: 0, denomination: '', roundUp: false, roundDown: false, positiveSign: false, zeroStyled: true, minimized: false, blankZero: false, bigUnitPostfix: false,
 }) {
   const { minimized, bigUnitPostfix } = opts
   const o = {}
   let {
-    value, decimals, decimalsRounded, denomination, roundUp, roundDown, positiveSign, zeroStyled, blankZero
+    value, decimals, decimalsRounded, denomination, roundUp, roundDown, positiveSign, zeroStyled, blankZero,
   } = opts
 
   decimals = decimals || 0
