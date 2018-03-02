@@ -1,23 +1,37 @@
 import { augur } from 'services/augurjs'
-import { updateMarketsData, updateMarketsLoadingStatus } from 'modules/markets/actions/update-markets-data'
+import { updateMarketsData } from 'modules/markets/actions/update-markets-data'
+import { updateMarketLoading, removeMarketLoading } from 'modules/market/actions/update-market-loading'
 import isObject from 'utils/is-object'
 import logError from 'utils/log-error'
 
+import { MARKET_INFO_LOADING, MARKET_INFO_LOADED } from 'modules/market/constants/market-loading-states'
+
 export const loadMarketsInfo = (marketIds, callback = logError) => (dispatch, getState) => {
-  dispatch(updateMarketsLoadingStatus(marketIds, true))
+  (marketIds || []).map(marketId => dispatch(updateMarketLoading({ marketId, state: MARKET_INFO_LOADING })))
+
 
   augur.markets.getMarketsInfo({ marketIds }, (err, marketsDataArray) => {
-    if (err) return callback(err)
+    if (err) {
+      rollbackLoadingState(dispatch, marketIds)
+      return callback(err)
+    }
 
-    const marketsData = marketsDataArray.filter(it => it).reduce((p, marketData) => ({
+    const marketsData = marketsDataArray.filter(marketHasData => marketHasData).reduce((p, marketData) => ({
       ...p,
       [marketData.id]: marketData,
     }), {})
+
     if (marketsData == null || !isObject(marketsData)) {
+      rollbackLoadingState(dispatch, marketIds)
       return callback(`no markets data received`)
     }
-    if (!Object.keys(marketsData).length) return callback(null)
-    dispatch(updateMarketsLoadingStatus(marketIds, false))
+
+    if (!Object.keys(marketsData).length) {
+      rollbackLoadingState(dispatch, marketIds)
+      return callback(null)
+    }
+
+    Object.keys(marketsData).forEach(marketId => dispatch(updateMarketLoading({ marketId: marketsData.id, state: MARKET_INFO_LOADED })))
     dispatch(updateMarketsData(marketsData))
     callback(null, marketsData)
   })
@@ -35,4 +49,8 @@ export const loadMarketsInfoOnly = (marketIds, callback = logError) => (dispatch
     dispatch(updateMarketsData(marketsData))
     callback(null)
   })
+}
+
+function rollbackLoadingState(dispatch, marketIds) {
+  (marketIds || []).map(marketId => dispatch(removeMarketLoading(marketId)))
 }

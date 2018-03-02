@@ -1,20 +1,26 @@
-export const ADD_MARKET_LOADING = 'MARKET_LOADING'
+export const UPDATE_MARKET_LOADING = 'UPDATE_MARKET_LOADING'
 export const REMOVE_MARKET_LOADING = 'REMOVE_MARKET_LOADING'
 
-export function addMarketLoading(marketId) {
+/**
+* Updates the respective market's current loading state
+* @param {object} data - object containing the update data
+* @param {string} data.marketId - id of the market to update
+* @param {string} data.state - current load status of the market, only valid options are found w/in the `market-loading-status` constants file
+*/
+export function updateMarketLoading(data) {
   return {
-    type: ADD_MARKET_LOADING,
-    data: {
-      marketId,
-    },
+    type: UPDATE_MARKET_LOADING,
+    data,
   }
 }
 
+/**
+* Removes a market's current loading state
+* @param {string} marketId - id of the market to remove
+*/
 export function removeMarketLoading(marketId) {
   return {
     type: REMOVE_MARKET_LOADING,
-    data: {
-      marketId,
-    },
+    data: marketId,
   }
 }
