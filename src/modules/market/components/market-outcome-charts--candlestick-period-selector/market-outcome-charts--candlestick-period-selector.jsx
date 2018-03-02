@@ -212,33 +212,6 @@ export default class PeriodSelector extends Component {
           }
         >
           <div className={Styles.PeriodSelector__column}>
-            <h1>Period</h1>
-            <ul>
-              {PERIODS.map(period => (
-                <li
-                  key={period.period}
-                  className={Styles.PeriodSelector__value}
-                >
-                  <button
-                    className={
-                      classNames({
-                        [Styles['PeriodSelector__value--active']]: period.period === s.selectedPeriod,
-                      })
-                    }
-                    disabled={s.permissiblePeriods.indexOf(period.period) === -1}
-                    onClick={() => {
-                      this.setState({
-                        selectedPeriod: period.period === s.selectedPeriod ? -1 : period.period,
-                      })
-                    }}
-                  >
-                    {period.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={Styles.PeriodSelector__column}>
             <h1>Range</h1>
             <ul>
               {RANGES.map(range => (
@@ -260,6 +233,33 @@ export default class PeriodSelector extends Component {
                     }}
                   >
                     {range.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className={Styles.PeriodSelector__column}>
+            <h1>Period</h1>
+            <ul>
+              {PERIODS.map(period => (
+                <li
+                  key={period.period}
+                  className={Styles.PeriodSelector__value}
+                >
+                  <button
+                    className={
+                      classNames({
+                        [Styles['PeriodSelector__value--active']]: period.period === s.selectedPeriod,
+                      })
+                    }
+                    disabled={s.permissiblePeriods.indexOf(period.period) === -1}
+                    onClick={() => {
+                      this.setState({
+                        selectedPeriod: period.period === s.selectedPeriod ? -1 : period.period,
+                      })
+                    }}
+                  >
+                    {period.label}
                   </button>
                 </li>
               ))}

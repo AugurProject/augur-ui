@@ -10,7 +10,7 @@ export default function (marketLoading = DEFAULT_STATE, action) {
         ...marketLoading,
         [action.data.marketId]: {
           ...marketLoading[action.data.marketId],
-          ...action.data.marketId,
+          ...action.data,
         },
       }
     case REMOVE_MARKET_LOADING:

@@ -60,9 +60,10 @@ export default class MarketView extends Component {
     if (
       nextProps.isConnected &&
       nextProps.loadingState === null &&
-      !!this.props.marketId
+      !!nextProps.marketId
     ) {
-      nextProps.loadFullMarket(this.props.marketId)
+      console.log('load -- ', nextProps.isConnected, nextProps.loadingState, nextProps.marketId)
+      // nextProps.loadFullMarket(this.props.marketId)
     }
   }
 

@@ -31,7 +31,7 @@ export const loadMarketsInfo = (marketIds, callback = logError) => (dispatch, ge
       return callback(null)
     }
 
-    Object.keys(marketsData).forEach(marketId => dispatch(updateMarketLoading({ marketId: marketsData.id, state: MARKET_INFO_LOADED })))
+    Object.keys(marketsData).forEach(marketId => dispatch(updateMarketLoading({ marketId, state: MARKET_INFO_LOADED })))
     dispatch(updateMarketsData(marketsData))
     callback(null, marketsData)
   })

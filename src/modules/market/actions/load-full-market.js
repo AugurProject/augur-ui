@@ -30,7 +30,7 @@ export const loadMarketDetails = (marketId, callback = logError) => dispatch => 
       if (err) return callback(err)
       dispatch(loadPriceHistory({ market: marketId }, (err) => {
         if (err) return callback(err)
-        dispatch(updateMarketLoading({ marketId, status: MARKET_FULLY_LOADED }))
+        dispatch(updateMarketLoading({ marketId, state: MARKET_FULLY_LOADED }))
         callback(null)
       }))
     }))
