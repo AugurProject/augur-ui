@@ -34,8 +34,6 @@ export default class MarketView extends Component {
       selectedNav: BUY,
     }
 
-    console.log('des -- ', props.description)
-
     this.state = {
       selectedOutcomes: props.marketType === CATEGORICAL ? [] : ['1'],
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
@@ -58,12 +56,17 @@ export default class MarketView extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (
-      nextProps.isConnected &&
-      nextProps.loadingState === null &&
-      !!nextProps.marketId
+      (
+        this.props.isConnected !== nextProps.isConnected ||
+        this.props.loadingState !== nextProps.loadingState
+      ) &&
+      (
+        nextProps.isConnected &&
+        nextProps.loadingState === null &&
+        !!nextProps.marketId
+      )
     ) {
-      console.log('load -- ', nextProps.isConnected, nextProps.loadingState, nextProps.marketId)
-      // nextProps.loadFullMarket(this.props.marketId)
+      nextProps.loadFullMarket(this.props.marketId)
     }
   }
 
