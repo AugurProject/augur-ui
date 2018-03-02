@@ -88,10 +88,18 @@ describe('loadDisputing action', () => {
       store.dispatch(loadDisputing(callback))
     })
 
-    it('should be passed to callback passed to action', () => {
-      submitRequestStub.getCall(0).args[2](error)
+    describe('CROWDSOURCING_DISPUTE', () => {
+      it('should be passed to callback passed to action', () => {
+        submitRequestStub.getCall(0).args[2](error)
+        callback.calledWith(error)
+      })
+    })
 
-      callback.calledWith(error)
+    describe('AWAITING_NEXT_WINDOW', () => {
+      it('should be passed to callback passed to action', () => {
+        submitRequestStub.getCall(1).args[2](error)
+        callback.calledWith(error)
+      })
     })
   })
 })
