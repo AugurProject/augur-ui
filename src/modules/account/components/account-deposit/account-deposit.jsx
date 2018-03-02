@@ -33,18 +33,16 @@ export default class AccountDeposit extends Component {
     let shapeShiftConverter = <a href="https://shapeshift.io">Use Shapeshift</a>
     if (parseInt(augur.rpc.getNetworkID(), 10) === 1) {
       shapeShiftConverter = (
-        <div>
+        <div className={Styles.AccountDeposit__shapeShiftButton}>
           <button
             onClick={e => shapeShiftOnClick(e)}
             value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=ETH'}
-            className={Styles.AccountDeposit__shapeShiftEthButton}
           >
             ShapeShift to ETH
           </button>
           <button
             onClick={e => shapeShiftOnClick(e)}
             value={'https://shapeshift.io/shifty.html?destination=' + p.address + '&output=REP'}
-            className={Styles.AccountDeposit__shapeShiftRepButton}
           >
             ShapeShift to REP
           </button>

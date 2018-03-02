@@ -63,19 +63,18 @@
   }
 }
 
-.AccountDeposit__shapeShiftEthButton {
-  clear: both;
-  float: left;
-  font-weight: bold;
-  text-transform: uppercase;
-}
+.AccountDeposit__shapeShiftButton {
+  align-items: left;
+  display: flex;
+  flex-direction: column;
 
-.AccountDeposit__shapeShiftRepButton {
-  clear: both;
-  float: left;
-  font-weight: bold;
-  margin-top: 15px;
-  text-transform: uppercase;
+  > button {
+    &:extend(.caps--large);
+
+    color: @color-purple;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
 }
 
 .AccountDeposit__copyButtonElement {
