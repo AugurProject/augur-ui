@@ -9,7 +9,7 @@ import { MARKET_FULLY_LOADING, MARKET_FULLY_LOADED } from 'modules/market/consta
 
 export const loadFullMarket = (marketId, callback = logError) => (dispatch, getState) => {
   const { marketsData } = getState()
-  dispatch(updateMarketLoading({ marketId, state: MARKET_FULLY_LOADING }))
+  dispatch(updateMarketLoading({ [marketId]: MARKET_FULLY_LOADING }))
 
   // if the basic data is already loaded, just load the details
   if (marketsData[marketId]) return dispatch(loadMarketDetails(marketId))
@@ -30,7 +30,7 @@ export const loadMarketDetails = (marketId, callback = logError) => dispatch => 
       if (err) return callback(err)
       dispatch(loadPriceHistory({ market: marketId }, (err) => {
         if (err) return callback(err)
-        dispatch(updateMarketLoading({ marketId, state: MARKET_FULLY_LOADED }))
+        dispatch(updateMarketLoading({ [marketId]: MARKET_FULLY_LOADED }))
         callback(null)
       }))
     }))

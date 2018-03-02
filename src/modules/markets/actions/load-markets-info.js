@@ -7,7 +7,7 @@ import logError from 'utils/log-error'
 import { MARKET_INFO_LOADING, MARKET_INFO_LOADED } from 'modules/market/constants/market-loading-states'
 
 export const loadMarketsInfo = (marketIds, callback = logError) => (dispatch, getState) => {
-  (marketIds || []).map(marketId => dispatch(updateMarketLoading({ marketId, state: MARKET_INFO_LOADING })))
+  (marketIds || []).map(marketId => dispatch(updateMarketLoading({ [marketId]: MARKET_INFO_LOADING })))
 
 
   augur.markets.getMarketsInfo({ marketIds }, (err, marketsDataArray) => {
@@ -31,7 +31,7 @@ export const loadMarketsInfo = (marketIds, callback = logError) => (dispatch, ge
       return callback(null)
     }
 
-    Object.keys(marketsData).forEach(marketId => dispatch(updateMarketLoading({ marketId, state: MARKET_INFO_LOADED })))
+    Object.keys(marketsData).forEach(marketId => dispatch(updateMarketLoading({ [marketId]: MARKET_INFO_LOADED })))
     dispatch(updateMarketsData(marketsData))
     callback(null, marketsData)
   })

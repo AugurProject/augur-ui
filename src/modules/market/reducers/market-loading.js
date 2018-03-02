@@ -8,13 +8,10 @@ export default function (marketLoading = DEFAULT_STATE, action) {
     case UPDATE_MARKET_LOADING:
       return {
         ...marketLoading,
-        [action.data.marketId]: {
-          ...marketLoading[action.data.marketId],
-          ...action.data,
-        },
+        ...action.data,
       }
     case REMOVE_MARKET_LOADING:
-      return Object.keys(marketLoading).reduce((p, marketId) => (marketId !== action.data.marketId ? { ...p, [marketId]: { ...marketLoading[marketId] } } : p), {})
+      return Object.keys(marketLoading).reduce((p, marketId) => (marketId !== action.data ? { ...p, marketId: marketLoading[marketId] } : p), {})
     case RESET_STATE:
       return DEFAULT_STATE
     default:

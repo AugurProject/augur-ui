@@ -3,9 +3,7 @@ export const REMOVE_MARKET_LOADING = 'REMOVE_MARKET_LOADING'
 
 /**
 * Updates the respective market's current loading state
-* @param {object} data - object containing the update data
-* @param {string} data.marketId - id of the market to update
-* @param {string} data.state - current load status of the market, only valid options are found w/in the `market-loading-status` constants file
+* @param {object} data.<string, string> - An index of market loading states keyed by marketId
 */
 export function updateMarketLoading(data) {
   return {
