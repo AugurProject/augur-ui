@@ -4,7 +4,7 @@ import mockStore from 'test/mockStore'
 
 import { listenToUpdates, __RewireAPI__ as ReWireModule } from 'modules/app/actions/listen-to-updates'
 
-describe.only('listen-to-updates', () => {
+describe('listen-to-updates', () => {
   const test = t => it(t.description, done => t.assertions(done))
   const { store, state } = mockStore
   const mockHistory = {
