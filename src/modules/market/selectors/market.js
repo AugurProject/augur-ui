@@ -195,7 +195,7 @@ export function assembleMarket(
           break
       }
 
-      market.loadingState = marketLoading.state || null
+      market.loadingState = marketLoading !== null ? marketLoading.state : marketLoading
 
       market.endDate = (endDateYear >= 0 && endDateMonth >= 0 && endDateDay >= 0 && formatDate(new Date(endDateYear, endDateMonth, endDateDay))) || null
       market.endDateLabel = (market.endDate < now) ? 'ended' : 'ends'
