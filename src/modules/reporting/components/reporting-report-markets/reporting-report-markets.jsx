@@ -7,7 +7,6 @@ import ReportingHeader from 'modules/reporting/containers/reporting-header'
 import MarketPreview from 'src/modules/reporting/containers/market-preview'
 
 import Styles from './reporting-report-markets.styles'
-import MarketsHeaderStyles from 'modules/markets/components/markets-header/markets-header.styles'
 
 export const NoMarketsFound = ({ message }) => (
   <article className={Styles.NoMarketsFound}>
