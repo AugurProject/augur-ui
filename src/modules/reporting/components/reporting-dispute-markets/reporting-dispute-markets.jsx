@@ -45,7 +45,7 @@ ReportSection.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
 }
 
-class ReportingReporting extends React.Component {
+class ReportingDisputeMarkets extends React.Component {
   componentDidMount() {
     this.props.loadReporting()
   }
@@ -73,9 +73,9 @@ class ReportingReporting extends React.Component {
   }
 }
 
-ReportingReporting.propTypes = {
+ReportingDisputeMarkets.propTypes = {
   markets: PropTypes.object.isRequired,
   loadReporting: PropTypes.func.isRequired,
 }
 
-export default ReportingReporting
+export default ReportingDisputeMarkets
