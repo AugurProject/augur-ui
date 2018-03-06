@@ -11,7 +11,8 @@ export default function () {
 }
 
 export const selectPortfolioNavItems = () => {
-  const positionsSummary = generateMarketsPositionsSummary(selectAllMarkets())
+  const markets = selectAllMarkets()
+  const positionsSummary = generateMarketsPositionsSummary(markets)
   const marketsSummary = selectMyMarketsSummary()
   const reportsSummary = selectMyReportsSummary()
   return [
