@@ -84,7 +84,7 @@ export default class ReportingDispute extends Component {
         }
         { p.upcomingMarketsCount === 0 &&
           <NullStateMessage
-            message="No markets in this dispute window have been successfully disputed."
+            message="There are currently no markets slated for the upcoming dispute window."
           />
         }
       </section>
