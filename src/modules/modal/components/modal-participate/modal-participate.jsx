@@ -14,7 +14,7 @@ export default class ModalParticipate extends Component {
     super(props)
 
     this.state = {
-      quantity: ''
+      quantity: '',
     }
 
     this.submitForm = this.submitForm.bind(this)
@@ -22,7 +22,7 @@ export default class ModalParticipate extends Component {
 
   submitForm(e, ...args) {
     e.preventDefault()
-    console.log('form submit (NYI)', args, e);
+    console.log('form submit (NYI)', args, this.state)
   }
 
   updateField(field, value, ...args) {
@@ -30,7 +30,7 @@ export default class ModalParticipate extends Component {
   }
 
   render() {
-    const p = this.props
+    // const p = this.props
     const s = this.state
 
     return (
@@ -41,18 +41,18 @@ export default class ModalParticipate extends Component {
           className={Styles.ModalParticipate__form}
           onSubmit={this.submitForm}
         >
-        <label htmlFor="modal__participate-quantity">
-          Quantity (1 token @ 1 REP)
-          <input
-            id="modal__participate-quantity"
-            type="text"
-            className={Styles.ModalParticipate__input}
-            value={s.quantity}
-            placeholder="0.0"
-            onChange={e => this.updateField('quantity', e.target.value)}
-          />
-        </label>
-        <button type="submit">Review</button>
+          <label htmlFor="modal__participate-quantity">
+            Quantity (1 token @ 1 REP)
+            <input
+              id="modal__participate-quantity"
+              type="text"
+              className={Styles.ModalParticipate__input}
+              value={s.quantity}
+              placeholder="0.0"
+              onChange={e => this.updateField('quantity', e.target.value)}
+            />
+          </label>
+          <button type="submit">Review</button>
         </form>
       </section>
     )
