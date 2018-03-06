@@ -1,207 +1,74 @@
 import { describe, it } from 'mocha'
-// import { assert } from 'chai'
-// import sinon from 'sinon'
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
-import { __RewireAPI__ } from 'modules/reporting/selectors/select-awaiting-dispute-markets'
-// import proxyquire from 'proxyquire'
-
-// TODO --
-// Test defualt
-// Mock selector
-// Mock markets-all selector
-// test result func under conditions
+import { assert } from 'chai'
+import sinon from 'sinon'
+import marketsAwaitingDispute, { selectMarketsAwaitingDispute, __RewireAPI__ } from 'modules/reporting/selectors/select-awaiting-dispute-markets'
 
 describe(`modules/reports/selectors/select-awaiting-dispute-markets.js`, () => {
-  const middlewares = [thunk]
-  const mockStore = configureMockStore(middlewares)
+  const test = t => it(t.description, done => t.assertions(done))
 
-  __RewireAPI__.__Rewire__('selectAllMarkets', () => {})
+  describe('default method', () => {
+    test({
+      description: 'should call `selectMarketsAwaitingDispute` from the default function',
+      assertions: (done) => {
+        const stubbedSelectMarketsAwaitingDispute = sinon.stub()
+        __RewireAPI__.__Rewire__('selectMarketsAwaitingDispute', stubbedSelectMarketsAwaitingDispute)
 
-  const test = t => it(t.description, (done) => {
-    const store = mockStore(t.state || {})
+        marketsAwaitingDispute()
 
-    t.assertions(store, done)
+        assert.isTrue(stubbedSelectMarketsAwaitingDispute.calledOnce, `didn't call 'selectMarketsAwaitingDispute' once as expected`)
+
+        __RewireAPI__.__ResetDependency__('selectMarketsAwaitingDispute')
+
+        done()
+      },
+    })
   })
 
-  test({
-    description: 'should call `selectMarketsAwaitingDispute` from the default function',
-    store: {},
-    assertions: (store, done) => {
-      console.log('fak')
-      // __RewireAPI__.__Rewire__('selectMarketsAwaitingDispute', sinon.stub())
-      // __RewireAPI__.__Rewire__('selectMarkets', () => {})
+  describe('selectMarketsAwaitingDispute', () => {
+    test({
+      description: `should return an empty array`,
+      assertions: (done) => {
+        const actual = selectMarketsAwaitingDispute.resultFunc([])
 
+        const expected = []
 
-      done()
-    },
+        assert.deepEqual(actual, expected, `didn't return the expected result`)
+
+        done()
+      },
+    })
+
+    test({
+      description: `should return an array populated with matching market objects`,
+      assertions: (done) => {
+        __RewireAPI__.__Rewire__('constants', {
+          REPORTING_STATE: {
+            AWAITING_NEXT_WINDOW: 'test',
+          },
+        })
+
+        const actual = selectMarketsAwaitingDispute.resultFunc([
+          {
+            id: '0xshouldpass',
+            reportingState: 'test',
+          },
+          {
+            id: '0xshouldnt',
+            reportingState: 'fail',
+          },
+        ])
+
+        const expected = [{
+          id: '0xshouldpass',
+          reportingState: 'test',
+        }]
+
+        assert.deepEqual(actual, expected, `didn't return the expected result`)
+
+        __RewireAPI__.__ResetDependency__('constants')
+
+        done()
+      },
+    })
   })
 })
-
-//   describe('default', () => {
-//     it(`should not get any markets`, () => {
-//       const mockMarketsAll = {
-//         selectMarkets: () => ([]),
-//       }
-//       const selector = proxyquire('../../../src/modules/reporting/selectors/select-awaiting-dispute-markets.js', {
-//         '../../markets/selectors/markets-all': mockMarketsAll,
-//       })
-//
-//       const actual = selector.selectMarketsAwaitingDispute()
-//       assert.deepEqual(actual, [], `Didn't call the expected method`)
-//     })
-//   })
-// })
-//
-// describe('selectMarketsAwaitingDispute', () => {
-//   it(`should return zero elements array`, () => {
-//     const mockMarketsAll = {
-//       selectMarkets: () => (
-//         [
-//           {
-//             id: '0xMARKETID1',
-//             reportingState: 'PRE_REPORTING',
-//           },
-//           {
-//             id: '0xMARKETID2',
-//             reportingState: 'FINALIZED',
-//           },
-//           {
-//             id: '0xMARKETID3',
-//             reportingState: 'PRE_REPORTING',
-//           },
-//         ]
-//       ),
-//     }
-//     const selector = proxyquire('../../../src/modules/reporting/selectors/select-awaiting-dispute-markets.js', {
-//       '../../markets/selectors/markets-all': mockMarketsAll,
-//     })
-//
-//     const actual = selector.selectMarketsAwaitingDispute()
-//     assert.deepEqual(actual, [], `Didn't return the expected array`)
-//   })
-// })
-//
-// describe('selectMarketsAwaitingDispute', () => {
-//   it(`should return one element expected array`, () => {
-//     const mockMarketsAll = {
-//       selectMarkets: () => (
-//         [
-//           {
-//             id: '0xMARKETID1',
-//             reportingState: 'PRE_REPORTING',
-//           },
-//           {
-//             id: '0xMARKETID2',
-//             reportingState: 'FINALIZED',
-//           },
-//           {
-//             id: '0xMARKETID3',
-//             reportingState: 'AWAITING_NEXT_WINDOW',
-//           },
-//         ]
-//       ),
-//     }
-//
-//     const selector = proxyquire('../../../src/modules/reporting/selectors/select-awaiting-dispute-markets.js', {
-//       '../../markets/selectors/markets-all': mockMarketsAll,
-//     })
-//
-//     const actual = selector.selectMarketsAwaitingDispute()
-//
-//     const expected = [
-//       {
-//         id: '0xMARKETID3',
-//         reportingState: 'AWAITING_NEXT_WINDOW',
-//       },
-//     ]
-//
-//     assert.deepEqual(actual, expected, `Didn't return the expected array`)
-//   })
-// })
-
-
-// describe(`modules/reports/selectors/select-awaiting-dispute-markets.js`, () => {
-//   proxyquire.noPreserveCache().noCallThru()
-//
-//   describe('default', () => {
-//     it(`should not get any markets`, () => {
-//       const mockMarketsAll = {
-//         selectMarkets: () => ([]),
-//       }
-//       const selector = proxyquire('../../../src/modules/reporting/selectors/select-awaiting-dispute-markets.js', {
-//         '../../markets/selectors/markets-all': mockMarketsAll,
-//       })
-//
-//       const actual = selector.selectMarketsAwaitingDispute()
-//       assert.deepEqual(actual, [], `Didn't call the expected method`)
-//     })
-//   })
-// })
-//
-// describe('selectMarketsAwaitingDispute', () => {
-//   it(`should return zero elements array`, () => {
-//     const mockMarketsAll = {
-//       selectMarkets: () => (
-//         [
-//           {
-//             id: '0xMARKETID1',
-//             reportingState: 'PRE_REPORTING',
-//           },
-//           {
-//             id: '0xMARKETID2',
-//             reportingState: 'FINALIZED',
-//           },
-//           {
-//             id: '0xMARKETID3',
-//             reportingState: 'PRE_REPORTING',
-//           },
-//         ]
-//       ),
-//     }
-//     const selector = proxyquire('../../../src/modules/reporting/selectors/select-awaiting-dispute-markets.js', {
-//       '../../markets/selectors/markets-all': mockMarketsAll,
-//     })
-//
-//     const actual = selector.selectMarketsAwaitingDispute()
-//     assert.deepEqual(actual, [], `Didn't return the expected array`)
-//   })
-// })
-//
-// describe('selectMarketsAwaitingDispute', () => {
-//   it(`should return one element expected array`, () => {
-//     const mockMarketsAll = {
-//       selectMarkets: () => (
-//         [
-//           {
-//             id: '0xMARKETID1',
-//             reportingState: 'PRE_REPORTING',
-//           },
-//           {
-//             id: '0xMARKETID2',
-//             reportingState: 'FINALIZED',
-//           },
-//           {
-//             id: '0xMARKETID3',
-//             reportingState: 'AWAITING_NEXT_WINDOW',
-//           },
-//         ]
-//       ),
-//     }
-//
-//     const selector = proxyquire('../../../src/modules/reporting/selectors/select-awaiting-dispute-markets.js', {
-//       '../../markets/selectors/markets-all': mockMarketsAll,
-//     })
-//
-//     const actual = selector.selectMarketsAwaitingDispute()
-//
-//     const expected = [
-//       {
-//         id: '0xMARKETID3',
-//         reportingState: 'AWAITING_NEXT_WINDOW',
-//       },
-//     ]
-//
-//     assert.deepEqual(actual, expected, `Didn't return the expected array`)
-//   })
-// })
