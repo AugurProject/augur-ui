@@ -30,12 +30,12 @@ export default class ModalParticipate extends Component {
   }
 
   render() {
-    // const p = this.props
+    const p = this.props
     const s = this.state
 
     return (
       <section className={Styles.ModalParticipate}>
-        <h1>{Participate()} Buy Participation Tokens</h1>
+        <h1 className={Styles.ModalParticipate__heading}>{Participate()} Buy Participation Tokens</h1>
         <span className={Styles.ModalParticipate__helperText}>Purchase participation tokens to earn a share of the reporting fees collected during this dispute window.</span>
         <form
           className={Styles.ModalParticipate__form}
@@ -52,7 +52,10 @@ export default class ModalParticipate extends Component {
               onChange={e => this.updateField('quantity', e.target.value)}
             />
           </label>
-          <button type="submit">Review</button>
+          <div className={Styles['ModalParticipate__form-actions']}>
+            <button onClick={() => p.closeModal()}>Cancel</button>
+            <button type="submit">Review</button>
+          </div>
         </form>
       </section>
     )

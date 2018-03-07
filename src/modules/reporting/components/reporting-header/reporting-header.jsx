@@ -51,10 +51,7 @@ export default class ReportingHeader extends Component {
                     className={Styles.ReportingHeader__participationTokens}
                     data-tip
                     data-for="tooltip--participation-tokens"
-                    onClick={() => p.updateModal({
-                      type: MODAL_PARTICIPATE,
-                      canClose: true,
-                    })}
+                    onClick={() => p.updateModal({ type: MODAL_PARTICIPATE })}
                   >
                     {Participate()}
                     <span
