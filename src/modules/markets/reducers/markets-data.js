@@ -70,9 +70,6 @@ function processMarketsData(newMarketsData, existingMarketsData) {
       ...newMarketsData[marketId],
     }
 
-    // mark whether details have been loaded
-    marketData.hasLoadedMarketInfo = !!marketData.cumulativeScale
-
     // save market (without outcomes)
     // p[normalizedmarketId] = marketData
     p[marketId] = marketData
