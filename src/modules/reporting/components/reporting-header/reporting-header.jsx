@@ -15,6 +15,7 @@ export default class ReportingHeader extends Component {
     isMobile: PropTypes.bool.isRequired,
     loadReportingWindowBounds: PropTypes.func.isRequired,
     reportingWindowStats: PropTypes.object.isRequired,
+    repBalance: PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -28,7 +29,7 @@ export default class ReportingHeader extends Component {
     const daysLeft = getDaysRemaining(p.reportingWindowStats.endTime)
     const formattedDate = convertUnixToFormattedDate(p.reportingWindowStats.endTime)
     const currentPercentage = ((totalDays - daysLeft) / totalDays) * 100
-
+    const disableParticipate = (p.repBalance === '0')
     const currentPeriodStyle = {
       width: `${((totalDays - daysLeft) / totalDays) * 100}%`,
     }
@@ -45,10 +46,12 @@ export default class ReportingHeader extends Component {
                     <span className={Styles.ReportingHeader__endDate}>Dispute Window ends { formattedDate.formattedLocal }</span>
                     <span className={Styles.ReportingHeader__stake}> | </span><span className={Styles.ReportingHeader__stake}>{ p.reportingWindowStats.stake } REP Staked</span>
                   </div>
-                  <span
-                    className={Styles.ReportingHeader__participationTokens}
+                  <button
+                    className={disableParticipate ? Styles['ReportingHeader__participationTokens--disabled'] : Styles.ReportingHeader__participationTokens}
                     data-tip
                     data-for="tooltip--participation-tokens"
+                    disabled={disableParticipate}
+                    onClick={() => console.log('participate clicked!')}
                   >
                     {Participate()}
                     <span
@@ -56,7 +59,7 @@ export default class ReportingHeader extends Component {
                     >
                       participate
                     </span>
-                  </span>
+                  </button>
                   {!p.isMobile &&
                     <ReactTooltip
                       id="tooltip--participation-tokens"

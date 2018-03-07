@@ -7,6 +7,7 @@ import { loadReportingWindowBounds } from 'modules/reporting/actions/load-report
 const mapStateToProps = state => ({
   reportingWindowStats: state.reportingWindowStats,
   isMobile: state.isMobile,
+  repBalance: state.loginAccount.rep,
 })
 
 const mapDispatchToProps = dispatch => ({
