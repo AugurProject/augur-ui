@@ -16,9 +16,9 @@ export function updateMarketLoading(data) {
 * Removes a market's current loading state
 * @param {string} marketId - id of the market to remove
 */
-export function removeMarketLoading(marketId) {
+export function removeMarketLoading(data) {
   return {
     type: REMOVE_MARKET_LOADING,
-    data: marketId,
+    data,
   }
 }
