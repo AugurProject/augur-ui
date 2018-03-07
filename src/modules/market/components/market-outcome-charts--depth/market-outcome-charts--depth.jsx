@@ -40,13 +40,18 @@ export default class MarketOutcomeDepth extends Component {
   }
 
   componentDidMount() {
-    this.drawChart(this.props.marketDepth)
+    this.drawChart(this.props.marketDepth, this.props.orderBookKeys)
 
-    window.addEventListener('resize', this.drawChart)
+    window.addEventListener('resize', () => this.drawChart(this.props.marketDepth, this.props.orderBookKeys))
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.marketDepth, nextProps.marketDepth)) this.drawChart()
+    if (
+      !isEqual(this.props.marketDepth, nextProps.marketDepth) ||
+      !isEqual(this.props.orderBookKeys, nextProps.orderBookKeys)
+    ) {
+      this.drawChart(nextProps.marketDepth, nextProps.orderBookKeys)
+    }
 
     if (!isEqual(this.props.hoveredPrice, nextProps.hoveredPrice)) this.drawCrosshairs(nextProps.hoveredPrice)
   }
@@ -55,7 +60,7 @@ export default class MarketOutcomeDepth extends Component {
     window.removeEventListener('resize', this.drawChart)
   }
 
-  drawChart() {
+  drawChart(marketDepth, orderBookKeys) {
     if (this.depthChart) {
       const fauxDiv = new ReactFauxDOM.Element('div')
       const chart = d3.select(fauxDiv)
@@ -86,7 +91,6 @@ export default class MarketOutcomeDepth extends Component {
         tickOffset: 10,
       }
 
-      const { marketDepth } = this.props
       const width = this.depthChart.clientWidth
       const height = this.depthChart.clientHeight
 
@@ -104,16 +108,16 @@ export default class MarketOutcomeDepth extends Component {
       const allowedFloat = 2 // TODO -- set this to the precision
 
       // Determine bounding diff
-      const maxDiff = Math.abs(this.props.orderBookKeys.mid - this.props.orderBookKeys.max)
-      const minDiff = Math.abs(this.props.orderBookKeys.mid - this.props.orderBookKeys.min)
+      const maxDiff = Math.abs(orderBookKeys.mid - orderBookKeys.max)
+      const minDiff = Math.abs(orderBookKeys.mid - orderBookKeys.min)
       const boundDiff = (maxDiff > minDiff ? maxDiff : minDiff)
 
       // Set interval step
       const step = boundDiff / ((intervals - 1) / 2)
 
       const yDomain = new Array(intervals).fill(null).reduce((p, _unused, i) => {
-        if (i === 0) return [Number((this.props.orderBookKeys.mid - boundDiff).toFixed(allowedFloat))]
-        if (i + 1 === Math.round(intervals / 2)) return [...p, this.props.orderBookKeys.mid]
+        if (i === 0) return [Number((orderBookKeys.mid - boundDiff).toFixed(allowedFloat))]
+        if (i + 1 === Math.round(intervals / 2)) return [...p, orderBookKeys.mid]
         return [...p, Number((p[i - 1] + step).toFixed(allowedFloat))]
       }, [])
 
@@ -198,7 +202,7 @@ export default class MarketOutcomeDepth extends Component {
             orderPrice < this.props.marketMax
           ) {
             this.props.updateSeletedOrderProperties({
-              selectedNav: orderPrice > this.props.orderBookKeys.mid ? BUY : SELL,
+              selectedNav: orderPrice > orderBookKeys.mid ? BUY : SELL,
               orderPrice: nearestOrder[1],
               orderQuantity: nearestOrder[0],
             })
