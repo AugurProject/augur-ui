@@ -142,13 +142,22 @@ export default class PeriodSelector extends Component {
   render() {
     const s = this.state
 
+    const selectedPeriodLabel = (PERIODS.find(period => period.period === s.selectedPeriod) || {}).label || null
+    const selectedRangeLabel = (RANGES.find(range => range.range === s.selectedRange) || {}).label || null
+
     return (
       <section className={Styles.PeriodSelector}>
         <button
           className={Styles.PeriodSelector__button}
           onClick={() => this.setState({ isModalActive: !s.isModalActive })}
         >
-          <span>Period|Range</span>
+          <span>
+            {
+              selectedRangeLabel && selectedPeriodLabel ?
+                `${selectedRangeLabel}, ${selectedPeriodLabel}` :
+                'Range, Period'
+            }
+          </span>
           {s.isModalActive ?
             <ChevronUp /> :
             <ChevronDown />

@@ -5,8 +5,12 @@
 }
 
 .PeriodSelector__button {
+  &:extend(.caps--small);
+
   background-color: transparent;
+  color: @color-lightgray;
   display: flex;
+  white-space: nowrap;
 
   svg {
     min-height: 1em;
