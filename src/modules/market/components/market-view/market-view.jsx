@@ -10,7 +10,6 @@ import MarketTrading from 'modules/market/containers/market-trading'
 
 import parseMarketTitle from 'modules/market/helpers/parse-market-title'
 
-import { CATEGORICAL } from 'modules/markets/constants/market-types'
 import { BUY } from 'modules/transactions/constants/types'
 
 import Styles from 'modules/market/components/market-view/market-view.styles'
@@ -34,7 +33,7 @@ export default class MarketView extends Component {
     }
 
     this.state = {
-      selectedOutcomes: props.marketType === CATEGORICAL ? [] : ['1'],
+      selectedOutcomes: [],
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
     }
 
