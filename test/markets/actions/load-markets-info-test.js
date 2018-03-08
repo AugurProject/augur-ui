@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import { stub } from 'sinon'
 
-import { loadMarketsInfo } from './load-markets-info'
+import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info'
 
 describe('load-markets-info', () => {
   let mockStore
