@@ -18,6 +18,14 @@
     flex: 1;
   }
 
+  input:focus {
+    .border(false);
+  }
+
+  &:focus-within {
+    .border(true, @border-all, @color-input-border, @border-width-2);
+  }
+
   .fa-search {
     align-items: center;
     background-color: transparent;
@@ -34,6 +42,13 @@
       padding-left: 0;
     }
   }
+}
+
+.Input__max {
+  .caps--small();
+
+  color: @color-purple;
+  padding: 0 1rem;
 }
 
 .Input__Incremental {
