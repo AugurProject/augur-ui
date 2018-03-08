@@ -6,6 +6,7 @@ import { getDaysRemaining, convertUnixToFormattedDate } from 'utils/format-date'
 
 import Styles from 'modules/reporting/components/reporting-header/reporting-header.styles'
 import TooltipStyles from 'modules/common/less/tooltip'
+import { MODAL_PARTICIPATE } from 'modules/modal/constants/modal-types'
 
 import { Participate } from 'modules/common/components/icons'
 
@@ -16,6 +17,7 @@ export default class ReportingHeader extends Component {
     loadReportingWindowBounds: PropTypes.func.isRequired,
     reportingWindowStats: PropTypes.object.isRequired,
     repBalance: PropTypes.string.isRequired,
+    updateModal: PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -51,7 +53,7 @@ export default class ReportingHeader extends Component {
                     data-tip
                     data-for="tooltip--participation-tokens"
                     disabled={disableParticipate}
-                    onClick={() => console.log('participate clicked!')}
+                    onClick={() => p.updateModal({ type: MODAL_PARTICIPATE })}
                   >
                     {Participate()}
                     <span
