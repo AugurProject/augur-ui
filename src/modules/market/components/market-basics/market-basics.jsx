@@ -20,7 +20,7 @@ import { constants } from 'services/augurjs'
 import moment from 'moment'
 
 const MarketBasics = (p) => {
-  let ReportEndingIndicator = null
+  let ReportEndingIndicator = () => null
   if (p.reportingState === constants.REPORTING_STATE.DESIGNATED_REPORTING) {
     const WrappedGraph = TimeRemainingIndicatorWrapper(SingleSlicePieGraph)
     const endDate = moment(p.endDate.value).add(constants.CONTRACT_INTERVAL.DESIGNATED_REPORTING_DURATION_SECONDS, 'seconds').toDate()
@@ -51,7 +51,7 @@ const MarketBasics = (p) => {
                 </button>
               </li>)}
           </ul>
-          {ReportEndingIndicator}
+          <ReportEndingIndicator />
         </div>
         <h1 className={CommonStyles.MarketCommon__description}>
           <MarketLink
