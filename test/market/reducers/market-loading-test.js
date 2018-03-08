@@ -18,7 +18,7 @@ describe('modules/market/reducers/market-loading', () => {
 
       const expected = {}
 
-      assert.deepEqual(actual, expected, `Didn't return the expected array`)
+      assert.deepEqual(actual, expected, `Didn't return the expected object`)
     },
   })
 
@@ -42,7 +42,7 @@ describe('modules/market/reducers/market-loading', () => {
 
       const expected = { '0xMarket1': 'loading' }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected array`)
+      assert.deepEqual(actual, expected, `Didn't return the expected object`)
     },
   })
 
@@ -60,7 +60,7 @@ describe('modules/market/reducers/market-loading', () => {
         '0xMARKETID': 'current state',
       }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected array`)
+      assert.deepEqual(actual, expected, `Didn't return the expected object`)
     },
   })
 
@@ -79,7 +79,7 @@ describe('modules/market/reducers/market-loading', () => {
         '0xMARKETID2': 'state2',
       }
 
-      assert.deepEqual(actual, expected, `Didn't return the expected array`)
+      assert.deepEqual(actual, expected, `Didn't return the expected object`)
     },
   })
 })
