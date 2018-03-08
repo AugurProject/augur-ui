@@ -70,8 +70,6 @@ function processMarketsData(newMarketsData, existingMarketsData) {
       ...newMarketsData[marketId],
     }
 
-    // save market (without outcomes)
-    // p[normalizedmarketId] = marketData
     p[marketId] = marketData
 
     return p
