@@ -1,7 +1,6 @@
 import { augur } from 'services/augurjs'
 import { updateMarketsData } from 'modules/markets/actions/update-markets-data'
 import { updateMarketLoading, removeMarketLoading } from 'modules/market/actions/update-market-loading'
-import isObject from 'utils/is-object'
 import logError from 'utils/log-error'
 
 import { MARKET_INFO_LOADING, MARKET_INFO_LOADED } from 'modules/market/constants/market-loading-states'
@@ -13,12 +12,16 @@ export const loadMarketsInfo = (marketIds, callback = logError) => (dispatch, ge
   augur.markets.getMarketsInfo({ marketIds }, (err, marketsDataArray) => {
     if (err) return loadingError(dispatch, callback, err, marketIds)
 
-    const marketsData = marketsDataArray.filter(marketHasData => marketHasData).reduce((p, marketData) => ({
-      ...p,
-      [marketData.id]: marketData,
-    }), {})
+    if (marketsDataArray == null || !marketsDataArray.length) return loadingError(dispatch, callback, `no markets data received`, marketIds)
 
-    if (marketsData == null || !isObject(marketsData)) return loadingError(dispatch, callback, `no markets data received`, marketIds)
+    const marketsData = marketsDataArray.filter(marketHasData => marketHasData).reduce((p, marketData) => {
+      if (marketData.id == null) return p
+
+      return {
+        ...p,
+        [marketData.id]: marketData,
+      }
+    }, {})
 
     if (!Object.keys(marketsData).length) return loadingError(dispatch, callback, null, marketIds)
 

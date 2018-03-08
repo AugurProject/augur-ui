@@ -1,38 +1,311 @@
 import { describe, it } from 'mocha'
 import { assert } from 'chai'
-
-import { augur } from 'src/services/augurjs'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import { stub } from 'sinon'
+import sinon from 'sinon'
 
-import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info'
+import { loadMarketsInfo, __RewireAPI__ } from 'modules/markets/actions/load-markets-info'
 
-describe('load-markets-info', () => {
-  let mockStore
-  let store
-  const marketIds = ['0x000000', '0x000000']
+import { MARKET_INFO_LOADING, MARKET_INFO_LOADED } from 'modules/market/constants/market-loading-states'
+import { UPDATE_MARKET_LOADING, REMOVE_MARKET_LOADING } from 'modules/market/actions/update-market-loading'
+import { UPDATE_MARKETS_DATA } from 'modules/markets/actions/update-markets-data'
 
-  before(() => {
-    mockStore = configureMockStore([thunk])
-    store = mockStore({})
+describe('modules/markets/actions/load-markets-info.js', () => {
+  const middleware = [thunk]
+  const mockStore = configureMockStore(middleware)
+
+  const marketIds = ['0xMarket1', '0xMarket2']
+
+  const test = t => it(t.description, (done) => {
+    const store = mockStore()
+
+    t.assertions(store, done)
   })
 
-  beforeEach(() => {
-    stub(augur.markets, 'getMarketsInfo')
+  describe('loadMarketsInfo', () => {
+    __RewireAPI__.__Rewire__('updateMarketLoading', marketLoading => ({
+      type: UPDATE_MARKET_LOADING,
+      data: {
+        ...marketLoading,
+      },
+    }))
+
+    test({
+      description: `should dispatch the expected actions + call 'getMarketsInfo'`,
+      assertions: (store, done) => {
+        const stubbedAugur = {
+          markets: {
+            getMarketsInfo: sinon.stub(),
+          },
+        }
+        __RewireAPI__.__Rewire__('augur', stubbedAugur)
+
+        store.dispatch(loadMarketsInfo(marketIds))
+
+        const actual = store.getActions()
+
+        const expected = [
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket1': 'MARKET_INFO_LOADING',
+            },
+          },
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket2': 'MARKET_INFO_LOADING',
+            },
+          },
+        ]
+
+        assert.deepEqual(actual, expected, `didn't dispatch the expected actions`)
+        assert.isTrue(stubbedAugur.markets.getMarketsInfo.calledOnce, `didn't call 'getMarketsInfo' once as expected`)
+
+        __RewireAPI__.__ResetDependency__('augur')
+
+        done()
+      },
+    })
+
+    test({
+      description: `should dispatch the expected actions + call 'loadingError' due to error returned from 'getMarketsInfo'`,
+      assertions: (store, done) => {
+        const stubbedAugur = {
+          markets: {
+            getMarketsInfo: (marketIds, cb) => cb(true),
+          },
+        }
+        __RewireAPI__.__Rewire__('augur', stubbedAugur)
+
+        const stubbedLoadingError = sinon.stub()
+        __RewireAPI__.__Rewire__('loadingError', stubbedLoadingError)
+
+        store.dispatch(loadMarketsInfo(marketIds))
+
+        const actual = store.getActions()
+
+        const expected = [
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket1': 'MARKET_INFO_LOADING',
+            },
+          },
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket2': 'MARKET_INFO_LOADING',
+            },
+          },
+        ]
+
+        assert.deepEqual(actual, expected, `didn't dispatch the expected actions`)
+        assert.isTrue(stubbedLoadingError.calledOnce, `didn't call 'loadingError' once as expected`)
+
+        __RewireAPI__.__ResetDependency__('augur')
+        __RewireAPI__.__ResetDependency__('loadingError')
+
+        done()
+      },
+    })
+
+    test({
+      description: `should dispatch the expected actions + call 'loadingError' due to null return value from 'getMarketsInfo'`,
+      assertions: (store, done) => {
+        const stubbedAugur = {
+          markets: {
+            getMarketsInfo: (marketIds, cb) => cb(null, []),
+          },
+        }
+        __RewireAPI__.__Rewire__('augur', stubbedAugur)
+
+        const stubbedLoadingError = sinon.stub()
+        __RewireAPI__.__Rewire__('loadingError', stubbedLoadingError)
+
+        store.dispatch(loadMarketsInfo(marketIds))
+
+        const actual = store.getActions()
+
+        const expected = [
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket1': 'MARKET_INFO_LOADING',
+            },
+          },
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket2': 'MARKET_INFO_LOADING',
+            },
+          },
+        ]
+
+        assert.deepEqual(actual, expected, `didn't dispatch the expected actions`)
+        assert.isTrue(stubbedLoadingError.calledOnce, `didn't call 'loadingError' once as expected`)
+
+        __RewireAPI__.__ResetDependency__('augur')
+        __RewireAPI__.__ResetDependency__('loadingError')
+
+        done()
+      },
+    })
+
+    test({
+      description: `should dispatch the expected actions + call 'loadingError' due to malformed return value from 'getMarketsInfo'`,
+      assertions: (store, done) => {
+        const stubbedAugur = {
+          markets: {
+            getMarketsInfo: (marketIds, cb) => cb(null, [{ mal: 'formed' }]),
+          },
+        }
+        __RewireAPI__.__Rewire__('augur', stubbedAugur)
+
+        const stubbedLoadingError = sinon.stub()
+        __RewireAPI__.__Rewire__('loadingError', stubbedLoadingError)
+
+        store.dispatch(loadMarketsInfo(marketIds))
+
+        const actual = store.getActions()
+
+        const expected = [
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket1': 'MARKET_INFO_LOADING',
+            },
+          },
+          {
+            type: 'UPDATE_MARKET_LOADING',
+            data: {
+              '0xMarket2': 'MARKET_INFO_LOADING',
+            },
+          },
+        ]
+
+        assert.deepEqual(actual, expected, `didn't dispatch the expected actions`)
+        assert.isTrue(stubbedLoadingError.calledOnce, `didn't call 'loadingError' once as expected`)
+
+        __RewireAPI__.__ResetDependency__('augur')
+        __RewireAPI__.__ResetDependency__('loadingError')
+
+        done()
+      },
+    })
+
+    test({
+      description: `should dispatch the expected actions`,
+      assertions: (store, done) => {
+        const stubbedAugur = {
+          markets: {
+            getMarketsInfo: (marketIds, cb) => cb(false, marketIds.marketIds.reduce((p, marketId) => ([...p, { id: marketId, test: 'value' }]), [])),
+          },
+        }
+        __RewireAPI__.__Rewire__('augur', stubbedAugur)
+
+        store.dispatch(loadMarketsInfo(marketIds))
+
+        const actual = store.getActions()
+
+        const expected = [
+          {
+            type: UPDATE_MARKET_LOADING,
+            data: {
+              '0xMarket1': MARKET_INFO_LOADING,
+            },
+          },
+          {
+            type: UPDATE_MARKET_LOADING,
+            data: {
+              '0xMarket2': MARKET_INFO_LOADING,
+            },
+          },
+          {
+            type: UPDATE_MARKET_LOADING,
+            data: {
+              '0xMarket1': MARKET_INFO_LOADED,
+            },
+          },
+          {
+            type: UPDATE_MARKET_LOADING,
+            data: {
+              '0xMarket2': MARKET_INFO_LOADED,
+            },
+          },
+          {
+            type: UPDATE_MARKETS_DATA,
+            marketsData: {
+              '0xMarket1': {
+                id: '0xMarket1',
+                test: 'value',
+              },
+              '0xMarket2': {
+                id: '0xMarket2',
+                test: 'value',
+              },
+            },
+          },
+        ]
+
+        assert.deepEqual(actual, expected, `didn't dispatch the expected actions`)
+
+        __RewireAPI__.__ResetDependency__('augur')
+        __RewireAPI__.__ResetDependency__('loadingError')
+
+        done()
+      },
+    })
+
   })
 
-  afterEach(() => {
-    augur.markets.getMarketsInfo.restore()
-  })
+  describe('loadingError', () => {
+    __RewireAPI__.__Rewire__('removeMarketLoading', marketId => ({
+      type: REMOVE_MARKET_LOADING,
+      data: {
+        marketId,
+      },
+    }))
 
-  it('should pass marketIds to augur.js', () => {
-    store.dispatch(loadMarketsInfo(marketIds))
-    assert.ok(augur.markets.getMarketsInfo.calledWith({ marketIds }))
-  })
+    after(() => {
+      __RewireAPI__.__ResetDependency__('removeMarketLoading')
+    })
 
-  it('filter out undefined markets', () => {
-    store.dispatch(loadMarketsInfo(marketIds))
-    augur.markets.getMarketsInfo.args[0][1](null, [null, null])
+    const loadingError = __RewireAPI__.__get__('loadingError')
+
+    test({
+      description: 'should remove the market from the loading state + call the callback with error parameter',
+      assertions: (store, done) => {
+        let callbackReturnValue
+
+        const callback = (err) => {
+          callbackReturnValue = err
+        }
+
+        loadingError(store.dispatch, callback, 'ERROR', marketIds)
+
+        const actual = store.getActions()
+
+        const expected = [
+          {
+            type: 'REMOVE_MARKET_LOADING',
+            data: {
+              marketId: '0xMarket1',
+            },
+          },
+          {
+            type: 'REMOVE_MARKET_LOADING',
+            data: {
+              marketId: '0xMarket2',
+            },
+          },
+        ]
+
+        assert.deepEqual(actual, expected, `didn't return the expected values`)
+        assert.equal('ERROR', callbackReturnValue, `didn't return the expected value`)
+
+        done()
+      },
+    })
   })
 })
