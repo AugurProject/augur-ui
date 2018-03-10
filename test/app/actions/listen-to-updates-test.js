@@ -106,14 +106,9 @@ describe('listen-to-updates', () => {
           START_BLOCK_LISTENERS: { type: 'START_BLOCK_LISTENERS' },
           START_AUGUR_NODE_EVENT_LISTENERS: { type: 'START_AUGUR_NODE_EVENT_LISTENERS' },
           NODES_AUGUR_ON_SET: { type: 'NODES_AUGUR_ON_SET' },
-          RESET_STATE: { type: 'RESET_STATE' },
-          UPDATE_CONNECTION_STATUS: {
-            type: 'UPDATE_CONNECTION_STATUS',
-            isConnected: true,
-          },
           UPDATE_AUGUR_NODE_CONNECTION_STATUS: {
             type: 'UPDATE_AUGUR_NODE_CONNECTION_STATUS',
-            isConnected: true,
+            isConnected: false,
           },
           UPDATE_MODAL: {
             type: 'UPDATE_MODAL',
@@ -166,10 +161,9 @@ describe('listen-to-updates', () => {
           assert.isFunction(func)
           return func
         })
-        ReWireModule.__Rewire__('resetState', () => {
-          testState.connection.isConnectedToAugurNode = false
-          // testState.connection.isConnected = false
-          return ACTIONS.RESET_STATE
+        ReWireModule.__Rewire__('updateAugurNodeConnectionStatus', (isConnected) => {
+          testState.connection.isConnectedToAugurNode = isConnected
+          return ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS
         })
         testStore.dispatch(listenToUpdates(mockHistory))
         assert.deepEqual(testStore.getActions(), [
@@ -179,9 +173,8 @@ describe('listen-to-updates', () => {
           ACTIONS.START_BLOCK_LISTENERS,
           ACTIONS.START_AUGUR_NODE_EVENT_LISTENERS,
           ACTIONS.NODES_AUGUR_ON_SET,
-          ACTIONS.RESET_STATE,
-          ACTIONS.UPDATE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
+          ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.CONNECT_AUGUR,
           ACTIONS.NODES_ETHEREUM_ON_SET,
@@ -191,7 +184,7 @@ describe('listen-to-updates', () => {
     })
 
     test({
-      description: 'it should handle a augurNode disconnection event',
+      description: 'it should handle an Ethereum disconnection event',
       assertions: (done) => {
         const testState = Object.assign({}, state, {
           connection: {
@@ -208,14 +201,13 @@ describe('listen-to-updates', () => {
           START_BLOCK_LISTENERS: { type: 'START_BLOCK_LISTENERS' },
           START_AUGUR_NODE_EVENT_LISTENERS: { type: 'START_AUGUR_NODE_EVENT_LISTENERS' },
           NODES_AUGUR_ON_SET: { type: 'NODES_AUGUR_ON_SET' },
-          RESET_STATE: { type: 'RESET_STATE' },
           UPDATE_AUGUR_NODE_CONNECTION_STATUS: {
             type: 'UPDATE_AUGUR_NODE_CONNECTION_STATUS',
-            isConnected: true,
+            isConnected: false,
           },
           UPDATE_CONNECTION_STATUS: {
             type: 'UPDATE_CONNECTION_STATUS',
-            isConnected: true,
+            isConnected: false,
           },
           UPDATE_MODAL: {
             type: 'UPDATE_MODAL',
@@ -268,10 +260,13 @@ describe('listen-to-updates', () => {
           assert.isFunction(func)
           return func
         })
-        ReWireModule.__Rewire__('resetState', () => {
-          // testState.connection.isConnectedToAugurNode = false
-          testState.connection.isConnected = false
-          return ACTIONS.RESET_STATE
+        ReWireModule.__Rewire__('updateAugurNodeConnectionStatus', (isConnected) => {
+          testState.connection.isConnectedToAugurNode = isConnected
+          return ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS
+        })
+        ReWireModule.__Rewire__('updateConnectionStatus', (isConnected) => {
+          testState.connection.isConnected = isConnected
+          return ACTIONS.UPDATE_CONNECTION_STATUS
         })
         testStore.dispatch(listenToUpdates(mockHistory))
         assert.deepEqual(testStore.getActions(), [
@@ -282,9 +277,8 @@ describe('listen-to-updates', () => {
           ACTIONS.START_AUGUR_NODE_EVENT_LISTENERS,
           ACTIONS.NODES_AUGUR_ON_SET,
           ACTIONS.NODES_ETHEREUM_ON_SET,
-          ACTIONS.RESET_STATE,
-          ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
+          ACTIONS.UPDATE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.CONNECT_AUGUR,
         ], `Didn't recieve the expected actions`)
@@ -311,14 +305,13 @@ describe('listen-to-updates', () => {
           START_BLOCK_LISTENERS: { type: 'START_BLOCK_LISTENERS' },
           START_AUGUR_NODE_EVENT_LISTENERS: { type: 'START_AUGUR_NODE_EVENT_LISTENERS' },
           NODES_AUGUR_ON_SET: { type: 'NODES_AUGUR_ON_SET' },
-          RESET_STATE: { type: 'RESET_STATE' },
           UPDATE_CONNECTION_STATUS: {
             type: 'UPDATE_CONNECTION_STATUS',
             isConnected: true,
           },
           UPDATE_AUGUR_NODE_CONNECTION_STATUS: {
             type: 'UPDATE_AUGUR_NODE_CONNECTION_STATUS',
-            isConnected: true,
+            isConnected: false,
           },
           UPDATE_MODAL: {
             type: 'UPDATE_MODAL',
@@ -375,10 +368,9 @@ describe('listen-to-updates', () => {
             func(cb)
           }
         })
-        ReWireModule.__Rewire__('resetState', () => {
-          testState.connection.isConnectedToAugurNode = false
-          // testState.connection.isConnected = false
-          return ACTIONS.RESET_STATE
+        ReWireModule.__Rewire__('updateAugurNodeConnectionStatus', (isConnected) => {
+          testState.connection.isConnectedToAugurNode = isConnected
+          return ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS
         })
         testStore.dispatch(listenToUpdates(mockHistory))
         assert.deepEqual(testStore.getActions(), [
@@ -388,9 +380,8 @@ describe('listen-to-updates', () => {
           ACTIONS.START_BLOCK_LISTENERS,
           ACTIONS.START_AUGUR_NODE_EVENT_LISTENERS,
           ACTIONS.NODES_AUGUR_ON_SET,
-          ACTIONS.RESET_STATE,
-          ACTIONS.UPDATE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
+          ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.CONNECT_AUGUR,
@@ -419,10 +410,9 @@ describe('listen-to-updates', () => {
           START_BLOCK_LISTENERS: { type: 'START_BLOCK_LISTENERS' },
           START_AUGUR_NODE_EVENT_LISTENERS: { type: 'START_AUGUR_NODE_EVENT_LISTENERS' },
           NODES_AUGUR_ON_SET: { type: 'NODES_AUGUR_ON_SET' },
-          RESET_STATE: { type: 'RESET_STATE' },
           UPDATE_CONNECTION_STATUS: {
             type: 'UPDATE_CONNECTION_STATUS',
-            isConnected: true,
+            isConnected: false,
           },
           UPDATE_AUGUR_NODE_CONNECTION_STATUS: {
             type: 'UPDATE_AUGUR_NODE_CONNECTION_STATUS',
@@ -483,10 +473,9 @@ describe('listen-to-updates', () => {
             func(cb)
           }
         })
-        ReWireModule.__Rewire__('resetState', () => {
-          // testState.connection.isConnectedToAugurNode = false
-          testState.connection.isConnected = false
-          return ACTIONS.RESET_STATE
+        ReWireModule.__Rewire__('updateConnectionStatus', (isConnected) => {
+          testState.connection.isConnected = isConnected
+          return ACTIONS.UPDATE_CONNECTION_STATUS
         })
         testStore.dispatch(listenToUpdates(mockHistory))
         assert.deepEqual(testStore.getActions(), [
@@ -497,9 +486,8 @@ describe('listen-to-updates', () => {
           ACTIONS.START_AUGUR_NODE_EVENT_LISTENERS,
           ACTIONS.NODES_AUGUR_ON_SET,
           ACTIONS.NODES_ETHEREUM_ON_SET,
-          ACTIONS.RESET_STATE,
-          ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
+          ACTIONS.UPDATE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.CONNECT_AUGUR,
@@ -528,14 +516,13 @@ describe('listen-to-updates', () => {
           START_BLOCK_LISTENERS: { type: 'START_BLOCK_LISTENERS' },
           START_AUGUR_NODE_EVENT_LISTENERS: { type: 'START_AUGUR_NODE_EVENT_LISTENERS' },
           NODES_AUGUR_ON_SET: { type: 'NODES_AUGUR_ON_SET' },
-          RESET_STATE: { type: 'RESET_STATE' },
           UPDATE_CONNECTION_STATUS: {
             type: 'UPDATE_CONNECTION_STATUS',
             isConnected: true,
           },
           UPDATE_AUGUR_NODE_CONNECTION_STATUS: {
             type: 'UPDATE_AUGUR_NODE_CONNECTION_STATUS',
-            isConnected: true,
+            isConnected: false,
           },
           UPDATE_MODAL: {
             type: 'UPDATE_MODAL',
@@ -594,10 +581,9 @@ describe('listen-to-updates', () => {
           assert.isFunction(func)
           return func
         })
-        ReWireModule.__Rewire__('resetState', () => {
-          testState.connection.isConnectedToAugurNode = false
-          // testState.connection.isConnected = false
-          return ACTIONS.RESET_STATE
+        ReWireModule.__Rewire__('updateAugurNodeConnectionStatus', (isConnected) => {
+          testState.connection.isConnectedToAugurNode = isConnected
+          return ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS
         })
         testStore.dispatch(listenToUpdates(mockHistory))
         assert.deepEqual(testStore.getActions(), [
@@ -607,9 +593,8 @@ describe('listen-to-updates', () => {
           ACTIONS.START_BLOCK_LISTENERS,
           ACTIONS.START_AUGUR_NODE_EVENT_LISTENERS,
           ACTIONS.NODES_AUGUR_ON_SET,
-          ACTIONS.RESET_STATE,
-          ACTIONS.UPDATE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
+          ACTIONS.UPDATE_AUGUR_NODE_CONNECTION_STATUS,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.UPDATE_MODAL,
           ACTIONS.UPDATE_MODAL,
@@ -661,7 +646,6 @@ describe('listen-to-updates', () => {
         })
         ReWireModule.__Rewire__('connectAugur', (history, env, isInitialConnection, cb) => { })
         ReWireModule.__Rewire__('debounce', (func, wait) => { })
-        ReWireModule.__Rewire__('resetState', () => { })
         ReWireModule.__Rewire__('loadMarketsInfo', () => ACTIONS.LOAD_MARKETS_INFO)
 
         testStore.dispatch(listenToUpdates(mockHistory))
@@ -710,7 +694,6 @@ describe('listen-to-updates', () => {
         })
         ReWireModule.__Rewire__('connectAugur', (history, env, isInitialConnection, cb) => { })
         ReWireModule.__Rewire__('debounce', (func, wait) => { })
-        ReWireModule.__Rewire__('resetState', () => { })
         ReWireModule.__Rewire__('loadMarketsInfo', () => ACTIONS.LOAD_MARKETS_INFO)
 
         testStore.dispatch(listenToUpdates(mockHistory))
