@@ -193,7 +193,7 @@ export default class CreateMarketResolution extends Component {
         </li>
         <li className={Styles.CreateMarketResolution__datepicker}>
           <label htmlFor="cm__input--date">
-            <span>Expiration Date (UTC { utcLocalOffset })</span>
+            <span>Expiration Date</span>
           </label>
           <SingleDatePicker
             id="cm__input--date"
@@ -209,7 +209,7 @@ export default class CreateMarketResolution extends Component {
         </li>
         <li>
           <label htmlFor="cm__input--time">
-            <span>Expiration Time</span>
+            <span>Expiration Time (UTC { utcLocalOffset })</span>
             { p.newMarket.validations[p.newMarket.currentStep].hour.length &&
               <span className={StylesForm.CreateMarketForm__error}>{InputErrorIcon}{ p.newMarket.validations[p.newMarket.currentStep].hour }</span>
             }
