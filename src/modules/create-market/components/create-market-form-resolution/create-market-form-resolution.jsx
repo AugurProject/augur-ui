@@ -119,8 +119,7 @@ export default class CreateMarketResolution extends Component {
   render() {
     const p = this.props
     const validations = p.newMarket.validations[p.newMarket.currentStep]
-    const formattedDate = formatDate(new Date(Date.now()))
-    const utcLocalOffset = formattedDate.utcLocalOffset
+    const utcLocalOffset = formatDate(new Date(Date.now()))["utcLocalOffset"]
 
     const designatedReporterError = p.newMarket.designatedReporterType === DESIGNATED_REPORTER_SPECIFIC && validations.designatedReporterAddress && !!validations.designatedReporterAddress.length
 
