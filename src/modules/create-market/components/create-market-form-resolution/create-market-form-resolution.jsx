@@ -119,6 +119,7 @@ export default class CreateMarketResolution extends Component {
   render() {
     const p = this.props
     const validations = p.newMarket.validations[p.newMarket.currentStep]
+    const utcLocalOffset = formatDate(new Date(Date.now())).localOffset
 
     const designatedReporterError = p.newMarket.designatedReporterType === DESIGNATED_REPORTER_SPECIFIC && validations.designatedReporterAddress && !!validations.designatedReporterAddress.length
 
@@ -192,7 +193,7 @@ export default class CreateMarketResolution extends Component {
         </li>
         <li className={Styles.CreateMarketResolution__datepicker}>
           <label htmlFor="cm__input--date">
-            <span>Expiration Date</span>
+            <span>Expiration Date (UTC { utcLocalOffset })</span>
           </label>
           <SingleDatePicker
             id="cm__input--date"
