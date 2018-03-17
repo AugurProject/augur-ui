@@ -15,6 +15,7 @@ import getValue from 'utils/get-value'
 const mapStateToProps = state => ({
   universe: state.universe,
   availableEth: getValue(state, 'loginAccount.eth'),
+  availableRep: getValue(state, 'loginAccount.rep'),
   meta: getValue(state, 'loginAccount.meta'),
   newMarket: state.newMarket,
   footerHeight: state.footerHeight,

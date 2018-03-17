@@ -15,6 +15,9 @@ export default class CreateMarketReview extends Component {
     newMarket: PropTypes.object.isRequired,
     universe: PropTypes.object.isRequired,
     meta: PropTypes.object,
+    availableEth: PropTypes.string.isRequired,
+    availableRep: PropTypes.string.isRequired,
+    universe: PropTypes.object.isRequired,
   }
 
   constructor(props) {
