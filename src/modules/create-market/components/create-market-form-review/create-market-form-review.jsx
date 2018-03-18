@@ -7,6 +7,7 @@ import { augur } from 'services/augurjs'
 import { formatEtherEstimate } from 'utils/format-number'
 import { EXPIRY_SOURCE_GENERIC } from 'modules/create-market/constants/new-market-constraints'
 
+import { ExclamationCircle as InputErrorIcon } from 'modules/common/components/icons'
 import Styles from 'modules/create-market/components/create-market-form-review/create-market-form-review.styles'
 import StylesForm from 'modules/create-market/components/create-market-form/create-market-form.styles'
 
@@ -67,6 +68,17 @@ export default class CreateMarketReview extends Component {
     const p = this.props
     const s = this.state
 
+    const insufficientEth = parseInt(p.availableEth) < parseInt(s.validityBond) + parseInt(s.gasCost) + parseInt(s.creationFee)
+    const insufficientRep = parseInt(p.availableRep) < parseInt(s.designatedReportNoShowReputationBond)
+    let insufficientFundsString = ""
+    if (insufficientEth && insufficientRep) {
+      insufficientFundsString = "ETH and REP"
+    } else if (insufficientEth) {
+      insufficientFundsString = "ETH"
+    } else if (insufficientRep) {
+      insufficientFundsString = "REP"
+    }
+
     return (
       <article className={StylesForm.CreateMarketForm__fields}>
         <div className={Styles.CreateMarketReview}>
@@ -111,6 +123,11 @@ export default class CreateMarketReview extends Component {
               </ul>
             </div>
           </div>
+          {insufficientFundsString !== "" &&
+          <span className={StylesForm['CreateMarketForm__error--insufficient-funds']}>
+            {InputErrorIcon}You have insufficient {insufficientFundsString} to create this market.
+          </span>
+          }
           <div className={Styles.CreateMarketReview__resolution}>
             <h4 className={Styles.CreateMarketReview__smallheading}>Resolution Source</h4>
             <p className={Styles.CreateMarketReview__smallparagraph}>
