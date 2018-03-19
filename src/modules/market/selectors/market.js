@@ -76,7 +76,7 @@ export const selectMarket = (marketId) => {
     orderCancellation,
     smallestPositions,
     loginAccount,
-    ...state,
+    ...state
   } = store.getState()
 
   const accountPositions = selectAccountPositions()
