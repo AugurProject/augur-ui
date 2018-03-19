@@ -15,6 +15,16 @@ describe('utils/format-date', () => {
   test({
     description: `should return false`,
     assertions: () => {
+      const currentTime = new Date(Date.now()).getTimezoneOffset()
+      const actual = formatDate(new Date(Date.now())).utcTime
+
+      assert.strictEqual(actual, currentTime / 60 * -1, `didn't return` + currentTime / 60 * -1 + ` as expected`)
+    },
+  })
+
+  test({
+    description: `should return false`,
+    assertions: () => {
       const actual = dateHasPassed(11111111)
 
       assert.strictEqual(actual, true, `didn't return true as expected`)
