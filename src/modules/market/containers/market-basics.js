@@ -4,10 +4,13 @@ import MarketBasics from 'modules/market/components/market-basics/market-basics'
 
 import { selectCurrentTimestamp } from 'src/select-state'
 
-const mapStateToProps = (state) =>
-  ({
+import getValue from 'utils/get-value'
+
+const mapStateToProps = (state, ownProps) => {
+  return {
     currentTimestamp: selectCurrentTimestamp(state),
-  })
+  }
+}
 
 const MarketBasicsContainer = connect(mapStateToProps)(MarketBasics)
 
