@@ -15,10 +15,10 @@ describe('utils/format-date', () => {
   test({
     description: `should return false`,
     assertions: () => {
-      const currenUtcOffset = (new Date(Date.now()).getTimezoneOffset() / 60) * -1
-      const actual = formatDate(new Date(Date.now())).utcTime
+      const currenUtcOffset = (new Date(1521489481).getTimezoneOffset() / 60) * -1
+      const actual = formatDate(new Date(1521489481)).utcLocalOffset
 
-      assert.strictEqual(actual, currenUtcOffset, `didn't return` + currenUtcOffset + ` as expected`)
+      assert.strictEqual(actual, currenUtcOffset, `didn't return ` + currenUtcOffset + ` as expected`)
     },
   })
 
