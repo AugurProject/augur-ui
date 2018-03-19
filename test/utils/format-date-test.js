@@ -2,7 +2,7 @@ import { describe, it } from 'mocha'
 import { assert } from 'chai'
 import sinon from 'sinon'
 
-import { dateHasPassed, getDaysRemaining } from 'utils/format-date'
+import { dateHasPassed, formatDate, getDaysRemaining } from 'utils/format-date'
 
 describe('utils/format-date', () => {
   const test = t => it(t.description, () => t.assertions())
@@ -18,7 +18,7 @@ describe('utils/format-date', () => {
       const currentTime = new Date(Date.now()).getTimezoneOffset()
       const actual = formatDate(new Date(Date.now())).utcTime
 
-      assert.strictEqual(actual, currentTime / 60 * -1, `didn't return` + currentTime / 60 * -1 + ` as expected`)
+      assert.strictEqual(actual, (currentTime / 60) * -1, `didn't return` + (currentTime / 60) * -1 + ` as expected`)
     },
   })
 
