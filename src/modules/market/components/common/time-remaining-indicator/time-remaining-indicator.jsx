@@ -7,7 +7,12 @@ import PropTypes from 'prop-types'
 * */
 export default function TimeRemainingIndicatorWrapper(BaseCmp) {
   const TimeRemainingIndicator = (props) => {
-    const { startDate, endDate, currentTimestamp, ...otherProps } = props
+    const {
+      startDate,
+      endDate,
+      currentTimestamp,
+      ...otherProps
+    } = props
 
     const duration = endDate.getTime() - startDate.getTime()
     // Render null if given invalid input

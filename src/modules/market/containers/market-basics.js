@@ -6,11 +6,9 @@ import { selectCurrentTimestamp } from 'src/select-state'
 
 import getValue from 'utils/get-value'
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    currentTimestamp: selectCurrentTimestamp(state),
-  }
-}
+const mapStateToProps = (state) => ({
+  currentTimestamp: selectCurrentTimestamp(state),
+})
 
 const MarketBasicsContainer = connect(mapStateToProps)(MarketBasics)
 
