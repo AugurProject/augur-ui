@@ -30,6 +30,7 @@ const CreateMarketView = p => (
         history={p.history}
         universe={p.universe}
         isBugBounty={p.isBugBounty}
+        currentTimestamp={p.currentTimestamp}
       />
     </div>
   </section>
@@ -42,6 +43,7 @@ CreateMarketView.propTypes = {
   history: PropTypes.object.isRequired,
   universe: PropTypes.object.isRequired,
   isMobileSmall: PropTypes.bool.isRequired,
+  currentTimestamp: PropTypes.number,
 }
 
 export default CreateMarketView
