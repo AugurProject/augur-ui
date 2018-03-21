@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { augur } from 'services/augurjs'
 // import BigNumber from 'bignumber.js'
 import getValue from 'src/utils/get-value'
-import insufficientFunds from 'src/modules/create-market/selectors/insufficient-funds'
+import insufficientFunds from 'src/modules/create-market/utils/insufficient-funds'
 
 import { formatEtherEstimate } from 'utils/format-number'
 import { EXPIRY_SOURCE_GENERIC } from 'modules/create-market/constants/new-market-constraints'
