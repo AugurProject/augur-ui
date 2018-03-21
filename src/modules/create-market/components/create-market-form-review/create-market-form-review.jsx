@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 // import classNames from 'classnames'
 import { augur } from 'services/augurjs'
 // import BigNumber from 'bignumber.js'
+import getValue from 'src/utils/get-value'
+import insufficientFunds from 'src/modules/create-market/selectors/insufficient-funds'
 
 import { formatEtherEstimate } from 'utils/format-number'
 import { EXPIRY_SOURCE_GENERIC } from 'modules/create-market/constants/new-market-constraints'
@@ -18,7 +20,6 @@ export default class CreateMarketReview extends Component {
     meta: PropTypes.object,
     availableEth: PropTypes.string.isRequired,
     availableRep: PropTypes.string.isRequired,
-    universe: PropTypes.object.isRequired,
   }
 
   constructor(props) {
@@ -68,16 +69,12 @@ export default class CreateMarketReview extends Component {
     const p = this.props
     const s = this.state
 
-    const insufficientEth = parseInt(p.availableEth) < parseInt(s.validityBond) + parseInt(s.gasCost) + parseInt(s.creationFee)
-    const insufficientRep = parseInt(p.availableRep) < parseInt(s.designatedReportNoShowReputationBond)
-    let insufficientFundsString = ""
-    if (insufficientEth && insufficientRep) {
-      insufficientFundsString = "ETH and REP"
-    } else if (insufficientEth) {
-      insufficientFundsString = "ETH"
-    } else if (insufficientRep) {
-      insufficientFundsString = "REP"
-    }
+    const validityBond = getValue(s, 'validityBond.formattedValue')
+    const gasCost = getValue(s, 'gasCost.formattedValue')
+    const creationFee = getValue(s, 'creationFee.formattedValue')
+    const designatedReportNoShowReputationBond = getValue(s, 'designatedReportNoShowReputationBond.formattedValue')
+
+    const insufficientFundsString = insufficientFunds(validityBond, gasCost, creationFee, designatedReportNoShowReputationBond, p.availableEth, p.availableRep)
 
     return (
       <article className={StylesForm.CreateMarketForm__fields}>
@@ -123,7 +120,7 @@ export default class CreateMarketReview extends Component {
               </ul>
             </div>
           </div>
-          {insufficientFundsString !== "" &&
+          {insufficientFundsString !== '' &&
           <span className={StylesForm['CreateMarketForm__error--insufficient-funds']}>
             {InputErrorIcon}You have insufficient {insufficientFundsString} to create this market.
           </span>
