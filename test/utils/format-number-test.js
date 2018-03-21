@@ -18,6 +18,7 @@ describe('utils/format-number.js', () => {
         minimized: '1,000.1',
         denomination: ' ETH',
         full: '1,000.1000 ETH',
+        fullPrecision: '1000.1',
       },
     },
     {
@@ -32,6 +33,7 @@ describe('utils/format-number.js', () => {
         minimized: '1,000.1',
         denomination: ' ETH (estimated)',
         full: '1,000.1000 ETH (estimated)',
+        fullPrecision: '1000.1',
       },
     },
     {
@@ -46,6 +48,7 @@ describe('utils/format-number.js', () => {
         minimized: '1,000.1',
         denomination: '%',
         full: '1,000.10%',
+        fullPrecision: '1000.1',
       },
     },
     {
@@ -60,6 +63,7 @@ describe('utils/format-number.js', () => {
         minimized: '1,000.1',
         denomination: ' shares',
         full: '1,000.1 shares',
+        fullPrecision: '1000.1',
       },
     },
     {
@@ -75,6 +79,7 @@ describe('utils/format-number.js', () => {
         minimized: '1',
         denomination: ' share',
         full: '1 share',
+        fullPrecision: '1',
       },
     },
     {
@@ -89,6 +94,7 @@ describe('utils/format-number.js', () => {
         minimized: '1,000.1',
         denomination: ' REP',
         full: '1,000.10 REP',
+        fullPrecision: '1000.1',
       },
     },
   ]
