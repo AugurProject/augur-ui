@@ -236,7 +236,7 @@ export default class CreateMarketResolution extends Component {
               value={p.newMarket.minute}
               placeholder="Minute"
               onBlur={e => this.props.validateNumber('minute', e.target.value, 'minute', 0, 59, 0, true)}
-              onChange={e => p.validateNumber('minute', e.target.value, 'minute', 0, 59, 0)}
+              onChange={e => p.validateNumber('minute', e.target.value, 'minute', 0, 59, 0, true)}
             />
             <InputDropdown
               label="AM/PM"
