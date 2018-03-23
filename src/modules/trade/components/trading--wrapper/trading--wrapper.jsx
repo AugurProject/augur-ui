@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'utils/wrapped-big-number'
+import BigNumberLib from 'bignumber.js'
 
 import MarketTradingForm from 'modules/trade/components/trading--form/trading--form'
 import MarketTradingConfirm from 'modules/trade/components/trading--confirm/trading--confirm'
@@ -25,7 +26,7 @@ class MarketTradingWrapper extends Component {
     isLogged: PropTypes.bool.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     initialMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumberLib).isRequired,
     isMobile: PropTypes.bool.isRequired,
     toggleForm: PropTypes.func.isRequired,
     showOrderPlaced: PropTypes.func.isRequired,

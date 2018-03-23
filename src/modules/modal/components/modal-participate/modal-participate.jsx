@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import BigNumber from 'bignumber.js'
+import BigNumber from 'utils/wrapped-big-number'
 
 import { Participate, ExclamationCircle as InputErrorIcon } from 'modules/common/components/icons'
 import Styles from 'modules/modal/components/modal-participate/modal-participate.styles'

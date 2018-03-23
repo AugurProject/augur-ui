@@ -1,7 +1,7 @@
 
 
 import { calculatePercentage, calculateTentativeRemainingRep, calculateAddedStakePercentage, __RewireAPI__ as RewireAPI } from 'modules/reporting/helpers/progress-calculations'
-import { BigNumber } from 'bignumber.js'
+import BigNumber from 'utils/wrapped-big-number'
 
 describe(`modules/reporting/helpers/progress-calculations.js`, () => {
   const test = (t) => {

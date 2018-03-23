@@ -7,7 +7,7 @@ import {
 import { RESET_STATE } from 'modules/app/actions/reset-state'
 import { SETTLEMENT_FEE_DEFAULT } from 'modules/create-market/constants/new-market-constraints'
 
-import BigNumber from 'bignumber.js'
+import BigNumber from 'utils/wrapped-big-number'
 
 const DEFAULT_STATE = {
   isValid: false,

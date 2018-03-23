@@ -1,5 +1,5 @@
 import memoize from 'memoizee'
-// import BigNumber from 'bignumber.js'
+// import BigNumber from 'utils/WrappedBigNumber'
 
 /**
  * Prepares price history data for charting
