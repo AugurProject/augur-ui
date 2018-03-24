@@ -16,12 +16,14 @@ describe('src/utils/wrapped-big-number.js', () => {
   it('should console an error when a undefined is passed', () => {
     const result = new WrappedBigNumber(undefined)
     assert.instanceOf(result, WrappedBigNumber)
+    assert.isNotOk(!result)
     assert.isOk(spy.called)
   })
 
   it('should console an error when a null value is passed', () => {
     const result = new WrappedBigNumber(null)
     assert.instanceOf(result, WrappedBigNumber)
+    assert.isNotOk(!result)
     assert.isOk(spy.called)
   })
 
