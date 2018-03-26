@@ -7,7 +7,7 @@ import {
 import { RESET_STATE } from 'modules/app/actions/reset-state'
 import { SETTLEMENT_FEE_DEFAULT } from 'modules/create-market/constants/new-market-constraints'
 
-import BigNumber from 'utils/wrapped-big-number'
+import { WrappedBigNumber } from 'utils/wrapped-big-number'
 
 const DEFAULT_STATE = {
   isValid: false,
@@ -57,9 +57,9 @@ const DEFAULT_STATE = {
   orderBook: {}, // for submit orders
   orderBookSorted: {}, // for order book table
   orderBookSeries: {}, // for order book chart
-  initialLiquidityEth: new BigNumber(0),
-  initialLiquidityGas: new BigNumber(0),
-  initialLiquidityFees: new BigNumber(0),
+  initialLiquidityEth: WrappedBigNumber(0),
+  initialLiquidityGas: WrappedBigNumber(0),
+  initialLiquidityFees: WrappedBigNumber(0),
   creationError: 'Unable to create market.  Ensure your market is unique and all values are valid.',
 }
 

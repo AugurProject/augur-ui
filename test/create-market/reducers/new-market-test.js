@@ -9,7 +9,7 @@ import {
   CLEAR_NEW_MARKET,
 } from 'modules/create-market/actions/update-new-market'
 
-import BigNumber from 'utils/wrapped-big-number'
+import { WrappedBigNumber } from 'utils/wrapped-big-number'
 
 describe('modules/create-market/reducers/new-market.js', () => {
   const test = (t) => {
@@ -48,9 +48,9 @@ describe('modules/create-market/reducers/new-market.js', () => {
         orderBook: {},
         orderBookSorted: {},
         orderBookSeries: {},
-        initialLiquidityEth: new BigNumber(0),
-        initialLiquidityGas: new BigNumber(0),
-        initialLiquidityFees: new BigNumber(0),
+        initialLiquidityEth: WrappedBigNumber(0),
+        initialLiquidityGas: WrappedBigNumber(0),
+        initialLiquidityFees: WrappedBigNumber(0),
         validations: [
           {
             description: false,
@@ -105,8 +105,8 @@ describe('modules/create-market/reducers/new-market.js', () => {
         data: {
           outcome: 'Outcome1',
           type: 'bid',
-          price: new BigNumber(0.5),
-          quantity: new BigNumber(1),
+          price: WrappedBigNumber(0.5),
+          quantity: WrappedBigNumber(1),
         },
       })
 
@@ -116,8 +116,8 @@ describe('modules/create-market/reducers/new-market.js', () => {
           Outcome1: [
             {
               type: 'bid',
-              price: new BigNumber(0.5),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.5),
+              quantity: WrappedBigNumber(1),
             },
           ],
         },
@@ -136,13 +136,13 @@ describe('modules/create-market/reducers/new-market.js', () => {
           Outcome1: [
             {
               type: 'bid',
-              price: new BigNumber(0.8),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.8),
+              quantity: WrappedBigNumber(1),
             },
             {
               type: 'ask',
-              price: new BigNumber(0.9),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.9),
+              quantity: WrappedBigNumber(1),
             },
           ],
         },
@@ -153,8 +153,8 @@ describe('modules/create-market/reducers/new-market.js', () => {
         data: {
           outcome: 'Outcome1',
           type: 'bid',
-          price: new BigNumber(0.5),
-          quantity: new BigNumber(1),
+          price: WrappedBigNumber(0.5),
+          quantity: WrappedBigNumber(1),
         },
       })
 
@@ -164,18 +164,18 @@ describe('modules/create-market/reducers/new-market.js', () => {
           Outcome1: [
             {
               type: 'bid',
-              price: new BigNumber(0.8),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.8),
+              quantity: WrappedBigNumber(1),
             },
             {
               type: 'ask',
-              price: new BigNumber(0.9),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.9),
+              quantity: WrappedBigNumber(1),
             },
             {
               type: 'bid',
-              price: new BigNumber(0.5),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.5),
+              quantity: WrappedBigNumber(1),
             },
           ],
         },
@@ -194,13 +194,13 @@ describe('modules/create-market/reducers/new-market.js', () => {
           Outcome1: [
             {
               type: 'bid',
-              price: new BigNumber(0.8),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.8),
+              quantity: WrappedBigNumber(1),
             },
             {
               type: 'ask',
-              price: new BigNumber(0.9),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.9),
+              quantity: WrappedBigNumber(1),
             },
           ],
         },
@@ -220,8 +220,8 @@ describe('modules/create-market/reducers/new-market.js', () => {
           Outcome1: [
             {
               type: 'ask',
-              price: new BigNumber(0.9),
-              quantity: new BigNumber(1),
+              price: WrappedBigNumber(0.9),
+              quantity: WrappedBigNumber(1),
             },
           ],
         },
@@ -301,9 +301,9 @@ describe('modules/create-market/reducers/new-market.js', () => {
         orderBook: {},
         orderBookSorted: {},
         orderBookSeries: {},
-        initialLiquidityEth: new BigNumber(0),
-        initialLiquidityGas: new BigNumber(0),
-        initialLiquidityFees: new BigNumber(0),
+        initialLiquidityEth: WrappedBigNumber(0),
+        initialLiquidityGas: WrappedBigNumber(0),
+        initialLiquidityFees: WrappedBigNumber(0),
         validations: [
           {
             description: false,

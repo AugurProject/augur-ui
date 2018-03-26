@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 // import classNames from 'classnames'
 import { augur } from 'services/augurjs'
-// import BigNumber from 'utils/WrappedBigNumber'
+// import WrappedBigNumber from 'utils/WrappedBigNumber'
 import getValue from 'src/utils/get-value'
 import insufficientFunds from 'src/modules/create-market/utils/insufficient-funds'
 

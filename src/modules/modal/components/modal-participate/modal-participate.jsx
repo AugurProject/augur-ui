@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import BigNumber from 'utils/wrapped-big-number'
+import { WrappedBigNumber } from 'utils/wrapped-big-number'
 
 import { Participate, ExclamationCircle as InputErrorIcon } from 'modules/common/components/icons'
 import Styles from 'modules/modal/components/modal-participate/modal-participate.styles'
@@ -57,7 +57,7 @@ export default class ModalParticipate extends Component {
   }
 
   validateForm(quantity) {
-    const bnRep = new BigNumber(this.props.rep, 10)
+    const bnRep = WrappedBigNumber(this.props.rep, 10)
     const errors = []
     let isValid = true
 
@@ -66,7 +66,7 @@ export default class ModalParticipate extends Component {
       // exit early, as the other check doesn't matter.
       return ({ errors, isValid })
     }
-    const bnQuantity = new BigNumber(quantity, 10)
+    const bnQuantity = WrappedBigNumber(quantity, 10)
 
     if (bnQuantity.lte(0)) {
       errors.push('Quantity must greater than 0.')

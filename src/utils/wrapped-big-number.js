@@ -1,17 +1,16 @@
-import BigNumber from 'bignumber.js'
 import logError from 'utils/log-error'
+import BigNumber from 'bignumber.js'
 
-const WrappedBigNumber = function (...args) {
+export const WrappedBigNumber = (...args) => {
   let newBigNumber
   try {
     newBigNumber = new BigNumber(...args)
   } catch (e) {
-    logError('Error instantiating BigNumber', e)
+    logError('Error instantiating WrappedBigNumber', e)
   }
 
   return newBigNumber
 }
 
-const FullWrappedBigNumber = Object.assign(WrappedBigNumber, BigNumber)
-
-export default FullWrappedBigNumber
+// Note this is exported from here.
+export { default as BigNumber } from 'bignumber.js'
