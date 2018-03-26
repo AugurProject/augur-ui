@@ -68,7 +68,7 @@ export const selectMarketPositionPlusAsks = (account, position, asks) => {
  * @param {String} outcomeId
  * @param {String} account
  * @param {Object} askOrders
- * @return {WrappedBigNumber} Total number of shares in open ask orders.
+ * @return {BigNumber} Total number of shares in open ask orders.
  */
 export function getOpenAskShares(account, outcomeId, askOrders) {
   if (!account || !askOrders) return ZERO

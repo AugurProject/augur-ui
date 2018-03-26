@@ -1,4 +1,4 @@
-import { WrappedBigNumber } from 'utils/wrapped-big-number'
+import { BigNumber, WrappedBigNumber } from 'utils/wrapped-big-number'
 import { encodeNumberAsBase10String, encodeNumberAsJSNumber } from 'speedomatic'
 import { augur, constants } from 'services/augurjs'
 import { ZERO, TEN } from 'modules/trade/constants/numbers'
@@ -252,11 +252,11 @@ export function formatNumber(num, opts = {
 
   let roundingMode
   if (roundDown) {
-    roundingMode = WrappedBigNumber.ROUND_DOWN
+    roundingMode = BigNumber.ROUND_DOWN
   } else if (roundUp) {
-    roundingMode = WrappedBigNumber.ROUND_UP
+    roundingMode = BigNumber.ROUND_UP
   } else {
-    roundingMode = WrappedBigNumber.ROUND_HALF_EVEN
+    roundingMode = BigNumber.ROUND_HALF_EVEN
   }
   if (isNaN(parseFloat(num))) {
     o.value = 0
