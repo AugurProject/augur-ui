@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-import { WrappedBigNumber } from 'utils/wrapped-big-number'
+import { BigNumber, WrappedBigNumber } from 'utils/wrapped-big-number'
 
 import Styles from 'modules/categories/components/category/category.styles'
 
@@ -15,7 +15,7 @@ import { CATEGORY_PARAM_NAME } from 'modules/filter-sort/constants/param-names'
 
 export default class Category extends Component {
   static propTypes = {
-    popularity: PropTypes.number,
+    popularity: PropTypes.string,
   }
 
   constructor(props) {
@@ -41,7 +41,7 @@ export default class Category extends Component {
     const s = this.state
 
     const isNullCategory = p.category === 'null-category' && p.popularity === 0
-    const roundedPop = WrappedBigNumber(p.popularity.toString()).integerValue(WrappedBigNumber.ROUND_HALF_EVEN)
+    const roundedPop = WrappedBigNumber(p.popularity.toString()).integerValue(BigNumber.ROUND_HALF_EVEN)
     let popString = roundedPop.toNumber() === 1 ? ' SHARE' : ' SHARES'
     if (roundedPop > 1000) {
       const thousands = roundedPop / 1000
