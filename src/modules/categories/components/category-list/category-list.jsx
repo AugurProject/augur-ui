@@ -5,16 +5,16 @@ import Category from 'modules/categories/components/category/category'
 
 import Styles from 'modules/categories/components/category-list/category-list.styles'
 
-const CategoryList = (p) => {
-  const isShortList = (p.categories.length <= 2)
-  const arrayLength = isShortList ? p.categories.length : p.boundedLength
+const CategoryList = ({ boundedLength, categories, lowerBound }) => {
+  const isShortList = (categories.length <= 2)
+  const arrayLength = isShortList ? categories.length : boundedLength
   const categoryStyling = isShortList ? Styles['CategoryList__categorywrap-short'] : Styles.CategoryList__categorywrap
 
   return (
     <div className={Styles.CategoryList}>
       {[...Array(arrayLength)].map((_, i) => {
-        const categoryIndex = (p.lowerBound - 1) + i
-        const category = (p.categories && p.categories[categoryIndex]) ? p.categories[categoryIndex] : null
+        const categoryIndex = (lowerBound - 1) + i
+        const category = (categories && categories[categoryIndex]) ? categories[categoryIndex] : null
 
         return (
           <div

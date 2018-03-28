@@ -1,11 +1,16 @@
-
-
 import { selectCategories } from 'modules/categories/selectors/categories'
 
 describe(`modules/categories/selectors/categories.js`, () => {
-  const test = t => it(t.description, () => (
-    t.assertions(selectCategories({ categories: t.categories }))
-  ))
+  const test = t => it(t.description, () => {
+    // There has to be a better way to deepEqual BigNumbers.
+    const result = selectCategories({ categories: t.categories })
+      .map(({ popularity, ...other }) => ({
+        popularity: popularity.toString(),
+        ...other,
+      }))
+
+    t.assertions(result)
+  })
   test({
     description: 'no categories',
     categories: {},

@@ -28,7 +28,7 @@ export default class Category extends Component {
     this.updatePopularity = this.updatePopularity.bind(this)
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps) {
     if (this.props.popularity !== nextProps.popularity) this.updatePopularity(nextProps.popularity > this.props.popularity ? CATEGORY_VOLUME_INCREASED : CATEGORY_VOLUME_DECREASED)
   }
 
@@ -61,11 +61,9 @@ export default class Category extends Component {
         }}
         className={isNullCategory ? Styles['Category__link-hidden'] : Styles.Category__link}
       >
-        <div
-          ref={(categoryNameContainer) => { this.categoryNameContainer = categoryNameContainer }}
-        >
+        <div>
           <div className={Styles.Category__name} >
-            <span ref={(categoryName) => { this.categoryName = categoryName }}>
+            <span>
               {p.category.toUpperCase()}
             </span>
           </div>

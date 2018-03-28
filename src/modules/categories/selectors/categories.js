@@ -1,16 +1,15 @@
 import { createSelector } from 'reselect'
-import store from 'src/store'
 import { selectCategoriesState } from 'src/select-state'
-
-export default function () {
-  return selectCategories(store.getState())
-}
+import { WrappedBigNumber } from 'src/utils/wrapped-big-number'
 
 export const selectCategories = createSelector(
   selectCategoriesState,
-  categories => Object.keys(categories || {})
-    .map(category => ({ popularity: categories[category].popularity, category: categories[category].category }))
+  categories => Object.values(categories || {})
+    .map(({ category, popularity }) => ({
+      category,
+      popularity: WrappedBigNumber(popularity),
+    }))
     .sort(popularityDifference),
 )
 
-const popularityDifference = (category1, category2) => category2.popularity - category1.popularity
+const popularityDifference = (category1, category2) => category1.popularity.isLessThan(category2.popularity)
