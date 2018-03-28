@@ -27,8 +27,11 @@ export default class MarketPositionsList extends Component {
   }
 
   render() {
+    const {
+      openOrders,
+      positions,
+    } = this.props
     const s = this.state
-    const p = this.props
 
     return (
       <section className={Styles.MarketPositionsList}>
@@ -44,7 +47,7 @@ export default class MarketPositionsList extends Component {
           className={classNames(ToggleHeightStyles['open-on-mobile'], ToggleHeightStyles['toggle-height-target'])}
         >
           <div className={Styles.MarketPositionsList__table}>
-            { p.positions.length > 0 &&
+            { positions.length > 0 &&
               <ul className={Styles['MarketPositionsList__table-header']}>
                 <li>Position</li>
                 <li><span>Quantity</span></li>
@@ -54,21 +57,21 @@ export default class MarketPositionsList extends Component {
                 <li><span>Action</span></li>
               </ul>
             }
-            { p.positions.length > 0 &&
+            { positions.length > 0 &&
               <div className={Styles['MarketPositionsList__table-body']}>
-                { p.positions && p.positions.map((position, i) => (
+                { positions && positions.map((position, i) => (
                   <MarketPositionsListPosition
                     key={i}
                     name={position.name}
                     position={position}
-                    openOrders={p.openOrders.filter(order => order.id === position.id && order.pending === true)}
+                    openOrders={openOrders.filter(order => order.id === position.id && order.pending === true)}
                     isExtendedDisplay={false}
                     isMobile={false}
                   />
                 ))}
               </div>
             }
-            { p.openOrders.length > 0 &&
+            { openOrders.length > 0 &&
               <ul className={Styles['MarketPositionsList__table-header']}>
                 <li>Open Orders</li>
                 <li><span>Quantity</span></li>
@@ -78,9 +81,9 @@ export default class MarketPositionsList extends Component {
                 <li><span>Action</span></li>
               </ul>
             }
-            { p.openOrders.length > 0 &&
+            { openOrders.length > 0 &&
               <div className={Styles['MarketPositionsList__table-body']}>
-                { p.openOrders.map((order, i) => (
+                { openOrders.map((order, i) => (
                   <MarketPositionsListOrder
                     key={i}
                     name={order.name}
@@ -93,7 +96,7 @@ export default class MarketPositionsList extends Component {
               </div>
             }
           </div>
-          { p.positions.length === 0 && p.openOrders.length === 0 &&
+          { positions.length === 0 && openOrders.length === 0 &&
             <NullStateMessage className={Styles['MarketPositionsList__null-state']} message="No positions or open orders" />
           }
         </div>

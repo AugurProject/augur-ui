@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { WrappedBigNumber, BigNumber } from 'utils/wrapped-big-number'
+import { WrappedBigNumber } from 'utils/wrapped-big-number'
 
 import { IconSearch, Close } from 'modules/common/components/icons'
 
@@ -50,7 +50,8 @@ export default class Input extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.value !== nextProps.value) {
+    const { value } = this.props
+    if (value !== nextProps.value) {
       this.setState({ value: nextProps.value })
     }
   }

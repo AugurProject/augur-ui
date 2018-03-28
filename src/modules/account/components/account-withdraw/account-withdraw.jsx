@@ -102,18 +102,22 @@ export default class AccountWithdraw extends Component {
   }
 
   submitForm() {
+    const { transferFunds } = this.props
     const s = this.state
-    const p = this.props
 
     if (s.isValid) {
       const stringedAmount = s.amount instanceof BigNumber ? s.amount.toString() : s.amount
-      p.transferFunds(stringedAmount, s.selectedAsset, s.address)
+      transferFunds(stringedAmount, s.selectedAsset, s.address)
       this.setState(this.DEFAULT_STATE)
     }
   }
 
   render() {
-    const p = this.props
+    const {
+      eth,
+      isMobileSmall,
+      rep,
+    } = this.props
     const s = this.state
 
     return (
@@ -124,7 +128,7 @@ export default class AccountWithdraw extends Component {
         </div>
         <div className={Styles.AccountWithdraw__main}>
           <div className={Styles.AccountWithdraw__description}>
-            <p>Withdraw Ethereum or Reputation from your Trading Account into another account.</p>
+            <this.props>Withdraw Ethereum or Reputation from your Trading Account into another account.</this.props>
             <a href="https://shapeshift.io/">Use Shapeshift</a>
           </div>
           <div className={Styles.AccountWithdraw__form}>
@@ -138,10 +142,10 @@ export default class AccountWithdraw extends Component {
                   options={['ETH', 'REP']}
                   default="ETH"
                   type="text"
-                  isMobileSmall={p.isMobileSmall}
+                  isMobileSmall={isMobileSmall}
                   onChange={(type) => {
                     const selectedAsset = (type === 'ETH') ? ETH : REP
-                    const upperBound = (type === 'ETH') ? p.eth.value : p.rep.value
+                    const upperBound = (type === 'ETH') ? eth.value : rep.value
                     this.setState({
                       selectedAsset,
                       upperBound,

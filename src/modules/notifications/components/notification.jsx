@@ -44,21 +44,25 @@ export default class Notification extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    const {
+      checkSeen,
+      notificationsBounds,
+      updateNotificationsBoundingBox,
+    } = this.props
     if (this.state.notificationBounds !== nextState.notificationBounds) {
-      this.props.updateNotificationsBoundingBox()
+      updateNotificationsBoundingBox()
     }
 
     if (
-      this.props.notificationsBounds !== nextProps.notificationsBounds ||
+      notificationsBounds !== nextProps.notificationsBounds ||
       this.state.notificationBounds !== nextState.notificationBounds
     ) {
       this.hasNotificationBeenSeen(nextProps.notificationsBounds, nextState.notificationBounds)
     }
 
-    if (this.props.checkSeen !== nextProps.checkSeen && nextProps.checkSeen) {
+    if (checkSeen !== nextProps.checkSeen && nextProps.checkSeen) {
       this.updateNotificationBoundingBox()
     }
-
   }
 
   componentWillUnmount() {
@@ -70,6 +74,10 @@ export default class Notification extends Component {
   }
 
   hasNotificationBeenSeen(notificationsBounds, notificationBounds) {
+    const {
+      id,
+      updateNotification,
+    } = this.props
     if (!this.seen && notificationsBounds.top && notificationsBounds.bottom && notificationBounds.top && notificationBounds.bottom) {
       const topBound = notificationsBounds.top
       const bottomBound = notificationsBounds.bottom
@@ -80,15 +88,23 @@ export default class Notification extends Component {
         notificationMidpoint <= bottomBound
       ) {
         setTimeout(() => {
-          this.props.updateNotification(this.props.id, { seen: true })
+          updateNotification(id, { seen: true })
         }, 1000)
       }
     }
   }
 
   render() {
-    const p = this.props
-
+    const {
+      description,
+      linkPath,
+      onClick,
+      removeNotification,
+      seen,
+      timestamp,
+      title,
+      toggleNotifications,
+    } = this.props
     return (
       <article
         ref={(notification) => {
@@ -98,27 +114,27 @@ export default class Notification extends Component {
       >
         <Link
           className={Styles.Notification__link}
-          to={p.linkPath ? p.linkPath : ''}
+          to={linkPath || ''}
           onClick={(e) => {
             e.stopPropagation()
-            if (!p.linkPath) e.preventDefault()
-            if (p.linkPath && p.onClick) p.toggleNotifications()
+            if (!linkPath) e.preventDefault()
+            if (linkPath && onClick) toggleNotifications()
           }}
         >
-          <span className={Styles.Notification__title}>{p.title}</span>
-          {AlertCircle(!p.seen ? Styles.Notification__dot : Styles['Notification__dot-seen'], '#553580')}
+          <span className={Styles.Notification__title}>{title}</span>
+          {AlertCircle(!seen ? Styles.Notification__dot : Styles['Notification__dot-seen'], '#553580')}
           <button
             className={Styles.Notification__close}
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              p.removeNotification()
+              removeNotification()
             }}
           >
             {CloseBlack}
           </button>
-          <span className={Styles.Notification__description}>{p.description}</span>
-          <span className={Styles.Notification__time}>{moment.unix(p.timestamp).fromNow()}</span>
+          <span className={Styles.Notification__description}>{description}</span>
+          <span className={Styles.Notification__time}>{moment.unix(timestamp).fromNow()}</span>
         </Link>
       </article>
     )

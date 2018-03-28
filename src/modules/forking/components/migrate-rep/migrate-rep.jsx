@@ -56,14 +56,23 @@ export default class MigrateRep extends Component {
   }
 
   componentWillMount() {
+    const {
+      isConnected,
+      isMarketLoaded,
+      loadFullMarket,
+    } = this.props
     this.getForkMigrationTotals()
-    if (this.props.isConnected && !this.props.isMarketLoaded) {
-      this.props.loadFullMarket()
+    if (isConnected && !isMarketLoaded) {
+      loadFullMarket()
     }
   }
 
   getForkMigrationTotals() {
-    this.props.getForkMigrationTotals(this.props.marketId, (forkMigrationTotals) => {
+    const {
+      getForkMigrationTotals,
+      marketId,
+    } = this.props
+    getForkMigrationTotals(marketId, (forkMigrationTotals) => {
       this.setState({
         forkMigrationTotals,
       })
@@ -89,9 +98,13 @@ export default class MigrateRep extends Component {
   }
 
   calculateGasEstimates() {
+    const {
+      estimateSubmitMigrateREP,
+      market,
+    } = this.props
     if (this.state.repAmount > 0) {
       const amount = speedomatic.fix(this.state.repAmount, 'hex')
-      this.props.estimateSubmitMigrateREP(this.props.market.id, this.state.selectedOutcome, this.state.isMarketInValid, amount, (err, gasEstimateValue) => {
+      estimateSubmitMigrateREP(market.id, this.state.selectedOutcome, this.state.isMarketInValid, amount, (err, gasEstimateValue) => {
         if (err) return console.error(err)
 
         const gasPrice = augur.rpc.getGasPrice()
@@ -103,20 +116,26 @@ export default class MigrateRep extends Component {
   }
 
   render() {
+    const {
+      history,
+      isLogged,
+      location,
+      market,
+      submitMigrateREP,
+    } = this.props
     const s = this.state
-    const p = this.props
 
     return (
       <section>
         <Helmet>
           <title>Submit Dispute</title>
         </Helmet>
-        { !isEmpty(p.market) &&
+        { !isEmpty(market) &&
         <MarketPreview
-          {...p.market}
-          isLogged={p.isLogged}
-          location={p.location}
-          history={p.history}
+          {...market}
+          isLogged={isLogged}
+          location={location}
+          history={history}
           cardStyle="single-card"
           linkType={TYPE_VIEW}
           buttonText="View"
@@ -126,26 +145,26 @@ export default class MigrateRep extends Component {
           disputeRound={0}
         />
         }
-        { !isEmpty(p.market) && s.showingDetails &&
+        { !isEmpty(market) && s.showingDetails &&
           <div className={Styles[`ReportingReportMarket__details-container-wrapper`]}>
             <div className={Styles[`ReportingReportMarket__details-container`]}>
               <div className={Styles.ReportingReportMarket__details}>
                 <span>
-                  {p.market.extraInfo}
+                  {market.extraInfo}
                 </span>
               </div>
               <div className={Styles[`ReportingReportMarket__resolution-source`]}>
                 <h4>Resolution Source:</h4>
-                <span>{p.market.resolutionSource || 'Outcome will be determined by news media'}</span>
+                <span>{market.resolutionSource || 'Outcome will be determined by news media'}</span>
               </div>
             </div>
           </div>
         }
-        { !isEmpty(p.market) &&
+        { !isEmpty(market) &&
           <article className={FormStyles.Form}>
             { s.currentStep === 0 &&
               <MigrateRepForm
-                market={p.market}
+                market={market}
                 updateState={this.updateState}
                 isMarketInValid={s.isMarketInValid}
                 selectedOutcome={s.selectedOutcome}
@@ -158,7 +177,7 @@ export default class MigrateRep extends Component {
             }
             { s.currentStep === 1 &&
               <MigrateRepConfirm
-                market={p.market}
+                market={market}
                 isMarketInValid={s.isMarketInValid}
                 selectedOutcomeName={s.selectedOutcomeName}
                 repAmount={s.repAmount}
@@ -180,14 +199,14 @@ export default class MigrateRep extends Component {
               { s.currentStep === 1 &&
               <button
                 className={FormStyles.Form__submit}
-                onClick={() => p.submitMigrateREP(p.market.id, s.selectedOutcome, s.isMarketInValid, speedomatic.fix(s.repAmount, 'hex'), p.history)}
+                onClick={() => submitMigrateREP(market.id, s.selectedOutcome, s.isMarketInValid, speedomatic.fix(s.repAmount, 'hex'), history)}
               >Submit
               </button>
               }
             </div>
           </article>
         }
-        { isEmpty(p.market) &&
+        { isEmpty(market) &&
           <div className={Styles.NullState}>
             <NullStateMessage
               message="Market not found"

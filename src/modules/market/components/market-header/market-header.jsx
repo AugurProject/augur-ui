@@ -31,22 +31,31 @@ export default class MarketHeader extends Component {
   }
 
   render() {
+    const {
+      clearSelectedOutcome,
+      coreProperties,
+      description,
+      details,
+      history,
+      marketType,
+      resolutionSource,
+      selectedOutcome,
+    } = this.props
     const s = this.state
-    const p = this.props
 
     return (
       <section className={Styles.MarketHeader}>
         <div className={Styles.MarketHeader__nav}>
-          {p.selectedOutcome !== null && p.marketType === CATEGORICAL ?
+          {selectedOutcome !== null && marketType === CATEGORICAL ?
             <button
               className={Styles[`MarketHeader__back-button`]}
-              onClick={() => p.clearSelectedOutcome()}
+              onClick={() => clearSelectedOutcome()}
             >
               {ChevronLeft}<span> view all outcomes</span>
             </button> :
             <button
               className={Styles[`MarketHeader__back-button`]}
-              onClick={() => p.history.goBack()}
+              onClick={() => history.goBack()}
             >
               {ChevronLeft}<span> back</span>
             </button>
@@ -54,17 +63,17 @@ export default class MarketHeader extends Component {
         </div>
         <div className={Styles[`MarketHeader__main-values`]}>
           <h1 className={Styles.MarketHeader__description}>
-            {p.description}
+            {description}
           </h1>
           <div className={Styles.MarketHeader__properties}>
-            {!!p.coreProperties &&
-              Object.keys(p.coreProperties).map(property => (
+            {!!coreProperties &&
+              Object.keys(coreProperties).map(property => (
                 <div
                   key={property}
                   className={Styles.MarketHeader__property}
                 >
                   <span>{property}</span>
-                  <span>{p.coreProperties[property]}</span>
+                  <span>{coreProperties[property]}</span>
                 </div>
               ))
             }
@@ -81,12 +90,12 @@ export default class MarketHeader extends Component {
             ref={(marketDetails) => { this.marketDetails = marketDetails }}
             className={classNames(Styles[`MarketHeader__details-container`], ToggleHeightStyles['toggle-height-target'])}
           >
-            {p.details != null &&
+            {details != null &&
               <div
                 className={Styles.MarketHeader__details}
               >
                 <span>
-                  {p.details}
+                  {details}
                 </span>
               </div>
             }
@@ -94,7 +103,7 @@ export default class MarketHeader extends Component {
               className={Styles[`MarketHeader__resolution-source`]}
             >
               <h4>Resolution Source:</h4>
-              <span>{p.resolutionSource || 'Outcome will be determined by news media'}</span>
+              <span>{resolutionSource || 'Outcome will be determined by news media'}</span>
             </div>
           </div>
         </div>
