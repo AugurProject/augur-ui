@@ -7,16 +7,17 @@ import { Check, Close } from 'modules/common/components/icons'
 import { isEqual } from 'lodash'
 import makePath from 'modules/routes/helpers/make-path'
 
-import BigNumberLib from 'bignumber.js'
+import { BigNumber } from 'src/utils/wrapped-big-number'
 
 import { ACCOUNT_DEPOSIT } from 'modules/routes/constants/views'
 
 import Styles from 'modules/trade/components/trading/trading.styles'
 
+
 class MarketTrading extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumberLib).isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
@@ -126,7 +127,7 @@ class MarketTrading extends Component {
         { s.showOrderPlaced &&
           <div className={Styles['Trading__button--order-placed']}>
             <span>{ Check } Order placed!</span>
-            <button onClick={e => this.toggleShowOrderPlaced()}>{ Close }</button>
+            <button onClick={() => this.toggleShowOrderPlaced()}>{ Close }</button>
           </div>
         }
       </section>

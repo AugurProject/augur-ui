@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { BigNumber, WrappedBigNumber } from 'utils/wrapped-big-number'
-import BigNumberLib from 'bignumber.js'
 
 import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import { SCALAR } from 'modules/markets/constants/market-types'
@@ -27,7 +26,7 @@ class MarketTradingForm extends Component {
     isMobile: PropTypes.bool.isRequired,
     minPrice: PropTypes.number.isRequired,
     maxPrice: PropTypes.number.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumberLib).isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
   }
 
   constructor(props) {
