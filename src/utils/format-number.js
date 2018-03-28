@@ -223,24 +223,37 @@ export function formatGasCost(num, opts) {
   )
 }
 
-export function formatNumber(num, opts = {
-  decimals: 0, decimalsRounded: 0, denomination: '', roundUp: false, roundDown: false, positiveSign: false, zeroStyled: true, minimized: false, blankZero: false, bigUnitPostfix: false,
-}) {
-  const { minimized, bigUnitPostfix } = opts
-  const o = {}
-  let {
-    value, decimals, decimalsRounded, denomination, roundUp, roundDown, positiveSign, zeroStyled, blankZero,
-  } = opts
+const defaultFormatNumberOpts = {
+  decimals: 0,
+  decimalsRounded: 0,
+  denomination: '',
+  roundUp: false,
+  roundDown: false,
+  positiveSign: false,
+  zeroStyled: true,
+  minimized: false,
+  blankZero: false,
+  bigUnitPostfix: false,
+}
 
-  decimals = decimals || 0
-  decimalsRounded = decimalsRounded || 0
-  denomination = denomination || ''
-  positiveSign = !!positiveSign
-  roundUp = !!roundUp
-  roundDown = !!roundDown
-  zeroStyled = zeroStyled !== false
-  blankZero = blankZero !== false
-  value = num != null ? WrappedBigNumber(num, 10) : ZERO
+export function formatNumber(num, opts = {}) {
+  const {
+    decimals,
+    decimalsRounded,
+    denomination,
+    roundUp,
+    roundDown,
+    positiveSign,
+    zeroStyled,
+    blankZero,
+    minimized,
+    bigUnitPostfix,
+  } = {
+    ...defaultFormatNumberOpts,
+    ...opts,
+  }
+  const out = {}
+  const value = num != null ? WrappedBigNumber(num, 10) : ZERO
 
   if (value.eq(ZERO)) {
     if (zeroStyled) return formatNone()
@@ -259,58 +272,58 @@ export function formatNumber(num, opts = {
     roundingMode = BigNumber.ROUND_HALF_EVEN
   }
   if (isNaN(parseFloat(num))) {
-    o.value = 0
-    o.formattedValue = 0
-    o.formatted = '0'
-    o.roundedValue = 0
-    o.rounded = '0'
-    o.minimized = '0'
+    out.value = 0
+    out.formattedValue = 0
+    out.formatted = '0'
+    out.roundedValue = 0
+    out.rounded = '0'
+    out.minimized = '0'
   } else {
-    o.value = value.toNumber()
+    out.value = value.toNumber()
     if (value.abs().lt(constants.PRECISION.zero)) {
-      o.formattedValue = '0'
+      out.formattedValue = '0'
     } else if (value.abs().lt(constants.PRECISION.limit)) {
       if (!decimals) {
-        o.formattedValue = '0'
+        out.formattedValue = '0'
       } else {
-        o.formattedValue = value.toPrecision(decimals, roundingMode)
+        out.formattedValue = value.toPrecision(decimals, roundingMode)
       }
     } else {
-      o.formattedValue = value.times(decimalsValue).integerValue(roundingMode)
+      out.formattedValue = value.times(decimalsValue).integerValue(roundingMode)
         .dividedBy(decimalsValue)
         .toFixed(decimals)
     }
-    o.formatted = (bigUnitPostfix)
-      ? addBigUnitPostfix(value, o.formattedValue)
-      : addCommas(o.formattedValue)
-    o.fullPrecision = value.toFixed()
-    o.roundedValue = value.times(decimalsRoundedValue).integerValue(roundingMode).dividedBy(decimalsRoundedValue)
-    o.rounded = (bigUnitPostfix)
-      ? addBigUnitPostfix(value, o.roundedValue.toFixed(decimalsRounded))
-      : addCommas(o.roundedValue.toFixed(decimalsRounded))
-    o.minimized = addCommas(encodeNumberAsBase10String(o.formattedValue))
-    o.formattedValue = encodeNumberAsJSNumber(o.formattedValue)
-    o.roundedValue = o.roundedValue.toNumber()
+    out.formatted = (bigUnitPostfix)
+      ? addBigUnitPostfix(value, out.formattedValue)
+      : addCommas(out.formattedValue)
+    out.fullPrecision = value.toFixed()
+    out.roundedValue = value.times(decimalsRoundedValue).integerValue(roundingMode).dividedBy(decimalsRoundedValue)
+    out.rounded = (bigUnitPostfix)
+      ? addBigUnitPostfix(value, out.roundedValue.toFixed(decimalsRounded))
+      : addCommas(out.roundedValue.toFixed(decimalsRounded))
+    out.minimized = addCommas(encodeNumberAsBase10String(out.formattedValue))
+    out.formattedValue = encodeNumberAsJSNumber(out.formattedValue)
+    out.roundedValue = out.roundedValue.toNumber()
   }
 
   if (positiveSign && !bigUnitPostfix) {
-    if (o.formattedValue >= 0) {
-      o.formatted = `+${o.formatted}`
-      o.minimized = `+${o.minimized}`
+    if (out.formattedValue >= 0) {
+      out.formatted = `+${out.formatted}`
+      out.minimized = `+${out.minimized}`
     }
-    if (o.roundedValue >= 0) {
-      o.rounded = `+${o.rounded}`
+    if (out.roundedValue >= 0) {
+      out.rounded = `+${out.rounded}`
     }
   }
 
   if (minimized) {
-    o.formatted = o.minimized
+    out.formatted = out.minimized
   }
 
-  o.denomination = denomination
-  o.full = makeFull(o.formatted, o.denomination)
+  out.denomination = denomination
+  out.full = makeFull(out.formatted, out.denomination)
 
-  return o
+  return out
 }
 
 function addBigUnitPostfix(value, formattedValue) {
