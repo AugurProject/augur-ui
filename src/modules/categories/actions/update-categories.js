@@ -4,7 +4,7 @@ export const UPDATE_CATEGORY_POPULARITY = 'UPDATE_CATEGORY_POPULARITY'
 
 export const updateCategories = categories => ({ type: UPDATE_CATEGORIES, categories })
 export const clearCategories = () => ({ type: CLEAR_CATEGORIES })
-export const updateCategoryPopularity = (category, amount) => ({ type: UPDATE_CATEGORY_POPULARITY, category, amount })
+export const updateCategoryPopularity = (category, amount) => ({ type: UPDATE_CATEGORY_POPULARITY, category, amount: amount.toString() })
 
 export const updateMarketCategoryPopularity = (marketId, amount) => (dispatch, getState) => {
   const market = getState().marketsData[marketId]
