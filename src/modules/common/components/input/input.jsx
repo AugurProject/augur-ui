@@ -176,8 +176,8 @@ export default class Input extends Component {
                 e.currentTarget.blur()
 
                 if ((!isNaN(parseFloat(s.value)) && isFinite(s.value)) || !s.value) {
-                  const bnMax = sanitizeBound(max)
-                  const bnMin = sanitizeBound(min)
+                  const bnMax = WrappedBigNumber(max)
+                  const bnMin = WrappedBigNumber(min)
 
                   let newValue = WrappedBigNumber(s.value || 0)
 
@@ -206,8 +206,8 @@ export default class Input extends Component {
                 e.currentTarget.blur()
 
                 if ((!isNaN(parseFloat(s.value)) && isFinite(s.value)) || !s.value) {
-                  const bnMax = sanitizeBound(max)
-                  const bnMin = sanitizeBound(min)
+                  const bnMax = WrappedBigNumber(max)
+                  const bnMin = WrappedBigNumber(min)
 
                   let newValue = WrappedBigNumber(s.value || 0)
 
@@ -233,14 +233,4 @@ export default class Input extends Component {
       </div>
     )
   }
-}
-
-function sanitizeBound(value) {
-  if (value == null) {
-    return null
-  } else if (!(value instanceof BigNumber)) {
-    return WrappedBigNumber(value)
-  }
-
-  return value
 }
