@@ -7,7 +7,7 @@ import { Check, Close } from 'modules/common/components/icons'
 import { isEqual } from 'lodash'
 import makePath from 'modules/routes/helpers/make-path'
 
-import BigNumber from 'bignumber.js'
+import BigNumberLib from 'bignumber.js'
 
 import { ACCOUNT_DEPOSIT } from 'modules/routes/constants/views'
 
@@ -16,7 +16,7 @@ import Styles from 'modules/trade/components/trading/trading.styles'
 class MarketTrading extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumberLib).isRequired,
     isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,

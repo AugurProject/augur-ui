@@ -3,7 +3,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import BigNumber from 'bignumber.js'
+import { BigNumber, WrappedBigNumber } from 'utils/wrapped-big-number'
+import BigNumberLib from 'bignumber.js'
 
 import { MARKET, LIMIT } from 'modules/transactions/constants/types'
 import { SCALAR } from 'modules/markets/constants/market-types'
@@ -26,7 +27,7 @@ class MarketTradingForm extends Component {
     isMobile: PropTypes.bool.isRequired,
     minPrice: PropTypes.number.isRequired,
     maxPrice: PropTypes.number.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumberLib).isRequired,
   }
 
   constructor(props) {
@@ -86,11 +87,11 @@ class MarketTradingForm extends Component {
       // limitPrice is being defaulted and we had no value in the input box
       const priceChange = (prevTradePrice === null && nextTradePrice !== null)
       // limitPrice is being updated in the background, but we have no limitPrice input set.
-      const forcePriceUpdate = (prevTradePrice === nextTradePrice) && (nextTradePrice !== null) && isNaN(this.state[this.INPUT_TYPES.PRICE] && new BigNumber(this.state[this.INPUT_TYPES.PRICE])) && isNaN(nextProps[this.INPUT_TYPES.PRICE] && new BigNumber(nextProps[this.INPUT_TYPES.PRICE]))
+      const forcePriceUpdate = (prevTradePrice === nextTradePrice) && (nextTradePrice !== null) && isNaN(this.state[this.INPUT_TYPES.PRICE] && WrappedBigNumber(this.state[this.INPUT_TYPES.PRICE])) && isNaN(nextProps[this.INPUT_TYPES.PRICE] && WrappedBigNumber(nextProps[this.INPUT_TYPES.PRICE]))
 
       if ((priceChange || forcePriceUpdate)) {
         // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user as to where estimates are coming from.
-        this.props.updateState(this.INPUT_TYPES.PRICE, new BigNumber(nextTradePrice))
+        this.props.updateState(this.INPUT_TYPES.PRICE, WrappedBigNumber(nextTradePrice))
       }
 
       // orderValidation
@@ -133,13 +134,13 @@ class MarketTradingForm extends Component {
     let isOrderValid = true
     let errorCount = 0
 
-    let value = order[this.INPUT_TYPES.QUANTITY] && new BigNumber(order[this.INPUT_TYPES.QUANTITY])
+    let value = order[this.INPUT_TYPES.QUANTITY] && WrappedBigNumber(order[this.INPUT_TYPES.QUANTITY])
     const { isOrderValid: quantityValid, errors: quantityErrors, errorCount: quantityErrorCount } = this.testQuantity(value, errors, isOrderValid)
     isOrderValid = quantityValid
     errorCount += quantityErrorCount
     errors = { ...errors, ...quantityErrors }
 
-    value = order[this.INPUT_TYPES.PRICE] && new BigNumber(order[this.INPUT_TYPES.PRICE])
+    value = order[this.INPUT_TYPES.PRICE] && WrappedBigNumber(order[this.INPUT_TYPES.PRICE])
     const { isOrderValid: priceValid, errors: priceErrors, errorCount: priceErrorCount } = this.testPrice(value, errors, isOrderValid)
     isOrderValid = priceValid
     errorCount += priceErrorCount
@@ -162,7 +163,7 @@ class MarketTradingForm extends Component {
 
   validateForm(property, rawValue) {
     let value = rawValue
-    if (!(value instanceof BigNumber) && value !== '') value = new BigNumber(value)
+    if (!(value instanceof BigNumber) && value !== '') value = WrappedBigNumber(value)
     const updatedState = {
       ...this.state,
       [property]: value,

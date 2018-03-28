@@ -3,7 +3,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { augur } from 'services/augurjs'
-import BigNumber from 'bignumber.js'
+import BigNumberLib from 'bignumber.js'
 
 import { formatEtherEstimate } from 'utils/format-number'
 import getValue from 'utils/get-value'
@@ -19,9 +19,9 @@ export default class CreateMarketReview extends Component {
     universe: PropTypes.object.isRequired,
     endDate: PropTypes.object.isRequired,
     currentStep: PropTypes.number.isRequired,
-    initialLiquidityEth: PropTypes.instanceOf(BigNumber).isRequired,
-    initialLiquidityGas: PropTypes.instanceOf(BigNumber).isRequired,
-    initialLiquidityFees: PropTypes.instanceOf(BigNumber).isRequired,
+    initialLiquidityEth: PropTypes.instanceOf(BigNumberLib).isRequired,
+    initialLiquidityGas: PropTypes.instanceOf(BigNumberLib).isRequired,
+    initialLiquidityFees: PropTypes.instanceOf(BigNumberLib).isRequired,
     settlementFee: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
