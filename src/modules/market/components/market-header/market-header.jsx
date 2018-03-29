@@ -20,7 +20,7 @@ export default class MarketHeader extends Component {
     history: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     resolutionSource: PropTypes.any,
-    selectedOutcome: PropTypes.any
+    selectedOutcome: PropTypes.any,
   }
 
   constructor(props) {

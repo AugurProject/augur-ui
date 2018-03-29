@@ -92,7 +92,7 @@ export default class AppView extends Component {
     universe: PropTypes.object.isRequired,
     updateIsMobile: PropTypes.func.isRequired,
     updateIsMobileSmall: PropTypes.func.isRequired,
-    url: PropTypes.string
+    url: PropTypes.string,
   }
 
   constructor(props) {

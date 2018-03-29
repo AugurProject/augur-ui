@@ -16,7 +16,7 @@ export default class InputList extends Component {
     listMaxElements: PropTypes.number,
     listMinElements: PropTypes.number,
     onChange: PropTypes.func,
-    warnings: PropTypes.array
+    warnings: PropTypes.array,
   }
 
   constructor(props) {
