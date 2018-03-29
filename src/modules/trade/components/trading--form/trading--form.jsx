@@ -13,20 +13,21 @@ import Styles from 'modules/trade/components/trading--form/trading--form.styles'
 
 class MarketTradingForm extends Component {
   static propTypes = {
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    isMobile: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
+    marketQuantity: PropTypes.instanceOf(BigNumber).isRequired,
     marketType: PropTypes.string.isRequired,
-    selectedNav: PropTypes.string.isRequired,
-    orderType: PropTypes.string.isRequired,
+    maxPrice: PropTypes.number.isRequired,
+    minPrice: PropTypes.number.isRequired,
+    nextPage: PropTypes.func.isRequired,
+    orderEstimate: PropTypes.string.isRequired,
     orderPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired,
     orderQuantity: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.object]).isRequired,
-    orderEstimate: PropTypes.string.isRequired,
+    orderType: PropTypes.string.isRequired,
+    selectedNav: PropTypes.string.isRequired,
     selectedOutcome: PropTypes.object.isRequired,
-    nextPage: PropTypes.func.isRequired,
     updateState: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool.isRequired,
-    minPrice: PropTypes.number.isRequired,
-    maxPrice: PropTypes.number.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
   }
 
   constructor(props) {

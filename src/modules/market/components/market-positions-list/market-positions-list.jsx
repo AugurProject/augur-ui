@@ -15,6 +15,7 @@ import ToggleHeightStyles from 'utils/toggle-height/toggle-height.styles'
 
 export default class MarketPositionsList extends Component {
   static propTypes = {
+    openOrders: PropTypes.array,
     positions: PropTypes.array.isRequired,
   }
 

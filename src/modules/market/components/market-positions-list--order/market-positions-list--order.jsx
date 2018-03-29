@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */ // needed because <button> cannot take the place <ul> in the table structure
 
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import classNames from 'classnames'
 
@@ -10,6 +11,13 @@ import { SELL } from 'modules/trade/constants/types'
 import Styles from 'modules/market/components/market-positions-list--order/market-positions-list--order.styles'
 
 export default class Order extends Component {
+  static propTypes = {
+    isExtendedDisplay: PropTypes.bool,
+    isMobile: PropTypes.bool,
+    order: PropTypes.object,
+    pending: PropTypes.bool,
+  }
+
   constructor(props) {
     super(props)
 

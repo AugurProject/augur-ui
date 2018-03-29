@@ -35,12 +35,13 @@ export const ChevronRight = () => (
 export default class CreateMarketResolution extends Component {
 
   static propTypes = {
+    currentTimestamp: PropTypes.number.isRequired,
+    isMobileSmall: PropTypes.bool.isRequired,
+    isValid: PropTypes.func.isRequired,
     newMarket: PropTypes.object.isRequired,
     updateNewMarket: PropTypes.func.isRequired,
     validateField: PropTypes.func.isRequired,
     validateNumber: PropTypes.func.isRequired,
-    isValid: PropTypes.func.isRequired,
-    isMobileSmall: PropTypes.bool.isRequired,
   }
 
   constructor(props) {

@@ -19,8 +19,13 @@ function getMarketIds(markets) {
 
 export default class ReportingResolved extends Component {
   static propTypes = {
-    markets: PropTypes.array.isRequired,
+    history: PropTypes.object,
+    isLogged: PropTypes.bool,
+    loadMarketsInfo: PropTypes.func,
     loadReporting: PropTypes.func.isRequired,
+    location: PropTypes.object,
+    markets: PropTypes.array.isRequired,
+    toggleFavorite: PropTypes.func,
   }
 
   constructor(props) {

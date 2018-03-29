@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import classNames from 'classnames'
 
@@ -10,6 +11,10 @@ import Styles from 'modules/portfolio/components/transaction-linked/transaction-
 import ToggleHeightStyles from 'utils/toggle-height/toggle-height.styles'
 
 export default class LinkedTransaction extends Component {
+  static propTypes = {
+    transaction: PropTypes.object,
+  }
+
   constructor(props) {
     super(props)
 

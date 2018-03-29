@@ -16,12 +16,13 @@ import Styles from 'modules/trade/components/trading/trading.styles'
 
 class MarketTrading extends Component {
   static propTypes = {
-    market: PropTypes.object.isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    clearTradeInProgress: PropTypes.func,
     isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    market: PropTypes.object.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
-    selectedOutcome: PropTypes.any,
+    selectedOutcome: PropTypes.func,
   }
 
   constructor(props) {

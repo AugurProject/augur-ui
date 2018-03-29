@@ -9,22 +9,24 @@ import Styles from 'modules/notifications/components/notification.styles'
 
 export default class Notification extends Component {
   static propTypes = {
-    index: PropTypes.number.isRequired,
-    seen: PropTypes.bool.isRequired,
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    removeNotification: PropTypes.func.isRequired,
-    toggleNotifications: PropTypes.func.isRequired,
-    updateNotification: PropTypes.func.isRequired,
-    notificationsBounds: PropTypes.object.isRequired,
-    updateNotificationsBoundingBox: PropTypes.func.isRequired,
     checkSeen: PropTypes.bool.isRequired,
+    description: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
     linkPath: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object,
     ]),
-  };
+    notificationsBounds: PropTypes.object.isRequired,
+    onClick: PropTypes.func,
+    removeNotification: PropTypes.func.isRequired,
+    seen: PropTypes.bool.isRequired,
+    timestamp: PropTypes.number,
+    title: PropTypes.string.isRequired,
+    toggleNotifications: PropTypes.func.isRequired,
+    updateNotification: PropTypes.func.isRequired,
+    updateNotificationsBoundingBox: PropTypes.func.isRequired,
+  }
 
   constructor(props) {
     super(props)

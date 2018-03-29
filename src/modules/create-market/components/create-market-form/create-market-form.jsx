@@ -15,19 +15,20 @@ import Styles from 'modules/create-market/components/create-market-form/create-m
 export default class CreateMarketForm extends Component {
 
   static propTypes = {
-    newMarket: PropTypes.object.isRequired,
-    updateNewMarket: PropTypes.func.isRequired,
-    categories: PropTypes.array.isRequired,
     addOrderToNewMarket: PropTypes.func.isRequired,
     availableEth: PropTypes.string.isRequired,
     availableRep: PropTypes.string.isRequired,
-    isMobileSmall: PropTypes.bool.isRequired,
-    submitNewMarket: PropTypes.func.isRequired,
+    categories: PropTypes.array.isRequired,
+    currentTimestamp: PropTypes.number.isRequired,
     history: PropTypes.object.isRequired,
-    universe: PropTypes.object.isRequired,
-    meta: PropTypes.object,
     isBugBounty: PropTypes.bool.isRequired,
-    currentTimestamp: PropTypes.number,
+    isMobileSmall: PropTypes.bool.isRequired,
+    meta: PropTypes.object,
+    newMarket: PropTypes.object.isRequired,
+    removeOrderFromNewMarket: PropTypes.func.isRequired,
+    submitNewMarket: PropTypes.func.isRequired,
+    universe: PropTypes.object.isRequired,
+    updateNewMarket: PropTypes.func.isRequired,
   }
 
   constructor(props) {

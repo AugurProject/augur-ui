@@ -8,17 +8,16 @@ import Input from 'modules/common/components/input/input'
 import debounce from 'utils/debounce'
 
 export default class InputList extends Component {
-  // TODO -- Prop Validations
   static propTypes = {
-    // className: PropTypes.string,
+    className: PropTypes.string,
+    errors: PropTypes.object,
+    itemMaxLength: PropTypes.number,
     list: PropTypes.array,
-    // errors: PropTypes.array,
+    listMaxElements: PropTypes.number,
     listMinElements: PropTypes.number,
-    // listMaxElements: PropTypes.number,
-    // itemMaxLength: PropTypes.number,
     onChange: PropTypes.func,
-    warnings: PropTypes.array,
-  };
+    warnings: PropTypes.array
+  }
 
   constructor(props) {
     super(props)
