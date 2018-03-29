@@ -147,26 +147,26 @@ describe(`modules/categories/selectors/categories.js`, () => {
     categories: {
       0: {
         category: 'testing',
-        popularity: 10,
+        popularity: '10',
       },
       1: {
         category: 'twirling',
-        popularity: 10,
+        popularity: '10',
       },
       2: {
         category: 'frontflips',
-        popularity: 10,
+        popularity: '10',
       },
       3: {
         category: '',
-        popularity: 10,
+        popularity: '10',
       },
     },
     assertions: (output) => {
       assert.deepEqual(output, [
-        { category: 'testing', popularity: 10 },
-        { category: 'twirling', popularity: 10 },
-        { category: 'frontflips', popularity: 10 },
+        { category: 'testing', popularity: '10' },
+        { category: 'twirling', popularity: '10' },
+        { category: 'frontflips', popularity: '10' },
       ])
     },
   })

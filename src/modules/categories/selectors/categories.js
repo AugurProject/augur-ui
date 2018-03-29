@@ -5,6 +5,7 @@ import { WrappedBigNumber } from 'src/utils/wrapped-big-number'
 export const selectCategories = createSelector(
   selectCategoriesState,
   categories => Object.values(categories || {})
+    .filter(({ category }) => category && category !== '')
     .map(({ category, popularity }) => ({
       category,
       popularity: WrappedBigNumber(popularity),
