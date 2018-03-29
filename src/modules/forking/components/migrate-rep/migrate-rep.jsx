@@ -19,17 +19,18 @@ import Styles from 'modules/reporting/components/reporting-report/reporting-repo
 export default class MigrateRep extends Component {
 
   static propTypes = {
-    history: PropTypes.object.isRequired,
-    market: PropTypes.object.isRequired,
-    universe: PropTypes.string.isRequired,
-    marketId: PropTypes.string.isRequired,
-    isConnected: PropTypes.bool.isRequired,
-    isMarketLoaded: PropTypes.bool.isRequired,
-    loadFullMarket: PropTypes.func.isRequired,
-    submitMigrateREP: PropTypes.func.isRequired,
+    accountREP: PropTypes.string.isRequired,
     estimateSubmitMigrateREP: PropTypes.func.isRequired,
     getForkMigrationTotals: PropTypes.func.isRequired,
-    accountREP: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
+    isConnected: PropTypes.bool.isRequired,
+    isLogged: PropTypes.bool,
+    isMarketLoaded: PropTypes.bool.isRequired,
+    loadFullMarket: PropTypes.func.isRequired,
+    location: PropTypes.object,
+    market: PropTypes.object.isRequired,
+    marketId: PropTypes.string.isRequired,
+    submitMigrateREP: PropTypes.func.isRequired
   }
 
   constructor(props) {

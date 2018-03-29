@@ -11,19 +11,21 @@ import PortfolioStyles from 'modules/portfolio/components/portfolio-view/portfol
 import { TYPE_TRADE, TYPE_REPORT, TYPE_CLOSED } from 'modules/market/constants/link-types'
 import { constants } from 'services/augurjs'
 import { CREATE_MARKET } from 'modules/routes/constants/views'
+import { BigNumber } from 'src/utils/wrapped-big-number'
 
 class MyMarkets extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool.isRequired,
+    collectMarketCreatorFees: PropTypes.instanceOf(BigNumber).isRequired,
     hasAllTransactionsLoaded: PropTypes.bool.isRequired,
     history: PropTypes.object.isRequired,
+    isLogged: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool,
+    loadMarkets: PropTypes.func.isRequired,
+    loadMarketsInfo: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
     myMarkets: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
-    loadMarkets: PropTypes.func.isRequired,
-    loadMarketsInfo: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool,
   }
 
   constructor(props) {

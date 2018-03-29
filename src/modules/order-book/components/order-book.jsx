@@ -13,11 +13,12 @@ import getValue from 'utils/get-value'
 
 export default class OrderBook extends Component {
   static propTypes = {
+    marketType: PropTypes.string,
+    outcome: PropTypes.object,
     selectedShareDenomination: PropTypes.string,
     selectedTradeSide: PropTypes.object.isRequired,
     updateTradeFromSelectedOrder: PropTypes.func.isRequired,
-    outcome: PropTypes.object,
-  };
+  }
 
   constructor(props) {
     super(props)

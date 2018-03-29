@@ -16,12 +16,13 @@ import PositionStyles from 'modules/market/components/market-positions-list/mark
 
 export default class MarketPortfolioCard extends Component {
   static propTypes = {
-    market: PropTypes.object.isRequired,
-    closePositionStatus: PropTypes.object.isRequired,
-    linkType: PropTypes.string,
-    positionsDefault: PropTypes.bool,
+    buttonText: PropTypes.string,
     claimTradingProceeds: PropTypes.func,
+    closePositionStatus: PropTypes.object.isRequired,
     isMobile: PropTypes.bool,
+    linkType: PropTypes.string,
+    market: PropTypes.object.isRequired,
+    positionsDefault: PropTypes.bool,
   }
 
   static defaultProps = {

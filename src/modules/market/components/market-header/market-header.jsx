@@ -13,13 +13,14 @@ import ToggleHeightStyles from 'utils/toggle-height/toggle-height.styles'
 
 export default class MarketHeader extends Component {
   static propTypes = {
-    history: PropTypes.object.isRequired,
+    clearSelectedOutcome: PropTypes.func,
+    coreProperties: PropTypes.object.isRequired,
     description: PropTypes.string.isRequired,
     details: PropTypes.string.isRequired,
-    coreProperties: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     resolutionSource: PropTypes.any,
-    selectedOutcome: PropTypes.any,
+    selectedOutcome: PropTypes.any
   }
 
   constructor(props) {

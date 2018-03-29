@@ -74,20 +74,25 @@ const navTypes = {
 
 export default class AppView extends Component {
   static propTypes = {
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+    blockchain: PropTypes.object.isRequired,
+    categories: PropTypes.any,
+    connection: PropTypes.object.isRequired,
     coreStats: PropTypes.array.isRequired,
+    history: PropTypes.object.isRequired,
+    initAugur: PropTypes.func.isRequired,
+    isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     isMobileSmall: PropTypes.bool.isRequired,
+    location: PropTypes.object.isRequired,
+    loginAccount: PropTypes.object.isRequired,
+    markets: PropTypes.array.isRequired,
+    marketsFilteredSorted: PropTypes.array,
+    modal: PropTypes.object.isRequired,
+    selectedCategory: PropTypes.string,
+    universe: PropTypes.object.isRequired,
     updateIsMobile: PropTypes.func.isRequired,
     updateIsMobileSmall: PropTypes.func.isRequired,
-    initAugur: PropTypes.func.isRequired,
-    modal: PropTypes.object.isRequired,
-    connection: PropTypes.object.isRequired,
-    selectedCategory: PropTypes.string,
-    url: PropTypes.string,
-    universe: PropTypes.object.isRequired,
-    blockchain: PropTypes.object.isRequired,
+    url: PropTypes.string
   }
 
   constructor(props) {
