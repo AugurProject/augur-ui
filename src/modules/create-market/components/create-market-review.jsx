@@ -49,22 +49,32 @@ export default class CreateMarketReview extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.currentStep !== nextProps.currentStep &&
+    const {
+      currentStep,
+      initialLiquidityEth,
+      initialLiquidityFees,
+      initialLiquidityGas
+    } = this.props;
+    if (currentStep !== nextProps.currentStep &&
       newMarketCreationOrder[nextProps.currentStep] === NEW_MARKET_REVIEW
     ) {
       this.calculateMarketCreationCosts()
     }
 
-    if (this.props.initialLiquidityEth !== nextProps.initialLiquidityEth) this.setState({ formattedInitialLiquidityEth: formatEtherEstimate(nextProps.initialLiquidityEth) })
-    if (this.props.initialLiquidityGas !== nextProps.initialLiquidityGas) this.setState({ formattedInitialLiquidityGas: formatEtherEstimate(nextProps.initialLiquidityGas) })
-    if (this.props.initialLiquidityFees !== nextProps.initialLiquidityFees) this.setState({ formattedInitialLiquidityFees: formatEtherEstimate(nextProps.initialLiquidityFees) })
+    if (initialLiquidityEth !== nextProps.initialLiquidityEth) this.setState({ formattedInitialLiquidityEth: formatEtherEstimate(nextProps.initialLiquidityEth) })
+    if (initialLiquidityGas !== nextProps.initialLiquidityGas) this.setState({ formattedInitialLiquidityGas: formatEtherEstimate(nextProps.initialLiquidityGas) })
+    if (initialLiquidityFees !== nextProps.initialLiquidityFees) this.setState({ formattedInitialLiquidityFees: formatEtherEstimate(nextProps.initialLiquidityFees) })
   }
 
   calculateMarketCreationCosts() {
+    const {
+      endDate,
+      universe
+    } = this.props;
     const self = this
     augur.createMarket.getMarketCreationCostBreakdown({
-      universe: this.props.universe.id,
-      _endTime: this.props.endDate.timestamp,
+      universe: universe.id,
+      _endTime: endDate.timestamp,
     }, (err, marketCreationCostBreakdown) => {
       if (err) return console.error(err)
       self.setState({
@@ -76,7 +86,12 @@ export default class CreateMarketReview extends Component {
   }
 
   render() {
-    const p = this.props
+    const {
+      className,
+      initialLiquidityEth,
+      initialLiquidityFees,
+      initialLiquidityGas
+    } = this.props;
     const s = this.state
 
     const creationFee = getValue(s, 'creationFee.formatted')
@@ -87,7 +102,7 @@ export default class CreateMarketReview extends Component {
     const liquidityFees = getValue(s, 'formattedInitialLiquidityFees.formatted')
 
     return (
-      <article className={`create-market-form-part create-market-form-review ${p.className || ''}`}>
+      <article className={`create-market-form-part create-market-form-review ${className || ''}`}>
         <div className="create-market-form-part-content">
           <div className="create-market-form-part-input">
             <aside>
@@ -126,7 +141,7 @@ export default class CreateMarketReview extends Component {
                   </span>
                 </li>
               </ul>
-              {(!!p.initialLiquidityEth.toNumber() || !!p.initialLiquidityGas.toNumber() || !!p.initialLiquidityFees.toNumber()) &&
+              {(!!initialLiquidityEth.toNumber() || !!initialLiquidityGas.toNumber() || !!initialLiquidityFees.toNumber()) &&
                 <div>
                   <h3>Initial Liquidity:</h3>
                   <ul>
@@ -165,7 +180,7 @@ export default class CreateMarketReview extends Component {
 
         </div>
       </article>
-    )
+    );
   }
 }
 

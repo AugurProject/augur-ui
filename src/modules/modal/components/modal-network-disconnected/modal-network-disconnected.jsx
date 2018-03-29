@@ -32,16 +32,22 @@ export default class ModalNetworkDisconnected extends Component {
   }
 
   showForm(e) {
+    const { updateIsReconnectionPaused } = this.props;
     e.preventDefault()
     this.setState({ showEnvForm: !this.state.showEnvForm })
     // if the form is going to be shown, we pass true to pause reconnection
-    this.props.updateIsReconnectionPaused(!this.state.showEnvForm)
+    updateIsReconnectionPaused(!this.state.showEnvForm)
   }
 
   submitForm(e, ...args) {
+    const {
+      modal,
+      updateEnv,
+      updateIsReconnectionPaused
+    } = this.props;
     e.preventDefault()
-    this.props.updateEnv({
-      ...this.props.modal.env,
+    updateEnv({
+      ...modal.env,
       'augur-node': this.state.augurNode,
       'ethereum-node': {
         http: this.state.ethereumNodeHttp,
@@ -49,7 +55,7 @@ export default class ModalNetworkDisconnected extends Component {
       },
     })
     // unpause reconnection
-    this.props.updateIsReconnectionPaused(false)
+    updateIsReconnectionPaused(false)
     this.setState({ showEnvForm: false })
   }
 
@@ -58,9 +64,8 @@ export default class ModalNetworkDisconnected extends Component {
   }
 
   render() {
-    const p = this.props
     const s = this.state
-    const connectionStatus = getValue(p, 'modal.connection')
+    const connectionStatus = getValue(this.props, 'modal.connection')
     let nodeTitleText = ''
     let nodeDescriptionText = ''
     if ((connectionStatus.isConnected && !connectionStatus.isConnectedToAugurNode)) {

@@ -25,20 +25,32 @@ export default class ModalMigrateMarket extends Component {
   }
 
   componentWillMount() {
-    this.props.migrateMarketThroughFork(this.props.marketId, true, (err, gasEstimate) => {
+    const {
+      marketId,
+      migrateMarketThroughFork
+    } = this.props;
+    migrateMarketThroughFork(marketId, true, (err, gasEstimate) => {
       if (!err && !!gasEstimate) this.setState({ gasEstimate })
     })
   }
 
   submitForm(e, ...args) {
+    const {
+      marketId,
+      migrateMarketThroughFork
+    } = this.props;
     e.preventDefault()
-    this.props.migrateMarketThroughFork(this.props.marketId, false, (err, res) => {
+    migrateMarketThroughFork(marketId, false, (err, res) => {
       console.log('onSuccess for migrateMarketThroughFork', err, res)
     })
   }
 
   render() {
-    const p = this.props
+    const {
+      closeModal,
+      marketDescription,
+      modal
+    } = this.props;
     const s = this.state
 
     return (
@@ -53,7 +65,7 @@ export default class ModalMigrateMarket extends Component {
             <li>gas</li>
           </ul>
           <ul className={Styles.ModalMigrateMarket__values}>
-            <li>{p.marketDescription}</li>
+            <li>{marketDescription}</li>
             <li>{formatEther(s.gasEstimate).full}</li>
           </ul>
         </div>
@@ -61,9 +73,9 @@ export default class ModalMigrateMarket extends Component {
           <button
             className={Styles.ModalMigrateMarket__button}
             type="button"
-            onClick={p.closeModal}
+            onClick={closeModal}
           >
-            Back {p.modal}
+            Back {modal}
           </button>
           <button
             className={Styles.ModalMigrateMarket__button}
@@ -73,6 +85,6 @@ export default class ModalMigrateMarket extends Component {
           </button>
         </div>
       </form>
-    )
+    );
   }
 }

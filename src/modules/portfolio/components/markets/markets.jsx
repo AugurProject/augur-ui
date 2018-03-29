@@ -61,14 +61,16 @@ class MyMarkets extends Component {
   }
 
   componentWillMount() {
+    const { loadMarkets } = this.props;
     // Load all markets incase they haven't been loaded already
     // Eventually replace this with a 1 to 1 call to augurnode for example what we need.
-    this.props.loadMarkets()
+    loadMarkets()
   }
 
   componentWillReceiveProps(nextProps) {
+    const { myMarkets } = this.props;
     // update the filtered markets if the myMarkets prop changes
-    if (this.props.myMarkets !== nextProps.myMarkets) {
+    if (myMarkets !== nextProps.myMarkets) {
       const openMarkets = []
       const reportingMarkets = []
       const finalMarkets = []
@@ -101,16 +103,25 @@ class MyMarkets extends Component {
   }
 
   render() {
-    const p = this.props
+    const {
+      collectMarketCreatorFees,
+      history,
+      isLogged,
+      isMobile,
+      loadMarketsInfo,
+      location,
+      myMarkets,
+      toggleFavorite
+    } = this.props;
     const s = this.state
-    const haveMarkets = p.myMarkets && !!p.myMarkets.length
+    const haveMarkets = myMarkets && !!myMarkets.length
 
     return (
       <section className={Styles.Markets}>
         <Helmet>
           <title>My Markets</title>
         </Helmet>
-        {p.myMarkets && !!p.myMarkets.length &&
+        {myMarkets && !!myMarkets.length &&
           <div
             className={Styles.Markets__SortBar}
           >
@@ -119,18 +130,18 @@ class MyMarkets extends Component {
         }
         {haveMarkets &&
           <MarketsList
-            isLogged={p.isLogged}
+            isLogged={isLogged}
             markets={s.openMarkets}
             filteredMarkets={s.filteredMarketsOpen}
-            location={p.location}
-            history={p.history}
-            toggleFavorite={p.toggleFavorite}
-            loadMarketsInfo={p.loadMarketsInfo}
+            location={location}
+            history={history}
+            toggleFavorite={toggleFavorite}
+            loadMarketsInfo={loadMarketsInfo}
             linkType={TYPE_TRADE}
             outstandingReturns
             paginationPageParam="open"
-            collectMarketCreatorFees={p.collectMarketCreatorFees}
-            isMobile={p.isMobile}
+            collectMarketCreatorFees={collectMarketCreatorFees}
+            isMobile={isMobile}
           />
         }
         {haveMarkets && s.filteredMarketsOpen.length === 0 && <div className={Styles['Markets__nullState--spacer']} />}
@@ -147,18 +158,18 @@ class MyMarkets extends Component {
         }
         {haveMarkets &&
           <MarketsList
-            isLogged={p.isLogged}
+            isLogged={isLogged}
             markets={s.reportingMarkets}
             filteredMarkets={s.filteredMarketsReporting}
-            location={p.location}
-            history={p.history}
-            toggleFavorite={p.toggleFavorite}
-            loadMarketsInfo={p.loadMarketsInfo}
+            location={location}
+            history={history}
+            toggleFavorite={toggleFavorite}
+            loadMarketsInfo={loadMarketsInfo}
             linkType={TYPE_REPORT}
             outstandingReturns
             paginationPageParam="reporting"
-            collectMarketCreatorFees={p.collectMarketCreatorFees}
-            isMobile={p.isMobile}
+            collectMarketCreatorFees={collectMarketCreatorFees}
+            isMobile={isMobile}
           />
         }
         {haveMarkets && s.filteredMarketsReporting.length === 0 && <div className={Styles['Markets__nullState--spacer']} />}
@@ -175,22 +186,22 @@ class MyMarkets extends Component {
         }
         {haveMarkets &&
           <MarketsList
-            isLogged={p.isLogged}
+            isLogged={isLogged}
             markets={s.finalMarkets}
             filteredMarkets={s.filteredMarketsFinal}
-            location={p.location}
-            history={p.history}
-            toggleFavorite={p.toggleFavorite}
-            loadMarketsInfo={p.loadMarketsInfo}
+            location={location}
+            history={history}
+            toggleFavorite={toggleFavorite}
+            loadMarketsInfo={loadMarketsInfo}
             linkType={TYPE_CLOSED}
             outstandingReturns
             paginationPageParam="final"
-            collectMarketCreatorFees={p.collectMarketCreatorFees}
-            isMobile={p.isMobile}
+            collectMarketCreatorFees={collectMarketCreatorFees}
+            isMobile={isMobile}
           />
         }
         {haveMarkets && s.filteredMarketsFinal.length === 0 && <div className={Styles['Markets__nullState--spacer']} />}
-        {(p.myMarkets == null || (p.myMarkets && p.myMarkets.length === 0)) &&
+        {(myMarkets == null || (myMarkets && myMarkets.length === 0)) &&
           <div className={PortfolioStyles.NoMarkets__container} >
             <span>You haven&apos;t created any markets.</span>
             <Link
@@ -202,7 +213,7 @@ class MyMarkets extends Component {
           </div>
         }
       </section>
-    )
+    );
   }
 }
 
