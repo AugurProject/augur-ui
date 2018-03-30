@@ -29,12 +29,13 @@ const NETWORK_NAMES = {
 
 function pollForAccount(dispatch, getState) {
   const { env } = getState()
-  let account
-  loadAccount(dispatch, getState, account, env, (err, account) => {
+  loadAccount(dispatch, getState, null, env, (err, account) => {
     if (err) console.error(err)
+    let existingAccount = account
     setInterval(() => {
-      loadAccount(dispatch, getState, account, env, (err, account) => {
+      loadAccount(dispatch, getState, existingAccount, env, (err, account) => {
         if (err) console.error(err)
+        existingAccount = account
       })
     }, ACCOUNTS_POLL_INTERVAL_DURATION)
   })
