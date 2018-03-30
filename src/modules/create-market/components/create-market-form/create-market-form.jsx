@@ -27,6 +27,7 @@ export default class CreateMarketForm extends Component {
     universe: PropTypes.object.isRequired,
     meta: PropTypes.object,
     isBugBounty: PropTypes.bool.isRequired,
+    estimateSubmitNewMarket: PropTypes.func.isRequired,
     currentTimestamp: PropTypes.number,
   }
 
@@ -180,6 +181,7 @@ export default class CreateMarketForm extends Component {
                 availableEth={p.availableEth}
                 availableRep={p.availableRep}
                 universe={p.universe}
+                estimateSubmitNewMarket={p.estimateSubmitNewMarket}
               />
             }
           </div>
