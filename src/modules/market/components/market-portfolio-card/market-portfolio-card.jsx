@@ -16,6 +16,7 @@ import PositionStyles from 'modules/market/components/market-positions-list/mark
 
 export default class MarketPortfolioCard extends Component {
   static propTypes = {
+    currentTimestamp: PropTypes.number.isRequired,
     market: PropTypes.object.isRequired,
     closePositionStatus: PropTypes.object.isRequired,
     linkType: PropTypes.string,
@@ -81,7 +82,7 @@ export default class MarketPortfolioCard extends Component {
           >
             <div className={Styles.MarketCard__headertext}>
               <span className={Styles['MarketCard__expiration--mobile']}>
-                {dateHasPassed(p.market.endDate.timestamp) ? 'Expired ' : 'Expires '}
+                {dateHasPassed(p.currentTimestamp, p.market.endDate.timestamp) ? 'Expired ' : 'Expires '}
                 { p.isMobile ? p.market.endDate.formattedShort : p.market.endDate.formatted }
               </span>
               <h1 className={CommonStyles.MarketCommon__description}>

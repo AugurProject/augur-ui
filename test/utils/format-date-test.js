@@ -25,7 +25,7 @@ describe('utils/format-date', () => {
   test({
     description: `should return false`,
     assertions: () => {
-      const actual = dateHasPassed(11111111)
+      const actual = dateHasPassed(Date.now(), 11111111)
 
       assert.strictEqual(actual, true, `didn't return true as expected`)
     },
@@ -34,7 +34,7 @@ describe('utils/format-date', () => {
   test({
     description: `should return a trimmed string`,
     assertions: () => {
-      const actual = dateHasPassed(999999999999999)
+      const actual = dateHasPassed(Date.now(), 999999999999999)
 
       assert.strictEqual(actual, false, `didn't return false as expected`)
     },

@@ -17,6 +17,7 @@ import Styles from 'modules/create-market/components/create-market-preview/creat
 export default class CreateMarketPreview extends Component {
 
   static propTypes = {
+    currentTimestamp: PropTypes.number.isRequired,
     newMarket: PropTypes.object.isRequired,
   }
 
@@ -127,7 +128,7 @@ export default class CreateMarketPreview extends Component {
                 <span>{ p.newMarket.settlementFee ? p.newMarket.settlementFee : '0.0'}%</span>
               </li>
               <li>
-                <span>{dateHasPassed(p.newMarket.endDate.timestamp) ? 'Expired' : 'Expires'}</span>
+                <span>{dateHasPassed(p.currentTimestamp, p.newMarket.endDate.timestamp) ? 'Expired' : 'Expires'}</span>
                 <span>{ s.expirationDate }</span>
               </li>
             </ul>
