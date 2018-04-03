@@ -19,6 +19,7 @@ export default class MarketPortfolioCard extends Component {
     buttonText: PropTypes.string,
     claimTradingProceeds: PropTypes.func,
     closePositionStatus: PropTypes.object.isRequired,
+    currentTimestamp: PropTypes.number.isRequired,
     isMobile: PropTypes.bool,
     linkType: PropTypes.string,
     market: PropTypes.object.isRequired,
@@ -46,6 +47,7 @@ export default class MarketPortfolioCard extends Component {
   render() {
     const {
       buttonText,
+      currentTimestamp,
       isMobile,
       linkType,
       market,
@@ -87,7 +89,7 @@ export default class MarketPortfolioCard extends Component {
           >
             <div className={Styles.MarketCard__headertext}>
               <span className={Styles['MarketCard__expiration--mobile']}>
-                {dateHasPassed(market.endDate.timestamp) ? 'Expired ' : 'Expires '}
+                {dateHasPassed(currentTimestamp, market.endDate.timestamp) ? 'Expired ' : 'Expires '}
                 { isMobile ? market.endDate.formattedShort : market.endDate.formatted }
               </span>
               <h1 className={CommonStyles.MarketCommon__description}>
