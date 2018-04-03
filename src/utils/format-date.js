@@ -80,12 +80,8 @@ export function dateHasPassed(currentAugurTimestamp, unixTimestamp) {
 }
 
 export function getDaysRemaining(endTimestamp, startTimestamp) {
-  if (!endTimestamp) return 0
-  let start = startTimestamp
-  if (!startTimestamp) {
-    start = formatDate(new Date()).timestamp
-  }
-  if (start > endTimestamp) return 0
-  const remainingTicks = endTimestamp - start
+  if (!endTimestamp || !startTimestamp) return 0
+  if (startTimestamp > endTimestamp) return 0
+  const remainingTicks = endTimestamp - startTimestamp
   return Math.floor(remainingTicks / NUMBER_OF_SECONDS_IN_A_DAY)
 }
