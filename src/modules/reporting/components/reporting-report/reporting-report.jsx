@@ -134,6 +134,7 @@ export default class ReportingReport extends Component {
     const s = this.state
 
     return (
+
       <section>
         <Helmet>
           <title>Submit Report</title>
