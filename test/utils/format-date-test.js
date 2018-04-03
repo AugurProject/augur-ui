@@ -80,7 +80,7 @@ describe('utils/format-date', () => {
     description: `days should be floored to fake today`,
     assertions: () => {
       clock = sinon.useFakeTimers(new Date(1519849696000))
-      const actual = getDaysRemaining(1520300344)
+      const actual = getDaysRemaining(1520300344, formatDate(new Date()).timestamp)
 
       assert.strictEqual(actual, 5, `didn't return 5 as expected`)
     },
