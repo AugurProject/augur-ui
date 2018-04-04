@@ -1,6 +1,8 @@
 import { connect } from 'react-redux'
 import memoize from 'memoizee'
 
+import { selectCurrentTimestamp } from 'src/select-state'
+
 import MarketOutcomeCharts from 'modules/market/components/market-outcome-charts/market-outcome-charts'
 
 import { BIDS, ASKS } from 'modules/order-book/constants/order-book-order-types'
@@ -131,6 +133,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     currentBlock: state.blockchain.currentBlockNumber || 0,
+    currentTimestamp: selectCurrentTimestamp(state),
     minPrice: market.minPrice || 0,
     maxPrice: market.maxPrice || 0,
     outcomeBounds: findBounds(outcome),

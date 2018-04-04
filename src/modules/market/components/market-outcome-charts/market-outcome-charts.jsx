@@ -21,6 +21,7 @@ export default class MarketOutcomeCharts extends Component {
     marketDepth: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string.isRequired,
     currentBlock: PropTypes.number.isRequired,
+    currentTimestamp: PropTypes.number.isRequired,
     updateSeletedOrderProperties: PropTypes.func.isRequired,
   }
 
@@ -95,6 +96,7 @@ export default class MarketOutcomeCharts extends Component {
   render() {
     const {
       currentBlock,
+      currentTimestamp,
       marketDepth,
       maxPrice,
       minPrice,
@@ -123,6 +125,7 @@ export default class MarketOutcomeCharts extends Component {
             <MarketOutcomeCandlestick
               priceTimeSeries={priceTimeSeries}
               currentBlock={currentBlock}
+              currentTimestamp={currentTimestamp}
               selectedPeriod={s.selectedPeriod}
               fixedPrecision={s.fixedPrecision}
               outcomeBounds={outcomeBounds}

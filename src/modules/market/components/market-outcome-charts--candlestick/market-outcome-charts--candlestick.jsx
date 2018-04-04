@@ -19,6 +19,7 @@ export default class MarketOutcomeCandlestick extends Component {
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.object.isRequired,
     currentBlock: PropTypes.number.isRequired,
+    currentTimestamp: PropTypes.number.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
     outcomeBounds: PropTypes.object.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
@@ -155,7 +156,7 @@ export default class MarketOutcomeCandlestick extends Component {
       if (
         (
           selectedPeriod.selectedPeriod === null && // per block
-          dateToBlock(new Date(accumulationPeriod.period), currentBlock) - dateToBlock(new Date(priceTime.timestamp), currentBlock) >= 1
+          dateToBlock(new Date(accumulationPeriod.period), currentBlock, this.state.currentTimestamp) - dateToBlock(new Date(priceTime.timestamp), currentBlock, this.state.currentTimestamp) >= 1
         ) ||
         priceTime.timestamp - accumulationPeriod.period > selectedPeriod.selectedPeriod
       ) {
