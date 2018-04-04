@@ -2,44 +2,56 @@
 
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import proxyquire from 'proxyquire'
-import sinon from 'sinon'
+// import proxyquire from 'proxyquire'
+// import sinon from 'sinon'
+import { selectClosePositionStatus, __RewireAPI__ as ReWireModule } from 'modules/my-positions/selectors/close-position-status'
 
 import { CLOSE_DIALOG_CLOSING, CLOSE_DIALOG_NO_ORDERS, CLOSE_DIALOG_FAILED, CLOSE_DIALOG_PARTIALLY_FAILED, CLOSE_DIALOG_SUCCESS } from 'modules/market/constants/close-dialog-status'
 import { SUCCESS, FAILED } from 'modules/transactions/constants/statuses'
 import { CLEAR_CLOSE_POSITION_OUTCOME } from 'modules/my-positions/actions/clear-close-position-outcome'
 
-describe('modules/my-positions/selectors/close-position-status', function () { // eslint-disable-line func-names, prefer-arrow-callback
-  proxyquire.noPreserveCache().noCallThru()
+describe.only('modules/my-positions/selectors/close-position-status', function () { // eslint-disable-line func-names, prefer-arrow-callback
+  // proxyquire.noPreserveCache().noCallThru()
 
   const middlewares = [thunk]
   const mockStore = configureMockStore(middlewares)
 
-  before(() => {
-    this.clock = sinon.useFakeTimers()
-  })
+  // before(() => {
+  //   this.clock = sinon.useFakeTimers()
+  // })
 
   after(() => {
-    this.clock.restore()
+    // this.clock.restore()
   })
+
+  afterEach(() => {
+    ReWireModule.__ResetDependency__('delayClearTradeGroupIds')
+  })
+
+  const delayClearTradeGroupIds = () => ({ type: 'CLEAR_TRADE_GROUP_IDS' })
+
+  ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
   const test = (t) => {
     it(t.description, () => {
       const store = mockStore(t.state)
 
-      const mockClearClosePositionOutcome = () => {}
+      // const mockClearClosePositionOutcome = () => {}
 
-      const selector = proxyquire('../../../src/modules/my-positions/selectors/close-position-status', {
-        '../../../store': store,
-        '../../my-positions/actions/clear-close-position-outcome': mockClearClosePositionOutcome,
-      })
+      // const selector = proxyquire('../../../src/modules/my-positions/selectors/close-position-status', {
+      //   '../../../store': store,
+      //   '../../my-positions/actions/clear-close-position-outcome': mockClearClosePositionOutcome,
+      // })
 
-      t.assertions(selector.default(), store, this.clock)
+      // t.assertions(selector.default(), store, this.clock)
+
+      const result = selectClosePositionStatus({ closePositionTradeGroups: t.state.closePositionTradeGroups, transactionsData: t.state.transactionsData })
+      t.assertions(result, store, this.clock)
     })
   }
 
   test({
-    description: 'should return CLOSE_DIALOG_CLOSING status if closePositionTradeGroups has a tradeGroupId and transactionsData does not house a corresponding tradeGroupId',
+    description: 'should return CLOSE_DIALOG_CLi523OSING status if closePositionTradeGroups has a tradeGroupId and transactionsData does not house a corresponding tradeGroupId',
     state: {
       closePositionTradeGroups: {
         '0xMarketID1': {
@@ -114,7 +126,8 @@ describe('modules/my-positions/selectors/close-position-status', function () { /
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
 
-      clock.tick(3000)
+      // clock.tick(3000)
+      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
       const actual = store.getActions()
 
@@ -159,7 +172,8 @@ describe('modules/my-positions/selectors/close-position-status', function () { /
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
 
-      clock.tick(3000)
+      // clock.tick(3000)
+      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
       const actual = store.getActions()
 
@@ -204,7 +218,8 @@ describe('modules/my-positions/selectors/close-position-status', function () { /
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
 
-      clock.tick(3000)
+      // clock.tick(3000)
+      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
       const actual = store.getActions()
 
@@ -281,7 +296,8 @@ describe('modules/my-positions/selectors/close-position-status', function () { /
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
 
-      clock.tick(3000)
+      // clock.tick(3000)
+      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
       const actual = store.getActions()
 
@@ -318,7 +334,8 @@ describe('modules/my-positions/selectors/close-position-status', function () { /
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
 
-      clock.tick(3000)
+      // clock.tick(3000)
+      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
       const actual = store.getActions()
 
