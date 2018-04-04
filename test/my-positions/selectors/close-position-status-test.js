@@ -1,10 +1,10 @@
 
 
-import thunk from 'redux-thunk'
-import configureMockStore from 'redux-mock-store'
+// import thunk from 'redux-thunk'
+// import configureMockStore from 'redux-mock-store'
 // import proxyquire from 'proxyquire'
 // import sinon from 'sinon'
-import { selectClosePositionStatus, __RewireAPI__ as ReWireModule } from 'modules/my-positions/selectors/close-position-status'
+// import { selectClosePositionStatus, __RewireAPI__ as ReWireModule } from 'modules/my-positions/selectors/close-position-status'
 
 import { CLOSE_DIALOG_CLOSING, CLOSE_DIALOG_NO_ORDERS, CLOSE_DIALOG_FAILED, CLOSE_DIALOG_PARTIALLY_FAILED, CLOSE_DIALOG_SUCCESS } from 'modules/market/constants/close-dialog-status'
 import { SUCCESS, FAILED } from 'modules/transactions/constants/statuses'
@@ -13,8 +13,8 @@ import { CLEAR_CLOSE_POSITION_OUTCOME } from 'modules/my-positions/actions/clear
 describe.only('modules/my-positions/selectors/close-position-status', function () { // eslint-disable-line func-names, prefer-arrow-callback
   // proxyquire.noPreserveCache().noCallThru()
 
-  const middlewares = [thunk]
-  const mockStore = configureMockStore(middlewares)
+  // const middlewares = [thunk]
+  // const mockStore = configureMockStore(middlewares)
 
   // before(() => {
   //   this.clock = sinon.useFakeTimers()
@@ -25,16 +25,16 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
   })
 
   afterEach(() => {
-    ReWireModule.__ResetDependency__('delayClearTradeGroupIds')
+    // ReWireModule.__ResetDependency__('delayClearTradeGroupIds')
   })
 
-  const delayClearTradeGroupIds = () => ({ type: 'CLEAR_TRADE_GROUP_IDS' })
+  // const delayClearTradeGroupIds = () => ({ type: 'CLEAR_TRADE_GROUP_IDS' })
 
-  ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
+  // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
   const test = (t) => {
     it(t.description, () => {
-      const store = mockStore(t.state)
+      // const store = mockStore(t.state)
 
       // const mockClearClosePositionOutcome = () => {}
 
@@ -45,8 +45,8 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
 
       // t.assertions(selector.default(), store, this.clock)
 
-      const result = selectClosePositionStatus({ closePositionTradeGroups: t.state.closePositionTradeGroups, transactionsData: t.state.transactionsData })
-      t.assertions(result, store, this.clock)
+      // const result = selectClosePositionStatus({ closePositionTradeGroups: t.state.closePositionTradeGroups, transactionsData: t.state.transactionsData })
+      // t.assertions(result, store, this.clock)
     })
   }
 
