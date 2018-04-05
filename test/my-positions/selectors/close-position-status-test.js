@@ -1,52 +1,24 @@
-
-
-// import thunk from 'redux-thunk'
-// import configureMockStore from 'redux-mock-store'
-// import proxyquire from 'proxyquire'
-// import sinon from 'sinon'
-// import { selectClosePositionStatus, __RewireAPI__ as ReWireModule } from 'modules/my-positions/selectors/close-position-status'
+import sinon from 'sinon'
+import { selectClosePositionStatus, __RewireAPI__ as ReWireModule } from 'modules/my-positions/selectors/close-position-status'
 
 import { CLOSE_DIALOG_CLOSING, CLOSE_DIALOG_NO_ORDERS, CLOSE_DIALOG_FAILED, CLOSE_DIALOG_PARTIALLY_FAILED, CLOSE_DIALOG_SUCCESS } from 'modules/market/constants/close-dialog-status'
 import { SUCCESS, FAILED } from 'modules/transactions/constants/statuses'
-import { CLEAR_CLOSE_POSITION_OUTCOME } from 'modules/my-positions/actions/clear-close-position-outcome'
 
 describe.only('modules/my-positions/selectors/close-position-status', function () { // eslint-disable-line func-names, prefer-arrow-callback
-  // proxyquire.noPreserveCache().noCallThru()
-
-  // const middlewares = [thunk]
-  // const mockStore = configureMockStore(middlewares)
-
-  // before(() => {
-  //   this.clock = sinon.useFakeTimers()
-  // })
-
-  after(() => {
-    // this.clock.restore()
-  })
 
   afterEach(() => {
-    // ReWireModule.__ResetDependency__('delayClearTradeGroupIds')
+
   })
-
-  // const delayClearTradeGroupIds = () => ({ type: 'CLEAR_TRADE_GROUP_IDS' })
-
-  // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
   const test = (t) => {
     it(t.description, () => {
-      // const store = mockStore(t.state)
+      const delayClearTradeGroupIds = sinon.stub()
+      ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
 
-      // const mockClearClosePositionOutcome = () => {}
+      const result = selectClosePositionStatus({ closePositionTradeGroups: t.state.closePositionTradeGroups, transactionsData: t.state.transactionsData })
+      t.assertions(result, delayClearTradeGroupIds.calledOnce)
 
-      // const selector = proxyquire('../../../src/modules/my-positions/selectors/close-position-status', {
-      //   '../../../store': store,
-      //   '../../my-positions/actions/clear-close-position-outcome': mockClearClosePositionOutcome,
-      // })
-
-      // t.assertions(selector.default(), store, this.clock)
-
-      // const result = selectClosePositionStatus({ closePositionTradeGroups: t.state.closePositionTradeGroups, transactionsData: t.state.transactionsData })
-      // t.assertions(result, store, this.clock)
+      ReWireModule.__ResetDependency__('delayClearTradeGroupIds')
     })
   }
 
@@ -64,14 +36,15 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res) => {
+    assertions: (res, clearTradeCalled) => {
       const expected = {
         '0xMarketID1': {
-          0: CLOSE_DIALOG_CLOSING,
+          0: 'CLOSE_DIALOG_CLOSING',
         },
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
+      assert.isFalse(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 
@@ -92,14 +65,14 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res) => {
+    assertions: (res, clearTradeCalled) => {
       const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_CLOSING,
         },
       }
-
       assert.deepEqual(res, expected, `Didn't return the expected object`)
+      assert.isFalse(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 
@@ -117,27 +90,15 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res, store, clock) => {
-      let expected = {
+    assertions: (res, clearTradeCalled) => {
+      const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_FAILED,
         },
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-
-      // clock.tick(3000)
-      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
-
-      const actual = store.getActions()
-
-      expected = [{
-        type: CLEAR_CLOSE_POSITION_OUTCOME,
-        marketId: '0xMarketID1',
-        outcomeId: '0',
-      }]
-
-      assert.deepEqual(actual, expected, `Didn't return the expected actions`)
+      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 
@@ -163,27 +124,15 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res, store, clock) => {
-      let expected = {
+    assertions: (res, clearTradeCalled) => {
+      const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_FAILED,
         },
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-
-      // clock.tick(3000)
-      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
-
-      const actual = store.getActions()
-
-      expected = [{
-        type: CLEAR_CLOSE_POSITION_OUTCOME,
-        marketId: '0xMarketID1',
-        outcomeId: '0',
-      }]
-
-      assert.deepEqual(actual, expected, `Didn't return the expected actions`)
+      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 
@@ -209,27 +158,15 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res, store, clock) => {
-      let expected = {
+    assertions: (res, clearTradeCalled) => {
+      const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_PARTIALLY_FAILED,
         },
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-
-      // clock.tick(3000)
-      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
-
-      const actual = store.getActions()
-
-      expected = [{
-        type: CLEAR_CLOSE_POSITION_OUTCOME,
-        marketId: '0xMarketID1',
-        outcomeId: '0',
-      }]
-
-      assert.deepEqual(actual, expected, `Didn't return the expected actions`)
+      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 
@@ -254,7 +191,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res) => {
+    assertions: (res, clearTradeCalled) => {
       const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_PARTIALLY_FAILED,
@@ -262,6 +199,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
+      assert.isFalse(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 
@@ -287,27 +225,15 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res, store, clock) => {
-      let expected = {
+    assertions: (res, clearTradeCalled) => {
+      const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_SUCCESS,
         },
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-
-      // clock.tick(3000)
-      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
-
-      const actual = store.getActions()
-
-      expected = [{
-        type: CLEAR_CLOSE_POSITION_OUTCOME,
-        marketId: '0xMarketID1',
-        outcomeId: '0',
-      }]
-
-      assert.deepEqual(actual, expected, `Didn't return the expected actions`)
+      assert(clearTradeCalled, `did call delay clear trade group ids`)
     },
   })
 
@@ -325,27 +251,15 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       },
     },
-    assertions: (res, store, clock) => {
-      let expected = {
+    assertions: (res, clearTradeCalled) => {
+      const expected = {
         '0xMarketID1': {
           0: CLOSE_DIALOG_NO_ORDERS,
         },
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-
-      // clock.tick(3000)
-      // ReWireModule.__Rewire__('delayClearTradeGroupIds', delayClearTradeGroupIds)
-
-      const actual = store.getActions()
-
-      expected = [{
-        type: CLEAR_CLOSE_POSITION_OUTCOME,
-        marketId: '0xMarketID1',
-        outcomeId: '0',
-      }]
-
-      assert.deepEqual(actual, expected, `Didn't return the expected actions`)
+      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
     },
   })
 })
