@@ -19,10 +19,10 @@ export default class ReportingHeader extends Component {
     reportingWindowStats: PropTypes.object.isRequired,
     repBalance: PropTypes.string.isRequired,
     updateModal: PropTypes.func.isRequired,
+    currentTime: PropTypes.number.isRequired,
     isForking: PropTypes.bool,
     forkingMarket: PropTypes.string,
     forkEndTime: PropTypes.string,
-    currentTime: PropTypes.number.isRequired,
   }
 
   componentWillMount() {
