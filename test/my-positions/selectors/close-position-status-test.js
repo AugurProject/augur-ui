@@ -4,12 +4,7 @@ import { selectClosePositionStatus, __RewireAPI__ as ReWireModule } from 'module
 import { CLOSE_DIALOG_CLOSING, CLOSE_DIALOG_NO_ORDERS, CLOSE_DIALOG_FAILED, CLOSE_DIALOG_PARTIALLY_FAILED, CLOSE_DIALOG_SUCCESS } from 'modules/market/constants/close-dialog-status'
 import { SUCCESS, FAILED } from 'modules/transactions/constants/statuses'
 
-describe.only('modules/my-positions/selectors/close-position-status', function () { // eslint-disable-line func-names, prefer-arrow-callback
-
-  afterEach(() => {
-
-  })
-
+describe('modules/my-positions/selectors/close-position-status', function () { // eslint-disable-line func-names, prefer-arrow-callback
   const test = (t) => {
     it(t.description, () => {
       const delayClearTradeGroupIds = sinon.stub()
@@ -44,7 +39,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert.isFalse(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert.isFalse(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 
@@ -72,7 +67,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
         },
       }
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert.isFalse(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert.isFalse(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 
@@ -98,7 +93,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 
@@ -132,7 +127,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 
@@ -166,7 +161,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 
@@ -199,7 +194,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert.isFalse(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert.isFalse(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 
@@ -233,7 +228,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert(clearTradeCalled, `did call delay clear trade group ids`)
+      assert(clearTradeCalled, `Did call delay clear trade group ids`)
     },
   })
 
@@ -259,7 +254,7 @@ describe.only('modules/my-positions/selectors/close-position-status', function (
       }
 
       assert.deepEqual(res, expected, `Didn't return the expected object`)
-      assert(clearTradeCalled, `didn't call delay clear trade group ids`)
+      assert(clearTradeCalled, `Didn't call delay clear trade group ids`)
     },
   })
 })
