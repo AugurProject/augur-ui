@@ -35,8 +35,8 @@ const MarketProperties = (p) => {
             <ValueDenomination {...p.settlementFeePercent} />
           </li>
           <li>
-            <span>{p.endDate && dateHasPassed(p.currentTimestamp, p.endDate.timestamp) ? 'Expired' : 'Expires'}</span>
-            <span>{ p.isMobile ? p.endDate.formattedShort : p.endDate.formatted }</span>
+            <span>{p.endTime && dateHasPassed(p.currentTimestamp, p.endTime.timestamp) ? 'Expired' : 'Expires'}</span>
+            <span>{ p.isMobile ? p.endTime.formattedShort : p.endTime.formatted }</span>
           </li>
           {p.outstandingReturns &&
           <li>
