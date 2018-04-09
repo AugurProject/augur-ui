@@ -150,7 +150,7 @@ export default class ReportingDisputeForm extends Component {
     const { market } = this.props
     if (market.marketType === SCALAR) {
       if (!this.state.outcomes.find(o => o.id === this.state.selectedOutcome)) {
-        this.validateScalar(this.state.selectedOutcome, 'outcome', market.minPrice, market.maxPrice, this.state.isMarketInValid)
+        this.validateScalar(this.state.selectedOutcome, 'outcome', market.minPrice, market.maxPrice, market.tickSize, this.state.isMarketInValid)
       }
     } else {
       this.validateOutcome(this.state.validations, this.state.selectedOutcome, this.state.selectedOutcomeName, this.state.isMarketInValid)
@@ -217,7 +217,7 @@ export default class ReportingDisputeForm extends Component {
     this.textInput.focus()
   }
 
-  validateScalar(value, humanName, min, max, isInvalid) {
+  validateScalar(value, humanName, min, max, tickSize, isInvalid) {
     const {
       stake,
       updateState,
@@ -236,6 +236,8 @@ export default class ReportingDisputeForm extends Component {
       const minValue = parseFloat(min)
       const maxValue = parseFloat(max)
       const valueValue = parseFloat(value)
+      const bnValue = createBigNumber(value)
+      const bnTickSize = createBigNumber(tickSize)
 
       switch (true) {
         case value === '':
@@ -249,6 +251,9 @@ export default class ReportingDisputeForm extends Component {
           break
         case value === this.state.currentOutcome.id:
           updatedValidations.err = `Current tentative winning outcome.`
+          break
+        case bnValue.mod(bnTickSize).gt('0'):
+          updatedValidations.err = `The ${humanName} field must be a multiple of ${tickSize}.`
           break
         default:
           delete updatedValidations.err
@@ -343,7 +348,7 @@ export default class ReportingDisputeForm extends Component {
                   <li>
                     <button
                       className={classNames({ [`${FormStyles.active}`]: s.scalarInputChoosen })}
-                      onClick={(e) => { this.validateScalar('', 'selectedOutcome', market.minPrice, market.maxPrice, false) }}
+                      onClick={(e) => { this.validateScalar('', 'selectedOutcome', market.minPrice, market.maxPrice, market.tickSize, false) }}
                     />
                     <input
                       id="sr__input--outcome-scalar"
@@ -355,7 +360,7 @@ export default class ReportingDisputeForm extends Component {
                       placeholder={market.scalarDenomination}
                       value={s.inputSelectedOutcome}
                       className={classNames({ [`${FormStyles['Form__error--field']}`]: s.validations.hasOwnProperty('err') && s.validations.selectedOutcome })}
-                      onChange={(e) => { this.validateScalar(e.target.value, 'outcome', market.minPrice, market.maxPrice, false) }}
+                      onChange={(e) => { this.validateScalar(e.target.value, 'outcome', market.minPrice, market.maxPrice, market.tickSize, false) }}
                     />
                   </li>
                   <li>
