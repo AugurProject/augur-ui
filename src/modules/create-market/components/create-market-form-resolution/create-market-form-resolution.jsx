@@ -224,22 +224,32 @@ export default class CreateMarketResolution extends Component {
         </li>
         <li
           className={Styles.CreateMarketResolution__datepicker}
+          role="presentation"
+          onKeyPress={e => keyPressed(e)}
         >
-          <label htmlFor="cm__input--date">
-            <span>Expiration Date</span>
-          </label>
-          <SingleDatePicker
-            id="cm__input--date"
-            date={this.state.date}
-            onDateChange={(date) => { this.setState({ date }); validateField('endTime', formatDate(date.toDate())) }}
-            focused={this.state.focused}
-            onFocusChange={({ focused }) => this.setState({ focused })}
-            displayFormat="MMM D, YYYY"
-            numberOfMonths={1}
-            navPrev={<ChevronLeft />}
-            navNext={<ChevronRight />}
+          <div
+            id="cm__input--datewrapper"
+            role="menu"
+            ref={(dateInput) => { this.dateInput = dateInput }}
+            tabIndex="0"
             onKeyPress={e => keyPressed(e)}
-          />
+          >
+            <label htmlFor="cm__input--date">
+              <span>Expiration Date</span>
+            </label>
+            <SingleDatePicker
+              id="cm__input--date"
+              date={this.state.date}
+              onClose={() => { this.dateInput.focus() }}
+              onDateChange={(date) => { this.setState({ date }); validateField('endTime', formatDate(date.toDate())) }}
+              focused={this.state.focused}
+              onFocusChange={({ focused }) => this.setState({ focused })}
+              displayFormat="MMM D, YYYY"
+              numberOfMonths={1}
+              navPrev={<ChevronLeft />}
+              navNext={<ChevronRight />}
+            />
+          </div>
         </li>
         <li>
           <label htmlFor="cm__input--time">
@@ -257,14 +267,19 @@ export default class CreateMarketResolution extends Component {
               </span>
             }
           </label>
-          <div id="cm__input--time" className={Styles.CreateMarketResolution__time}>
+          <div
+            id="cm__input--time"
+            role="presentation"
+            className={Styles.CreateMarketResolution__time}
+            onKeyPress={e => keyPressed(e)}
+          >
             <InputDropdown
               label="Hour"
               options={s.hours}
               default={newMarket.hour}
-              onChange={value => validateNumber('hour', value, 'hour', 1, 12, 0)}
+              onChange={(value) => { validateNumber('hour', value, 'hour', 1, 12, 0) }}
               isMobileSmall={isMobileSmall}
-              onKeyPress={e => keyPressed(e)}
+              tabIndex="0"
             />
             <InputDropdown
               label="Minute"
@@ -272,7 +287,7 @@ export default class CreateMarketResolution extends Component {
               default={newMarket.minute}
               onChange={value => validateNumber('minute', value, 'minute', 0, 59, 0)}
               isMobileSmall={isMobileSmall}
-              onKeyPress={e => keyPressed(e)}
+              tabIndex="0"
             />
             <InputDropdown
               label="AM/PM"
@@ -280,7 +295,7 @@ export default class CreateMarketResolution extends Component {
               options={s.ampm}
               onChange={value => validateField('meridiem', value)}
               isMobileSmall={isMobileSmall}
-              onKeyPress={e => keyPressed(e)}
+              tabIndex="0"
             />
           </div>
         </li>
