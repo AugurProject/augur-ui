@@ -9,7 +9,7 @@ import CreateMarketOutcome from 'modules/create-market/components/create-market-
 import CreateMarketResolution from 'modules/create-market/components/create-market-form-resolution/create-market-form-resolution'
 import CreateMarketLiquidity from 'modules/create-market/components/create-market-form-liquidity/create-market-form-liquidity'
 import CreateMarketReview from 'modules/create-market/components/create-market-form-review/create-market-form-review'
-
+import { isStringUtf8 } from 'modules/create-market/helpers/is-string-utf8'
 import Styles from 'modules/create-market/components/create-market-form/create-market-form.styles'
 
 export default class CreateMarketForm extends Component {
@@ -91,6 +91,7 @@ export default class CreateMarketForm extends Component {
     const { currentStep } = newMarket
 
     const updatedMarket = { ...newMarket }
+    const isUtf8 = typeof value === 'string' ? isStringUtf8(value) : true
 
     switch (true) {
       case typeof value === 'string' && !value.length:
@@ -98,6 +99,9 @@ export default class CreateMarketForm extends Component {
         break
       case maxLength && value.length > maxLength:
         updatedMarket.validations[currentStep][fieldName] = `Maximum length is ${maxLength}.`
+        break
+      case !isUtf8:
+        updatedMarket.validations[currentStep][fieldName] = `This field has invalid characters`
         break
       default:
         updatedMarket.validations[currentStep][fieldName] = true
