@@ -52,10 +52,10 @@ export default class MarketPortfolioCard extends Component {
       linkType,
       market,
     } = this.props
-    const myPositionsSummary = getValue(this.props, 'market.myPositionsSummary')
-    const myPositionOutcomes = getValue(this.props, 'market.outcomes')
+    const myPositionsSummary = getValue(market, 'myPositionsSummary')
+    const myPositionOutcomes = getValue(market, 'outcomes')
     let localButtonText
-
+    console.log(this.props, myPositionsSummary, myPositionOutcomes, this.state);
     switch (linkType) {
       case TYPE_REPORT:
         localButtonText = 'Report'
@@ -183,7 +183,7 @@ export default class MarketPortfolioCard extends Component {
                   key={outcome.id + outcome.marketId}
                   name={outcome.name}
                   position={outcome.position}
-                  openOrders={outcome.userOpenOrders ? outcome.userOpenOrders.filter(order => order.id === outcome.position.id && order.pending === true) : []}
+                  openOrders={outcome.userOpenOrders ? outcome.userOpenOrders.filter(order => order.outcomeId === outcome.position.outcomeId) : []}
                   isExtendedDisplay
                   isMobile={isMobile}
                 />
