@@ -65,7 +65,7 @@ export default class MarketPositionsList extends Component {
                     key={i}
                     name={position.name}
                     position={position}
-                    openOrders={openOrders.filter(order => order.id === position.id && order.pending === true)}
+                    openOrders={openOrders.filter(order => parseInt(order.outcomeId, 10) === parseInt(position.outcomeId, 10))}
                     isExtendedDisplay={false}
                     isMobile={false}
                   />
