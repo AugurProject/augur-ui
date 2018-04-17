@@ -13,6 +13,7 @@ import Styles from 'modules/reporting/components/reporting-dispute-form/reportin
 import ReportingDisputeProgress from 'modules/reporting/components/reporting-dispute-progress/reporting-dispute-progress'
 import selectDisputeOutcomes from 'modules/reporting/selectors/select-dispute-outcomes'
 import fillDisputeOutcomeProgress from 'modules/reporting/selectors/fill-dispute-outcome-progress'
+import { isEqual } from 'lodash'
 
 export default class ReportingDisputeForm extends Component {
 
@@ -53,19 +54,21 @@ export default class ReportingDisputeForm extends Component {
     }
 
     this.focusTextInput = this.focusTextInput.bind(this)
-
-    if (this.props.accountDisputeData) {
-      this.setAccountDisputeData(this.props.accountDisputeData)
-    }
-
   }
 
   componentWillMount() {
-    this.getDisputeInfo()
+    this.getMarketDisputeInfo()
+    if (this.props.accountDisputeData) {
+      this.setAccountDisputeData(this.props.accountDisputeData)
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return !isEqual(nextState, this.state)
   }
 
   componentDidUpdate() {
-    this.getDisputeInfo()
+    this.getMarketDisputeInfo()
   }
 
   componentWillUnmount() {
@@ -84,12 +87,13 @@ export default class ReportingDisputeForm extends Component {
     }
   }
 
-  getDisputeInfo() {
+  getMarketDisputeInfo() {
     const {
       accountDisputeData,
       getDisputeInfo,
       market,
     } = this.props
+
     getDisputeInfo([market.id], (err, disputeInfos) => {
       if (err) return console.error(err)
       const disputeInfo = disputeInfos[0]
@@ -97,11 +101,12 @@ export default class ReportingDisputeForm extends Component {
       const disputeOutcomes = selectDisputeOutcomes(market, disputeInfo.stakes, bondSizeOfNewStake)
         .map(o => fillDisputeOutcomeProgress(bondSizeOfNewStake, o))
 
-      this.state.outcomes = disputeOutcomes.filter(item => !item.tentativeWinning) || []
-      this.state.currentOutcome = disputeOutcomes.find(item => item.tentativeWinning) || {}
-
-      this.state.disputeBondValue = parseInt(bondSizeOfNewStake, 10)
-      this.state.disputeBondFormatted = formatAttoRep(bondSizeOfNewStake, { decimals: 4, denomination: ' REP' }).formatted
+      this.setState({
+        outcomes: disputeOutcomes.filter(item => !item.tentativeWinning) || [],
+        currentOutcome: disputeOutcomes.find(item => item.tentativeWinning) || {},
+        disputeBondValue: parseInt(bondSizeOfNewStake, 10),
+        disputeBondFormatted: formatAttoRep(bondSizeOfNewStake, { decimals: 4, denomination: ' REP' }).formatted,
+      })
 
       // outcomes need to be populated before validating saved data
       if (accountDisputeData) {
@@ -118,10 +123,13 @@ export default class ReportingDisputeForm extends Component {
     if (stake > 0) {
       delete accountDisputeData.validations.stake
     }
-    this.state.isMarketInValid = accountDisputeData.isMarketInValid ? accountDisputeData.isMarketInValid : null
-    this.state.selectedOutcome = accountDisputeData.selectedOutcome ? accountDisputeData.selectedOutcome : ''
-    this.state.selectedOutcomeName = accountDisputeData.selectedOutcomeName ? accountDisputeData.selectedOutcomeName : ''
-    this.state.validations = accountDisputeData.validations
+
+    this.setState({
+      isMarketInValid: accountDisputeData.isMarketInValid ? accountDisputeData.isMarketInValid : null,
+      selectedOutcome: accountDisputeData.selectedOutcome ? accountDisputeData.selectedOutcome : '',
+      selectedOutcomeName: accountDisputeData.selectedOutcomeName ? accountDisputeData.selectedOutcomeName : '',
+      validations: accountDisputeData.validations,
+    })
 
     updateState({
       isMarketInValid: this.state.isMarketInValid,
@@ -184,14 +192,13 @@ export default class ReportingDisputeForm extends Component {
 
     ReportingDisputeForm.checkStake(stake, updatedValidations)
 
-    this.state.inputSelectedOutcome = ''
-    this.state.scalarInputChoosen = false
-
     this.setState({
       validations: updatedValidations,
       selectedOutcome,
       selectedOutcomeName: selectedOutcomeName.toString(),
       isMarketInValid: isInvalid,
+      inputSelectedOutcome: '',
+      scalarInputChoosen: false,
     })
 
     updateState({
@@ -212,7 +219,7 @@ export default class ReportingDisputeForm extends Component {
       updateState,
     } = this.props
     const updatedValidations = { ...this.state.validations }
-    this.state.scalarInputChoosen = true
+
     if (value === '') {
       this.focusTextInput()
     }
@@ -259,6 +266,7 @@ export default class ReportingDisputeForm extends Component {
       selectedOutcome: value,
       selectedOutcomeName: value ? value.toString() : '',
       isMarketInValid: isInvalid,
+      scalarInputChoosen: true,
     })
 
     updateState({
