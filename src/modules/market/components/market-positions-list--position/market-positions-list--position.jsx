@@ -13,7 +13,7 @@ import Styles from 'modules/market/components/market-positions-list--position/ma
 
 export default class Position extends Component {
   static propTypes = {
-    name: PropTypes.string.isRequired,
+    outcomeName: PropTypes.string.isRequired,
     position: PropTypes.object.isRequired,
     openOrders: PropTypes.array.isRequired,
     isExtendedDisplay: PropTypes.bool.isRequired,
@@ -70,7 +70,7 @@ export default class Position extends Component {
     const {
       isExtendedDisplay,
       isMobile,
-      name,
+      outcomeName,
       openOrders,
       position,
     } = this.props
@@ -87,10 +87,10 @@ export default class Position extends Component {
         className={!isMobile ? Styles.Position : Styles.PortMobile}
       >
         <li>
-          { name }
+          { outcomeName }
           { openOrders && openOrders.length > 0 && openOrders.map((order, i) => (
             <div key={i} className={Styles.Position__pending}>
-              <span className={Styles['Position__pending-title']}>Pending</span>
+              <span className={Styles['Position__pending-title']}>{order.pending ? `Pending` : `Open`}</span>
               <span className={Styles['Position__pending-message']}>{ getValue(order, 'type') === SELL ? 'Selling' : 'Buying'} { getValue(order, 'unmatchedShares.formatted') } Shares of { getValue(order, 'name') } at { getValue(order, 'avgPrice.formatted') } ETH</span>
             </div>
           ))}
@@ -140,7 +140,7 @@ export default class Position extends Component {
             </div>
             :
             <div className={Styles['Position__confirm-details']}>
-              <p>Close position by selling { getValue(position, 'qtyShares.formatted') } shares of “{ name }” at market price?</p>
+              <p>Close position by selling { getValue(position, 'qtyShares.formatted') } shares of “{ outcomeName }” at market price?</p>
               <div className={Styles['Position__confirm-options']}>
                 <button onClick={(e) => { position.closePosition(position.marketId, position.outcomeId); this.toggleConfirm() }}>Yes</button>
                 <button onClick={this.toggleConfirm}>No</button>

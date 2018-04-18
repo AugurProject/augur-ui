@@ -55,7 +55,7 @@ export default class MarketPortfolioCard extends Component {
     const myPositionsSummary = getValue(market, 'myPositionsSummary')
     const myPositionOutcomes = getValue(market, 'outcomes')
     let localButtonText
-    console.log(this.props, myPositionsSummary, myPositionOutcomes, this.state);
+
     switch (linkType) {
       case TYPE_REPORT:
         localButtonText = 'Report'
@@ -181,9 +181,9 @@ export default class MarketPortfolioCard extends Component {
               { this.state.tableOpen.myPositions && (myPositionOutcomes || []).filter(outcome => outcome.position).map(outcome => (
                 <MarketPositionsListPosition
                   key={outcome.id + outcome.marketId}
-                  name={outcome.name}
+                  outcomeName={outcome.name}
                   position={outcome.position}
-                  openOrders={outcome.userOpenOrders ? outcome.userOpenOrders.filter(order => order.outcomeId === outcome.position.outcomeId) : []}
+                  openOrders={outcome.userOpenOrders ? outcome.userOpenOrders.filter(order => parseInt(order.outcomeId, 10) === parseInt(outcome.position.outcomeId, 10)) : []}
                   isExtendedDisplay
                   isMobile={isMobile}
                 />
@@ -226,7 +226,7 @@ export default class MarketPortfolioCard extends Component {
                   outcome.userOpenOrders.map((order, i) => (
                     <MarketPositionsListOrder
                       key={order.id}
-                      name={outcome.name}
+                      outcomeName={outcome.name}
                       order={order}
                       pending={order.pending}
                       isExtendedDisplay

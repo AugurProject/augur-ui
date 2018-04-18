@@ -63,7 +63,7 @@ export default class MarketPositionsList extends Component {
                 { positions && positions.map((position, i) => (
                   <MarketPositionsListPosition
                     key={i}
-                    name={position.name}
+                    outcomeName={position.name}
                     position={position}
                     openOrders={openOrders.filter(order => parseInt(order.outcomeId, 10) === parseInt(position.outcomeId, 10))}
                     isExtendedDisplay={false}
@@ -87,7 +87,7 @@ export default class MarketPositionsList extends Component {
                 { openOrders.map((order, i) => (
                   <MarketPositionsListOrder
                     key={i}
-                    name={order.name}
+                    outcomeName={order.name}
                     order={order}
                     pending={order.pending}
                     isExtendedDisplay={false}
