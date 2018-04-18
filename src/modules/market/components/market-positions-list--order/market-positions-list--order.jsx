@@ -14,7 +14,7 @@ export default class Order extends Component {
   static propTypes = {
     isExtendedDisplay: PropTypes.bool,
     isMobile: PropTypes.bool,
-    name: PropTypes.string,
+    outcomeName: PropTypes.string,
     order: PropTypes.object,
     pending: PropTypes.string,
   }
@@ -56,7 +56,7 @@ export default class Order extends Component {
     const {
       isExtendedDisplay,
       isMobile,
-      name,
+      outcomeName,
       order,
       pending,
     } = this.props
@@ -73,7 +73,7 @@ export default class Order extends Component {
         className={!isMobile ? Styles.Order : Styles.PortMobile}
       >
         <li>
-          { name }
+          { outcomeName }
           { pending &&
             <span className={Styles.Order__pending}>
               { pending === CLOSE_DIALOG_CLOSING &&
@@ -115,7 +115,7 @@ export default class Order extends Component {
               </div>
             </div> :
             <div className={Styles['Order__confirm-details']}>
-              <p>Cancel order for { getValue(order, 'unmatchedShares.formatted') } shares of &ldquo;{ name }&rdquo; at { getValue(order, 'avgPrice.formatted') } ETH?</p>
+              <p>Cancel order for { getValue(order, 'unmatchedShares.formatted') } shares of &ldquo;{ outcomeName }&rdquo; at { getValue(order, 'avgPrice.formatted') } ETH?</p>
               <div className={Styles['Order__confirm-options']}>
                 <button onClick={(e) => { order.cancelOrder(order.id, order.marketId, order.outcomeId, order.type); this.toggleConfirm() }}>Yes</button>
                 <button onClick={this.toggleConfirm}>No</button>
