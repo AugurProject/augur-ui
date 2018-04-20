@@ -54,7 +54,7 @@ function render(Root) {
   )
 }
 
-handleRender(App)
+handleRender()
 
 if (module.hot) {
   module.hot.accept(
