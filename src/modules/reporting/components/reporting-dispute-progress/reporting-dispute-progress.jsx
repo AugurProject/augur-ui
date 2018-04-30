@@ -36,7 +36,11 @@ const ReportingDisputeProgress = (p) => {
             </div>
           </div>
         </div>
-        <div className={Styles['ReportingDisputeProgress__dispute-label']}>{remainingRepFormatted} Remaining &#124; { bondSizeCurrentFromatted } REP</div>
+        <div className={Styles['ReportingDisputeProgress__dispute-label']}>
+          <span className={Styles['ReportingDisputeProgress__dispute-label-total-rep-text']}>{remainingRepFormatted}</span>
+          <span className={Styles['ReportingDisputeProgress__dispute-label-break']}> / </span>
+          <span className={Styles['ReportingDisputeProgress__dispute-label-goal-text']}>{ bondSizeCurrentFromatted } REP</span>
+        </div>
         { userStaked && totalPercentageComplete >= 100 &&
           <div className={Styles['ReportingDisputeProgress__dispute-tentative']}>New tentative outcome</div>
         }
