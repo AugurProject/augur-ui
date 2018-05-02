@@ -41,8 +41,8 @@ export default class CreateMarketOutcome extends Component {
       // marketType: false,
       outcomeFieldCount: CreateMarketOutcome.calculateOutcomeFieldCount(this.props),
       showAddOutcome: CreateMarketOutcome.calculateOutcomeFieldCount(this.props) < 8,
-      scalarMin: createBigNumber(speedomatic.constants.INT256_MIN_VALUE).decimalPlaces(18, BigNumber.ROUND_DOWN),
-      scalarMax: createBigNumber(speedomatic.constants.INT256_MAX_VALUE).decimalPlaces(18, BigNumber.ROUND_DOWN),
+      scalarMin: Number.MIN_SAFE_INTEGER,
+      scalarMax: Number.MAX_SAFE_INTEGER,
     }
 
     this.handleAddOutcomeClick = this.handleAddOutcomeClick.bind(this)
