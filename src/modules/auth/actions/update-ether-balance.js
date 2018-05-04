@@ -12,7 +12,7 @@ export const updateEtherBalance = (callback = logError) => (dispatch, getState) 
     if (!loginAccount.eth || loginAccount.eth !== etherBalance) {
       dispatch(updateLoginAccount({ eth: etherBalance }))
     }
-    console.log('Ether balance:', etherBalance)
+    // console.log('Ether balance:', etherBalance)
     callback(null, etherBalance)
   })
 }
