@@ -44,7 +44,6 @@ export default class ModalClaimReportingFees extends Component {
         })
       },
       onSuccess: (result) => {
-        // Default to 0 for now if we recieve an error.
         const claimReportingFeesGasEstimate = result.gasEstimates.totals.all.toString()
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({

@@ -1,3 +1,7 @@
+/**
+ * TODO: Add forkedMarket/nonforkedMarkets data to unit tests.
+ */
+
 import React from 'react'
 
 import { describe, it } from 'mocha'
@@ -23,7 +27,7 @@ describe('modal-claim-reporting-fees', () => {
           unclaimedEth={formatEther('0', { decimals: 4, zeroStyled: true })}
           unclaimedRep={formatAttoRep('0', { decimals: 4, zeroStyled: true })}
           feeWindows={['0x161c723cac007e4283cee4ba11b15277e46eec53']}
-          forkedMarket={{}}
+          forkedMarket={null}
           nonforkedMarkets={[]}
         />)
       })
@@ -58,7 +62,7 @@ describe('modal-claim-reporting-fees', () => {
         it('should receive first argument that matches expected value', () => {
           const expected = {
             feeWindows: ['0x161c723cac007e4283cee4ba11b15277e46eec53'],
-            forkedMarket: {},
+            forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
             onSent: claimReportingFees.args[0][0].onSent,
@@ -94,7 +98,7 @@ describe('modal-claim-reporting-fees', () => {
           unclaimedEth={formatEther('0.123', { decimals: 4, zeroStyled: true })}
           unclaimedRep={formatAttoRep('0', { decimals: 4, zeroStyled: true })}
           feeWindows={['0x161c723cac007e4283cee4ba11b15277e46eec53']}
-          forkedMarket={{}}
+          forkedMarket={null}
           nonforkedMarkets={[]}
         />)
       })
@@ -129,7 +133,7 @@ describe('modal-claim-reporting-fees', () => {
         it('should receive first argument that matches expected value', () => {
           const expected = {
             feeWindows: ['0x161c723cac007e4283cee4ba11b15277e46eec53'],
-            forkedMarket: {},
+            forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
             onSent: claimReportingFees.args[0][0].onSent,
@@ -165,7 +169,7 @@ describe('modal-claim-reporting-fees', () => {
           unclaimedEth={formatEther('0', { decimals: 4, zeroStyled: true })}
           unclaimedRep={formatAttoRep('2000000000000000000', { decimals: 4, zeroStyled: true })}
           feeWindows={['0x161c723cac007e4283cee4ba11b15277e46eec53']}
-          forkedMarket={{}}
+          forkedMarket={null}
           nonforkedMarkets={[]}
         />)
       })
@@ -200,7 +204,7 @@ describe('modal-claim-reporting-fees', () => {
         it('should receive first argument that matches expected value', () => {
           const expected = {
             feeWindows: ['0x161c723cac007e4283cee4ba11b15277e46eec53'],
-            forkedMarket: {},
+            forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
             onSent: claimReportingFees.args[0][0].onSent,
@@ -236,7 +240,7 @@ describe('modal-claim-reporting-fees', () => {
           unclaimedEth={formatEther('0.123', { decimals: 4, zeroStyled: true })}
           unclaimedRep={formatAttoRep('2000000000000000000', { decimals: 4, zeroStyled: true })}
           feeWindows={['0x161c723cac007e4283cee4ba11b15277e46eec53']}
-          forkedMarket={{}}
+          forkedMarket={null}
           nonforkedMarkets={[]}
         />)
       })
@@ -271,7 +275,7 @@ describe('modal-claim-reporting-fees', () => {
         it('should receive first argument that matches expected value', () => {
           const expected = {
             feeWindows: ['0x161c723cac007e4283cee4ba11b15277e46eec53'],
-            forkedMarket: {},
+            forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
             onSent: claimReportingFees.args[0][0].onSent,
