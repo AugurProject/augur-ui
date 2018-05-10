@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 
 import { createBigNumber } from 'utils/create-big-number'
-import { selectCurrentTimestamp } from 'src/select-state'
+import { selectCurrentTimestamp, selectCurrentTimestampInSeconds } from 'src/select-state'
 import MarketOutcomeCharts from 'modules/market/components/market-outcome-charts/market-outcome-charts'
 import orderAndAssignCumulativeShares from 'modules/market/helpers/order-and-assign-cumulative-shares'
 import orderForMarketDepth from 'modules/market/helpers/order-for-market-depth'
@@ -31,13 +31,17 @@ const mapStateToProps = (state, ownProps) => {
     isMobile: state.isMobile,
     currentBlock: state.blockchain.currentBlockNumber || 0,
     currentTimestamp: selectCurrentTimestamp(state),
+    currentTimeInSeconds: selectCurrentTimestampInSeconds(state),
+    fixedPrecision: 4,
     minPrice: newMarket.type === SCALAR ? createBigNumber(newMarket.scalarSmallNum) : createBigNumber(0),
     maxPrice: newMarket.type === SCALAR ? createBigNumber(newMarket.scalarBigNum) : createBigNumber(1),
     orderBook: cumulativeOrderBook,
     priceTimeSeries: [],
     orderBookKeys,
     marketDepth,
-    selectedOutcome,
+    selectedOutcome: {
+      id: selectedOutcome,
+    },
     hasOrders,
   }
 }

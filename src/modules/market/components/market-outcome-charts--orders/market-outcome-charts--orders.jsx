@@ -7,22 +7,9 @@ import MarketOutcomeChartHeaderOrders from 'modules/market/components/market-out
 import { ASKS, BIDS } from 'modules/order-book/constants/order-book-order-types'
 import { BUY, SELL } from 'modules/transactions/constants/types'
 
-import { compose, reverse, sortBy, take } from 'lodash/fp'
-
 import Styles from 'modules/market/components/market-outcome-charts--orders/market-outcome-charts--orders.styles'
 import StylesHeader from 'modules/market/components/market-outcome-charts--header/market-outcome-charts--header.styles'
-
-const askLimit = compose(
-  take(5),
-  sortBy('price.value'),
-)
-
-const bidLimit = compose(
-  take(5),
-  reverse,
-  sortBy('price.value'),
-)
-
+import { isEmpty, isEqual, times } from 'lodash'
 
 export default class MarketOutcomeOrderbook extends Component {
   static propTypes = {
@@ -31,7 +18,7 @@ export default class MarketOutcomeOrderbook extends Component {
     fixedPrecision: PropTypes.number.isRequired,
     updateHoveredPrice: PropTypes.func.isRequired,
     updateSeletedOrderProperties: PropTypes.func.isRequired,
-    updatePrecision: PropTypes.func.isRequired,
+    updatePrecision: PropTypes.func,
     isMobile: PropTypes.bool.isRequired,
     headerHeight: PropTypes.number.isRequired,
     selectedOutcome: PropTypes.any,
@@ -48,6 +35,21 @@ export default class MarketOutcomeOrderbook extends Component {
     }
   }
 
+  componentDidMount() {
+    this.asks.scrollTop = this.asks.scrollHeight
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      orderBook } = this.props
+    if (
+      isEmpty(prevProps.orderBook.asks) &&
+      !isEqual(prevProps.orderBook.asks, orderBook.asks)
+    ) {
+      this.asks.scrollTop = this.asks.scrollHeight
+    }
+  }
+
   render() {
     const {
       fixedPrecision,
@@ -61,8 +63,7 @@ export default class MarketOutcomeOrderbook extends Component {
     } = this.props
     const s = this.state
 
-    const asks = askLimit((orderBook.asks || []), 5)
-    const bids = bidLimit((orderBook.bids || []), 5)
+    const orderBookAsks = orderBook.asks || []
 
     return (
       <section
@@ -79,7 +80,14 @@ export default class MarketOutcomeOrderbook extends Component {
           ref={(asks) => { this.asks = asks }}
           className={classNames(Styles.MarketOutcomeOrderBook__Side, Styles['MarketOutcomeOrderBook__side--asks'])}
         >
-          {asks.map((order, i) => (
+          {times(9 - orderBookAsks.length, i => (
+            <div
+              key={i}
+              className={Styles.MarketOutcomeOrderBook__row}
+            />
+          ))}
+
+          {orderBookAsks.map((order, i) => (
             <div
               key={order.cumulativeShares}
               className={
@@ -141,7 +149,7 @@ export default class MarketOutcomeOrderbook extends Component {
         </div>
         <div className={Styles.MarketOutcomeOrderBook__Midmarket} />
         <div className={classNames(Styles.MarketOutcomeOrderBook__Side, Styles['MarketOutcomeOrderBook__side--bids'])} >
-          {(bids).map((order, i) => (
+          {(orderBook.bids || []).map((order, i) => (
             <div
               key={order.cumulativeShares}
               className={
