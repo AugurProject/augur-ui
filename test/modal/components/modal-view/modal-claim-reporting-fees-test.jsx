@@ -9,19 +9,19 @@ import sinon from 'sinon'
 
 import { shallow } from 'enzyme'
 
-import ModalClaimReportingFees from 'src/modules/modal/components/modal-claim-reporting-fees/modal-claim-reporting-fees'
+import ModalClaimReportingFeesNonforkedMarkets from 'src/modules/modal/components/modal-claim-reporting-fees-nonforked-markets/modal-claim-reporting-fees-nonforked-markets'
 import { formatAttoRep, formatEther } from 'utils/format-number'
 
-describe('modal-claim-reporting-fees', () => {
+describe('modal-claim-reporting-fees-nonforked-markets', () => {
   let Cmp
 
   describe('When displaying modal for claimable reporting fees', () => {
     describe('When there are no claimable ETH or REP fees', () => {
-      let claimReportingFees
+      let claimReportingFeesNonforkedMarkets
       beforeEach(() => {
-        claimReportingFees = sinon.spy()
-        Cmp = shallow(<ModalClaimReportingFees
-          claimReportingFees={claimReportingFees}
+        claimReportingFeesNonforkedMarkets = sinon.spy()
+        Cmp = shallow(<ModalClaimReportingFeesNonforkedMarkets
+          claimReportingFeesNonforkedMarkets={claimReportingFeesNonforkedMarkets}
           closeModal={sinon.spy()}
           recipient="0X913DA4198E6BE1D5F5E4A40D0667F70C0B5430EB"
           unclaimedEth={formatEther('0', { decimals: 4, zeroStyled: true })}
@@ -50,13 +50,13 @@ describe('modal-claim-reporting-fees', () => {
         })
       })
 
-      describe('claimReportingFees function', () => {
+      describe('claimReportingFeesNonforkedMarkets function', () => {
         it('should get called once with args ', () => {
-          assert.isOk(claimReportingFees)
+          assert.isOk(claimReportingFeesNonforkedMarkets)
         })
 
         it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFees.args[0].length, 1)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0].length, 1)
         })
 
         it('should receive first argument that matches expected value', () => {
@@ -65,11 +65,11 @@ describe('modal-claim-reporting-fees', () => {
             forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
-            onSent: claimReportingFees.args[0][0].onSent,
-            onFailed: claimReportingFees.args[0][0].onFailed,
-            onSuccess: claimReportingFees.args[0][0].onSuccess,
+            onSent: claimReportingFeesNonforkedMarkets.args[0][0].onSent,
+            onFailed: claimReportingFeesNonforkedMarkets.args[0][0].onFailed,
+            onSuccess: claimReportingFeesNonforkedMarkets.args[0][0].onSuccess,
           }
-          assert.deepEqual(claimReportingFees.args[0][0], expected)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0][0], expected)
         })
       })
 
@@ -88,11 +88,11 @@ describe('modal-claim-reporting-fees', () => {
     })
 
     describe('When there are claimable ETH fees, but no claimable REP fees', () => {
-      let claimReportingFees
+      let claimReportingFeesNonforkedMarkets
       beforeEach(() => {
-        claimReportingFees = sinon.spy()
-        Cmp = shallow(<ModalClaimReportingFees
-          claimReportingFees={claimReportingFees}
+        claimReportingFeesNonforkedMarkets = sinon.spy()
+        Cmp = shallow(<ModalClaimReportingFeesNonforkedMarkets
+          claimReportingFeesNonforkedMarkets={claimReportingFeesNonforkedMarkets}
           closeModal={sinon.spy()}
           recipient="0X913DA4198E6BE1D5F5E4A40D0667F70C0B5430EB"
           unclaimedEth={formatEther('0.123', { decimals: 4, zeroStyled: true })}
@@ -121,13 +121,13 @@ describe('modal-claim-reporting-fees', () => {
         })
       })
 
-      describe('claimReportingFees function', () => {
+      describe('claimReportingFeesNonforkedMarkets function', () => {
         it('should get called once with args ', () => {
-          assert.isOk(claimReportingFees)
+          assert.isOk(claimReportingFeesNonforkedMarkets)
         })
 
         it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFees.args[0].length, 1)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0].length, 1)
         })
 
         it('should receive first argument that matches expected value', () => {
@@ -136,11 +136,11 @@ describe('modal-claim-reporting-fees', () => {
             forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
-            onSent: claimReportingFees.args[0][0].onSent,
-            onFailed: claimReportingFees.args[0][0].onFailed,
-            onSuccess: claimReportingFees.args[0][0].onSuccess,
+            onSent: claimReportingFeesNonforkedMarkets.args[0][0].onSent,
+            onFailed: claimReportingFeesNonforkedMarkets.args[0][0].onFailed,
+            onSuccess: claimReportingFeesNonforkedMarkets.args[0][0].onSuccess,
           }
-          assert.deepEqual(claimReportingFees.args[0][0], expected)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0][0], expected)
         })
       })
 
@@ -159,11 +159,11 @@ describe('modal-claim-reporting-fees', () => {
     })
 
     describe('When there are claimable REP fees, but no claimable ETH fees', () => {
-      let claimReportingFees
+      let claimReportingFeesNonforkedMarkets
       beforeEach(() => {
-        claimReportingFees = sinon.spy()
-        Cmp = shallow(<ModalClaimReportingFees
-          claimReportingFees={claimReportingFees}
+        claimReportingFeesNonforkedMarkets = sinon.spy()
+        Cmp = shallow(<ModalClaimReportingFeesNonforkedMarkets
+          claimReportingFeesNonforkedMarkets={claimReportingFeesNonforkedMarkets}
           closeModal={sinon.spy()}
           recipient="0X913DA4198E6BE1D5F5E4A40D0667F70C0B5430EB"
           unclaimedEth={formatEther('0', { decimals: 4, zeroStyled: true })}
@@ -192,13 +192,13 @@ describe('modal-claim-reporting-fees', () => {
         })
       })
 
-      describe('claimReportingFees function', () => {
+      describe('claimReportingFeesNonforkedMarkets function', () => {
         it('should get called once with args ', () => {
-          assert.isOk(claimReportingFees)
+          assert.isOk(claimReportingFeesNonforkedMarkets)
         })
 
         it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFees.args[0].length, 1)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0].length, 1)
         })
 
         it('should receive first argument that matches expected value', () => {
@@ -207,11 +207,11 @@ describe('modal-claim-reporting-fees', () => {
             forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
-            onSent: claimReportingFees.args[0][0].onSent,
-            onFailed: claimReportingFees.args[0][0].onFailed,
-            onSuccess: claimReportingFees.args[0][0].onSuccess,
+            onSent: claimReportingFeesNonforkedMarkets.args[0][0].onSent,
+            onFailed: claimReportingFeesNonforkedMarkets.args[0][0].onFailed,
+            onSuccess: claimReportingFeesNonforkedMarkets.args[0][0].onSuccess,
           }
-          assert.deepEqual(claimReportingFees.args[0][0], expected)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0][0], expected)
         })
       })
 
@@ -230,11 +230,11 @@ describe('modal-claim-reporting-fees', () => {
     })
 
     describe('When there are claimable ETH fees and REP fees', () => {
-      let claimReportingFees
+      let claimReportingFeesNonforkedMarkets
       beforeEach(() => {
-        claimReportingFees = sinon.spy()
-        Cmp = shallow(<ModalClaimReportingFees
-          claimReportingFees={claimReportingFees}
+        claimReportingFeesNonforkedMarkets = sinon.spy()
+        Cmp = shallow(<ModalClaimReportingFeesNonforkedMarkets
+          claimReportingFeesNonforkedMarkets={claimReportingFeesNonforkedMarkets}
           closeModal={sinon.spy()}
           recipient="0X913DA4198E6BE1D5F5E4A40D0667F70C0B5430EB"
           unclaimedEth={formatEther('0.123', { decimals: 4, zeroStyled: true })}
@@ -263,13 +263,13 @@ describe('modal-claim-reporting-fees', () => {
         })
       })
 
-      describe('claimReportingFees function', () => {
+      describe('claimReportingFeesNonforkedMarkets function', () => {
         it('should get called once with args ', () => {
-          assert.isOk(claimReportingFees)
+          assert.isOk(claimReportingFeesNonforkedMarkets)
         })
 
         it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFees.args[0].length, 1)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0].length, 1)
         })
 
         it('should receive first argument that matches expected value', () => {
@@ -278,11 +278,11 @@ describe('modal-claim-reporting-fees', () => {
             forkedMarket: null,
             nonforkedMarkets: [],
             estimateGas: true,
-            onSent: claimReportingFees.args[0][0].onSent,
-            onFailed: claimReportingFees.args[0][0].onFailed,
-            onSuccess: claimReportingFees.args[0][0].onSuccess,
+            onSent: claimReportingFeesNonforkedMarkets.args[0][0].onSent,
+            onFailed: claimReportingFeesNonforkedMarkets.args[0][0].onFailed,
+            onSuccess: claimReportingFeesNonforkedMarkets.args[0][0].onSuccess,
           }
-          assert.deepEqual(claimReportingFees.args[0][0], expected)
+          assert.deepEqual(claimReportingFeesNonforkedMarkets.args[0][0], expected)
         })
       })
 

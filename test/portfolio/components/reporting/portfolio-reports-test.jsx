@@ -31,7 +31,7 @@ describe('portfolio-reports', () => {
   })
 
   describe('When loaded', () => {
-    describe('claimReportingFees function', () => {
+    describe('claimReportingFeesNonforkedMarkets function', () => {
       it('should get called once with args ', () => {
         assert.isOk(getReportingFees)
       })
@@ -63,7 +63,7 @@ describe('portfolio-reports', () => {
       })
     })
 
-    describe('claim-reporting-fees-button', () => {
+    describe('claim-reporting-fees-nonforked-markets-button', () => {
       it('should be disabled', () => {
         const button = Cmp.find('button')
         assert.isOk(button.html().includes('disabled'))
