@@ -8,7 +8,7 @@ import Styles from 'modules/modal/components/modal-claim-reporting-fees-nonforke
 
 export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
   static propTypes = {
-    ClaimReportingFeesNonforkedMarkets: PropTypes.func.isRequired,
+    claimReportingFeesNonforkedMarkets: PropTypes.func.isRequired,
     closeModal: PropTypes.func.isRequired,
     recipient: PropTypes.string.isRequired,
     feeWindows: PropTypes.array.isRequired,
@@ -51,7 +51,7 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
         })
       },
     }
-    this.props.ClaimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+    this.props.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
   }
 
   handleClaimReportingFeesNonforkedMarkets(e) {
@@ -69,7 +69,7 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
         this.props.closeModal()
       },
     }
-    this.props.ClaimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+    this.props.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
   }
 
   render() {
