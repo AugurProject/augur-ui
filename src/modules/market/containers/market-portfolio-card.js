@@ -7,10 +7,7 @@ import MarketPortfolioCard from 'modules/market/components/market-portfolio-card
 import { selectMarket } from 'modules/market/selectors/market'
 import { sendFinalizeMarket } from 'modules/market/actions/finalize-market'
 import { getWinningBalance } from 'modules/portfolio/actions/get-winning-balance'
-<<<<<<< HEAD
 import getClosePositionStatus from 'modules/my-positions/selectors/close-position-status'
-=======
->>>>>>> remove outstandingReturns stuff that got merged back in
 
 const mapStateToProps = (state, ownProps) => ({
   currentTimestamp: selectCurrentTimestampInSeconds(state),
