@@ -7,10 +7,12 @@ import MarketPortfolioCard from 'modules/market/components/market-portfolio-card
 import { selectMarket } from 'modules/market/selectors/market'
 import { sendFinalizeMarket } from 'modules/market/actions/finalize-market'
 import { getWinningBalance } from 'modules/portfolio/actions/get-winning-balance'
+import getClosePositionStatus from 'modules/my-positions/selectors/close-position-status'
 
 const mapStateToProps = (state, ownProps) => ({
   currentTimestamp: selectCurrentTimestampInSeconds(state),
   linkType: ownProps.linkType || determineMarketLinkType(selectMarket(ownProps.market.id), state.loginAccount),
+  closePositionStatus: getClosePositionStatus(),
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
