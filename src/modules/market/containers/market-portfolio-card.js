@@ -8,6 +8,7 @@ import { selectMarket } from 'modules/market/selectors/market'
 import { sendFinalizeMarket } from 'modules/market/actions/finalize-market'
 import getClosePositionStatus from 'modules/my-positions/selectors/close-position-status'
 import { getWinningBalance } from 'modules/portfolio/actions/get-winning-balance'
+import getClosePositionStatus from 'modules/my-positions/selectors/close-position-status'
 
 const mapStateToProps = (state, ownProps) => ({
   currentTimestamp: selectCurrentTimestampInSeconds(state),
