@@ -41,7 +41,7 @@ export default class PortfolioReports extends Component {
       },
     }
 
-    this.handleClaimReportingFees = this.handleClaimReportingFees.bind(this)
+    this.handleClaimReportingFeesNonforkedMarkets = this.handleClaimReportingFeesNonforkedMarkets.bind(this)
   }
 
   componentWillMount() {
@@ -55,8 +55,8 @@ export default class PortfolioReports extends Component {
           unclaimedEth: formatEther(0, { decimals: 4, zeroStyled: true }),
           unclaimedRep: formatAttoRep(0, { decimals: 4, zeroStyled: true }),
           feeWindows: [],
-          forkedMarket: {},
-          nonforkedMarkets: {},
+          forkedMarket: null,
+          nonforkedMarkets: [],
         })
         return
       }
@@ -65,15 +65,13 @@ export default class PortfolioReports extends Component {
         unclaimedEth: formatEther(result.total.unclaimedEth, { decimals: 4, zeroStyled: true }),
         unclaimedRep: formatAttoRep(result.total.unclaimedRepStaked, { decimals: 4, zeroStyled: true }),
         feeWindows: result.feeWindows,
-        // TODO: Replace the hard-coded values below with result.forkedMarket and
-        // result.nonforkedMarkets once augur-node is returning these.
-        forkedMarket: {},
-        nonforkedMarkets: [],
+        forkedMarket: result.forkedMarket,
+        nonforkedMarkets: result.nonforkedMarkets,
       })
     })
   }
 
-  handleClaimReportingFees() {
+  handleClaimReportingFeesNonforkedMarkets() {
     const {
       unclaimedEth,
       unclaimedRep,
@@ -95,9 +93,9 @@ export default class PortfolioReports extends Component {
   render() {
     const s = this.state
 
-    let disableClaimReportingFeesButton = ''
+    let disableClaimReportingFeesNonforkedMarketsButton = ''
     if (s.unclaimedEth.formatted === '-' && s.unclaimedRep.formatted === '-') {
-      disableClaimReportingFeesButton = 'disabled'
+      disableClaimReportingFeesNonforkedMarketsButton = 'disabled'
     }
 
     return (
@@ -115,8 +113,8 @@ export default class PortfolioReports extends Component {
           </ul>
           <button
             className={Styles.PortfolioReports__claim}
-            disabled={disableClaimReportingFeesButton}
-            onClick={this.handleClaimReportingFees}
+            disabled={disableClaimReportingFeesNonforkedMarketsButton}
+            onClick={this.handleClaimReportingFeesNonforkedMarkets}
           >
             Claim
           </button>

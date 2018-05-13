@@ -10,7 +10,7 @@ import ModalNetworkDisabled from 'modules/modal/components/modal-network-disable
 import ModalNetworkDisconnected from 'modules/modal/containers/modal-network-disconnected'
 import ModalApproval from 'modules/modal/containers/modal-approval'
 import ModalEscapeHatch from 'modules/modal/components/modal-escape-hatch/modal-escape-hatch'
-import ModalClaimReportingFees from 'modules/modal/containers/modal-claim-reporting-fees'
+import ModalClaimReportingFeesNonforkedMarkets from 'modules/modal/containers/modal-claim-reporting-fees-nonforked-markets'
 import ModalParticipate from 'modules/modal/containers/modal-participate'
 import ModalMigrateMarket from 'modules/modal/containers/modal-migrate-market'
 import ModalNetworkConnect from 'modules/modal/containers/modal-network-connect'
@@ -113,7 +113,7 @@ export default class ModalView extends Component {
             <ModalEscapeHatch {...this.props} />
           }
           {modal.type === TYPES.MODAL_CLAIM_REPORTING_FEES &&
-            <ModalClaimReportingFees {...modal} />
+            <ModalClaimReportingFeesNonforkedMarkets {...modal} />
           }
           {modal.type === TYPES.MODAL_MIGRATE_MARKET &&
             <ModalMigrateMarket
