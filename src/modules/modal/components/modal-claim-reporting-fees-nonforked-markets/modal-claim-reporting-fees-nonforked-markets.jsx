@@ -12,10 +12,10 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
     closeModal: PropTypes.func.isRequired,
     recipient: PropTypes.string.isRequired,
     feeWindows: PropTypes.array.isRequired,
-    forkedMarket: PropTypes.object.isRequired,
     nonforkedMarkets: PropTypes.array.isRequired,
     unclaimedEth: PropTypes.object.isRequired,
     unclaimedRep: PropTypes.object.isRequired,
+    forkedMarket: PropTypes.object,
   }
 
   constructor(props) {
@@ -56,20 +56,14 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
 
   handleClaimReportingFeesNonforkedMarkets(e) {
     e.preventDefault()
-    const ClaimReportingFeesNonforkedMarketsOptions = {
+    const options = {
       feeWindows: this.props.feeWindows,
       forkedMarket: this.props.forkedMarket,
       nonforkedMarkets: this.props.nonforkedMarkets,
-      estimateGas: false,
-      onSent: () => {},
-      onFailed: (err) => {
-        this.props.closeModal()
-      },
-      onSuccess: (result) => {
-        this.props.closeModal()
-      },
     }
-    this.props.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+    this.props.claimReportingFeesNonforkedMarkets(options, (err, result) => {
+      this.props.closeModal()
+    })
   }
 
   render() {
