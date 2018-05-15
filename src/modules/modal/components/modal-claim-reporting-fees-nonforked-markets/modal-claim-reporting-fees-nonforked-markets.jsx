@@ -12,10 +12,10 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
     closeModal: PropTypes.func.isRequired,
     recipient: PropTypes.string.isRequired,
     feeWindows: PropTypes.array.isRequired,
-    forkedMarket: PropTypes.object.isRequired,
     nonforkedMarkets: PropTypes.array.isRequired,
     unclaimedEth: PropTypes.object.isRequired,
     unclaimedRep: PropTypes.object.isRequired,
+    forkedMarket: PropTypes.object,
   }
 
   constructor(props) {
