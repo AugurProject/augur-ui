@@ -29,29 +29,29 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
   }
 
   componentWillMount() {
-    const ClaimReportingFeesNonforkedMarketsOptions = {
+    const options = {
       feeWindows: this.props.feeWindows,
       forkedMarket: this.props.forkedMarket,
       nonforkedMarkets: this.props.nonforkedMarkets,
       estimateGas: true,
-      onSent: () => {},
-      onFailed: (err) => {
+    }
+    this.props.claimReportingFeesNonforkedMarkets(options, (err, result) => {
+      if (err) {
         // Default to 0 for now if we recieve an error.
         const ClaimReportingFeesNonforkedMarketsGasEstimate = '0'
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
           ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(ClaimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
-      },
-      onSuccess: (result) => {
+      } else {
         const ClaimReportingFeesNonforkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
           ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(ClaimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
-      },
-    }
-    this.props.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+      }
+      this.props.closeModal()
+    })
   }
 
   handleClaimReportingFeesNonforkedMarkets(e) {
@@ -60,6 +60,7 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
       feeWindows: this.props.feeWindows,
       forkedMarket: this.props.forkedMarket,
       nonforkedMarkets: this.props.nonforkedMarkets,
+      estimateGas: false,
     }
     this.props.claimReportingFeesNonforkedMarkets(options, (err, result) => {
       this.props.closeModal()

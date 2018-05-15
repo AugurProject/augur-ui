@@ -8,6 +8,7 @@ export default function claimReportingFeesNonforkedMarkets(options, callback = l
       feeWindows: options.feeWindows,
       forkedMarket: options.forkedMarket,
       nonforkedMarkets: options.nonforkedMarkets,
+      estimateGas: options.estimateGas,
       onSent: () => {},
       onSuccess: (result) => {
         dispatch(updateAssets())
