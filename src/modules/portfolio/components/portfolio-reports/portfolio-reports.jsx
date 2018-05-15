@@ -93,15 +93,15 @@ export default class PortfolioReports extends Component {
         return
       }
 
-      let unclaimedEth = new BigNumber(result.total.unclaimedEth).minus(new BigNumber(result.total.unclaimedForkEth)).toString()
-      let unclaimedRepStaked = new BigNumber(result.total.unclaimedRepStaked).minus(new BigNumber(result.total.unclaimedForkRepStaked)).toString()
-      // In theory, unclaimedEth/unclaimedRep should never be negative, but add this check just in case
-      if (unclaimedEth.isNegative) unclaimedEth = '0'
-      if (unclaimedRepStaked.isNegative) unclaimedRepStaked = '0'
+      let unclaimedEth = new BigNumber(result.total.unclaimedEth).minus(new BigNumber(result.total.unclaimedForkEth))
+      let unclaimedRepStaked = new BigNumber(result.total.unclaimedRepStaked).minus(new BigNumber(result.total.unclaimedForkRepStaked))
+      // In theory, unclaimedEth/unclaimedRep should never be negative, but perform this check just in case
+      unclaimedEth = unclaimedEth.isNegative() ? 0 : unclaimedEth
+      unclaimedRepStaked = unclaimedRepStaked.isNegative() ? 0 : unclaimedRepStaked
 
       this.setState({
-        unclaimedEth: formatEther(unclaimedEth, { decimals: 4, zeroStyled: true }),
-        unclaimedRep: formatAttoRep(unclaimedRepStaked, { decimals: 4, zeroStyled: true }),
+        unclaimedEth: formatEther(unclaimedEth.toString(), { decimals: 4, zeroStyled: true }),
+        unclaimedRep: formatAttoRep(unclaimedRepStaked.toString(), { decimals: 4, zeroStyled: true }),
         unclaimedForkEth: formatEther(result.total.unclaimedForkEth, { decimals: 4, zeroStyled: true }),
         unclaimedForkRepStaked: formatAttoRep(result.total.unclaimedForkRepStaked, { decimals: 4, zeroStyled: true }),
         feeWindows: result.feeWindows,
