@@ -83,17 +83,14 @@ describe('modal-claim-reporting-fees-forked-market', () => {
           assert.isOk(claimReportingFeesForkedMarket)
         })
 
-        it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 1)
+        it('should receive 2 arguments', () => {
+          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 2)
         })
 
         it('should receive first argument that matches expected value', () => {
           const expected = {
             forkedMarket,
             estimateGas: true,
-            onSent: claimReportingFeesForkedMarket.args[0][0].onSent,
-            onFailed: claimReportingFeesForkedMarket.args[0][0].onFailed,
-            onSuccess: claimReportingFeesForkedMarket.args[0][0].onSuccess,
           }
           assert.deepEqual(claimReportingFeesForkedMarket.args[0][0], expected)
         })
@@ -150,17 +147,14 @@ describe('modal-claim-reporting-fees-forked-market', () => {
           assert.isOk(claimReportingFeesForkedMarket)
         })
 
-        it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 1)
+        it('should receive 2 arguments', () => {
+          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 2)
         })
 
         it('should receive first argument that matches expected value', () => {
           const expected = {
             forkedMarket,
             estimateGas: true,
-            onSent: claimReportingFeesForkedMarket.args[0][0].onSent,
-            onFailed: claimReportingFeesForkedMarket.args[0][0].onFailed,
-            onSuccess: claimReportingFeesForkedMarket.args[0][0].onSuccess,
           }
           assert.deepEqual(claimReportingFeesForkedMarket.args[0][0], expected)
         })
@@ -217,17 +211,14 @@ describe('modal-claim-reporting-fees-forked-market', () => {
           assert.isOk(claimReportingFeesForkedMarket)
         })
 
-        it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 1)
+        it('should receive 2 arguments', () => {
+          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 2)
         })
 
         it('should receive first argument that matches expected value', () => {
           const expected = {
             forkedMarket,
             estimateGas: true,
-            onSent: claimReportingFeesForkedMarket.args[0][0].onSent,
-            onFailed: claimReportingFeesForkedMarket.args[0][0].onFailed,
-            onSuccess: claimReportingFeesForkedMarket.args[0][0].onSuccess,
           }
           assert.deepEqual(claimReportingFeesForkedMarket.args[0][0], expected)
         })
@@ -284,17 +275,14 @@ describe('modal-claim-reporting-fees-forked-market', () => {
           assert.isOk(claimReportingFeesForkedMarket)
         })
 
-        it('should receive one argument', () => {
-          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 1)
+        it('should receive 2 arguments', () => {
+          assert.deepEqual(claimReportingFeesForkedMarket.args[0].length, 2)
         })
 
         it('should receive first argument that matches expected value', () => {
           const expected = {
             forkedMarket,
             estimateGas: true,
-            onSent: claimReportingFeesForkedMarket.args[0][0].onSent,
-            onFailed: claimReportingFeesForkedMarket.args[0][0].onFailed,
-            onSuccess: claimReportingFeesForkedMarket.args[0][0].onSuccess,
           }
           assert.deepEqual(claimReportingFeesForkedMarket.args[0][0], expected)
         })

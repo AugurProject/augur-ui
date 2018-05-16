@@ -27,43 +27,37 @@ export default class ModalClaimReportingFeesForkedMarket extends Component {
   }
 
   componentWillMount() {
-    const ClaimReportingFeesForkedMarketOptions = {
+    const options = {
       forkedMarket: this.props.forkedMarket,
       estimateGas: true,
-      onSent: () => {},
-      onFailed: (err) => {
-        // Default to 0 for now if we recieve an error.
-        const ClaimReportingFeesForkedMarketGasEstimate = '0'
-        const gasPrice = augur.rpc.getGasPrice()
-        this.setState({
-          ClaimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(ClaimReportingFeesForkedMarketGasEstimate, { decimalsRounded: 4 }, gasPrice),
-        })
-      },
-      onSuccess: (result) => {
-        const ClaimReportingFeesForkedMarketGasEstimate = result.gasEstimates.totals.all.toString()
-        const gasPrice = augur.rpc.getGasPrice()
-        this.setState({
-          ClaimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(ClaimReportingFeesForkedMarketGasEstimate, { decimalsRounded: 4 }, gasPrice),
-        })
-      },
     }
-    this.props.claimReportingFeesForkedMarket(ClaimReportingFeesForkedMarketOptions)
+    this.props.claimReportingFeesForkedMarket(options, (err, result) => {
+      if (err) {
+        // Default to 0 for now if we recieve an error.
+        const claimReportingFeesForkedMarketsGasEstimate = '0'
+        const gasPrice = augur.rpc.getGasPrice()
+        this.setState({
+          ClaimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(claimReportingFeesForkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+        })
+      } else {
+        const claimReportingFeesForkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
+        const gasPrice = augur.rpc.getGasPrice()
+        this.setState({
+          ClaimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(claimReportingFeesForkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+        })
+      }
+    })
   }
 
   handleClaimReportingFeesForkedMarket(e) {
     e.preventDefault()
-    const ClaimReportingFeesForkedMarketOptions = {
+    const options = {
       forkedMarket: this.props.forkedMarket,
       estimateGas: false,
-      onSent: () => {},
-      onFailed: (err) => {
-        this.props.closeModal()
-      },
-      onSuccess: (result) => {
-        this.props.closeModal()
-      },
     }
-    this.props.claimReportingFeesForkedMarket(ClaimReportingFeesForkedMarketOptions)
+    this.props.claimReportingFeesForkedMarket(options, (err, result) => {
+      this.props.closeModal()
+    })
   }
 
   render() {

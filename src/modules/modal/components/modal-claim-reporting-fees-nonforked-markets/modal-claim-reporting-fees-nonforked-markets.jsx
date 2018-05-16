@@ -38,19 +38,18 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
     this.props.claimReportingFeesNonforkedMarkets(options, (err, result) => {
       if (err) {
         // Default to 0 for now if we recieve an error.
-        const ClaimReportingFeesNonforkedMarketsGasEstimate = '0'
+        const claimReportingFeesNonforkedMarketsGasEstimate = '0'
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
-          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(ClaimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
       } else {
-        const ClaimReportingFeesNonforkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
+        const claimReportingFeesNonforkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
-          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(ClaimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
       }
-      this.props.closeModal()
     })
   }
 
