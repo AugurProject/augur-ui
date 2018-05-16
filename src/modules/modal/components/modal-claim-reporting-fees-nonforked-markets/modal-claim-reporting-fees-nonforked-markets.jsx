@@ -12,64 +12,58 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
     closeModal: PropTypes.func.isRequired,
     recipient: PropTypes.string.isRequired,
     feeWindows: PropTypes.array.isRequired,
-    forkedMarket: PropTypes.object.isRequired,
     nonforkedMarkets: PropTypes.array.isRequired,
     unclaimedEth: PropTypes.object.isRequired,
     unclaimedRep: PropTypes.object.isRequired,
+    forkedMarket: PropTypes.object,
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      ClaimReportingFeesNonforkedMarketsGasEstimate: '0',
+      claimReportingFeesNonforkedMarketsGasEstimate: '0',
     }
 
     this.handleClaimReportingFeesNonforkedMarkets = this.handleClaimReportingFeesNonforkedMarkets.bind(this)
   }
 
   componentWillMount() {
-    const ClaimReportingFeesNonforkedMarketsOptions = {
+    const options = {
       feeWindows: this.props.feeWindows,
       forkedMarket: this.props.forkedMarket,
       nonforkedMarkets: this.props.nonforkedMarkets,
       estimateGas: true,
-      onSent: () => {},
-      onFailed: (err) => {
-        // Default to 0 for now if we recieve an error.
-        const ClaimReportingFeesNonforkedMarketsGasEstimate = '0'
-        const gasPrice = augur.rpc.getGasPrice()
-        this.setState({
-          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(ClaimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
-        })
-      },
-      onSuccess: (result) => {
-        const ClaimReportingFeesNonforkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
-        const gasPrice = augur.rpc.getGasPrice()
-        this.setState({
-          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(ClaimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
-        })
-      },
     }
-    this.props.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+    this.props.claimReportingFeesNonforkedMarkets(options, (err, result) => {
+      if (err) {
+        // Default to 0 for now if we recieve an error.
+        const claimReportingFeesNonforkedMarketsGasEstimate = '0'
+        const gasPrice = augur.rpc.getGasPrice()
+        this.setState({
+          claimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+        })
+      } else {
+        const claimReportingFeesNonforkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
+        const gasPrice = augur.rpc.getGasPrice()
+        this.setState({
+          claimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+        })
+      }
+    })
   }
 
   handleClaimReportingFeesNonforkedMarkets(e) {
     e.preventDefault()
-    const ClaimReportingFeesNonforkedMarketsOptions = {
+    const options = {
       feeWindows: this.props.feeWindows,
       forkedMarket: this.props.forkedMarket,
       nonforkedMarkets: this.props.nonforkedMarkets,
       estimateGas: false,
-      onSent: () => {},
-      onFailed: (err) => {
-        this.props.closeModal()
-      },
-      onSuccess: (result) => {
-        this.props.closeModal()
-      },
     }
-    this.props.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+    this.props.claimReportingFeesNonforkedMarkets(options, (err, result) => {
+      this.props.closeModal()
+    })
   }
 
   render() {
@@ -99,7 +93,7 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
             <li><span>Recipient</span><span>{recipient}</span></li>
             <li><span>Rep</span><span>{unclaimedRep.formatted}</span></li>
             <li><span>Eth</span><span>{unclaimedEth.formatted}</span></li>
-            <li><span>Gas</span><span>{s.ClaimReportingFeesNonforkedMarketsGasEstimate}</span></li>
+            <li><span>Gas</span><span>{s.claimReportingFeesNonforkedMarketsGasEstimate}</span></li>
           </ul>
         </div>
         <div className={Styles.ModalClaimReportingFeesNonforkedMarkets__message}>
