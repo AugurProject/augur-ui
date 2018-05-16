@@ -93,16 +93,9 @@ export default class PortfolioReports extends Component {
         return
       }
 
-      // Calculate ETH/REP for everything except forked market participants
-      let unclaimedNonforkEth = new BigNumber(result.total.unclaimedEth).minus(new BigNumber(result.total.unclaimedForkEth))
-      let unclaimedNonforkRepStaked = new BigNumber(result.total.unclaimedRepStaked).minus(new BigNumber(result.total.unclaimedForkRepStaked))
-      // In theory, unclaimedEth/unclaimedRep should never be negative, but perform this check just in case
-      unclaimedNonforkEth = unclaimedNonforkEth.isNegative() ? '0' : unclaimedNonforkEth.toString()
-      unclaimedNonforkRepStaked = unclaimedNonforkRepStaked.isNegative() ? '0' : unclaimedNonforkRepStaked.toString()
-
       this.setState({
-        unclaimedEth: formatEther(unclaimedNonforkEth, { decimals: 4, zeroStyled: true }),
-        unclaimedRep: formatAttoRep(unclaimedNonforkRepStaked, { decimals: 4, zeroStyled: true }),
+        unclaimedEth: formatEther(result.total.unclaimedEth, { decimals: 4, zeroStyled: true }),
+        unclaimedRep: formatAttoRep(result.total.unclaimedRepStaked, { decimals: 4, zeroStyled: true }),
         unclaimedForkEth: formatEther(result.total.unclaimedForkEth, { decimals: 4, zeroStyled: true }),
         unclaimedForkRepStaked: formatAttoRep(result.total.unclaimedForkRepStaked, { decimals: 4, zeroStyled: true }),
         feeWindows: result.feeWindows,

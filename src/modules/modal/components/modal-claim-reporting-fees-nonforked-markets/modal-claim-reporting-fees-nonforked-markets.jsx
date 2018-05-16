@@ -22,7 +22,7 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
     super(props)
 
     this.state = {
-      ClaimReportingFeesNonforkedMarketsGasEstimate: '0',
+      claimReportingFeesNonforkedMarketsGasEstimate: '0',
     }
 
     this.handleClaimReportingFeesNonforkedMarkets = this.handleClaimReportingFeesNonforkedMarkets.bind(this)
@@ -41,13 +41,13 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
         const claimReportingFeesNonforkedMarketsGasEstimate = '0'
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
-          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+          claimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
       } else {
         const claimReportingFeesNonforkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
-          ClaimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+          claimReportingFeesNonforkedMarketsGasEstimate: formatGasCostToEther(claimReportingFeesNonforkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
       }
     })
@@ -93,7 +93,7 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
             <li><span>Recipient</span><span>{recipient}</span></li>
             <li><span>Rep</span><span>{unclaimedRep.formatted}</span></li>
             <li><span>Eth</span><span>{unclaimedEth.formatted}</span></li>
-            <li><span>Gas</span><span>{s.ClaimReportingFeesNonforkedMarketsGasEstimate}</span></li>
+            <li><span>Gas</span><span>{s.claimReportingFeesNonforkedMarketsGasEstimate}</span></li>
           </ul>
         </div>
         <div className={Styles.ModalClaimReportingFeesNonforkedMarkets__message}>

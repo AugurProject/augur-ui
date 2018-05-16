@@ -20,7 +20,7 @@ export default class ModalClaimReportingFeesForkedMarket extends Component {
     super(props)
 
     this.state = {
-      ClaimReportingFeesForkedMarketGasEstimate: '0',
+      claimReportingFeesForkedMarketGasEstimate: '0',
     }
 
     this.handleClaimReportingFeesForkedMarket = this.handleClaimReportingFeesForkedMarket.bind(this)
@@ -37,13 +37,13 @@ export default class ModalClaimReportingFeesForkedMarket extends Component {
         const claimReportingFeesForkedMarketsGasEstimate = '0'
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
-          ClaimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(claimReportingFeesForkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+          claimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(claimReportingFeesForkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
       } else {
         const claimReportingFeesForkedMarketsGasEstimate = result.gasEstimates.totals.all.toString()
         const gasPrice = augur.rpc.getGasPrice()
         this.setState({
-          ClaimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(claimReportingFeesForkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
+          claimReportingFeesForkedMarketGasEstimate: formatGasCostToEther(claimReportingFeesForkedMarketsGasEstimate, { decimalsRounded: 4 }, gasPrice),
         })
       }
     })
@@ -87,7 +87,7 @@ export default class ModalClaimReportingFeesForkedMarket extends Component {
             <li><span>Recipient</span><span>{recipient}</span></li>
             <li><span>Rep</span><span>{unclaimedRep.formatted}</span></li>
             <li><span>Eth</span><span>{unclaimedEth.formatted}</span></li>
-            <li><span>Gas</span><span>{s.ClaimReportingFeesForkedMarketGasEstimate}</span></li>
+            <li><span>Gas</span><span>{s.claimReportingFeesForkedMarketGasEstimate}</span></li>
           </ul>
         </div>
         <div className={Styles.ModalClaimReportingFeesForkedMarket__message}>
