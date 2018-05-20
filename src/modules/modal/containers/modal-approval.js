@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   closeModal: () => dispatch(closeModal()),
-  approveAccount: (cb, onSuccess) => dispatch(approveAccount(cb, onSuccess)),
+  approveAccount: cb => dispatch(approveAccount(cb)),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalApproval))
