@@ -264,7 +264,7 @@ export default class MarketOutcomeDepth extends Component {
         updateHoveredDepth([])
       } else {
         const nearestFillingOrder = nearestCompletelyFillingOrder(hoveredPrice, marketDepth)
-        console.log(nearestFillingOrder)
+        // console.log(nearestFillingOrder)
         if (nearestFillingOrder === null) return
 
         updateHoveredDepth(nearestFillingOrder)
