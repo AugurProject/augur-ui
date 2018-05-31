@@ -126,7 +126,7 @@ export const handleInitialReportSubmittedLog = log => (dispatch, getState) => {
 }
 
 export const handleInitialReporterRedeemedLog = log => (dispatch, getState) => {
-  dispatch(loadMarketsInfoIfNotLoaded([log.market]))
+  dispatch(loadMarketsInfo([log.market]))
   const isStoredTransaction = log.reporter === getState().loginAccount.address
   if (isStoredTransaction) {
     dispatch(loadReporting())
