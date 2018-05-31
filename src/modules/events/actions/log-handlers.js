@@ -33,7 +33,7 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
   if (log.removed) {
     dispatch(removeMarket(log.market))
   } else {
-    dispatch(loadMarketsInfoIfNotLoaded([log.market]))
+    dispatch(loadMarketsInfo([log.market]))
     dispatch(loadCategories())
   }
   if (isStoredTransaction) {
