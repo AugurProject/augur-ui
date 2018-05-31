@@ -173,7 +173,7 @@ export const handleDisputeCrowdsourcerContributionLog = log => (dispatch, getSta
 }
 
 export const handleDisputeCrowdsourcerCompletedLog = log => (dispatch) => {
-  dispatch(loadMarketsInfoIfNotLoaded([log.marketId]))
+  dispatch(loadMarketsInfo([log.marketId]))
   dispatch(loadMarketsDisputeInfo([log.marketId]))
   dispatch(loadReportingWindowBounds())
   dispatch(defaultLogHandler(log))
