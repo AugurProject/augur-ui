@@ -89,7 +89,7 @@ class MarketTradingWrapper extends Component {
 
   updateState(property, value) {
     this.setState({ [property]: value })
-    this.props.updateSeletedOrderProperties({ 
+    this.props.updateSeletedOrderProperties({
       orderPrice: this.state.orderPrice,
       orderQuantity: this.state.orderQuantity,
       doNotCreateOrders: this.state.doNotCreateOrders,
