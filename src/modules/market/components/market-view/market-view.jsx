@@ -172,6 +172,7 @@ export default class MarketView extends Component {
               marketId={marketId}
               selectedOutcome={s.selectedOutcome}
               selectedOrderProperties={s.selectedOrderProperties}
+              updateSeletedOrderProperties={this.updateSeletedOrderProperties}
             />
           </div>
         </section>
