@@ -20,9 +20,10 @@ import loadCategories from 'modules/categories/actions/load-categories'
 import { MODAL_ESCAPE_HATCH } from 'modules/modal/constants/modal-types'
 import { getReportingFees } from 'modules/portfolio/actions/get-reporting-fees'
 import { loadMarketsInfoIfNotLoaded } from 'src/modules/markets/actions/load-markets-info-if-not-loaded'
+import { loadMarketsInfo } from 'src/modules/markets/actions/load-markets-info'
 
 export const handleMarketStateLog = log => (dispatch) => {
-  dispatch(loadMarketsInfoIfNotLoaded([log.marketId], () => {
+  dispatch(loadMarketsInfo([log.marketId], () => {
     dispatch(loadReporting())
   }))
 }
@@ -115,7 +116,7 @@ export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
 }
 
 export const handleInitialReportSubmittedLog = log => (dispatch, getState) => {
-  dispatch(loadMarketsInfoIfNotLoaded([log.market]))
+  dispatch(loadMarketsInfo([log.market]))
   const isStoredTransaction = log.reporter === getState().loginAccount.address
   if (isStoredTransaction) {
     dispatch(loadReporting())
