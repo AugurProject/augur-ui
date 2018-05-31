@@ -22,7 +22,7 @@ class MarketTrading extends Component {
     market: PropTypes.object.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string,
-    updateSeletedOrderProperties: PropTypes.func.isRequired,
+    updateSelectedOrderProperties: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -119,7 +119,7 @@ class MarketTrading extends Component {
             showOrderPlaced={this.showOrderPlaced}
             availableFunds={availableFunds}
             clearTradeInProgress={clearTradeInProgress}
-            updateSeletedOrderProperties={this.props.updateSeletedOrderProperties}
+            updateSelectedOrderProperties={this.props.updateSelectedOrderProperties}
           />
         }
         { isMobile && hasSelectedOutcome && initialMessage &&

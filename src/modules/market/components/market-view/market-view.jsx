@@ -43,7 +43,7 @@ export default class MarketView extends Component {
     }
 
     this.updateSelectedOutcome = this.updateSelectedOutcome.bind(this)
-    this.updateSeletedOrderProperties = this.updateSeletedOrderProperties.bind(this)
+    this.updateSelectedOrderProperties = this.updateSelectedOrderProperties.bind(this)
     this.clearSelectedOutcome = this.clearSelectedOutcome.bind(this)
     this.updatePrecision = this.updatePrecision.bind(this)
   }
@@ -97,7 +97,7 @@ export default class MarketView extends Component {
     })
   }
 
-  updateSeletedOrderProperties(selectedOrderProperties) {
+  updateSelectedOrderProperties(selectedOrderProperties) {
     this.setState({
       selectedOrderProperties: {
         ...this.DEFAULT_ORDER_PROPERTIES,
@@ -155,7 +155,7 @@ export default class MarketView extends Component {
               fixedPrecision={s.fixedPrecision}
               updatePrecision={this.updatePrecision}
               selectedOutcome={s.selectedOutcome}
-              updateSeletedOrderProperties={this.updateSeletedOrderProperties}
+              updateSelectedOrderProperties={this.updateSelectedOrderProperties}
             />
           }
         </div>
@@ -172,7 +172,7 @@ export default class MarketView extends Component {
               marketId={marketId}
               selectedOutcome={s.selectedOutcome}
               selectedOrderProperties={s.selectedOrderProperties}
-              updateSeletedOrderProperties={this.updateSeletedOrderProperties}
+              updateSelectedOrderProperties={this.updateSelectedOrderProperties}
             />
           </div>
         </section>
