@@ -198,7 +198,7 @@ class MarketTradingForm extends Component {
     // update the state of the parent component to reflect new property/value
     // only update the trade if there were no errors detected.
     updateState(property, value)
-    
+
     if (errorCount === 0) {
       this.updateTrade(updatedState)
     }
