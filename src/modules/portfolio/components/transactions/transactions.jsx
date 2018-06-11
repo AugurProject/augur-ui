@@ -87,6 +87,7 @@ export default class Transactions extends Component {
       transactions,
     } = this.props
     const s = this.state
+
     return (
       <section>
         <Helmet>
