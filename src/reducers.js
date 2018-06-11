@@ -25,6 +25,7 @@ import transactionsData from 'modules/transactions/reducers/transactions-data'
 import transactionsOldestLoadedBlock from 'modules/transactions/reducers/transactions-oldest-loaded-block'
 import transactionsLoading from 'modules/transactions/reducers/transactions-loading'
 import scalarMarketsShareDenomination from 'modules/market/reducers/scalar-markets-share-denomination'
+import transactionPeriod from 'modules/portfolio/reducers/transaction-period'
 import closePositionTradeGroups from 'modules/my-positions/reducers/close-position-trade-groups'
 import categories from 'modules/categories/reducers/categories-data'
 import hasLoadedCategory from 'modules/categories/reducers/has-loaded-category'
@@ -94,5 +95,6 @@ export function createReducer() {
     disputeCrowdsourcerTokens,
     accountDisputes,
     allOrders,
+    transactionPeriod,
   }
 }
