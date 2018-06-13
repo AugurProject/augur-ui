@@ -1,13 +1,17 @@
 import "jest-environment-puppeteer";
 import {UnlockedAccounts} from "./constants/accounts";
 
-const url = `${process.env.AUGUR_URL}/#/market?id=0x8c915bd2c0df8ba79a7d28538500a97bd15ea985`;
+const url = `${process.env.AUGUR_URL}`;
 
 jest.setTimeout(100000);
 
 describe("Trading", () => {
   beforeAll(async () => {
     await page.goto(url);
+
+    const marketId = await page.evaluate((marketDescription) => window.integrationHelpers.findMarketId(marketDescription), 'Will the Larsen B ice shelf collapse by the end of November 2019?');
+
+    await page.goto(url.concat('/#/market?id=' + marketId));
 
     // No idea what a 'typical' desktop resolution would be for our users.
     await page.setViewport({
@@ -39,7 +43,7 @@ describe("Trading", () => {
 
     page.on('console', msg => console.log('PAGE LOG:', msg.text()));
 
-    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
+    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.SECONDARY_ACCOUNT);
     await expect(page).toClick("button", {
       text: "Buy",
       timeout: 2000
