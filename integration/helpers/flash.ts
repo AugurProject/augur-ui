@@ -1,12 +1,23 @@
 "use strict";
 
-import { IFlash, IMarket } from "../../types/window"
-import { UnlockedAccounts } from "../constants/accounts";
+import {UnlockedAccounts} from "../constants/accounts";
 import Augur from "augur.js"
 import connectionEndpoints from 'augur.js/scripts/connection-endpoints'
 import pushTimestamp from 'augur.js/scripts/flash/push-timestamp'
 import setAugurTimestamp from 'augur.js/scripts/flash/set-timestamp-cmd'
-import { getPrivateKeyFromString } from 'augur.js/scripts/dp/lib/get-private-key'
+import {getPrivateKeyFromString} from 'augur.js/scripts/dp/lib/get-private-key'
+
+export interface IFlash {
+  pushSeconds(numberOfSeconds: number): Promise<Boolean>;
+  pushDays(numberOfDays: number): Promise<Boolean>;
+  pushWeeks(numberOfWeeks: number): Promise<Boolean>;
+  setTimestamp(timestamp: number): Promise<Boolean>;
+  setMarketEndTime(marketId: string): Promise<Boolean>;
+}
+
+export interface IMarket {
+  endTime: number
+}
 
 export default class Flash implements IFlash {
   augur: object
