@@ -1,0 +1,38 @@
+# Using slim here because we need chromium for puppeteer
+#
+FROM node:8.11.2-slim
+
+RUN apt-get update && \
+    apt-get -y install git python make g++ bash curl binutils tar libusb-1.0-0-dev \
+    libasound2 \
+    libgconf-2-4 \
+    libgtk-3-0 \
+    libnss3 \
+    libosmesa6 \
+    libX11-xcb-dev \
+    libxss1
+
+# begin create caching layer
+COPY package.json /augur/package.json
+WORKDIR /app
+RUN git init \
+  && yarn add require-from-string \
+  && yarn \
+  && rm -rf .git \
+  && rm package.json \
+  && rm yarn.lock
+# end create caching layer
+
+COPY . /app
+
+RUN ETHEREUM_NETWORK=integration yarn build
+
+# Add Chrome as a user. Without this chrome requires that it be run --without-sandbox
+# which jest-puppetter doesn't do by default. So, to keep the sandboxing for the
+# running of these tests we gotta add a group and user for chrome
+RUN groupadd -r chrome && useradd -r -g chrome chrome \
+    && chown -R chrome:chrome /app
+# Run Chrome non-privileged
+USER chrome
+
+CMD ["bash"]

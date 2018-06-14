@@ -1,0 +1,49 @@
+version: "3.2"
+services:
+  geth:
+    image: "augurproject/dev-pop-geth:core-${AUGUR_CORE_VERSION}"
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+
+  augur-node-service:
+    image: augurproject/augur-node:core-${AUGUR_CORE_VERSION}
+    ports:
+      - "9001:9001"
+    environment:
+      - ETHEREUM_HTTP=http://geth:8545
+      - ETHEREUM_WS=ws://geth:8546
+    depends_on:
+      - geth
+    entrypoint: /app/wait-for-url.sh http://geth:8545 /app/docker-entrypoint.sh
+
+  augur-ui:
+    image: augur-ui-integration-test
+    build:
+      context: .
+      dockerfile: Dockerfile-integration
+      cache_from:
+        - augur-ui-integration-test
+      args:
+        ethereum_network: integratio-
+    environment:
+      - ETHEREUM_NETWORK=integration-tests
+    depends_on:
+      - augur-node-service
+    entrypoint: /app/wait-for-url.sh http://augur-node-service:9001/status/sync yarn start
+
+  test-runner:
+    image: augur-ui-integration-test
+    links:
+      - geth
+      - augur-node-service
+      - augur-ui
+    depends_on:
+      - augur-ui
+    environment:
+      - AUGUR_URL=http://augur-ui:8080/
+    security_opt:
+      - seccomp=./chrome.json
+    entrypoint: /app/wait-for-url.sh http://augur-ui:8080/ npx jest
+
+
