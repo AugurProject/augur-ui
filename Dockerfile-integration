@@ -1,23 +1,48 @@
 # Using slim here because we need chromium for puppeteer
 #
-FROM node:8.11.2-slim
+FROM node:8.11.2-alpine
 
-RUN apt-get update && \
-    apt-get -y install git python make g++ bash curl binutils tar libusb-1.0-0-dev \
-    libasound2 \
-    libgconf-2-4 \
-    libgtk-3-0 \
-    libnss3 \
-    libosmesa6 \
-    libX11-xcb-dev \
-    libxss1
+RUN apk add --update \
+    python \
+    python-dev \
+    py-pip \
+    git \
+    curl \
+    bash \
+    musl \
+    libressl-dev \
+    libc6-compat \
+    linux-headers \
+    build-base \
+    gmp-dev \
+    libffi-dev \
+    libusb-dev
+
+# Update apk repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/edge/main" > /etc/apk/repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
+RUN echo "http://dl-2.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+
+# Install chromium
+RUN apk -U --no-cache \
+	--allow-untrusted add \
+    zlib-dev \
+    chromium \
+    xvfb \
+    wait4ports \
+    xorg-server \
+    dbus \
+    ttf-freefont \
+    mesa-dri-swrast \
+    grep \
+    udev
 
 # begin create caching layer
-COPY package.json /augur/package.json
+COPY package.json /app/package.json
 WORKDIR /app
 RUN git init \
   && yarn add require-from-string \
-  && yarn \
+  && PUPPETEER_CHROMIUM_REVISION="64.0.3282.168-r0" yarn \
   && rm -rf .git \
   && rm package.json \
   && rm yarn.lock
@@ -30,9 +55,7 @@ RUN ETHEREUM_NETWORK=integration yarn build
 # Add Chrome as a user. Without this chrome requires that it be run --without-sandbox
 # which jest-puppetter doesn't do by default. So, to keep the sandboxing for the
 # running of these tests we gotta add a group and user for chrome
-RUN groupadd -r chrome && useradd -r -g chrome chrome \
-    && chown -R chrome:chrome /app
+RUN  adduser -D chrome
 # Run Chrome non-privileged
 USER chrome
-
 CMD ["bash"]
