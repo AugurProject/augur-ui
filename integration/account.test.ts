@@ -41,7 +41,7 @@ describe("Account", () => {
       });
 
       // expect to be on authentication page 
-      const pageUrl = await page.evaluate(() => location.href);
+      const pageUrl = await page.url();
       await expect(pageUrl).toEqual(`${process.env.AUGUR_URL}#/authentication`)
     });
 
@@ -57,6 +57,7 @@ describe("Account", () => {
 
   describe("REP Faucet Page", () => {
     it("should have a working 'Get REP' button", async () => {
+
       // navigate to rep faucet
       await page.goto(url + '#/rep-faucet');
 
@@ -96,7 +97,20 @@ describe("Account", () => {
       await expect(page).toFill("input#address", UnlockedAccounts.CONTRACT_OWNER);
       await expect(page).toClick("button#withdraw-button");
 
-      // expect succesful withdraw 
+      // check for notification
+      await expect(page).toClick("button.top-bar-styles_TopBar__notification-icon")
+      await expect(page).toMatch("Transfer Ether -- Success", {timeout: 50000})
+
+      // withdraw rep
+      await expect(page).toClick(".input-dropdown-styles_InputDropdown")
+      await expect(page).toClick("button", {text: "REP", timeout: 5000})
+      await expect(page).toFill("input#quantity", "10", {timeout: 5000});
+      await expect(page).toFill("input#address", UnlockedAccounts.CONTRACT_OWNER);
+      await expect(page).toClick("button#withdraw-button");
+
+      // check for notification
+      await expect(page).toClick("button.top-bar-styles_TopBar__notification-icon")
+      await expect(page).toMatch("Transfer REP -- Success", {timeout: 50000})
 
       // log into original account
       await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
@@ -107,6 +121,11 @@ describe("Account", () => {
       const newEth = await new BigNumber(eth).plus(100)
       const formatEth = await page.evaluate((value) => window.integrationHelpers.formatEth(value), newEth);
       await expect(page).toMatch(formatEth.formatted.split(".")[0], { timeout: 10000 }) // decimals may not equal be sometimes cause of rounding
+
+      const rep = await originalAccountData.rep // sometimes null for newAccountData
+      const newRep = await new BigNumber(rep).plus(10)
+      const formatRep = await page.evaluate((value) => window.integrationHelpers.formatRep(value), newRep);
+      await expect(page).toMatch(formatRep.formatted.split(".")[0], { timeout: 10000 }) // decimals may not equal be sometimes cause of rounding
     });
   });
 
