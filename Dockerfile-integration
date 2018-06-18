@@ -54,7 +54,7 @@ RUN git init \
 
 COPY . /app
 
-RUN ETHEREUM_NETWORK=integration yarn build
+RUN NODE_ENV='development' ETHEREUM_NETWORK=integration yarn build
 
 # Add Chrome as a user. Without this chrome requires that it be run --without-sandbox
 # which jest-puppetter doesn't do by default. So, to keep the sandboxing for the
