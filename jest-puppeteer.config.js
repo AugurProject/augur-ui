@@ -2,6 +2,8 @@ module.exports = {
   launch: {
     dumpio: true,
     headless: process.env.HEADLESS !== 'false',
-    serial: true
+    disableGPU: true,
+    serial: true,
+    executablePath: 'chromium-browser'
   },
 }
