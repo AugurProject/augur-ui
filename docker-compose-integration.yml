@@ -25,7 +25,7 @@ services:
       cache_from:
         - augur-ui-integration-test
     environment:
-      - ETHEREUM_NETWORK=integration-tests
+      - ETHEREUM_NETWORK=integration
     depends_on:
       - augur-node-service
     entrypoint: /app/wait-for-url.sh http://augur-node-service:9001/status/sync yarn start
