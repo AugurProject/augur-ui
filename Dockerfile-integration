@@ -1,6 +1,6 @@
 # Using slim here because we need chromium for puppeteer
 #
-FROM node:8.11.2-alpine
+FROM node:9-alpine
 
 RUN apk add --update \
     python \
@@ -28,21 +28,25 @@ RUN apk -U --no-cache \
 	--allow-untrusted add \
     zlib-dev \
     chromium \
+    nss \
     xvfb \
     wait4ports \
     xorg-server \
     dbus \
     ttf-freefont \
     mesa-dri-swrast \
+    mesa-gles \
     grep \
     udev
+
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
 # begin create caching layer
 COPY package.json /app/package.json
 WORKDIR /app
 RUN git init \
   && yarn add require-from-string \
-  && PUPPETEER_CHROMIUM_REVISION="64.0.3282.168-r0" yarn \
+  && yarn \
   && rm -rf .git \
   && rm package.json \
   && rm yarn.lock

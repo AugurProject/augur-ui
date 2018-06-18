@@ -1,0 +1,53 @@
+# Using slim here because we need chromium for puppeteer
+#
+FROM node:8.11.2-slim
+
+ENV PUPPETEER_CHROMIUM_REVISION "64.0.3282.168-r0"
+ENV ETHEREUM_NETWORK integration
+
+RUN apt-get update && \
+    apt-get -y install git python make g++ bash curl binutils tar libusb-1.0-0-dev \
+    libasound2 \
+    libgconf-2-4 \
+    libgtk-3-0 \
+    libnss3 \
+    libosmesa6 \
+    libX11-xcb-dev \
+    libxss1
+
+# Install latest chrome dev package and fonts to support major charsets (Chinese, Japanese, Arabic, Hebrew, Thai and a few others)
+# Note: this installs the necessary libs to make the bundled version of Chromium that Puppeteer
+# installs, work.
+RUN apt-get update && apt-get install -y wget --no-install-recommends \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
+      --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /src/*.deb
+
+# begin create caching layer
+COPY package.json /augur/package.json
+WORKDIR /app
+RUN git init \
+  && yarn add require-from-string \
+  && yarn \
+  && rm -rf .git \
+  && rm package.json \
+  && rm yarn.lock
+# end create caching layer
+
+COPY . /app
+
+RUN yarn build
+
+# Add Chrome as a user. Without this chrome requires that it be run --without-sandbox
+# which jest-puppetter doesn't do by default. So, to keep the sandboxing for the
+# running of these tests we gotta add a group and user for chrome
+RUN groupadd -r chrome && useradd -r -g chrome -G audio,video chrome \
+    && chown -R chrome:chrome /app
+# Run Chrome non-privileged
+USER chrome
+
+CMD ["bash"]
