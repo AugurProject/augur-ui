@@ -2,7 +2,7 @@
 #
 FROM node:8.11.2-slim
 
-ENV PUPPETEER_CHROMIUM_REVISION "64.0.3282.168-r0"
+#ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 ENV ETHEREUM_NETWORK integration
 
 RUN apt-get update && \
@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y wget --no-install-recommends \
     && rm -rf /src/*.deb
 
 # begin create caching layer
-COPY package.json /augur/package.json
+COPY package.json /app/package.json
 WORKDIR /app
 RUN git init \
   && yarn add require-from-string \
@@ -40,13 +40,15 @@ RUN git init \
 
 COPY . /app
 
-RUN yarn build
+RUN ETHEREUM_NETWORK=integration yarn build
 
 # Add Chrome as a user. Without this chrome requires that it be run --without-sandbox
 # which jest-puppetter doesn't do by default. So, to keep the sandboxing for the
 # running of these tests we gotta add a group and user for chrome
 RUN groupadd -r chrome && useradd -r -g chrome -G audio,video chrome \
-    && chown -R chrome:chrome /app
+    && mkdir -p /home/chrome \
+    && chown -R chrome:chrome /app \
+    && chown -R chrome:chrome /home/chrome
 # Run Chrome non-privileged
 USER chrome
 
