@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.6"
 services:
   geth:
     image: "augurproject/dev-pop-geth:core-${AUGUR_CORE_VERSION}"
@@ -22,13 +22,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-integration-slim
+      shm_size: '1gb'
       cache_from:
         - augur-ui-integration-test
-    environment:
-      - ETHEREUM_NETWORK=integration
     depends_on:
       - augur-node-service
-    entrypoint: /app/wait-for-url.sh http://augur-node-service:9001/status/sync yarn start
+    entrypoint: /app/wait-for-url.sh http://augur-node-service:9001/status/sync yarn dev
 
   test-runner:
     image: augur-ui-integration-test
@@ -42,6 +41,6 @@ services:
       - AUGUR_URL=http://augur-ui:8080/
     cap_add:
       - SYS_ADMIN
-    entrypoint: /app/wait-for-url.sh http://augur-ui:8080/ npx jest
+    entrypoint: /app/wait-for-url.sh http://augur-ui:8080/ npx jest integration/dismiss-approval.test.ts
 
 

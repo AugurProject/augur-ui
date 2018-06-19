@@ -2,8 +2,8 @@
 #
 FROM node:8.11.2-slim
 
-#ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
-ENV ETHEREUM_NETWORK integration
+# ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
+# ENV ETHEREUM_NETWORK integration
 
 RUN apt-get update && \
     apt-get -y install git python make g++ bash curl binutils tar libusb-1.0-0-dev \
@@ -40,7 +40,7 @@ RUN git init \
 
 COPY . /app
 
-RUN NODE_ENV=development ETHEREUM_NETWORK=integration yarn build
+# RUN NODE_ENV=development ETHEREUM_NETWORK=integration yarn build --dev
 
 # Add Chrome as a user. Without this chrome requires that it be run --without-sandbox
 # which jest-puppetter doesn't do by default. So, to keep the sandboxing for the
