@@ -21,7 +21,7 @@ services:
     image: augur-ui-integration-test
     build:
       context: .
-      dockerfile: Dockerfile-integration
+      dockerfile: Dockerfile-integration-slim
       cache_from:
         - augur-ui-integration-test
     environment:
