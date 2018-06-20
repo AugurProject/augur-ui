@@ -36,6 +36,11 @@ export const toReporting = async () => {
   await page.goto(url.concat("#/reporting-report-markets"));
 };
 
+export const toDisputing = async () => {
+  const url = `${process.env.AUGUR_URL}`;
+  await page.goto(url.concat("#/reporting-dispute-markets"));
+};
+
 export const toAccount = async () => {
   const url = `${process.env.AUGUR_URL}`;
   await page.goto(url.concat("#/deposit-funds"), {waitUntil: "networkidle0"});

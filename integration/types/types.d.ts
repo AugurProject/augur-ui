@@ -9,6 +9,7 @@ export interface IFlash {
   tradeCompleteSets(marketId: string): Promise<Boolean>;
   designateReport(marketId: string, outcome: string): Promise<Boolean>;
   fillMarketOrders(marketId: string, outcome: string, orderType: string): Promise<Boolean>;
+  nitialReport(marketId: string, outcome: string, invalid: boolean = false, noPush: boolean = false): Promise<Boolean>;
   dispose(): void;
 }
 

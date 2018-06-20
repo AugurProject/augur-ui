@@ -42,6 +42,7 @@ const DisputeMarketCard = ({ history, isForkingMarket, location, market, ...p })
   return (
     <article
       className={classNames(CommonStyles.MarketCommon__container, showForkTop ? Styles['DisputeMarket__fork-top'] : '')}
+      data-testid={'marketId-' + market.id}
     >
       <div className={CommonStyles.MarketCommon__topcontent}>
         <div className={CommonStyles.MarketCommon__header}>
