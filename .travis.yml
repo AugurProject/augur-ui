@@ -8,6 +8,13 @@ cache:
     - node_modules
 services:
   - docker
+before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
 branches:
   only:
     - master
@@ -33,6 +40,11 @@ script:
   - yarn build --dev
 jobs:
   include:
+  - stage: Integration tests
+    script:
+      - yarn
+      - yarn docker:integration:build
+      - yarn docker:integration:all
   - stage: Deploy to stable
     if: branch = stable
     node_js: '8'

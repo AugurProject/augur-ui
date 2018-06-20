@@ -1,5 +1,5 @@
 {
-  "dev-bak": {
+  "dev": {
     "augur-node": "ws://127.0.0.1:9001",
     "ethereum-node": {
       "http": "http://127.0.0.1:8545",
@@ -17,7 +17,7 @@
       "broadcast": false
     }
   },
-  "dev": {
+  "integration": {
     "augur-node": "ws://augur-node-service:9001",
     "ethereum-node": {
       "http": "http://geth:8545",
