@@ -11,6 +11,14 @@ const url = `${process.env.AUGUR_URL}`;
 const SMALL_TIMEOUT = 50000
 const BIG_TIMEOUT = 100000
 
+const disputeOnAllOutcomes = async () => {
+  
+}
+
+const disputeOnOutcome = async () => {
+  
+}
+
 jest.setTimeout(100000);
 
 let flash: IFlash = new Flash();
@@ -18,7 +26,7 @@ let flash: IFlash = new Flash();
 // checkout out reportingWindowStats
 
 describe("Disputing", () => {
-  const market: IMarket;
+  let market: IMarket;
 
   beforeAll(async () => {
     await page.goto(url);
@@ -32,7 +40,7 @@ describe("Disputing", () => {
 
     market = await createYesNoMarket()
 
-    await flash.initialReport(market.id, "0")
+    await flash.initialReport(market.id, "0", false, false)
     await flash.pushWeeks(1) // push into dispute window
   });
 
@@ -152,6 +160,8 @@ describe("Disputing", () => {
   describe("Disputing Mechanisms", () => {
     describe("Yes/No Market", () => {
       it("should be able to dispute on all outcomes", async () => {
+        const outcomes = await page.evaluate(() => window.integrationHelpers.getMarketDisputeOutcomes());
+        console.log(outcomes)
       });
     });
 
