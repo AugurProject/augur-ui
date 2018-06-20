@@ -41,7 +41,10 @@
     "docker:pull": "AUGUR_CORE_VERSION=$(npm explore augur.js -- npm run --silent core:version) docker-compose pull",
     "docker:spin-down": "AUGUR_CORE_VERSION=$(npm explore augur.js -- npm run --silent core:version) docker-compose down",
     "version": "npm run build:mainnet",
-    "docker:integration": "AUGUR_CORE_VERSION=$(npm run --silent core-version) docker-compose -f docker-compose-integration.yml up --abort-on-container-exit"
+    "docker:integration": "AUGUR_CORE_VERSION=$(npm run --silent core-version) docker-compose -f docker-compose-integration.yml run --rm test-runner",
+    "docker:integration:all": "node scripts/integration.js",
+    "docker:integration:build": "AUGUR_CORE_VERSION=$(npm run --silent core-version) docker-compose -f docker-compose-integration.yml build",
+    "docker:integration:down": "AUGUR_CORE_VERSION=$(npm run --silent core-version) docker-compose -f docker-compose-integration.yml down"
   },
   "dependencies": {
     "async": "2.6.0",
