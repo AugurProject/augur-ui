@@ -4,7 +4,7 @@ import { IFlash, IMarket } from "./types/types"
 import {UnlockedAccounts} from "./constants/accounts";
 import {dismissDisclaimerModal} from "./helpers/dismiss-disclaimer-modal";
 import { toMyMarkets, toDisputing } from "./helpers/navigation-helper";
-import { createYesNoMarket } from './helpers/create-markets'
+import { createYesNoMarket, createCategoricalMarket, createScalarMarket } from './helpers/create-markets'
 import { waitNextBlock } from './helpers/wait-new-block'
 
 const url = `${process.env.AUGUR_URL}`;
@@ -17,7 +17,7 @@ const disputeOnAllOutcomes = async (marketId, outcomes) => {
   for (let i = 0; i < outcomes.length; i++) {
     if (!outcomes[i].tentativeWinning) {
       await disputeOnOutcome(outcomes[i])
-      await expect(page).toClick("[data-testid='link-"+marketId+"']", { text: "dispute", timeout: SMALL_TIMEOUT})
+      await expect(page).toClick("[data-testid='link-"+marketId+"']", { text: "dispute", timeout: BIG_TIMEOUT})
     }
   });
   return
@@ -88,7 +88,9 @@ describe("Disputing", () => {
 
   describe("Disputing Mechanisms", () => {
     let yesNoMarket: IMarket;
+    let categoricalMarket: IMarket;
     let outcomes;
+
     describe("Yes/No Market", () => {
       beforeAll(async () => {
         await page.evaluate(() => window.integrationHelpers.getRep());
@@ -110,7 +112,21 @@ describe("Disputing", () => {
     });
 
     describe("Categorical Market", () => {
+       beforeAll(async () => {
+        await page.evaluate(() => window.integrationHelpers.getRep());
+        await waitNextBlock(2)
+        categoricalMarket = await createCategoricalMarket()
+
+        await flash.initialReport(categoricalMarket.id, "0", false, false)
+        await flash.pushWeeks(1) 
+        
+        // await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER); //need to refresh
+        // await toDisputing()
+        await waitNextBlock(2)
+        outcomes = await page.evaluate(() => window.integrationHelpers.getMarketDisputeOutcomes());
+      });
       it("should be able to dispute on all outcomes", async () => {
+        await disputeOnAllOutcomes(categoricalMarket.id, outcomes[categoricalMarket.id])
       });
     });
 
