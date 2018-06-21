@@ -364,6 +364,7 @@ export default class ReportingDisputeForm extends Component {
             { outcomes && outcomes.filter(o => !o.tentativeWinning).map(outcome => (
               <li key={outcome.id}>
                 <button
+                  data-testid={'button-' + outcome.id}
                   className={classNames({ [`${FormStyles.active}`]: s.selectedOutcome === outcome.id })}
                   onClick={(e) => { this.validateOutcome(s.validations, outcome.id, outcome.name, false) }}
                 >
