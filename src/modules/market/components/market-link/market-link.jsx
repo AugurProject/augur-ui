@@ -31,7 +31,7 @@ const MarketLink = (p) => {
       {
         (p.id && p.formattedDescription) ?
           <Link
-            data-testid={"link-"+p.id}
+            data-testid={'link-'+p.id}
             className={p.className}
             to={{
               pathname: path,
