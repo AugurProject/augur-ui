@@ -12,6 +12,7 @@ interface IntegrationHelpers {
   formatEth(value: string): object;
   getRep(): void;
   getMarketCreationCostBreakdown(): object;
+  getMarketDisputeOutcomes(): object;
 }
 
 declare namespace window {
