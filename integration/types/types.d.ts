@@ -18,6 +18,7 @@ export interface IMarket extends Object {
   endTime: number
   reportingState: string
   description: string
+  type: string
 }
 
 export interface MarketCosts extends Object {
@@ -26,3 +27,9 @@ export interface MarketCosts extends Object {
   designatedReportNoShowReputationBond: string
   validityBond: string
 }
+
+export interface Outcome extends Object {
+  id: string
+  tentativeWinning: boolean
+}
+
