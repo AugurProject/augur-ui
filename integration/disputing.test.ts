@@ -9,31 +9,30 @@ import { waitNextBlock } from './helpers/wait-new-block'
 
 const url = `${process.env.AUGUR_URL}`;
 const SMALL_TIMEOUT = 80000
-const BIG_TIMEOUT = 100000
+const BIG_TIMEOUT = 150000
+
+jest.setTimeout(200000);
+
+let flash: IFlash = new Flash();
 
 const disputeOnAllOutcomes = async (marketId, outcomes) => {
-  // click on dispute button
-  await expect(page).toClick("[data-testid='link-"+marketId+"']", { text: "dispute", timeout: BIG_TIMEOUT})
   for (let i = 0; i < outcomes.length; i++) {
     if (!outcomes[i].tentativeWinning) {
-      await disputeOnOutcome(outcomes[i])
-      await expect(page).toClick("[data-testid='link-"+marketId+"']", { text: "dispute", timeout: BIG_TIMEOUT})
+      await disputeOnOutcome(marketId, outcomes[i])
     }
   });
   return
 }
 
-const disputeOnOutcome = async (outcome) => {
-  await expect(page).toClick("[data-testid='button-"+outcome.id+"']", { timeout: SMALL_TIMEOUT})
-  await expect(page).toFill("#sr__input--stake", ".3")
+const disputeOnOutcome = async (marketId, outcome) => {
+  await expect(page).toClick("[data-testid='link-"+marketId+"']", { text: "dispute", timeout: BIG_TIMEOUT})
+  await expect(page).toClick("[data-testid='button-"+outcome.id+"']", { timeout: BIG_TIMEOUT})
+  await expect(page).toFill("#sr__input--stake", ".3", { timeout: SMALL_TIMEOUT})
   await expect(page).toClick("button", { text: 'Review', timeout: SMALL_TIMEOUT})
-  await expect(page).toClick("button", { text: 'Submit', timeout: SMALL_TIMEOUT})
+  await expect(page).toClick("button", { text: 'Submit', timeout: BIG_TIMEOUT})
   return
 }
 
-jest.setTimeout(100000);
-
-let flash: IFlash = new Flash();
 
 // checkout out reportingWindowStats
 
@@ -107,6 +106,7 @@ describe("Disputing", () => {
       });
 
       it("should be able to dispute on all outcomes", async () => {
+        console.log(outcomes[yesNoMarket.id])
         await disputeOnAllOutcomes(yesNoMarket.id, outcomes[yesNoMarket.id])
       });
     });
@@ -115,7 +115,7 @@ describe("Disputing", () => {
        beforeAll(async () => {
         await page.evaluate(() => window.integrationHelpers.getRep());
         await waitNextBlock(2)
-        categoricalMarket = await createCategoricalMarket()
+        categoricalMarket = await createCategoricalMarket(4)
 
         await flash.initialReport(categoricalMarket.id, "0", false, false)
         await flash.pushWeeks(1) 
