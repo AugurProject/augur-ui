@@ -1,4 +1,3 @@
-import { augur } from 'services/augurjs'
 import { MARKET_CREATION, PUBLIC_TRADE, TRANSFER, REPORTING, TRADE, OPEN_ORDER, BUY, SELL } from 'modules/transactions/constants/types'
 import { SUCCESS, PENDING } from 'modules/transactions/constants/statuses'
 import { updateTransactionsData } from 'modules/transactions/actions/update-transactions-data'
@@ -97,12 +96,9 @@ function buildTradeTransaction(trade, marketsData) {
 }
 
 export function addTransferTransactions(transfers) {
-  const FillOrderContractAddress = augur.contracts.addresses[augur.rpc.getNetworkID()].FillOrder
-  return (dispatch, getState) => {
+  return (dispatch) => {
     const transactions = {}
     each(transfers, (transfer) => {
-      // filter out market trade transfers from FillOrder contract
-      if (transfer.sender && transfer.sender.toLowerCase() === FillOrderContractAddress.toLowerCase()) return
       const transaction = { ...transfer }
       transaction.id = `${transaction.transactionHash}-${transaction.logIndex}`
       const header = buildHeader(transaction, TRANSFER, SUCCESS)
@@ -314,7 +310,7 @@ function processReport(market, transaction) {
 
 function getOutcome(market, outcome) {
   let value = null
-  if (!market || !outcome) return value
+  if (!market || isNaN(outcome)) return value
   if (market.marketType === YES_NO) {
     value = 'Yes'
   } else if (market.marketType === CATEGORICAL) {
