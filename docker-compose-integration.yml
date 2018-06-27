@@ -1,17 +1,5 @@
 version: "3.6"
 services:
-  geth:
-    image: "augurproject/dev-pop-geth:core-${AUGUR_CORE_VERSION}"
-
-  augur-node-service:
-    image: augurproject/augur-node:core-${AUGUR_CORE_VERSION}
-    environment:
-      - ETHEREUM_HTTP=http://geth:8545
-      - ETHEREUM_WS=ws://geth:8546
-    depends_on:
-      - geth
-    entrypoint: /app/wait-for-url.sh http://geth:8545 /app/docker-entrypoint.sh
-
   augur-ui:
     image: augur-ui-integration-test
     build:

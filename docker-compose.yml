@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.6"
 services:
   geth:
     image: "augurproject/dev-pop-geth:core-${AUGUR_CORE_VERSION}"
@@ -6,7 +6,7 @@ services:
       - "8545:8545"
       - "8546:8546"
 
-  node:
+  augur-node-service:
     image: augurproject/augur-node:core-${AUGUR_CORE_VERSION}
     ports:
       - "9001:9001"
