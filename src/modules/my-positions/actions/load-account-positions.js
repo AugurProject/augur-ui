@@ -5,7 +5,7 @@ import logError from 'utils/log-error'
 import { updateTopBarPL } from 'modules/my-positions/actions/update-top-bar-pl'
 
 export const loadAccountPositions = (options = {}, callback = logError) => (dispatch, getState) => {
-  const { universe, loginAccount, blockchain } = getState()
+  const { universe, loginAccount } = getState()
   if (loginAccount.address == null || universe.id == null) return callback(null)
   augur.trading.getUserTradingPositions({ ...options, account: loginAccount.address, universe: universe.id }, (err, positions) => {
     if (err) return callback(err)
@@ -22,24 +22,24 @@ export const loadAccountPositions = (options = {}, callback = logError) => (disp
         outcomeIds.forEach((outcomeId) => {
           marketPositionData[marketId][outcomeId] = positions.filter(position => position.marketId === marketId && position.outcome === outcomeId)
         })
-        // finally make sure we have most up to date PL values for our positions
         augur.augurNode.submitRequest(
           'getProfitLoss',
           {
             universe: universe.id,
             account: loginAccount.address,
-            startTime: 0,
-            endTime: blockchain.currentAugurTimestamp,
-            periodInterval: blockchain.currentAugurTimestamp,
           },
           (err, rawPerformanceData) => {
             const { all } = rawPerformanceData
             Object.keys(marketPositionData[marketId]).reduce((acc, outcome) => {
-              acc[marketId][outcome] = marketPositionData[marketId][outcome]
+              const outcomePosition = marketPositionData[marketId][outcome]
+              outcomePosition[0].realizedProfitLoss = '0'
+              outcomePosition[0].unrealizedProfitLoss = '0'
               if (all && all[marketId] && all[marketId][outcome] && all[marketId][outcome].length && all[marketId][outcome][0].profitLoss) {
-                acc[marketId][outcome][0].realizedProfitLoss = all[marketId][outcome][0].profitLoss.realized
-                acc[marketId][outcome][0].unrealizedProfitLoss = all[marketId][outcome][0].profitLoss.unrealized
+                outcomePosition[0].realizedProfitLoss = all[marketId][outcome][0].profitLoss.realized
+                outcomePosition[0].unrealizedProfitLoss = all[marketId][outcome][0].profitLoss.unrealized
+                outcomePosition[0].averagePrice = all[marketId][outcome][0].profitLoss.meanOpenPrice
               }
+              acc[marketId][outcome] = outcomePosition
               return acc
             }, { [marketId]: {} })
             dispatch(updateAccountPositionsData(marketPositionData, marketId))

@@ -18,6 +18,7 @@ import networkConfig from 'config/network'
 import { isEmpty } from 'lodash'
 
 import { MODAL_NETWORK_MISMATCH, MODAL_ESCAPE_HATCH, MODAL_NETWORK_DISCONNECTED, MODAL_DISCLAIMER, MODAL_NETWORK_DISABLED } from 'modules/modal/constants/modal-types'
+import { DISCLAIMER_SEEN } from 'src/modules/modal/constants/local-storage-keys'
 
 const ACCOUNTS_POLL_INTERVAL_DURATION = 3000
 const NETWORK_ID_POLL_INTERVAL_DURATION = 3000
@@ -133,7 +134,7 @@ export function connectAugur(history, env, isInitialConnection = false, callback
       let universeId = env.universe || AugurJS.augur.contracts.addresses[AugurJS.augur.rpc.getNetworkID()].Universe
       if (windowRef.localStorage && windowRef.localStorage.getItem) {
         const storedUniverseId = windowRef.localStorage.getItem('selectedUniverse')
-        const disclaimerSeen = windowRef.localStorage.getItem('disclaimerSeen')
+        const disclaimerSeen = windowRef.localStorage.getItem(DISCLAIMER_SEEN)
         universeId = storedUniverseId === null ? universeId : storedUniverseId
         if (!disclaimerSeen) {
           dispatch(updateModal({
@@ -141,14 +142,32 @@ export function connectAugur(history, env, isInitialConnection = false, callback
           }))
         }
       }
-      dispatch(loadUniverse(universeId, history))
-      if (modal && modal.type === MODAL_NETWORK_DISCONNECTED) dispatch(closeModal())
-      if (isInitialConnection) {
-        pollForAccount(dispatch, getState)
-        pollForNetwork(dispatch, getState)
-        pollForEscapeHatch(dispatch, getState)
+
+      const doIt = () => {
+        dispatch(loadUniverse(universeId, history))
+        if (modal && modal.type === MODAL_NETWORK_DISCONNECTED) dispatch(closeModal())
+        if (isInitialConnection) {
+          pollForAccount(dispatch, getState)
+          pollForNetwork(dispatch, getState)
+          pollForEscapeHatch(dispatch, getState)
+        }
+        callback()
       }
-      callback()
+
+      if (process.env.NODE_ENV === 'development') {
+        AugurJS.augur.api.Augur.isKnownUniverse({
+          _universe: universeId,
+        }, (err, data) => {
+          if (data === false && windowRef.localStorage && windowRef.localStorage.removeItem) {
+            windowRef.localStorage.removeItem('selectedUniverse')
+            location.reload()
+          }
+
+          doIt()
+        })
+      } else {
+        doIt()
+      }
     })
   }
 }

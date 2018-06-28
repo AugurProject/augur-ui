@@ -12,11 +12,9 @@ There are several configurations to run it on testnet:
 * Full Local: [run everything locally](#run-everything-locally-)
 * Development Environment Setups: [various configurations](https://github.com/AugurProject/augur/blob/master/docs/dev-local-node.md)
 
-Production configuration:
+Production: 
 
-* Docker: [dockerized augur client](./docs/deploy-production.md)
-
-To view the status of production status: [current production status](https://github.com/AugurProject/augur/blob/master/docs/production.md)
+There is an electron app that contains augur-node and augur UI. This app allows the user to point to testnets and mainnet. [Augur App](https://github.com/AugurProject/augur-app). It is a faster way to interact with mainnet because augur-node is local. Enjoy!
 ***
 
 ## Rinkeby Ethereum Account
@@ -92,7 +90,7 @@ After git cloning UI source let docker build UI and create a docker image. Then 
 ## Run everything Locally <a name="totally_local"></a>
 These instructions go through running local ethereum node, augur-node and augur UI. This will create a local environment contracts loaded with canned data.
 
-Full instructions are here [dev-local-node](https://github.com/AugurProject/augur/blob/seadragon/docs/dev-local-node.md)
+Full instructions are here [dev-local-node](https://github.com/AugurProject/augur/blob/master/docs/dev-local-node.md)
 
 
 
