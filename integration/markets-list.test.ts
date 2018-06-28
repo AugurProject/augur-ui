@@ -1,5 +1,4 @@
 import "jest-environment-puppeteer";
-import Flash from "./helpers/flash";
 import {dismissDisclaimerModal} from "./helpers/dismiss-disclaimer-modal";
 import { ElementHandle } from "puppeteer";
 import { createYesNoMarket, createScalarMarket } from './helpers/create-markets'
