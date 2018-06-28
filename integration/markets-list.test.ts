@@ -67,7 +67,7 @@ describe("Markets List", () => {
 
   describe("Filtering", () => {
     beforeEach(async () => {
-      await page.goto(url + "#/markets?category=politics"); // click sometimes fails because of page rerenders
+      await page.goto(url + "#/markets?category=politics", { waitUntil: "networkidle0" }); // click sometimes fails because of page rerenders
     });
 
     it("should display both submenu bars", async () => {
