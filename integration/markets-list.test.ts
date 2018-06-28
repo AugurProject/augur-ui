@@ -90,7 +90,10 @@ describe("Markets List", () => {
   });
 
   describe("Search", () => {
-     
+    beforeEach(async () => {
+      await page.goto(url + "#/markets", { waitUntil: "networkidle0" });
+    });
+
     it("should filter markets to show only ones with searched keyword", async () => {
       // enter in a search keyword
       await expect(page).toFill("input.filter-search-styles_FilterSearch__input", "jair");
