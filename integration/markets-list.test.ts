@@ -102,7 +102,7 @@ describe("Markets List", () => {
 
   describe("Search", () => {
     beforeEach(async () => {
-      await page.goto(url + "#/markets");
+      await page.goto(url + "#/markets", { waitUntil: "networkidle0" });
     });
 
     it("should filter markets to show only ones with searched keyword", async () => {
