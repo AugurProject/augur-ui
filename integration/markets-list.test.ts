@@ -117,8 +117,10 @@ describe("Markets List", () => {
       await checkNumElements(true, 2)
 
       // check that expected titles are present
-      const expectedMarketTitles = ["Will Ethereum trade at $2000 or higher at any time before the end of 2018?", "Millions of Tether tokens issued on Thu Jun 07 2018 (round down)"]
-      checkMarketNames(expectedMarketTitles)
+      // The tether market has a dynamic date in the title which is why it is truncated here.
+      // @todo Use regex to match tether title.
+      const expectedMarketTitles = ["Will Ethereum trade at $2000 or higher at any time before the end of 2018?", "Millions of Tether tokens issued on "]
+      await checkMarketNames(expectedMarketTitles)
 
       await expect(page).toClick(".input-styles_close")
 
