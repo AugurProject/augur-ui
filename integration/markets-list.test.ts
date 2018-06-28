@@ -1,5 +1,4 @@
 import "jest-environment-puppeteer";
-import {UnlockedAccounts} from "./constants/accounts";
 import {dismissDisclaimerModal} from "./helpers/dismiss-disclaimer-modal";
 import { ElementHandle } from "puppeteer";
 
