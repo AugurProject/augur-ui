@@ -49,6 +49,7 @@ describe("My Markets", () => {
 
   it("should update market's volume correctly when trades occur", async () => {
     //needs the market to not have any volume
+
     //check that market has 0 volume
     let market = await page.$("[id='id-" + marketId + "']");
     await expect(market).toMatchElement(".value_volume", { text: '0', timeout: SMALL_TIMEOUT });
@@ -118,6 +119,28 @@ describe("My Markets", () => {
     await expect(page).toClick("[data-testid='collectMarketCreatorFees-" + scalarMarket.id + "']", { timeout: SMALL_TIMEOUT });
     // check that outstanding returns go away;
     await expect(page).not.toMatchElement("[data-testid='unclaimedCreatorFees-" + scalarMarket.id + "']", { text: validityBond, timeout: BIG_TIMEOUT });
+  });
+
+  it("should verify that, when a market is reported on by the Designated Reporter, the reporter gas bond becomes available in 'Outstanding Returns', is claimable, and the Collected Returns balance updates properly.", async () => {
+    // create market with designated reporter
+    const assignedReporterMarket = await createYesNoMarket(UnlockedAccounts.CONTRACT_OWNER);
+    // make designated report
+    await flash.designateReport(assignedReporterMarket.id, "0");
+
+    await waitNextBlock(4);
+    await toPortfolio();
+    // go to my markets page
+    await toMyMarkets();
+    // verify that you are on that page
+    await expect(page).toMatch('portfolio: my markets', { timeout: SMALL_TIMEOUT });
+    const reporterGasBond = await page.evaluate((value) => window.integrationHelpers.formatEth(value), marketCosts.targetReporterGasCosts);
+
+    // check for reporter gas bond
+    await expect(page).toMatchElement("[data-testid='unclaimedCreatorFees-" + assignedReporterMarket.id + "']", { text: reporterGasBond, timeout: BIG_TIMEOUT }); // need to find creationFee
+    // claim reporter gas bond
+    await expect(page).toClick("[data-testid='collectMarketCreatorFees-" + assignedReporterMarket.id + "']", { timeout: SMALL_TIMEOUT });
+    // check that outstanding returns go away
+    await expect(page).not.toMatchElement("[data-testid='unclaimedCreatorFees-" + assignedReporterMarket.id + "']", { text: reporterGasBond, timeout: BIG_TIMEOUT });
   });
 
   it("should have outstanding returns become available to the market creator when complete sets settle, and that the amount that becomes available is correct", async () => {
