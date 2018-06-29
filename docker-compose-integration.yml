@@ -28,6 +28,6 @@ services:
       - JEST_PUPPETEER_CONFIG=jest-puppeteer.config.ci.js
     cap_add:
       - SYS_ADMIN
-    entrypoint: /app/wait-for-url.sh http://augur-ui:8080/ npx jest
+    entrypoint: /app/wait-for-url.sh http://augur-ui:8080/ npx jest --forceExit
 
 
