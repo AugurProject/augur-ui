@@ -21,7 +21,10 @@ services:
     depends_on:
       - augur-ui
     environment:
+      - AUGUR_WS=ws://augur-node-service:9001
       - AUGUR_URL=http://augur-ui:8080/
+      - ETHEREUM_HTTP=http://geth:8545
+      - ETHEREUM_WS=ws://geth:8546
       - JEST_PUPPETEER_CONFIG=jest-puppeteer.config.ci.js
     cap_add:
       - SYS_ADMIN
