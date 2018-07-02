@@ -1,12 +1,18 @@
 import "jest-environment-puppeteer";
+import Flash from "./helpers/flash";
 import {dismissDisclaimerModal} from "./helpers/dismiss-disclaimer-modal";
 import { ElementHandle } from "puppeteer";
+import { createYesNoMarket, createScalarMarket } from './helpers/create-markets'
+import { IFlash, IMarket } from "./types/types"
+import { waitNextBlock } from './helpers/wait-new-block'
 
 const url = `${process.env.AUGUR_URL}`;
 const MARKETS_SELECTOR = ".market-common-styles_MarketCommon__container"
 const TIMEOUT = 5000;
 
 jest.setTimeout(100000);
+
+let flash: IFlash = new Flash();
 
 const checkNumElements = async (isMarkets: boolean, num: number) => {
   const selector = (isMarkets ? MARKETS_SELECTOR : ".inner-nav-styles_InnerNav__menu-item--visible")
@@ -41,6 +47,10 @@ describe("Markets List", () => {
     yesNoMarketId = await page.evaluate((marketDescription) => window.integrationHelpers.findMarketId(marketDescription), yesNoMarketDesc);
   });
 
+  afterAll(async () => {
+    flash.dispose();
+  });
+
   describe("General View", () => {
 
     it("should paginate in chunks of 10", async () => {
@@ -51,12 +61,14 @@ describe("Markets List", () => {
     it("should display all categories for every loaded market in the sidebar", async () => {
       await page.waitForSelector(".inner-nav-styles_InnerNav__menu--main")
       await checkNumElements(false, 12)
+
+      // TODO: check which categories are present
     });
   });
 
   describe("Filtering", () => {
     beforeEach(async () => {
-      await page.goto(url + "#/markets?category=politics", { waitUntil: "networkidle0" }); // click sometimes fails because of page rerenders
+      await page.goto(url + "#/markets?category=politics"); // click sometimes fails because of page rerenders
     });
 
     it("should display both submenu bars", async () => {
@@ -79,7 +91,7 @@ describe("Markets List", () => {
 
     it("should filter out markets that don't match the selected tags when clicking on tags", async () => {
       // when clicking on elections check that only two markets are displayed
-      await expect(page).toClick("button.elections")
+      await page.goto(url + "#/markets?category=politics&tags=elections"); // click sometimes fails because of page rerenders
       await checkNumElements(true, 2)
     });
 
@@ -91,7 +103,7 @@ describe("Markets List", () => {
 
   describe("Search", () => {
     beforeEach(async () => {
-      await page.goto(url + "#/markets", { waitUntil: "networkidle0" });
+      await page.goto(url + "#/markets");
     });
 
     it("should filter markets to show only ones with searched keyword", async () => {
@@ -100,7 +112,7 @@ describe("Markets List", () => {
       await checkNumElements(true, 1)
 
       // check that market that shows up is correct one
-      checkMarketNames(["Will Jair Messias Bolsonaro be elected the president of Brazil in 2018?"])
+      await checkMarketNames(["Will Jair Messias Bolsonaro be elected the president of Brazil in 2018?"])
     });
 
     it("should not have case sensitive search", async () => {
@@ -108,7 +120,7 @@ describe("Markets List", () => {
       await expect(page).toClick(".input-styles_close")
       await expect(page).toFill("input.filter-search-styles_FilterSearch__input", "JAIR");
       await checkNumElements(true, 1)
-    })
+    });
 
     it("should have markets be searchable by title, tag, or category", async () => {
       // search for a category
@@ -131,16 +143,26 @@ describe("Markets List", () => {
   });
 
   describe("Market Cards", () => {
+    let newMarket: IMarket;
+
     beforeAll(async () => {
       await page.goto(url + "#/markets?category=agriculture");
       yesNoMarket = await expect(page).toMatchElement("article", { text: yesNoMarketDesc})
+      newMarket = await createYesNoMarket();
     });
 
     it("should display market title", async () => {
       await expect(yesNoMarket).toMatchElement("a", { text: yesNoMarketDesc})
     });
 
+    it("should display category and tags in the top left corner of each card", async () => {
+      await expect(yesNoMarket).toMatchElement("[data-testid='Categories-0'", { text: 'agriculture'})
+      await expect(yesNoMarket).toMatchElement("[data-testid='Tags-0'", { text: 'antibiotics'})
+      await expect(yesNoMarket).toMatchElement("[data-testid='Tags-1'", { text: 'China'})
+    });
+
     it("display the min and max values accurately on either ends of the scale", async () => {
+      // (0% - 100% for binary markets, min - max for scalar markets)
       await expect(yesNoMarket).toMatchElement(".market-outcomes-yes-no-scalar-styles_MarketOutcomes__min", { text: "0 %"})
       await expect(yesNoMarket).toMatchElement(".market-outcomes-yes-no-scalar-styles_MarketOutcomes__max", { text: "100 %"})
     });
@@ -150,7 +172,7 @@ describe("Markets List", () => {
       await expect(yesNoMarket).toMatchElement(".value_fee", { text: "2.00"})
       // @todo Figure out how to handle local datetimes
       // await expect(yesNoMarket).toMatchElement(".value_expires", { text: "Dec 31, 2019 4:00 PM (UTC -8)"})
-    });
+    }); 
 
     it("should display a togglable favorites star to the left of the action button on the bottom right of the card", async () => {
       await expect(yesNoMarket).toClick("button.market-properties-styles_MarketProperties__favorite")
@@ -186,6 +208,41 @@ describe("Markets List", () => {
 
       // "+ N More" should change to "- N More" when expanded, should collapse again on click.
       await expect(categoricalMarket).toMatchElement(".market-outcomes-categorical-styles_MarketOutcomesCategorical__show-more", { text: "- 3 less"})
+    });
+
+    it("should display a scale with the current mid-price for the market", async () => {
+      // go to new markets page
+      await page.goto(url + "#/markets?category=space");
+      await expect(page).toMatchElement("[data-testid='markets-" + newMarket.id + "'] [data-testid='midpoint']", {
+        text: '50.00',
+        timeout: TIMEOUT
+      });
+    });
+
+    it("should have accurate volume stat", async () => {
+      // expect volume to start at zero
+      await expect(page).toMatchElement("[data-testid='markets-" + newMarket.id + "'] .value_volume", { 
+        text: '0', 
+        timeout: TIMEOUT 
+      });
+
+      // create and fill order
+      await flash.createMarketOrder(newMarket.id, "1", "sell", ".1", "2");
+      await waitNextBlock(4);
+      await flash.fillMarketOrders(newMarket.id, "1", "buy");
+
+      // expect volume increase
+      await expect(page).toMatchElement("[data-testid='markets-" + newMarket.id + "'] .value_volume", { 
+        text: '2.0000', 
+        timeout: TIMEOUT 
+      });
+    });
+
+    it("should verify that the midprice moves along the scale appropriately", async () => {
+      await expect(page).toMatchElement("[data-testid='markets-" + newMarket.id + "'] [data-testid='midpoint']", {
+        text: '10.00',
+        timeout: TIMEOUT
+      });
     });
   });
 });

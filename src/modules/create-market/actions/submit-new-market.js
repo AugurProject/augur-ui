@@ -14,7 +14,7 @@ import { CATEGORICAL } from 'modules/markets/constants/market-types'
 import { TRANSACTIONS } from 'modules/routes/constants/views'
 import { buildCreateMarket } from 'modules/create-market/helpers/build-create-market'
 
-export function submitNewMarket(newMarket, history, callback) {
+export function submitNewMarket(newMarket, history, callback = noop) {
   return (dispatch, getState) => {
     const { universe, loginAccount, contractAddresses } = getState()
     const { createMarket, formattedNewMarket } = buildCreateMarket(newMarket, false, universe, loginAccount, contractAddresses)
@@ -79,7 +79,7 @@ export function submitNewMarket(newMarket, history, callback) {
         },
         onFailed: (err) => {
           console.error('ERROR create market failed:', err)
-
+          callback(err)
           dispatch(invalidateMarketCreation(err.message))
         },
       })
