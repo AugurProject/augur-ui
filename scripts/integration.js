@@ -48,6 +48,9 @@ const cb = async (filepath) => {
 
   try {
     await promisifyExec(`npm run docker:integration ${filepath}`)
+
+    // Teardown stack between runs.
+    await promisifyExec(`npm run docker:integration:down`)
   } catch (e) {
     readline.clearLine();
     readline.cursorTo(0);
@@ -57,9 +60,6 @@ const cb = async (filepath) => {
 
     console.error(e);
     process.exit(1);
-  } finally {
-    // Teardown stack between runs.
-    await promisifyExec(`npm run docker:integration:down`)
   }
 
   readline.clearLine();
