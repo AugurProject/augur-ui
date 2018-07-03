@@ -22,8 +22,6 @@ const trezorSigner = async (connect, addressPath, dispatch, rawTxArgs) => {
   const callback = rawTxArgs[1]
 
   return new Promise((resolve, reject) => {
-    tx.gasLimit || (tx.gasLimit = tx.gas)
-
     const chain = augur.rpc.getNetworkID()
 
     connect.ethereumSignTx(
