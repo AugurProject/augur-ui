@@ -33,13 +33,6 @@ export function sortOrders(orderBook) {
         sortedOrderBook[outcome].push(asks[outcome][index])
       })
     }
-
-    console.log('bids')
-    console.log(bids)
-    console.log('asks')
-    console.log(asks)
-    console.log('sortedOrderBook')
-    console.log(sortedOrderBook)
   })
 
   return sortedOrderBook
