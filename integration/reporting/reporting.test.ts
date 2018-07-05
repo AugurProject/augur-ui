@@ -8,7 +8,7 @@ import { createCategoricalMarket, createScalarMarket, createYesNoMarket } from '
 import {UnlockedAccounts} from "../constants/accounts";
 import { waitNextBlock } from '../helpers/wait-new-block'
 
-jest.setTimeout(30000);
+jest.setTimeout(100000);
 
 let flash: IFlash = new Flash();
 

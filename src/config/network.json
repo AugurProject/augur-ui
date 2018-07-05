@@ -17,6 +17,24 @@
       "broadcast": false
     }
   },
+  "integration": {
+    "augur-node": "ws://augur-node-service:9001",
+    "ethereum-node": {
+      "http": "http://geth:8545",
+      "ws": "ws://geth:8546",
+      "pollingIntervalMilliseconds": 500,
+      "blockRetention": 100,
+      "connectionTimeout": 60000
+    },
+    "auto-login": true,
+    "universe": null,
+    "bug-bounty": false,
+    "bug-bounty-address": null,
+    "debug": {
+      "connect": true,
+      "broadcast": false
+    }
+  },
   "ropsten": {
     "augur-node": "wss://ropsten.augur.nodes.augur.net",
     "ethereum-node": {

@@ -83,7 +83,7 @@ describe("Markets List", () => {
       // check that number of markets listed is as expected
       await checkNumElements(true, 3)
     });
-    
+
     it("should populate submenu bar with the tag values for the markets displayed", async () => {
       // check that tag submenu has right number of tags displayed
       await checkNumElements(false, 17)
@@ -129,6 +129,8 @@ describe("Markets List", () => {
       await checkNumElements(true, 2)
 
       // check that expected titles are present
+      // The tether market has a dynamic date in the title which is why it is truncated here.
+      // @todo Use regex to match tether title.
       const expectedMarketTitles = ["Will Ethereum trade at $2000 or higher at any time before the end of 2018?", "Millions of Tether tokens issued on "]
       await checkMarketNames(expectedMarketTitles)
 
