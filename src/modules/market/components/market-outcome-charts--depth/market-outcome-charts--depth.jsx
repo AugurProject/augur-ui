@@ -498,7 +498,7 @@ function drawTicks(options) {
 
   }
   if (hasOrders) {
-    const offsetTicks = Array.from(new Array(11), (val, index) => createBigNumber(drawParams.yDomain[1]).times(0.1).times(index).toNumber()).slice(1, 11)
+    const offsetTicks = Array.from(new Array(11), (val, index) => createBigNumber(drawParams.yDomain[1].toString()).times(0.1).times(index).toNumber()).slice(1, 11)
 
     const yTicks = depthChart.append('g')
       .attr('id', 'depth_y_ticks')
@@ -620,7 +620,6 @@ function attachHoverClickHandlers(options) {
     drawParams,
     depthChart,
     marketDepth,
-    orderBookKeys,
     fixedPrecision,
     marketMin,
     marketMax,
@@ -644,7 +643,7 @@ function attachHoverClickHandlers(options) {
     })
     .on('click', () => {
       const mouse = d3.mouse(d3.select('#depth_chart').node())
-      const orderPrice = drawParams.xScale.invert(mouse[1]).toFixed(fixedPrecision)
+      const orderPrice = drawParams.xScale.invert(mouse[0]).toFixed(fixedPrecision)
       const nearestFillingOrder = nearestCompletelyFillingOrder(orderPrice, marketDepth)
 
       if (
@@ -653,9 +652,9 @@ function attachHoverClickHandlers(options) {
         createBigNumber(orderPrice).lte(marketMax)
       ) {
         updateSelectedOrderProperties({
-          selectedNav: createBigNumber(orderPrice).gt(orderBookKeys.mid) ? BUY : SELL,
-          orderPrice: nearestFillingOrder[1],
           orderQuantity: nearestFillingOrder[0],
+          orderPrice: nearestFillingOrder[1],
+          selectedNav: nearestFillingOrder[4] === BIDS ? SELL : BUY,
         })
       }
     })

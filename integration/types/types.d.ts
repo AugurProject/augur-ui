@@ -10,6 +10,8 @@ export interface IFlash {
   designateReport(marketId: string, outcome: string): Promise<Boolean>;
   fillMarketOrders(marketId: string, outcome: string, orderType: string): Promise<Boolean>;
   initialReport(marketId: string, outcome: string, invalid: boolean, noPush: boolean): Promise<Boolean>;
+  disputeContribute(marketId: string, outcome: string, invalid: boolean, noPush: boolean, amount?: string): Promise<Boolean>;
+  createMarketOrder(marketId: string, outcome: string, orderType: string, price: string, amount: string): Promise<Boolean>;
   dispose(): void;
 }
 

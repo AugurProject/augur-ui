@@ -99,6 +99,10 @@ export default class CreateMarketOutcome extends Component {
 
     // Reset tickSize as it only applies to 'scalar' markets and we are 'defaulting' the value in the componenet.
     delete updatedMarket.tickSize
+    delete updatedValidations.outcomes
+    delete updatedValidations.scalarSmallNum
+    delete updatedValidations.scalarBigNum
+    delete updatedValidations.tickSize
 
     switch (value) {
       case CATEGORICAL:
@@ -205,7 +209,10 @@ export default class CreateMarketOutcome extends Component {
       default:
         updatedMarket.validations[currentStep].tickSize = true
     }
-    updatedMarket.tickSize = numTicksBigNum
+
+    if (type === scalarType.TICK_SIZE) {
+      updatedMarket.tickSize = value
+    }
 
     // Make sure scalarBigNum, scalarSmallNum, & numTicksBigNum are all BigNumbers
     if (BigNumber.isBigNumber(scalarBigNum) && BigNumber.isBigNumber(scalarSmallNum) && BigNumber.isBigNumber(numTicksBigNum) && !numTicksBigNum.eq(ZERO)) {
