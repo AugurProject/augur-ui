@@ -18,8 +18,6 @@ jest.setTimeout(200000);
 
 let flash: IFlash = new Flash();
 
-// NEED EXTREMELY FRESH DOCKER IMAGE
-
 describe("My Markets", () => {
   let scalarMarket: IMarket;
   let categoricalMarket: IMarket;
@@ -36,7 +34,7 @@ describe("My Markets", () => {
       width: 1200
     });
     await dismissDisclaimerModal(page);
-    marketId = await page.evaluate((marketDescription) => window.integrationHelpers.findMarketId(marketDescription), 'Will the Dow Jones Industrial Average close at a higher price on Fri Jun 08 2018 than it closed at the previous day?');
+    marketId = await page.evaluate((marketDescription) => window.integrationHelpers.findMarketId(marketDescription), 'Will the Larsen B ice shelf collapse by the end of November 2019?');
     marketCosts = await page.evaluate(() => window.integrationHelpers.getMarketCreationCostBreakdown());
 
     // go to my markets page
@@ -50,8 +48,7 @@ describe("My Markets", () => {
   });
 
   it("should update market's volume correctly when trades occur", async () => {
-    //needs the Will Dow Jones market to not have any volume
-
+    //needs the market to not have any volume
     //check that market has 0 volume
     let market = await page.$("[id='id-" + marketId + "']");
     await expect(market).toMatchElement(".value_volume", { text: '0', timeout: SMALL_TIMEOUT });
@@ -66,14 +63,13 @@ describe("My Markets", () => {
 
   it("should show an empty view if the user hasn't created any markets", async () => {
     // needs secondary account to not have any previously created markets
-
     // use account with no markets created
     await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.SECONDARY_ACCOUNT);
     // go to my markets page
     await toMyMarkets();
     // verify that you are on that page
     await expect(page).toMatch('portfolio: my markets', { timeout: SMALL_TIMEOUT });
-    //need account to not have any created markets
+    // need account to not have any created markets
     await expect(page).toMatch('You haven\'t created any markets.', { timeout: SMALL_TIMEOUT });
   });
 
@@ -118,7 +114,9 @@ describe("My Markets", () => {
     const validityBond = await page.evaluate((value) => window.integrationHelpers.formatEth(value), marketCosts.validityBond);
     // check for validity bond
     await expect(page).toMatchElement("[data-testid='unclaimedCreatorFees-" + scalarMarket.id + "']", { text: validityBond, timeout: BIG_TIMEOUT });
-    // check that outstanding returns go away
+    // claim validity bond
+    await expect(page).toClick("[data-testid='collectMarketCreatorFees-" + scalarMarket.id + "']", { timeout: SMALL_TIMEOUT });
+    // check that outstanding returns go away;
     await expect(page).not.toMatchElement("[data-testid='unclaimedCreatorFees-" + scalarMarket.id + "']", { text: validityBond, timeout: BIG_TIMEOUT });
   });
 
