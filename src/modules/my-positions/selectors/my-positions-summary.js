@@ -21,7 +21,9 @@ export const generateOutcomePositionSummary = memoize((adjustedPosition) => {
   const unrealized = accumulate(adjustedPosition, 'unrealizedProfitLoss')
   // todo: check if this calculation is correct for UI
   const averagePrice = accumulate(adjustedPosition, 'averagePrice')
-  const isClosable = !!createBigNumber(qtyShares || netPosition || '0').toNumber() // Based on position, can we attempt to close this position
+  // use qtyShares if it's not 0 or netPosition if it's not 0, otherwise default to 0.
+  const sharesValueToUse = (!qtyShares.eq(0) && qtyShares) || (!netPosition.eq(0) && netPosition) || '0'
+  const isClosable = !!createBigNumber(sharesValueToUse).toNumber() // Based on position, can we attempt to close this position
 
   const marketId = Array.isArray(adjustedPosition) && adjustedPosition.length > 0 ? adjustedPosition[outcomePositions-1].marketId : null
   const outcomeId = Array.isArray(adjustedPosition) && adjustedPosition.length > 0 ? adjustedPosition[outcomePositions-1].outcome : null
