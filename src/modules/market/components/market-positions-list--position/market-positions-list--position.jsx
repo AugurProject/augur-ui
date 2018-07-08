@@ -120,7 +120,7 @@ export default class MarketPositionsListPosition extends Component {
       message = 'Positions cannot be closed while orders are pending.'
     } else if (!message && s.showConfirm && isClosable && s.closeOutcomeName === position.name) {
       cancelOnly = false
-      message = `Close position by ${getValue(position, 'qtyShares.value') > 0 ? 'selling' : 'buying back'} ${positionShares.replace('-', '')} shares ${outcomeName ? `of "${outcomeName}"` : ''} at market price?`
+      message = `Close position by ${getValue(position, 'netPosition.value') > 0 ? 'selling' : 'buying back'} ${netPositionShares.replace('-', '')} shares ${outcomeName ? `of "${outcomeName}"` : ''} at market price?`
     }
 
     return (
