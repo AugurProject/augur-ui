@@ -110,6 +110,7 @@ export default class MarketPositionsListPosition extends Component {
       height: s.confirmHeight,
       marginTop: s.confirmMargin,
     }
+    const netPositionShares = getValue(position, 'netPosition.formatted')
     const positionShares = getValue(position, 'qtyShares.formatted')
     const isClosable = getValue(position, 'isClosable')
 
@@ -134,6 +135,9 @@ export default class MarketPositionsListPosition extends Component {
           { outcomeName || getValue(position, 'purchasePrice.formatted')}
         </li>
         <li>
+          { netPositionShares }
+        </li>
+        <li>
           { positionShares }
         </li>
         <li>
@@ -152,7 +156,7 @@ export default class MarketPositionsListPosition extends Component {
           </li>
         }
         <li>
-          {positionShares !== '0' ?
+          {positionShares !== '0' || netPositionShares !== '0' ?
             <button onClick={this.toggleConfirm}>Close</button> :
             <span className={Styles.NotActive}>Close</span>
           }

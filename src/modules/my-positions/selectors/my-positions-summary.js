@@ -15,12 +15,13 @@ export const generateOutcomePositionSummary = memoize((adjustedPosition) => {
     return null
   }
   const outcomePositions = Array.isArray(adjustedPosition) ? adjustedPosition.length : 1
-  const qtyShares = accumulate(adjustedPosition, 'numSharesAdjusted')
+  const netPosition = accumulate(adjustedPosition, 'numSharesAdjustedForUserIntention')
+  const qtyShares = accumulate(adjustedPosition, 'numShares')
   const realized = accumulate(adjustedPosition, 'realizedProfitLoss')
   const unrealized = accumulate(adjustedPosition, 'unrealizedProfitLoss')
   // todo: check if this calculation is correct for UI
   const averagePrice = accumulate(adjustedPosition, 'averagePrice')
-  const isClosable = !!createBigNumber(qtyShares || '0').toNumber() // Based on position, can we attempt to close this position
+  const isClosable = !!createBigNumber(qtyShares || netPosition || '0').toNumber() // Based on position, can we attempt to close this position
 
   const marketId = Array.isArray(adjustedPosition) && adjustedPosition.length > 0 ? adjustedPosition[outcomePositions-1].marketId : null
   const outcomeId = Array.isArray(adjustedPosition) && adjustedPosition.length > 0 ? adjustedPosition[outcomePositions-1].outcome : null
@@ -29,7 +30,7 @@ export const generateOutcomePositionSummary = memoize((adjustedPosition) => {
     // if in case of multiple positions for same outcome use the last one, marketId and outcome will be the same
     marketId,
     outcomeId,
-    ...generatePositionsSummary(outcomePositions, qtyShares, averagePrice, realized, unrealized),
+    ...generatePositionsSummary(outcomePositions, netPosition, qtyShares, averagePrice, realized, unrealized),
     isClosable,
     closePosition: (marketId, outcomeId) => {
       store.dispatch(closePosition(marketId, outcomeId))
@@ -44,26 +45,28 @@ export const generateMarketsPositionsSummary = memoize((markets) => {
   let qtyShares = ZERO
   let totalRealizedNet = ZERO
   let totalUnrealizedNet = ZERO
+  let netPosition = ZERO
   const positionOutcomes = []
   markets.forEach((market) => {
     market.outcomes.forEach((outcome) => {
       if (!outcome || !outcome.position || !outcome.position.numPositions || !outcome.position.numPositions.value) {
         return
       }
+      netPosition = netPosition.plus(createBigNumber(outcome.position.netPosition.value, 10))
       qtyShares = qtyShares.plus(createBigNumber(outcome.position.qtyShares.value, 10))
       totalRealizedNet = totalRealizedNet.plus(createBigNumber(outcome.position.realizedNet.value, 10))
       totalUnrealizedNet = totalUnrealizedNet.plus(createBigNumber(outcome.position.unrealizedNet.value, 10))
       positionOutcomes.push(outcome)
     })
   })
-  const positionsSummary = generatePositionsSummary(positionOutcomes.length, qtyShares, 0, totalRealizedNet, totalUnrealizedNet)
+  const positionsSummary = generatePositionsSummary(positionOutcomes.length, netPosition, qtyShares, 0, totalRealizedNet, totalUnrealizedNet)
   return {
     ...positionsSummary,
     positionOutcomes,
   }
 }, { max: 50 })
 
-export const generatePositionsSummary = memoize((numPositions, qtyShares, meanTradePrice, realizedNet, unrealizedNet) => {
+export const generatePositionsSummary = memoize((numPositions, netPosition, qtyShares, meanTradePrice, realizedNet, unrealizedNet) => {
   const totalNet = createBigNumber(realizedNet, 10).plus(createBigNumber(unrealizedNet, 10))
   return {
     numPositions: formatNumber(numPositions, {
@@ -73,6 +76,7 @@ export const generatePositionsSummary = memoize((numPositions, qtyShares, meanTr
       positiveSign: false,
       zeroStyled: false,
     }),
+    netPosition: formatShares(netPosition),
     qtyShares: formatShares(qtyShares),
     purchasePrice: formatEther(meanTradePrice),
     realizedNet: formatEther(realizedNet),
