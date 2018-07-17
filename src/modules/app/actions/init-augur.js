@@ -179,14 +179,14 @@ export function initAugur(history, overrides, callback = logError) {
     env.useWeb3Transport = overrides.useWeb3Transport
 
     if (windowRef.localStorage && windowRef.localStorage.getItem) {
-      env['augur-node'] = windowRef.localStorage.getItem('augur-node') || env['augur-node']
-      env['ethereum-node'].http = windowRef.localStorage.getItem('ethereum-node-http') || env['ethereum-node'].http
-      env['ethereum-node'].ws = windowRef.localStorage.getItem('ethereum-node-ws') || env['ethereum-node'].ws
+      env['augur-node'] = env['augur-node'] || windowRef.localStorage.getItem('augur-node')
+      env['ethereum-node'].http = env['ethereum-node'].http || windowRef.localStorage.getItem('ethereum-node-http')
+      env['ethereum-node'].ws = env['ethereum-node'].ws || windowRef.localStorage.getItem('ethereum-node-ws')
     }
 
-    env['augur-node'] = overrides.augur_node === undefined ? env['augur-node'] : overrides.augur_node
-    env['ethereum-node'].http = overrides.ethereum_node_http === undefined ? env['ethereum-node'].http : overrides.ethereum_node_http
-    env['ethereum-node'].ws = overrides.ethereum_node_ws === undefined ? env['ethereum-node'].ws : overrides.ethereum_node_ws
+    env['augur-node'] = !overrides.augur_node ? env['augur-node'] : overrides.augur_node
+    env['ethereum-node'].http = !overrides.ethereum_node_http ? env['ethereum-node'].http : overrides.ethereum_node_http
+    env['ethereum-node'].ws = !overrides.ethereum_node_ws ? env['ethereum-node'].ws : overrides.ethereum_node_ws
 
     if (windowRef.localStorage && windowRef.localStorage.setItem) {
       windowRef.localStorage.setItem('augur-node', env['augur-node'])
