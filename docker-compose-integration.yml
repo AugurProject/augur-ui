@@ -1,0 +1,33 @@
+version: "3.6"
+services:
+  augur-ui:
+    image: augur-ui-integration-test
+    build:
+      context: .
+      dockerfile: Dockerfile-integration
+      shm_size: '1gb'
+      cache_from:
+        - augur-ui-integration-test
+    depends_on:
+      - augur-node-service
+    entrypoint: /app/wait-for-url.sh http://augur-node-service:9001/status/sync yarn start
+
+  test-runner:
+    image: augur-ui-integration-test
+    links:
+      - geth
+      - augur-node-service
+      - augur-ui
+    depends_on:
+      - augur-ui
+    environment:
+      - AUGUR_WS=ws://augur-node-service:9001
+      - AUGUR_URL=http://augur-ui:8080/
+      - ETHEREUM_HTTP=http://geth:8545
+      - ETHEREUM_WS=ws://geth:8546
+      - JEST_PUPPETEER_CONFIG=jest-puppeteer.config.ci.js
+    cap_add:
+      - SYS_ADMIN
+    entrypoint: /app/wait-for-url.sh http://augur-ui:8080/ npx jest --forceExit
+
+

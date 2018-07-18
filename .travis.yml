@@ -8,6 +8,13 @@ cache:
     - node_modules
 services:
   - docker
+before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  - sudo sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
 branches:
   only:
     - master
@@ -27,14 +34,14 @@ addons:
       - g++-4.8
       - build-essential
       - libusb-1.0-0-dev
-script:
-  - yarn lint && yarn test;
-  - NODE_ENV='test' node ./node_modules/nyc/bin/nyc.js ./node_modules/mocha/bin/_mocha --timeout 10000 --require babel-register && node ./node_modules/nyc/bin/nyc.js report --require babel-register --reporter=lcov && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
-  # This is here to confirm the build works.
-  # Nothing is done with the resulting artifacts.
-  - yarn build --dev
+script: skip
 jobs:
   include:
+  - stage: Integration tests
+    script:
+      - yarn
+      - yarn docker:integration:build
+      - yarn docker:integration:all
   - stage: Deploy to stable
     if: branch = stable
     node_js: '8'

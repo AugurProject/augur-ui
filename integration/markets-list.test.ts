@@ -1,5 +1,4 @@
 import "jest-environment-puppeteer";
-import Flash from "./helpers/flash";
 import {dismissDisclaimerModal} from "./helpers/dismiss-disclaimer-modal";
 import { ElementHandle } from "puppeteer";
 import { createYesNoMarket, createScalarMarket } from './helpers/create-markets'
@@ -68,7 +67,7 @@ describe("Markets List", () => {
 
   describe("Filtering", () => {
     beforeEach(async () => {
-      await page.goto(url + "#/markets?category=politics"); // click sometimes fails because of page rerenders
+      await page.goto(url + "#/markets?category=politics", { waitUntil: "networkidle0" }); // click sometimes fails because of page rerenders
     });
 
     it("should display both submenu bars", async () => {
@@ -103,7 +102,7 @@ describe("Markets List", () => {
 
   describe("Search", () => {
     beforeEach(async () => {
-      await page.goto(url + "#/markets");
+      await page.goto(url + "#/markets", { waitUntil: "networkidle0" });
     });
 
     it("should filter markets to show only ones with searched keyword", async () => {
@@ -129,6 +128,8 @@ describe("Markets List", () => {
       await checkNumElements(true, 2)
 
       // check that expected titles are present
+      // The tether market has a dynamic date in the title which is why it is truncated here.
+      // @todo Use regex to match tether title.
       const expectedMarketTitles = ["Will Ethereum trade at $2000 or higher at any time before the end of 2018?", "Millions of Tether tokens issued on "]
       await checkMarketNames(expectedMarketTitles)
 
