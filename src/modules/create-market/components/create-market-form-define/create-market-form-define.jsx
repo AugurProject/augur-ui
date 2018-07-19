@@ -42,8 +42,8 @@ export default class CreateMarketDefine extends Component {
 
   filterCategories(category) {
     const { categories } = this.props
-    const userString = category.toLowerCase()
-    return categories.filter(cat => cat.category.toLowerCase().indexOf(userString) === 0)
+    const userString = category.toUpperCase()
+    return categories.filter(cat => cat.category.toUpperCase().indexOf(userString) === 0)
   }
 
   updateFilteredCategories(userString, clearSuggestions = false) {
@@ -156,10 +156,10 @@ export default class CreateMarketDefine extends Component {
             id="cm__input--cat"
             className={classNames({ [`${StylesForm['CreateMarketForm__error--field']}`]: newMarket.validations[newMarket.currentStep].category.length })}
             type="text"
-            value={s.localValues.category}
+            value={s.localValues.category.toUpperCase()}
             maxLength={TAGS_MAX_LENGTH}
             placeholder="Help users find your market by defining its category"
-            onChange={(e) => { this.updateFilteredCategories(e.target.value); this.validateTag('category', e.target.value, TAGS_MAX_LENGTH) }}
+            onChange={(e) => { this.updateFilteredCategories(e.target.value.toUpperCase()); this.validateTag('category', e.target.value.toUpperCase(), TAGS_MAX_LENGTH) }}
             onKeyPress={e => keyPressed(e)}
           />
           { newMarket.validations[newMarket.currentStep].category.length &&
@@ -201,20 +201,20 @@ export default class CreateMarketDefine extends Component {
             id="cm__input--tag1"
             type="text"
             className={classNames({ [`${StylesForm['CreateMarketForm__error--field']}`]: newMarket.validations[newMarket.currentStep].tag1.length })}
-            value={s.localValues.tag1}
+            value={s.localValues.tag1.toUpperCase()}
             maxLength={TAGS_MAX_LENGTH}
             placeholder="Tag 1"
-            onChange={e => this.validateTag('tag1', e.target.value, TAGS_MAX_LENGTH, false)}
+            onChange={e => this.validateTag('tag1', e.target.value.toUpperCase(), TAGS_MAX_LENGTH, false)}
             onKeyPress={e => keyPressed(e)}
           />
           <input
             id="cm__input--tag2"
             type="text"
             className={classNames({ [`${StylesForm['CreateMarketForm__error--field']}`]: newMarket.validations[newMarket.currentStep].tag2.length })}
-            value={s.localValues.tag2}
+            value={s.localValues.tag2.toUpperCase()}
             maxLength={TAGS_MAX_LENGTH}
             placeholder="Tag 2"
-            onChange={e => this.validateTag('tag2', e.target.value, TAGS_MAX_LENGTH, false)}
+            onChange={e => this.validateTag('tag2', e.target.value.toUpperCase(), TAGS_MAX_LENGTH, false)}
             onKeyPress={e => keyPressed(e)}
           />
         </li>
