@@ -3,8 +3,9 @@ import { augur } from 'services/augurjs'
 import { loadAccountData } from 'modules/auth/actions/load-account-data'
 import { updateIsLogged } from 'modules/auth/actions/update-is-logged'
 import { clearLoginAccount } from 'modules/auth/actions/update-login-account'
+import { doPollForEscapeHatch } from 'modules/app/actions/init-augur'
 
-export const updateIsLoggedAndLoadAccountData = (unlockedAddress, accountType) => (dispatch) => {
+export const updateIsLoggedAndLoadAccountData = (unlockedAddress, accountType) => (dispatch, getState) => {
   augur.rpc.clear() // clear ethrpc transaction history, registered callbacks, and notifications
   dispatch(clearLoginAccount()) // clear the loginAccount data in local state
   const displayAddress = toChecksumAddress(unlockedAddress)
@@ -16,4 +17,5 @@ export const updateIsLoggedAndLoadAccountData = (unlockedAddress, accountType) =
   }
   dispatch(updateIsLogged(true))
   dispatch(loadAccountData(loginAccount))
+  dispatch(doPollForEscapeHatch(dispatch, getState))
 }
