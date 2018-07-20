@@ -12,7 +12,6 @@ describe(`modules/auth/actions/update-is-logged-and-load-account-data.js`, () =>
     const store = mockStore(t.state)
     const AugurJS = { augur: { rpc: { clear: () => {} } } }
     const LoadAccountData = { loadAccountData: () => {} }
-    const DoPollForEscapeHatch = { doPollForEscapeHatch: () => {} }
     const action = proxyquire('../../../src/modules/auth/actions/update-is-logged-and-load-account-data.js', {
       '../../../services/augurjs': AugurJS,
       './load-account-data': LoadAccountData,
@@ -20,7 +19,6 @@ describe(`modules/auth/actions/update-is-logged-and-load-account-data.js`, () =>
     sinon.stub(AugurJS.augur.rpc, 'clear').callsFake(() => store.dispatch({ type: 'AUGURJS_RPC_CLEAR' }))
     sinon.stub(LoadAccountData, 'loadAccountData').callsFake(account => ({ type: 'LOAD_ACCOUNT_DATA', account }))
     sinon.stub(DoPollForEscapeHatch, 'doPollForEscapeHatch').returns({ type: 'POLL_ESCAPE_HATCH' })
-    store.dispatch(action.updateIsLoggedAndLoadAccountData(t.params.unlockedAddress, t.params.accountType))
     t.assertions(store.getActions())
     store.clearActions()
   })
