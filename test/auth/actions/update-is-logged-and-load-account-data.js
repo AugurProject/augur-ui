@@ -18,7 +18,7 @@ describe(`modules/auth/actions/update-is-logged-and-load-account-data.js`, () =>
     })
     sinon.stub(AugurJS.augur.rpc, 'clear').callsFake(() => store.dispatch({ type: 'AUGURJS_RPC_CLEAR' }))
     sinon.stub(LoadAccountData, 'loadAccountData').callsFake(account => ({ type: 'LOAD_ACCOUNT_DATA', account }))
-    store.dispatch(action.updateIsLoggedAndLoadAccountData(t.params.unlockedAddress, t.params.accountType))
+    sinon.stub(DoPollForEscapeHatch, 'doPollForEscapeHatch').returns({ type: 'POLL_ESCAPE_HATCH' })
     t.assertions(store.getActions())
     store.clearActions()
   })
