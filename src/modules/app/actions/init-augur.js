@@ -56,16 +56,31 @@ function pollForAccount(dispatch, getState) {
 }
 
 function loadAccount(dispatch, existing, env, callback) {
+  let loggedInAccount = null
+
+  if (windowRef.localStorage && windowRef.localStorage.getItem) {
+    loggedInAccount = windowRef.localStorage.getItem('loggedInAccount')
+  }
   AugurJS.augur.rpc.eth.accounts((err, accounts) => {
     if (err) return callback(err)
     let account = existing
+
     if (existing !== accounts[0]) {
       account = accounts[0]
       if (account && (env.useWeb3Transport || process.env.AUTO_LOGIN)) {
         dispatch(useUnlockedAccount(account))
+      } else if (loggedInAccount && accounts.includes(loggedInAccount)) {
+        dispatch(useUnlockedAccount(loggedInAccount))
       } else {
         dispatch(logout())
       }
+
+      if (loggedInAccount && account !== loggedInAccount) {
+        dispatch(logout())
+      }
+    }
+    if (!existing && loggedInAccount && accounts.includes(loggedInAccount)) {
+      dispatch(useUnlockedAccount(loggedInAccount))
     }
     callback(null, account)
   })
