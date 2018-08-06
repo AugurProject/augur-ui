@@ -14,6 +14,7 @@ import { CATEGORICAL } from 'modules/markets/constants/market-types'
 import { TRANSACTIONS } from 'modules/routes/constants/views'
 import { buildCreateMarket } from 'modules/create-market/helpers/build-create-market'
 import { sortOrders } from 'modules/create-market/helpers/liquidity'
+import { saveLiquidity, startOrderSending } from 'modules/create-market/actions/liquidity-management'
 
 export function submitNewMarket(newMarket, history, callback = noop) {
   return (dispatch, getState) => {
@@ -35,51 +36,53 @@ export function submitNewMarket(newMarket, history, callback = noop) {
         },
         onSuccess: (res) => {
           const marketId = res.callReturn
-
+          console.log('Success!', newMarket.orderBook, marketId);
           if (hasOrders) {
-            eachOfSeries(Object.keys(newMarket.orderBook), (outcome, index, seriesCB) => {
-              // Set the limit for simultaneous async calls to 1 so orders will have to be signed in order, one at a time.
-              // (This is done so the gas cost doesn't increase as orders are created, due to having to traverse the
-              // order book and insert each order in the appropriate spot.)
-              eachLimit(newMarket.orderBook[outcome], 1, (order, orderCB) => {
-                const outcomeId = newMarket.type === CATEGORICAL ? index : 1 // NOTE -- Both Scalar + Binary only trade against one outcome, that of outcomeId 1
-                const orderType = order.type === BID ? 0 : 1
-                const numTicks = formattedNewMarket.tickSize ? (newMarket.scalarBigNum - newMarket.scalarSmallNum) / newMarket.tickSize : augur.constants.DEFAULT_NUM_TICKS[2]
-                const tradeCost = augur.trading.calculateTradeCost({
-                  displayPrice: order.price,
-                  displayAmount: order.quantity,
-                  sharesProvided: '0',
-                  numTicks,
-                  orderType,
-                  minDisplayPrice: newMarket.scalarSmallNum || 0,
-                  maxDisplayPrice: newMarket.scalarBigNum || 1,
-                })
-                const { onChainAmount, onChainPrice, cost } = tradeCost
-                augur.api.CreateOrder.publicCreateOrder({
-                  meta: loginAccount.meta,
-                  tx: { value: augur.utils.convertBigNumberToHexString(cost) },
-                  _type: orderType,
-                  _attoshares: augur.utils.convertBigNumberToHexString(onChainAmount),
-                  _displayPrice: augur.utils.convertBigNumberToHexString(onChainPrice),
-                  _market: marketId,
-                  _outcome: outcomeId,
-                  _tradeGroupId: augur.trading.generateTradeGroupId(),
-                  onSent: (res) => {
-                    orderCB()
-                  },
-                  onSuccess: noop,
-                  onFailed: (err) => {
-                    console.error('ERROR creating order in initial market liquidity: ', err)
-                    orderCB()
-                  },
-                })
-              }, (err) => {
-                if (err !== null) console.error('ERROR: ', err)
-                seriesCB()
-              })
-            }, (err) => {
-              if (err !== null) console.error('ERROR: ', err)
-            })
+            dispatch(saveLiquidity(newMarket.orderBook, marketId))
+            
+            // eachOfSeries(Object.keys(newMarket.orderBook), (outcome, index, seriesCB) => {
+            //   // Set the limit for simultaneous async calls to 1 so orders will have to be signed in order, one at a time.
+            //   // (This is done so the gas cost doesn't increase as orders are created, due to having to traverse the
+            //   // order book and insert each order in the appropriate spot.)
+            //   eachLimit(newMarket.orderBook[outcome], 1, (order, orderCB) => {
+            //     const outcomeId = newMarket.type === CATEGORICAL ? index : 1 // NOTE -- Both Scalar + Binary only trade against one outcome, that of outcomeId 1
+            //     const orderType = order.type === BID ? 0 : 1
+            //     const numTicks = formattedNewMarket.tickSize ? (newMarket.scalarBigNum - newMarket.scalarSmallNum) / newMarket.tickSize : augur.constants.DEFAULT_NUM_TICKS[2]
+            //     const tradeCost = augur.trading.calculateTradeCost({
+            //       displayPrice: order.price,
+            //       displayAmount: order.quantity,
+            //       sharesProvided: '0',
+            //       numTicks,
+            //       orderType,
+            //       minDisplayPrice: newMarket.scalarSmallNum || 0,
+            //       maxDisplayPrice: newMarket.scalarBigNum || 1,
+            //     })
+            //     const { onChainAmount, onChainPrice, cost } = tradeCost
+            //     augur.api.CreateOrder.publicCreateOrder({
+            //       meta: loginAccount.meta,
+            //       tx: { value: augur.utils.convertBigNumberToHexString(cost) },
+            //       _type: orderType,
+            //       _attoshares: augur.utils.convertBigNumberToHexString(onChainAmount),
+            //       _displayPrice: augur.utils.convertBigNumberToHexString(onChainPrice),
+            //       _market: marketId,
+            //       _outcome: outcomeId,
+            //       _tradeGroupId: augur.trading.generateTradeGroupId(),
+            //       onSent: (res) => {
+            //         orderCB()
+            //       },
+            //       onSuccess: noop,
+            //       onFailed: (err) => {
+            //         console.error('ERROR creating order in initial market liquidity: ', err)
+            //         orderCB()
+            //       },
+            //     })
+            //   }, (err) => {
+            //     if (err !== null) console.error('ERROR: ', err)
+            //     seriesCB()
+            //   })
+            // }, (err) => {
+            //   if (err !== null) console.error('ERROR: ', err)
+            // })
           }
           if (callback) callback(null, marketId)
         },
