@@ -27,7 +27,7 @@ const localStorageMiddleware = store => next => (action) => {
   }
   if (windowRef.localStorage && windowRef.localStorage.setItem) {
     windowRef.localStorage.setItem(state.loginAccount.address, JSON.stringify({
-      ...JSON.parse(windowRef.localStorage.getItem(state.loginAccount.address)),
+      pendingLiquidityOrders: state.pendingLiquidityOrders,
       scalarMarketsShareDenomination: state.scalarMarketsShareDenomination,
       favorites: state.favorites,
       reports: state.reports,

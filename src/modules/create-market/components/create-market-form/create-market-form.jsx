@@ -200,11 +200,11 @@ export default class CreateMarketForm extends Component {
     switch (newMarket.type) {
       case CATEGORICAL:
         newMarket.outcomes.forEach((outcomeName, index) => {
-          if (this.state.selectedOutcome === outcomeName) outcome = index
+          if (order.selectedOutcome === outcomeName) outcome = index
         })
         break
       case SCALAR:
-        outcome = this.state.selectedOutcome
+        outcome = order.selectedOutcome
         break
       default:
         outcome = 1
