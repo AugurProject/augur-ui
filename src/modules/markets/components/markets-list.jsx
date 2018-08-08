@@ -94,6 +94,7 @@ export default class MarketsList extends Component {
       showPagination,
       toggleFavorite,
       testid,
+      pendingLiquidityOrders,
     } = this.props
     const s = this.state
 
@@ -105,7 +106,7 @@ export default class MarketsList extends Component {
           [...Array(s.boundedLength)].map((unused, i) => {
             const id = filteredMarkets[(s.lowerBound - 1) + i]
             const market = markets.find(market => market.id === id)
-
+            
             if (market && market.id) {
               return (
                 <MarketPreview
@@ -120,6 +121,7 @@ export default class MarketsList extends Component {
                   linkType={TYPE_TRADE}
                   id={market.id}
                   testid={testid}
+                  pendingLiquidityOrders={pendingLiquidityOrders}
                 />
               )
             }

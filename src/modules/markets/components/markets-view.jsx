@@ -80,6 +80,7 @@ export default class MarketsView extends Component {
       location,
       markets,
       toggleFavorite,
+      pendingLiquidityOrders,
     } = this.props
     const s = this.state
 

@@ -1,0 +1,45 @@
+@import (reference) '~assets/styles/shared';
+
+.MarketLiquidity__container {
+  background-color: @color-yellow-alert;
+  padding: 1rem 2rem;
+}
+
+.MarketLiquidity__container-hidden {
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.MarketLiquidity__heading {
+  align-content: space-between;
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+
+  > h1 {
+    &:extend(.caps--small all);
+
+    flex: 1;
+    margin: 0;
+    text-align: left;
+  }
+
+  > span {
+    transition: transform 0.3s ease;
+
+    &.is-open {
+      transform: rotate(-180deg);
+    }
+
+    > svg {
+      stroke: @color-darkpurple;
+      width: 1.5rem;
+    }
+  }
+}
+
+.MarketLiquidity__tableContainer {
+  
+}
