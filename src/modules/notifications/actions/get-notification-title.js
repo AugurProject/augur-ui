@@ -1,4 +1,4 @@
-export function getNotificationTitle(notification) {
+export default function getNotificationTitle(notification) {
   let titleString
   switch (notification.type.toUpperCase()) {
     case 'CREATEMARKET':
