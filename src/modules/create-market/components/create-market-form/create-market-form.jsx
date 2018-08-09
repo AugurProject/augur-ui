@@ -198,16 +198,17 @@ export default class CreateMarketForm extends Component {
     let initialLiquidityGas
 
     switch (newMarket.type) {
-      case CATEGORICAL:
+      case CATEGORICAL: {
         newMarket.outcomes.forEach((outcomeName, index) => {
           if (order.outcome === outcomeName) outcome = index
         })
-        break
-      case SCALAR:
-        outcome = order.outcome
-        break
-      default:
+      }
+      case SCALAR: {
+        ({ outcome } = order)
+      }
+      default: {
         outcome = 1
+      }
     }
 
     const orderInfo = {
