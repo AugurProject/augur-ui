@@ -2,7 +2,7 @@
 
 .MarketLiquidity__container {
   background-color: @color-yellow-alert;
-  padding: 1rem 2rem;
+  padding: .25rem;
 }
 
 .MarketLiquidity__container-hidden {
@@ -17,6 +17,7 @@
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
+  padding: 1rem 2rem;
 
   > h1 {
     &:extend(.caps--small all);
@@ -40,6 +41,124 @@
   }
 }
 
-.MarketLiquidity__tableContainer {
+.MarketLiquidity__TableHeader {
+  &:extend(.caps--small);
+
+  color: @color-darkpurple;
+  display: table-header-group;
+  font-weight: 500;
+
+  &:first-child > li {
+    padding-top: 0;
+  }
+
+  > li {
+    display: table-cell;
+    padding: 2rem 0 0.625rem;
+    text-align: left;
+
+    &:first-child {
+      padding-left: 2rem;
+    }
+
+    &:last-child {
+      text-align: center;
+    }
+  }
+}
+
+.MarketLiquidity__TableWrapper {
+  display: table;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.MarketLiquidity__ExtendedContainer {
+  background-color: @color-yellow-washed;
+  padding: 1rem 2rem;
+
+  > h1 {
+    &:extend(.caps--large all);
+
+    color: @color-darkpurple;
+  }
+}
+
+.MarketLiquidity__ExtendedContainer-outcomeSelectContainer {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 20rem;
+  margin-bottom: 1.5rem;
+
+  > label {
+    color: @color-darkpurple;
+  }
+}
+
+.MarketLiquidity__costs {
+  display: table-row-group;
+}
+
+.MarketLiquidity__ExtendedContainer-estGas {
+  display: table-row;
   
+  > li {
+    padding: 2rem 1rem 0.5rem 0;
+    display: table-cell;
+    text-align: right;
+  }
+
+  > li:last-child {
+    padding-right: 0;
+  }
+}
+
+.MarketLiquidity__ExtendedContainer-totalCost {
+  display: table-row;
+  
+  > li {
+    padding: 0.5rem 1rem 0;
+    display: table-cell;
+    font-weight: 500;
+    text-align: right;
+  }
+
+  > li:last-child {
+    padding-right: 0;
+  }
+}
+
+.MarketLiquidity__submit-container {
+  display: flex;
+  flex-flow: row-reverse nowrap;
+}
+
+.MarketLiquidity__submit {
+  &:extend(.button--purple all);
+
+  &.disabled {
+    &:extend(.button--purple--disabled);
+
+    pointer-events: none;
+  }
+}
+
+
+@media @breakpoint-mobile {
+  .MarketLiquidity__TableHeader {
+    > li {
+      display: table-cell;
+      padding: 1rem 0 0.625rem;
+      text-align: right;
+
+      &:first-child {
+        padding-left: 0.75rem;
+        text-align: left;
+      }
+
+      &:last-child {
+        padding-right: 0.5rem;
+      }
+    }
+  }
 }
