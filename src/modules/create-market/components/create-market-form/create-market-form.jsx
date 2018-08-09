@@ -203,9 +203,11 @@ export default class CreateMarketForm extends Component {
           if (order.outcome === outcomeName) outcome = index
         })
       }
+      break
       case SCALAR: {
         ({ outcome } = order)
       }
+      break
       default: {
         outcome = 1
       }
