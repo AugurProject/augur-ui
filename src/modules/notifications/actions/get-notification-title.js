@@ -1,54 +1,47 @@
 export default function getNotificationTitle(notification) {
   let titleString
+  console.log('NOTIFICATION: ', notification)
   switch (notification.type.toUpperCase()) {
-    case 'CREATEMARKET':
-    case 'CREATEYESNOMARKET':
+    case 'CREATEMARKET': // Not tested
     case 'CREATECATEGORICALMARKET':
     case 'CREATESCALARMARKET':
-      titleString = 'Create new market ' + notification._description
+    case 'CREATEYESNOMARKET':
+      titleString = 'Create new market "' + notification._description + '"'
       break
-    case 'CREATEORDER':
-    case 'PUBLICCREATEORDER':
-    case 'PUBLICTRADE': // TBD
-    case 'PUBLICTRADEWITHLIMIT': // TBD
-      titleString = 'Place order for X shares(s) of [outcomeName] at Y ETH'
+    case 'CREATEORDER': // Not tested
+    case 'PUBLICCREATEORDER': // TODO: Look up outcome name
+      titleString = 'Create order for ' + parseInt(notification._attoshares, 16) + ' share unit(s) of "' + parseInt(notification._outcome, 16) + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
       break
-    case 'FILLORDER':
-    case 'PUBLICFILLBESTORDER':
-    case 'PUBLICFILLBESTORDERWITHLIMIT':
-    case 'PUBLICFILLORDER':
-      titleString = 'Fill order for X shares(s) of [outcomeName] at Y ETH'
+    case 'PUBLICTRADE': // Not tested
+    case 'PUBLICTRADEWITHLIMIT': // TODO: Look up outcome name
+      titleString = 'Place order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + parseInt(notification._outcome, 16) + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
       break
+    case 'FILLORDER': // Not tested
+    case 'PUBLICFILLBESTORDER': // Not tested
+    case 'PUBLICFILLORDER': // Not tested
+    case 'PUBLICFILLBESTORDERWITHLIMIT': // TODO: Look up outcome name
+      titleString = 'Fill order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + parseInt(notification._outcome, 16) + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
+      break
+    case 'CANCELORDER': // TODO: Look up share units, outcome name, and price
+      titleString = 'Cancel order for X share unit(s) of [outcomeName] at Y ETH'
+      break
+    case 'DOINITIALREPORT': // TODO: Look up market name
+      titleString = 'Submit report on "' + notification.marketName + "'"
+      break
+    case 'CONTRIBUTE': // TODO: Look up outcome name
+      titleString = 'Place ' + notification._amount + ' REP on [outcomeName] dispute bond'
+      break
+    case 'BUYPARTICIPATIONTOKENS': // Not tested
     case 'BUY':
-    case 'PUBLICBUY':
-    case 'PUBLICBUYWITHLIMIT':
-      titleString = 'Buy X share(s) of [outcomeName] at Y ETH'
+      titleString = 'Purchase ' + (notification._attotokens / 1000000000000000000) + ' Participation Token(s)'
       break
-    case 'PUBLICSELL':
-    case 'PUBLICSELLWITHLIMIT':
-      titleString = 'Sell X share(s) of [outcomeName] at Y ETH'
+    case 'SENDETHER':
+      titleString = 'Send ' + notification.etherToSend + ' ETH to ' + notification.to
       break
-    case 'CANCELORDER':
-      titleString = 'Cancel order for X share(s) of [outcomeName] at Y ETH'
+    case 'SENDREPUTATION': // Not tested
+      titleString = 'Send ' + notification.reputationToSend + ' ETH to ' + notification.to
       break
-    case 'BUYCOMPLETESETS':
-    case 'PUBLICBUYCOMPLETESETS':
-    case 'PUBLICBUYCOMPLETESETSWITHCASH':
-      titleString = 'Buy X complete sets for Y ETH'
-      break
-    case 'PUBLICSELLCOMPLETESETS':
-    case 'PUBLICSELLCOMPLETESETSWITHCASH':
-      titleString = 'Sell X complete sets for Y ETH'
-      break
-    case 'DOINITIALREPORT':
-      titleString = 'Submit report on "[marketName]"'
-      break
-    case 'CONTRIBUTE':
-      titleString = 'Place X REP on [outcomeName] dispute bond'
-      break
-    case 'BUYPARTICIPATIONTOKENS':
-      titleString = 'Purchase X Participation Tokens'
-      break
+
     case 'FINALIZE':
       titleString = 'Finalize market "[marketName]"'
       break
@@ -93,7 +86,27 @@ export default function getNotificationTitle(notification) {
     case 'WITHDRAWTOKENS':
       titleString = 'Withdraw X tokens'
       break
-    // TODO
+
+    // To test?
+    case 'PUBLICBUY': // Not tested
+    case 'PUBLICBUYWITHLIMIT': // Not tested
+      titleString = 'Buy X share(s) of [outcomeName] at Y ETH'
+      break
+    case 'PUBLICSELL': // Not tested
+    case 'PUBLICSELLWITHLIMIT': // Not tested
+      titleString = 'Sell X share(s) of [outcomeName] at Y ETH'
+      break
+    case 'BUYCOMPLETESETS': // Not tested
+    case 'PUBLICBUYCOMPLETESETS': // Not tested
+    case 'PUBLICBUYCOMPLETESETSWITHCASH': // Not tested
+      titleString = 'Buy X complete sets for Y ETH'
+      break
+    case 'PUBLICSELLCOMPLETESETS': // Not tested
+    case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not tested
+      titleString = 'Sell X complete sets for Y ETH'
+      break
+
+    // Create text?
     case 'APPROVE':
     case 'APPROVESPENDERS':
     case 'CREATEUNIVERSE':

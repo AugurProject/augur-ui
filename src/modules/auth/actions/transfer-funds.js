@@ -23,8 +23,11 @@ export function transferFunds(amount, currency, toAddress) {
             dispatch(addNotification({
               id: tx.hash,
               status: 'Pending',
+              etherToSend: amount,
+              to,
               title: `Transfer ${amount} ETH to ${trimString(to)}`,
               timestamp: selectCurrentTimestampInSeconds(getState()),
+              type: 'sendEther',
             }))
           },
           onSuccess: (tx) => {
@@ -50,8 +53,11 @@ export function transferFunds(amount, currency, toAddress) {
             dispatch(addNotification({
               id: `REP-${tx.hash}`,
               status: 'Pending',
+              amount,
+              reputationToSend: amount,
               title: `Transfer ${amount} REP -> ${trimString(to)}`,
               timestamp: selectCurrentTimestampInSeconds(getState()),
+              type: 'sendReputation',
             }))
           },
           onSuccess: (tx) => {
