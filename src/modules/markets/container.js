@@ -21,7 +21,7 @@ const mapStateToProps = (state, { location }) => {
   } = getSelectedTagsAndCategoriesFromLocation(location)
 
   const searchPhrase = buildSearchString(keywords, tags)
-  
+
   return {
     isLogged: state.isLogged,
     universe: (state.universe || {}).id,

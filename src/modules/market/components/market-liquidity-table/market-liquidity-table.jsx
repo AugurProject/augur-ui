@@ -32,6 +32,7 @@ const MarketLiquidityTable = (p) => {
                 onClick={e => removeOrderFromNewMarket({
                   outcome: selectedOutcome,
                   index,
+                  orderId: order.index,
                 })}
               >Cancel
               </button>

@@ -25,6 +25,7 @@ class MyMarkets extends Component {
     match: PropTypes.object.isRequired,
     myMarkets: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
+    pendingLiquidityOrders: PropTypes.object,
   }
 
   constructor(props) {

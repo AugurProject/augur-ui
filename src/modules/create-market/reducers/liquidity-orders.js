@@ -52,6 +52,7 @@ export default function (pendingLiquidityOrders = DEFAULT_STATE(), action) {
       return ({ ...pendingLiquidityOrders })
     }
     case REMOVE_LIQUIDITY_ORDER: {
+      // data: marketId, outcomeId, orderId (index)
       const marketOutcomes = Object.keys(pendingLiquidityOrders[data.marketId])
       // if removing this order will clear the order array, delete the outcome/market if no other outcomes
       if (pendingLiquidityOrders[data.marketId][data.outcomeId].length === 1) {

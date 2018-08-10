@@ -50,7 +50,7 @@
       padding-left: 1.5rem;
       position: relative;
       text-transform: capitalize;
-      width: 5rem;
+      width: 9%;
 
       > .Order__pending {
         justify-content: flex-start;
@@ -99,15 +99,23 @@
     > li {
       border-top-color: @color-darkpurple;
       color: inherit;
+      text-align: center;
+      width: unset;
 
       &:first-child {
         padding-left: 0;
         text-align: center;
+        width: unset;
+      }
+
+      &:nth-child(2) {
+        width: unset;
       }
 
       &:last-of-type {
         padding-right: 0;
         text-align: center;
+        width: unset;
       }
     }
   }
@@ -123,6 +131,14 @@
       font-size: @font-size-medium;
       line-height: @font-size-medium;
       max-width: 25vw;
+      width: unset;
+
+      &:first-child,
+      &:nth-child(2),
+      &:last-child {
+        text-align: center;
+        width: unset;
+      }
     }
   }
 }

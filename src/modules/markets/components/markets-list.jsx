@@ -24,6 +24,7 @@ export default class MarketsList extends Component {
     showPagination: PropTypes.bool,
     collectMarketCreatorFees: PropTypes.func,
     isMobile: PropTypes.bool,
+    pendingLiquidityOrders: PropTypes.object,
   }
 
   static defaultProps = {
@@ -106,7 +107,7 @@ export default class MarketsList extends Component {
           [...Array(s.boundedLength)].map((unused, i) => {
             const id = filteredMarkets[(s.lowerBound - 1) + i]
             const market = markets.find(market => market.id === id)
-            
+
             if (market && market.id) {
               return (
                 <MarketPreview

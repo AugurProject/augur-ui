@@ -34,7 +34,7 @@ const CreateMarketLiquidityOrders = (props) => {
               <li>Quantity</li>
               <li>Limit Price</li>
               <li>Cost</li>
-              <li>Action</li>
+              <li />
             </ul>
             <MarketLiquidityTable
               marketType={newMarket.type}
