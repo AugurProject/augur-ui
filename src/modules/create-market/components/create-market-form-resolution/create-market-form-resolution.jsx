@@ -251,7 +251,7 @@ export default class CreateMarketResolution extends Component {
               >
                 <h4>Market Expiration Date</h4>
                 <p style={{ color: '#372e4b' }}>
-                  {'Augur is still experimental software, we have disabled creating markets past 6 months to discourage long running markets.'}
+                  {'Augur is still experimental software, we have disabled creating markets past six months to discourage long running markets.'}
                 </p>
               </ReactTooltip>
             </div>
