@@ -267,7 +267,7 @@ export default class CreateMarketResolution extends Component {
               validateField('endTime', formatDate(date.toDate()))
             }}
             isOutsideRange={day =>
-              day.isAfter(moment(this.props.currentTimestamp).add(6, 'M')) ||
+              day.isAfter(moment(this.props.currentTimestamp).add(1, 'M')) ||
               day.isBefore(moment(this.props.currentTimestamp))
             }
             focused={this.state.focused}
