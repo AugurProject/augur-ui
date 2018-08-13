@@ -13,7 +13,7 @@ import { loadMarketsInfo } from 'modules/markets/actions/load-markets-info'
 import { collectMarketCreatorFees } from 'modules/portfolio/actions/collect-market-creator-fees'
 import { loadMarketsInfoIfNotLoaded } from 'modules/markets/actions/load-markets-info-if-not-loaded'
 import logError from 'utils/log-error'
-
+import marketDisputeOutcomes from 'modules/reporting/selectors/select-market-dispute-outcomes'
 
 const mapStateToProps = state =>
   // getMyMarkets or it's equivalent will need a way of calculating the outstanding returns for a market and attaching it to each market object. Currently I've just added a key/value pair to the market objects im using below.
@@ -23,6 +23,7 @@ const mapStateToProps = state =>
     transactionsLoading: state.transactionsLoading,
     isMobile: state.isMobile,
     hasAllTransactionsLoaded: state.transactionsOldestLoadedBlock === state.loginAccount.registerBlockNumber, // FIXME
+    outcomes: marketDisputeOutcomes() || {},
   })
 
 const mapDispatchToProps = dispatch => ({

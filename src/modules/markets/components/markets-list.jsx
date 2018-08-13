@@ -6,6 +6,7 @@ import Paginator from 'modules/common/components/paginator/paginator'
 import NullStateMessage from 'modules/common/components/null-state-message/null-state-message'
 import { TYPE_TRADE } from 'modules/market/constants/link-types'
 import isEqual from 'lodash/isEqual'
+import DisputeMarketCard from 'modules/reporting/components/dispute-market-card/dispute-market-card'
 
 import debounce from 'utils/debounce'
 
@@ -24,6 +25,8 @@ export default class MarketsList extends Component {
     showPagination: PropTypes.bool,
     collectMarketCreatorFees: PropTypes.func,
     isMobile: PropTypes.bool,
+    showDisputingCard: PropTypes.bool,
+    outcomes: PropTypes.object,
   }
 
   static defaultProps = {
@@ -94,6 +97,8 @@ export default class MarketsList extends Component {
       showPagination,
       toggleFavorite,
       testid,
+      showDisputingCard,
+      outcomes,
     } = this.props
     const s = this.state
 
@@ -107,6 +112,21 @@ export default class MarketsList extends Component {
             const market = markets.find(market => market.id === id)
 
             if (market && market.id) {
+              if (showDisputingCard) {
+                console.log(market)
+                return (
+                  <DisputeMarketCard
+                    key={market.id}
+                    market={market}
+                    isMobile={isMobile}
+                    location={location}
+                    history={history}
+                    outcomes={outcomes}
+                    isForkingMarket={false}
+                  />
+                )
+                
+              }
               return (
                 <MarketPreview
                   {...market}
@@ -120,6 +140,7 @@ export default class MarketsList extends Component {
                   linkType={TYPE_TRADE}
                   id={market.id}
                   testid={testid}
+                  showResolution
                 />
               )
             }
