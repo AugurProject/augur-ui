@@ -20,6 +20,7 @@ export default class MarketLiquidity extends Component {
     availableEth: PropTypes.string.isRequired,
     removeLiquidityOrder: PropTypes.func.isRequired,
     submitLiquidityOrders: PropTypes.func.isRequired,
+    clearMarketLiquidityOrders: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -27,6 +28,7 @@ export default class MarketLiquidity extends Component {
 
     this.state = {
       isOpen: false,
+      isWarningShowing: false,
       estimatedGas: createBigNumber('0'),
       totalCost: createBigNumber('0'),
       gasPrice: augur.rpc.getGasPrice(),
@@ -34,6 +36,7 @@ export default class MarketLiquidity extends Component {
 
     this.handleCancelOrder = this.handleCancelOrder.bind(this)
     this.handleSubmitOrders = this.handleSubmitOrders.bind(this)
+    this.handleClearAllMarketOrders = this.handleClearAllMarketOrders.bind(this)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -95,6 +98,11 @@ export default class MarketLiquidity extends Component {
     submitLiquidityOrders({ marketId })
   }
 
+  handleClearAllMarketOrders(e) {
+    const { marketId, clearMarketLiquidityOrders } = this.props
+    clearMarketLiquidityOrders(marketId)
+  }
+
   render() {
     const {
       pendingLiquidityOrders,
@@ -106,6 +114,7 @@ export default class MarketLiquidity extends Component {
       estimatedGas,
       totalCost,
       gasPrice,
+      isWarningShowing,
     } = this.state
     const isNullState = !(pendingLiquidityOrders && pendingLiquidityOrders[marketId])
     const marketOrders = isNullState ? {} : pendingLiquidityOrders[marketId]
@@ -189,14 +198,43 @@ export default class MarketLiquidity extends Component {
                 </ul>
               </div>
             </div>
-            <div className={Styles['MarketLiquidity__submit-container']}>
-              <button
-                className={Styles.MarketLiquidity__submit}
-                onClick={this.handleSubmitOrders}
-              >
-                SUBMIT ORDERS
-              </button>
-            </div>
+            { !isWarningShowing &&
+              <div className={Styles['MarketLiquidity__submit-container']}>
+                <button
+                  className={Styles.MarketLiquidity__submit}
+                  onClick={this.handleSubmitOrders}
+                >
+                  SUBMIT ORDERS
+                </button>
+                <button
+                  className={Styles.MarketLiquidity__clearAll}
+                  onClick={(e) => {
+                    this.setState({ isWarningShowing: true })
+                    e.preventDefault()
+                  }}
+                >
+                  Cancel All Orders
+                </button>
+              </div>
+            }
+            { isWarningShowing &&
+              <div className={Styles['MarketLiquidity__warning-container']}>
+                <div>This action cannot be reversed. Are you sure you want to cancel all initial liquidity orders?</div>
+                <button
+                  onClick={(e) => {
+                    this.setState({ isWarningShowing: false })
+                    e.preventDefault()
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={this.handleClearAllMarketOrders}
+                >
+                  Clear All Orders
+                </button>
+              </div>
+            }
           </div>
         }
       </div>

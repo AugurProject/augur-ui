@@ -3,6 +3,7 @@ import {
   ADD_MARKET_LIQUIDITY_ORDERS,
   REMOVE_LIQUIDITY_ORDER,
   LOAD_PENDING_LIQUIDITY_ORDERS,
+  CLEAR_ALL_MARKET_ORDERS,
 } from 'modules/create-market/actions/liquidity-management'
 
 const DEFAULT_STATE = () => ({})
@@ -38,6 +39,10 @@ export default function (pendingLiquidityOrders = DEFAULT_STATE(), action) {
         ...pendingLiquidityOrders,
         [data.marketId]: updatedOrderBook,
       })
+    }
+    case CLEAR_ALL_MARKET_ORDERS: {
+      delete pendingLiquidityOrders[data]
+      return ({ ...pendingLiquidityOrders })
     }
     case UPDATE_LIQUIDITY_ORDER: {
       const updatedOrder = {

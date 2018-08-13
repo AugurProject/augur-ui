@@ -29,6 +29,7 @@ const MarketLiquidityTable = (p) => {
             <li>{formatEther(order.orderEstimate).full}</li>
             <li>
               <button
+                disabled={(order.onSent || !!order.txhash)}
                 onClick={e => removeOrderFromNewMarket({
                   outcome: selectedOutcome,
                   index,

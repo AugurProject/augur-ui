@@ -1,7 +1,8 @@
 @import (reference) '~assets/styles/shared';
 
 .MarketLiquidity__TableScroll {
-  max-height: 20rem;
+  border: 1px solid @color-lightest-gray;
+  max-height: 15.5rem;
   overflow-y: auto;
 
   > .MarketLiquidity__TableWrapper {
@@ -25,7 +26,7 @@
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  padding: 1rem 2rem;
+  padding: 0 1.75rem;
   width: 100%;
 
   > h1 {
@@ -165,6 +166,42 @@
   }
 }
 
+.MarketLiquidity__clearAll {
+  &:extend(.button--text-only all);
+  margin-right: 2rem;
+
+  &.disabled {
+    &:extend(.button--text-only-disabled);
+
+    pointer-events: none;
+  }
+}
+
+.MarketLiquidity__warning-container {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+
+  > div {
+    flex: 1;
+    margin-right: 2rem;
+  }
+
+  > button {
+    &:extend(.button--purple all);
+
+    &.disabled {
+      &:extend(.button--purple--disabled);
+
+      pointer-events: none;
+    }
+  }
+
+  > button:first-of-type {
+    margin-right: 3rem;
+  }
+}
+
 @media @breakpoint-mobile {
   .MarketLiquidity__TableHeader {
     > li {
@@ -188,6 +225,24 @@
         text-align: center;
         width: unset;
       }
+    }
+  }
+
+  .MarketLiquidity__warning-container {
+    flex-flow: column nowrap;
+  
+    > div {
+      flex: 1 100%;
+      margin: 0;
+    }
+  
+    > button {
+      flex: 1 100%;
+      margin-top: 1rem;
+    }
+  
+    > button:first-of-type {
+      margin-right: 0;
     }
   }
 }
