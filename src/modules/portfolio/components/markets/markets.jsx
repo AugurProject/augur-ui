@@ -26,6 +26,7 @@ class MyMarkets extends Component {
     myMarkets: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
     outcomes: PropTypes.object.isRequired,
+    loadDisputingMarkets: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -63,10 +64,11 @@ class MyMarkets extends Component {
   }
 
   componentWillMount() {
-    const { loadMarkets } = this.props
+    const { loadMarkets, loadDisputingMarkets } = this.props
     // Load all markets incase they haven't been loaded already
     // Eventually replace this with a 1 to 1 call to augurnode for example what we need.
     loadMarkets()
+    loadDisputingMarkets()
   }
 
   componentWillReceiveProps(nextProps) {

@@ -7,6 +7,7 @@ import NullStateMessage from 'modules/common/components/null-state-message/null-
 import { TYPE_TRADE } from 'modules/market/constants/link-types'
 import isEqual from 'lodash/isEqual'
 import DisputeMarketCard from 'modules/reporting/components/dispute-market-card/dispute-market-card'
+import { constants } from 'services/augurjs'
 
 import debounce from 'utils/debounce'
 
@@ -112,8 +113,7 @@ export default class MarketsList extends Component {
             const market = markets.find(market => market.id === id)
 
             if (market && market.id) {
-              if (showDisputingCard) {
-                console.log(market)
+              if (showDisputingCard && (market.reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE || market.reportingState === constants.REPORTING_STATE.AWAITING_NEXT_WINDOW)) {
                 return (
                   <DisputeMarketCard
                     key={market.id}
@@ -125,7 +125,7 @@ export default class MarketsList extends Component {
                     isForkingMarket={false}
                   />
                 )
-                
+
               }
               return (
                 <MarketPreview
