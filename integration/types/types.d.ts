@@ -6,6 +6,7 @@ export interface IFlash {
   setTimestamp(timestamp: number): Promise<Boolean>;
   setMarketEndTime(marketId: string): Promise<Boolean>;
   forceFinalize(marketId: string): Promise<Boolean>;
+  finalizeMarket(marketId: string): Promise<Boolean>;
   tradeCompleteSets(marketId: string): Promise<Boolean>;
   designateReport(marketId: string, outcome: string): Promise<Boolean>;
   fillMarketOrders(marketId: string, outcome: string, orderType: string): Promise<Boolean>;

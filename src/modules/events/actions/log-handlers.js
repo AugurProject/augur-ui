@@ -116,6 +116,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
 
 export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.sender === getState().loginAccount.address
+  console.log(log)
   if (isStoredTransaction) {
     dispatch(updateLoggedTransactions(log))
     dispatch(loadAccountTrades({ marketId: log.market }))

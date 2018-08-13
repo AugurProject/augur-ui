@@ -40,21 +40,23 @@ describe("My Markets", () => {
 
   afterAll(async () => {
     flash.dispose();
+    //flashSecondary.dispose();
   });
 
-  // it("should update market's volume correctly when trades occur", async () => {
-  //   //needs the market to not have any volume
-  //   //check that market has 0 volume
-  //   let market = await page.$("[id='id-" + marketId + "']");
-  //   await expect(market).toMatchElement(".value_volume", { text: '0', timeout: BIG_TIMEOUT });
+  it("should update market's volume correctly when trades occur", async () => {
+    //needs the market to not have any volume
+    //check that market has 0 volume
+    // let market = await page.$("[id='id-" + marketId + "']");
+    // await expect(market).toMatchElement(".value_volume", { text: '0', timeout: BIG_TIMEOUT });
 
-  //   // fill market order
-  //   await flash.fillMarketOrders(marketId, "1", "buy");
 
-  //   // check that volume updates correctly
-  //   market = await page.$("[id='id-" + marketId + "']");
-  //   await expect(page).toMatchElement("span.value_volume", { text: '0.0030', timeout: BIG_TIMEOUT });
-  // });
+    // fill market order
+    // await flash.fillMarketOrders(marketId, "1", "buy");
+
+    // check that volume updates correctly
+    //market = await page.$("[id='id-" + marketId + "']");
+   // await expect(page).toMatchElement("span.value_volume", { text: '0.0030', timeout: BIG_TIMEOUT });
+  });
 
   // it("should show an empty view if the user hasn't created any markets", async () => {
   //   // needs secondary account to not have any previously created markets
@@ -119,11 +121,64 @@ describe("My Markets", () => {
   });
 
   it("should be able to collect outstanding returns from settled trades and the Collected Returns balance on the market updates correctly", async () => {
-    // create a market with non-zero settlement fee on account 2
-    // make a position on account 1
-    // finalize
-    // calculate payout
-    // claim proceeds
+    // 1. fill trades
+    // first account is market creater
+    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
+    const market = await createYesNoMarket("", 5)
+    await waitNextBlock(10);
+
+    // create order
+    await flash.createMarketOrder(market.id, "1", "sell", ".5", "5");
+    await waitNextBlock(10);
+
+    let flashSecondary: IFlash = new Flash(UnlockedAccounts.SECONDARY_ACCOUNT_PRIV);
+
+    // use second account to fill order
+    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.SECONDARY_ACCOUNT);
+    await waitNextBlock(10);
+
+    await flashSecondary.fillMarketOrders(market.id, "1", "buy");
+    await waitNextBlock(10);
+
+    // 2. initial report
+
+    await flash.initialReport(market.id, "1", false, false)
+    await waitNextBlock(10);
+
+    // 3. push time so market is finalized 
+    
+    await flash.pushDays(14)
+    await waitNextBlock(10);
+
+    // 4. finalize market by clicking button on account 2
+   //  await toPortfolio(); // need this back and forth because of a bug ch15283
+   //  await waitNextBlock(2);
+   //  await toMyMarkets();
+   //  await toPortfolio();
+   //  await waitNextBlock(2);
+   // await expect(page).toClick("[data-testid='claimButton-" + market.id + "']", { timeout: BIG_TIMEOUT });
+
+
+    // 5. go to my positions and claim outstanding returns
+    // push time to claim
+    // await flash.pushDays(8)
+    // await waitNextBlock(2);
+    // await toPortfolio(); // need this back and forth because of a bug ch15283
+    // await waitNextBlock(2);
+    // await toMyMarkets();
+    // await waitNextBlock(2);
+    // await toPortfolio();
+    // await toMyMarkets(2);
+    // await toPortfolio();
+    // await waitNextBlock(2);
+    // await expect(page).toClick("[data-testid='claimButton-" + market.id + "']", { timeout: BIG_TIMEOUT }); // claim button doesn't work!!???!??!
+    // await waitNextBlock(10);
+
+    // 6. check in my-markets for proceeds
+    // await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
+    // await waitNextBlock(10);
+    // await toMyMarkets()
+    // await expect(page).toMatchElement("[data-testid='unclaimedCreatorFees-" + market.id + "']", { text: '.1615', timeout: BIG_TIMEOUT });
   });
 
   it("should show most recently resolved markets at the top of the Resolved list", async () => {

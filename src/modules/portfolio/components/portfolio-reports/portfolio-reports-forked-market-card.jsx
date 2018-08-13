@@ -69,6 +69,7 @@ const PortfolioReportsForkedMarketCard = ({ buttonAction, currentTimestamp, fork
         currentTimestamp={currentTimestamp}
         unclaimedForkEth={unclaimedForkEth}
         unclaimedForkRepStaked={unclaimedForkRepStaked}
+        marketId={market.id}
       />
     </article>
   )

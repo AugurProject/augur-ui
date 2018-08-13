@@ -65,6 +65,7 @@ const MarketPortfolioCardFooter = (p) => {
               </div>
             }
             <button
+              data-testid={'claimButton-' + p.marketId}
               className={classNames(Styles['MarketCard__action-footer-light'])}
               onClick={p.buttonAction}
               disabled={p.linkType === TYPE_CLAIM_PROCEEDS && !canClaim && !userHasClaimableForkFees}
@@ -87,6 +88,7 @@ MarketPortfolioCardFooter.propTypes = {
   currentTimestamp: PropTypes.number.isRequired,
   unclaimedForkEth: PropTypes.object,
   unclaimedForkRepStaked: PropTypes.object,
+  marketId: PropTypes.string.isRequired,
 }
 
 export default MarketPortfolioCardFooter
