@@ -244,7 +244,7 @@ export default class CreateMarketResolution extends Component {
               </label>
               <ReactTooltip
                 id="tooltip--expiration-date"
-                className={TooltipStyles.Tooltip}
+                className={classNames(TooltipStyles.Tooltip, Styles.CreateMarketResolution__tooltipContainer)}
                 effect="solid"
                 place="right"
                 type="light"
