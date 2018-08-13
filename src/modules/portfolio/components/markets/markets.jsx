@@ -25,6 +25,8 @@ class MyMarkets extends Component {
     match: PropTypes.object.isRequired,
     myMarkets: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
+    outcomes: PropTypes.object.isRequired,
+    loadDisputingMarkets: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -62,10 +64,11 @@ class MyMarkets extends Component {
   }
 
   componentWillMount() {
-    const { loadMarkets } = this.props
+    const { loadMarkets, loadDisputingMarkets } = this.props
     // Load all markets incase they haven't been loaded already
     // Eventually replace this with a 1 to 1 call to augurnode for example what we need.
     loadMarkets()
+    loadDisputingMarkets()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,6 +113,7 @@ class MyMarkets extends Component {
       location,
       myMarkets,
       toggleFavorite,
+      outcomes,
     } = this.props
     const s = this.state
     const haveMarkets = myMarkets && !!myMarkets.length
@@ -170,6 +174,8 @@ class MyMarkets extends Component {
             collectMarketCreatorFees={collectMarketCreatorFees}
             loadMarketsInfoIfNotLoaded={loadMarketsInfoIfNotLoaded}
             isMobile={isMobile}
+            showDisputingCard
+            outcomes={outcomes}
           />
         }
         {haveMarkets && s.filteredMarketsReporting.length === 0 && <div className={Styles['Markets__nullState--spacer']} />}
