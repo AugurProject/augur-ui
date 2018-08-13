@@ -26,6 +26,7 @@ export default class ReportingHeader extends Component {
     forkReputationGoal: PropTypes.string,
     isForkingMarketFinalized: PropTypes.bool,
     isLogged: PropTypes.bool,
+    universe: PropTypes.string.isRequired,
   }
 
   constructor(props) {
@@ -46,6 +47,16 @@ export default class ReportingHeader extends Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.hideReadMore)
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      loadReportingWindowBounds,
+      universe,
+    } = this.props
+    if (universe !== prevProps.universe) {
+      loadReportingWindowBounds()
+    }
   }
 
   componentWillUnmount() {
@@ -98,7 +109,7 @@ export default class ReportingHeader extends Component {
       <article className={Styles.ReportingHeader}>
         <div className={Styles.ReportingHeader__header}>
           <div>
-            <h1 className={Styles.ReportingHeader__heading}>Reporting: {heading}</h1>
+            <h1 className={Styles.ReportingHeader__heading}>Reporting<span>: {heading}</span></h1>
             { heading === 'Dispute' && isForking &&
               <ForkingContent
                 forkingMarket={forkingMarket}
