@@ -168,6 +168,7 @@
 
 .MarketLiquidity__clearAll {
   &:extend(.button--text-only all);
+
   margin-right: 2rem;
 
   &.disabled {
@@ -178,9 +179,9 @@
 }
 
 .MarketLiquidity__warning-container {
+  align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  align-items: center;
 
   > div {
     flex: 1;
@@ -230,17 +231,17 @@
 
   .MarketLiquidity__warning-container {
     flex-flow: column nowrap;
-  
+
     > div {
       flex: 1 100%;
       margin: 0;
     }
-  
+
     > button {
       flex: 1 100%;
       margin-top: 1rem;
     }
-  
+
     > button:first-of-type {
       margin-right: 0;
     }
