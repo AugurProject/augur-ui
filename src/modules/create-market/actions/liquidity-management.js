@@ -37,7 +37,6 @@ export const startOrderSending = options => (dispatch, getState) => {
     // order book and insert each order in the appropriate spot.)
     const { numTicks, marketType, minPrice, maxPrice } = market
     eachOfLimit(orderBook[outcome], 1, (order, orderId, orderCB) => {
-      console.log('EachOfLimit', order, orderId)
       const outcomeIndex = marketType === CATEGORICAL ? index : 1 // NOTE -- Both Scalar + Binary only trade against one outcome, that of outcomeId 1
       const outcomeId = marketType === CATEGORICAL ? outcome : 1
       const orderType = order.type === BID ? 0 : 1

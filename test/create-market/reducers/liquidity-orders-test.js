@@ -4,7 +4,7 @@ import liquidityOrders from 'modules/create-market/reducers/liquidity-orders'
 
 import {
   UPDATE_LIQUIDITY_ORDER,
-  ADD_MARKET_LIQUIDITY_ORDERS, 
+  ADD_MARKET_LIQUIDITY_ORDERS,
   REMOVE_LIQUIDITY_ORDER,
   LOAD_PENDING_LIQUIDITY_ORDERS,
   CLEAR_ALL_MARKET_ORDERS,
@@ -255,7 +255,7 @@ describe('modules/create-market/reducers/liquidity-orders.js', () => {
       }, { type: REMOVE_LIQUIDITY_ORDER, data })
 
       const expected = {}
-      
+
       assert.deepEqual(actual, expected, `Didn't return the expected updated pending orders`)
     },
   })
