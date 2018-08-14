@@ -15,20 +15,33 @@ export function addCriticalNotification(notification) {
 
 export function addNotification(notification) {
   if (notification != null) {
-    if (!notification.status == 'confirmed') {
-      setNotificationText(notification)
-      notification.isUserFriendly = true
-    }
-    return {
-      type: ADD_NOTIFICATION,
-      data: {
-        notification: {
-          seen: false,
-          level: notificationLevels.INFO,
-          ...notification,
+    const callback = (notification) => {
+      const fullNotification = {
+        type: ADD_NOTIFICATION,
+        data: {
+          notification: {
+            seen: false,
+            level: notificationLevels.INFO,
+            ...notification,
+          },
         },
-      },
+      }
+      return fullNotification
     }
+
+    if (!notification.textIsSet) {
+      return setNotificationText(notification, callback)
+    }
+    // return {
+    //   type: ADD_NOTIFICATION,
+    //   data: {
+    //     notification: {
+    //       seen: false,
+    //       level: notificationLevels.INFO,
+    //       ...notification,
+    //     },
+    //   },
+    // }
   }
 }
 

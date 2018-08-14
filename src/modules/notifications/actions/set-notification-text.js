@@ -1,8 +1,12 @@
 import { augur } from 'services/augurjs'
 import { formatShares } from 'utils/format-number'
 
-export default function setNotificationText(notification) {
+export default function setNotificationText(notification, callback) {
   console.log('NOTIFICATION: ', notification)
+  if (!notification || !notification.type) {
+    // throw new Error('Notification does not have type')
+    return
+  }
   switch (notification.type.toUpperCase()) {
     case 'CREATEMARKET': // Not tested
     case 'CREATECATEGORICALMARKET':
@@ -11,26 +15,38 @@ export default function setNotificationText(notification) {
       notification.title = 'Create new market "' + notification._description + '"'
       break
     case 'CREATEORDER': // Not tested
-    case 'PUBLICCREATEORDER': // TODO: Look up outcome name
-      notification.title = 'Create order for ' + formatShares(notification._attoshares).decimals + ' share unit(s) of "' + parseInt(notification._outcome, 16) + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
-      break
-    case 'PUBLICTRADE': // Not tested
-    case 'PUBLICTRADEWITHLIMIT': // TODO: Look up outcome name
-      console.log("notification before", notification)
+    case 'PUBLICCREATEORDER':
       augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
         if (err) {
-          // Handle error
+          throw err
         }
-        console.log("marketsDataArray", marketsDataArray)
-        console.log(marketsDataArray[0][outcomes])
-        notification.title = 'Place order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + parseInt(notification._outcome, 16) + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
+        const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)]
+        notification.title = 'Create order for ' + formatShares(notification._attoshares).decimals + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
+      })
+      break
+    case 'PUBLICTRADE': // Not tested
+    case 'PUBLICTRADEWITHLIMIT':
+      console.log('before')
+      augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
+        if (err) {
+          throw err
+        }
+        const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)]
+        notification.title = 'Place order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
+        return callback(notification)
       })
       break
     case 'FILLORDER': // Not tested
     case 'PUBLICFILLBESTORDER': // Not tested
     case 'PUBLICFILLORDER': // Not tested
-    case 'PUBLICFILLBESTORDERWITHLIMIT': // TODO: Look up outcome name
-      notification.title = 'Fill order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + parseInt(notification._outcome, 16) + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
+    case 'PUBLICFILLBESTORDERWITHLIMIT':
+      augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
+        if (err) {
+          throw err
+        }
+        const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)]
+        notification.title = 'Fill order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
+      })
       break
     case 'CANCELORDER': // TODO: Look up share units, outcome name, and price
       notification.title = 'Cancel order for X share unit(s) of [outcomeName] at Y ETH'
@@ -139,4 +155,5 @@ export default function setNotificationText(notification) {
       break
     }
   }
+  // notification.textIsSet = true
 }
