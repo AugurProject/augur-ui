@@ -26,7 +26,6 @@ export default function setNotificationText(notification, callback) {
       break
     case 'PUBLICTRADE': // Not tested
     case 'PUBLICTRADEWITHLIMIT':
-      console.log('before')
       augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
         if (err) {
           throw err
