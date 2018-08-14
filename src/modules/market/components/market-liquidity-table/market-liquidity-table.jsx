@@ -11,12 +11,17 @@ const MarketLiquidityTable = (p) => {
   return (
     <div className={Styles['MarketLiquidityTable__table-body']}>
       { outcomeOrders.map((order, index) => {
+        if (order.onSent && order.txhash) return undefined
         let outcomeLabel = marketType === YES_NO ? 'Yes' : selectedOutcome
         const direction = order.type === BID ? '' : '-'
-        outcomeLabel = marketType === SCALAR ? formatEther(order.price).formattedValue : outcomeLabel
+        const quantity = formatShares(order.quantity)
+        const price = formatEther(order.price)
+        const estimate = formatEther(order.orderEstimate)
+        outcomeLabel = marketType === SCALAR ? price.formattedValue : outcomeLabel
+
         return (
           <ul
-            key={`${selectedOutcome}-${order.type}-${formatEther(order.price).formatted}`}
+            key={`${selectedOutcome}-${order.type}-${price.formatted}`}
             className={classNames(Styles.MarketLiquidityTable__Order, {
               [`${Styles.positive}`]: order.type === BID,
               [`${Styles.negative}`]: order.type === ASK,
@@ -24,11 +29,12 @@ const MarketLiquidityTable = (p) => {
           >
             <li>{order.type}</li>
             <li>{outcomeLabel}</li>
-            <li>{`${direction}${formatShares(order.quantity).full}`}</li>
-            <li>{formatEther(order.price).full}</li>
-            <li>{formatEther(order.orderEstimate).full}</li>
+            <li>{`${direction}${quantity.formatted}`}<span>{`${quantity.denomination}`}</span></li>
+            <li>{price.formatted}<span>{`${price.denomination}`}</span></li>
+            <li>{estimate.formatted}<span>{`${estimate.denomination}`}</span></li>
             <li>
               <button
+                className={Styles.MarketLiquidityTable__cancel}
                 disabled={(order.onSent || !!order.txhash)}
                 onClick={e => removeOrderFromNewMarket({
                   outcome: selectedOutcome,

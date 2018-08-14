@@ -2,7 +2,7 @@
 
 .MarketLiquidity__TableScroll {
   border: 1px solid @color-lightest-gray;
-  max-height: 15.5rem;
+  max-height: 36.75rem;
   overflow-y: auto;
 
   > .MarketLiquidity__TableWrapper {
@@ -10,15 +10,19 @@
   }
 }
 
-.MarketLiquidity__container {
-  background-color: @color-yellow-alert;
-  padding: 0.25rem;
+.extended {
+  max-height: 100%;
 }
 
-.MarketLiquidity__container-hidden {
+.MarketLiquidity__hidden {
   display: none;
   opacity: 0;
   visibility: hidden;
+}
+
+.MarketLiquidity__container {
+  background-color: @color-yellow-alert;
+  padding: 0.25rem;
 }
 
 .MarketLiquidity__heading {
@@ -47,6 +51,33 @@
     > svg {
       stroke: @color-darkpurple;
       width: 1.5rem;
+    }
+  }
+}
+
+.MarketLiquidity__showMore {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 1rem 0;
+  width: 100%;
+
+  > h1 {
+    &:extend(.caps--small all);
+
+    margin: 0 1rem 0 auto;
+  }
+
+  > span {
+    transition: transform 0.3s ease;
+
+    &.is-open {
+      transform: rotate(-180deg);
+    }
+
+    > svg {
+      stroke: @color-darkpurple;
+      width: 0.875rem;
     }
   }
 }
@@ -95,9 +126,9 @@
   padding: 1rem 2rem;
 
   > h1 {
-    &:extend(.caps--large all);
-
     color: @color-darkpurple;
+    font-size: @font-size-large;
+    font-weight: 500;
   }
 
   > .MarketLiquidity__TableWrapper:first-of-type {
@@ -117,37 +148,45 @@
 }
 
 .MarketLiquidity__costs {
-  display: table-row-group;
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 1.25rem 0 2rem;
 }
 
-.MarketLiquidity__ExtendedContainer-estGas {
-  display: table-row;
+.MarketLiquidity__costs-labels {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 0 5rem 0 auto;
+  text-align: right;
 
-  > li {
-    display: table-cell;
-    padding: 2rem 1rem 0.5rem 0;
-    text-align: right;
+  h4 {
+    flex: 1;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
   }
 
-  > li:last-child {
-    padding-right: 0;
-    width: 17%;
-  }
-}
-
-.MarketLiquidity__ExtendedContainer-totalCost {
-  display: table-row;
-
-  > li {
-    display: table-cell;
+  h3 {
+    flex: 1;
+    font-size: @font-size-large;
     font-weight: 500;
-    padding: 0.5rem 1rem 0;
-    text-align: right;
+  }
+}
+
+.MarketLiquidity__costs-values {
+  display: flex;
+  flex-flow: column nowrap;
+  text-align: right;
+
+  h4 {
+    flex: 1;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
   }
 
-  > li:last-child {
-    padding-right: 0;
-    width: 17%;
+  h3 {
+    flex: 1;
+    font-size: @font-size-large;
+    font-weight: 500;
   }
 }
 
@@ -167,12 +206,12 @@
 }
 
 .MarketLiquidity__clearAll {
-  &:extend(.button--text-only all);
+  &:extend(.button--gray all);
 
   margin-right: 2rem;
 
   &.disabled {
-    &:extend(.button--text-only-disabled);
+    &:extend(.button--grey-disabled);
 
     pointer-events: none;
   }
@@ -199,7 +238,15 @@
   }
 
   > button:first-of-type {
+    &:extend(.button--gray all);
+
     margin-right: 3rem;
+
+    &.disabled {
+      &:extend(.button--gray--disabled);
+
+      pointer-events: none;
+    }
   }
 }
 

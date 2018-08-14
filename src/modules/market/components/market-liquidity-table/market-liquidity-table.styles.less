@@ -5,21 +5,10 @@
   display: table-row-group;
   font-size: @font-size-large;
   line-height: @font-size-large;
-
-  > ul.MarketLiquidityTable__Order:first-child {
-    > li {
-      border-top: 1px solid @color-lightest-gray;
-    }
-  }
-
-  > ul.MarketLiquidityTable__Order:last-child {
-    > li {
-      border-bottom: 1px solid @color-lightest-gray;
-    }
-  }
 }
 
 .MarketLiquidityTable__Order {
+  background-color: white;
   display: table-row;
   transition: background-color 0.15s ease;
 
@@ -39,11 +28,15 @@
     border-top: 1px solid @color-lightest-gray;
     display: table-cell;
     overflow: hidden;
-    padding: 1.125rem 0;
+    padding: 0.625rem 0;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 13.5%;
+
+    > span {
+      font-size: @font-size-medium;
+    }
 
     &:first-child {
       font-weight: 500;
@@ -62,14 +55,22 @@
     }
 
     &:last-of-type {
-      border-left: 1px solid @color-lightest-gray;
-      border-right: 1px solid @color-lightest-gray;
+      padding: 0.625rem 0.25rem;
       text-align: center;
       width: 10%;
 
       > button {
-        font-weight: 500;
+        &:extend(.button--transparent all);
+
+        font-size: @font-size-medium;
+        margin: auto;
       }
+    }
+  }
+
+  &:hover {
+    > li {
+      background-color: @color-selection-modal-background;
     }
   }
 }
@@ -123,10 +124,6 @@
 
 @media @breakpoint-mobile-medium {
   .MarketLiquidityTable__Order {
-    &:first-child > li {
-      border-top-width: 1px;
-    }
-
     > li {
       font-size: @font-size-medium;
       line-height: @font-size-medium;

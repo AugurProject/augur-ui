@@ -28,6 +28,7 @@ export default class MarketLiquidity extends Component {
 
     this.state = {
       isOpen: false,
+      showAllOrders: false,
       isWarningShowing: false,
       estimatedGas: createBigNumber('0'),
       totalCost: createBigNumber('0'),
@@ -115,6 +116,7 @@ export default class MarketLiquidity extends Component {
       totalCost,
       gasPrice,
       isWarningShowing,
+      showAllOrders,
     } = this.state
     const isNullState = !(pendingLiquidityOrders && pendingLiquidityOrders[marketId])
     const marketOrders = isNullState ? {} : pendingLiquidityOrders[marketId]
@@ -123,11 +125,17 @@ export default class MarketLiquidity extends Component {
     if (this.tableScroll && this.tableScroll.scrollWidth && this.tableScrollHeader && this.tableScrollHeader.scrollWidth) {
       headerPadding = `${this.tableScrollHeader.scrollWidth - this.tableScroll.scrollWidth}px`
     }
+    let runningTotal = 0
+    let tenOrLess = true
+    marketOutcomes.forEach((outcome) => {
+      runningTotal += marketOrders[outcome].length
+      tenOrLess = (runningTotal <= 10)
+    })
 
     return (
       <div
         className={classNames(Styles.MarketLiquidity__container, {
-          [Styles['MarketLiquidity__container-hidden']]: isNullState,
+          [Styles.MarketLiquidity__hidden]: isNullState,
         })}
       >
         <button
@@ -158,7 +166,9 @@ export default class MarketLiquidity extends Component {
             </div>
             <div
               ref={(tableScroll) => { this.tableScroll = tableScroll }}
-              className={Styles.MarketLiquidity__TableScroll}
+              className={classNames(Styles.MarketLiquidity__TableScroll, {
+                [Styles.extended]: showAllOrders,
+              })}
             >
               <div
                 className={Styles.MarketLiquidity__TableWrapper}
@@ -174,28 +184,25 @@ export default class MarketLiquidity extends Component {
                 ))}
               </div>
             </div>
-            <div className={Styles.MarketLiquidity__TableWrapper}>
-              <div className={Styles.MarketLiquidity__costs}>
-                <ul
-                  className={Styles['MarketLiquidity__ExtendedContainer-estGas']}
-                >
-                  <li />
-                  <li />
-                  <li />
-                  <li />
-                  <li>EST. GAS</li>
-                  <li>{formatEther(formatGasCostToEther(estimatedGas, { decimalsRounded: 4 }, gasPrice)).full}</li>
-                </ul>
-                <ul
-                  className={Styles['MarketLiquidity__ExtendedContainer-totalCost']}
-                >
-                  <li />
-                  <li />
-                  <li />
-                  <li />
-                  <li>TOTAL COST</li>
-                  <li>{formatEther(totalCost).full}</li>
-                </ul>
+            <button
+              className={classNames(Styles.MarketLiquidity__showMore, {
+                [Styles.MarketLiquidity__hidden]: tenOrLess,
+              })}
+              onClick={() => {
+                this.setState({ showAllOrders: !showAllOrders })
+              }}
+            >
+              <h1>{showAllOrders ? 'Show Less' : 'Show All'}</h1>
+              <span className={classNames({ [`${Styles['is-open']}`]: showAllOrders })}><ChevronDown stroke="#372e4b" /></span>
+            </button>
+            <div className={Styles.MarketLiquidity__costs}>
+              <div className={Styles['MarketLiquidity__costs-labels']}>
+                <h4>EST. GAS</h4>
+                <h3>TOTAL COST</h3>
+              </div>
+              <div className={Styles['MarketLiquidity__costs-values']}>
+                <h4>{formatEther(formatGasCostToEther(estimatedGas, { decimalsRounded: 4 }, gasPrice)).full}</h4>
+                <h3>{formatEther(totalCost).full}</h3>
               </div>
             </div>
             { !isWarningShowing &&
@@ -213,7 +220,7 @@ export default class MarketLiquidity extends Component {
                     e.preventDefault()
                   }}
                 >
-                  Cancel All Orders
+                  Cancel All
                 </button>
               </div>
             }
