@@ -1,5 +1,5 @@
 import * as notificationLevels from 'src/modules/notifications/constants'
-import getNotificationTitle from './get-notification-title'
+import setNotificationText from './set-notification-text'
 
 export const ADD_NOTIFICATION = 'ADD_NOTIFICATION'
 export const REMOVE_NOTIFICATION = 'REMOVE_NOTIFICATION'
@@ -15,7 +15,10 @@ export function addCriticalNotification(notification) {
 
 export function addNotification(notification) {
   if (notification != null) {
-    notification.title = getNotificationTitle(notification)
+    if (!notification.status == 'confirmed') {
+      setNotificationText(notification)
+      notification.isUserFriendly = true
+    }
     return {
       type: ADD_NOTIFICATION,
       data: {
