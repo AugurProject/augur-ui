@@ -2,12 +2,13 @@ import { augur } from 'services/augurjs'
 import { formatShares } from 'utils/format-number'
 
 export default function setNotificationText(notification, callback) {
-  return function (getState, dispatch) {
+  return (getState, dispatch) => {
     console.log('NOTIFICATION: ', notification)
     if (!notification || !notification.type) {
-      // throw new Error('Notification does not have type')
-      return
+      throw new Error('Notification does not have type')
     }
+
+    notification.textIsSet = true
     switch (notification.type.toUpperCase()) {
       case 'CREATEMARKET': // Not tested
       case 'CREATECATEGORICALMARKET':
@@ -21,7 +22,7 @@ export default function setNotificationText(notification, callback) {
           if (err) {
             throw err
           }
-          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)]
+          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
           notification.title = 'Create order for ' + formatShares(notification._attoshares).decimals + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
         })
         break
@@ -31,7 +32,7 @@ export default function setNotificationText(notification, callback) {
           if (err) {
             throw err
           }
-          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)]
+          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
           notification.title = 'Place order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
           return callback(notification)
         })
@@ -44,7 +45,7 @@ export default function setNotificationText(notification, callback) {
           if (err) {
             throw err
           }
-          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)]
+          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
           notification.title = 'Fill order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
         })
         break
@@ -156,5 +157,4 @@ export default function setNotificationText(notification, callback) {
       }
     }
   }
-  // notification.textIsSet = true
 }
