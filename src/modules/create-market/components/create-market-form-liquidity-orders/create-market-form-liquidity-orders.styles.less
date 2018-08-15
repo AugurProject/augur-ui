@@ -24,24 +24,29 @@
 
   > li {
     display: table-cell;
+    min-width: 9.5rem;
     padding: 2rem 0 0.625rem;
     text-align: left;
+    width: 12.5rem;
 
     &:first-child {
-      padding-left: 2rem;
+      min-width: 4.25rem;
+      padding-left: 1.5rem;
+      padding-right: 0.5rem;
+      width: 4.75rem;
+    }
+
+    &:nth-child(2) {
+      min-width: 4.375rem;
+      width: auto;
     }
 
     &:last-child {
+      min-width: 9.38rem;
       text-align: center;
+      width: 9.38rem;
     }
   }
-}
-
-.LiquidityOrders__table-body {
-  background-color: @color-input-background;
-  display: table-row-group;
-  font-size: @font-size-large;
-  line-height: @font-size-large;
 }
 
 .LiquidityOrders__TableWrapper {
@@ -60,24 +65,19 @@
     padding-top: 0;
   }
 
-  .LiquidityOrders__table {
-    background-color: @color-input-background;
-    display: table-row-group;
-    font-size: @font-size-small;
-    line-height: @font-size-small;
-  }
-
   .LiquidityOrders__TableHeader {
     > li {
       display: table-cell;
+      min-width: 7.5rem;
       padding: 1rem 0 0.625rem;
-      text-align: center;
 
       &:first-child {
-        padding-left: 0.75rem;
+        padding-left: 0.5rem;
+        padding-right: 0;
       }
 
       &:last-child {
+        min-width: 7.5rem;
         padding-right: 0.5rem;
       }
     }
@@ -87,16 +87,17 @@
 @media @breakpoint-mobile-medium {
   .LiquidityOrders__TableHeader {
     > li {
+      min-width: unset;
       padding: 1rem 0 0.625rem;
       text-align: center;
       width: unset;
 
       &:first-child {
-        padding-left: 0.75rem;
+        padding-left: 0.5rem;
       }
 
       &:last-child {
-        padding-right: 0.5rem;
+        width: unset;
       }
     }
   }

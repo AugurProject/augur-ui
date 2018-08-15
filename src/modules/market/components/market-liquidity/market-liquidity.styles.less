@@ -39,6 +39,7 @@
     flex: 1;
     margin: 0;
     text-align: left;
+    text-transform: none;
   }
 
   > span {
@@ -59,13 +60,13 @@
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  margin: 1rem 0;
+  margin: 1rem 0 0;
   width: 100%;
 
   > h1 {
     &:extend(.caps--small all);
 
-    margin: 0 1rem 0 auto;
+    margin: 0 0.5rem 0 auto;
   }
 
   > span {
@@ -95,22 +96,27 @@
 
   > li {
     display: table-cell;
-    padding: 2rem 0 0.625rem;
+    min-width: 9.5rem;
+    padding: 2rem 0.5rem 0.625rem 0;
     text-align: left;
-    width: 13.5%;
+    width: 12.5rem;
 
     &:first-child {
-      padding-left: 2rem;
-      width: 9%;
+      min-width: 4.25rem;
+      padding-left: 1.5rem;
+      padding-right: 0.5rem;
+      width: 4.75rem;
     }
 
     &:nth-child(2) {
-      width: 40.5%;
+      min-width: 4.375rem;
+      width: auto;
     }
 
     &:last-child {
+      min-width: 9.38rem;
       text-align: center;
-      width: 10%;
+      width: 9.38rem;
     }
   }
 }
@@ -126,9 +132,7 @@
   padding: 1rem 2rem;
 
   > h1 {
-    color: @color-darkpurple;
-    font-size: @font-size-large;
-    font-weight: 500;
+    &:extend(.caps--large all);
   }
 
   > .MarketLiquidity__TableWrapper:first-of-type {
@@ -150,18 +154,18 @@
 .MarketLiquidity__costs {
   display: flex;
   flex-flow: row nowrap;
-  margin: 1.25rem 0 2rem;
+  margin: 2rem 0;
 }
 
 .MarketLiquidity__costs-labels {
   display: flex;
   flex-flow: column nowrap;
-  margin: 0 5rem 0 auto;
+  margin: 0 1rem 0 auto;
   text-align: right;
 
   h4 {
     flex: 1;
-    font-size: 0.9rem;
+    font-size: @font-size-medium;
     margin-bottom: 1rem;
   }
 
@@ -179,7 +183,7 @@
 
   h4 {
     flex: 1;
-    font-size: 0.9rem;
+    font-size: @font-size-medium;
     margin-bottom: 1rem;
   }
 
@@ -198,6 +202,8 @@
 .MarketLiquidity__submit {
   &:extend(.button--purple all);
 
+  padding: 0 1.5rem;
+
   &.disabled {
     &:extend(.button--purple--disabled);
 
@@ -209,6 +215,7 @@
   &:extend(.button--gray all);
 
   margin-right: 2rem;
+  padding: 0 1.5rem;
 
   &.disabled {
     &:extend(.button--grey-disabled);
@@ -254,24 +261,17 @@
   .MarketLiquidity__TableHeader {
     > li {
       display: table-cell;
+      min-width: 7.5rem;
       padding: 1rem 0 0.625rem;
-      text-align: center;
-      width: unset;
 
       &:first-child {
-        padding-left: 0.75rem;
-        text-align: center;
-        width: unset;
-      }
-
-      &:nth-child(2) {
-        width: unset;
+        padding-left: 0.5rem;
+        padding-right: 0;
       }
 
       &:last-child {
+        min-width: 7.5rem;
         padding-right: 0.5rem;
-        text-align: center;
-        width: unset;
       }
     }
   }
@@ -299,14 +299,15 @@
   .MarketLiquidity__TableHeader {
     > li {
       display: table-cell;
+      min-width: unset;
       padding: 1rem 0 0.625rem;
-      text-align: center;
       width: unset;
 
-      &:first-child,
-      &:nth-child(2),
+      &:first-child {
+        padding-left: 0.5rem;
+      }
+
       &:last-child {
-        text-align: center;
         width: unset;
       }
     }

@@ -27,12 +27,13 @@
   > li {
     border-top: 1px solid @color-lightest-gray;
     display: table-cell;
+    min-width: 9.5rem;
     overflow: hidden;
-    padding: 0.625rem 0;
+    padding: 0.625rem 0.2rem 0.625rem 0;
     text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 13.5%;
+    width: 12.5rem;
 
     > span {
       font-size: @font-size-medium;
@@ -40,10 +41,11 @@
 
     &:first-child {
       font-weight: 500;
-      padding-left: 1.5rem;
-      position: relative;
+      min-width: 4.25rem;
+      padding-left: 1rem;
+      padding-right: 0.5rem;
       text-transform: capitalize;
-      width: 9%;
+      width: 4.75rem;
 
       > .Order__pending {
         justify-content: flex-start;
@@ -51,13 +53,14 @@
     }
 
     &:nth-child(2) {
-      width: 40.5%;
+      min-width: 4.375rem;
+      width: auto;
     }
 
     &:last-of-type {
-      padding: 0.625rem 0.25rem;
+      min-width: 9.38rem;
       text-align: center;
-      width: 10%;
+      width: 9.38rem;
 
       > button {
         &:extend(.button--transparent all);
@@ -100,23 +103,15 @@
     > li {
       border-top-color: @color-darkpurple;
       color: inherit;
-      text-align: center;
-      width: unset;
+      min-width: 7.5rem;
 
       &:first-child {
-        padding-left: 0;
-        text-align: center;
-        width: unset;
-      }
-
-      &:nth-child(2) {
-        width: unset;
+        padding-left: 0.5rem;
       }
 
       &:last-of-type {
+        min-width: 7.5rem;
         padding-right: 0;
-        text-align: center;
-        width: unset;
       }
     }
   }
@@ -127,13 +122,13 @@
     > li {
       font-size: @font-size-medium;
       line-height: @font-size-medium;
-      max-width: 25vw;
+      min-width: unset;
       width: unset;
 
       &:first-child,
       &:nth-child(2),
       &:last-child {
-        text-align: center;
+        min-width: unset;
         width: unset;
       }
     }
