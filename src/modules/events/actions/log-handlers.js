@@ -24,6 +24,7 @@ import { loadUnclaimedFees } from 'modules/markets/actions/load-unclaimed-fees'
 import { loadFundingHistory } from 'modules/account/actions/load-funding-history'
 import { getWinningBalance } from 'modules/portfolio/actions/get-winning-balance'
 import { startOrderSending } from 'modules/create-market/actions/liquidity-management'
+import { loadMarketTradingHistory } from 'modules/market/actions/load-market-trading-history'
 
 export const handleMarketStateLog = log => (dispatch) => {
   dispatch(loadMarketsInfo([log.marketId], () => {
@@ -114,6 +115,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
   }
   // always reload account positions on trade so we get up to date PL data.
   dispatch(loadAccountTrades({ marketId: log.marketId }))
+  dispatch(loadMarketTradingHistory({ marketId: log.marketId }))
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId))
 }
 
