@@ -58,6 +58,8 @@ export function transferFunds(amount, currency, toAddress) {
               title: `Transfer ${amount} REP -> ${trimString(to)}`,
               timestamp: selectCurrentTimestampInSeconds(getState()),
               type: 'sendReputation',
+              universe: universe.id,
+              _to: to,
             }))
           },
           onSuccess: (tx) => {

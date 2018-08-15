@@ -4,7 +4,7 @@
 
 import { augur } from 'services/augurjs'
 import { selectMarket } from 'modules/market/selectors/market'
-import { formatEther, formatShares } from 'utils/format-number'
+import { formatEther, formatRep, formatShares } from 'utils/format-number'
 
 function getOutcomeDescription(marketInfo, outcomeIndex) {
   if (marketInfo.marketType === 'YesNo') {
@@ -89,30 +89,40 @@ export default function setNotificationText(notification, callback) {
         })
         break
       }
-      case 'DOINITIALREPORT': { // Not tested
-        const marketDescription = selectMarket(notification._market).description
-        notification.title = 'Submit report on "' + marketDescription + "'"
-        dispatch(callback(notification))
+      case 'DOINITIALREPORT': { // TODO: Get market description
+        const result = notification.title.replace(/([A-Z])/g, ' $1')
+        notification.title = result.charAt(0).toUpperCase() + result.slice(1)
+        // console.log(notification)
+        // const marketDescription = selectMarket(notification._market).description
+        // notification.title = 'Submit report on "' + marketDescription + "'"
+        // dispatch(callback(notification))
         break
       }
-      case 'CONTRIBUTE': { // Not tested
-        const marketInfo = selectMarket(notification._market)
-        const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
-        notification.title = 'Place ' + notification._amount + ' REP on "' + outcomeDescription + '" dispute bond'
-        dispatch(callback(notification))
+      case 'CONTRIBUTE': { // TODO: Get outcome description
+        const result = notification.title.replace(/([A-Z])/g, ' $1')
+        notification.title = result.charAt(0).toUpperCase() + result.slice(1)
+        // console.log(notification)
+        // const marketInfo = selectMarket(notification._market)
+        // const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
+        // notification.title = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
+        // dispatch(callback(notification))
         break
       }
       case 'BUYPARTICIPATIONTOKENS': // Not tested
-      case 'BUY': // Re-test
-        notification.title = 'Purchase ' + (notification._attotokens / 1000000000000000000) + ' Participation Token(s)'
+      case 'BUY':
+        notification.title = 'Purchase ' + formatRep(notification._attotokens / 1000000000000000000).formatted + ' Participation Token(s)'
         dispatch(callback(notification))
         break
-      case 'SENDETHER': // Re-test
-        notification.title = 'Send ' + notification.etherToSend + ' ETH to ' + notification.to
+      case 'SENDETHER':
+        notification.title = 'Send ' + formatEther(notification.etherToSend).formatted + ' ETH to ' + notification.to
         dispatch(callback(notification))
         break
-      case 'SENDREPUTATION': // Re-test
-        notification.title = 'Send ' + notification.reputationToSend + ' REP to ' + notification._to
+      case 'SENDREPUTATION':
+        notification.title = 'Send ' + formatRep(notification.reputationToSend).formatted + ' REP to ' + notification._to
+        dispatch(callback(notification))
+        break
+      case 'TRANSFER':
+        notification.title = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
         dispatch(callback(notification))
         break
 
@@ -193,7 +203,6 @@ export default function setNotificationText(notification, callback) {
       case 'MIGRATEOUTBYPAYOUT':
       case 'MIGRATETHROUGHONEFORK':
       case 'REDEEMFORREPORTINGPARTICIPANT':
-      case 'TRANSFER':
       case 'TRANSFERFROM':
       case 'TRANSFEROWNERSHIP':
       case 'UPDATEFORKVALUES':
