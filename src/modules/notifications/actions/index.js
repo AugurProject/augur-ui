@@ -30,18 +30,11 @@ export function addNotification(notification) {
     }
 
     if (!notification.textIsSet) {
+      notification.textIsSet = true
       return setNotificationText(notification, callback)
     }
-    // return {
-    //   type: ADD_NOTIFICATION,
-    //   data: {
-    //     notification: {
-    //       seen: false,
-    //       level: notificationLevels.INFO,
-    //       ...notification,
-    //     },
-    //   },
-    // }
+
+    return callback(notification)
   }
 }
 

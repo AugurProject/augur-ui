@@ -2,13 +2,12 @@ import { augur } from 'services/augurjs'
 import { formatShares } from 'utils/format-number'
 
 export default function setNotificationText(notification, callback) {
-  return (getState, dispatch) => {
+  return (dispatch, getState) => {
     console.log('NOTIFICATION: ', notification)
     if (!notification || !notification.type) {
       throw new Error('Notification does not have type')
     }
 
-    notification.textIsSet = true
     switch (notification.type.toUpperCase()) {
       case 'CREATEMARKET': // Not tested
       case 'CREATECATEGORICALMARKET':
@@ -34,7 +33,7 @@ export default function setNotificationText(notification, callback) {
           }
           const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
           notification.title = 'Place order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
-          return callback(notification)
+          dispatch(callback(notification))
         })
         break
       case 'FILLORDER': // Not tested
