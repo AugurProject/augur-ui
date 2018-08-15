@@ -1,9 +1,20 @@
+/**
+ * @todo Test un-tested notification types. (Must be done by making calls via the API.)
+ */
+
 import { augur } from 'services/augurjs'
-import { formatShares } from 'utils/format-number'
+import { selectMarket } from 'modules/market/selectors/market'
+import { formatEther, formatShares } from 'utils/format-number'
+
+function getOutcomeDescription(marketInfo, outcomeIndex) {
+  if (marketInfo.marketType === 'YesNo') {
+    return (outcomeIndex === 0) ? 'No' : 'Yes'
+  }
+  return marketInfo.outcomes[outcomeIndex].description
+}
 
 export default function setNotificationText(notification, callback) {
   return (dispatch, getState) => {
-    console.log('NOTIFICATION: ', notification)
     if (!notification || !notification.type) {
       throw new Error('Notification does not have type')
     }
@@ -14,63 +25,103 @@ export default function setNotificationText(notification, callback) {
       case 'CREATESCALARMARKET':
       case 'CREATEYESNOMARKET':
         notification.title = 'Create new market "' + notification._description + '"'
+        dispatch(callback(notification))
         break
       case 'CREATEORDER': // Not tested
-      case 'PUBLICCREATEORDER':
-        augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
-          if (err) {
-            throw err
-          }
-          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
-          notification.title = 'Create order for ' + formatShares(notification._attoshares).decimals + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
-        })
+      case 'PUBLICCREATEORDER': { // TODO: Find a way to get market info
+        // augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsInfo) => {
+        //   if (err) {
+        //     throw err
+        //   }
+        //   console.log('marketsInfo')
+        //   console.log(marketsInfo)
+        //   const outcomeDescription = getOutcomeDescription(marketsInfo[0])
+        //   const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
+        //   notification.title = 'Create ' + orderType + ' order for ' + formatShares(notification._attoshares).decimals + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
+        //   dispatch(callback(notification))
+        // })
         break
+      }
       case 'PUBLICTRADE': // Not tested
-      case 'PUBLICTRADEWITHLIMIT':
-        augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
-          if (err) {
-            throw err
-          }
-          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
-          notification.title = 'Place order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
-          dispatch(callback(notification))
-        })
+      case 'PUBLICTRADEWITHLIMIT': {
+        const marketInfo = selectMarket(notification._market)
+        const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
+        const orderType = (notification._direction === '0x0') ? 'buy' : 'sell'
+        notification.title = 'Place ' + orderType + ' order for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
+        dispatch(callback(notification))
         break
+      }
       case 'FILLORDER': // Not tested
       case 'PUBLICFILLBESTORDER': // Not tested
       case 'PUBLICFILLORDER': // Not tested
-      case 'PUBLICFILLBESTORDERWITHLIMIT':
-        augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsDataArray) => {
+      case 'PUBLICFILLBESTORDERWITHLIMIT': {
+        const marketInfo = selectMarket(notification._market)
+        const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
+        const fillOrderType = (notification._type === '0x0') ? 'sell' : 'buy'
+        notification.title = 'Fill ' + fillOrderType + ' order(s) for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
+        dispatch(callback(notification))
+        break
+      }
+      case 'CANCELORDER': {
+        augur.api.Orders.getAmount({ _orderId: notification._orderId }, (err, orderAmount) => {
           if (err) {
             throw err
           }
-          const outcomeDescription = marketsDataArray[0].outcomes[parseInt(notification._outcome, 16)].description
-          notification.title = 'Fill order for ' + parseInt(notification._fxpAmount, 16) + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._price, 16) / 10000) + ' ETH'
+          augur.api.Orders.getMarket({ _orderId: notification._orderId }, (err, marketId) => {
+            if (err) {
+              throw err
+            }
+            augur.api.Orders.getOutcome({ _orderId: notification._orderId }, (err, orderOutcome) => {
+              if (err) {
+                throw err
+              }
+              augur.api.Orders.getPrice({ _orderId: notification._orderId }, (err, orderPrice) => {
+                if (err) {
+                  throw err
+                }
+                const marketInfo = selectMarket(marketId)
+                const outcomeDescription = getOutcomeDescription(marketInfo, orderOutcome)
+                notification.title = 'Cancel order for ' + formatShares(orderAmount / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(orderPrice / 10000).formatted + ' ETH'
+                dispatch(callback(notification))
+              })
+            })
+          })
         })
         break
-      case 'CANCELORDER': // TODO: Look up share units, outcome name, and price
-        notification.title = 'Cancel order for X share unit(s) of [outcomeName] at Y ETH'
+      }
+      case 'DOINITIALREPORT': { // Not tested
+        const marketDescription = selectMarket(notification._market).description
+        notification.title = 'Submit report on "' + marketDescription + "'"
+        dispatch(callback(notification))
         break
-      case 'DOINITIALREPORT': // TODO: Look up market name
-        notification.title = 'Submit report on "' + notification.marketName + "'"
+      }
+      case 'CONTRIBUTE': { // Not tested
+        const marketInfo = selectMarket(notification._market)
+        const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
+        notification.title = 'Place ' + notification._amount + ' REP on "' + outcomeDescription + '" dispute bond'
+        dispatch(callback(notification))
         break
-      case 'CONTRIBUTE': // TODO: Look up outcome name
-        notification.title = 'Place ' + notification._amount + ' REP on [outcomeName] dispute bond'
-        break
+      }
       case 'BUYPARTICIPATIONTOKENS': // Not tested
-      case 'BUY':
+      case 'BUY': // Re-test
         notification.title = 'Purchase ' + (notification._attotokens / 1000000000000000000) + ' Participation Token(s)'
+        dispatch(callback(notification))
         break
-      case 'SENDETHER':
+      case 'SENDETHER': // Re-test
         notification.title = 'Send ' + notification.etherToSend + ' ETH to ' + notification.to
+        dispatch(callback(notification))
         break
-      case 'SENDREPUTATION': // Not tested
-        notification.title = 'Send ' + notification.reputationToSend + ' ETH to ' + notification.to
+      case 'SENDREPUTATION': // Re-test
+        notification.title = 'Send ' + notification.reputationToSend + ' REP to ' + notification._to
+        dispatch(callback(notification))
         break
 
-      case 'FINALIZE':
-        notification.title = 'Finalize market "[marketName]"'
+      case 'FINALIZE': { // Not tested
+        const marketDescription = selectMarket(notification._market).description
+        notification.title = 'Finalize market "' + marketDescription + '"'
+        dispatch(callback(notification))
         break
+      }
       case 'CLAIMTRADINGPROCEEDS':
         notification.title = 'Claim X ETH trading proceeds'
         break
@@ -113,7 +164,6 @@ export default function setNotificationText(notification, callback) {
         notification.title = 'Withdraw X tokens'
         break
 
-      // To test?
       case 'PUBLICBUY': // Not tested
       case 'PUBLICBUYWITHLIMIT': // Not tested
         notification.title = 'Buy X share(s) of [outcomeName] at Y ETH'
@@ -132,7 +182,7 @@ export default function setNotificationText(notification, callback) {
         notification.title = 'Sell X complete sets for Y ETH'
         break
 
-      // Create text?
+      // TODO: Create text for these as well as canceling orphaned order (src/modules/orphaned-orders/actions/index.js)
       case 'APPROVE':
       case 'APPROVESPENDERS':
       case 'CREATEUNIVERSE':
