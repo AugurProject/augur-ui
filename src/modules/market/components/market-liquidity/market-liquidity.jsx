@@ -21,6 +21,7 @@ export default class MarketLiquidity extends Component {
     removeLiquidityOrder: PropTypes.func.isRequired,
     submitLiquidityOrders: PropTypes.func.isRequired,
     clearMarketLiquidityOrders: PropTypes.func.isRequired,
+    updateModal: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -29,7 +30,6 @@ export default class MarketLiquidity extends Component {
     this.state = {
       isOpen: false,
       showAllOrders: false,
-      isWarningShowing: false,
       estimatedGas: createBigNumber('0'),
       totalCost: createBigNumber('0'),
       gasPrice: augur.rpc.getGasPrice(),
@@ -109,13 +109,13 @@ export default class MarketLiquidity extends Component {
       pendingLiquidityOrders,
       marketId,
       market,
+      updateModal,
     } = this.props
     const {
       isOpen,
       estimatedGas,
       totalCost,
       gasPrice,
-      isWarningShowing,
       showAllOrders,
     } = this.state
     const isNullState = !(pendingLiquidityOrders && pendingLiquidityOrders[marketId])
@@ -205,46 +205,52 @@ export default class MarketLiquidity extends Component {
                 <h3>{formatEther(totalCost).full}</h3>
               </div>
             </div>
-            { !isWarningShowing &&
-              <div className={Styles['MarketLiquidity__submit-container']}>
-                <button
-                  className={Styles.MarketLiquidity__submit}
-                  onClick={this.handleSubmitOrders}
-                >
-                  SUBMIT ORDERS
-                </button>
-                <button
-                  className={Styles.MarketLiquidity__clearAll}
-                  onClick={(e) => {
-                    this.setState({ isWarningShowing: true })
-                    e.preventDefault()
-                  }}
-                >
-                  Cancel All
-                </button>
-              </div>
-            }
-            { isWarningShowing &&
-              <div className={Styles['MarketLiquidity__warning-container']}>
-                <div>This action cannot be reversed. Are you sure you want to cancel all initial liquidity orders?</div>
-                <button
-                  onClick={(e) => {
-                    this.setState({ isWarningShowing: false })
-                    e.preventDefault()
-                  }}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={this.handleClearAllMarketOrders}
-                >
-                  Clear All Orders
-                </button>
-              </div>
-            }
+            <div className={Styles['MarketLiquidity__submit-container']}>
+              <button
+                className={Styles.MarketLiquidity__submit}
+                onClick={this.handleSubmitOrders}
+              >
+                SUBMIT ORDERS
+              </button>
+              <button
+                className={Styles.MarketLiquidity__clearAll}
+                onClick={(e) => {
+                  e.preventDefault()
+                  updateModal({
+                    title: 'Cancel all unsigned orders?',
+                    description: 'Cancelling will permenantly remove them from your initial liquidity list',
+                    cancelButtonText: 'keep orders',
+                    submitAction: this.handleClearAllMarketOrders,
+                    submitButtonText: 'cancel orders',
+                  })
+                }}
+              >
+                Cancel All
+              </button>
+            </div>
           </div>
         }
       </div>
     )
   }
 }
+
+
+// { isWarningShowing &&
+//   <div className={Styles['MarketLiquidity__warning-container']}>
+//     <div>This action cannot be reversed. Are you sure you want to cancel all initial liquidity orders?</div>
+//     <button
+//       onClick={(e) => {
+//         this.setState({ isWarningShowing: false })
+//         e.preventDefault()
+//       }}
+//     >
+//       Cancel
+//     </button>
+//     <button
+//       onClick={this.handleClearAllMarketOrders}
+//     >
+//       Clear All Orders
+//     </button>
+//   </div>
+// }
