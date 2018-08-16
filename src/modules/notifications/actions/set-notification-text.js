@@ -1,5 +1,5 @@
 /**
- * @todo Test un-tested notification types. (Must be done by making calls via the API.)
+ * @todo Test canceling orphaned order
  */
 
 import { augur } from 'services/augurjs'
@@ -27,14 +27,14 @@ export default function setNotificationText(notification, callback) {
     }
 
     switch (notification.type.toUpperCase()) {
-      case 'CREATEMARKET': // Not tested
+      case 'CREATEMARKET': // Not called directly by UI
       case 'CREATECATEGORICALMARKET':
       case 'CREATESCALARMARKET':
       case 'CREATEYESNOMARKET':
         notification.title = 'Create new market "' + notification._description + '"'
         dispatch(callback(notification))
         break
-      case 'CREATEORDER': // Not tested
+      case 'CREATEORDER': // Not called directly by UI
       case 'PUBLICCREATEORDER': {
         const outcomeDescription = getOutcomeDescription(notification.marketObj, notification._outcome)
         const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
@@ -42,7 +42,7 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       }
-      case 'PUBLICTRADE': // Not tested
+      case 'PUBLICTRADE': // Not called directly by UI
       case 'PUBLICTRADEWITHLIMIT': {
         const marketInfo = selectMarket(notification._market)
         const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
@@ -51,9 +51,9 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       }
-      case 'FILLORDER': // Not tested
-      case 'PUBLICFILLBESTORDER': // Not tested
-      case 'PUBLICFILLORDER': // Not tested
+      case 'FILLORDER': // Not called directly by UI
+      case 'PUBLICFILLBESTORDER': // Not called directly by UI
+      case 'PUBLICFILLORDER': // Not called directly by UI
       case 'PUBLICFILLBESTORDERWITHLIMIT': {
         const marketInfo = selectMarket(notification._market)
         const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
@@ -102,7 +102,7 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       }
-      case 'BUYPARTICIPATIONTOKENS': // Not tested
+      case 'BUYPARTICIPATIONTOKENS': // Not called directly by UI
       case 'BUY':
         notification.title = 'Purchase ' + formatRep(notification._attotokens / 1000000000000000000).formatted + ' Participation Token(s)'
         dispatch(callback(notification))
@@ -115,9 +115,7 @@ export default function setNotificationText(notification, callback) {
         notification.title = 'Send ' + formatRep(notification.reputationToSend).formatted + ' REP to ' + notification._to
         dispatch(callback(notification))
         break
-      case 'TRANSFER':
-        // Ignore this case for now, as it seems redundant with SENDREPUTATION
-
+      case 'TRANSFER': // Not called directly by UI. Ignore this case for now, as it seems redundant with SENDREPUTATION
         // notification.title = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
         // dispatch(callback(notification))
         break
@@ -127,19 +125,24 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       }
-      case 'PUBLICSELLCOMPLETESETS': // Used in UI, not tested
-      case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not tested
+      case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not called directly by UI
+      case 'PUBLICSELLCOMPLETESETS':
         notification.title = 'Sell X complete sets for Y ETH'
         break
       case 'CLAIMTRADINGPROCEEDS':
         notification.title = 'Claim X ETH trading proceeds'
         break
-      case 'FORK':
-        notification.title = 'Initiate Fork'
+      case 'WITHDRAWETHER':
+      case 'WITHDRAWETHERTO':
+      case 'WITHDRAWETHERTOIFPOSSIBLE':
+        notification.title = 'Withdraw X ETH to [address]'
         break
-      case 'DISAVOWCROWDSOURCERS':
-        notification.title = 'Make staked REP available for claiming'
+      case 'MIGRATEOUTBYPAYOUT': // TODO: Write text
         break
+      case 'MIGRATETHROUGHONEFORK': // TODO: Write text
+        break
+
+      // TODO: Events not called directly by UI. To be implemented/tested
       case 'REDEEM':
       case 'FORKANDREDEEM':
       case 'REDEEMSTAKE':
@@ -157,36 +160,35 @@ export default function setNotificationText(notification, callback) {
       case 'CREATECHILDUNIVERSE':
         notification.title = 'Create new child universe for outcome [outcomeName]'
         break
-      case 'CREATEGENESISUNIVERSE': // Not tested
+      case 'CREATEGENESISUNIVERSE':
         notification.title = 'Create new genesis universe'
         break
       case 'DEPOSITETHER':
       case 'DEPOSITETHERFOR':
         notification.title = 'Deposit X ETH to [address]'
         break
-      case 'WITHDRAWETHER':
-      case 'WITHDRAWETHERTO':
-      case 'WITHDRAWETHERTOIFPOSSIBLE':
-        notification.title = 'Withdraw X ETH to [address]'
-        break
       case 'WITHDRAWTOKENS':
         notification.title = 'Withdraw X tokens'
         break
-
-      case 'PUBLICBUY': // Not tested
-      case 'PUBLICBUYWITHLIMIT': // Not tested
+      case 'FORK':
+        notification.title = 'Initiate Fork'
+        break
+      case 'DISAVOWCROWDSOURCERS':
+        notification.title = 'Make staked REP available for claiming'
+        break
+      case 'PUBLICBUY':
+      case 'PUBLICBUYWITHLIMIT':
         notification.title = 'Buy X share(s) of [outcomeName] at Y ETH'
         break
-      case 'PUBLICSELL': // Not tested
-      case 'PUBLICSELLWITHLIMIT': // Not tested
+      case 'PUBLICSELL':
+      case 'PUBLICSELLWITHLIMIT':
         notification.title = 'Sell X share(s) of [outcomeName] at Y ETH'
         break
-      case 'BUYCOMPLETESETS': // Not tested
-      case 'PUBLICBUYCOMPLETESETS': // Not tested
-      case 'PUBLICBUYCOMPLETESETSWITHCASH': // Not tested
+      case 'BUYCOMPLETESETS':
+      case 'PUBLICBUYCOMPLETESETS':
+      case 'PUBLICBUYCOMPLETESETSWITHCASH':
         notification.title = 'Buy X complete sets for Y ETH'
         break
-
       // TODO: Create text for these as well as canceling orphaned order (src/modules/orphaned-orders/actions/index.js)
       case 'APPROVE':
       case 'APPROVESPENDERS':
@@ -195,8 +197,6 @@ export default function setNotificationText(notification, callback) {
       case 'INCREASEAPPROVAL':
       case 'MIGRATEIN':
       case 'MIGRATEOUT':
-      case 'MIGRATEOUTBYPAYOUT':
-      case 'MIGRATETHROUGHONEFORK':
       case 'REDEEMFORREPORTINGPARTICIPANT':
       case 'TRANSFERFROM':
       case 'TRANSFEROWNERSHIP':

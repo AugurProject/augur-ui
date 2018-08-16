@@ -39,7 +39,7 @@ export const cancelOrphanedOrder = ({ orderId, marketId, outcome, orderTypeLabel
         id: res.hash,
         timestamp,
         status: 'Sent',
-        title: 'Cancelling Orphaned Order',
+        type: 'cancelOrphanedOrder',
       }))
     },
     onSuccess: (res) => {
