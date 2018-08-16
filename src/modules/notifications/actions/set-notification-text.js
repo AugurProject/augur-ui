@@ -127,6 +127,10 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       }
+      case 'PUBLICSELLCOMPLETESETS': // Used in UI, not tested
+      case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not tested
+        notification.title = 'Sell X complete sets for Y ETH'
+        break
       case 'CLAIMTRADINGPROCEEDS':
         notification.title = 'Claim X ETH trading proceeds'
         break
@@ -181,10 +185,6 @@ export default function setNotificationText(notification, callback) {
       case 'PUBLICBUYCOMPLETESETS': // Not tested
       case 'PUBLICBUYCOMPLETESETSWITHCASH': // Not tested
         notification.title = 'Buy X complete sets for Y ETH'
-        break
-      case 'PUBLICSELLCOMPLETESETS': // Not tested
-      case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not tested
-        notification.title = 'Sell X complete sets for Y ETH'
         break
 
       // TODO: Create text for these as well as canceling orphaned order (src/modules/orphaned-orders/actions/index.js)
