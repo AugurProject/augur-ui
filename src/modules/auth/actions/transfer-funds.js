@@ -25,7 +25,6 @@ export function transferFunds(amount, currency, toAddress) {
               status: 'Pending',
               etherToSend: amount,
               to,
-              title: `Transfer ${amount} ETH to ${trimString(to)}`,
               timestamp: selectCurrentTimestampInSeconds(getState()),
               type: 'sendEther',
             }))
@@ -55,7 +54,6 @@ export function transferFunds(amount, currency, toAddress) {
               status: 'Pending',
               amount,
               reputationToSend: amount,
-              title: `Transfer ${amount} REP -> ${trimString(to)}`,
               timestamp: selectCurrentTimestampInSeconds(getState()),
               type: 'sendReputation',
               universe: universe.id,

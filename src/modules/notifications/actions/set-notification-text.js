@@ -15,10 +15,16 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
 
 export default function setNotificationText(notification, callback) {
   return (dispatch, getState) => {
-    if (!notification || !notification.type) {
-      throw new Error('Notification does not have type')
+    if (!notification) {
+      throw new Error('Notification is not set')
     }
-
+    if (!callback) {
+      throw new Error('Callback function is not set')
+    }
+    if (!notification.type) {
+      dispatch(callback(notification))
+    }
+    // console.log('NOTIFICATION: ', notification)
     switch (notification.type.toUpperCase()) {
       case 'CREATEMARKET': // Not tested
       case 'CREATECATEGORICALMARKET':
@@ -122,11 +128,12 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       case 'TRANSFER':
-        notification.title = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
-        dispatch(callback(notification))
-        break
+        // Ignore this case for now, as it seems redundant with SENDREPUTATION
 
-      case 'FINALIZE': { // Not tested
+        // notification.title = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
+        // dispatch(callback(notification))
+        break
+      case 'FINALIZE': { // TODO: Get market description
         const marketDescription = selectMarket(notification._market).description
         notification.title = 'Finalize market "' + marketDescription + '"'
         dispatch(callback(notification))
@@ -158,7 +165,7 @@ export default function setNotificationText(notification, callback) {
       case 'CREATECHILDUNIVERSE':
         notification.title = 'Create new child universe for outcome [outcomeName]'
         break
-      case 'CREATEGENESISUNIVERSE':
+      case 'CREATEGENESISUNIVERSE': // Not tested
         notification.title = 'Create new genesis universe'
         break
       case 'DEPOSITETHER':
