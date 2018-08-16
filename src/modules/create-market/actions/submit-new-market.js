@@ -14,6 +14,8 @@ import { CATEGORICAL } from 'modules/markets/constants/market-types'
 import { TRANSACTIONS } from 'modules/routes/constants/views'
 import { buildCreateMarket } from 'modules/create-market/helpers/build-create-market'
 import { sortOrders } from 'modules/create-market/helpers/liquidity'
+import { updateNotification, addNotification } from 'modules/notifications/actions'
+import { selectCurrentTimestampInSeconds } from 'src/select-state'
 
 export function submitNewMarket(newMarket, history, callback = noop) {
   return (dispatch, getState) => {
@@ -65,9 +67,25 @@ export function submitNewMarket(newMarket, history, callback = noop) {
                   _outcome: outcomeId,
                   _tradeGroupId: augur.trading.generateTradeGroupId(),
                   onSent: (res) => {
+                    newMarket.marketType = newMarket.type
+                    dispatch(addNotification({
+                      id: res.hash,
+                      marketObj: newMarket,
+                      _attoshares: augur.utils.convertBigNumberToHexString(onChainAmount),
+                      _displayPrice: augur.utils.convertBigNumberToHexString(onChainPrice),
+                      _outcome: outcomeId,
+                      status: 'Pending',
+                      timestamp: selectCurrentTimestampInSeconds(getState()),
+                      type: 'publicCreateOrder',
+                    }))
                     orderCB()
                   },
-                  onSuccess: noop,
+                  onSuccess: (res) => {
+                    dispatch(updateNotification(res.hash, {
+                      status: 'Success',
+                      timestamp: selectCurrentTimestampInSeconds(getState()),
+                    }))
+                  },
                   onFailed: (err) => {
                     console.error('ERROR creating order in initial market liquidity: ', err)
                     orderCB()

@@ -35,18 +35,11 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       case 'CREATEORDER': // Not tested
-      case 'PUBLICCREATEORDER': { // TODO: Find a way to get market info
-        // augur.markets.getMarketsInfo({ marketIds: [notification._market] }, (err, marketsInfo) => {
-        //   if (err) {
-        //     throw err
-        //   }
-        //   console.log('marketsInfo')
-        //   console.log(marketsInfo)
-        //   const outcomeDescription = getOutcomeDescription(marketsInfo[0])
-        //   const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
-        //   notification.title = 'Create ' + orderType + ' order for ' + formatShares(notification._attoshares).decimals + ' share unit(s) of "' + outcomeDescription + '" at ' + (parseInt(notification._displayPrice, 16) / 10000) + ' ETH'
-        //   dispatch(callback(notification))
-        // })
+      case 'PUBLICCREATEORDER': {
+        const outcomeDescription = getOutcomeDescription(notification.marketObj, notification._outcome)
+        const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
+        notification.title = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / 100000000000000).formatted + ' share unit(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / 10000).formatted + ' ETH'
+        dispatch(callback(notification))
         break
       }
       case 'PUBLICTRADE': // Not tested
