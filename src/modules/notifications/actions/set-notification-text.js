@@ -7,7 +7,7 @@ import { selectMarket } from 'modules/market/selectors/market'
 import { formatEther, formatRep, formatShares } from 'utils/format-number'
 
 function getOutcomeDescription(marketInfo, outcomeIndex) {
-  if (marketInfo.marketType === 'YesNo') {
+  if (marketInfo.marketType.toUpperCase() === 'YESNO') {
     return (outcomeIndex === 0) ? 'No' : 'Yes'
   }
   return marketInfo.outcomes[outcomeIndex].description
@@ -102,13 +102,11 @@ export default function setNotificationText(notification, callback) {
         dispatch(callback(notification))
         break
       }
-      case 'CONTRIBUTE': { // TODO: Get outcome description
-        const result = notification.title.replace(/([A-Z])/g, ' $1')
-        notification.title = result.charAt(0).toUpperCase() + result.slice(1)
-        // const marketInfo = selectMarket(notification._market)
-        // const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
-        // notification.title = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
-        // dispatch(callback(notification))
+      case 'CONTRIBUTE': {
+        const marketInfo = selectMarket(notification.market)
+        const outcomeDescription = (notification._invalid) ? 'Invalid' : getOutcomeDescription(marketInfo, parseInt(notification.outcome, 10))
+        notification.title = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
+        dispatch(callback(notification))
         break
       }
       case 'BUYPARTICIPATIONTOKENS': // Not tested
