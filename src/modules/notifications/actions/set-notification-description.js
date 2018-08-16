@@ -6,6 +6,10 @@ import { augur } from 'services/augurjs'
 import { selectMarket } from 'modules/market/selectors/market'
 import { formatEther, formatRep, formatShares } from 'utils/format-number'
 
+const ETHER_DIVISOR = 10000
+const REP_DIVISOR = 1000000000000000000
+const SHARES_DIVISOR = 100000000000000
+
 function getOutcomeDescription(marketInfo, outcomeIndex) {
   if (marketInfo.marketType.toUpperCase() === 'YESNO') {
     return (outcomeIndex === 0) ? 'No' : 'Yes'
@@ -39,7 +43,7 @@ export default function setNotificationDescription(notification, callback) {
         // const marketInfo = selectMarket(notification._market)
         // const outcomeDescription = getOutcomeDescription(notification.marketObj, notification._outcome)
         // const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
-        // notification.description = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / 100000000000000).formatted + ' share unit(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / 10000).formatted + ' ETH'
+        // notification.description = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / SHARES_DIVISOR).formatted + ' share unit(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / ETHER_DIVISOR).formatted + ' ETH'
         // dispatch(callback(notification))
         break
       }
@@ -48,7 +52,7 @@ export default function setNotificationDescription(notification, callback) {
         const marketInfo = selectMarket(notification._market)
         const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
         const orderType = (notification._direction === '0x0') ? 'buy' : 'sell'
-        notification.description = 'Place ' + orderType + ' order for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
+        notification.description = 'Place ' + orderType + ' order for ' + formatShares(parseInt(notification._fxpAmount, 16) / SHARES_DIVISOR).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / ETHER_DIVISOR).formatted + ' ETH'
         dispatch(callback(notification))
         break
       }
@@ -59,7 +63,7 @@ export default function setNotificationDescription(notification, callback) {
         const marketInfo = selectMarket(notification._market)
         const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
         const fillOrderType = (notification._type === '0x0') ? 'sell' : 'buy'
-        notification.description = 'Fill ' + fillOrderType + ' order(s) for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
+        notification.description = 'Fill ' + fillOrderType + ' order(s) for ' + formatShares(parseInt(notification._fxpAmount, 16) / SHARES_DIVISOR).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / ETHER_DIVISOR).formatted + ' ETH'
         dispatch(callback(notification))
         break
       }
@@ -82,7 +86,7 @@ export default function setNotificationDescription(notification, callback) {
                 }
                 const marketInfo = selectMarket(marketId)
                 const outcomeDescription = getOutcomeDescription(marketInfo, orderOutcome)
-                notification.description = 'Cancel order for ' + formatShares(orderAmount / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(orderPrice / 10000).formatted + ' ETH'
+                notification.description = 'Cancel order for ' + formatShares(orderAmount / SHARES_DIVISOR).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(orderPrice / ETHER_DIVISOR).formatted + ' ETH'
                 dispatch(callback(notification))
               })
             })
@@ -99,13 +103,13 @@ export default function setNotificationDescription(notification, callback) {
       case 'CONTRIBUTE': {
         const marketInfo = selectMarket(notification.market)
         const outcomeDescription = (notification._invalid) ? 'Invalid' : getOutcomeDescription(marketInfo, parseInt(notification.outcome, 10))
-        notification.description = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
+        notification.description = 'Place ' + formatRep(parseInt(notification._amount, 16) / REP_DIVISOR).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
         dispatch(callback(notification))
         break
       }
       case 'BUYPARTICIPATIONTOKENS': // Not called directly by UI
       case 'BUY':
-        notification.description = 'Purchase ' + formatRep(notification._attotokens / 1000000000000000000).formatted + ' Participation Token(s)'
+        notification.description = 'Purchase ' + formatRep(notification._attotokens / REP_DIVISOR).formatted + ' Participation Token(s)'
         dispatch(callback(notification))
         break
       case 'SENDETHER':
@@ -117,7 +121,7 @@ export default function setNotificationDescription(notification, callback) {
         dispatch(callback(notification))
         break
       case 'TRANSFER': // Not called directly by UI. Ignore this case for now, as it seems redundant with SENDREPUTATION
-        // notification.description = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
+        // notification.description = 'Transfer ' + formatRep(notification._value / REP_DIVISOR).formatted + ' REP to ' + notification._to
         // dispatch(callback(notification))
         break
       case 'FINALIZE': {
@@ -128,7 +132,7 @@ export default function setNotificationDescription(notification, callback) {
       }
       case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not called directly by UI
       case 'PUBLICSELLCOMPLETESETS':
-        notification.description = 'Sell ' + formatShares(parseInt(notification._amount, 16) / 100000000000000).formatted + ' complete sets for Y ETH'
+        notification.description = 'Sell ' + formatShares(parseInt(notification._amount, 16) / SHARES_DIVISOR).formatted + ' complete sets for Y ETH'
         break
       case 'CLAIMTRADINGPROCEEDS':
         notification.description = 'Claim X ETH trading proceeds'
@@ -205,8 +209,8 @@ export default function setNotificationDescription(notification, callback) {
       case 'UPDATEPARENTTOTALTHEORETICALSUPPLY':
       case 'UPDATESIBLINGMIGRATIONTOTAL':
       default: {
-        const result = notification.title.replace(/([A-Z])/g, ' $1')
-        notification.title = result.charAt(0).toUpperCase() + result.slice(1)
+        const result = notification.description.replace(/([A-Z])/g, ' $1')
+        notification.description = result.charAt(0).toUpperCase() + result.slice(1)
         break
       }
     }
