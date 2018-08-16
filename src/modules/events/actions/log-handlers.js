@@ -151,22 +151,12 @@ export const handleInitialReporterRedeemedLog = log => (dispatch, getState) => {
 export const handleMarketFinalizedLog = log => (dispatch, getState) => (
   dispatch(loadMarketsInfo([log.market], (err) => {
     if (err) return console.error(err)
-    const { volume, author, description } = getState().marketsData[log.market]
+    const { volume, author } = getState().marketsData[log.market]
     dispatch(updateMarketCategoryPopularity(log.market, new BigNumber(volume, 10).negated().toFixed()))
     dispatch(loadReporting())
     const isOwnMarket = getState().loginAccount.address === author
     if (isOwnMarket) {
       dispatch(updateLoggedTransactions(log))
-      if (!log.removed) {
-        dispatch(addNotification({
-          id: log.transactionHash,
-          timestamp: log.timestamp,
-          blockNumber: log.blockNumber,
-          status: 'Success',
-          title: `Finalized Market: "${description}"`,
-          linkPath: makePath(MY_MARKETS),
-        }))
-      }
     }
   }))
 )

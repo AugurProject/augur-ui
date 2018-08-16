@@ -15,6 +15,7 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
 
 export default function setNotificationText(notification, callback) {
   return (dispatch, getState) => {
+    // console.log('NOTIFICATION: ', notification)
     if (!notification) {
       throw new Error('Notification is not set')
     }
@@ -24,7 +25,7 @@ export default function setNotificationText(notification, callback) {
     if (!notification.type) {
       dispatch(callback(notification))
     }
-    // console.log('NOTIFICATION: ', notification)
+
     switch (notification.type.toUpperCase()) {
       case 'CREATEMARKET': // Not tested
       case 'CREATECATEGORICALMARKET':
@@ -133,8 +134,8 @@ export default function setNotificationText(notification, callback) {
         // notification.title = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
         // dispatch(callback(notification))
         break
-      case 'FINALIZE': { // TODO: Get market description
-        const marketDescription = selectMarket(notification._market).description
+      case 'FINALIZE': {
+        const marketDescription = selectMarket(notification.market).description
         notification.title = 'Finalize market "' + marketDescription + '"'
         dispatch(callback(notification))
         break

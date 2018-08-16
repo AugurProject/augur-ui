@@ -13,7 +13,7 @@ export const sendFinalizeMarket = (marketId, callback = logError) => (dispatch, 
     onSent: (res) => {
       dispatch(addNotification({
         id: res.hash,
-        marketAddress: marketId,
+        market: marketId,
         status: 'Pending',
         timestamp: selectCurrentTimestampInSeconds(getState()),
         type: 'finalize',
