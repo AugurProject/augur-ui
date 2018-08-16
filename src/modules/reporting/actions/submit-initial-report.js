@@ -4,6 +4,9 @@ import makePath from 'modules/routes/helpers/make-path'
 import logError from 'utils/log-error'
 import { getPayoutNumerators } from 'modules/reporting/selectors/get-payout-numerators'
 
+import { updateNotification, addNotification } from 'modules/notifications/actions'
+import { selectCurrentTimestampInSeconds } from 'src/select-state'
+
 export const submitInitialReport = (estimateGas, marketId, selectedOutcome, invalid, history, callback = logError) => (dispatch, getState) => {
   const { loginAccount, marketsData } = getState()
   const outcome = parseFloat(selectedOutcome)
@@ -19,15 +22,26 @@ export const submitInitialReport = (estimateGas, marketId, selectedOutcome, inva
     tx: { to: marketId, estimateGas },
     _invalid: invalid,
     _payoutNumerators: payoutNumerators,
-    onSent: () => {
+    onSent: (res) => {
       if (!estimateGas) {
+        dispatch(addNotification({
+          id: res.hash,
+          market: marketId,
+          status: 'Pending',
+          timestamp: selectCurrentTimestampInSeconds(getState()),
+          type: 'doInitialReport',
+        }))
         history.push(makePath(REPORTING_REPORT_MARKETS))
       }
     },
-    onSuccess: (gasCost) => {
+    onSuccess: (res) => {
       if (estimateGas) {
-        callback(null, gasCost)
+        callback(null, res)
       } else {
+        dispatch(updateNotification(res.hash, {
+          status: 'Success',
+          timestamp: selectCurrentTimestampInSeconds(getState()),
+        }))
         callback(null)
       }
     },

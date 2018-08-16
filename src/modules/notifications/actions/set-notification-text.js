@@ -96,19 +96,15 @@ export default function setNotificationText(notification, callback) {
         })
         break
       }
-      case 'DOINITIALREPORT': { // TODO: Get market description
-        const result = notification.title.replace(/([A-Z])/g, ' $1')
-        notification.title = result.charAt(0).toUpperCase() + result.slice(1)
-        // console.log(notification)
-        // const marketDescription = selectMarket(notification._market).description
-        // notification.title = 'Submit report on "' + marketDescription + "'"
-        // dispatch(callback(notification))
+      case 'DOINITIALREPORT': {
+        const marketDescription = selectMarket(notification.market).description
+        notification.title = 'Submit report on "' + marketDescription + '"'
+        dispatch(callback(notification))
         break
       }
       case 'CONTRIBUTE': { // TODO: Get outcome description
         const result = notification.title.replace(/([A-Z])/g, ' $1')
         notification.title = result.charAt(0).toUpperCase() + result.slice(1)
-        // console.log(notification)
         // const marketInfo = selectMarket(notification._market)
         // const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
         // notification.title = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
