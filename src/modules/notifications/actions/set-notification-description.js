@@ -13,7 +13,7 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
   return marketInfo.outcomes[outcomeIndex].description
 }
 
-export default function setNotificationText(notification, callback) {
+export default function setNotificationDescription(notification, callback) {
   return (dispatch, getState) => {
     // console.log('NOTIFICATION: ', notification)
     if (!notification) {
@@ -31,15 +31,16 @@ export default function setNotificationText(notification, callback) {
       case 'CREATECATEGORICALMARKET':
       case 'CREATESCALARMARKET':
       case 'CREATEYESNOMARKET':
-        notification.title = 'Create new market "' + notification._description + '"'
+        notification.description = 'Create new market "' + notification._description + '"'
         dispatch(callback(notification))
         break
       case 'CREATEORDER': // Not called directly by UI
       case 'PUBLICCREATEORDER': {
-        const outcomeDescription = getOutcomeDescription(notification.marketObj, notification._outcome)
-        const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
-        notification.title = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / 100000000000000).formatted + ' share unit(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / 10000).formatted + ' ETH'
-        dispatch(callback(notification))
+        // const marketInfo = selectMarket(notification._market)
+        // const outcomeDescription = getOutcomeDescription(notification.marketObj, notification._outcome)
+        // const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
+        // notification.description = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / 100000000000000).formatted + ' share unit(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / 10000).formatted + ' ETH'
+        // dispatch(callback(notification))
         break
       }
       case 'PUBLICTRADE': // Not called directly by UI
@@ -47,7 +48,7 @@ export default function setNotificationText(notification, callback) {
         const marketInfo = selectMarket(notification._market)
         const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
         const orderType = (notification._direction === '0x0') ? 'buy' : 'sell'
-        notification.title = 'Place ' + orderType + ' order for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
+        notification.description = 'Place ' + orderType + ' order for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
         dispatch(callback(notification))
         break
       }
@@ -58,7 +59,7 @@ export default function setNotificationText(notification, callback) {
         const marketInfo = selectMarket(notification._market)
         const outcomeDescription = getOutcomeDescription(marketInfo, parseInt(notification._outcome, 16))
         const fillOrderType = (notification._type === '0x0') ? 'sell' : 'buy'
-        notification.title = 'Fill ' + fillOrderType + ' order(s) for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
+        notification.description = 'Fill ' + fillOrderType + ' order(s) for ' + formatShares(parseInt(notification._fxpAmount, 16) / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._price, 16) / 10000).formatted + ' ETH'
         dispatch(callback(notification))
         break
       }
@@ -81,7 +82,7 @@ export default function setNotificationText(notification, callback) {
                 }
                 const marketInfo = selectMarket(marketId)
                 const outcomeDescription = getOutcomeDescription(marketInfo, orderOutcome)
-                notification.title = 'Cancel order for ' + formatShares(orderAmount / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(orderPrice / 10000).formatted + ' ETH'
+                notification.description = 'Cancel order for ' + formatShares(orderAmount / 100000000000000).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(orderPrice / 10000).formatted + ' ETH'
                 dispatch(callback(notification))
               })
             })
@@ -91,51 +92,51 @@ export default function setNotificationText(notification, callback) {
       }
       case 'DOINITIALREPORT': {
         const marketDescription = selectMarket(notification.market).description
-        notification.title = 'Submit report on "' + marketDescription + '"'
+        notification.description = 'Submit report on "' + marketDescription + '"'
         dispatch(callback(notification))
         break
       }
       case 'CONTRIBUTE': {
         const marketInfo = selectMarket(notification.market)
         const outcomeDescription = (notification._invalid) ? 'Invalid' : getOutcomeDescription(marketInfo, parseInt(notification.outcome, 10))
-        notification.title = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
+        notification.description = 'Place ' + formatRep(parseInt(notification._amount, 16) / 1000000000000000000).formatted + ' REP on "' + outcomeDescription + '" dispute bond'
         dispatch(callback(notification))
         break
       }
       case 'BUYPARTICIPATIONTOKENS': // Not called directly by UI
       case 'BUY':
-        notification.title = 'Purchase ' + formatRep(notification._attotokens / 1000000000000000000).formatted + ' Participation Token(s)'
+        notification.description = 'Purchase ' + formatRep(notification._attotokens / 1000000000000000000).formatted + ' Participation Token(s)'
         dispatch(callback(notification))
         break
       case 'SENDETHER':
-        notification.title = 'Send ' + formatEther(notification.etherToSend).formatted + ' ETH to ' + notification.to
+        notification.description = 'Send ' + formatEther(notification.etherToSend).formatted + ' ETH to ' + notification.to
         dispatch(callback(notification))
         break
       case 'SENDREPUTATION':
-        notification.title = 'Send ' + formatRep(notification.reputationToSend).formatted + ' REP to ' + notification._to
+        notification.description = 'Send ' + formatRep(notification.reputationToSend).formatted + ' REP to ' + notification._to
         dispatch(callback(notification))
         break
       case 'TRANSFER': // Not called directly by UI. Ignore this case for now, as it seems redundant with SENDREPUTATION
-        // notification.title = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
+        // notification.description = 'Transfer ' + formatRep(notification._value / 1000000000000000000).formatted + ' REP to ' + notification._to
         // dispatch(callback(notification))
         break
       case 'FINALIZE': {
         const marketDescription = selectMarket(notification.market).description
-        notification.title = 'Finalize market "' + marketDescription + '"'
+        notification.description = 'Finalize market "' + marketDescription + '"'
         dispatch(callback(notification))
         break
       }
       case 'PUBLICSELLCOMPLETESETSWITHCASH': // Not called directly by UI
       case 'PUBLICSELLCOMPLETESETS':
-        notification.title = 'Sell X complete sets for Y ETH'
+        notification.description = 'Sell ' + formatShares(parseInt(notification._amount, 16) / 100000000000000).formatted + ' complete sets for Y ETH'
         break
       case 'CLAIMTRADINGPROCEEDS':
-        notification.title = 'Claim X ETH trading proceeds'
+        notification.description = 'Claim X ETH trading proceeds'
         break
       case 'WITHDRAWETHER':
       case 'WITHDRAWETHERTO':
       case 'WITHDRAWETHERTOIFPOSSIBLE':
-        notification.title = 'Withdraw X ETH to [address]'
+        notification.description = 'Withdraw X ETH to [address]'
         break
       case 'MIGRATEOUTBYPAYOUT': // TODO: Write text
         break
@@ -146,48 +147,48 @@ export default function setNotificationText(notification, callback) {
       case 'REDEEM':
       case 'FORKANDREDEEM':
       case 'REDEEMSTAKE':
-        notification.title = 'Claim X REP'
+        notification.description = 'Claim X REP'
         break
       case 'FINALIZEFORK':
-        notification.title = 'Finalize Fork'
+        notification.description = 'Finalize Fork'
         break
       case 'MIGRATE':
-        notification.title = 'Migrate market "[marketName]" to child universe'
+        notification.description = 'Migrate market "[marketName]" to child universe'
         break
       case 'MIGRATEREP':
-        notification.title = 'Migrate X REP to child universe [outcomeName]'
+        notification.description = 'Migrate X REP to child universe [outcomeName]'
         break
       case 'CREATECHILDUNIVERSE':
-        notification.title = 'Create new child universe for outcome [outcomeName]'
+        notification.description = 'Create new child universe for outcome [outcomeName]'
         break
       case 'CREATEGENESISUNIVERSE':
-        notification.title = 'Create new genesis universe'
+        notification.description = 'Create new genesis universe'
         break
       case 'DEPOSITETHER':
       case 'DEPOSITETHERFOR':
-        notification.title = 'Deposit X ETH to [address]'
+        notification.description = 'Deposit X ETH to [address]'
         break
       case 'WITHDRAWTOKENS':
-        notification.title = 'Withdraw X tokens'
+        notification.description = 'Withdraw X tokens'
         break
       case 'FORK':
-        notification.title = 'Initiate Fork'
+        notification.description = 'Initiate Fork'
         break
       case 'DISAVOWCROWDSOURCERS':
-        notification.title = 'Make staked REP available for claiming'
+        notification.description = 'Make staked REP available for claiming'
         break
       case 'PUBLICBUY':
       case 'PUBLICBUYWITHLIMIT':
-        notification.title = 'Buy X share(s) of [outcomeName] at Y ETH'
+        notification.description = 'Buy X share(s) of [outcomeName] at Y ETH'
         break
       case 'PUBLICSELL':
       case 'PUBLICSELLWITHLIMIT':
-        notification.title = 'Sell X share(s) of [outcomeName] at Y ETH'
+        notification.description = 'Sell X share(s) of [outcomeName] at Y ETH'
         break
       case 'BUYCOMPLETESETS':
       case 'PUBLICBUYCOMPLETESETS':
       case 'PUBLICBUYCOMPLETESETSWITHCASH':
-        notification.title = 'Buy X complete sets for Y ETH'
+        notification.description = 'Buy X complete sets for Y ETH'
         break
       // TODO: Create text for these as well as canceling orphaned order (src/modules/orphaned-orders/actions/index.js)
       case 'APPROVE':
