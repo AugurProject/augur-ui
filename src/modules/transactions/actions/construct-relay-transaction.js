@@ -22,6 +22,7 @@ export const constructRelayTransaction = tx => (dispatch, getState) => {
       blockNumber,
       status,
       title: unpackedParams.type,
+      type: unpackedParams.type,
       description: unpackedParams._description || '',
       linkPath: makePath(TRANSACTIONS),
     }))

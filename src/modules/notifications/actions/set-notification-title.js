@@ -7,11 +7,12 @@ export default function setNotificationTitle(notification, callback) {
     if (!callback) {
       throw new Error('Callback function is not set')
     }
-    if (!notification.title) {
+    if (!notification.type) {
       dispatch(callback(notification))
+      return
     }
 
-    switch (notification.title.toUpperCase()) {
+    switch (notification.type.toUpperCase()) {
       // Augur
       case 'CREATEGENESISUNIVERSE':
         notification.title = 'Create genesis universe'
@@ -227,14 +228,14 @@ export default function setNotificationTitle(notification, callback) {
 
       // augur.js functions
       case 'SENDETHER':
-        notification.description = 'Send ETH'
+        notification.title = 'Send ETH'
         break
       case 'SENDREPUTATION':
-        notification.description = 'Send REP'
+        notification.title = 'Send REP'
         break
 
       default: {
-        const result = notification.title.replace(/([A-Z])/g, ' $1')
+        const result = notification.type.replace(/([A-Z])/g, ' $1')
         notification.title = result.charAt(0).toUpperCase() + result.slice(1)
         break
       }

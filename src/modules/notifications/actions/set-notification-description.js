@@ -32,6 +32,7 @@ export default function setNotificationDescription(notification, callback) {
     }
     if (!notification.type) {
       dispatch(callback(notification))
+      return
     }
 
     switch (notification.type.toUpperCase()) {
@@ -93,11 +94,11 @@ export default function setNotificationDescription(notification, callback) {
 
       // CreateOrder
       case 'PUBLICCREATEORDER': { // TODO: Fix
-        // const marketInfo = selectMarket(notification._market)
-        // const outcomeDescription = getOutcomeDescription(notification.marketObj, notification._outcome)
-        // const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
-        // notification.description = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / SHARES_DIVISOR).formatted + ' share unit(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / ETHER_DIVISOR).formatted + ' ETH'
-        // dispatch(callback(notification))
+        const marketInfo = selectMarket(notification._market)
+        const outcomeDescription = getOutcomeDescription(marketInfo, notification._outcome)
+        const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
+        notification.description = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / SHARES_DIVISOR).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / ETHER_DIVISOR).formatted + ' ETH'
+        dispatch(callback(notification))
         break
       }
 
@@ -284,7 +285,7 @@ export default function setNotificationDescription(notification, callback) {
         break
 
       default: {
-        const result = notification.description.replace(/([A-Z])/g, ' $1')
+        const result = notification.type.replace(/([A-Z])/g, ' $1')
         notification.description = result.charAt(0).toUpperCase() + result.slice(1)
         break
       }
