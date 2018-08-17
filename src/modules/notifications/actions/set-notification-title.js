@@ -23,7 +23,6 @@ export default function setNotificationTitle(notification, callback) {
         break
 
       // Cash
-      case 'WITHDRAWETHERTO':
       case 'WITHDRAWETHERTOIFPOSSIBLE':
         notification.title = 'Withdraw ETH'
         break
@@ -58,9 +57,11 @@ export default function setNotificationTitle(notification, callback) {
         notification.title = 'Buy participation token(s)'
         break
 
-      // FillOrder
+      // FillOrder & Trade
+      case 'PUBLICFILLBESTORDER':
+      case 'PUBLICFILLBESTORDERWITHLIMIT':
       case 'PUBLICFILLORDER':
-        notification.title = 'Fill order for share(s)'
+        notification.title = 'Fill order(s)'
         break
 
       // InitialReporter
@@ -131,10 +132,6 @@ export default function setNotificationTitle(notification, callback) {
         notification.title = 'Place trade'
         break
       }
-      case 'PUBLICFILLBESTORDER':
-      case 'PUBLICFILLBESTORDERWITHLIMIT':
-        notification.title = 'Fill order(s)'
-        break
 
       // TradingEscapeHatch
       case 'CLAIMSHARESINUPDATE':
@@ -155,7 +152,7 @@ export default function setNotificationTitle(notification, callback) {
         notification.title = 'Create child universe'
         break
       case 'FORK':
-        notification.title = 'Fork universe'
+        notification.title = 'Initiate fork'
         break
       case 'REDEEMSTAKE':
         notification.title = 'Claim staked REP/Ether'
@@ -221,9 +218,21 @@ export default function setNotificationTitle(notification, callback) {
       case 'TRANSFEROWNERSHIP':
         notification.title = 'Transfer to another address'
         break
+      case 'WITHDRAWETHERTO':
+        notification.title = 'Withdraw ETH'
+        break
       case 'WITHDRAWINEMERGENCY':
         notification.title = 'Withdraw funds'
         break
+
+      // augur.js functions
+      case 'SENDETHER':
+        notification.description = 'Send ETH'
+        break
+      case 'SENDREPUTATION':
+        notification.description = 'Send REP'
+        break
+
       default: {
         const result = notification.title.replace(/([A-Z])/g, ' $1')
         notification.title = result.charAt(0).toUpperCase() + result.slice(1)
