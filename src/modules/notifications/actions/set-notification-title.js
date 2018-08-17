@@ -1,5 +1,5 @@
 /**
- * @todo Write titles
+ * @todo Finish writing title text
  * @todo Figure out how to handle overloaded transaction names
  * @todo Have John's code convert hex params to integers (or vice versa)?
  * @todo Determine how to handle non-documented transactions (such as Universe.addMarketTo)

@@ -27,11 +27,12 @@ import { loadMarketTradingHistory } from 'modules/market/actions/load-market-tra
 import { updateAssets } from 'modules/auth/actions/update-assets'
 import { selectCurrentTimestampInSeconds } from 'src/select-state'
 
-const handleNofiticationUpdate = (log, dispatch, getState) => {
+const handleNotificationUpdate = (log, dispatch, getState) => {
   dispatch(updateNotification(log.transactionHash, {
     id: log.transactionHash,
     timestamp: selectCurrentTimestampInSeconds(getState()),
     blockNumber: log.blockNumber,
+    contractName: log.contractName,
     status: 'confirmed',
     linkPath: makePath(TRANSACTIONS),
     seen: false, // Manually set to false to ensure notification
@@ -53,7 +54,7 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
     dispatch(loadCategories())
   }
   if (isStoredTransaction) {
-    handleNofiticationUpdate(log, dispatch, getState)
+    handleNotificationUpdate(log, dispatch, getState)
     dispatch(updateAssets())
     dispatch(updateLoggedTransactions(log))
   }
@@ -75,7 +76,7 @@ export const handleTokensTransferredLog = log => (dispatch, getState) => {
   if (isStoredTransaction) {
     dispatch(updateAssets())
     dispatch(loadFundingHistory())
-    handleNofiticationUpdate(log, dispatch, getState)
+    handleNotificationUpdate(log, dispatch, getState)
   }
 }
 
@@ -104,7 +105,7 @@ export const handleOrderCreatedLog = log => (dispatch, getState) => {
   if (isStoredTransaction) {
     dispatch(updateAssets())
     dispatch(updateOrder(log, true))
-    handleNofiticationUpdate(log, dispatch, getState)
+    handleNotificationUpdate(log, dispatch, getState)
     dispatch(loadAccountTrades({ marketId: log.marketId }))
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId))
@@ -116,7 +117,7 @@ export const handleOrderCanceledLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.sender === getState().loginAccount.address
   if (isStoredTransaction) {
     if (!log.removed) dispatch(removeCanceledOrder(log.orderId))
-    handleNofiticationUpdate(log, dispatch, getState)
+    handleNotificationUpdate(log, dispatch, getState)
     dispatch(updateOrder(log, false))
     dispatch(loadAccountTrades({ marketId: log.marketId }))
   }
