@@ -1,17 +1,3 @@
-/**
- * @todo Finish writing title text
- * @todo Figure out how to handle overloaded transaction names
- * @todo Have John's code convert hex params to integers (or vice versa)?
- * @todo Determine how to handle non-documented transactions (such as Universe.addMarketTo)
- * @todo Test titles
- */
-
-import { formatEther, formatRep, formatShares } from 'utils/format-number'
-
-const ETHER_DIVISOR = 10000
-const REP_DIVISOR = 1000000000000000000
-const SHARES_DIVISOR = 100000000000000
-
 export default function setNotificationTitle(notification, callback) {
   return (dispatch, getState) => {
     // console.log('NOTIFICATION: ', notification)
@@ -30,58 +16,69 @@ export default function setNotificationTitle(notification, callback) {
       case 'CREATEGENESISUNIVERSE':
         notification.title = 'Create genesis universe'
         break
+
       // CancelOrder
       case 'CANCELORDER':
         notification.title = 'Cancel order'
         break
+
       // Cash
+      case 'WITHDRAWETHERTO':
       case 'WITHDRAWETHERTOIFPOSSIBLE':
-        notification.title = 'Withdraw ' + formatEther(notification._amount / ETHER_DIVISOR).formatted + ' ETH to ' + notification._address
+        notification.title = 'Withdraw ETH'
         break
+
       // ClaimTradingProceeds
       case 'CALCULATEREPORTINGFEE':
-        notification.title = 'Calculate reporting fee for ' + formatShares(notification._amount / SHARES_DIVISOR).formatted + ' shares in market ' + notification._market
+        notification.title = 'Calculate reporting fee'
         break
       case 'CLAIMTRADINGPROCEEDS':
-        notification.title = 'Claim trading proceeds for ' + notification._shareHolder + ' in market ' + notification._market
+        notification.title = 'Claim trading proceeds'
         break
+
       // CompleteSets
       case 'PUBLICBUYCOMPLETESETS':
       case 'PUBLICBUYCOMPLETESETSWITHCASH':
-        notification.title = 'Buy ' + formatShares(notification._amount / SHARES_DIVISOR).formatted + ' complete sets in market ' + notification._market
+        notification.title = 'Buy complete set(s)'
         break
       case 'PUBLICSELLCOMPLETESETS':
       case 'PUBLICSELLCOMPLETESETSWITHCASH':
-        notification.title = 'Sell ' + formatShares(notification._amount / SHARES_DIVISOR).formatted + ' complete sets in market ' + notification._market
+        notification.title = 'Sell complete set(s)'
         break
+
       // CreateOrder
       case 'PUBLICCREATEORDER': {
-        const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
-        notification.title = 'Create ' + orderType + ' liquidity order'
+        notification.title = 'Create liquidity order'
         break
       }
-      // DisputeCrowdsourcer
 
-      // FeeWindow
+      // FeeWindow & Universe
       case 'BUY':
-        notification.title = 'Buy ' + formatRep(notification._attotokens / REP_DIVISOR).formatted + ' Participation Tokens'
+      case 'BUYPARTICIPATIONTOKENS':
+        notification.title = 'Buy participation token(s)'
         break
+
       // FillOrder
       case 'PUBLICFILLORDER':
-        notification.title = 'Fill order for ' + formatShares(notification._amountFillerWants / SHARES_DIVISOR).formatted + ' shares'
+        notification.title = 'Fill order for share(s)'
         break
+
       // InitialReporter
+      case 'MIGRATEREP':
+        notification.title = 'Migrate REP'
+        break
 
       // Mailbox
       case 'WITHDRAWETHER':
-        notification.title = 'Withdraw Ether from mailbox'
+        notification.title = 'Withdraw ETH from mailbox'
         break
       case 'WITHDRAWTOKENS':
         notification.title = 'Withdraw tokens from mailbox'
         break
+
       // Market
       case 'CONTRIBUTE':
-        notification.title = 'Contribute ' + formatRep(notification._amount / REP_DIVISOR).formatted + ' REP to crowdsourcer'
+        notification.title = 'Contribute REP to crowdsourcer'
         break
       case 'DISAVOWCROWDSOURCERS':
         notification.title = 'Make staked REP available for claiming'
@@ -98,6 +95,7 @@ export default function setNotificationTitle(notification, callback) {
       case 'MIGRATETHROUGHONEFORK':
         notification.title = 'Migrate market to winning child universe'
         break
+
       // ReputationToken
       case 'MIGRATEBALANCESFROMLEGACYREP':
         notification.title = 'Migrate balances from legacy REP contract'
@@ -105,11 +103,12 @@ export default function setNotificationTitle(notification, callback) {
       case 'MIGRATEALLOWANCESFROMLEGACYREP':
         notification.title = 'Migrate allowances from legacy REP contract'
         break
-      case 'MIGRATEOUT':
-        notification.title = 'Migrate ' + formatRep(notification._attotokens / REP_DIVISOR).formatted + ' REP to ' + notification._destination
+      case 'MIGRATEIN':
+        notification.title = 'Migrate REP into universe'
         break
+      case 'MIGRATEOUT':
       case 'MIGRATEOUTBYPAYOUT':
-        notification.title = 'Migrate ' + formatRep(notification._attotokens / REP_DIVISOR).formatted + ' REP by payout set'
+        notification.title = 'Migrate REP out of universe'
         break
       case 'UPDATEPARENTTOTALTHEORETICALSUPPLY':
         notification.title = 'Update theoretical REP supply for parent universe'
@@ -117,43 +116,46 @@ export default function setNotificationTitle(notification, callback) {
       case 'UPDATESIBLINGMIGRATIONTOTAL':
         notification.title = 'Update theoretical REP supply for sibling universe'
         break
-      // ShareToken
 
       // Trade
       case 'PUBLICBUY':
       case 'PUBLICBUYWITHLIMIT':
-        notification.title = 'Buy ' + formatShares(notification._fxpAmount / SHARES_DIVISOR).formatted + ' at ' + formatEther(notification._price / ETHER_DIVISOR).formatted
+        notification.title = 'Buy share(s)'
         break
       case 'PUBLICSELL':
       case 'PUBLICSELLWITHLIMIT':
-        notification.title = 'Sell ' + formatShares(notification._fxpAmount / SHARES_DIVISOR).formatted + ' at ' + formatEther(notification._price / ETHER_DIVISOR).formatted
+        notification.title = 'Sell share(s)'
         break
       case 'PUBLICTRADE':
       case 'PUBLICTRADEWITHLIMIT': {
-        const orderType = (notification._direction === '0x0') ? 'Buy' : 'Sell'
-        notification.title = orderType + ' ' + formatShares(notification._fxpAmount / SHARES_DIVISOR).formatted + ' at ' + formatEther(notification._price / ETHER_DIVISOR).formatted
+        notification.title = 'Place trade'
         break
       }
       case 'PUBLICFILLBESTORDER':
       case 'PUBLICFILLBESTORDERWITHLIMIT':
-        notification.title = 'Fill order for ' + formatShares(notification._fxpAmount / SHARES_DIVISOR).formatted + ' shares at ' + formatEther(notification._price / ETHER_DIVISOR).formatted
+        notification.title = 'Fill order(s)'
         break
+
       // TradingEscapeHatch
       case 'CLAIMSHARESINUPDATE':
-        notification.title = 'Claim shares from market ' + notification._market
+        notification.title = 'Claim share(s) from market'
         break
       case 'GETFROZENSHAREVALUEINMARKET':
-        notification.title = 'Liquidate shares in market ' + notification._market + ' to Ether'
+        notification.title = 'Liquidate share(s) in market to ETH'
         break
+
       // Universe
       case 'CREATEMARKET':
       case 'CREATECATEGORICALMARKET':
       case 'CREATESCALARMARKET':
       case 'CREATEYESNOMARKET':
-        notification.title = 'Create new market ' + notification._description
+        notification.title = 'Create new market'
         break
       case 'CREATECHILDUNIVERSE':
         notification.title = 'Create child universe'
+        break
+      case 'FORK':
+        notification.title = 'Fork universe'
         break
       case 'REDEEMSTAKE':
         notification.title = 'Claim staked REP/Ether'
@@ -188,36 +190,39 @@ export default function setNotificationTitle(notification, callback) {
       case 'GETORCREATEPREVIOUSFEEWINDOW':
         notification.title = 'Get/create previous fee window'
         break
+      case 'UPDATEFORKVALUES':
+        notification.title = 'Update fork values'
+        break
 
-      // TODO: The transaction names below are overloaded across contracts.
-      // We probably need a way for the notification system to indicate
-      // which contract these correspond to.
+      // These transaction names are overloaded across multiple contracts
       case 'APPROVE':
-        notification.title = ''
+        notification.title = 'Approve spending'
         break
       case 'DECREASEAPPROVAL':
-        notification.title = ''
+        notification.title = 'Decrease spending approval'
+        break
+      case 'DEPOSITETHER':
+      case 'DEPOSITETHERFOR':
+        notification.title = 'Deposit ETH'
         break
       case 'FORKANDREDEEM':
-        notification.title = ''
+      case 'REDEEM':
+      case 'REDEEMFORREPORTINGPARTICIPANT':
+        notification.title = 'Claim funds'
         break
       case 'INCREASEAPPROVAL':
-        notification.title = ''
+        notification.title = 'Increase spending approval'
         break
-      case 'REDEEM':
-        notification.title = ''
+      case 'MIGRATE':
+        notification.title = 'Migrate funds'
         break
       case 'TRANSFER':
-        notification.title = ''
-        break
       case 'TRANSFERFROM':
-        notification.title = ''
-        break
       case 'TRANSFEROWNERSHIP':
-        notification.title = ''
+        notification.title = 'Transfer to another address'
         break
       case 'WITHDRAWINEMERGENCY':
-        notification.title = ''
+        notification.title = 'Withdraw funds'
         break
       default: {
         const result = notification.title.replace(/([A-Z])/g, ' $1')

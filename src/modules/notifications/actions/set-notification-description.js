@@ -1,5 +1,6 @@
 /**
- * @todo Test canceling orphaned order
+ * @todo Add checks for hex params vs integer params?
+ * @todo Test all transactions & canceling orphaned orders
  */
 
 import { augur } from 'services/augurjs'
