@@ -2,19 +2,19 @@
 
 import { IFlash } from "../types/types";
 import { UnlockedAccounts } from "../constants/accounts";
-import Augur from "augur.js"
-import connectionEndpoints from 'augur.js/scripts/connection-endpoints'
-import pushTimestamp from 'augur.js/scripts/flash/push-timestamp'
-import setAugurTimestamp from 'augur.js/scripts/flash/set-timestamp-cmd'
-import forceFinalize from 'augur.js/scripts/flash/force-finalize'
-import tradeCompleteSets from 'augur.js/scripts/flash/trade-complete-sets'
-import designateReport from 'augur.js/scripts/flash/designated-report'
-import fillMarketOrders from 'augur.js/scripts/flash/fill-market-orders'
-import initialReport from 'augur.js/scripts/flash/initial-report'
-import disputeContribute from 'augur.js/scripts/flash/dispute-contribute'
-import createMarketOrder from 'augur.js/scripts/flash/create-market-order'
-import finalizeMarket from 'augur.js/scripts/flash/finalize-market'
-import { getPrivateKeyFromString } from 'augur.js/scripts/dp/lib/get-private-key'
+import Augur from "augur.js";
+import connectionEndpoints from "augur.js/scripts/connection-endpoints";
+import pushTimestamp from "augur.js/scripts/flash/push-timestamp";
+import setAugurTimestamp from "augur.js/scripts/flash/set-timestamp-cmd";
+import forceFinalize from "augur.js/scripts/flash/force-finalize";
+import tradeCompleteSets from "augur.js/scripts/flash/trade-complete-sets";
+import designateReport from "augur.js/scripts/flash/designated-report";
+import fillMarketOrders from "augur.js/scripts/flash/fill-market-orders";
+import initialReport from "augur.js/scripts/flash/initial-report";
+import disputeContribute from "augur.js/scripts/flash/dispute-contribute";
+import createMarketOrder from "augur.js/scripts/flash/create-market-order";
+import finalizeMarket from "augur.js/scripts/flash/finalize-market";
+import { getPrivateKeyFromString } from "augur.js/scripts/dp/lib/get-private-key";
 
 export default class Flash implements IFlash {
   augur: Augur;
@@ -22,20 +22,13 @@ export default class Flash implements IFlash {
 
   constructor(contractAddress: string = UnlockedAccounts.CONTRACT_OWNER_PRIV) {
     this.augur = new Augur();
-<<<<<<< HEAD
     this.auth = getPrivateKeyFromString(contractAddress);
-    this.augur.connect(connectionEndpoints, (err: any) => {
-      if (err) console.error("Augur could not connect")
-    })
-=======
-    this.auth = getPrivateKeyFromString(UnlockedAccounts.CONTRACT_OWNER_PRIV);
     this.augur.connect(
       connectionEndpoints,
       (err: any) => {
         if (err) console.error("Augur could not connect");
       }
     );
->>>>>>> master
   }
 
   dispose(): void {
@@ -111,12 +104,11 @@ export default class Flash implements IFlash {
   finalizeMarket(marketId: string) {
     const args = {
       opt: {
-        marketId:marketId,
+        marketId: marketId
       }
-    }
-    return this.command(args, finalizeMarket)
+    };
+    return this.command(args, finalizeMarket);
   }
-
 
   tradeCompleteSets(marketId: string) {
     const args = {
@@ -145,14 +137,8 @@ export default class Flash implements IFlash {
         outcome: outcome,
         orderType: orderType
       }
-<<<<<<< HEAD
-    }
-
-    return this.command(args, fillMarketOrders)
-=======
     };
     return this.command(args, fillMarketOrders);
->>>>>>> master
   }
 
   initialReport(
@@ -210,14 +196,8 @@ export default class Flash implements IFlash {
         amount: amount,
         useShares: false
       }
-<<<<<<< HEAD
-    }
-
-    return this.command(args, createMarketOrder)
-=======
     };
     return this.command(args, createMarketOrder);
->>>>>>> master
   }
 
   command(args: object, func: Function) {
