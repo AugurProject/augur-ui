@@ -15,20 +15,12 @@ export const toMarketCreate = async () => {
 
 export const toPortfolio = async () => {
   const url = `${process.env.AUGUR_URL}`;
-<<<<<<< HEAD
   await page.goto(url.concat("#/my-positions"));
-=======
-  await page.goto(url.concat("#/my-positions"), { waitUntil: "networkidle0" });
->>>>>>> master
 };
 
 export const toMyMarkets = async () => {
   const url = `${process.env.AUGUR_URL}`;
-<<<<<<< HEAD
   await page.goto(url.concat("#/my-markets"));
-=======
-  await page.goto(url.concat("#/my-markets"), { waitUntil: "networkidle0" });
->>>>>>> master
 };
 
 export const toReporting = async () => {
