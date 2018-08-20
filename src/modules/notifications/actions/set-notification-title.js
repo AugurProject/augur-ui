@@ -1,6 +1,5 @@
 export default function setNotificationTitle(notification, callback) {
   return (dispatch, getState) => {
-    // console.log('NOTIFICATION: ', notification)
     if (!notification) {
       throw new Error('Notification is not set')
     }
@@ -240,6 +239,7 @@ export default function setNotificationTitle(notification, callback) {
         break
       }
     }
+    notification.description = ''
     dispatch(callback(notification))
   }
 }

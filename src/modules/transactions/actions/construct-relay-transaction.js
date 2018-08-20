@@ -14,7 +14,6 @@ export const constructRelayTransaction = tx => (dispatch, getState) => {
   const timestamp = tx.response.timestamp || selectCurrentTimestampInSeconds(getState())
   const blockNumber = tx.response.blockNumber && parseInt(tx.response.blockNumber, 16)
   if (!notifications.filter(notification => notification.id === hash).length) {
-    console.log('constructRelayTransaction', tx);
     dispatch(addNotification({
       ...unpackedParams,
       id: hash,

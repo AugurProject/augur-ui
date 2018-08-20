@@ -23,19 +23,18 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
 
 export default function setNotificationDescription(notification, callback) {
   return (dispatch, getState) => {
-    // console.log('NOTIFICATION: ', notification)
     if (!notification) {
       throw new Error('Notification is not set')
     }
     if (!callback) {
       throw new Error('Callback function is not set')
     }
-    if (!notification.type) {
+    if (!notification.log) {
       dispatch(callback(notification))
       return
     }
 
-    switch (notification.type.toUpperCase()) {
+    switch (notification.log.toUpperCase()) {
       // Augur
       case 'CREATEGENESISUNIVERSE':
         break
@@ -95,10 +94,14 @@ export default function setNotificationDescription(notification, callback) {
       // CreateOrder
       case 'PUBLICCREATEORDER': { // TODO: Fix
         const marketInfo = selectMarket(notification._market)
+        console.log(marketInfo)
         const outcomeDescription = getOutcomeDescription(marketInfo, notification._outcome)
+        console.log(outcomeDescription)
         const orderType = (notification._type === '0x0') ? 'buy' : 'sell'
+        console.log(outcomeDescription)
         notification.description = 'Create ' + orderType + ' order for ' + formatShares(parseInt(notification._attoshares, 16) / SHARES_DIVISOR).formatted + ' share(s) of "' + outcomeDescription + '" at ' + formatEther(parseInt(notification._displayPrice, 16) / ETHER_DIVISOR).formatted + ' ETH'
-        dispatch(callback(notification))
+        console.log(notification.description)
+        // dispatch(callback(notification))
         break
       }
 

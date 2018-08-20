@@ -70,7 +70,6 @@ export function submitNewMarket(newMarket, history, callback = noop) {
                     newMarket.marketType = newMarket.type
                     dispatch(addNotification({
                       id: res.hash,
-                      marketObj: newMarket,
                       _attoshares: augur.utils.convertBigNumberToHexString(onChainAmount),
                       _displayPrice: augur.utils.convertBigNumberToHexString(onChainPrice),
                       _outcome: outcomeId,
