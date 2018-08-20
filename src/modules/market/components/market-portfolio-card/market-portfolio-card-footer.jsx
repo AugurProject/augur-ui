@@ -98,7 +98,7 @@ const MarketPortfolioCardFooter = p => {
                 </div>
               )}
             <button
-              data-testid={'claimButton-' + p.marketId}
+              data-testid={"claimButton-" + p.marketId}
               className={classNames(Styles["MarketCard__action-footer-light"])}
               onClick={p.buttonAction}
               disabled={

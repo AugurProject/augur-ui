@@ -1,7 +1,10 @@
 "use strict";
 import BigNumber from "bignumber.js";
 
-export const createYesNoMarket = async (address: string = "", settlementFee: number = 0) => {
+export const createYesNoMarket = async (
+  address: string = "",
+  settlementFee: number = 0
+) => {
   // page.on('console', msg => console.log('PAGE LOG:', msg.text()));
   const currentTimestamp: number = await page.evaluate(() =>
     window.integrationHelpers.getCurrentTimestamp()
