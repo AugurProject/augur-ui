@@ -168,61 +168,88 @@ describe("My Markets", () => {
   it("should have outstanding returns become available to the market creator when complete sets settle, and that the amount that becomes available is correct", async () => {});
 
   it("should be able to collect outstanding returns from settled trades and the Collected Returns balance on the market updates correctly", async () => {
-
     // 1. fill trades
     // first account is market creater
-    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
-    const market = await createYesNoMarket("", 5)
+    await page.evaluate(
+      account => window.integrationHelpers.updateAccountAddress(account),
+      UnlockedAccounts.CONTRACT_OWNER
+    );
+    const market = await createYesNoMarket("", 5);
     await waitNextBlock(10);
 
     // create order
     await flash.createMarketOrder(market.id, "1", "sell", ".5", "5");
     await waitNextBlock(5);
 
-    let flashSecondary: IFlash = new Flash(UnlockedAccounts.SECONDARY_ACCOUNT_PRIV);
+    let flashSecondary: IFlash = new Flash(
+      UnlockedAccounts.SECONDARY_ACCOUNT_PRIV
+    );
 
     // use second account to fill order
-    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.SECONDARY_ACCOUNT);
+    await page.evaluate(
+      account => window.integrationHelpers.updateAccountAddress(account),
+      UnlockedAccounts.SECONDARY_ACCOUNT
+    );
     await waitNextBlock(5);
 
     await flashSecondary.fillMarketOrders(market.id, "1", "buy");
     await waitNextBlock(5);
 
     // 2. initial report
-    await flash.initialReport(market.id, "1", false, false)
+    await flash.initialReport(market.id, "1", false, false);
     await waitNextBlock(5);
 
-    // 3. push time so market is finalized 
-    await flash.pushDays(14)
+    // 3. push time so market is finalized
+    await flash.pushDays(14);
     await waitNextBlock(5);
 
     // 4. finalize market by clicking button on account 1
-    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
+    await page.evaluate(
+      account => window.integrationHelpers.updateAccountAddress(account),
+      UnlockedAccounts.CONTRACT_OWNER
+    );
     await waitNextBlock(5);
     await toPortfolio(); // need this back and forth because of a bug ch15283
     await waitNextBlock(10);
-    await expect(page).toClick("[data-testid='claimButton-" + market.id + "']", { timeout: BIG_TIMEOUT });
+    await expect(page).toClick(
+      "[data-testid='claimButton-" + market.id + "']",
+      { timeout: BIG_TIMEOUT }
+    );
     await waitNextBlock(10);
     await page.reload(); // reload needed because of ch15614
 
-
     // 5. go to my positions and claim outstanding returns
     // push time to claim
-    await flash.pushDays(8)
+    await flash.pushDays(8);
     await waitNextBlock(5);
-    await toPortfolio(); 
+    await toPortfolio();
     await waitNextBlock(10);
-    await expect(page).toClick("[data-testid='claimButton-" + market.id + "']", { timeout: BIG_TIMEOUT });
+    await expect(page).toClick(
+      "[data-testid='claimButton-" + market.id + "']",
+      { timeout: BIG_TIMEOUT }
+    );
     await waitNextBlock(10);
 
     //6. check in my-markets for proceeds
-    await page.evaluate((account) => window.integrationHelpers.updateAccountAddress(account), UnlockedAccounts.CONTRACT_OWNER);
+    await page.evaluate(
+      account => window.integrationHelpers.updateAccountAddress(account),
+      UnlockedAccounts.CONTRACT_OWNER
+    );
     await waitNextBlock(5);
     await toMyMarkets();
     await waitNextBlock(5);
-    await expect(page).toMatchElement("[data-testid='unclaimedCreatorFees-" + market.id + "']", { text: '.2600', timeout: BIG_TIMEOUT });
-    await expect(page).toClick("[data-testid='collectMarketCreatorFees-" + market.id + "']", { timeout: BIG_TIMEOUT });
+    await expect(page).toMatchElement(
+      "[data-testid='unclaimedCreatorFees-" + market.id + "']",
+      { text: ".2600", timeout: BIG_TIMEOUT }
+    );
+    await expect(page).toClick(
+      "[data-testid='collectMarketCreatorFees-" + market.id + "']",
+      { timeout: BIG_TIMEOUT }
+    );
     await waitNextBlock(10);
-    await expect(page).not.toMatchElement("[data-testid='collectMarketCreatorFees-" + market.id + "']", { timeout: BIG_TIMEOUT });
+    await expect(page).not.toMatchElement(
+      "[data-testid='collectMarketCreatorFees-" + market.id + "']",
+      { timeout: BIG_TIMEOUT }
+    );
   });
 });

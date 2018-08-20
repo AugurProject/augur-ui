@@ -2,7 +2,6 @@
 
 import { IFlash } from "../types/types";
 import { UnlockedAccounts } from "../constants/accounts";
-<<<<<<< HEAD
 import Augur from "augur.js"
 import connectionEndpoints from 'augur.js/scripts/connection-endpoints'
 import pushTimestamp from 'augur.js/scripts/flash/push-timestamp'
@@ -16,20 +15,6 @@ import disputeContribute from 'augur.js/scripts/flash/dispute-contribute'
 import createMarketOrder from 'augur.js/scripts/flash/create-market-order'
 import finalizeMarket from 'augur.js/scripts/flash/finalize-market'
 import { getPrivateKeyFromString } from 'augur.js/scripts/dp/lib/get-private-key'
-=======
-import Augur from "augur.js";
-import connectionEndpoints from "augur.js/scripts/connection-endpoints";
-import pushTimestamp from "augur.js/scripts/flash/push-timestamp";
-import setAugurTimestamp from "augur.js/scripts/flash/set-timestamp-cmd";
-import forceFinalize from "augur.js/scripts/flash/force-finalize";
-import tradeCompleteSets from "augur.js/scripts/flash/trade-complete-sets";
-import designateReport from "augur.js/scripts/flash/designated-report";
-import fillMarketOrders from "augur.js/scripts/flash/fill-market-orders";
-import initialReport from "augur.js/scripts/flash/initial-report";
-import disputeContribute from "augur.js/scripts/flash/dispute-contribute";
-import createMarketOrder from "augur.js/scripts/flash/create-market-order";
-import { getPrivateKeyFromString } from "augur.js/scripts/dp/lib/get-private-key";
->>>>>>> master
 
 export default class Flash implements IFlash {
   augur: Augur;
