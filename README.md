@@ -59,7 +59,7 @@ Turn on `Developer Mode` and also enable `Windows Subsystem For Linux` so that y
 Run all subsequent commands within the bash command prompt.  
 It's also recommend that you use a Debian based workflow for the installation of packages (makes things much easier).
 
-* Because of issues with node-gyp bindings, we are not using node stable v10, we are using v9. Here are the versions we used for development
+* Because of issues with node v10 doesn't support node-hid we are using v9. Here are the versions we used for development.
 ```
     node: v9.11.1
     npm: 5.6.0
@@ -92,6 +92,9 @@ Simply copy these files to your web server of choice.
 ### [Docker](https://www.docker.com/)
 After git cloning UI source let docker build UI and create a docker image. Then run the docker container (from just built image) that will host augur UI locally and usings rinkeby augur-node and rinkeby ethereum node
 [dockerized augur client](./docs/deploy-production.md)
+
+### [Prettier](https://prettier.io/)
+We are using prettier to maintain formatting standards.Please [install](https://prettier.io/docs/en/editors.html) the relevant editor extension for your editor.
 
 ***
 
