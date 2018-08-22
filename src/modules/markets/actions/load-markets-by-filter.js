@@ -5,7 +5,7 @@ import {
   MARKET_END_DATE,
   MARKET_RECENTLY_TRADED,
   MARKET_FEE,
-  MARKET_OPEN_INTEREST,
+  MARKET_OPEN_INTEREST
 } from "modules/filter-sort/constants/market-sort-params";
 import {
   MARKET_REPORTING,
