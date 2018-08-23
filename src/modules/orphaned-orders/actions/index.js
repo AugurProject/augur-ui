@@ -38,15 +38,6 @@ export const cancelOrphanedOrder = (
   augur.api.CancelOrder.cancelOrder({
     meta: loginAccount.meta,
     _orderId: orderId,
-<<<<<<< HEAD
-    onSent: (res) => {
-      dispatch(addNotification({
-        id: res.hash,
-        timestamp,
-        status: 'Sent',
-        type: 'cancelOrphanedOrder',
-      }))
-=======
     onSent: res => {
       dispatch(
         addNotification({
@@ -56,7 +47,6 @@ export const cancelOrphanedOrder = (
           title: "Cancelling Orphaned Order"
         })
       );
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
     },
     onSuccess: res => {
       dispatch(removeOrphanedOrder(orderId));
