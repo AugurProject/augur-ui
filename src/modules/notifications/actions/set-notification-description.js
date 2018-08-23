@@ -22,6 +22,7 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
 }
 
 export default function setNotificationDescription(notification, callback) {
+  // console.log(notification);
   return (dispatch, getState) => {
     if (!notification) {
       throw new Error("Notification is not set");
@@ -29,12 +30,12 @@ export default function setNotificationDescription(notification, callback) {
     if (!callback) {
       throw new Error("Callback function is not set");
     }
-    if (!notification.log) {
+    if (!notification.log.eventName) {
       dispatch(callback(notification));
       return;
     }
 
-    switch (notification.log.toUpperCase()) {
+    switch (notification.log.eventNamer.toUpperCase()) {
       // Augur
       case "CREATEGENESISUNIVERSE":
         break;

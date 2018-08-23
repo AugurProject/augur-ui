@@ -37,6 +37,7 @@ const handleNotificationUpdate = (log, dispatch, getState) => {
       id: log.transactionHash,
       timestamp: selectCurrentTimestampInSeconds(getState()),
       blockNumber: log.blockNumber,
+      log,
       status: "confirmed",
       linkPath: makePath(TRANSACTIONS),
       seen: false // Manually set to false to ensure notification
