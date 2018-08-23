@@ -57,25 +57,6 @@ export function transferFunds(amount, currency, toAddress) {
           universe: universe.id,
           reputationToSend: amount,
           _to: to,
-<<<<<<< HEAD
-          onSent: (tx) => {
-            dispatch(addNotification({
-              id: `REP-${tx.hash}`,
-              status: 'Pending',
-              amount,
-              reputationToSend: amount,
-              timestamp: selectCurrentTimestampInSeconds(getState()),
-              type: 'sendReputation',
-              universe: universe.id,
-              _to: to,
-            }))
-          },
-          onSuccess: (tx) => {
-            dispatch(updateNotification(`REP-${tx.hash}`, {
-              status: 'Success',
-              timestamp: selectCurrentTimestampInSeconds(getState()),
-            }))
-=======
           onSent: tx => {
             dispatch(
               addNotification({
@@ -89,7 +70,6 @@ export function transferFunds(amount, currency, toAddress) {
                 _to: to,
               })
             );
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
           },
           onSuccess: tx => {
             dispatch(

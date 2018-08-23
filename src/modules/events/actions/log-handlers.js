@@ -1,51 +1,3 @@
-<<<<<<< HEAD
-import BigNumber from 'bignumber.js'
-import { loadAccountTrades } from 'modules/my-positions/actions/load-account-trades'
-import loadBidsAsks from 'modules/bids-asks/actions/load-bids-asks'
-import { loadMarketsDisputeInfo } from 'modules/markets/actions/load-markets-dispute-info'
-import { loadReportingWindowBounds } from 'modules/reporting/actions/load-reporting-window-bounds'
-import { updateLoggedTransactions } from 'modules/transactions/actions/convert-logs-to-transactions'
-import { removeMarket } from 'modules/markets/actions/update-markets-data'
-import { updateOutcomePrice } from 'modules/markets/actions/update-outcome-price'
-import { updateOrder } from 'modules/my-orders/actions/update-orders'
-import { removeCanceledOrder } from 'modules/bids-asks/actions/update-order-status'
-import { updateMarketCategoryPopularity } from 'modules/categories/actions/update-categories'
-import { defaultLogHandler } from 'modules/events/actions/default-log-handler'
-import { addNotification, updateNotification } from 'modules/notifications/actions'
-import { isCurrentMarket } from 'modules/trade/helpers/is-current-market'
-import makePath from 'modules/routes/helpers/make-path'
-import { MY_MARKETS, TRANSACTIONS } from 'modules/routes/constants/views'
-import { loadReporting } from 'src/modules/reporting/actions/load-reporting'
-import { loadDisputing } from 'modules/reporting/actions/load-disputing'
-import loadCategories from 'modules/categories/actions/load-categories'
-import { getReportingFees } from 'modules/portfolio/actions/get-reporting-fees'
-import { loadMarketsInfoIfNotLoaded } from 'src/modules/markets/actions/load-markets-info-if-not-loaded'
-import { loadMarketsInfo } from 'src/modules/markets/actions/load-markets-info'
-import { loadUnclaimedFees } from 'modules/markets/actions/load-unclaimed-fees'
-import { loadFundingHistory } from 'modules/account/actions/load-funding-history'
-import { getWinningBalance } from 'modules/portfolio/actions/get-winning-balance'
-import { loadMarketTradingHistory } from 'modules/market/actions/load-market-trading-history'
-import { updateAssets } from 'modules/auth/actions/update-assets'
-import { selectCurrentTimestampInSeconds } from 'src/select-state'
-
-const handleNotificationUpdate = (log, dispatch, getState) => {
-  dispatch(updateNotification(log.transactionHash, {
-    id: log.transactionHash,
-    timestamp: selectCurrentTimestampInSeconds(getState()),
-    blockNumber: log.blockNumber,
-    log,
-    status: 'confirmed',
-    linkPath: makePath(TRANSACTIONS),
-    seen: false, // Manually set to false to ensure notification
-  }))
-}
-
-export const handleMarketStateLog = log => (dispatch) => {
-  dispatch(loadMarketsInfo([log.marketId], () => {
-    dispatch(loadReporting())
-  }))
-}
-=======
 import BigNumber from "bignumber.js";
 import { loadAccountTrades } from "modules/my-positions/actions/load-account-trades";
 import loadBidsAsks from "modules/bids-asks/actions/load-bids-asks";
@@ -81,7 +33,6 @@ export const handleMarketStateLog = log => dispatch => {
     })
   );
 };
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
 
 export const handleMarketCreatedLog = log => (dispatch, getState) => {
   const isStoredTransaction =
@@ -93,15 +44,9 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
     dispatch(loadCategories());
   }
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    handleNotificationUpdate(log, dispatch, getState)
-    dispatch(updateAssets())
-    dispatch(updateLoggedTransactions(log))
-=======
     // My Market? start kicking off liquidity orders
     if (!log.removed) dispatch(startOrderSending({ marketId: log.market }));
     dispatch(updateLoggedTransactions(log));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
 };
 
@@ -119,13 +64,7 @@ export const handleTokensTransferredLog = log => (dispatch, getState) => {
   const { address } = getState().loginAccount;
   const isStoredTransaction = log.from === address || log.to === address;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(loadFundingHistory())
-    handleNotificationUpdate(log, dispatch, getState)
-=======
     dispatch(loadFundingHistory());
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
 };
 
@@ -133,14 +72,8 @@ export const handleTokensMintedLog = log => (dispatch, getState) => {
   const { address } = getState().loginAccount;
   const isStoredTransaction = log.target === address;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(loadReportingWindowBounds())
-    dispatch(defaultLogHandler(log))
-=======
     dispatch(loadReportingWindowBounds());
     dispatch(defaultLogHandler(log));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
 };
 
@@ -153,45 +86,23 @@ export const handleTokensBurnedLog = log => (dispatch, getState) => {
 };
 
 export const handleOrderCreatedLog = log => (dispatch, getState) => {
-<<<<<<< HEAD
-  dispatch(loadMarketsInfoIfNotLoaded([log.marketId]))
-  const isStoredTransaction = log.orderCreator === getState().loginAccount.address
-  console.log('handleOrderCreatedLog', log);
-  if (isStoredTransaction) {
-    dispatch(updateAssets())
-    dispatch(updateOrder(log, true))
-    handleNotificationUpdate(log, dispatch, getState)
-    dispatch(loadAccountTrades({ marketId: log.marketId }))
-=======
   dispatch(loadMarketsInfoIfNotLoaded([log.marketId]));
   const isStoredTransaction =
     log.orderCreator === getState().loginAccount.address;
   if (isStoredTransaction) {
     dispatch(updateOrder(log, true));
     dispatch(loadAccountTrades({ marketId: log.marketId }));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
 
 export const handleOrderCanceledLog = log => (dispatch, getState) => {
-<<<<<<< HEAD
-  dispatch(loadMarketsInfoIfNotLoaded([log.marketId]))
-  console.log('handleOrderCanceledLog', log);
-  const isStoredTransaction = log.sender === getState().loginAccount.address
-  if (isStoredTransaction) {
-    if (!log.removed) dispatch(removeCanceledOrder(log.orderId))
-    handleNotificationUpdate(log, dispatch, getState)
-    dispatch(updateOrder(log, false))
-    dispatch(loadAccountTrades({ marketId: log.marketId }))
-=======
   dispatch(loadMarketsInfoIfNotLoaded([log.marketId]));
   const isStoredTransaction = log.sender === getState().loginAccount.address;
   if (isStoredTransaction) {
     if (!log.removed) dispatch(removeCanceledOrder(log.orderId));
     dispatch(updateOrder(log, false));
     dispatch(loadAccountTrades({ marketId: log.marketId }));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
@@ -204,12 +115,6 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     ? new BigNumber(log.amount, 10).negated().toFixed()
     : log.amount;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(updateOutcomePrice(log.marketId, log.outcome, new BigNumber(log.price, 10)))
-    dispatch(updateMarketCategoryPopularity(log.market, popularity))
-    dispatch(updateOrder(log, false))
-=======
     dispatch(
       updateOutcomePrice(
         log.marketId,
@@ -219,7 +124,6 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     );
     dispatch(updateMarketCategoryPopularity(log.market, popularity));
     dispatch(updateOrder(log, false));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
   // always reload account positions on trade so we get up to date PL data.
   dispatch(loadAccountTrades({ marketId: log.marketId }));
@@ -230,16 +134,9 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
 export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.sender === getState().loginAccount.address;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(updateLoggedTransactions(log))
-    dispatch(loadAccountTrades({ marketId: log.market }))
-    dispatch(getWinningBalance([log.market]))
-=======
     dispatch(updateLoggedTransactions(log));
     dispatch(loadAccountTrades({ marketId: log.market }));
     dispatch(getWinningBalance([log.market]));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
   if (isCurrentMarket(log.market)) dispatch(loadBidsAsks(log.market));
 };
@@ -251,14 +148,8 @@ export const handleInitialReportSubmittedLog = log => (dispatch, getState) => {
   dispatch(loadReporting());
   const isStoredTransaction = log.reporter === getState().loginAccount.address;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(loadDisputing())
-    dispatch(updateLoggedTransactions(log))
-=======
     dispatch(loadDisputing());
     dispatch(updateLoggedTransactions(log));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
 };
 
@@ -267,35 +158,6 @@ export const handleInitialReporterRedeemedLog = log => (dispatch, getState) => {
   dispatch(loadUnclaimedFees([log.market]));
   const isStoredTransaction = log.reporter === getState().loginAccount.address;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(loadReporting())
-    dispatch(loadDisputing())
-    dispatch(updateLoggedTransactions(log))
-  }
-  dispatch(getReportingFees())
-}
-
-export const handleMarketFinalizedLog = log => (dispatch, getState) => (
-  dispatch(loadMarketsInfo([log.market], (err) => {
-    if (err) return console.error(err)
-    const { volume, author, description } = getState().marketsData[log.market]
-    dispatch(updateMarketCategoryPopularity(log.market, new BigNumber(volume, 10).negated().toFixed()))
-    dispatch(loadReporting())
-    const isOwnMarket = getState().loginAccount.address === author
-    if (isOwnMarket) {
-      dispatch(updateAssets())
-      dispatch(updateLoggedTransactions(log))
-      if (!log.removed) {
-        dispatch(addNotification({
-          id: log.transactionHash,
-          timestamp: log.timestamp,
-          blockNumber: log.blockNumber,
-          status: 'Success',
-          title: `Finalized Market: "${description}"`,
-          linkPath: makePath(MY_MARKETS),
-        }))
-=======
     dispatch(loadReporting());
     dispatch(loadDisputing());
     dispatch(updateLoggedTransactions(log));
@@ -332,7 +194,6 @@ export const handleMarketFinalizedLog = log => (dispatch, getState) =>
             })
           );
         }
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
       }
     })
   );
@@ -350,12 +211,7 @@ export const handleDisputeCrowdsourcerContributionLog = log => (
   dispatch(loadMarketsDisputeInfo([log.marketId]));
   dispatch(defaultLogHandler(log));
   if (log.reporter === getState().loginAccount.address) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(loadReportingWindowBounds())
-=======
     dispatch(loadReportingWindowBounds());
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
   }
 };
 
@@ -391,12 +247,7 @@ export const handleFeeWindowRedeemedLog = log => dispatch => {
 export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.account === getState().loginAccount.address;
   if (isStoredTransaction) {
-<<<<<<< HEAD
-    dispatch(updateAssets())
-    dispatch(updateLoggedTransactions(log))
-=======
     dispatch(updateLoggedTransactions(log));
->>>>>>> ee59e41c7295965e1185233dc18c9ef2096bdefa
     // always reload account positions on trade so we get up to date PL data.
     dispatch(loadAccountTrades({ marketId: log.marketId }));
   }
