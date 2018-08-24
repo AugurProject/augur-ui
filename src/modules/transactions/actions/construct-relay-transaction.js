@@ -18,10 +18,10 @@ export const constructRelayTransaction = tx => (dispatch, getState) => {
   if (!notifications.filter(notification => notification.id === hash).length) {
     dispatch(
       addNotification({
-        ...unpackedParams,
         id: hash,
         timestamp,
         blockNumber,
+        params: unpackedParams,
         status,
         title: unpackedParams.type,
         description: unpackedParams._description || "",

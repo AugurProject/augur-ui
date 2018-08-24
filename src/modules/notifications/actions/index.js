@@ -1,3 +1,4 @@
+import store from "src/store";
 import * as notificationLevels from "src/modules/notifications/constants";
 import setNotificationTitle from "./set-notification-title";
 import setNotificationDescription from "./set-notification-description";
@@ -52,8 +53,16 @@ export function updateNotification(id, notification) {
     };
     return fullNotification;
   };
-
-  return setNotificationDescription(notification, callback);
+  const { notifications } = store.getState();
+  for (let index = Object.keys(notifications).length - 1; index >= 0; index--) {
+    if (notifications[index].id === notification.id) {
+      return setNotificationDescription(
+        notification,
+        notifications[index].params,
+        callback
+      );
+    }
+  }
 }
 
 // We clear by 'notification level'.

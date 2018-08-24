@@ -1,12 +1,10 @@
 /**
  * @todo Finish TODO descriptions
- * @todo Remove commented dispatch(callback(notification)) lines
  * @todo Remove "// Not called directly by UI" lines
  * @todo Add checks for hex params vs integer params?
  * @todo Test all transactions & canceling orphaned orders (src/modules/orphaned-orders/actions/index.js)
  */
 
-import { augur } from "services/augurjs";
 import { selectMarket } from "modules/market/selectors/market";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
 
@@ -21,8 +19,13 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
   return marketInfo.outcomes[outcomeIndex].description;
 }
 
-export default function setNotificationDescription(notification, callback) {
-  // console.log(notification);
+export default function setNotificationDescription(
+  notification,
+  transactionParams,
+  callback
+) {
+  console.log(notification);
+  console.log(transactionParams);
   return (dispatch, getState) => {
     if (!notification) {
       throw new Error("Notification is not set");
@@ -30,72 +33,33 @@ export default function setNotificationDescription(notification, callback) {
     if (!callback) {
       throw new Error("Callback function is not set");
     }
-    if (!notification.log.eventName) {
+    if (
+      !transactionParams ||
+      !notification.log ||
+      !notification.log.eventName
+    ) {
       dispatch(callback(notification));
       return;
     }
 
-    switch (notification.log.eventNamer.toUpperCase()) {
+    switch (transactionParams.type.toUpperCase()) {
       // Augur
       case "CREATEGENESISUNIVERSE":
         break;
 
       // CancelOrder
       case "CANCELORDER": {
-        augur.api.Orders.getAmount(
-          {
-            _orderId: notification._orderId
-          },
-          (err, orderAmount) => {
-            if (err) {
-              throw err;
-            }
-            augur.api.Orders.getMarket(
-              {
-                _orderId: notification._orderId
-              },
-              (err, marketId) => {
-                if (err) {
-                  throw err;
-                }
-                augur.api.Orders.getOutcome(
-                  {
-                    _orderId: notification._orderId
-                  },
-                  (err, orderOutcome) => {
-                    if (err) {
-                      throw err;
-                    }
-                    augur.api.Orders.getPrice(
-                      {
-                        _orderId: notification._orderId
-                      },
-                      (err, orderPrice) => {
-                        if (err) {
-                          throw err;
-                        }
-                        const marketInfo = selectMarket(marketId);
-                        const outcomeDescription = getOutcomeDescription(
-                          marketInfo,
-                          orderOutcome
-                        );
-                        notification.description =
-                          "Cancel order for " +
-                          formatShares(orderAmount / SHARES_DIVISOR).formatted +
-                          " share(s) of " +
-                          outcomeDescription +
-                          " at " +
-                          formatEther(orderPrice / ETHER_DIVISOR).formatted +
-                          " ETH";
-                        // dispatch(callback(notification))
-                      }
-                    );
-                  }
-                );
-              }
-            );
-          }
+        const marketInfo = selectMarket(notification.log.marketId);
+        const outcomeDescription = getOutcomeDescription(
+          marketInfo,
+          notification.log.outcome
         );
+        notification.description =
+          "Cancel order for share(s) of " +
+          outcomeDescription +
+          " at " +
+          formatEther(notification.log.price).formatted +
+          " ETH";
         break;
       }
 
@@ -151,7 +115,6 @@ export default function setNotificationDescription(notification, callback) {
             .formatted +
           " ETH";
         console.log(notification.description);
-        // dispatch(callback(notification))
         break;
       }
 
@@ -162,7 +125,6 @@ export default function setNotificationDescription(notification, callback) {
           "Purchase " +
           formatRep(notification._attotokens / REP_DIVISOR).formatted +
           " Participation Token(s)";
-        // dispatch(callback(notification))
         break;
 
       // FillOrder & Trade
@@ -188,7 +150,6 @@ export default function setNotificationDescription(notification, callback) {
           formatEther(parseInt(notification._price, 16) / ETHER_DIVISOR)
             .formatted +
           " ETH";
-        // dispatch(callback(notification))
         break;
       }
 
@@ -222,7 +183,6 @@ export default function setNotificationDescription(notification, callback) {
           " REP on " +
           outcomeDescription +
           " dispute bond";
-        // dispatch(callback(notification))
         break;
       }
       case "DISAVOWCROWDSOURCERS": // TODO: Write text
@@ -231,13 +191,11 @@ export default function setNotificationDescription(notification, callback) {
       case "DOINITIALREPORT": {
         const marketDescription = selectMarket(notification.market).description;
         notification.description = "Submit report on " + marketDescription + "";
-        // dispatch(callback(notification))
         break;
       }
       case "FINALIZE": {
         const marketDescription = selectMarket(notification.market).description;
         notification.description = "Finalize market " + marketDescription + "";
-        // dispatch(callback(notification))
         break;
       }
       case "FINALIZEFORK":
@@ -289,7 +247,6 @@ export default function setNotificationDescription(notification, callback) {
           formatEther(parseInt(notification._price, 16) / ETHER_DIVISOR)
             .formatted +
           " ETH";
-        // dispatch(callback(notification))
         break;
       }
 
@@ -306,7 +263,6 @@ export default function setNotificationDescription(notification, callback) {
       case "CREATEYESNOMARKET":
         notification.description =
           "Create new market " + notification._description + "";
-        // dispatch(callback(notification))
         break;
       case "CREATECHILDUNIVERSE": // TODO: Finish text
         notification.description =
@@ -381,7 +337,6 @@ export default function setNotificationDescription(notification, callback) {
           formatEther(notification.etherToSend).formatted +
           " ETH to " +
           notification.to;
-        // dispatch(callback(notification))
         break;
       case "SENDREPUTATION":
         notification.description =
@@ -389,11 +344,60 @@ export default function setNotificationDescription(notification, callback) {
           formatRep(notification.reputationToSend).formatted +
           " REP to " +
           notification._to;
-        // dispatch(callback(notification))
         break;
 
+      // case "MARKETCREATED":
+      //   notification.description =
+      //     'Create new market "' + notification.log.description + '"';
+      //   break;
+      // case "ORDERCANCELED": {
+      //   const marketInfo = selectMarket(notification.log.marketId);
+      //   const outcomeDescription = getOutcomeDescription(
+      //     marketInfo,
+      //     notification.log.outcome
+      //   );
+      //   notification.description =
+      //     "Cancel order for share(s) of " +
+      //     outcomeDescription +
+      //     " at " +
+      //     formatEther(notification.log.price).formatted +
+      //     " ETH";
+      //   break;
+      // }
+      // case "ORDERCREATED": {
+      //   const marketInfo = selectMarket(notification.log.marketId);
+      //   const outcomeDescription = getOutcomeDescription(
+      //     marketInfo,
+      //     notification.log.outcome
+      //   );
+      //   notification.description =
+      //     "Create " +
+      //     notification.log.orderType +
+      //     " order for " +
+      //     formatShares(notification.log.fullPrecisionAmount).formatted +
+      //     ' share(s) of "' +
+      //     outcomeDescription +
+      //     '" at ' +
+      //     formatEther(notification.log.fullPrecisionPrice).formatted +
+      //     " ETH";
+      //   break;
+      // }
+      // case "TOKENSTRANSFERRED": {
+      //   console.log(userInfo);
+      //   console.log("!!!!!!", windowRef.localStorage.getItem(userInfo));
+      //   const tokenType = "REP";
+      //   notification.description =
+      //     "Transferred " +
+      //     formatRep(notification.log.value / REP_DIVISOR).formatted +
+      //     " " +
+      //     tokenType +
+      //     " to " +
+      //     notification.log.to;
+      //   break;
+      // }
+
       default: {
-        const result = notification.type.replace(/([A-Z])/g, " $1");
+        const result = notification.log.eventName.replace(/([A-Z])/g, " $1");
         notification.description =
           result.charAt(0).toUpperCase() + result.slice(1);
         break;

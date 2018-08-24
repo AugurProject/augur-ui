@@ -113,10 +113,12 @@ export default function setNotificationTitle(notification, callback) {
         notification.title = "Migrate REP out of universe";
         break;
       case "UPDATEPARENTTOTALTHEORETICALSUPPLY":
-        notification.title = "Update theoretical REP supply for parent universe";
+        notification.title =
+          "Update theoretical REP supply for parent universe";
         break;
       case "UPDATESIBLINGMIGRATIONTOTAL":
-        notification.title = "Update theoretical REP supply for sibling universe";
+        notification.title =
+          "Update theoretical REP supply for sibling universe";
         break;
 
       // Trade
@@ -174,7 +176,8 @@ export default function setNotificationTitle(notification, callback) {
         notification.title = "Get reporting fee divisor";
         break;
       case "GETORCACHEVALIDITYBOND":
-        notification.title = "Get validity bond size required for market creation";
+        notification.title =
+          "Get validity bond size required for market creation";
         break;
       case "GETORCREATECURRENTFEEWINDOW":
         notification.title = "Get/create current fee window address";
@@ -217,7 +220,7 @@ export default function setNotificationTitle(notification, callback) {
       case "TRANSFER":
       case "TRANSFERFROM":
       case "TRANSFEROWNERSHIP":
-        notification.title = "Transfer to another address";
+        notification.title = "Transfer funds";
         break;
       case "WITHDRAWETHERTO":
         notification.title = "Withdraw ETH";

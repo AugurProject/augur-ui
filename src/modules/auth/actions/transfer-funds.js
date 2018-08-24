@@ -5,9 +5,6 @@ import {
   addNotification
 } from "modules/notifications/actions";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
-
-import trimString from "utils/trim-string";
-
 import { ETH, REP } from "modules/account/constants/asset-types";
 
 export function transferFunds(amount, currency, toAddress) {
@@ -30,7 +27,7 @@ export function transferFunds(amount, currency, toAddress) {
                 etherToSend: amount,
                 to,
                 timestamp: selectCurrentTimestampInSeconds(getState()),
-                type: 'sendEther',
+                type: "sendEther"
               })
             );
           },
@@ -38,7 +35,9 @@ export function transferFunds(amount, currency, toAddress) {
             dispatch(
               updateNotification(tx.hash, {
                 status: "Success",
-                timestamp: selectCurrentTimestampInSeconds(getState())
+                timestamp: selectCurrentTimestampInSeconds(getState()),
+                tx,
+                type: "sendEther"
               })
             );
           },
@@ -58,26 +57,26 @@ export function transferFunds(amount, currency, toAddress) {
           reputationToSend: amount,
           _to: to,
           onSent: tx => {
-            dispatch(
-              addNotification({
-                id: `REP-${tx.hash}`,
-                status: "Pending",
-                amount,
-                reputationToSend: amount,
-                timestamp: selectCurrentTimestampInSeconds(getState()),
-                type: 'sendReputation',
-                universe: universe.id,
-                _to: to,
-              })
-            );
+            // dispatch(
+            //   addNotification({
+            //     id: `REP-${tx.hash}`,
+            //     status: "Pending",
+            //     amount,
+            //     reputationToSend: amount,
+            //     timestamp: selectCurrentTimestampInSeconds(getState()),
+            //     type: "sendReputation",
+            //     universe: universe.id,
+            //     _to: to
+            //   })
+            // );
           },
           onSuccess: tx => {
-            dispatch(
-              updateNotification(`REP-${tx.hash}`, {
-                status: "Success",
-                timestamp: selectCurrentTimestampInSeconds(getState())
-              })
-            );
+            // dispatch(
+            //   updateNotification(`REP-${tx.hash}`, {
+            //     status: "Success",
+            //     timestamp: selectCurrentTimestampInSeconds(getState())
+            //   })
+            // );
           },
           onFailed: tx => {
             dispatch(
