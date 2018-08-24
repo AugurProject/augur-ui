@@ -13,6 +13,7 @@ const REP_DIVISOR = 1000000000000000000;
 const SHARES_DIVISOR = 100000000000000;
 
 function getOutcomeDescription(marketInfo, outcomeIndex) {
+  console.log("marketInfo", marketInfo);
   if (marketInfo.marketType.toUpperCase() === "YESNO") {
     return outcomeIndex === 0 ? "No" : "Yes";
   }
@@ -24,8 +25,11 @@ export default function setNotificationDescription(
   transactionParams,
   callback
 ) {
-  console.log(notification);
-  console.log(transactionParams);
+  console.log("setNotificationDescription notification:", notification);
+  console.log(
+    "setNotificationDescription transactionParams:",
+    transactionParams
+  );
   return (dispatch, getState) => {
     if (!notification) {
       throw new Error("Notification is not set");
@@ -55,66 +59,63 @@ export default function setNotificationDescription(
           notification.log.outcome
         );
         notification.description =
-          "Cancel order for share(s) of " +
+          'Cancel order for share(s) of "' +
           outcomeDescription +
-          " at " +
+          '" at ' +
           formatEther(notification.log.price).formatted +
           " ETH";
         break;
       }
 
       // Cash
-      case "WITHDRAWETHERTOIFPOSSIBLE": // TODO: Finish text
-        notification.description = "Withdraw X ETH to [address]";
+      case "WITHDRAWETHERTOIFPOSSIBLE": // TODO: Test
+        // notification.description =
+        //   "Withdraw " +
+        //   formatEther(transactionParams._amount / ETHER_DIVISOR) +
+        //   " ETH to " +
+        //   transactionParams._to;
         break;
 
       // ClaimTradingProceeds
       case "CALCULATEREPORTINGFEE":
         break;
-      case "CLAIMTRADINGPROCEEDS": // TODO: Finish text
-        notification.description = "Claim X ETH trading proceeds";
+      case "CLAIMTRADINGPROCEEDS": // TODO: Finish text. Use transactionParams._amount or ??? to get amount
+        // notification.description = "Claim X ETH trading proceeds";
         break;
 
       // CompleteSets
       case "BUYCOMPLETESETS":
       case "PUBLICBUYCOMPLETESETS":
-      case "PUBLICBUYCOMPLETESETSWITHCASH": // TODO: Finish text
-        notification.description = "Buy X complete sets for Y ETH";
+      case "PUBLICBUYCOMPLETESETSWITHCASH": // TODO: Finish text. Find a way to get cost in ETH
+        // notification.description =
+        //   "Buy " + transactionParams._amount + " complete sets for Y ETH";
         break;
       case "PUBLICSELLCOMPLETESETSWITHCASH": // Not called directly by UI
-      case "PUBLICSELLCOMPLETESETS":
-        notification.description =
-          "Sell " +
-          formatShares(parseInt(notification._amount, 16) / SHARES_DIVISOR)
-            .formatted +
-          " complete sets for Y ETH";
+      case "PUBLICSELLCOMPLETESETS": // TODO: Finish text
+        // notification.description =
+        //   "Sell " +
+        //   formatShares(parseInt(notification._amount, 16) / SHARES_DIVISOR)
+        //     .formatted +
+        //   " complete sets for Y ETH";
         break;
 
       // CreateOrder
       case "PUBLICCREATEORDER": {
-        // TODO: Fix
-        const marketInfo = selectMarket(notification._market);
-        console.log(marketInfo);
+        const marketInfo = selectMarket(notification.log.marketId);
         const outcomeDescription = getOutcomeDescription(
           marketInfo,
-          notification._outcome
+          notification.log.outcome
         );
-        console.log(outcomeDescription);
-        const orderType = notification._type === "0x0" ? "buy" : "sell";
-        console.log(outcomeDescription);
         notification.description =
           "Create " +
-          orderType +
+          notification.log.orderType +
           " order for " +
-          formatShares(parseInt(notification._attoshares, 16) / SHARES_DIVISOR)
-            .formatted +
-          " share(s) of " +
+          formatShares(notification.log.amount).formatted +
+          ' share(s) of "' +
           outcomeDescription +
-          " at " +
-          formatEther(parseInt(notification._displayPrice, 16) / ETHER_DIVISOR)
-            .formatted +
+          '" at ' +
+          formatEther(notification.log.price).formatted +
           " ETH";
-        console.log(notification.description);
         break;
       }
 
@@ -123,24 +124,23 @@ export default function setNotificationDescription(
       case "BUYPARTICIPATIONTOKENS":
         notification.description =
           "Purchase " +
-          formatRep(notification._attotokens / REP_DIVISOR).formatted +
+          formatRep(notification.log.value / REP_DIVISOR).formatted +
           " Participation Token(s)";
         break;
 
       // FillOrder & Trade
       case "PUBLICFILLBESTORDER": // Not called directly by UI
       case "PUBLICFILLBESTORDERWITHLIMIT":
-      case "PUBLICFILLORDER": {
+      case "PUBLICFILLORDER": { // TODO: Test
         // Not called directly by UI
-        const marketInfo = selectMarket(notification._market);
+        const marketInfo = selectMarket(notification.log.marketId);
         const outcomeDescription = getOutcomeDescription(
           marketInfo,
-          parseInt(notification._outcome, 16)
+          notification.log.outcome
         );
-        const fillOrderType = notification._type === "0x0" ? "sell" : "buy";
         notification.description =
           "Fill " +
-          fillOrderType +
+          notification.log.orderType +
           " order(s) for " +
           formatShares(parseInt(notification._fxpAmount, 16) / SHARES_DIVISOR)
             .formatted +
@@ -155,16 +155,16 @@ export default function setNotificationDescription(
 
       // InitialReporter
       case "MIGRATEREP": // TODO: Finish text
-        notification.description =
-          "Migrate X REP to child universe [outcomeName]";
+        // notification.description =
+        //   "Migrate X REP to child universe [outcomeName]";
         break;
 
       // Mailbox
       case "WITHDRAWETHER": // TODO: Finish text
-        notification.description = "Withdraw X ETH to [address]";
+        // notification.description = "Withdraw X ETH to [address]";
         break;
       case "WITHDRAWTOKENS": // TODO: Finish text
-        notification.description = "Withdraw X tokens";
+        // notification.description = "Withdraw X tokens";
         break;
 
       // Market
@@ -185,16 +185,17 @@ export default function setNotificationDescription(
           " dispute bond";
         break;
       }
-      case "DISAVOWCROWDSOURCERS": // TODO: Write text
-        notification.description = "Make staked REP available for claiming";
+      case "DISAVOWCROWDSOURCERS":
         break;
       case "DOINITIALREPORT": {
-        const marketDescription = selectMarket(notification.market).description;
+        const marketDescription = selectMarket(notification.log.marketId)
+          .description;
         notification.description = "Submit report on " + marketDescription + "";
         break;
       }
       case "FINALIZE": {
-        const marketDescription = selectMarket(notification.market).description;
+        const marketDescription = selectMarket(notification.log.marketId)
+          .description;
         notification.description = "Finalize market " + marketDescription + "";
         break;
       }
@@ -221,30 +222,31 @@ export default function setNotificationDescription(
       // Trade
       case "PUBLICBUY":
       case "PUBLICBUYWITHLIMIT": // TODO: Finish text
-        notification.description = "Buy X share(s) of [outcomeName] at Y ETH";
+        // notification.description = "Buy X share(s) of [outcomeName] at Y ETH";
         break;
       case "PUBLICSELL":
       case "PUBLICSELLWITHLIMIT": // TODO: Finish text
-        notification.description = "Sell X share(s) of [outcomeName] at Y ETH";
+        // notification.description = "Sell X share(s) of [outcomeName] at Y ETH";
         break;
       case "PUBLICTRADE": // Not called directly by UI
       case "PUBLICTRADEWITHLIMIT": {
-        const marketInfo = selectMarket(notification._market);
+        const marketInfo = selectMarket(notification.log.marketId);
         const outcomeDescription = getOutcomeDescription(
           marketInfo,
-          parseInt(notification._outcome, 16)
+          parseInt(transactionParams._outcome, 16)
         );
         const orderType = notification._direction === "0x0" ? "buy" : "sell";
         notification.description =
           "Place " +
           orderType +
           " order for " +
-          formatShares(parseInt(notification._fxpAmount, 16) / SHARES_DIVISOR)
-            .formatted +
+          formatShares(
+            parseInt(transactionParams._fxpAmount, 16) / SHARES_DIVISOR
+          ).formatted +
           " share(s) of " +
           outcomeDescription +
           " at " +
-          formatEther(parseInt(notification._price, 16) / ETHER_DIVISOR)
+          formatEther(parseInt(transactionParams._price, 16) / ETHER_DIVISOR)
             .formatted +
           " ETH";
         break;
@@ -265,13 +267,13 @@ export default function setNotificationDescription(
           "Create new market " + notification._description + "";
         break;
       case "CREATECHILDUNIVERSE": // TODO: Finish text
-        notification.description =
-          "Create new child universe for outcome [outcomeName]";
+        // notification.description =
+        //   "Create new child universe for outcome [outcomeName]";
         break;
       case "FORK":
         break;
       case "REDEEMSTAKE": // TODO: Finish text
-        notification.description = "Claim X REP";
+        // notification.description = "Claim X REP";
         break;
       case "GETINITIALREPORTSTAKESIZE":
         break;
@@ -303,19 +305,19 @@ export default function setNotificationDescription(
         break;
       case "DEPOSITETHER":
       case "DEPOSITETHERFOR": // TODO: Finish text
-        notification.description = "Deposit X ETH to [address]";
+        // notification.description = "Deposit X ETH to [address]";
         break;
       case "FORKANDREDEEM":
       case "REDEEM": // TODO: Finish text
-        notification.description = "Claim X REP";
+        // notification.description = "Claim X REP";
         break;
       case "REDEEMFORREPORTINGPARTICIPANT":
         break;
       case "INCREASEAPPROVAL":
         break;
       case "MIGRATE": // TODO: Finish text
-        notification.description =
-          "Migrate market [marketName] to child universe";
+        // notification.description =
+        //   "Migrate market [marketName] to child universe";
         break;
       case "TRANSFER": // Ignore this case for now, as it seems redundant with SENDREPUTATION
         break;
@@ -324,10 +326,9 @@ export default function setNotificationDescription(
       case "TRANSFEROWNERSHIP":
         break;
       case "WITHDRAWETHERTO": // TODO: Finish text
-        notification.description = "Withdraw X ETH to [address]";
+        // notification.description = "Withdraw X ETH to [address]";
         break;
       case "WITHDRAWINEMERGENCY":
-        notification.description = "";
         break;
 
       // augur.js functions

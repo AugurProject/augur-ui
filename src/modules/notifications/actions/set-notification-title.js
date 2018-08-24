@@ -1,5 +1,5 @@
 export default function setNotificationTitle(notification, callback) {
-  // console.log(notification);
+  console.log("setNotificationTitle notification:", notification);
   return (dispatch, getState) => {
     if (!notification) {
       throw new Error("Notification is not set");
@@ -7,12 +7,12 @@ export default function setNotificationTitle(notification, callback) {
     if (!callback) {
       throw new Error("Callback function is not set");
     }
-    if (!notification.type) {
+    if (!notification.title) {
       dispatch(callback(notification));
       return;
     }
 
-    switch (notification.type.toUpperCase()) {
+    switch (notification.title.toUpperCase()) {
       // Augur
       case "CREATEGENESISUNIVERSE":
         notification.title = "Create genesis universe";
@@ -220,7 +220,7 @@ export default function setNotificationTitle(notification, callback) {
       case "TRANSFER":
       case "TRANSFERFROM":
       case "TRANSFEROWNERSHIP":
-        notification.title = "Transfer funds";
+        notification.title = "Transfer";
         break;
       case "WITHDRAWETHERTO":
         notification.title = "Withdraw ETH";
@@ -238,7 +238,7 @@ export default function setNotificationTitle(notification, callback) {
         break;
 
       default: {
-        const result = notification.type.replace(/([A-Z])/g, " $1");
+        const result = notification.title.replace(/([A-Z])/g, " $1");
         notification.title = result.charAt(0).toUpperCase() + result.slice(1);
         break;
       }

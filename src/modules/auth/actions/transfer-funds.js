@@ -24,10 +24,12 @@ export function transferFunds(amount, currency, toAddress) {
               addNotification({
                 id: tx.hash,
                 status: "Pending",
-                etherToSend: amount,
-                to,
+                params: {
+                  etherToSend: amount,
+                  to,
+                  type: "sendEther"
+                },
                 timestamp: selectCurrentTimestampInSeconds(getState()),
-                type: "sendEther"
               })
             );
           },
@@ -36,8 +38,6 @@ export function transferFunds(amount, currency, toAddress) {
               updateNotification(tx.hash, {
                 status: "Success",
                 timestamp: selectCurrentTimestampInSeconds(getState()),
-                tx,
-                type: "sendEther"
               })
             );
           },
@@ -57,26 +57,30 @@ export function transferFunds(amount, currency, toAddress) {
           reputationToSend: amount,
           _to: to,
           onSent: tx => {
-            // dispatch(
-            //   addNotification({
-            //     id: `REP-${tx.hash}`,
-            //     status: "Pending",
-            //     amount,
-            //     reputationToSend: amount,
-            //     timestamp: selectCurrentTimestampInSeconds(getState()),
-            //     type: "sendReputation",
-            //     universe: universe.id,
-            //     _to: to
-            //   })
-            // );
+            dispatch(
+              addNotification({
+                id: `REP-${tx.hash}`,
+                status: "Pending",
+                params: {
+                  universe: universe.id,
+                  reputationToSend: amount,
+                  _to: to,
+                  type: "sendReputation"
+                },
+                timestamp: selectCurrentTimestampInSeconds(getState()),
+                universe: universe.id,
+                reputationToSend: amount,
+                _to: to
+              })
+            );
           },
           onSuccess: tx => {
-            // dispatch(
-            //   updateNotification(`REP-${tx.hash}`, {
-            //     status: "Success",
-            //     timestamp: selectCurrentTimestampInSeconds(getState())
-            //   })
-            // );
+            dispatch(
+              updateNotification(`REP-${tx.hash}`, {
+                status: "Success",
+                timestamp: selectCurrentTimestampInSeconds(getState())
+              })
+            );
           },
           onFailed: tx => {
             dispatch(

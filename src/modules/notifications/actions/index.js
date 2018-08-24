@@ -1,7 +1,6 @@
 import store from "src/store";
 import * as notificationLevels from "src/modules/notifications/constants";
-import setNotificationTitle from "./set-notification-title";
-import setNotificationDescription from "./set-notification-description";
+import setNotificationText from "./set-notification-text";
 
 export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
@@ -31,7 +30,7 @@ export function addNotification(notification) {
       return fullNotification;
     };
 
-    return setNotificationTitle(notification, callback);
+    return setNotificationText(notification, callback);
   }
 }
 
@@ -53,16 +52,22 @@ export function updateNotification(id, notification) {
     };
     return fullNotification;
   };
-  const { notifications } = store.getState();
-  for (let index = Object.keys(notifications).length - 1; index >= 0; index--) {
-    if (notifications[index].id === notification.id) {
-      return setNotificationDescription(
-        notification,
-        notifications[index].params,
-        callback
-      );
+
+  // Set notification.params if it is not already set.
+  // (This occurs the first time the notification is updated.)
+  if (notification && !notification.params) {
+    const { notifications } = store.getState();
+    for (
+      let index = Object.keys(notifications).length - 1;
+      index >= 0;
+      index--
+    ) {
+      if (notifications[index].id === notification.id) {
+        notification.params = notifications[index].params;
+      }
     }
   }
+  return setNotificationText(notification, callback);
 }
 
 // We clear by 'notification level'.
