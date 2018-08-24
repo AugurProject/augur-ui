@@ -6,9 +6,7 @@ import { selectMarket } from "modules/market/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
 
-const ETHER_DIVISOR = 10000;
 const REP_DIVISOR = 1000000000000000000;
-const SHARES_DIVISOR = 100000000000000;
 
 function getOutcomeDescription(marketInfo, outcomeIndex) {
   // console.log("marketInfo", marketInfo);
