@@ -30,7 +30,7 @@ export const submitInitialReport = (
     tx: { to: marketId, estimateGas },
     _invalid: invalid,
     _payoutNumerators: payoutNumerators,
-    onSent: (res) => {
+    onSent: res => {
       if (!estimateGas) {
         history.push(makePath(REPORTING_REPORT_MARKETS));
       }

@@ -33,7 +33,7 @@ export const submitMarketContribute = (
     _invalid: !!invalid,
     _payoutNumerators: payoutNumerators,
     _amount: amount,
-    onSent: (res) => {
+    onSent: res => {
       if (!estimateGas) {
         history.push(makePath(REPORTING_DISPUTE_MARKETS));
       }

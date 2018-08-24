@@ -29,7 +29,7 @@ export function transferFunds(amount, currency, toAddress) {
                   to,
                   type: "sendEther"
                 },
-                timestamp: selectCurrentTimestampInSeconds(getState()),
+                timestamp: selectCurrentTimestampInSeconds(getState())
               })
             );
           },
@@ -38,7 +38,7 @@ export function transferFunds(amount, currency, toAddress) {
               updateNotification(tx.hash, {
                 id: tx.hash,
                 status: "Success",
-                timestamp: selectCurrentTimestampInSeconds(getState()),
+                timestamp: selectCurrentTimestampInSeconds(getState())
               })
             );
           },
