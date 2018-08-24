@@ -1,6 +1,4 @@
 /**
- * @todo Remove set-notification-title.js & set-notification-description.js
- * @todo Comment out console.log lines
  * @todo Investigate why fill order tx gets stuck in Pending status
  * @todo Fix bug where createOrder outcome is wrong for categorical markets
  */
@@ -21,7 +19,7 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
 }
 
 export default function setNotificationText(notification, callback) {
-  console.log("setNotificationText notification:", notification);
+  // console.log("setNotificationText notification:", notification);
   return (dispatch, getState) => {
     if (!notification) {
       throw new Error("Notification is not set");
@@ -200,20 +198,22 @@ export default function setNotificationText(notification, callback) {
 
       // Market
       case "CONTRIBUTE":
+        // Tested
         notification.title = "Contribute REP to crowdsourcer";
         if (!notification.description && notification.log) {
           dispatch(
-            loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
-              const marketInfo = selectMarket(notification.market);
-              const outcomeDescription = notification.params._invalid
-                ? "Invalid"
-                : getOutcomeDescription(marketInfo, notification.log.outcome);
+            loadMarketsInfoIfNotLoaded([notification.to], () => {
+              // TODO: Set outcome description
+              // const marketInfo = selectMarket(notification.to);
+              // const outcomeDescription = notification.params._invalid
+              //   ? "Invalid"
+              //   : getOutcomeDescription(marketInfo, notification.log.outcome);
               notification.description =
                 "Place " +
-                formatRep(notification.log.amount).formatted +
-                ' REP on "' +
-                outcomeDescription +
-                '" dispute bond';
+                formatRep(
+                  parseInt(notification.params._amount, 16) / REP_DIVISOR
+                ).formatted +
+                " REP on dispute bond";
               dispatch(callback(notification));
             })
           );
@@ -223,10 +223,11 @@ export default function setNotificationText(notification, callback) {
         notification.title = "Make staked REP available for claiming";
         break;
       case "DOINITIALREPORT":
+        // Tested
         notification.title = "Submit report";
         if (!notification.description && notification.log) {
           dispatch(
-            loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
+            loadMarketsInfoIfNotLoaded([notification.to], () => {
               const marketDescription = selectMarket(notification.to)
                 .description;
               notification.description =
@@ -238,12 +239,18 @@ export default function setNotificationText(notification, callback) {
         break;
       case "FINALIZE":
         notification.title = "Finalize market";
-        if (!notification.description && notification.log) {
-          const marketDescription = selectMarket(notification.log.marketId)
-            .description;
-          notification.description =
-            'Finalize market "' + marketDescription + '"';
-        }
+        // TODO: Test
+        // if (!notification.description && notification.log) {
+        //   dispatch(
+        //     loadMarketsInfoIfNotLoaded([notification.to], () => {
+        //       const marketDescription = selectMarket(notification.to)
+        //         .description;
+        //       notification.description =
+        //         'Finalize market "' + marketDescription + '"';
+        //       dispatch(callback(notification));
+        //     })
+        //   );
+        // }
         break;
       case "FINALIZEFORK":
         notification.title = "Finalize forked market";
