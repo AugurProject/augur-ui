@@ -37,7 +37,6 @@ export default function setNotificationText(notification, callback) {
       return;
     }
 
-    console.log("looking for " + notification.params.type.toUpperCase());
     switch (notification.params.type.toUpperCase()) {
       // Augur
       case "CREATEGENESISUNIVERSE":
@@ -405,7 +404,8 @@ export default function setNotificationText(notification, callback) {
       case "TRANSFER":
       case "TRANSFERFROM":
       case "TRANSFEROWNERSHIP":
-        notification.title = "Transfer";
+        // Ignore this case for now
+        // notification.title = "Transfer";
         break;
       case "WITHDRAWETHERTO":
         notification.title = "Withdraw ETH";
@@ -417,22 +417,22 @@ export default function setNotificationText(notification, callback) {
       // augur.js functions
       case "SENDETHER":
         notification.title = "Send ETH";
-        if (!notification.description && notification.log) {
+        if (!notification.description && notification.params) {
           notification.description =
             "Send " +
-            formatEther(notification.etherToSend).formatted +
+            formatEther(notification.params.etherToSend).formatted +
             " ETH to " +
-            notification.to;
+            notification.params.to;
         }
         break;
       case "SENDREPUTATION":
         notification.title = "Send REP";
-        if (!notification.description && notification.log) {
+        if (!notification.description && notification.params) {
           notification.description =
             "Send " +
-            formatRep(notification.reputationToSend).formatted +
+            formatRep(notification.params.reputationToSend).formatted +
             " REP to " +
-            notification._to;
+            notification.params._to;
         }
         break;
 

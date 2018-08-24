@@ -36,6 +36,7 @@ export function transferFunds(amount, currency, toAddress) {
           onSuccess: tx => {
             dispatch(
               updateNotification(tx.hash, {
+                id: tx.hash,
                 status: "Success",
                 timestamp: selectCurrentTimestampInSeconds(getState()),
               })
@@ -77,6 +78,7 @@ export function transferFunds(amount, currency, toAddress) {
           onSuccess: tx => {
             dispatch(
               updateNotification(`REP-${tx.hash}`, {
+                id: `REP-${tx.hash}`,
                 status: "Success",
                 timestamp: selectCurrentTimestampInSeconds(getState())
               })
@@ -85,6 +87,7 @@ export function transferFunds(amount, currency, toAddress) {
           onFailed: tx => {
             dispatch(
               updateNotification(`REP-${tx.hash}`, {
+                id: `REP-${tx.hash}`,
                 status: "Failed",
                 timestamp: selectCurrentTimestampInSeconds(getState())
               })
