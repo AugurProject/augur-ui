@@ -1,3 +1,9 @@
+/**
+ * @todo Remove set-notification-title.js & set-notification-description.js
+ * @todo Comment out console.log lines
+ * @todo Investigate why fill order tx gets stuck in Pending status
+ * @todo Fix bug where createOrder outcome is wrong for categorical markets
+ */
 import { selectMarket } from "modules/market/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
@@ -31,6 +37,7 @@ export default function setNotificationText(notification, callback) {
       return;
     }
 
+    console.log("looking for " + notification.params.type.toUpperCase());
     switch (notification.params.type.toUpperCase()) {
       // Augur
       case "CREATEGENESISUNIVERSE":
@@ -109,6 +116,7 @@ export default function setNotificationText(notification, callback) {
 
       // CreateOrder
       case "PUBLICCREATEORDER": {
+        // Tested
         notification.title = "Create liquidity order";
         if (!notification.description && notification.log) {
           dispatch(
@@ -138,6 +146,7 @@ export default function setNotificationText(notification, callback) {
       // FeeWindow & Universe
       case "BUY":
       case "BUYPARTICIPATIONTOKENS":
+        // Tested
         notification.title = "Buy participation token(s)";
         if (!notification.description && notification.log) {
           notification.description =
@@ -198,10 +207,7 @@ export default function setNotificationText(notification, callback) {
               const marketInfo = selectMarket(notification.market);
               const outcomeDescription = notification._invalid
                 ? "Invalid"
-                : getOutcomeDescription(
-                    marketInfo,
-                    parseInt(notification.outcome, 10)
-                  );
+                : getOutcomeDescription(marketInfo, notification.log.outcome);
               notification.description =
                 "Place " +
                 formatRep(parseInt(notification._amount, 16) / REP_DIVISOR)
@@ -323,10 +329,11 @@ export default function setNotificationText(notification, callback) {
       case "CREATECATEGORICALMARKET":
       case "CREATESCALARMARKET":
       case "CREATEYESNOMARKET":
+        // Tested
         notification.title = "Create new market";
         if (!notification.description && notification.log) {
           notification.description =
-            "Create new market " + notification._description + "";
+            'Create new market "' + notification.params._description + '"';
         }
         break;
       case "CREATECHILDUNIVERSE":
