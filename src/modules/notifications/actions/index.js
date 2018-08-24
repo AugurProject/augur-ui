@@ -64,6 +64,7 @@ export function updateNotification(id, notification) {
     ) {
       if (notifications[index].id === notification.id) {
         notification.params = notifications[index].params;
+        notification.to = notifications[index].to;
       }
     }
   }

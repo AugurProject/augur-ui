@@ -25,7 +25,8 @@ export const constructRelayTransaction = tx => (dispatch, getState) => {
         status,
         title: unpackedParams.type,
         description: "",
-        linkPath: makePath(TRANSACTIONS)
+        linkPath: makePath(TRANSACTIONS),
+        to: tx.data.to
       })
     );
   }

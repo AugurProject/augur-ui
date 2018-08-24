@@ -159,29 +159,30 @@ export default function setNotificationText(notification, callback) {
       case "PUBLICFILLBESTORDER":
       case "PUBLICFILLBESTORDERWITHLIMIT":
       case "PUBLICFILLORDER":
+        // TODO: Test
         notification.title = "Fill order(s)";
-        if (!notification.description && notification.log) {
-          dispatch(
-            loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
-              const marketInfo = selectMarket(notification.log.marketId);
-              const outcomeDescription = getOutcomeDescription(
-                marketInfo,
-                notification.log.outcome
-              );
-              notification.description =
-                "Fill " +
-                notification.log.orderType +
-                " order(s) for " +
-                formatShares(notification.log.amount).formatted +
-                ' share(s) of "' +
-                outcomeDescription +
-                '" at ' +
-                formatEther(notification._price).formatted +
-                " ETH";
-              dispatch(callback(notification));
-            })
-          );
-        }
+        // if (!notification.description && notification.log) {
+        //   dispatch(
+        //     loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
+        //       const marketInfo = selectMarket(notification.log.marketId);
+        //       const outcomeDescription = getOutcomeDescription(
+        //         marketInfo,
+        //         notification.log.outcome
+        //       );
+        //       notification.description =
+        //         "Fill " +
+        //         notification.log.orderType +
+        //         " order(s) for " +
+        //         formatShares(notification.log.amount).formatted +
+        //         ' share(s) of "' +
+        //         outcomeDescription +
+        //         '" at ' +
+        //         formatEther(notification.log.price).formatted +
+        //         " ETH";
+        //       dispatch(callback(notification));
+        //     })
+        //   );
+        // }
         break;
 
       // InitialReporter
@@ -204,13 +205,12 @@ export default function setNotificationText(notification, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
               const marketInfo = selectMarket(notification.market);
-              const outcomeDescription = notification._invalid
+              const outcomeDescription = notification.params._invalid
                 ? "Invalid"
                 : getOutcomeDescription(marketInfo, notification.log.outcome);
               notification.description =
                 "Place " +
-                formatRep(parseInt(notification._amount, 16) / REP_DIVISOR)
-                  .formatted +
+                formatRep(notification.log.amount).formatted +
                 ' REP on "' +
                 outcomeDescription +
                 '" dispute bond';
@@ -227,7 +227,7 @@ export default function setNotificationText(notification, callback) {
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
-              const marketDescription = selectMarket(notification.log.marketId)
+              const marketDescription = selectMarket(notification.to)
                 .description;
               notification.description =
                 'Submit report on "' + marketDescription + '"';
@@ -416,6 +416,7 @@ export default function setNotificationText(notification, callback) {
 
       // augur.js functions
       case "SENDETHER":
+        // Tested
         notification.title = "Send ETH";
         if (!notification.description && notification.params) {
           notification.description =
@@ -426,6 +427,7 @@ export default function setNotificationText(notification, callback) {
         }
         break;
       case "SENDREPUTATION":
+        // Tested
         notification.title = "Send REP";
         if (!notification.description && notification.params) {
           notification.description =
