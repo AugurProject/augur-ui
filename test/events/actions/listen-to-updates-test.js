@@ -292,5 +292,76 @@ describe("events/actions/listen-to-updates", () => {
           }
         ])
     });
+    test({
+      description:
+        "it should handle calling initial reporter redeemed not designated reporter",
+      state: {
+        universe: { id: "UNIVERSE_ADDRESS" },
+        loginAccount: { address: "MY_ADDRESS" }
+      },
+      stub: {
+        augur: {
+          events: {
+            stopBlockListeners: () => {},
+            stopAugurNodeEventListeners: () => {},
+            startBlockListeners: () => {},
+            startAugurNodeEventListeners: listeners =>
+              listeners.InitialReporterRedeemed(null, {
+                eventName: "InitialReporterRedeemed",
+                market: "MARKET_ADDRESS",
+                reporter: "REPORTER_ADDRESS",
+                universe: "UNIVERSE_ADDRESS"
+              }),
+            nodes: { augur: { on: () => {} }, ethereum: { on: () => {} } }
+          }
+        }
+      },
+      assertions: actions =>
+        assert.deepEqual(actions, [
+          { type: "LOAD_MARKETS_INFO", marketIds: ["MARKET_ADDRESS"] },
+          { type: "UPDATE_UNCLAIMED_DATA", marketIds: ["MARKET_ADDRESS"] }
+        ])
+    });
+    test({
+      description:
+        "it should handle calling initial reporter redeemed IS designated reporter",
+      state: {
+        universe: { id: "UNIVERSE_ADDRESS" },
+        loginAccount: { address: "MY_ADDRESS" }
+      },
+      stub: {
+        augur: {
+          events: {
+            stopBlockListeners: () => {},
+            stopAugurNodeEventListeners: () => {},
+            startBlockListeners: () => {},
+            startAugurNodeEventListeners: listeners =>
+              listeners.InitialReporterRedeemed(null, {
+                eventName: "InitialReporterRedeemed",
+                market: "MARKET_ADDRESS",
+                reporter: "MY_ADDRESS",
+                universe: "UNIVERSE_ADDRESS"
+              }),
+            nodes: { augur: { on: () => {} }, ethereum: { on: () => {} } }
+          }
+        }
+      },
+      assertions: actions =>
+        assert.deepEqual(actions, [
+          { type: "LOAD_MARKETS_INFO", marketIds: ["MARKET_ADDRESS"] },
+          { type: "UPDATE_UNCLAIMED_DATA", marketIds: ["MARKET_ADDRESS"] },
+          { type: "UPDATE_ASSETS" },
+          { type: "LOAD_REPORTING" },
+          {
+            type: "UPDATE_LOGGED_TRANSACTIONS",
+            log: {
+              eventName: "InitialReporterRedeemed",
+              market: "MARKET_ADDRESS",
+              reporter: "MY_ADDRESS",
+              universe: "UNIVERSE_ADDRESS"
+            }
+          }
+        ])
+    });
   });
 });
