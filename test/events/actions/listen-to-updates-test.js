@@ -173,6 +173,26 @@ describe("events/actions/listen-to-updates", () => {
           { type: "LOAD_MARKETS_INFO", marketIds: ["MARKET_ADDRESS"] }
         ])
     });
+    test({
+      description:
+        "it should handle calling market state change with log set to empty array",
+      state: {
+        universe: { id: "UNIVERSE_ADDRESS" }
+      },
+      stub: {
+        augur: {
+          events: {
+            stopBlockListeners: () => {},
+            stopAugurNodeEventListeners: () => {},
+            startBlockListeners: () => {},
+            startAugurNodeEventListeners: listeners =>
+              listeners.MarketState(null, []),
+            nodes: { augur: { on: () => {} }, ethereum: { on: () => {} } }
+          }
+        }
+      },
+      assertions: actions => assert.deepEqual(actions, [])
+    });
   });
   describe("InitialReportSubmitted", () => {
     const test = t =>
