@@ -2,6 +2,9 @@
  * @todo Investigate why fill order tx gets stuck in Pending status
  * @todo Fix bug where createOrder outcome is wrong for categorical markets
  */
+
+import store from "src/store";
+import { isEmpty } from "lodash/fp";
 import { selectMarket } from "modules/market/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
@@ -18,9 +21,9 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
 
 export default function setNotificationText(notification, callback) {
   // console.log("setNotificationText notification:", notification);
-  return (dispatch, getState) => {
-    if (!notification) {
-      throw new Error("Notification is not set");
+  const result = (dispatch, getState) => {
+    if (!notification || isEmpty(notification)) {
+      return callback(notification);
     }
     if (!callback) {
       throw new Error("Callback function is not set");
@@ -29,8 +32,7 @@ export default function setNotificationText(notification, callback) {
       !notification.params ||
       (notification.title && notification.description)
     ) {
-      dispatch(callback(notification));
-      return;
+      return callback(notification);
     }
 
     switch (notification.params.type.toUpperCase()) {
@@ -57,7 +59,7 @@ export default function setNotificationText(notification, callback) {
                 '" at ' +
                 formatEther(notification.log.price).formatted +
                 " ETH";
-              dispatch(callback(notification));
+              return callback(notification);
             })
           );
         }
@@ -79,7 +81,7 @@ export default function setNotificationText(notification, callback) {
                 '" at ' +
                 formatEther(notification.log.price).formatted +
                 " ETH";
-              dispatch(callback(notification));
+              return callback(notification);
             })
           );
         }
@@ -131,7 +133,7 @@ export default function setNotificationText(notification, callback) {
                 '" at ' +
                 formatEther(notification.log.price).formatted +
                 " ETH";
-              dispatch(callback(notification));
+              return callback(notification);
             })
           );
         }
@@ -175,7 +177,7 @@ export default function setNotificationText(notification, callback) {
         //         '" at ' +
         //         formatEther(notification.log.price).formatted +
         //         " ETH";
-        //       dispatch(callback(notification));
+        //       return callback(notification);
         //     })
         //   );
         // }
@@ -212,7 +214,7 @@ export default function setNotificationText(notification, callback) {
                   parseInt(notification.params._amount, 16) / REP_DIVISOR
                 ).formatted +
                 " REP on dispute bond";
-              dispatch(callback(notification));
+              return callback(notification);
             })
           );
         }
@@ -230,7 +232,7 @@ export default function setNotificationText(notification, callback) {
                 .description;
               notification.description =
                 'Submit report on "' + marketDescription + '"';
-              dispatch(callback(notification));
+              return callback(notification);
             })
           );
         }
@@ -245,7 +247,7 @@ export default function setNotificationText(notification, callback) {
         //         .description;
         //       notification.description =
         //         'Finalize market "' + marketDescription + '"';
-        //       dispatch(callback(notification));
+        //       return callback(notification);
         //     })
         //   );
         // }
@@ -313,7 +315,7 @@ export default function setNotificationText(notification, callback) {
                 '" at ' +
                 formatEther(notification.log.price).formatted +
                 " ETH";
-              dispatch(callback(notification));
+              return callback(notification);
             })
           );
         }
@@ -449,6 +451,7 @@ export default function setNotificationText(notification, callback) {
         break;
       }
     }
-    dispatch(callback(notification));
+    return callback(notification);
   };
+  return result(store.dispatch, store.getState);
 }

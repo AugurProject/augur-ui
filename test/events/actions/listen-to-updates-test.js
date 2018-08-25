@@ -260,6 +260,7 @@ describe("events/actions/listen-to-updates", () => {
           { type: "LOAD_MARKETS_INFO", marketIds: ["MARKET_ADDRESS"] },
           { type: "UPDATE_UNCLAIMED_DATA", marketIds: ["MARKET_ADDRESS"] },
           { type: "LOAD_REPORTING" },
+          { type: "UPDATE_ASSETS" },
           {
             type: "UPDATE_LOGGED_TRANSACTIONS",
             log: {
