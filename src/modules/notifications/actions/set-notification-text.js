@@ -456,7 +456,7 @@ export default function setNotificationText(notification, callback) {
         break;
       }
     }
-    return callback(notification);
+    dispatch(callback(notification));
   };
   return result(store.dispatch, store.getState);
 }

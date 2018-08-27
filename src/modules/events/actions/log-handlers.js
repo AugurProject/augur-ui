@@ -288,7 +288,3 @@ export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
     dispatch(loadAccountTrades({ marketId: log.marketId }));
   }
 };
-
-export const handleApprovalLog = log => (dispatch, getState) => {
-  handleNotificationUpdate(log, dispatch, getState);
-};
