@@ -26,7 +26,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   switch (filterOptions.sort) {
     case MARKET_RECENTLY_TRADED: {
       // Sort By Recently Traded:
-      // defaults for now...
       sort.sortBy = "lastTradeTime";
       sort.isSortDescending = true;
       break;
