@@ -37,7 +37,7 @@ export default function(callback = logError) {
             dispatch(
               updateNotification(res.hash, {
                 id: res.hash,
-                status: "Success",
+                status: "Confirmed",
                 timestamp: selectCurrentTimestampInSeconds(getState())
               })
             );

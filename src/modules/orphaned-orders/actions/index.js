@@ -46,7 +46,7 @@ export const cancelOrphanedOrder = (
             type: "cancelOrphanedOrder"
           },
           timestamp,
-          status: "Sent",
+          status: "Pending",
           title: "Cancel orphaned order"
         })
       );
@@ -57,7 +57,7 @@ export const cancelOrphanedOrder = (
         updateNotification(res.hash, {
           id: res.hash,
           timestamp,
-          status: "Completed"
+          status: "Confirmed"
         })
       );
       callback(null);
