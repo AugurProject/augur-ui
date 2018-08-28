@@ -81,11 +81,11 @@ export default class Notification extends Component {
             )}
         </Link>
         <div className={Styles.Notification__row}>
-          <span className={Styles.Notification__time}>
-            {moment.unix(timestamp).fromNow()} —{" "}
-          </span>
           <span className={Styles.Notification__etherLink}>
             <EtherscanLink txhash={id} label="etherscan tx" />
+          </span>
+          <span className={Styles.Notification__time}>
+            &nbsp;— {moment.unix(timestamp).fromNow()}
           </span>
         </div>
       </article>
