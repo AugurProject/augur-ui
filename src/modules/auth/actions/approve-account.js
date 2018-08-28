@@ -35,19 +35,7 @@ export function approveAccount(onSent = logError, onSuccess = logError) {
     augur.accounts.approveAugur({
       meta,
       address,
-      onSent: res => {
-        dispatch(
-          addNotification({
-            id: res.hash,
-            status: "Pending",
-            params: {
-              type: "approve"
-            },
-            timestamp: selectCurrentTimestampInSeconds(getState())
-          })
-        );
-        onSent(res);
-      },
+      onSent,
       onSuccess: res => {
         updateNotification(res.hash, {
           id: res.hash,
