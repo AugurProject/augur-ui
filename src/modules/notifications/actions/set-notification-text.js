@@ -1,4 +1,5 @@
 /**
+ * @todo Make use of getOutcome in addTransactions.js
  * @todo Investigate why fill order tx gets stuck in Pending status
  * @todo Fix bug where createOrder outcome is wrong for categorical markets
  */
@@ -43,7 +44,6 @@ export default function setNotificationText(notification, callback) {
 
       // CancelOrder
       case "CANCELORPHANEDORDER":
-        // Tested
         notification.title = "Cancel orphaned order";
         if (!notification.description && notification.log) {
           dispatch(
@@ -65,7 +65,6 @@ export default function setNotificationText(notification, callback) {
         }
         break;
       case "CANCELORDER": {
-        // Tested
         notification.title = "Cancel order";
         if (!notification.description && notification.log) {
           dispatch(
@@ -113,8 +112,7 @@ export default function setNotificationText(notification, callback) {
 
       // CreateOrder
       case "PUBLICCREATEORDER": {
-        // Tested
-        notification.title = "Create liquidity order";
+        notification.title = "Create order";
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
@@ -143,7 +141,6 @@ export default function setNotificationText(notification, callback) {
       // FeeWindow & Universe
       case "BUY":
       case "BUYPARTICIPATIONTOKENS":
-        // Tested
         notification.title = "Buy participation token(s)";
         if (!notification.description && notification.log) {
           notification.description =
@@ -157,30 +154,29 @@ export default function setNotificationText(notification, callback) {
       case "PUBLICFILLBESTORDER":
       case "PUBLICFILLBESTORDERWITHLIMIT":
       case "PUBLICFILLORDER":
-        // TODO: Test
         notification.title = "Fill order(s)";
-        // if (!notification.description && notification.log) {
-        //   dispatch(
-        //     loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
-        //       const marketInfo = selectMarket(notification.log.marketId);
-        //       const outcomeDescription = getOutcomeDescription(
-        //         marketInfo,
-        //         notification.log.outcome
-        //       );
-        //       notification.description =
-        //         "Fill " +
-        //         notification.log.orderType +
-        //         " order(s) for " +
-        //         formatShares(notification.log.amount).formatted +
-        //         ' share(s) of "' +
-        //         outcomeDescription +
-        //         '" at ' +
-        //         formatEther(notification.log.price).formatted +
-        //         " ETH";
-        //       return callback(notification);
-        //     })
-        //   );
-        // }
+        if (!notification.description && notification.log) {
+          dispatch(
+            loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
+              const marketInfo = selectMarket(notification.log.marketId);
+              const outcomeDescription = getOutcomeDescription(
+                marketInfo,
+                notification.log.outcome
+              );
+              notification.description =
+                "Fill " +
+                notification.log.orderType +
+                " order(s) for " +
+                formatShares(notification.log.amount).formatted +
+                ' share(s) of "' +
+                outcomeDescription +
+                '" at ' +
+                formatEther(notification.log.price).formatted +
+                " ETH";
+              return callback(notification);
+            })
+          );
+        }
         break;
 
       // InitialReporter
@@ -203,7 +199,6 @@ export default function setNotificationText(notification, callback) {
 
       // Market
       case "CONTRIBUTE":
-        // Tested
         notification.title = "Contribute REP to crowdsourcer";
         if (!notification.description && notification.log) {
           dispatch(
@@ -228,7 +223,6 @@ export default function setNotificationText(notification, callback) {
         notification.title = "Make staked REP available for claiming";
         break;
       case "DOINITIALREPORT":
-        // Tested
         notification.title = "Submit report";
         if (!notification.description && notification.log) {
           dispatch(
@@ -298,7 +292,6 @@ export default function setNotificationText(notification, callback) {
         break;
       case "PUBLICTRADE":
       case "PUBLICTRADEWITHLIMIT": {
-        // Tested
         notification.title = "Place trade";
         if (!notification.description && notification.log) {
           dispatch(
@@ -340,11 +333,9 @@ export default function setNotificationText(notification, callback) {
       case "CREATECATEGORICALMARKET":
       case "CREATESCALARMARKET":
       case "CREATEYESNOMARKET":
-        // Tested
         notification.title = "Create new market";
         if (!notification.description && notification.log) {
-          notification.description =
-            'Create new market "' + notification.params._description + '"';
+          notification.description = notification.params._description;
         }
         break;
       case "CREATECHILDUNIVERSE":
@@ -428,7 +419,6 @@ export default function setNotificationText(notification, callback) {
 
       // augur.js functions
       case "SENDETHER":
-        // Tested
         notification.title = "Send ETH";
         if (!notification.description && notification.params) {
           notification.description =
@@ -439,7 +429,6 @@ export default function setNotificationText(notification, callback) {
         }
         break;
       case "SENDREPUTATION":
-        // Tested
         notification.title = "Send REP";
         if (!notification.description && notification.params) {
           notification.description =
