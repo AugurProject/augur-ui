@@ -1,10 +1,7 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { updateLoginAccount } from "modules/auth/actions/update-login-account";
-import {
-  addNotification,
-  updateNotification
-} from "modules/notifications/actions";
+import { updateNotification } from "modules/notifications/actions";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 
 export function checkAccountAllowance(callback = logError) {
