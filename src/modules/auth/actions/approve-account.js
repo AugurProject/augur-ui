@@ -46,6 +46,7 @@ export function approveAccount(onSent = logError, onSuccess = logError) {
             timestamp: selectCurrentTimestampInSeconds(getState())
           })
         );
+        onSent(res);
       },
       onSuccess: res => {
         updateNotification(res.hash, {
