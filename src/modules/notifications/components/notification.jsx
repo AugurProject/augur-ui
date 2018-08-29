@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-import { AlertCircle } from "modules/common/components/icons";
+import { AlertCircle, CloseWithCircle } from "modules/common/components/icons";
 import Styles from "modules/notifications/components/notification.styles";
 import EtherscanLink from "modules/common/containers/etherscan-link";
 
@@ -21,6 +21,19 @@ export default class Notification extends Component {
     status: PropTypes.string,
     toggleNotifications: PropTypes.func.isRequired
   };
+
+  showOnMouseEnterIcon() {
+    this.notificationCloseButton.className =
+      Styles.Notification__closeButtonHidden;
+    this.notificationCloseButtonHover.className =
+      Styles.Notification__closeButton;
+  }
+
+  showOnMouseLeaveIcon() {
+    this.notificationCloseButton.className = Styles.Notification__closeButton;
+    this.notificationCloseButtonHover.className =
+      Styles.Notification__closeButtonHidden;
+  }
 
   render() {
     const {
@@ -69,7 +82,30 @@ export default class Notification extends Component {
                 e.preventDefault();
                 removeNotification();
               }}
-            />
+              onMouseEnter={() => {
+                this.showOnMouseEnterIcon();
+              }}
+              onMouseLeave={() => {
+                this.showOnMouseLeaveIcon();
+              }}
+            >
+              <div
+                ref={notificationCloseButton => {
+                  this.notificationCloseButton = notificationCloseButton;
+                }}
+                className={Styles.Notification__closeButton}
+              >
+                {CloseWithCircle("", "#DBDAE1", "#FFF")}
+              </div>
+              <div
+                ref={notificationCloseButtonHover => {
+                  this.notificationCloseButtonHover = notificationCloseButtonHover;
+                }}
+                className={Styles.Notification__closeButtonHidden}
+              >
+                {CloseWithCircle("", "#412468", "#FFF")}
+              </div>
+            </button>
           </div>
           {description &&
             description !== "" && (
