@@ -5,6 +5,7 @@ export const wrapLogHandler = (logHandler = defaultLogHandler) => (
   dispatch,
   getState
 ) => (err, log) => {
+  console.log("wrapLogHandler", err, log);
   if (err) return console.error((log || {}).eventName, err, log);
   if (log) {
     // console.info(`${new Date().toISOString()} LOG ${log.removed ? 'REMOVED' : 'ADDED'} ${log.eventName} ${JSON.stringify(log)}`)
@@ -18,7 +19,7 @@ export const wrapLogHandler = (logHandler = defaultLogHandler) => (
       log.forEach(log => {
         if (
           find(Object.values(log), value => universeId === value) ||
-          log.contractName === "Cash"
+          (log.contractName === "Cash" && log.eventName === "Approval")
         )
           dispatch(logHandler(log));
       });
@@ -27,7 +28,10 @@ export const wrapLogHandler = (logHandler = defaultLogHandler) => (
         Object.values(log),
         value => universeId === value
       );
-      if (isInCurrentUniverse || log.contractName === "Cash")
+      if (
+        isInCurrentUniverse ||
+        (log.contractName === "Cash" && log.eventName === "Approval")
+      )
         dispatch(logHandler(log));
     }
   }
