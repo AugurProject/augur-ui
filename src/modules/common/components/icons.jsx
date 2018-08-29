@@ -863,8 +863,8 @@ export const CloseBlack = (
 
 export const CloseWithCircle = (
   className = "",
-  fill1 = "#DBDAE1",
-  fill2 = "#FFF"
+  backgroundFillColor = "#DBDAE1",
+  xFillColor = "#FFF"
 ) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -873,7 +873,7 @@ export const CloseWithCircle = (
   >
     <g fill="none" fillRule="nonzero" transform="translate(-5 -5)">
       <path
-        fill={fill1}
+        fill={backgroundFillColor}
         d="M8.721 24.278c-4.295-4.296-4.295-11.26 0-15.556 4.297-4.296 11.261-4.296 15.557 0 4.296 4.295 4.296 11.26 0 15.557-4.296 4.295-11.26 4.295-15.557-.001z"
       />
       <rect
@@ -881,7 +881,7 @@ export const CloseWithCircle = (
         height="13"
         x="16"
         y="10"
-        fill={fill2}
+        fill={xFillColor}
         rx=".5"
         transform="rotate(135 16.5 16.5)"
       />
@@ -890,7 +890,7 @@ export const CloseWithCircle = (
         height="13"
         x="16"
         y="10"
-        fill={fill2}
+        fill={xFillColor}
         rx=".5"
         transform="rotate(-135 16.5 16.5)"
       />
