@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
-import { AlertCircle, CloseBlack } from "modules/common/components/icons";
+import { AlertCircle } from "modules/common/components/icons";
 import Styles from "modules/notifications/components/notification.styles";
 import EtherscanLink from "modules/common/containers/etherscan-link";
 
@@ -69,9 +69,7 @@ export default class Notification extends Component {
                 e.preventDefault();
                 removeNotification();
               }}
-            >
-              {CloseBlack}
-            </button>
+            />
           </div>
           {description &&
             description !== "" && (

@@ -89,7 +89,7 @@ let config = {
         loader: "json"
       },
       {
-        test: /\.(woff|woff2)/,
+        test: /\.(woff|woff2|svg)/,
         loader: "file"
       }
     ]
