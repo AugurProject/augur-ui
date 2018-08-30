@@ -1,5 +1,5 @@
 /**
- * Update text for FINALIZE once notification triggering is moved
+ * @todo Update text for FINALIZE once notification triggering is moved
  */
 import store from "src/store";
 import { augur } from "services/augurjs";
