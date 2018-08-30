@@ -440,8 +440,10 @@ export default function setNotificationText(notification, callback) {
         break;
 
       default: {
-        const result = notification.params.type.replace(/([A-Z])/g, " $1");
-        notification.title = result.charAt(0).toUpperCase() + result.slice(1);
+        const result = notification.params.type
+          .replace(/([A-Z])/g, " $1")
+          .toLowerCase();
+        notification.title = result;
         break;
       }
     }
