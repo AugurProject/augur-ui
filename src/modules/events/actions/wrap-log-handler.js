@@ -5,7 +5,6 @@ export const wrapLogHandler = (logHandler = defaultLogHandler) => (
   dispatch,
   getState
 ) => (err, log) => {
-  console.log("wrapLogHandler", err, log);
   if (err) return console.error((log || {}).eventName, err, log);
   if (log) {
     // console.info(`${new Date().toISOString()} LOG ${log.removed ? 'REMOVED' : 'ADDED'} ${log.eventName} ${JSON.stringify(log)}`)

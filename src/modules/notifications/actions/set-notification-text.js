@@ -5,6 +5,7 @@
  */
 
 import store from "src/store";
+import { augur } from "services/augurjs";
 import { isEmpty } from "lodash/fp";
 import { selectMarket } from "modules/market/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
@@ -15,7 +16,6 @@ import { createBigNumber } from "utils/create-big-number";
 import { getOutcome } from "modules/transactions/actions/add-transactions";
 
 export default function setNotificationText(notification, callback) {
-  console.log("setNotificationText", notification);
   const result = (dispatch, getState) => {
     if (!notification || isEmpty(notification)) {
       return callback(notification);
@@ -59,7 +59,6 @@ export default function setNotificationText(notification, callback) {
         break;
       case "CANCELORDER": {
         notification.title = "Cancel order";
-        console.log("CancelOrder", notification);
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
@@ -151,10 +150,8 @@ export default function setNotificationText(notification, callback) {
       case "PUBLICFILLBESTORDER":
       case "PUBLICFILLBESTORDERWITHLIMIT":
       case "PUBLICFILLORDER":
-        console.log("entering publicFill");
         notification.title = "Fill order(s)";
         if (!notification.description && notification.log) {
-          console.log("publicFill If statement");
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.params._market], () => {
               const marketInfo = selectMarket(notification.params._market);
@@ -166,13 +163,7 @@ export default function setNotificationText(notification, callback) {
                     createBigNumber(notification.params._outcome).toFixed()
                 ).name
               );
-              console.log(
-                "PUBLICFILL",
-                notification,
-                outcomeDescription,
-                notification.log,
-                marketInfo
-              );
+
               notification.description = `Filled ${
                 notification.log.orderType
               } order(s) for ${
@@ -182,6 +173,17 @@ export default function setNotificationText(notification, callback) {
               } of "${outcomeDescription}" at ${
                 formatEther(notification.log.price).formatted
               } ETH`;
+
+              if (notification.log.noFill) {
+                notification.description = `Unable to ${
+                  notification.log.orderType
+                } Shares of ${outcomeDescription} at ${augur.utils.convertOnChainPriceToDisplayPrice(
+                  createBigNumber(notification.params._price),
+                  createBigNumber(marketInfo.minPrice),
+                  marketInfo.numTicks
+                )} ETH.`;
+              }
+
               return callback(notification);
             })
           );
