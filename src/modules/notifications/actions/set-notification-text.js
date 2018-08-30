@@ -1,6 +1,6 @@
 /**
- * Test canceling order using getOutcome on different types of markets
  * Test default letter casing
+ * Update text for FINALIZE once notification triggering is moved
  */
 import store from "src/store";
 import { augur } from "services/augurjs";
@@ -8,10 +8,11 @@ import { isEmpty } from "lodash/fp";
 import { selectMarket } from "modules/market/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
 import { TEN_TO_THE_EIGHTEENTH_POWER } from "modules/trade/constants/numbers";
+import { getOutcome } from "modules/transactions/actions/add-transactions";
 import { BUY, SELL } from "modules/trade/constants/types";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
+import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
 import { createBigNumber } from "utils/create-big-number";
-import { getOutcome } from "modules/transactions/actions/add-transactions";
 
 export default function setNotificationText(notification, callback) {
   const result = (dispatch, getState) => {
@@ -45,9 +46,9 @@ export default function setNotificationText(notification, callback) {
                 marketInfo,
                 notification.log.outcome
               );
-              notification.description = `Canceled order for ${
-                formatShares(notification.log.quantity).denomination
-              } of "${outcomeDescription}" at ${
+              notification.description = `Canceled order for ${formatShares(
+                notification.log.quantity
+              ).denomination.toLowerCase()} of "${outcomeDescription}" at ${
                 formatEther(notification.log.price).formatted
               } ETH`;
               return callback(notification);
@@ -65,9 +66,9 @@ export default function setNotificationText(notification, callback) {
                 marketInfo,
                 notification.log.outcome
               );
-              notification.description = `Canceled order for ${
-                formatShares(notification.log.quantity).denomination
-              } of "${outcomeDescription}" at ${
+              notification.description = `Canceled order for ${formatShares(
+                notification.log.quantity
+              ).denomination.toLowerCase()} of "${outcomeDescription}" at ${
                 formatEther(notification.log.price).formatted
               } ETH`;
               return callback(notification);
@@ -175,7 +176,7 @@ export default function setNotificationText(notification, callback) {
               if (notification.log.noFill) {
                 notification.description = `Unable to ${
                   notification.log.orderType
-                } Shares of ${outcomeDescription} at ${augur.utils.convertOnChainPriceToDisplayPrice(
+                } shares of ${outcomeDescription} at ${augur.utils.convertOnChainPriceToDisplayPrice(
                   createBigNumber(notification.params._price),
                   createBigNumber(marketInfo.minPrice),
                   marketInfo.numTicks
@@ -212,18 +213,20 @@ export default function setNotificationText(notification, callback) {
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.to], () => {
-              // TODO: Set outcome description
-              // const marketInfo = selectMarket(notification.to);
-              // const outcomeDescription = notification.params._invalid
-              //   ? "Invalid"
-              //   : getOutcome(marketInfo, notification.log.outcome);
+              const marketInfo = selectMarket(notification.to);
+              const outcome = calculatePayoutNumeratorsValue(
+                marketInfo,
+                notification.params._payoutNumerators,
+                notification.params._invalid
+              );
+              const outcomeDescription = getOutcome(marketInfo, outcome);
               notification.description = `Placed ${
                 formatRep(
                   createBigNumber(notification.params._amount).dividedBy(
                     TEN_TO_THE_EIGHTEENTH_POWER
                   )
                 ).formatted
-              } REP on a dispute bond`;
+              } REP on "${outcomeDescription}" dispute bond`;
               return callback(notification);
             })
           );
@@ -237,7 +240,6 @@ export default function setNotificationText(notification, callback) {
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.to], () => {
-              // TODO: Add outcome description & test
               const marketDescription = selectMarket(notification.to)
                 .description;
               notification.description = `Submitted report on "${marketDescription}"`;
@@ -248,7 +250,9 @@ export default function setNotificationText(notification, callback) {
         break;
       case "FINALIZE":
         notification.title = "Finalize market";
-        // TODO: Test
+        // TODO: Currently, this is being handled by handleMarketFinalizedLog of log-handlers.js
+        // Should probably remove that and have the notification info set here.
+
         // if (!notification.description && notification.log) {
         //   dispatch(
         //     loadMarketsInfoIfNotLoaded([notification.to], () => {
