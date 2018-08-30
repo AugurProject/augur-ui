@@ -415,7 +415,6 @@ export default function setNotificationText(notification, callback) {
       case "TRANSFER":
       case "TRANSFERFROM":
       case "TRANSFEROWNERSHIP":
-        console.log("transfreEvent", notification);
         break;
       case "WITHDRAWETHERTO":
         notification.title = "Withdraw ETH";
