@@ -182,7 +182,6 @@ export default function setNotificationText(notification, callback) {
                   marketInfo.numTicks
                 )} ETH.`;
               }
-
               return callback(notification);
             })
           );
@@ -287,7 +286,28 @@ export default function setNotificationText(notification, callback) {
         break;
       case "MIGRATEOUTBYPAYOUT":
         notification.title = "Migrate REP out of universe";
-        // TODO: Add description & test
+        if (!notification.description && notification.log) {
+          const forkingMarketId = getState().universe.forkingMarket;
+          dispatch(
+            loadMarketsInfoIfNotLoaded([forkingMarketId], () => {
+              const marketInfo = selectMarket(forkingMarketId);
+              const outcome = calculatePayoutNumeratorsValue(
+                marketInfo,
+                notification.params._payoutNumerators,
+                notification.params._invalid
+              );
+              const outcomeDescription = getOutcome(marketInfo, outcome);
+              notification.description = `Migrated ${
+                formatRep(
+                  createBigNumber(notification.log.value).dividedBy(
+                    TEN_TO_THE_EIGHTEENTH_POWER
+                  )
+                ).formatted
+              } REP to child universe "${outcomeDescription}"`;
+              return callback(notification);
+            })
+          );
+        }
         break;
       case "UPDATEPARENTTOTALTHEORETICALSUPPLY":
         notification.title =
@@ -416,13 +436,15 @@ export default function setNotificationText(notification, callback) {
         break;
       case "REDEEM":
         notification.title = "Redeem funds";
-        notification.description = `Claimed ${
-          formatRep(
-            createBigNumber(notification.log.value).dividedBy(
-              TEN_TO_THE_EIGHTEENTH_POWER
-            )
-          ).formatted
-        } REP`;
+        if (!notification.description && notification.log) {
+          notification.description = `Claimed ${
+            formatRep(
+              createBigNumber(notification.log.value).dividedBy(
+                TEN_TO_THE_EIGHTEENTH_POWER
+              )
+            ).formatted
+          } REP`;
+        }
         break;
       case "INCREASEAPPROVAL":
         notification.title = "Increase spending approval";
