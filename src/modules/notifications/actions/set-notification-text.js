@@ -1,17 +1,18 @@
 /**
- * @todo Make use of getOutcome in addTransactions.js
- * @todo Investigate why fill order tx gets stuck in Pending status
- * @todo Fix bug where createOrder outcome is wrong for categorical markets
+ * Test canceling order using getOutcome on different types of markets
  */
-
 import store from "src/store";
 import { isEmpty } from "lodash/fp";
 import { selectMarket } from "modules/market/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
+import { TEN_TO_THE_EIGHTEENTH_POWER } from "modules/trade/constants/numbers";
+import { getOutcome } from "modules/transactions/actions/add-transactions";
+import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
+import { createBigNumber } from "utils/create-big-number";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
 
 const REP_DIVISOR = 1000000000000000000;
-
+/*
 function getOutcomeDescription(marketInfo, outcomeIndex) {
   // console.log("marketInfo", marketInfo);
   if (marketInfo.marketType.toUpperCase() === "YESNO") {
@@ -20,6 +21,47 @@ function getOutcomeDescription(marketInfo, outcomeIndex) {
   return marketInfo.outcomes[outcomeIndex].description;
 }
 
+function getOutcomeDescriptionFromPayoutInfo(
+  marketInfo,
+  payoutNumerators,
+  invalid
+) {
+  let outcomeDescription = "";
+  if (invalid) {
+    outcomeDescription = "Market Is Invalid";
+  } else {
+    switch (marketInfo.marketType) {
+      case "yesNo":
+        outcomeDescription =
+          payoutNumerators[0] ===
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+            ? "Yes"
+            : "No";
+        break;
+      case "categorical":
+        Object.keys(payoutNumerators).forEach(key => {
+          if (
+            payoutNumerators[key] !==
+            "0x0000000000000000000000000000000000000000000000000000000000000000"
+          ) {
+            outcomeDescription = marketInfo.outcomes[key].description;
+          }
+        });
+        break;
+      case "scalar":
+        // TODO: determine outcome description for scalar markets
+        // Divide by numTicks
+        // Multiply by (maxPrice - minPrice)
+        outcomeDescription = "";
+        break;
+      default:
+        outcomeDescription = "";
+        break;
+    }
+  }
+  return outcomeDescription;
+}
+*/
 export default function setNotificationText(notification, callback) {
   // console.log("setNotificationText notification:", notification);
   const result = (dispatch, getState) => {
@@ -49,7 +91,7 @@ export default function setNotificationText(notification, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
               const marketInfo = selectMarket(notification.log.marketId);
-              const outcomeDescription = getOutcomeDescription(
+              const outcomeDescription = getOutcome(
                 marketInfo,
                 notification.log.outcome
               );
@@ -70,7 +112,7 @@ export default function setNotificationText(notification, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
               const marketInfo = selectMarket(notification.log.marketId);
-              const outcomeDescription = getOutcomeDescription(
+              const outcomeDescription = getOutcome(
                 marketInfo,
                 notification.log.outcome
               );
@@ -117,7 +159,7 @@ export default function setNotificationText(notification, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
               const marketInfo = selectMarket(notification.log.marketId);
-              const outcomeDescription = getOutcomeDescription(
+              const outcomeDescription = getOutcome(
                 marketInfo,
                 notification.log.outcome
               );
@@ -159,7 +201,7 @@ export default function setNotificationText(notification, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.log.marketId], () => {
               const marketInfo = selectMarket(notification.log.marketId);
-              const outcomeDescription = getOutcomeDescription(
+              const outcomeDescription = getOutcome(
                 marketInfo,
                 notification.log.outcome
               );
@@ -203,17 +245,21 @@ export default function setNotificationText(notification, callback) {
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.to], () => {
-              // TODO: Set outcome description
-              // const marketInfo = selectMarket(notification.to);
-              // const outcomeDescription = notification.params._invalid
-              //   ? "Invalid"
-              //   : getOutcomeDescription(marketInfo, notification.log.outcome);
+              const marketInfo = selectMarket(notification.to);
+              const outcome = calculatePayoutNumeratorsValue(
+                marketInfo,
+                notification.params._payoutNumerators,
+                notification.params._invalid
+              );
+              const outcomeDescription = getOutcome(marketInfo, outcome);
               notification.description =
                 "Place " +
                 formatRep(
                   parseInt(notification.params._amount, 16) / REP_DIVISOR
                 ).formatted +
-                " REP on dispute bond";
+                ' REP on "' +
+                outcomeDescription +
+                '" dispute bond';
               return callback(notification);
             })
           );
@@ -227,6 +273,7 @@ export default function setNotificationText(notification, callback) {
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.to], () => {
+              // TODO: Add outcome description & test
               const marketDescription = selectMarket(notification.to)
                 .description;
               notification.description =
@@ -269,8 +316,11 @@ export default function setNotificationText(notification, callback) {
         notification.title = "Migrate REP into universe";
         break;
       case "MIGRATEOUT":
+        notification.title = "Migrate REP out of universe";
+        break;
       case "MIGRATEOUTBYPAYOUT":
         notification.title = "Migrate REP out of universe";
+        // TODO: Add description & test
         break;
       case "UPDATEPARENTTOTALTHEORETICALSUPPLY":
         notification.title =
@@ -299,7 +349,7 @@ export default function setNotificationText(notification, callback) {
               const marketInfo = selectMarket(notification.log.marketId);
               const orderType =
                 notification.params._direction === "0x0" ? "buy" : "sell";
-              const outcomeDescription = getOutcomeDescription(
+              const outcomeDescription = getOutcome(
                 marketInfo,
                 notification.log.outcome
               );
@@ -340,6 +390,7 @@ export default function setNotificationText(notification, callback) {
         break;
       case "CREATECHILDUNIVERSE":
         notification.title = "Create child universe";
+        // TODO: Add description & test
         break;
       case "FORK":
         notification.title = "Initiate fork";
@@ -394,9 +445,18 @@ export default function setNotificationText(notification, callback) {
         notification.title = "Deposit ETH";
         break;
       case "FORKANDREDEEM":
-      case "REDEEM":
       case "REDEEMFORREPORTINGPARTICIPANT":
-        notification.title = "Claim funds";
+        notification.title = "Redeem funds";
+        break;
+      case "REDEEM":
+        notification.title = "Redeem funds";
+        notification.description = `Claim ${
+          formatRep(
+            createBigNumber(notification.log.value).dividedBy(
+              TEN_TO_THE_EIGHTEENTH_POWER
+            )
+          ).formatted
+        } REP`;
         break;
       case "INCREASEAPPROVAL":
         notification.title = "Increase spending approval";
