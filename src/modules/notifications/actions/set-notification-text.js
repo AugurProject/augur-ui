@@ -45,7 +45,7 @@ export default function setNotificationText(notification, callback) {
                 marketInfo,
                 notification.log.outcome
               );
-              notification.description = `Canceled order for ${formatShares(
+              notification.description = `Cancel order for ${formatShares(
                 notification.log.quantity
               ).denomination.toLowerCase()} of "${outcomeDescription}" at ${
                 formatEther(notification.log.price).formatted
@@ -65,7 +65,7 @@ export default function setNotificationText(notification, callback) {
                 marketInfo,
                 notification.log.outcome
               );
-              notification.description = `Canceled order for ${formatShares(
+              notification.description = `Cancel order for ${formatShares(
                 notification.log.quantity
               ).denomination.toLowerCase()} of "${outcomeDescription}" at ${
                 formatEther(notification.log.price).formatted
@@ -111,7 +111,7 @@ export default function setNotificationText(notification, callback) {
                 marketInfo,
                 notification.log.outcome
               );
-              notification.description = `Created ${
+              notification.description = `Create ${
                 notification.log.orderType
               } order for ${
                 formatShares(notification.log.quantity).formatted
@@ -132,7 +132,7 @@ export default function setNotificationText(notification, callback) {
       case "BUYPARTICIPATIONTOKENS":
         notification.title = "Buy participation token(s)";
         if (!notification.description && notification.log) {
-          notification.description = `Purchased ${
+          notification.description = `Purchase ${
             formatRep(
               createBigNumber(notification.log.value).dividedBy(
                 TEN_TO_THE_EIGHTEENTH_POWER
@@ -162,7 +162,7 @@ export default function setNotificationText(notification, callback) {
                 ).name
               );
 
-              notification.description = `Filled ${
+              notification.description = `Fill ${
                 notification.log.orderType
               } order(s) for ${
                 formatShares(notification.log.amount || 0).formatted
@@ -218,7 +218,7 @@ export default function setNotificationText(notification, callback) {
                 notification.params._invalid
               );
               const outcomeDescription = getOutcome(marketInfo, outcome);
-              notification.description = `Placed ${
+              notification.description = `Place ${
                 formatRep(
                   createBigNumber(notification.params._amount).dividedBy(
                     TEN_TO_THE_EIGHTEENTH_POWER
@@ -240,7 +240,7 @@ export default function setNotificationText(notification, callback) {
             loadMarketsInfoIfNotLoaded([notification.to], () => {
               const marketDescription = selectMarket(notification.to)
                 .description;
-              notification.description = `Submitted report on "${marketDescription}"`;
+              notification.description = `Submit report on "${marketDescription}"`;
               return callback(notification);
             })
           );
@@ -296,7 +296,7 @@ export default function setNotificationText(notification, callback) {
                 notification.params._invalid
               );
               const outcomeDescription = getOutcome(marketInfo, outcome);
-              notification.description = `Migrated ${
+              notification.description = `Migrate ${
                 formatRep(
                   createBigNumber(notification.log.value).dividedBy(
                     TEN_TO_THE_EIGHTEENTH_POWER
@@ -339,7 +339,7 @@ export default function setNotificationText(notification, callback) {
                 marketInfo,
                 notification.log.outcome
               );
-              notification.description = `Placed ${orderType} order for ${
+              notification.description = `Place ${orderType} order for ${
                 formatShares(notification.log.amount).formatted
               } ${
                 formatShares(notification.log.amount).denomination
@@ -368,7 +368,7 @@ export default function setNotificationText(notification, callback) {
       case "CREATEYESNOMARKET":
         notification.title = "Create new market";
         if (!notification.description && notification.log) {
-          notification.description = `Created market "${
+          notification.description = `Create market "${
             notification.params._description
           }"`;
         }
@@ -435,7 +435,7 @@ export default function setNotificationText(notification, callback) {
       case "REDEEM":
         notification.title = "Redeem funds";
         if (!notification.description && notification.log) {
-          notification.description = `Claimed ${
+          notification.description = `Claim ${
             formatRep(
               createBigNumber(notification.log.value).dividedBy(
                 TEN_TO_THE_EIGHTEENTH_POWER
@@ -466,7 +466,7 @@ export default function setNotificationText(notification, callback) {
       case "SENDETHER":
         notification.title = "Send ETH";
         if (!notification.description && notification.params) {
-          notification.description = `Sent ${
+          notification.description = `Send ${
             formatEther(notification.params.etherToSend).formatted
           } ETH to ${notification.params.to}`;
         }
@@ -474,7 +474,7 @@ export default function setNotificationText(notification, callback) {
       case "SENDREPUTATION":
         notification.title = "Send REP";
         if (!notification.description && notification.params) {
-          notification.description = `Sent ${
+          notification.description = `Send ${
             formatRep(notification.params.reputationToSend).formatted
           } REP to ${notification.params._to}`;
         }
