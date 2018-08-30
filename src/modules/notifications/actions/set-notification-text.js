@@ -1,5 +1,6 @@
 /**
  * Test canceling order using getOutcome on different types of markets
+ * Test default letter casing
  */
 import store from "src/store";
 import { isEmpty } from "lodash/fp";
@@ -11,57 +12,6 @@ import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-va
 import { createBigNumber } from "utils/create-big-number";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
 
-const REP_DIVISOR = 1000000000000000000;
-/*
-function getOutcomeDescription(marketInfo, outcomeIndex) {
-  // console.log("marketInfo", marketInfo);
-  if (marketInfo.marketType.toUpperCase() === "YESNO") {
-    return outcomeIndex === 0 ? "No" : "Yes";
-  }
-  return marketInfo.outcomes[outcomeIndex].description;
-}
-
-function getOutcomeDescriptionFromPayoutInfo(
-  marketInfo,
-  payoutNumerators,
-  invalid
-) {
-  let outcomeDescription = "";
-  if (invalid) {
-    outcomeDescription = "Market Is Invalid";
-  } else {
-    switch (marketInfo.marketType) {
-      case "yesNo":
-        outcomeDescription =
-          payoutNumerators[0] ===
-          "0x0000000000000000000000000000000000000000000000000000000000000000"
-            ? "Yes"
-            : "No";
-        break;
-      case "categorical":
-        Object.keys(payoutNumerators).forEach(key => {
-          if (
-            payoutNumerators[key] !==
-            "0x0000000000000000000000000000000000000000000000000000000000000000"
-          ) {
-            outcomeDescription = marketInfo.outcomes[key].description;
-          }
-        });
-        break;
-      case "scalar":
-        // TODO: determine outcome description for scalar markets
-        // Divide by numTicks
-        // Multiply by (maxPrice - minPrice)
-        outcomeDescription = "";
-        break;
-      default:
-        outcomeDescription = "";
-        break;
-    }
-  }
-  return outcomeDescription;
-}
-*/
 export default function setNotificationText(notification, callback) {
   // console.log("setNotificationText notification:", notification);
   const result = (dispatch, getState) => {
@@ -187,7 +137,8 @@ export default function setNotificationText(notification, callback) {
         if (!notification.description && notification.log) {
           notification.description =
             "Purchase " +
-            formatRep(notification.log.value / REP_DIVISOR).formatted +
+            formatRep(notification.log.value / TEN_TO_THE_EIGHTEENTH_POWER)
+              .formatted +
             " Participation Token(s)";
         }
         break;
@@ -255,7 +206,8 @@ export default function setNotificationText(notification, callback) {
               notification.description =
                 "Place " +
                 formatRep(
-                  parseInt(notification.params._amount, 16) / REP_DIVISOR
+                  parseInt(notification.params._amount, 16) /
+                    TEN_TO_THE_EIGHTEENTH_POWER
                 ).formatted +
                 ' REP on "' +
                 outcomeDescription +
@@ -467,8 +419,7 @@ export default function setNotificationText(notification, callback) {
       case "TRANSFER":
       case "TRANSFERFROM":
       case "TRANSFEROWNERSHIP":
-        // Ignore this case for now
-        // notification.title = "Transfer";
+        // Ignore this case for now, since it seems redundant with some other notifications
         break;
       case "WITHDRAWETHERTO":
         notification.title = "Withdraw ETH";
