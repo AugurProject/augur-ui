@@ -444,6 +444,7 @@ export function getOutcome(market, outcome) {
   }
   return value;
 }
+
 function buildHeader(item, type, status) {
   const header = {};
   header.status = status;
