@@ -1,5 +1,4 @@
 /**
- * Test default letter casing
  * Update text for FINALIZE once notification triggering is moved
  */
 import store from "src/store";
@@ -376,7 +375,6 @@ export default function setNotificationText(notification, callback) {
         break;
       case "CREATECHILDUNIVERSE":
         notification.title = "Create child universe";
-        // TODO: Add description & test
         break;
       case "FORK":
         notification.title = "Initiate fork";
