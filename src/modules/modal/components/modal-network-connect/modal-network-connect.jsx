@@ -133,9 +133,7 @@ export default class ModalNetworkConnect extends Component {
     };
 
     // reloads window
-    if (editEndpointParams(windowRef, endpoints)) {
-      return;
-    }
+    editEndpointParams(windowRef, endpoints);
 
     // p.submitForm used as a hook for disconnection modal, normally just preventsDefault
     p.submitForm(e);

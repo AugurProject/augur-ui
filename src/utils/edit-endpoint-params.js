@@ -3,7 +3,7 @@ import { createPath } from "history";
 import makeQuery from "src/modules/routes/helpers/make-query";
 import { isEmpty } from "lodash";
 
-export const editEndpointParam = (
+export const editEndpointParams = (
   windowRef,
   { augurNode, ethereumNodeHTTP, ethereumNodeWS }
 ) => {
@@ -12,15 +12,14 @@ export const editEndpointParam = (
 
   if (augurNode && existingParams.augur_node !== augurNode) {
     paramsToModify.augur_node = augurNode;
-  } else if (
+  }
+  if (
     ethereumNodeHTTP &&
     existingParams.ethereum_node_http !== ethereumNodeHTTP
   ) {
     paramsToModify.ethereum_node_http = ethereumNodeHTTP;
-  } else if (
-    ethereumNodeWS &&
-    existingParams.ethereum_node_ws !== ethereumNodeWS
-  ) {
+  }
+  if (ethereumNodeWS && existingParams.ethereum_node_ws !== ethereumNodeWS) {
     paramsToModify.ethereum_node_ws = ethereumNodeWS;
   }
 
@@ -33,7 +32,5 @@ export const editEndpointParam = (
       }),
       hash: windowRef.location.hash
     });
-    return true;
   }
-  return false;
 };

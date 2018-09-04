@@ -1,4 +1,4 @@
-import { editEndpointParam } from "src/utils/edit-endpoint-params";
+import { editEndpointParams } from "src/utils/edit-endpoint-params";
 
 describe("src/utils/edit-endpoint-params.js", () => {
   let windowRef;
@@ -24,7 +24,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
     describe("when nothing is passed", () => {
       it("should not change the location", () => {
         assert.doesNotThrow(() => {
-          editEndpointParam(windowRef, {});
+          editEndpointParams(windowRef, {});
         });
       });
     });
@@ -32,7 +32,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
     describe("when only the same augur-node is passed", () => {
       it("should not update location", () => {
         assert.doesNotThrow(() => {
-          editEndpointParam(windowRef, { augurNode: "ws://127.0.0.1:9001" });
+          editEndpointParams(windowRef, { augurNode: "ws://127.0.0.1:9001" });
         });
       });
     });
@@ -40,7 +40,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
     describe("when only the same ethereum-node-http is passed", () => {
       it("should not update location", () => {
         assert.doesNotThrow(() => {
-          editEndpointParam(windowRef, {
+          editEndpointParams(windowRef, {
             ethereumNodeHTTP: "http://127.0.0.1:8545"
           });
         });
@@ -50,7 +50,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
     describe("when only the same ethereum-node-ws is passed", () => {
       it("should not update location", () => {
         assert.doesNotThrow(() => {
-          editEndpointParam(windowRef, {
+          editEndpointParams(windowRef, {
             ethereumNodeWS: "ws://127.0.0.1:8546"
           });
         });
@@ -62,7 +62,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
 
   describe("when only a new augur-node is passed", () => {
     it("should update the augur-node endpoint in the url search string", () => {
-      editEndpointParam(windowRef, {
+      editEndpointParams(windowRef, {
         augurNode: "ws://different-endpoint:100000"
       });
       assert.equal(
@@ -74,7 +74,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
 
   describe("when only a new ethereum-node-http is passed", () => {
     it("should update the ehtereum-node-http in the url search string", () => {
-      editEndpointParam(windowRef, {
+      editEndpointParams(windowRef, {
         ethereumNodeHTTP: "http://111.1.1.1:1111"
       });
       assert.equal(
@@ -86,7 +86,7 @@ describe("src/utils/edit-endpoint-params.js", () => {
 
   describe("when only a new ethereum-node-ws is passed", () => {
     it("should update the ethereum-node-ws in the url search string", () => {
-      editEndpointParam(windowRef, {
+      editEndpointParams(windowRef, {
         ethereumNodeWS: "ws://222.2.2.2:2222"
       });
       assert.equal(
