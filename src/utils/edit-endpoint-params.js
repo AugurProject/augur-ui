@@ -33,5 +33,7 @@ export const editEndpointParam = (
       }),
       hash: windowRef.location.hash
     });
+    return true;
   }
+  return false;
 };

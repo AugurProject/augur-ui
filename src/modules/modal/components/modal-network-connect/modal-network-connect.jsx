@@ -9,6 +9,8 @@ import {
 import Input from "modules/common/components/input/input";
 
 import Styles from "modules/modal/components/modal-network-connect/modal-network-connect.styles";
+import { windowRef } from "src/utils/window-ref";
+import { editEndpointParams } from "src/utils/edit-endpoint-params";
 
 function calculateConnectionErrors(err, res) {
   const errors = [];
@@ -111,6 +113,7 @@ export default class ModalNetworkConnect extends Component {
         [`${protocol}`]: this.state.ethereumNode
       };
     }
+
     // because we prioritize, lets wipe out all previous connection options but not remove things like timeout.
     const updatedEnv = {
       ...this.props.env,
@@ -123,9 +126,20 @@ export default class ModalNetworkConnect extends Component {
         ...ethNode
       }
     };
-    p.updateEnv(updatedEnv);
+    const endpoints = {
+      augurNode: updatedEnv["augur-node"],
+      ethereumNodeHTTP: updatedEnv["ethereum-node"].http,
+      ethereumNodeWS: updatedEnv["ethereum-node"].ws
+    };
+
+    // reloads window
+    if (editEndpointParams(windowRef, endpoints)) {
+      return;
+    }
+
     // p.submitForm used as a hook for disconnection modal, normally just preventsDefault
     p.submitForm(e);
+
     // reset local error state and initial attemptConnection loading icon
     this.setState({ isAttemptingConnection: true, connectErrors: [] });
 
