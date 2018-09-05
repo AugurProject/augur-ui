@@ -2,29 +2,29 @@ import { editEndpointParams } from "src/utils/edit-endpoint-params";
 import * as sinon from "sinon";
 
 describe("src/utils/edit-endpoint-params.js", () => {
-  let windowRef;
-  let spy;
-  beforeEach(() => {
-    spy = sinon.spy();
-    windowRef = {
-      location: {
-        search:
-          "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
-        origin: "http://example.com",
-        hash: "#/markets",
-        get href() {
-          return "";
-        },
-        set href(value) {
-          spy(value);
-        },
-        reload() {}
-      }
-    };
-  });
-
   // Not changing params
   describe("when the same or null values are passed", () => {
+    let windowRef;
+    let spy;
+    beforeEach(() => {
+      spy = sinon.spy();
+      windowRef = {
+        location: {
+          search:
+            "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
+          origin: "http://example.com",
+          hash: "#/markets",
+          get href() {
+            return "";
+          },
+          set href(value) {
+            spy(value);
+          },
+          reload() {}
+        }
+      };
+    });
+
     describe("when nothing is passed", () => {
       it("should not change the location", () => {
         editEndpointParams(windowRef, {});
@@ -34,19 +34,17 @@ describe("src/utils/edit-endpoint-params.js", () => {
 
     describe("when only the same augur-node is passed", () => {
       it("should not update location", () => {
-        assert.doesNotThrow(() => {
-          editEndpointParams(windowRef, { augurNode: "ws://127.0.0.1:9001" });
-        });
+        editEndpointParams(windowRef, { augurNode: "ws://127.0.0.1:9001" });
+        assert.isNotOk(spy.called);
       });
     });
 
     describe("when only the same ethereum-node-http is passed", () => {
       it("should not update location", () => {
-        assert.doesNotThrow(() => {
-          editEndpointParams(windowRef, {
-            ethereumNodeHTTP: "http://127.0.0.1:8545"
-          });
+        editEndpointParams(windowRef, {
+          ethereumNodeHTTP: "http://127.0.0.1:8545"
         });
+        assert.isNotOk(spy.called);
       });
     });
 
@@ -62,6 +60,20 @@ describe("src/utils/edit-endpoint-params.js", () => {
   });
 
   // Changing params
+
+  let windowRef;
+  beforeEach(() => {
+    windowRef = {
+      location: {
+        search:
+          "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
+        origin: "http://example.com",
+        hash: "#/markets",
+        href: "",
+        reload() {}
+      }
+    };
+  });
 
   describe("when only a new augur-node is passed", () => {
     it("should update the augur-node endpoint in the url search string", () => {
