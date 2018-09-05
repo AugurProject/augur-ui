@@ -9,7 +9,8 @@ describe("src/utils/edit-endpoint-params.js", () => {
           "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
         origin: "http://example.com",
         hash: "#/markets",
-        href: ""
+        href: "",
+        reload() {}
       }
     };
   });
