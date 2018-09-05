@@ -12,21 +12,6 @@ import Styles from "modules/modal/components/modal-network-connect/modal-network
 import { windowRef } from "src/utils/window-ref";
 import { editEndpointParams } from "src/utils/edit-endpoint-params";
 
-function calculateConnectionErrors(err, res) {
-  const errors = [];
-
-  if (err || (!!res && !res.ethereumNode && !res.augurNode))
-    errors.push(
-      "There was an issue connecting to the nodes, please try again."
-    );
-  if (!!res && !res.ethereumNode && !err && res.augurNode)
-    errors.push("Failed to connect to the Ethereum Node.");
-  if (!!res && !res.augurNode && !err && res.ethereumNode)
-    errors.push("Failed to connect to the Augur Node.");
-
-  return errors;
-}
-
 export default class ModalNetworkConnect extends Component {
   static propTypes = {
     modal: PropTypes.shape({

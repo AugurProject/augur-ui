@@ -32,7 +32,7 @@ export const editEndpointParams = (
       }),
       hash: windowRef.location.hash
     });
-    return true;
+  } else {
+    windowRef.location.reload();
   }
-  return false;
 };
