@@ -1,32 +1,34 @@
 import { editEndpointParams } from "src/utils/edit-endpoint-params";
+import * as sinon from "sinon";
 
 describe("src/utils/edit-endpoint-params.js", () => {
   let windowRef;
+  let spy;
   beforeEach(() => {
+    spy = sinon.spy();
     windowRef = {
       location: {
         search:
           "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
         origin: "http://example.com",
         hash: "#/markets",
-        href: "",
+        get href() {
+          return "";
+        },
+        set href(value) {
+          spy(value);
+        },
         reload() {}
       }
     };
   });
 
   // Not changing params
-
   describe("when the same or null values are passed", () => {
-    beforeEach(() => {
-      windowRef.location = Object.freeze(windowRef.location);
-    });
-
     describe("when nothing is passed", () => {
       it("should not change the location", () => {
-        assert.doesNotThrow(() => {
-          editEndpointParams(windowRef, {});
-        });
+        editEndpointParams(windowRef, {});
+        assert.isNotOk(spy.called);
       });
     });
 
