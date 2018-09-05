@@ -137,44 +137,6 @@ export default class ModalNetworkConnect extends Component {
 
     // p.submitForm used as a hook for disconnection modal, normally just preventsDefault
     p.submitForm(e);
-
-    // reset local error state and initial attemptConnection loading icon
-    this.setState({ isAttemptingConnection: true, connectErrors: [] });
-
-    p.connectAugur(
-      p.history,
-      updatedEnv,
-      !!p.modal.isInitialConnection,
-      (err, res) => {
-        const connectErrors = calculateConnectionErrors(err, res);
-        if (connectErrors.length || err || res) {
-          return this.setState({
-            isAttemptingConnection: false,
-            connectErrors
-          });
-        }
-        // no errors and we didn't get an err or res object? we are connected.
-        if (!connectErrors.length && !err && !res) {
-          let isAugurJSEqual;
-          p.isAugurJSVersionsEqual().then(res => {
-            isAugurJSEqual = res.isEqual;
-            if (isAugurJSEqual) return p.closeModal();
-            const { formErrors } = this.state;
-            formErrors.augurNode = [];
-            formErrors.augurNode.push(
-              `AugurJS version (${res.augurjs}) doesn't match AugurNode (${
-                res.augurNode
-              }).`
-            );
-            this.setState({
-              isAttemptingConnection: false,
-              connectErrors,
-              formErrors
-            });
-          });
-        }
-      }
-    );
   }
 
   render() {
