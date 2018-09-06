@@ -2,29 +2,29 @@ import { editEndpointParams } from "src/utils/edit-endpoint-params";
 import * as sinon from "sinon";
 
 describe("src/utils/edit-endpoint-params.js", () => {
+  let windowRef;
+  let spy;
+  beforeEach(() => {
+    spy = sinon.spy();
+    windowRef = {
+      location: {
+        search:
+          "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
+        origin: "http://example.com",
+        hash: "#/markets",
+        get href() {
+          return "";
+        },
+        set href(value) {
+          spy(value);
+        },
+        reload() {}
+      }
+    };
+  });
+
   // Not changing params
   describe("when the same or null values are passed", () => {
-    let windowRef;
-    let spy;
-    beforeEach(() => {
-      spy = sinon.spy();
-      windowRef = {
-        location: {
-          search:
-            "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
-          origin: "http://example.com",
-          hash: "#/markets",
-          get href() {
-            return "";
-          },
-          set href(value) {
-            spy(value);
-          },
-          reload() {}
-        }
-      };
-    });
-
     describe("when nothing is passed", () => {
       it("should not change the location", () => {
         editEndpointParams(windowRef, {});
@@ -60,28 +60,15 @@ describe("src/utils/edit-endpoint-params.js", () => {
 
   // Changing params
 
-  let windowRef;
-  beforeEach(() => {
-    windowRef = {
-      location: {
-        search:
-          "?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue",
-        origin: "http://example.com",
-        hash: "#/markets",
-        href: "",
-        reload() {}
-      }
-    };
-  });
-
   describe("when only a new augur-node is passed", () => {
     it("should update the augur-node endpoint in the url search string", () => {
       editEndpointParams(windowRef, {
         augurNode: "ws://different-endpoint:100000"
       });
-      assert.equal(
-        windowRef.location.href,
-        "http://example.com?augur_node=ws%3A%2F%2Fdifferent-endpoint%3A100000&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue#/markets"
+      assert.isOk(
+        spy.calledWith(
+          "http://example.com?augur_node=ws%3A%2F%2Fdifferent-endpoint%3A100000&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue#/markets"
+        )
       );
     });
   });
@@ -91,9 +78,10 @@ describe("src/utils/edit-endpoint-params.js", () => {
       editEndpointParams(windowRef, {
         ethereumNodeHTTP: "http://111.1.1.1:1111"
       });
-      assert.equal(
-        windowRef.location.href,
-        "http://example.com?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F111.1.1.1%3A1111&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue#/markets"
+      assert.isOk(
+        spy.calledWith(
+          "http://example.com?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F111.1.1.1%3A1111&ethereum_node_ws=ws%3A%2F%2F127.0.0.1%3A8546&some_other_param=somevalue#/markets"
+        )
       );
     });
   });
@@ -103,9 +91,10 @@ describe("src/utils/edit-endpoint-params.js", () => {
       editEndpointParams(windowRef, {
         ethereumNodeWS: "ws://222.2.2.2:2222"
       });
-      assert.equal(
-        windowRef.location.href,
-        "http://example.com?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F222.2.2.2%3A2222&some_other_param=somevalue#/markets"
+      assert.isOk(
+        spy.calledWith(
+          "http://example.com?augur_node=ws%3A%2F%2F127.0.0.1%3A9001&ethereum_node_http=http%3A%2F%2F127.0.0.1%3A8545&ethereum_node_ws=ws%3A%2F%2F222.2.2.2%3A2222&some_other_param=somevalue#/markets"
+        )
       );
     });
   });
