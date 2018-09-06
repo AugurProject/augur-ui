@@ -50,11 +50,10 @@ describe("src/utils/edit-endpoint-params.js", () => {
 
     describe("when only the same ethereum-node-ws is passed", () => {
       it("should not update location", () => {
-        assert.doesNotThrow(() => {
-          editEndpointParams(windowRef, {
-            ethereumNodeWS: "ws://127.0.0.1:8546"
-          });
+        editEndpointParams(windowRef, {
+          ethereumNodeWS: "ws://127.0.0.1:8546"
         });
+        assert.isNotOk(spy.called);
       });
     });
   });
