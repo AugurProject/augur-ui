@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import makePath from "modules/routes/helpers/make-path";
 import MarketsList from "modules/markets/components/markets-list";
+import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import Styles from "modules/portfolio/components/markets/markets.styles";
 import PortfolioStyles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 import {
@@ -130,9 +131,11 @@ class MyMarkets extends Component {
         </Helmet>
         {myMarkets &&
           !!myMarkets.length && (
-            <div className={Styles.Markets__SortBar}>
-              <h2 className={Styles["Markets__SortBar-title"]}>Open</h2>
-            </div>
+            <article className={MarketsHeaderStyles.MarketsHeader}>
+              <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
+                Open
+              </h4>
+            </article>
           )}
         {haveMarkets && (
           <MarketsList
@@ -157,9 +160,11 @@ class MyMarkets extends Component {
             <div className={Styles["Markets__nullState--spacer"]} />
           )}
         {haveMarkets && (
-          <div className={Styles.Markets__SortBar}>
-            <div className={Styles["Markets__SortBar-title"]}>In Reporting</div>
-          </div>
+          <article className={MarketsHeaderStyles.MarketsHeader}>
+            <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
+              In Reporting
+            </h4>
+          </article>
         )}
         {haveMarkets && (
           <MarketsList
@@ -183,9 +188,11 @@ class MyMarkets extends Component {
             <div className={Styles["Markets__nullState--spacer"]} />
           )}
         {haveMarkets && (
-          <div className={Styles.Markets__SortBar}>
-            <div className={Styles["Markets__SortBar-title"]}>Resolved</div>
-          </div>
+          <article className={MarketsHeaderStyles.MarketsHeader}>
+            <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
+              Resolved
+            </h4>
+          </article>
         )}
         {haveMarkets && (
           <MarketsList

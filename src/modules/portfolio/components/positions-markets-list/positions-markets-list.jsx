@@ -4,6 +4,7 @@ import classNames from "classnames";
 import MarketPortfolioCard from "modules/market/containers/market-portfolio-card";
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 import Paginator from "modules/common/components/paginator/paginator";
+import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import Styles from "modules/portfolio/components/positions-markets-list/positions-markets-list.styles";
 import isEqual from "lodash/isEqual";
 
@@ -90,11 +91,11 @@ export default class PositionsMarketsList extends Component {
           [`${Styles.PositionMarketsListNullState}`]: markets.length === 0
         })}
       >
-        <div className={Styles.PositionsMarketsList__SortBar}>
-          <div className={Styles["PositionsMarketsList__SortBar-title"]}>
+        <article className={MarketsHeaderStyles.MarketsHeader}>
+          <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
             {title}
-          </div>
-        </div>
+          </h4>
+        </article>
         {markets &&
           markets.length > 0 &&
           filteredMarkets.map(market => (
