@@ -19,7 +19,8 @@ export const ReportSection = ({
   boundedLength,
   history,
   location,
-  pageinationCount
+  pageinationCount,
+  addNullPadding
 }) => {
   let theChildren;
   const count = items.length;
@@ -28,6 +29,7 @@ export const ReportSection = ({
       <NullStateMessage
         message={nullMessage || "No Markets Available"}
         key={title}
+        addNullPadding={addNullPadding}
       />
     );
   } else {
@@ -73,7 +75,8 @@ ReportSection.propTypes = {
   setSegment: PropTypes.func.isRequired,
   lower: PropTypes.number.isRequired,
   boundedLength: PropTypes.number.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object)
+  items: PropTypes.arrayOf(PropTypes.object),
+  addNullPadding: PropTypes.bool
 };
 
 class ReportingReporting extends React.Component {
@@ -176,6 +179,7 @@ class ReportingReporting extends React.Component {
           lower={paginations.ur.lower}
           boundedLength={paginations.ur.boundedLength}
           setSegment={this.setUrSegment}
+          addNullPadding
         />
       </section>
     );

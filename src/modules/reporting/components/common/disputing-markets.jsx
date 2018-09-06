@@ -25,7 +25,8 @@ export default class DisputingMarkets extends Component {
     showUpcomingPagination: PropTypes.bool,
     loadMarkets: PropTypes.func,
     nullDisputeMessage: PropTypes.string,
-    nullUpcomingMessage: PropTypes.string
+    nullUpcomingMessage: PropTypes.string,
+    addNullPadding: PropTypes.bool
   };
 
   constructor(props) {
@@ -128,7 +129,8 @@ export default class DisputingMarkets extends Component {
       showPagination,
       showUpcomingPagination,
       nullDisputeMessage,
-      nullUpcomingMessage
+      nullUpcomingMessage,
+      addNullPadding
     } = this.props;
     const { filteredMarkets, filteredUpcomingMarkets } = this.state;
 
@@ -234,6 +236,7 @@ export default class DisputingMarkets extends Component {
             upcomingMarketsCount === 0 &&
             isForking)) && (
           <NullStateMessage
+            addNullPadding={addNullPadding}
             message={
               nullUpcomingMessage ||
               "There are currently no markets slated for the upcoming dispute window."

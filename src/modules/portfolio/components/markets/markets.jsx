@@ -209,6 +209,7 @@ class MyMarkets extends Component {
             collectMarketCreatorFees={collectMarketCreatorFees}
             loadMarketsInfoIfNotLoaded={loadMarketsInfoIfNotLoaded}
             isMobile={isMobile}
+            addNullPadding
           />
         )}
         {haveMarkets &&

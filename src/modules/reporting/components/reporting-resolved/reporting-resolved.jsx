@@ -105,6 +105,7 @@ export default class ReportingResolved extends Component {
           loadMarketsInfoIfNotLoaded={loadMarketsInfoIfNotLoaded}
           paginationPageParam="reporting-resolved-page"
           nullMessage={nullMessage}
+          addNullPadding
         />
       </section>
     );
