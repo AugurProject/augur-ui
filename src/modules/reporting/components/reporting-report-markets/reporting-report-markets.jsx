@@ -7,22 +7,12 @@ import ReportingHeader from "modules/reporting/containers/reporting-header";
 import MarketPreview from "src/modules/reporting/containers/market-preview";
 import Paginator from "modules/common/components/paginator/paginator";
 import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
-import Styles from "modules/reporting/components/reporting-report-markets/reporting-report-markets.styles";
-
-export const NoMarketsFound = ({ message }) => (
-  <article className={Styles.NoMarketsFound}>
-    <section className={Styles.NoMarketsFound__message}>{message}</section>
-  </article>
-);
-
-NoMarketsFound.propTypes = {
-  message: PropTypes.string.isRequired
-};
+import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 
 export const ReportSection = ({
   title,
   items,
-  emptyMessage,
+  nullMessage,
   pageinationName,
   setSegment,
   lower,
@@ -34,7 +24,12 @@ export const ReportSection = ({
   let theChildren;
   const count = items.length;
   if (items.length === 0) {
-    theChildren = <NoMarketsFound message={emptyMessage} key={title} />;
+    theChildren = (
+      <NullStateMessage
+        message={nullMessage || "No Markets Available"}
+        key={title}
+      />
+    );
   } else {
     const itemLength = boundedLength + (lower - 1);
     const newItems = items.slice(lower - 1, itemLength);
@@ -45,19 +40,25 @@ export const ReportSection = ({
   }
 
   return (
-    <article className={MarketsHeaderStyles.MarketsHeader}>
-      <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>{title}</h4>
-      <section>{theChildren}</section>
-      {count > pageinationCount && (
-        <Paginator
-          itemsLength={count}
-          itemsPerPage={pageinationCount}
-          location={location}
-          history={history}
-          setSegment={setSegment}
-          pageParam={pageinationName}
-        />
-      )}
+    <article>
+      <article className={MarketsHeaderStyles.MarketsHeader}>
+        <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
+          {title}
+        </h4>
+      </article>
+      <article>
+        <section>{theChildren}</section>
+        {count > pageinationCount && (
+          <Paginator
+            itemsLength={count}
+            itemsPerPage={pageinationCount}
+            location={location}
+            history={history}
+            setSegment={setSegment}
+            pageParam={pageinationName}
+          />
+        )}
+      </article>
     </article>
   );
 };
@@ -67,7 +68,7 @@ ReportSection.propTypes = {
   history: PropTypes.object.isRequired,
   pageinationName: PropTypes.string.isRequired,
   pageinationCount: PropTypes.number.isRequired,
-  emptyMessage: PropTypes.string.isRequired,
+  nullMessage: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   setSegment: PropTypes.func.isRequired,
   lower: PropTypes.number.isRequired,
@@ -145,7 +146,7 @@ class ReportingReporting extends React.Component {
           pageinationCount={PAGINATION_LENGTH}
           title="Designated Reporting"
           items={designated}
-          emptyMessage="There are no markets available for you to report on. "
+          nullMessage="There are no markets available for you to report on. "
           pageinationName="designated"
           lower={paginations.dr.lower}
           boundedLength={paginations.dr.boundedLength}
@@ -157,7 +158,7 @@ class ReportingReporting extends React.Component {
           pageinationCount={PAGINATION_LENGTH}
           title="Open Reporting"
           items={open}
-          emptyMessage="There are no markets in Open Reporting."
+          nullMessage="There are no markets in Open Reporting."
           pageinationName="open"
           lower={paginations.or.lower}
           boundedLength={paginations.or.boundedLength}
@@ -170,7 +171,7 @@ class ReportingReporting extends React.Component {
           title="Upcoming Reporting"
           items={upcoming}
           buttonText="View"
-          emptyMessage="There are no upcoming markets for you to report on."
+          nullMessage="There are no upcoming markets for you to report on."
           pageinationName="upcoming"
           lower={paginations.ur.lower}
           boundedLength={paginations.ur.boundedLength}

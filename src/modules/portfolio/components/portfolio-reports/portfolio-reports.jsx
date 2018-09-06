@@ -179,7 +179,7 @@ export default class PortfolioReports extends Component {
         <div>
           <article className={MarketsHeaderStyles.MarketsHeader}>
             <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-              In Dispute
+              Available for dispute
             </h4>
           </article>
           <DisputingMarkets
