@@ -14,10 +14,6 @@ describe("reporting-report-markets", () => {
       cmp = shallow(<ReportSection title={exampleTitle} items={[]} />);
     });
 
-    it("should display the passed in title", () => {
-      assert.include(cmp.text(), exampleTitle);
-    });
-
     describe("when items array is empty", () => {
       it("should render no markets found component", () => {
         assert.lengthOf(cmp.find("NullStateMessage"), 1);
