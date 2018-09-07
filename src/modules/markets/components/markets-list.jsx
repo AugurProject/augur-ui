@@ -23,7 +23,6 @@ export default class MarketsList extends Component {
     loadMarketsInfoIfNotLoaded: PropTypes.func,
     paginationPageParam: PropTypes.string,
     linkType: PropTypes.string,
-    showPagination: PropTypes.bool,
     collectMarketCreatorFees: PropTypes.func,
     isMobile: PropTypes.bool,
     pendingLiquidityOrders: PropTypes.object,
@@ -37,7 +36,8 @@ export default class MarketsList extends Component {
     this.state = {
       lowerBound: 1,
       boundedLength: 10,
-      marketIdsMissingInfo: [] // This is ONLY the currently displayed markets that are missing info
+      marketIdsMissingInfo: [], // This is ONLY the currently displayed markets that are missing info
+      showPagination: props.filteredMarkets.length > PAGINATION_COUNT
     };
 
     this.setSegment = this.setSegment.bind(this);
@@ -88,8 +88,8 @@ export default class MarketsList extends Component {
         lowerBound - 1,
         marketIdLength
       );
-
-      this.setState({ marketIdsMissingInfo });
+      const showPagination = filteredMarkets.length > PAGINATION_COUNT;
+      this.setState({ marketIdsMissingInfo, showPagination });
     }
   }
 
@@ -110,7 +110,6 @@ export default class MarketsList extends Component {
       location,
       markets,
       paginationPageParam,
-      showPagination,
       toggleFavorite,
       testid,
       pendingLiquidityOrders,
@@ -156,7 +155,7 @@ export default class MarketsList extends Component {
           />
         )}
         {!!marketsLength &&
-          showPagination && (
+          s.showPagination && (
             <Paginator
               itemsLength={marketsLength}
               itemsPerPage={PAGINATION_COUNT}

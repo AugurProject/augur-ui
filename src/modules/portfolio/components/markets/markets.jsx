@@ -16,8 +16,6 @@ import { constants } from "services/augurjs";
 import { CREATE_MARKET } from "modules/routes/constants/views";
 import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
 
-const PAGINATION_COUNT = 10;
-
 class MyMarkets extends Component {
   static propTypes = {
     collectMarketCreatorFees: PropTypes.func.isRequired,
@@ -141,7 +139,6 @@ class MyMarkets extends Component {
             isLogged={isLogged}
             markets={s.openMarkets}
             filteredMarkets={s.filteredMarketsOpen}
-            showPagination={s.filteredMarketsOpen.length > PAGINATION_COUNT}
             location={location}
             history={history}
             toggleFavorite={toggleFavorite}
@@ -161,9 +158,6 @@ class MyMarkets extends Component {
             isLogged={isLogged}
             markets={s.reportingMarkets}
             filteredMarkets={s.filteredMarketsReporting}
-            showPagination={
-              s.filteredMarketsReporting.length > PAGINATION_COUNT
-            }
             location={location}
             history={history}
             toggleFavorite={toggleFavorite}
@@ -182,7 +176,6 @@ class MyMarkets extends Component {
             isLogged={isLogged}
             markets={s.finalMarkets}
             filteredMarkets={s.filteredMarketsFinal}
-            showPagination={s.filteredMarketsFinal.length > PAGINATION_COUNT}
             location={location}
             history={history}
             toggleFavorite={toggleFavorite}
