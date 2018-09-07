@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 import DisputeMarketCard from "modules/reporting/components/dispute-market-card/dispute-market-card";
-import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import Paginator from "modules/common/components/paginator/paginator";
 import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
 import isEqual from "lodash/isEqual";

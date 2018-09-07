@@ -9,7 +9,6 @@ import {
 } from "modules/modal/constants/modal-types";
 import { TYPE_CLAIM_PROCEEDS } from "modules/market/constants/link-types";
 import Styles from "modules/portfolio/components/portfolio-reports/portfolio-reports.styles";
-import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import DisputingMarkets from "modules/reporting/components/common/disputing-markets";
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
 import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
