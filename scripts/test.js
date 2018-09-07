@@ -6,11 +6,29 @@ const colors = require("./common/colors");
 process.env.NODE_ENV = process.env.BABEL_ENV = "test";
 process.env.FORCE_COLOR = true;
 
-const tests = () =>
+const mochaTests = () =>
   new Promise((resolve, reject) => {
     shell.exec(
       `mocha ${process.argv[2] ||
         `"{src/**/*[-\.]test,test/**/*}.js?(x)"`} --timeout 10000 --reporter=min`,
+      { silent: true
+      },
+      (code, stdout) => {
+        if (code !== 0) {
+          console.error(stdout);
+          reject(new Error());
+          shell.exit(code);
+        }
+
+        resolve();
+      }
+    );
+  });
+
+const jestTests = () =>
+  new Promise((resolve, reject) => {
+    shell.exec(
+      `jest -c=jest.unit.config.js`,
       { silent: true },
       (code, stdout) => {
         if (code !== 0) {
@@ -27,7 +45,10 @@ const tests = () =>
 const tasks = new Listr([
   {
     title: "Run Tests",
-    task: tests
+    task: mochaTests
+  }, {
+    title: "Run Jest Tests",
+    task: jestTests
   }
 ]);
 

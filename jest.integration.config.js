@@ -1,4 +1,7 @@
 module.exports = {
+  name: "integration",
+  displayName: "Integration Tests",
+
   preset: "jest-puppeteer",
   setupTestFrameworkScriptFile: "expect-puppeteer",
   roots: ["<rootDir>/integration"],
