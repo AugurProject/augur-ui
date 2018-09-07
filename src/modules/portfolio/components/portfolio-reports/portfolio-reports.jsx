@@ -12,6 +12,7 @@ import Styles from "modules/portfolio/components/portfolio-reports/portfolio-rep
 import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import DisputingMarkets from "modules/reporting/components/common/disputing-markets";
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
+import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
 
 export default class PortfolioReports extends Component {
   static propTypes = {
@@ -177,11 +178,7 @@ export default class PortfolioReports extends Component {
           </section>
         )}
         <div>
-          <article className={MarketsHeaderStyles.MarketsHeader}>
-            <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-              Available for dispute
-            </h4>
-          </article>
+          <MarketsHeaderLabel title="Available for dispute" />
           <DisputingMarkets
             location={location}
             history={history}

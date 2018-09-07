@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import ReportingHeader from "modules/reporting/containers/reporting-header";
 import MarketPreview from "src/modules/reporting/containers/market-preview";
 import Paginator from "modules/common/components/paginator/paginator";
-import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
+import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 
 export const ReportSection = ({
@@ -43,11 +43,7 @@ export const ReportSection = ({
 
   return (
     <article>
-      <article className={MarketsHeaderStyles.MarketsHeader}>
-        <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-          {title}
-        </h4>
-      </article>
+      <MarketsHeaderLabel title={title} />
       <article>
         <section>{theChildren}</section>
         {count > pageinationCount && (

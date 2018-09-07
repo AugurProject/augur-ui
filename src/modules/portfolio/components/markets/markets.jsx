@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 import makePath from "modules/routes/helpers/make-path";
 import MarketsList from "modules/markets/components/markets-list";
-import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import Styles from "modules/portfolio/components/markets/markets.styles";
 import PortfolioStyles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 import {
@@ -15,6 +14,9 @@ import {
 } from "modules/market/constants/link-types";
 import { constants } from "services/augurjs";
 import { CREATE_MARKET } from "modules/routes/constants/views";
+import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
+
+const PAGINATION_COUNT = 10;
 
 class MyMarkets extends Component {
   static propTypes = {
@@ -131,11 +133,7 @@ class MyMarkets extends Component {
         </Helmet>
         {myMarkets &&
           !!myMarkets.length && (
-            <article className={MarketsHeaderStyles.MarketsHeader}>
-              <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-                Open
-              </h4>
-            </article>
+            <MarketsHeaderLabel title="Open" noTopPadding />
           )}
         {haveMarkets && (
           <MarketsList
@@ -143,6 +141,7 @@ class MyMarkets extends Component {
             isLogged={isLogged}
             markets={s.openMarkets}
             filteredMarkets={s.filteredMarketsOpen}
+            showPagination={s.filteredMarketsOpen.length > PAGINATION_COUNT}
             location={location}
             history={history}
             toggleFavorite={toggleFavorite}
@@ -155,23 +154,16 @@ class MyMarkets extends Component {
             pendingLiquidityOrders={pendingLiquidityOrders}
           />
         )}
-        {haveMarkets &&
-          s.filteredMarketsOpen.length === 0 && (
-            <div className={Styles["Markets__nullState--spacer"]} />
-          )}
-        {haveMarkets && (
-          <article className={MarketsHeaderStyles.MarketsHeader}>
-            <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-              In Reporting
-            </h4>
-          </article>
-        )}
+        {haveMarkets && <MarketsHeaderLabel title="In Reporting" />}
         {haveMarkets && (
           <MarketsList
             testid="inReporting"
             isLogged={isLogged}
             markets={s.reportingMarkets}
             filteredMarkets={s.filteredMarketsReporting}
+            showPagination={
+              s.filteredMarketsReporting.length > PAGINATION_COUNT
+            }
             location={location}
             history={history}
             toggleFavorite={toggleFavorite}
@@ -183,23 +175,14 @@ class MyMarkets extends Component {
             isMobile={isMobile}
           />
         )}
-        {haveMarkets &&
-          s.filteredMarketsReporting.length === 0 && (
-            <div className={Styles["Markets__nullState--spacer"]} />
-          )}
-        {haveMarkets && (
-          <article className={MarketsHeaderStyles.MarketsHeader}>
-            <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-              Resolved
-            </h4>
-          </article>
-        )}
+        {haveMarkets && <MarketsHeaderLabel title="Resolved" />}
         {haveMarkets && (
           <MarketsList
             testid="resolved"
             isLogged={isLogged}
             markets={s.finalMarkets}
             filteredMarkets={s.filteredMarketsFinal}
+            showPagination={s.filteredMarketsFinal.length > PAGINATION_COUNT}
             location={location}
             history={history}
             toggleFavorite={toggleFavorite}
@@ -212,10 +195,6 @@ class MyMarkets extends Component {
             addNullPadding
           />
         )}
-        {haveMarkets &&
-          s.filteredMarketsFinal.length === 0 && (
-            <div className={Styles["Markets__nullState--spacer"]} />
-          )}
         {(myMarkets == null || (myMarkets && myMarkets.length === 0)) && (
           <div className={PortfolioStyles.NoMarkets__container}>
             <span>You haven&apos;t created any markets.</span>

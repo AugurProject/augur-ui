@@ -5,6 +5,7 @@ import NullStateMessage from "modules/common/components/null-state-message/null-
 import DisputeMarketCard from "modules/reporting/components/dispute-market-card/dispute-market-card";
 import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
 import Paginator from "modules/common/components/paginator/paginator";
+import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
 import isEqual from "lodash/isEqual";
 
 export default class DisputingMarkets extends Component {
@@ -191,11 +192,9 @@ export default class DisputingMarkets extends Component {
               }
             />
           )}
-        <article className={MarketsHeaderStyles.MarketsHeader}>
-          <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-            {isForking ? "Dispute Paused" : "Upcoming Dispute Window"}
-          </h4>
-        </article>
+        <MarketsHeaderLabel
+          title={isForking ? "Dispute Paused" : "Upcoming Dispute Window"}
+        />
         {nonForkingMarketsCount > 0 &&
           isForking &&
           nonForkingMarkets.map(market => (

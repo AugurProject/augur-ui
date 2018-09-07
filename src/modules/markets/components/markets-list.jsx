@@ -9,6 +9,8 @@ import isEqual from "lodash/isEqual";
 
 import debounce from "utils/debounce";
 
+const PAGINATION_COUNT = 10;
+
 export default class MarketsList extends Component {
   static propTypes = {
     testid: PropTypes.string,
@@ -27,10 +29,6 @@ export default class MarketsList extends Component {
     pendingLiquidityOrders: PropTypes.object,
     nullMessage: PropTypes.string,
     addNullPadding: PropTypes.bool
-  };
-
-  static defaultProps = {
-    showPagination: true
   };
 
   constructor(props) {
@@ -90,6 +88,7 @@ export default class MarketsList extends Component {
         lowerBound - 1,
         marketIdLength
       );
+
       this.setState({ marketIdsMissingInfo });
     }
   }
@@ -160,7 +159,7 @@ export default class MarketsList extends Component {
           showPagination && (
             <Paginator
               itemsLength={marketsLength}
-              itemsPerPage={10}
+              itemsPerPage={PAGINATION_COUNT}
               location={location}
               history={history}
               setSegment={this.setSegment}

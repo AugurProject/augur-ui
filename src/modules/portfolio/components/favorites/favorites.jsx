@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
 import MarketsList from "modules/markets/components/markets-list";
-import MarketsHeaderStyles from "modules/markets/components/markets-header/markets-header.styles";
+import MarketsHeaderLabel from "modules/markets/components/markets-header-label/markets-header-label";
 import Styles from "modules/portfolio/components/favorites/favorites.styles";
 import { TYPE_TRADE } from "modules/market/constants/link-types";
 
@@ -12,11 +12,7 @@ const Favorites = p => (
     <Helmet>
       <title>Favorites</title>
     </Helmet>
-    <article className={MarketsHeaderStyles.MarketsHeader}>
-      <h4 className={MarketsHeaderStyles.MarketsHeader__subheading}>
-        Favorites
-      </h4>
-    </article>
+    <MarketsHeaderLabel title="Favorites" noTopPadding />
     <MarketsList
       isLogged={p.isLogged}
       markets={p.markets}
