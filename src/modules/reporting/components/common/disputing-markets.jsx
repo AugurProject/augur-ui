@@ -145,7 +145,7 @@ export default class DisputingMarkets extends Component {
     const nonForkingMarketsCount = filteredMarkets.length;
 
     return (
-      <section>
+      <section style={{ paddingBottom: "6rem" }}>
         {isForking && (
           <DisputeMarketCard
             key={forkingMarketId}
