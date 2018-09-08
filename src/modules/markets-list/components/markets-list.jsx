@@ -121,7 +121,7 @@ export default class MarketsList extends Component {
     const marketsLength = filteredMarkets.length;
 
     return (
-      <article className="markets-list" data-testid={testid}>
+      <article style={{ paddingBottom: "6rem" }} data-testid={testid}>
         {marketsLength && s.boundedLength ? (
           [...Array(s.boundedLength)].map((unused, i) => {
             const id = filteredMarkets[s.lowerBound - 1 + i];
