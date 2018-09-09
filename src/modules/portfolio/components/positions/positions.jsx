@@ -46,7 +46,7 @@ export default class Positions extends Component {
           <title>Positions</title>
         </Helmet>
         {marketsCount !== 0 && (
-          <div>
+          <div className={PortfolioStyles.PositionContainer__padding}>
             <PositionsMarketsList
               title="Open"
               markets={openPositionMarkets}
