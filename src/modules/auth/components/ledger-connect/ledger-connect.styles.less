@@ -85,3 +85,36 @@
     flex: auto;
   }
 }
+
+.LedgerConnect__action ul {
+  cursor: pointer;
+  display: table-row;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: @color-lightergray;
+  }
+
+  &:first-child > li {
+    border-top-width: 0;
+  }
+
+  > li {
+    display: table-cell;
+    overflow: hidden;
+    padding: 0.625rem 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.LedgerConnect__action input[type="radio"] {
+  width: 1rem;
+}
+
+.LedgerConnect__action label {
+  color: @color-text-dark;
+  margin-bottom: 0;
+  text-transform: none;
+  font-size: @font-size-normal;
+}
