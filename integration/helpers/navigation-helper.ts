@@ -47,3 +47,14 @@ export const toDisputing = async () => {
   const url = `${process.env.AUGUR_URL}`;
   await page.goto(url.concat("#/reporting-dispute-markets"));
 };
+
+export const clickToReporting = async(timeoutMilliseconds: number = 500) => {
+  await expect(page).toClick("span", { text: "Reporting", timeout: timeoutMilliseconds });
+}
+
+export const clickFromReportingToInitialReport = async(marketDescription: string, timeoutMilliseconds: number = 500) => {
+console.log("before");
+  await expect(page).toClick(".market-common-styles_MarketCommon__topcontent h1 span .market-link", { text: marketDescription, timeout: timeoutMilliseconds });
+console.log("after");
+  await expect(page).toClick(".core-properties-styles_CoreProperties__property-button", { text: "REPORT", timeout: timeoutMilliseconds });
+}
