@@ -6,10 +6,10 @@ import {
 } from "modules/routes/constants/views";
 
 describe("modules/account/constants/account-nav-items.js", () => {
-  const test = t => it(t.description, () => t.assertions());
+  const runTest = t => it(t.description, () => t.assertions());
 
-  test({
-    description: `should return the expected constants`,
+  runTest({
+    description: "should return the expected constants",
     assertions: () => {
       const expected = {
         [ACCOUNT_DEPOSIT]: {
@@ -19,12 +19,7 @@ describe("modules/account/constants/account-nav-items.js", () => {
           label: "Transfer"
         }
       };
-
-      assert.deepEqual(
-        ACCOUNT_NAV_ITEMS,
-        expected,
-        `Didn't return the expected constants`
-      );
+      expect(ACCOUNT_NAV_ITEMS).toEqual(expected);
     }
   });
 });
