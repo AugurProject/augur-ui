@@ -42,10 +42,10 @@ const jestTests = () =>
   });
 
 const tasks = new Listr([
-  {
-    title: "Run Tests",
-    task: mochaTests
-  },
+  // {
+  //   title: "Run Tests",
+  //   task: mochaTests
+  // },
   {
     title: "Run Jest Tests",
     task: jestTests
