@@ -5,8 +5,8 @@ import Flash from "../helpers/flash";
 import { IFlash, IMarket } from "../types/types";
 import {
   toDefaultView,
-  clickToReporting,
-  clickFromReportingToInitialReport
+  clickToMarkets,
+  searchForMarketByDescription
 } from "../helpers/navigation-helper";
 import {
   createCategoricalMarket,
@@ -34,7 +34,7 @@ describe("Categorical Initial Report", () => {
 
   beforeEach(async () => {
     await waitNextBlock(2);
-    clickToReporting(timeoutMilliseconds);
+    clickToMarkets(timeoutMilliseconds);
 
     const market: IMarket = await createCategoricalMarket(4);
     await waitNextBlock(20);
@@ -42,9 +42,9 @@ describe("Categorical Initial Report", () => {
     await flash.setMarketEndTime(market.id);
     await waitNextBlock(5);
     await flash.pushDays(1); // put market in designated reporting state
-    await waitNextBlock(2);
+    await waitNextBlock(5);
 
-    clickFromReportingToInitialReport(market.description, timeoutMilliseconds);
+    searchForMarketByDescription(market.description, timeoutMilliseconds);
     await waitNextBlock(10);
   });
 
@@ -145,7 +145,7 @@ describe("Categorical Open Report", () => {
 
   beforeEach(async () => {
     await waitNextBlock(2);
-    clickToReporting(timeoutMilliseconds);
+    clickToMarkets(timeoutMilliseconds);
 
     await page.evaluate(
       account => window.integrationHelpers.updateAccountAddress(account),
@@ -165,9 +165,9 @@ describe("Categorical Open Report", () => {
       account => window.integrationHelpers.updateAccountAddress(account),
       UnlockedAccounts.SECONDARY_ACCOUNT
     );
-    await waitNextBlock(2);
+    await waitNextBlock(5);
 
-    clickFromReportingToInitialReport(market.description, timeoutMilliseconds);
+    searchForMarketByDescription(market.description, timeoutMilliseconds);
     await waitNextBlock(10);
   });
 
@@ -268,7 +268,7 @@ describe("YesNo Initial Report", () => {
 
   beforeEach(async () => {
     await waitNextBlock(2);
-    clickToReporting(timeoutMilliseconds);
+    clickToMarkets(timeoutMilliseconds);
 
     const market: IMarket = await createYesNoMarket();
     await waitNextBlock(20);
@@ -278,7 +278,7 @@ describe("YesNo Initial Report", () => {
     await flash.pushDays(1); // put market in designated reporting state
     await waitNextBlock(2);
 
-    clickFromReportingToInitialReport(market.description, timeoutMilliseconds);
+    searchForMarketByDescription(market.description, timeoutMilliseconds);
     await waitNextBlock(10);
    });
 
@@ -344,6 +344,9 @@ describe("YesNo Open Report", () => {
   });
 
   beforeEach(async () => {
+    await waitNextBlock(2);
+    clickToMarkets(timeoutMilliseconds);
+
     await page.evaluate(
       account => window.integrationHelpers.updateAccountAddress(account),
       UnlockedAccounts.CONTRACT_OWNER
@@ -353,19 +356,18 @@ describe("YesNo Open Report", () => {
     const market: IMarket = await createYesNoMarket();
     await waitNextBlock(20);
 
-    await page.evaluate(
-      account => window.integrationHelpers.updateAccountAddress(account),
-      UnlockedAccounts.SECONDARY_ACCOUNT
-    );
-
-    clickToReporting(timeoutMilliseconds);
-
     await flash.setMarketEndTime(market.id);
     await waitNextBlock(5);
     await flash.pushDays(5); // put market in open reporting state
     await waitNextBlock(2);
 
-    clickFromReportingToInitialReport(market.description, timeoutMilliseconds);
+    await page.evaluate(
+      account => window.integrationHelpers.updateAccountAddress(account),
+      UnlockedAccounts.SECONDARY_ACCOUNT
+    );
+    await waitNextBlock(2);
+
+    searchForMarketByDescription(market.description, timeoutMilliseconds);
     await waitNextBlock(10);
   });
 
@@ -432,7 +434,7 @@ describe("Scalar Initial Report", () => {
 
   beforeEach(async () => {
     await waitNextBlock(2);
-    clickToReporting(timeoutMilliseconds);
+    clickToMarkets(timeoutMilliseconds);
 
     const market: IMarket = await createScalarMarket();
     await waitNextBlock(20);
@@ -440,9 +442,9 @@ describe("Scalar Initial Report", () => {
     await flash.setMarketEndTime(market.id);
     await waitNextBlock(5);
     await flash.pushDays(1); // put market in designated reporting state
-    await waitNextBlock(2);
+    await waitNextBlock(5);
 
-    clickFromReportingToInitialReport(market.description, timeoutMilliseconds);
+    searchForMarketByDescription(market.description, timeoutMilliseconds);
     await waitNextBlock(10);
   });
 
@@ -542,7 +544,7 @@ describe("Scalar Open Report", () => {
 
   beforeEach(async () => {
     await waitNextBlock(2);
-    clickToReporting(timeoutMilliseconds);
+    clickToMarkets(timeoutMilliseconds);
 
     await page.evaluate(
       account => window.integrationHelpers.updateAccountAddress(account),
@@ -561,9 +563,9 @@ describe("Scalar Open Report", () => {
     await flash.setMarketEndTime(market.id);
     await waitNextBlock(5);
     await flash.pushDays(5); // put market in open reporting state
-    await waitNextBlock(2);
+    await waitNextBlock(5);
 
-    clickFromReportingToInitialReport(market.description, timeoutMilliseconds);
+    searchForMarketByDescription(market.description, timeoutMilliseconds);
     await waitNextBlock(10);
   });
 
