@@ -19,7 +19,7 @@ describe("modules/account/constants/account-nav-items.js", () => {
           label: "Transfer"
         }
       };
-      expect(ACCOUNT_NAV_ITEMS).toEqual(expected);
+      expect(ACCOUNT_NAV_ITEMS).toStrictEqual(expected);
     }
   });
 });
