@@ -5,7 +5,7 @@ import {
 } from "modules/account/actions/load-universe-info";
 
 describe("modules/account/actions/load-universe-info.js", () => {
-  const runTest = t => it(t.description, () => t.assertions());
+  const runTest = t => test(t.description, () => t.assertions());
 
   describe("loadUniverseInfo", () => {
     runTest({

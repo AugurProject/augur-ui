@@ -1,4 +1,3 @@
-import sinon from "sinon";
 import { createBigNumber } from "utils/create-big-number";
 
 import coreStats, {
@@ -11,13 +10,13 @@ import coreStats, {
 import { ZERO } from "modules/trade/constants/numbers";
 
 describe("modules/account/selectors/core-stats", () => {
-  const test = t => it(t.description, () => t.assertions());
+  const runTest = t => test(t.description, () => t.assertions());
 
   describe("default", () => {
-    test({
+    runTest({
       description: `should call 'selectCoreStats'`,
       assertions: () => {
-        const stubbedSelectCoreStats = sinon.stub();
+        const stubbedSelectCoreStats = jest.fn();
 
         CoreStatsRewireAPI.__Rewire__(
           "selectCoreStats",
@@ -28,71 +27,60 @@ describe("modules/account/selectors/core-stats", () => {
 
         CoreStatsRewireAPI.__ResetDependency__("selectCoreStats");
 
-        assert(
-          stubbedSelectCoreStats.calledOnce,
-          `didn't call 'selectCoreStats' once as expected`
-        );
+        expect(stubbedSelectCoreStats.mock.calls).toHaveLength(1);
       }
     });
   });
 
   describe("selectOutcomeLastPrice", () => {
-    test({
+    runTest({
       description: `should return null when 'marketOutcomeData' is undefined`,
       assertions: () => {
         const actual = selectOutcomeLastPrice(undefined, 1);
 
         const expected = null;
 
-        assert.strictEqual(actual, expected, `didn't return null as expected`);
+        expect(actual).toStrictEqual(expected);
       }
     });
 
-    test({
+    runTest({
       description: `should return null when 'outcomeId' is undefined`,
       assertions: () => {
         const actual = selectOutcomeLastPrice({}, undefined);
 
         const expected = null;
 
-        assert.strictEqual(actual, expected, `didn't return null as expected`);
+        expect(actual).toStrictEqual(expected);
       }
     });
 
-    test({
+    runTest({
       description: `should return the expected price`,
       assertions: () => {
         const actual = selectOutcomeLastPrice({ 1: { price: "0.1" } }, 1);
 
         const expected = "0.1";
 
-        assert.strictEqual(
-          actual,
-          expected,
-          `didn't return the expected price`
-        );
+        expect(actual).toStrictEqual(expected);
       }
     });
 
-    test({
+    runTest({
       description: `should return the expected price`,
       assertions: () => {
         const actual = selectOutcomeLastPrice({ 2: { price: "0.1" } }, 1);
 
         const expected = undefined;
 
-        assert.strictEqual(
-          actual,
-          expected,
-          `didn't return the expected price`
-        );
+        expect(actual).toStrictEqual(expected);
       }
     });
   });
 
   describe("createPeriodPLSelector", () => {
     // eslint-disable-line func-names, prefer-arrow-callback
-    test({
+    runTest({
       description: `should return null when 'accountTrades' is undefined`,
       assertions: () => {
         const blockchain = {};
@@ -103,11 +91,11 @@ describe("modules/account/selectors/core-stats", () => {
 
         const expected = null;
 
-        assert.strictEqual(actual, expected, `didn't return null as expected`);
+        expect(actual).toStrictEqual(expected);
       }
     });
 
-    test({
+    runTest({
       description: `should return null when 'blockchain' is undefined`,
       assertions: () => {
         const accountTrades = {};
@@ -118,11 +106,11 @@ describe("modules/account/selectors/core-stats", () => {
 
         const expected = null;
 
-        assert.strictEqual(actual, expected, `didn't return null as expected`);
+        expect(actual).toStrictEqual(expected);
       }
     });
 
-    test({
+    runTest({
       description: `should return 0 for a set period with no trades`,
       assertions: () => {
         const accountTrades = {
@@ -162,13 +150,11 @@ describe("modules/account/selectors/core-stats", () => {
           outcomesData
         );
 
-        const expected = ZERO;
-
-        assert.deepEqual(actual, expected, `didn't return the expected value`);
+        expect(actual).toStrictEqual(ZERO);
       }
     });
 
-    test({
+    runTest({
       description: `should return the expected value for a set period with trades`,
       assertions: () => {
         const accountTrades = {
@@ -223,7 +209,7 @@ describe("modules/account/selectors/core-stats", () => {
         CoreStatsRewireAPI.__ResetDependency__("selectOutcomeLastPrice");
         CoreStatsRewireAPI.__ResetDependency__("augur");
 
-        assert.deepEqual(actual, expected, `didn't return the expected value`);
+        expect(actual).toStrictEqual(expected);
       }
     });
   });
