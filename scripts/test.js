@@ -8,7 +8,7 @@ const mochaTests = () =>
   new Promise((resolve, reject) => {
     shell.exec(
       `mocha ${process.argv[2] ||
-        `"{src/**/*[-\.]test,test/**/*}.js?(x)"`} --timeout 10000 --reporter=min`,
+        `"test/**/*.js?(x)"`} --timeout 10000 --reporter=min`,
       {
         silent: true
       },
@@ -42,10 +42,10 @@ const jestTests = () =>
   });
 
 const tasks = new Listr([
-  // {
-  //   title: "Run Tests",
-  //   task: mochaTests
-  // },
+  {
+    title: "Run Tests",
+    task: mochaTests
+  },
   {
     title: "Run Jest Tests",
     task: jestTests
