@@ -1,11 +1,11 @@
 import { ETH, REP } from "modules/account/constants/asset-types";
 
 describe("modules/account/constants/asset-types.js", () => {
-  const runTest = t => test(t.description, () => t.assertions());
+  const runTest = t => test(t.description, () => t.expectations());
 
   runTest({
     description: `ETH should return the expected string`,
-    assertions: () => {
+    expectations: () => {
       const expected = "ETH";
 
       expect(ETH).toStrictEqual(expected);
@@ -14,7 +14,7 @@ describe("modules/account/constants/asset-types.js", () => {
 
   runTest({
     description: `REP should return the expected string`,
-    assertions: () => {
+    expectations: () => {
       const expected = "REP";
 
       expect(REP).toStrictEqual(expected);

@@ -5,12 +5,12 @@ import {
 } from "modules/account/actions/load-universe-info";
 
 describe("modules/account/actions/load-universe-info.js", () => {
-  const runTest = t => test(t.description, () => t.assertions());
+  const runTest = t => test(t.description, () => t.expectations());
 
   describe("loadUniverseInfo", () => {
     runTest({
       description: "should return the expected object",
-      assertions: () => {
+      expectations: () => {
         const universesData = [
           {
             universe: "0xGENESIS",
