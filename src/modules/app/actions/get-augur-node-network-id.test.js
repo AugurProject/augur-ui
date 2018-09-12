@@ -12,18 +12,18 @@ describe("modules/app/actions/get-augur-node-network-id.js", () => {
     store.clearActions();
     __RewireAPI__.__ResetDependency__("augur");
   });
-  const test = t =>
-    it(t.description, done => {
+  const runTest = t =>
+    test(t.description, done => {
       store = configureMockStore([thunk])({ ...t.state });
       __RewireAPI__.__Rewire__("augur", t.stub.augur);
       store.dispatch(
         getAugurNodeNetworkId((err, augurNodeNetworkId) => {
-          t.assertions(err, augurNodeNetworkId, store.getActions());
+          t.expectations(err, augurNodeNetworkId, store.getActions());
           done();
         })
       );
     });
-  test({
+  runTest({
     description: "augur-node network id already in state",
     state: {
       connection: { augurNodeNetworkId: "4" }
@@ -31,17 +31,17 @@ describe("modules/app/actions/get-augur-node-network-id.js", () => {
     stub: {
       augur: {
         augurNode: {
-          getSyncData: () => assert.fail()
+          getSyncData: () => expect.toThrowErrorMatchingSnapshot()
         }
       }
     },
-    assertions: (err, augurNodeNetworkId, actions) => {
-      assert.isNull(err);
-      assert.strictEqual(augurNodeNetworkId, "4");
-      assert.deepEqual(actions, []);
+    expectations: (err, augurNodeNetworkId, actions) => {
+      expect(err).toBeNull();
+      expect(augurNodeNetworkId).toStrictEqual("4");
+      expect(actions).toEqual([]);
     }
   });
-  test({
+  runTest({
     description: "fetch network id from augur-node",
     state: {
       connection: { augurNodeNetworkId: null }
@@ -53,10 +53,10 @@ describe("modules/app/actions/get-augur-node-network-id.js", () => {
         }
       }
     },
-    assertions: (err, augurNodeNetworkId, actions) => {
-      assert.isNull(err);
-      assert.strictEqual(augurNodeNetworkId, "4");
-      assert.deepEqual(actions, [
+    expectations: (err, augurNodeNetworkId, actions) => {
+      expect(err).toBeNull();
+      expect(augurNodeNetworkId).toStrictEqual("4");
+      expect(actions).toEqual([
         {
           type: "UPDATE_AUGUR_NODE_NETWORK_ID",
           augurNodeNetworkId: "4"
