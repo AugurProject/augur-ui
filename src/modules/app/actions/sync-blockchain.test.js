@@ -2,7 +2,6 @@ import {
   syncBlockchain,
   __RewireAPI__ as ReWireModule
 } from "modules/app/actions/sync-blockchain";
-import { describe, it, after } from "mocha";
 
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
@@ -44,12 +43,12 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
   ReWireModule.__Rewire__("augur", AugurJS);
   ReWireModule.__Rewire__("updateBlockchain", updateBlockchain);
 
-  after(() => {
+  afterAll(() => {
     store.clearActions();
     ReWireModule.__ResetDependency__("augur", "updateBlockchain");
   });
 
-  it("rpc.block set: should sync with blockchain using rpc.block.number", done => {
+  test("rpc.block set: should sync with blockchain using rpc.block.number", done => {
     AugurJS.rpc.block = { number: 10000, timestamp: "0x123456789" };
     const out = [
       {
@@ -58,11 +57,7 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
       }
     ];
     store.dispatch(syncBlockchain());
-    assert.deepEqual(
-      store.getActions(),
-      out,
-      `Didn't dispatch the expected actions`
-    );
+    expect(store.getActions()).toEqual(out);
 
     done();
   });
