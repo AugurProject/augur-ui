@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import Styles from "modules/common/components/chevron-flip/chevron-flip.styles";
 
 // todo: simpilify this by making these in /icon folder and passing in params
+// todo: use right icon for filled in
 
 const ChevronFlip = p => {
   if (p.filledInIcon) {

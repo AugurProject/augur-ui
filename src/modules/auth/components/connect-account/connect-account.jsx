@@ -2,13 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import toggleHeight from "utils/toggle-height/toggle-height";
 import ConnectDropdown from "modules/auth/components/connect-dropdown/connect-dropdown";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip"; 
+
 import Styles from "modules/auth/components/connect-account/connect-account.styles";
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
+
+// todo: need to hide dropdown when clicked outside of components
 
 export default class ConnectAccount extends Component {
   static propTypes = {
-    availableEth: PropTypes.string,
+    isLogged: PropTypes.bool,
   };
 
   constructor(props) {
@@ -23,17 +28,23 @@ export default class ConnectAccount extends Component {
   }
 
   toggleDropdown() {
-    this.setState({dropdownOpen: !this.state.dropdownOpen})
+    toggleHeight(this.ConnectDropdown, this.state.dropdownOpen, () => {
+      this.setState({dropdownOpen: !this.state.dropdownOpen})
+    });
   }
 
   render() {
     const {
-      availableEth,
+      isLogged,
     } = this.props;
     const s = this.state;
 
     return (
-      <div className={Styles.ConnectAccount}>
+      <div 
+        className={classNames(Styles.ConnectAccount, {
+            [Styles.ConnectAccount__selected]: s.dropdownOpen
+        })}
+      >
         <div className={Styles.ConnectAccount__container} onClick={this.toggleDropdown}>
           <div className={Styles.ConnectAccount__column}>
             <div className={Styles.ConnectAccount__status}>
@@ -46,7 +57,19 @@ export default class ConnectAccount extends Component {
             <ChevronFlip pointDown={s.dropdownOpen} stroke="#fff" filledInIcon/>
           </div>
         </div>
-        <ConnectDropdown dropdownOpen={s.dropdownOpen} />
+        <div
+          ref={ConnectDropdown => {
+            this.ConnectDropdown = ConnectDropdown;
+          }}
+          className={classNames(Styles.ConnectAccount__connectDropdown, 
+            ToggleHeightStyles["toggle-height-target"],
+            {
+                [Styles.ConnectAccount__connectDropdown__isLogged]: !isLogged
+            }
+          )}
+        >
+          <ConnectDropdown />
+        </div>
       </div>
     );
   }

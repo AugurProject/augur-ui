@@ -2,11 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import { ITEMS } from "modules/auth/constants/connect-nav";
+
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 
-export default class ConnectAccount extends Component {
+// todo: need to update icons and get right sizes
+
+export default class ConnectDropdown extends Component {
   static propTypes = {
-    availableEth: PropTypes.string,
+    isLogged: PropTypes.bool,
   };
 
   constructor(props) {
@@ -20,13 +24,18 @@ export default class ConnectAccount extends Component {
 
   render() {
     const {
-      availableEth,
+      isLogged,
     } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.ConnectDropdown}>
-          dropdown
+        {ITEMS.map(item => (
+          <div key={item.param} className={Styles.ConnectDropdown__item}>
+            <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
+            {item.title}
+          </div>
+        ))}
       </div>
     );
   }

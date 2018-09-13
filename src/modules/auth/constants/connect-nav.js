@@ -17,23 +17,31 @@ export const PARAMS = {
   TREZOR: "trezor"
 };
 
+export const WALLET_TYPE = {
+  SOFTWARE: "software",
+  HARDWARE: "hardware"
+};
+
 const DEFAULT_ITEM_INDEX = 0;
 
 export const ITEMS = [
   {
     param: PARAMS.METAMASK,
     title: "Metamask / Web 3 Provider",
-    icon: MetaMask
+    icon: MetaMask,
+    type: WALLET_TYPE.SOFTWARE
   },
   {
     param: PARAMS.LEDGER,
     title: "Ledger",
-    icon: Ledger
+    icon: Ledger,
+    type: WALLET_TYPE.HARDWARE,
   },
   {
     param: PARAMS.TREZOR,
     title: "Trezor",
-    icon: Trezor
+    icon: Trezor,
+    type: WALLET_TYPE.HARDWARE,
   }
 ];
 
@@ -41,7 +49,8 @@ if (!process.env.AUGUR_HOSTED) {
   ITEMS.unshift({
     param: PARAMS.EDGE,
     title: "Edge (Username & Password)",
-    icon: Edge
+    icon: Edge,
+    type: WALLET_TYPE.SOFTWARE,
   });
 }
 

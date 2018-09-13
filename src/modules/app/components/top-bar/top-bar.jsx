@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 
 import { Notifications } from "modules/common/components/icons";
-import ConnectAccount from "modules/auth/components/connect-account/connect-account";
+import ConnectAccount from "modules/auth/containers/connect-account";
 import makePath from "modules/routes/helpers/make-path";
 import { CATEGORIES } from "modules/routes/constants/views";
 import Styles from "modules/app/components/top-bar/top-bar.styles";
