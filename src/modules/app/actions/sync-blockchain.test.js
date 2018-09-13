@@ -1,11 +1,12 @@
-import {
-  syncBlockchain,
-  __RewireAPI__ as ReWireModule
-} from "modules/app/actions/sync-blockchain";
-
+import { syncBlockchain } from "modules/app/actions/sync-blockchain";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import testState from "test/testState";
+import { augur } from "services/augurjs";
+import { updateBlockchain } from "modules/app/actions/update-blockchain";
+
+jest.mock("services/augurjs");
+jest.mock("modules/app/actions/update-blockchain");
 
 describe(`modules/app/actions/sync-blockchain.js`, () => {
   // eslint-disable-line func-names, prefer-arrow-callback
@@ -38,14 +39,14 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
     }
   };
 
-  const updateBlockchain = data => ({ type: "UPDATE_BLOCKCHAIN", data });
+  const mockUpdateBlockchain = data => ({ type: "UPDATE_BLOCKCHAIN", data });
 
-  ReWireModule.__Rewire__("augur", AugurJS);
-  ReWireModule.__Rewire__("updateBlockchain", updateBlockchain);
+  augur.get.mockResolvedValue(AugurJS);
+  updateBlockchain.get.mockResolvedValue(mockUpdateBlockchain);
 
   afterAll(() => {
     store.clearActions();
-    ReWireModule.__ResetDependency__("augur", "updateBlockchain");
+    jest.resetModules();
   });
 
   test("rpc.block set: should sync with blockchain using rpc.block.number", done => {
