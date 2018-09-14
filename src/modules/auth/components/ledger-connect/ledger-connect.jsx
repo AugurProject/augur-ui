@@ -212,7 +212,7 @@ export default class Ledger extends Component {
               <div>
                 {Array.from(Array(NUM_DERIVATION_PATHS_TO_DISPLAY).keys()).map(
                   i => (
-                    <ul>
+                    <ul key={i}>
                       <li>
                         <input
                           type="radio"
