@@ -35,13 +35,13 @@ export const ITEMS = [
     param: PARAMS.LEDGER,
     title: "Ledger",
     icon: Ledger,
-    type: WALLET_TYPE.HARDWARE,
+    type: WALLET_TYPE.HARDWARE
   },
   {
     param: PARAMS.TREZOR,
     title: "Trezor",
     icon: Trezor,
-    type: WALLET_TYPE.HARDWARE,
+    type: WALLET_TYPE.HARDWARE
   }
 ];
 
@@ -50,7 +50,7 @@ if (!process.env.AUGUR_HOSTED) {
     param: PARAMS.EDGE,
     title: "Edge (Username & Password)",
     icon: Edge,
-    type: WALLET_TYPE.SOFTWARE,
+    type: WALLET_TYPE.SOFTWARE
   });
 }
 
