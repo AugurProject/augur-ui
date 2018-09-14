@@ -6,20 +6,14 @@ import {
 } from "modules/routes/constants/views";
 
 describe("modules/account/constants/account-nav-items.js", () => {
-  const runTest = t => test(t.description, () => t.expectations());
-
-  runTest({
-    description: "should return the expected constants",
-    expectations: () => {
-      const expected = {
-        [ACCOUNT_DEPOSIT]: {
-          label: "Deposit"
-        },
-        [ACCOUNT_TRANSFER]: {
-          label: "Transfer"
-        }
-      };
-      expect(ACCOUNT_NAV_ITEMS).toStrictEqual(expected);
-    }
+  test("should return the expected constants", () => {
+    expect(ACCOUNT_NAV_ITEMS).toStrictEqual({
+      [ACCOUNT_DEPOSIT]: {
+        label: "Deposit"
+      },
+      [ACCOUNT_TRANSFER]: {
+        label: "Transfer"
+      }
+    });
   });
 });
