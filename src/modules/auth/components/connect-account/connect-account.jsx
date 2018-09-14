@@ -9,7 +9,6 @@ import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import Styles from "modules/auth/components/connect-account/connect-account.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
-// todo: need to hide dropdown when clicked outside of components
 // todo: need to style for mobile
 
 export default class ConnectAccount extends Component {
@@ -26,12 +25,27 @@ export default class ConnectAccount extends Component {
     };
 
     this.toggleDropdown = this.toggleDropdown.bind(this)
+    this.handleWindowOnClick = this.handleWindowOnClick.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener("click", this.handleWindowOnClick);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("click", this.handleWindowOnClick);
   }
 
   toggleDropdown() {
     toggleHeight(this.ConnectDropdown, this.state.dropdownOpen, () => {
       this.setState({dropdownOpen: !this.state.dropdownOpen})
     });
+  }
+
+  handleWindowOnClick(event) {
+    if (this.state.dropdownOpen && this.connectAccount && !this.connectAccount.contains(event.target)) {
+      this.toggleDropdown()
+    }
   }
 
   render() {
@@ -45,6 +59,9 @@ export default class ConnectAccount extends Component {
         className={classNames(Styles.ConnectAccount, {
             [Styles.ConnectAccount__selected]: s.dropdownOpen
         })}
+        ref={connectAccount => {
+          this.connectAccount = connectAccount;
+        }}
       >
         <div className={Styles.ConnectAccount__container} onClick={this.toggleDropdown}>
           <div className={Styles.ConnectAccount__column}>

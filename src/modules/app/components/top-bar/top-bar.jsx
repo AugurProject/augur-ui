@@ -69,8 +69,6 @@ const TopBar = props => (
           <button
             className={Styles["TopBar__notification-icon"]}
             onClick={e => {
-              e.preventDefault();
-              e.stopPropagation();
               props.toggleNotifications();
             }}
           >
