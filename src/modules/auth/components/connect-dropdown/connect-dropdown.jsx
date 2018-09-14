@@ -50,7 +50,7 @@ const DerivationPathEditor = p => {
         </ul>
       </div>
       <div className={Styles.DerivationPathEditor__row}>
-        <ul className={classNames(FormStyles["Form__radio-buttons--per-line"], Styles.DerivationPathEditor__radioButtons)}>
+        <ul className={classNames(FormStyles["Form__radio-buttons--per-line"], Styles.DerivationPathEditor__radioButtons, Styles.DerivationPathEditor__radioButtonsInput)}>
           <li>
             <button
               className={classNames({
@@ -58,7 +58,15 @@ const DerivationPathEditor = p => {
               })}
               onClick={p.selectDerivationPath.bind(this, false)}
             >
-              <span className={Styles.DerivationPathEditor__path}>m/44’/60’/0</span>
+              <span className={Styles.DerivationPathEditor__path}>
+                <input
+                  className={Styles.DerivationPathEditor__pathInput}
+                  type="text"
+                  value={p.customDerivationPath}
+                  placeholder="m/44’/60’/0"
+                  onChange={e => p.validatePath(e.target.value)}
+                />
+              </span>
             </button>
           </li>
         </ul>
@@ -110,10 +118,12 @@ export default class ConnectDropdown extends Component {
       selectedOption: null, // todo: should be in redux?
       showAdvanced: false,
       selectedDefaultPath: true,
+      customDerivationPath: "",
     };
 
     this.showAdvanced = this.showAdvanced.bind(this)
     this.selectDerivationPath = this.selectDerivationPath.bind(this)
+    this.validatePath = this.validatePath.bind(this)
   }
 
   selectOption(param) {
@@ -164,8 +174,12 @@ export default class ConnectDropdown extends Component {
   }
 
   selectDerivationPath(value) {
-    console.log(value)
     this.setState({selectedDefaultPath: value})
+  }
+
+  validatePath(value) {
+    // todo: validate custom derivation path here
+    this.setState({customDerivationPath: value})
   }
 
   render() {
@@ -213,8 +227,10 @@ export default class ConnectDropdown extends Component {
                   )}
                 >
                   <DerivationPathEditor 
-                    selectedDefaultPath={this.state.selectedDefaultPath} 
+                    selectedDefaultPath={s.selectedDefaultPath} 
                     selectDerivationPath={this.selectDerivationPath} 
+                    customDerivationPath={s.customDerivationPath}
+                    validatePath={this.validatePath}
                   />
                 </div>
                 <AddressPickerContent />
