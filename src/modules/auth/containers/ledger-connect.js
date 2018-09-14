@@ -24,12 +24,7 @@ const mapDispatchToProps = dispatch => ({
   loginWithLedger: (address, lib, devPath) =>
     dispatch(loginWithLedger(address, lib, devPath)),
   updateLedgerStatus: status =>
-    dispatch(updateAuthStatus(LEDGER_STATUS, status)),
-  onConnectLedgerRequest: () => dispatch(onConnectLedgerRequest()),
-  onOpenEthereumAppRequest: () => dispatch(onOpenEthereumAppRequest()),
-  onSwitchLedgerModeRequest: () => dispatch(onSwitchLedgerModeRequest()),
-  onEnableContractSupportRequest: () =>
-    dispatch(onEnableContractSupportRequest())
+    dispatch(updateAuthStatus(LEDGER_STATUS, status))
 });
 
 export default withRouter(

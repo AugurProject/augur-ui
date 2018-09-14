@@ -8,6 +8,9 @@ import { ITEMS, WALLET_TYPE, PARAMS } from "modules/auth/constants/connect-nav";
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import FormStyles from "modules/common/less/form";
+import DerivationPath, {
+  DEFAULT_DERIVATION_PATH
+} from "modules/auth/helpers/derivation-path";
 
 // todo: need to update icons and get right sizes
 // todo: what happens if you click software wallet while it is in the connecting phase?
@@ -43,7 +46,7 @@ const DerivationPathEditor = p => {
               })}
               onClick={p.selectDerivationPath.bind(this, true)}
             >
-              <span className={Styles.DerivationPathEditor__path}>m/44’/60’/0</span> 
+              <span className={Styles.DerivationPathEditor__path}>{DEFAULT_DERIVATION_PATH}</span>
               <span className={Styles.DerivationPathEditor__pathDetails}>(default)</span>
             </button>
           </li>
@@ -63,7 +66,7 @@ const DerivationPathEditor = p => {
                   className={Styles.DerivationPathEditor__pathInput}
                   type="text"
                   value={p.customDerivationPath}
-                  placeholder="m/44’/60’/0"
+                  placeholder={DEFAULT_DERIVATION_PATH}
                   onChange={e => p.validatePath(e.target.value)}
                 />
               </span>
@@ -142,7 +145,7 @@ export default class ConnectDropdown extends Component {
       this.props.toggleDropdown()
       this.props.connectMetaMask()
       this.setState({selectOption: null})
-    } 
+    }
   }
 
   selectOption(param) {
@@ -212,16 +215,16 @@ export default class ConnectDropdown extends Component {
   }
 
   render() {
-    const { 
-      isLogged, 
+    const {
+      isLogged,
     } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.ConnectDropdown}>
-        {isLogged && 
-          <div 
-            className={classNames(Styles.ConnectDropdown__item)} 
+        {isLogged &&
+          <div
+            className={classNames(Styles.ConnectDropdown__item)}
             onClick={this.logout}
           >
             Logout
@@ -257,7 +260,7 @@ export default class ConnectDropdown extends Component {
                   ToggleHeightStyles["toggle-height-target"]
                 )}
               >
-                <div  
+                <div
                   ref={'advanced_' + item.param}
                   key={'advanced_' + item.param}
                   className={classNames(
@@ -265,9 +268,9 @@ export default class ConnectDropdown extends Component {
                     ToggleHeightStyles["toggle-height-target"]
                   )}
                 >
-                  <DerivationPathEditor 
-                    selectedDefaultPath={s.selectedDefaultPath} 
-                    selectDerivationPath={this.selectDerivationPath} 
+                  <DerivationPathEditor
+                    selectedDefaultPath={s.selectedDefaultPath}
+                    selectDerivationPath={this.selectDerivationPath}
                     customDerivationPath={s.customDerivationPath}
                     validatePath={this.validatePath}
                   />

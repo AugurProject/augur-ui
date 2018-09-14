@@ -1,4 +1,4 @@
-export const DEFAULT_DERIVATION_PATH = "m/44'/60'/0'/0";
+export const DEFAULT_DERIVATION_PATH = "m/44'/60'/0'/0/0";
 export const NUM_DERIVATION_PATHS_TO_DISPLAY = 5;
 
 export default class DerivationPath {

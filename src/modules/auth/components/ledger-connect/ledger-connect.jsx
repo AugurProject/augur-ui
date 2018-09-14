@@ -10,12 +10,13 @@ import DerivationPath, {
   DEFAULT_DERIVATION_PATH,
   NUM_DERIVATION_PATHS_TO_DISPLAY
 } from "modules/auth/helpers/derivation-path";
-
+import classNames from "classnames";
 import { Alert } from "modules/common/components/icons";
 import getEtherBalance from "modules/auth/actions/get-ether-balance";
 import Spinner from "modules/common/components/spinner/spinner";
 import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
+import FormStyles from "modules/common/less/form";
 
 export default class Ledger extends Component {
   static propTypes = {
@@ -23,11 +24,7 @@ export default class Ledger extends Component {
     loginWithLedger: PropTypes.func.isRequired,
     networkId: PropTypes.number.isRequired,
     updateLedgerStatus: PropTypes.func.isRequired,
-    ledgerStatus: PropTypes.string.isRequired,
-    onConnectLedgerRequest: PropTypes.func.isRequired,
-    onOpenEthereumAppRequest: PropTypes.func.isRequired,
-    onSwitchLedgerModeRequest: PropTypes.func.isRequired,
-    onEnableContractSupportRequest: PropTypes.func.isRequired
+    ledgerStatus: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -39,27 +36,18 @@ export default class Ledger extends Component {
       displayInstructions: false,
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
-      ledgerAddressBalances: {}
+      ledgerAddressBalances: {},
+      ledgerAddressPageNumber: 1,
+      customDerivationPath: false
     };
 
     this.connectLedger = this.connectLedger.bind(this);
     this.updateDisplayInstructions = this.updateDisplayInstructions.bind(this);
-    this.onConnectLedgerRequestHook = this.onConnectLedgerRequestHook.bind(
-      this
-    );
-    this.onOpenEthereumAppRequestHook = this.onOpenEthereumAppRequestHook.bind(
-      this
-    );
-    this.onSwitchLedgerModeRequestHook = this.onSwitchLedgerModeRequestHook.bind(
-      this
-    );
-    this.onEnableContractSupportRequestHook = this.onEnableContractSupportRequestHook.bind(
-      this
-    );
     this.onDerivationPathChange = this.onDerivationPathChange.bind(this);
-    this.derivationPath = this.derivationPath.bind(this);
+    this.buildDerivationPath = this.buildDerivationPath.bind(this);
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
+    this.focusTextInput = this.focusTextInput.bind(this);
   }
 
   componentDidMount() {
@@ -84,30 +72,33 @@ export default class Ledger extends Component {
   }
 
   async onConnectLedgerRequestHook() {
-    this.props.onConnectLedgerRequest();
+    console.log("onConnectLedgerRequestHook")
   }
 
   async onOpenEthereumAppRequestHook() {
-    this.props.onOpenEthereumAppRequest();
+    console.log("onOpenEthereumAppRequestHook")
   }
 
   async onSwitchLedgerModeRequestHook() {
-    this.props.onSwitchLedgerModeRequest();
+    console.log("onSwitchLedgerModeRequestHook")
   }
 
   async onEnableContractSupportRequestHook() {
-    this.props.onEnableContractSupportRequest();
+    console.log("onEnableContractSupportRequestHook")
   }
 
   async onDerivationPathChange(derivationPath) {
-    const { networkId } = this.props;
-    this.props.updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
+    const { networkId, updateLedgerStatus } = this.props;
+    updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
 
     if (location.protocol !== "https:") {
-      this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
+      updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
     }
 
-    this.setState({ baseDerivationPath: derivationPath });
+    this.setState({
+      baseDerivationPath: derivationPath,
+      customDerivationPath: derivationPath !== DEFAULT_DERIVATION_PATH
+    });
 
     const ledgerEthereum = new LedgerEthereum(
       networkId,
@@ -132,7 +123,7 @@ export default class Ledger extends Component {
       addresses.map(address => this.updateAccountBalance(address));
     }
 
-    this.props.updateLedgerStatus(LEDGER_STATES.NOT_CONNECTED);
+    updateLedgerStatus(LEDGER_STATES.NOT_CONNECTED);
   }
 
   updateDisplayInstructions(displayInstructions) {
@@ -140,17 +131,19 @@ export default class Ledger extends Component {
   }
 
   updateAccountBalance(address) {
-    getEtherBalance(address, (err, balance) => {
-      if (!err) this.state.ledgerAddressBalances[address] = balance || 0;
-    });
+    if (!this.state.ledgerAddressBalances[address]) {
+      getEtherBalance(address, (err, balance) => {
+        if (!err) this.state.ledgerAddressBalances[address] = balance || 0;
+      });
+    }
   }
 
   async connectLedger(pathIndex) {
-    const { loginWithLedger, networkId } = this.props;
-    this.props.updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
+    const { loginWithLedger, networkId, updateLedgerStatus } = this.props;
+    updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
 
     if (location.protocol !== "https:") {
-      this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
+      updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
     }
 
     const ledgerEthereum = new LedgerEthereum(
@@ -162,7 +155,7 @@ export default class Ledger extends Component {
       this.onEnableContractSupportRequestHook
     );
 
-    const derivationPath = this.derivationPath(pathIndex);
+    const derivationPath = this.buildDerivationPath(pathIndex);
     const address = await ledgerEthereum.getAddressByBip32Path(derivationPath);
 
     if (address) {
@@ -176,13 +169,18 @@ export default class Ledger extends Component {
     this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
   }
 
-  derivationPath(pathIndex) {
+  buildDerivationPath(pathIndex) {
     return DerivationPath.buildString(
       DerivationPath.increment(
         DerivationPath.parse(this.state.baseDerivationPath),
         pathIndex
       )
     );
+  }
+
+  focusTextInput() {
+    this.derivationInput.focus();
+    this.setState({ customDerivationPath: true });
   }
 
   next() {
@@ -200,15 +198,45 @@ export default class Ledger extends Component {
     return (
       <section className={Styles.LedgerConnect}>
         <div className={Styles.LedgerConnect__action}>
-          <input
-            type="text"
-            defaultValue={s.baseDerivationPath}
-            onChange={e => {
-              this.onDerivationPathChange(e.target.value).catch(() =>
-                updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
-              );
-            }}
-          />
+          <ul className={FormStyles["Form__radio-buttons--per-line"]}>
+            <li className={FormStyles["field--inline"]}>
+              <button
+                className={classNames({
+                  [`${FormStyles.active}`]:
+                    s.baseDerivationPath === DEFAULT_DERIVATION_PATH
+                })}
+                onClick={e => {
+                  this.onDerivationPathChange(DEFAULT_DERIVATION_PATH);
+                }}
+              />
+              <label>{DEFAULT_DERIVATION_PATH} (default)</label>
+            </li>
+          </ul>
+          <ul className={FormStyles["Form__radio-buttons--per-line"]}>
+            <li className={FormStyles["field--inline"]}>
+              <button
+                className={classNames({
+                  [`${FormStyles.active}`]: s.customDerivationPath
+                })}
+                onClick={e => {
+                  this.focusTextInput();
+                }}
+              />
+              <input
+                ref={input => {
+                  this.derivationInput = input;
+                }}
+                type="text"
+                className={FormStyles.Form__input}
+                defaultValue={s.baseDerivationPath}
+                onChange={e => {
+                  this.onDerivationPathChange(e.target.value).catch(() =>
+                    updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
+                  );
+                }}
+              />
+            </li>
+          </ul>
 
           {this.state.ledgerAddresses.some(a => a !== null) && (
             <div>
@@ -254,19 +282,20 @@ export default class Ledger extends Component {
             <Spinner light />
           )}
         </div>
-        {s.displayInstructions && (
-          <div className={Styles.LedgerConnect__messages}>
-            {Alert}
-            <h3>Make sure you have: </h3>
-            <ul>
-              <li>Accessed Augur via HTTPS</li>
-              <li>Connected your Ledger</li>
-              <li>Opened the Ethereum App</li>
-              <li>Enabled Contract Data</li>
-              <li>Enabled Browser Support</li>
-            </ul>
-          </div>
-        )}
+        {s.displayInstructions &&
+          1 === 4 && (
+            <div className={Styles.LedgerConnect__messages}>
+              {Alert}
+              <h3>Make sure you have: </h3>
+              <ul>
+                <li>Accessed Augur via HTTPS</li>
+                <li>Connected your Ledger</li>
+                <li>Opened the Ethereum App</li>
+                <li>Enabled Contract Data</li>
+                <li>Enabled Browser Support</li>
+              </ul>
+            </div>
+          )}
       </section>
     );
   }
