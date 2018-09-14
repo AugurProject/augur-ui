@@ -1,4 +1,6 @@
-const mockUpdateBlockchain = jest.genMockFromModule("augur.js");
+const mockUpdateBlockchain = jest.genMockFromModule(
+  "modules/app/actions/update-blockchain"
+);
 
 mockUpdateBlockchain.updateBlockchain = data => ({
   type: "UPDATE_BLOCKCHAIN",
