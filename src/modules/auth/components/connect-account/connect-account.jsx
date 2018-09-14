@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import ConnectDropdown from "modules/auth/components/connect-dropdown/connect-dropdown";
+import ConnectDropdown from "modules/auth/containers/connect-dropdown";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 
 import Styles from "modules/auth/components/connect-account/connect-account.styles";

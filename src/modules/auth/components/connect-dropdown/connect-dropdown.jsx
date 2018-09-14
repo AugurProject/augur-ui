@@ -107,6 +107,8 @@ const AddressPickerContent = p => {
 export default class ConnectDropdown extends Component {
   static propTypes = {
     isLogged: PropTypes.bool
+    connectMetaMask: PropTypes.func.isRequired,
+    isMetaMaskPresent: PropTypes.func.isRequired,
   };
 
   constructor(props) {
