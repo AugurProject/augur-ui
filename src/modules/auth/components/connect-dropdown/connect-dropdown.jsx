@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { ITEMS, WALLET_TYPE } from "modules/auth/constants/connect-nav";
+import { ITEMS, WALLET_TYPE, PARAMS } from "modules/auth/constants/connect-nav";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
@@ -53,7 +53,7 @@ const DerivationPathEditor = p => {
         </ul>
       </div>
       <div className={Styles.DerivationPathEditor__row}>
-        <ul className={classNames(FormStyles["Form__radio-buttons--per-line"], Styles.DerivationPathEditor__radioButtons)}>
+        <ul className={classNames(FormStyles["Form__radio-buttons--per-line"], Styles.DerivationPathEditor__radioButtons, Styles.DerivationPathEditor__radioButtonsInput)}>
           <li>
             <button
               className={classNames({
@@ -61,7 +61,15 @@ const DerivationPathEditor = p => {
               })}
               onClick={p.selectDerivationPath.bind(this, false)}
             >
-              <span className={Styles.DerivationPathEditor__path}>{DEFAULT_DERIVATION_PATH}</span>
+              <span className={Styles.DerivationPathEditor__path}>
+                <input
+                  className={Styles.DerivationPathEditor__pathInput}
+                  type="text"
+                  value={p.customDerivationPath}
+                  placeholder={DEFAULT_DERIVATION_PATH}
+                  onChange={e => p.validatePath(e.target.value)}
+                />
+              </span>
             </button>
           </li>
         </ul>
@@ -101,25 +109,42 @@ const AddressPickerContent = p => {
 }
 export default class ConnectDropdown extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool
+    isLogged: PropTypes.bool,
+    connectMetaMask: PropTypes.func.isRequired,
+    isMetaMaskPresent: PropTypes.bool.isRequired,
+    toggleDropdown: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      connected: false,
-      dropdownOpen: false,
-      selectedOption: null, // todo: should be in redux?
+      selectedOption: null,
       showAdvanced: false,
       selectedDefaultPath: true,
+      customDerivationPath: "",
     };
 
     this.showAdvanced = this.showAdvanced.bind(this)
     this.selectDerivationPath = this.selectDerivationPath.bind(this)
+    this.validatePath = this.validatePath.bind(this)
+    this.connect = this.connect.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+
+  connect(param) {
+    // todo: need to redirect to /categories page
+    if (param === PARAMS.METAMASK) {
+      this.props.toggleDropdown()
+      this.props.connectMetaMask()
+      this.setState({selectOption: null})
+    }
   }
 
   selectOption(param) {
+    // todo: clean up, too confusing
+
     const prevSelected = this.state.selectedOption;
 
     if (prevSelected && this.refs[prevSelected]) {
@@ -140,6 +165,8 @@ export default class ConnectDropdown extends Component {
         // software wallets
         this.setState({ selectedOption: param});
       }
+
+      this.connect(param)
 
       this.setState({selectedDefaultPath: true}) // need to reset default path when switching off, todo: is this wanted?
     } else {
@@ -167,17 +194,36 @@ export default class ConnectDropdown extends Component {
   }
 
   selectDerivationPath(value) {
-    console.log(value)
     this.setState({selectedDefaultPath: value})
   }
 
+  validatePath(value) {
+    // todo: validate custom derivation path here
+    this.setState({customDerivationPath: value})
+  }
+
+  logout() {
+    this.props.toggleDropdown()
+    this.props.logout()
+  }
+
   render() {
-    const { isLogged } = this.props;
+    const {
+      isLogged,
+    } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.ConnectDropdown}>
-        {ITEMS.map(item => (
+        {isLogged &&
+          <div
+            className={classNames(Styles.ConnectDropdown__item)}
+            onClick={this.logout}
+          >
+            Logout
+          </div>
+        }
+        {!isLogged && ITEMS.map(item => (
           <div key={item.param}>
             <div
               className={classNames(Styles.ConnectDropdown__item, {
@@ -216,8 +262,10 @@ export default class ConnectDropdown extends Component {
                   )}
                 >
                   <DerivationPathEditor
-                    selectedDefaultPath={this.state.selectedDefaultPath}
+                    selectedDefaultPath={s.selectedDefaultPath}
                     selectDerivationPath={this.selectDerivationPath}
+                    customDerivationPath={s.customDerivationPath}
+                    validatePath={this.validatePath}
                   />
                 </div>
                 <AddressPickerContent />
