@@ -10,6 +10,7 @@ import Styles from "modules/auth/components/connect-account/connect-account.styl
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 // todo: need to hide dropdown when clicked outside of components
+// todo: need to style for mobile
 
 export default class ConnectAccount extends Component {
   static propTypes = {

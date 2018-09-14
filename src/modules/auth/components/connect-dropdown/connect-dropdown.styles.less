@@ -14,13 +14,43 @@
     display: flex;
     flex-direction: row;
 	max-height: 48px;
+	z-index: 1;
+    position: relative;
 	
 	&:hover {
 		background-color: #412468;
 	}
 }
 
+.ConnectDropdown__itemSelected {
+	background-color: #412468;
+}
+
+.ConnectDropdown__itemHardwareSelected {
+	box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.13);
+
+}
+
+
 .ConnectDropdown__icon {
     margin-right: 11px;
     width: 18px;
+}
+
+.ConnectDropdown__hardwareContent {
+  height: 0px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: #372e4b;
+  z-index: 0;
+  position: relative;
+}
+
+.ConnectDropdown__item-selected {
+	background-color: #412468;
+	box-shadow: 0 2px 4px -4px rgba(0, 0, 0, 0.13);
+}
+
+.ConnectDropdown__content {
+  padding: 16px 24px;	
 }
