@@ -41,6 +41,8 @@ export default class ConnectDropdown extends Component {
       dropdownOpen: false,
       selectedOption: null, // todo: should be in redux?
     };
+
+    this.showAdvanced = this.showAdvanced.bind(this)
   }
 
   selectOption(param) {
@@ -67,6 +69,10 @@ export default class ConnectDropdown extends Component {
     }
   }
 
+  showAdvanced() {
+    
+  }
+
   render() {
     const {
       isLogged,
@@ -88,7 +94,7 @@ export default class ConnectDropdown extends Component {
               <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
               <div className={Styles.ConnectDropdown__title}>{item.title}</div>
               { s.selectedOption === item.param && item.type === WALLET_TYPE.HARDWARE && 
-                <div className={Styles.ConnectDropdown__advanced}>Advanced</div>
+                <div className={Styles.ConnectDropdown__advanced} onClick={this.showAdvanced}>Advanced</div>
               }
             </div>
             { item.type === WALLET_TYPE.HARDWARE &&
@@ -100,8 +106,8 @@ export default class ConnectDropdown extends Component {
                 )}
               >
                 <div className={Styles.ConnectDropdown__content}>
-                  <div className={classNames(Styles.ConnectDropdown__row, 
-                      Styles.ConnectDropdown__header,
+                  <div className={classNames(Styles.ConnectDropdown__header, 
+                      Styles.ConnectDropdown__row,
                   )}>
                     <div className={Styles.ConnectDropdown__addressColumn}>
                       Address
