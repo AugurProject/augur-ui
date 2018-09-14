@@ -2,8 +2,8 @@ import { syncBlockchain } from "modules/app/actions/sync-blockchain";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import testState from "test/testState";
-import { augur } from "services/augurjs";
-import { updateBlockchain } from "modules/app/actions/update-blockchain";
+
+const augur = require("services/augurjs");
 
 jest.mock("services/augurjs");
 jest.mock("modules/app/actions/update-blockchain");
@@ -25,32 +25,13 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
     currentAugurTimestamp: 42
   };
   const store = mockStore(state);
-  const AugurJS = {
-    rpc: {
-      getCurrentBlock: () => ({ number: 10000, timestamp: 4886718345 }),
-      block: { number: 10000, timestamp: 4886718345 }
-    },
-    api: {
-      Controller: {
-        getTimestamp: callback => {
-          callback(null, 42);
-        }
-      }
-    }
-  };
-
-  const mockUpdateBlockchain = data => ({ type: "UPDATE_BLOCKCHAIN", data });
-
-  augur.get.mockResolvedValue(AugurJS);
-  updateBlockchain.get.mockResolvedValue(mockUpdateBlockchain);
 
   afterAll(() => {
     store.clearActions();
-    jest.resetModules();
   });
 
   test("rpc.block set: should sync with blockchain using rpc.block.number", done => {
-    AugurJS.rpc.block = { number: 10000, timestamp: "0x123456789" };
+    augur.rpc.block = { number: 10000, timestamp: "0x123456789" };
     const out = [
       {
         type: "UPDATE_BLOCKCHAIN",
