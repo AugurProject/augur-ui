@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch, { history }) => ({
-  connectMetaMask: () => dispatch(loginWithMetaMask(history)),
+  connectMetaMask: (cb) => dispatch(loginWithMetaMask(history, cb)),
   logout: () => dispatch(logout()),
 });
 
