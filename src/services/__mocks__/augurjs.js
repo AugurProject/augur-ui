@@ -5,6 +5,31 @@ const BigNumber = require("bignumber.js");
 const ten = new BigNumber(10, 10);
 const decimals = new BigNumber(18, 10);
 const multiple = ten.exponentiatedBy(18);
+const universesData = [
+  {
+    universe: "0xGENESIS",
+    payout: [],
+    isInvalid: false,
+    numMarkets: 15,
+    supply: "1100000000000000000000000",
+    parentUniverse: "0x0000000000000000000000000000000000000000"
+  },
+  {
+    universe: "0xGENESIS_2",
+    payout: [],
+    isInvalid: false,
+    numMarkets: 0,
+    supply: "50000000000000000000000",
+    parentUniverse: "0x0000000000000000000000000000000000000000"
+  },
+  {
+    universe: "0xCHILD_1",
+    payout: [10000, 0],
+    isInvalid: false,
+    numMarkets: 400,
+    parentUniverse: "0xGENESIS"
+  }
+];
 
 mockAugur.constants = {
   PRECISION: {
@@ -25,6 +50,28 @@ mockAugur.api = {
     getTimestamp: callback => {
       callback(null, 42);
     }
+  },
+  Universe: {
+    getParentUniverse: (args, callback) => {
+      expect(args).toStrictEqual({
+        tx: { to: "0xGENESIS" }
+      });
+      return callback(null, "0x0000000000000000000000000000000000000000");
+    },
+    getOpenInterestInAttoEth: (args, callback) => {
+      callback(null, "1000000");
+    }
+  }
+};
+
+mockAugur.augurNode = {
+  submitRequest: (methodName, args, callback) => {
+    expect(methodName).toEqual("getUniversesInfo");
+    expect(args).toStrictEqual({
+      universe: "0xGENESIS",
+      account: "0xACCOUNT"
+    });
+    return callback(null, universesData);
   }
 };
 
