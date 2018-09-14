@@ -15,22 +15,22 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 const mockData = [
   {
-    address: '0x001...6bf',
-    balance: '1.20 ETH'
+    address: "0x001...6bf",
+    balance: "1.20 ETH"
   },
   {
-    address: '0x003...6bf',
-    balance: '2.20 ETH'
+    address: "0x003...6bf",
+    balance: "2.20 ETH"
   },
   {
-    address: '0x20e...5bf',
-    balance: '4.20 ETH'
+    address: "0x20e...5bf",
+    balance: "4.20 ETH"
   }
-]
+];
 
 export default class ConnectDropdown extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool,
+    isLogged: PropTypes.bool
   };
 
   constructor(props) {
@@ -39,70 +39,83 @@ export default class ConnectDropdown extends Component {
     this.state = {
       connected: false,
       dropdownOpen: false,
-      selectedOption: null, // todo: should be in redux?
+      selectedOption: null // todo: should be in redux?
     };
   }
 
   selectOption(param) {
-    const prevSelected = this.state.selectedOption
+    const prevSelected = this.state.selectedOption;
 
-    if (prevSelected && this.refs[prevSelected]) { // need to de-toggle previous selection
+    if (prevSelected && this.refs[prevSelected]) {
+      // need to de-toggle previous selection
       toggleHeight(this.refs[prevSelected], true, () => {
-        this.setState({selectedOption: null})
+        this.setState({ selectedOption: null });
       });
     }
 
-    if (prevSelected !== param) { // new selection being made
-      if (this.refs[param]) { // new selection is a hardware wallet
+    if (prevSelected !== param) {
+      // new selection being made
+      if (this.refs[param]) {
+        // new selection is a hardware wallet
         toggleHeight(this.refs[param], false, () => {
-          this.setState({selectedOption: param})
+          this.setState({ selectedOption: param });
         });
-      } else { // software wallets
-        this.setState({selectedOption: param})
+      } else {
+        // software wallets
+        this.setState({ selectedOption: param });
       }
-    } else { // deselection is being done
-      if (!this.refs[prevSelected]) { // software wallets
-        this.setState({selectedOption: null})
+    } else {
+      // deselection is being done
+      if (!this.refs[prevSelected]) {
+        // software wallets
+        this.setState({ selectedOption: null });
       }
     }
   }
 
   render() {
-    const {
-      isLogged,
-    } = this.props;
+    const { isLogged } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.ConnectDropdown}>
         {ITEMS.map(item => (
           <div key={item.param}>
-            <div 
-              className={classNames(Styles.ConnectDropdown__item, 
-              {
-                  [Styles.ConnectDropdown__itemSelected]: s.selectedOption === item.param,
-                  [Styles.ConnectDropdown__itemHardwareSelected]: s.selectedOption === item.param && item.type === WALLET_TYPE.HARDWARE
+            <div
+              className={classNames(Styles.ConnectDropdown__item, {
+                [Styles.ConnectDropdown__itemSelected]:
+                  s.selectedOption === item.param,
+                [Styles.ConnectDropdown__itemHardwareSelected]:
+                  s.selectedOption === item.param &&
+                  item.type === WALLET_TYPE.HARDWARE
               })}
               onClick={this.selectOption.bind(this, item.param)}
             >
               <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
               <div className={Styles.ConnectDropdown__title}>{item.title}</div>
-              { s.selectedOption === item.param && item.type === WALLET_TYPE.HARDWARE && 
-                <div className={Styles.ConnectDropdown__advanced}>Advanced</div>
-              }
+              {s.selectedOption === item.param &&
+                item.type === WALLET_TYPE.HARDWARE && (
+                  <div className={Styles.ConnectDropdown__advanced}>
+                    Advanced
+                  </div>
+                )}
             </div>
-            { item.type === WALLET_TYPE.HARDWARE &&
-              <div 
+            {item.type === WALLET_TYPE.HARDWARE && (
+              <div
                 ref={item.param}
                 key={item.param}
-                className={classNames(Styles.ConnectDropdown__hardwareContent, 
-                  ToggleHeightStyles["toggle-height-target"],
+                className={classNames(
+                  Styles.ConnectDropdown__hardwareContent,
+                  ToggleHeightStyles["toggle-height-target"]
                 )}
               >
                 <div className={Styles.ConnectDropdown__content}>
-                  <div className={classNames(Styles.ConnectDropdown__row, 
-                      Styles.ConnectDropdown__header,
-                  )}>
+                  <div
+                    className={classNames(
+                      Styles.ConnectDropdown__row,
+                      Styles.ConnectDropdown__header
+                    )}
+                  >
                     <div className={Styles.ConnectDropdown__addressColumn}>
                       Address
                     </div>
@@ -122,7 +135,7 @@ export default class ConnectDropdown extends Component {
                   ))}
                 </div>
               </div>
-            }
+            )}
           </div>
         ))}
       </div>
