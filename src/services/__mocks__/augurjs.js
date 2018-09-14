@@ -1,4 +1,4 @@
-const augurjs = jest.genMockFromModule("augur.js");
+const mockAugur = jest.genMockFromModule("augur.js");
 
 const BigNumber = require("bignumber.js");
 
@@ -6,7 +6,7 @@ const ten = new BigNumber(10, 10);
 const decimals = new BigNumber(18, 10);
 const multiple = ten.exponentiatedBy(18);
 
-augurjs.constants = {
+mockAugur.constants = {
   PRECISION: {
     decimals: decimals.toNumber(),
     limit: ten.dividedBy(multiple),
@@ -15,12 +15,12 @@ augurjs.constants = {
   }
 };
 
-augurjs.rpc = {
+mockAugur.rpc = {
   getCurrentBlock: () => ({ number: 10000, timestamp: 4886718345 }),
   block: { number: 10000, timestamp: 4886718345 }
 };
 
-augurjs.api = {
+mockAugur.api = {
   Controller: {
     getTimestamp: callback => {
       callback(null, 42);
@@ -28,4 +28,6 @@ augurjs.api = {
   }
 };
 
-module.exports = augurjs;
+mockAugur.augur = mockAugur;
+
+module.exports = mockAugur;

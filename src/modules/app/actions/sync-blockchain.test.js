@@ -2,8 +2,7 @@ import { syncBlockchain } from "modules/app/actions/sync-blockchain";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import testState from "test/testState";
-
-const augur = require("services/augurjs");
+import * as augur from "services/augurjs";
 
 jest.mock("services/augurjs");
 jest.mock("modules/app/actions/update-blockchain");
