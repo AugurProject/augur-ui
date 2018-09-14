@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { ITEMS, WALLET_TYPE } from "modules/auth/constants/connect-nav";
+import { ITEMS, WALLET_TYPE, PARAMS } from "modules/auth/constants/connect-nav";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
@@ -106,18 +106,18 @@ const AddressPickerContent = p => {
 }
 export default class ConnectDropdown extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool
+    isLogged: PropTypes.bool,
     connectMetaMask: PropTypes.func.isRequired,
-    isMetaMaskPresent: PropTypes.func.isRequired,
+    isMetaMaskPresent: PropTypes.bool.isRequired,
+    toggleDropdown: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      connected: false,
-      dropdownOpen: false,
-      selectedOption: null, // todo: should be in redux?
+      selectedOption: null,
       showAdvanced: false,
       selectedDefaultPath: true,
       customDerivationPath: "",
@@ -126,9 +126,22 @@ export default class ConnectDropdown extends Component {
     this.showAdvanced = this.showAdvanced.bind(this)
     this.selectDerivationPath = this.selectDerivationPath.bind(this)
     this.validatePath = this.validatePath.bind(this)
+    this.connect = this.connect.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+
+  connect(param) {
+    // todo: need to redirect to /categories page
+    if (param === PARAMS.METAMASK) {
+      this.props.toggleDropdown()
+      this.props.connectMetaMask()
+      this.setState({selectOption: null})
+    } 
   }
 
   selectOption(param) {
+    // todo: clean up, too confusing
+
     const prevSelected = this.state.selectedOption;
 
     if (prevSelected && this.refs[prevSelected]) {
@@ -149,6 +162,8 @@ export default class ConnectDropdown extends Component {
         // software wallets
         this.setState({ selectedOption: param});
       }
+
+      this.connect(param)
 
       this.setState({selectedDefaultPath: true}) // need to reset default path when switching off, todo: is this wanted?
     } else {
@@ -184,13 +199,28 @@ export default class ConnectDropdown extends Component {
     this.setState({customDerivationPath: value})
   }
 
+  logout() {
+    this.props.toggleDropdown()
+    this.props.logout()
+  }
+
   render() {
-    const { isLogged } = this.props;
+    const { 
+      isLogged, 
+    } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.ConnectDropdown}>
-        {ITEMS.map(item => (
+        {isLogged && 
+          <div 
+            className={classNames(Styles.ConnectDropdown__item)} 
+            onClick={this.logout}
+          >
+            Logout
+          </div>
+        }
+        {!isLogged && ITEMS.map(item => (
           <div key={item.param}>
             <div
               className={classNames(Styles.ConnectDropdown__item, {

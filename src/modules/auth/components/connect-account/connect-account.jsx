@@ -5,6 +5,7 @@ import classNames from "classnames";
 import toggleHeight from "utils/toggle-height/toggle-height";
 import ConnectDropdown from "modules/auth/containers/connect-dropdown";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
+import formatAddress from "modules/auth/helpers/format-address";
 
 import Styles from "modules/auth/components/connect-account/connect-account.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
@@ -13,7 +14,8 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 export default class ConnectAccount extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool
+    isLogged: PropTypes.bool,
+    address: PropTypes.string,
   };
 
   constructor(props) {
@@ -53,7 +55,10 @@ export default class ConnectAccount extends Component {
   }
 
   render() {
-    const { isLogged } = this.props;
+    const { 
+      isLogged,
+      address 
+    } = this.props;
     const s = this.state;
 
     return (
@@ -71,10 +76,19 @@ export default class ConnectAccount extends Component {
         >
           <div className={Styles.ConnectAccount__column}>
             <div className={Styles.ConnectAccount__status}>
-              <div className={Styles["ConnectAccount__status-indicator"]} />
-              Disconnected
+              <div 
+                className={classNames(
+                  Styles["ConnectAccount__status-indicator"],
+                  {
+                    [Styles.ConnectAccount__statusGreen]: isLogged
+                  }
+                )}
+              />
+              {isLogged ? 'Connected' : 'Disconnected'}
             </div>
-            <div className={Styles.ConnectAccount__title}>Connect A Wallet</div>
+            <div className={Styles.ConnectAccount__title}>
+              {isLogged ? formatAddress(address || '') : 'Connect A Wallet'}
+            </div>
           </div>
           <div className={Styles.ConnectAccount__arrow}>
             <ChevronFlip
@@ -96,7 +110,7 @@ export default class ConnectAccount extends Component {
             }
           )}
         >
-          <ConnectDropdown />
+          <ConnectDropdown toggleDropdown={this.toggleDropdown} />
         </div>
       </div>
     );
