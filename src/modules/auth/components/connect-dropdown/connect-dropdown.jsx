@@ -130,6 +130,12 @@ export default class ConnectDropdown extends Component {
     this.logout = this.logout.bind(this)
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.isLogged !== this.props.isLogged) {
+      this.setState({selectedOption: null})
+    }
+  }
+
   connect(param) {
     // todo: need to redirect to /categories page
     if (param === PARAMS.METAMASK) {
@@ -200,8 +206,9 @@ export default class ConnectDropdown extends Component {
   }
 
   logout() {
-    this.props.toggleDropdown()
-    this.props.logout()
+    this.props.toggleDropdown(() => {
+      this.props.logout()
+    })
   }
 
   render() {
