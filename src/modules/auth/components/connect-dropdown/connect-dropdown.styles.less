@@ -1,4 +1,6 @@
 @import (reference) '~assets/styles/shared';
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); // todo: import font the right way
+
 
 .ConnectDropdown {
 	padding-top: 8px;
@@ -53,4 +55,41 @@
 
 .ConnectDropdown__content {
   padding: 16px 24px;	
+}
+
+.ConnectDropdown__advanced {
+  font-size: 12px;
+  color: #a7a2b2;
+  border-bottom: 0.5px dotted #dbdae1;
+  margin-right: 24px;
+}
+
+.ConnectDropdown__title {
+  display: flex;
+  flex-grow: 1;
+}
+
+.ConnectDropdown__header {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.ConnectDropdown__row {
+  display: flex;
+  margin-bottom: 11px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.ConnectDropdown__addressColumn {
+  display: flex;
+}
+
+.ConnectDropdown__balanceColumn {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
 }

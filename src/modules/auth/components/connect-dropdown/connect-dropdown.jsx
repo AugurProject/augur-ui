@@ -13,6 +13,21 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 // todo: make hardware content own component
 // todo: replace icons with right ones
 
+const mockData = [
+  {
+    address: '0x001...6bf',
+    balance: '1.20 ETH'
+  },
+  {
+    address: '0x003...6bf',
+    balance: '2.20 ETH'
+  },
+  {
+    address: '0x20e...5bf',
+    balance: '4.20 ETH'
+  }
+]
+
 export default class ConnectDropdown extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
@@ -71,7 +86,10 @@ export default class ConnectDropdown extends Component {
               onClick={this.selectOption.bind(this, item.param)}
             >
               <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
-              {item.title}
+              <div className={Styles.ConnectDropdown__title}>{item.title}</div>
+              { s.selectedOption === item.param && item.type === WALLET_TYPE.HARDWARE && 
+                <div className={Styles.ConnectDropdown__advanced}>Advanced</div>
+              }
             </div>
             { item.type === WALLET_TYPE.HARDWARE &&
               <div 
@@ -82,9 +100,26 @@ export default class ConnectDropdown extends Component {
                 )}
               >
                 <div className={Styles.ConnectDropdown__content}>
-                  <div>hi</div>
-                  <div>hi</div>
-                  <div>hi</div>
+                  <div className={classNames(Styles.ConnectDropdown__row, 
+                      Styles.ConnectDropdown__header,
+                  )}>
+                    <div className={Styles.ConnectDropdown__addressColumn}>
+                      Address
+                    </div>
+                    <div className={Styles.ConnectDropdown__balanceColumn}>
+                      Balance
+                    </div>
+                  </div>
+                  {mockData.map((item, index) => (
+                    <div key={index} className={Styles.ConnectDropdown__row}>
+                      <div className={Styles.ConnectDropdown__addressColumn}>
+                        {item.address}
+                      </div>
+                      <div className={Styles.ConnectDropdown__balanceColumn}>
+                        {item.balance}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             }
