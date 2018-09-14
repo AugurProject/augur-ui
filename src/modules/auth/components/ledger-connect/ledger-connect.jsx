@@ -6,18 +6,16 @@ import {
 } from "ethereumjs-ledger";
 
 import * as LEDGER_STATES from "modules/auth/constants/ledger-status";
-import {
+import DerivationPath, {
   DEFAULT_DERIVATION_PATH,
   NUM_DERIVATION_PATHS_TO_DISPLAY
-} from "modules/auth/constants/derivation-path";
+} from "modules/auth/helpers/derivation-path";
 
 import { Alert } from "modules/common/components/icons";
-
+import getEtherBalance from "modules/auth/actions/get-ether-balance";
 import Spinner from "modules/common/components/spinner/spinner";
-
+import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
-
-import DerivationPath from "modules/auth/helpers/derivation-path";
 
 export default class Ledger extends Component {
   static propTypes = {
@@ -40,8 +38,8 @@ export default class Ledger extends Component {
     this.state = {
       displayInstructions: false,
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
-      pathIndex: 0,
-      ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null)
+      ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
+      ledgerAddressBalances: {}
     };
 
     this.connectLedger = this.connectLedger.bind(this);
@@ -59,8 +57,9 @@ export default class Ledger extends Component {
       this
     );
     this.onDerivationPathChange = this.onDerivationPathChange.bind(this);
-    this.onPathIndexChange = this.onPathIndexChange.bind(this);
     this.derivationPath = this.derivationPath.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
   }
 
   componentDidMount() {
@@ -130,20 +129,23 @@ export default class Ledger extends Component {
 
     if (addresses) {
       this.setState({ ledgerAddresses: addresses });
+      addresses.map(address => this.updateAccountBalance(address));
     }
 
     this.props.updateLedgerStatus(LEDGER_STATES.NOT_CONNECTED);
-  }
-
-  onPathIndexChange(e) {
-    this.setState({ pathIndex: parseInt(e.target.value, 10) });
   }
 
   updateDisplayInstructions(displayInstructions) {
     this.setState({ displayInstructions });
   }
 
-  async connectLedger() {
+  updateAccountBalance(address) {
+    getEtherBalance(address, (err, balance) => {
+      if (!err) this.state.ledgerAddressBalances[address] = balance || 0;
+    });
+  }
+
+  async connectLedger(pathIndex) {
     const { loginWithLedger, networkId } = this.props;
     this.props.updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
 
@@ -160,7 +162,7 @@ export default class Ledger extends Component {
       this.onEnableContractSupportRequestHook
     );
 
-    const derivationPath = this.derivationPath();
+    const derivationPath = this.derivationPath(pathIndex);
     const address = await ledgerEthereum.getAddressByBip32Path(derivationPath);
 
     if (address) {
@@ -174,13 +176,21 @@ export default class Ledger extends Component {
     this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
   }
 
-  derivationPath() {
+  derivationPath(pathIndex) {
     return DerivationPath.buildString(
       DerivationPath.increment(
         DerivationPath.parse(this.state.baseDerivationPath),
-        this.state.pathIndex
+        pathIndex
       )
     );
+  }
+
+  next() {
+    console.log("next", this.state.baseDerivationPath);
+  }
+
+  previous() {
+    console.log("previous", this.state.baseDerivationPath);
   }
 
   render() {
@@ -190,58 +200,59 @@ export default class Ledger extends Component {
     return (
       <section className={Styles.LedgerConnect}>
         <div className={Styles.LedgerConnect__action}>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              this.connectLedger().catch(() =>
+          <input
+            type="text"
+            defaultValue={s.baseDerivationPath}
+            onChange={e => {
+              this.onDerivationPathChange(e.target.value).catch(() =>
                 updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
               );
             }}
-          >
-            <input
-              type="text"
-              defaultValue={s.baseDerivationPath}
-              onChange={e => {
-                this.onDerivationPathChange(e.target.value).catch(() =>
-                  updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
-                );
-              }}
-            />
+          />
 
-            {this.state.ledgerAddresses.some(a => a !== null) && (
-              <div>
-                {Array.from(Array(NUM_DERIVATION_PATHS_TO_DISPLAY).keys()).map(
-                  i => (
-                    <ul key={i}>
-                      <li>
-                        <input
-                          type="radio"
-                          name="ledger-address"
-                          value={i}
-                          id={`ledger-address-${i}`}
-                          checked={this.state.pathIndex === i}
-                          onChange={this.onPathIndexChange}
-                        />
-                      </li>
-                      <li>
-                        <label htmlFor={`ledger-address-${i}`}>
-                          {s.ledgerAddresses[i]}
-                        </label>
-                      </li>
-                    </ul>
-                  )
-                )}
-              </div>
-            )}
-
-            <button className={Styles.LedgerConnect__button} type="submit">
-              {ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION ? (
-                "Connect Ledger"
-              ) : (
-                <Spinner light />
+          {this.state.ledgerAddresses.some(a => a !== null) && (
+            <div>
+              {Array.from(Array(NUM_DERIVATION_PATHS_TO_DISPLAY).keys()).map(
+                i => (
+                  <div key={i} className={Styles.Ledger__address__balances}>
+                    <div className={Styles.Ledger__addresses}>
+                      <label
+                        onClick={() => this.connectLedger(i)}
+                        htmlFor={`ledger-address-${i}`}
+                      >
+                        {formatAddress(s.ledgerAddresses[i])}
+                      </label>
+                    </div>
+                    <div className={Styles.Ledger__balances}>
+                      <label>
+                        {this.state.ledgerAddressBalances[s.ledgerAddresses[i]]}
+                      </label>
+                    </div>
+                  </div>
+                )
               )}
-            </button>
-          </form>
+              <div className={Styles.LedgerConnect__buttons}>
+                <button
+                  type="button"
+                  className={Styles.LedgerConnect__button}
+                  onClick={this.previous}
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  className={Styles.LedgerConnect__button}
+                  onClick={this.next}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+
+          {ledgerStatus === LEDGER_STATES.ATTEMPTING_CONNECTION && (
+            <Spinner light />
+          )}
         </div>
         {s.displayInstructions && (
           <div className={Styles.LedgerConnect__messages}>

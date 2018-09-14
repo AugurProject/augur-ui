@@ -3,10 +3,9 @@
 .LedgerConnect {
   align-items: center;
   display: flex;
-  height: 100%;
   justify-content: center;
+  flex-flow: column;
   padding: 2rem;
-  width: 100%;
 
   @media @breakpoint-small-desktop {
     flex-flow: column;
@@ -15,7 +14,6 @@
 
 .LedgerConnect__action {
   align-items: center;
-  display: flex;
   flex: 3 1 auto;
   justify-content: center;
 
@@ -43,6 +41,25 @@
   height: 100%;
   justify-content: flex-start;
   padding: 1.5em 0;
+
+  .Ledger__address__balances {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .LedgerConnect__buttons {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+  }
+
+  .Ledger__addresses {
+
+  }
+
+  .Ledger__balances {
+
+  }
 
   @media @breakpoint-small-desktop {
     flex: 2 0 0%;
