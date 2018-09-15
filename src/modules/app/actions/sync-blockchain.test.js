@@ -25,7 +25,7 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
   };
   const store = mockStore(state);
 
-  afterAll(() => {
+  afterEach(() => {
     store.clearActions();
   });
 
