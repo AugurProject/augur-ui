@@ -166,7 +166,6 @@ export default class ConnectDropdown extends Component {
               });
             });
           });
-        }
         
         return;
       }
