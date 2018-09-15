@@ -157,13 +157,15 @@ export default class ConnectDropdown extends Component {
     if (param === PARAMS.METAMASK) {
       if (!this.props.isMetaMaskPresent) { // todo: does this look at all web3 things or just MM?
         // todo: hot mess
-          // toggleHeight(this.refs["error_"+param], true, () => {
-            toggleHeight(this.refs[param], false, () => {
-              toggleHeight(this.refs["error_"+param], false, () => {
-                this.setState({error: ERROR_TYPES.UNABLE_TO_CONNECT})
+          toggleHeight(this.refs[param], true, () => {
+            toggleHeight(this.refs["error_"+param], true, () => {
+              toggleHeight(this.refs[param], false, () => {
+                toggleHeight(this.refs["error_"+param], false, () => {
+                  this.setState({error: ERROR_TYPES.UNABLE_TO_CONNECT})
+                });
               });
             });
-          //});
+          });
         }
         
         return;
