@@ -72,7 +72,7 @@ const DerivationPathEditor = p => {
               })}
               onClick={p.selectDerivationPath.bind(this, false)}
             >
-              <span className={Styles.DerivationPathEditor__path}>
+              <span className={classNames(Styles.DerivationPathEditor__path, Styles.DerivationPathEditor__pathInput)}>
                 <input
                   className={Styles.DerivationPathEditor__pathInput}
                   type="text"
@@ -118,6 +118,20 @@ const AddressPickerContent = p => {
     </div>
   )
 }
+
+const ErrorContainer = p => {
+  return (
+    <div className={Styles.ConnectDropdown__content}>
+      <div className={Styles.ErrorContainer__header}>
+        {p.error && p.error.header}
+      </div>
+      <div className={Styles.ErrorContainer__subheader}>
+        {p.error && p.error.subheader}
+      </div>
+    </div>
+  )
+}
+
 export default class ConnectDropdown extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
@@ -143,6 +157,11 @@ export default class ConnectDropdown extends Component {
     this.validatePath = this.validatePath.bind(this)
     this.connect = this.connect.bind(this)
     this.logout = this.logout.bind(this)
+    this.showError = this.showError.bind(this)
+    this.hideHardwareWallet = this.hideHardwareWallet.bind(this)
+    this.hideAdvanced = this.hideAdvanced.bind(this)
+    this.hideError = this.hideError.bind(this)
+    this.showHardwareWallet = this.showHardwareWallet.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -151,68 +170,35 @@ export default class ConnectDropdown extends Component {
     }
   }
 
-  connect(param, prevError) {
-    // todo: need to redirect to /categories page?
-    // todo: need to check if connection was successful before closing
-    if (param === PARAMS.METAMASK) {
-      if (!this.props.isMetaMaskPresent) { // todo: does this look at all web3 things or just MM?
-        toggleHeight(this.refs[param], false, () => {
-          toggleHeight(this.refs["error_"+param], false, () => {
-            this.setState({error: ERROR_TYPES.UNABLE_TO_CONNECT})
-          });
-        });
-        return;
-      }
-      this.props.toggleDropdown()
-      this.props.connectMetaMask((err, res) => {
-        // if doesnt work, say not logged in?
-        // console.log(err)
-        // console.log(res)
-      })
-      this.setState({selectOption: null})
-    }
+  showError(param, error) {
+    this.setState({error: error}, function(){
+      toggleHeight(this.refs["error_"+param], false, () => {});
+    });
   }
 
-  selectOption(param) {
-    // todo: clean up, too confusing
-    const prevSelected = this.state.selectedOption;
-    const prevError = this.state.error
-
-    if (prevSelected && this.refs[prevSelected]) {
-      // need to de-toggle previous selection
-      toggleHeight(this.refs[prevSelected], true, () => {
-        this.setState({ selectedOption: null});
-      });
-
-      if (this.refs['advanced_' + prevSelected]) {
-        toggleHeight(this.refs['advanced_' + prevSelected], true, () => {
-          this.setState({showAdvanced: false})
-        });
-      }
-    } else {
-      this.setState({showAdvanced: false})
-    }
-
-    if (prevError) {
-      toggleHeight(this.refs["error_"+prevSelected], true, () => {
+  hideError(param) {
+    if (this.refs["error_"+param]) {
+      toggleHeight(this.refs["error_"+param], true, () => {
         this.setState({error: null})
       });
     }
+  }
 
-    if (prevSelected !== param) {
-      // new selection being made
-      if (this.refs[param]) {
-        toggleHeight(this.refs[param], false, () => {
-          this.setState({ selectedOption: param});
-        });
-      } else {
+  showHardwareWallet(param) {
+    if (this.refs[param]) {
+      toggleHeight(this.refs[param], false, () => {
         this.setState({ selectedOption: param});
-      }
-      this.connect(param, prevError) 
-      this.setState({selectedDefaultPath: true}) // need to reset default path when switching off, todo: is this wanted?
+      });
     } else {
-      // deselection is being done
-      this.setState({ selectedOption: null});
+      this.setState({ selectedOption: param});
+    }
+  }
+
+  hideHardwareWallet(param) {
+    if (param && this.refs[param]) {
+      toggleHeight(this.refs[param], true, () => {
+        this.setState({ selectedOption: null});
+      });
     }
   }
 
@@ -223,6 +209,52 @@ export default class ConnectDropdown extends Component {
     toggleHeight(this.refs['advanced_' + this.state.selectedOption], this.state.showAdvanced, () => {
       this.setState({showAdvanced: !this.state.showAdvanced})
     });
+  }
+
+  hideAdvanced(param) {
+    if (param && this.refs['advanced_' + param]) {
+      if (this.refs['advanced_' + param]) {
+        toggleHeight(this.refs['advanced_' + param], true, () => {
+          this.setState({showAdvanced: false})
+        });
+      }
+    } else {
+      this.setState({showAdvanced: false})
+    }
+  }
+
+  connect(param) {
+    // todo: need to redirect to /categories page?
+    // todo: need to check if connection was successful before closing
+    if (param === PARAMS.METAMASK) {
+      if (!this.props.isMetaMaskPresent) { // todo: does this look at all web3 things or just MM?
+        this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT)
+        return;
+      }
+      this.props.toggleDropdown()
+      this.props.connectMetaMask((err, res) => {
+        // todo: if doesnt work, say not logged in?
+      })
+      this.setState({selectOption: null})
+    } 
+  }
+
+  selectOption(param) {
+    const prevSelected = this.state.selectedOption;
+
+    this.hideHardwareWallet(prevSelected)
+    this.hideAdvanced(prevSelected)
+    this.hideError(prevSelected)
+
+    if (prevSelected !== param) {
+      // new selection being made
+      this.showHardwareWallet(param);
+      this.connect(param) 
+      this.setState({selectedDefaultPath: true}) 
+    } else {
+      // deselection is being done
+      this.setState({ selectedOption: null});
+    }
   }
 
   selectDerivationPath(value) {
@@ -236,7 +268,9 @@ export default class ConnectDropdown extends Component {
 
   logout() {
     this.props.toggleDropdown(() => {
-      this.props.logout()
+       setTimeout(() => { // need to wait for animation to be done
+          this.props.logout()
+        }, 500);
     })
   }
 
@@ -272,8 +306,10 @@ export default class ConnectDropdown extends Component {
               <div className={Styles.ConnectDropdown__title}>{item.title}</div>
               {s.selectedOption === item.param &&
                 item.type === WALLET_TYPE.HARDWARE && (
-                  <div className={Styles.ConnectDropdown__advanced} onClick={this.showAdvanced}>
-                    Advanced
+                  <div style={{padding: '10px'}} onClick={this.showAdvanced}>
+                    <div className={Styles.ConnectDropdown__advanced}>
+                      Advanced
+                    </div>
                   </div>
               )}
             </div>
@@ -285,26 +321,27 @@ export default class ConnectDropdown extends Component {
                 ToggleHeightStyles["toggle-height-target"]
               )}
             >
-            {item.type === WALLET_TYPE.HARDWARE && (
-              <div>
-                <div
-                  ref={'advanced_' + item.param}
-                  key={'advanced_' + item.param}
-                  className={classNames(
-                    Styles.ConnectDropdown__advancedContent,
-                    ToggleHeightStyles["toggle-height-target"]
-                  )}
-                >
-                  <DerivationPathEditor
-                    selectedDefaultPath={s.selectedDefaultPath}
-                    selectDerivationPath={this.selectDerivationPath}
-                    customDerivationPath={s.customDerivationPath}
-                    validatePath={this.validatePath}
-                  />
+              {item.type === WALLET_TYPE.HARDWARE && (
+                <div>
+                  <div
+                    ref={'advanced_' + item.param}
+                    key={'advanced_' + item.param}
+                    className={classNames(
+                      Styles.ConnectDropdown__advancedContent,
+                      ToggleHeightStyles["toggle-height-target"]
+                    )}
+                  >
+                    <DerivationPathEditor
+                      selectedDefaultPath={s.selectedDefaultPath}
+                      selectDerivationPath={this.selectDerivationPath}
+                      customDerivationPath={s.customDerivationPath}
+                      validatePath={this.validatePath}
+                    />
+                  </div>
+                  <AddressPickerContent />
                 </div>
-                <AddressPickerContent />
-              </div>
-            )}
+              )}   
+            </div>
             <div
               ref={"error_" + item.param}
               className={classNames(
@@ -312,15 +349,7 @@ export default class ConnectDropdown extends Component {
                 ToggleHeightStyles["toggle-height-target"]
               )}
             >
-              <div className={Styles.ConnectDropdown__content}>
-                <div>
-                  {s.error && s.error.header}
-                </div>
-                <div>
-                  {s.error && s.error.subheader}
-                </div>
-              </div>
-            </div>
+              <ErrorContainer error={s.error}/>
             </div>
           </div>
         ))}
