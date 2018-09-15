@@ -151,22 +151,16 @@ export default class ConnectDropdown extends Component {
     }
   }
 
-  connect(param) {
+  connect(param, prevError) {
     // todo: need to redirect to /categories page?
     // todo: need to check if connection was successful before closing
     if (param === PARAMS.METAMASK) {
       if (!this.props.isMetaMaskPresent) { // todo: does this look at all web3 things or just MM?
-        // todo: hot mess
-          toggleHeight(this.refs[param], true, () => {
-            toggleHeight(this.refs["error_"+param], true, () => {
-              toggleHeight(this.refs[param], false, () => {
-                toggleHeight(this.refs["error_"+param], false, () => {
-                  this.setState({error: ERROR_TYPES.UNABLE_TO_CONNECT})
-                });
-              });
-            });
+        toggleHeight(this.refs[param], false, () => {
+          toggleHeight(this.refs["error_"+param], false, () => {
+            this.setState({error: ERROR_TYPES.UNABLE_TO_CONNECT})
           });
-        
+        });
         return;
       }
       this.props.toggleDropdown()
@@ -180,13 +174,14 @@ export default class ConnectDropdown extends Component {
   }
 
   selectOption(param) {
-    // todo: clean up, too confsusing
+    // todo: clean up, too confusing
     const prevSelected = this.state.selectedOption;
+    const prevError = this.state.error
 
     if (prevSelected && this.refs[prevSelected]) {
       // need to de-toggle previous selection
       toggleHeight(this.refs[prevSelected], true, () => {
-        this.setState({ selectedOption: null, error: null});
+        this.setState({ selectedOption: null});
       });
 
       if (this.refs['advanced_' + prevSelected]) {
@@ -195,7 +190,13 @@ export default class ConnectDropdown extends Component {
         });
       }
     } else {
-      this.setState({showAdvanced: false, error: null})
+      this.setState({showAdvanced: false})
+    }
+
+    if (prevError) {
+      toggleHeight(this.refs["error_"+prevSelected], true, () => {
+        this.setState({error: null})
+      });
     }
 
     if (prevSelected !== param) {
@@ -207,7 +208,7 @@ export default class ConnectDropdown extends Component {
       } else {
         this.setState({ selectedOption: param});
       }
-      this.connect(param) 
+      this.connect(param, prevError) 
       this.setState({selectedDefaultPath: true}) // need to reset default path when switching off, todo: is this wanted?
     } else {
       // deselection is being done

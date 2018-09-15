@@ -12,7 +12,7 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 // todo: need to style for mobile
 // todo: figure out disgusting dropdown not closing when clicking logout 
- 
+
 export default class ConnectAccount extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
@@ -36,9 +36,11 @@ export default class ConnectAccount extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.isLogged !== this.props.isLogged) {
-      this.setState({dropdownOpen: false})
-    }
+    // if (prevProps.isLogged !== this.props.isLogged) {
+    //   toggleHeight(this.ConnectDropdown, true, () => {
+    //     this.setState({dropdownOpen: false})
+    //   });
+    // }
   }
 
   componentWillUnmount() {
