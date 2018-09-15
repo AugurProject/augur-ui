@@ -32,15 +32,15 @@ export const ITEMS = [
     type: WALLET_TYPE.SOFTWARE
   },
   {
-    param: PARAMS.LEDGER,
-    title: "Ledger",
-    icon: Ledger,
-    type: WALLET_TYPE.HARDWARE
-  },
-  {
     param: PARAMS.TREZOR,
     title: "Trezor",
     icon: Trezor,
+    type: WALLET_TYPE.HARDWARE
+  },
+  {
+    param: PARAMS.LEDGER,
+    title: "Ledger",
+    icon: Ledger,
     type: WALLET_TYPE.HARDWARE
   }
 ];

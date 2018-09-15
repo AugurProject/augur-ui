@@ -12,11 +12,8 @@ import DerivationPath, {
   DEFAULT_DERIVATION_PATH
 } from "modules/auth/helpers/derivation-path";
 
-// todo: need to update icons and get right sizes
 // todo: what happens if you click software wallet while it is in the connecting phase?
-// todo: make hardware content own component
-// todo: replace icons with right ones
-// todo: give advanced button some padding so clickable field is bigger
+// todo: put seperate components in own files
 
 const mockData = [
   {
@@ -72,7 +69,7 @@ const DerivationPathEditor = p => {
               })}
               onClick={p.selectDerivationPath.bind(this, false)}
             >
-              <span className={classNames(Styles.DerivationPathEditor__path, Styles.DerivationPathEditor__pathInput)}>
+              <span className={classNames(Styles.DerivationPathEditor__path, Styles.DerivationPathEditor__pathInputContainer)}>
                 <input
                   className={Styles.DerivationPathEditor__pathInput}
                   type="text"
