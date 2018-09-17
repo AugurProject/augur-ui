@@ -77,7 +77,7 @@ export default class Ledger extends Component {
     }
 
     if (this.props.showAdvanced !== nextProps.showAdvanced) {
-      this.showAdvanced(nextProps.showAdvanced);
+      this.showAdvanced(this.props.showAdvanced);
     }
     if (this.props.ledgerStatus !== nextProps.ledgerStatus) {
       if (

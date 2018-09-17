@@ -246,26 +246,11 @@ export default class ConnectDropdown extends Component {
   showAdvanced(e) {
     e.stopPropagation();
     e.preventDefault();
-    const param = this.state.selectedOption
-    console.log(param)
-    // if (this.refs["advanced_" + param]) {
-    //   toggleHeight(this.refs["advanced_" + param], false, () => {
-    //     console.log('showing')
-        this.setState({ showAdvanced: true });
-    //   });
-    // }
+    this.setState({ showAdvanced: !this.state.showAdvanced });
   }
 
-  hideAdvanced(param) {
-    if (param && this.refs["advanced_" + param]) {
-      if (this.refs["advanced_" + param]) {
-        toggleHeight(this.refs["advanced_" + param], true, () => {
-          this.setState({ showAdvanced: false });
-        });
-      }
-    } else {
-      this.setState({ showAdvanced: false });
-    }
+  hideAdvanced() {
+    this.setState({ showAdvanced: false });
   }
 
   toggleDropdownAndConnect(cb) {
