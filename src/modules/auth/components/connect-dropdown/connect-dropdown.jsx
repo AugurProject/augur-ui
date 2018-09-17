@@ -13,8 +13,7 @@ import { errorIcon } from "modules/common/components/icons";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
-import FormStyles from "modules/common/less/form";
-
+import Ledger from "modules/auth/containers/ledger-connect";
 
 // todo: need to figure out why edge fails sometimes
 // todo: need to add loading states
@@ -53,8 +52,8 @@ const ERROR_TYPES = {
     header: "Incorrect Format",
     subheader: "Please enter a derivative path with the the format “m/44’/60/0”"
   }
-}
-
+};
+/*
 const DerivationPathEditor = p => {
   return (
     <section className={Styles.DerivationPathEditor}>
@@ -129,7 +128,7 @@ const AddressPickerContent = p => {
       ))}
       <div className={Styles.ConnectDropdown__row}>
         <div className={Styles.AddressPickerContent__direction}>
-          Previous 
+          Previous
         </div>
         <div className={Styles.AddressPickerContent__direction} style={{marginLeft: '24px'}}>
           Next
@@ -138,7 +137,7 @@ const AddressPickerContent = p => {
     </div>
   )
 }
-
+*/
 const ErrorContainer = p => {
   return (
     <div className={Styles.ConnectDropdown__content}>
@@ -147,22 +146,25 @@ const ErrorContainer = p => {
         {p.error && p.error.header}
       </div>
       <div className={Styles.ErrorContainer__subheader}>
-        {p.error === ERROR_TYPES.UNABLE_TO_CONNECT && 
+        {p.error === ERROR_TYPES.UNABLE_TO_CONNECT && (
           <div className={Styles.ErrorContainer__words}>
-            Please install the MetaMask browser plug-in from <a
+            Please install the MetaMask browser plug-in from{" "}
+            <a
               href="https://metamask.io/"
               target="_blank"
               rel="noopener noreferrer"
-            >Metamask.io</a>
+            >
+              Metamask.io
+            </a>
           </div>
-        }
-        {p.error !== ERROR_TYPES.UNABLE_TO_CONNECT && 
-          p.error && p.error.subheader
-        }
+        )}
+        {p.error !== ERROR_TYPES.UNABLE_TO_CONNECT &&
+          p.error &&
+          p.error.subheader}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default class ConnectDropdown extends Component {
   static propTypes = {
@@ -172,7 +174,7 @@ export default class ConnectDropdown extends Component {
     logout: PropTypes.func.isRequired,
     edgeLoginLink: PropTypes.func.isRequired,
     edgeLoading: PropTypes.bool.isRequired,
-    history: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -184,38 +186,39 @@ export default class ConnectDropdown extends Component {
       selectedDefaultPath: true,
       customDerivationPath: "",
       error: null,
+      connectLedger: false
     };
 
-    this.showAdvanced = this.showAdvanced.bind(this)
-    this.selectDerivationPath = this.selectDerivationPath.bind(this)
-    this.validatePath = this.validatePath.bind(this)
-    this.connect = this.connect.bind(this)
-    this.logout = this.logout.bind(this)
-    this.showError = this.showError.bind(this)
-    this.hideHardwareWallet = this.hideHardwareWallet.bind(this)
-    this.hideAdvanced = this.hideAdvanced.bind(this)
-    this.hideError = this.hideError.bind(this)
-    this.showHardwareWallet = this.showHardwareWallet.bind(this)
-    this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this)
-    this.retry = this.retry.bind(this)
+    this.showAdvanced = this.showAdvanced.bind(this);
+    this.selectDerivationPath = this.selectDerivationPath.bind(this);
+    this.validatePath = this.validatePath.bind(this);
+    this.connect = this.connect.bind(this);
+    this.logout = this.logout.bind(this);
+    this.showError = this.showError.bind(this);
+    this.hideHardwareWallet = this.hideHardwareWallet.bind(this);
+    this.hideAdvanced = this.hideAdvanced.bind(this);
+    this.hideError = this.hideError.bind(this);
+    this.showHardwareWallet = this.showHardwareWallet.bind(this);
+    this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this);
+    this.retry = this.retry.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.isLogged !== this.props.isLogged) {
-      this.setState({selectedOption: null})
+      this.setState({ selectedOption: null });
     }
   }
 
   showError(param, error) {
-    this.setState({error: error}, function(){
-      toggleHeight(this.refs["error_"+param], false, () => {});
+    this.setState({ error: error }, function() {
+      toggleHeight(this.refs["error_" + param], false, () => {});
     });
   }
 
   hideError(param) {
-    if (this.refs["error_"+param]) {
-      toggleHeight(this.refs["error_"+param], true, () => {
-        this.setState({error: null})
+    if (this.refs["error_" + param]) {
+      toggleHeight(this.refs["error_" + param], true, () => {
+        this.setState({ error: null });
       });
     }
   }
@@ -223,17 +226,17 @@ export default class ConnectDropdown extends Component {
   showHardwareWallet(param) {
     if (this.refs[param]) {
       toggleHeight(this.refs[param], false, () => {
-        this.setState({ selectedOption: param});
+        this.setState({ selectedOption: param });
       });
     } else {
-      this.setState({ selectedOption: param});
+      this.setState({ selectedOption: param });
     }
   }
 
   hideHardwareWallet(param) {
     if (param && this.refs[param]) {
       toggleHeight(this.refs[param], true, () => {
-        this.setState({ selectedOption: null});
+        this.setState({ selectedOption: null });
       });
     }
   }
@@ -241,184 +244,183 @@ export default class ConnectDropdown extends Component {
   showAdvanced(e) {
     e.stopPropagation();
     e.preventDefault();
-
-    toggleHeight(this.refs['advanced_' + this.state.selectedOption], this.state.showAdvanced, () => {
-      this.setState({showAdvanced: !this.state.showAdvanced})
-    });
+    this.setState({ showAdvanced: !this.state.showAdvanced });
   }
 
   hideAdvanced(param) {
-    if (param && this.refs['advanced_' + param]) {
-      if (this.refs['advanced_' + param]) {
-        toggleHeight(this.refs['advanced_' + param], true, () => {
-          this.setState({showAdvanced: false})
+    if (param && this.refs["advanced_" + param]) {
+      if (this.refs["advanced_" + param]) {
+        toggleHeight(this.refs["advanced_" + param], true, () => {
+          this.setState({ showAdvanced: false });
         });
       }
     } else {
-      this.setState({showAdvanced: false})
+      this.setState({ showAdvanced: false });
     }
   }
 
   toggleDropdownAndConnect(cb) {
     this.props.toggleDropdown(() => {
-       setTimeout(() => { // need to wait for animation to be done
-          cb()
-        }, 500);
-    })
+      setTimeout(() => {
+        // need to wait for animation to be done
+        cb();
+      }, 500);
+    });
   }
 
   connect(param) {
+    if (param == PARAMS.LEDGER) {
+      this.setState({ connectLedger: false });
+    }
     // todo: need to check if connection was successful before closing
     if (param === PARAMS.METAMASK) {
-      if (!isMetaMaskPresent()) { // todo: does this look at all web3 things or just MM?
-        this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT)
+      if (!isMetaMaskPresent()) {
+        // todo: does this look at all web3 things or just MM?
+        this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT);
         return;
       }
       this.toggleDropdownAndConnect(() => {
-        this.props.connectMetaMask((err, res) => { //todo: if it doesn;t work say not logged in?
-          this.setState({selectOption: null})
-        })
-      })
+        this.props.connectMetaMask((err, res) => {
+          //todo: if it doesn;t work say not logged in?
+          this.setState({ selectOption: null });
+        });
+      });
     } else if (param === PARAMS.EDGE) {
-      // this.toggleDropdownAndConnect(() => { 
-      this.props.edgeLoginLink(this.props.history) //todo: why does this fail sometimes?
+      // this.toggleDropdownAndConnect(() => {
+      this.props.edgeLoginLink(this.props.history); //todo: why does this fail sometimes?
       //})
+    } else if (param === PARAMS.LEDGER) {
+      this.setState({ connectLedger: true });
     }
   }
 
   selectOption(param) {
     const prevSelected = this.state.selectedOption;
 
-    this.hideHardwareWallet(prevSelected)
-    this.hideAdvanced(prevSelected)
-    this.hideError(prevSelected)
+    this.hideHardwareWallet(prevSelected);
+    this.hideAdvanced(prevSelected);
+    this.hideError(prevSelected);
 
     if (prevSelected !== param) {
       // new selection being made
       this.showHardwareWallet(param);
-      this.connect(param) 
-      this.setState({selectedDefaultPath: true}) 
+      this.connect(param);
+      this.setState({ selectedDefaultPath: true });
     } else {
       // deselection is being done
-      this.setState({ selectedOption: null});
+      this.setState({ selectedOption: null });
     }
   }
 
   selectDerivationPath(value) {
-    this.setState({selectedDefaultPath: value})
+    this.setState({ selectedDefaultPath: value });
   }
 
   validatePath(value) {
     // todo: validate custom derivation path here
-    this.setState({customDerivationPath: value})
+    this.setState({ customDerivationPath: value });
   }
 
   logout() {
     this.props.toggleDropdown(() => {
-       setTimeout(() => { // need to wait for animation to be done
-          this.props.logout()
-        }, 500);
-    })
+      setTimeout(() => {
+        // need to wait for animation to be done
+        this.props.logout();
+      }, 500);
+    });
   }
 
   retry(param) {
-    console.log('hi')
-    this.connect(param)
+    console.log("hi");
+    this.connect(param);
   }
 
   render() {
-    const {
-      isLogged,
-      edgeLoading,
-    } = this.props;
+    const { isLogged, edgeLoading } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.ConnectDropdown}>
-        {isLogged &&
+        {isLogged && (
           <div
             className={classNames(Styles.ConnectDropdown__item)}
             onClick={this.logout}
           >
             Logout
           </div>
-        }
-        {!isLogged && ITEMS.map(item => (
-          <div key={item.param}>
-            <div
-              className={classNames(Styles.ConnectDropdown__item, {
-                [Styles.ConnectDropdown__itemSelected]:
-                  s.selectedOption === item.param,
-                [Styles.ConnectDropdown__itemHardwareSelected]:
-                  s.selectedOption === item.param &&
-                  (item.type === WALLET_TYPE.HARDWARE || s.error)
-              })}
-              onClick={this.selectOption.bind(this, item.param)}
-            >
-              <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
-              <div className={Styles.ConnectDropdown__title}>
-                {item.title}
-                {s.selectedOption === item.param && item.param === PARAMS.EDGE && edgeLoading &&
-                  <div style={{ marginLeft: "8px" }}>
-                    <PulseLoader
-                      color="#FFF"
-                      sizeUnit="px"
-                      size={8}
-                      loading={true}
-                    />
-                  </div>
-                }
-              </div>
-              
-              {s.selectedOption === item.param &&
-                item.type === WALLET_TYPE.HARDWARE && (
-                  <div style={{padding: '10px'}} onClick={this.showAdvanced}>
-                    <div className={Styles.ConnectDropdown__advanced}>
-                      Advanced
-                    </div>
-                  </div>
-              )}
-            </div>
-            <div
-              ref={item.param}
-              key={item.param}
-              className={classNames(
-                Styles.ConnectDropdown__hardwareContent,
-                ToggleHeightStyles["toggle-height-target"]
-              )}
-            >
-              {item.type === WALLET_TYPE.HARDWARE && (
-                <div>
-                  <div
-                    ref={'advanced_' + item.param}
-                    key={'advanced_' + item.param}
-                    className={classNames(
-                      Styles.ConnectDropdown__advancedContent,
-                      ToggleHeightStyles["toggle-height-target"]
+        )}
+        {!isLogged &&
+          ITEMS.map(item => (
+            <div key={item.param}>
+              <div
+                className={classNames(Styles.ConnectDropdown__item, {
+                  [Styles.ConnectDropdown__itemSelected]:
+                    s.selectedOption === item.param,
+                  [Styles.ConnectDropdown__itemHardwareSelected]:
+                    s.selectedOption === item.param &&
+                    (item.type === WALLET_TYPE.HARDWARE || s.error)
+                })}
+                onClick={this.selectOption.bind(this, item.param)}
+              >
+                <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
+                <div className={Styles.ConnectDropdown__title}>
+                  {item.title}
+                  {s.selectedOption === item.param &&
+                    item.param === PARAMS.EDGE &&
+                    edgeLoading && (
+                      <div style={{ marginLeft: "8px" }}>
+                        <PulseLoader
+                          color="#FFF"
+                          sizeUnit="px"
+                          size={8}
+                          loading={true}
+                        />
+                      </div>
                     )}
-                  >
-                    <DerivationPathEditor
-                      selectedDefaultPath={s.selectedDefaultPath}
-                      selectDerivationPath={this.selectDerivationPath}
-                      customDerivationPath={s.customDerivationPath}
-                      validatePath={this.validatePath}
-                    />
-                  </div>
-                  <AddressPickerContent />
                 </div>
-              )}   
+
+                {s.selectedOption === item.param &&
+                  item.type === WALLET_TYPE.HARDWARE && (
+                    <div
+                      style={{ padding: "10px" }}
+                      onClick={this.showAdvanced}
+                    >
+                      <div className={Styles.ConnectDropdown__advanced}>
+                        Advanced
+                      </div>
+                    </div>
+                  )}
+              </div>
+              <div
+                ref={item.param}
+                key={item.param}
+                className={classNames(
+                  Styles.ConnectDropdown__hardwareContent,
+                  ToggleHeightStyles["toggle-height-target"]
+                )}
+              >
+                {item.type === WALLET_TYPE.HARDWARE &&
+                  item.param === "ledger" &&
+                  s.connectLedger && (
+                    <Ledger
+                      dropdownItem={item}
+                      showAdvanced={
+                        s.selectedOption === "ledger" && s.showAdvanced
+                      }
+                    />
+                  )}
+              </div>
+              <div
+                ref={"error_" + item.param}
+                className={classNames(
+                  Styles.ConnectDropdown__hardwareContent,
+                  ToggleHeightStyles["toggle-height-target"]
+                )}
+              >
+                <ErrorContainer error={s.error} retry={this.retry} />
+              </div>
             </div>
-            <div
-              ref={"error_" + item.param}
-              className={classNames(
-                Styles.ConnectDropdown__hardwareContent,
-                ToggleHeightStyles["toggle-height-target"]
-              )}
-            >
-              <ErrorContainer error={s.error} retry={this.retry} />
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     );
   }

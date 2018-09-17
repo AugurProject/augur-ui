@@ -14,9 +14,14 @@ import classNames from "classnames";
 import { Alert } from "modules/common/components/icons";
 import getEtherBalance from "modules/auth/actions/get-ether-balance";
 import Spinner from "modules/common/components/spinner/spinner";
-import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
 import FormStyles from "modules/common/less/form";
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
+import AddressPickerContent from "modules/auth/components/common/AddressPickerContent";
+import DerivationPathEditor from "modules/auth/components/common/DerivationPathEditor";
+import toggleHeight from "utils/toggle-height/toggle-height";
+
+const INCORRECT_FORMAT = "INCORRECT_FORMAT";
 
 export default class Ledger extends Component {
   static propTypes = {
@@ -24,7 +29,9 @@ export default class Ledger extends Component {
     loginWithLedger: PropTypes.func.isRequired,
     networkId: PropTypes.number.isRequired,
     updateLedgerStatus: PropTypes.func.isRequired,
-    ledgerStatus: PropTypes.string.isRequired
+    ledgerStatus: PropTypes.string.isRequired,
+    dropdownItem: PropTypes.object,
+    showAdvanced: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -48,6 +55,7 @@ export default class Ledger extends Component {
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.focusTextInput = this.focusTextInput.bind(this);
+    this.validatePath = this.validatePath.bind(this);
   }
 
   componentDidMount() {
@@ -59,6 +67,18 @@ export default class Ledger extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    if (
+      this.state.ledgerAddressPageNumber !== nextState.ledgerAddressPageNumber
+    ) {
+      this.onDerivationPathChange(
+        this.state.baseDerivationPath,
+        nextState.ledgerAddressPageNumber
+      );
+    }
+
+    if (this.props.showAdvanced !== nextProps.showAdvanced) {
+      this.showAdvanced(nextProps.showAdvanced);
+    }
     if (this.props.ledgerStatus !== nextProps.ledgerStatus) {
       if (
         nextProps.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED &&
@@ -71,26 +91,9 @@ export default class Ledger extends Component {
     }
   }
 
-  async onConnectLedgerRequestHook() {
-    console.log("onConnectLedgerRequestHook")
-  }
-
-  async onOpenEthereumAppRequestHook() {
-    console.log("onOpenEthereumAppRequestHook")
-  }
-
-  async onSwitchLedgerModeRequestHook() {
-    console.log("onSwitchLedgerModeRequestHook")
-  }
-
-  async onEnableContractSupportRequestHook() {
-    console.log("onEnableContractSupportRequestHook")
-  }
-
-  async onDerivationPathChange(derivationPath) {
+  async onDerivationPathChange(derivationPath, pageNumber = 1) {
     const { networkId, updateLedgerStatus } = this.props;
     updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
-
     if (location.protocol !== "https:") {
       updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
     }
@@ -110,8 +113,9 @@ export default class Ledger extends Component {
     );
 
     const components = DerivationPath.parse(derivationPath);
+    const numberOfAddresses = NUM_DERIVATION_PATHS_TO_DISPLAY * pageNumber;
     const addresses = await Promise.all(
-      Array.from(Array(NUM_DERIVATION_PATHS_TO_DISPLAY).keys()).map(i =>
+      Array.from(Array(numberOfAddresses).keys()).map(i =>
         ledgerEthereum.getAddressByBip32Path(
           DerivationPath.buildString(DerivationPath.increment(components, i))
         )
@@ -133,7 +137,16 @@ export default class Ledger extends Component {
   updateAccountBalance(address) {
     if (!this.state.ledgerAddressBalances[address]) {
       getEtherBalance(address, (err, balance) => {
-        if (!err) this.state.ledgerAddressBalances[address] = balance || 0;
+        if (!err) {
+          const balances = {
+            ...this.state.ledgerAddressBalances
+          };
+          balances[address] = balance || 0;
+
+          this.setState({
+            ledgerAddressBalances: balances
+          });
+        }
       });
     }
   }
@@ -178,25 +191,104 @@ export default class Ledger extends Component {
     );
   }
 
+  validatePath(value) {
+    // todo: validate custom derivation path here
+    if (DerivationPath.validate(value)) {
+      this.onDerivationPathChange(value).catch(() =>
+        this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
+      );
+      this.setState({
+        error: null
+      });
+    } else {
+      this.setState({
+        error: INCORRECT_FORMAT
+      });
+    }
+  }
+
+  showAdvanced(value) {
+    toggleHeight(this.refs["advanced_ledger"], value, () => {});
+  }
+
   focusTextInput() {
     this.derivationInput.focus();
     this.setState({ customDerivationPath: true });
   }
 
   next() {
-    console.log("next", this.state.baseDerivationPath);
+    const { ledgerAddressPageNumber } = this.state;
+    this.setState({ ledgerAddressPageNumber: ledgerAddressPageNumber + 1 });
   }
 
   previous() {
-    console.log("previous", this.state.baseDerivationPath);
+    const { ledgerAddressPageNumber } = this.state;
+    this.setState({ ledgerAddressPageNumber: ledgerAddressPageNumber - 1 });
   }
 
   render() {
     const { ledgerStatus, updateLedgerStatus } = this.props;
     const s = this.state;
 
+    const indexes = [
+      ...Array(NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber)
+    ]
+      .map((_, i) => i)
+      .slice(
+        NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber -
+          NUM_DERIVATION_PATHS_TO_DISPLAY,
+        NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
+      );
+
+    console.log("ledgerStatus", ledgerStatus);
     return (
-      <section className={Styles.LedgerConnect}>
+      <section>
+        <div>
+          <div
+            ref="advanced_ledger"
+            key="advanced_ledger"
+            className={classNames(
+              Styles.ConnectDropdown__advancedContent,
+              ToggleHeightStyles["toggle-height-target"]
+            )}
+          >
+            <DerivationPathEditor validatePath={this.validatePath} />
+          </div>
+          {!s.error &&
+            !s.displayInstructions && (
+              <AddressPickerContent
+                addresses={s.ledgerAddresses}
+                balances={s.ledgerAddressBalances}
+                indexArray={indexes}
+                clickAction={this.connectLedger}
+                clickPrevious={this.previous}
+                clickNext={this.next}
+              />
+            )}
+          {s.error === INCORRECT_FORMAT && (
+            <div>
+              {Alert}
+              <h3>Incorrect Format </h3>
+              <span>
+                Please enter a derivation path with the format
+                {DEFAULT_DERIVATION_PATH}
+              </span>
+            </div>
+          )}
+          {!s.error &&
+            s.displayInstructions && (
+              <ul>
+                <li>Accessed Augur via HTTPS</li>
+                <li>Connected your Ledger</li>
+                <li>Opened the Ethereum App</li>
+                <li>Enabled Contract Data</li>
+                <li>Enabled Browser Support</li>
+              </ul>
+            )}
+        </div>
+      </section>
+      /*
+<section className={Styles.LedgerConnect}>
         <div className={Styles.LedgerConnect__action}>
           <ul className={FormStyles["Form__radio-buttons--per-line"]}>
             <li className={FormStyles["field--inline"]}>
@@ -240,25 +332,24 @@ export default class Ledger extends Component {
 
           {this.state.ledgerAddresses.some(a => a !== null) && (
             <div>
-              {Array.from(Array(NUM_DERIVATION_PATHS_TO_DISPLAY).keys()).map(
-                i => (
-                  <div key={i} className={Styles.Ledger__address__balances}>
-                    <div className={Styles.Ledger__addresses}>
-                      <label
-                        onClick={() => this.connectLedger(i)}
-                        htmlFor={`ledger-address-${i}`}
-                      >
-                        {formatAddress(s.ledgerAddresses[i])}
-                      </label>
-                    </div>
-                    <div className={Styles.Ledger__balances}>
-                      <label>
-                        {this.state.ledgerAddressBalances[s.ledgerAddresses[i]]}
-                      </label>
-                    </div>
+              {indexes.map(i => (
+                <div key={i} className={Styles.Ledger__address__balances}>
+                  <div className={Styles.Ledger__addresses}>
+                    <label
+                      onClick={() => this.connectLedger(i)}
+                      htmlFor={`ledger-address-${i}`}
+                    >
+                      {s.ledgerAddresses[i] &&
+                        formatAddress(s.ledgerAddresses[i])}
+                    </label>
                   </div>
-                )
-              )}
+                  <div className={Styles.Ledger__balances}>
+                    <label>
+                      {this.state.ledgerAddressBalances[s.ledgerAddresses[i]]}
+                    </label>
+                  </div>
+                </div>
+              ))}
               <div className={Styles.LedgerConnect__buttons}>
                 <button
                   type="button"
@@ -282,21 +373,21 @@ export default class Ledger extends Component {
             <Spinner light />
           )}
         </div>
-        {s.displayInstructions &&
-          1 === 4 && (
-            <div className={Styles.LedgerConnect__messages}>
-              {Alert}
-              <h3>Make sure you have: </h3>
-              <ul>
-                <li>Accessed Augur via HTTPS</li>
-                <li>Connected your Ledger</li>
-                <li>Opened the Ethereum App</li>
-                <li>Enabled Contract Data</li>
-                <li>Enabled Browser Support</li>
-              </ul>
-            </div>
-          )}
+        {s.displayInstructions && (
+          <div className={Styles.LedgerConnect__messages}>
+            {Alert}
+            <h3>Make sure you have: </h3>
+            <ul>
+              <li>Accessed Augur via HTTPS</li>
+              <li>Connected your Ledger</li>
+              <li>Opened the Ethereum App</li>
+              <li>Enabled Contract Data</li>
+              <li>Enabled Browser Support</li>
+            </ul>
+          </div>
+        )}
       </section>
+      */
     );
   }
 }
