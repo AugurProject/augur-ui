@@ -32,21 +32,22 @@ export default class Ledger extends Component {
     dropdownItem: PropTypes.object,
     showAdvanced: PropTypes.bool,
     showError: PropTypes.func.isRequired,
-    hideError: PropTypes.func.isRequired,
+    hideError: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.LedgerEthereum = null;
- 
+
     this.state = {
-      displayInstructions: (props.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED && props.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION),
+      displayInstructions:
+        props.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED &&
+        props.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION,
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
       ledgerAddressBalances: {},
-      ledgerAddressPageNumber: 1,
-      customDerivationPath: false
+      ledgerAddressPageNumber: 1
     };
 
     this.connectLedger = this.connectLedger.bind(this);
@@ -55,7 +56,6 @@ export default class Ledger extends Component {
     this.buildDerivationPath = this.buildDerivationPath.bind(this);
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
-    this.focusTextInput = this.focusTextInput.bind(this);
     this.validatePath = this.validatePath.bind(this);
   }
 
@@ -82,7 +82,10 @@ export default class Ledger extends Component {
     }
 
     if (this.props.ledgerStatus !== nextProps.ledgerStatus) {
-      if (nextProps.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED && nextProps.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION) {
+      if (
+        nextProps.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED &&
+        nextProps.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION
+      ) {
         this.updateDisplayInstructions(true);
       } else {
         this.updateDisplayInstructions(false);
@@ -98,8 +101,7 @@ export default class Ledger extends Component {
     }
 
     this.setState({
-      baseDerivationPath: derivationPath,
-      customDerivationPath: derivationPath !== DEFAULT_DERIVATION_PATH
+      baseDerivationPath: derivationPath
     });
 
     const ledgerEthereum = new LedgerEthereum(
@@ -196,13 +198,13 @@ export default class Ledger extends Component {
       this.onDerivationPathChange(value).catch(() =>
         this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
       );
-      this.props.hideError("ledger")
+      this.props.hideError("ledger");
 
       this.setState({
         error: null
       });
     } else {
-      this.props.showError("ledger", ERROR_TYPES.INCORRECT_FORMAT)
+      this.props.showError("ledger", ERROR_TYPES.INCORRECT_FORMAT);
       this.setState({
         error: ERROR_TYPES.INCORRECT_FORMAT
       });
@@ -211,11 +213,6 @@ export default class Ledger extends Component {
 
   showAdvanced(value) {
     toggleHeight(this.refs["advanced_ledger"], value, () => {});
-  }
-
-  focusTextInput() {
-    this.derivationInput.focus();
-    this.setState({ customDerivationPath: true });
   }
 
   next() {
@@ -230,7 +227,7 @@ export default class Ledger extends Component {
 
   render() {
     const { ledgerStatus, updateLedgerStatus } = this.props;
-    console.log(ledgerStatus)
+    console.log(ledgerStatus);
     const s = this.state;
 
     const indexes = [
@@ -256,6 +253,7 @@ export default class Ledger extends Component {
             <DerivationPathEditor validatePath={this.validatePath} />
           </div>
           {!s.error &&
+            ledgerStatus === LEDGER_STATES.CONNECT_LEDGER &&
             !s.displayInstructions && (
               <AddressPickerContent
                 addresses={s.ledgerAddresses}
@@ -266,7 +264,7 @@ export default class Ledger extends Component {
                 clickNext={this.next}
               />
             )}
-          
+
           {!s.error &&
             s.displayInstructions && (
               <ul>
@@ -276,7 +274,7 @@ export default class Ledger extends Component {
                 <li>Enabled Contract Data</li>
                 <li>Enabled Browser Support</li>
               </ul>
-          )}
+            )}
         </div>
       </section>
     );

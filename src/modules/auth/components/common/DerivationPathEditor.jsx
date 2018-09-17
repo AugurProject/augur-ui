@@ -18,6 +18,11 @@ export default class DerivationPathEditor extends Component {
     };
 
     this.selectDerivationPath = this.selectDerivationPath.bind(this);
+    this.focusTextInput = this.focusTextInput.bind(this);
+  }
+
+  focusTextInput() {
+    this.derivationInput.focus();
   }
 
   selectDerivationPath(value) {
@@ -25,6 +30,7 @@ export default class DerivationPathEditor extends Component {
     if (value) {
       this.props.validatePath(DEFAULT_DERIVATION_PATH);
     }
+    this.focusTextInput();
   }
 
   render() {
@@ -84,6 +90,9 @@ export default class DerivationPathEditor extends Component {
                   <input
                     className={Styles.DerivationPathEditor__pathInput}
                     type="text"
+                    ref={input => {
+                      this.derivationInput = input;
+                    }}
                     placeholder={DEFAULT_DERIVATION_PATH}
                     onChange={e => validatePath(e.target.value)}
                   />
