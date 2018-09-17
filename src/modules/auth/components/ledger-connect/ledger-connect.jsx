@@ -240,13 +240,11 @@ export default class Ledger extends Component {
         NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
       );
 
-    console.log("ledgerStatus", ledgerStatus);
     return (
       <section>
         <div>
           <div
             ref="advanced_ledger"
-            key="advanced_ledger"
             className={classNames(
               Styles.ConnectDropdown__advancedContent,
               ToggleHeightStyles["toggle-height-target"]
@@ -284,7 +282,7 @@ export default class Ledger extends Component {
                 <li>Enabled Contract Data</li>
                 <li>Enabled Browser Support</li>
               </ul>
-            )}
+          )}
         </div>
       </section>
       /*

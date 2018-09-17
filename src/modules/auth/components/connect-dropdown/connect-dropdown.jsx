@@ -144,7 +144,7 @@ const ErrorContainer = p => {
   return (
     <div className={Styles.ConnectDropdown__content}>
       <div className={Styles.ErrorContainer__header}>
-        <div className={Styles.ErrorContainer__headerIcon}>{errorIcon}</div>
+        <div className={Styles.ErrorContainer__headerIcon}>{p.error && errorIcon}</div>
         {p.error && p.error.header}
       </div>
       <div className={Styles.ErrorContainer__subheader}>
@@ -226,8 +226,8 @@ export default class ConnectDropdown extends Component {
   }
 
   showHardwareWallet(param) {
-    if (this.refs[param]) {
-      toggleHeight(this.refs[param], false, () => {
+    if (this.refs["hardwareContent_" + param]) {
+      toggleHeight(this.refs["hardwareContent_" + param], false, () => {
         this.setState({ selectedOption: param });
       });
     } else {
@@ -236,8 +236,8 @@ export default class ConnectDropdown extends Component {
   }
 
   hideHardwareWallet(param) {
-    if (param && this.refs[param]) {
-      toggleHeight(this.refs[param], true, () => {
+    if (param && this.refs["hardwareContent_"+param]) {
+      toggleHeight(this.refs["hardwareContent_"+param], true, () => {
         this.setState({ selectedOption: null });
       });
     }
@@ -246,7 +246,14 @@ export default class ConnectDropdown extends Component {
   showAdvanced(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.setState({ showAdvanced: !this.state.showAdvanced });
+    const param = this.state.selectedOption
+    console.log(param)
+    // if (this.refs["advanced_" + param]) {
+    //   toggleHeight(this.refs["advanced_" + param], false, () => {
+    //     console.log('showing')
+        this.setState({ showAdvanced: true });
+    //   });
+    // }
   }
 
   hideAdvanced(param) {
@@ -271,7 +278,7 @@ export default class ConnectDropdown extends Component {
   }
 
   connect(param) {
-    if (param == PARAMS.LEDGER) {
+    if (param !== PARAMS.LEDGER) {
       this.setState({ connectLedger: false });
     }
     // todo: need to check if connection was successful before closing
@@ -395,23 +402,21 @@ export default class ConnectDropdown extends Component {
                   )}
               </div>
               <div
-                ref={item.param}
-                key={item.param}
+                ref={"hardwareContent_"+item.param}
                 className={classNames(
                   Styles.ConnectDropdown__hardwareContent,
                   ToggleHeightStyles["toggle-height-target"]
                 )}
               >
                 {item.type === WALLET_TYPE.HARDWARE &&
-                  item.param === "ledger" &&
-                  s.connectLedger && (
+                  item.param === "ledger" && (
                     <Ledger
                       dropdownItem={item}
                       showAdvanced={
                         s.selectedOption === "ledger" && s.showAdvanced
                       }
                     />
-                  )}
+                )}
               </div>
               <div
                 ref={"error_" + item.param}
