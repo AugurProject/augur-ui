@@ -40,10 +40,13 @@ const NETWORK_NAMES = {
   12346: "Private"
 };
 
-function pollForAccount(dispatch, getState) {
+function pollForAccount(dispatch, getState, callback) {
   const { env } = getState();
   loadAccount(dispatch, null, env, (err, loadedAccount) => {
-    if (err) console.error(err);
+    if (err) {
+      callback(err)
+      console.error(err);
+    }
     let account = loadedAccount;
     setInterval(() => {
       loadAccount(dispatch, account, env, (err, loadedAccount) => {
@@ -77,7 +80,11 @@ function loadAccount(dispatch, existing, env, callback) {
         dispatch(logout());
       }
     }
-    callback(null, account);
+    if (!account) {
+      callback('not signed in', account)
+    } else {
+      callback(null, account);
+    }
   });
 }
 
@@ -160,7 +167,7 @@ export function connectAugur(
           if (modal && modal.type === MODAL_NETWORK_DISCONNECTED)
             dispatch(closeModal());
           if (isInitialConnection) {
-            pollForAccount(dispatch, getState);
+            pollForAccount(dispatch, getState, callback);
             pollForNetwork(dispatch, getState);
           }
           callback();

@@ -15,7 +15,6 @@ import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.st
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import FormStyles from "modules/common/less/form";
 
-
 // todo: need to figure out why edge fails sometimes
 // todo: need to add loading states
 
@@ -261,9 +260,9 @@ export default class ConnectDropdown extends Component {
 
   toggleDropdownAndConnect(cb) {
     this.props.toggleDropdown(() => {
-       setTimeout(() => { // need to wait for animation to be done
-          cb()
-        }, 500);
+      setTimeout(() => { // need to wait for animation to be done
+        cb()
+      }, 500);
     })
   }
 
@@ -276,6 +275,8 @@ export default class ConnectDropdown extends Component {
       }
       this.toggleDropdownAndConnect(() => {
         this.props.connectMetaMask((err, res) => { //todo: if it doesn;t work say not logged in?
+          console.log(err)
+          console.log(res)
           this.setState({selectOption: null})
         })
       })
@@ -322,7 +323,6 @@ export default class ConnectDropdown extends Component {
   }
 
   retry(param) {
-    console.log('hi')
     this.connect(param)
   }
 
