@@ -22,6 +22,17 @@ export const WALLET_TYPE = {
   HARDWARE: "hardware"
 };
 
+export const ERROR_TYPES = {
+  UNABLE_TO_CONNECT: {
+    header: "Unable To Connect",
+    subheader: "Please install the MetaMask browser plug-in from Metamask.io"
+  },
+  INCORRECT_FORMAT: {
+    header: "Incorrect Format",
+    subheader: "Please enter a derivative path with the the format “m/44’/60/0”"
+  }
+};
+
 const DEFAULT_ITEM_INDEX = 0;
 
 export const ITEMS = [

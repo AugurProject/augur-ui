@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { PulseLoader } from "react-spinners";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { ITEMS, WALLET_TYPE, PARAMS } from "modules/auth/constants/connect-nav";
+import { ITEMS, WALLET_TYPE, PARAMS, ERROR_TYPES } from "modules/auth/constants/connect-nav";
 import isMetaMaskPresent from "src/modules/auth/helpers/is-meta-mask";
 import DerivationPath, {
   DEFAULT_DERIVATION_PATH
@@ -45,101 +45,6 @@ const mockData = [
   }
 ];
 
-const ERROR_TYPES = {
-  UNABLE_TO_CONNECT: {
-    header: "Unable To Connect",
-    subheader: "Please install the MetaMask browser plug-in from Metamask.io"
-  },
-  INCORRECT_FORMAT: {
-    header: "Incorrect Format",
-    subheader: "Please enter a derivative path with the the format “m/44’/60/0”"
-  }
-};
-/*
-const DerivationPathEditor = p => {
-  return (
-    <section className={Styles.DerivationPathEditor}>
-      <div className={Styles.DerivationPathEditor__title}>Derivation Path</div>
-      <div className={Styles.DerivationPathEditor__row}>
-        <ul className={classNames(FormStyles["Form__radio-buttons--per-line"], Styles.DerivationPathEditor__radioButtons)}>
-          <li>
-            <button
-              className={classNames({
-                [`${FormStyles.active}`]: p.selectedDefaultPath
-              })}
-              onClick={p.selectDerivationPath.bind(this, true)}
-            >
-              <span className={Styles.DerivationPathEditor__path}>{DEFAULT_DERIVATION_PATH}</span>
-              <span className={Styles.DerivationPathEditor__pathDetails}>(default)</span>
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div className={Styles.DerivationPathEditor__row}>
-        <ul className={classNames(FormStyles["Form__radio-buttons--per-line"], Styles.DerivationPathEditor__radioButtons, Styles.DerivationPathEditor__radioButtonsInput)}>
-          <li>
-            <button
-              className={classNames({
-                [`${FormStyles.active}`]: !p.selectedDefaultPath
-              })}
-              onClick={p.selectDerivationPath.bind(this, false)}
-            >
-              <span className={classNames(Styles.DerivationPathEditor__path, Styles.DerivationPathEditor__pathInputContainer)}>
-                <input
-                  className={Styles.DerivationPathEditor__pathInput}
-                  type="text"
-                  value={p.customDerivationPath}
-                  placeholder={DEFAULT_DERIVATION_PATH}
-                  onChange={e => p.validatePath(e.target.value)}
-                />
-              </span>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </section>
-  );
-};
-
-
-const AddressPickerContent = p => {
-  return (
-    <div className={Styles.ConnectDropdown__content}>
-      <div
-        className={classNames(
-          Styles.ConnectDropdown__row,
-          Styles.ConnectDropdown__header
-        )}
-      >
-        <div className={Styles.ConnectDropdown__addressColumn}>
-          Address
-        </div>
-        <div className={Styles.ConnectDropdown__balanceColumn}>
-          Balance
-        </div>
-      </div>
-      {mockData.map((item, index) => (
-        <div key={index} className={Styles.ConnectDropdown__row}>
-          <div className={Styles.ConnectDropdown__addressColumn}>
-            {item.address}
-          </div>
-          <div className={Styles.ConnectDropdown__balanceColumn}>
-            {item.balance}
-          </div>
-        </div>
-      ))}
-      <div className={Styles.ConnectDropdown__row}>
-        <div className={Styles.AddressPickerContent__direction}>
-          Previous
-        </div>
-        <div className={Styles.AddressPickerContent__direction} style={{marginLeft: '24px'}}>
-          Next
-        </div>
-      </div>
-    </div>
-  )
-}
-*/
 const ErrorContainer = p => {
   return (
     <div className={Styles.ConnectDropdown__content}>
@@ -213,16 +118,18 @@ export default class ConnectDropdown extends Component {
 
   showError(param, error) {
     this.setState({ error: error }, function() {
-      toggleHeight(this.refs["error_" + param], false, () => {});
+      if (this.refs["error_" + param]) {
+        toggleHeight(this.refs["error_" + param], false, () => {});
+      }
     });
   }
 
   hideError(param) {
-    if (this.refs["error_" + param]) {
-      toggleHeight(this.refs["error_" + param], true, () => {
-        this.setState({ error: null });
-      });
-    }
+    this.setState({ error: null }, function() {
+      if (this.refs["error_" + param]) {
+        toggleHeight(this.refs["error_" + param], true, () => {});
+      }
+    });
   }
 
   showHardwareWallet(param) {
@@ -292,9 +199,9 @@ export default class ConnectDropdown extends Component {
   selectOption(param) {
     const prevSelected = this.state.selectedOption;
 
-    this.hideHardwareWallet(prevSelected);
-    this.hideAdvanced(prevSelected);
     this.hideError(prevSelected);
+    this.hideAdvanced(prevSelected);
+    this.hideHardwareWallet(prevSelected);
 
     if (prevSelected !== param) {
       // new selection being made
@@ -326,7 +233,6 @@ export default class ConnectDropdown extends Component {
   }
 
   retry(param) {
-    console.log("hi");
     this.connect(param);
   }
 
@@ -397,6 +303,8 @@ export default class ConnectDropdown extends Component {
                   item.param === "ledger" && (
                     <Ledger
                       dropdownItem={item}
+                      showError={this.showError}
+                      hideError={this.hideError}
                       showAdvanced={
                         s.selectedOption === "ledger" && s.showAdvanced
                       }

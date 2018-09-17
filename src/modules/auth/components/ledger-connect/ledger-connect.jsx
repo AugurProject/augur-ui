@@ -20,8 +20,7 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import AddressPickerContent from "modules/auth/components/common/AddressPickerContent";
 import DerivationPathEditor from "modules/auth/components/common/DerivationPathEditor";
 import toggleHeight from "utils/toggle-height/toggle-height";
-
-const INCORRECT_FORMAT = "INCORRECT_FORMAT";
+import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
 
 export default class Ledger extends Component {
   static propTypes = {
@@ -31,16 +30,18 @@ export default class Ledger extends Component {
     updateLedgerStatus: PropTypes.func.isRequired,
     ledgerStatus: PropTypes.string.isRequired,
     dropdownItem: PropTypes.object,
-    showAdvanced: PropTypes.bool.isRequired
+    showAdvanced: PropTypes.bool,
+    showError: PropTypes.func.isRequired,
+    hideError: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.LedgerEthereum = null;
-
+ 
     this.state = {
-      displayInstructions: false,
+      displayInstructions: (props.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED && props.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION),
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
       ledgerAddressBalances: {},
@@ -79,11 +80,9 @@ export default class Ledger extends Component {
     if (this.props.showAdvanced !== nextProps.showAdvanced) {
       this.showAdvanced(this.props.showAdvanced);
     }
+
     if (this.props.ledgerStatus !== nextProps.ledgerStatus) {
-      if (
-        nextProps.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED &&
-        nextProps.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION
-      ) {
+      if (nextProps.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED && nextProps.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION) {
         this.updateDisplayInstructions(true);
       } else {
         this.updateDisplayInstructions(false);
@@ -197,12 +196,15 @@ export default class Ledger extends Component {
       this.onDerivationPathChange(value).catch(() =>
         this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
       );
+      this.props.hideError("ledger")
+
       this.setState({
         error: null
       });
     } else {
+      this.props.showError("ledger", ERROR_TYPES.INCORRECT_FORMAT)
       this.setState({
-        error: INCORRECT_FORMAT
+        error: ERROR_TYPES.INCORRECT_FORMAT
       });
     }
   }
@@ -228,6 +230,7 @@ export default class Ledger extends Component {
 
   render() {
     const { ledgerStatus, updateLedgerStatus } = this.props;
+    console.log(ledgerStatus)
     const s = this.state;
 
     const indexes = [
@@ -263,16 +266,7 @@ export default class Ledger extends Component {
                 clickNext={this.next}
               />
             )}
-          {s.error === INCORRECT_FORMAT && (
-            <div>
-              {Alert}
-              <h3>Incorrect Format </h3>
-              <span>
-                Please enter a derivation path with the format
-                {DEFAULT_DERIVATION_PATH}
-              </span>
-            </div>
-          )}
+          
           {!s.error &&
             s.displayInstructions && (
               <ul>
@@ -285,107 +279,17 @@ export default class Ledger extends Component {
           )}
         </div>
       </section>
-      /*
-<section className={Styles.LedgerConnect}>
-        <div className={Styles.LedgerConnect__action}>
-          <ul className={FormStyles["Form__radio-buttons--per-line"]}>
-            <li className={FormStyles["field--inline"]}>
-              <button
-                className={classNames({
-                  [`${FormStyles.active}`]:
-                    s.baseDerivationPath === DEFAULT_DERIVATION_PATH
-                })}
-                onClick={e => {
-                  this.onDerivationPathChange(DEFAULT_DERIVATION_PATH);
-                }}
-              />
-              <label>{DEFAULT_DERIVATION_PATH} (default)</label>
-            </li>
-          </ul>
-          <ul className={FormStyles["Form__radio-buttons--per-line"]}>
-            <li className={FormStyles["field--inline"]}>
-              <button
-                className={classNames({
-                  [`${FormStyles.active}`]: s.customDerivationPath
-                })}
-                onClick={e => {
-                  this.focusTextInput();
-                }}
-              />
-              <input
-                ref={input => {
-                  this.derivationInput = input;
-                }}
-                type="text"
-                className={FormStyles.Form__input}
-                defaultValue={s.baseDerivationPath}
-                onChange={e => {
-                  this.onDerivationPathChange(e.target.value).catch(() =>
-                    updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
-                  );
-                }}
-              />
-            </li>
-          </ul>
-
-          {this.state.ledgerAddresses.some(a => a !== null) && (
-            <div>
-              {indexes.map(i => (
-                <div key={i} className={Styles.Ledger__address__balances}>
-                  <div className={Styles.Ledger__addresses}>
-                    <label
-                      onClick={() => this.connectLedger(i)}
-                      htmlFor={`ledger-address-${i}`}
-                    >
-                      {s.ledgerAddresses[i] &&
-                        formatAddress(s.ledgerAddresses[i])}
-                    </label>
-                  </div>
-                  <div className={Styles.Ledger__balances}>
-                    <label>
-                      {this.state.ledgerAddressBalances[s.ledgerAddresses[i]]}
-                    </label>
-                  </div>
-                </div>
-              ))}
-              <div className={Styles.LedgerConnect__buttons}>
-                <button
-                  type="button"
-                  className={Styles.LedgerConnect__button}
-                  onClick={this.previous}
-                >
-                  Previous
-                </button>
-                <button
-                  type="button"
-                  className={Styles.LedgerConnect__button}
-                  onClick={this.next}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          )}
-
-          {ledgerStatus === LEDGER_STATES.ATTEMPTING_CONNECTION && (
-            <Spinner light />
-          )}
-        </div>
-        {s.displayInstructions && (
-          <div className={Styles.LedgerConnect__messages}>
-            {Alert}
-            <h3>Make sure you have: </h3>
-            <ul>
-              <li>Accessed Augur via HTTPS</li>
-              <li>Connected your Ledger</li>
-              <li>Opened the Ethereum App</li>
-              <li>Enabled Contract Data</li>
-              <li>Enabled Browser Support</li>
-            </ul>
-          </div>
-        )}
-      </section>
-      */
     );
   }
 }
+
+// {s.error === INCORRECT_FORMAT && (
+//             <div>
+//               {Alert}
+//               <h3>Incorrect Format </h3>
+//               <span>
+//                 Please enter a derivation path with the format
+//                 {DEFAULT_DERIVATION_PATH}
+//               </span>
+//             </div>
+//           )}
