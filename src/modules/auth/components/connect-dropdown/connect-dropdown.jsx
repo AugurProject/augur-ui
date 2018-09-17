@@ -22,6 +22,7 @@ import FormStyles from "modules/common/less/form";
 // todo: need to know that MM login failed
 
 // todo: put seperate components in own files
+// todo: give prev, next arrow buttons
 // todo: give addresses hovers, and fix padding
 // todo: give advanced button white hover state
 // todo: need metamask word to be underlined
