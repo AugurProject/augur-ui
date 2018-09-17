@@ -1488,5 +1488,3 @@ export const errorIcon = (
       </g>
   </svg>
 );
-
-

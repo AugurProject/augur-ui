@@ -1,19 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import { PulseLoader } from "react-spinners";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
 import { ITEMS, WALLET_TYPE, PARAMS } from "modules/auth/constants/connect-nav";
+import isMetaMaskPresent from "src/modules/auth/helpers/is-meta-mask";
+import DerivationPath, {
+  DEFAULT_DERIVATION_PATH
+} from "modules/auth/helpers/derivation-path";
+import { errorIcon } from "modules/common/components/icons";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import FormStyles from "modules/common/less/form";
-import DerivationPath, {
-  DEFAULT_DERIVATION_PATH
-} from "modules/auth/helpers/derivation-path";
 
-// todo: what happens if you click software wallet while it is in the connecting phase?
+
+// todo: need to figure out why edge fails sometimes
+// todo: need to add loading states
+
+// todo: need to be able to retry MM
+// todo: need to know that MM login failed
+
 // todo: put seperate components in own files
+// todo: give addresses hovers, and fix padding
+// todo: give advanced button white hover state
+// todo: need metamask word to be underlined
+// todo: need to style for mobile
+// todo: clean up pr, remove those overrode files
 
 const mockData = [
   {
@@ -86,6 +100,7 @@ const DerivationPathEditor = p => {
   );
 };
 
+
 const AddressPickerContent = p => {
   return (
     <div className={Styles.ConnectDropdown__content}>
@@ -112,6 +127,14 @@ const AddressPickerContent = p => {
           </div>
         </div>
       ))}
+      <div className={Styles.ConnectDropdown__row}>
+        <div className={Styles.AddressPickerContent__direction}>
+          Previous 
+        </div>
+        <div className={Styles.AddressPickerContent__direction} style={{marginLeft: '24px'}}>
+          Next
+        </div>
+      </div>
     </div>
   )
 }
@@ -120,10 +143,22 @@ const ErrorContainer = p => {
   return (
     <div className={Styles.ConnectDropdown__content}>
       <div className={Styles.ErrorContainer__header}>
+        <div className={Styles.ErrorContainer__headerIcon}>{errorIcon}</div>
         {p.error && p.error.header}
       </div>
       <div className={Styles.ErrorContainer__subheader}>
-        {p.error && p.error.subheader}
+        {p.error === ERROR_TYPES.UNABLE_TO_CONNECT && 
+          <div className={Styles.ErrorContainer__words}>
+            Please install the MetaMask browser plug-in from <a
+              href="https://metamask.io/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >Metamask.io</a>
+          </div>
+        }
+        {p.error !== ERROR_TYPES.UNABLE_TO_CONNECT && 
+          p.error && p.error.subheader
+        }
       </div>
     </div>
   )
@@ -133,9 +168,11 @@ export default class ConnectDropdown extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
     connectMetaMask: PropTypes.func.isRequired,
-    isMetaMaskPresent: PropTypes.bool.isRequired,
     toggleDropdown: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
+    edgeLoginLink: PropTypes.func.isRequired,
+    edgeLoading: PropTypes.bool.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -159,6 +196,8 @@ export default class ConnectDropdown extends Component {
     this.hideAdvanced = this.hideAdvanced.bind(this)
     this.hideError = this.hideError.bind(this)
     this.showHardwareWallet = this.showHardwareWallet.bind(this)
+    this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this)
+    this.retry = this.retry.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -220,20 +259,31 @@ export default class ConnectDropdown extends Component {
     }
   }
 
+  toggleDropdownAndConnect(cb) {
+    this.props.toggleDropdown(() => {
+       setTimeout(() => { // need to wait for animation to be done
+          cb()
+        }, 500);
+    })
+  }
+
   connect(param) {
-    // todo: need to redirect to /categories page?
     // todo: need to check if connection was successful before closing
     if (param === PARAMS.METAMASK) {
-      if (!this.props.isMetaMaskPresent) { // todo: does this look at all web3 things or just MM?
+      if (!isMetaMaskPresent()) { // todo: does this look at all web3 things or just MM?
         this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT)
         return;
       }
-      this.props.toggleDropdown()
-      this.props.connectMetaMask((err, res) => {
-        // todo: if doesnt work, say not logged in?
+      this.toggleDropdownAndConnect(() => {
+        this.props.connectMetaMask((err, res) => { //todo: if it doesn;t work say not logged in?
+          this.setState({selectOption: null})
+        })
       })
-      this.setState({selectOption: null})
-    } 
+    } else if (param === PARAMS.EDGE) {
+      // this.toggleDropdownAndConnect(() => { 
+      this.props.edgeLoginLink(this.props.history) //todo: why does this fail sometimes?
+      //})
+    }
   }
 
   selectOption(param) {
@@ -271,9 +321,15 @@ export default class ConnectDropdown extends Component {
     })
   }
 
+  retry(param) {
+    console.log('hi')
+    this.connect(param)
+  }
+
   render() {
     const {
       isLogged,
+      edgeLoading,
     } = this.props;
     const s = this.state;
 
@@ -300,7 +356,20 @@ export default class ConnectDropdown extends Component {
               onClick={this.selectOption.bind(this, item.param)}
             >
               <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
-              <div className={Styles.ConnectDropdown__title}>{item.title}</div>
+              <div className={Styles.ConnectDropdown__title}>
+                {item.title}
+                {s.selectedOption === item.param && item.param === PARAMS.EDGE && edgeLoading &&
+                  <div style={{ marginLeft: "8px" }}>
+                    <PulseLoader
+                      color="#FFF"
+                      sizeUnit="px"
+                      size={8}
+                      loading={true}
+                    />
+                  </div>
+                }
+              </div>
+              
               {s.selectedOption === item.param &&
                 item.type === WALLET_TYPE.HARDWARE && (
                   <div style={{padding: '10px'}} onClick={this.showAdvanced}>
@@ -346,7 +415,7 @@ export default class ConnectDropdown extends Component {
                 ToggleHeightStyles["toggle-height-target"]
               )}
             >
-              <ErrorContainer error={s.error}/>
+              <ErrorContainer error={s.error} retry={this.retry} />
             </div>
           </div>
         ))}

@@ -48,7 +48,7 @@ export const ITEMS = [
 if (!process.env.AUGUR_HOSTED) {
   ITEMS.unshift({
     param: PARAMS.EDGE,
-    title: "Edge (Username & Password)",
+    title: "Edge",
     icon: Edge,
     type: WALLET_TYPE.SOFTWARE
   });

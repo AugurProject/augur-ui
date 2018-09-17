@@ -10,8 +10,6 @@ import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/connect-account/connect-account.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
-// todo: need to style for mobile
-
 export default class ConnectAccount extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,

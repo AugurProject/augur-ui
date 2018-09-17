@@ -17,6 +17,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
   const state = getState();
   const edgeContext = selectEdgeContextState(state);
   const edgeLoading = selectEdgeLoadingState(state);
+  console.log(history)
   const loginWindowOptions = {
     onLogin: edgeAccount => dispatch(loginWithEdge(edgeAccount, history))
   };
