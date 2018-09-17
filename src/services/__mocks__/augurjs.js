@@ -42,7 +42,18 @@ mockAugur.constants = {
 
 mockAugur.rpc = {
   getCurrentBlock: () => ({ number: 10000, timestamp: 4886718345 }),
-  block: { number: 10000, timestamp: 4886718345 }
+  block: { number: 10000, timestamp: 4886718345 },
+  constants: {
+    ACCOUNT_TYPES: {
+      U_PORT: "uPort",
+      LEDGER: "ledger",
+      PRIVATE_KEY: "privateKey",
+      UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
+      META_MASK: "metaMask",
+      TREZOR: "trezor",
+      EDGE: "edge"
+    }
+  }
 };
 
 mockAugur.api = {
