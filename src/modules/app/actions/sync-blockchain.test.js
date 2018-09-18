@@ -8,7 +8,6 @@ jest.mock("services/augurjs");
 jest.mock("modules/app/actions/update-blockchain");
 
 describe(`modules/app/actions/sync-blockchain.js`, () => {
-  // eslint-disable-line func-names, prefer-arrow-callback
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
   const state = Object.assign({}, testState, {
