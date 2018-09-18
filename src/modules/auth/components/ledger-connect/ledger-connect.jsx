@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  LedgerEthereum,
-  BrowserLedgerConnectionFactory
-} from "ethereumjs-ledger";
+import TransportU2F from "@ledgerhq/hw-transport-u2f";
+import Eth from "@ledgerhq/hw-app-eth";
 
 import DerivationPath, {
   DEFAULT_DERIVATION_PATH,
   NUM_DERIVATION_PATHS_TO_DISPLAY
 } from "modules/auth/helpers/derivation-path";
 import classNames from "classnames";
-import getEtherBalance from "modules/auth/actions/get-ether-balance";
+
 import AddressPickerContent from "modules/auth/components/common/address-picker-content";
 import DerivationPathEditor from "modules/auth/components/common/derivation-path-editor";
 import toggleHeight from "utils/toggle-height/toggle-height";
@@ -20,8 +18,6 @@ import { errorIcon } from "modules/common/components/icons";
 import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
 import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
-
-
 
 export default class Ledger extends Component {
   static propTypes = {
@@ -36,7 +32,7 @@ export default class Ledger extends Component {
     error: PropTypes.bool,
     setIsLedgerLoading: PropTypes.func.isRequired,
     setShowAdvancedButton: PropTypes.func.isRequired,
-    isLedgerClicked: PropTypes.bool,
+    isLedgerClicked: PropTypes.bool
   };
 
   constructor(props) {
@@ -49,7 +45,7 @@ export default class Ledger extends Component {
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
       ledgerAddressBalances: {},
-      ledgerAddressPageNumber: 1,
+      ledgerAddressPageNumber: 1
     };
 
     this.connectLedger = this.connectLedger.bind(this);
@@ -60,13 +56,6 @@ export default class Ledger extends Component {
     this.ledgerValidation = this.ledgerValidation.bind(this);
     this.previous = this.previous.bind(this);
     this.validatePath = this.validatePath.bind(this);
-
-    const { networkId } = this.props;
-
-    this.state.ledgerEthereum = new LedgerEthereum(
-      networkId,
-      BrowserLedgerConnectionFactory
-    );
 
     this.ledgerValidation();
   }
@@ -80,7 +69,11 @@ export default class Ledger extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.isLedgerClicked !== nextProps.isLedgerClicked && nextProps.isLedgerClicked) { // this is if the button was clicked, need to reupdate on click
+    if (
+      this.props.isLedgerClicked !== nextProps.isLedgerClicked &&
+      nextProps.isLedgerClicked
+    ) {
+      // this is if the button was clicked, need to reupdate on click
       this.onDerivationPathChange(
         this.state.baseDerivationPath,
         nextState.ledgerAddressPageNumber
@@ -107,8 +100,11 @@ export default class Ledger extends Component {
   }
 
   async onDerivationPathChange(derivationPath, pageNumber = 1) {
-    this.props.setIsLedgerLoading(true)
-    const { ledgerEthereum } = this.state;
+    this.props.setIsLedgerLoading(true);
+    const transport = await TransportU2F.create();
+    const ledgerEthereum = new Eth(transport);
+
+    this.updateDisplayInstructions(false);
 
     this.setState({
       baseDerivationPath: derivationPath
@@ -116,28 +112,23 @@ export default class Ledger extends Component {
 
     const components = DerivationPath.parse(derivationPath);
     const numberOfAddresses = NUM_DERIVATION_PATHS_TO_DISPLAY * pageNumber;
-    const addresses = await Promise.all(
-      Array.from(Array(numberOfAddresses).keys()).map(i =>
-        ledgerEthereum
-          .getAddressByBip32Path(
-            DerivationPath.buildString(DerivationPath.increment(components, i))
-          )
-          .catch(() => { 
-            this.updateDisplayInstructions(true)
-            this.props.setIsLedgerLoading(false)
-            return
-          })
-      )
-    );
+    const indexes = Array.from(Array(numberOfAddresses).keys());
+    const addresses = [];
 
-    if (addresses) {
+    for (const index of indexes) {
+      const result = await ledgerEthereum.getAddress(
+        DerivationPath.buildString(DerivationPath.increment(components, index))
+      );
+      addresses.push(result && result.address);
+    }
+
+    if (addresses && addresses.length > 0) {
       this.setState({ ledgerAddresses: addresses });
-      if (!addresses.every(element => element === null)) {
+      if (!addresses.every(element => !element)) {
         this.updateDisplayInstructions(false);
         this.props.setIsLedgerLoading(false);
       }
-  
-      return addresses.map(address => this.updateAccountBalance(address));
+      return;
     }
 
     this.updateDisplayInstructions(true);
@@ -151,44 +142,25 @@ export default class Ledger extends Component {
 
   updateDisplayInstructions(displayInstructions) {
     if (displayInstructions) {
-      this.props.setShowAdvancedButton(false)
+      this.props.setShowAdvancedButton(false);
     } else {
-      this.props.setShowAdvancedButton(true)
+      this.props.setShowAdvancedButton(true);
     }
     this.setState({ displayInstructions });
-  }
-
-  updateAccountBalance(address) {
-    if (!this.state.ledgerAddressBalances[address] && address) {
-      getEtherBalance(address, (err, balance) => {
-        if (!err) {
-          const balances = {
-            ...this.state.ledgerAddressBalances
-          };
-          balances[address] = balance || 0;
-
-          this.setState({
-            ledgerAddressBalances: balances
-          });
-        }
-      });
-    }
   }
 
   async connectLedger(pathIndex) {
     const { loginWithLedger } = this.props;
     const derivationPath = this.buildDerivationPath(pathIndex);
-    const address = await this.state.ledgerEthereum
-      .getAddressByBip32Path(derivationPath)
-      .catch(err => {
-        console.log(err);
-        this.updateDisplayInstructions(true);
-      });
+    const transport = await TransportU2F.create();
+    const ledgerEthereum = new Eth(transport);
+    const result = await ledgerEthereum.getAddress(derivationPath);
+    const { address } = result;
 
     if (address) {
       return loginWithLedger(
         address.toLowerCase(),
-        this.state.ledgerEthereum,
+        ledgerEthereum,
         derivationPath
       );
     }
@@ -278,10 +250,12 @@ export default class Ledger extends Component {
                   </div>
                   Unable To Connect
                 </div>
-                <div className={classNames(
-                  StylesDropdown.ErrorContainer__subheader,
-                  Styles.LedgerConnect__subheader
-                )}>
+                <div
+                  className={classNames(
+                    StylesDropdown.ErrorContainer__subheader,
+                    Styles.LedgerConnect__subheader
+                  )}
+                >
                   <div>Make sure you have:</div>
                   <ul>
                     <li>Accessed Augur via HTTPS</li>
@@ -292,7 +266,6 @@ export default class Ledger extends Component {
                   </ul>
                 </div>
               </div>
-              
             )}
         </div>
       </section>
