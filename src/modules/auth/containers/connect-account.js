@@ -5,7 +5,7 @@ import ConnectAccount from "modules/auth/components/connect-account/connect-acco
 const mapStateToProps = state => ({
   isMobile: state.appStatus.isMobile,
   isLogged: state.authStatus.isLogged,
-  address: state.loginAccount.address,
+  address: state.loginAccount.address
 });
 
 export default withRouter(connect(mapStateToProps)(ConnectAccount));

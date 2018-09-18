@@ -62,7 +62,7 @@ const TopBar = props => (
               <span>{props.stats[1].totalPLDay.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLDay.value.formatted} 
+              {props.stats[1].totalPLDay.value.formatted}
               <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>

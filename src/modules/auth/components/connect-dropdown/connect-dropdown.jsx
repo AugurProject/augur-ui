@@ -11,14 +11,10 @@ import {
   ERROR_TYPES
 } from "modules/auth/constants/connect-nav";
 import isMetaMaskPresent from "src/modules/auth/helpers/is-meta-mask";
-import DerivationPath, {
-  DEFAULT_DERIVATION_PATH
-} from "modules/auth/helpers/derivation-path";
 import { errorIcon } from "modules/common/components/icons";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
-import FormStyles from "modules/common/less/form";
 import Ledger from "modules/auth/containers/ledger-connect";
 
 // todo: need to figure out why edge fails sometimes
@@ -31,25 +27,13 @@ import Ledger from "modules/auth/containers/ledger-connect";
 // todo: need to style for mobile
 // todo: clean up pr, remove those overrode files
 
-const mockData = [
-  {
-    address: "0x001...6bf",
-    balance: "1.20 ETH"
-  },
-  {
-    address: "0x003...6bf",
-    balance: "2.20 ETH"
-  },
-  {
-    address: "0x20e...5bf",
-    balance: "4.20 ETH"
-  }
-];
-
 const ErrorContainer = p => (
-  <div className={classNames(Styles.ConnectDropdown__content, {
-         [Styles.ConnectDropdown__contentNoPadding]: !p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT
-    })}>
+  <div
+    className={classNames(Styles.ConnectDropdown__content, {
+      [Styles.ConnectDropdown__contentNoPadding]:
+        !p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT
+    })}
+  >
     <div className={Styles.ErrorContainer__header}>
       <div className={Styles.ErrorContainer__headerIcon}>
         {p.error && errorIcon}
@@ -94,12 +78,9 @@ export default class ConnectDropdown extends Component {
     this.state = {
       selectedOption: null,
       showAdvanced: false,
-      selectedDefaultPath: true,
-      customDerivationPath: "",
       error: null,
-      connectLedger: false,
       isLedgerLoading: true,
-      showAdvancedButton: false, // todo: don't want this to show up until loading is done?
+      showAdvancedButton: false // todo: don't want this to show up until loading is done?
     };
 
     this.showAdvanced = this.showAdvanced.bind(this);
@@ -112,8 +93,8 @@ export default class ConnectDropdown extends Component {
     this.showHardwareWallet = this.showHardwareWallet.bind(this);
     this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this);
     this.retry = this.retry.bind(this);
-    this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this)
-    this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this)
+    this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this);
+    this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -123,15 +104,15 @@ export default class ConnectDropdown extends Component {
   }
 
   setIsLedgerLoading(value) {
-    this.setState({isLedgerLoading: value})
+    this.setState({ isLedgerLoading: value });
   }
 
   setShowAdvancedButton(value) {
-    this.setState({showAdvancedButton: value})
+    this.setState({ showAdvancedButton: value });
   }
 
   showError(param, error) {
-    this.setState({ error }, function() {
+    this.setState({ error }, () => {
       if (this.refs["error_" + param]) {
         toggleHeight(this.refs["error_" + param], false, () => {});
       }
@@ -139,10 +120,10 @@ export default class ConnectDropdown extends Component {
   }
 
   hideError(param) {
-    this.setState({ error: null }, function() {
+    this.setState({ error: null }, () => {
       if (this.refs["error_" + param]) {
         toggleHeight(this.refs["error_" + param], true, () => {
-          console.log('error hidden ' + param)
+          console.log("error hidden " + param);
         });
       }
     });
@@ -200,8 +181,6 @@ export default class ConnectDropdown extends Component {
           if (err) {
             this.showError(param, ERROR_TYPES.NOT_SIGNED_IN);
             this.props.toggleDropdown();
-          } else {
-            this.setState({ selectOption: null });
           }
         });
       });
@@ -223,7 +202,6 @@ export default class ConnectDropdown extends Component {
       // new selection being made
       this.showHardwareWallet(param);
       this.connect(param);
-      this.setState({ selectedDefaultPath: true });
     } else {
       // deselection is being done
       this.setState({ selectedOption: null });
@@ -244,10 +222,7 @@ export default class ConnectDropdown extends Component {
   }
 
   render() {
-    const { 
-      isLogged, 
-      edgeLoading, 
-    } = this.props;
+    const { isLogged, edgeLoading } = this.props;
     const s = this.state;
 
     return (
@@ -277,8 +252,8 @@ export default class ConnectDropdown extends Component {
                 <div className={Styles.ConnectDropdown__title}>
                   {item.title}
                   {s.selectedOption === item.param &&
-                    ((item.param === PARAMS.EDGE &&
-                    edgeLoading) || (item.param === PARAMS.LEDGER && s.isLedgerLoading)) && (
+                    ((item.param === PARAMS.EDGE && edgeLoading) ||
+                      (item.param === PARAMS.LEDGER && s.isLedgerLoading)) && (
                       <div style={{ marginLeft: "8px" }}>
                         <PulseLoader
                           color="#FFF"
@@ -291,7 +266,8 @@ export default class ConnectDropdown extends Component {
                 </div>
 
                 {s.selectedOption === item.param &&
-                  item.type === WALLET_TYPE.HARDWARE && s.showAdvancedButton && (
+                  item.type === WALLET_TYPE.HARDWARE &&
+                  s.showAdvancedButton && (
                     <div
                       style={{ padding: "10px" }}
                       onClick={this.showAdvanced}
@@ -318,7 +294,9 @@ export default class ConnectDropdown extends Component {
                       showAdvanced={
                         s.selectedOption === "ledger" && s.showAdvanced
                       }
-                      error={Boolean(s.selectedOption === item.param && s.error)}
+                      error={Boolean(
+                        s.selectedOption === item.param && s.error
+                      )}
                       setIsLedgerLoading={this.setIsLedgerLoading}
                       isLedgerClicked={s.selectedOption === item.param}
                       setShowAdvancedButton={this.setShowAdvancedButton}

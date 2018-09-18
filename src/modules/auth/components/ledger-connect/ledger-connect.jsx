@@ -204,7 +204,7 @@ export default class Ledger extends Component {
   }
 
   render() {
-    const { ledgerStatus, error } = this.props;
+    const { error } = this.props;
     const s = this.state;
 
     const indexes = [

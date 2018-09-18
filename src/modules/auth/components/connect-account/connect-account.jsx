@@ -13,14 +13,13 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 export default class ConnectAccount extends Component {
   static propTypes = {
     isLogged: PropTypes.bool,
-    address: PropTypes.string,
+    address: PropTypes.string
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      connected: false,
       dropdownOpen: false
     };
 
@@ -55,10 +54,7 @@ export default class ConnectAccount extends Component {
   }
 
   render() {
-    const { 
-      isLogged,
-      address 
-    } = this.props;
+    const { isLogged, address } = this.props;
     const s = this.state;
 
     return (
@@ -76,7 +72,7 @@ export default class ConnectAccount extends Component {
         >
           <div className={Styles.ConnectAccount__column}>
             <div className={Styles.ConnectAccount__status}>
-              <div 
+              <div
                 className={classNames(
                   Styles["ConnectAccount__status-indicator"],
                   {
@@ -84,10 +80,10 @@ export default class ConnectAccount extends Component {
                   }
                 )}
               />
-              {isLogged ? 'Connected' : 'Disconnected'}
+              {isLogged ? "Connected" : "Disconnected"}
             </div>
             <div className={Styles.ConnectAccount__title}>
-              {isLogged ? formatAddress(address || '') : 'Connect A Wallet'}
+              {isLogged ? formatAddress(address || "") : "Connect A Wallet"}
             </div>
           </div>
           <div className={Styles.ConnectAccount__arrow}>

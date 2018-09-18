@@ -7,18 +7,18 @@
 }
 
 .ConnectDropdown__item {
-  padding: 14px 0 14px 24px;
-  font-size: 16px;
-  font-weight: normal;
+  align-items: center;
   color: #ffffff;
   cursor: pointer;
-  align-items: center;
   display: flex;
   flex-direction: row;
+  font-size: 16px;
+  font-weight: normal;
   max-height: 48px;
-  z-index: 1;
+  padding: 14px 0 14px 24px;
   position: relative;
-	
+  z-index: 1;
+
   &:hover {
     background-color: #412468;
   }
@@ -33,19 +33,19 @@
 }
 
 .ConnectDropdown__icon {
-  margin-right: 11px;
   display: flex;
   justify-content: center;
+  margin-right: 11px;
   width: 18px;
 }
 
 .ConnectDropdown__hardwareContent {
-  height: 0;
-  border-bottom-right-radius: 2px;
-  border-bottom-left-radius: 2px;
   background-color: #372e4b;
-  z-index: 0;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  height: 0;
   position: relative;
+  z-index: 0;
 }
 
 .ConnectDropdown__item-selected {
@@ -58,14 +58,14 @@
 }
 
 .ConnectDropdown__advanced {
-  font-size: 12px;
-  color: #a7a2b2;
   border-bottom: 0.5px dotted #dbdae1;
+  color: #a7a2b2;
+  font-size: 12px;
   margin-right: 14px;
 
   &:hover {
-    color: white;
     border-bottom: 0.5px dotted white;
+    color: white;
   }
 }
 
@@ -75,14 +75,14 @@
 }
 
 .ConnectDropdown__header {
+  color: #ffffff;
   font-family: @roboto !important;
   font-size: 13px;
   font-weight: bold;
-  color: #ffffff;
 
   &:hover {
-    cursor: default;
     background-color: unset !important;
+    cursor: default;
   }
 }
 
@@ -90,20 +90,20 @@
   margin-top: 16px;
 
   &:hover {
-    cursor: default;
     background-color: unset !important;
+    cursor: default;
   }
 }
 
 .ConnectDropdown__row {
-  display: flex;
-  font-family: 'Roboto Mono', monospace;
-  padding: 7px 24px 7px;
   color: #ffffff;
   cursor: pointer;
+  display: flex;
+  font-family: 'Roboto Mono', monospace;
+  padding: 7px 24px;
 
   &:hover {
-    background-color: rgba(240, 239, 246, .05);
+    background-color: rgba(240, 239, 246, 0.05);
   }
 }
 
@@ -122,17 +122,17 @@
 }
 
 .ConnectDropdown__contentNoPadding {
-  padding: 0px;
+  padding: 0;
 }
 
 .DerivationPathEditor {
-  padding: 16px 24px 8px 24px;
+  padding: 16px 24px 8px;
 }
 
 .DerivationPathEditor__title {
+  color: #ffffff;
   font-size: 13px;
   font-weight: bold;
-  color: #ffffff;
 }
 
 .DerivationPathEditor__row {
@@ -140,25 +140,22 @@
   margin-top: 12px;
 }
 
-.DerivationPathEditor__radioButton {
-}
-
 .DerivationPathEditor__address {
   margin-left: 16px;
 }
 
 .DerivationPathEditor__pathDetails {
+  color: #ffffff;
   font-family: @roboto;
   font-size: 13px;
-  color: #ffffff;
-  text-transform: none;
   margin-left: 8px;
+  text-transform: none;
 }
 
 .DerivationPathEditor__path {
+  color: #ffffff;
   font-family: 'Roboto Mono', monospace;
   font-size: 13px;
-  color: #ffffff;
   text-transform: none;
 }
 
@@ -170,53 +167,51 @@
 .DerivationPathEditor__radioButtons {
   display: flex;
   flex-grow: 1;
-  
+
   > li {
-    text-transform: none;
     display: flex;
     flex-grow: 1;
-    
+    text-transform: none;
+
     > button {
       color: @color-white;
       cursor: pointer;
-      display: block;
+      display: flex;
+      flex-grow: 1;
       font-size: @font-size-large;
       line-height: @font-size-large;
       min-height: 1.7rem;
-      padding-left: 2.5rem;
+      padding-left: 36px;
       position: relative;
       text-align: left;
-      display: flex;
-      flex-grow: 1;
-      padding-left: 36px;
 
-      &::before {        
+      &::before {
         background-color: white;
+        border: 0;
         border-radius: 100%;
         content: "";
+        height: 20px;
         left: 0;
         margin: auto;
+        margin-top: 5px;
         top: 0;
         width: 20px;
-        height: 20px;
-        border: 0px;
-        margin-top: 5px;
       }
 
       &::after {
         background-color: #412468;
         height: 11.75px;
-        left: 0.28rem;
-        width: 11.75px;
-        top: 0.24rem;
+        left: 0.25rem;
         margin-top: 5px;
+        top: 0.25rem;
+        width: 11.75px;
       }
     }
   }
 }
 
 .DerivationPathEditor__radioButtonsInput {
- > li {
+  > li {
     > button {
       padding-left: 32px;
     }
@@ -224,14 +219,14 @@
 }
 
 .DerivationPathEditor__pathInput {
-  color: #372e4b;
-  max-height: 24px;
-  font-weight: bold;
-  text-transform: none;
   border: none;
+  color: #372e4b;
+  font-weight: bold;
   height: 24px;
+  max-height: 24px;
   padding: 3px 12px;
-  
+  text-transform: none;
+
   &::placeholder {
     color: #a7a2b2;
     font-weight: normal;
@@ -243,11 +238,11 @@
 }
 
 .ErrorContainer__header {
-  font-size: 12px;
-  font-weight: bold;
+  align-items: center;
   color: #ffffff;
   display: flex;
-  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .ErrorContainer__headerIcon {
@@ -255,13 +250,13 @@
 }
 
 .ErrorContainer__subheader {
-  font-size: 13px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: 1.54;
-  letter-spacing: normal;
   color: #ffffff;
+  font-size: 13px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  line-height: 1.54;
   margin-top: 8px;
 }
 
@@ -271,19 +266,19 @@
 }
 
 .AddressPickerContent__direction {
-  font-size: 14px;
-  font-weight: 500;
-  font-family: @roboto !important;
-  text-transform: none;
+  align-items: center;
   cursor: pointer;
   display: flex;
+  font-family: @roboto !important;
+  font-size: 14px;
+  font-weight: 500;
   justify-content: center;
-  align-items: center;
+  text-transform: none;
 }
 
 .AddressPickerContent__arrow {
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 

@@ -1,12 +1,12 @@
 @import (reference) '~assets/styles/shared';
 
 .ConnectAccount {
-  color: white;
-  max-width: 184px;
-  border-left: 0.0625rem solid @color-lightpurple;
-  justify-content: center;
   align-items: center;
+  border-left: 0.0625rem solid @color-lightpurple;
+  color: white;
   flex-direction: column;
+  justify-content: center;
+  max-width: 184px;
 
   &:hover {
     background-color: #553580;
@@ -18,27 +18,27 @@
 }
 
 .ConnectAccount__container {
-  display: flex;
   cursor: pointer;
+  display: flex;
   flex: 1;
-  width: 100%;
   padding: 20px 16px 18px 23px;
+  width: 100%;
 }
 
 .ConnectAccount__status {
+  color: #dbdae1;
   font-size: 12px;
   font-weight: normal;
-  color: #dbdae1;
   margin-bottom: 4px;
 }
 
 .ConnectAccount__status-indicator {
   background-color: #f0eff6;
-  min-width: 8px;
-  min-height: 8px;
   border-radius: 50%;
-  margin-right: 5px;
   display: inline-block;
+  margin-right: 5px;
+  min-height: 8px;
+  min-width: 8px;
 }
 
 .ConnectAccount__statusGreen {
@@ -51,14 +51,18 @@
 }
 
 .ConnectAccount__arrow {
-  justify-content: center;
   align-items: center;
   display: flex;
+  justify-content: center;
   margin-left: 24px;
   max-width: 12px;
 }
 
 .ConnectAccount__connectDropdown {
+  background-color: #553580;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.5);
   height: 0;
   position: absolute;
   right: 81px;
@@ -66,10 +70,6 @@
   top: 72px;
   width: 98px;
   z-index: @above-all-content;
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  background-color: #553580;
-  box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.5);
 }
 
 .ConnectAccount__connectDropdown__isLogged {

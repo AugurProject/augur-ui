@@ -9,13 +9,13 @@ import { selectEdgeLoadingState } from "src/select-state";
 const mapStateToProps = state => ({
   isMobile: state.appStatus.isMobile,
   isLogged: state.authStatus.isLogged,
-  edgeLoading: selectEdgeLoadingState(state),
+  edgeLoading: selectEdgeLoadingState(state)
 });
 
 const mapDispatchToProps = (dispatch, { history }) => ({
-  connectMetaMask: (cb) => dispatch(loginWithMetaMask(history, cb)),
+  connectMetaMask: cb => dispatch(loginWithMetaMask(history, cb)),
   logout: () => dispatch(logout()),
-  edgeLoginLink: (history) => dispatch(showEdgeLogin(history)),
+  edgeLoginLink: history => dispatch(showEdgeLogin(history))
 });
 
 export default withRouter(
