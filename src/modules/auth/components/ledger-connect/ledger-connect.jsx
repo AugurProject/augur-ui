@@ -11,12 +11,17 @@ import DerivationPath, {
 } from "modules/auth/helpers/derivation-path";
 import classNames from "classnames";
 import getEtherBalance from "modules/auth/actions/get-ether-balance";
-import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
-import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import AddressPickerContent from "modules/auth/components/common/address-picker-content";
 import DerivationPathEditor from "modules/auth/components/common/derivation-path-editor";
 import toggleHeight from "utils/toggle-height/toggle-height";
 import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
+import { errorIcon } from "modules/common/components/icons";
+
+import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
+import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
+
+
 
 export default class Ledger extends Component {
   static propTypes = {
@@ -120,6 +125,7 @@ export default class Ledger extends Component {
           .catch(() => { 
             this.updateDisplayInstructions(true)
             this.props.setIsLedgerLoading(false)
+            return
           })
       )
     );
@@ -262,13 +268,28 @@ export default class Ledger extends Component {
 
           {!error &&
             s.displayInstructions && (
-              <ul>
-                <li>Accessed Augur via HTTPS</li>
-                <li>Connected your Ledger</li>
-                <li>Opened the Ethereum App</li>
-                <li>Enabled Contract Data</li>
-                <li>Enabled Browser Support</li>
-              </ul>
+              <div className={StylesDropdown.ConnectDropdown__content}>
+                <div className={StylesDropdown.ErrorContainer__header}>
+                  <div className={StylesDropdown.ErrorContainer__headerIcon}>
+                    {errorIcon}
+                  </div>
+                  Unable To Connect
+                </div>
+                <div className={classNames(
+                  StylesDropdown.ErrorContainer__subheader,
+                  Styles.LedgerConnect__subheader
+                )}>
+                  <div>Make sure you have:</div>
+                  <ul>
+                    <li>Accessed Augur via HTTPS</li>
+                    <li>Connected your Ledger</li>
+                    <li>Opened the Ethereum App</li>
+                    <li>Enabled contract data</li>
+                    <li>Enabled browser support</li>
+                  </ul>
+                </div>
+              </div>
+              
             )}
         </div>
       </section>
