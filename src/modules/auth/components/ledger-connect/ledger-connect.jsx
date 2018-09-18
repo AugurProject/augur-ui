@@ -27,7 +27,6 @@ export default class Ledger extends Component {
     history: PropTypes.object.isRequired,
     loginWithLedger: PropTypes.func.isRequired,
     networkId: PropTypes.number.isRequired,
-    updateLedgerStatus: PropTypes.func.isRequired,
     ledgerStatus: PropTypes.string.isRequired,
     dropdownItem: PropTypes.object,
     showAdvanced: PropTypes.bool,
@@ -55,14 +54,24 @@ export default class Ledger extends Component {
     this.onDerivationPathChange = this.onDerivationPathChange.bind(this);
     this.buildDerivationPath = this.buildDerivationPath.bind(this);
     this.next = this.next.bind(this);
+    this.ledgerValidation = this.ledgerValidation.bind(this);
     this.previous = this.previous.bind(this);
     this.validatePath = this.validatePath.bind(this);
+
+    const { networkId } = this.props;
+
+    this.state.ledgerEthereum = new LedgerEthereum(
+      networkId,
+      BrowserLedgerConnectionFactory
+    );
+
+    this.ledgerValidation();
   }
 
   componentDidMount() {
     if (this.state.ledgerAddresses.some(a => a === null)) {
       this.onDerivationPathChange(this.state.baseDerivationPath).catch(() =>
-        this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
+        this.updateDisplayInstructions(true)
       );
     }
   }
@@ -81,37 +90,19 @@ export default class Ledger extends Component {
       this.showAdvanced(this.props.showAdvanced);
     }
 
-    if (this.props.ledgerStatus !== nextProps.ledgerStatus) {
-      if (
-        nextProps.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED &&
-        nextProps.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION
-      ) {
-        this.updateDisplayInstructions(true);
-      } else {
-        this.updateDisplayInstructions(false);
-      }
+    if (this.state.displayInstructions !== nextState.displayInstructions) {
+      this.updateDisplayInstructions(nextState.displayInstructions);
     }
   }
 
   async onDerivationPathChange(derivationPath, pageNumber = 1) {
-    const { networkId, updateLedgerStatus } = this.props;
-    updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
-    if (location.protocol !== "https:") {
-      updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
-    }
+    const { ledgerEthereum } = this.state;
+
+    this.updateDisplayInstructions(false);
 
     this.setState({
       baseDerivationPath: derivationPath
     });
-
-    const ledgerEthereum = new LedgerEthereum(
-      networkId,
-      BrowserLedgerConnectionFactory,
-      this.onConnectLedgerRequestHook,
-      this.onOpenEthereumAppRequestHook,
-      this.onSwitchLedgerModeRequestHook,
-      this.onEnableContractSupportRequestHook
-    );
 
     const components = DerivationPath.parse(derivationPath);
     const numberOfAddresses = NUM_DERIVATION_PATHS_TO_DISPLAY * pageNumber;
@@ -128,7 +119,13 @@ export default class Ledger extends Component {
       addresses.map(address => this.updateAccountBalance(address));
     }
 
-    updateLedgerStatus(LEDGER_STATES.NOT_CONNECTED);
+    this.updateDisplayInstructions(true);
+  }
+
+  ledgerValidation() {
+    if (location.protocol !== "https:") {
+      this.updateDisplayInstructions(true);
+    }
   }
 
   updateDisplayInstructions(displayInstructions) {
@@ -153,34 +150,21 @@ export default class Ledger extends Component {
   }
 
   async connectLedger(pathIndex) {
-    const { loginWithLedger, networkId, updateLedgerStatus } = this.props;
-    updateLedgerStatus(LEDGER_STATES.ATTEMPTING_CONNECTION);
-
-    if (location.protocol !== "https:") {
-      updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
-    }
-
-    const ledgerEthereum = new LedgerEthereum(
-      networkId,
-      BrowserLedgerConnectionFactory,
-      this.onConnectLedgerRequestHook,
-      this.onOpenEthereumAppRequestHook,
-      this.onSwitchLedgerModeRequestHook,
-      this.onEnableContractSupportRequestHook
-    );
-
+    const { loginWithLedger } = this.props;
     const derivationPath = this.buildDerivationPath(pathIndex);
-    const address = await ledgerEthereum.getAddressByBip32Path(derivationPath);
+    const address = await this.state.ledgerEthereum.getAddressByBip32Path(
+      this.state.derivationPath
+    );
 
     if (address) {
       return loginWithLedger(
         address.toLowerCase(),
-        ledgerEthereum,
+        this.state.ledgerEthereum,
         derivationPath
       );
     }
 
-    this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE);
+    this.updateDisplayInstructions(true);
   }
 
   buildDerivationPath(pathIndex) {
@@ -226,7 +210,7 @@ export default class Ledger extends Component {
   }
 
   render() {
-    const { ledgerStatus, updateLedgerStatus } = this.props;
+    const { ledgerStatus } = this.props;
     console.log(ledgerStatus);
     const s = this.state;
 

@@ -4,7 +4,12 @@ import classNames from "classnames";
 import { PulseLoader } from "react-spinners";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { ITEMS, WALLET_TYPE, PARAMS, ERROR_TYPES } from "modules/auth/constants/connect-nav";
+import {
+  ITEMS,
+  WALLET_TYPE,
+  PARAMS,
+  ERROR_TYPES
+} from "modules/auth/constants/connect-nav";
 import isMetaMaskPresent from "src/modules/auth/helpers/is-meta-mask";
 import DerivationPath, {
   DEFAULT_DERIVATION_PATH
@@ -49,7 +54,9 @@ const ErrorContainer = p => {
   return (
     <div className={Styles.ConnectDropdown__content}>
       <div className={Styles.ErrorContainer__header}>
-        <div className={Styles.ErrorContainer__headerIcon}>{p.error && errorIcon}</div>
+        <div className={Styles.ErrorContainer__headerIcon}>
+          {p.error && errorIcon}
+        </div>
         {p.error && p.error.header}
       </div>
       <div className={Styles.ErrorContainer__subheader}>
@@ -143,8 +150,8 @@ export default class ConnectDropdown extends Component {
   }
 
   hideHardwareWallet(param) {
-    if (param && this.refs["hardwareContent_"+param]) {
-      toggleHeight(this.refs["hardwareContent_"+param], true, () => {
+    if (param && this.refs["hardwareContent_" + param]) {
+      toggleHeight(this.refs["hardwareContent_" + param], true, () => {
         this.setState({ selectedOption: null });
       });
     }
@@ -170,9 +177,6 @@ export default class ConnectDropdown extends Component {
   }
 
   connect(param) {
-    if (param !== PARAMS.LEDGER) {
-      this.setState({ connectLedger: false });
-    }
     // todo: need to check if connection was successful before closing
     if (param === PARAMS.METAMASK) {
       if (!isMetaMaskPresent()) {
@@ -181,12 +185,13 @@ export default class ConnectDropdown extends Component {
         return;
       }
       this.toggleDropdownAndConnect(() => {
-        this.props.connectMetaMask((err, res) => { //todo: if it doesn;t work say not logged in?
-          console.log(err)
-          console.log(res)
-          this.setState({ selectOption: null })
-        })
-      })
+        this.props.connectMetaMask((err, res) => {
+          //todo: if it doesn;t work say not logged in?
+          console.log(err);
+          console.log(res);
+          this.setState({ selectOption: null });
+        });
+      });
     } else if (param === PARAMS.EDGE) {
       // this.toggleDropdownAndConnect(() => {
       this.props.edgeLoginLink(this.props.history); //todo: why does this fail sometimes?
@@ -293,7 +298,7 @@ export default class ConnectDropdown extends Component {
                   )}
               </div>
               <div
-                ref={"hardwareContent_"+item.param}
+                ref={"hardwareContent_" + item.param}
                 className={classNames(
                   Styles.ConnectDropdown__hardwareContent,
                   ToggleHeightStyles["toggle-height-target"]
@@ -309,7 +314,7 @@ export default class ConnectDropdown extends Component {
                         s.selectedOption === "ledger" && s.showAdvanced
                       }
                     />
-                )}
+                  )}
               </div>
               <div
                 ref={"error_" + item.param}
