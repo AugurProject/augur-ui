@@ -180,17 +180,20 @@ export default class ConnectDropdown extends Component {
         this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT);
         return;
       }
+
       this.toggleDropdownAndConnect(() => {
-        this.props.connectMetaMask((err, res) => { //todo: if it doesn;t work say not logged in?
-          console.log(err)
-          console.log(res)
-          this.setState({ selectOption: null })
+        this.props.connectMetaMask((err, res) => { // todo: if it doesn;t work say not logged in?
+          if (err) {
+            this.showError(param, ERROR_TYPES.NOT_SIGNED_IN);
+            this.props.toggleDropdown()
+            return;
+          } else {
+            this.setState({ selectOption: null })
+          }
         })
       })
     } else if (param === PARAMS.EDGE) {
-      // this.toggleDropdownAndConnect(() => {
       this.props.edgeLoginLink(this.props.history); //todo: why does this fail sometimes?
-      //})
     } else if (param === PARAMS.LEDGER) {
       this.setState({ connectLedger: true });
     }

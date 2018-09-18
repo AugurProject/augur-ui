@@ -44,8 +44,8 @@ function pollForAccount(dispatch, getState, callback) {
   const { env } = getState();
   loadAccount(dispatch, null, env, (err, loadedAccount) => {
     if (err) {
-      callback(err)
       console.error(err);
+      return callback(err)
     }
     let account = loadedAccount;
     setInterval(() => {
@@ -81,7 +81,7 @@ function loadAccount(dispatch, existing, env, callback) {
       }
     }
     if (!account) {
-      callback('not signed in', account)
+      return callback('NOT_SIGNED_IN', account)
     } else {
       callback(null, account);
     }
