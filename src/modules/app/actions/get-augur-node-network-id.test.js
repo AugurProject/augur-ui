@@ -1,67 +1,51 @@
-import {
-  getAugurNodeNetworkId,
-  __RewireAPI__
-} from "modules/app/actions/get-augur-node-network-id";
+import { getAugurNodeNetworkId } from "modules/app/actions/get-augur-node-network-id";
 
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import * as augur from "services/augurjs";
+
+jest.mock("../../../services/augurjs.js");
 
 describe("modules/app/actions/get-augur-node-network-id.js", () => {
   let store;
   afterEach(() => {
     store.clearActions();
-    __RewireAPI__.__ResetDependency__("augur");
+    jest.resetModules();
   });
-  const runTest = t =>
-    test(t.description, done => {
-      store = configureMockStore([thunk])({ ...t.state });
-      __RewireAPI__.__Rewire__("augur", t.stub.augur);
-      store.dispatch(
-        getAugurNodeNetworkId((err, augurNodeNetworkId) => {
-          t.expectations(err, augurNodeNetworkId, store.getActions());
-          done();
-        })
-      );
-    });
-  runTest({
-    description: "augur-node network id already in state",
-    state: {
+
+  test("augur-node network id already in state", done => {
+    store = configureMockStore([thunk])({
       connection: { augurNodeNetworkId: "4" }
-    },
-    stub: {
-      augur: {
-        augurNode: {
-          getSyncData: () => expect.toThrowErrorMatchingSnapshot()
-        }
-      }
-    },
-    expectations: (err, augurNodeNetworkId, actions) => {
-      expect(err).toBeNull();
-      expect(augurNodeNetworkId).toStrictEqual("4");
-      expect(actions).toEqual([]);
-    }
+    });
+    augur.augur.augurNode.mockGetSyncData = expect.toThrowErrorMatchingSnapshot();
+    store.dispatch(
+      getAugurNodeNetworkId((err, augurNodeNetworkId) => {
+        expect(err).toBeNull();
+        expect(augurNodeNetworkId).toStrictEqual("4");
+        expect(store.getActions()).toEqual([]);
+        done();
+      })
+    );
   });
-  runTest({
-    description: "fetch network id from augur-node",
-    state: {
+
+  test("fetch network id from augur-node", done => {
+    store = configureMockStore([thunk])({
       connection: { augurNodeNetworkId: null }
-    },
-    stub: {
-      augur: {
-        augurNode: {
-          getSyncData: callback => callback(null, { net_version: "4" })
-        }
-      }
-    },
-    expectations: (err, augurNodeNetworkId, actions) => {
-      expect(err).toBeNull();
-      expect(augurNodeNetworkId).toStrictEqual("4");
-      expect(actions).toEqual([
-        {
-          type: "UPDATE_AUGUR_NODE_NETWORK_ID",
-          augurNodeNetworkId: "4"
-        }
-      ]);
-    }
+    });
+    augur.augur.augurNode.mockGetSyncData = callback =>
+      callback(null, { net_version: "4" });
+    store.dispatch(
+      getAugurNodeNetworkId((err, augurNodeNetworkId) => {
+        expect(err).toBeNull();
+        expect(augurNodeNetworkId).toStrictEqual("4");
+        expect(store.getActions()).toEqual([
+          {
+            type: "UPDATE_AUGUR_NODE_NETWORK_ID",
+            augurNodeNetworkId: "4"
+          }
+        ]);
+        done();
+      })
+    );
   });
 });

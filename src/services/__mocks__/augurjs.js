@@ -76,6 +76,11 @@ mockAugur.api = {
 };
 
 mockAugur.augurNode = {
+  set mockGetSyncData(f) {
+    mockAugur.augurNode.getSyncData = f;
+  },
+  getSyncData: () => this.mockGetSyncData,
+
   submitRequest: (methodName, args, callback) => {
     expect(methodName).toEqual("getUniversesInfo");
     expect(args).toStrictEqual({
