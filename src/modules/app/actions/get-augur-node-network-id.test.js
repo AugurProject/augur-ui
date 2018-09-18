@@ -17,7 +17,7 @@ describe("modules/app/actions/get-augur-node-network-id.js", () => {
     store = configureMockStore([thunk])({
       connection: { augurNodeNetworkId: "4" }
     });
-    augur.augur.augurNode.mockGetSyncData = expect.toThrowErrorMatchingSnapshot();
+    augur.augurNode.mockGetSyncData = expect.toThrowErrorMatchingSnapshot();
     store.dispatch(
       getAugurNodeNetworkId((err, augurNodeNetworkId) => {
         expect(err).toBeNull();
@@ -32,7 +32,7 @@ describe("modules/app/actions/get-augur-node-network-id.js", () => {
     store = configureMockStore([thunk])({
       connection: { augurNodeNetworkId: null }
     });
-    augur.augur.augurNode.mockGetSyncData = callback =>
+    augur.augurNode.mockGetSyncData = callback =>
       callback(null, { net_version: "4" });
     store.dispatch(
       getAugurNodeNetworkId((err, augurNodeNetworkId) => {
