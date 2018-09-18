@@ -98,7 +98,8 @@ export default class ConnectDropdown extends Component {
       selectedDefaultPath: true,
       customDerivationPath: "",
       error: null,
-      connectLedger: false
+      connectLedger: false,
+      isLedgerLoading: false,
     };
 
     this.showAdvanced = this.showAdvanced.bind(this);
@@ -113,12 +114,17 @@ export default class ConnectDropdown extends Component {
     this.showHardwareWallet = this.showHardwareWallet.bind(this);
     this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this);
     this.retry = this.retry.bind(this);
+    this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this)
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.isLogged !== this.props.isLogged) {
       this.setState({ selectedOption: null });
     }
+  }
+
+  setIsLedgerLoading(value) {
+    this.setState({isLedgerLoading: value})
   }
 
   showError(param, error) {
@@ -198,6 +204,7 @@ export default class ConnectDropdown extends Component {
       this.props.edgeLoginLink(this.props.history); // todo: why does this fail sometimes?
     } else if (param === PARAMS.LEDGER) {
       this.setState({ connectLedger: true });
+      this.setIsLedgerLoading(true)
     }
   }
 
@@ -242,7 +249,10 @@ export default class ConnectDropdown extends Component {
   }
 
   render() {
-    const { isLogged, edgeLoading } = this.props;
+    const { 
+      isLogged, 
+      edgeLoading, 
+    } = this.props;
     const s = this.state;
 
     return (
@@ -272,8 +282,8 @@ export default class ConnectDropdown extends Component {
                 <div className={Styles.ConnectDropdown__title}>
                   {item.title}
                   {s.selectedOption === item.param &&
-                    item.param === PARAMS.EDGE &&
-                    edgeLoading && (
+                    ((item.param === PARAMS.EDGE &&
+                    edgeLoading) || (item.param === PARAMS.LEDGER && s.isLedgerLoading)) && (
                       <div style={{ marginLeft: "8px" }}>
                         <PulseLoader
                           color="#FFF"
@@ -313,6 +323,7 @@ export default class ConnectDropdown extends Component {
                       showAdvanced={
                         s.selectedOption === "ledger" && s.showAdvanced
                       }
+                      setIsLedgerLoading={this.setIsLedgerLoading}
                     />
                   )}
               </div>
