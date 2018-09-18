@@ -11,7 +11,7 @@ describe("modules/app/actions/update-is-mobile.js", () => {
   describe("updateIsMobile", () => {
     test("isMobile being set from call", () => {
       const actual = updateIsMobile(false);
-      assert(actual).toEqual({
+      expect(actual).toEqual({
         type: UPDATE_IS_MOBILE,
         data: {
           isMobile: false
