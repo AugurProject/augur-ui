@@ -132,8 +132,11 @@ export default class Ledger extends Component {
 
     if (addresses) {
       this.setState({ ledgerAddresses: addresses });
-      this.updateDisplayInstructions(false);
-      this.props.setIsLedgerLoading(false)
+      if (!addresses.every(element => element === null)) {
+        this.updateDisplayInstructions(false);
+        this.props.setIsLedgerLoading(false);
+      }
+  
       return addresses.map(address => this.updateAccountBalance(address));
     }
 
