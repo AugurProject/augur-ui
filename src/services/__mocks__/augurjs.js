@@ -86,6 +86,13 @@ mockAugur.augurNode = {
   }
 };
 
+mockAugur.trading = {
+  calculateProfitLoss: () => ({
+    realized: "-1",
+    unrealized: "2"
+  })
+};
+
 mockAugur.augur = mockAugur;
 
 module.exports = mockAugur;
