@@ -1,65 +1,126 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import { prevIcon, nextIcon } from "modules/common/components/icons";
+import getEtherBalance from "modules/auth/actions/get-ether-balance";
 
-const AddressPickerContent = p => (
-  <div className={Styles.ConnectDropdown__content} style={{paddingLeft: '0', paddingRight: '0'}}>
-    <div
-      className={classNames(
-        Styles.ConnectDropdown__row,
-        Styles.ConnectDropdown__header
-      )}
-    >
-      <div className={Styles.ConnectDropdown__addressColumn}>Address</div>
-      <div className={Styles.ConnectDropdown__balanceColumn}>Balance</div>
-    </div>
-    {p.indexArray.map(i => (
-      <div key={i} className={Styles.ConnectDropdown__row}>
+export default class AddressPickerContent extends Component {
+  static propTypes = {
+    addresses: PropTypes.array.isRequired,
+    indexArray: PropTypes.array.isRequired,
+    clickAction: PropTypes.func.isRequired,
+    clickPrevious: PropTypes.func.isRequired,
+    clickNext: PropTypes.func.isRequired
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.LedgerEthereum = null;
+
+    this.state = {
+      addressBalances: {}
+    };
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.props.addresses !== nextProps.addresses) {
+      nextProps.addresses.map(address => this.updateAccountBalance(address));
+    }
+  }
+
+  updateAccountBalance(address) {
+    if (!this.state.addressBalances[address] && address) {
+      getEtherBalance(address, (err, balance) => {
+        if (!err) {
+          const balances = {
+            ...this.state.addressBalances
+          };
+          balances[address] = balance || 0;
+
+          this.setState({
+            addressBalances: balances
+          });
+        }
+      });
+    }
+  }
+
+  render() {
+    const {
+      indexArray,
+      addresses,
+      clickAction,
+      clickPrevious,
+      clickNext
+    } = this.props;
+    const { addressBalances } = this.state;
+
+    return (
+      <div
+        className={Styles.ConnectDropdown__content}
+        style={{ paddingLeft: "0", paddingRight: "0" }}
+      >
         <div
-          role="button"
-          className={Styles.ConnectDropdown__addressColumn}
-          onClick={() => p.clickAction(i)}
+          className={classNames(
+            Styles.ConnectDropdown__row,
+            Styles.ConnectDropdown__header
+          )}
         >
-          {p.addresses[i] && formatAddress(p.addresses[i])}
+          <div className={Styles.ConnectDropdown__addressColumn}>Address</div>
+          <div className={Styles.ConnectDropdown__balanceColumn}>Balance</div>
         </div>
-        <div className={Styles.ConnectDropdown__balanceColumn}>
-          {p.balances[p.addresses[i]]}
+        {indexArray.map(i => (
+          <div key={i} className={Styles.ConnectDropdown__row}>
+            <div
+              role="button"
+              className={Styles.ConnectDropdown__addressColumn}
+              onClick={() => clickAction(i)}
+            >
+              {addresses[i] && formatAddress(addresses[i])}
+            </div>
+            <div className={Styles.ConnectDropdown__balanceColumn}>
+              {addressBalances[addresses[i]]
+                ? addressBalances[addresses[i]]
+                : `-`}
+            </div>
+          </div>
+        ))}
+        <div
+          className={classNames(
+            Styles.ConnectDropdown__row,
+            Styles.ConnectDropdown__footer
+          )}
+        >
+          <div
+            className={Styles.AddressPickerContent__direction}
+            onClick={clickPrevious}
+          >
+            <span
+              style={{ marginRight: "8px" }}
+              className={Styles.AddressPickerContent__arrow}
+            >
+              {prevIcon}
+            </span>
+            Previous
+          </div>
+          <div
+            className={Styles.AddressPickerContent__direction}
+            onClick={clickNext}
+            style={{ marginLeft: "24px" }}
+          >
+            Next
+            <span
+              style={{ marginLeft: "8px" }}
+              className={Styles.AddressPickerContent__arrow}
+            >
+              {nextIcon}
+            </span>
+          </div>
         </div>
       </div>
-    ))}
-    <div 
-      className={classNames(
-        Styles.ConnectDropdown__row,
-        Styles.ConnectDropdown__footer
-      )}
-    >
-      <div
-        className={Styles.AddressPickerContent__direction}
-        onClick={p.clickPrevious}
-      >
-        <span style={{marginRight:"8px"}} className={Styles.AddressPickerContent__arrow}>{prevIcon}</span>Previous
-      </div>
-      <div
-        className={Styles.AddressPickerContent__direction}
-        onClick={p.clickNext}
-        style={{ marginLeft: "24px" }}
-      >
-        Next<span style={{marginLeft:"8px"}} className={Styles.AddressPickerContent__arrow}>{nextIcon}</span>
-      </div>
-    </div>
-  </div>
-);
-
-export default AddressPickerContent;
-
-AddressPickerContent.propTypes = {
-  addresses: PropTypes.array.isRequired,
-  balances: PropTypes.object.isRequired,
-  indexArray: PropTypes.array.isRequired,
-  clickAction: PropTypes.func.isRequired,
-  clickPrevious: PropTypes.func.isRequired,
-  clickNext: PropTypes.func.isRequired
-};
+    );
+  }
+}
