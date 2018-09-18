@@ -148,9 +148,12 @@ export default class Ledger extends Component {
   async connectLedger(pathIndex) {
     const { loginWithLedger } = this.props;
     const derivationPath = this.buildDerivationPath(pathIndex);
-    const address = await this.state.ledgerEthereum.getAddressByBip32Path(
-      this.state.derivationPath
-    );
+    const address = await this.state.ledgerEthereum
+      .getAddressByBip32Path(derivationPath)
+      .catch(err => {
+        console.log(err);
+        this.updateDisplayInstructions(true);
+      });
 
     if (address) {
       return loginWithLedger(
