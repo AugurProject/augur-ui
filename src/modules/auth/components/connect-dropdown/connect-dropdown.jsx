@@ -47,7 +47,9 @@ const mockData = [
 ];
 
 const ErrorContainer = p => (
-  <div className={Styles.ConnectDropdown__content}>
+  <div className={classNames(Styles.ConnectDropdown__content, {
+         [Styles.ConnectDropdown__contentNoPadding]: !p.error
+    })}>
     <div className={Styles.ErrorContainer__header}>
       <div className={Styles.ErrorContainer__headerIcon}>
         {p.error && errorIcon}
@@ -96,7 +98,8 @@ export default class ConnectDropdown extends Component {
       customDerivationPath: "",
       error: null,
       connectLedger: false,
-      isLedgerLoading: false,
+      isLedgerLoading: true,
+      showAdvancedButton: false, // todo: don't want this to show up until loading is done?
     };
 
     this.showAdvanced = this.showAdvanced.bind(this);
@@ -110,6 +113,7 @@ export default class ConnectDropdown extends Component {
     this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this);
     this.retry = this.retry.bind(this);
     this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this)
+    this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -120,6 +124,10 @@ export default class ConnectDropdown extends Component {
 
   setIsLedgerLoading(value) {
     this.setState({isLedgerLoading: value})
+  }
+
+  setShowAdvancedButton(value) {
+    this.setState({showAdvancedButton: value})
   }
 
   showError(param, error) {
@@ -283,7 +291,7 @@ export default class ConnectDropdown extends Component {
                 </div>
 
                 {s.selectedOption === item.param &&
-                  item.type === WALLET_TYPE.HARDWARE && (
+                  item.type === WALLET_TYPE.HARDWARE && s.showAdvancedButton && (
                     <div
                       style={{ padding: "10px" }}
                       onClick={this.showAdvanced}
@@ -310,8 +318,10 @@ export default class ConnectDropdown extends Component {
                       showAdvanced={
                         s.selectedOption === "ledger" && s.showAdvanced
                       }
+                      error={Boolean(s.selectedOption === item.param && s.error)}
                       setIsLedgerLoading={this.setIsLedgerLoading}
-                      error={s.selectedOption === item.param && s.error}
+                      isLedgerClicked={s.selectedOption === item.param}
+                      setShowAdvancedButton={this.setShowAdvancedButton}
                     />
                   )}
               </div>

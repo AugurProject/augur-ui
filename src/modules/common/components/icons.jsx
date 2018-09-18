@@ -1492,7 +1492,7 @@ export const errorIcon = (
 export const prevIcon = (
   <svg width="7px" height="11px" viewBox="0 0 7 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink">
       <defs></defs>
-      <g id="Create/Connect-Account" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+      <g id="Create/Connect-Account" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g id="hardWareWalletDisconnectedAddressesLoadedHover" transform="translate(-24.000000, -406.000000)" fill="#FFFFFF" fillRule="nonzero">
               <g id="dropdown" transform="translate(-1.000000, 72.000000)">
                   <g id="derivationPath" transform="translate(0.000000, 152.000000)">
@@ -1509,7 +1509,7 @@ export const prevIcon = (
 export const nextIcon = (
   <svg width="7px" height="11px" viewBox="0 0 7 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink">
       <defs></defs>
-      <g id="Create/Connect-Account" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+      <g id="Create/Connect-Account" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
           <g id="hardWareWalletDisconnectedAddressesLoadedHover" transform="translate(-156.000000, -406.000000)" fill="#FFFFFF" fillRule="nonzero">
               <g id="dropdown" transform="translate(-1.000000, 72.000000)">
                   <g id="derivationPath" transform="translate(0.000000, 152.000000)">

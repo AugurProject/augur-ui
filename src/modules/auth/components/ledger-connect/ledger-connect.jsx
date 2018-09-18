@@ -28,7 +28,10 @@ export default class Ledger extends Component {
     showAdvanced: PropTypes.bool,
     showError: PropTypes.func.isRequired,
     hideError: PropTypes.func.isRequired,
-    error: PropTypes.object,
+    error: PropTypes.bool,
+    setIsLedgerLoading: PropTypes.func.isRequired,
+    setShowAdvancedButton: PropTypes.func.isRequired,
+    isLedgerClicked: PropTypes.bool,
   };
 
   constructor(props) {
@@ -37,7 +40,7 @@ export default class Ledger extends Component {
     this.LedgerEthereum = null;
 
     this.state = {
-      displayInstructions: true,
+      displayInstructions: true, // don't want to show ledger content while loading is true
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
       ledgerAddressBalances: {},
@@ -72,6 +75,14 @@ export default class Ledger extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
+    if (this.props.isLedgerClicked !== nextProps.isLedgerClicked && nextProps.isLedgerClicked) { // this is if the button was clicked, need to reupdate on click
+      this.onDerivationPathChange(
+        this.state.baseDerivationPath,
+        nextState.ledgerAddressPageNumber
+      );
+
+      this.ledgerValidation();
+    }
     if (
       this.state.ledgerAddressPageNumber !== nextState.ledgerAddressPageNumber
     ) {
@@ -91,9 +102,8 @@ export default class Ledger extends Component {
   }
 
   async onDerivationPathChange(derivationPath, pageNumber = 1) {
+    this.props.setIsLedgerLoading(true)
     const { ledgerEthereum } = this.state;
-
-    this.updateDisplayInstructions(false);
 
     this.setState({
       baseDerivationPath: derivationPath
@@ -107,12 +117,17 @@ export default class Ledger extends Component {
           .getAddressByBip32Path(
             DerivationPath.buildString(DerivationPath.increment(components, i))
           )
-          .catch(() => this.updateDisplayInstructions(true))
+          .catch(() => { 
+            this.updateDisplayInstructions(true)
+            this.props.setIsLedgerLoading(false)
+          })
       )
     );
 
     if (addresses) {
       this.setState({ ledgerAddresses: addresses });
+      this.updateDisplayInstructions(false);
+      this.props.setIsLedgerLoading(false)
       return addresses.map(address => this.updateAccountBalance(address));
     }
 
@@ -126,6 +141,11 @@ export default class Ledger extends Component {
   }
 
   updateDisplayInstructions(displayInstructions) {
+    if (displayInstructions) {
+      this.props.setShowAdvancedButton(false)
+    } else {
+      this.props.setShowAdvancedButton(true)
+    }
     this.setState({ displayInstructions });
   }
 
