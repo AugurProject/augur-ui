@@ -34,6 +34,10 @@ export const ERROR_TYPES = {
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
     subheader: "Please enter a derivative path with the the format “m/44’/60/0”"
+  }, 
+  EVERYTHING_WRONG_LEDGER: {
+    header: "Check you have accessed ledger correct", 
+    subheader: "Check these things"
   }
 };
 

@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import { prevIcon, nextIcon } from "modules/common/components/icons";
 
 const AddressPickerContent = p => (
-  <div className={Styles.ConnectDropdown__content}>
+  <div className={Styles.ConnectDropdown__content} style={{paddingLeft: '0', paddingRight: '0'}}>
     <div
       className={classNames(
         Styles.ConnectDropdown__row,
@@ -29,19 +30,24 @@ const AddressPickerContent = p => (
         </div>
       </div>
     ))}
-    <div className={Styles.ConnectDropdown__row}>
+    <div 
+      className={classNames(
+        Styles.ConnectDropdown__row,
+        Styles.ConnectDropdown__footer
+      )}
+    >
       <div
         className={Styles.AddressPickerContent__direction}
         onClick={p.clickPrevious}
       >
-        Previous
+        <span style={{marginRight:"8px"}} className={Styles.AddressPickerContent__arrow}>{prevIcon}</span>Previous
       </div>
       <div
         className={Styles.AddressPickerContent__direction}
         onClick={p.clickNext}
         style={{ marginLeft: "24px" }}
       >
-        Next
+        Next<span style={{marginLeft:"8px"}} className={Styles.AddressPickerContent__arrow}>{nextIcon}</span>
       </div>
     </div>
   </div>

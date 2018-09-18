@@ -23,15 +23,11 @@ import Ledger from "modules/auth/containers/ledger-connect";
 
 // todo: need to figure out why edge fails sometimes
 // todo: need to add loading states
-
+// todo: hookup trezor
 // todo: need to be able to retry MM
-// todo: need to know that MM login failed
 
 // todo: put seperate components in own files
-// todo: give prev, next arrow buttons
-// todo: give addresses hovers, and fix padding
-// todo: give advanced button white hover state
-// todo: need metamask word to be underlined
+// todo: convert hex to constants, px to rem
 // todo: need to style for mobile
 // todo: clean up pr, remove those overrode files
 
@@ -66,6 +62,7 @@ const ErrorContainer = p => (
             href="https://metamask.io/"
             target="_blank"
             rel="noopener noreferrer"
+            className={Styles.ErrorContainer__link}
           >
             Metamask.io
           </a>

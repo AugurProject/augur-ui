@@ -1488,3 +1488,37 @@ export const errorIcon = (
       </g>
   </svg>
 );
+
+export const prevIcon = (
+  <svg width="7px" height="11px" viewBox="0 0 7 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink">
+      <defs></defs>
+      <g id="Create/Connect-Account" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+          <g id="hardWareWalletDisconnectedAddressesLoadedHover" transform="translate(-24.000000, -406.000000)" fill="#FFFFFF" fillRule="nonzero">
+              <g id="dropdown" transform="translate(-1.000000, 72.000000)">
+                  <g id="derivationPath" transform="translate(0.000000, 152.000000)">
+                      <g id="previous" transform="translate(25.000000, 179.000000)">
+                          <polygon id="TrianglePrevious" transform="translate(3.333333, 8.083333) rotate(-90.000000) translate(-3.333333, -8.083333) " points="3.33333333 4.75 8.33333333 11.4166667 -1.66666667 11.4166667"></polygon>
+                      </g>
+                  </g>
+              </g>
+          </g>
+      </g>
+  </svg>
+);
+
+export const nextIcon = (
+  <svg width="7px" height="11px" viewBox="0 0 7 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/1999/xlink">
+      <defs></defs>
+      <g id="Create/Connect-Account" stroke="none" stroke-width="1" fill="none" fillRule="evenodd">
+          <g id="hardWareWalletDisconnectedAddressesLoadedHover" transform="translate(-156.000000, -406.000000)" fill="#FFFFFF" fillRule="nonzero">
+              <g id="dropdown" transform="translate(-1.000000, 72.000000)">
+                  <g id="derivationPath" transform="translate(0.000000, 152.000000)">
+                      <g id="next" transform="translate(119.000000, 179.000000)">
+                          <polygon id="TriangleNext" transform="translate(41.333333, 8.083333) scale(-1, 1) rotate(-90.000000) translate(-41.333333, -8.083333) " points="41.3333333 4.75 46.3333333 11.4166667 36.3333333 11.4166667"></polygon>
+                      </g>
+                  </g>
+              </g>
+          </g>
+      </g>
+  </svg>
+)

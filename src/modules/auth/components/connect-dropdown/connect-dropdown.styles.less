@@ -62,6 +62,11 @@
   color: #a7a2b2;
   border-bottom: 0.5px dotted #dbdae1;
   margin-right: 14px;
+
+  &:hover {
+    color: white;
+    border-bottom: 0.5px dotted white;
+  }
 }
 
 .ConnectDropdown__title {
@@ -74,15 +79,32 @@
   font-size: 13px;
   font-weight: bold;
   color: #ffffff;
+
+  &:hover {
+    cursor: default;
+    background-color: unset !important;
+  }
+}
+
+.ConnectDropdown__footer {
+  margin-top: 16px;
+
+  &:hover {
+    cursor: default;
+    background-color: unset !important;
+  }
 }
 
 .ConnectDropdown__row {
   display: flex;
-  margin-bottom: 11px;
   font-family: 'Roboto Mono', monospace;
-  font-size: 13px;
+  padding: 7px 24px 7px;
   color: #ffffff;
   cursor: pointer;
+
+  &:hover {
+    background-color: rgba(240, 239, 246, .05);
+  }
 }
 
 .ConnectDropdown__addressColumn {
@@ -239,11 +261,25 @@
   margin-top: 8px;
 }
 
+.ErrorContainer__link {
+  text-decoration: underline;
+  text-decoration-color: white;
+}
+
 .AddressPickerContent__direction {
   font-size: 14px;
   font-weight: 500;
   font-family: @roboto !important;
   text-transform: none;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.AddressPickerContent__arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
