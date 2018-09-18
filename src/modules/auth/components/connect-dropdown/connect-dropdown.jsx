@@ -50,35 +50,33 @@ const mockData = [
   }
 ];
 
-const ErrorContainer = p => {
-  return (
-    <div className={Styles.ConnectDropdown__content}>
-      <div className={Styles.ErrorContainer__header}>
-        <div className={Styles.ErrorContainer__headerIcon}>
-          {p.error && errorIcon}
-        </div>
-        {p.error && p.error.header}
+const ErrorContainer = p => (
+  <div className={Styles.ConnectDropdown__content}>
+    <div className={Styles.ErrorContainer__header}>
+      <div className={Styles.ErrorContainer__headerIcon}>
+        {p.error && errorIcon}
       </div>
-      <div className={Styles.ErrorContainer__subheader}>
-        {p.error === ERROR_TYPES.UNABLE_TO_CONNECT && (
-          <div className={Styles.ErrorContainer__words}>
-            Please install the MetaMask browser plug-in from{" "}
-            <a
-              href="https://metamask.io/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Metamask.io
-            </a>
-          </div>
-        )}
-        {p.error !== ERROR_TYPES.UNABLE_TO_CONNECT &&
-          p.error &&
-          p.error.subheader}
-      </div>
+      {p.error && p.error.header}
     </div>
-  );
-};
+    <div className={Styles.ErrorContainer__subheader}>
+      {p.error === ERROR_TYPES.UNABLE_TO_CONNECT && (
+        <div className={Styles.ErrorContainer__words}>
+          Please install the MetaMask browser plug-in from{" "}
+          <a
+            href="https://metamask.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Metamask.io
+          </a>
+        </div>
+      )}
+      {p.error !== ERROR_TYPES.UNABLE_TO_CONNECT &&
+        p.error &&
+        p.error.subheader}
+    </div>
+  </div>
+);
 
 export default class ConnectDropdown extends Component {
   static propTypes = {
@@ -124,7 +122,7 @@ export default class ConnectDropdown extends Component {
   }
 
   showError(param, error) {
-    this.setState({ error: error }, function() {
+    this.setState({ error }, function() {
       if (this.refs["error_" + param]) {
         toggleHeight(this.refs["error_" + param], false, () => {});
       }
@@ -184,18 +182,20 @@ export default class ConnectDropdown extends Component {
         this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT);
         return;
       }
+
       this.toggleDropdownAndConnect(() => {
         this.props.connectMetaMask((err, res) => {
-          //todo: if it doesn;t work say not logged in?
-          console.log(err);
-          console.log(res);
-          this.setState({ selectOption: null });
+          // todo: if it doesn;t work say not logged in?
+          if (err) {
+            this.showError(param, ERROR_TYPES.NOT_SIGNED_IN);
+            this.props.toggleDropdown();
+          } else {
+            this.setState({ selectOption: null });
+          }
         });
       });
     } else if (param === PARAMS.EDGE) {
-      // this.toggleDropdownAndConnect(() => {
-      this.props.edgeLoginLink(this.props.history); //todo: why does this fail sometimes?
-      //})
+      this.props.edgeLoginLink(this.props.history); // todo: why does this fail sometimes?
     } else if (param === PARAMS.LEDGER) {
       this.setState({ connectLedger: true });
     }
@@ -279,7 +279,7 @@ export default class ConnectDropdown extends Component {
                           color="#FFF"
                           sizeUnit="px"
                           size={8}
-                          loading={true}
+                          loading
                         />
                       </div>
                     )}

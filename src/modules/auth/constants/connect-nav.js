@@ -27,6 +27,10 @@ export const ERROR_TYPES = {
     header: "Unable To Connect",
     subheader: "Please install the MetaMask browser plug-in from Metamask.io"
   },
+  NOT_SIGNED_IN: {
+    header: "Unable To Connect",
+    subheader: "Please make sure you are signed in to your account."
+  },
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
     subheader: "Please enter a derivative path with the the format “m/44’/60/0”"

@@ -5,20 +5,16 @@ import {
   BrowserLedgerConnectionFactory
 } from "ethereumjs-ledger";
 
-import * as LEDGER_STATES from "modules/auth/constants/ledger-status";
 import DerivationPath, {
   DEFAULT_DERIVATION_PATH,
   NUM_DERIVATION_PATHS_TO_DISPLAY
 } from "modules/auth/helpers/derivation-path";
 import classNames from "classnames";
-import { Alert } from "modules/common/components/icons";
 import getEtherBalance from "modules/auth/actions/get-ether-balance";
-import Spinner from "modules/common/components/spinner/spinner";
 import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
-import FormStyles from "modules/common/less/form";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
-import AddressPickerContent from "modules/auth/components/common/AddressPickerContent";
-import DerivationPathEditor from "modules/auth/components/common/DerivationPathEditor";
+import AddressPickerContent from "modules/auth/components/common/address-picker-content";
+import DerivationPathEditor from "modules/auth/components/common/derivation-path-editor";
 import toggleHeight from "utils/toggle-height/toggle-height";
 import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
 
@@ -40,9 +36,7 @@ export default class Ledger extends Component {
     this.LedgerEthereum = null;
 
     this.state = {
-      displayInstructions:
-        props.ledgerStatus !== LEDGER_STATES.NOT_CONNECTED &&
-        props.ledgerStatus !== LEDGER_STATES.ATTEMPTING_CONNECTION,
+      displayInstructions: true,
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
       ledgerAddressBalances: {},
@@ -108,15 +102,17 @@ export default class Ledger extends Component {
     const numberOfAddresses = NUM_DERIVATION_PATHS_TO_DISPLAY * pageNumber;
     const addresses = await Promise.all(
       Array.from(Array(numberOfAddresses).keys()).map(i =>
-        ledgerEthereum.getAddressByBip32Path(
-          DerivationPath.buildString(DerivationPath.increment(components, i))
-        )
+        ledgerEthereum
+          .getAddressByBip32Path(
+            DerivationPath.buildString(DerivationPath.increment(components, i))
+          )
+          .catch(() => this.updateDisplayInstructions(true))
       )
     );
 
     if (addresses) {
       this.setState({ ledgerAddresses: addresses });
-      addresses.map(address => this.updateAccountBalance(address));
+      return addresses.map(address => this.updateAccountBalance(address));
     }
 
     this.updateDisplayInstructions(true);
@@ -133,7 +129,7 @@ export default class Ledger extends Component {
   }
 
   updateAccountBalance(address) {
-    if (!this.state.ledgerAddressBalances[address]) {
+    if (!this.state.ledgerAddressBalances[address] && address) {
       getEtherBalance(address, (err, balance) => {
         if (!err) {
           const balances = {
@@ -180,7 +176,7 @@ export default class Ledger extends Component {
     // todo: validate custom derivation path here
     if (DerivationPath.validate(value)) {
       this.onDerivationPathChange(value).catch(() =>
-        this.props.updateLedgerStatus(LEDGER_STATES.OTHER_ISSUE)
+        this.updateDisplayInstructions(true)
       );
       this.props.hideError("ledger");
 
@@ -196,7 +192,7 @@ export default class Ledger extends Component {
   }
 
   showAdvanced(value) {
-    toggleHeight(this.refs["advanced_ledger"], value, () => {});
+    toggleHeight(this.refs.advanced_ledger, value, () => {});
   }
 
   next() {
@@ -237,7 +233,6 @@ export default class Ledger extends Component {
             <DerivationPathEditor validatePath={this.validatePath} />
           </div>
           {!s.error &&
-            ledgerStatus === LEDGER_STATES.CONNECT_LEDGER &&
             !s.displayInstructions && (
               <AddressPickerContent
                 addresses={s.ledgerAddresses}
@@ -264,14 +259,3 @@ export default class Ledger extends Component {
     );
   }
 }
-
-// {s.error === INCORRECT_FORMAT && (
-//             <div>
-//               {Alert}
-//               <h3>Incorrect Format </h3>
-//               <span>
-//                 Please enter a derivation path with the format
-//                 {DEFAULT_DERIVATION_PATH}
-//               </span>
-//             </div>
-//           )}
