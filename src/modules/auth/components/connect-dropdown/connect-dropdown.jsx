@@ -103,8 +103,6 @@ export default class ConnectDropdown extends Component {
     };
 
     this.showAdvanced = this.showAdvanced.bind(this);
-    this.selectDerivationPath = this.selectDerivationPath.bind(this);
-    this.validatePath = this.validatePath.bind(this);
     this.connect = this.connect.bind(this);
     this.logout = this.logout.bind(this);
     this.showError = this.showError.bind(this);
@@ -138,7 +136,9 @@ export default class ConnectDropdown extends Component {
   hideError(param) {
     this.setState({ error: null }, function() {
       if (this.refs["error_" + param]) {
-        toggleHeight(this.refs["error_" + param], true, () => {});
+        toggleHeight(this.refs["error_" + param], true, () => {
+          console.log('error hidden ' + param)
+        });
       }
     });
   }
@@ -204,7 +204,6 @@ export default class ConnectDropdown extends Component {
       this.props.edgeLoginLink(this.props.history); // todo: why does this fail sometimes?
     } else if (param === PARAMS.LEDGER) {
       this.setState({ connectLedger: true });
-      this.setIsLedgerLoading(true)
     }
   }
 
@@ -224,15 +223,6 @@ export default class ConnectDropdown extends Component {
       // deselection is being done
       this.setState({ selectedOption: null });
     }
-  }
-
-  selectDerivationPath(value) {
-    this.setState({ selectedDefaultPath: value });
-  }
-
-  validatePath(value) {
-    // todo: validate custom derivation path here
-    this.setState({ customDerivationPath: value });
   }
 
   logout() {
@@ -324,6 +314,7 @@ export default class ConnectDropdown extends Component {
                         s.selectedOption === "ledger" && s.showAdvanced
                       }
                       setIsLedgerLoading={this.setIsLedgerLoading}
+                      error={s.selectedOption === item.param && s.error}
                     />
                   )}
               </div>

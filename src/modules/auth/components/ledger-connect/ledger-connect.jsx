@@ -27,7 +27,8 @@ export default class Ledger extends Component {
     dropdownItem: PropTypes.object,
     showAdvanced: PropTypes.bool,
     showError: PropTypes.func.isRequired,
-    hideError: PropTypes.func.isRequired
+    hideError: PropTypes.func.isRequired,
+    error: PropTypes.object,
   };
 
   constructor(props) {
@@ -40,7 +41,7 @@ export default class Ledger extends Component {
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
       ledgerAddressBalances: {},
-      ledgerAddressPageNumber: 1
+      ledgerAddressPageNumber: 1,
     };
 
     this.connectLedger = this.connectLedger.bind(this);
@@ -182,15 +183,8 @@ export default class Ledger extends Component {
         this.updateDisplayInstructions(true)
       );
       this.props.hideError("ledger");
-
-      this.setState({
-        error: null
-      });
     } else {
       this.props.showError("ledger", ERROR_TYPES.INCORRECT_FORMAT);
-      this.setState({
-        error: ERROR_TYPES.INCORRECT_FORMAT
-      });
     }
   }
 
@@ -209,8 +203,7 @@ export default class Ledger extends Component {
   }
 
   render() {
-    const { ledgerStatus } = this.props;
-    console.log(ledgerStatus);
+    const { ledgerStatus, error } = this.props;
     const s = this.state;
 
     const indexes = [
@@ -235,7 +228,7 @@ export default class Ledger extends Component {
           >
             <DerivationPathEditor validatePath={this.validatePath} />
           </div>
-          {!s.error &&
+          {!error &&
             !s.displayInstructions && (
               <AddressPickerContent
                 addresses={s.ledgerAddresses}
@@ -247,7 +240,7 @@ export default class Ledger extends Component {
               />
             )}
 
-          {!s.error &&
+          {!error &&
             s.displayInstructions && (
               <ul>
                 <li>Accessed Augur via HTTPS</li>
