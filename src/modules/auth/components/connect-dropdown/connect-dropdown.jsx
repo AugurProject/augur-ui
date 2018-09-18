@@ -48,7 +48,7 @@ const mockData = [
 
 const ErrorContainer = p => (
   <div className={classNames(Styles.ConnectDropdown__content, {
-         [Styles.ConnectDropdown__contentNoPadding]: !p.error
+         [Styles.ConnectDropdown__contentNoPadding]: !p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT
     })}>
     <div className={Styles.ErrorContainer__header}>
       <div className={Styles.ErrorContainer__headerIcon}>
