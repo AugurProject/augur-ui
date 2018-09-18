@@ -35,11 +35,7 @@ const ShowResolutionStates = [
 ];
 
 const MarketProperties = p => {
-  const shareVolumeFormatted = getValue(p, "volume.formatted");
-  const shareDenomination = shareDenominationLabel(
-    p.selectedShareDenomination,
-    p.shareDenominations
-  );
+  const shareVolume = getValue(p, "volume");
   const isScalar = p.marketType === SCALAR;
   let consensus = getValue(
     p,
@@ -62,8 +58,7 @@ const MarketProperties = p => {
             <span>Volume</span>
             <ValueDenomination
               valueClassname="volume"
-              formatted={shareVolumeFormatted}
-              denomination={shareDenomination}
+              formatted={shareVolume.full}
             />
           </li>
           <li>
