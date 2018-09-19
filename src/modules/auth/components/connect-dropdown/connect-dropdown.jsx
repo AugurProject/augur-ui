@@ -239,12 +239,14 @@ export default class ConnectDropdown extends Component {
     return (
       <div className={Styles.ConnectDropdown}>
         {isLogged && (
-          <button
+          <div
             className={classNames(Styles.ConnectDropdown__item)}
             onClick={this.logout}
+            role="button"
+            tabIndex="-1"
           >
             Logout
-          </button>
+          </div>
         )}
         {!isLogged &&
           ITEMS.map(item => (
