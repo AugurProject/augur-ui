@@ -137,6 +137,7 @@ export default class Trezor extends Component {
       }
     } else {
       this.updateDisplayInstructions(true);
+      this.props.setIsLoading(false);
     }
   }
 
