@@ -252,12 +252,17 @@ export default class Trezor extends Component {
                       Disconnecting and reconnecting Trezor might fix the issue
                     </li>
                   </ul>
-                  <div className={StylesDropdown.ConnectDropdown__retryContainer}>
-                    <button 
-                      className={StylesDropdown.ConnectDropdown__retryButton} 
-                      onClick={() => this.onDerivationPathChange(
-                        state.baseDerivationPath,
-                      )}
+                  <div
+                    className={StylesDropdown.ConnectDropdown__retryContainer}
+                  >
+                    <button
+                      className={StylesDropdown.ConnectDropdown__retryButton}
+                      onClick={e => {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        this.onDerivationPathChange(s.baseDerivationPath);
+                      }}
                     >
                       Retry
                     </button>
