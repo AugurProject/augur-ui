@@ -102,9 +102,14 @@ export default class Trezor extends Component {
       };
     });
 
-    const response = await TrezorConnect.ethereumGetAddress({ bundle });
+    const response = await TrezorConnect.ethereumGetAddress({ bundle }).catch(
+      err => {
+        console.log("Error:", err);
+        this.updateDisplayInstructions(true);
+        return this.props.setIsLoading(false);
+      }
+    );
 
-    console.log("response", response);
     if (response.success) {
       // parse up the bundle results
       response.payload.every(item => addresses.push(item.address));
@@ -241,6 +246,12 @@ export default class Trezor extends Component {
                   )}
                 >
                   <div>Make sure you have connected your Trezor</div>
+                  <ul>
+                    <li>Try dismissing Trezor web browser tab.</li>
+                    <li>
+                      Disconnecting and reconnectin Trezor might fix the issue
+                    </li>
+                  </ul>
                 </div>
               </div>
             )}

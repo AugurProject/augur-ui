@@ -114,7 +114,7 @@ export default class Ledger extends Component {
           true
         )
         .catch(err => {
-          console.log("get address errror", err);
+          console.log("Error:", err);
           this.updateDisplayInstructions(true);
           return this.props.setIsLoading(false);
         });
