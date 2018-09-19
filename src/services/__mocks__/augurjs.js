@@ -1,10 +1,7 @@
+const realAugur = require.requireActual("../augurjs.js");
+
 const mockAugur = jest.genMockFromModule("augur.js");
 
-const BigNumber = require("bignumber.js");
-
-const ten = new BigNumber(10, 10);
-const decimals = new BigNumber(18, 10);
-const multiple = ten.exponentiatedBy(18);
 const universesData = [
   {
     universe: "0xGENESIS",
@@ -31,37 +28,29 @@ const universesData = [
   }
 ];
 
-mockAugur.constants = {
-  PRECISION: {
-    decimals: decimals.toNumber(),
-    limit: ten.dividedBy(multiple),
-    zero: new BigNumber(1, 10).dividedBy(multiple),
-    multiple
-  }
+const ethereumNodeConnectionInfo = {
+  http: "http://some.eth.node.com",
+  ws: "wss://some.eth.ws.node.com"
 };
+
+const augurNodeWS = "wss://some.web.socket.com";
 
 mockAugur.rpc = {
-  getCurrentBlock: () => ({ number: 10000, timestamp: 4886718345 }),
   block: { number: 10000, timestamp: 4886718345 },
-  constants: {
-    ACCOUNT_TYPES: {
-      U_PORT: "uPort",
-      LEDGER: "ledger",
-      PRIVATE_KEY: "privateKey",
-      UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
-      META_MASK: "metaMask",
-      TREZOR: "trezor",
-      EDGE: "edge"
-    }
-  }
+  constants: realAugur.augur.rpc.constants,
+  eth: { accounts: cb => cb(null, ["0xa11ce"]) },
+  getCurrentBlock: () => ({ number: 10000, timestamp: 4886718345 }),
+  clear: realAugur.augur.rpc.clear,
+  getNetworkID: () => 4
 };
 
+mockAugur.constants = realAugur.augur.constants;
+
 mockAugur.api = {
-  Controller: {
-    getTimestamp: callback => {
-      callback(null, 42);
-    }
+  set mockController(c) {
+    mockAugur.api.Controller = c;
   },
+  Controller: {},
   Universe: {
     getParentUniverse: (args, callback) => {
       expect(args).toStrictEqual({
@@ -79,7 +68,7 @@ mockAugur.augurNode = {
   set mockGetSyncData(f) {
     mockAugur.augurNode.getSyncData = f;
   },
-  getSyncData: () => this.mockGetSyncData,
+  getSyncData: () => {},
 
   submitRequest: (methodName, args, callback) => {
     expect(methodName).toEqual("getUniversesInfo");
@@ -97,6 +86,22 @@ mockAugur.trading = {
     unrealized: "2"
   })
 };
+
+mockAugur.connect = (env, cb) => {
+  cb(null, {
+    ethereumNode: {
+      ...ethereumNodeConnectionInfo,
+      contracts: {},
+      abi: {
+        functions: {},
+        events: {}
+      }
+    },
+    augurNode: augurNodeWS
+  });
+};
+
+mockAugur.contracts = { addresses: { 4: { Universe: "0xb0b" } } };
 
 mockAugur.augur = mockAugur;
 

@@ -7,7 +7,7 @@ import * as augur from "services/augurjs";
 jest.mock("services/augurjs");
 jest.mock("modules/app/actions/update-blockchain");
 
-describe(`modules/app/actions/sync-blockchain.js`, () => {
+describe("modules/app/actions/sync-blockchain.js", () => {
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
   const state = Object.assign({}, testState, {
@@ -23,6 +23,11 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
     currentAugurTimestamp: 42
   };
   const store = mockStore(state);
+  augur.api.mockController = {
+    getTimestamp: callback => {
+      callback(null, 42);
+    }
+  };
 
   afterEach(() => {
     store.clearActions();
