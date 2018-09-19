@@ -5,10 +5,9 @@ import { Link } from "react-router-dom";
 import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
 import { Check, Close } from "modules/common/components/icons";
 import { isEqual } from "lodash";
-import makePath from "modules/routes/helpers/make-path";
 import classNames from "classnames";
 import {
-  AUTHENTICATION,
+  DEFAULT_VIEW,
   ACCOUNT_DEPOSIT
 } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
@@ -139,8 +138,8 @@ class MarketTrading extends Component {
               <p>
                 {!isLogged ? (
                   <span>
-                    <Link
-                      to={makePath(AUTHENTICATION)}
+                    <Link //todo: what should this do?
+                      to={makePath(DEFAULT_VIEW)}
                       style={{
                         textDecoration: "underline",
                         marginRight: "4px"

@@ -16,7 +16,7 @@ import { isEqual } from "lodash";
 
 import { BUY, SELL, LIMIT } from "modules/transactions/constants/types";
 import {
-  AUTHENTICATION,
+  DEFAULT_VIEW,
   ACCOUNT_DEPOSIT
 } from "modules/routes/constants/views";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
@@ -244,8 +244,8 @@ class MarketTradingWrapper extends Component {
               <p className={Styles["TradingWrapper__initial-message"]}>
                 {!isLogged ? (
                   <span>
-                    <Link
-                      to={makePath(AUTHENTICATION)}
+                    <Link //todo: what should this do?
+                      to={makePath(DEFAULT_VIEW)}
                       style={{
                         textDecoration: "underline",
                         marginRight: "4px"

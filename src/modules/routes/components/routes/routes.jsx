@@ -89,10 +89,6 @@ const Routes = p => (
       path={makePath(VIEWS.REPORTING_RESOLVED_MARKETS)}
       component={COMPONENTS.Reporting}
     />
-    <UnauthenticatedRoute
-      path={makePath(VIEWS.AUTHENTICATION)}
-      component={COMPONENTS.Auth}
-    />
     <Redirect to={makePath(VIEWS.CATEGORIES)} />
   </Switch>
 );
