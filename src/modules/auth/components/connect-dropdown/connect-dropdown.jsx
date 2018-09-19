@@ -18,16 +18,6 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import Ledger from "modules/auth/containers/ledger-connect";
 import Trezor from "modules/auth/containers/trezor-connect";
 
-// todo: need to figure out why edge fails sometimes
-// todo: need to add loading states
-// todo: hookup trezor
-// todo: need to be able to retry MM
-
-// todo: put seperate components in own files
-// todo: convert hex to constants, px to rem
-// todo: need to style for mobile
-// todo: clean up pr, remove those overrode files
-
 const ErrorContainer = p => (
   <div
     className={classNames(Styles.ConnectDropdown__content, {
@@ -99,7 +89,7 @@ export default class ConnectDropdown extends Component {
       error: null,
       isLedgerLoading: true,
       isTrezorLoading: true,
-      showAdvancedButton: false // todo: don't want this to show up until loading is done?
+      showAdvancedButton: false
     };
 
     this.showAdvanced = this.showAdvanced.bind(this);
@@ -189,7 +179,6 @@ export default class ConnectDropdown extends Component {
   connect(param) {
     if (param === PARAMS.METAMASK) {
       if (!isMetaMaskPresent()) {
-        // todo: does this look at all web3 things or just MM?
         this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT);
         return;
       }
@@ -199,7 +188,7 @@ export default class ConnectDropdown extends Component {
         }
       });
     } else if (param === PARAMS.EDGE) {
-      this.props.edgeLoginLink(this.props.history); // todo: why does this fail sometimes?
+      this.props.edgeLoginLink(this.props.history);
     }
   }
 

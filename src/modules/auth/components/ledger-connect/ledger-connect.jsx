@@ -191,7 +191,6 @@ export default class Ledger extends Component {
   }
 
   validatePath(value) {
-    // todo: validate custom derivation path here
     if (DerivationPath.validate(value)) {
       this.onDerivationPathChange(value).catch(() =>
         this.updateDisplayInstructions(true)

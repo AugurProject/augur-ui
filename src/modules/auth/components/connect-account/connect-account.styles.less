@@ -27,6 +27,10 @@
   &:focus {
     outline: none;
   }
+
+  @media @breakpoint-mobile {
+    padding-top: 10px;
+  }
 }
 
 .ConnectAccount__status {
@@ -71,9 +75,13 @@
   position: absolute;
   right: 81px;
   text-align: left;
-  top: 72px;
+  top: @top-bar-height;
   width: 98px;
   z-index: @above-all-content;
+
+  @media @breakpoint-mobile {
+    top: 3rem;
+  }
 }
 
 .ConnectAccount__connectDropdown__isLogged {
