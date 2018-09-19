@@ -269,7 +269,7 @@ export default class ConnectDropdown extends Component {
                   {s.selectedOption === item.param &&
                     ((item.param === PARAMS.EDGE && edgeLoading) ||
                       (item.param === PARAMS.LEDGER && s.isLedgerLoading) ||
-                      (item.param === PARAMS.Trezor && s.isTrezorLoading)) && (
+                      (item.param === PARAMS.TREZOR && s.isTrezorLoading)) && (
                       <div style={{ marginLeft: "8px" }}>
                         <PulseLoader
                           color="#FFF"
