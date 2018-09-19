@@ -57,7 +57,6 @@ const ErrorContainer = p => (
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
-
               p.connect(PARAMS.METAMASK);
             }}
           >
@@ -108,9 +107,17 @@ export default class ConnectDropdown extends Component {
     this.clearState = this.clearState.bind(this);
   }
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps, nextState) {
     if (nextProps.isLogged !== this.props.isLogged) {
       this.clearState();
+    }
+
+    if (nextState.isLedgerLoading !== this.state.isLedgerLoading && !nextState.isLedgerLoading && nextState.selectedOption === PARAMS.LEDGER) {
+      toggleHeight(this.refs["hardwareContent_" + PARAMS.LEDGER], false, () => {});
+    }
+
+    if (nextState.isTrezorLoading !== this.state.isTrezorLoading && !nextState.isTrezorLoading && nextState.selectedOption === PARAMS.TREZOR) {
+      toggleHeight(this.refs["hardwareContent_" + PARAMS.TREZOR], false, () => {});
     }
   }
 
@@ -142,24 +149,31 @@ export default class ConnectDropdown extends Component {
     this.setState({ error: null }, () => {
       if (this.refs["error_" + param]) {
         toggleHeight(this.refs["error_" + param], true, () => {
-          console.log("error hidden " + param);
         });
       }
     });
   }
 
   showHardwareWallet(param) {
-    if (this.refs["hardwareContent_" + param]) {
-      toggleHeight(this.refs["hardwareContent_" + param], false, () => {
-        this.setState({ selectedOption: param });
-      });
-    } else {
+    if (this.state.isLedgerLoading || this.state.isTrezorLoading) { // dont toggle if loading is true, check if nextState is true then toggle
       this.setState({ selectedOption: param });
+    } else {
+      if (this.refs["hardwareContent_" + param]) {
+        toggleHeight(this.refs["hardwareContent_" + param], false, () => {
+          this.setState({ selectedOption: param });
+        });
+      } else {
+        this.setState({ selectedOption: param });
+      }
     }
+    
   }
 
   hideHardwareWallet(param) {
     if (param && this.refs["hardwareContent_" + param]) {
+      
+      this.setState({isLedgerLoading: true, isTrezorLoading: true})
+      
       toggleHeight(this.refs["hardwareContent_" + param], true, () => {
         this.setState({ selectedOption: null });
       });
