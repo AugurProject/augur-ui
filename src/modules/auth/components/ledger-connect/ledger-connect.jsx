@@ -150,6 +150,7 @@ export default class Ledger extends Component {
 
   ledgerValidation() {
     if (location.protocol !== "https:") {
+      this.props.setIsLoading(false);
       this.updateDisplayInstructions(true);
     }
   }
@@ -293,6 +294,7 @@ export default class Ledger extends Component {
                         e.preventDefault();
 
                         this.onDerivationPathChange(s.baseDerivationPath);
+                        this.ledgerValidation();
                       }}
                     >
                       Retry
