@@ -61,10 +61,7 @@ export default class Ledger extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (
-      this.props.isClicked !== nextProps.isClicked &&
-      nextProps.isClicked
-    ) {
+    if (this.props.isClicked !== nextProps.isClicked && nextProps.isClicked) {
       // this is if the button was clicked, need to reupdate on click
       this.onDerivationPathChange(
         this.state.baseDerivationPath,
@@ -108,9 +105,19 @@ export default class Ledger extends Component {
     const addresses = [];
 
     for (const index of indexes) {
-      const result = await ledgerEthereum.getAddress(
-        DerivationPath.buildString(DerivationPath.increment(components, index))
-      );
+      const result = await ledgerEthereum
+        .getAddress(
+          DerivationPath.buildString(
+            DerivationPath.increment(components, index)
+          ),
+          false,
+          true
+        )
+        .catch(err => {
+          console.log("get address errror", err);
+          this.updateDisplayInstructions(true);
+          return this.props.setIsLoading(false);
+        });
       addresses.push(result && result.address);
     }
 
