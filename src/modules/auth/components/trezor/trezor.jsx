@@ -176,7 +176,7 @@ export default class Ledger extends Component {
   }
 
   showAdvanced(value) {
-    toggleHeight(this.refs.advanced_ledger, value, () => {});
+    toggleHeight(this.refs.advanced_trezor, value, () => {});
   }
 
   next() {
