@@ -51,14 +51,6 @@ export default class Ledger extends Component {
     this.validatePath = this.validatePath.bind(this);
   }
 
-  componentDidMount() {
-    if (this.state.ledgerAddresses.some(a => !a)) {
-      this.onDerivationPathChange(this.state.baseDerivationPath).catch(() =>
-        this.updateDisplayInstructions(true)
-      );
-    }
-  }
-
   componentWillUpdate(nextProps, nextState) {
     if (
       this.props.isLedgerClicked !== nextProps.isLedgerClicked &&

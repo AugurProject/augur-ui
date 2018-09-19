@@ -60,14 +60,6 @@ export default class Ledger extends Component {
     this.ledgerValidation();
   }
 
-  componentDidMount() {
-    if (this.state.ledgerAddresses.some(a => a === null)) {
-      this.onDerivationPathChange(this.state.baseDerivationPath).catch(() =>
-        this.updateDisplayInstructions(true)
-      );
-    }
-  }
-
   componentWillUpdate(nextProps, nextState) {
     if (
       this.props.isLedgerClicked !== nextProps.isLedgerClicked &&
@@ -100,7 +92,6 @@ export default class Ledger extends Component {
   }
 
   async onDerivationPathChange(derivationPath, pageNumber = 1) {
-    return;
     this.props.setIsLedgerLoading(true);
     const transport = await TransportU2F.create();
     const ledgerEthereum = new Eth(transport);
