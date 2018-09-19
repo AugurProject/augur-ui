@@ -17,16 +17,16 @@ import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles
 import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
-export default class Ledger extends Component {
+export default class Trezor extends Component {
   static propTypes = {
     loginWithTrezor: PropTypes.func.isRequired,
     showAdvanced: PropTypes.bool,
     showError: PropTypes.func.isRequired,
     hideError: PropTypes.func.isRequired,
     error: PropTypes.bool,
-    setIsLedgerLoading: PropTypes.func.isRequired,
+    setIsLoading: PropTypes.func.isRequired,
     setShowAdvancedButton: PropTypes.func.isRequired,
-    isLedgerClicked: PropTypes.bool
+    isClicked: PropTypes.bool
   };
 
   constructor(props) {
@@ -53,8 +53,8 @@ export default class Ledger extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (
-      this.props.isLedgerClicked !== nextProps.isLedgerClicked &&
-      nextProps.isLedgerClicked
+      this.props.isClicked !== nextProps.isClicked &&
+      nextProps.isClicked
     ) {
       // this is if the button was clicked, need to reupdate on click
       this.onDerivationPathChange(
@@ -81,7 +81,7 @@ export default class Ledger extends Component {
   }
 
   async onDerivationPathChange(derivationPath, pageNumber = 1) {
-    this.props.setIsLedgerLoading(true);
+    this.props.setIsLoading(true);
 
     this.updateDisplayInstructions(false);
 
@@ -115,7 +115,7 @@ export default class Ledger extends Component {
         this.setState({ ledgerAddresses: addresses });
         if (!addresses.every(element => !element)) {
           this.updateDisplayInstructions(false);
-          this.props.setIsLedgerLoading(false);
+          this.props.setIsLoading(false);
         }
       }
     } else {

@@ -84,14 +84,12 @@ export default class AddressPickerContent extends Component {
         </div>
         {indexArray.map(i => (
           <div key={i} className={Styles.ConnectDropdown__row}>
-            <div
-              role="button"
-              tabIndex={0}
+            <button
               className={Styles.ConnectDropdown__addressColumn}
               onClick={() => clickAction(i)}
             >
               {(addresses[i] && formatAddress(addresses[i])) || `—`}
-            </div>
+            </button>
             <div className={Styles.ConnectDropdown__balanceColumn}>
               {addressBalances[addresses[i]]
                 ? formatEther(addressBalances[addresses[i]]).formatted

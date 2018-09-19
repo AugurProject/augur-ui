@@ -313,8 +313,8 @@ export default class ConnectDropdown extends Component {
                       error={Boolean(
                         s.selectedOption === item.param && s.error
                       )}
-                      setIsLedgerLoading={this.setIsLedgerLoading}
-                      isLedgerClicked={s.selectedOption === item.param}
+                      setIsLoading={this.setIsLedgerLoading}
+                      isClicked={s.selectedOption === item.param}
                       setShowAdvancedButton={this.setShowAdvancedButton}
                     />
                   )}
@@ -330,8 +330,8 @@ export default class ConnectDropdown extends Component {
                       error={Boolean(
                         s.selectedOption === item.param && s.error
                       )}
-                      setIsLedgerLoading={this.setIsTrezorLoading}
-                      isLedgerClicked={s.selectedOption === item.param}
+                      setIsLoading={this.setIsTrezorLoading}
+                      isClicked={s.selectedOption === item.param}
                       setShowAdvancedButton={this.setShowAdvancedButton}
                     />
                   )}
