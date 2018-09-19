@@ -7,7 +7,7 @@ import { DEFAULT_DERIVATION_PATH } from "modules/auth/helpers/derivation-path";
 
 export default class DerivationPathEditor extends Component {
   static propTypes = {
-    validatePath: PropTypes.func.isRequired,
+    validatePath: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -20,11 +20,12 @@ export default class DerivationPathEditor extends Component {
 
     this.selectDerivationPath = this.selectDerivationPath.bind(this);
     this.focusTextInput = this.focusTextInput.bind(this);
-    this.setPath = this.setPath.bind(this)
+    this.setPath = this.setPath.bind(this);
   }
 
-  focusTextInput() {
-    this.derivationInput.focus();
+  setPath(value) {
+    this.setState({ customPath: value });
+    this.props.validatePath(value);
   }
 
   selectDerivationPath(value) {
@@ -37,13 +38,11 @@ export default class DerivationPathEditor extends Component {
     this.focusTextInput();
   }
 
-  setPath(value) {
-    this.setState({customPath: value})
-    this.props.validatePath(value)
+  focusTextInput() {
+    this.derivationInput.focus();
   }
 
   render() {
-    const { validatePath } = this.props;
     const s = this.state;
 
     return (

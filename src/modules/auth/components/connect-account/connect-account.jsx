@@ -66,7 +66,7 @@ export default class ConnectAccount extends Component {
           this.connectAccount = connectAccount;
         }}
       >
-        <div
+        <button
           className={Styles.ConnectAccount__container}
           onClick={this.toggleDropdown}
         >
@@ -93,7 +93,7 @@ export default class ConnectAccount extends Component {
               filledInIcon
             />
           </div>
-        </div>
+        </button>
         <div
           ref={ConnectDropdown => {
             this.ConnectDropdown = ConnectDropdown;

@@ -5,6 +5,7 @@ import formatAddress from "modules/auth/helpers/format-address";
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import { prevIcon, nextIcon } from "modules/common/components/icons";
 import getEtherBalance from "modules/auth/actions/get-ether-balance";
+import { formatEther } from "utils/format-number";
 
 export default class AddressPickerContent extends Component {
   static propTypes = {
@@ -13,7 +14,7 @@ export default class AddressPickerContent extends Component {
     clickAction: PropTypes.func.isRequired,
     clickPrevious: PropTypes.func.isRequired,
     clickNext: PropTypes.func.isRequired,
-    disablePrevious: PropTypes.bool,
+    disablePrevious: PropTypes.bool
   };
 
   constructor(props) {
@@ -25,7 +26,7 @@ export default class AddressPickerContent extends Component {
       addressBalances: {}
     };
 
-    this.clickPrevious = this.clickPrevious.bind(this)
+    this.clickPrevious = this.clickPrevious.bind(this);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -63,7 +64,7 @@ export default class AddressPickerContent extends Component {
       addresses,
       clickAction,
       clickNext,
-      disablePrevious,
+      disablePrevious
     } = this.props;
     const { addressBalances } = this.state;
 
@@ -85,15 +86,16 @@ export default class AddressPickerContent extends Component {
           <div key={i} className={Styles.ConnectDropdown__row}>
             <div
               role="button"
+              tabIndex={0}
               className={Styles.ConnectDropdown__addressColumn}
               onClick={() => clickAction(i)}
             >
-              {addresses[i] && formatAddress(addresses[i])}
+              {(addresses[i] && formatAddress(addresses[i])) || `—`}
             </div>
             <div className={Styles.ConnectDropdown__balanceColumn}>
               {addressBalances[addresses[i]]
-                ? addressBalances[addresses[i]]
-                : `-`}
+                ? formatEther(addressBalances[addresses[i]]).formatted
+                : `—`}
             </div>
           </div>
         ))}
@@ -103,12 +105,10 @@ export default class AddressPickerContent extends Component {
             Styles.ConnectDropdown__footer
           )}
         >
-          <div
-            className={
-              classNames(Styles.AddressPickerContent__direction, {
-                [Styles.AddressPickerContent__directionDisabled]: disablePrevious
-             })
-            }
+          <button
+            className={classNames(Styles.AddressPickerContent__direction, {
+              [Styles.AddressPickerContent__directionDisabled]: disablePrevious
+            })}
             onClick={this.clickPrevious}
           >
             <span
@@ -118,8 +118,8 @@ export default class AddressPickerContent extends Component {
               {prevIcon}
             </span>
             Previous
-          </div>
-          <div
+          </button>
+          <button
             className={Styles.AddressPickerContent__direction}
             onClick={clickNext}
             style={{ marginLeft: "24px" }}
@@ -131,7 +131,7 @@ export default class AddressPickerContent extends Component {
             >
               {nextIcon}
             </span>
-          </div>
+          </button>
         </div>
       </div>
     );

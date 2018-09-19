@@ -1,6 +1,6 @@
 import speedomatic from "speedomatic";
 import { augur } from "services/augurjs";
-import isAddress from "modules/auth/helpers/is-address";
+// import isAddress from "modules/auth/helpers/is-address";
 
 export default function getEtherBalance(address, callback) {
   /* if (!isAddress(address)) {

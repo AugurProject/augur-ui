@@ -32,7 +32,7 @@ const ErrorContainer = p => (
   <div
     className={classNames(Styles.ConnectDropdown__content, {
       [Styles.ConnectDropdown__contentNoPadding]:
-        !(p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT)
+        !p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT
     })}
   >
     <div className={Styles.ErrorContainer__header}>
@@ -98,11 +98,13 @@ export default class ConnectDropdown extends Component {
     this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this);
     this.setIsTrezorLoading = this.setIsTrezorLoading.bind(this);
     this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this);
+    this.selectOption = this.selectOption.bind(this);
+    this.clearState = this.clearState.bind(this);
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.isLogged !== this.props.isLogged) {
-      this.setState({ selectedOption: null });
+  componentWillUpdate(nextProps) {
+    if (nextProps.isLogged !== this.props.isLogged) {
+      this.clearState();
     }
   }
 
@@ -116,6 +118,10 @@ export default class ConnectDropdown extends Component {
 
   setShowAdvancedButton(value) {
     this.setState({ showAdvancedButton: value });
+  }
+
+  clearState() {
+    this.setState({ selectedOption: null });
   }
 
   showError(param, error) {
@@ -193,8 +199,6 @@ export default class ConnectDropdown extends Component {
       });
     } else if (param === PARAMS.EDGE) {
       this.props.edgeLoginLink(this.props.history); // todo: why does this fail sometimes?
-    } else if (param === PARAMS.LEDGER) {
-      this.setState({ connectLedger: true });
     }
   }
 
@@ -235,12 +239,12 @@ export default class ConnectDropdown extends Component {
     return (
       <div className={Styles.ConnectDropdown}>
         {isLogged && (
-          <div
+          <button
             className={classNames(Styles.ConnectDropdown__item)}
             onClick={this.logout}
           >
             Logout
-          </div>
+          </button>
         )}
         {!isLogged &&
           ITEMS.map(item => (
@@ -253,7 +257,9 @@ export default class ConnectDropdown extends Component {
                     s.selectedOption === item.param &&
                     (item.type === WALLET_TYPE.HARDWARE || s.error)
                 })}
-                onClick={this.selectOption.bind(this, item.param)}
+                onClick={() => this.selectOption(item.param)}
+                role="button"
+                tabIndex="-1"
               >
                 <div className={Styles.ConnectDropdown__icon}>{item.icon}</div>
                 <div className={Styles.ConnectDropdown__title}>
@@ -276,14 +282,14 @@ export default class ConnectDropdown extends Component {
                 {s.selectedOption === item.param &&
                   item.type === WALLET_TYPE.HARDWARE &&
                   s.showAdvancedButton && (
-                    <div
+                    <button
                       style={{ padding: "10px" }}
                       onClick={this.showAdvanced}
                     >
                       <div className={Styles.ConnectDropdown__advanced}>
                         Advanced
                       </div>
-                    </div>
+                    </button>
                   )}
               </div>
               <div
