@@ -21,7 +21,6 @@ const Routes = p => (
     />
     <Route path={makePath(VIEWS.MARKETS)} component={COMPONENTS.Markets} />
     <Route path={makePath(VIEWS.MARKET)} component={COMPONENTS.Market} />
-    <Route path={makePath(VIEWS.CONNECT)} component={COMPONENTS.Connect} />
     <AuthenticatedRoute
       path={makePath(VIEWS.DISPUTE)}
       component={COMPONENTS.Dispute}

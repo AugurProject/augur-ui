@@ -172,7 +172,8 @@ export default class AppView extends Component {
         icon: NavAccountIcon,
         mobileClick: () =>
           this.setState({ mobileMenuState: mobileMenuStates.FIRSTMENU_OPEN }),
-        route: ACCOUNT_DEPOSIT
+        route: ACCOUNT_DEPOSIT,
+        requireLogin: true
       }
     ];
 
