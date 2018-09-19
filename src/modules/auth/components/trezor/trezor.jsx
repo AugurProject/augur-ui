@@ -115,7 +115,10 @@ export default class Trezor extends Component {
       // parse up the bundle results
       response.payload.every(item => addresses.push(item.address));
       if (addresses && addresses.length > 0) {
-        this.setState({ ledgerAddresses: addresses });
+        this.setState({
+          ledgerAddresses: addresses,
+          ledgerAddressPageNumber: pageNumber
+        });
         if (!addresses.every(element => !element)) {
           this.updateDisplayInstructions(false);
           this.props.setIsLoading(false);
@@ -174,7 +177,7 @@ export default class Trezor extends Component {
       );
       this.props.hideError("trezor");
     } else {
-      this.props.showError("trezor", ERROR_TYPES.INCORRECT_FORMAT);
+      this.updateDisplayInstructions(true);
     }
   }
 
