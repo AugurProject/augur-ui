@@ -13,7 +13,7 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
 import { errorIcon } from "modules/common/components/icons";
 
-import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
+import Styles from "modules/auth/components/common/connect-wallet.styles";
 import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
@@ -33,17 +33,14 @@ export default class Trezor extends Component {
   constructor(props) {
     super(props);
 
-    this.LedgerEthereum = null;
-
     this.state = {
-      displayInstructions: true, // don't want to show ledger content while loading is true
+      displayInstructions: true,
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
-      ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
-      ledgerAddressBalances: {},
-      ledgerAddressPageNumber: 1
+      walletAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
+      addressPageNumber: 1
     };
 
-    this.connectLedger = this.connectLedger.bind(this);
+    this.connectWallet = this.connectWallet.bind(this);
     this.updateDisplayInstructions = this.updateDisplayInstructions.bind(this);
     this.onDerivationPathChange = this.onDerivationPathChange.bind(this);
     this.buildDerivationPath = this.buildDerivationPath.bind(this);
@@ -53,10 +50,10 @@ export default class Trezor extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState.ledgerAddresses !== this.state.ledgerAddresses) {
+    if (nextState.walletAddresses !== this.state.walletAddresses) {
       if (
         nextState.isLoading &&
-        nextState.ledgerAddresses.every(element => !element)
+        nextState.walletAddresses.every(element => !element)
       ) {
         nextProps.setShowAdvancedButton(false);
       } else {
@@ -68,15 +65,13 @@ export default class Trezor extends Component {
       // this is if the button was clicked, need to reupdate on click
       this.onDerivationPathChange(
         this.state.baseDerivationPath,
-        nextState.ledgerAddressPageNumber
+        nextState.addressPageNumber
       );
     }
-    if (
-      this.state.ledgerAddressPageNumber !== nextState.ledgerAddressPageNumber
-    ) {
+    if (this.state.addressPageNumber !== nextState.addressPageNumber) {
       this.onDerivationPathChange(
         this.state.baseDerivationPath,
-        nextState.ledgerAddressPageNumber
+        nextState.addressPageNumber
       );
     }
 
@@ -127,8 +122,8 @@ export default class Trezor extends Component {
       response.payload.every(item => addresses.push(item.address));
       if (addresses && addresses.length > 0) {
         this.setState({
-          ledgerAddresses: addresses,
-          ledgerAddressPageNumber: pageNumber
+          walletAddresses: addresses,
+          addressPageNumber: pageNumber
         });
         if (!addresses.every(element => !element)) {
           this.updateDisplayInstructions(false);
@@ -148,7 +143,7 @@ export default class Trezor extends Component {
     this.setState({ displayInstructions });
   }
 
-  async connectLedger(pathIndex) {
+  async connectWallet(pathIndex) {
     const { loginWithTrezor } = this.props;
     const derivationPath = this.buildDerivationPath(pathIndex);
     const result = await TrezorConnect.ethereumGetAddress({
@@ -195,13 +190,13 @@ export default class Trezor extends Component {
   }
 
   next() {
-    const { ledgerAddressPageNumber } = this.state;
-    this.setState({ ledgerAddressPageNumber: ledgerAddressPageNumber + 1 });
+    const { addressPageNumber } = this.state;
+    this.setState({ addressPageNumber: addressPageNumber + 1 });
   }
 
   previous() {
-    const { ledgerAddressPageNumber } = this.state;
-    this.setState({ ledgerAddressPageNumber: ledgerAddressPageNumber - 1 });
+    const { addressPageNumber } = this.state;
+    this.setState({ addressPageNumber: addressPageNumber - 1 });
   }
 
   render() {
@@ -209,17 +204,17 @@ export default class Trezor extends Component {
     const s = this.state;
 
     const indexes = [
-      ...Array(NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber)
+      ...Array(NUM_DERIVATION_PATHS_TO_DISPLAY * s.addressPageNumber)
     ]
       .map((_, i) => i)
       .slice(
-        NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber -
+        NUM_DERIVATION_PATHS_TO_DISPLAY * s.addressPageNumber -
           NUM_DERIVATION_PATHS_TO_DISPLAY,
-        NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
+        NUM_DERIVATION_PATHS_TO_DISPLAY * s.addressPageNumber
       );
 
     let hideContent = false;
-    if (isLoading && s.ledgerAddresses.every(element => !element)) {
+    if (isLoading && s.walletAddresses.every(element => !element)) {
       hideContent = true;
     }
 
@@ -229,7 +224,7 @@ export default class Trezor extends Component {
           <div
             ref="advanced_trezor"
             className={classNames(
-              Styles.ConnectDropdown__advancedContent,
+              StylesDropdown.ConnectDropdown__advancedContent,
               ToggleHeightStyles["toggle-height-target"]
             )}
           >
@@ -239,13 +234,12 @@ export default class Trezor extends Component {
             !s.displayInstructions &&
             !hideContent && (
               <AddressPickerContent
-                addresses={s.ledgerAddresses}
-                balances={s.ledgerAddressBalances}
+                addresses={s.walletAddresses}
                 indexArray={indexes}
-                clickAction={this.connectLedger}
+                clickAction={this.connectWallet}
                 clickPrevious={this.previous}
                 clickNext={this.next}
-                disablePrevious={s.ledgerAddressPageNumber === 1}
+                disablePrevious={s.addressPageNumber === 1}
               />
             )}
 
@@ -261,7 +255,7 @@ export default class Trezor extends Component {
                 <div
                   className={classNames(
                     StylesDropdown.ErrorContainer__subheader,
-                    Styles.LedgerConnect__subheader
+                    Styles.ConnectWallet__subheader
                   )}
                 >
                   <ul>
