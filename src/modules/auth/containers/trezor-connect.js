@@ -9,14 +9,6 @@ const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({
   loginWithTrezor: (address, connect, addressPath) =>
     dispatch(loginWithTrezor(address, connect, addressPath)),
-  showError: error =>
-    dispatch(
-      updateModal({
-        type: MODAL_TREZOR,
-        info: `Error authenticating with Trezor: "${error}"`,
-        canClose: true
-      })
-    )
 });
 
 export default connect(
