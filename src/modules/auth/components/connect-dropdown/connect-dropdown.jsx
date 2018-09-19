@@ -32,7 +32,7 @@ const ErrorContainer = p => (
   <div
     className={classNames(Styles.ConnectDropdown__content, {
       [Styles.ConnectDropdown__contentNoPadding]:
-        !p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT
+        !(p.error && p.error === ERROR_TYPES.INCORRECT_FORMAT)
     })}
   >
     <div className={Styles.ErrorContainer__header}>

@@ -122,7 +122,7 @@ export default class Ledger extends Component {
       }
       return;
     }
-
+    this.props.setIsLedgerLoading(false);
     this.updateDisplayInstructions(true);
   }
 
