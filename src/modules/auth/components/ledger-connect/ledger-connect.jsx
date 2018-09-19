@@ -63,10 +63,13 @@ export default class Ledger extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (nextState.ledgerAddresses !== this.state.ledgerAddresses) {
-      if (nextState.isLoading && nextState.ledgerAddresses.every(element => !element)) {
-        nextProps.setShowAdvancedButton(false)
+      if (
+        nextState.isLoading &&
+        nextState.ledgerAddresses.every(element => !element)
+      ) {
+        nextProps.setShowAdvancedButton(false);
       } else {
-        nextProps.setShowAdvancedButton(true)
+        nextProps.setShowAdvancedButton(true);
       }
     }
 
@@ -154,7 +157,7 @@ export default class Ledger extends Component {
   updateDisplayInstructions(displayInstructions) {
     if (displayInstructions) {
       this.props.setShowAdvancedButton(false);
-    } 
+    }
 
     this.setState({ displayInstructions });
   }
@@ -281,6 +284,21 @@ export default class Ledger extends Component {
                     <li>Enabled contract data</li>
                     <li>Enabled browser support</li>
                   </ul>
+                  <div
+                    className={StylesDropdown.ConnectDropdown__retryContainer}
+                  >
+                    <button
+                      className={StylesDropdown.ConnectDropdown__retryButton}
+                      onClick={e => {
+                        e.stopPropagation();
+                        e.preventDefault();
+
+                        this.onDerivationPathChange(s.baseDerivationPath);
+                      }}
+                    >
+                      Retry
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

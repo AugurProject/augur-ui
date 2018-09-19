@@ -54,13 +54,16 @@ export default class Trezor extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (nextState.ledgerAddresses !== this.state.ledgerAddresses) {
-      if (nextState.isLoading && nextState.ledgerAddresses.every(element => !element)) {
-        nextProps.setShowAdvancedButton(false)
+      if (
+        nextState.isLoading &&
+        nextState.ledgerAddresses.every(element => !element)
+      ) {
+        nextProps.setShowAdvancedButton(false);
       } else {
-        nextProps.setShowAdvancedButton(true)
+        nextProps.setShowAdvancedButton(true);
       }
     }
-    
+
     if (this.props.isClicked !== nextProps.isClicked && nextProps.isClicked) {
       // this is if the button was clicked, need to reupdate on click
       this.onDerivationPathChange(
@@ -140,7 +143,7 @@ export default class Trezor extends Component {
   updateDisplayInstructions(displayInstructions) {
     if (displayInstructions) {
       this.props.setShowAdvancedButton(false);
-    } 
+    }
     this.setState({ displayInstructions });
   }
 

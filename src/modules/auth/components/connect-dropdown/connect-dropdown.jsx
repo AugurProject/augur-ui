@@ -58,6 +58,23 @@ const ErrorContainer = p => (
       {p.error !== ERROR_TYPES.UNABLE_TO_CONNECT &&
         p.error &&
         p.error.subheader}
+      {p.error === ERROR_TYPES.NOT_SIGNED_IN &&
+        <div
+          className={Styles.ConnectDropdown__retryContainer}
+        >
+          <button
+            className={Styles.ConnectDropdown__retryButton}
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+
+              p.connect(PARAMS.METAMASK);
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      }
     </div>
   </div>
 );
@@ -329,7 +346,7 @@ export default class ConnectDropdown extends Component {
                   ToggleHeightStyles["toggle-height-target"]
                 )}
               >
-                <ErrorContainer error={s.error} retry={this.retry} />
+                <ErrorContainer error={s.error} retry={this.retry} connect={this.connect}/>
               </div>
             </div>
           ))}
