@@ -32,8 +32,8 @@ export default class Ledger extends Component {
     error: PropTypes.bool,
     setIsLoading: PropTypes.func.isRequired,
     setShowAdvancedButton: PropTypes.func.isRequired,
-    isClicked: PropTypes.bool, 
-    isLoading: PropTypes.bool, 
+    isClicked: PropTypes.bool,
+    isLoading: PropTypes.bool
   };
 
   constructor(props) {
@@ -131,7 +131,10 @@ export default class Ledger extends Component {
     }
 
     if (addresses && addresses.length > 0) {
-      this.setState({ ledgerAddresses: addresses });
+      this.setState({
+        ledgerAddresses: addresses,
+        ledgerAddressPageNumber: pageNumber
+      });
       if (!addresses.every(element => !element)) {
         this.updateDisplayInstructions(false);
         this.props.setIsLoading(false);
@@ -224,9 +227,9 @@ export default class Ledger extends Component {
         NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
       );
 
-    let hideContent = false
+    let hideContent = false;
     if (isLoading && s.ledgerAddresses.every(element => !element)) {
-      hideContent = true
+      hideContent = true;
     }
 
     return (
@@ -242,7 +245,8 @@ export default class Ledger extends Component {
             <DerivationPathEditor validatePath={this.validatePath} />
           </div>
           {!error &&
-            !s.displayInstructions && !hideContent && (
+            !s.displayInstructions &&
+            !hideContent && (
               <AddressPickerContent
                 addresses={s.ledgerAddresses}
                 balances={s.ledgerAddressBalances}

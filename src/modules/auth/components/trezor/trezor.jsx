@@ -27,7 +27,7 @@ export default class Trezor extends Component {
     setIsLoading: PropTypes.func.isRequired,
     setShowAdvancedButton: PropTypes.func.isRequired,
     isClicked: PropTypes.bool,
-    isLoading: PropTypes.bool, 
+    isLoading: PropTypes.bool
   };
 
   constructor(props) {
@@ -183,7 +183,7 @@ export default class Trezor extends Component {
       );
       this.props.hideError("trezor");
     } else {
-      this.updateDisplayInstructions(true);
+      this.props.showError("trezor", ERROR_TYPES.INCORRECT_FORMAT);
     }
   }
 
@@ -215,9 +215,9 @@ export default class Trezor extends Component {
         NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
       );
 
-    let hideContent = false
+    let hideContent = false;
     if (isLoading && s.ledgerAddresses.every(element => !element)) {
-      hideContent = true
+      hideContent = true;
     }
 
     return (
@@ -233,7 +233,8 @@ export default class Trezor extends Component {
             <DerivationPathEditor validatePath={this.validatePath} />
           </div>
           {!error &&
-            !s.displayInstructions && !hideContent && (
+            !s.displayInstructions &&
+            !hideContent && (
               <AddressPickerContent
                 addresses={s.ledgerAddresses}
                 balances={s.ledgerAddressBalances}

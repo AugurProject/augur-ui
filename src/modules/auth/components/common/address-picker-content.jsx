@@ -27,6 +27,8 @@ export default class AddressPickerContent extends Component {
     };
 
     this.clickPrevious = this.clickPrevious.bind(this);
+
+    props.addresses.map(address => this.updateAccountBalance(address));
   }
 
   componentWillUpdate(nextProps, nextState) {
