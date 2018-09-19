@@ -299,6 +299,7 @@ export default class ConnectDropdown extends Component {
                       )}
                       setIsLoading={this.setIsLedgerLoading}
                       isClicked={s.selectedOption === item.param}
+                      isLoading={s.isLedgerLoading}
                       setShowAdvancedButton={this.setShowAdvancedButton}
                     />
                   )}
@@ -316,6 +317,7 @@ export default class ConnectDropdown extends Component {
                       )}
                       setIsLoading={this.setIsTrezorLoading}
                       isClicked={s.selectedOption === item.param}
+                      isLoading={s.isTrezorLoading}
                       setShowAdvancedButton={this.setShowAdvancedButton}
                     />
                   )}

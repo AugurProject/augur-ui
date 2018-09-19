@@ -26,7 +26,8 @@ export default class Trezor extends Component {
     error: PropTypes.bool,
     setIsLoading: PropTypes.func.isRequired,
     setShowAdvancedButton: PropTypes.func.isRequired,
-    isClicked: PropTypes.bool
+    isClicked: PropTypes.bool,
+    isLoading: PropTypes.bool, 
   };
 
   constructor(props) {
@@ -192,7 +193,7 @@ export default class Trezor extends Component {
   }
 
   render() {
-    const { error } = this.props;
+    const { isLoading, error } = this.props;
     const s = this.state;
 
     const indexes = [
@@ -204,6 +205,11 @@ export default class Trezor extends Component {
           NUM_DERIVATION_PATHS_TO_DISPLAY,
         NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
       );
+
+    let hideContent = false
+    if (isLoading && s.ledgerAddresses.every(element => !element)) {
+      hideContent = true
+    }
 
     return (
       <section>
@@ -218,7 +224,7 @@ export default class Trezor extends Component {
             <DerivationPathEditor validatePath={this.validatePath} />
           </div>
           {!error &&
-            !s.displayInstructions && (
+            !s.displayInstructions && !hideContent && (
               <AddressPickerContent
                 addresses={s.ledgerAddresses}
                 balances={s.ledgerAddressBalances}
