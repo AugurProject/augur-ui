@@ -57,7 +57,9 @@ export default class Ledger extends Component {
     this.ledgerValidation = this.ledgerValidation.bind(this);
     this.previous = this.previous.bind(this);
     this.validatePath = this.validatePath.bind(this);
+  }
 
+  componentDidMount() {
     this.ledgerValidation();
   }
 
