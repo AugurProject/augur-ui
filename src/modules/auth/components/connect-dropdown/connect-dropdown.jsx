@@ -93,7 +93,6 @@ export default class ConnectDropdown extends Component {
     this.hideAdvanced = this.hideAdvanced.bind(this);
     this.hideError = this.hideError.bind(this);
     this.showHardwareWallet = this.showHardwareWallet.bind(this);
-    this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this);
     this.retry = this.retry.bind(this);
     this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this);
     this.setIsTrezorLoading = this.setIsTrezorLoading.bind(this);
@@ -170,32 +169,17 @@ export default class ConnectDropdown extends Component {
     this.setState({ showAdvanced: false });
   }
 
-  toggleDropdownAndConnect(cb) {
-    this.props.toggleDropdown(() => {
-      setTimeout(() => {
-        // need to wait for animation to be done
-        cb();
-      }, 500);
-    });
-  }
-
   connect(param) {
-    // todo: need to check if connection was successful before closing
     if (param === PARAMS.METAMASK) {
       if (!isMetaMaskPresent()) {
         // todo: does this look at all web3 things or just MM?
         this.showError(param, ERROR_TYPES.UNABLE_TO_CONNECT);
         return;
       }
-
-      this.toggleDropdownAndConnect(() => {
-        this.props.connectMetaMask((err, res) => {
-          // todo: if it doesn;t work say not logged in?
-          if (err) {
-            this.showError(param, ERROR_TYPES.NOT_SIGNED_IN);
-            this.props.toggleDropdown();
-          }
-        });
+      this.props.connectMetaMask((err, res) => {
+        if (err) {
+          this.showError(param, ERROR_TYPES.NOT_SIGNED_IN);
+        }
       });
     } else if (param === PARAMS.EDGE) {
       this.props.edgeLoginLink(this.props.history); // todo: why does this fail sometimes?

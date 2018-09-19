@@ -61,10 +61,7 @@ export default class Ledger extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (
-      this.props.isClicked !== nextProps.isClicked &&
-      nextProps.isClicked
-    ) {
+    if (this.props.isClicked !== nextProps.isClicked && nextProps.isClicked) {
       // this is if the button was clicked, need to reupdate on click
       this.onDerivationPathChange(
         this.state.baseDerivationPath,

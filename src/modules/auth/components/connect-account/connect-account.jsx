@@ -25,14 +25,27 @@ export default class ConnectAccount extends Component {
 
     this.toggleDropdown = this.toggleDropdown.bind(this);
     this.handleWindowOnClick = this.handleWindowOnClick.bind(this);
+    this.setDropdownOpen = this.setDropdownOpen.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener("click", this.handleWindowOnClick);
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.isLogged !== this.props.isLogged && nextProps.isLogged) {
+      toggleHeight(this.ConnectDropdown, true, () => {
+        this.setDropdownOpen(false);
+      });
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener("click", this.handleWindowOnClick);
+  }
+
+  setDropdownOpen(value) {
+    this.setState({ dropdownOpen: value });
   }
 
   toggleDropdown(cb) {
