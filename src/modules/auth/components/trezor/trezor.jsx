@@ -245,13 +245,23 @@ export default class Trezor extends Component {
                     Styles.LedgerConnect__subheader
                   )}
                 >
-                  <div>Make sure you have connected your Trezor</div>
                   <ul>
-                    <li>Try dismissing Trezor web browser tab.</li>
+                    <li>Make sure you have connected your Trezor</li>
+                    <li>Try dismissing Trezor web browser tab</li>
                     <li>
-                      Disconnecting and reconnectin Trezor might fix the issue
+                      Disconnecting and reconnecting Trezor might fix the issue
                     </li>
                   </ul>
+                  <div className={StylesDropdown.ConnectDropdown__retryContainer}>
+                    <button 
+                      className={StylesDropdown.ConnectDropdown__retryButton} 
+                      onClick={() => this.onDerivationPathChange(
+                        state.baseDerivationPath,
+                      )}
+                    >
+                      Retry
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

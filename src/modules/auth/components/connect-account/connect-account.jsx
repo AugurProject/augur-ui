@@ -34,9 +34,7 @@ export default class ConnectAccount extends Component {
 
   componentWillUpdate(nextProps) {
     if (nextProps.isLogged !== this.props.isLogged && nextProps.isLogged) {
-      toggleHeight(this.ConnectDropdown, true, () => {
-        this.setDropdownOpen(false);
-      });
+      this.setDropdownOpen(false);
     }
   }
 
@@ -44,8 +42,10 @@ export default class ConnectAccount extends Component {
     window.removeEventListener("click", this.handleWindowOnClick);
   }
 
-  setDropdownOpen(value) {
-    this.setState({ dropdownOpen: value });
+  setDropdownOpen(value) {    
+    this.setState({ dropdownOpen: value }, () => {
+      toggleHeight(this.ConnectDropdown, true, () => {})
+    });
   }
 
   toggleDropdown(cb) {
