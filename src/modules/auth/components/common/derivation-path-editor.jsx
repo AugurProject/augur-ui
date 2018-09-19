@@ -7,18 +7,20 @@ import { DEFAULT_DERIVATION_PATH } from "modules/auth/helpers/derivation-path";
 
 export default class DerivationPathEditor extends Component {
   static propTypes = {
-    validatePath: PropTypes.func.isRequired
+    validatePath: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedDefaultPath: true
+      selectedDefaultPath: true,
+      customPath: ""
     };
 
     this.selectDerivationPath = this.selectDerivationPath.bind(this);
     this.focusTextInput = this.focusTextInput.bind(this);
+    this.setPath = this.setPath.bind(this)
   }
 
   focusTextInput() {
@@ -27,10 +29,17 @@ export default class DerivationPathEditor extends Component {
 
   selectDerivationPath(value) {
     this.setState({ selectedDefaultPath: value });
-    if (value) {
+    if (!value && this.state.customPath !== "") {
+      this.props.validatePath(this.state.customPath);
+    } else if (value) {
       this.props.validatePath(DEFAULT_DERIVATION_PATH);
     }
     this.focusTextInput();
+  }
+
+  setPath(value) {
+    this.setState({customPath: value})
+    this.props.validatePath(value)
   }
 
   render() {
@@ -90,11 +99,12 @@ export default class DerivationPathEditor extends Component {
                   <input
                     className={Styles.DerivationPathEditor__pathInput}
                     type="text"
-                    ref={input => {
-                      this.derivationInput = input;
+                    ref={derivationInput => {
+                      this.derivationInput = derivationInput;
                     }}
+                    value={s.customPath}
                     placeholder={DEFAULT_DERIVATION_PATH}
-                    onChange={e => validatePath(e.target.value)}
+                    onChange={e => this.setPath(e.target.value)}
                   />
                 </span>
               </button>
