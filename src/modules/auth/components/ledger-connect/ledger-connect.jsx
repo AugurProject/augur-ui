@@ -100,6 +100,7 @@ export default class Ledger extends Component {
   }
 
   async onDerivationPathChange(derivationPath, pageNumber = 1) {
+    return;
     this.props.setIsLedgerLoading(true);
     const transport = await TransportU2F.create();
     const ledgerEthereum = new Eth(transport);

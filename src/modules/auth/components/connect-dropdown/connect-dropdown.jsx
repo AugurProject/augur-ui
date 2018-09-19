@@ -16,6 +16,7 @@ import { errorIcon } from "modules/common/components/icons";
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import Ledger from "modules/auth/containers/ledger-connect";
+import Trezor from "modules/auth/containers/trezor-connect";
 
 // todo: need to figure out why edge fails sometimes
 // todo: need to add loading states
@@ -80,6 +81,7 @@ export default class ConnectDropdown extends Component {
       showAdvanced: false,
       error: null,
       isLedgerLoading: true,
+      isTrezorLoading: true,
       showAdvancedButton: false // todo: don't want this to show up until loading is done?
     };
 
@@ -94,6 +96,7 @@ export default class ConnectDropdown extends Component {
     this.toggleDropdownAndConnect = this.toggleDropdownAndConnect.bind(this);
     this.retry = this.retry.bind(this);
     this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this);
+    this.setIsTrezorLoading = this.setIsTrezorLoading.bind(this);
     this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this);
   }
 
@@ -105,6 +108,10 @@ export default class ConnectDropdown extends Component {
 
   setIsLedgerLoading(value) {
     this.setState({ isLedgerLoading: value });
+  }
+
+  setIsTrezorLoading(value) {
+    this.setState({ isTrezorLoading: value });
   }
 
   setShowAdvancedButton(value) {
@@ -253,7 +260,8 @@ export default class ConnectDropdown extends Component {
                   {item.title}
                   {s.selectedOption === item.param &&
                     ((item.param === PARAMS.EDGE && edgeLoading) ||
-                      (item.param === PARAMS.LEDGER && s.isLedgerLoading)) && (
+                      (item.param === PARAMS.LEDGER && s.isLedgerLoading) ||
+                      (item.param === PARAMS.Trezor && s.isTrezorLoading)) && (
                       <div style={{ marginLeft: "8px" }}>
                         <PulseLoader
                           color="#FFF"
@@ -298,6 +306,23 @@ export default class ConnectDropdown extends Component {
                         s.selectedOption === item.param && s.error
                       )}
                       setIsLedgerLoading={this.setIsLedgerLoading}
+                      isLedgerClicked={s.selectedOption === item.param}
+                      setShowAdvancedButton={this.setShowAdvancedButton}
+                    />
+                  )}
+                {item.type === WALLET_TYPE.HARDWARE &&
+                  item.param === "trezor" && (
+                    <Trezor
+                      dropdownItem={item}
+                      showError={this.showError}
+                      hideError={this.hideError}
+                      showAdvanced={
+                        s.selectedOption === "trezor" && s.showAdvanced
+                      }
+                      error={Boolean(
+                        s.selectedOption === item.param && s.error
+                      )}
+                      setIsLedgerLoading={this.setIsTrezorLoading}
                       isLedgerClicked={s.selectedOption === item.param}
                       setShowAdvancedButton={this.setShowAdvancedButton}
                     />

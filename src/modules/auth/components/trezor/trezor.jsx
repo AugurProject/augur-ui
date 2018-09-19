@@ -1,52 +1,262 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { augur } from "services/augurjs";
 
-import Styles from "modules/auth/components/trezor/trezor.styles";
+import DerivationPath, {
+  DEFAULT_DERIVATION_PATH,
+  NUM_DERIVATION_PATHS_TO_DISPLAY
+} from "modules/auth/helpers/derivation-path";
+import classNames from "classnames";
+import TrezorConnect from "trezor-connect";
+import AddressPickerContent from "modules/auth/components/common/address-picker-content";
+import DerivationPathEditor from "modules/auth/components/common/derivation-path-editor";
+import toggleHeight from "utils/toggle-height/toggle-height";
+import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
+import { errorIcon } from "modules/common/components/icons";
 
-export default class Trezor extends PureComponent {
+import Styles from "modules/auth/components/ledger-connect/ledger-connect.styles";
+import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
+
+export default class Ledger extends Component {
   static propTypes = {
     loginWithTrezor: PropTypes.func.isRequired,
-    showError: PropTypes.func.isRequired
+    showAdvanced: PropTypes.bool,
+    showError: PropTypes.func.isRequired,
+    hideError: PropTypes.func.isRequired,
+    error: PropTypes.bool,
+    setIsLedgerLoading: PropTypes.func.isRequired,
+    setShowAdvancedButton: PropTypes.func.isRequired,
+    isLedgerClicked: PropTypes.bool
   };
 
+  constructor(props) {
+    super(props);
+
+    this.LedgerEthereum = null;
+
+    this.state = {
+      displayInstructions: true, // don't want to show ledger content while loading is true
+      baseDerivationPath: DEFAULT_DERIVATION_PATH,
+      ledgerAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
+      ledgerAddressBalances: {},
+      ledgerAddressPageNumber: 1
+    };
+
+    this.connectLedger = this.connectLedger.bind(this);
+    this.updateDisplayInstructions = this.updateDisplayInstructions.bind(this);
+    this.onDerivationPathChange = this.onDerivationPathChange.bind(this);
+    this.buildDerivationPath = this.buildDerivationPath.bind(this);
+    this.next = this.next.bind(this);
+    this.previous = this.previous.bind(this);
+    this.validatePath = this.validatePath.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.state.ledgerAddresses.some(a => !a)) {
+      this.onDerivationPathChange(this.state.baseDerivationPath).catch(() =>
+        this.updateDisplayInstructions(true)
+      );
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (
+      this.props.isLedgerClicked !== nextProps.isLedgerClicked &&
+      nextProps.isLedgerClicked
+    ) {
+      // this is if the button was clicked, need to reupdate on click
+      this.onDerivationPathChange(
+        this.state.baseDerivationPath,
+        nextState.ledgerAddressPageNumber
+      );
+    }
+    if (
+      this.state.ledgerAddressPageNumber !== nextState.ledgerAddressPageNumber
+    ) {
+      this.onDerivationPathChange(
+        this.state.baseDerivationPath,
+        nextState.ledgerAddressPageNumber
+      );
+    }
+
+    if (this.props.showAdvanced !== nextProps.showAdvanced) {
+      this.showAdvanced(this.props.showAdvanced);
+    }
+
+    if (this.state.displayInstructions !== nextState.displayInstructions) {
+      this.updateDisplayInstructions(nextState.displayInstructions);
+    }
+  }
+
+  async onDerivationPathChange(derivationPath, pageNumber = 1) {
+    this.props.setIsLedgerLoading(true);
+
+    this.updateDisplayInstructions(false);
+
+    this.setState({
+      baseDerivationPath: derivationPath
+    });
+
+    const components = DerivationPath.parse(derivationPath);
+    const numberOfAddresses = NUM_DERIVATION_PATHS_TO_DISPLAY * pageNumber;
+    const indexes = Array.from(Array(numberOfAddresses).keys());
+    const addresses = [];
+
+    const bundle = indexes.map(index => {
+      const showOnTrezor = false;
+      const path = DerivationPath.buildString(
+        DerivationPath.increment(components, index)
+      );
+      return {
+        path,
+        showOnTrezor
+      };
+    });
+
+    const response = await TrezorConnect.ethereumGetAddress({ bundle });
+
+    console.log("response", response);
+    if (response.success) {
+      // parse up the bundle results
+      response.payload.every(item => addresses.push(item.address));
+      if (addresses && addresses.length > 0) {
+        this.setState({ ledgerAddresses: addresses });
+        if (!addresses.every(element => !element)) {
+          this.updateDisplayInstructions(false);
+          this.props.setIsLedgerLoading(false);
+        }
+      }
+    } else {
+      this.updateDisplayInstructions(true);
+    }
+  }
+
+  updateDisplayInstructions(displayInstructions) {
+    if (displayInstructions) {
+      this.props.setShowAdvancedButton(false);
+    } else {
+      this.props.setShowAdvancedButton(true);
+    }
+    this.setState({ displayInstructions });
+  }
+
+  async connectLedger(pathIndex) {
+    const { loginWithTrezor } = this.props;
+    const derivationPath = this.buildDerivationPath(pathIndex);
+    const result = await TrezorConnect.ethereumGetAddress({
+      path: derivationPath
+    });
+
+    if (result.success) {
+      const { address } = result.payload;
+
+      if (address) {
+        return loginWithTrezor(
+          address.toLowerCase(),
+          TrezorConnect,
+          derivationPath
+        );
+      }
+    }
+
+    this.updateDisplayInstructions(true);
+  }
+
+  buildDerivationPath(pathIndex) {
+    return DerivationPath.buildString(
+      DerivationPath.increment(
+        DerivationPath.parse(this.state.baseDerivationPath),
+        pathIndex
+      )
+    );
+  }
+
+  validatePath(value) {
+    // todo: validate custom derivation path here
+    if (DerivationPath.validate(value)) {
+      this.onDerivationPathChange(value).catch(() =>
+        this.updateDisplayInstructions(true)
+      );
+      this.props.hideError("trezor");
+    } else {
+      this.props.showError("trezor", ERROR_TYPES.INCORRECT_FORMAT);
+    }
+  }
+
+  showAdvanced(value) {
+    toggleHeight(this.refs.advanced_ledger, value, () => {});
+  }
+
+  next() {
+    const { ledgerAddressPageNumber } = this.state;
+    this.setState({ ledgerAddressPageNumber: ledgerAddressPageNumber + 1 });
+  }
+
+  previous() {
+    const { ledgerAddressPageNumber } = this.state;
+    this.setState({ ledgerAddressPageNumber: ledgerAddressPageNumber - 1 });
+  }
+
   render() {
-    const { loginWithTrezor, showError } = this.props;
+    const { error } = this.props;
+    const s = this.state;
 
-    // const testnet = true // TODO update when testnet is not used
-    // const network = testnet ? 1 : 60
-
-    const connect = window.TrezorConnect; // DEPENDS ON TREZOR CONNECT SCRIPT TAG IN INDEX.HTML
+    const indexes = [
+      ...Array(NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber)
+    ]
+      .map((_, i) => i)
+      .slice(
+        NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber -
+          NUM_DERIVATION_PATHS_TO_DISPLAY,
+        NUM_DERIVATION_PATHS_TO_DISPLAY * s.ledgerAddressPageNumber
+      );
 
     return (
-      <section className={Styles.TrezorConnect}>
-        <div className={Styles.TrezorConnect__action}>
-          <button
-            className={Styles.TrezorConnect__button}
-            onClick={() => {
-              const isTestnet = augur.rpc.getNetworkID() !== "1";
-
-              const path = `m/44'/${isTestnet ? "1" : "60"}'/0'/0/0`; // First ETH account
-
-              connect.ethereumGetAddress(
-                path,
-                response => {
-                  if (response.success) {
-                    loginWithTrezor(
-                      "0x" + response.address,
-                      connect,
-                      response.path
-                    ); // Trezor uses hex with no prefix
-                  } else {
-                    showError(response.error);
-                  }
-                },
-                "1.4.2"
-              );
-            }}
+      <section>
+        <div>
+          <div
+            ref="advanced_trezor"
+            className={classNames(
+              Styles.ConnectDropdown__advancedContent,
+              ToggleHeightStyles["toggle-height-target"]
+            )}
           >
-            Connect Trezor
-          </button>
+            <DerivationPathEditor validatePath={this.validatePath} />
+          </div>
+          {!error &&
+            !s.displayInstructions && (
+              <AddressPickerContent
+                addresses={s.ledgerAddresses}
+                balances={s.ledgerAddressBalances}
+                indexArray={indexes}
+                clickAction={this.connectLedger}
+                clickPrevious={this.previous}
+                clickNext={this.next}
+              />
+            )}
+
+          {!error &&
+            s.displayInstructions && (
+              <div className={StylesDropdown.ConnectDropdown__content}>
+                <div className={StylesDropdown.ErrorContainer__header}>
+                  <div className={StylesDropdown.ErrorContainer__headerIcon}>
+                    {errorIcon}
+                  </div>
+                  Unable To Connect
+                </div>
+                <div
+                  className={classNames(
+                    StylesDropdown.ErrorContainer__subheader,
+                    Styles.LedgerConnect__subheader
+                  )}
+                >
+                  <div>Make sure you have:</div>
+                  <ul>
+                    <li>Connected your Trezor</li>
+                  </ul>
+                </div>
+              </div>
+            )}
         </div>
       </section>
     );
