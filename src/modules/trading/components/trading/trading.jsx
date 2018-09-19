@@ -6,10 +6,7 @@ import MarketTradingWrapper from "modules/trading/components/trading--wrapper/tr
 import { Check, Close } from "modules/common/components/icons";
 import { isEqual } from "lodash";
 import classNames from "classnames";
-import {
-  DEFAULT_VIEW,
-  ACCOUNT_DEPOSIT
-} from "modules/routes/constants/views";
+import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
 import Styles from "modules/trading/components/trading/trading.styles";
 
@@ -138,16 +135,7 @@ class MarketTrading extends Component {
               <p>
                 {!isLogged ? (
                   <span>
-                    <Link //todo: what should this do?
-                      to={makePath(DEFAULT_VIEW)}
-                      style={{
-                        textDecoration: "underline",
-                        marginRight: "4px"
-                      }}
-                    >
-                      Log in
-                    </Link>
-                    to trade.
+                    Log in to trade.
                   </span>
                 ) : (
                   initialMessage
