@@ -49,10 +49,13 @@ function pollForAccount(dispatch, getState, callback) {
     }
     let account = loadedAccount;
     setInterval(() => {
-      loadAccount(dispatch, account, env, (err, loadedAccount) => {
-        if (err) console.error(err);
-        account = loadedAccount;
-      });
+      const { authStatus } = getState();
+      if (authStatus.isLogged) {
+        loadAccount(dispatch, account, env, (err, loadedAccount) => {
+          if (err) console.error(err);
+          account = loadedAccount;
+        });
+      }
       const disclaimerSeen =
         windowRef &&
         windowRef.localStorage &&
