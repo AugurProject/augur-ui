@@ -224,6 +224,7 @@ export default class Ledger extends Component {
                 clickAction={this.connectLedger}
                 clickPrevious={this.previous}
                 clickNext={this.next}
+                disablePrevious={s.ledgerAddressPageNumber === 1}
               />
             )}
 
@@ -242,10 +243,7 @@ export default class Ledger extends Component {
                     Styles.LedgerConnect__subheader
                   )}
                 >
-                  <div>Make sure you have:</div>
-                  <ul>
-                    <li>Connected your Trezor</li>
-                  </ul>
+                  <div>Make sure you have connected your Trezor</div>
                 </div>
               </div>
             )}

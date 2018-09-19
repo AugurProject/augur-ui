@@ -12,7 +12,8 @@ export default class AddressPickerContent extends Component {
     indexArray: PropTypes.array.isRequired,
     clickAction: PropTypes.func.isRequired,
     clickPrevious: PropTypes.func.isRequired,
-    clickNext: PropTypes.func.isRequired
+    clickNext: PropTypes.func.isRequired,
+    disablePrevious: PropTypes.bool,
   };
 
   constructor(props) {
@@ -23,6 +24,8 @@ export default class AddressPickerContent extends Component {
     this.state = {
       addressBalances: {}
     };
+
+    this.clickPrevious = this.clickPrevious.bind(this)
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -48,13 +51,19 @@ export default class AddressPickerContent extends Component {
     }
   }
 
+  clickPrevious() {
+    if (!this.props.disablePrevious) {
+      this.props.clickPrevious();
+    }
+  }
+
   render() {
     const {
       indexArray,
       addresses,
       clickAction,
-      clickPrevious,
-      clickNext
+      clickNext,
+      disablePrevious,
     } = this.props;
     const { addressBalances } = this.state;
 
@@ -95,8 +104,12 @@ export default class AddressPickerContent extends Component {
           )}
         >
           <div
-            className={Styles.AddressPickerContent__direction}
-            onClick={clickPrevious}
+            className={
+              classNames(Styles.AddressPickerContent__direction, {
+                [Styles.AddressPickerContent__directionDisabled]: disablePrevious
+             })
+            }
+            onClick={this.clickPrevious}
           >
             <span
               style={{ marginRight: "8px" }}

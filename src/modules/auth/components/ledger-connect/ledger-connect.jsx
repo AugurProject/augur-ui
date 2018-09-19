@@ -230,6 +230,7 @@ export default class Ledger extends Component {
                 clickAction={this.connectLedger}
                 clickPrevious={this.previous}
                 clickNext={this.next}
+                disablePrevious={s.ledgerAddressPageNumber === 1}
               />
             )}
 
