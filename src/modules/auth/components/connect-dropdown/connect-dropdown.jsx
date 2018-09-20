@@ -70,7 +70,10 @@ export default class ConnectDropdown extends Component {
   }
 
   clearState() {
-    this.setState({ selectedOption: null });
+    this.setState({ 
+      selectedOption: null, 
+      showAdvancedButton: false, 
+    });
   }
 
   showAdvanced(e) {
