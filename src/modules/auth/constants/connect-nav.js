@@ -4,6 +4,7 @@ import {
   MetaMask,
   Trezor
 } from "modules/common/components/icons";
+import { DEFAULT_DERIVATION_PATH } from "modules/auth/helpers/derivation-path";
 
 export const PARAMS = {
   EDGE: "edge",
@@ -28,7 +29,7 @@ export const ERROR_TYPES = {
   },
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
-    subheader: "Please enter a derivative path with the format “m/44’/60/0”"
+    subheader: "Please enter a derivative path with the format \"" + DEFAULT_DERIVATION_PATH +"\""
   }
 };
 
