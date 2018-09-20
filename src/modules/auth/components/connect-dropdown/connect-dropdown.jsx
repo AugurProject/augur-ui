@@ -159,7 +159,7 @@ export default class ConnectDropdown extends Component {
                   [Styles.ConnectDropdown__itemHardwareSelected]:
                     s.selectedOption === item.param &&
                     ((item.type === WALLET_TYPE.HARDWARE &&
-                      (s.showAdvanced ||
+                      (s.showAdvancedButton ||
                         !s.isLedgerLoading ||
                         !s.isTrezorLoading)) ||
                       s.error)
