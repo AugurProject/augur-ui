@@ -55,7 +55,7 @@ import {
   CATEGORIES,
   REPORTING_DISPUTE_MARKETS,
   REPORTING_REPORT_MARKETS,
-  REPORTING_RESOLVED_MARKETS,
+  REPORTING_RESOLVED_MARKETS
 } from "modules/routes/constants/views";
 import { MODAL_NETWORK_CONNECT } from "modules/modal/constants/modal-types";
 import { CATEGORY_PARAM_NAME } from "modules/filter-sort/constants/param-names";

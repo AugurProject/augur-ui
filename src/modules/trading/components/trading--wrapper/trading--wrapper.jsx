@@ -239,13 +239,7 @@ class MarketTradingWrapper extends Component {
             </ul>
             {initialMessage && (
               <p className={Styles["TradingWrapper__initial-message"]}>
-                {!isLogged ? (
-                  <span>
-                    Log in to trade.
-                  </span>
-                ) : (
-                  initialMessage
-                )}
+                {!isLogged ? <span>Log in to trade.</span> : initialMessage}
               </p>
             )}
             {initialMessage &&

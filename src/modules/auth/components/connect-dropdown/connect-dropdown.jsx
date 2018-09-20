@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { PulseLoader } from "react-spinners";
 
-import toggleHeight from "utils/toggle-height/toggle-height";
 import {
   ITEMS,
   WALLET_TYPE,
@@ -14,110 +13,9 @@ import isMetaMaskPresent from "src/modules/auth/helpers/is-meta-mask";
 import { errorIcon } from "modules/common/components/icons";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
-import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 import Ledger from "modules/auth/containers/ledger-connect";
 import Trezor from "modules/auth/containers/trezor-connect";
-
-class ErrorContainer extends Component {
-  static propTypes = {
-    error: PropTypes.object,
-    connect: PropTypes.func.isRequired,
-    param: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool,
-  };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      errorShown: false
-    };
-
-    this.hideError = this.hideError.bind(this);
-    this.showError = this.showError.bind(this);
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.error !== nextProps.error && nextProps.isSelected && nextProps.error) {
-      this.showError()
-    } else if (this.props.isSelected !== nextProps.isSelected && !nextProps.isSelected) {
-      this.hideError()
-    } 
-  }
-
-  showError() {
-    this.setState({ errorShown: true}, () => {
-      toggleHeight(this.refs["error_" + this.props.param], false, () => {});
-    });
-  }
-
-  hideError(param) {
-    this.setState({ errorShown: false }, () => {
-      toggleHeight(this.refs["error_" + this.props.param], true, () => {});
-    });
-  }
-
-  render() {
-    const {
-      param,
-      error,
-      connect
-    } = this.props;
-    console.log(error)
-    return (
-      <div
-        ref={"error_" + param}
-        className={classNames(
-          Styles.ConnectDropdown__hardwareContent,
-          ToggleHeightStyles["toggle-height-target"]
-        )}
-      >
-        <div className={classNames(Styles.ConnectDropdown__content)}>
-          <div className={Styles.ErrorContainer__header}>
-            <div className={Styles.ErrorContainer__headerIcon}>
-              {error && errorIcon}
-            </div>
-            {error && error.header}
-          </div>
-          <div className={Styles.ErrorContainer__subheader}>
-            {error === ERROR_TYPES.UNABLE_TO_CONNECT && (
-              <div className={Styles.ErrorContainer__words}>
-                Please install the MetaMask browser plug-in from{" "}
-                <a
-                  href="https://metamask.io/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={Styles.ErrorContainer__link}
-                >
-                  Metamask.io
-                </a>
-              </div>
-            )}
-            {error !== ERROR_TYPES.UNABLE_TO_CONNECT &&
-              error &&
-              error.subheader}
-            {error === ERROR_TYPES.NOT_SIGNED_IN &&
-              <div
-                className={Styles.ConnectDropdown__retryContainer}
-              >
-                <button
-                  className={Styles.ConnectDropdown__retryButton}
-                  onClick={e => {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    connect(PARAMS.METAMASK);
-                  }}
-                >
-                  Retry
-                </button>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    )
-  }
-}
+import ErrorContainer from "modules/auth/components/common/error-container";
 
 export default class ConnectDropdown extends Component {
   static propTypes = {
@@ -145,9 +43,6 @@ export default class ConnectDropdown extends Component {
     this.showAdvanced = this.showAdvanced.bind(this);
     this.connect = this.connect.bind(this);
     this.logout = this.logout.bind(this);
-    this.hideHardwareWallet = this.hideHardwareWallet.bind(this);
-    this.hideAdvanced = this.hideAdvanced.bind(this);
-    this.showHardwareWallet = this.showHardwareWallet.bind(this);
     this.setIsLedgerLoading = this.setIsLedgerLoading.bind(this);
     this.setIsTrezorLoading = this.setIsTrezorLoading.bind(this);
     this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this);
@@ -161,14 +56,10 @@ export default class ConnectDropdown extends Component {
     if (nextProps.isLogged !== this.props.isLogged) {
       this.clearState();
     }
+  }
 
-    if (nextState.isLedgerLoading !== this.state.isLedgerLoading && !nextState.isLedgerLoading && nextState.selectedOption === PARAMS.LEDGER) {
-      toggleHeight(this.refs["hardwareContent_" + PARAMS.LEDGER], false, () => {});
-    }
-
-    if (nextState.isTrezorLoading !== this.state.isTrezorLoading && !nextState.isTrezorLoading && nextState.selectedOption === PARAMS.TREZOR) {
-      toggleHeight(this.refs["hardwareContent_" + PARAMS.TREZOR], false, () => {});
-    }
+  clearState() {
+    this.setState({ selectedOption: null });
   }
 
   setIsLedgerLoading(value) {
@@ -183,44 +74,10 @@ export default class ConnectDropdown extends Component {
     this.setState({ showAdvancedButton: value });
   }
 
-  clearState() {
-    this.setState({ selectedOption: null });
-  }
-
-  showHardwareWallet(param) {
-    if (this.state.isLedgerLoading || this.state.isTrezorLoading) { // dont toggle if loading is true, check if nextState is true then toggle
-      this.setState({ selectedOption: param });
-    } else {
-      if (this.refs["hardwareContent_" + param]) {
-        toggleHeight(this.refs["hardwareContent_" + param], false, () => {
-          this.setState({ selectedOption: param });
-        });
-      } else {
-        this.setState({ selectedOption: param });
-      }
-    }
-    
-  }
-
-  hideHardwareWallet(param) {
-    if (param && this.refs["hardwareContent_" + param]) {
-      
-      this.setState({isLedgerLoading: true, isTrezorLoading: true})
-      
-      toggleHeight(this.refs["hardwareContent_" + param], true, () => {
-        this.setState({ selectedOption: null });
-      });
-    }
-  }
-
   showAdvanced(e) {
     e.stopPropagation();
     e.preventDefault();
     this.setState({ showAdvanced: !this.state.showAdvanced });
-  }
-
-  hideAdvanced() {
-    this.setState({ showAdvanced: false });
   }
 
   connect(param) {
@@ -247,17 +104,20 @@ export default class ConnectDropdown extends Component {
     this.setState({ error: null })
   }
 
-
   selectOption(param) {
     const prevSelected = this.state.selectedOption;
 
-    this.hideError(prevSelected);
-    this.hideAdvanced(prevSelected);
-    this.hideHardwareWallet(prevSelected);
+    this.setState({
+      error: null, 
+      showAdvanced: false, 
+      isLedgerLoading: true, 
+      isTrezorLoading: true, 
+      selectedOption: null
+    })
 
     if (prevSelected !== param) {
       // new selection being made
-      this.showHardwareWallet(param);
+      this.setState({ selectedOption: param });
       this.connect(param);
     } else {
       // deselection is being done
@@ -336,50 +196,42 @@ export default class ConnectDropdown extends Component {
                     </button>
                   )}
               </div>
-              <div
-                ref={"hardwareContent_" + item.param}
-                className={classNames(
-                  Styles.ConnectDropdown__hardwareContent,
-                  ToggleHeightStyles["toggle-height-target"]
+              {item.type === WALLET_TYPE.HARDWARE &&
+                item.param === "ledger" && (
+                  <Ledger
+                    dropdownItem={item}
+                    showAdvanced={
+                      s.selectedOption === "ledger" && s.showAdvanced
+                    }
+                    error={Boolean(
+                      s.selectedOption === item.param && s.error
+                    )}
+                    showError={this.showError}
+                    hideError={this.hideError}
+                    setIsLoading={this.setIsLedgerLoading}
+                    isClicked={s.selectedOption === item.param}
+                    isLoading={s.isLedgerLoading}
+                    setShowAdvancedButton={this.setShowAdvancedButton}
+                  />
                 )}
-              >
-                {item.type === WALLET_TYPE.HARDWARE &&
-                  item.param === "ledger" && (
-                    <Ledger
-                      dropdownItem={item}
-                      showAdvanced={
-                        s.selectedOption === "ledger" && s.showAdvanced
-                      }
-                      error={Boolean(
-                        s.selectedOption === item.param && s.error
-                      )}
-                      showError={this.showError}
-                      hideError={this.hideError}
-                      setIsLoading={this.setIsLedgerLoading}
-                      isClicked={s.selectedOption === item.param}
-                      isLoading={s.isLedgerLoading}
-                      setShowAdvancedButton={this.setShowAdvancedButton}
-                    />
-                  )}
-                {item.type === WALLET_TYPE.HARDWARE &&
-                  item.param === "trezor" && (
-                    <Trezor
-                      dropdownItem={item}
-                      showAdvanced={
-                        s.selectedOption === "trezor" && s.showAdvanced
-                      }
-                      error={Boolean(
-                        s.selectedOption === item.param && s.error
-                      )}
-                      showError={this.showError}
-                      hideError={this.hideError}
-                      setIsLoading={this.setIsTrezorLoading}
-                      isClicked={s.selectedOption === item.param}
-                      isLoading={s.isTrezorLoading}
-                      setShowAdvancedButton={this.setShowAdvancedButton}
-                    />
-                  )}
-              </div>
+              {item.type === WALLET_TYPE.HARDWARE &&
+                item.param === "trezor" && (
+                  <Trezor
+                    dropdownItem={item}
+                    showAdvanced={
+                      s.selectedOption === "trezor" && s.showAdvanced
+                    }
+                    error={Boolean(
+                      s.selectedOption === item.param && s.error
+                    )}
+                    showError={this.showError}
+                    hideError={this.hideError}
+                    setIsLoading={this.setIsTrezorLoading}
+                    isClicked={s.selectedOption === item.param}
+                    isLoading={s.isTrezorLoading}
+                    setShowAdvancedButton={this.setShowAdvancedButton}
+                  />
+                )}
               <ErrorContainer 
                 error={s.error} 
                 connect={this.connect} 

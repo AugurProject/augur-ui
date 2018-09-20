@@ -39,7 +39,8 @@ export default class HardwareWallet extends Component {
       displayInstructions: true,
       baseDerivationPath: DEFAULT_DERIVATION_PATH,
       walletAddresses: new Array(NUM_DERIVATION_PATHS_TO_DISPLAY).fill(null),
-      addressPageNumber: 1
+      addressPageNumber: 1,
+      showWallet: false
     };
 
     this.updateDisplayInstructions = this.updateDisplayInstructions.bind(this);
@@ -49,6 +50,8 @@ export default class HardwareWallet extends Component {
     this.validatePath = this.validatePath.bind(this);
     this.getWalletAddresses = this.getWalletAddresses.bind(this);
     this.connectWallet = this.connectWallet.bind(this);
+    this.hideHardwareWallet = this.hideHardwareWallet.bind(this);
+    this.showHardwareWallet = this.showHardwareWallet.bind(this);
   }
 
   componentDidMount() {
@@ -59,15 +62,35 @@ export default class HardwareWallet extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextState.walletAddresses !== this.state.walletAddresses) {
+    if (
+      nextState.walletAddresses !== this.state.walletAddresses &&
+      !nextState.walletAddresses.every(element => !element)
+    ) {
+      nextProps.setShowAdvancedButton(true);
+    }
+
+    if (nextProps.isClicked && !this.state.showWallet) {
+      // only if connection option was clicked and previously not shown do we want to show it
       if (
-        nextState.isLoading &&
-        nextState.walletAddresses.every(element => !element)
+        !nextProps.isLoading &&
+        this.props.isLoading &&
+        nextState.displayInstructions
       ) {
+        // if it is not loading and before it was loading and instructions are going to be shown do we show it
+        this.showHardwareWallet();
         nextProps.setShowAdvancedButton(false);
-      } else {
+      } else if (
+        !nextProps.isLoading &&
+        this.props.isLoading &&
+        !nextState.walletAddresses.every(element => !element)
+      ) {
+        // if it is not loading and before it was loading and addresses have been loaded
+        this.showHardwareWallet();
         nextProps.setShowAdvancedButton(true);
       }
+    } else if (!nextProps.isClicked && this.state.showWallet) {
+      // if it has been clicked off and previously it was being shown do we hide
+      this.hideHardwareWallet();
     }
 
     if (this.props.isClicked !== nextProps.isClicked && nextProps.isClicked) {
@@ -77,6 +100,7 @@ export default class HardwareWallet extends Component {
         nextState.addressPageNumber
       );
     }
+
     if (this.state.addressPageNumber !== nextState.addressPageNumber) {
       this.getWalletAddresses(
         this.state.baseDerivationPath,
@@ -127,9 +151,6 @@ export default class HardwareWallet extends Component {
   }
 
   updateDisplayInstructions(displayInstructions) {
-    if (displayInstructions) {
-      this.props.setShowAdvancedButton(false);
-    }
     this.setState({ displayInstructions });
   }
 
@@ -166,6 +187,27 @@ export default class HardwareWallet extends Component {
     );
   }
 
+  showHardwareWallet() {
+    toggleHeight(
+      this.refs["hardwareContent_" + this.props.walletName],
+      false,
+      () => {
+        this.setState({ showWallet: true });
+      }
+    );
+  }
+
+  hideHardwareWallet() {
+    this.props.setShowAdvancedButton(false);
+    toggleHeight(
+      this.refs["hardwareContent_" + this.props.walletName],
+      true,
+      () => {
+        this.setState({ showWallet: false });
+      }
+    );
+  }
+
   next() {
     const { addressPageNumber } = this.state;
     this.setState({ addressPageNumber: addressPageNumber + 1 });
@@ -196,7 +238,13 @@ export default class HardwareWallet extends Component {
     }
 
     return (
-      <section>
+      <div
+        ref={"hardwareContent_" + walletName}
+        className={classNames(
+          StylesDropdown.ConnectDropdown__hardwareContent,
+          ToggleHeightStyles["toggle-height-target"]
+        )}
+      >
         <div>
           <div
             ref={"advanced" + walletName}
@@ -274,7 +322,7 @@ export default class HardwareWallet extends Component {
               </div>
             )}
         </div>
-      </section>
+      </div>
     );
   }
 }
