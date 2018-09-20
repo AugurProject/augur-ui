@@ -37,6 +37,8 @@ export default class Ledger extends Component {
     const indexes = Array.from(Array(numberOfAddresses).keys());
     const addresses = [];
 
+    // ledger can only take one request at a time, can't stack up promises
+    /* eslint-disable */
     for (const index of indexes) {
       const result = await ledgerEthereum
         .getAddress(
@@ -52,6 +54,7 @@ export default class Ledger extends Component {
         });
       addresses.push(result && result.address);
     }
+    /* eslint-enable */
 
     if (addresses && addresses.length > 0) {
       if (!addresses.every(element => !element)) {

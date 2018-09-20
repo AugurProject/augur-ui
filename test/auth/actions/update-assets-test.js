@@ -5,20 +5,16 @@ import {
   updateAssets,
   __RewireAPI__ as updateAssetsRewireAPI
 } from "modules/auth/actions/update-assets";
-import {
-  __RewireAPI__ as updateEtherBalanceRewireAPI
-} from "modules/auth/actions/update-ether-balance";
+import { __RewireAPI__ as updateEtherBalanceRewireAPI } from "modules/auth/actions/update-ether-balance";
 
 const ETH = "eth";
 const REP = "rep";
 
 describe("modules/auth/actions/update-assets.js", () => {
   const mockStore = configureMockStore([thunk]);
-  const stubbedUpdateLoginAccount = sinon
-    .stub()
-    .returns({
-      type: "updateLoginAccount"
-    });
+  const stubbedUpdateLoginAccount = sinon.stub().returns({
+    type: "updateLoginAccount"
+  });
   updateAssetsRewireAPI.__Rewire__(
     "updateLoginAccount",
     stubbedUpdateLoginAccount
