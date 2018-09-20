@@ -28,7 +28,7 @@ export const ERROR_TYPES = {
   },
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
-    subheader: "Please enter a derivative path with the the format “m/44’/60/0”"
+    subheader: "Please enter a derivative path with the format “m/44’/60/0”"
   }
 };
 
