@@ -29,7 +29,10 @@ export const ERROR_TYPES = {
   },
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
-    subheader: "Please enter a derivative path with the format \"" + DEFAULT_DERIVATION_PATH +"\""
+    subheader:
+      'Please enter a derivative path with the format "' +
+      DEFAULT_DERIVATION_PATH +
+      '"'
   }
 };
 
