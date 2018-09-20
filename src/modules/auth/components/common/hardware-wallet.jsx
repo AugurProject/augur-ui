@@ -189,7 +189,7 @@ export default class HardwareWallet extends Component {
 
   showAdvanced(value) {
     toggleHeight(
-      this.refs["advanced" + this.props.walletName],
+      this.advanced,
       value,
       () => {}
     );
@@ -197,7 +197,7 @@ export default class HardwareWallet extends Component {
 
   showHardwareWallet() {
     toggleHeight(
-      this.refs["hardwareContent_" + this.props.walletName],
+      this.hardwareContent,
       false,
       () => {
         this.setState({ showWallet: true });
@@ -208,7 +208,7 @@ export default class HardwareWallet extends Component {
   hideHardwareWallet() {
     const { setShowAdvancedButton, walletName } = this.props;
     setShowAdvancedButton(false);
-    toggleHeight(this.refs["hardwareContent_" + walletName], true, () => {
+    toggleHeight(this.hardwareContent, true, () => {
       this.setState({ showWallet: false });
     });
   }
@@ -250,7 +250,7 @@ export default class HardwareWallet extends Component {
 
     return (
       <div
-        ref={"hardwareContent_" + walletName}
+        ref={(hardwareContent) => { this.hardwareContent = hardwareContent }}
         className={classNames(
           StylesDropdown.ConnectDropdown__hardwareContent,
           ToggleHeightStyles["toggle-height-target"]
@@ -258,7 +258,7 @@ export default class HardwareWallet extends Component {
       >
         <div>
           <div
-            ref={"advanced" + walletName}
+            ref={(advanced) => { this.advanced = advanced }}
             className={classNames(
               StylesDropdown.ConnectDropdown__advancedContent,
               ToggleHeightStyles["toggle-height-target"]
