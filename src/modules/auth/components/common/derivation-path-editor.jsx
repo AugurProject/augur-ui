@@ -9,7 +9,7 @@ export default class DerivationPathEditor extends Component {
   static propTypes = {
     validatePath: PropTypes.func.isRequired,
     isVisible: PropTypes.bool,
-    isClicked: PropTypes.bool,
+    isClicked: PropTypes.bool
   };
 
   constructor(props) {
@@ -32,18 +32,18 @@ export default class DerivationPathEditor extends Component {
     }
     if (this.props.isVisible !== nextProps.isVisible) {
       if (!nextState.selectedDefaultPath) {
-        nextProps.validatePath(nextState.customPath)
+        nextProps.validatePath(nextState.customPath);
       }
     }
-  }
-
-  clearState() {
-    this.setState({customPath: "", selectedDefaultPath: true})
   }
 
   setPath(value) {
     this.setState({ customPath: value });
     this.props.validatePath(value);
+  }
+
+  clearState() {
+    this.setState({ customPath: "", selectedDefaultPath: true });
   }
 
   selectDerivationPath(value) {
