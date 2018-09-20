@@ -59,10 +59,12 @@ export default class ErrorContainer extends Component {
   }
 
   render() {
-    const { param, error, connect } = this.props;
+    const { error, connect } = this.props;
     return (
       <div
-        ref={(error) => { this.error = error }}
+        ref={error => {
+          this.error = error;
+        }}
         className={classNames(
           StylesDropdown.ConnectDropdown__hardwareContent,
           ToggleHeightStyles["toggle-height-target"]
