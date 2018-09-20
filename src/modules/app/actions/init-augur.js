@@ -33,6 +33,7 @@ import { windowRef } from "src/utils/window-ref";
 
 const ACCOUNTS_POLL_INTERVAL_DURATION = 10000;
 const NETWORK_ID_POLL_INTERVAL_DURATION = 10000;
+const NOT_SIGNED_IN_ERROR = "NOT_SIGNED_IN";
 
 const NETWORK_NAMES = {
   1: "Mainnet",
@@ -84,7 +85,7 @@ function loadAccount(dispatch, existing, env, callback) {
       }
     }
     if (!account) {
-      return callback("NOT_SIGNED_IN", account);
+      return callback(NOT_SIGNED_IN_ERROR, account);
     }
     callback(null, account);
   });
