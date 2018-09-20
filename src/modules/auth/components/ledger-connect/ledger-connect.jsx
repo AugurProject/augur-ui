@@ -17,6 +17,7 @@ export default class Ledger extends Component {
     error: PropTypes.bool,
     setIsLoading: PropTypes.func.isRequired,
     setShowAdvancedButton: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
     isClicked: PropTypes.bool,
     isLoading: PropTypes.bool
   };
@@ -72,8 +73,14 @@ export default class Ledger extends Component {
   }
 
   async connectWallet(derivationPath) {
-    const { loginWithLedger } = this.props;
+    const { loginWithLedger, logout } = this.props;
     const transport = await TransportU2F.create();
+
+    transport.on("disconnect", () => {
+      console.log("Ledger is disconected");
+      logout();
+    });
+
     const ledgerEthereum = new Eth(transport);
     const result = await ledgerEthereum.getAddress(derivationPath);
     const { address } = result;

@@ -94,10 +94,7 @@ export default class HardwareWallet extends Component {
 
     if (isClicked !== nextProps.isClicked && nextProps.isClicked) {
       // this is if the button was clicked, need to reupdate on click
-      this.getWalletAddresses(
-        this.state.baseDerivationPath,
-        nextState.addressPageNumber
-      );
+      this.getWalletAddresses(DEFAULT_DERIVATION_PATH, 1);
     }
 
     if (this.state.addressPageNumber !== nextState.addressPageNumber) {
@@ -128,15 +125,11 @@ export default class HardwareWallet extends Component {
 
     this.updateDisplayInstructions(false);
 
-    const setState = {
-      baseDerivationPath: derivationPath
-    };
-
     if (clearAddresses) {
-      setState.walletAddresses = [];
+      this.setState({
+        walletAddresses: []
+      });
     }
-
-    this.setState(setState);
 
     const result = await onDerivationPathChange(
       derivationPath,
@@ -148,6 +141,7 @@ export default class HardwareWallet extends Component {
 
     if (result.success) {
       this.setState({
+        baseDerivationPath: derivationPath,
         walletAddresses: result.addresses,
         addressPageNumber: pageNumber
       });
