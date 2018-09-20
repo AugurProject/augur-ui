@@ -84,8 +84,12 @@ export default class AddressPickerContent extends Component {
             StylesDropdown.ConnectDropdown__header
           )}
         >
-          <div className={StylesDropdown.ConnectDropdown__addressColumn}>Address</div>
-          <div className={StylesDropdown.ConnectDropdown__balanceColumn}>Balance</div>
+          <div className={StylesDropdown.ConnectDropdown__addressColumn}>
+            Address
+          </div>
+          <div className={StylesDropdown.ConnectDropdown__balanceColumn}>
+            Balance
+          </div>
         </div>
         {indexArray.map(i => (
           <div key={i} className={StylesDropdown.ConnectDropdown__row}>

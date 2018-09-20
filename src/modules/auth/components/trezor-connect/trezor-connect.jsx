@@ -37,12 +37,12 @@ export default class TrezorConnect extends Component {
       };
     });
 
-    const response = await TrezorConnectImport.ethereumGetAddress({ bundle }).catch(
-      err => {
-        console.log("Error:", err);
-        return { success: false };
-      }
-    );
+    const response = await TrezorConnectImport.ethereumGetAddress({
+      bundle
+    }).catch(err => {
+      console.log("Error:", err);
+      return { success: false };
+    });
 
     if (response.success) {
       // parse up the bundle results
@@ -87,7 +87,7 @@ export default class TrezorConnect extends Component {
       <HardwareWallet
         loginWithWallet={this.connectWallet}
         walletName="trezor"
-        onDerivationPathChange={Trezor.onDerivationPathChange}
+        onDerivationPathChange={TrezorConnect.onDerivationPathChange}
         validation={() => true}
         {...this.props}
       />

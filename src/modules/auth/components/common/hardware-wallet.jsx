@@ -224,7 +224,13 @@ export default class HardwareWallet extends Component {
   }
 
   render() {
-    const { isLoading, error, walletName, showAdvanced, isClicked } = this.props;
+    const {
+      isLoading,
+      error,
+      walletName,
+      showAdvanced,
+      isClicked
+    } = this.props;
     const s = this.state;
 
     const indexes = [
@@ -258,7 +264,11 @@ export default class HardwareWallet extends Component {
               ToggleHeightStyles["toggle-height-target"]
             )}
           >
-            <DerivationPathEditor validatePath={this.validatePath} isVisible={showAdvanced} isClicked={isClicked}/>
+            <DerivationPathEditor
+              validatePath={this.validatePath}
+              isVisible={showAdvanced}
+              isClicked={isClicked}
+            />
           </div>
           {!error &&
             !s.displayInstructions &&
