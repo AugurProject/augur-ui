@@ -117,7 +117,7 @@ export default class HardwareWallet extends Component {
     }
   }
 
-  async getWalletAddresses(derivationPath, pageNumber = 1) {
+  async getWalletAddresses(derivationPath, pageNumber, clearAddresses) {
     if (!this.props.validation()) {
       this.updateDisplayInstructions(true);
       this.props.setIsLoading(false);
@@ -128,9 +128,15 @@ export default class HardwareWallet extends Component {
 
     this.updateDisplayInstructions(false);
 
-    this.setState({
+    const setState = {
       baseDerivationPath: derivationPath
-    });
+    };
+
+    if (clearAddresses) {
+      setState.walletAddresses = [];
+    }
+
+    this.setState(setState);
 
     const result = await this.props
       .onDerivationPathChange(derivationPath, pageNumber)
@@ -172,7 +178,7 @@ export default class HardwareWallet extends Component {
 
   validatePath(value) {
     if (DerivationPath.validate(value)) {
-      this.getWalletAddresses(value);
+      this.getWalletAddresses(value, 1);
       this.props.hideError(this.props.walletName);
     } else {
       this.props.showError(this.props.walletName, ERROR_TYPES.INCORRECT_FORMAT);
@@ -312,7 +318,7 @@ export default class HardwareWallet extends Component {
                         e.stopPropagation();
                         e.preventDefault();
 
-                        this.getWalletAddresses(s.baseDerivationPath);
+                        this.getWalletAddresses(s.baseDerivationPath, 1, true);
                       }}
                     >
                       Retry
