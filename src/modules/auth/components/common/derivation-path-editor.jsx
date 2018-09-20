@@ -35,7 +35,11 @@ export default class DerivationPathEditor extends Component {
     } else if (value) {
       this.props.validatePath(DEFAULT_DERIVATION_PATH);
     }
-    this.focusTextInput();
+    if (!value) {
+      this.focusTextInput();
+    } else {
+      this.derivationInput.blur();
+    }
   }
 
   focusTextInput() {
