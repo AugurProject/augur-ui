@@ -80,7 +80,7 @@ export default class ErrorContainer extends Component {
           <div className={Styles.ErrorContainer__subheader}>
             {error === ERROR_TYPES.UNABLE_TO_CONNECT && (
               <div className={Styles.ErrorContainer__words}>
-                Please install the MetaMask browser plug-in from{" "}
+                Please install or enable the MetaMask browser plug-in from
                 <a
                   href="https://metamask.io/"
                   target="_blank"
