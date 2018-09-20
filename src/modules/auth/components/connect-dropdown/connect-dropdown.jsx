@@ -186,7 +186,7 @@ export default class ConnectDropdown extends Component {
                   item.type === WALLET_TYPE.HARDWARE &&
                   s.showAdvancedButton && (
                     <button
-                      style={{ padding: "10px" }}
+                      style={{ margin: "10px" }}
                       onClick={this.showAdvanced}
                     >
                       <div className={Styles.ConnectDropdown__advanced}>
