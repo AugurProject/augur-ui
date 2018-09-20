@@ -307,6 +307,7 @@ export default class HardwareWallet extends Component {
                       <li>Opened the Ethereum App</li>
                       <li>Enabled contract data</li>
                       <li>Enabled browser support</li>
+                      <li>Unlock Ledger Wallet</li>
                     </ul>
                   )}
                   <div
