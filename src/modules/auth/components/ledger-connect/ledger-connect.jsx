@@ -88,31 +88,13 @@ export default class Ledger extends Component {
   }
 
   render() {
-    const {
-      isLoading,
-      error,
-      showAdvanced,
-      showError,
-      hideError,
-      setIsLoading,
-      setShowAdvancedButton,
-      isClicked
-    } = this.props;
-
     return (
       <HardwareWallet
         loginWithWallet={this.connectWallet}
         walletName="ledger"
-        showAdvanced={showAdvanced}
-        showError={showError}
-        hideError={hideError}
-        error={error}
-        setIsLoading={setIsLoading}
-        setShowAdvancedButton={setShowAdvancedButton}
-        isClicked={isClicked}
-        isLoading={isLoading}
         onDerivationPathChange={Ledger.onDerivationPathChange}
         validation={Ledger.ledgerValidation}
+        {...this.props}
       />
     );
   }
