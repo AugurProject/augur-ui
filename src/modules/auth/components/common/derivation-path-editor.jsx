@@ -32,11 +32,6 @@ export default class DerivationPathEditor extends Component {
     if (this.props.isClicked && !nextProps.isClicked) {
       this.clearState();
     }
-    if (this.props.isVisible !== nextProps.isVisible) {
-      if (!nextState.selectedDefaultPath) {
-        nextProps.validatePath(nextState.customPath);
-      }
-    }
   }
 
   setPath(value) {
