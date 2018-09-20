@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Trezor from "modules/auth/components/trezor/trezor";
+import TrezorConnect from "modules/auth/components/trezor-connect/trezor-connect";
 import loginWithTrezor from "src/modules/auth/actions/login-with-trezor";
 
 const mapStateToProps = state => ({});
@@ -12,4 +12,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Trezor);
+)(TrezorConnect);

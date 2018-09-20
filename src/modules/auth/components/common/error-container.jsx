@@ -6,7 +6,8 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 import { PARAMS, ERROR_TYPES } from "modules/auth/constants/connect-nav";
 import { errorIcon } from "modules/common/components/icons";
 
-import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import Styles from "modules/auth/components/common/error-container.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 export default class ErrorContainer extends Component {
@@ -63,11 +64,11 @@ export default class ErrorContainer extends Component {
       <div
         ref={"error_" + param}
         className={classNames(
-          Styles.ConnectDropdown__hardwareContent,
+          StylesDropdown.ConnectDropdown__hardwareContent,
           ToggleHeightStyles["toggle-height-target"]
         )}
       >
-        <div className={classNames(Styles.ConnectDropdown__content)}>
+        <div className={classNames(StylesDropdown.ConnectDropdown__content)}>
           <div className={Styles.ErrorContainer__header}>
             <div className={Styles.ErrorContainer__headerIcon}>
               {error && errorIcon}
@@ -92,9 +93,9 @@ export default class ErrorContainer extends Component {
               error &&
               error.subheader}
             {error === ERROR_TYPES.NOT_SIGNED_IN && (
-              <div className={Styles.ConnectDropdown__retryContainer}>
+              <div className={StylesDropdown.ConnectDropdown__retryContainer}>
                 <button
-                  className={Styles.ConnectDropdown__retryButton}
+                  className={StylesDropdown.ConnectDropdown__retryButton}
                   onClick={e => {
                     e.stopPropagation();
                     e.preventDefault();

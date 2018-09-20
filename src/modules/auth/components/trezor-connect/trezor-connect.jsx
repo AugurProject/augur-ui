@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import DerivationPath, {
   NUM_DERIVATION_PATHS_TO_DISPLAY
 } from "modules/auth/helpers/derivation-path";
-import TrezorConnect from "trezor-connect";
+import TrezorConnectImport from "trezor-connect";
 import HardwareWallet from "modules/auth/components/common/hardware-wallet";
 
-export default class Trezor extends Component {
+export default class TrezorConnect extends Component {
   static propTypes = {
     loginWithTrezor: PropTypes.func.isRequired,
     showAdvanced: PropTypes.bool,
@@ -37,7 +37,7 @@ export default class Trezor extends Component {
       };
     });
 
-    const response = await TrezorConnect.ethereumGetAddress({ bundle }).catch(
+    const response = await TrezorConnectImport.ethereumGetAddress({ bundle }).catch(
       err => {
         console.log("Error:", err);
         return { success: false };
@@ -65,7 +65,7 @@ export default class Trezor extends Component {
 
   async connectWallet(derivationPath) {
     const { loginWithTrezor } = this.props;
-    const result = await TrezorConnect.ethereumGetAddress({
+    const result = await TrezorConnectImport.ethereumGetAddress({
       path: derivationPath
     });
 
@@ -75,7 +75,7 @@ export default class Trezor extends Component {
       if (address) {
         return loginWithTrezor(
           address.toLowerCase(),
-          TrezorConnect,
+          TrezorConnectImport,
           derivationPath
         );
       }

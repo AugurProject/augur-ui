@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
-import FormStyles from "modules/common/less/form";
+
 import { DEFAULT_DERIVATION_PATH } from "modules/auth/helpers/derivation-path";
+
+import Styles from "modules/auth/components/common/derivation-path-editor.styles";
+import FormStyles from "modules/common/less/form";
 
 export default class DerivationPathEditor extends Component {
   static propTypes = {
