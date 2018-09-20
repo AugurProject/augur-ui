@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+
 import formatAddress from "modules/auth/helpers/format-address";
-import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import { prevIcon, nextIcon } from "modules/common/components/icons";
 import getEtherBalance from "modules/auth/actions/get-ether-balance";
 import { formatEther } from "utils/format-number";
+
+import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import Styles from "modules/auth/components/common/address-picker-content.styles";
 
 export default class AddressPickerContent extends Component {
   static propTypes = {
@@ -72,27 +75,31 @@ export default class AddressPickerContent extends Component {
 
     return (
       <div
-        className={Styles.ConnectDropdown__content}
+        className={StylesDropdown.ConnectDropdown__content}
         style={{ paddingLeft: "0", paddingRight: "0" }}
       >
         <div
           className={classNames(
-            Styles.ConnectDropdown__row,
-            Styles.ConnectDropdown__header
+            StylesDropdown.ConnectDropdown__row,
+            StylesDropdown.ConnectDropdown__header
           )}
         >
-          <div className={Styles.ConnectDropdown__addressColumn}>Address</div>
-          <div className={Styles.ConnectDropdown__balanceColumn}>Balance</div>
+          <div className={StylesDropdown.ConnectDropdown__addressColumn}>
+            Address
+          </div>
+          <div className={StylesDropdown.ConnectDropdown__balanceColumn}>
+            Balance
+          </div>
         </div>
         {indexArray.map(i => (
-          <div key={i} className={Styles.ConnectDropdown__row}>
+          <div key={i} className={StylesDropdown.ConnectDropdown__row}>
             <button
-              className={Styles.ConnectDropdown__addressColumn}
+              className={StylesDropdown.ConnectDropdown__addressColumn}
               onClick={() => clickAction(i)}
             >
               {(addresses[i] && formatAddress(addresses[i])) || `—`}
             </button>
-            <div className={Styles.ConnectDropdown__balanceColumn}>
+            <div className={StylesDropdown.ConnectDropdown__balanceColumn}>
               {addressBalances[addresses[i]]
                 ? formatEther(addressBalances[addresses[i]]).formatted
                 : `—`}
@@ -101,8 +108,8 @@ export default class AddressPickerContent extends Component {
         ))}
         <div
           className={classNames(
-            Styles.ConnectDropdown__row,
-            Styles.ConnectDropdown__footer
+            StylesDropdown.ConnectDropdown__row,
+            StylesDropdown.ConnectDropdown__footer
           )}
         >
           <button

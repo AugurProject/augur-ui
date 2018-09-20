@@ -12,8 +12,9 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
 import { errorIcon } from "modules/common/components/icons";
 
-import Styles from "modules/auth/components/common/connect-wallet.styles";
+import Styles from "modules/auth/components/common/hardware-wallet.styles";
 import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
+import StylesError from "modules/auth/components/common/error-container.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 export default class HardwareWallet extends Component {
@@ -285,15 +286,15 @@ export default class HardwareWallet extends Component {
           {!error &&
             s.displayInstructions && (
               <div className={StylesDropdown.ConnectDropdown__content}>
-                <div className={StylesDropdown.ErrorContainer__header}>
-                  <div className={StylesDropdown.ErrorContainer__headerIcon}>
+                <div className={StylesError.ErrorContainer__header}>
+                  <div className={StylesError.ErrorContainer__headerIcon}>
                     {errorIcon}
                   </div>
                   Unable To Connect
                 </div>
                 <div
                   className={classNames(
-                    StylesDropdown.ErrorContainer__subheader,
+                    StylesError.ErrorContainer__subheader,
                     Styles.ConnectWallet__subheader
                   )}
                 >
