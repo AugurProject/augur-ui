@@ -83,6 +83,8 @@ describe("modules/app/actions/init-augur.js", () => {
         })
       );
 
+      console.log(store.getActions());
+
       expect(store.getActions()).toEqual([
         { type: "UPDATE_ENV" },
         { type: "UPDATE_CONNECTION_STATUS" },
@@ -92,8 +94,7 @@ describe("modules/app/actions/init-augur.js", () => {
         { type: "UPDATE_AUGUR_NODE_CONNECTION_STATUS" },
         { type: "REGISTER_TRANSACTION_RELAY" },
         { type: "LOAD_UNIVERSE" },
-        { type: "CLOSE_MODAL" },
-        { type: "SET_LOGIN_ACCOUNT" }
+        { type: "CLOSE_MODAL" }
       ]);
     });
 

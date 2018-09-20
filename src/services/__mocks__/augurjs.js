@@ -1,6 +1,6 @@
 const realAugur = require.requireActual("../augurjs.js");
 
-const mockAugur = jest.genMockFromModule("augur.js");
+const MockAugurJS = jest.genMockFromModule("augur.js");
 
 const universesData = [
   {
@@ -35,7 +35,7 @@ const ethereumNodeConnectionInfo = {
 
 const augurNodeWS = "wss://some.web.socket.com";
 
-mockAugur.rpc = {
+MockAugurJS.rpc = {
   block: { number: 10000, timestamp: 4886718345 },
   constants: realAugur.augur.rpc.constants,
   eth: { accounts: cb => cb(null, ["0xa11ce"]) },
@@ -44,11 +44,11 @@ mockAugur.rpc = {
   getNetworkID: () => 4
 };
 
-mockAugur.constants = realAugur.augur.constants;
+MockAugurJS.constants = realAugur.augur.constants;
 
-mockAugur.api = {
+MockAugurJS.api = {
   set mockController(c) {
-    mockAugur.api.Controller = c;
+    MockAugurJS.api.Controller = c;
   },
   Controller: {},
   Universe: {
@@ -64,9 +64,9 @@ mockAugur.api = {
   }
 };
 
-mockAugur.augurNode = {
+MockAugurJS.augurNode = {
   set mockGetSyncData(f) {
-    mockAugur.augurNode.getSyncData = f;
+    MockAugurJS.augurNode.getSyncData = f;
   },
   getSyncData: () => {},
 
@@ -80,14 +80,14 @@ mockAugur.augurNode = {
   }
 };
 
-mockAugur.trading = {
+MockAugurJS.trading = {
   calculateProfitLoss: () => ({
     realized: "-1",
     unrealized: "2"
   })
 };
 
-mockAugur.connect = (env, cb) => {
+MockAugurJS.connect = (env, cb) => {
   cb(null, {
     ethereumNode: {
       ...ethereumNodeConnectionInfo,
@@ -101,8 +101,8 @@ mockAugur.connect = (env, cb) => {
   });
 };
 
-mockAugur.contracts = { addresses: { 4: { Universe: "0xb0b" } } };
+MockAugurJS.contracts = { addresses: { 4: { Universe: "0xb0b" } } };
 
-mockAugur.augur = mockAugur;
+MockAugurJS.augur = MockAugurJS;
 
-module.exports = mockAugur;
+module.exports = MockAugurJS;
