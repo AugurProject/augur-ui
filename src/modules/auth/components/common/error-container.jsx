@@ -48,21 +48,23 @@ export default class ErrorContainer extends Component {
 
   showError() {
     this.setState({ errorShown: true }, () => {
-      toggleHeight(this.refs["error_" + this.props.param], false, () => {});
+      toggleHeight(this.error, false, () => {});
     });
   }
 
   hideError() {
     this.setState({ errorShown: false }, () => {
-      toggleHeight(this.refs["error_" + this.props.param], true, () => {});
+      toggleHeight(this.error, true, () => {});
     });
   }
 
   render() {
-    const { param, error, connect } = this.props;
+    const { error, connect } = this.props;
     return (
       <div
-        ref={"error_" + param}
+        ref={error => {
+          this.error = error;
+        }}
         className={classNames(
           StylesDropdown.ConnectDropdown__hardwareContent,
           ToggleHeightStyles["toggle-height-target"]
