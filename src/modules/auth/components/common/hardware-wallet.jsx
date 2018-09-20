@@ -55,13 +55,15 @@ export default class HardwareWallet extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.validation()) {
+    const { validation, setIsLoading } = this.props;
+    if (!validation()) {
       this.updateDisplayInstructions(true);
-      this.props.setIsLoading(false);
+      setIsLoading(false);
     }
   }
 
   componentWillUpdate(nextProps, nextState) {
+    const { isLoading, isClicked, showAdvanced } = this.props;
     if (
       nextState.walletAddresses !== this.state.walletAddresses &&
       !nextState.walletAddresses.every(element => !element)
@@ -71,17 +73,13 @@ export default class HardwareWallet extends Component {
 
     if (nextProps.isClicked && !this.state.showWallet) {
       // only if connection option was clicked and previously not shown do we want to show it
-      if (
-        !nextProps.isLoading &&
-        this.props.isLoading &&
-        nextState.displayInstructions
-      ) {
+      if (!nextProps.isLoading && isLoading && nextState.displayInstructions) {
         // if it is not loading and before it was loading and instructions are going to be shown do we show it
         this.showHardwareWallet();
         nextProps.setShowAdvancedButton(false);
       } else if (
         !nextProps.isLoading &&
-        this.props.isLoading &&
+        isLoading &&
         !nextState.walletAddresses.every(element => !element)
       ) {
         // if it is not loading and before it was loading and addresses have been loaded
@@ -93,7 +91,7 @@ export default class HardwareWallet extends Component {
       this.hideHardwareWallet();
     }
 
-    if (this.props.isClicked !== nextProps.isClicked && nextProps.isClicked) {
+    if (isClicked !== nextProps.isClicked && nextProps.isClicked) {
       // this is if the button was clicked, need to reupdate on click
       this.getWalletAddresses(
         this.state.baseDerivationPath,
@@ -108,8 +106,8 @@ export default class HardwareWallet extends Component {
       );
     }
 
-    if (this.props.showAdvanced !== nextProps.showAdvanced) {
-      this.showAdvanced(this.props.showAdvanced);
+    if (showAdvanced !== nextProps.showAdvanced) {
+      this.showAdvanced(showAdvanced);
     }
 
     if (this.state.displayInstructions !== nextState.displayInstructions) {
@@ -118,13 +116,14 @@ export default class HardwareWallet extends Component {
   }
 
   async getWalletAddresses(derivationPath, pageNumber, clearAddresses) {
-    if (!this.props.validation()) {
+    const { validation, setIsLoading, onDerivationPathChange } = this.props;
+    if (!validation()) {
       this.updateDisplayInstructions(true);
-      this.props.setIsLoading(false);
+      setIsLoading(false);
       return;
     }
 
-    this.props.setIsLoading(true);
+    setIsLoading(true);
 
     this.updateDisplayInstructions(false);
 
@@ -138,12 +137,13 @@ export default class HardwareWallet extends Component {
 
     this.setState(setState);
 
-    const result = await this.props
-      .onDerivationPathChange(derivationPath, pageNumber)
-      .catch(() => {
-        this.updateDisplayInstructions(true);
-        this.props.setIsLoading(false);
-      });
+    const result = await onDerivationPathChange(
+      derivationPath,
+      pageNumber
+    ).catch(() => {
+      this.updateDisplayInstructions(true);
+      setIsLoading(false);
+    });
 
     if (result.success) {
       this.setState({
@@ -153,7 +153,7 @@ export default class HardwareWallet extends Component {
     } else {
       this.updateDisplayInstructions(true);
     }
-    this.props.setIsLoading(false);
+    setIsLoading(false);
   }
 
   updateDisplayInstructions(displayInstructions) {
@@ -177,11 +177,12 @@ export default class HardwareWallet extends Component {
   }
 
   validatePath(value) {
+    const { hideError, showError, walletName } = this.props;
     if (DerivationPath.validate(value)) {
       this.getWalletAddresses(value, 1);
-      this.props.hideError(this.props.walletName);
+      hideError(walletName);
     } else {
-      this.props.showError(this.props.walletName, ERROR_TYPES.INCORRECT_FORMAT);
+      showError(walletName, ERROR_TYPES.INCORRECT_FORMAT);
     }
   }
 
@@ -204,14 +205,11 @@ export default class HardwareWallet extends Component {
   }
 
   hideHardwareWallet() {
-    this.props.setShowAdvancedButton(false);
-    toggleHeight(
-      this.refs["hardwareContent_" + this.props.walletName],
-      true,
-      () => {
-        this.setState({ showWallet: false });
-      }
-    );
+    const { setShowAdvancedButton, walletName } = this.props;
+    setShowAdvancedButton(false);
+    toggleHeight(this.refs["hardwareContent_" + walletName], true, () => {
+      this.setState({ showWallet: false });
+    });
   }
 
   next() {
