@@ -10,7 +10,6 @@ import {
   ERROR_TYPES
 } from "modules/auth/constants/connect-nav";
 import isMetaMaskPresent from "src/modules/auth/helpers/is-meta-mask";
-import { errorIcon } from "modules/common/components/icons";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
 import Ledger from "modules/auth/containers/ledger-connect";
@@ -58,10 +57,6 @@ export default class ConnectDropdown extends Component {
     }
   }
 
-  clearState() {
-    this.setState({ selectedOption: null });
-  }
-
   setIsLedgerLoading(value) {
     this.setState({ isLedgerLoading: value });
   }
@@ -72,6 +67,10 @@ export default class ConnectDropdown extends Component {
 
   setShowAdvancedButton(value) {
     this.setState({ showAdvancedButton: value });
+  }
+
+  clearState() {
+    this.setState({ selectedOption: null });
   }
 
   showAdvanced(e) {
@@ -97,23 +96,23 @@ export default class ConnectDropdown extends Component {
   }
 
   showError(param, error) {
-    this.setState({ error })
+    this.setState({ error });
   }
 
   hideError(param) {
-    this.setState({ error: null })
+    this.setState({ error: null });
   }
 
   selectOption(param) {
     const prevSelected = this.state.selectedOption;
 
     this.setState({
-      error: null, 
-      showAdvanced: false, 
-      isLedgerLoading: true, 
-      isTrezorLoading: true, 
+      error: null,
+      showAdvanced: false,
+      isLedgerLoading: true,
+      isTrezorLoading: true,
       selectedOption: null
-    })
+    });
 
     if (prevSelected !== param) {
       // new selection being made
@@ -203,9 +202,7 @@ export default class ConnectDropdown extends Component {
                     showAdvanced={
                       s.selectedOption === "ledger" && s.showAdvanced
                     }
-                    error={Boolean(
-                      s.selectedOption === item.param && s.error
-                    )}
+                    error={Boolean(s.selectedOption === item.param && s.error)}
                     showError={this.showError}
                     hideError={this.hideError}
                     setIsLoading={this.setIsLedgerLoading}
@@ -221,9 +218,7 @@ export default class ConnectDropdown extends Component {
                     showAdvanced={
                       s.selectedOption === "trezor" && s.showAdvanced
                     }
-                    error={Boolean(
-                      s.selectedOption === item.param && s.error
-                    )}
+                    error={Boolean(s.selectedOption === item.param && s.error)}
                     showError={this.showError}
                     hideError={this.hideError}
                     setIsLoading={this.setIsTrezorLoading}
@@ -232,10 +227,10 @@ export default class ConnectDropdown extends Component {
                     setShowAdvancedButton={this.setShowAdvancedButton}
                   />
                 )}
-              <ErrorContainer 
-                error={s.error} 
-                connect={this.connect} 
-                param={item.param} 
+              <ErrorContainer
+                error={s.error}
+                connect={this.connect}
+                param={item.param}
                 isSelected={s.selectedOption === item.param}
               />
             </div>

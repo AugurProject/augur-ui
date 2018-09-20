@@ -8,6 +8,7 @@ import { isEqual } from "lodash";
 import classNames from "classnames";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
+import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/trading/components/trading/trading.styles";
 
 class MarketTrading extends Component {

@@ -2,7 +2,6 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import AuthenticatedRoute from "modules/routes/components/authenticated-route/authenticated-route";
-import UnauthenticatedRoute from "modules/routes/components/unauthenticated-route/unauthenticated-route";
 import makePath from "modules/routes/helpers/make-path";
 
 import * as VIEWS from "modules/routes/constants/views";

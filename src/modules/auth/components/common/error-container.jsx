@@ -3,12 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import {
-  ITEMS,
-  WALLET_TYPE,
-  PARAMS,
-  ERROR_TYPES
-} from "modules/auth/constants/connect-nav";
+import { PARAMS, ERROR_TYPES } from "modules/auth/constants/connect-nav";
 import { errorIcon } from "modules/common/components/icons";
 
 import Styles from "modules/auth/components/connect-dropdown/connect-dropdown.styles";
@@ -19,7 +14,7 @@ export default class ErrorContainer extends Component {
     error: PropTypes.object,
     connect: PropTypes.func.isRequired,
     param: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool,
+    isSelected: PropTypes.bool
   };
 
   constructor(props) {
@@ -34,17 +29,24 @@ export default class ErrorContainer extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (this.props.error !== nextProps.error && nextProps.isSelected && nextProps.error) {
-      this.showError()
-    } else if (this.props.isSelected !== nextProps.isSelected && !nextProps.isSelected) {
-      this.hideError()
+    if (
+      this.props.error !== nextProps.error &&
+      nextProps.isSelected &&
+      nextProps.error
+    ) {
+      this.showError();
+    } else if (
+      this.props.isSelected !== nextProps.isSelected &&
+      !nextProps.isSelected
+    ) {
+      this.hideError();
     } else if (!nextProps.error && this.state.errorShown) {
-      this.hideError()
+      this.hideError();
     }
   }
 
   showError() {
-    this.setState({ errorShown: true}, () => {
+    this.setState({ errorShown: true }, () => {
       toggleHeight(this.refs["error_" + this.props.param], false, () => {});
     });
   }
@@ -56,11 +58,7 @@ export default class ErrorContainer extends Component {
   }
 
   render() {
-    const {
-      param,
-      error,
-      connect
-    } = this.props;
+    const { param, error, connect } = this.props;
     return (
       <div
         ref={"error_" + param}
@@ -93,10 +91,8 @@ export default class ErrorContainer extends Component {
             {error !== ERROR_TYPES.UNABLE_TO_CONNECT &&
               error &&
               error.subheader}
-            {error === ERROR_TYPES.NOT_SIGNED_IN &&
-              <div
-                className={Styles.ConnectDropdown__retryContainer}
-              >
+            {error === ERROR_TYPES.NOT_SIGNED_IN && (
+              <div className={Styles.ConnectDropdown__retryContainer}>
                 <button
                   className={Styles.ConnectDropdown__retryButton}
                   onClick={e => {
@@ -108,10 +104,10 @@ export default class ErrorContainer extends Component {
                   Retry
                 </button>
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
