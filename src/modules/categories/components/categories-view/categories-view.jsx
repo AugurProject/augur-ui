@@ -21,11 +21,8 @@ export default class CategoriesView extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    categories: PropTypes.array,
-    universe: PropTypes.object,
-    loginAccount: PropTypes.object
+    categories: PropTypes.array
   };
 
   constructor(props) {
