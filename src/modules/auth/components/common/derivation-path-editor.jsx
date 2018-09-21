@@ -10,8 +10,8 @@ import FormStyles from "modules/common/less/form";
 export default class DerivationPathEditor extends Component {
   static propTypes = {
     validatePath: PropTypes.func.isRequired,
-    isVisible: PropTypes.bool,
-    isClicked: PropTypes.bool
+    isVisible: PropTypes.bool.isRequired,
+    isClicked: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -34,23 +34,25 @@ export default class DerivationPathEditor extends Component {
     }
   }
 
-  setPath(value) {
-    this.setState({ customPath: value });
-    this.props.validatePath(value);
+  setPath(customPath) {
+    this.setState({ customPath });
+    this.props.validatePath(customPath);
   }
 
   clearState() {
     this.setState({ customPath: "", selectedDefaultPath: true });
   }
 
-  selectDerivationPath(value) {
-    this.setState({ selectedDefaultPath: value });
-    if (!value && this.state.customPath !== "") {
-      this.props.validatePath(this.state.customPath);
-    } else if (value) {
-      this.props.validatePath(DEFAULT_DERIVATION_PATH);
+  selectDerivationPath(selectedDefaultPath) {
+    const { validatePath } = this.props;
+    const { customPath } = this.state;
+    this.setState({ selectedDefaultPath });
+    if (!selectedDefaultPath && customPath !== "") {
+      validatePath(customPath);
+    } else if (selectedDefaultPath) {
+      validatePath(DEFAULT_DERIVATION_PATH);
     }
-    if (!value) {
+    if (!selectedDefaultPath) {
       this.focusTextInput();
     } else {
       this.derivationInput.blur();

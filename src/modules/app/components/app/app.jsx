@@ -114,7 +114,7 @@ export default class AppView extends Component {
     updateIsAnimating: PropTypes.func.isRequired,
     finalizeMarket: PropTypes.func.isRequired,
     url: PropTypes.string,
-    isLoading: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
     augurNode: PropTypes.string,
     ethereumNodeHttp: PropTypes.string,
     ethereumNodeWs: PropTypes.string
@@ -357,13 +357,13 @@ export default class AppView extends Component {
         }
       });
     };
-
+    const { updateIsAnimating } = this.props;
     const alreadyDone =
       (!nowOpen && this.state[menuKey].scalar === 0) ||
       (nowOpen && this.state[menuKey].scalar === 1);
     if (alreadyDone) {
       if (cb && typeof cb === "function") cb();
-      this.props.updateIsAnimating(false);
+      updateIsAnimating(false);
     } else {
       const baseMenuState = { open: nowOpen };
       const currentTween = tween({
@@ -377,11 +377,11 @@ export default class AppView extends Component {
           );
         }
       }).then(() => {
-        this.props.updateIsAnimating(false);
+        updateIsAnimating(false);
         if (cb && typeof cb === "function") cb();
         setMenuState({ locked: false, currentTween: null });
       });
-      this.props.updateIsAnimating(true);
+      updateIsAnimating(true);
       setMenuState({ currentTween });
     }
   }
@@ -588,7 +588,6 @@ export default class AppView extends Component {
                   subMenuScalar={subMenu.scalar}
                   markets={markets}
                   openSubMenu={this.openSubMenu}
-                  privateKey={loginAccount.privateKey}
                 />
               )}
               {!InnerNav && <div className="no-nav-placehold" />}

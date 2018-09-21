@@ -15,7 +15,7 @@ export default class ErrorContainer extends Component {
     error: PropTypes.object,
     connect: PropTypes.func.isRequired,
     param: PropTypes.string.isRequired,
-    isSelected: PropTypes.bool
+    isSelected: PropTypes.bool.isRequired
   };
 
   constructor(props) {

@@ -13,7 +13,7 @@ export default class SideNav extends Component {
   static propTypes = {
     defaultMobileClick: PropTypes.func.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    isLogged: PropTypes.bool,
+    isLogged: PropTypes.bool.isRequired,
     menuData: PropTypes.array.isRequired,
     mobileShow: PropTypes.bool.isRequired,
     toggleNotifications: PropTypes.func.isRequired,

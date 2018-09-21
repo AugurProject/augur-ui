@@ -19,7 +19,9 @@ const MenuItem = p => (
 
 MenuItem.propTypes = {
   isSelected: PropTypes.bool,
-  key: PropTypes.string
+  visible: PropTypes.bool,
+  children: PropTypes.object,
+  key: PropTypes.string.isRequired
 };
 
 export default MenuItem;

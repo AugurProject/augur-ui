@@ -12,7 +12,7 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 export default class ConnectAccount extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool,
+    isLogged: PropTypes.bool.isRequired,
     address: PropTypes.string
   };
 
