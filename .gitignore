@@ -13,6 +13,8 @@ target
 scratch
 .vscode
 
+package-lock.json
+
 # Logs
 logs
 npm-debug.log*
