@@ -5,8 +5,7 @@ import { submitNewMarket } from "modules/markets/actions/submit-new-market";
 import {
   addOrderToNewMarket,
   removeOrderFromNewMarket,
-  updateNewMarket,
-  clearNewMarket
+  updateNewMarket
 } from "modules/markets/actions/update-new-market";
 import CreateMarketView from "modules/create-market/components/create-market-view/create-market-view";
 import { selectCurrentTimestamp } from "src/select-state";
@@ -16,11 +15,10 @@ import getValue from "utils/get-value";
 
 const mapStateToProps = state => ({
   universe: state.universe,
-  availableEth: getValue(state, "loginAccount.eth") || "0",
-  availableRep: getValue(state, "loginAccount.rep") || "0",
+  availableEth: getValue(state, "loginAccount.eth"),
+  availableRep: getValue(state, "loginAccount.rep"),
   meta: getValue(state, "loginAccount.meta"),
   newMarket: state.newMarket,
-  footerHeight: state.footerHeight,
   categories: selectCategories(state),
   isMobileSmall: state.appStatus.isMobileSmall,
   currentTimestamp: selectCurrentTimestamp(state)
@@ -30,7 +28,6 @@ const mapDispatchToProps = dispatch => ({
   addOrderToNewMarket: data => dispatch(addOrderToNewMarket(data)),
   removeOrderFromNewMarket: data => dispatch(removeOrderFromNewMarket(data)),
   updateNewMarket: data => dispatch(updateNewMarket(data)),
-  clearNewMarket: () => dispatch(clearNewMarket()),
   submitNewMarket: (data, history, cb) =>
     dispatch(submitNewMarket(data, history, cb)),
   estimateSubmitNewMarket: (data, callback) =>

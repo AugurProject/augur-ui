@@ -34,8 +34,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     orderBookKeys: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.any,
     hoveredPrice: PropTypes.any,
-    marketMidpoint: PropTypes.any,
-    hasPriceHistory: PropTypes.bool
+    marketMidpoint: PropTypes.any
   };
 
   constructor(props) {

@@ -20,8 +20,8 @@ const MenuItem = p => (
 MenuItem.propTypes = {
   isSelected: PropTypes.bool,
   visible: PropTypes.bool,
-  children: PropTypes.object,
-  key: PropTypes.string.isRequired
+  children: PropTypes.array,
+  key: PropTypes.string
 };
 
 export default MenuItem;

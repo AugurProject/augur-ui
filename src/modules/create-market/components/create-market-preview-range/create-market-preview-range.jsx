@@ -10,9 +10,9 @@ const MarketPreviewRange = p => {
   let minValue = "0%";
   let maxValue = "100%";
 
-  const { scalarSmallNum, scalarBigNum } = p.newMarket;
+  const { scalarSmallNum, scalarBigNum, type } = p.newMarket;
 
-  if (p.newMarket.type === SCALAR) {
+  if (type === SCALAR) {
     minValue =
       scalarSmallNum && !BigNumber.isBigNumber(scalarSmallNum)
         ? scalarSmallNum

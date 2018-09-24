@@ -21,21 +21,26 @@ export default class MarketOutcomeCharts extends Component {
   static propTypes = {
     currentTimeInSeconds: PropTypes.number,
     excludeCandlestick: PropTypes.bool,
-    fixedPrecision: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
-    hasPriceHistory: PropTypes.bool,
     isMobile: PropTypes.bool.isRequired,
     marketDepth: PropTypes.object.isRequired,
-    marketId: PropTypes.string,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     orderBook: PropTypes.object.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
-    outcomeName: PropTypes.string,
-    priceTimeSeries: PropTypes.array,
     selectedOutcome: PropTypes.object.isRequired,
+    updateSelectedOrderProperties: PropTypes.func.isRequired,
+    marketId: PropTypes.string,
     updatePrecision: PropTypes.func,
-    updateSelectedOrderProperties: PropTypes.func.isRequired
+    priceTimeSeries: PropTypes.array,
+    fixedPrecision: PropTypes.number,
+    outcomeName: PropTypes.string
+  };
+
+  static defaultProps = {
+    fixedPrecision: 4,
+    outcomeName: "",
+    priceTimeSeries: []
   };
 
   constructor(props) {
@@ -222,8 +227,7 @@ export default class MarketOutcomeCharts extends Component {
       excludeCandlestick,
       isMobile,
       fixedPrecision,
-      updatePrecision,
-      hasPriceHistory
+      updatePrecision
     } = this.props;
     const s = this.state;
 
@@ -307,7 +311,6 @@ export default class MarketOutcomeCharts extends Component {
                 updateSelectedOrderProperties={updateSelectedOrderProperties}
                 hasOrders={hasOrders}
                 orderBookKeys={orderBookKeys}
-                hasPriceHistory={hasPriceHistory}
               />
             </div>
           </div>

@@ -21,20 +21,25 @@ const NEW_ORDER_GAS_ESTIMATE = createBigNumber(700000);
 
 export default class CreateMarketForm extends Component {
   static propTypes = {
-    addOrderToNewMarket: PropTypes.func.isRequired,
-    availableEth: PropTypes.string.isRequired,
-    availableRep: PropTypes.string.isRequired,
     categories: PropTypes.array.isRequired,
+    isMobileSmall: PropTypes.bool.isRequired,
     currentTimestamp: PropTypes.number.isRequired,
     history: PropTypes.object.isRequired,
-    isMobileSmall: PropTypes.bool.isRequired,
-    meta: PropTypes.object,
     newMarket: PropTypes.object.isRequired,
+    universe: PropTypes.object.isRequired,
+    addOrderToNewMarket: PropTypes.func.isRequired,
+    estimateSubmitNewMarket: PropTypes.func.isRequired,
     removeOrderFromNewMarket: PropTypes.func.isRequired,
     submitNewMarket: PropTypes.func.isRequired,
-    universe: PropTypes.object.isRequired,
-    estimateSubmitNewMarket: PropTypes.func.isRequired,
-    updateNewMarket: PropTypes.func.isRequired
+    updateNewMarket: PropTypes.func.isRequired,
+    availableEth: PropTypes.string,
+    availableRep: PropTypes.string,
+    meta: PropTypes.object
+  };
+
+  static defaultProps = {
+    availableEth: "0",
+    availableRep: "0"
   };
 
   constructor(props) {

@@ -39,14 +39,25 @@ const CreateMarketView = p => (
 );
 
 CreateMarketView.propTypes = {
+  categories: PropTypes.array.isRequired,
+  isMobileSmall: PropTypes.bool.isRequired,
   currentTimestamp: PropTypes.number.isRequired,
+  history: PropTypes.object.isRequired,
   newMarket: PropTypes.object.isRequired,
+  universe: PropTypes.object.isRequired,
+  addOrderToNewMarket: PropTypes.func.isRequired,
+  estimateSubmitNewMarket: PropTypes.func.isRequired,
+  removeOrderFromNewMarket: PropTypes.func.isRequired,
+  submitNewMarket: PropTypes.func.isRequired,
   updateNewMarket: PropTypes.func.isRequired,
   meta: PropTypes.object,
-  history: PropTypes.object.isRequired,
-  universe: PropTypes.object.isRequired,
-  isMobileSmall: PropTypes.bool.isRequired,
-  estimateSubmitNewMarket: PropTypes.func.isRequired
+  availableEth: PropTypes.string,
+  availableRep: PropTypes.string
+};
+
+CreateMarketView.defaultProps = {
+  availableEth: "0",
+  availableRep: "0"
 };
 
 export default CreateMarketView;

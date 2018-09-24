@@ -31,12 +31,12 @@ import TooltipStyles from "modules/common/less/tooltip";
 
 export default class CreateMarketOutcome extends Component {
   static propTypes = {
-    newMarket: PropTypes.object.isRequired,
-    updateNewMarket: PropTypes.func.isRequired,
-    validateField: PropTypes.func.isRequired,
-    isValid: PropTypes.func.isRequired,
     isMobileSmall: PropTypes.bool.isRequired,
-    keyPressed: PropTypes.func.isRequired
+    newMarket: PropTypes.object.isRequired,
+    isValid: PropTypes.func.isRequired,
+    keyPressed: PropTypes.func.isRequired,
+    updateNewMarket: PropTypes.func.isRequired,
+    validateField: PropTypes.func.isRequired
   };
 
   static calculateOutcomeFieldCount(p) {
