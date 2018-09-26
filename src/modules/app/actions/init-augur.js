@@ -164,7 +164,7 @@ export function connectAugur(
             pollForNetwork(dispatch, getState);
           }
           callback();
-        }
+        };
 
         if (process.env.NODE_ENV === "development") {
           AugurJS.augur.api.Augur.isKnownUniverse(
