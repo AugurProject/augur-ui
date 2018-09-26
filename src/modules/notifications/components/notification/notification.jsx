@@ -56,12 +56,6 @@ export default class Notification extends Component {
             }}
           >
             <div className={Styles.Notification__row}>
-              {AlertCircle(
-                !seen
-                  ? Styles.Notification__dot
-                  : Styles["Notification__dot-seen"],
-                "#fff"
-              )}
               <div className={Styles.Notification__status}>{status}</div>
             </div>
             <div className={Styles.Notification__row}>
