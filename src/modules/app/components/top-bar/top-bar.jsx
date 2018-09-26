@@ -71,7 +71,11 @@ const TopBar = props => (
     )}
     <ConnectAccount />
     {props.isLogged && (
-      <div className={Styles.TopBar__notifications}>
+      <div
+        className={classNames(Styles.TopBar__notifications, {
+          [Styles.TopBar__notificationsDark]: props.notificationsVisible
+        })}
+      >
         <div className={Styles["TopBar__notifications-container"]}>
           <button
             className={Styles["TopBar__notification-icon"]}
@@ -96,7 +100,8 @@ TopBar.propTypes = {
   isLogged: PropTypes.bool.isRequired,
   stats: PropTypes.array.isRequired,
   unseenCount: PropTypes.number.isRequired,
-  toggleNotifications: PropTypes.func.isRequired
+  toggleNotifications: PropTypes.func.isRequired,
+  notificationsVisible: PropTypes.bool.isRequired
 };
 
 export default TopBar;
