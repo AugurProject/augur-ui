@@ -28,17 +28,13 @@ const universesData = [
   }
 ];
 
-const ethereumNodeConnectionInfo = {
-  http: "http://some.eth.node.com",
-  ws: "wss://some.eth.ws.node.com"
-};
-
-const augurNodeWS = "wss://some.web.socket.com";
-
 MockAugurJS.rpc = {
   block: { number: 10000, timestamp: 4886718345 },
   constants: realAugur.augur.rpc.constants,
-  eth: { accounts: cb => cb(null, ["0xa11ce"]) },
+  set mockEth(e) {
+    MockAugurJS.rpc.eth = e;
+  },
+  eth: {},
   getCurrentBlock: () => ({ number: 10000, timestamp: 4886718345 }),
   clear: realAugur.augur.rpc.clear,
   getNetworkID: () => 4
@@ -87,21 +83,21 @@ MockAugurJS.trading = {
   })
 };
 
-MockAugurJS.connect = (env, cb) => {
-  cb(null, {
-    ethereumNode: {
-      ...ethereumNodeConnectionInfo,
-      contracts: {},
-      abi: {
-        functions: {},
-        events: {}
-      }
-    },
-    augurNode: augurNodeWS
-  });
-};
+MockAugurJS.connect = () => {};
+MockAugurJS.mockConnect = () => {};
+Object.defineProperty(MockAugurJS, "mockConnect", {
+  set(f) {
+    MockAugurJS.connect = f;
+  }
+});
 
-MockAugurJS.contracts = { addresses: { 4: { Universe: "0xb0b" } } };
+MockAugurJS.contracts = {};
+MockAugurJS.mockContracts = {};
+Object.defineProperty(MockAugurJS, "mockContracts", {
+  set(o) {
+    MockAugurJS.contracts = o;
+  }
+});
 
 MockAugurJS.augur = MockAugurJS;
 
