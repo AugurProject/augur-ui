@@ -33,7 +33,7 @@ describe("modules/app/actions/sync-blockchain.js", () => {
     store.clearActions();
   });
 
-  test("rpc.block set: should sync with blockchain using rpc.block.number", done => {
+  test("rpc.block set: should sync with blockchain using rpc.block.number", () => {
     augur.rpc.block = { number: 10000, timestamp: "0x123456789" };
     const out = [
       {
@@ -43,7 +43,5 @@ describe("modules/app/actions/sync-blockchain.js", () => {
     ];
     store.dispatch(syncBlockchain());
     expect(store.getActions()).toEqual(out);
-
-    done();
   });
 });
