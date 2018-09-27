@@ -46,19 +46,20 @@ const MarketOutcomes = p => {
       : getValue(p.outcomes[0], "lastPricePercent.denomination");
 
   const currentMarketStyles = pos => {
-    const size = getValue(
-      p.outcomes[0],
-      "lastPricePercent.formatted"
-    ).toString().length;
+    let size =
+      getValue(p.outcomes[0], "lastPricePercent.formatted").toString().length *
+      0.9;
     const isMobileAttrs =
       window.outerWidth < 590
-        ? { charLen: 8, marginTop: 4, fontSize: 16 }
-        : { charLen: 10, marginTop: 7, fontSize: 20 };
+        ? { marginTop: 4, fontSize: 16 }
+        : { marginTop: 7, fontSize: 20 };
+    for (let i = 5; i < size; i += 6) {
+      size *= 0.7;
+    }
     return {
-      marginLeft: pos < 5 ? size * isMobileAttrs.charLen : 0,
-      marginRight: pos > 95 ? size * isMobileAttrs.charLen : 0,
-      marginTop: isMobileAttrs.marginTop,
-      fontSize: isMobileAttrs.fontSize
+      marginLeft: pos < 15 ? size + "em" : 0,
+      marginRight: pos > 85 ? size + "em" : 0,
+      ...isMobileAttrs
     };
   };
 
