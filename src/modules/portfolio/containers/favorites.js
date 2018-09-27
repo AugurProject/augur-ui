@@ -3,9 +3,11 @@ import { withRouter } from "react-router-dom";
 
 import Favorites from "modules/portfolio/components/favorites/favorites";
 import { toggleFavorite } from "modules/markets/actions/update-favorites";
-import { loadMarketsInfo } from "modules/markets/actions/load-markets-info";
+import {
+  loadMarketsInfo,
+  loadMarketsInfoIfNotLoaded
+} from "modules/markets/actions/load-markets-info";
 import selectAllMarkets from "modules/markets/selectors/markets-all";
-import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info-if-not-loaded";
 
 const mapStateToProps = state => {
   // basically just create the filtered markets based on what IDs we find in the favorites object
@@ -13,13 +15,10 @@ const mapStateToProps = state => {
   const { favorites } = state;
 
   return {
-    isLogged: state.isLogged,
+    isLogged: state.authStatus.isLogged,
     markets,
     filteredMarkets: Object.keys(favorites),
-    transactionsLoading: state.transactionsLoading,
-    hasAllTransactionsLoaded:
-      state.transactionsOldestLoadedBlock ===
-      state.loginAccount.registerBlockNumber // FIXME
+    transactionsLoading: state.appStatus.transactionsLoading
   };
 };
 

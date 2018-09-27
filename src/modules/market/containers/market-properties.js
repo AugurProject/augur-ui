@@ -2,15 +2,16 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { selectCurrentTimestamp } from "src/select-state";
-import { determineMarketLinkType } from "modules/market/helpers/determine-market-link-type";
+import { determineMarketLinkType } from "modules/markets/helpers/determine-market-link-type";
 import MarketProperties from "modules/market/components/market-properties/market-properties";
-import { selectMarket } from "modules/market/selectors/market";
+import { selectMarket } from "modules/markets/selectors/market";
 import { updateModal } from "modules/modal/actions/update-modal";
+import { sendFinalizeMarket } from "modules/markets/actions/finalize-market";
 
 const mapStateToProps = (state, ownProps) => ({
   currentTimestamp: selectCurrentTimestamp(state),
-  isLogged: state.isLogged,
-  isMobile: state.isMobile,
+  isLogged: state.authStatus.isLogged,
+  isMobile: state.appStatus.isMobile,
   loginAccount: state.loginAccount,
   linkType:
     ownProps.linkType ||
@@ -22,7 +23,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateModal: modal => dispatch(updateModal(modal))
+  updateModal: modal => dispatch(updateModal(modal)),
+  finalizeMarket: marketId => dispatch(sendFinalizeMarket(marketId))
 });
 
 const MarketPropertiesContainer = withRouter(

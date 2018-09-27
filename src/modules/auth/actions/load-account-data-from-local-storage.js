@@ -1,8 +1,8 @@
 import { updateFavorites } from "modules/markets/actions/update-favorites";
-import { updateScalarMarketShareDenomination } from "modules/market/actions/update-scalar-market-share-denomination";
+import { updateScalarMarketShareDenomination } from "modules/markets/actions/update-scalar-market-share-denomination";
 import { updateReports } from "modules/reports/actions/update-reports";
-import { addNotification } from "modules/notifications/actions";
-import { loadPendingLiquidityOrders } from "modules/create-market/actions/liquidity-management";
+import { addNotification } from "modules/notifications/actions/notifications";
+import { loadPendingLiquidityOrders } from "modules/orders/actions/liquidity-management";
 
 export const loadAccountDataFromLocalStorage = address => (
   dispatch,
@@ -16,7 +16,15 @@ export const loadAccountDataFromLocalStorage = address => (
         dispatch(updateFavorites(storedAccountData.favorites));
       }
       if (storedAccountData.notifications) {
-        storedAccountData.notifications.map(n => dispatch(addNotification(n)));
+        storedAccountData.notifications.map(n => {
+          let notification = null;
+          try {
+            notification = addNotification(n);
+          } catch (e) {
+            console.error("could not process notification", e.message);
+          }
+          return notification && dispatch(notification);
+        });
       }
       if (storedAccountData.scalarMarketsShareDenomination) {
         Object.keys(storedAccountData.scalarMarketsShareDenomination).forEach(

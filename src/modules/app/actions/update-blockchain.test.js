@@ -20,8 +20,10 @@ describe(`modules/app/actions/update-blockchain.js`, () => {
       {
         type: "UPDATE_BLOCKCHAIN",
         data: {
-          currentBlockNumber: 10000,
-          currentBlockTimestamp: 4886718345
+          blockchainData: {
+            currentBlockNumber: 10000,
+            currentBlockTimestamp: 4886718345
+          }
         }
       }
     ]);

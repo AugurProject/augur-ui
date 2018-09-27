@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import PerformanceGraph from "modules/portfolio/components/performance-graph/performance-graph";
-import getProfitLoss from "modules/portfolio/actions/get-profit-loss";
+import getProfitLoss from "modules/positions/actions/get-profit-loss";
 import { selectIsAnimating } from "src/select-state";
 
 const mapStateToProps = state => ({
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getProfitLoss: (universe, startTime, endTime, periodInterval, callback) =>
     dispatch(
-      getProfitLoss(universe, startTime, endTime, periodInterval, callback)
+      getProfitLoss({ universe, startTime, endTime, periodInterval, callback })
     )
 });
 

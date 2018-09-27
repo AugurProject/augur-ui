@@ -8,10 +8,10 @@ import { MODAL_LEDGER } from "modules/modal/constants/modal-types";
 const ledgerSigner = async (rawTxArgs, ledgerLib, derivationPath, dispatch) => {
   dispatch(
     updateModal({
-      type: MODAL_LEDGER
+      type: MODAL_LEDGER,
+      canClose: true
     })
   );
-
   const tx = rawTxArgs[0];
   tx.v = tx.chainId; // NOTE: solves issue w/ lib setting the wrong chainId during signing, might not need in the future
 
@@ -20,10 +20,7 @@ const ledgerSigner = async (rawTxArgs, ledgerLib, derivationPath, dispatch) => {
   const formattedTx = new TX(rawTxArgs[0]);
 
   return ledgerLib
-    .signTransactionByBip32Path(
-      formattedTx.serialize().toString("hex"),
-      derivationPath
-    )
+    .signTransaction(derivationPath, formattedTx.serialize().toString("hex"))
     .then(res => {
       tx.r = prefixHex(res.r);
       tx.s = prefixHex(res.s);

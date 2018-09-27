@@ -6,14 +6,13 @@ import { augur } from "services/augurjs";
 
 import speedomatic from "speedomatic";
 import { createBigNumber } from "utils/create-big-number";
-import { ZERO } from "modules/trade/constants/numbers";
+import { ZERO } from "modules/trades/constants/numbers";
 import { formatGasCostToEther } from "utils/format-number";
 import MarketPreview from "modules/market/components/market-preview/market-preview";
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 import ReportingDisputeForm from "modules/reporting/containers/reporting-dispute-form";
 import ReportingDisputeConfirm from "modules/reporting/components/reporting-dispute-confirm/reporting-dispute-confirm";
-import { TYPE_VIEW } from "modules/market/constants/link-types";
-import MarketAdditonalDetails from "modules/reporting/components/market-additional-details/market-additional-details";
+import { TYPE_VIEW } from "modules/markets/constants/link-types";
 import { isEmpty } from "lodash";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-report/reporting-report.styles";
@@ -38,7 +37,6 @@ export default class ReportingDispute extends Component {
 
     this.state = {
       currentStep: 0,
-      showingDetails: true,
       gasEstimate: "0",
       isMarketInValid: null,
       selectedOutcome: "",
@@ -53,7 +51,6 @@ export default class ReportingDispute extends Component {
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.updateState = this.updateState.bind(this);
-    this.toggleDetails = this.toggleDetails.bind(this);
   }
 
   componentWillMount() {
@@ -81,23 +78,20 @@ export default class ReportingDispute extends Component {
     this.setState(newState);
   }
 
-  toggleDetails() {
-    this.setState({ showingDetails: !this.state.showingDetails });
-  }
-
   calculateGasEstimates() {
     const { submitMarketContribute, market } = this.props;
     const { selectedOutcome, isMarketInValid, stakeInfo } = this.state;
     if (createBigNumber(stakeInfo.repValue).gt(ZERO)) {
       const amount = speedomatic.fix(stakeInfo.repValue, "hex");
-      submitMarketContribute(
-        true,
-        market.id,
+      submitMarketContribute({
+        estimateGas: true,
+        marketId: market.id,
         selectedOutcome,
-        isMarketInValid,
+        invalid: isMarketInValid,
         amount,
-        null,
-        (err, gasEstimateValue) => {
+        history: null,
+        returnPath: null,
+        callback: (err, gasEstimateValue) => {
           if (err) return console.error(err);
 
           const gasPrice = augur.rpc.getGasPrice();
@@ -109,7 +103,7 @@ export default class ReportingDispute extends Component {
             )
           });
         }
-      );
+      });
     }
   }
 
@@ -139,13 +133,9 @@ export default class ReportingDispute extends Component {
             linkType={TYPE_VIEW}
             buttonText="View"
             showAdditionalDetailsToggle
-            showingDetails={s.showingDetails}
-            toggleDetails={this.toggleDetails}
             showDisputeRound
           />
         )}
-        {!isEmpty(market) &&
-          s.showingDetails && <MarketAdditonalDetails market={market} />}
         {!isEmpty(market) && (
           <article className={FormStyles.Form}>
             {s.currentStep === 0 && (
@@ -197,14 +187,14 @@ export default class ReportingDispute extends Component {
                 <button
                   className={FormStyles.Form__submit}
                   onClick={() =>
-                    submitMarketContribute(
-                      false,
-                      market.id,
-                      s.selectedOutcome,
-                      s.isMarketInValid,
-                      speedomatic.fix(s.stakeInfo.repValue, "hex"),
+                    submitMarketContribute({
+                      estimateGas: false,
+                      marketId: market.id,
+                      selectedOutcome: s.selectedOutcome,
+                      invalid: s.isMarketInValid,
+                      amount: speedomatic.fix(s.stakeInfo.repValue, "hex"),
                       history
-                    )
+                    })
                   }
                 >
                   Submit

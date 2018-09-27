@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 
 import { Notifications } from "modules/common/components/icons";
+import ConnectAccount from "modules/auth/containers/connect-account";
 import makePath from "modules/routes/helpers/make-path";
 import { CATEGORIES } from "modules/routes/constants/views";
 import Styles from "modules/app/components/top-bar/top-bar.styles";
@@ -12,7 +13,12 @@ const TopBar = props => (
   <header className={Styles.TopBar}>
     {props.isLogged && (
       <div>
-        <div className={Styles.TopBar__stats}>
+        <div
+          className={classNames(
+            Styles.TopBar__stats,
+            Styles["TopBar__regular-stats"]
+          )}
+        >
           <div className={Styles.TopBar__stat}>
             <span className={Styles["TopBar__stat-label"]}>ETH</span>
             <span className={Styles["TopBar__stat-value"]} id="core-bar-eth">
@@ -32,29 +38,44 @@ const TopBar = props => (
             Styles.TopBar__performance
           )}
         >
-          <div className={Styles.TopBar__stat}>
+          <div
+            className={classNames(
+              Styles.TopBar__stat,
+              Styles["TopBar__performance-stat"]
+            )}
+          >
             <div className={Styles["TopBar__stat-label"]}>
               <span>{props.stats[1].totalPLMonth.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLMonth.value.formatted} ETH
+              {props.stats[1].totalPLMonth.value.formatted}
+              <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>
-          <div className={Styles.TopBar__stat}>
+          <div
+            className={classNames(
+              Styles.TopBar__stat,
+              Styles["TopBar__performance-stat"]
+            )}
+          >
             <div className={Styles["TopBar__stat-label"]}>
               <span>{props.stats[1].totalPLDay.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLDay.value.formatted} ETH
+              {props.stats[1].totalPLDay.value.formatted}
+              <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>
         </div>
-        <div className={Styles.TopBar__notifications}>
+      </div>
+    )}
+    <ConnectAccount />
+    {props.isLogged && (
+      <div className={Styles.TopBar__notifications}>
+        <div className={Styles["TopBar__notifications-container"]}>
           <button
             className={Styles["TopBar__notification-icon"]}
             onClick={e => {
-              e.preventDefault();
-              e.stopPropagation();
               props.toggleNotifications();
             }}
           >

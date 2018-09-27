@@ -6,15 +6,14 @@ import MarketLink from "modules/market/components/market-link/market-link";
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 
 import {
-  TYPE_CLOSED,
+  TYPE_FINALIZE_MARKET,
   TYPE_DISPUTE,
   TYPE_VIEW,
   TYPE_CLAIM_PROCEEDS
-} from "modules/market/constants/link-types";
+} from "modules/markets/constants/link-types";
 import { SCALAR } from "modules/markets/constants/market-types";
 
 import getValue from "utils/get-value";
-import shareDenominationLabel from "utils/share-denomination-label";
 import { dateHasPassed } from "utils/format-date";
 import Styles from "modules/market/components/market-properties/market-properties.styles";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
@@ -35,11 +34,7 @@ const ShowResolutionStates = [
 ];
 
 const MarketProperties = p => {
-  const shareVolumeFormatted = getValue(p, "volume.formatted");
-  const shareDenomination = shareDenominationLabel(
-    p.selectedShareDenomination,
-    p.shareDenominations
-  );
+  const shareVolume = getValue(p, "volume");
   const isScalar = p.marketType === SCALAR;
   let consensus = getValue(
     p,
@@ -62,8 +57,7 @@ const MarketProperties = p => {
             <span>Volume</span>
             <ValueDenomination
               valueClassname="volume"
-              formatted={shareVolumeFormatted}
-              denomination={shareDenomination}
+              formatted={shareVolume.full}
             />
           </li>
           <li>
@@ -119,7 +113,7 @@ const MarketProperties = p => {
             )}
           {(linkType === undefined ||
             (linkType &&
-              linkType !== TYPE_CLOSED &&
+              linkType !== TYPE_FINALIZE_MARKET &&
               linkType !== TYPE_CLAIM_PROCEEDS)) && (
             <MarketLink
               className={classNames(Styles.MarketProperties__trade, {
@@ -132,10 +126,11 @@ const MarketProperties = p => {
             </MarketLink>
           )}
           {linkType &&
-            linkType === TYPE_CLOSED && (
+            linkType === TYPE_FINALIZE_MARKET &&
+            !p.finalizationTime && (
               <button
                 className={Styles.MarketProperties__trade}
-                onClick={e => console.log("call to finalize market")}
+                onClick={e => p.finalizeMarket(p.id)}
               >
                 Finalize
               </button>

@@ -2,30 +2,30 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import ReportingDispute from "modules/reporting/components/reporting-dispute/reporting-dispute";
-import { loadFullMarket } from "modules/market/actions/load-full-market";
+import { loadFullMarket } from "modules/markets/actions/load-full-market";
 import {
   MARKET_ID_PARAM_NAME,
   RETURN_PARAM_NAME
 } from "modules/routes/constants/param-names";
-import { selectMarket } from "modules/market/selectors/market";
+import { selectMarket } from "modules/markets/selectors/market";
 import parseQuery from "modules/routes/helpers/parse-query";
 import getValue from "utils/get-value";
 
-import { submitMarketContribute } from "modules/reporting/actions/submit-market-contribute";
+import { submitMarketContribute } from "modules/reports/actions/submit-market-contribute";
 
 const mapStateToProps = state => ({
-  isLogged: state.isLogged,
+  isLogged: state.authStatus.isLogged,
   // might need to call get market cost breakdown, it's on market from augur-node
   isConnected: state.connection.isConnected,
   universe: state.universe.id,
   marketsData: state.marketsData,
-  isMobile: state.isMobile,
+  isMobile: state.appStatus.isMobile,
   availableRep: getValue(state, "loginAccount.rep") || "0"
 });
 
 const mapDispatchToProps = dispatch => ({
   loadFullMarket: marketId => dispatch(loadFullMarket(marketId)),
-  submitMarketContribute: (
+  submitMarketContribute: ({
     estimateGas,
     marketId,
     selectedOutcome,
@@ -34,9 +34,9 @@ const mapDispatchToProps = dispatch => ({
     history,
     returnPath,
     callback
-  ) =>
+  }) =>
     dispatch(
-      submitMarketContribute(
+      submitMarketContribute({
         estimateGas,
         marketId,
         selectedOutcome,
@@ -45,7 +45,7 @@ const mapDispatchToProps = dispatch => ({
         history,
         returnPath,
         callback
-      )
+      })
     )
 });
 
@@ -68,7 +68,7 @@ const mergeProps = (sP, dP, oP) => {
     isMarketLoaded: sP.marketsData[marketId] != null,
     market,
     loadFullMarket: () => dP.loadFullMarket(marketId),
-    submitMarketContribute: (
+    submitMarketContribute: ({
       estimateGas,
       marketId,
       selectedOutcome,
@@ -76,8 +76,8 @@ const mergeProps = (sP, dP, oP) => {
       amount,
       history,
       callback
-    ) =>
-      dP.submitMarketContribute(
+    }) =>
+      dP.submitMarketContribute({
         estimateGas,
         marketId,
         selectedOutcome,
@@ -86,7 +86,7 @@ const mergeProps = (sP, dP, oP) => {
         history,
         returnPath,
         callback
-      )
+      })
   };
 };
 

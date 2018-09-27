@@ -10,8 +10,7 @@ import MarketPreview from "modules/market/components/market-preview/market-previ
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 import MigrateRepForm from "modules/forking/components/migrate-rep-form/migrate-rep-form";
 import MigrateRepConfirm from "modules/forking/components/migrate-rep-confirm/migrate-rep-confirm";
-import { TYPE_VIEW } from "modules/market/constants/link-types";
-import MarketAdditonalDetails from "modules/reporting/components/market-additional-details/market-additional-details";
+import { TYPE_VIEW } from "modules/markets/constants/link-types";
 import { isEmpty } from "lodash";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-report/reporting-report.styles";
@@ -37,7 +36,6 @@ export default class MigrateRep extends Component {
 
     this.state = {
       currentStep: 0,
-      showingDetails: true,
       isMarketInValid: null,
       selectedOutcome: "",
       selectedOutcomeName: "",
@@ -53,7 +51,6 @@ export default class MigrateRep extends Component {
     this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.updateState = this.updateState.bind(this);
-    this.toggleDetails = this.toggleDetails.bind(this);
   }
 
   componentWillMount() {
@@ -81,22 +78,18 @@ export default class MigrateRep extends Component {
     this.setState(newState);
   }
 
-  toggleDetails() {
-    this.setState({ showingDetails: !this.state.showingDetails });
-  }
-
   calculateGasEstimates() {
     const { submitMigrateREP, market } = this.props;
     if (this.state.repAmount !== "") {
       const amount = speedomatic.fix(this.state.repAmount, "hex");
-      submitMigrateREP(
-        true,
-        market.id,
-        this.state.selectedOutcome,
-        this.state.isMarketInValid,
+      submitMigrateREP({
+        estimateGas: true,
+        marketId: market.id,
+        selectedOutcome: this.state.selectedOutcome,
+        invalid: this.state.isMarketInValid,
         amount,
-        null,
-        (err, gasEstimateValue) => {
+        history: null,
+        callback: (err, gasEstimateValue) => {
           if (err) return console.error(err);
 
           const gasPrice = augur.rpc.getGasPrice();
@@ -108,7 +101,7 @@ export default class MigrateRep extends Component {
             )
           });
         }
-      );
+      });
     }
   }
 
@@ -140,12 +133,8 @@ export default class MigrateRep extends Component {
             linkType={TYPE_VIEW}
             buttonText="View"
             showAdditionalDetailsToggle
-            showingDetails={s.showingDetails}
-            toggleDetails={this.toggleDetails}
           />
         )}
-        {!isEmpty(market) &&
-          s.showingDetails && <MarketAdditonalDetails market={market} />}
         {!isEmpty(market) && (
           <article className={FormStyles.Form}>
             {s.currentStep === 0 && (
@@ -204,14 +193,14 @@ export default class MigrateRep extends Component {
                 <button
                   className={FormStyles.Form__submit}
                   onClick={() =>
-                    submitMigrateREP(
-                      false,
-                      market.id,
-                      s.selectedOutcome,
-                      s.isMarketInValid,
-                      speedomatic.fix(s.repAmount, "hex"),
+                    submitMigrateREP({
+                      estimateGas: false,
+                      marketId: market.id,
+                      selectedOutcome: s.selectedOutcome,
+                      invalid: s.isMarketInValid,
+                      amount: speedomatic.fix(s.repAmount, "hex"),
                       history
-                    )
+                    })
                   }
                 >
                   Submit

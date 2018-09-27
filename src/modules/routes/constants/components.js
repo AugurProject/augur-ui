@@ -5,7 +5,7 @@ import asyncComponent from "modules/common/components/async-component";
 export const Categories = asyncComponent({
   moduleName: "Categories",
   loader: () =>
-    import(/* webpackChunkName: 'categories' */ "modules/categories/container").then(
+    import(/* webpackChunkName: 'categories' */ "modules/categories/containers/categories").then(
       module => module.default
     )
 });
@@ -13,7 +13,7 @@ export const Categories = asyncComponent({
 export const Markets = asyncComponent({
   moduleName: "Markets",
   loader: () =>
-    import(/* webpackChunkName: 'markets' */ "modules/markets/container").then(
+    import(/* webpackChunkName: 'markets' */ "modules/markets-list/containers/markets-view-container").then(
       module => module.default
     )
 });
@@ -22,38 +22,6 @@ export const Account = asyncComponent({
   moduleName: "Account",
   loader: () =>
     import(/* webpackChunkName: 'account' */ "modules/account/components/account-view/account-view").then(
-      module => module.default
-    )
-});
-
-export const Auth = asyncComponent({
-  moduleName: "Auth",
-  loader: () =>
-    import(/* webpackChunkName: 'auth' */ "modules/auth/components/auth/auth").then(
-      module => module.default
-    )
-});
-
-export const AuthAccounts = asyncComponent({
-  moduleName: "AuthAccounts",
-  loader: () =>
-    import(/* webpackChunkName: 'auth-lander' */ "modules/auth/containers/connect").then(
-      module => module.default
-    )
-});
-
-export const AuthConnect = asyncComponent({
-  moduleName: "AuthConnect",
-  loader: () =>
-    import(/* webpackChunkName: 'auth-connect' */ "modules/auth/containers/connect").then(
-      module => module.default
-    )
-});
-
-export const Connect = asyncComponent({
-  moduleName: "Connect",
-  loader: () =>
-    import(/* webpackChunkName: 'connect' */ "modules/auth/containers/connect").then(
       module => module.default
     )
 });
