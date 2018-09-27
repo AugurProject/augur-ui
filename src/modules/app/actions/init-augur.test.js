@@ -105,8 +105,7 @@ describe("modules/app/actions/init-augur.js", () => {
           expect(err).toBeUndefined();
           expect(connInfo).toBeUndefined();
 
-          // TODO: Figure out the correct list of actions called.
-          /* expect(store.getActions()).deepEqual([
+          expect(store.getActions()).deepEqual([
             { type: "UPDATE_ENV" },
             { type: "UPDATE_CONNECTION_STATUS" },
             { type: "UPDATE_CONTRACT_ADDRESSES" },
@@ -116,7 +115,7 @@ describe("modules/app/actions/init-augur.js", () => {
             { type: "REGISTER_TRANSACTION_RELAY" },
             { type: "LOAD_UNIVERSE" },
             { type: "CLOSE_MODAL" }
-          ]); */
+          ]);
         })
       );
     });
