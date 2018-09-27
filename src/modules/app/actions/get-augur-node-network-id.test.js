@@ -40,7 +40,7 @@ describe("modules/app/actions/get-augur-node-network-id.js", () => {
         expect(store.getActions()).toEqual([
           {
             type: "UPDATE_AUGUR_NODE_NETWORK_ID",
-            augurNodeNetworkId: "4"
+            data: { augurNodeNetworkId: "4" }
           }
         ]);
       })

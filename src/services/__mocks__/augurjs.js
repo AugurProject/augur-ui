@@ -41,6 +41,15 @@ MockAugurJS.rpc = {
 };
 
 MockAugurJS.constants = realAugur.augur.constants;
+MockAugurJS.mockConstants = {};
+Object.defineProperty(MockAugurJS, "mockConstants", {
+  set(cs) {
+    MockAugurJS.constants = cs;
+  }
+});
+MockAugurJS.resetConstants = () => {
+  MockAugurJS.constants = realAugur.augur.constants;
+};
 
 MockAugurJS.api = {
   set mockController(c) {

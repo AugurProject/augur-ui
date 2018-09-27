@@ -72,6 +72,7 @@ describe("modules/app/actions/init-augur.js", () => {
 
   afterAll(() => {
     delete process.env.ETHEREUM_NETWORK;
+    augur.resetConstants();
   });
 
   describe("initAugur", () => {
@@ -91,6 +92,12 @@ describe("modules/app/actions/init-augur.js", () => {
 
     augur.rpc.mockEth = { accounts: cb => cb(null, ["0xa11ce"]) };
     augur.mockContracts = { addresses: { 4: { Universe: "0xb0b" } } };
+    augur.mockConstants = {
+      ACCOUNT_TYPES: {
+        UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
+        META_MASK: "metaMask"
+      }
+    };
 
     test("Should InitAugur successfully, with logged in account", () => {
       store.dispatch(
@@ -175,6 +182,13 @@ describe("modules/app/actions/init-augur.js", () => {
         }
       };
 
+      augur.mockConstants = {
+        ACCOUNT_TYPES: {
+          UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
+          META_MASK: "metaMask"
+        }
+      };
+
       augur.rpc.mockEth = { accounts: cb => cb(null, []) };
       augur.api.mockController = { stopped: () => {} };
 
@@ -253,6 +267,14 @@ describe("modules/app/actions/init-augur.js", () => {
         };
 
         augur.mockContracts = { addresses: { 4: { Universe: "0xb0b" } } };
+
+        augur.mockConstants = {
+          ACCOUNT_TYPES: {
+            UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
+            META_MASK: "metaMask"
+          }
+        };
+
         augur.rpc.mockEth = { accounts: cb => cb(null, []) };
         augur.api.mockController = { stopped: () => {} };
       });
@@ -325,10 +347,17 @@ describe("modules/app/actions/init-augur.js", () => {
           });
         };
 
-        augur.mockConctracts = {
+        augur.mockContracts = {
           addresses: {
             4: { Universe: "0xb0b" },
             3: { Universe: "0xc41231e2" }
+          }
+        };
+
+        augur.mockConstants = {
+          ACCOUNT_TYPES: {
+            UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
+            META_MASK: "metaMask"
           }
         };
 
@@ -357,7 +386,7 @@ describe("modules/app/actions/init-augur.js", () => {
           );
         };
 
-        augur.mockConctracts = {
+        augur.mockContracts = {
           addresses: {
             4: { Universe: "0xb0b" },
             3: { Universe: "0xc41231e2" }

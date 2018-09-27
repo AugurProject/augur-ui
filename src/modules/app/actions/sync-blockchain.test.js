@@ -41,6 +41,10 @@ describe("modules/app/actions/sync-blockchain.js", () => {
       {
         type: "UPDATE_BLOCKCHAIN",
         data: dataReturned
+      },
+      {
+        type: "UPDATE_ASSETS",
+        data: undefined
       }
     ]);
   });
