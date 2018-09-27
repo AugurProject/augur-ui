@@ -104,7 +104,6 @@ describe("modules/app/actions/init-augur.js", () => {
         initAugur({}, {}, (err, connInfo) => {
           expect(err).toBeUndefined();
           expect(connInfo).toBeUndefined();
-
           expect(store.getActions()).deepEqual([
             { type: "UPDATE_ENV" },
             { type: "UPDATE_CONNECTION_STATUS" },
