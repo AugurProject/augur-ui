@@ -53,7 +53,7 @@ const MarketOutcomes = p => {
       window.outerWidth < 590
         ? { marginTop: 4, fontSize: 16 }
         : { marginTop: 7, fontSize: 20 };
-    for (let i = 5; i < size; i += 6) {
+    for (let i = 6; i < size; i += 6) {
       size *= 0.7;
     }
     return {
