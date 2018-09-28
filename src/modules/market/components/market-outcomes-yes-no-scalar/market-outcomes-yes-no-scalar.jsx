@@ -57,8 +57,8 @@ const MarketOutcomes = p => {
       size *= 0.7;
     }
     return {
-      marginLeft: pos < 15 ? size + "em" : 0,
-      marginRight: pos > 85 ? size + "em" : 0,
+      marginLeft: pos < 15 ? size + "rem" : 0,
+      marginRight: pos > 85 ? size + "rem" : 0,
       ...isMobileAttrs
     };
   };
