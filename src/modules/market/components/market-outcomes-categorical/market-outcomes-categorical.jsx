@@ -21,7 +21,6 @@ const CategoricalOutcome = ({ className, outcome, lastTradeStatus }) => (
       outcome={outcome}
       style={{
         top: "0.0125rem",
-        bottom: "1rem",
         right: "0",
         width: "0.325rem"
       }}
