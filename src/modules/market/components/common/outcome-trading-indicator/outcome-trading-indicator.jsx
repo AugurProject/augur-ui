@@ -25,12 +25,12 @@ export default function OutcomeTradingIndicator({
   const indicatorStyle = indicatorArray[tradingIndicator];
 
   const topSpace = tradingIndicator => {
-    const isUp = tradingIndicator === BUY_UP || tradingIndicator === SELL_UP;
-    const isDown =
-      tradingIndicator === BUY_DOWN || tradingIndicator === SELL_DOWN;
-    if (isUp) {
+    if (tradingIndicator === BUY_UP || tradingIndicator === SELL_UP) {
       return -1.125;
-    } else if (isDown) {
+    } else if (
+      tradingIndicator === BUY_DOWN ||
+      tradingIndicator === SELL_DOWN
+    ) {
       return 1.125;
     }
     return 0;
