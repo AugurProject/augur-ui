@@ -46,8 +46,8 @@ const MarketOutcomes = p => {
       : getValue(p.outcomes[0], "lastPricePercent.denomination");
 
   const currentMarketStyles = pos => {
-    let size =
-      getValue(p.outcomes[0], "lastPricePercent.formatted").toString().length
+    let size = getValue(p.outcomes[0], "lastPricePercent.formatted").toString()
+      .length;
     const isMobileAttrs =
       window.outerWidth < 590
         ? { marginTop: 4, fontSize: 16 }
