@@ -47,14 +47,13 @@ const MarketOutcomes = p => {
 
   const currentMarketStyles = pos => {
     let size =
-      getValue(p.outcomes[0], "lastPricePercent.formatted").toString().length *
-      0.9;
+      getValue(p.outcomes[0], "lastPricePercent.formatted").toString().length
     const isMobileAttrs =
       window.outerWidth < 590
         ? { marginTop: 4, fontSize: 16 }
         : { marginTop: 7, fontSize: 20 };
     for (let i = 6; i < size; i += 6) {
-      size *= 0.7;
+      size *= 0.8;
     }
     return {
       marginLeft: pos < 15 ? size + "rem" : 0,
