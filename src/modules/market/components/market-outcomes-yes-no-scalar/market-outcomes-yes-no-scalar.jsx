@@ -63,12 +63,6 @@ const MarketOutcomes = p => {
     };
   };
 
-  const arrowStyles = {
-    top: "1.125rem",
-    left: "-0.25rem",
-    position: "relative"
-  };
-
   return (
     <div className={Styles.MarketOutcomes}>
       <div className={Styles.MarketOutcomes__range} />
@@ -88,10 +82,7 @@ const MarketOutcomes = p => {
           <span className={Styles["MarketOutcomes__current-denomination"]}>
             {lastPriceDenomination}
           </span>
-          <MarketOutcomeTradingIndicator
-            outcome={p.outcomes[0]}
-            style={arrowStyles}
-          />
+          <MarketOutcomeTradingIndicator outcome={p.outcomes[0]} />
         </div>
       </span>
     </div>
