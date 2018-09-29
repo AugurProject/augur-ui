@@ -6,7 +6,7 @@ import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-categorical/market-outcomes-categorical.styles";
 
-const fontSize = winWidth => (winWidth < 590 ? "16px" : "20px");
+const fontSize = winWidth => (winWidth < 1200 ? "15px" : "20px");
 
 const outcomeValueStyles = winWidth => ({
   fontSize: fontSize(winWidth),
@@ -17,9 +17,12 @@ const outcomeValueStyles = winWidth => ({
 const CategoricalOutcome = ({ className, outcome }) => (
   <div
     className={className || Styles.MarketOutcomesCategorical__outcome}
-    style={{ display: "inline-block", fontSize: fontSize(window.outerWidth) }}
+    style={{ display: "inline-block" }}
   >
-    <span className={Styles["MarketOutcomesCategorical__outcome-name"]}>
+    <span
+      className={Styles["MarketOutcomesCategorical__outcome-name"]}
+      style={{ fontSize: fontSize(window.outerWidth) }}
+    >
       {outcome.name}
     </span>
     <span
