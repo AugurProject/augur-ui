@@ -26,7 +26,6 @@ export default function OutcomeTradingIndicator({
 
   const arrowStyles = tradingIndicator => ({
     ...style,
-    left: "-0.25rem",
     position: "relative"
   });
 
