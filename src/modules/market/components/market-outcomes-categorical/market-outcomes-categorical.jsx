@@ -7,11 +7,21 @@ import MarketOutcomeTradingIndicator from "modules/market/containers/market-outc
 import Styles from "modules/market/components/market-outcomes-categorical/market-outcomes-categorical.styles";
 
 const CategoricalOutcome = ({ className, outcome, lastTradeStatus }) => (
-  <div className={className || Styles.MarketOutcomesCategorical__outcome}>
+  <div
+    className={className || Styles.MarketOutcomesCategorical__outcome}
+    style={{ display: "block" }}
+  >
     <span className={Styles["MarketOutcomesCategorical__outcome-name"]}>
       {outcome.name}
     </span>
-    <span className={Styles["MarketOutcomesCategorical__outcome-value"]}>
+    <span
+      className={Styles["MarketOutcomesCategorical__outcome-value"]}
+      style={{
+        fontSize: window.outerWidth < 590 ? "16px" : "20px",
+        left: "0.75rem",
+        right: "0.75rem"
+      }}
+    >
       {getValue(outcome, "lastPricePercent.full")}
     </span>
     <span className={Styles["MarketOutcomesCategorical__outcome-value"]}>
@@ -20,8 +30,8 @@ const CategoricalOutcome = ({ className, outcome, lastTradeStatus }) => (
     <MarketOutcomeTradingIndicator
       outcome={outcome}
       style={{
-        top: "0.0125rem",
-        right: "0",
+        top: 0,
+        right: 0,
         width: "0.325rem"
       }}
     />
