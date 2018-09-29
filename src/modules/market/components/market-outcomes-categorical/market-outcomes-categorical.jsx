@@ -9,7 +9,6 @@ import Styles from "modules/market/components/market-outcomes-categorical/market
 const fontSize = winWidth => (winWidth < 590 ? "16px" : "20px");
 
 const outcomeValueStyles = winWidth => ({
-  ...Styles["MarketOutcomesCategorical__outcome-value"],
   fontSize: fontSize(winWidth),
   left: "0.5rem",
   right: "0.5rem"
