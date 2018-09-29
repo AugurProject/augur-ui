@@ -10,14 +10,14 @@ const fontSize = winWidth => (winWidth < 590 ? "16px" : "20px");
 
 const outcomeValueStyles = winWidth => ({
   fontSize: fontSize(winWidth),
-  left: "0.5rem",
-  right: "0.5rem"
+  left: "0.25rem",
+  right: "0.25rem"
 });
 
 const CategoricalOutcome = ({ className, outcome }) => (
   <div
     className={className || Styles.MarketOutcomesCategorical__outcome}
-    style={{ display: "block", fontSize: fontSize(window.outerWidth) }}
+    style={{ display: "inline-block", fontSize: fontSize(window.outerWidth) }}
   >
     <span className={Styles["MarketOutcomesCategorical__outcome-name"]}>
       {outcome.name}
