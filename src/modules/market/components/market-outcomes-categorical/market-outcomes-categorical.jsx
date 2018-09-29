@@ -31,6 +31,7 @@ const CategoricalOutcome = ({ className, outcome }) => (
     <MarketOutcomeTradingIndicator
       outcome={outcome}
       style={{
+        left: 20,
         width: "0.325rem"
       }}
     />
