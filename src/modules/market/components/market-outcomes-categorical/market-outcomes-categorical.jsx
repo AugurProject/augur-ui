@@ -29,6 +29,7 @@ const CategoricalOutcome = ({ className, outcome }) => (
     >
       {getValue(outcome, "lastPricePercent.full")}
     </span>
+    <span>&nbsp;&nbsp;</span>
     <MarketOutcomeTradingIndicator outcome={outcome} />
   </div>
 );
