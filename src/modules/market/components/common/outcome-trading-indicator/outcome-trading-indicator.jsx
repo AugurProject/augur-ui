@@ -26,9 +26,6 @@ export default function OutcomeTradingIndicator({
   const indicatorStyle = indicatorArray[tradingIndicator];
 
   const spacing = (loc, indicator) => {
-    if (tradingIndicator === "none") {
-      return;
-    }
     switch (loc + "|" + indicator) {
       case "yes-no-scalar|" + BUY_UP:
       case "yes-no-scalar|" + SELL_UP:
