@@ -21,7 +21,7 @@ module.exports = {
   collectCoverage: true,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: ["<rootDir>/src/**/*.test.js?(x)"],
+  collectCoverageFrom: ["<rootDir>/src/**/*.{js,jsx}"],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: "coverage",
@@ -32,12 +32,7 @@ module.exports = {
   // ],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  coverageReporters: ["json", "text", "lcov", "clover", "text"],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
