@@ -6,7 +6,7 @@ import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-categorical/market-outcomes-categorical.styles";
 
-const fontSize = winWidth => (winWidth < 590 ? "14px" : "20px");
+const fontSize = winWidth => (winWidth < 590 ? "0.875rem" : "1.25rem");
 
 const CategoricalOutcome = ({ className, outcome }) => (
   <div
