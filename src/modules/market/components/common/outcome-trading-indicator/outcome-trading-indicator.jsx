@@ -29,8 +29,6 @@ export default function OutcomeTradingIndicator({
     if (tradingIndicator === "none") {
       return;
     }
-    console.log(loc);
-    console.log(indicator);
     switch (loc + "|" + indicator) {
       case "yes-no-scalar|" + BUY_UP:
       case "yes-no-scalar|" + SELL_UP:
