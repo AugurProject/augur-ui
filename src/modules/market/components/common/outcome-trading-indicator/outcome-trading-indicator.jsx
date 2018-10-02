@@ -25,26 +25,34 @@ export default function OutcomeTradingIndicator({
 
   const indicatorStyle = indicatorArray[tradingIndicator];
 
-  const spacing = (loc, indicator) => {
-    switch (loc + "|" + indicator) {
-      case "yes-no-scalar|" + BUY_UP:
-      case "yes-no-scalar|" + SELL_UP:
+  const direction = indicator => {
+    if (![BUY_UP, BUY_DOWN, SELL_UP, SELL_DOWN].includes(indicator)) {
+      return null;
+    }
+    return indicator === BUY_UP || indicator === SELL_UP ? "up" : "down";
+  };
+
+  const spacing = (loc, direction) => {
+    if (direction === null) {
+      return {};
+    }
+    switch (loc + "|" + direction) {
+      case "yes-no-scalar|up":
         return { bottom: "0.975rem" };
-      case "yes-no-scalar|" + BUY_DOWN:
-      case "yes-no-scalar|" + SELL_DOWN:
+      case "yes-no-scalar|down":
         return { top: "1.075rem" };
-      case "categorical|" + BUY_UP:
-      case "categorical|" + SELL_UP:
+      case "categorical|up":
         return { top: "-0.85rem" };
-      case "categorical|" + BUY_DOWN:
-      case "categorical|" + SELL_DOWN:
+      case "categorical|down":
         return { top: "0.85rem" };
-      case "list|" + BUY_UP:
-      case "list|" + SELL_UP:
+      case "outcomes|up":
         return { bottom: "0.935rem" };
-      case "list|" + BUY_DOWN:
-      case "list|" + SELL_DOWN:
+      case "outcomes|down":
         return { top: "0.955rem" };
+      case "positions|up":
+        return {};
+      case "positions|down":
+        return {};
       default:
         return {};
     }
@@ -59,7 +67,7 @@ export default function OutcomeTradingIndicator({
   return (
     <span
       className={classNames(indicatorStyle, { [`${Styles.small}`]: isMobile })}
-      style={arrowStyles(location, tradingIndicator)}
+      style={arrowStyles(location, direction(tradingIndicator))}
     />
   );
 }

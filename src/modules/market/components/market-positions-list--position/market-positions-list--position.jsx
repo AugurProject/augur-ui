@@ -176,7 +176,7 @@ export default class MarketPositionsListPosition extends Component {
                 marginLeft: "0.6rem",
                 width: "0.325rem"
               }}
-              location="list"
+              location="positions"
             />
             {getValue(position, "unrealizedNet.formatted")}
           </li>
