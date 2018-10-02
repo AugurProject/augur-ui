@@ -30,11 +30,11 @@ export default function OutcomeTradingIndicator({
     if (i >= 0) {
       return i <= 1 ? "up" : "down";
     }
-    return null;
+    return NONE;
   };
 
   const spacing = (loc, direction) => {
-    if (direction !== null) {
+    if (direction !== NONE) {
       switch (loc + "|" + direction) {
         case "yes-no-scalar|up":
           return { bottom: "0.975rem" };
