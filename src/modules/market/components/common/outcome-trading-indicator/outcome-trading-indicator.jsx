@@ -26,10 +26,11 @@ export default function OutcomeTradingIndicator({
   const indicatorStyle = indicatorArray[tradingIndicator];
 
   const direction = indicator => {
-    if (![BUY_UP, BUY_DOWN, SELL_UP, SELL_DOWN].includes(indicator)) {
-      return null;
+    const i = [BUY_UP, SELL_UP, BUY_DOWN, SELL_DOWN].indexOf(indicator);
+    if (i >= 0) {
+      return i <= 1 ? "up" : "down";
     }
-    return indicator === BUY_UP || indicator === SELL_UP ? "up" : "down";
+    return null;
   };
 
   const spacing = (loc, direction) => {
