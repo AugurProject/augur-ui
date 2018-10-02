@@ -33,29 +33,29 @@ export default function OutcomeTradingIndicator({
   };
 
   const spacing = (loc, direction) => {
-    if (direction === null) {
-      return {};
+    if (direction !== null) {
+      switch (loc + "|" + direction) {
+        case "yes-no-scalar|up":
+          return { bottom: "0.975rem" };
+        case "yes-no-scalar|down":
+          return { top: "1.075rem" };
+        case "categorical|up":
+          return { top: "-0.9rem" };
+        case "categorical|down":
+          return { top: "0.85rem" };
+        case "outcomes|up":
+          return { bottom: "0.907rem" };
+        case "outcomes|down":
+          return { top: "0.985rem" };
+        case "positions|up":
+          return { bottom: "0.9rem" };
+        case "positions|down":
+          return { top: "0.945rem" };
+        default:
+          return {};
+      }
     }
-    switch (loc + "|" + direction) {
-      case "yes-no-scalar|up":
-        return { bottom: "0.975rem" };
-      case "yes-no-scalar|down":
-        return { top: "1.075rem" };
-      case "categorical|up":
-        return { top: "-0.9rem" };
-      case "categorical|down":
-        return { top: "0.85rem" };
-      case "outcomes|up":
-        return { bottom: "0.907rem" };
-      case "outcomes|down":
-        return { top: "0.985rem" };
-      case "positions|up":
-        return { bottom: "0.9rem" };
-      case "positions|down":
-        return { top: "0.945rem" };
-      default:
-        return {};
-    }
+    return {};
   };
 
   const arrowStyles = (loc, indicator) => ({
