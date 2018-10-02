@@ -42,7 +42,7 @@ export default function OutcomeTradingIndicator({
       case "yes-no-scalar|down":
         return { top: "1.075rem" };
       case "categorical|up":
-        return { top: "-0.85rem" };
+        return { top: "-0.9rem" };
       case "categorical|down":
         return { top: "0.85rem" };
       case "outcomes|up":
