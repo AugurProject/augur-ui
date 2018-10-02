@@ -68,16 +68,10 @@ export default class MarketPositionsListPosition extends Component {
         {isExtendedDisplay &&
           !isMobile && <li>{getValue(outcome, "lastPrice.formatted")}</li>}
         {!isMobile && (
-          <li style={{ position: "relative" }}>
+          <li>
             {getValue(outcome, "lastPrice.formatted")}
             <MarketOutcomeTradingIndicator
               outcome={outcome}
-              style={{
-                left: "0",
-                bottom: "45%",
-                marginLeft: "0.6rem",
-                width: "0.325rem"
-              }}
               location="positions"
             />
           </li>

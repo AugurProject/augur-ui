@@ -50,18 +50,18 @@ export default function OutcomeTradingIndicator({
       case "outcomes|down":
         return { top: "0.955rem" };
       case "positions|up":
-        return {};
+        return { top: "-0.935rem" };
       case "positions|down":
-        return {};
+        return { top: "0.85rem" };
       default:
         return {};
     }
   };
 
   const arrowStyles = (loc, indicator) => ({
-    ...style,
     position: "relative",
-    ...spacing(loc, indicator)
+    ...spacing(loc, indicator),
+    ...style
   });
 
   return (
