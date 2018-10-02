@@ -46,7 +46,7 @@ export default function OutcomeTradingIndicator({
       case "categorical|down":
         return { top: "0.85rem" };
       case "outcomes|up":
-        return { bottom: "0.915rem" };
+        return { bottom: "0.907rem" };
       case "outcomes|down":
         return { top: "0.985rem" };
       case "positions|up":
