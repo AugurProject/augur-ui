@@ -1,46 +1,33 @@
-import {
-  BigNumber,
-  createBigNumber,
-  __RewireAPI__ as ReWireModule
-} from "src/utils/create-big-number";
-import * as sinon from "sinon";
+import { BigNumber, createBigNumber } from "src/utils/create-big-number";
+import logError from "utils/log-error";
+
+jest.mock("utils/log-error");
 
 describe("src/utils/wrapped-big-number.js", () => {
-  let spy;
-  beforeEach(() => {
-    spy = sinon.spy();
-    ReWireModule.__Rewire__("logError", spy);
-  });
-
-  after(() => {
-    ReWireModule.__ResetDependency__("logError");
-  });
-
   it("should console an error when a undefined is passed", () => {
     const result = createBigNumber(undefined);
-    assert.isUndefined(result);
-    assert.isOk(spy.called);
+    expect(result).toBeUndefined();
+    expect(logError).toBeCalled();
   });
 
   it("should console an error when a null value is passed", () => {
     const result = createBigNumber(null);
-    assert.isUndefined(result);
-    assert.isOk(spy.called);
+    expect(result).toBeUndefined();
+    expect(logError).toBeCalled();
   });
 
   it("should return a bignumber", () => {
     const result = createBigNumber("2500");
-    assert.instanceOf(result, BigNumber);
-    assert.isNotOk(spy.called);
+    expect(result).toBeInstanceOf(BigNumber);
+    expect(logError).not.toBeCalled();
   });
 
   it("should act like a big number", () => {
-    assert.equal(
+    expect(
       createBigNumber(2)
         .plus(createBigNumber(4))
-        .toString(),
-      "6"
-    );
+        .toString()
+    ).toEqual("6");
   });
 
   it("should sort like a big number", () => {
@@ -49,6 +36,6 @@ describe("src/utils/wrapped-big-number.js", () => {
     const result = myObjectArray.sort((a, b) =>
       createBigNumber(a.value).isLessThan(createBigNumber(b.value))
     );
-    assert.deepEqual(result, expected, "was not sorted correctly");
+    expect(result).toEqual(expected);
   });
 });

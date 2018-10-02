@@ -113,12 +113,10 @@ describe("utils/format-number.js", () => {
 
   utils.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num)
+        ).toEqual(currentUtil.out);
       });
     });
   });
@@ -159,12 +157,10 @@ describe("utils/format-number.js", () => {
 
   utils2.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num2),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num2)
+        ).toEqual(currentUtil.out);
       });
     });
   });
@@ -205,12 +201,10 @@ describe("utils/format-number.js", () => {
 
   utils3.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num3),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num3)
+        ).toEqual(currentUtil.out);
       });
     });
   });
@@ -251,12 +245,10 @@ describe("utils/format-number.js", () => {
 
   utils4.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num4),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num4)
+        ).toEqual(currentUtil.out);
       });
     });
   });
@@ -297,12 +289,10 @@ describe("utils/format-number.js", () => {
 
   utils5.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num5),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num5)
+        ).toEqual(currentUtil.out);
       });
     });
   });
@@ -343,12 +333,10 @@ describe("utils/format-number.js", () => {
 
   utils6.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num6),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num6)
+        ).toEqual(currentUtil.out);
       });
     });
   });
@@ -389,101 +377,80 @@ describe("utils/format-number.js", () => {
 
   utils7.forEach(currentUtil => {
     describe(`${currentUtil.func}`, () => {
-      it("should return a correctly formatted object", () => {
-        assert.deepEqual(
-          formatNumber[`${currentUtil.func}`](currentUtil.num || num7),
-          currentUtil.out,
-          "returned formatted number is not correctly formatted"
-        );
+      test("should return a correctly formatted object", () => {
+        expect(
+          formatNumber[`${currentUtil.func}`](currentUtil.num || num7)
+        ).toEqual(currentUtil.out);
       });
     });
-  });
 
-  describe("formatNone", () => {
-    it("should return a properly formatted `none` number object", () => {
-      const out = {
-        value: 0,
-        formattedValue: 0,
-        formatted: "-",
-        roundedValue: 0,
-        rounded: "-",
-        minimized: "-",
-        denomination: "",
-        full: "-"
-      };
+    describe("formatNone", () => {
+      test("should return a properly formatted `none` number object", () => {
+        const out = {
+          value: 0,
+          formattedValue: 0,
+          formatted: "-",
+          roundedValue: 0,
+          rounded: "-",
+          minimized: "-",
+          denomination: "",
+          full: "-"
+        };
 
-      assert.deepEqual(
-        formatNumber.formatNone(),
-        out,
-        "returned `none` formatted number object was not correct formatted"
-      );
-    });
-  });
-
-  describe("format gas cost", () => {
-    it("should return a properly formatted gas cost number", () => {
-      assert.deepEqual(
-        formatNumber.formatGasCostToEther(
-          "0x632ea0",
-          { decimalsRounded: 4 },
-          20000000
-        ),
-        "0.0001",
-        "returned gas cost formated in ether"
-      );
-    });
-  });
-
-  describe("format gas cost different gas", () => {
-    it("should return a properly formatted gas cost number", () => {
-      assert.deepEqual(
-        formatNumber.formatGasCostToEther(
-          "0x632ea0",
-          { decimalsRounded: 8 },
-          20000000
-        ),
-        "0.00013000",
-        "returned gas cost formated in ether given gas price"
-      );
-    });
-  });
-
-  describe("format attoETH", () => {
-    it("should return a properly formatted attoETH number", () => {
-      const result = formatNumber.formatAttoEth("349680582682291650", {
-        decimals: 4
+        expect(formatNumber.formatNone()).toEqual(out);
       });
-      assert.deepEqual(
-        result.formatted,
-        "0.3497",
-        "returned attoETH formated to 4 decimals"
-      );
     });
-  });
 
-  describe("format attoREP", () => {
-    it("should return a properly formatted attoREP number", () => {
-      const result = formatNumber.formatAttoRep("349680582682291650", {
-        decimals: 4
+    describe("format gas cost", () => {
+      test("should return a properly formatted gas cost number", () => {
+        expect(
+          formatNumber.formatGasCostToEther(
+            "0x632ea0",
+            { decimalsRounded: 4 },
+            20000000
+          )
+        ).toEqual("0.0001");
       });
-      assert.deepEqual(
-        result.formatted,
-        "0.3497",
-        "returned attoREP formated to 4 decimals"
-      );
     });
-  });
 
-  describe("format largish attoREP", () => {
-    it("should return a properly formatted attoREP number", () => {
-      const result = formatNumber.formatAttoRep("3496805826822916500000", {
-        decimals: 4
+    describe("format gas cost different gas", () => {
+      test("should return a properly formatted gas cost number", () => {
+        expect(
+          formatNumber.formatGasCostToEther(
+            "0x632ea0",
+            { decimalsRounded: 8 },
+            20000000
+          )
+        ).toEqual("0.00013000");
       });
-      assert.deepEqual(
-        result.formatted,
-        "3,496.8058",
-        "returned larger formatted attoREP to 4 decimals"
-      );
+    });
+
+    describe("format attoETH", () => {
+      test("should return a properly formatted attoETH number", () => {
+        const result = formatNumber.formatAttoEth("349680582682291650", {
+          decimals: 4
+        });
+        expect(result.formatted).toEqual("0.3497");
+      });
+    });
+
+    describe("format attoREP", () => {
+      test("should return a properly formatted attoREP number", () => {
+        const result = formatNumber.formatAttoRep("349680582682291650", {
+          decimals: 4
+        });
+        expect(result.formatted).toBe("0.3497");
+      });
+    });
+
+    describe("format largish attoREP", () => {
+      test("should return a properly formatted attoREP number", () => {
+        const result = formatNumber.formatAttoRep("3496805826822916500000", {
+          decimals: 4
+        });
+
+        expect(result.formatted).toBe("3,496.8058");
+      });
     });
   });
 });
