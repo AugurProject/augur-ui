@@ -4,6 +4,19 @@ import { augur } from "services/augurjs";
 jest.mock("services/augurjs");
 
 describe(`modules/universe/selectors/reporting-cycle.js`, () => {
+  let getCurrentPeriodProgressSpy;
+
+  beforeEach(() => {
+    getCurrentPeriodProgressSpy = jest.spyOn(
+      augur.reporting,
+      "getCurrentPeriodProgress"
+    );
+  });
+
+  afterEach(() => {
+    getCurrentPeriodProgressSpy.mockRestore();
+  });
+
   test("Reporting cycle is 51% complete", () => {
     const state = {
       blockchain: {
@@ -14,7 +27,7 @@ describe(`modules/universe/selectors/reporting-cycle.js`, () => {
       }
     };
 
-    jest.spyOn(augur.reporting, "getCurrentPeriodProgress").mockReturnValue(51);
+    getCurrentPeriodProgressSpy.mockReturnValue(51);
 
     const result = selectReportingCycle(state);
     expect(result).toEqual({
@@ -33,7 +46,7 @@ describe(`modules/universe/selectors/reporting-cycle.js`, () => {
       }
     };
 
-    jest.spyOn(augur.reporting, "getCurrentPeriodProgress").mockReturnValue(0);
+    getCurrentPeriodProgressSpy.mockReturnValue(0);
 
     const result = selectReportingCycle(state);
 
@@ -49,13 +62,12 @@ describe(`modules/universe/selectors/reporting-cycle.js`, () => {
         currentBlockTimestamp: 123456789
       },
       universe: {
-        reportingPeriodDurationInSeconds: 100
+        // This must be distinct to avoid selector caching.
+        reportingPeriodDurationInSeconds: 121
       }
     };
 
-    jest
-      .spyOn(augur.reporting, "getCurrentPeriodProgress")
-      .mockReturnValue(100);
+    getCurrentPeriodProgressSpy.mockReturnValue(100);
 
     const result = selectReportingCycle(state);
     expect(result).toEqual({
