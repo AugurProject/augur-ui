@@ -4,25 +4,25 @@ import logError from "utils/log-error";
 jest.mock("utils/log-error");
 
 describe("src/utils/wrapped-big-number.js", () => {
-  it("should console an error when a undefined is passed", () => {
+  test("should console an error when a undefined is passed", () => {
     const result = createBigNumber(undefined);
     expect(result).toBeUndefined();
     expect(logError).toBeCalled();
   });
 
-  it("should console an error when a null value is passed", () => {
+  test("should console an error when a null value is passed", () => {
     const result = createBigNumber(null);
     expect(result).toBeUndefined();
     expect(logError).toBeCalled();
   });
 
-  it("should return a bignumber", () => {
+  test("should return a bignumber", () => {
     const result = createBigNumber("2500");
     expect(result).toBeInstanceOf(BigNumber);
     expect(logError).not.toBeCalled();
   });
 
-  it("should act like a big number", () => {
+  test("should act like a big number", () => {
     expect(
       createBigNumber(2)
         .plus(createBigNumber(4))
@@ -30,7 +30,7 @@ describe("src/utils/wrapped-big-number.js", () => {
     ).toEqual("6");
   });
 
-  it("should sort like a big number", () => {
+  test("should sort like a big number", () => {
     const expected = [{ value: "77" }, { value: "12" }, { value: "4" }];
     const myObjectArray = [{ value: "12" }, { value: "4" }, { value: "77" }];
     const result = myObjectArray.sort((a, b) =>
