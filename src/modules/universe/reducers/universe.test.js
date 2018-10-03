@@ -4,7 +4,7 @@ import reducer from "modules/universe/reducers/universe";
 
 describe(`modules/universe/reducers/universe.js`, () => {
   const thisTestState = Object.assign({}, testState);
-  it(`should update the universe object in state`, () => {
+  test(`should update the universe object in state`, () => {
     const action = {
       type: UPDATE_UNIVERSE,
       data: {
@@ -19,10 +19,6 @@ describe(`modules/universe/reducers/universe.js`, () => {
       thisTestState.universe,
       action.data.updatedUniverse
     );
-    assert.deepEqual(
-      reducer(thisTestState.universe, action),
-      expectedOutput,
-      `Didn't update the universe object correctly`
-    );
+    expect(reducer(thisTestState.universe, action)).toEqual(expectedOutput);
   });
 });

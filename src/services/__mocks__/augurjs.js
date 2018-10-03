@@ -108,6 +108,8 @@ Object.defineProperty(MockAugurJS, "mockContracts", {
   }
 });
 
+MockAugurJS.reporting = realAugur.augur.reporting;
+
 MockAugurJS.augur = MockAugurJS;
 
 module.exports = MockAugurJS;
