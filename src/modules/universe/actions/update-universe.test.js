@@ -1,21 +1,17 @@
-import proxyquire from "proxyquire";
 import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import testState from "test/testState";
+import { updateUniverse } from "modules/universe/actions/update-universe";
 
 describe(`modules/universe/actions/update-universe.js`, () => {
-  proxyquire.noPreserveCache().noCallThru();
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
   const state = Object.assign({}, testState);
   const store = mockStore(state);
-  const action = proxyquire(
-    "../../../src/modules/universe/actions/update-universe.js",
-    {}
-  );
-  it("should dispatch UPDATE_UNIVERSE action", () => {
+
+  test("should dispatch UPDATE_UNIVERSE action", () => {
     store.dispatch(
-      action.updateUniverse({
+      updateUniverse({
         currentPeriod: 20,
         currentPeriodProgress: 52,
         isReportRevealPhase: true,
@@ -23,7 +19,7 @@ describe(`modules/universe/actions/update-universe.js`, () => {
         periodLength: 900
       })
     );
-    assert.deepEqual(store.getActions(), [
+    expect(store.getActions()).toEqual([
       {
         type: "UPDATE_UNIVERSE",
         data: {
