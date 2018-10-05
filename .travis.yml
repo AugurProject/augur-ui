@@ -34,7 +34,7 @@ script:
 jobs:
   include:
   - stage: Deploy to stable
-    if: (branch = stable) AND (NOT (type IN (pull_request)))
+    if: branch = stable
     node_js: '8'
     script: skip
     deploy:
@@ -44,7 +44,7 @@ jobs:
       on:
         all_branches: true
   - stage: Deploy to dev
-    if: (branch = master) AND (NOT (type IN (pull_request)))
+    if: branch = master
     script: skip
     deploy:
       provider: script
@@ -53,7 +53,7 @@ jobs:
       on:
         all_branches: true
   - stage: Deploy to kovan
-    if: (branch = master) AND (NOT (type IN (pull_request)))
+    if: branch = master
     script: skip
     deploy:
       provider: script
