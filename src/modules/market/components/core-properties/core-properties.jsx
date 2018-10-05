@@ -343,7 +343,12 @@ export default class CoreProperties extends Component {
             </div>
           </div>
         )}
-        {headerContent && <div className={Styles.CoreProperties__lineBreak} />}
+        {headerContent && (
+          <div
+            className={Styles.CoreProperties__rowBorder}
+            style={{ marginBottom: "4rem" }}
+          />
+        )}
         {renderedProperties}
       </div>
     );
