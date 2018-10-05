@@ -117,7 +117,8 @@ export default class AppView extends Component {
     isLoading: PropTypes.bool.isRequired,
     augurNode: PropTypes.string,
     ethereumNodeHttp: PropTypes.string,
-    ethereumNodeWs: PropTypes.string
+    ethereumNodeWs: PropTypes.string,
+    useWeb3Transport: PropTypes.bool
   };
 
   constructor(props) {
@@ -195,7 +196,8 @@ export default class AppView extends Component {
       history,
       initAugur,
       location,
-      updateModal
+      updateModal,
+      useWeb3Transport
     } = this.props;
     initAugur(
       history,
@@ -203,7 +205,8 @@ export default class AppView extends Component {
         ...env,
         augurNode,
         ethereumNodeHttp,
-        ethereumNodeWs
+        ethereumNodeWs,
+        useWeb3Transport
       },
       (err, res) => {
         if (err || (res && !res.ethereumNode) || (res && !res.augurNode)) {
@@ -337,9 +340,11 @@ export default class AppView extends Component {
   }
 
   toggleNotifications() {
-    this.setState({
-      isNotificationsVisible: !this.state.isNotificationsVisible
-    });
+    if (this.props.isLogged) {
+      this.setState({
+        isNotificationsVisible: !this.state.isNotificationsVisible
+      });
+    }
   }
 
   toggleMenuTween(menuKey, forceOpen, cb) {
@@ -543,21 +548,13 @@ export default class AppView extends Component {
                 unseenCount={unseenCount}
                 toggleNotifications={this.toggleNotifications}
                 isLoading={isLoading}
+                notificationsVisible={isLogged && s.isNotificationsVisible}
               />
             </section>
-            {isLogged &&
-              s.isNotificationsVisible && (
-                <div
-                  ref={notificationsContainer => {
-                    this.notificationsContainer = notificationsContainer;
-                  }}
-                  className={classNames(Styles.App__notifications)}
-                >
-                  <NotificationsContainer
-                    toggleNotifications={() => this.toggleNotifications()}
-                  />
-                </div>
-              )}
+            <NotificationsContainer
+              notificationsVisible={isLogged && s.isNotificationsVisible}
+              toggleNotifications={() => this.toggleNotifications()}
+            />
             {universe.forkEndTime &&
               universe.forkEndTime !== "0" &&
               blockchain &&

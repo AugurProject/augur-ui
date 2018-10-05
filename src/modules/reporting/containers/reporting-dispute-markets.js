@@ -24,7 +24,7 @@ const mapStateToProps = (state, { history }) => {
     markets: disputableMarkets,
     showPagination: disputableMarkets.length > PAGINATION_COUNT,
     disputableMarketsLength: disputableMarkets.length,
-    pageinationCount: PAGINATION_COUNT,
+    paginationCount: PAGINATION_COUNT,
     upcomingMarkets: upcomingDisputableMarkets,
     upcomingMarketsCount: upcomingDisputableMarkets.length,
     showUpcomingPagination: upcomingDisputableMarkets.length > PAGINATION_COUNT,
@@ -32,7 +32,7 @@ const mapStateToProps = (state, { history }) => {
     navigateToAccountDepositHandler: () =>
       history.push(makePath(ACCOUNT_DEPOSIT)),
     outcomes: disputeOutcomes,
-    isForking: state.universe.isForking,
+    isForking: state.universe.isForking || false,
     forkEndTime: state.universe.forkEndTime,
     forkingMarketId: state.universe.forkingMarket
   };

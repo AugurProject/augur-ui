@@ -12,6 +12,7 @@ import { selectCurrentTimestamp } from "src/select-state";
 import { estimateSubmitNewMarket } from "modules/markets/actions/estimate-submit-new-market";
 
 import getValue from "utils/get-value";
+import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 
 const mapStateToProps = state => ({
   universe: state.universe,
@@ -21,7 +22,8 @@ const mapStateToProps = state => ({
   newMarket: state.newMarket,
   categories: selectCategories(state),
   isMobileSmall: state.appStatus.isMobileSmall,
-  currentTimestamp: selectCurrentTimestamp(state)
+  currentTimestamp: selectCurrentTimestamp(state),
+  gasPrice: getGasPrice(state)
 });
 
 const mapDispatchToProps = dispatch => ({

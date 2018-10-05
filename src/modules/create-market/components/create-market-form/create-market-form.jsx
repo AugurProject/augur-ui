@@ -24,6 +24,7 @@ export default class CreateMarketForm extends Component {
     categories: PropTypes.array.isRequired,
     isMobileSmall: PropTypes.bool.isRequired,
     currentTimestamp: PropTypes.number.isRequired,
+    gasPrice: PropTypes.number.isRequired,
     history: PropTypes.object.isRequired,
     newMarket: PropTypes.object.isRequired,
     universe: PropTypes.object.isRequired,
@@ -274,7 +275,8 @@ export default class CreateMarketForm extends Component {
       submitNewMarket,
       universe,
       updateNewMarket,
-      estimateSubmitNewMarket
+      estimateSubmitNewMarket,
+      gasPrice
     } = this.props;
     const s = this.state;
 
@@ -341,6 +343,7 @@ export default class CreateMarketForm extends Component {
                 universe={universe}
                 updateStateValue={this.updateStateValue}
                 keyPressed={this.keyPressed}
+                gasPrice={gasPrice}
               />
             )}
           </div>

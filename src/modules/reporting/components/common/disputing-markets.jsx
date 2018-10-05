@@ -18,8 +18,8 @@ export default class DisputingMarkets extends Component {
     isConnected: PropTypes.bool.isRequired,
     outcomes: PropTypes.object.isRequired,
     isForking: PropTypes.bool.isRequired,
-    forkingMarketId: PropTypes.string.isRequired,
-    pageinationCount: PropTypes.number.isRequired,
+    forkingMarketId: PropTypes.string,
+    paginationCount: PropTypes.number.isRequired,
     disputableMarketsLength: PropTypes.number,
     showPagination: PropTypes.bool,
     showUpcomingPagination: PropTypes.bool,
@@ -34,9 +34,9 @@ export default class DisputingMarkets extends Component {
 
     this.state = {
       lowerBound: 1,
-      boundedLength: this.props.pageinationCount,
+      boundedLength: this.props.paginationCount,
       lowerBoundUpcoming: 1,
-      boundedLengthUpcoming: this.props.pageinationCount,
+      boundedLengthUpcoming: this.props.paginationCount,
       loadedMarkets: [],
       filteredMarkets: [],
       loadedUpcomingMarkets: [],
@@ -48,11 +48,13 @@ export default class DisputingMarkets extends Component {
   }
 
   componentWillMount() {
-    const { loadMarkets } = this.props;
-    if (loadMarkets) loadMarkets();
+    const { loadMarkets, isConnected } = this.props;
+    if (loadMarkets && isConnected) loadMarkets();
   }
 
   componentWillUpdate(nextProps, nextState) {
+    if (this.props.isConnected !== nextProps.isConnected)
+      this.props.loadMarkets();
     if (
       this.state.lowerBound !== nextState.lowerBound ||
       this.state.boundedLength !== nextState.boundedLength ||
@@ -124,7 +126,7 @@ export default class DisputingMarkets extends Component {
       outcomes,
       upcomingMarketsCount,
       forkingMarketId,
-      pageinationCount,
+      paginationCount,
       disputableMarketsLength,
       showPagination,
       showUpcomingPagination,
@@ -175,7 +177,7 @@ export default class DisputingMarkets extends Component {
           showPagination && (
             <Paginator
               itemsLength={disputableMarketsLength}
-              itemsPerPage={pageinationCount}
+              itemsPerPage={paginationCount}
               location={location}
               history={history}
               setSegment={this.setSegment}
@@ -222,7 +224,7 @@ export default class DisputingMarkets extends Component {
           showUpcomingPagination && (
             <Paginator
               itemsLength={upcomingMarketsCount}
-              itemsPerPage={pageinationCount}
+              itemsPerPage={paginationCount}
               location={location}
               history={history}
               setSegment={this.setSegmentUpcoming}
