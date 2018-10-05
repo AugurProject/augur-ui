@@ -259,22 +259,3 @@ export default class MarketLiquidity extends Component {
     );
   }
 }
-
-// { isWarningShowing &&
-//   <div className={Styles['MarketLiquidity__warning-container']}>
-//     <div>This action cannot be reversed. Are you sure you want to cancel all initial liquidity orders?</div>
-//     <button
-//       onClick={(e) => {
-//         this.setState({ isWarningShowing: false })
-//         e.preventDefault()
-//       }}
-//     >
-//       Cancel
-//     </button>
-//     <button
-//       onClick={this.handleClearAllMarketOrders}
-//     >
-//       Clear All Orders
-//     </button>
-//   </div>
-// }

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import { formatEther, formatShares } from "utils/format-number";
@@ -67,6 +68,13 @@ const MarketLiquidityTable = p => {
       })}
     </div>
   );
+};
+
+MarketLiquidityTable.propTypes = {
+  outcomeOrders: PropTypes.array.isRequired,
+  marketType: PropTypes.string.isRequired,
+  removeOrderFromNewMarket: PropTypes.func.isRequired,
+  selectedOutcome: PropTypes.string.isRequired
 };
 
 export default MarketLiquidityTable;
