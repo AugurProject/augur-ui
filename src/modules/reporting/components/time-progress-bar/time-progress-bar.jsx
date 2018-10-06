@@ -11,15 +11,20 @@ import Styles from "modules/reporting/components/time-progress-bar/time-progress
 
 const TimeProgressBar = p => {
   const { currentTime, startTime, endTime } = p;
-  const totalHours = getHoursRemaining(endTime, startTime);
-  const hoursLeft = currentTime && getHoursRemaining(endTime, currentTime);
-  const minutesLeft = currentTime && getMinutesRemaining(endTime, currentTime);
-  const daysLeft = currentTime && getDaysRemaining(endTime, currentTime);
-  const formattedDate = convertUnixToFormattedDate(endTime);
+  const totalHours = (startTime && getHoursRemaining(endTime, startTime)) || 0;
+  const hoursLeft =
+    (currentTime && getHoursRemaining(endTime, currentTime)) || 0;
+  const minutesLeft =
+    (currentTime && getMinutesRemaining(endTime, currentTime)) || 0;
+  const daysLeft = (currentTime && getDaysRemaining(endTime, currentTime)) || 0;
+  const formattedDate = (endTime && convertUnixToFormattedDate(endTime)) || {};
 
-  const currentPeriodStyle = {
-    width: `${((totalHours - hoursLeft) / totalHours) * 100}%`
-  };
+  const currentPeriodStyle =
+    totalHours === 0
+      ? { width: "0%" }
+      : {
+          width: `${((totalHours - hoursLeft) / totalHours) * 100}%`
+        };
 
   let timeLeft = `${daysLeft} ${daysLeft === 1 ? "day" : "days"} left`;
   if (daysLeft === 0)
