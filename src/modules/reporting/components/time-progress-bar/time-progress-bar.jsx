@@ -12,9 +12,9 @@ import Styles from "modules/reporting/components/time-progress-bar/time-progress
 const TimeProgressBar = p => {
   const { currentTime, startTime, endTime } = p;
   const totalHours = getHoursRemaining(endTime, startTime);
-  const hoursLeft = getHoursRemaining(endTime, currentTime);
-  const minutesLeft = getMinutesRemaining(endTime, currentTime);
-  const daysLeft = getDaysRemaining(endTime, currentTime);
+  const hoursLeft = currentTime && getHoursRemaining(endTime, currentTime);
+  const minutesLeft = currentTime && getMinutesRemaining(endTime, currentTime);
+  const daysLeft = currentTime && getDaysRemaining(endTime, currentTime);
   const formattedDate = convertUnixToFormattedDate(endTime);
 
   const currentPeriodStyle = {
@@ -77,9 +77,9 @@ const TimeProgressBar = p => {
 };
 
 TimeProgressBar.propTypes = {
-  endTime: PropTypes.number.isRequired,
-  currentTime: PropTypes.number.isRequired,
-  startTime: PropTypes.number.isRequired,
+  endTime: PropTypes.number,
+  currentTime: PropTypes.number,
+  startTime: PropTypes.number,
   timePeriodLabel: PropTypes.string.isRequired
 };
 
