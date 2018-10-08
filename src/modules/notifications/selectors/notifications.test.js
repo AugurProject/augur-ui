@@ -33,9 +33,8 @@ describe("modules/notifications/selectors/notifications", () => {
       };
     });
 
-    it("should return the expected object", () => {
-      const actual = selectInfoNotificationsAndSeenCount(state);
-      const expected = {
+    test("if returns the expected object", () => {
+      expect(selectInfoNotificationsAndSeenCount(state)).toEqual({
         unseenCount: 2,
         notifications: [
           {
@@ -60,9 +59,7 @@ describe("modules/notifications/selectors/notifications", () => {
             index: 0
           }
         ]
-      };
-
-      assert.deepEqual(actual, expected, `Didn't return the expected object`);
+      });
     });
   });
 
@@ -86,9 +83,10 @@ describe("modules/notifications/selectors/notifications", () => {
       };
     });
 
-    it("should only return notifications with a matching level", () => {
-      const actual = selectNotificationsByLevel(notificationLevels.INFO)(state);
-      assert.lengthOf(actual, 2);
+    test("if only returns notifications with a matching level", () => {
+      expect(
+        selectNotificationsByLevel(notificationLevels.INFO)(state)
+      ).toHaveLength(2);
     });
   });
 });

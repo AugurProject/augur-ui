@@ -11,7 +11,7 @@ import notifications from "modules/notifications/reducers/notifications";
 
 describe("modules/notifications/reducers/notifications", () => {
   test("if returns the default state", () => {
-    expect(notifications(undefined, {})).toEqual([]);
+    expect(notifications(undefined, {})).toHaveLength(0);
   });
 
   test("if returns the expected array for type ADD_NOTIFICATION", () => {
@@ -68,7 +68,7 @@ describe("modules/notifications/reducers/notifications", () => {
           data: { id: "0xTEST" }
         }
       )
-    ).toEqual([]);
+    ).toHaveLength(0);
   });
 
   test("if returns the expected array for type UPDATE_NOTIFICATION", () => {
