@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import MarketOutcomesList from "modules/market/components/market-outcomes-list/market-outcomes-list";
 import MarketPositionsList from "modules/market/components/market-positions-list/market-positions-list";
@@ -45,5 +46,19 @@ const MarketOutcomesAndPositions = p => (
       )}
   </section>
 );
+
+MarketOutcomesAndPositions.propTypes = {
+  isMobile: PropTypes.bool.isRequired,
+  marketId: PropTypes.string.isRequired,
+  outcomes: PropTypes.array,
+  numCompleteSets: PropTypes.string,
+  positions: PropTypes.array,
+  orphanedOrders: PropTypes.array,
+  openOrders: PropTypes.array,
+  selectedOutcome: PropTypes.string,
+  cancelOrphanedOrder: PropTypes.func.isRequired,
+  sellCompleteSets: PropTypes.func.isRequired,
+  updateSelectedOutcome: PropTypes.func.isRequired
+};
 
 export default MarketOutcomesAndPositions;

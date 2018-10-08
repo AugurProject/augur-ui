@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */ // needed because <button> cannot take the place <ul> in the table structure
 
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
@@ -54,6 +55,25 @@ const Outcome = p => {
       </li>
     </ul>
   );
+};
+
+Outcome.propTypes = {
+  outcome: PropTypes.shapeOf({
+    name: PropTypes.string,
+    id: PropTypes.string,
+    topBid: PropTypes.shapeOf({
+      shares: PropTypes.object,
+      price: PropTypes.object
+    }),
+    topAsk: PropTypes.shapeOf({
+      shares: PropTypes.object,
+      price: PropTypes.object
+    }),
+    lastPrice: PropTypes.object,
+    lastPricePercent: PropTypes.object
+  }),
+  selectedOutcome: PropTypes.string,
+  updateSelectedOutcome: PropTypes.func.isRequired
 };
 
 export default Outcome;

@@ -60,6 +60,18 @@ const Property = p => (
   </div>
 );
 
+Property.propTypes = {
+  numRow: PropTypes.number.isRequired,
+  property: PropTypes.shapeOf({
+    name: PropTypes.string.isRequired,
+    value: PropTypes.any,
+    tooltip: PropTypes.bool,
+    textStyle: PropTypes.object,
+    marketCreatorFee: PropTypes.string,
+    reportingFee: PropTypes.string
+  })
+};
+
 export default class CoreProperties extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
@@ -112,13 +124,15 @@ export default class CoreProperties extends Component {
       finalizeMarket
     } = this.props;
 
+    const { id, marketType } = market;
+
     const marketCreatorFee = getValue(
       market,
       "marketCreatorFeeRatePercent.full"
     );
     const reportingFee = getValue(market, "reportingFeeRatePercent.full");
 
-    const isScalar = market.marketType === SCALAR;
+    const isScalar = marketType === SCALAR;
     const consensus = getValue(
       market,
       isScalar ? "consensus.winningOutcome" : "consensus.outcomeName"
@@ -156,10 +170,7 @@ export default class CoreProperties extends Component {
         },
         {
           name: "min",
-          value:
-            market.marketType === SCALAR
-              ? getValue(market, "minPrice").toString()
-              : null
+          value: isScalar ? getValue(market, "minPrice").toString() : null
         }
       ],
       [
@@ -179,10 +190,7 @@ export default class CoreProperties extends Component {
         },
         {
           name: "max",
-          value:
-            market.marketType === SCALAR
-              ? getValue(market, "maxPrice").toString()
-              : null
+          value: isScalar ? getValue(market, "maxPrice").toString() : null
         }
       ]
     ];
@@ -259,7 +267,7 @@ export default class CoreProperties extends Component {
                   </ReactTooltip>
                   <button
                     className={Styles[`CoreProperties__property-button`]}
-                    onClick={() => finalizeMarket(market.id)}
+                    onClick={() => finalizeMarket(id)}
                   >
                     FINALIZE
                   </button>
@@ -288,7 +296,7 @@ export default class CoreProperties extends Component {
             </div>
             <MarketLink
               className={Styles[`CoreProperties__property-button`]}
-              id={market.id}
+              id={id}
               linkType={TYPE_DISPUTE}
               location={location}
             >
@@ -320,7 +328,7 @@ export default class CoreProperties extends Component {
             </div>
             <MarketLink
               className={Styles[`CoreProperties__property-button`]}
-              id={market.id}
+              id={id}
               linkType={TYPE_REPORT}
               location={location}
             >
