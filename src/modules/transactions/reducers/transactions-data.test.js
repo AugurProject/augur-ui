@@ -4,11 +4,10 @@ import reducer from "modules/transactions/reducers/transactions-data";
 describe(`modules/transactions/reducers/transactions-data.js`, () => {
   let action;
   let out;
-  let test;
 
   const state = Object.assign({}, testState);
 
-  it(`should update transactions data in state`, () => {
+  test("if updates transactions data in state", () => {
     action = {
       type: "UPDATE_TRANSACTIONS_DATA",
       data: {
@@ -33,11 +32,11 @@ describe(`modules/transactions/reducers/transactions-data.js`, () => {
         id: "example"
       }
     };
-    test = reducer(state.transactionsData, action);
-    assert.deepEqual(test, out, `Didn't update transactionData as expected`);
+
+    expect(reducer(state.transactionsData, action)).toEqual(out);
   });
 
-  it(`should delete transaction`, () => {
+  test("if deletes transaction", () => {
     action = {
       type: "DELETE_TRANSACTION",
       data: { transactionId: "transaction2" }
@@ -52,29 +51,20 @@ describe(`modules/transactions/reducers/transactions-data.js`, () => {
         id: "transaction2"
       }
     };
-    test = reducer(state.transactionsData, action);
-    assert.deepEqual(
-      test,
-      {
-        transaction1: {
-          data: "data1",
-          id: "transaction1"
-        }
-      },
-      `Failed to delete transaction as expected`
-    );
+
+    expect(reducer(state.transactionsData, action)).toEqual({
+      transaction1: {
+        data: "data1",
+        id: "transaction1"
+      }
+    });
   });
 
-  it(`should clear transactions on clear login account`, () => {
+  test("if clears transactions on clear login account", () => {
     action = {
       type: "CLEAR_LOGIN_ACCOUNT"
     };
-    out = {};
-    test = reducer(state.transactionsData, action);
-    assert.deepEqual(
-      test,
-      out,
-      `Didn't clear transactionsData when clearing the login account`
-    );
+
+    expect(reducer(state.transactionsData, action)).toEqual({});
   });
 });
