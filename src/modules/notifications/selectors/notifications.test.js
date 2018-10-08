@@ -84,9 +84,8 @@ describe("modules/notifications/selectors/notifications", () => {
     });
 
     test("if only returns notifications with a matching level", () => {
-      expect(
-        selectNotificationsByLevel(notificationLevels.INFO)(state)
-      ).toHaveLength(2);
+      const actual = selectNotificationsByLevel(notificationLevels.INFO)(state);
+      expect(actual).toHaveLength(2);
     });
   });
 });

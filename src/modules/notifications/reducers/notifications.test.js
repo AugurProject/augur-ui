@@ -15,16 +15,16 @@ describe("modules/notifications/reducers/notifications", () => {
   });
 
   test("if returns the expected array for type ADD_NOTIFICATION", () => {
-    expect(
-      notifications([], {
-        type: ADD_NOTIFICATION,
-        data: {
-          notification: {
-            id: "0xTEST"
-          }
+    const actual = notifications([], {
+      type: ADD_NOTIFICATION,
+      data: {
+        notification: {
+          id: "0xTEST"
         }
-      })
-    ).toEqual([
+      }
+    });
+
+    expect(actual).toEqual([
       {
         id: "0xTEST"
       }
