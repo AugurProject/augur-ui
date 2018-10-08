@@ -99,7 +99,8 @@ describe("modules/notifications/actions/notifications", () => {
 
       test("should pass notificationLevel", () => {
         expect(
-          updateNotifications.clearNotifications(notificationLevels.CRITICA)
+          updateNotifications.clearNotifications(notificationLevels.CRITICAL)
+            .data.level
         ).toBe(notificationLevels.CRITICAL);
       });
     });
