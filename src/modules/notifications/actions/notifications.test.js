@@ -11,13 +11,13 @@ describe("modules/notifications/actions/notifications", () => {
   const store = mockStore(state);
 
   describe("addNotification", () => {
-    test("should return nothing when the notifications param is null/undefined", () => {
+    test("if returns nothing when the notifications param is null/undefined", () => {
       expect(
         store.dispatch(updateNotifications.addNotification())
       ).toBeUndefined();
     });
 
-    test("should return the expected object when a notification is passed in", () => {
+    test("if returns the expected object when a notification is passed in", () => {
       expect(store.dispatch(updateNotifications.addNotification({}))).toEqual({
         type: updateNotifications.ADD_NOTIFICATION,
         data: {
@@ -31,14 +31,14 @@ describe("modules/notifications/actions/notifications", () => {
       });
     });
 
-    test("should default notification level to the 'INFO' constant", () => {
+    test("if the notification level defaults to the 'INFO' constant", () => {
       expect(
         store.dispatch(updateNotifications.addNotification({})).data
           .notification.level
       ).toBe(notificationLevels.INFO);
     });
 
-    test("should override the default notification level with the value passed in the notification object param", () => {
+    test("if overrides the default notification level with the value passed in the notification object param", () => {
       expect(
         store.dispatch(
           updateNotifications.addNotification({
@@ -50,7 +50,7 @@ describe("modules/notifications/actions/notifications", () => {
   });
 
   describe("removeNotification", () => {
-    test("should return the expected object", () => {
+    test("if returns the expected object", () => {
       expect(store.dispatch(updateNotifications.removeNotification(1))).toEqual(
         {
           type: updateNotifications.REMOVE_NOTIFICATION,
@@ -61,7 +61,7 @@ describe("modules/notifications/actions/notifications", () => {
   });
 
   describe("updateNotification", () => {
-    test("update should should return the expected object", () => {
+    test("if returns the expected object", () => {
       expect(
         store.dispatch(
           updateNotifications.updateNotification(1, {
@@ -81,7 +81,7 @@ describe("modules/notifications/actions/notifications", () => {
   });
 
   describe("clearNotifications", () => {
-    test("clear should return the expected object", () => {
+    test("if returns the expected object", () => {
       expect(store.dispatch(updateNotifications.clearNotifications())).toEqual({
         type: updateNotifications.CLEAR_NOTIFICATIONS,
         data: {
@@ -91,13 +91,13 @@ describe("modules/notifications/actions/notifications", () => {
     });
 
     describe("notificationLevel", () => {
-      test("should default to the 'INFO' constant", () => {
+      test("the 'INFO' constant", () => {
         expect(
           store.dispatch(updateNotifications.clearNotifications()).data.level
         ).toBe(notificationLevels.INFO);
       });
 
-      test("should pass notificationLevel", () => {
+      test("if passes notificationLevel", () => {
         expect(
           updateNotifications.clearNotifications(notificationLevels.CRITICAL)
             .data.level

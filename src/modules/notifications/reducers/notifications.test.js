@@ -10,11 +10,11 @@ import {
 import notifications from "modules/notifications/reducers/notifications";
 
 describe("modules/notifications/reducers/notifications", () => {
-  test("should return the default state", () => {
+  test("if returns the default state", () => {
     expect(notifications(undefined, {})).toEqual([]);
   });
 
-  test("should return the expected array for type ADD_NOTIFICATION", () => {
+  test("if returns the expected array for type ADD_NOTIFICATION", () => {
     expect(
       notifications([], {
         type: ADD_NOTIFICATION,
@@ -31,7 +31,7 @@ describe("modules/notifications/reducers/notifications", () => {
     ]);
   });
 
-  test("should return non dup array for type ADD_NOTIFICATION", () => {
+  test("if returns non dup array for type ADD_NOTIFICATION", () => {
     expect(
       notifications(
         [
@@ -55,7 +55,7 @@ describe("modules/notifications/reducers/notifications", () => {
     ]);
   });
 
-  test("should return the expected array for type REMOVE_NOTIFICATION", () => {
+  test("if returns the expected array for type REMOVE_NOTIFICATION", () => {
     expect(
       notifications(
         [
@@ -71,7 +71,7 @@ describe("modules/notifications/reducers/notifications", () => {
     ).toEqual([]);
   });
 
-  test("should return the expected array for type UPDATE_NOTIFICATION", () => {
+  test("if returns the expected array for type UPDATE_NOTIFICATION", () => {
     expect(
       notifications(
         [
@@ -108,7 +108,7 @@ describe("modules/notifications/reducers/notifications", () => {
   });
 
   describe("CLEAR_NOTIFICATIONS action", () => {
-    test("should remove items with the passed notification level.", () => {
+    test("if removes items with the passed notification level.", () => {
       expect(
         notifications(
           [
