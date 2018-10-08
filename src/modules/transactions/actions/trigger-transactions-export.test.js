@@ -29,13 +29,12 @@ describe("modules/transactions/actions/trigger-transactions-export.js", () => {
 
     global.document = {
       createElement: type => {
-        assert.equal(type, "a");
+        expect(type).toBe("a");
         return {
           setAttribute: (type, value) => {
             switch (type) {
               case "href":
-                return assert.deepEqual(
-                  value,
+                return expect(value).toEqual(
                   "data:text/json;charset=utf-8," +
                     encodeURIComponent(
                       JSON.stringify([
@@ -45,12 +44,9 @@ describe("modules/transactions/actions/trigger-transactions-export.js", () => {
                     )
                 );
               case "download":
-                return assert.deepEqual(value, "AugurTransactions.json");
+                return expect(value).toEqual("AugurTransactions.json");
               default:
-                return assert.isFalse(
-                  true,
-                  "call to setAttribute with unexpected values"
-                );
+                return expect(true).toBeFalsy();
             }
           },
           click: () => {}
