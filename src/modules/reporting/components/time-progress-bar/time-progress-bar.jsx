@@ -46,7 +46,7 @@ const TimeProgressBar = p => {
         <span data-testid="endTime" className={Styles.TimeProgressBar__endTime}>
           <span
             className={Styles.TimeProgressBar__endTimeValue}
-            style={{ fontSize: "1rem" }}
+            style={{ fontSize: "0.75rem" }}
           >
             {" "}
             {formattedDate.clockTimeLocal}
