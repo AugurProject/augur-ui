@@ -153,8 +153,6 @@ export default class MigrateRep extends Component {
             )}
             {s.currentStep === 1 && (
               <MigrateRepConfirm
-                market={market}
-                isMarketInValid={s.isMarketInValid}
                 selectedOutcomeName={s.selectedOutcomeName}
                 repAmount={s.repAmount}
                 gasEstimate={s.gasEstimate}
