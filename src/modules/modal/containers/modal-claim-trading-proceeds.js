@@ -33,22 +33,22 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mergeProps = (sP, dP, oP) => {
+  const { winningPositions } = sP;
   const { marketId } = sP.modal;
-  const winningPosition = sP.winningPositions[marketId];
+  const { closeModal, claimTradingProceeds } = dP;
+  const winningPosition = winningPositions[marketId];
   return {
     buttons: [
       {
         label: "cancel",
-        action: () => {
-          dP.closeModal();
-        },
+        action: closeModal,
         type: "gray"
       },
       {
         label: "confirm",
         action: () => {
-          dP.closeModal();
-          dP.claimTradingProceeds(winningPosition.id);
+          closeModal();
+          claimTradingProceeds(winningPosition.id);
         }
       }
     ],
