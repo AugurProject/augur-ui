@@ -63,12 +63,6 @@ export default class ModalClaimReportingFeesForkedMarket extends Component {
     );
   }
 
-  componentDidMount() {
-    window.onpopstate = () => {
-      this.props.closeModal();
-    };
-  }
-
   handleClaimReportingFeesForkedMarket(e) {
     const ClaimReportingFeesForkedMarketOptions = {
       forkedMarket: this.props.forkedMarket,

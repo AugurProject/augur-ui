@@ -67,12 +67,6 @@ export default class ModalClaimReportingFeesNonforkedMarkets extends Component {
     );
   }
 
-  componentDidMount() {
-    window.onpopstate = () => {
-      this.props.closeModal();
-    };
-  }
-
   handleClaimReportingFeesNonforkedMarkets(e) {
     const ClaimReportingFeesNonforkedMarketsOptions = {
       feeWindows: this.props.feeWindows,
