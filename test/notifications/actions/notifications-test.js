@@ -4,7 +4,7 @@ import thunk from "redux-thunk";
 import testState from "test/testState";
 import configureMockStore from "redux-mock-store";
 
-describe.only("modules/notifications/actions/notifications", () => {
+describe("modules/notifications/actions/notifications", () => {
   const middlewares = [thunk];
   const mockStore = configureMockStore(middlewares);
   const state = Object.assign({}, testState);
