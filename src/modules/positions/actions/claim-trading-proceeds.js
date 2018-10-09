@@ -13,7 +13,7 @@ const claimTradingProceeds = (marketId, callback = logError) => (
   getState
 ) => {
   const { loginAccount } = getState();
-  if (!loginAccount.address) return callback(null);
+  if (!loginAccount.address || !marketId) return callback(null);
 
   augur.api.ClaimTradingProceeds.claimTradingProceeds({
     tx: { gas: CLAIM_SHARES_GAS_COST, returns: "null" },

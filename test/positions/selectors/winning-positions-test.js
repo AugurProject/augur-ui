@@ -1,5 +1,4 @@
 import { createBigNumber } from "utils/create-big-number";
-
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 import { SCALAR } from "../../../src/modules/markets/constants/market-types";
@@ -24,29 +23,19 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
   };
   test({
     description: "no positions",
-    state: {
-      outcomesData: {}
-    },
+    state: {},
     selectors: {
       loginAccountPositions: {
         markets: []
       }
     },
     assertions: selection => {
-      assert.deepEqual(selection, []);
+      assert.deepEqual(selection, {});
     }
   });
   test({
     description: "1 position in closed market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
+    state: {},
     selectors: {
       loginAccountPositions: {
         markets: [
@@ -54,6 +43,7 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
             id: "0xa1",
             isOpen: false,
             description: "test market 1",
+            outstandingReturns: "1",
             consensus: {
               outcomeId: "2",
               isIndeterminate: false
@@ -63,29 +53,19 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
       }
     },
     assertions: selection => {
-      assert.deepEqual(selection, [
-        {
+      const winnings = createBigNumber("1");
+      assert.deepEqual(selection, {
+        "0xa1": {
           id: "0xa1",
           description: "test market 1",
-          shares: "1"
+          winnings
         }
-      ]);
+      });
     }
   });
   test({
     description: "1 position in closed indeterminate market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          1: {
-            sharesPurchased: "2"
-          },
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
+    state: {},
     selectors: {
       loginAccountPositions: {
         markets: [
@@ -93,6 +73,7 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
             id: "0xa1",
             isOpen: false,
             description: "test market 1",
+            outstandingReturns: "1",
             consensus: {
               outcomeId: "2",
               isIndeterminate: true
@@ -102,29 +83,19 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
       }
     },
     assertions: selection => {
-      assert.deepEqual(selection, [
-        {
+      const winnings = createBigNumber("1");
+      assert.deepEqual(selection, {
+        "0xa1": {
           id: "0xa1",
           description: "test market 1",
-          shares: "3"
+          winnings
         }
-      ]);
+      });
     }
   });
   test({
-    description: "1 position in closed unethical market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          1: {
-            sharesPurchased: "2"
-          },
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
+    description: "1 position in closed no winnings",
+    state: {},
     selectors: {
       loginAccountPositions: {
         markets: [
@@ -133,6 +104,7 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
             isOpen: false,
             description: "test market 1",
             type: SCALAR,
+            outstandingReturns: "0",
             consensus: {
               outcomeId: "0.5",
               isIndeterminate: false
@@ -142,326 +114,35 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
       }
     },
     assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa1",
-          description: "test market 1",
-          shares: "3"
-        }
-      ]);
-    }
-  });
-  test({
-    description: "1 position in closed indeterminate and unethical market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          1: {
-            sharesPurchased: "2"
-          },
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
-    selectors: {
-      loginAccountPositions: {
-        markets: [
-          {
-            id: "0xa1",
-            isOpen: false,
-            description: "test market 1",
-            consensus: {
-              outcomeId: "0.5",
-              isIndeterminate: true
-            }
-          }
-        ]
-      }
-    },
-    assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa1",
-          description: "test market 1",
-          shares: "3"
-        }
-      ]);
-    }
-  });
-  test({
-    description: "1 position in closed scalar market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          1: {
-            sharesPurchased: "2"
-          },
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
-    selectors: {
-      loginAccountPositions: {
-        markets: [
-          {
-            id: "0xa1",
-            type: "scalar",
-            isOpen: false,
-            description: "test market 1",
-            consensus: {
-              outcomeId: "1.23456",
-              isIndeterminate: false
-            }
-          }
-        ]
-      }
-    },
-    assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa1",
-          description: "test market 1",
-          shares: "3"
-        }
-      ]);
-    }
-  });
-  test({
-    description: "1 position in closed scalar indeterminate market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          1: {
-            sharesPurchased: "2"
-          },
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
-    selectors: {
-      loginAccountPositions: {
-        markets: [
-          {
-            id: "0xa1",
-            type: "scalar",
-            isOpen: false,
-            description: "test market 1",
-            consensus: {
-              outcomeId: "1.23456",
-              isIndeterminate: true
-            }
-          }
-        ]
-      }
-    },
-    assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa1",
-          description: "test market 1",
-          shares: "3"
-        }
-      ]);
-    }
-  });
-  test({
-    description: "1 position in closed scalar unethical market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          1: {
-            sharesPurchased: "2"
-          },
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
-    selectors: {
-      loginAccountPositions: {
-        markets: [
-          {
-            id: "0xa1",
-            type: "scalar",
-            isOpen: false,
-            description: "test market 1",
-            consensus: {
-              outcomeId: "1.23456",
-              isIndeterminate: false
-            }
-          }
-        ]
-      }
-    },
-    assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa1",
-          description: "test market 1",
-          shares: "3"
-        }
-      ]);
+      assert.deepEqual(selection, {});
     }
   });
   test({
     description: "1 position in open market",
-    state: {
-      outcomesData: {}
-    },
+    state: {},
     selectors: {
       loginAccountPositions: {
         markets: [
           {
             id: "0xa1",
             isOpen: true,
-            consensus: null
-          }
-        ]
-      }
-    },
-    assertions: selection => {
-      assert.deepEqual(selection, []);
-    }
-  });
-  test({
-    description: "1 position in open market, 1 position in closed market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          2: {
-            sharesPurchased: "1"
-          }
-        },
-        "0xa2": {
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
-    selectors: {
-      loginAccountPositions: {
-        markets: [
-          {
-            id: "0xa1",
-            isOpen: true,
-            consensus: null
-          },
-          {
-            id: "0xa2",
-            isOpen: false,
-            description: "test market 2",
+            description: "test market 1",
+            outstandingReturns: "1",
             consensus: {
-              outcomeId: "2",
-              isIndeterminate: false
+              outcomeId: "0.5",
+              isIndeterminate: true
             }
           }
         ]
       }
     },
     assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa2",
-          description: "test market 2",
-          shares: "1"
-        }
-      ]);
-    }
-  });
-  test({
-    description: "1 position in open market, 2 positions in closed markets",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          2: {
-            sharesPurchased: "1"
-          }
-        },
-        "0xa2": {
-          2: {
-            sharesPurchased: "1"
-          }
-        },
-        "0xa3": {
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
-    selectors: {
-      loginAccountPositions: {
-        markets: [
-          {
-            id: "0xa1",
-            isOpen: true,
-            consensus: null
-          },
-          {
-            id: "0xa2",
-            isOpen: false,
-            description: "test market 2",
-            consensus: {
-              outcomeId: "2",
-              isIndeterminate: false
-            }
-          },
-          {
-            id: "0xa3",
-            isOpen: false,
-            description: "test market 3",
-            consensus: {
-              outcomeId: "2",
-              isIndeterminate: false
-            }
-          }
-        ]
-      }
-    },
-    assertions: selection => {
-      assert.deepEqual(selection, [
-        {
-          id: "0xa2",
-          description: "test market 2",
-          shares: "1"
-        },
-        {
-          id: "0xa3",
-          description: "test market 3",
-          shares: "1"
-        }
-      ]);
+      assert.deepEqual(selection, {});
     }
   });
   test({
     description: "2 position in open markets, 1 position in closed market",
-    state: {
-      outcomesData: {
-        "0xa1": {
-          2: {
-            sharesPurchased: "1"
-          }
-        },
-        "0xa2": {
-          2: {
-            sharesPurchased: "1"
-          }
-        },
-        "0xa3": {
-          2: {
-            sharesPurchased: "1"
-          }
-        }
-      }
-    },
+    state: {},
     selectors: {
       loginAccountPositions: {
         markets: [
@@ -479,6 +160,7 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
             id: "0xa3",
             isOpen: false,
             description: "test market 3",
+            outstandingReturns: "1",
             consensus: {
               outcomeId: "2",
               isIndeterminate: false
@@ -488,13 +170,59 @@ describe(`modules/positions/selectors/winning-positions.js`, () => {
       }
     },
     assertions: selection => {
-      assert.deepEqual(selection, [
-        {
+      const winnings = createBigNumber("1");
+      assert.deepEqual(selection, {
+        "0xa3": {
           id: "0xa3",
           description: "test market 3",
-          shares: "1"
+          winnings
         }
-      ]);
+      });
+    }
+  });
+  test({
+    description: "2 position in closed market",
+    state: {},
+    selectors: {
+      loginAccountPositions: {
+        markets: [
+          {
+            id: "0xa1",
+            isOpen: false,
+            description: "test market 1",
+            outstandingReturns: "1",
+            consensus: {
+              outcomeId: "0.5",
+              isIndeterminate: true
+            }
+          },
+          {
+            id: "0xa21",
+            isOpen: false,
+            description: "test market 1",
+            outstandingReturns: "1",
+            consensus: {
+              outcomeId: "0.5",
+              isIndeterminate: true
+            }
+          }
+        ]
+      }
+    },
+    assertions: selection => {
+      const winnings = createBigNumber("1");
+      assert.deepEqual(selection, {
+        "0xa1": {
+          id: "0xa1",
+          description: "test market 1",
+          winnings
+        },
+        "0xa21": {
+          id: "0xa21",
+          description: "test market 1",
+          winnings
+        }
+      });
     }
   });
 });

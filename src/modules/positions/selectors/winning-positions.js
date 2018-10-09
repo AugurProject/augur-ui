@@ -13,7 +13,7 @@ export const selectClosedMarketsWithWinningShares = createSelector(
   loginAccountPositions => {
     const { markets } = loginAccountPositions;
     const numPositions = markets.length;
-    let closedMarketsWithWinningShares = {};
+    const closedMarketsWithWinningShares = {};
     for (let i = 0; i < numPositions; ++i) {
       const market = markets[i];
       const outstandingReturns = createBigNumber(
@@ -21,7 +21,7 @@ export const selectClosedMarketsWithWinningShares = createSelector(
       );
       if (!market.isOpen && outstandingReturns) {
         if (createBigNumber(outstandingReturns).gt(ZERO)) {
-          closedMarketsWithWinningShares = {
+          closedMarketsWithWinningShares[market.id] = {
             id: market.id,
             description: market.description,
             winnings: outstandingReturns
