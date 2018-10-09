@@ -74,7 +74,8 @@ MarketLiquidityTable.propTypes = {
   outcomeOrders: PropTypes.array.isRequired,
   marketType: PropTypes.string.isRequired,
   removeOrderFromNewMarket: PropTypes.func.isRequired,
-  selectedOutcome: PropTypes.string.isRequired
+  selectedOutcome: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired
 };
 
 export default MarketLiquidityTable;

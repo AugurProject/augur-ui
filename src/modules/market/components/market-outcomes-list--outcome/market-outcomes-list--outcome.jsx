@@ -58,14 +58,14 @@ const Outcome = p => {
 };
 
 Outcome.propTypes = {
-  outcome: PropTypes.shapeOf({
+  outcome: PropTypes.shape({
     name: PropTypes.string,
     id: PropTypes.string,
-    topBid: PropTypes.shapeOf({
+    topBid: PropTypes.shape({
       shares: PropTypes.object,
       price: PropTypes.object
     }),
-    topAsk: PropTypes.shapeOf({
+    topAsk: PropTypes.shape({
       shares: PropTypes.object,
       price: PropTypes.object
     }),

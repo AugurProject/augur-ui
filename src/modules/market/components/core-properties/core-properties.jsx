@@ -62,7 +62,7 @@ const Property = p => (
 
 Property.propTypes = {
   numRow: PropTypes.number.isRequired,
-  property: PropTypes.shapeOf({
+  property: PropTypes.shape({
     name: PropTypes.string.isRequired,
     value: PropTypes.any,
     tooltip: PropTypes.bool,

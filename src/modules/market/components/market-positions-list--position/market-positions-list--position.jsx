@@ -11,7 +11,14 @@ import MarketOutcomeTradingIndicator from "modules/market/containers/market-outc
 export default class MarketPositionsListPosition extends Component {
   static propTypes = {
     outcomeName: PropTypes.string.isRequired,
-    position: PropTypes.object.isRequired,
+    position: PropTypes.shape({
+      netPosition: PropTypes.object,
+      qtyShares: PropTypes.object,
+      purchasePrice: PropTypes.object,
+      unrealizedNet: PropTypes.object,
+      realizedNet: PropTypes.object,
+      totalNet: PropTypes.object
+    }).isRequired,
     openOrders: PropTypes.array.isRequired,
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,

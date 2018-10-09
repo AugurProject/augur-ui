@@ -14,7 +14,15 @@ export default class Order extends Component {
     isExtendedDisplay: PropTypes.bool,
     isMobile: PropTypes.bool,
     outcomeName: PropTypes.string,
-    order: PropTypes.object,
+    order: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      orderCancellationStatus: PropTypes.string,
+      avgPrice: PropTypes.object,
+      unmatchedShares: PropTypes.object,
+      tokensEscrowed: PropTypes.object,
+      sharesEscrowed: PropTypes.object,
+      cancelOrder: PropTypes.func.isRequired
+    }),
     pending: PropTypes.bool,
     outcome: PropTypes.object
   };
@@ -98,7 +106,7 @@ export default class Order extends Component {
         </li>
         <li />
         <li>
-          {order.type === SELL ? <span>-</span> : <span>+</span>} {orderShares}
+          {orderType === SELL ? <span>-</span> : <span>+</span>} {orderShares}
         </li>
         <li>{orderPrice}</li>
         {isExtendedDisplay &&

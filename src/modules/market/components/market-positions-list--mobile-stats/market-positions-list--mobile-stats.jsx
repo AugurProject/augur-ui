@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import React from "react";
+import PropTypes from "prop-types";
 
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 import getValue from "utils/get-value";
@@ -34,6 +35,19 @@ const MobileStats = p => {
       </ul>
     </div>
   );
+};
+
+MobileStats.propTypes = {
+  outcome: PropTypes.shape({
+    topBid: PropTypes.shape({
+      shares: PropTypes.object.isRequired,
+      price: PropTypes.object.isRequired
+    }),
+    topAsk: PropTypes.shape({
+      shares: PropTypes.object.isRequired,
+      price: PropTypes.object.isRequired
+    })
+  })
 };
 
 export default MobileStats;

@@ -51,7 +51,7 @@ MarketOutcomesAndPositions.propTypes = {
   isMobile: PropTypes.bool.isRequired,
   marketId: PropTypes.string.isRequired,
   outcomes: PropTypes.array,
-  numCompleteSets: PropTypes.string,
+  numCompleteSets: PropTypes.object,
   positions: PropTypes.array,
   orphanedOrders: PropTypes.array,
   openOrders: PropTypes.array,
