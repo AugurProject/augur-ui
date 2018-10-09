@@ -1,6 +1,5 @@
 import { augur } from "services/augurjs";
 import { loadMarketsInfo } from "modules/markets/actions/load-markets-info";
-import { cancelOpenOrdersInClosedMarkets } from "modules/orders/actions/cancel-order";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import noop from "utils/noop";
 import logError from "utils/log-error";
@@ -27,11 +26,6 @@ const claimTradingProceeds = (marketId, callback = logError) => (
     },
     onFailed: err => callback(err)
   });
-
-  // has claimed proceeds on all finalized markets so close open orders
-  if (!marketId) {
-    dispatch(cancelOpenOrdersInClosedMarkets());
-  }
 };
 
 export default claimTradingProceeds;
