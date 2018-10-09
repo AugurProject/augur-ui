@@ -112,9 +112,7 @@ const TransactionMeta = p => {
 };
 
 TransactionMeta.propTypes = {
-  meta: PropTypes.object.isRequired,
-  networkId: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-    .isRequired
+  meta: PropTypes.object.isRequired
 };
 
 export default TransactionMeta;

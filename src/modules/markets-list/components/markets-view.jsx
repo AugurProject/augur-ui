@@ -14,7 +14,7 @@ export default class MarketsView extends Component {
     history: PropTypes.object.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     loadMarketsByFilter: PropTypes.func.isRequired,
     search: PropTypes.string,
     category: PropTypes.string,
@@ -38,9 +38,10 @@ export default class MarketsView extends Component {
   }
 
   componentDidMount() {
-    if (this.props.universe) {
+    const { universe, loadDisputing } = this.props;
+    if (universe) {
       this.updateFilteredMarkets();
-      this.props.loadDisputing();
+      loadDisputing();
     }
   }
 

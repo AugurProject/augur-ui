@@ -21,7 +21,7 @@ export default class MarketsList extends Component {
     filteredMarkets: PropTypes.array.isRequired,
     location: PropTypes.object.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
-    loadMarketsInfoIfNotLoaded: PropTypes.func,
+    loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
     paginationPageParam: PropTypes.string,
     linkType: PropTypes.string,
     collectMarketCreatorFees: PropTypes.func,
@@ -32,6 +32,12 @@ export default class MarketsList extends Component {
     style: PropTypes.object,
     showDisputingCard: PropTypes.bool,
     outcomes: PropTypes.object
+  };
+
+  static defaultProps = {
+    linkType: TYPE_TRADE,
+    paginationPageParam: "page",
+    nullMessage: "No Markets Available"
   };
 
   constructor(props) {
@@ -60,9 +66,10 @@ export default class MarketsList extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     const { filteredMarkets, loadMarketsInfoIfNotLoaded } = this.props;
+    const { lowerBound, boundedLength, marketIdsMissingInfo } = this.state;
     if (
-      this.state.lowerBound !== nextState.lowerBound ||
-      this.state.boundedLength !== nextState.boundedLength ||
+      lowerBound !== nextState.lowerBound ||
+      boundedLength !== nextState.boundedLength ||
       !isEqual(filteredMarkets, nextProps.filteredMarkets)
     ) {
       this.setMarketIDsMissingInfo(
@@ -72,9 +79,7 @@ export default class MarketsList extends Component {
       );
     }
 
-    if (
-      !isEqual(this.state.marketIdsMissingInfo, nextState.marketIdsMissingInfo)
-    ) {
+    if (!isEqual(marketIdsMissingInfo, nextState.marketIdsMissingInfo)) {
       if (loadMarketsInfoIfNotLoaded) {
         this.loadMarketsInfoIfNotLoaded(nextState.marketIdsMissingInfo);
       }
@@ -159,7 +164,7 @@ export default class MarketsList extends Component {
                   history={history}
                   collectMarketCreatorFees={collectMarketCreatorFees}
                   isMobile={isMobile}
-                  linkType={linkType || TYPE_TRADE}
+                  linkType={linkType}
                   id={market.id}
                   testid={testid}
                   pendingLiquidityOrders={pendingLiquidityOrders}
@@ -172,7 +177,7 @@ export default class MarketsList extends Component {
         ) : (
           <NullStateMessage
             addNullPadding={addNullPadding}
-            message={nullMessage || "No Markets Available"}
+            message={nullMessage}
           />
         )}
         {!!marketsLength &&
@@ -183,7 +188,7 @@ export default class MarketsList extends Component {
               location={location}
               history={history}
               setSegment={this.setSegment}
-              pageParam={paginationPageParam || "page"}
+              pageParam={paginationPageParam}
             />
           )}
       </article>
