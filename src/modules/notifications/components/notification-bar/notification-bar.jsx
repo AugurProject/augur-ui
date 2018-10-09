@@ -67,7 +67,7 @@ export const NotificationBar = ({
   ));
 
 NotificationBar.propTypes = {
-  cancelOrder: PropTypes.func,
+  dismissFn: PropTypes.func.isRequired,
   notifications: PropTypes.arrayOf(PropTypes.object),
   market: PropTypes.object,
   marketsNumber: PropTypes.number.isRequired
