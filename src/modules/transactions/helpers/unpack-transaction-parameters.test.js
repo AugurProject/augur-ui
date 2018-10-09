@@ -1,12 +1,6 @@
 import unpackTransactionParameters from "modules/transactions/helpers/unpack-transaction-parameters";
 
-jest.mock("modules/transactions/helpers/unpack-transaction-parameters");
-
 describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => {
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
   test("unpack sent transaction parameters (buy)", () => {
     const params = {
       tx: {
@@ -56,7 +50,7 @@ describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => 
       }
     };
 
-    const actual = unpackTransactionParameters.default(params.tx);
+    const actual = unpackTransactionParameters(params.tx);
 
     expect(actual).toEqual({
       amount: "0x4563918244f40000",
@@ -138,7 +132,7 @@ describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => 
       }
     };
 
-    const actual = unpackTransactionParameters.default(params.tx);
+    const actual = unpackTransactionParameters(params.tx);
 
     expect(actual).toEqual({
       amount: "0x4563918244f40000",
@@ -175,7 +169,7 @@ describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => 
       }
     };
 
-    const actual = unpackTransactionParameters.default(params.tx);
+    const actual = unpackTransactionParameters(params.tx);
 
     expect(actual).toEqual({
       type: "emergencyStop"
