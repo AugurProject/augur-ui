@@ -38,7 +38,9 @@ export default class ModalView extends Component {
     return (
       <section className={Styles.ModalView}>
         <div className={Styles.ModalView__content}>
-          {modal.type === TYPES.MODAL_GAS_PRICE && <ModalGasPrice {...p} />}
+          {modal.type === TYPES.MODAL_GAS_PRICE && (
+            <ModalGasPrice {...this.props} />
+          )}
           {modal.type === TYPES.MODAL_CONFIRM && (
             <ModalConfirm {...modal} closeModal={closeModal} />
           )}
@@ -57,7 +59,7 @@ export default class ModalView extends Component {
             <ModalNetworkConnect />
           )}
           {modal.type === TYPES.MODAL_NETWORK_DISCONNECTED && (
-            <ModalNetworkDisconnected {...p} />
+            <ModalNetworkDisconnected {...this.props} />
           )}
           {modal.type === TYPES.MODAL_ACCOUNT_APPROVAL && <ModalApproval />}
           {modal.type === TYPES.MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET && (
