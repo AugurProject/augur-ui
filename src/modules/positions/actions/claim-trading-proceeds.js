@@ -1,4 +1,3 @@
-import { each } from "async";
 import { augur } from "services/augurjs";
 import { loadMarketsInfo } from "modules/markets/actions/load-markets-info";
 import { cancelOpenOrdersInClosedMarkets } from "modules/orders/actions/cancel-order";
