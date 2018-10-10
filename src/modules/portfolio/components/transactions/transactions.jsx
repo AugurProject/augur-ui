@@ -23,7 +23,7 @@ import {
 } from "modules/transactions/constants/types";
 
 import { getBeginDate } from "src/utils/format-date";
-import { isEqual } from "lodash";
+import { isEqual, orderBy } from "lodash";
 import Styles from "modules/portfolio/components/transactions/transactions.styles";
 import PortfolioStyles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 
@@ -116,8 +116,14 @@ export default class Transactions extends Component {
       );
     }
 
+    const sortedFilteredTransactions = orderBy(
+      filteredTransactions,
+      ["sortOrder"],
+      ["timestamp.timestamp"]
+    );
+
     this.setState({
-      filteredTransactions
+      filteredTransactions: sortedFilteredTransactions
     });
   }
 
