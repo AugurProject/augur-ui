@@ -67,7 +67,7 @@ const MarketProperties = p => {
             <ValueDenomination
               valueClassname="volume"
               formatted={openInterest}
-              denomination="Shares"
+              denomination="ETH"
             />
           </li>
           <li>
