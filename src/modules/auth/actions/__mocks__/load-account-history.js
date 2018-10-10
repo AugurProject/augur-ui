@@ -4,8 +4,8 @@ const mockLoadAccountHistoryModule = jest.genMockFromModule(
 
 mockLoadAccountHistoryModule.loadAccountHistory = () => {};
 mockLoadAccountHistoryModule.mockLoadAccountHistory = () => {};
-mockLoadAccountHistoryModule.setLoadAccountHistory = f => {
-  mockLoadAccountHistoryModule.loadAccountHistory = f;
+mockLoadAccountHistoryModule.setLoadAccountHistory = fn => {
+  mockLoadAccountHistoryModule.loadAccountHistory = fn;
 };
 
 module.exports = mockLoadAccountHistoryModule;
