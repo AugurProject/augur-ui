@@ -12,7 +12,7 @@ describe("modules/transactions/actions/trigger-transactions-export.js", () => {
   const mockStore = configureMockStore(middlewares);
   selectTransactions.mockImplementation(state => state.transactions);
 
-  test("if triggers a download if transactionsLoading is false", () => {
+  test("triggered a download if transactionsLoading is false", () => {
     const store = mockStore({
       transactions: [
         { id: 1, text: "a transaction" },
@@ -56,7 +56,7 @@ describe("modules/transactions/actions/trigger-transactions-export.js", () => {
     expect(store.getActions()).toHaveLength(0);
   });
 
-  test("if dispatches a loadAccountHistory action if transactionsLoading is true", () => {
+  test("dispatched a loadAccountHistory action if transactionsLoading is true", () => {
     const store = mockStore({
       transactions: [
         { id: 1, text: "a transaction" },

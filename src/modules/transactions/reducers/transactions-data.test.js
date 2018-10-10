@@ -3,11 +3,11 @@ import reducer from "modules/transactions/reducers/transactions-data";
 
 describe(`modules/transactions/reducers/transactions-data.js`, () => {
   let action;
-  let out;
+  let actual;
 
   const state = Object.assign({}, testState);
 
-  test("if updates transactions data in state", () => {
+  test("updated transactions data in state", () => {
     action = {
       type: "UPDATE_TRANSACTIONS_DATA",
       data: {
@@ -21,7 +21,7 @@ describe(`modules/transactions/reducers/transactions-data.js`, () => {
         }
       }
     };
-    out = {
+    actual = {
       ...state.transactionsData,
       test: {
         example: "example",
@@ -33,10 +33,10 @@ describe(`modules/transactions/reducers/transactions-data.js`, () => {
       }
     };
 
-    expect(reducer(state.transactionsData, action)).toEqual(out);
+    expect(reducer(state.transactionsData, action)).toEqual(actual);
   });
 
-  test("if deletes transaction", () => {
+  test("deleted transaction", () => {
     action = {
       type: "DELETE_TRANSACTION",
       data: { transactionId: "transaction2" }

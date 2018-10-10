@@ -8,7 +8,7 @@ describe(`modules/transactions/actions/update-transactions-data.js`, () => {
   const mockStore = configureMockStore(middlewares);
   const state = Object.assign({}, testState);
   const store = mockStore(state);
-  test("if fires update and processes transaction actions", () => {
+  test("fired update and processes transaction actions", () => {
     store.dispatch(
       updateTransactionsData({
         test: "testTransactionData"

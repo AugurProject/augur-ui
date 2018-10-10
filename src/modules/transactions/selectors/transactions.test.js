@@ -22,7 +22,7 @@ describe(`modules/transactions/selectors/transactions.js`, () => {
     jest.resetAllMocks();
   });
 
-  test("should return the expected array", () => {
+  test("returned the expected array", () => {
     const state = {
       transactionsData: {
         "0xTRANS0": {

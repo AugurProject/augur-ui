@@ -1,7 +1,7 @@
 import unpackTransactionParameters from "modules/transactions/helpers/unpack-transaction-parameters";
 
 describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => {
-  test("unpack sent transaction parameters (buy)", () => {
+  test("unpacked sent transaction parameters (buy)", () => {
     const params = {
       tx: {
         type: "Bid",
@@ -65,7 +65,7 @@ describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => 
     });
   });
 
-  test("unpack successful transaction parameters (buy)", () => {
+  test("unpacked successful transaction parameters (buy)", () => {
     const params = {
       tx: {
         type: "Bid",
@@ -147,7 +147,7 @@ describe("modules/transactions/helpers/unpack-transaction-parameters.js", () => 
     });
   });
 
-  test("Unpacking pending transaction without input", () => {
+  test("Unpacked pending transaction without input", () => {
     const params = {
       tx: {
         hash:
