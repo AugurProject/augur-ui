@@ -19,8 +19,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadAccountHistoryTransactions: (beginTime, endTime) =>
-    dispatch(loadAccountHistory(beginTime, endTime)),
+  loadAccountHistoryTransactions: (beginTime, endTime, type) =>
+    dispatch(loadAccountHistory(beginTime, endTime, type)),
   updateTransactionPeriod: transactionPeriod =>
     dispatch(updateFilterSortOptions(TRANSACTION_PERIOD, transactionPeriod)),
   loadAccountCompleteSets: () => dispatch(loadAccountCompleteSets())
