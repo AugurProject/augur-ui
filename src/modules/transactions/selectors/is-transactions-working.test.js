@@ -12,7 +12,7 @@ describe(`modules/transactions/selectors/is-transaction-working.js`, () => {
 
   const { state } = mockStore.default;
 
-  test("should check if a transaction is working", () => {
+  test("checked if a transaction is working", () => {
     let { transactionsData } = state;
     actual = selectIsWorking({ transactionsData });
     expect(selectIsWorking({ transactionsData })).toBe(false);

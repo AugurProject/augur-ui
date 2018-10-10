@@ -60,7 +60,7 @@ describe(`modules/transactions/reducers/transactions-data.js`, () => {
     });
   });
 
-  test("if clears transactions on clear login account", () => {
+  test("cleared transactions on clear login account", () => {
     action = {
       type: "CLEAR_LOGIN_ACCOUNT"
     };
