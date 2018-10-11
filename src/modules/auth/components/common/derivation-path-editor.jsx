@@ -10,7 +10,6 @@ import FormStyles from "modules/common/less/form";
 export default class DerivationPathEditor extends Component {
   static propTypes = {
     validatePath: PropTypes.func.isRequired,
-    isVisible: PropTypes.bool.isRequired,
     isClicked: PropTypes.bool.isRequired
   };
 

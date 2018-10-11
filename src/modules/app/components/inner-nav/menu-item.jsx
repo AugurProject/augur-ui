@@ -4,24 +4,22 @@ import classNames from "classnames";
 
 import Styles from "modules/app/components/inner-nav/inner-nav.styles";
 
-const MenuItem = p => (
+const MenuItem = ({ isSelected, visible, children }) => (
   <li
     className={classNames({
       [Styles["InnerNav__menu-item"]]: true,
-      [Styles["InnerNav__menu-item--selected"]]: p.isSelected,
-      [Styles["InnerNav__menu-item--visible"]]: p.visible
+      [Styles["InnerNav__menu-item--selected"]]: isSelected,
+      [Styles["InnerNav__menu-item--visible"]]: visible
     })}
-    key={p.key}
   >
-    {p.children}
+    {children}
   </li>
 );
 
 MenuItem.propTypes = {
-  isSelected: PropTypes.bool,
-  visible: PropTypes.bool,
-  children: PropTypes.array,
-  key: PropTypes.string
+  isSelected: PropTypes.bool.isRequired,
+  visible: PropTypes.bool.isRequired,
+  children: PropTypes.array
 };
 
 export default MenuItem;

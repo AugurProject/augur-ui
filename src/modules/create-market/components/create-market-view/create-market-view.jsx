@@ -13,28 +13,8 @@ const CreateMarketView = p => (
       <title>Create Market</title>
     </Helmet>
     <div>
-      <CreateMarketPreview
-        newMarket={p.newMarket}
-        currentTimestamp={p.currentTimestamp}
-        universe={p.universe}
-      />
-      <CreateMarketForm
-        newMarket={p.newMarket}
-        updateNewMarket={p.updateNewMarket}
-        categories={p.categories}
-        meta={p.meta}
-        availableEth={p.availableEth}
-        availableRep={p.availableRep}
-        addOrderToNewMarket={p.addOrderToNewMarket}
-        removeOrderFromNewMarket={p.removeOrderFromNewMarket}
-        submitNewMarket={p.submitNewMarket}
-        isMobileSmall={p.isMobileSmall}
-        history={p.history}
-        universe={p.universe}
-        currentTimestamp={p.currentTimestamp}
-        estimateSubmitNewMarket={p.estimateSubmitNewMarket}
-        gasPrice={p.gasPrice}
-      />
+      <CreateMarketPreview {...p} />
+      <CreateMarketForm {...p} />
     </div>
   </section>
 );

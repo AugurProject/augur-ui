@@ -8,11 +8,9 @@ import AccountUniverseDescription from "../account-universe-description/account-
 
 export default class AccountUniverses extends Component {
   static propTypes = {
-    address: PropTypes.string.isRequired,
     universe: PropTypes.string.isRequired,
     getUniverses: PropTypes.func.isRequired,
-    switchUniverse: PropTypes.func.isRequired,
-    winningChild: PropTypes.string
+    switchUniverse: PropTypes.func.isRequired
   };
 
   constructor(props) {

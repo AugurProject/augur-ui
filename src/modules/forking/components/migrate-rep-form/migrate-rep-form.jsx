@@ -21,8 +21,6 @@ export default class MigrateRepForm extends Component {
       .isRequired,
     selectedOutcomeName: PropTypes.string.isRequired,
     accountREP: PropTypes.string.isRequired,
-    forkMigrationTotals: PropTypes.object,
-    isMarketInValid: PropTypes.bool,
     currentBlockNumber: PropTypes.number.isRequired
   };
 

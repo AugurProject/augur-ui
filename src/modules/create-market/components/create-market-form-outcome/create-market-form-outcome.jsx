@@ -37,8 +37,7 @@ export default class CreateMarketOutcome extends Component {
     newMarket: PropTypes.object.isRequired,
     isValid: PropTypes.func.isRequired,
     keyPressed: PropTypes.func.isRequired,
-    updateNewMarket: PropTypes.func.isRequired,
-    validateField: PropTypes.func.isRequired
+    updateNewMarket: PropTypes.func.isRequired
   };
 
   static calculateOutcomeFieldCount(p) {

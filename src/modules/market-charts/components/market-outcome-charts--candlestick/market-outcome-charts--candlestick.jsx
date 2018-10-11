@@ -43,8 +43,7 @@ class MarketOutcomeCandlestick extends React.Component {
       orderBookKeys,
       priceTimeSeries,
       selectedPeriod,
-      selectedRange,
-      sharedChartMargins
+      selectedRange
     } = nextProps;
 
     const { candleDim, containerHeight, containerWidth } = prevState;
@@ -66,8 +65,7 @@ class MarketOutcomeCandlestick extends React.Component {
       outcomeBounds,
       priceTimeSeries,
       selectedPeriod,
-      selectedRange,
-      sharedChartMargins
+      selectedRange
     });
 
     return {
@@ -164,6 +162,8 @@ class MarketOutcomeCandlestick extends React.Component {
       currentTimeInSeconds,
       fixedPrecision,
       isMobile,
+      marketMax,
+      marketMin,
       orderBookKeys,
       outcomeName,
       priceTimeSeries,
@@ -181,8 +181,6 @@ class MarketOutcomeCandlestick extends React.Component {
       containerHeight,
       containerWidth,
       drawableWidth,
-      marketMax,
-      marketMin,
       xScale,
       yDomain,
       yScale,
@@ -354,10 +352,10 @@ function determineDrawParams({
   marketMax,
   marketMin,
   priceTimeSeries,
-  selectedRange,
-  sharedChartMargins
+  selectedRange
 }) {
   // Dimensions/Positioning
+  const { sharedChartMargins } = this.props;
   const chartDim = {
     ...sharedChartMargins,
     right: 0,

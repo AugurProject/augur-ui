@@ -54,6 +54,12 @@ export default class MarketOutcomeCharts extends Component {
     this.snapScroller = null;
 
     const { range, period } = defaultRangePeriodDurations;
+
+    this.sharedChartMargins = {
+      top: 0,
+      bottom: 30
+    };
+
     this.state = {
       candleScrolled: true,
       selectedPeriod: period,
@@ -62,10 +68,6 @@ export default class MarketOutcomeCharts extends Component {
       hoveredPrice: null,
       headerHeight: props.isMobile ? 20 : 0,
       priceTimeSeriesCandleStick: [],
-      sharedChartMargins: {
-        top: 0,
-        bottom: 30
-      },
       ordersWidth: 0
     };
 
@@ -254,7 +256,7 @@ export default class MarketOutcomeCharts extends Component {
                 currentTimeInSeconds={currentTimeInSeconds}
                 outcomeName={outcomeName}
                 isMobile={isMobile}
-                sharedChartMargins={s.sharedChartMargins}
+                sharedChartMargins={this.sharedChartMargins}
                 priceTimeSeries={s.priceTimeSeriesCandleStick}
                 selectedPeriod={s.selectedPeriod}
                 selectedRange={s.selectedRange}
@@ -281,7 +283,7 @@ export default class MarketOutcomeCharts extends Component {
                 headerHeight={s.headerHeight}
                 isMobile={isMobile}
                 priceTimeSeries={priceTimeSeries}
-                sharedChartMargins={s.sharedChartMargins}
+                sharedChartMargins={this.sharedChartMargins}
                 fixedPrecision={fixedPrecision}
                 orderBookKeys={orderBookKeys}
                 marketDepth={marketDepth}
@@ -301,7 +303,7 @@ export default class MarketOutcomeCharts extends Component {
               <MarketOutcomeChartsOrders
                 headerHeight={s.headerHeight}
                 isMobile={isMobile}
-                sharedChartMargins={s.sharedChartMargins}
+                sharedChartMargins={this.sharedChartMargins}
                 fixedPrecision={fixedPrecision}
                 orderBook={orderBook}
                 marketMidpoint={orderBookKeys.mid}

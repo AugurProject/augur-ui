@@ -18,8 +18,6 @@ export default class CreateMarketReview extends Component {
     currentStep: PropTypes.number.isRequired,
     initialLiquidityEth: PropTypes.instanceOf(BigNumber).isRequired,
     initialLiquidityGas: PropTypes.instanceOf(BigNumber).isRequired,
-    settlementFee: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      .isRequired,
     className: PropTypes.string
   };
 
