@@ -10,7 +10,7 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 
 import CommonStyles from "modules/market/components/common/market-common.styles";
 import Styles from "modules/market/components/market-preview/market-preview.styles";
-import MarketAdditonalDetails from "modules/reporting/components/market-additional-details/market-additional-details";
+import MarketAdditonalDetails from "modules/market/components/market-additional-details/market-additional-details";
 import { isEmpty } from "lodash";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
@@ -109,7 +109,7 @@ export default class MarketPreview extends Component {
                 ToggleHeightStyles["start-open"]
               )}
             >
-              <MarketAdditonalDetails market={p} />
+              <MarketAdditonalDetails {...p} />
             </div>
           )}
       </div>

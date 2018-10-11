@@ -20,10 +20,10 @@ export default class ReportingDispute extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     isConnected: PropTypes.bool.isRequired,
-    isLogged: PropTypes.bool,
+    isLogged: PropTypes.bool.isRequired,
     isMarketLoaded: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
-    location: PropTypes.object,
+    location: PropTypes.object.isRequired,
     market: PropTypes.object.isRequired,
     marketId: PropTypes.string.isRequired,
     submitMarketContribute: PropTypes.func.isRequired,
@@ -155,7 +155,6 @@ export default class ReportingDispute extends Component {
             )}
             {s.currentStep === 1 && (
               <ReportingDisputeConfirm
-                market={market}
                 isMarketInValid={s.isMarketInValid}
                 selectedOutcome={s.selectedOutcomeName}
                 stakeInfo={s.stakeInfo}
