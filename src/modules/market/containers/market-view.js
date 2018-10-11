@@ -17,6 +17,7 @@ const mapStateToProps = (state, ownProps) => {
   } = state;
   const marketId = parseQuery(ownProps.location.search)[MARKET_ID_PARAM_NAME];
   const market = selectMarket(marketId);
+  const pricePrecision = market.tickSize ? market.tickSize.length - 2 : 4;
 
   return {
     isConnected: connection.isConnected && universe.id != null,
@@ -28,7 +29,8 @@ const mapStateToProps = (state, ownProps) => {
     orderBooks,
     isMobile: appStatus.isMobile,
     marketId,
-    marketsData
+    marketsData,
+    pricePrecision
   };
 };
 
