@@ -17,9 +17,15 @@ export default class PositionsMarketsList extends Component {
     linkType: PropTypes.string,
     positionsDefault: PropTypes.bool,
     claimTradingProceeds: PropTypes.func,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     noTopPadding: PropTypes.bool,
     addNullPadding: PropTypes.bool
+  };
+
+  static defaultProps = {
+    noTopPadding: false,
+    addNullPadding: false,
+    positionsDefault: true
   };
 
   constructor(props) {

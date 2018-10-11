@@ -26,7 +26,7 @@ Favorites.propTypes = {
   toggleFavorite: PropTypes.func.isRequired,
   loadMarketsInfo: PropTypes.func.isRequired,
   loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool
+  isMobile: PropTypes.bool.isRequired
 };
 
 export default Favorites;

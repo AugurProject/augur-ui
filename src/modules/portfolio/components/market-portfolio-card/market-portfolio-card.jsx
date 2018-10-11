@@ -24,7 +24,7 @@ export default class MarketPortfolioCard extends Component {
     buttonText: PropTypes.string,
     claimTradingProceeds: PropTypes.func,
     currentTimestamp: PropTypes.number.isRequired,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     linkType: PropTypes.string,
     market: PropTypes.object.isRequired,
     positionsDefault: PropTypes.bool,

@@ -27,7 +27,7 @@ class MyMarkets extends Component {
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     isLogged: PropTypes.bool.isRequired,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     loadMarkets: PropTypes.func.isRequired,
     loadMarketsInfo: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,

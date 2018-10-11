@@ -26,14 +26,14 @@ export default class Transactions extends Component {
     transactions: PropTypes.array.isRequired,
     loadAccountHistoryTransactions: PropTypes.func.isRequired,
     transactionPeriod: PropTypes.string.isRequired,
-    transactionsLoading: PropTypes.bool,
+    transactionsLoading: PropTypes.bool.isRequired,
     updateTransactionPeriod: PropTypes.func.isRequired,
     loadAccountCompleteSets: PropTypes.func.isRequired
   };
 
   constructor(props) {
     super(props);
-
+    const { transactionPeriod } = props;
     this.state = {
       lowerBound: null,
       boundedLength: null,
@@ -43,8 +43,8 @@ export default class Transactions extends Component {
         { label: "Past Month", value: MONTH },
         { label: "All", value: ALL }
       ],
-      transactionPeriodDefault: props.transactionPeriod,
-      transactionPeriod: props.transactionPeriod
+      transactionPeriodDefault: transactionPeriod,
+      transactionPeriod
     };
 
     this.setSegment = this.setSegment.bind(this);
@@ -87,7 +87,13 @@ export default class Transactions extends Component {
 
   render() {
     const { history, location, transactions, transactionsLoading } = this.props;
-    const s = this.state;
+    const {
+      lowerBound,
+      boundedLength,
+      transactionPeriodDefault,
+      transactionPeriodOptions
+    } = this.state;
+    const hasTransactions = transactions.length > 0;
 
     return (
       <section>
@@ -100,30 +106,30 @@ export default class Transactions extends Component {
           </div>
           <div className={Styles["Transaction__data-filter"]}>
             <Dropdown
-              default={s.transactionPeriodDefault}
-              options={s.transactionPeriodOptions}
+              default={transactionPeriodDefault}
+              options={transactionPeriodOptions}
               onChange={this.changeTransactionDropdown}
             />
           </div>
         </div>
 
-        {transactionsLoading === true && (
+        {transactionsLoading && (
           <div className={PortfolioStyles.Loading__container}>
             <span>Loading...</span>
           </div>
         )}
-        {transactionsLoading === false &&
-          transactions.length === 0 && (
+        {!transactionsLoading &&
+          !hasTransactions && (
             <div className={PortfolioStyles.NoMarkets__container}>
               <span>You don&apos;t have any transactions.</span>
             </div>
           )}
         <div className={Styles.Transactions__list}>
-          {transactionsLoading === false &&
-            transactions.length > 0 &&
-            s.boundedLength &&
-            [...Array(s.boundedLength)].map((unused, i) => {
-              const transaction = transactions[s.lowerBound - 1 + i];
+          {!transactionsLoading &&
+            hasTransactions &&
+            boundedLength &&
+            [...Array(boundedLength)].map((unused, i) => {
+              const transaction = transactions[lowerBound - 1 + i];
               if (transaction) {
                 if (
                   !transaction.transactions ||
@@ -147,8 +153,8 @@ export default class Transactions extends Component {
               return null;
             })}
         </div>
-        {transactionsLoading === false &&
-          transactions.length > 0 && (
+        {!transactionsLoading &&
+          hasTransactions && (
             <Paginator
               itemsLength={transactions.length}
               itemsPerPage={10}
