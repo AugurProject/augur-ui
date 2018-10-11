@@ -71,7 +71,7 @@ describe(`modules/transactions/reducers/transactions-data.js`, () => {
   describe.each([
     [messages[0], actions[0], transactionsDataArray[0], actualArray[0]],
     [messages[1], actions[1], transactionsDataArray[1], actualArray[1]],
-    [messages[2], actions[2], transactionsDataArray[2], actualArray[2]]
+    [messages[2], actions[2], transactionsDataArray[1], actualArray[2]]
   ])(
     "updated transactions data in state",
     (msg, action, transactionsData, actual) => {
