@@ -36,8 +36,7 @@ export default class Transactions extends Component {
     loadAccountHistoryTransactions: PropTypes.func.isRequired,
     transactionPeriod: PropTypes.string.isRequired,
     transactionsLoading: PropTypes.bool,
-    updateTransactionPeriod: PropTypes.func.isRequired,
-    loadAccountCompleteSets: PropTypes.func.isRequired
+    updateTransactionPeriod: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -80,7 +79,6 @@ export default class Transactions extends Component {
       this.state.transactionPeriodDefault,
       this.state.transactionTypeDefault
     );
-    this.props.loadAccountCompleteSets();
     this.updateFilteredTransactions(this.props.transactions);
   }
 
