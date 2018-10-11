@@ -24,7 +24,7 @@ ModalReceipt.propTypes = {
       value: PropTypes.string.isRequired,
       denomination: PropTypes.string.isRequired
     })
-  )
+  ).isRequired
 };
 
 export default ModalReceipt;
