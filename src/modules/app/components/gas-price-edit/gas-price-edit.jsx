@@ -28,7 +28,6 @@ export default class GasPriceEdit extends Component {
 
   render() {
     const { userDefinedGasPrice, gasPriceSpeed } = this.props;
-    console.log("gasPriceSpeed", gasPriceSpeed);
 
     return (
       <div className={classNames(Styles.GasPriceEdit)}>
