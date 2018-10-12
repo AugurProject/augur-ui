@@ -9,7 +9,7 @@ import { sortBy, maxBy } from "lodash";
 
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
 import MarketOutcomeChartsHeaderCandlestick from "modules/market-charts/components/market-outcome-charts--header-candlestick/market-outcome-charts--header-candlestick";
-
+import { ONE } from "modules/trades/constants/numbers";
 import { BUY, SELL } from "modules/transactions/constants/types";
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
@@ -585,9 +585,14 @@ function drawVolume({
     .enter()
     .append("text")
     .attr("class", "tick-value-volume")
-    .attr("x", containerWidth - 90)
+    .attr("x", containerWidth - 110)
     .attr("y", d => yVolumeScale(d.volume) - 4)
-    .text(d => d.volume.toFixed(0) + ` ETH`);
+    .text(d => {
+      if (createBigNumber(d.volume).gte(ONE)) {
+        return d.volume.toFixed(0) + ` ETH`;
+      }
+      return d.volume.toFixed(4) + ` ETH`;
+    });
 }
 
 function drawXAxisLabels({
