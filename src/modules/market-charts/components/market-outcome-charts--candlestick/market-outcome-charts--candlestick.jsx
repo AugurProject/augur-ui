@@ -587,7 +587,7 @@ function drawVolume({
     .attr("class", "tick-value-volume")
     .attr("x", containerWidth - 90)
     .attr("y", d => yVolumeScale(d.volume) - 4)
-    .text(d => d.volume.toFixed(4));
+    .text(d => d.volume.toFixed(0) + ` ETH`);
 }
 
 function drawXAxisLabels({
