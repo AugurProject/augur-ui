@@ -588,7 +588,7 @@ function drawVolume({
     .attr("x", containerWidth - 110)
     .attr("y", d => yVolumeScale(d.volume) - 4)
     .text(d => {
-      if (createBigNumber(d.volume).gte(ONE)) {
+      if (createBigNumber(d.volume.toString()).gte(ONE)) {
         return d.volume.toFixed(1) + ` ETH`;
       }
       return d.volume.toFixed(4) + ` ETH`;
