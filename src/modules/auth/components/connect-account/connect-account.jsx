@@ -16,6 +16,10 @@ export default class ConnectAccount extends Component {
     address: PropTypes.string
   };
 
+  static defaultProps = {
+    address: ""
+  };
+
   constructor(props) {
     super(props);
 
@@ -98,7 +102,7 @@ export default class ConnectAccount extends Component {
               {isLogged ? "Connected" : "Disconnected"}
             </div>
             <div className={Styles.ConnectAccount__title}>
-              {isLogged ? formatAddress(address || "") : "Connect A Wallet"}
+              {isLogged ? formatAddress(address) : "Connect A Wallet"}
             </div>
           </div>
           <div className={Styles.ConnectAccount__arrow}>

@@ -68,9 +68,13 @@ Outcome.propTypes = {
     }),
     lastPrice: PropTypes.object,
     lastPricePercent: PropTypes.object
-  }),
+  }).isRequired,
   selectedOutcome: PropTypes.string,
   updateSelectedOutcome: PropTypes.func.isRequired
+};
+
+Outcome.defaultProps = {
+  selectedOutcome: null
 };
 
 export default Outcome;

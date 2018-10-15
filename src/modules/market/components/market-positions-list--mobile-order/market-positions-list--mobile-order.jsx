@@ -17,7 +17,7 @@ export default class MobileOrders extends Component {
       unmatchedShares: PropTypes.object,
       avgPrice: PropTypes.object,
       cancelOrder: PropTypes.func.isRequired
-    })
+    }).isRequired
   };
 
   constructor(props) {

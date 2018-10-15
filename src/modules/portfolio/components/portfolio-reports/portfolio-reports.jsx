@@ -10,7 +10,7 @@ import {
 import { TYPE_CLAIM_PROCEEDS } from "modules/markets/constants/link-types";
 import Styles from "modules/portfolio/components/portfolio-reports/portfolio-reports.styles";
 import DisputingMarkets from "modules/reporting/components/common/disputing-markets";
-import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
+import ReportingResolved from "modules/reporting/containers/reporting-resolved";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";
 
 export default class PortfolioReports extends Component {
@@ -39,6 +39,11 @@ export default class PortfolioReports extends Component {
     toggleFavorite: PropTypes.func.isRequired,
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
     loadMarkets: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    forkedMarket: null,
+    disputableMarketsLength: 0
   };
 
   constructor(props) {
@@ -197,6 +202,7 @@ export default class PortfolioReports extends Component {
             location={location}
             history={history}
             isLogged={isConnected}
+            isMobile={isMobile}
             loadMarketsInfoIfNotLoaded={loadMarketsInfoIfNotLoaded}
             markets={resolvedMarkets}
             noShowHeader

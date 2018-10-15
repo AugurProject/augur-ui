@@ -24,6 +24,12 @@ export default class MarketsView extends Component {
     loadDisputing: PropTypes.func.isRequired
   };
 
+  static defaultProps = {
+    search: null,
+    category: null,
+    universe: null
+  };
+
   constructor(props) {
     super(props);
 
@@ -61,9 +67,9 @@ export default class MarketsView extends Component {
   }
 
   updateFilteredMarkets() {
-    const { search, category } = this.props;
+    const { search, category, loadMarketsByFilter } = this.props;
     const { filter, sort } = this.state;
-    this.props.loadMarketsByFilter(
+    loadMarketsByFilter(
       { category, search, filter, sort },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);

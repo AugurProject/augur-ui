@@ -24,7 +24,7 @@ export default class CreateMarketReview extends Component {
     updateStateValue: PropTypes.func.isRequired,
     availableEth: PropTypes.string,
     availableRep: PropTypes.string,
-    meta: PropTypes.object
+    meta: PropTypes.object.isRequired
   };
 
   static defaultProps = {

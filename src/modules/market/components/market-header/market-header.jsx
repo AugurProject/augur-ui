@@ -13,7 +13,7 @@ const OVERFLOW_DETAILS_LENGTH = 560;
 
 export default class MarketHeader extends Component {
   static propTypes = {
-    clearSelectedOutcome: PropTypes.func,
+    clearSelectedOutcome: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     details: PropTypes.string.isRequired,
     history: PropTypes.object.isRequired,
@@ -29,7 +29,17 @@ export default class MarketHeader extends Component {
     isLogged: PropTypes.bool,
     isDesignatedReporter: PropTypes.bool,
     location: PropTypes.object.isRequired,
-    finalizeMarket: PropTypes.func
+    finalizeMarket: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    isLogged: false,
+    isDesignatedReporter: false,
+    tentativeWinner: null,
+    scalarDenomination: null,
+    resolutionSource: null,
+    selectedOutcome: null,
+    marketType: null
   };
 
   constructor(props) {

@@ -28,6 +28,11 @@ export default class ReportingDisputeForm extends Component {
     outcomes: PropTypes.array
   };
 
+  static defaultProps = {
+    accountDisputeData: null,
+    outcomes: []
+  };
+
   static constructRepObject(raw) {
     const adjRaw = raw;
 

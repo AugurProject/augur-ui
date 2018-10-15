@@ -5,7 +5,6 @@ import { BigNumber } from "utils/create-big-number";
 import ConfirmStyles from "modules/common/less/confirm-table";
 
 const ReportingReportConfirm = ({
-  market,
   selectedOutcome,
   stake,
   gasEstimate,
@@ -50,13 +49,16 @@ const ReportingReportConfirm = ({
 );
 
 ReportingReportConfirm.propTypes = {
-  market: PropTypes.object.isRequired,
   selectedOutcome: PropTypes.string.isRequired,
   stake: PropTypes.string.isRequired,
   gasEstimate: PropTypes.string.isRequired,
-  isMarketInValid: PropTypes.bool,
+  isMarketInValid: PropTypes.bool.isRequired,
   isOpenReporting: PropTypes.bool.isRequired,
   designatedReportNoShowReputationBond: PropTypes.object
+};
+
+ReportingReportConfirm.defaultProps = {
+  designatedReportNoShowReputationBond: null
 };
 
 export default ReportingReportConfirm;

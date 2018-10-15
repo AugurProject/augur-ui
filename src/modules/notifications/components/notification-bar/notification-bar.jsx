@@ -72,3 +72,8 @@ NotificationBar.propTypes = {
   market: PropTypes.object,
   marketsNumber: PropTypes.number.isRequired
 };
+
+NotificationBar.defaultProps = {
+  market: null,
+  notifications: []
+};

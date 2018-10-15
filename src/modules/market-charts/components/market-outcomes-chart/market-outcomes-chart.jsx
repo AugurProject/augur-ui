@@ -11,11 +11,11 @@ import Styles from "modules/market-charts/components/market-outcomes-chart/marke
 
 export default class MarketOutcomesChart extends Component {
   static propTypes = {
-    creationTime: PropTypes.number,
-    currentTimestamp: PropTypes.number,
-    estimatedInitialPrice: PropTypes.number,
-    maxPrice: PropTypes.number,
-    minPrice: PropTypes.number,
+    creationTime: PropTypes.number.isRequired,
+    currentTimestamp: PropTypes.number.isRequired,
+    estimatedInitialPrice: PropTypes.number.isRequired,
+    maxPrice: PropTypes.number.isRequired,
+    minPrice: PropTypes.number.isRequired,
     outcomes: PropTypes.array.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
     hasPriceHistory: PropTypes.bool.isRequired,

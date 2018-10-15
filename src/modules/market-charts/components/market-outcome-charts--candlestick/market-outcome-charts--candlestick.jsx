@@ -21,10 +21,10 @@ class MarketOutcomeCandlestick extends React.Component {
     currentTimeInSeconds: PropTypes.number,
     fixedPrecision: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    marketMax: CustomPropTypes.bigNumber,
-    marketMin: CustomPropTypes.bigNumber,
+    marketMax: CustomPropTypes.bigNumber.isRequired,
+    marketMin: CustomPropTypes.bigNumber.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
-    outcomeName: PropTypes.string,
+    outcomeName: PropTypes.string.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     selectedRange: PropTypes.number.isRequired,
@@ -32,6 +32,10 @@ class MarketOutcomeCandlestick extends React.Component {
     updateSelectedRange: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     pricePrecision: PropTypes.number.isRequired
+  };
+
+  static defaultProps = {
+    currentTimeInSeconds: null
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {

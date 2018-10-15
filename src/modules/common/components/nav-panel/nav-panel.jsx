@@ -50,3 +50,7 @@ NavPanel.propTypes = {
   param: PropTypes.string.isRequired,
   selectedNav: PropTypes.string
 };
+
+NavPanel.defaultProps = {
+  selectedNav: null
+};

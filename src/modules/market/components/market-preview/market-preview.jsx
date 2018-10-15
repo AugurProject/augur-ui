@@ -17,24 +17,38 @@ import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 export default class MarketPreview extends Component {
   static propTypes = {
     testid: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.string.isRequired,
     isLogged: PropTypes.bool.isRequired,
-    toggleFavorite: PropTypes.func,
+    toggleFavorite: PropTypes.func.isRequired,
     className: PropTypes.string,
-    description: PropTypes.string,
+    description: PropTypes.string.isRequired,
     outcomes: PropTypes.array,
     isOpen: PropTypes.bool,
     isFavorite: PropTypes.bool,
     isPendingReport: PropTypes.bool,
-    endTime: PropTypes.object,
+    endTime: PropTypes.object.isRequired,
     settlementFeePercent: PropTypes.object,
     volume: PropTypes.object,
     tags: PropTypes.array,
-    onClickToggleFavorite: PropTypes.func,
     cardStyle: PropTypes.string,
     hideReportEndingIndicator: PropTypes.bool,
     linkType: PropTypes.string,
-    collectMarketCreatorFees: PropTypes.func
+    collectMarketCreatorFees: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    isOpen: false,
+    isFavorite: false,
+    isPendingReport: false,
+    hideReportEndingIndicator: false,
+    tags: [],
+    volume: null,
+    cardStyle: null,
+    linkType: null,
+    className: null,
+    testid: null,
+    outcomes: [],
+    settlementFeePercent: null
   };
 
   constructor(props) {
@@ -78,20 +92,19 @@ export default class MarketPreview extends Component {
               toggleDetails={this.toggleDetails}
             />
           </div>
-          {p.unclaimedCreatorFees.value > 0 &&
-            p.collectMarketCreatorFees && (
-              <div
-                className={classNames(Styles.MarketPreview__returns, {
-                  [`${Styles["single-card"]}`]: p.cardStyle === "single-card"
-                })}
-              >
-                <OutstandingReturns
-                  id={p.id}
-                  unclaimedCreatorFees={p.unclaimedCreatorFees}
-                  collectMarketCreatorFees={p.collectMarketCreatorFees}
-                />
-              </div>
-            )}
+          {p.unclaimedCreatorFees.value > 0 && (
+            <div
+              className={classNames(Styles.MarketPreview__returns, {
+                [`${Styles["single-card"]}`]: p.cardStyle === "single-card"
+              })}
+            >
+              <OutstandingReturns
+                id={p.id}
+                unclaimedCreatorFees={p.unclaimedCreatorFees}
+                collectMarketCreatorFees={p.collectMarketCreatorFees}
+              />
+            </div>
+          )}
           <MarketLiquidity
             marketId={p.id}
             market={p}

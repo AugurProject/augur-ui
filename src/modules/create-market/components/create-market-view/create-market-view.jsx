@@ -32,7 +32,7 @@ CreateMarketView.propTypes = {
   removeOrderFromNewMarket: PropTypes.func.isRequired,
   submitNewMarket: PropTypes.func.isRequired,
   updateNewMarket: PropTypes.func.isRequired,
-  meta: PropTypes.object,
+  meta: PropTypes.object.isRequired,
   availableEth: PropTypes.string,
   availableRep: PropTypes.string
 };

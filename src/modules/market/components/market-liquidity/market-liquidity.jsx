@@ -23,6 +23,10 @@ export default class MarketLiquidity extends Component {
     gasPrice: PropTypes.number.isRequired
   };
 
+  static defaultProps = {
+    pendingLiquidityOrders: null
+  };
+
   constructor(props) {
     super(props);
 

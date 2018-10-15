@@ -94,9 +94,9 @@ const MarketOutcomes = ({
 
 MarketOutcomes.propTypes = {
   outcomes: PropTypes.array.isRequired,
-  max: CustomPropTypes.bigNumber,
-  min: CustomPropTypes.bigNumber,
-  type: PropTypes.string,
+  max: CustomPropTypes.bigNumber.isRequired,
+  min: CustomPropTypes.bigNumber.isRequired,
+  type: PropTypes.string.isRequired,
   scalarDenomination: PropTypes.string
 };
 

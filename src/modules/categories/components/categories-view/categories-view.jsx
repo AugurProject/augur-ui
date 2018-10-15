@@ -25,6 +25,10 @@ export default class CategoriesView extends Component {
     categories: PropTypes.array
   };
 
+  static defaultProps = {
+    categories: []
+  };
+
   constructor(props) {
     super(props);
 

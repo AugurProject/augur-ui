@@ -28,6 +28,11 @@ export default class MarketView extends Component {
     pricePrecision: PropTypes.number.isRequired
   };
 
+  static defaultProps = {
+    marketType: undefined,
+    loadingState: null
+  };
+
   constructor(props) {
     super(props);
 

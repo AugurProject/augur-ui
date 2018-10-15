@@ -72,4 +72,13 @@ MarketOutcomesAndPositions.propTypes = {
   updateSelectedOutcome: PropTypes.func.isRequired
 };
 
+MarketOutcomesAndPositions.defaultProps = {
+  outcomes: [],
+  numCompleteSets: null,
+  positions: [],
+  orphanedOrders: [],
+  openOrders: [],
+  selectedOutcome: null
+};
+
 export default MarketOutcomesAndPositions;

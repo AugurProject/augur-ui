@@ -40,3 +40,7 @@ export default MobileNavBackIcon;
 MobileNavBackIcon.propTypes = {
   className: PropTypes.string
 };
+
+MobileNavBackIcon.defaultProps = {
+  className: null
+};

@@ -26,15 +26,21 @@ export default class ReportingResolved extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
     nullMessage: PropTypes.string,
-    history: PropTypes.object,
-    isLogged: PropTypes.bool,
-    loadMarketsInfoIfNotLoaded: PropTypes.func,
-    location: PropTypes.object,
-    toggleFavorite: PropTypes.func,
+    isLogged: PropTypes.bool.isRequired,
+    loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
+    toggleFavorite: PropTypes.func.isRequired,
     isForkingMarketFinalized: PropTypes.bool,
     noShowHeader: PropTypes.bool,
     forkingMarket: PropTypes.object,
-    loadReporting: PropTypes.func
+    loadReporting: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool.isRequired
+  };
+
+  static defaultProps = {
+    nullMessage: null,
+    isForkingMarketFinalized: false,
+    noShowHeader: false,
+    forkingMarket: null
   };
 
   constructor(props) {
@@ -60,10 +66,9 @@ export default class ReportingResolved extends Component {
 
   render() {
     const {
-      history,
       isLogged,
+      isMobile,
       loadMarketsInfoIfNotLoaded,
-      location,
       markets,
       toggleFavorite,
       isForkingMarketFinalized,
@@ -95,6 +100,7 @@ export default class ReportingResolved extends Component {
         <MarketsHeaderLabel title="Resolved" />
         <MarketsList
           isLogged={isLogged}
+          isMobile={isMobile}
           markets={markets}
           filteredMarkets={s.filteredMarkets}
           location={location}

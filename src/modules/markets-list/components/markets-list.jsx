@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import MarketPreview from "modules/market/components/market-preview/market-preview";
+import MarketPreview from "modules/market/containers/market-preview";
 import Paginator from "modules/common/components/paginator/paginator";
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
 import { TYPE_TRADE } from "modules/markets/constants/link-types";
@@ -24,8 +24,7 @@ export default class MarketsList extends Component {
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
     paginationPageParam: PropTypes.string,
     linkType: PropTypes.string,
-    collectMarketCreatorFees: PropTypes.func,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool.isRequired,
     pendingLiquidityOrders: PropTypes.object,
     nullMessage: PropTypes.string,
     addNullPadding: PropTypes.bool,
@@ -35,9 +34,15 @@ export default class MarketsList extends Component {
   };
 
   static defaultProps = {
+    testid: null,
     linkType: TYPE_TRADE,
     paginationPageParam: "page",
-    nullMessage: "No Markets Available"
+    nullMessage: "No Markets Available",
+    pendingLiquidityOrders: {},
+    addNullPadding: false,
+    style: null,
+    showDisputingCard: false,
+    outcomes: null
   };
 
   constructor(props) {
@@ -111,7 +116,6 @@ export default class MarketsList extends Component {
   // NOTE -- You'll notice the odd method used for rendering the previews, this is done for optimization reasons
   render() {
     const {
-      collectMarketCreatorFees,
       filteredMarkets,
       history,
       isLogged,
@@ -162,7 +166,6 @@ export default class MarketsList extends Component {
                   toggleFavorite={toggleFavorite}
                   location={location}
                   history={history}
-                  collectMarketCreatorFees={collectMarketCreatorFees}
                   isMobile={isMobile}
                   linkType={linkType}
                   id={market.id}

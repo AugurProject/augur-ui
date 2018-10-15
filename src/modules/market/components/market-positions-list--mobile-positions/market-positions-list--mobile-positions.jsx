@@ -24,6 +24,11 @@ export default class MobilePositions extends Component {
     )
   };
 
+  static defaultProps = {
+    position: {},
+    pendingOrders: []
+  };
+
   static calcAvgDiff(position, orders) {
     const currentAvg = createBigNumber(
       getValue(position, "purchasePrice.formattedValue") || 0

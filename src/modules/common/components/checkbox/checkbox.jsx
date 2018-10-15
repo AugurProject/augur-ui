@@ -22,10 +22,10 @@ const Checkbox = ({ id, isChecked, value, onClick }) => (
 );
 
 Checkbox.propTypes = {
-  id: PropTypes.string,
-  isChecked: PropTypes.bool,
-  value: PropTypes.bool,
-  onClick: PropTypes.func
+  id: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool.isRequired,
+  value: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default Checkbox;

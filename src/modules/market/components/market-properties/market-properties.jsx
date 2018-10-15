@@ -121,7 +121,7 @@ const MarketProperties = p => {
                 )}
               </button>
             )}
-          {(linkType === undefined ||
+          {(!linkType ||
             (linkType &&
               linkType !== TYPE_FINALIZE_MARKET &&
               linkType !== TYPE_CLAIM_PROCEEDS)) && (
@@ -200,13 +200,22 @@ MarketProperties.propTypes = {
   updateModal: PropTypes.func.isRequired,
   linkType: PropTypes.string,
   finalizationTime: PropTypes.number,
-  buttonText: PropTypes.string,
   showAdditionalDetailsToggle: PropTypes.bool,
   showingDetails: PropTypes.bool,
-  toggleDetails: PropTypes.func,
+  toggleDetails: PropTypes.func.isRequired,
   isForking: PropTypes.bool,
   isForkingMarketFinalized: PropTypes.bool,
   forkingMarket: PropTypes.string
+};
+
+MarketProperties.defaultProps = {
+  linkType: null,
+  finalizationTime: null,
+  showAdditionalDetailsToggle: false,
+  showingDetails: false,
+  isForking: false,
+  isForkingMarketFinalized: false,
+  forkingMarket: null
 };
 
 export default MarketProperties;

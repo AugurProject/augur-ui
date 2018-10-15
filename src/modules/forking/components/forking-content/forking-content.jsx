@@ -131,4 +131,8 @@ ForkingContent.propTypes = {
   isForkingMarketFinalized: PropTypes.bool
 };
 
+ForkingContent.defaultProps = {
+  isForkingMarketFinalized: false
+};
+
 export default ForkingContent;

@@ -31,3 +31,7 @@ export default NavPortfolioIcon;
 NavPortfolioIcon.propTypes = {
   className: PropTypes.string
 };
+
+NavPortfolioIcon.defaultProps = {
+  className: null
+};

@@ -42,7 +42,7 @@ ReportingDisputeConfirm.propTypes = {
     .isRequired,
   stakeInfo: PropTypes.object.isRequired,
   gasEstimate: PropTypes.string.isRequired,
-  isMarketInValid: PropTypes.bool
+  isMarketInValid: PropTypes.bool.isRequired
 };
 
 export default ReportingDisputeConfirm;

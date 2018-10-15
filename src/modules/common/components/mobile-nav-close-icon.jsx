@@ -43,3 +43,7 @@ export default MobileNavCloseIcon;
 MobileNavCloseIcon.propTypes = {
   className: PropTypes.string
 };
+
+MobileNavCloseIcon.defaultProps = {
+  className: null
+};

@@ -23,3 +23,7 @@ export default AugurLogoIcon;
 AugurLogoIcon.propTypes = {
   className: PropTypes.string
 };
+
+AugurLogoIcon.defaultProps = {
+  className: null
+};

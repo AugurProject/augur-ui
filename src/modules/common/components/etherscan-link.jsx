@@ -14,9 +14,14 @@ const EtherscanLink = ({ baseUrl, txhash, label, showNonLink }) => (
 
 EtherscanLink.propTypes = {
   baseUrl: PropTypes.string,
-  txhash: PropTypes.string,
-  label: PropTypes.string,
+  txhash: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   showNonLink: PropTypes.bool
+};
+
+EtherscanLink.defaultProps = {
+  baseUrl: null,
+  showNonLink: false
 };
 
 export default EtherscanLink;

@@ -16,10 +16,16 @@ export default class Notification extends Component {
     onClick: PropTypes.func,
     removeNotification: PropTypes.func.isRequired,
     seen: PropTypes.bool.isRequired,
-    timestamp: PropTypes.number,
+    timestamp: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    status: PropTypes.string,
+    status: PropTypes.string.isRequired,
     toggleNotifications: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    description: "",
+    linkPath: null,
+    onClick: null
   };
 
   render() {

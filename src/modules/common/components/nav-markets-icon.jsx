@@ -37,3 +37,7 @@ export default NavMarketsIcon;
 NavMarketsIcon.propTypes = {
   className: PropTypes.string
 };
+
+NavMarketsIcon.defaultProps = {
+  className: null
+};

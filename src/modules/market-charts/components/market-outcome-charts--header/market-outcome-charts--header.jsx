@@ -51,7 +51,7 @@ const MarketOutcomeChartsHeader = ({
 export default MarketOutcomeChartsHeader;
 
 MarketOutcomeChartsHeader.propTypes = {
-  outcomeName: PropTypes.string,
+  outcomeName: PropTypes.string.isRequired,
   hoveredPeriod: PropTypes.object.isRequired,
   hoveredDepth: PropTypes.array.isRequired,
   fixedPrecision: PropTypes.number.isRequired,
@@ -59,4 +59,9 @@ MarketOutcomeChartsHeader.propTypes = {
   updateSelectedPeriod: PropTypes.func.isRequired,
   priceTimeSeries: PropTypes.array,
   excludeCandlestick: PropTypes.bool
+};
+
+MarketOutcomeChartsHeader.defaultProps = {
+  excludeCandlestick: false,
+  priceTimeSeries: []
 };

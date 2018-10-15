@@ -125,13 +125,18 @@ const MarketPortfolioCardFooter = ({
 MarketPortfolioCardFooter.propTypes = {
   linkType: PropTypes.string.isRequired,
   localButtonText: PropTypes.string.isRequired,
-  buttonAction: PropTypes.func,
-  outstandingReturns: PropTypes.string,
-  finalizationTime: PropTypes.number,
+  buttonAction: PropTypes.func.isRequired,
+  outstandingReturns: PropTypes.string.isRequired,
+  finalizationTime: PropTypes.number.isRequired,
   currentTimestamp: PropTypes.number.isRequired,
   unclaimedForkEth: PropTypes.object,
   marketId: PropTypes.string.isRequired,
   unclaimedForkRepStaked: PropTypes.object
+};
+
+MarketPortfolioCardFooter.defaultProps = {
+  unclaimedForkEth: null,
+  unclaimedForkRepStaked: null
 };
 
 export default MarketPortfolioCardFooter;

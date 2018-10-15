@@ -92,4 +92,10 @@ TimeProgressBar.propTypes = {
   timePeriodLabel: PropTypes.string.isRequired
 };
 
+TimeProgressBar.defaultProps = {
+  endTime: null,
+  currentTime: null,
+  startTime: null
+};
+
 export default TimeProgressBar;

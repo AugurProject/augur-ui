@@ -46,4 +46,13 @@ ChevronFlip.propTypes = {
   quick: PropTypes.bool
 };
 
+ChevronFlip.defaultProps = {
+  className: null,
+  pointDown: false,
+  stroke: null,
+  big: false,
+  filledInIcon: false,
+  quick: false
+};
+
 export default ChevronFlip;

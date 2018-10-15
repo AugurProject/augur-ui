@@ -188,4 +188,8 @@ ForkMigrationTotal.propTypes = {
   className: PropTypes.string
 };
 
+ForkMigrationTotal.defaultProps = {
+  className: null
+};
+
 export default ForkMigrationTotals;

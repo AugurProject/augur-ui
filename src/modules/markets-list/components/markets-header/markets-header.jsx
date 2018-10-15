@@ -19,7 +19,6 @@ export default class MarketsHeader extends Component {
     filter: PropTypes.string.isRequired,
     sort: PropTypes.string.isRequired,
     updateFilter: PropTypes.func.isRequired
-    // updateFilteredItems: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -27,25 +26,20 @@ export default class MarketsHeader extends Component {
 
     this.state = {
       headerTitle: null
-      // capitalizeTitle: false,
-      // filterByMarketFavorites: false
     };
 
     this.setHeaderTitle = this.setHeaderTitle.bind(this);
-    // this.setPathDependentFilters = this.setPathDependentFilters.bind(this)
   }
 
   componentWillMount() {
     const { location } = this.props;
     this.setHeaderTitle(location);
-    // this.setPathDependentFilters(this.props.location)
   }
 
   componentWillReceiveProps(nextProps) {
     const { location } = this.props;
     if (location !== nextProps.location) {
       this.setHeaderTitle(nextProps.location);
-      // this.setPathDependentFilters(nextProps.location)
     }
   }
 
@@ -55,7 +49,6 @@ export default class MarketsHeader extends Component {
     if (searchParams[CATEGORY_PARAM_NAME]) {
       this.setState({
         headerTitle: searchParams[CATEGORY_PARAM_NAME]
-        // capitalizeTitle: false
       });
     } else {
       const path = parsePath(location.pathname);
@@ -63,7 +56,6 @@ export default class MarketsHeader extends Component {
       if (path[0] === MARKETS) {
         this.setState({
           headerTitle: path[0]
-          // capitalizeTitle: true
         });
       }
     }

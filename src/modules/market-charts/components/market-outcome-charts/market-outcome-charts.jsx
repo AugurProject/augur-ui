@@ -31,8 +31,8 @@ export default class MarketOutcomeCharts extends Component {
     selectedOutcome: PropTypes.object.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    marketId: PropTypes.string,
-    updatePrecision: PropTypes.func,
+    marketId: PropTypes.string.isRequired,
+    updatePrecision: PropTypes.func.isRequired,
     priceTimeSeries: PropTypes.array,
     fixedPrecision: PropTypes.number,
     outcomeName: PropTypes.string
@@ -41,7 +41,9 @@ export default class MarketOutcomeCharts extends Component {
   static defaultProps = {
     fixedPrecision: 4,
     outcomeName: "",
-    priceTimeSeries: []
+    priceTimeSeries: [],
+    excludeCandlestick: false,
+    currentTimeInSeconds: null
   };
 
   constructor(props) {

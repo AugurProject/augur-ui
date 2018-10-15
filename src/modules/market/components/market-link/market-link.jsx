@@ -21,7 +21,7 @@ import {
   RETURN_PARAM_NAME
 } from "modules/routes/constants/param-names";
 
-const MarketLink = ({ linkType, location, className, id, children }) => {
+const MarketLink = ({ linkType, className, id, children }) => {
   let path;
 
   switch (linkType) {
@@ -70,8 +70,13 @@ MarketLink.propTypes = {
   id: PropTypes.string.isRequired,
   linkType: PropTypes.string,
   className: PropTypes.string,
-  location: PropTypes.object,
   children: PropTypes.any
+};
+
+MarketLink.defaultProps = {
+  linkType: null,
+  className: "",
+  children: null
 };
 
 export default MarketLink;

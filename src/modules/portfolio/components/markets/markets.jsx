@@ -33,7 +33,7 @@ class MyMarkets extends Component {
     location: PropTypes.object.isRequired,
     myMarkets: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
-    pendingLiquidityOrders: PropTypes.object,
+    pendingLiquidityOrders: PropTypes.object.isRequired,
     outcomes: PropTypes.object.isRequired,
     loadDisputingMarkets: PropTypes.func.isRequired
   };

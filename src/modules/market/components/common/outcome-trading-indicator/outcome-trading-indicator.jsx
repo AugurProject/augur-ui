@@ -77,6 +77,11 @@ export default function OutcomeTradingIndicator({
 OutcomeTradingIndicator.propTypes = {
   tradingIndicator: PropTypes.string.isRequired,
   style: PropTypes.object,
-  location: PropTypes.string,
+  location: PropTypes.string.isRequired,
   isMobile: PropTypes.bool
+};
+
+OutcomeTradingIndicator.defaultProps = {
+  style: {},
+  isMobile: false
 };

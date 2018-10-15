@@ -57,7 +57,9 @@ MarketAdditonalDetails.propTypes = {
 };
 
 MarketAdditonalDetails.defaultProps = {
-  resolutionSource: "General knowledge"
+  resolutionSource: "General knowledge",
+  details: null,
+  scalarDenomination: null
 };
 
 export default MarketAdditonalDetails;

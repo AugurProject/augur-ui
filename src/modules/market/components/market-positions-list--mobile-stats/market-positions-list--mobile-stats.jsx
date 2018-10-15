@@ -47,7 +47,7 @@ MobileStats.propTypes = {
       shares: PropTypes.object.isRequired,
       price: PropTypes.object.isRequired
     })
-  })
+  }).isRequired
 };
 
 export default MobileStats;

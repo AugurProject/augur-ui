@@ -69,7 +69,7 @@ Property.propTypes = {
     textStyle: PropTypes.object,
     marketCreatorFee: PropTypes.string,
     reportingFee: PropTypes.string
-  })
+  }).isRequired
 };
 
 export default class CoreProperties extends Component {
@@ -77,10 +77,15 @@ export default class CoreProperties extends Component {
     market: PropTypes.object.isRequired,
     currentTimestamp: PropTypes.number.isRequired,
     tentativeWinner: PropTypes.object,
-    isLogged: PropTypes.bool,
+    isLogged: PropTypes.bool.isRequired,
     isDesignatedReporter: PropTypes.bool,
     location: PropTypes.object.isRequired,
     finalizeMarket: PropTypes.func.isRequired
+  };
+
+  static defaultProps = {
+    tentativeWinner: null,
+    isDesignatedReporter: false
   };
 
   determinePhase() {

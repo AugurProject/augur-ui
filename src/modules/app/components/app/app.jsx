@@ -116,6 +116,13 @@ export default class AppView extends Component {
     useWeb3Transport: PropTypes.bool
   };
 
+  static defaultProps = {
+    augurNode: null,
+    ethereumNodeHttp: null,
+    ethereumNodeWs: null,
+    useWeb3Transport: false
+  };
+
   constructor(props) {
     super(props);
 

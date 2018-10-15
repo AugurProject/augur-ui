@@ -15,10 +15,10 @@ export default class ModalNetworkConnect extends Component {
   static propTypes = {
     modal: PropTypes.shape({
       isInitialConnection: PropTypes.bool
-    }),
-    env: PropTypes.object,
+    }).isRequired,
+    env: PropTypes.object.isRequired,
     submitForm: PropTypes.func.isRequired,
-    isConnectedThroughWeb3: PropTypes.bool
+    isConnectedThroughWeb3: PropTypes.bool.isRequired
   };
 
   constructor(props) {

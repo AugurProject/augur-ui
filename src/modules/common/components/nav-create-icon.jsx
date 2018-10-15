@@ -41,3 +41,7 @@ export default NavCreateIcon;
 NavCreateIcon.propTypes = {
   className: PropTypes.string
 };
+
+NavCreateIcon.defaultProps = {
+  className: null
+};

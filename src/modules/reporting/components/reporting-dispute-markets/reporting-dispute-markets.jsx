@@ -31,7 +31,9 @@ export default class ReportingDisputeMarkets extends Component {
   };
 
   static defaultProps = {
-    isForking: false
+    isForking: false,
+    forkingMarketId: null,
+    forkEndTime: null
   };
 
   componentWillMount() {

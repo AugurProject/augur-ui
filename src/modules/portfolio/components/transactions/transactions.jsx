@@ -163,6 +163,8 @@ export default class Transactions extends Component {
       boundedLength,
       transactionPeriodDefault,
       transactionPeriodOptions,
+      transactionTypeDefault,
+      transactionTypeOptions,
       filteredTransactions
     } = this.state;
     const hasTransactions = filteredTransactions.length > 0;
@@ -233,7 +235,7 @@ export default class Transactions extends Component {
         {!transactionsLoading &&
           hasTransactions && (
             <Paginator
-              itemsLength={s.filteredTransactions.length}
+              itemsLength={filteredTransactions.length}
               itemsPerPage={10}
               location={location}
               history={history}

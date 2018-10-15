@@ -33,7 +33,8 @@ export default class DisputingMarkets extends Component {
     nullDisputeMessage: "There are currently no markets available for dispute.",
     nullUpcomingMessage:
       "There are currently no markets slated for the upcoming dispute window.",
-    addNullPadding: false
+    addNullPadding: false,
+    forkingMarketId: null
   };
 
   constructor(props) {

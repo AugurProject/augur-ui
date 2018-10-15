@@ -21,7 +21,7 @@ import MarketPortfolioCardFooter from "modules/portfolio/components/market-portf
 
 export default class MarketPortfolioCard extends Component {
   static propTypes = {
-    claimTradingProceeds: PropTypes.func,
+    claimTradingProceeds: PropTypes.func.isRequired,
     currentTimestamp: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,
     linkType: PropTypes.string,
@@ -34,7 +34,8 @@ export default class MarketPortfolioCard extends Component {
   };
 
   static defaultProps = {
-    positionsDefault: true
+    positionsDefault: true,
+    linkType: null
   };
 
   constructor(props) {

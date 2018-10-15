@@ -45,3 +45,7 @@ export default MobileNavHamburgerIcon;
 MobileNavHamburgerIcon.propTypes = {
   className: PropTypes.string
 };
+
+MobileNavHamburgerIcon.defaultProps = {
+  className: null
+};

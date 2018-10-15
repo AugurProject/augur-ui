@@ -18,6 +18,10 @@ export default class MarketOutcomesList extends Component {
     selectedOutcome: PropTypes.any
   };
 
+  static defaultProps = {
+    selectedOutcome: null
+  };
+
   constructor(props) {
     super(props);
 

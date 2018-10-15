@@ -14,7 +14,6 @@ export default class PositionsMarketsList extends Component {
     history: PropTypes.object.isRequired,
     currentTimestamp: PropTypes.number.isRequired,
     paginationName: PropTypes.string.isRequired,
-    linkType: PropTypes.string,
     positionsDefault: PropTypes.bool,
     claimTradingProceeds: PropTypes.func,
     isMobile: PropTypes.bool.isRequired,
@@ -25,7 +24,8 @@ export default class PositionsMarketsList extends Component {
   static defaultProps = {
     noTopPadding: false,
     addNullPadding: false,
-    positionsDefault: true
+    positionsDefault: true,
+    claimTradingProceeds: null
   };
 
   constructor(props) {
@@ -81,7 +81,6 @@ export default class PositionsMarketsList extends Component {
       markets,
       location,
       history,
-      linkType,
       positionsDefault,
       claimTradingProceeds,
       isMobile,
@@ -104,7 +103,6 @@ export default class PositionsMarketsList extends Component {
               market={market}
               location={location}
               history={history}
-              linkType={linkType}
               positionsDefault={positionsDefault}
               claimTradingProceeds={claimTradingProceeds}
               isMobile={isMobile}

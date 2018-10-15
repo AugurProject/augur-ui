@@ -45,3 +45,7 @@ export default NavAccountIcon;
 NavAccountIcon.propTypes = {
   className: PropTypes.string
 };
+
+NavAccountIcon.defaultProps = {
+  className: null
+};

@@ -31,3 +31,7 @@ export default NavReportingIcon;
 NavReportingIcon.propTypes = {
   className: PropTypes.string
 };
+
+NavReportingIcon.defaultProps = {
+  className: null
+};

@@ -93,10 +93,10 @@ const PortfolioReportsForkedMarketCard = ({
 PortfolioReportsForkedMarketCard.propTypes = {
   buttonAction: PropTypes.func.isRequired,
   currentTimestamp: PropTypes.number.isRequired,
-  linkType: PropTypes.string,
+  linkType: PropTypes.string.isRequired,
   market: PropTypes.object.isRequired,
-  unclaimedForkEth: PropTypes.object,
-  unclaimedForkRepStaked: PropTypes.object
+  unclaimedForkEth: PropTypes.object.isRequired,
+  unclaimedForkRepStaked: PropTypes.object.isRequired
 };
 
 export default PortfolioReportsForkedMarketCard;

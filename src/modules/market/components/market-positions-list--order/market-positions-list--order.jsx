@@ -11,9 +11,9 @@ import Styles from "modules/market/components/market-positions-list--order/marke
 
 export default class Order extends Component {
   static propTypes = {
-    isExtendedDisplay: PropTypes.bool,
-    isMobile: PropTypes.bool,
-    outcomeName: PropTypes.string,
+    isExtendedDisplay: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool.isRequired,
+    outcomeName: PropTypes.string.isRequired,
     order: PropTypes.shape({
       type: PropTypes.string.isRequired,
       orderCancellationStatus: PropTypes.string,
@@ -22,9 +22,13 @@ export default class Order extends Component {
       tokensEscrowed: PropTypes.object,
       sharesEscrowed: PropTypes.object,
       cancelOrder: PropTypes.func.isRequired
-    }),
-    pending: PropTypes.bool,
+    }).isRequired,
+    pending: PropTypes.bool.isRequired,
     outcome: PropTypes.object
+  };
+
+  static defaultProps = {
+    outcome: null
   };
 
   constructor(props) {

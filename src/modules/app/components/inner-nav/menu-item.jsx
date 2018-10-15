@@ -22,4 +22,8 @@ MenuItem.propTypes = {
   children: PropTypes.array
 };
 
+MenuItem.defaultProps = {
+  children: null
+};
+
 export default MenuItem;

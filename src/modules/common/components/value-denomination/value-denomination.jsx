@@ -67,4 +67,18 @@ ValueDenomination.propTypes = {
   hideDenomination: PropTypes.bool
 };
 
+ValueDenomination.defaultProps = {
+  className: null,
+  valueClassname: null,
+  prefix: null,
+  postfix: null,
+  value: null,
+  formatted: null,
+  fullPrecision: null,
+  denomination: null,
+  hidePrefix: false,
+  hidePostfix: false,
+  hideDenomination: false
+};
+
 export default ValueDenomination;
