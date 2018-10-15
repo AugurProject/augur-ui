@@ -25,6 +25,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     sharedChartMargins: PropTypes.object.isRequired,
     orderBook: PropTypes.object.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
+    pricePrecision: PropTypes.number.isRequired,
     updateHoveredPrice: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     updatePrecision: PropTypes.func,
@@ -60,6 +61,7 @@ export default class MarketOutcomeChartsOrders extends Component {
   render() {
     const {
       fixedPrecision,
+      pricePrecision,
       orderBook,
       sharedChartMargins,
       updateHoveredPrice,
@@ -80,7 +82,6 @@ export default class MarketOutcomeChartsOrders extends Component {
         style={{ paddingBottom: sharedChartMargins.bottom - 4 }}
       >
         <MarketOutcomeChartHeaderOrders
-          fixedPrecision={fixedPrecision}
           updatePrecision={updatePrecision}
           isMobile={isMobile}
           headerHeight={headerHeight}
@@ -153,10 +154,10 @@ export default class MarketOutcomeChartsOrders extends Component {
                   }
                 >
                   <span>
-                    {parseFloat(order.price.value.toFixed(fixedPrecision))}
+                    {parseFloat(order.price.value.toFixed(pricePrecision))}
                     <span style={{ color: "#6d1d3d", marginLeft: ".5px" }}>
                       {findTrailingZeros(
-                        order.price.value.toFixed(fixedPrecision)
+                        order.price.value.toFixed(pricePrecision)
                       )}
                     </span>
                   </span>
@@ -185,7 +186,7 @@ export default class MarketOutcomeChartsOrders extends Component {
           <MarketOutcomeMidpoint
             hasOrders={hasOrders}
             orderBookKeys={orderBookKeys}
-            fixedPrecision={fixedPrecision}
+            pricePrecision={pricePrecision}
           />
         </div>
         <div
@@ -252,10 +253,10 @@ export default class MarketOutcomeChartsOrders extends Component {
                   }
                 >
                   <span>
-                    {parseFloat(order.price.value.toFixed(fixedPrecision))}
+                    {parseFloat(order.price.value.toFixed(pricePrecision))}
                     <span style={{ color: "#135045", marginLeft: ".5px" }}>
                       {findTrailingZeros(
-                        order.price.value.toFixed(fixedPrecision)
+                        order.price.value.toFixed(pricePrecision)
                       )}
                     </span>
                   </span>

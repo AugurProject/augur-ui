@@ -40,6 +40,7 @@ const mapStateToProps = (state, ownProps) => {
     isMobile: state.appStatus.isMobile,
     currentTimeInSeconds: selectCurrentTimestampInSeconds(state),
     fixedPrecision: 4,
+    pricePrecision: 4,
     minPrice:
       newMarket.type === SCALAR
         ? createBigNumber(newMarket.scalarSmallNum)
