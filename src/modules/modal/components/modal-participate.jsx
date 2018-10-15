@@ -13,7 +13,6 @@ import { formatRep, formatEther } from "utils/format-number";
 
 export default class ModalParticipate extends Component {
   static propTypes = {
-    modal: PropTypes.object.isRequired,
     rep: PropTypes.string.isRequired,
     closeModal: PropTypes.func.isRequired,
     purchaseParticipationTokens: PropTypes.func.isRequired

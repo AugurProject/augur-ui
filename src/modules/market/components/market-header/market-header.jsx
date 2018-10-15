@@ -50,6 +50,7 @@ export default class MarketHeader extends Component {
       clearSelectedOutcome,
       description,
       history,
+      location,
       marketType,
       resolutionSource,
       selectedOutcome,

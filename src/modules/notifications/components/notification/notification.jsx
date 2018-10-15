@@ -12,7 +12,6 @@ export default class Notification extends Component {
   static propTypes = {
     description: PropTypes.string,
     id: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired,
     linkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onClick: PropTypes.func,
     removeNotification: PropTypes.func.isRequired,

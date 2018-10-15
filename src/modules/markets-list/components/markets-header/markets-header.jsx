@@ -15,7 +15,6 @@ import Styles from "modules/markets-list/components/markets-header/markets-heade
 // NOTE -- commented out state due to temp lack of utilization + linting
 export default class MarketsHeader extends Component {
   static propTypes = {
-    isLogged: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     filter: PropTypes.string.isRequired,
     sort: PropTypes.string.isRequired,

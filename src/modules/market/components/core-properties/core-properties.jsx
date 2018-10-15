@@ -19,15 +19,15 @@ import {
   TYPE_DISPUTE
 } from "modules/markets/constants/link-types";
 
-const Property = p => (
+const Property = ({ numRow, property }) => (
   <div
     className={classNames(Styles.CoreProperties__property, {
-      [Styles.CoreProperties__propertySmall]: p.numRow !== 0
+      [Styles.CoreProperties__propertySmall]: numRow !== 0
     })}
   >
     <span className={Styles[`CoreProperties__property-name`]}>
-      <div>{p.property.name}</div>
-      {p.property.tooltip && (
+      <div>{property.name}</div>
+      {property.tooltip && (
         <div>
           <label
             className={classNames(
@@ -49,14 +49,14 @@ const Property = p => (
             <h4>Trading Settlement Fee</h4>
             <p>
               The trading settlement fee is a combination of the Market Creator
-              Fee (<b>{p.property.marketCreatorFee}</b>) and the Reporting Fee (
-              <b>{p.property.reportingFee}</b>)
+              Fee (<b>{property.marketCreatorFee}</b>) and the Reporting Fee (
+              <b>{property.reportingFee}</b>)
             </p>
           </ReactTooltip>
         </div>
       )}
     </span>
-    <span style={p.property.textStyle}>{p.property.value}</span>
+    <span style={property.textStyle}>{property.value}</span>
   </div>
 );
 

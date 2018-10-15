@@ -4,7 +4,15 @@ import { BigNumber } from "utils/create-big-number";
 
 import ConfirmStyles from "modules/common/less/confirm-table";
 
-const ReportingReportConfirm = p => (
+const ReportingReportConfirm = ({
+  market,
+  selectedOutcome,
+  stake,
+  gasEstimate,
+  isMarketInValid,
+  isOpenReporting,
+  designatedReportNoShowReputationBond
+}) => (
   <article className={ConfirmStyles.Confirm}>
     <h2 className={ConfirmStyles.Confirm__heading}>Confirm Report</h2>
     <div className={ConfirmStyles["Confirm__wrapper--wide"]}>
@@ -13,30 +21,29 @@ const ReportingReportConfirm = p => (
           <li>
             <span>Outcome</span>
             <span>
-              {p.isMarketInValid ? "Market is Invalid" : p.selectedOutcome}
+              {isMarketInValid ? "Market is Invalid" : selectedOutcome}
             </span>
           </li>
-          {!p.isOpenReporting && (
+          {!isOpenReporting && (
             <li>
               <span>Stake</span>
               <span>
-                {BigNumber.isBigNumber(p.stake) ? p.stake.toNumber() : p.stake}{" "}
-                REP
+                {BigNumber.isBigNumber(stake) ? stake.toNumber() : stake} REP
               </span>
             </li>
           )}
           <li>
             <span>Gas</span>
-            <span>{p.gasEstimate} ETH</span>
+            <span>{gasEstimate} ETH</span>
           </li>
         </ul>
       </div>
     </div>
-    {p.isOpenReporting &&
-      p.designatedReportNoShowReputationBond && (
+    {isOpenReporting &&
+      designatedReportNoShowReputationBond && (
         <div className={ConfirmStyles.Confirm__note_text}>
           If your report is accepted as the winning outcome, you will receive at
-          least {p.designatedReportNoShowReputationBond.formatted} REP
+          least {designatedReportNoShowReputationBond.formatted} REP
         </div>
       )}
   </article>

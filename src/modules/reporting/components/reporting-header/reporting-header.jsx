@@ -11,7 +11,6 @@ import TimeProgressBar from "modules/reporting/components/time-progress-bar/time
 export default class ReportingHeader extends Component {
   static propTypes = {
     heading: PropTypes.string.isRequired,
-    isMobile: PropTypes.bool.isRequired,
     loadReportingWindowBounds: PropTypes.func.isRequired,
     reportingWindowStats: PropTypes.object.isRequired,
     repBalance: PropTypes.string.isRequired,

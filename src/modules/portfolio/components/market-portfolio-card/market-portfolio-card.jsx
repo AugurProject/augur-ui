@@ -21,7 +21,6 @@ import MarketPortfolioCardFooter from "modules/portfolio/components/market-portf
 
 export default class MarketPortfolioCard extends Component {
   static propTypes = {
-    buttonText: PropTypes.string,
     claimTradingProceeds: PropTypes.func,
     currentTimestamp: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,

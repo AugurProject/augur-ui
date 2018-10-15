@@ -31,7 +31,6 @@ export default class PortfolioReports extends Component {
     showUpcomingPagination: PropTypes.bool.isRequired,
     currentTimestamp: PropTypes.number.isRequired,
     getReportingFees: PropTypes.func.isRequired,
-    isLogged: PropTypes.bool.isRequired,
     finalizeMarket: PropTypes.func.isRequired,
     forkedMarket: PropTypes.object,
     updateModal: PropTypes.func.isRequired,

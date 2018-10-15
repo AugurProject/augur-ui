@@ -19,7 +19,6 @@ export default class MarketPositionsListPosition extends Component {
       realizedNet: PropTypes.object,
       totalNet: PropTypes.object
     }).isRequired,
-    openOrders: PropTypes.array.isRequired,
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     outcome: PropTypes.object,

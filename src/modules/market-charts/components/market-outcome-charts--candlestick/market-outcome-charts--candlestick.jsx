@@ -28,7 +28,6 @@ class MarketOutcomeCandlestick extends React.Component {
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     selectedRange: PropTypes.number.isRequired,
-    sharedChartMargins: PropTypes.object.isRequired,
     updateSelectedPeriod: PropTypes.func.isRequired,
     updateSelectedRange: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired
@@ -355,9 +354,9 @@ function determineDrawParams({
   selectedRange
 }) {
   // Dimensions/Positioning
-  const { sharedChartMargins } = this.props;
   const chartDim = {
-    ...sharedChartMargins,
+    top: 0,
+    bottom: 30,
     right: 0,
     left: 50,
     stick: 5,

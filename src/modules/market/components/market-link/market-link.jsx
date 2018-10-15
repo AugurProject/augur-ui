@@ -21,10 +21,10 @@ import {
   RETURN_PARAM_NAME
 } from "modules/routes/constants/param-names";
 
-const MarketLink = p => {
+const MarketLink = ({ linkType, location, className, id, children }) => {
   let path;
 
-  switch (p.linkType) {
+  switch (linkType) {
     case TYPE_REPORT:
       path = makePath(REPORT);
       break;
@@ -39,28 +39,28 @@ const MarketLink = p => {
   }
 
   const queryLink = {
-    [MARKET_ID_PARAM_NAME]: p.id
+    [MARKET_ID_PARAM_NAME]: id
   };
 
-  if (p.linkType === TYPE_DISPUTE || p.linkType === TYPE_REPORT) {
+  if (linkType === TYPE_DISPUTE || linkType === TYPE_REPORT) {
     queryLink[RETURN_PARAM_NAME] = location.hash;
   }
 
   return (
     <span>
-      {p.id ? (
+      {id ? (
         <Link
-          data-testid={"link-" + p.id}
-          className={p.className}
+          data-testid={"link-" + id}
+          className={className}
           to={{
             pathname: path,
             search: makeQuery(queryLink)
           }}
         >
-          {p.children}
+          {children}
         </Link>
       ) : (
-        p.children
+        children
       )}
     </span>
   );
@@ -70,7 +70,8 @@ MarketLink.propTypes = {
   id: PropTypes.string.isRequired,
   linkType: PropTypes.string,
   className: PropTypes.string,
-  location: PropTypes.object
+  location: PropTypes.object,
+  children: PropTypes.any
 };
 
 export default MarketLink;
