@@ -127,7 +127,7 @@ MarketPortfolioCardFooter.propTypes = {
   localButtonText: PropTypes.string.isRequired,
   buttonAction: PropTypes.func.isRequired,
   outstandingReturns: PropTypes.string.isRequired,
-  finalizationTime: PropTypes.number.isRequired,
+  finalizationTime: PropTypes.number,
   currentTimestamp: PropTypes.number.isRequired,
   unclaimedForkEth: PropTypes.object,
   marketId: PropTypes.string.isRequired,
@@ -136,7 +136,8 @@ MarketPortfolioCardFooter.propTypes = {
 
 MarketPortfolioCardFooter.defaultProps = {
   unclaimedForkEth: null,
-  unclaimedForkRepStaked: null
+  unclaimedForkRepStaked: null,
+  finalizationTime: null
 };
 
 export default MarketPortfolioCardFooter;

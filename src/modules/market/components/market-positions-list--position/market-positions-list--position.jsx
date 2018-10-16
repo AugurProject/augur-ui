@@ -21,12 +21,13 @@ export default class MarketPositionsListPosition extends Component {
     }).isRequired,
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    outcome: PropTypes.object.isRequired,
+    outcome: PropTypes.object,
     hasOrders: PropTypes.bool
   };
 
   static defaultProps = {
-    hasOrders: false
+    hasOrders: false,
+    outcome: null
   };
 
   static calcAvgDiff(position, order) {

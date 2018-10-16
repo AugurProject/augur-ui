@@ -26,8 +26,12 @@ export default class ReportingReportForm extends Component {
     stake: PropTypes.string.isRequired,
     isOpenReporting: PropTypes.bool.isRequired,
     isDesignatedReporter: PropTypes.bool.isRequired,
-    isMarketInValid: PropTypes.bool.isRequired,
+    isMarketInValid: PropTypes.bool,
     insufficientRep: PropTypes.bool.isRequired
+  };
+
+  static defaultProps = {
+    isMarketInValid: false
   };
 
   static BUTTONS = {
