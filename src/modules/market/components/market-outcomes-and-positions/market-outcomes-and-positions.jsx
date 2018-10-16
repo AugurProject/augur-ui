@@ -19,7 +19,7 @@ const MarketOutcomesAndPositions = ({
   updateSelectedOutcome
 }) => (
   <section>
-    {(!isMobile || (isMobile && !selectedOutcome)) && (
+    {(!isMobile || !selectedOutcome) && (
       <MarketOutcomesList
         marketId={marketId}
         outcomes={outcomes}

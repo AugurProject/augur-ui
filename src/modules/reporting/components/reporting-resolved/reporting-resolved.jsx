@@ -24,6 +24,8 @@ function getMarketIds(markets) {
 
 export default class ReportingResolved extends Component {
   static propTypes = {
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
     markets: PropTypes.array.isRequired,
     nullMessage: PropTypes.string,
     isLogged: PropTypes.bool.isRequired,
@@ -74,7 +76,9 @@ export default class ReportingResolved extends Component {
       isForkingMarketFinalized,
       forkingMarket,
       noShowHeader,
-      nullMessage
+      nullMessage,
+      location,
+      history
     } = this.props;
     const s = this.state;
 
