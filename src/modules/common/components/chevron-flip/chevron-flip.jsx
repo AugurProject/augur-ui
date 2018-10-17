@@ -47,11 +47,11 @@ ChevronFlip.propTypes = {
 };
 
 ChevronFlip.defaultProps = {
-  className: null,
+  className: undefined,
   pointDown: false,
-  stroke: null,
-  big: false,
-  filledInIcon: false,
+  stroke: undefined,
+  big: undefined,
+  filledInIcon: undefined,
   quick: false
 };
 
