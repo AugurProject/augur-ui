@@ -95,7 +95,8 @@ export default class AddressPickerContent extends Component {
           <div
             key={i}
             className={classNames(StylesDropdown.ConnectDropdown__row, {
-              [StylesDropdown.FadeInAndOut]: !addresses[i]
+              [StylesDropdown.FadeInAndOut]: !addresses[i],
+              [StylesDropdown.ConnectDropdown__rowTransition]: true
             })}
           >
             <button
