@@ -115,9 +115,31 @@
   display: flex;
   font-family: 'Roboto Mono', monospace;
   padding: 7px 24px;
+  transition: opacity 0.5s fadeIn;
 
   &:hover {
     background-color: rgba(240, 239, 246, 0.05);
+  }
+}
+
+.FadeInAndOut {
+  animation-duration: 1.25s;
+  animation-iteration-count: infinite;
+  animation-name: fadeAnimation;
+  opacity: 0;
+}
+
+@keyframes fadeAnimation {
+  0% {
+    opacity: 0;
+  }
+
+  33% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 
