@@ -27,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
     isLogged: state.authStatus.isLogged,
     isDesignatedReporter:
       market.designatedReporter === state.loginAccount.address,
+    isMobileSmall: state.appStatus.isMobileSmall,
     market
   };
 };

@@ -29,7 +29,8 @@ export default class MarketHeader extends Component {
     isLogged: PropTypes.bool,
     isDesignatedReporter: PropTypes.bool,
     location: PropTypes.object.isRequired,
-    finalizeMarket: PropTypes.func.isRequired
+    finalizeMarket: PropTypes.func.isRequired,
+    isMobileSmall: PropTypes.bool.isRequired
   };
 
   static defaultProps = {
@@ -72,7 +73,8 @@ export default class MarketHeader extends Component {
       tentativeWinner,
       isLogged,
       isDesignatedReporter,
-      finalizeMarket
+      finalizeMarket,
+      isMobileSmall
     } = this.props;
 
     let { details } = this.props;
@@ -157,6 +159,7 @@ export default class MarketHeader extends Component {
               isDesignatedReporter={isDesignatedReporter}
               location={location}
               finalizeMarket={finalizeMarket}
+              isMobileSmall={isMobileSmall}
             />
           </div>
         </div>
