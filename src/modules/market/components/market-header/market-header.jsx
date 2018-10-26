@@ -30,7 +30,8 @@ export default class MarketHeader extends Component {
     isDesignatedReporter: PropTypes.bool,
     location: PropTypes.object.isRequired,
     finalizeMarket: PropTypes.func.isRequired,
-    isMobileSmall: PropTypes.bool.isRequired
+    isMobileSmall: PropTypes.bool.isRequired,
+    isForking: PropTypes.bool.isRequired
   };
 
   static defaultProps = {
@@ -74,7 +75,8 @@ export default class MarketHeader extends Component {
       isLogged,
       isDesignatedReporter,
       finalizeMarket,
-      isMobileSmall
+      isMobileSmall,
+      isForking
     } = this.props;
 
     let { details } = this.props;
@@ -90,7 +92,11 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
-        <div className={Styles.MarketHeader__nav}>
+        <div
+          className={classNames(Styles.MarketHeader__nav, {
+            [Styles["MarketHeader__nav-isForking"]]: isForking
+          })}
+        >
           {selectedOutcome !== null && marketType === CATEGORICAL ? (
             <button
               className={Styles[`MarketHeader__back-button`]}
