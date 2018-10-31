@@ -90,7 +90,7 @@ const MarketProperties = ({
             <span>Open Interest</span>
             <ValueDenomination
               valueClassname="volume"
-              formatted={openInterest.full}
+              formatted={openInterest.formatted}
             />
           </li>
           <li>
@@ -238,7 +238,7 @@ MarketProperties.propTypes = {
   forkingMarket: PropTypes.string,
   resolutionSource: PropTypes.string,
   marketType: PropTypes.string,
-  openInterest: PropTypes.string,
+  openInterest: PropTypes.object,
   volume: PropTypes.object,
   loginAccount: PropTypes.object,
   reportingState: PropTypes.string,
