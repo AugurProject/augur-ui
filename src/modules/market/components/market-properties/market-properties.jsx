@@ -90,8 +90,7 @@ const MarketProperties = ({
             <span>Open Interest</span>
             <ValueDenomination
               valueClassname="volume"
-              formatted={openInterest}
-              denomination="ETH"
+              formatted={openInterest.full}
             />
           </li>
           <li>
