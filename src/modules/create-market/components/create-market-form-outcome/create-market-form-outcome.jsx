@@ -118,14 +118,16 @@ export default class CreateMarketOutcome extends Component {
 
     const updatedValidations = Object.keys(validations).reduce(
       (p, key) =>
-        validations[key] === true
-          ? { ...p, [key]: true }
-          : { ...p, [key]: validations[key] || false },
+        validations[key] === ""
+          ? { ...p, [key]: "" }
+          : { ...p, [key]: validations[key] || null },
       {}
     );
 
-    // Reset tickSize as it only applies to 'scalar' markets and we are 'defaulting' the value in the componenet.
+    // Reset tickSize and scalarDenomination as it only applies to 'scalar' markets and we are 'defaulting' the value in the componenet.
+    delete updatedMarket.scalarDenomination;
     delete updatedMarket.tickSize;
+    delete updatedValidations.scalarDenomination;
     delete updatedValidations.outcomes;
     delete updatedValidations.scalarSmallNum;
     delete updatedValidations.scalarBigNum;
@@ -135,24 +137,24 @@ export default class CreateMarketOutcome extends Component {
       case CATEGORICAL:
         updatedValidations.outcomes = updatedValidations.outcomes
           ? updatedValidations.outcomes
-          : false;
+          : null;
         break;
       case SCALAR:
         updatedValidations.scalarSmallNum = updatedValidations.scalarSmallNum
           ? updatedValidations.scalarSmallNum
-          : false;
+          : null;
         updatedValidations.scalarBigNum = updatedValidations.scalarBigNum
           ? updatedValidations.scalarBigNum
-          : false;
+          : null;
         updatedValidations.tickSize = updatedValidations.tickSize
           ? updatedValidations.tickSize
-          : false;
+          : null;
         break;
       default:
         break;
     }
 
-    updatedValidations.type = true;
+    updatedValidations.type = "";
 
     updatedMarket.validations[newMarket.currentStep] = updatedValidations;
     updatedMarket.type = value;
@@ -198,9 +200,9 @@ export default class CreateMarketOutcome extends Component {
     }
 
     // reset errors
-    updatedMarket.validations[currentStep].scalarBigNum = true;
-    updatedMarket.validations[currentStep].scalarSmallNum = true;
-    updatedMarket.validations[currentStep].tickSize = true;
+    updatedMarket.validations[currentStep].scalarBigNum = "";
+    updatedMarket.validations[currentStep].scalarSmallNum = "";
+    updatedMarket.validations[currentStep].tickSize = "";
 
     switch (true) {
       case scalarSmallNum === "":
@@ -226,11 +228,11 @@ export default class CreateMarketOutcome extends Component {
           "Min must be less than max.";
         break;
       default:
-        updatedMarket.validations[currentStep].scalarSmallNum = true;
+        updatedMarket.validations[currentStep].scalarSmallNum = "";
     }
     updatedMarket.scalarSmallNum = scalarSmallNum;
 
-    if (updatedMarket.validations[currentStep].scalarSmallNum === true) {
+    if (updatedMarket.validations[currentStep].scalarSmallNum === "") {
       switch (true) {
         case scalarBigNum === "":
           updatedMarket.validations[currentStep].scalarBigNum =
@@ -255,7 +257,7 @@ export default class CreateMarketOutcome extends Component {
             "Max must be more than min.";
           break;
         default:
-          updatedMarket.validations[currentStep].scalarBigNum = true;
+          updatedMarket.validations[currentStep].scalarBigNum = "";
       }
     }
     updatedMarket.scalarBigNum = scalarBigNum;
@@ -275,7 +277,7 @@ export default class CreateMarketOutcome extends Component {
         }`;
         break;
       default:
-        updatedMarket.validations[currentStep].tickSize = true;
+        updatedMarket.validations[currentStep].tickSize = "";
     }
 
     if (type === scalarType.TICK_SIZE) {
@@ -288,7 +290,7 @@ export default class CreateMarketOutcome extends Component {
           "Denomination is required.";
         break;
       default:
-        updatedMarket.validations[currentStep].scalarDenomination = true;
+        updatedMarket.validations[currentStep].scalarDenomination = "";
     }
 
     if (type === scalarType.DENOMINATION) {
@@ -350,10 +352,10 @@ export default class CreateMarketOutcome extends Component {
           "Outcome names must be unique.";
         break;
       default:
-        updatedMarket.validations[currentStep].outcomes = true;
+        updatedMarket.validations[currentStep].outcomes = "";
     }
 
-    if (updatedMarket.validations[currentStep].outcomes === true) {
+    if (updatedMarket.validations[currentStep].outcomes === "") {
       updatedMarket.outcomes = outcomes;
     }
     updatedMarket.isValid = isValid(currentStep);
@@ -416,7 +418,7 @@ export default class CreateMarketOutcome extends Component {
             <label htmlFor="cm__input--outcome1">
               <span>Potential Outcomes</span>
               {validation.outcomes &&
-                validation.outcomes.length && (
+                validation.outcomes.length > 0 && (
                   <span className={StylesForm.CreateMarketForm__error}>
                     {InputErrorIcon}
                     {validation.outcomes}
@@ -427,7 +429,8 @@ export default class CreateMarketOutcome extends Component {
               {[...Array(s.outcomeFieldCount).keys()].map(i => {
                 const placeholderText = i < 2 ? "Outcome" : "Optional Outcome";
                 const isError =
-                  typeof newMarket.validations[1].outcomes === "string";
+                  newMarket.validations[1].outcomes &&
+                  newMarket.validations[1].outcomes.length > 0;
                 const isDuplicate =
                   cleanedOutcomes.filter(
                     outcome => outcome === newMarket.outcomes[i]
@@ -532,7 +535,7 @@ export default class CreateMarketOutcome extends Component {
                   onKeyPress={e => keyPressed(e)}
                 />
                 {validation.scalarBigNum &&
-                  validation.scalarBigNum.length && (
+                  validation.scalarBigNum.length > 0 && (
                     <span
                       className={StylesForm["CreateMarketForm__error--bottom"]}
                     >
@@ -587,7 +590,7 @@ export default class CreateMarketOutcome extends Component {
                   onKeyPress={e => keyPressed(e)}
                 />
                 {validation.scalarDenomination &&
-                  validation.scalarDenomination.length && (
+                  validation.scalarDenomination.length > 0 && (
                     <span className={StylesForm.CreateMarketForm__error_tick}>
                       {InputErrorIcon}
                       {validation.scalarDenomination}
@@ -614,7 +617,7 @@ export default class CreateMarketOutcome extends Component {
                   onKeyPress={e => keyPressed(e)}
                 />
                 {validation.tickSize &&
-                  validation.tickSize.length && (
+                  validation.tickSize.length > 0 && (
                     <span className={StylesForm.CreateMarketForm__error_tick}>
                       {InputErrorIcon}
                       {validation.tickSize}
