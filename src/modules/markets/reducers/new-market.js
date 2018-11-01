@@ -16,8 +16,8 @@ const DEFAULT_STATE = () => ({
     {
       description: null,
       category: null,
-      tag1: null,
-      tag2: null
+      tag1: "",
+      tag2: ""
     },
     {
       type: null
