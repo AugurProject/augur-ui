@@ -244,7 +244,12 @@ export default class CreateMarketDefine extends Component {
           <label htmlFor="cm__input--tag1">
             <span>Tags</span>
             {tagMessage && (
-              <span className={StylesForm["CreateMarketForm__error--abs"]}>
+              <span
+                className={classNames(
+                  StylesForm["CreateMarketForm__error--abs"],
+                  StylesForm["CreateMarketForm__error--lessSpace"]
+                )}
+              >
                 {InputErrorIcon}
                 {tagMessage}
               </span>
