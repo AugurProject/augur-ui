@@ -1091,10 +1091,10 @@ augur-core@1.1.0:
     solidity-coverage "0.5.4"
     yargs "11.0.0"
 
-augur.js@5.10.2:
-  version "5.10.2"
-  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-5.10.2.tgz#40a12e5e2f99ade3bda2c54b5d3a1384d044ef55"
-  integrity sha512-kdl1Fg7ssX+9lJ0sPy4vZRH+1ph8j1HYtvC7bz9W7xMVQ8++Jg/QbvTa8yM+6JSZF4Y+UR8ZcwI1cxVx6f2ORw==
+augur.js@5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-5.10.3.tgz#e7e73c890765588f7cee9d614565532505590adf"
+  integrity sha512-EGc6ITxjb5F+mtC15pUgcS5JgXOON2IAr1e6IC+x5EvhDzzwy7vee+YpTQaVJPcDyJ7wn1eL35iH3O3pMzb7eg==
   dependencies:
     async "1.5.2"
     augur-core "1.1.0"
@@ -2507,7 +2507,7 @@ buffer-xor@^1.0.3:
 
 buffer@^4.3.0:
   version "4.9.1"
-  resolved "http://registry.npmjs.org/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
   integrity sha1-bRu2AbB6TvztlwlBMgkwJ8lbwpg=
   dependencies:
     base64-js "^1.0.2"
@@ -5513,6 +5513,31 @@ ethrpc@5.7.1:
     request "2.85.0"
     websocket "1.0.26"
 
+ethrpc@5.7.2:
+  version "5.7.2"
+  resolved "https://registry.yarnpkg.com/ethrpc/-/ethrpc-5.7.2.tgz#79ef8d37f83f2f33fac1119d1d556f00f61edd87"
+  integrity sha512-cU7kFhKsh2u9ADVMRl2DjXHjBf4o6+dzSb9piEHnDNTGgBp2sNqIwKZt8pIhjO9TlSVg73jsjcVW1xi2dLLxoA==
+  dependencies:
+    async "2.6.0"
+    augur-blockstream "5.0.0"
+    bignumber.js "6.0.0"
+    browser-request "0.3.3"
+    clone "2.1.1"
+    es6-promise "4.2.4"
+    ethereumjs-tx "1.3.1"
+    immutable-delete "1.0.1"
+    keccak "1.2.0"
+    lodash "4.17.10"
+    oboe "2.1.3"
+    postinstall-build "5.0.1"
+    redux "3.6.0"
+    redux-thunk-subscribe "1.0.3"
+    speedomatic "2.1.5"
+    uuid "3.0.1"
+  optionalDependencies:
+    request "2.85.0"
+    websocket "1.0.26"
+
 event-emitter@0.3.5, event-emitter@^0.3.5, event-emitter@~0.3.5:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/event-emitter/-/event-emitter-0.3.5.tgz#df8c69eef1647923c7157b9ce83840610b02cc39"
@@ -6996,7 +7021,7 @@ http-errors@1.6.2:
 
 http-errors@~1.6.2:
   version "1.6.3"
-  resolved "http://registry.npmjs.org/http-errors/-/http-errors-1.6.3.tgz#8b55680bb4be283a0b5bf4ea2e38580be1d9320d"
+  resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.6.3.tgz#8b55680bb4be283a0b5bf4ea2e38580be1d9320d"
   integrity sha1-i1VoC7S+KDoLW/TqLjhYC+HZMg0=
   dependencies:
     depd "~1.1.2"
@@ -9129,7 +9154,7 @@ lodash@4.17.10:
 
 lodash@4.17.4:
   version "4.17.4"
-  resolved "http://registry.npmjs.org/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
   integrity sha1-eCA6TRwyiuHYbcpkYONptX9AVa4=
 
 lodash@^4.0.0, lodash@^4.1.0, lodash@^4.1.1, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0:
@@ -11711,15 +11736,15 @@ react-datetime@2.11.0:
     prop-types "^15.5.7"
     react-onclickoutside "^6.5.0"
 
-react-dom@16.2.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
-  integrity sha512-zpGAdwHVn9K0091d+hr+R0qrjoJ84cIBFL2uU60KvWBPfZ7LPSrfqviTxGHWN0sjPZb2hxWzMexwrvJdKePvjg==
+react-dom@16.6.0:
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.6.0.tgz#6375b8391e019a632a89a0988bce85f0cc87a92f"
+  integrity sha512-Stm2D9dXEUUAQdvpvhvFj/DEXwC2PAL/RwEMhoN4dvvD2ikTlJegEXf97xryg88VIAU22ZAP7n842l+9BTz6+w==
   dependencies:
-    fbjs "^0.8.16"
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    prop-types "^15.6.0"
+    prop-types "^15.6.2"
+    scheduler "^0.10.0"
 
 react-emotion@^9.1.1:
   version "9.2.10"
@@ -11904,15 +11929,15 @@ react-with-styles@^2.2.0:
     prop-types "^15.6.0"
     react-with-direction "^1.1.0"
 
-react@16.2.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.2.0.tgz#a31bd2dab89bff65d42134fa187f24d054c273ba"
-  integrity sha512-ZmIomM7EE1DvPEnSFAHZn9Vs9zJl5A9H7el0EGTE6ZbW9FKe/14IYAlPbC8iH25YarEQxZL+E8VW7Mi7kfQrDQ==
+react@16.6.0:
+  version "16.6.0"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.6.0.tgz#b34761cfaf3e30f5508bc732fb4736730b7da246"
+  integrity sha512-zJPnx/jKtuOEXCbQ9BKaxDMxR0001/hzxXwYxG8septeyYGfsgAei6NgfbVgOhbY1WOP2o3VPs/E9HaN+9hV3Q==
   dependencies:
-    fbjs "^0.8.16"
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-    prop-types "^15.6.0"
+    prop-types "^15.6.2"
+    scheduler "^0.10.0"
 
 read-chunk@^2.1.0:
   version "2.1.0"
@@ -12010,7 +12035,7 @@ read-pkg@^3.0.0:
 
 readable-stream@1.0, "readable-stream@>=1.0.33-1 <1.1.0-0":
   version "1.0.34"
-  resolved "http://registry.npmjs.org/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-1.0.34.tgz#125820e34bc842d2f2aaafafe4c2916ee32c157c"
   integrity sha1-Elgg40vIQtLyqq+v5MKRbuMsFXw=
   dependencies:
     core-util-is "~1.0.0"
@@ -12746,6 +12771,14 @@ schedule@^0.5.0:
   resolved "https://registry.yarnpkg.com/schedule/-/schedule-0.5.0.tgz#c128fffa0b402488b08b55ae74bb9df55cc29cc8"
   integrity sha512-HUcJicG5Ou8xfR//c2rPT0lPIRR09vVvN81T9fqfVgBmhERUbDEQoYKjpBxbueJnCPpSu2ujXzOnRQt6x9o/jw==
   dependencies:
+    object-assign "^4.1.1"
+
+scheduler@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.10.0.tgz#7988de90fe7edccc774ea175a783e69c40c521e1"
+  integrity sha512-+TSTVTCBAA3h8Anei3haDc1IRwMeDmtI/y/o3iBe3Mjl2vwYF9DtPDt929HyRmV/e7au7CLu8sc4C4W0VOs29w==
+  dependencies:
+    loose-envify "^1.1.0"
     object-assign "^4.1.1"
 
 schema-utils@^0.4.2, schema-utils@^0.4.4, schema-utils@^0.4.5:
@@ -14970,7 +15003,7 @@ webpack@^3.0.0:
 
 websocket@1.0.26:
   version "1.0.26"
-  resolved "https://registry.yarnpkg.com/websocket/-/websocket-1.0.26.tgz#a03a01299849c35268c83044aa919c6374be8194"
+  resolved "git://github.com/frozeman/WebSocket-Node.git#6c72925e3f8aaaea8dc8450f97627e85263999f2"
   integrity sha512-fjcrYDPIQxpTnqFQ9JjxUQcdvR89MFAOjPBlF+vjOt49w/XW4fJknUoMz/mDIn2eK1AdslVojcaOxOqyZZV8rw==
   dependencies:
     debug "^2.2.0"
@@ -14992,7 +15025,7 @@ whatwg-fetch@>=0.10.0:
 
 whatwg-fetch@^2.0.4:
   version "2.0.4"
-  resolved "http://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
   integrity sha512-dcQ1GWpOD/eEQ97k66aiEVpNnapVj90/+R+SXTPYGHpYBBypfKJEQjLrvMZ7YXbKm21gXd4NcuxUTjiv1YtLng==
 
 whatwg-mimetype@^2.1.0:
@@ -15291,7 +15324,7 @@ yargs@^3.5.4:
 
 yargs@^4.1.0, yargs@^4.6.0:
   version "4.8.1"
-  resolved "http://registry.npmjs.org/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-4.8.1.tgz#c0c42924ca4aaa6b0e6da1739dfb216439f9ddc0"
   integrity sha1-wMQpJMpKqmsObaFznfshZDn53cA=
   dependencies:
     cliui "^3.2.0"
