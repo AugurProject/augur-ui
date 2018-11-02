@@ -241,7 +241,12 @@ export default class CreateMarketDefine extends Component {
           </ul>
         </li>
         <li className={Styles.CreateMarketDefine__tags}>
-          <label htmlFor="cm__input--tag1">
+          <label
+            className={classNames({
+              [StylesForm["CreateMarketForm__error--label"]]: tagMessage
+            })}
+            htmlFor="cm__input--tag1"
+          >
             <span>Tags</span>
             {tagMessage && (
               <span
