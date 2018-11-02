@@ -15,17 +15,37 @@ const CategoricalOutcome = ({ className, outcome, isMobileSmall }) => (
       textOverflow: "ellipsis"
     }}
   >
-    <span className={Styles["MarketOutcomesCategorical__outcome-name"]}>
-      {outcome.name}
-    </span>
-    <span className={Styles["MarketOutcomesCategorical__outcome-value"]}>
-      {getValue(outcome, "lastPricePercent.full")}
-    </span>
-    <MarketOutcomeTradingIndicator
-      style={{ marginLeft: "10px" }}
-      outcome={outcome}
-      location="categorical"
-    />
+    {isMobileSmall ? 
+      <div className={Styles["MarketOutcomesCategorical__container"]}>
+        <div>
+          <span className={Styles["MarketOutcomesCategorical__outcome-value"]}>
+            {getValue(outcome, "lastPricePercent.full")}
+          </span>
+          <MarketOutcomeTradingIndicator
+            style={{ marginLeft: "10px" }}
+            outcome={outcome}
+            location="categorical"
+          />
+        </div>
+        <span className={Styles["MarketOutcomesCategorical__outcome-name"]}>
+          {outcome.name}
+        </span> 
+      </div>
+      :
+      <div className={Styles["MarketOutcomesCategorical__container"]}>
+        <span className={Styles["MarketOutcomesCategorical__outcome-name"]}>
+          {outcome.name}
+        </span>
+        <span className={Styles["MarketOutcomesCategorical__outcome-value"]}>
+          {getValue(outcome, "lastPricePercent.full")}
+        </span>
+        <MarketOutcomeTradingIndicator
+          style={{ marginLeft: "10px" }}
+          outcome={outcome}
+          location="categorical"
+        />
+      </div>
+    }
   </div>
 );
 
