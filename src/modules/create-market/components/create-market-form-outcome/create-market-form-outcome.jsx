@@ -417,13 +417,12 @@ export default class CreateMarketOutcome extends Component {
           <li>
             <label htmlFor="cm__input--outcome1">
               <span>Potential Outcomes</span>
-              {validation.outcomes &&
-                validation.outcomes.length > 0 && (
-                  <span className={StylesForm.CreateMarketForm__error}>
-                    {InputErrorIcon}
-                    {validation.outcomes}
-                  </span>
-                )}
+              {validation.outcomes && (
+                <span className={StylesForm.CreateMarketForm__error}>
+                  {InputErrorIcon}
+                  {validation.outcomes}
+                </span>
+              )}
             </label>
             <div className={Styles.CreateMarketOutcome__categorical}>
               {[...Array(s.outcomeFieldCount).keys()].map(i => {
@@ -500,15 +499,14 @@ export default class CreateMarketOutcome extends Component {
                   }}
                   onKeyPress={e => keyPressed(e)}
                 />
-                {validation.scalarSmallNum &&
-                  validation.scalarSmallNum.length && (
-                    <span
-                      className={StylesForm["CreateMarketForm__error--bottom"]}
-                    >
-                      {InputErrorIcon}
-                      {validation.scalarSmallNum}
-                    </span>
-                  )}
+                {validation.scalarSmallNum && (
+                  <span
+                    className={StylesForm["CreateMarketForm__error--bottom"]}
+                  >
+                    {InputErrorIcon}
+                    {validation.scalarSmallNum}
+                  </span>
+                )}
               </div>
               <div>
                 <label htmlFor="cm__input--max">
@@ -534,15 +532,14 @@ export default class CreateMarketOutcome extends Component {
                   }}
                   onKeyPress={e => keyPressed(e)}
                 />
-                {validation.scalarBigNum &&
-                  validation.scalarBigNum.length > 0 && (
-                    <span
-                      className={StylesForm["CreateMarketForm__error--bottom"]}
-                    >
-                      {InputErrorIcon}
-                      {validation.scalarBigNum}
-                    </span>
-                  )}
+                {validation.scalarBigNum && (
+                  <span
+                    className={StylesForm["CreateMarketForm__error--bottom"]}
+                  >
+                    {InputErrorIcon}
+                    {validation.scalarBigNum}
+                  </span>
+                )}
               </div>
               <div>
                 <label htmlFor="cm__input--denomination">
@@ -589,13 +586,12 @@ export default class CreateMarketOutcome extends Component {
                   }
                   onKeyPress={e => keyPressed(e)}
                 />
-                {validation.scalarDenomination &&
-                  validation.scalarDenomination.length > 0 && (
-                    <span className={StylesForm.CreateMarketForm__error_tick}>
-                      {InputErrorIcon}
-                      {validation.scalarDenomination}
-                    </span>
-                  )}
+                {validation.scalarDenomination && (
+                  <span className={StylesForm.CreateMarketForm__error_tick}>
+                    {InputErrorIcon}
+                    {validation.scalarDenomination}
+                  </span>
+                )}
               </div>
               <div>
                 <label htmlFor="cm__input--ticksize">
@@ -616,13 +612,12 @@ export default class CreateMarketOutcome extends Component {
                   }
                   onKeyPress={e => keyPressed(e)}
                 />
-                {validation.tickSize &&
-                  validation.tickSize.length > 0 && (
-                    <span className={StylesForm.CreateMarketForm__error_tick}>
-                      {InputErrorIcon}
-                      {validation.tickSize}
-                    </span>
-                  )}
+                {validation.tickSize && (
+                  <span className={StylesForm.CreateMarketForm__error_tick}>
+                    {InputErrorIcon}
+                    {validation.tickSize}
+                  </span>
+                )}
               </div>
             </div>
           </li>

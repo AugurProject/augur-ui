@@ -179,8 +179,7 @@ export default class CreateMarketResolution extends Component {
 
     const designatedReporterError =
       newMarket.designatedReporterType === DESIGNATED_REPORTER_SPECIFIC &&
-      validations.designatedReporterAddress &&
-      validations.designatedReporterAddress.length > 0;
+      validations.designatedReporterAddress;
 
     return (
       <ul className={StylesForm.CreateMarketForm__fields}>
@@ -229,21 +228,18 @@ export default class CreateMarketResolution extends Component {
                     }
                     onKeyPress={e => keyPressed(e)}
                   />
-                  {newMarket.validations[newMarket.currentStep].expirySource &&
-                    newMarket.validations[newMarket.currentStep].expirySource
-                      .length > 0 && (
-                      <span
-                        className={
-                          StylesForm["CreateMarketForm__error--bottom"]
-                        }
-                      >
-                        {InputErrorIcon}{" "}
-                        {
-                          newMarket.validations[newMarket.currentStep]
-                            .expirySource
-                        }
-                      </span>
-                    )}
+                  {newMarket.validations[newMarket.currentStep]
+                    .expirySource && (
+                    <span
+                      className={StylesForm["CreateMarketForm__error--bottom"]}
+                    >
+                      {InputErrorIcon}{" "}
+                      {
+                        newMarket.validations[newMarket.currentStep]
+                          .expirySource
+                      }
+                    </span>
+                  )}
                 </div>
               )}
             </li>
@@ -391,21 +387,18 @@ export default class CreateMarketResolution extends Component {
         <li>
           <label htmlFor="cm__input--time">
             <span>Expiration Time (UTC {utcLocalOffset})</span>
-            {newMarket.validations[newMarket.currentStep].hour &&
-              newMarket.validations[newMarket.currentStep].hour.length > 0 && (
-                <span className={StylesForm.CreateMarketForm__error}>
-                  {InputErrorIcon}
-                  {newMarket.validations[newMarket.currentStep].hour}
-                </span>
-              )}
-            {newMarket.validations[newMarket.currentStep].minute &&
-              newMarket.validations[newMarket.currentStep].minute.length >
-                0 && (
-                <span className={StylesForm.CreateMarketForm__error}>
-                  {InputErrorIcon}
-                  {newMarket.validations[newMarket.currentStep].minute}
-                </span>
-              )}
+            {newMarket.validations[newMarket.currentStep].hour && (
+              <span className={StylesForm.CreateMarketForm__error}>
+                {InputErrorIcon}
+                {newMarket.validations[newMarket.currentStep].hour}
+              </span>
+            )}
+            {newMarket.validations[newMarket.currentStep].minute && (
+              <span className={StylesForm.CreateMarketForm__error}>
+                {InputErrorIcon}
+                {newMarket.validations[newMarket.currentStep].minute}
+              </span>
+            )}
           </label>
           <div
             id="cm__input--time"

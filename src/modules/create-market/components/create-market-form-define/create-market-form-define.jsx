@@ -122,15 +122,9 @@ export default class CreateMarketDefine extends Component {
     const s = this.state;
 
     let tagMessage = null;
-    if (
-      newMarket.validations[newMarket.currentStep].tag1 &&
-      newMarket.validations[newMarket.currentStep].tag1.length > 0
-    ) {
+    if (newMarket.validations[newMarket.currentStep].tag1) {
       tagMessage = newMarket.validations[newMarket.currentStep].tag1;
-    } else if (
-      newMarket.validations[newMarket.currentStep].tag2 &&
-      newMarket.validations[newMarket.currentStep].tag2.length > 0
-    ) {
+    } else if (newMarket.validations[newMarket.currentStep].tag2) {
       tagMessage = newMarket.validations[newMarket.currentStep].tag2;
     }
 
@@ -139,23 +133,19 @@ export default class CreateMarketDefine extends Component {
         <li className={Styles.CreateMarketDefine__question}>
           <label htmlFor="cm__input--desc">
             <span>Market Question</span>
-            {newMarket.validations[newMarket.currentStep].description &&
-              newMarket.validations[newMarket.currentStep].description.length >
-                0 && (
-                <span className={StylesForm.CreateMarketForm__error}>
-                  {InputErrorIcon}
-                  {newMarket.validations[newMarket.currentStep].description}
-                </span>
-              )}
+            {newMarket.validations[newMarket.currentStep].description && (
+              <span className={StylesForm.CreateMarketForm__error}>
+                {InputErrorIcon}
+                {newMarket.validations[newMarket.currentStep].description}
+              </span>
+            )}
           </label>
           <input
             id="cm__input--desc"
             type="text"
             className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]:
-                newMarket.validations[newMarket.currentStep].description &&
-                newMarket.validations[newMarket.currentStep].description
-                  .length > 0
+              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                .validations[newMarket.currentStep].description
             })}
             value={newMarket.description}
             maxLength={DESCRIPTION_MAX_LENGTH}
@@ -186,9 +176,8 @@ export default class CreateMarketDefine extends Component {
             }}
             id="cm__input--cat"
             className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]:
-                newMarket.validations[newMarket.currentStep].category &&
-                newMarket.validations[newMarket.currentStep].category.length > 0
+              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                .validations[newMarket.currentStep].category
             })}
             type="text"
             value={s.localValues.category}
@@ -200,16 +189,14 @@ export default class CreateMarketDefine extends Component {
             }}
             onKeyPress={e => keyPressed(e)}
           />
-          {newMarket.validations[newMarket.currentStep].category &&
-            newMarket.validations[newMarket.currentStep].category.length >
-              0 && (
-              <span
-                className={[`${StylesForm["CreateMarketForm__error--bottom"]}`]}
-              >
-                {InputErrorIcon}
-                {newMarket.validations[newMarket.currentStep].category}
-              </span>
-            )}
+          {newMarket.validations[newMarket.currentStep].category && (
+            <span
+              className={[`${StylesForm["CreateMarketForm__error--bottom"]}`]}
+            >
+              {InputErrorIcon}
+              {newMarket.validations[newMarket.currentStep].category}
+            </span>
+          )}
         </li>
         <li className={StylesForm["field--50"]}>
           <label>
@@ -266,9 +253,8 @@ export default class CreateMarketDefine extends Component {
             id="cm__input--tag1"
             type="text"
             className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]:
-                newMarket.validations[newMarket.currentStep].tag1 &&
-                newMarket.validations[newMarket.currentStep].tag1.length > 0
+              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                .validations[newMarket.currentStep].tag1
             })}
             value={s.localValues.tag1}
             maxLength={TAGS_MAX_LENGTH}
@@ -282,9 +268,8 @@ export default class CreateMarketDefine extends Component {
             id="cm__input--tag2"
             type="text"
             className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]:
-                newMarket.validations[newMarket.currentStep].tag2 &&
-                newMarket.validations[newMarket.currentStep].tag2.length > 0
+              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                .validations[newMarket.currentStep].tag2
             })}
             value={s.localValues.tag2}
             maxLength={TAGS_MAX_LENGTH}
