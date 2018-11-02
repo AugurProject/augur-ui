@@ -67,7 +67,7 @@ const ForkingContent = ({
               href="http://docs.augur.net/#fork-state"
               target="_blank"
               rel="noopener noreferrer"
-              style={{textDecoration: "underline"}}
+              style={{ textDecoration: "underline" }}
             >
               here
             </a>
@@ -84,7 +84,7 @@ const ForkingContent = ({
               href="http://docs.augur.net/#fork-state"
               target="_blank"
               rel="noopener noreferrer"
-              style={{textDecoration: "underline"}}
+              style={{ textDecoration: "underline" }}
             >
               here
             </a>
