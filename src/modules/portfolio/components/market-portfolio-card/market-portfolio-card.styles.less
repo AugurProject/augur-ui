@@ -40,7 +40,9 @@
 .MarketCard__statlabel {
   .MarketCommon__small-label();
 
-  margin-right: 10%;
+  @media @breakpoint-1-0 {
+    margin-right: 5%;
+  }
 }
 
 .MarketCard__statvalue {
@@ -53,8 +55,12 @@
 .MarketCard__statunit {
   color: @color-purple;
   font-size: 0.875rem;
-  margin-right: 10%;
+  margin-right: 3.375rem;
   text-transform: uppercase;
+
+  @media @breakpoint-1-0 {
+    margin-right: 10%;
+  }
 }
 
 .MarketCard__expiration {
