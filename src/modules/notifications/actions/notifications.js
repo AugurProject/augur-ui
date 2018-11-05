@@ -70,8 +70,6 @@ export function updateNotification(id, notification) {
         index--
       ) {
         if (notifications[index].id === notification.id) {
-          // console.log(notifications[index])
-          // console.log(notification)
           notification.params = notifications[index].params;
           notification.to = notifications[index].to;
           if (notification.log.amount) {
