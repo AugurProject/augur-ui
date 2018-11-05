@@ -345,7 +345,7 @@ export default function setNotificationText(notification, callback) {
                 notification.log.outcome
               );
               notification.description = `Place ${orderType} order for ${
-                formatShares(notification.log.amount).formatted
+                formatShares(notification.amount || notification.log.amount).formatted
               } ${formatShares(
                 notification.log.amount
               ).denomination.toLowerCase()} of "${outcomeDescription}" at ${
