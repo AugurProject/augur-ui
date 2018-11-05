@@ -75,7 +75,11 @@ export function updateNotification(id, notification) {
           notification.params = notifications[index].params;
           notification.to = notifications[index].to;
           if (notification.log.amount) {
-            notification.amount = createBigNumber(notifications[index].amount || 0).plus(createBigNumber(notification.log.amount)).toFixed()
+            notification.amount = createBigNumber(
+              notifications[index].amount || 0
+            )
+              .plus(createBigNumber(notification.log.amount))
+              .toFixed();
           }
         }
       }
