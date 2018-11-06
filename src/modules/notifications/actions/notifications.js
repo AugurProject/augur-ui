@@ -40,7 +40,6 @@ export function loadNotifications() {
                   marketId:
                     transaction &&
                     transaction.market &&
-                    transaction &&
                     transaction.market.id,
                   quantity: transaction && transaction.quantity
                 }
