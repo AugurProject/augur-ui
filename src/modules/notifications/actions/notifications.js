@@ -23,7 +23,9 @@ export function loadNotifications() {
             key.match(regex) !== null &&
             transactionsData[key].status.toLowerCase() === SUCCESS
           ) {
-            const transaction = transactionsData[key].transactions && transactionsData[key].transactions[0]
+            const transaction =
+              transactionsData[key].transactions &&
+              transactionsData[key].transactions[0];
             dispatch(
               updateNotification(notifications[i].id, {
                 id: notifications[i].id,
@@ -35,8 +37,12 @@ export function loadNotifications() {
                   price: transaction && transaction.price,
                   outcome: transaction && transaction.outcome,
                   amount: transaction && transaction.amount,
-                  marketId: transaction && transaction.market && transaction && transaction.market.id,
-                  quantity: transaction && transaction.quantity,
+                  marketId:
+                    transaction &&
+                    transaction.market &&
+                    transaction &&
+                    transaction.market.id,
+                  quantity: transaction && transaction.quantity
                 }
               })
             );
