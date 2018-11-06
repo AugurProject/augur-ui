@@ -5,10 +5,7 @@ import setNotificationText from "modules/notifications/actions/set-notification-
 import { createBigNumber } from "utils/create-big-number";
 import makePath from "modules/routes/helpers/make-path";
 import { TRANSACTIONS } from "modules/routes/constants/views";
-import {
-  PENDING,
-  SUCCESS,
-} from "modules/transactions/constants/statuses";
+import { PENDING, SUCCESS } from "modules/transactions/constants/statuses";
 
 export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
