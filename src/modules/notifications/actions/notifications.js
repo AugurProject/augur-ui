@@ -3,11 +3,46 @@ import { augur } from "services/augurjs";
 import * as notificationLevels from "modules/notifications/constants/notifications";
 import setNotificationText from "modules/notifications/actions/set-notification-text";
 import { createBigNumber } from "utils/create-big-number";
+import makePath from "modules/routes/helpers/make-path";
+import { TRANSACTIONS } from "modules/routes/constants/views";
+import {
+  PENDING,
+  SUCCESS,
+} from "modules/transactions/constants/statuses";
 
 export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
 export const UPDATE_NOTIFICATION = "UPDATE_NOTIFICATION";
 export const CLEAR_NOTIFICATIONS = "CLEAR_NOTIFICATIONS";
+
+export function loadNotifications() {
+  return (dispatch, getState) => {
+    const { notifications, transactionsData } = store.getState();
+    for (let i = 0; i < notifications.length; i++) {
+      if (notifications[i].status.toLowerCase() === PENDING) {
+        const regex = new RegExp(notifications[i].id, "g");
+        Object.keys(transactionsData).some(key => {
+          if (
+            key.match(regex) !== null &&
+            transactionsData[key].status.toLowerCase() === SUCCESS
+          ) {
+            dispatch(
+              updateNotification(notifications[i].id, {
+                id: notifications[i].id,
+                timestamp: transactionsData[key].timestamp.timestamp,
+                status: "Confirmed",
+                linkPath: makePath(TRANSACTIONS),
+                seen: false
+              })
+            );
+            return true;
+          }
+          return false;
+        });
+      }
+    }
+  };
+}
 
 export function addCriticalNotification(notification) {
   return addNotification({
@@ -72,7 +107,7 @@ export function updateNotification(id, notification) {
         if (notifications[index].id === notification.id) {
           notification.params = notifications[index].params;
           notification.to = notifications[index].to;
-          if (notification.log.amount) {
+          if (notification.log && notification.log.amount) {
             notification.amount = createBigNumber(
               notifications[index].amount || 0
             )

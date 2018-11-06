@@ -18,10 +18,23 @@ export default class NotificationsView extends Component {
     removeNotification: PropTypes.func.isRequired,
     clearNotifications: PropTypes.func.isRequired,
     toggleNotifications: PropTypes.func.isRequired,
-    notificationsVisible: PropTypes.bool.isRequired
+    notificationsVisible: PropTypes.bool.isRequired,
+    loadNotifications: PropTypes.func.isRequired,
+    transactionsData: PropTypes.object.isRequired
   };
 
+  componentDidMount() {
+    this.props.loadNotifications();
+  }
+
   componentWillUpdate(nextProps) {
+    if (
+      JSON.stringify(this.props.transactionsData) ===
+      JSON.stringify(nextProps.transactionsData)
+    ) {
+      this.props.loadNotifications();
+    }
+
     if (!this.props.notificationsVisible && nextProps.notificationsVisible) {
       toggleHeight(this.notificationsContainer, false, () => {});
     } else if (
