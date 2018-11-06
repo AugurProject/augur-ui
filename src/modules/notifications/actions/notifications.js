@@ -23,13 +23,21 @@ export function loadNotifications() {
             key.match(regex) !== null &&
             transactionsData[key].status.toLowerCase() === SUCCESS
           ) {
+            const transaction = transactionsData[key].transactions && transactionsData[key].transactions[0]
             dispatch(
               updateNotification(notifications[i].id, {
                 id: notifications[i].id,
                 timestamp: transactionsData[key].timestamp.timestamp,
                 status: "Confirmed",
                 linkPath: makePath(TRANSACTIONS),
-                seen: false
+                seen: false,
+                log: {
+                  price: transaction && transaction.price,
+                  outcome: transaction && transaction.outcome,
+                  amount: transaction && transaction.amount,
+                  marketId: transaction && transaction.market && transaction && transaction.market.id,
+                  quantity: transaction && transaction.quantity,
+                }
               })
             );
             return true;
