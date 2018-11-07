@@ -42,7 +42,7 @@ export const cancelOrder = (
         outcome,
         orderTypeLabel
       })
-    )
+    );
     augur.api.CancelOrder.cancelOrder({
       meta: loginAccount.meta,
       _orderId: orderId,
