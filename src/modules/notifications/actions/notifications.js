@@ -38,9 +38,7 @@ export function loadNotifications() {
                   outcome: transaction && transaction.outcome,
                   amount: transaction && transaction.amount,
                   marketId:
-                    transaction &&
-                    transaction.market &&
-                    transaction.market.id,
+                    transaction && transaction.market && transaction.market.id,
                   quantity: transaction && transaction.quantity
                 }
               })
