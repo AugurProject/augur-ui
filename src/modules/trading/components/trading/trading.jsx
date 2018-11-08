@@ -72,7 +72,6 @@ class MarketTrading extends Component {
   }
 
   toggleForm() {
-    window.scroll(0, 0);
     this.setState({ showForm: !this.state.showForm });
   }
 
@@ -117,8 +116,8 @@ class MarketTrading extends Component {
         initialMessage = false;
     }
 
-    const bodyContent = [
-      <div key="bodyContent">
+    return (
+      <section className={classNames(Styles.Trading, "market-trading-wrapper")}>
         {(!isMobile || s.showForm) && (
           <MarketTradingWrapper
             market={market}
@@ -155,6 +154,20 @@ class MarketTrading extends Component {
             </div>
           )}
         {isMobile &&
+          hasSelectedOutcome &&
+          initialMessage && (
+            <div className={Styles["Trading__initial-message"]}>
+              <p>{initialMessage}</p>
+              {!hasFunds && (
+                <Link to={makePath(ACCOUNT_DEPOSIT)}>
+                  <span className={Styles["Trading__deposit-button"]}>
+                    Add Funds
+                  </span>
+                </Link>
+              )}
+            </div>
+          )}
+        {isMobile &&
         hasSelectedOutcome &&
         !initialMessage &&
         !s.showForm && ( // this needs to be changed to use p.selectedOutcome (should only show on mobile when an outcome has been selected)
@@ -168,15 +181,6 @@ class MarketTrading extends Component {
             <button onClick={e => this.toggleShowOrderPlaced()}>{Close}</button>
           </div>
         )}
-      </div>
-    ];
-
-    if (isMobile) {
-      return <div>{bodyContent}</div>;
-    }
-    return (
-      <section className={classNames(Styles.Trading, "market-trading-wrapper")}>
-        {bodyContent}
       </section>
     );
   }
