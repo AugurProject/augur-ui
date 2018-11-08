@@ -44,6 +44,31 @@ export function loadNotifications() {
               })
             );
             return true;
+          } else if (transactionsData[key].status.toLowerCase() === SUCCESS) {
+            const groupedTransactions = transactionsData[key].transactions;
+            groupedTransactions.forEach(transaction => {
+              if (
+                transaction.meta &&
+                transaction.meta.txhash === notifications[i].id
+              ) {
+                dispatch(
+                  updateNotification(notifications[i].id, {
+                    id: notifications[i].id,
+                    timestamp: transaction.creationTime,
+                    status: "Confirmed",
+                    linkPath: makePath(TRANSACTIONS),
+                    seen: false,
+                    log: {
+                      price: transaction.price,
+                      outcome: transaction.meta && transaction.meta.outcome,
+                      amount: transaction.amount,
+                      marketId: transaction.marketId
+                    }
+                  })
+                );
+                return true;
+              }
+            });
           }
           return false;
         });
