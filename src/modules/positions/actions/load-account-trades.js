@@ -12,6 +12,7 @@ import {
   clearAccountTrades
 } from "modules/positions/actions/update-account-trades-data";
 import logError from "utils/log-error";
+import { loadNotifications } from "modules/notifications/actions/notifications";
 
 export function loadAccountTrades(options, callback = logError) {
   return (dispatch, getState) => {
@@ -25,6 +26,7 @@ export function loadAccountTrades(options, callback = logError) {
         next => dispatch(loadAccountOrphanedOrders(options, next))
       ],
       () => {
+        dispatch(loadNotifications());
         callback(null);
       }
     );
