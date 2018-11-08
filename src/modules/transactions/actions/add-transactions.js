@@ -30,12 +30,12 @@ import { groupBy } from "lodash/fp";
 function formatTransactionMessage(sumBuy, sumSell, txType, isFill) {
   const buys = sumBuy !== 0 ? `${sumBuy} ${BUY}` : "";
   const sells = sumSell !== 0 ? `${sumSell} ${SELL}` : "";
-  if (isFill) {
-    return `${sumBuy + sumSell} ${txType}${
-      sumBuy + sumSell > 1 ? "s" : ""
-    } Filled`;
-  }
-  return `${buys}${
+  // if (isFill) {
+  //   return `${sumBuy + sumSell} ${txType}${
+  //     sumBuy + sumSell > 1 ? "s" : ""
+  //   } Filled`;
+  // }
+  return `${isFill ? "Filled: " : ""}${buys}${
     sumBuy !== 0 && sumSell !== 0 ? " & " : " "
   }${sells} ${txType}${sumBuy + sumSell > 1 ? "s" : ""}`;
 }
