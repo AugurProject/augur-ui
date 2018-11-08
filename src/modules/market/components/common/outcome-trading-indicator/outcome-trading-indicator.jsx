@@ -54,9 +54,9 @@ export default function OutcomeTradingIndicator({
         case "positions|down":
           return { top: "0.945rem" };
         case "modileTradingForm|down":
-          return { top: "1rem"};
+          return { top: "1rem" };
         case "modileTradingForm|up":
-          return { bottom: "1rem"};
+          return { bottom: "1rem" };
         default:
           return {};
       }
