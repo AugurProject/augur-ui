@@ -19,7 +19,6 @@ export default class NotificationsView extends Component {
     clearNotifications: PropTypes.func.isRequired,
     toggleNotifications: PropTypes.func.isRequired,
     notificationsVisible: PropTypes.bool.isRequired,
-    transactionsData: PropTypes.object.isRequired
   };
 
   componentWillUpdate(nextProps) {

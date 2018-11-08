@@ -12,7 +12,6 @@ const mapStateToProps = state => {
   const notifications = selectInfoNotificationsAndSeenCount(state);
   return {
     notifications: notifications.notifications,
-    transactionsData: state.transactionsData
   };
 };
 
