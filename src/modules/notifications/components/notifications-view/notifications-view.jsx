@@ -22,7 +22,7 @@ export default class NotificationsView extends Component {
     loadNotifications: PropTypes.func.isRequired,
     transactionsData: PropTypes.object.isRequired
   };
-  
+
   componentWillUpdate(nextProps) {
     if (
       JSON.stringify(this.props.transactionsData) ===
