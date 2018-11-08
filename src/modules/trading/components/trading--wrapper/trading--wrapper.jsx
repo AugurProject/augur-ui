@@ -211,7 +211,7 @@ class MarketTradingWrapper extends Component {
               <MarketOutcomeTradingIndicator
                 isMobile={isMobile}
                 outcome={selectedOutcome}
-                style={{ bottom: "1rem" }}
+                location="modileTradingForm"
               />
             </span>
           </div>
