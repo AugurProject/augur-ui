@@ -9,9 +9,9 @@ import {
 } from "modules/notifications/actions/notifications";
 
 const mapStateToProps = state => {
-  const notifications = selectInfoNotificationsAndSeenCount(state);
+  const { notifications } = selectInfoNotificationsAndSeenCount(state);
   return {
-    notifications: notifications.notifications
+    notifications
   };
 };
 
