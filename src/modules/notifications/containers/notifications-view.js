@@ -5,8 +5,7 @@ import { selectInfoNotificationsAndSeenCount } from "modules/notifications/selec
 import {
   updateNotification,
   removeNotification,
-  clearNotifications,
-  loadNotifications
+  clearNotifications
 } from "modules/notifications/actions/notifications";
 
 const mapStateToProps = state => {
@@ -21,8 +20,7 @@ const mapDispatchToProps = dispatch => ({
   updateNotification: (id, notification) =>
     dispatch(updateNotification(id, notification)),
   removeNotification: id => dispatch(removeNotification(id)),
-  clearNotifications: () => dispatch(clearNotifications()),
-  loadNotifications: () => dispatch(loadNotifications())
+  clearNotifications: () => dispatch(clearNotifications())
 });
 
 const NotificationsContainer = connect(
