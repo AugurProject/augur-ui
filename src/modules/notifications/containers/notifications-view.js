@@ -11,7 +11,7 @@ import {
 const mapStateToProps = state => {
   const notifications = selectInfoNotificationsAndSeenCount(state);
   return {
-    notifications: notifications.notifications,
+    notifications: notifications.notifications
   };
 };
 
