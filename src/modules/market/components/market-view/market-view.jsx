@@ -9,6 +9,7 @@ import MarketOutcomesAndPositions from "modules/market/containers/market-outcome
 import MarketTrading from "modules/trading/containers/trading";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
+import { BigNumber } from "utils/create-big-number";
 
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { BUY } from "modules/transactions/constants/types";
@@ -25,7 +26,10 @@ export default class MarketView extends Component {
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     loadingState: PropTypes.any,
-    pricePrecision: PropTypes.number.isRequired
+    pricePrecision: PropTypes.number.isRequired,
+    isMobile: PropTypes.bool.isRequired,
+    isLogged: PropTypes.bool.isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired
   };
 
   static defaultProps = {
@@ -147,18 +151,38 @@ export default class MarketView extends Component {
   }
 
   render() {
-    const { description, marketId, location, pricePrecision } = this.props;
+    const {
+      description,
+      marketId,
+      location,
+      pricePrecision,
+      isMobile,
+      availableFunds,
+      isLogged
+    } = this.props;
     const s = this.state;
+
+    const hasFunds = availableFunds && availableFunds.gt(0);
+    const topPlacement = isMobile && hasFunds && isLogged;
 
     return (
       <section
         ref={node => {
           this.node = node;
         }}
+        style={{ position: "relative" }}
       >
         <Helmet>
           <title>{parseMarketTitle(description)}</title>
         </Helmet>
+        {topPlacement && (
+          <MarketTrading
+            marketId={marketId}
+            selectedOutcome={s.selectedOutcome}
+            selectedOrderProperties={s.selectedOrderProperties}
+            updateSelectedOrderProperties={this.updateSelectedOrderProperties}
+          />
+        )}
         <div className={Styles.Market__upper}>
           <MarketHeader
             marketId={marketId}
@@ -195,14 +219,18 @@ export default class MarketView extends Component {
               updateSelectedOutcome={this.updateSelectedOutcome}
             />
           </div>
-          <div className={Styles["Market__details-trading"]}>
-            <MarketTrading
-              marketId={marketId}
-              selectedOutcome={s.selectedOutcome}
-              selectedOrderProperties={s.selectedOrderProperties}
-              updateSelectedOrderProperties={this.updateSelectedOrderProperties}
-            />
-          </div>
+          {!topPlacement && (
+            <div className={Styles["Market__details-trading"]}>
+              <MarketTrading
+                marketId={marketId}
+                selectedOutcome={s.selectedOutcome}
+                selectedOrderProperties={s.selectedOrderProperties}
+                updateSelectedOrderProperties={
+                  this.updateSelectedOrderProperties
+                }
+              />
+            </div>
+          )}
         </section>
       </section>
     );

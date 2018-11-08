@@ -6,6 +6,7 @@ import { selectMarket } from "modules/markets/selectors/market";
 import parseQuery from "modules/routes/helpers/parse-query";
 import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
 import getPrecision from "utils/get-number-precision";
+import { createBigNumber } from "utils/create-big-number";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -29,6 +30,7 @@ const mapStateToProps = (state, ownProps) => {
     universe,
     orderBooks,
     isMobile: appStatus.isMobile,
+    availableFunds: createBigNumber(state.loginAccount.eth || 0),
     marketId,
     marketsData,
     pricePrecision
