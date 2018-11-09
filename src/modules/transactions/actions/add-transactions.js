@@ -27,7 +27,7 @@ import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-va
 
 import { groupBy } from "lodash/fp";
 
-function formatTransactionMessage(sumBuy, sumSell, txType, isFill) {
+function formatTransactionMessage(sumBuy, sumSell, txType) {
   const buys = sumBuy !== 0 ? `${sumBuy} ${BUY}` : "";
   const sells = sumSell !== 0 ? `${sumSell} ${SELL}` : "";
   return `${buys}${
