@@ -94,7 +94,7 @@ function buildTradeTransaction(trade, marketsData) {
   transaction.id = `${transaction.transactionHash}-${transaction.orderId}`;
   const header = buildHeader(transaction, TRADE, SUCCESS);
   const meta = {};
-  meta.type = TRADE + (transaction.maker ? ' Filled' : ' Placed');
+  meta.type = TRADE + (transaction.maker ? " Filled" : " Placed");
   const outcomeName = getOutcome(market, transaction.outcome);
   if (outcomeName) meta.outcome = outcomeName;
   const formattedShares = formatShares(transaction.amount);
