@@ -30,12 +30,7 @@ import { groupBy } from "lodash/fp";
 function formatTransactionMessage(sumBuy, sumSell, txType, isFill) {
   const buys = sumBuy !== 0 ? `${sumBuy} ${BUY}` : "";
   const sells = sumSell !== 0 ? `${sumSell} ${SELL}` : "";
-  // if (isFill) {
-  //   return `${sumBuy + sumSell} ${txType}${
-  //     sumBuy + sumSell > 1 ? "s" : ""
-  //   } Filled`;
-  // }
-  return `${isFill ? "Filled: " : ""}${buys}${
+  return `${buys}${
     sumBuy !== 0 && sumSell !== 0 ? " & " : " "
   }${sells} ${txType}${sumBuy + sumSell > 1 ? "s" : ""}`;
 }
@@ -99,7 +94,7 @@ function buildTradeTransaction(trade, marketsData) {
   transaction.id = `${transaction.transactionHash}-${transaction.orderId}`;
   const header = buildHeader(transaction, TRADE, SUCCESS);
   const meta = {};
-  meta.type = TRADE;
+  meta.type = TRADE + (transaction.maker ? ' Filled' : ' Placed');
   const outcomeName = getOutcome(market, transaction.outcome);
   if (outcomeName) meta.outcome = outcomeName;
   const formattedShares = formatShares(transaction.amount);
