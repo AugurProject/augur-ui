@@ -35,6 +35,12 @@ function formatTransactionMessage(sumBuy, sumSell, txType, isFill) {
   }${sells} ${txType}${sumBuy + sumSell > 1 ? "s" : ""}`;
 }
 
+function formatTransactioFillMessage(txType, amount, price, outcome) {
+  return `${txType === BUY ? "bought" : "sold"} ${amount} Share${
+    amount > 1 ? "s" : ""
+  } of Outcome ${outcome} at ${price} ETH`;
+}
+
 export function addTradeTransactions(trades) {
   return (dispatch, getState) => {
     const { marketsData } = getState();
@@ -80,7 +86,12 @@ function buildTradeTransactionGroup(group, marketsData) {
     header.transactions[0].maker
   ) {
     // own order filled
-    header.message = formatTransactionMessage(sumBuy, sumSell, "Order", true);
+    header.message = formatTransactioFillMessage(
+      header.transactions[0].type,
+      header.transactions[0].amount,
+      header.transactions[0].price,
+      header.transactions[0].meta && header.transactions[0].meta.outcome
+    );
   } else {
     header.message = formatTransactionMessage(sumBuy, sumSell, "Trade");
   }
