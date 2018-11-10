@@ -35,10 +35,10 @@ function formatTransactionMessage(sumBuy, sumSell, txType) {
   }${sells} ${txType}${sumBuy + sumSell > 1 ? "s" : ""}`;
 }
 
-function formatTransactioFillMessage(txType, amount, price, outcome) {
+function formatTransactioFillMessage(txType, amount, price, numTxs, outcome) {
   return `${txType === BUY ? "bought" : "sold"} ${amount} Share${
-    amount > 1 ? "s" : ""
-  } of Outcome ${outcome} at ${price} ETH`;
+    amount === 1 ? "" : "s"
+  } of ${outcome} at ${numTxs > 1 ? "an average price of " : ""}${price}`;
 }
 
 export function addTradeTransactions(trades) {
@@ -64,15 +64,16 @@ export function addTradeTransactions(trades) {
 
 function buildTradeTransactionGroup(group, marketsData) {
   let header = {};
-  let sumBuy = 0;
-  let sumSell = 0;
+  let sumAmount = createBigNumber(0);
+  let sumPrice = createBigNumber(0);
+  let numTxs = 0;
+
   each(group, trade => {
-    if (trade.type === BUY) {
-      sumBuy += 1;
-    }
-    if (trade.type === SELL) {
-      sumSell += 1;
-    }
+    sumAmount = sumAmount.plus(createBigNumber(trade.amount));
+    sumPrice = sumPrice.plus(
+      createBigNumber(trade.price).times(createBigNumber(trade.amount))
+    );
+    numTxs += 1;
     const localHeader = buildTradeTransaction(trade, marketsData);
     if (Object.keys(header).length === 0) {
       header = localHeader;
@@ -80,21 +81,14 @@ function buildTradeTransactionGroup(group, marketsData) {
       header.transactions.push(localHeader.transactions[0]);
     }
   });
-  if (
-    header.transactions &&
-    header.transactions.length === 1 &&
-    header.transactions[0].maker
-  ) {
-    // own order filled
-    header.message = formatTransactioFillMessage(
-      header.transactions[0].type,
-      header.transactions[0].amount,
-      header.transactions[0].price,
-      header.transactions[0].meta && header.transactions[0].meta.outcome
-    );
-  } else {
-    header.message = formatTransactionMessage(sumBuy, sumSell, "Trade");
-  }
+
+  header.message = formatTransactioFillMessage(
+    header.transactions[0].type,
+    formatShares(sumAmount.toNumber()).formatted,
+    formatEther(sumPrice.dividedBy(sumAmount).toNumber()).full,
+    numTxs,
+    header.transactions[0].meta && header.transactions[0].meta.outcome
+  );
   return header;
 }
 
