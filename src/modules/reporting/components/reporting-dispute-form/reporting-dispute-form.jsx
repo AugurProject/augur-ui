@@ -87,7 +87,10 @@ export default class ReportingDisputeForm extends Component {
     const { disputeInfo } = newProps.market;
     const { updateState } = this.props;
     const updatedValidations = { ...this.state.validations };
-    if (disputeInfo && disputeInfo.disputeRound !== this.state.currentDisputeRound) {
+    if (
+      disputeInfo &&
+      disputeInfo.disputeRound !== this.state.currentDisputeRound
+    ) {
       updatedValidations.isDisputeActive =
         disputeInfo.disputeRound === this.state.currentDisputeRound;
       this.setState({
