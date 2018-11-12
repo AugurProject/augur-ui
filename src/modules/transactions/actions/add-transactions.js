@@ -35,7 +35,7 @@ function formatTransactionMessage(sumBuy, sumSell, txType) {
   }${sells} ${txType}${sumBuy + sumSell > 1 ? "s" : ""}`;
 }
 
-function formatTransactioFillMessage(txType, amount, price, numTxs, outcome) {
+function formatTransactionFillMessage(txType, amount, price, numTxs, outcome) {
   return `${txType === BUY ? "bought" : "sold"} ${amount} Share${
     amount === 1 ? "" : "s"
   } of ${outcome} at ${numTxs > 1 ? "an average price of " : ""}${price}`;
@@ -82,7 +82,7 @@ function buildTradeTransactionGroup(group, marketsData) {
     }
   });
 
-  header.message = formatTransactioFillMessage(
+  header.message = formatTransactionFillMessage(
     header.transactions[0].type,
     formatShares(sumAmount.toNumber()).formatted,
     formatEther(sumPrice.dividedBy(sumAmount).toNumber()).full,
