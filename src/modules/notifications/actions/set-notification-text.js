@@ -103,9 +103,7 @@ export default function setNotificationText(notification, callback) {
       // CreateOrder
       case "PUBLICCREATEORDER": {
         notification.title = "Create order";
-        console.log(' title updated ')
         if (!notification.description && notification.log) {
-          console.log('desc updated')
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.params._market], () => {
               const marketInfo = selectMarket(notification.params._market);
