@@ -34,6 +34,7 @@ import { updateAssets } from "modules/auth/actions/update-assets";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 
 const handleNotificationUpdate = (log, dispatch, getState) => {
+  //console.log(log)
   dispatch(
     updateNotification(log.transactionHash, {
       id: log.transactionHash,
@@ -121,6 +122,8 @@ export const handleOrderCreatedLog = log => (dispatch, getState) => {
     dispatch(updateAssets());
     dispatch(updateOrder(log, true));
     handleNotificationUpdate(log, dispatch, getState);
+    // console.log('order created')
+    // console.log(log)
     dispatch(loadAccountTrades({ marketId: log.marketId }));
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
@@ -157,6 +160,9 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     );
     dispatch(updateMarketCategoryPopularity(log.market, popularity));
     dispatch(updateOrder(log, false));
+    // console.log('order filled')
+    // console.log(log)
+
     handleNotificationUpdate(log, dispatch, getState);
   }
   // always reload account positions on trade so we get up to date PL data.

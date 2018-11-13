@@ -117,6 +117,8 @@ export function removeNotification(id) {
 
 export function updateNotification(id, notification) {
   return (dispatch, getState) => {
+    console.log('update')
+    console.log(notification)
     const callback = notification => {
       const fullNotification = {
         type: UPDATE_NOTIFICATION,
@@ -146,6 +148,24 @@ export function updateNotification(id, notification) {
             )
               .plus(createBigNumber(notification.log.amount))
               .toFixed();
+          }
+          if (notification.log && notifications[index].log && 
+            notification.log.eventName !== notifications[index].log.eventName && 
+            notification.log.orderId !==  notifications[index].log.orderId && 
+            notification.log.eventName === "OrderCreated") {
+            return dispatch(
+              addNotification({
+                id: notification.log.transactionHash + "-" + notification.log.orderId,
+                timestamp: notification.timestamp,
+                blockNumber: notification.log.blockNumber,
+                log: notification.log,
+                status: "Confirmed",
+                linkPath: makePath(TRANSACTIONS),
+                params: {
+                  type: "PUBLICCREATEORDER"
+                },
+              })
+            )
           }
         }
       }
