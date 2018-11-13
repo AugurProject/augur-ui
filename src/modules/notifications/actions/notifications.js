@@ -157,15 +157,16 @@ export function updateNotification(id, notification) {
           ) {
             return dispatch(
               addNotification({
-                id: notification.log.transactionHash + "-" + notification.log.orderId,
+                id:
+                  notification.log.transactionHash +
+                  "-" +
+                  notification.log.orderId,
                 timestamp: notification.timestamp,
                 blockNumber: notification.log.blockNumber,
                 log: notification.log,
                 status: "Confirmed",
                 linkPath: makePath(TRANSACTIONS),
-                params: {
-                  type: "PUBLICTRADE"
-                }
+                params: notification.params
               })
             );
           }
