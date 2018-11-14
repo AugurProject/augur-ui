@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Highcharts from "highcharts";
-import noData from "highcharts/modules/no-data-to-display";
-import moment from "moment";
+// import Highcharts from "highcharts";
+// import noData from "highcharts/modules/no-data-to-display";
+// import moment from "moment";
+import * as d3 from "d3";
+// import ReactFauxDOM from "react-faux-dom";
 
 import Dropdown from "modules/common/components/dropdown/dropdown";
 
-import debounce from "utils/debounce";
+// import debounce from "utils/debounce";
 import { formatEther } from "utils/format-number";
 
 import Styles from "modules/portfolio/components/performance-graph/performance-graph.styles";
@@ -48,10 +50,10 @@ class PerformanceGraph extends Component {
       graphTypeDefault: "total",
       graphPeriod: "DAY",
       graphPeriodOptions: [
-        { label: "Past 24hrs", value: "DAY" },
-        { label: "Past Week", value: "WEEK" },
-        { label: "Past Month", value: "MONTH" },
-        { label: "All", value: "ALL" }
+        { label: "Past 24hrs", value: "DAY", format: "%a %d %I:%M %p" },
+        { label: "Past Week", value: "WEEK", format: "%a %d %I:%M %p" },
+        { label: "Past Month", value: "MONTH", format: "%m/%d %I:%M %p" },
+        { label: "All", value: "ALL", format: "%x %I:%M %p" }
       ],
       graphPeriodDefault: "DAY",
       startTime: this.timeFrames.DAY,
@@ -60,9 +62,11 @@ class PerformanceGraph extends Component {
       performanceData: []
     };
 
+    this.margin = { top: 0, right: 0, bottom: 20, left: 60 };
+
     this.changeDropdown = this.changeDropdown.bind(this);
     this.updateChart = this.updateChart.bind(this);
-    this.updateChartDebounced = debounce(this.updateChart.bind(this));
+    // this.updateChartDebounced = debounce(this.updateChart.bind(this));
     this.updatePerformanceData = this.updatePerformanceData.bind(this);
     this.parsePerformanceData = this.parsePerformanceData.bind(this);
     this.chartSetup = this.chartSetup.bind(this);
@@ -70,7 +74,7 @@ class PerformanceGraph extends Component {
   }
 
   componentDidMount() {
-    noData(Highcharts);
+    // noData(Highcharts);
     this.chartFullRefresh(!this.props.isAnimating);
   }
 
@@ -90,10 +94,11 @@ class PerformanceGraph extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateChartDebounced);
+    // window.removeEventListener("resize", this.updateChartDebounced);
   }
 
   chartFullRefresh(forceUpdate = false) {
+    // if (forceUpdate && this.componentWrapper) this.updatePerformanceData();
     if (this.componentWrapper)
       this.chartSetup(() => {
         if (forceUpdate && this.componentWrapper) this.updatePerformanceData();
@@ -101,205 +106,218 @@ class PerformanceGraph extends Component {
   }
 
   chartSetup(callback = () => {}) {
-    window.removeEventListener("resize", this.updateChartDebounced);
+    if (!this.chart)
+      this.chart = d3
+        .select(this.drawContainer)
+        .append("svg")
+        .attr("height", 220)
+        .attr("width", "100%");
 
-    Highcharts.setOptions({
-      lang: {
-        thousandsSep: ","
-      }
-    });
-    const id = "performance_graph_chart";
-
-    this.performanceGraph = new Highcharts.Chart(id, {
-      title: {
-        text: null
-      },
-      chart: {
-        backgroundColor: "transparent",
-        height: "220px",
-        spacingLeft: 0,
-        spacingRight: 0
-      },
-      events: {
-        load() {
-          this.customTexts = [];
-
-          const text = this.renderer
-            .text(
-              "Responsive text",
-              this.xAxis[0].toPixels(20),
-              this.yAxis[0].toPixels(60)
-            )
-            .css({
-              fontSize: "10px"
-            })
-            .add();
-
-          this.customTexts.push(text);
-        },
-        redraw() {
-          this.customTexts[0].attr({
-            x: this.xAxis[0].toPixels(15),
-            y: this.yAxis[0].toPixels(50)
-          });
-        }
-      },
-      lang: {
-        noData: "No performance history."
-      },
-      rangeSelector: { selected: 1 },
-      xAxis: {
-        visible: true,
-        type: "datetime",
-        lineColor: "#686177",
-        crosshair: {
-          width: 4,
-          color: "#6f697e"
-        },
-        labels: {
-          formatter() {
-            return moment.unix(this.value).format("LL");
-          },
-          style: {
-            color: "#a7a2b2",
-            fontSize: "0.625rem",
-            textTransform: "uppercase",
-            fontWeight: "500"
-          }
-        },
-        tickLength: 6,
-        showFirstLabel: true,
-        showLastLabel: true,
-        tickPositioner(low, high) {
-          const positions = [this.dataMin, this.dataMax];
-          return positions;
-        }
-      },
-      yAxis: {
-        visible: true,
-        showFirstLabel: false,
-        showLastLabel: true,
-        gridLineColor: "#686177",
-        title: {
-          text: null
-        },
-        opposite: false,
-        labels: {
-          align: "left",
-          y: 15,
-          x: 5,
-          format: "{value} ETH",
-          formatter() {
-            return `${formatEther(this.value).formattedValue} ETH`;
-          },
-          style: {
-            color: "#a7a2b2",
-            fontSize: "0.625rem",
-            textTransform: "uppercase",
-            fontWeight: "500"
-          }
-        },
-        tickPositioner() {
-          // default
-          let positions = [-0.15, 0, 0.5, 1];
-          if (this.series[0]) {
-            positions = [];
-            const rangeMargin = (this.dataMax - this.dataMin) * 0.2;
-            let minTickValue =
-              this.dataMin >= 0 ? -0.25 : this.dataMin - rangeMargin;
-            let maxTickValue =
-              this.dataMax <= 0 ? 0.25 : this.dataMax + rangeMargin;
-            if (this.dataMin === 0 && this.dataMax > 0) {
-              minTickValue = rangeMargin * -1;
-            }
-            if (this.dataMax === 0 && this.dataMin < 0) {
-              maxTickValue = rangeMargin;
-            }
-            const median = (minTickValue + maxTickValue) / 2;
-            positions.push(minTickValue);
-            positions.push(this.dataMin);
-            if (median > 0) positions.push(0);
-            positions.push(median);
-            if (median < 0) positions.push(0);
-            positions.push(this.dataMax);
-            positions.push(maxTickValue);
-          }
-          return positions;
-        }
-      },
-      plotOptions: {
-        series: {
-          color: "white",
-          fillColor: {
-            linearGradient: [0, 0, 0, "100%"],
-            stops: [
-              [
-                0,
-                Highcharts.Color("#dbdae1")
-                  .setOpacity(0.25)
-                  .get("rgba")
-              ],
-              [
-                0.5,
-                Highcharts.Color("#dbdae1")
-                  .setOpacity(0.15)
-                  .get("rgba")
-              ],
-              [
-                1,
-                Highcharts.Color("#dbdae1")
-                  .setOpacity(0)
-                  .get("rgba")
-              ]
-            ]
-          }
-        }
-      },
-      legend: {
-        enabled: false
-      },
-      tooltip: {
-        positioner(labelWidth, labelHeight, point) {
-          // tooltip wants to position top left of crosshair, this optionally
-          // positions the inverse if the label will render off chart
-          return {
-            x:
-              point.plotX - labelWidth < 0
-                ? point.plotX
-                : point.plotX - labelWidth,
-            y:
-              point.plotY < labelHeight
-                ? point.plotY + labelHeight * 0.9
-                : point.plotY - labelHeight * 0.9
-          };
-        },
-        backgroundColor: "rgba(255,255,255,0)",
-        borderWidth: 0,
-        headerFormat: "",
-        style: {
-          fontSize: "0.625rem",
-          color: "white",
-          fontWeight: "700"
-        },
-        shadow: false,
-        shared: true,
-        shape: "none",
-        pointFormatter() {
-          return `<p style="line-height:1.2rem"><b style="color:${
-            this.color
-          }">${this.y} ETH</b><br/>${moment.unix(this.x).format("LLL")}</p>`;
-        },
-        valueDecimals: 4
-      },
-      credits: {
-        enabled: false
-      }
-    });
-
-    window.addEventListener("resize", this.updateChartDebounced);
+    console.log("chartSetupCalled", this.state);
 
     callback();
   }
+
+  // chartSetup(callback = () => {}) {
+  //   window.removeEventListener("resize", this.updateChartDebounced);
+
+  //   Highcharts.setOptions({
+  //     lang: {
+  //       thousandsSep: ","
+  //     }
+  //   });
+  //   const id = "performance_graph_chart";
+
+  //   this.performanceGraph = new Highcharts.Chart(id, {
+  //     title: {
+  //       text: null
+  //     },
+  //     chart: {
+  //       backgroundColor: "transparent",
+  //       height: "220px",
+  //       spacingLeft: 0,
+  //       spacingRight: 0
+  //     },
+  //     events: {
+  //       load() {
+  //         this.customTexts = [];
+
+  //         const text = this.renderer
+  //           .text(
+  //             "Responsive text",
+  //             this.xAxis[0].toPixels(20),
+  //             this.yAxis[0].toPixels(60)
+  //           )
+  //           .css({
+  //             fontSize: "10px"
+  //           })
+  //           .add();
+
+  //         this.customTexts.push(text);
+  //       },
+  //       redraw() {
+  //         this.customTexts[0].attr({
+  //           x: this.xAxis[0].toPixels(15),
+  //           y: this.yAxis[0].toPixels(50)
+  //         });
+  //       }
+  //     },
+  //     lang: {
+  //       noData: "No performance history."
+  //     },
+  //     rangeSelector: { selected: 1 },
+  //     xAxis: {
+  //       visible: true,
+  //       type: "datetime",
+  //       lineColor: "#686177",
+  //       crosshair: {
+  //         width: 4,
+  //         color: "#6f697e"
+  //       },
+  //       labels: {
+  //         formatter() {
+  //           return moment.unix(this.value).format("LL");
+  //         },
+  //         style: {
+  //           color: "#a7a2b2",
+  //           fontSize: "0.625rem",
+  //           textTransform: "uppercase",
+  //           fontWeight: "500"
+  //         }
+  //       },
+  //       tickLength: 6,
+  //       showFirstLabel: true,
+  //       showLastLabel: true,
+  //       tickPositioner(low, high) {
+  //         const positions = [this.dataMin, this.dataMax];
+  //         return positions;
+  //       }
+  //     },
+  //     yAxis: {
+  //       visible: true,
+  //       showFirstLabel: false,
+  //       showLastLabel: true,
+  //       gridLineColor: "#686177",
+  //       title: {
+  //         text: null
+  //       },
+  //       opposite: false,
+  //       labels: {
+  //         align: "left",
+  //         y: 15,
+  //         x: 5,
+  //         format: "{value} ETH",
+  //         formatter() {
+  //           return `${formatEther(this.value).formattedValue} ETH`;
+  //         },
+  //         style: {
+  //           color: "#a7a2b2",
+  //           fontSize: "0.625rem",
+  //           textTransform: "uppercase",
+  //           fontWeight: "500"
+  //         }
+  //       },
+  //       tickPositioner() {
+  //         // default
+  //         let positions = [-0.15, 0, 0.5, 1];
+  //         if (this.series[0]) {
+  //           positions = [];
+  //           const rangeMargin = (this.dataMax - this.dataMin) * 0.2;
+  //           let minTickValue =
+  //             this.dataMin >= 0 ? -0.25 : this.dataMin - rangeMargin;
+  //           let maxTickValue =
+  //             this.dataMax <= 0 ? 0.25 : this.dataMax + rangeMargin;
+  //           if (this.dataMin === 0 && this.dataMax > 0) {
+  //             minTickValue = rangeMargin * -1;
+  //           }
+  //           if (this.dataMax === 0 && this.dataMin < 0) {
+  //             maxTickValue = rangeMargin;
+  //           }
+  //           const median = (minTickValue + maxTickValue) / 2;
+  //           positions.push(minTickValue);
+  //           positions.push(this.dataMin);
+  //           if (median > 0) positions.push(0);
+  //           positions.push(median);
+  //           if (median < 0) positions.push(0);
+  //           positions.push(this.dataMax);
+  //           positions.push(maxTickValue);
+  //         }
+  //         return positions;
+  //       }
+  //     },
+  //     plotOptions: {
+  //       series: {
+  //         color: "white",
+  //         fillColor: {
+  //           linearGradient: [0, 0, 0, "100%"],
+  //           stops: [
+  //             [
+  //               0,
+  //               Highcharts.Color("#dbdae1")
+  //                 .setOpacity(0.25)
+  //                 .get("rgba")
+  //             ],
+  //             [
+  //               0.5,
+  //               Highcharts.Color("#dbdae1")
+  //                 .setOpacity(0.15)
+  //                 .get("rgba")
+  //             ],
+  //             [
+  //               1,
+  //               Highcharts.Color("#dbdae1")
+  //                 .setOpacity(0)
+  //                 .get("rgba")
+  //             ]
+  //           ]
+  //         }
+  //       }
+  //     },
+  //     legend: {
+  //       enabled: false
+  //     },
+  //     tooltip: {
+  //       positioner(labelWidth, labelHeight, point) {
+  //         // tooltip wants to position top left of crosshair, this optionally
+  //         // positions the inverse if the label will render off chart
+  //         return {
+  //           x:
+  //             point.plotX - labelWidth < 0
+  //               ? point.plotX
+  //               : point.plotX - labelWidth,
+  //           y:
+  //             point.plotY < labelHeight
+  //               ? point.plotY + labelHeight * 0.9
+  //               : point.plotY - labelHeight * 0.9
+  //         };
+  //       },
+  //       backgroundColor: "rgba(255,255,255,0)",
+  //       borderWidth: 0,
+  //       headerFormat: "",
+  //       style: {
+  //         fontSize: "0.625rem",
+  //         color: "white",
+  //         fontWeight: "700"
+  //       },
+  //       shadow: false,
+  //       shared: true,
+  //       shape: "none",
+  //       pointFormatter() {
+  //         return `<p style="line-height:1.2rem"><b style="color:${
+  //           this.color
+  //         }">${this.y} ETH</b><br/>${moment.unix(this.x).format("LLL")}</p>`;
+  //       },
+  //       valueDecimals: 4
+  //     },
+  //     credits: {
+  //       enabled: false
+  //     }
+  //   });
+
+  //   window.addEventListener("resize", this.updateChartDebounced);
+
+  //   callback();
+  // }
 
   changeDropdown(value) {
     let { graphType, graphPeriod, startTime } = this.state;
@@ -336,7 +354,7 @@ class PerformanceGraph extends Component {
     performanceData.forEach((object, index) => {
       const plotPoint = [];
       const { profitLoss } = object;
-      plotPoint.push(object.timestamp);
+      plotPoint.push(object.timestamp * 1000);
       if (profitLoss && profitLoss[graphType]) {
         plotPoint.push(formatEther(profitLoss[graphType]).formattedValue);
       } else {
@@ -379,36 +397,111 @@ class PerformanceGraph extends Component {
       }
     );
   }
-
   updateChart() {
-    const { selectedSeriesData } = this.state;
-    selectedSeriesData.forEach((series, i) => {
-      if (this.performanceGraph.series[i] == null) {
-        this.performanceGraph.addSeries(
-          {
-            type: "area",
-            color: "#ffffff",
-            className: Styles.PerformanceGraph__Series,
-            marker: {
-              fillColor: "white",
-              lineColor: "white"
-            },
-            name: series.name,
-            data: series.data
-          },
-          false
-        );
-      } else {
-        this.performanceGraph.series[i].setData(series.data, false, {}, false);
-      }
-    });
+    const { selectedSeriesData, graphPeriod, graphPeriodOptions } = this.state;
+    const timeFormat = graphPeriodOptions.reduce((a, e) => {
+      let newFormat = a;
+      if (e.value === graphPeriod) newFormat = e.format;
+      return newFormat;
+    }, "");
+    // console.log(selectedSeriesData);
+    // first remove all drawn lines in SVG to switch the chart info
+    d3.select(this.drawContainer)
+      .select("svg")
+      .selectAll("g")
+      .remove();
+    const width =
+      this.chart._groups[0][0].width.baseVal.value -
+      this.margin.left -
+      this.margin.right;
+    const height =
+      this.chart._groups[0][0].height.baseVal.value -
+      this.margin.top -
+      this.margin.bottom;
+    console.log(timeFormat);
+    const dateFormat = d3.timeFormat(timeFormat);
+    const chart = this.chart
+      .append("g")
+      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
+    const x = d3.scaleTime().rangeRound([0, width]);
+    const y = d3.scaleLinear().rangeRound([height, 0]);
+    const line = d3
+      .line()
+      .x(d => x(d[0]))
+      .y(d => y(d[1]));
+    x.domain(d3.extent(selectedSeriesData[0].data, d => d[0]));
+    y.domain(d3.extent(selectedSeriesData[0].data, d => d[1]));
+    chart
+      .append("g")
+      .attr("fill", "#fff")
+      .attr("stroke", "#fff")
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(x).tickFormat(dateFormat))
+      .attr("stroke", "#fff")
+      .select(".domain")
+      .attr("stroke", "#fff");
 
-    this.performanceGraph.redraw();
+    chart
+      .append("g")
+      .attr("stroke", "#fff")
+      .call(
+        d3.axisLeft(y).tickFormat(v => `${formatEther(v).formattedValue} ETH`)
+      )
+      .attr("stroke", "#fff")
+      .select(".domain")
+      .attr("stroke", "#fff")
+      .append("text")
+      .attr("fill", "#fff")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", "0.71em")
+      .attr("text-anchor", "end")
+      .text("ETH");
+
+    chart
+      .append("path")
+      .datum(selectedSeriesData[0].data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-linejoin", "round")
+      .attr("stroke-linecap", "round")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+    chart
+      .selectAll("g")
+      .selectAll(".tick line")
+      .attr("stroke", "#fff");
+    // console.log(line, x, y);
   }
+  // updateChart() {
+  //   const { selectedSeriesData } = this.state;
+  //   selectedSeriesData.forEach((series, i) => {
+  //     if (this.performanceGraph.series[i] == null) {
+  //       this.performanceGraph.addSeries(
+  //         {
+  //           type: "area",
+  //           color: "#ffffff",
+  //           className: Styles.PerformanceGraph__Series,
+  //           marker: {
+  //             fillColor: "white",
+  //             lineColor: "white"
+  //           },
+  //           name: series.name,
+  //           data: series.data
+  //         },
+  //         false
+  //       );
+  //     } else {
+  //       this.performanceGraph.series[i].setData(series.data, false, {}, false);
+  //     }
+  //   });
+
+  //   this.performanceGraph.redraw();
+  // }
 
   render() {
     const s = this.state;
-
+    console.log(s);
     return (
       <section
         className={Styles.PerformanceGraph}
@@ -433,7 +526,13 @@ class PerformanceGraph extends Component {
             />
           </div>
         </div>
-        <div id="performance_graph_chart" />
+        <div
+          className={Styles.PerformanceGraph__drawContainer}
+          id="performance_graph_chart"
+          ref={drawContainer => {
+            this.drawContainer = drawContainer;
+          }}
+        />
       </section>
     );
   }
