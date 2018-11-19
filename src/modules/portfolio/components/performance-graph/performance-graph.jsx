@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import Highcharts from "highcharts";
-// import noData from "highcharts/modules/no-data-to-display";
 // import moment from "moment";
 import * as d3 from "d3";
-// import ReactFauxDOM from "react-faux-dom";
 
 import Dropdown from "modules/common/components/dropdown/dropdown";
 
-// import debounce from "utils/debounce";
 import { formatEther } from "utils/format-number";
-
+import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/portfolio/components/performance-graph/performance-graph.styles";
 
 class PerformanceGraph extends Component {
@@ -66,7 +62,6 @@ class PerformanceGraph extends Component {
 
     this.changeDropdown = this.changeDropdown.bind(this);
     this.updateChart = this.updateChart.bind(this);
-    // this.updateChartDebounced = debounce(this.updateChart.bind(this));
     this.updatePerformanceData = this.updatePerformanceData.bind(this);
     this.parsePerformanceData = this.parsePerformanceData.bind(this);
     this.chartSetup = this.chartSetup.bind(this);
@@ -74,8 +69,7 @@ class PerformanceGraph extends Component {
   }
 
   componentDidMount() {
-    // noData(Highcharts);
-    this.chartFullRefresh(!this.props.isAnimating);
+    this.chartFullRefresh(true);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -93,12 +87,7 @@ class PerformanceGraph extends Component {
     }
   }
 
-  componentWillUnmount() {
-    // window.removeEventListener("resize", this.updateChartDebounced);
-  }
-
   chartFullRefresh(forceUpdate = false) {
-    // if (forceUpdate && this.componentWrapper) this.updatePerformanceData();
     if (this.componentWrapper)
       this.chartSetup(() => {
         if (forceUpdate && this.componentWrapper) this.updatePerformanceData();
@@ -110,6 +99,7 @@ class PerformanceGraph extends Component {
       this.chart = d3
         .select(this.drawContainer)
         .append("svg")
+        .attr("id", "performance_chart")
         .attr("height", 220)
         .attr("width", "100%");
 
@@ -410,6 +400,7 @@ class PerformanceGraph extends Component {
       .select("svg")
       .selectAll("g")
       .remove();
+
     const width =
       this.chart._groups[0][0].width.baseVal.value -
       this.margin.left -
@@ -418,7 +409,6 @@ class PerformanceGraph extends Component {
       this.chart._groups[0][0].height.baseVal.value -
       this.margin.top -
       this.margin.bottom;
-    console.log(timeFormat);
     const dateFormat = d3.timeFormat(timeFormat);
     const chart = this.chart
       .append("g")
@@ -429,8 +419,32 @@ class PerformanceGraph extends Component {
       .line()
       .x(d => x(d[0]))
       .y(d => y(d[1]));
+
+    const yDomainBounds = selectedSeriesData[0].data.reduce(
+      (a, e) => {
+        const newA = a;
+        if (newA.low > e[1]) {
+          newA.low = e[1];
+          console.log("low", newA, e[1]);
+        }
+        if (newA.high < e[1]) {
+          newA.high = e[1];
+          console.log("high", newA, e[1]);
+        }
+        return newA;
+      },
+      {
+        low: -0.15,
+        high: 0.15
+      }
+    );
+    const yDomainData = [[0, yDomainBounds.low * 1.1]]
+      .concat(selectedSeriesData[0].data)
+      .concat([[0, yDomainBounds.high * 1.1]]);
+    console.log(yDomainBounds, yDomainData);
     x.domain(d3.extent(selectedSeriesData[0].data, d => d[0]));
-    y.domain(d3.extent(selectedSeriesData[0].data, d => d[1]));
+    y.domain(d3.extent(yDomainData, d => d[1]));
+
     chart
       .append("g")
       .attr("fill", "#fff")
@@ -471,37 +485,77 @@ class PerformanceGraph extends Component {
       .selectAll("g")
       .selectAll(".tick line")
       .attr("stroke", "#fff");
+    chart
+      .on("click", () => {
+        const v = y.invert(
+          d3.mouse(
+            d3
+              .select(this.drawContainer)
+              .select("svg")
+              .node()
+          )[1]
+        );
+        console.log(
+          "click",
+          d3.mouse(
+            d3
+              .select(this.drawContainer)
+              .select("svg")
+              .node()
+          ),
+          `${formatEther(v).formatted} ETH`
+        );
+      })
+      .on("mouseover", () => {
+        const v = y.invert(
+          d3.mouse(
+            d3
+              .select(this.drawContainer)
+              .select("svg")
+              .node()
+          )[1]
+        );
+        console.log(
+          "mouseover",
+          `${formatEther(v).formatted} ETH`,
+          y.invert(
+            d3.mouse(
+              d3
+                .select(this.drawContainer)
+                .select("svg")
+                .node()
+            )[1]
+          )
+        );
+      })
+      .on("mouseout", () => {
+        const v = y.invert(
+          d3.mouse(
+            d3
+              .select(this.drawContainer)
+              .select("svg")
+              .node()
+          )[1]
+        );
+        console.log(
+          "mouseout",
+          `${formatEther(v).formatted} ETH`,
+          y.invert(
+            d3.mouse(
+              d3
+                .select(this.drawContainer)
+                .select("svg")
+                .node()
+            )[1]
+          )
+        );
+      });
     // console.log(line, x, y);
   }
-  // updateChart() {
-  //   const { selectedSeriesData } = this.state;
-  //   selectedSeriesData.forEach((series, i) => {
-  //     if (this.performanceGraph.series[i] == null) {
-  //       this.performanceGraph.addSeries(
-  //         {
-  //           type: "area",
-  //           color: "#ffffff",
-  //           className: Styles.PerformanceGraph__Series,
-  //           marker: {
-  //             fillColor: "white",
-  //             lineColor: "white"
-  //           },
-  //           name: series.name,
-  //           data: series.data
-  //         },
-  //         false
-  //       );
-  //     } else {
-  //       this.performanceGraph.series[i].setData(series.data, false, {}, false);
-  //     }
-  //   });
-
-  //   this.performanceGraph.redraw();
-  // }
 
   render() {
     const s = this.state;
-    console.log(s);
+    // console.log(s);
     return (
       <section
         className={Styles.PerformanceGraph}
