@@ -6,7 +6,7 @@ import * as d3 from "d3";
 import Dropdown from "modules/common/components/dropdown/dropdown";
 
 import { formatEther } from "utils/format-number";
-import { createBigNumber } from "utils/create-big-number";
+// import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/portfolio/components/performance-graph/performance-graph.styles";
 
 class PerformanceGraph extends Component {
@@ -78,7 +78,7 @@ class PerformanceGraph extends Component {
       !this.state.selectedSeriesData.length
     ) {
       // fetch data as we need a new range of info
-      this.chartFullRefresh(true);
+      // this.chartFullRefresh(true);
     } else if (prevState.graphPeriod !== this.state.graphPeriod) {
       this.updatePerformanceData();
     } else if (prevState.graphType !== this.state.graphType) {
@@ -107,207 +107,6 @@ class PerformanceGraph extends Component {
 
     callback();
   }
-
-  // chartSetup(callback = () => {}) {
-  //   window.removeEventListener("resize", this.updateChartDebounced);
-
-  //   Highcharts.setOptions({
-  //     lang: {
-  //       thousandsSep: ","
-  //     }
-  //   });
-  //   const id = "performance_graph_chart";
-
-  //   this.performanceGraph = new Highcharts.Chart(id, {
-  //     title: {
-  //       text: null
-  //     },
-  //     chart: {
-  //       backgroundColor: "transparent",
-  //       height: "220px",
-  //       spacingLeft: 0,
-  //       spacingRight: 0
-  //     },
-  //     events: {
-  //       load() {
-  //         this.customTexts = [];
-
-  //         const text = this.renderer
-  //           .text(
-  //             "Responsive text",
-  //             this.xAxis[0].toPixels(20),
-  //             this.yAxis[0].toPixels(60)
-  //           )
-  //           .css({
-  //             fontSize: "10px"
-  //           })
-  //           .add();
-
-  //         this.customTexts.push(text);
-  //       },
-  //       redraw() {
-  //         this.customTexts[0].attr({
-  //           x: this.xAxis[0].toPixels(15),
-  //           y: this.yAxis[0].toPixels(50)
-  //         });
-  //       }
-  //     },
-  //     lang: {
-  //       noData: "No performance history."
-  //     },
-  //     rangeSelector: { selected: 1 },
-  //     xAxis: {
-  //       visible: true,
-  //       type: "datetime",
-  //       lineColor: "#686177",
-  //       crosshair: {
-  //         width: 4,
-  //         color: "#6f697e"
-  //       },
-  //       labels: {
-  //         formatter() {
-  //           return moment.unix(this.value).format("LL");
-  //         },
-  //         style: {
-  //           color: "#a7a2b2",
-  //           fontSize: "0.625rem",
-  //           textTransform: "uppercase",
-  //           fontWeight: "500"
-  //         }
-  //       },
-  //       tickLength: 6,
-  //       showFirstLabel: true,
-  //       showLastLabel: true,
-  //       tickPositioner(low, high) {
-  //         const positions = [this.dataMin, this.dataMax];
-  //         return positions;
-  //       }
-  //     },
-  //     yAxis: {
-  //       visible: true,
-  //       showFirstLabel: false,
-  //       showLastLabel: true,
-  //       gridLineColor: "#686177",
-  //       title: {
-  //         text: null
-  //       },
-  //       opposite: false,
-  //       labels: {
-  //         align: "left",
-  //         y: 15,
-  //         x: 5,
-  //         format: "{value} ETH",
-  //         formatter() {
-  //           return `${formatEther(this.value).formattedValue} ETH`;
-  //         },
-  //         style: {
-  //           color: "#a7a2b2",
-  //           fontSize: "0.625rem",
-  //           textTransform: "uppercase",
-  //           fontWeight: "500"
-  //         }
-  //       },
-  //       tickPositioner() {
-  //         // default
-  //         let positions = [-0.15, 0, 0.5, 1];
-  //         if (this.series[0]) {
-  //           positions = [];
-  //           const rangeMargin = (this.dataMax - this.dataMin) * 0.2;
-  //           let minTickValue =
-  //             this.dataMin >= 0 ? -0.25 : this.dataMin - rangeMargin;
-  //           let maxTickValue =
-  //             this.dataMax <= 0 ? 0.25 : this.dataMax + rangeMargin;
-  //           if (this.dataMin === 0 && this.dataMax > 0) {
-  //             minTickValue = rangeMargin * -1;
-  //           }
-  //           if (this.dataMax === 0 && this.dataMin < 0) {
-  //             maxTickValue = rangeMargin;
-  //           }
-  //           const median = (minTickValue + maxTickValue) / 2;
-  //           positions.push(minTickValue);
-  //           positions.push(this.dataMin);
-  //           if (median > 0) positions.push(0);
-  //           positions.push(median);
-  //           if (median < 0) positions.push(0);
-  //           positions.push(this.dataMax);
-  //           positions.push(maxTickValue);
-  //         }
-  //         return positions;
-  //       }
-  //     },
-  //     plotOptions: {
-  //       series: {
-  //         color: "white",
-  //         fillColor: {
-  //           linearGradient: [0, 0, 0, "100%"],
-  //           stops: [
-  //             [
-  //               0,
-  //               Highcharts.Color("#dbdae1")
-  //                 .setOpacity(0.25)
-  //                 .get("rgba")
-  //             ],
-  //             [
-  //               0.5,
-  //               Highcharts.Color("#dbdae1")
-  //                 .setOpacity(0.15)
-  //                 .get("rgba")
-  //             ],
-  //             [
-  //               1,
-  //               Highcharts.Color("#dbdae1")
-  //                 .setOpacity(0)
-  //                 .get("rgba")
-  //             ]
-  //           ]
-  //         }
-  //       }
-  //     },
-  //     legend: {
-  //       enabled: false
-  //     },
-  //     tooltip: {
-  //       positioner(labelWidth, labelHeight, point) {
-  //         // tooltip wants to position top left of crosshair, this optionally
-  //         // positions the inverse if the label will render off chart
-  //         return {
-  //           x:
-  //             point.plotX - labelWidth < 0
-  //               ? point.plotX
-  //               : point.plotX - labelWidth,
-  //           y:
-  //             point.plotY < labelHeight
-  //               ? point.plotY + labelHeight * 0.9
-  //               : point.plotY - labelHeight * 0.9
-  //         };
-  //       },
-  //       backgroundColor: "rgba(255,255,255,0)",
-  //       borderWidth: 0,
-  //       headerFormat: "",
-  //       style: {
-  //         fontSize: "0.625rem",
-  //         color: "white",
-  //         fontWeight: "700"
-  //       },
-  //       shadow: false,
-  //       shared: true,
-  //       shape: "none",
-  //       pointFormatter() {
-  //         return `<p style="line-height:1.2rem"><b style="color:${
-  //           this.color
-  //         }">${this.y} ETH</b><br/>${moment.unix(this.x).format("LLL")}</p>`;
-  //       },
-  //       valueDecimals: 4
-  //     },
-  //     credits: {
-  //       enabled: false
-  //     }
-  //   });
-
-  //   window.addEventListener("resize", this.updateChartDebounced);
-
-  //   callback();
-  // }
 
   changeDropdown(value) {
     let { graphType, graphPeriod, startTime } = this.state;
@@ -398,23 +197,23 @@ class PerformanceGraph extends Component {
     // first remove all drawn lines in SVG to switch the chart info
     d3.select(this.drawContainer)
       .select("svg")
-      .selectAll("g")
+      .selectAll("*")
       .remove();
-
-    const width =
-      this.chart._groups[0][0].width.baseVal.value -
-      this.margin.left -
-      this.margin.right;
-    const height =
-      this.chart._groups[0][0].height.baseVal.value -
-      this.margin.top -
-      this.margin.bottom;
+    const chartHeight = d3.select("#performance_chart").node().clientHeight;
+    const chartWidth = d3.select("#performance_chart").node().clientWidth;
+    const width = chartWidth - this.margin.left - this.margin.right;
+    const height = chartHeight - this.margin.top - this.margin.bottom;
     const dateFormat = d3.timeFormat(timeFormat);
-    const chart = this.chart
+    // console.log(chartWidth, width);
+    const chart = d3
+      .select("#performance_chart")
       .append("g")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
     const x = d3.scaleTime().rangeRound([0, width]);
-    const y = d3.scaleLinear().rangeRound([height, 0]);
+    const y = d3
+      .scaleLinear()
+      .clamp(true)
+      .range([height, 0]);
     const line = d3
       .line()
       .x(d => x(d[0]))
@@ -425,11 +224,9 @@ class PerformanceGraph extends Component {
         const newA = a;
         if (newA.low > e[1]) {
           newA.low = e[1];
-          console.log("low", newA, e[1]);
         }
         if (newA.high < e[1]) {
           newA.high = e[1];
-          console.log("high", newA, e[1]);
         }
         return newA;
       },
@@ -441,7 +238,7 @@ class PerformanceGraph extends Component {
     const yDomainData = [[0, yDomainBounds.low * 1.1]]
       .concat(selectedSeriesData[0].data)
       .concat([[0, yDomainBounds.high * 1.1]]);
-    console.log(yDomainBounds, yDomainData);
+    // console.log(yDomainBounds, yDomainData, width, selectedSeriesData[0]);
     x.domain(d3.extent(selectedSeriesData[0].data, d => d[0]));
     y.domain(d3.extent(yDomainData, d => d[1]));
 
@@ -476,7 +273,7 @@ class PerformanceGraph extends Component {
       .append("path")
       .datum(selectedSeriesData[0].data)
       .attr("fill", "none")
-      .attr("stroke", "steelblue")
+      .attr("stroke", `${selectedSeriesData[0].color}`)
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
       .attr("stroke-width", 2)
@@ -485,71 +282,105 @@ class PerformanceGraph extends Component {
       .selectAll("g")
       .selectAll(".tick line")
       .attr("stroke", "#fff");
-    chart
-      .on("click", () => {
-        const v = y.invert(
-          d3.mouse(
-            d3
-              .select(this.drawContainer)
-              .select("svg")
-              .node()
-          )[1]
-        );
-        console.log(
-          "click",
-          d3.mouse(
-            d3
-              .select(this.drawContainer)
-              .select("svg")
-              .node()
-          ),
-          `${formatEther(v).formatted} ETH`
-        );
-      })
-      .on("mouseover", () => {
-        const v = y.invert(
-          d3.mouse(
-            d3
-              .select(this.drawContainer)
-              .select("svg")
-              .node()
-          )[1]
-        );
-        console.log(
-          "mouseover",
-          `${formatEther(v).formatted} ETH`,
-          y.invert(
-            d3.mouse(
-              d3
-                .select(this.drawContainer)
-                .select("svg")
-                .node()
-            )[1]
-          )
-        );
-      })
-      .on("mouseout", () => {
-        const v = y.invert(
-          d3.mouse(
-            d3
-              .select(this.drawContainer)
-              .select("svg")
-              .node()
-          )[1]
-        );
-        console.log(
-          "mouseout",
-          `${formatEther(v).formatted} ETH`,
-          y.invert(
-            d3.mouse(
-              d3
-                .select(this.drawContainer)
-                .select("svg")
-                .node()
-            )[1]
-          )
-        );
-      });
+
+    const focus = this.chart
+      .append("g")
+      .attr("stroke", "#fff")
+      .attr("color", "#fff")
+      .attr("fill", "#fff")
+      .style("display", "none");
+
+    focus.append("circle").attr("r", 4.5);
+
+    focus
+      .append("text")
+      .attr("x", "0.5rem")
+      .attr("dy", "1rem");
+    console.log(width, height, chartWidth, chartHeight);
+    this.chart
+      .append("rect")
+      .attr("fill", "none")
+      .attr("pointer-events", "all")
+      .attr("width", width)
+      .attr("height", height)
+      .on("mouseover", () => focus.style("display", null))
+      .on("mouseout", () => focus.style("display", "none"))
+      .on("mousemove", mousemove);
+
+    function mousemove() {
+      const { data } = selectedSeriesData[0];
+      const v2 = x.invert(d3.mouse(this)[0]);
+      const biSect = d3.bisector(d => d[0]).left;
+      const i = biSect(data, v2, 1);
+      console.log(v2, i, data[i]);
+      focus.attr("transform", `translate(${x(data[i][0])},${y(data[i][1])})`);
+      focus.select("text").text(`${formatEther(data[i][1]).formatted} ETH`);
+    }
+    // chart
+    //   .on("click", () => {
+    //     const v = y.invert(
+    //       d3.mouse(
+    //         d3
+    //           .select(this.drawContainer)
+    //           .select("svg")
+    //           .node()
+    //       )[1]
+    //     );
+    //     console.log(
+    //       "click",
+    //       d3.mouse(
+    //         d3
+    //           .select(this.drawContainer)
+    //           .select("svg")
+    //           .node()
+    //       ),
+    //       `${formatEther(v).formatted} ETH`
+    //     );
+    //   })
+    //   .on("mouseover", () => {
+    //     const v = y.invert(
+    //       d3.mouse(
+    //         d3
+    //           .select(this.drawContainer)
+    //           .select("svg")
+    //           .node()
+    //       )[1]
+    //     );
+    //     console.log(
+    //       "mouseover",
+    //       `${formatEther(v).formatted} ETH`,
+    //       y.invert(
+    //         d3.mouse(
+    //           d3
+    //             .select(this.drawContainer)
+    //             .select("svg")
+    //             .node()
+    //         )[1]
+    //       )
+    //     );
+    //   })
+    //   .on("mouseout", () => {
+    //     const v = y.invert(
+    //       d3.mouse(
+    //         d3
+    //           .select(this.drawContainer)
+    //           .select("svg")
+    //           .node()
+    //       )[1]
+    //     );
+    //     console.log(
+    //       "mouseout",
+    //       `${formatEther(v).formatted} ETH`,
+    //       y.invert(
+    //         d3.mouse(
+    //           d3
+    //             .select(this.drawContainer)
+    //             .select("svg")
+    //             .node()
+    //         )[1]
+    //       )
+    //     );
+    //   });
     // console.log(line, x, y);
   }
 
