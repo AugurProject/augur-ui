@@ -51,11 +51,15 @@ class PerformanceGraph extends Component {
         { label: "Past Month", value: "MONTH", format: "%m/%d %I:%M %p" },
         { label: "All", value: "ALL", format: "%x %I:%M %p" }
       ],
-      graphPeriodDefault: "DAY",
-      startTime: this.timeFrames.DAY,
+      graphPeriodDefault: "ALL",
+      startTime: this.timeFrames.ALL,
       endTime: currentAugurTimestamp,
       selectedSeriesData: [],
-      performanceData: []
+      performanceData: [],
+      chartDimensions: {
+        width: 300,
+        height: 220
+      }
     };
 
     this.margin = { top: 0, right: 0, bottom: 20, left: 60 };
@@ -66,6 +70,7 @@ class PerformanceGraph extends Component {
     this.parsePerformanceData = this.parsePerformanceData.bind(this);
     this.chartSetup = this.chartSetup.bind(this);
     this.chartFullRefresh = this.chartFullRefresh.bind(this);
+    this.updateChartDimensions = this.updateChartDimensions.bind(this);
   }
 
   componentDidMount() {
@@ -73,13 +78,7 @@ class PerformanceGraph extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      (prevProps.isAnimating && !this.props.isAnimating) ||
-      !this.state.selectedSeriesData.length
-    ) {
-      // fetch data as we need a new range of info
-      // this.chartFullRefresh(true);
-    } else if (prevState.graphPeriod !== this.state.graphPeriod) {
+    if (prevState.graphPeriod !== this.state.graphPeriod) {
       this.updatePerformanceData();
     } else if (prevState.graphType !== this.state.graphType) {
       // update chart based on data we have in state, no fetch
@@ -89,9 +88,14 @@ class PerformanceGraph extends Component {
 
   chartFullRefresh(forceUpdate = false) {
     if (this.componentWrapper)
-      this.chartSetup(() => {
-        if (forceUpdate && this.componentWrapper) this.updatePerformanceData();
-      });
+      console.log(
+        "chartFullRefresh Called",
+        this.drawContainer.clientWidth,
+        this.drawContainer.clientHeight
+      );
+    this.chartSetup(() => {
+      if (forceUpdate && this.componentWrapper) this.updatePerformanceData();
+    });
   }
 
   chartSetup(callback = () => {}) {
@@ -103,7 +107,12 @@ class PerformanceGraph extends Component {
         .attr("height", 220)
         .attr("width", "100%");
 
-    console.log("chartSetupCalled", this.state);
+    console.log(
+      "chartSetupCalled",
+      this.drawContainer.clientWidth,
+      this.drawContainer.clientHeight,
+      this.state
+    );
 
     callback();
   }
@@ -132,6 +141,11 @@ class PerformanceGraph extends Component {
   }
 
   parsePerformanceData() {
+    console.log(
+      "parsePerformanceData Called",
+      this.drawContainer.clientWidth,
+      this.drawContainer.clientHeight
+    );
     const { performanceData, graphType } = this.state;
     const selectedSeriesData = [
       {
@@ -187,20 +201,26 @@ class PerformanceGraph extends Component {
     );
   }
   updateChart() {
+    console.log(
+      "updateChart  Called",
+      this.drawContainer.clientWidth,
+      this.drawContainer.clientHeight
+    );
     const { selectedSeriesData, graphPeriod, graphPeriodOptions } = this.state;
     const timeFormat = graphPeriodOptions.reduce((a, e) => {
       let newFormat = a;
       if (e.value === graphPeriod) newFormat = e.format;
       return newFormat;
     }, "");
-    // console.log(selectedSeriesData);
     // first remove all drawn lines in SVG to switch the chart info
     d3.select(this.drawContainer)
       .select("svg")
       .selectAll("*")
       .remove();
-    const chartHeight = d3.select("#performance_chart").node().clientHeight;
-    const chartWidth = d3.select("#performance_chart").node().clientWidth;
+    // const chartHeight = d3.select("#performance_chart").node().clientHeight;
+    const chartHeight = this.drawContainer.clientHeight;
+    // const chartWidth = d3.select("#performance_chart").node().clientWidth;
+    const chartWidth = this.drawContainer.clientWidth;
     const width = chartWidth - this.margin.left - this.margin.right;
     const height = chartHeight - this.margin.top - this.margin.bottom;
     const dateFormat = d3.timeFormat(timeFormat);
@@ -208,7 +228,13 @@ class PerformanceGraph extends Component {
     const chart = d3
       .select("#performance_chart")
       .append("g")
+      .attr("id", "performance_chart_canvas")
       .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
+
+    // .domain([
+    //   selectedSeriesData[0].data[0][0],
+    //   selectedSeriesData[0].data[selectedSeriesData[0].data.length - 1][0]
+    // ])
     const x = d3.scaleTime().rangeRound([0, width]);
     const y = d3
       .scaleLinear()
@@ -218,7 +244,7 @@ class PerformanceGraph extends Component {
       .line()
       .x(d => x(d[0]))
       .y(d => y(d[1]));
-
+    // console.log(line(selectedSeriesData[0].data), selectedSeriesData[0].data);
     const yDomainBounds = selectedSeriesData[0].data.reduce(
       (a, e) => {
         const newA = a;
@@ -246,6 +272,8 @@ class PerformanceGraph extends Component {
       .append("g")
       .attr("fill", "#fff")
       .attr("stroke", "#fff")
+      .attr("height", height)
+      .attr("width", width)
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x).tickFormat(dateFormat))
       .attr("stroke", "#fff")
@@ -255,6 +283,8 @@ class PerformanceGraph extends Component {
     chart
       .append("g")
       .attr("stroke", "#fff")
+      .attr("height", height)
+      .attr("width", width)
       .call(
         d3.axisLeft(y).tickFormat(v => `${formatEther(v).formattedValue} ETH`)
       )
@@ -292,101 +322,95 @@ class PerformanceGraph extends Component {
 
     focus.append("circle").attr("r", 4.5);
 
-    focus
-      .append("text")
-      .attr("x", "0.5rem")
-      .attr("dy", "1rem");
-    console.log(width, height, chartWidth, chartHeight);
+    focus.append("text");
     this.chart
       .append("rect")
+      .attr("id", "performance_chart_overlay")
       .attr("fill", "none")
       .attr("pointer-events", "all")
       .attr("width", width)
       .attr("height", height)
+      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
       .on("mouseover", () => focus.style("display", null))
       .on("mouseout", () => focus.style("display", "none"))
       .on("mousemove", mousemove);
+
+    const { margin } = this;
 
     function mousemove() {
       const { data } = selectedSeriesData[0];
       const v2 = x.invert(d3.mouse(this)[0]);
       const biSect = d3.bisector(d => d[0]).left;
-      const i = biSect(data, v2, 1);
-      console.log(v2, i, data[i]);
-      focus.attr("transform", `translate(${x(data[i][0])},${y(data[i][1])})`);
+      const i = biSect(data, v2, 0);
+      // console.log(v2, i, data[i]);
+      // console.log('i and data', i, data[i]);
+      // console.log("mousestuff", d3.mouse(this), d3.mouse(this)[0] + margin.left);
+      // console.log(
+      //   "x,y",
+      //   x(data[i][0]),
+      //   y(data[i][1]),
+      //   "//",
+      //   x(data[i][0]) + margin.left,
+      //   y(data[i][1]) - margin.top
+      // );
+      const actualWidth = d3.select("#performance_chart").node().clientWidth;
+      const widthThreshold = actualWidth * 0.9;
+      const actualHeight = d3.select("#performance_chart").node().clientHeight;
+      const heightThreshold = actualHeight * 0.9;
+      const tests = [
+        x(data[i][0]) + margin.left > widthThreshold,
+        y(data[i][1]) - margin.top > heightThreshold
+      ];
+      // console.log(actualWidth, actualHeight, "/", widthThreshold, heightThreshold, tests);
+      focus.attr(
+        "transform",
+        `translate(${x(data[i][0]) + margin.left},${y(data[i][1])})`
+      );
       focus.select("text").text(`${formatEther(data[i][1]).formatted} ETH`);
+      // const focusTextRems = focus.select("text").node().clientWidth / 16;
+      // const test = (focusTextRems + 3) * -1;
+      // console.log(focusTextRems, test);
+      const textX = tests[0] ? -7 : 0.5;
+      const textDY = tests[1] ? -1 : 1;
+      // console.log(focus.select("text").node().clientWidth);
+      focus
+        .select("text")
+        .attr("dx", `${textX}rem`)
+        .attr("dy", `${textDY}rem`);
     }
-    // chart
-    //   .on("click", () => {
-    //     const v = y.invert(
-    //       d3.mouse(
-    //         d3
-    //           .select(this.drawContainer)
-    //           .select("svg")
-    //           .node()
-    //       )[1]
-    //     );
-    //     console.log(
-    //       "click",
-    //       d3.mouse(
-    //         d3
-    //           .select(this.drawContainer)
-    //           .select("svg")
-    //           .node()
-    //       ),
-    //       `${formatEther(v).formatted} ETH`
-    //     );
-    //   })
-    //   .on("mouseover", () => {
-    //     const v = y.invert(
-    //       d3.mouse(
-    //         d3
-    //           .select(this.drawContainer)
-    //           .select("svg")
-    //           .node()
-    //       )[1]
-    //     );
-    //     console.log(
-    //       "mouseover",
-    //       `${formatEther(v).formatted} ETH`,
-    //       y.invert(
-    //         d3.mouse(
-    //           d3
-    //             .select(this.drawContainer)
-    //             .select("svg")
-    //             .node()
-    //         )[1]
-    //       )
-    //     );
-    //   })
-    //   .on("mouseout", () => {
-    //     const v = y.invert(
-    //       d3.mouse(
-    //         d3
-    //           .select(this.drawContainer)
-    //           .select("svg")
-    //           .node()
-    //       )[1]
-    //     );
-    //     console.log(
-    //       "mouseout",
-    //       `${formatEther(v).formatted} ETH`,
-    //       y.invert(
-    //         d3.mouse(
-    //           d3
-    //             .select(this.drawContainer)
-    //             .select("svg")
-    //             .node()
-    //         )[1]
-    //       )
-    //     );
-    //   });
-    // console.log(line, x, y);
+  }
+
+  updateChartDimensions() {
+    if (!this.chart && !this.state.selectedSeriesData[0].data) return;
+    console.log(
+      "updateChartDimensionsCalled:",
+      this.drawContainer && this.drawContainer.clientWidth,
+      this.drawContainer && this.drawContainer.clientHeight
+    );
+    const currentChartDimensions = {
+      width: this.chart && d3.select("#performance_chart").node().clientWidth,
+      height: this.chart && d3.select("#performance_chart").node().clientHeight
+    };
+    if (
+      this.state.chartDimensions.width !== currentChartDimensions.width ||
+      this.state.chartDimensions.height !== currentChartDimensions.height
+    ) {
+      this.setState({
+        chartDimensions: {
+          width: currentChartDimensions.width,
+          height: currentChartDimensions.height
+        }
+      });
+      this.updateChart();
+    }
   }
 
   render() {
     const s = this.state;
+    console.log(this.props.isAnimating);
+    // if (this.chart && s.selectedSeriesData[0] && s.selectedSeriesData[0].data) this.updateChart();
     // console.log(s);
+    // console.log(this.drawContainer && this.drawContainer.clientWidth, this.drawContainer && this.drawContainer.clientHeight);
     return (
       <section
         className={Styles.PerformanceGraph}
