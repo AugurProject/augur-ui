@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import moment from "moment";
 import * as d3 from "d3";
 
 import Dropdown from "modules/common/components/dropdown/dropdown";
-
 import { formatEther } from "utils/format-number";
-// import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/portfolio/components/performance-graph/performance-graph.styles";
 
 class PerformanceGraph extends Component {
