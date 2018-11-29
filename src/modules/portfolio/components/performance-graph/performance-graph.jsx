@@ -48,14 +48,14 @@ class PerformanceGraph extends Component {
         { label: "Past Month", value: "MONTH", format: "%m/%d %I:%M %p" },
         { label: "All", value: "ALL", format: "%x %I:%M %p" }
       ],
-      graphPeriodDefault: "ALL",
-      startTime: this.timeFrames.ALL,
+      graphPeriodDefault: "DAY",
+      startTime: this.timeFrames.DAY,
       endTime: currentAugurTimestamp,
       selectedSeriesData: [],
       performanceData: []
     };
     this.textWidth = 3.75;
-    this.margin = { top: 0, right: 0, bottom: 20, left: 60 };
+    this.margin = { top: 10, right: 10, bottom: 20, left: 60 };
 
     this.changeDropdown = this.changeDropdown.bind(this);
     this.updateChart = this.updateChart.bind(this);
@@ -95,7 +95,7 @@ class PerformanceGraph extends Component {
         .select(this.drawContainer)
         .append("svg")
         .attr("id", "performance_chart")
-        .attr("height", 220)
+        .attr("height", 240)
         .attr("width", "100%");
 
     callback();
@@ -182,6 +182,7 @@ class PerformanceGraph extends Component {
 
   updateChart() {
     const { selectedSeriesData, graphPeriod, graphPeriodOptions } = this.state;
+    const { margin } = this;
     const timeFormat = graphPeriodOptions.reduce((a, e) => {
       let newFormat = a;
       if (e.value === graphPeriod) newFormat = e.format;
@@ -196,8 +197,8 @@ class PerformanceGraph extends Component {
     const chartHeight = this.drawContainer.clientHeight;
     const chartWidth = this.drawContainer.clientWidth;
 
-    const width = chartWidth - this.margin.left - this.margin.right;
-    const height = chartHeight - this.margin.top - this.margin.bottom;
+    const width = chartWidth - margin.left - margin.right;
+    const height = chartHeight - margin.top - margin.bottom;
 
     const dateFormat = d3.timeFormat(timeFormat);
 
@@ -205,8 +206,11 @@ class PerformanceGraph extends Component {
       .select("#performance_chart")
       .append("g")
       .attr("id", "performance_chart_canvas")
-      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`);
-
+      .attr("width", width)
+      .attr("height", height)
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    // this.margin = { top: 10, right: 10, bottom: 20, left: 60 };
+    console.log("cwh/wh:", chartWidth, chartHeight, width, height);
     const x = d3.scaleTime().rangeRound([0, width]);
     const y = d3
       .scaleLinear()
@@ -232,29 +236,38 @@ class PerformanceGraph extends Component {
         high: 0.15
       }
     );
-    const yDomainData = [[0, yDomainBounds.low * 1.1]]
+    // TODO: need to relook at this.
+    yDomainBounds.range = yDomainBounds.high - yDomainBounds.low;
+    yDomainBounds.buffer = yDomainBounds.range * 0.05;
+    yDomainBounds.calcedHigh = yDomainBounds.buffer > yDomainBounds.high ? yDomainBounds.buffer : yDomainBounds.high;
+    yDomainBounds.calcedLow = yDomainBounds.buffer > yDomainBounds.low ? yDomainBounds.buffer : yDomainBounds.low;
+    if (yDomainBounds.low < 0) yDomainBounds.calcedLow = yDomainBounds.calcedLow * -1;
+    if (yDomainBounds.high < 0) yDomainBounds.calcedLow = yDomainBounds.calcedLow * -1;
+    console.log("yDomainBounds", yDomainBounds);
+
+    const yDomainData = [[0, yDomainBounds.calcedLow]]
       .concat(selectedSeriesData[0].data)
-      .concat([[0, yDomainBounds.high * 1.1]]);
+      .concat([[0, yDomainBounds.calcedHigh]]);
     x.domain(d3.extent(selectedSeriesData[0].data, d => d[0]));
     y.domain(d3.extent(yDomainData, d => d[1]));
-
+    // x axis
     chart
       .append("g")
       .attr("fill", "#fff")
       .attr("stroke", "#fff")
-      .attr("height", height)
-      .attr("width", width)
+      // .attr("height", height)
+      // .attr("width", width)
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x).tickFormat(dateFormat))
       .attr("stroke", "#fff")
       .select(".domain")
       .attr("stroke", "#fff");
-
+    // y axis
     chart
       .append("g")
       .attr("stroke", "#fff")
-      .attr("height", height)
-      .attr("width", width)
+      // .attr("height", height)
+      // .attr("width", width)
       .call(
         d3.axisLeft(y).tickFormat(v => `${formatEther(v).formattedValue} ETH`)
       )
@@ -293,20 +306,18 @@ class PerformanceGraph extends Component {
     focus.append("circle").attr("r", 4.5);
     focus.append("text").attr("id", "crosshair_text_eth");
     focus.append("text").attr("id", "crosshair_text_date");
-
+    console.log("rect translate", `translate(${margin.left}, ${margin.top})`, `translate(${margin.left + margin.right}, ${margin.top + margin.bottom})`);
     this.chart
       .append("rect")
       .attr("id", "performance_chart_overlay")
       .attr("fill", "none")
       .attr("pointer-events", "all")
-      .attr("width", width)
+      .attr("width", chartWidth - margin.left)
       .attr("height", height)
-      .attr("transform", `translate(${this.margin.left}, ${this.margin.top})`)
+      .attr("transform", `translate(${margin.left}, ${margin.top})`)
       .on("mouseover", () => focus.style("display", null))
       .on("mouseout", () => focus.style("display", "none"))
       .on("mousemove", mousemove);
-
-    const { margin } = this;
 
     function mousemove() {
       const { data } = selectedSeriesData[0];
@@ -316,14 +327,15 @@ class PerformanceGraph extends Component {
       const actualWidth = d3.select("#performance_chart").node().clientWidth;
       const widthThreshold = actualWidth * 0.9;
       const actualHeight = d3.select("#performance_chart").node().clientHeight;
-      const heightThreshold = actualHeight * 0.8;
+      const heightThreshold = (actualHeight - margin.top) * 0.8;
       const tests = [
         x(data[i][0]) + margin.left > widthThreshold,
         y(data[i][1]) - margin.top > heightThreshold
       ];
       focus.attr(
         "transform",
-        `translate(${x(data[i][0]) + margin.left},${y(data[i][1])})`
+        `translate(${x(data[i][0]) + margin.left},${y(data[i][1]) +
+          margin.top})`
       );
       d3.select("#crosshair_text_eth").text(
         `${formatEther(data[i][1]).formatted} ETH`
@@ -331,7 +343,7 @@ class PerformanceGraph extends Component {
       d3.select("#crosshair_text_date").text(`${dateFormat(v2)}`);
       let ethWidth = d3.select("#crosshair_text_eth").node().clientWidth;
       let dateWidth = d3.select("#crosshair_text_date").node().clientWidth;
-      if (width === 0 && tests[0]) {
+      if (ethWidth === 0 && tests[0]) {
         focus.style("display", "none");
         focus.selectAll("text").attr("x", "1rem");
         ethWidth = d3.select("#crosshair_text_eth").node().clientWidth;
@@ -344,8 +356,12 @@ class PerformanceGraph extends Component {
       if (!tests[0]) {
         focus.selectAll("text").attr("x", "1rem");
       } else {
-        focus.select("#crosshair_text_eth").attr("x", `-${ethWidth - 24}px`);
-        focus.select("#crosshair_text_date").attr("x", `-${dateWidth - 24}px`);
+        focus
+          .select("#crosshair_text_eth")
+          .attr("x", `${(ethWidth - 24) * -1}px`);
+        focus
+          .select("#crosshair_text_date")
+          .attr("x", `${(dateWidth - 24) * -1}px`);
       }
       focus.select("#crosshair_text_eth").attr("dy", `${ethTextDY}`);
       focus.select("#crosshair_text_date").attr("dy", `${dateTextDY}`);
