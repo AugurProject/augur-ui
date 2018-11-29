@@ -232,18 +232,15 @@ class PerformanceGraph extends Component {
         return newA;
       },
       {
-        low: -0.15,
-        high: 0.15
+        low: 0,
+        high: 0
       }
     );
-    // TODO: need to relook at this.
     yDomainBounds.range = yDomainBounds.high - yDomainBounds.low;
-    yDomainBounds.buffer = yDomainBounds.range * 0.05;
-    yDomainBounds.calcedHigh = yDomainBounds.buffer > yDomainBounds.high ? yDomainBounds.buffer : yDomainBounds.high;
-    yDomainBounds.calcedLow = yDomainBounds.buffer > yDomainBounds.low ? yDomainBounds.buffer : yDomainBounds.low;
-    if (yDomainBounds.low < 0) yDomainBounds.calcedLow = yDomainBounds.calcedLow * -1;
-    if (yDomainBounds.high < 0) yDomainBounds.calcedLow = yDomainBounds.calcedLow * -1;
-    console.log("yDomainBounds", yDomainBounds);
+    yDomainBounds.buffer =
+      yDomainBounds.range !== 0 ? yDomainBounds.range * 0.05 : 1;
+    yDomainBounds.calcedHigh = yDomainBounds.high + yDomainBounds.buffer;
+    yDomainBounds.calcedLow = yDomainBounds.low - yDomainBounds.buffer;
 
     const yDomainData = [[0, yDomainBounds.calcedLow]]
       .concat(selectedSeriesData[0].data)
@@ -255,8 +252,6 @@ class PerformanceGraph extends Component {
       .append("g")
       .attr("fill", "#fff")
       .attr("stroke", "#fff")
-      // .attr("height", height)
-      // .attr("width", width)
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(x).tickFormat(dateFormat))
       .attr("stroke", "#fff")
@@ -266,8 +261,6 @@ class PerformanceGraph extends Component {
     chart
       .append("g")
       .attr("stroke", "#fff")
-      // .attr("height", height)
-      // .attr("width", width)
       .call(
         d3.axisLeft(y).tickFormat(v => `${formatEther(v).formattedValue} ETH`)
       )
@@ -306,7 +299,7 @@ class PerformanceGraph extends Component {
     focus.append("circle").attr("r", 4.5);
     focus.append("text").attr("id", "crosshair_text_eth");
     focus.append("text").attr("id", "crosshair_text_date");
-    console.log("rect translate", `translate(${margin.left}, ${margin.top})`, `translate(${margin.left + margin.right}, ${margin.top + margin.bottom})`);
+
     this.chart
       .append("rect")
       .attr("id", "performance_chart_overlay")
@@ -323,11 +316,13 @@ class PerformanceGraph extends Component {
       const { data } = selectedSeriesData[0];
       const v2 = x.invert(d3.mouse(this)[0]);
       const biSect = d3.bisector(d => d[0]).left;
-      const i = biSect(data, v2, 0);
+      let i = biSect(data, v2, 0);
+      if (i === data.length) i -= 1;
       const actualWidth = d3.select("#performance_chart").node().clientWidth;
       const widthThreshold = actualWidth * 0.9;
       const actualHeight = d3.select("#performance_chart").node().clientHeight;
       const heightThreshold = (actualHeight - margin.top) * 0.8;
+
       const tests = [
         x(data[i][0]) + margin.left > widthThreshold,
         y(data[i][1]) - margin.top > heightThreshold
