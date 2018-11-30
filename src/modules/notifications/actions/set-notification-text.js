@@ -146,7 +146,6 @@ export default function setNotificationText(notification, callback) {
       case "PUBLICFILLBESTORDER":
       case "PUBLICFILLBESTORDERWITHLIMIT":
       case "PUBLICFILLORDER":
-        console.log("set-notification-text", notification);
         notification.title = "Fill order(s)";
         if (!notification.description && notification.log) {
           dispatch(
@@ -174,13 +173,14 @@ export default function setNotificationText(notification, callback) {
               if (notification.log.noFill) {
                 notification.description = `Unable to ${
                   notification.log.orderType
-                } shares of "${outcomeDescription}" at ${augur.utils.convertOnChainPriceToDisplayPrice(
+                } ${notification.log.difference || ""} ${
+                  formatShares(notification.log.difference || 10).denomination
+                } of "${outcomeDescription}" at ${augur.utils.convertOnChainPriceToDisplayPrice(
                   createBigNumber(notification.params._price),
                   createBigNumber(marketInfo.minPrice),
                   marketInfo.tickSize
                 )} ETH.`;
               }
-              console.log(callback.toString());
               return dispatch(callback(notification));
             })
           );

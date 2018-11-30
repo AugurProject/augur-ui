@@ -32,42 +32,69 @@ function packageNotificationInfo(notificationId, timestamp, transaction) {
   };
 }
 
-export function handleFilledOnly(parentNotifcation) {
+export function handleFilledOnly(tradeInProgress = null) {
   return (dispatch, getState) => {
     const { notifications, transactionsData } = store.getState();
     for (let i = 0; i < notifications.length; i++) {
       if (notifications[i].status.toLowerCase() === PENDING) {
         const tradeGroupId = notifications[i].params._tradeGroupId;
-        console.log(parentNotifcation);
-        Object.keys(transactionsData).some(key => {
-          if (
-            transactionsData[key].transactions[0].tradeGroupId ===
-              tradeGroupId &&
-            transactionsData[key].status.toLowerCase() === SUCCESS &&
-            notifications[i].params.type.toUpperCase() ===
-              "PUBLICFILLBESTORDERWITHLIMIT" &&
-            notifications[i].description === ""
-          ) {
-            // handle fill only orders notifications updates.
-            dispatch(
-              updateNotificationAction(notifications[i].id, {
-                id: notifications[i].id,
-                status: "Confirmed",
-                timestamp:
-                  selectCurrentTimestampInSeconds(getState()) ||
-                  transactionsData[key].timestamp.timestamp,
-                seen: false,
-                log: {
-                  noFill: true,
-                  orderType:
-                    notifications[i].params._direction === "0x1" ? BUY : SELL
-                }
-              })
-            );
-            return true;
-          }
-          return false;
-        });
+        if (
+          tradeInProgress &&
+          tradeInProgress.tradeGroupId === tradeGroupId &&
+          notifications[i].params.type.toUpperCase() ===
+            "PUBLICFILLBESTORDERWITHLIMIT" &&
+          notifications[i].description === ""
+        ) {
+          const difference = createBigNumber(tradeInProgress.numShares).minus(
+            tradeInProgress.sharesFilled
+          );
+          // handle fill only orders notifications updates.
+          dispatch(
+            updateNotificationAction(notifications[i].id, {
+              id: notifications[i].id,
+              status: "Confirmed",
+              timestamp:
+                selectCurrentTimestampInSeconds(getState()) || Date.now(),
+              seen: false,
+              log: {
+                noFill: true,
+                orderType:
+                  notifications[i].params._direction === "0x1" ? BUY : SELL,
+                difference: difference.toFixed()
+              }
+            })
+          );
+        } else {
+          Object.keys(transactionsData).some(key => {
+            if (
+              transactionsData[key].transactions[0].tradeGroupId ===
+                tradeGroupId &&
+              transactionsData[key].status.toLowerCase() === SUCCESS &&
+              notifications[i].params.type.toUpperCase() ===
+                "PUBLICFILLBESTORDERWITHLIMIT" &&
+              notifications[i].description === ""
+            ) {
+              // handle fill only orders notifications updates.
+              dispatch(
+                updateNotificationAction(notifications[i].id, {
+                  id: notifications[i].id,
+                  status: "Confirmed",
+                  timestamp:
+                    selectCurrentTimestampInSeconds(getState()) ||
+                    transactionsData[key].timestamp.timestamp,
+                  seen: false,
+                  log: {
+                    noFill: true,
+                    orderType:
+                      notifications[i].params._direction === "0x1" ? BUY : SELL
+                  }
+                })
+              );
+              return true;
+            }
+            return false;
+          });
+        }
       }
     }
   };
@@ -224,7 +251,6 @@ export function updateNotification(id, notification) {
           notification
         }
       };
-      console.log(notification);
       return fullNotification;
     };
 
