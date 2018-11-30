@@ -226,6 +226,7 @@ const MarketTradingConfirm = ({
                 }
               },
               res => {
+                console.log("ON COMPLETE", res);
                 // onComplete CB
               },
               doNotCreateOrders

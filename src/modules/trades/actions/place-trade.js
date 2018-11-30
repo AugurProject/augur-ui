@@ -6,8 +6,8 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import { checkAccountAllowance } from "modules/auth/actions/approve-account";
 import { ZERO } from "modules/trades/constants/numbers";
 import { MODAL_ACCOUNT_APPROVAL } from "modules/modal/constants/modal-types";
-import { updateNotification } from "modules/notifications/actions/notifications";
-import { selectCurrentTimestampInSeconds } from "src/select-state";
+// import { updateNotification } from "modules/notifications/actions/notifications";
+// import { selectCurrentTimestampInSeconds } from "src/select-state";
 import logError from "utils/log-error";
 import noop from "utils/noop";
 
@@ -38,7 +38,7 @@ export const placeTrade = ({
     ? otherSharesDepleted.toFixed()
     : sharesDepleted.toFixed();
   // save vars to update notification if can't fill any orders on fillOnly.
-  let txHash = "";
+  // let txHash = "";
   const tradeCost = augur.trading.calculateTradeCost({
     displayPrice: tradeInProgress.limitPrice,
     displayAmount: tradeInProgress.numShares,
@@ -64,30 +64,36 @@ export const placeTrade = ({
     _tradeGroupId: tradeInProgress.tradeGroupId,
     doNotCreateOrders,
     onSent: res => {
-      const { hash } = res;
-      txHash = hash;
+      // const { hash } = res;
+      // txHash = hash;
       dispatch(checkAccountAllowance());
       callback(null, tradeInProgress.tradeGroupId);
+      console.log("ON SENT", res);
     },
     onFailed: callback,
     onSuccess: res => {
-      if (doNotCreateOrders && res && sharesToFill.eq(res)) {
-        // didn't fill any shares on FillOnly
-        dispatch(
-          updateNotification(txHash, {
-            id: txHash,
-            status: "Confirmed",
-            timestamp: selectCurrentTimestampInSeconds(getState()),
-            seen: false,
-            log: {
-              noFill: true,
-              orderType: tradeInProgress.side
-            }
-          })
-        );
-      }
+      console.log("ON SUCCESS", res);
+      // if (doNotCreateOrders && res && sharesToFill.eq(res)) {
+      //   // didn't fill any shares on FillOnly
+      //   dispatch(
+      //     updateNotification(txHash, {
+      //       id: txHash,
+      //       status: "Confirmed",
+      //       timestamp: selectCurrentTimestampInSeconds(getState()),
+      //       seen: false,
+      //       log: {
+      //         noFill: true,
+      //         orderType: tradeInProgress.side
+      //       }
+      //     })
+      //   );
+      // }
       if (bnAllowance.lte(0)) dispatch(checkAccountAllowance());
-      onComplete(res);
+      onComplete({
+        res,
+        sharesToFill: sharesToFill.toString(),
+        tradeInProgress
+      });
     }
   };
 
