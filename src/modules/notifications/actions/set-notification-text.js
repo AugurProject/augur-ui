@@ -160,11 +160,9 @@ export default function setNotificationText(notification, callback) {
                 ).name
               );
 
-              notification.description = `Fill ${
-                notification.log.orderType
-              } order(s) for ${
-                formatShares(notification.log.amount || 0).formatted
-              } ${
+              notification.description = `${
+                notification.log.orderType === BUY ? "Sold" : "Bought"
+              } ${formatShares(notification.log.amount || 0).formatted} ${
                 formatShares(notification.log.amount || 0).denomination
               } of "${outcomeDescription}" at ${
                 formatEther(notification.log.price).formatted
@@ -172,8 +170,8 @@ export default function setNotificationText(notification, callback) {
 
               if (notification.log.noFill) {
                 notification.description = `Unable to ${
-                  notification.log.orderType
-                } shares of "${outcomeDescription}" at ${augur.utils.convertOnChainPriceToDisplayPrice(
+                  notification.log.orderType === BUY ? "Sell" : "Buy"
+                } Shares of "${outcomeDescription}" at ${augur.utils.convertOnChainPriceToDisplayPrice(
                   createBigNumber(notification.params._price),
                   createBigNumber(marketInfo.minPrice),
                   marketInfo.tickSize
