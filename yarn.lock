@@ -934,9 +934,10 @@ augur-core@1.1.0:
     solidity-coverage "0.5.4"
     yargs "11.0.0"
 
-augur.js@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-6.1.0.tgz#96399c92c72a189d7617a8f316cbaf2679aa3d4e"
+augur.js@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-6.1.2.tgz#32c272b0f9ff64f6b0b89face327e71b03c5bd44"
+  integrity sha512-uHf1G9wrk/Ua3qKnjaMPv2cxa3yblcp0iMsDEzq3DvUAmZu+BeC9r2R6yXseX/DwqqvBCM20F7Y44RgtSCQCpQ==
   dependencies:
     async "1.5.2"
     augur-core "1.1.0"
@@ -944,7 +945,7 @@ augur.js@6.1.0:
     clone "2.1.1"
     columnify "1.5.4"
     ethereumjs-blockstream "4.0.1"
-    ethrpc "^6.1.0"
+    ethrpc "^6.1.1"
     event-emitter "0.3.5"
     immutable-delete "1.1.0"
     keccak "1.2.0"
@@ -4801,9 +4802,10 @@ ethrpc@5.7.2:
     request "2.85.0"
     websocket "1.0.26"
 
-ethrpc@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/ethrpc/-/ethrpc-6.1.0.tgz#a694ef71ba85c434d99eeb85e012cda6043f0ee1"
+ethrpc@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/ethrpc/-/ethrpc-6.1.1.tgz#4b3b0a9a2bdbdb5bc83d934a588592b7ec747b3b"
+  integrity sha512-MaEJraqayh8pzp+KXKa/t3z+ffvb03g3KMGTfKSIRf7VDoWCgd6Tc6ah09HlThyGLqs5L5d7kyOYfL0wLNxZww==
   dependencies:
     async "2.6.0"
     bignumber.js "6.0.0"

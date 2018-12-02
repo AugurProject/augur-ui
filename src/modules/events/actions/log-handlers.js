@@ -11,7 +11,6 @@ import { removeMarket } from "modules/markets/actions/update-markets-data";
 import { updateOutcomePrice } from "modules/markets/actions/update-outcome-price";
 import { updateOrder } from "modules/orders/actions/update-orders";
 import { removeCanceledOrder } from "modules/orders/actions/update-order-status";
-import { updateMarketCategoryPopularity } from "modules/categories/actions/update-categories";
 import { defaultLogHandler } from "modules/events/actions/default-log-handler";
 import { isCurrentMarket } from "modules/trades/helpers/is-current-market";
 import makePath from "modules/routes/helpers/make-path";
@@ -143,9 +142,6 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
   dispatch(loadMarketsInfo([log.marketId]));
   const { address } = getState().loginAccount;
   const isStoredTransaction = log.filler === address || log.creator === address;
-  const popularity = log.removed
-    ? new BigNumber(log.amount, 10).negated().toFixed()
-    : log.amount;
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(
@@ -155,7 +151,6 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
         new BigNumber(log.price, 10)
       )
     );
-    dispatch(updateMarketCategoryPopularity(log.market, popularity));
     dispatch(updateOrder(log, false));
     handleNotificationUpdate(log, dispatch, getState);
   }
@@ -207,13 +202,7 @@ export const handleMarketFinalizedLog = log => (dispatch, getState) =>
   dispatch(
     loadMarketsInfo([log.market], err => {
       if (err) return console.error(err);
-      const { volume, author } = getState().marketsData[log.market];
-      dispatch(
-        updateMarketCategoryPopularity(
-          log.market,
-          new BigNumber(volume, 10).negated().toFixed()
-        )
-      );
+      const { author } = getState().marketsData[log.market];
       dispatch(loadReporting());
       dispatch(getWinningBalance([log.market]));
       const isOwnMarket = getState().loginAccount.address === author;
