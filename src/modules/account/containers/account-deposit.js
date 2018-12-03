@@ -43,6 +43,7 @@ const mapDispatchToProps = () => ({
           ],
           additionalAssetMetaDataMap: {
             "0xf47261b00000000000000000000000004c7493b70f16bec1e087bf74a31d095f9b8f9c40": {
+              assetProxyId: "0xf47261b0",
               decimals: 18,
               primaryColor: "#512D80",
               symbol: "rep",
