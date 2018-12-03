@@ -75,7 +75,7 @@
     ethereum-types "^1.0.11"
     popper.js "1.14.3"
 
-"@0xproject/utils@^2.0.2":
+"@0xproject/utils@2.0.2", "@0xproject/utils@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@0xproject/utils/-/utils-2.0.2.tgz#5a0cba11ea8378378a600ed7b25c82834038c932"
   integrity sha512-4hzplD8lXcjEu/CM2gmw7tzVYbxZ6HqU0YGX+nGvE8fiFSPkdbHiBgLvlST1bF8M7D854v/sRCirAuP5FbJf1A==
