@@ -75,7 +75,7 @@ class PerformanceGraph extends Component {
       performanceData: []
     };
     this.textWidth = 3.75;
-    this.margin = { top: 0, right: 0, bottom: 20, left: 60 };
+    this.margin = { top: 10, right: 0, bottom: 20, left: 60 };
 
     this.changeDropdown = this.changeDropdown.bind(this);
     this.updateChart = this.updateChart.bind(this);
