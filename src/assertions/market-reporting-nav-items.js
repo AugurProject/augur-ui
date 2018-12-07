@@ -1,4 +1,4 @@
-import assertComponentNavItem from "assertions/common/component-nav";
+import assertComponentNavItem from "src/assertions/common/component-nav";
 
 export default function(marketReportingNavItems) {
   expect(marketReportingNavItems).toBeDefined();
