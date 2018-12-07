@@ -7,11 +7,9 @@ import { isEmpty, orderBy } from "lodash";
 import selectDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
 import { selectUniverseState } from "src/select-state";
 
-export default function() {
-  return selectMarketsInDispute(store.getState());
-}
+export const selectMarketsInDisputeSelector = () =>
+  createSelector(
 
-export const selectMarketsInDispute = createSelector(
   selectMarkets,
   selectDisputeOutcomes,
   selectUniverseState,
@@ -98,10 +96,12 @@ export const selectMarketsInDispute = createSelector(
       }
     });
 
-    const orderedMarkets = potentialForkingMarkets.concat(
-      nonPotentialForkingMarkets
-    );
-    if (!universe.isForking) return orderedMarkets;
-    return [forkingMarket].concat(orderedMarkets);
-  }
-);
+      const orderedMarkets = potentialForkingMarkets.concat(
+        nonPotentialForkingMarkets
+      );
+      if (!universe.isForking) return orderedMarkets;
+      return [forkingMarket].concat(orderedMarkets);
+    }
+  );
+
+export const selectMarketsInDispute = selectMarketsInDisputeSelector();

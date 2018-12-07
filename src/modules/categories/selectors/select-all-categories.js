@@ -31,7 +31,10 @@ const process = compose(
   Object.values
 );
 
-export const selectAllCategories = createSelector(
-  selectCategoriesState,
-  process
-);
+const selectAllCategoriesSelector = () =>
+  createSelector(
+    selectCategoriesState,
+    process
+  );
+
+export const selectAllCategories = selectAllCategoriesSelector();

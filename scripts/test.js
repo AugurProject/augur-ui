@@ -28,19 +28,15 @@ const mochaTests = () =>
 
 const jestTests = () =>
   new Promise((resolve, reject) => {
-    shell.exec(
-      `jest -c=jest.unit.config.js`,
-      { silent },
-      (code, stdout, stderr) => {
-        if (code !== 0) {
-          console.error(stdout, stderr);
-          reject(new Error());
-          shell.exit(code);
-        }
-
-        resolve();
+    shell.exec(`jest -c=jest.config.js`, { silent }, (code, stdout, stderr) => {
+      if (code !== 0) {
+        console.error(stdout, stderr);
+        reject(new Error());
+        shell.exit(code);
       }
-    );
+
+      resolve();
+    });
   });
 
 const tasks = new Listr([
