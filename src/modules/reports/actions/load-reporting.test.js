@@ -2,8 +2,7 @@ import configureMockStore from "redux-mock-store";
 
 import thunk from "redux-thunk";
 
-import { constants } from "src/services/constants";
-import { augur } from "services/augurjs";
+import { augur, constants } from "services/augurjs";
 
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 import { loadReporting } from "modules/reports/actions/load-reporting";

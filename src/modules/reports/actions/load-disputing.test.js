@@ -2,8 +2,7 @@ import configureMockStore from "redux-mock-store";
 
 import thunk from "redux-thunk";
 
-import { augur } from "services/augurjs";
-import { constants } from "services/constants";
+import { augur, constants } from "services/augurjs";
 
 import { loadDisputing } from "modules/reports/actions/load-disputing";
 

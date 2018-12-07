@@ -1,4 +1,4 @@
-import { constants } from "services/constants";
+import { constants } from "services/augurjs";
 import {
   TYPE_VIEW,
   TYPE_REPORT,

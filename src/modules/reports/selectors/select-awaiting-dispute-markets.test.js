@@ -1,4 +1,4 @@
-import { constants } from "src/services/constants";
+import { constants } from "services/augurjs";
 import { selectMarketsAwaitingDispute } from "modules/reports/selectors/select-awaiting-dispute-markets";
 
 jest.mock("modules/markets/selectors/markets-all");
