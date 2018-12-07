@@ -15,7 +15,8 @@ import Styles from "modules/account/components/account-deposit/account-deposit.s
 export default class AccountDeposit extends Component {
   static propTypes = {
     address: PropTypes.string.isRequired,
-    openZeroExInstant: PropTypes.func.isRequired
+    openZeroExInstant: PropTypes.func.isRequired,
+    augurNodeNetworkId: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -42,12 +43,12 @@ export default class AccountDeposit extends Component {
   }
 
   render() {
-    const { address, openZeroExInstant } = this.props;
+    const { address, openZeroExInstant, augurNodeNetworkId } = this.props;
     const styleQR = {
       height: "auto",
       width: "100%"
     };
-
+    const show0xInstant = [1, 42].includes(augurNodeNetworkId);
     return (
       <section
         className={Styles.AccountDeposit}
@@ -61,11 +62,19 @@ export default class AccountDeposit extends Component {
         </div>
         <div className={Styles.AccountDeposit__main}>
           <div className={Styles.AccountDeposit__description}>
-            <div className={Styles.AccountDeposit__0xInstantButton}>
-              <button onClick={openZeroExInstant}>
-                Buy REP using 0x instant.
-              </button>
-            </div>
+            {show0xInstant && (
+              <div className={Styles.AccountDeposit__0xInstantButton}>
+                <button onClick={openZeroExInstant}>
+                  Buy REP using 0x instant.
+                </button>
+              </div>
+            )}
+            {!show0xInstant && (
+              <div className={Styles.AccountDeposit__0xInstantButton}>
+                Deposits via 0x Instant are only available on the Ethereum main
+                network and Kovan test network.
+              </div>
+            )}
           </div>
           <div className={Styles.AccountDeposit__address}>
             <h3 className={Styles.AccountDeposit__addressLabel}>

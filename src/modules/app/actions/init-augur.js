@@ -41,7 +41,9 @@ const NETWORK_ID_POLL_INTERVAL_DURATION = 10000;
 
 const NETWORK_NAMES = {
   1: "Mainnet",
+  3: "Ropsten",
   4: "Rinkeby",
+  42: "Kovan",
   12346: "Private"
 };
 
