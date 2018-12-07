@@ -45,10 +45,6 @@ const tasks = () =>
       {
         title: "Run lint",
         task: () => lintTasks
-      },
-      {
-        title: "Run Tests",
-        task: () => testTasks
       }
     ],
     {
