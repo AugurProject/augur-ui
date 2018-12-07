@@ -30,7 +30,8 @@ export default class MarketPortfolioCard extends Component {
     finalizeMarket: PropTypes.func.isRequired,
     getWinningBalances: PropTypes.func.isRequired,
     orphanedOrders: PropTypes.array.isRequired,
-    cancelOrphanedOrder: PropTypes.func.isRequired
+    cancelOrphanedOrder: PropTypes.func.isRequired,
+    sellCompleteSets: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -47,7 +48,8 @@ export default class MarketPortfolioCard extends Component {
         openOrders: orphanedOrders.length > 0 // open if orphaned orders are present
       },
       claimClicked: false,
-      disableFinalize: false
+      disableFinalize: false,
+      completeSetsSalePending: false
     };
   }
 
@@ -89,12 +91,18 @@ export default class MarketPortfolioCard extends Component {
       linkType,
       market,
       orphanedOrders,
-      cancelOrphanedOrder
+      cancelOrphanedOrder,
+      sellCompleteSets
     } = this.props;
-    const { tableOpen, claimClicked, disableFinalize } = this.state;
+    const {
+      tableOpen,
+      claimClicked,
+      disableFinalize,
+      completeSetsSalePending
+    } = this.state;
     const myPositionsSummary = getValue(market, "myPositionsSummary");
     const myPositionOutcomes = getValue(market, "outcomes");
-
+    const numCompleteSets = getValue(myPositionsSummary, "numCompleteSets");
     let localButtonText;
     let buttonAction;
     let disabled = false;
@@ -284,6 +292,27 @@ export default class MarketPortfolioCard extends Component {
                   ))}
             </div>
           </div>
+          {numCompleteSets &&
+            numCompleteSets.value > 0 && (
+              <div className={PositionStyles.MarketPositionsList__completeSets} style={{paddingLeft: "0.5rem"}}>
+                <span>{`You currently have ${
+                  numCompleteSets.full
+                } of all outcomes.`}</span>
+                <button
+                  onClick={e => {
+                    this.setState({ completeSetsSalePending: true });
+                    sellCompleteSets(market.id, numCompleteSets, (err, res) => {
+                      if (err) {
+                        this.setState({ completeSetsSalePending: false });
+                      }
+                    });
+                  }}
+                  disabled={completeSetsSalePending}
+                >
+                  Sell Complete Sets
+                </button>
+              </div>
+            )}
         </section>
         <section className={Styles.MarketCard__tablesection}>
           <div className={PositionStyles.MarketPositionsList__table}>

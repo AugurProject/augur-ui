@@ -7,9 +7,11 @@
 .MarketPositionsList__completeSets {
   display: flex;
   justify-content: space-between;
-  margin: 1rem 0;
-  padding: 1rem 2rem;
+  // margin: 1rem 0;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 2rem;
   width: 100%;
+  background-color: @color-lightgray-2;
 
   > span {
     flex: 1;
@@ -19,6 +21,7 @@
     &:extend(.caps--medium);
 
     font-weight: 500;
+    text-decoration: underline;
 
     &:disabled {
       color: @color-lightergray;
