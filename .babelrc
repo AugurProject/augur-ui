@@ -1,5 +1,5 @@
 {
-  "presets": [["es2015", {"modules": false}], "stage-0", "react"],
+  "presets": [["es2015", { "modules": false }], "stage-0", "react"],
   "env": {
     "production": {
       "plugins": [
@@ -17,16 +17,19 @@
             "mode": "remove",
             "removeImport": true
           }
-        ],
+        ]
       ],
-      "compact": false,
+      "compact": false
     },
     "development": {
       "plugins": [
-        ["transform-runtime", {
-          "polyfill": false,
-          "regenerator": true
-        }]
+        [
+          "transform-runtime",
+          {
+            "polyfill": false,
+            "regenerator": true
+          }
+        ]
       ],
       "compact": false
     },
@@ -41,21 +44,24 @@
           }
         ],
         "rewire",
-        ["module-resolver", {
-          "root": ["./src", "./test"],
-          "alias": {
-            "src": "./src",
-            "test": "./test",
-            "assertions": "./test/assertions",
-            "config": "./src/config",
-            "assets": "./src/assets",
-            "modules": "./src/modules",
-            "utils": "./src/utils",
-            "services": "./src/services"
-          },
-          "extensions": [".js", ".jsx"]
-        }]
+        [
+          "module-resolver",
+          {
+            "root": ["./src", "./test"],
+            "alias": {
+              "src": "./src",
+              "test": "./test",
+              "assertions": "./src/assertions",
+              "config": "./src/config",
+              "assets": "./src/assets",
+              "modules": "./src/modules",
+              "utils": "./src/utils",
+              "services": "./src/services"
+            },
+            "extensions": [".js", ".jsx"]
+          }
+        ]
       ]
-    },
+    }
   }
 }
