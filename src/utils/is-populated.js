@@ -4,5 +4,6 @@ import { isEmpty } from "lodash";
 // @params {Any} value - passed in value
 // @returns boolean - returns true if value is populated, otherwise, returns false
 export default function isPopulated(value) {
-  return value || !isEmpty(value);
+  if (typeof value === "boolean") return value;
+  return value !== "" && !isEmpty(value);
 }
