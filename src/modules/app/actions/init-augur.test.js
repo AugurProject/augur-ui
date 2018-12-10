@@ -412,7 +412,9 @@ describe("modules/app/actions/init-augur.js", () => {
       networkIdSpy = jest
         .spyOn(AugurJS.augur.rpc, "getNetworkID")
         .mockReturnValue(4);
-      stoppedSpy = jest.spyOn(AugurJS.augur.api.Controller, "stopped").mockImplementation(() => {});
+      stoppedSpy = jest
+        .spyOn(AugurJS.augur.api.Controller, "stopped")
+        .mockImplementation(() => {});
 
       store.dispatch(
         connectAugur({}, mockEnv, false, (err, connInfo) => {
