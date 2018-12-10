@@ -7,13 +7,18 @@ import { initAugur, connectAugur } from "modules/app/actions/init-augur";
 
 jest.mock("services/augurjs");
 
-jest.mock("modules/app/actions/update-env");
+jest.mock("modules/app/actions/update-env", () => ({
+  updateEnv: () => ({
+    type: "UPDATE_ENV"
+  })
+}));
 jest.mock("modules/app/actions/update-connection");
 jest.mock("modules/contracts/actions/update-contract-addresses");
 jest.mock("modules/contracts/actions/update-contract-api");
 jest.mock("modules/transactions/actions/register-transaction-relay");
 jest.mock("modules/app/actions/load-universe");
 jest.mock("modules/app/actions/verify-matching-network-ids");
+jest.mock("modules/auth/actions/use-unlocked-account", () => {});
 
 jest.mock("config/network.json", () => ({
   test: {
@@ -39,7 +44,8 @@ jest.mock("services/augurjs", () => ({
   rpc: {
     eth: { accounts: cb => cb(null, ["0xa11ce"]) }
   },
-  contracts: { addresses: { 4: { Universe: "0xb0b" } } }
+  contracts: { addresses: { 4: { Universe: "0xb0b" } } },
+  connect: jest.fn(() => {})
 }));
 
 describe("modules/app/actions/init-augur.js", () => {
@@ -131,7 +137,8 @@ describe("modules/app/actions/init-augur.js", () => {
           augurNode: augurNodeWS
         });
       };
-
+      augur.api = jest.fn(() => {});
+      augur.rpc = jest.fn(() => {});
       augur.contracts = { addresses: { 4: { Universe: "0xb0b" } } };
       augur.rpc.eth = { accounts: cb => cb(null, []) };
       augur.api.Controller = { stopped: () => {} };
@@ -157,7 +164,7 @@ describe("modules/app/actions/init-augur.js", () => {
     });
 
     test("if initializes augur successfully when not logged in and unexpectedNetworkId", () => {
-      augur.mockConnect = (env, cb) => {
+      augur.connect = (env, cb) => {
         cb(null, {
           ethereumNode: {
             ...ethereumNodeConnectionInfo,
@@ -170,15 +177,16 @@ describe("modules/app/actions/init-augur.js", () => {
           augurNode: augurNodeWS
         });
       };
-
-      augur.mockContracts = {
+      augur.api = jest.fn(() => {});
+      augur.rpc = jest.fn(() => {});
+      augur.Contracts = {
         addresses: {
           4: { Universe: "0xb0b" },
           3: { Universe: "0xc41231e2" }
         }
       };
 
-      augur.mockConstants = {
+      augur.rpc.constants = {
         ACCOUNT_TYPES: {
           UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
           META_MASK: "metaMask"
@@ -223,7 +231,8 @@ describe("modules/app/actions/init-augur.js", () => {
             augurNode: augurNodeWS
           });
         };
-
+        augur.api = jest.fn(() => {});
+        augur.rpc = jest.fn(() => {});
         augur.Contracts = { addresses: { 4: { Universe: "0xb0b" } } };
         augur.rpc.eth = { accounts: cb => cb(null, ["0xa11ce"]) };
         augur.api.Controller = { stopped: () => {} };
@@ -248,7 +257,7 @@ describe("modules/app/actions/init-augur.js", () => {
       });
 
       test("if connectAugur successfully reconnects", () => {
-        augur.mockConnect = (env, cb) => {
+        augur.connect = (env, cb) => {
           cb(null, {
             ethereumNode: {
               ...ethereumNodeConnectionInfo,
@@ -261,16 +270,9 @@ describe("modules/app/actions/init-augur.js", () => {
             augurNode: augurNodeWS
           });
         };
-
-        augur.mockContracts = { addresses: { 4: { Universe: "0xb0b" } } };
-
-        augur.mockConstants = {
-          ACCOUNT_TYPES: {
-            UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
-            META_MASK: "metaMask"
-          }
-        };
-
+        augur.api = jest.fn(() => {});
+        augur.rpc = jest.fn(() => {});
+        augur.Contracts = { addresses: { 4: { Universe: "0xb0b" } } };
         augur.rpc.eth = { accounts: cb => cb(null, []) };
         augur.api.Controller = { stopped: () => {} };
       });
@@ -293,7 +295,7 @@ describe("modules/app/actions/init-augur.js", () => {
       );
 
       test("if handles an undefined augurNode from AugurJS.connect", () => {
-        augur.mockConnect = (env, cb) => {
+        augur.connect = (env, cb) => {
           cb(null, {
             ethereumNode: {
               ...ethereumNodeConnectionInfo,
@@ -307,7 +309,7 @@ describe("modules/app/actions/init-augur.js", () => {
           });
         };
 
-        augur.mockContracts = {
+        augur.Contracts = {
           addresses: {
             4: { Universe: "0xb0b" },
             3: { Universe: "0xc41231e2" }
@@ -343,14 +345,15 @@ describe("modules/app/actions/init-augur.js", () => {
           });
         };
 
-        augur.mockContracts = {
+        augur.Contracts = {
           addresses: {
             4: { Universe: "0xb0b" },
             3: { Universe: "0xc41231e2" }
           }
         };
-
-        augur.mockConstants = {
+        augur.api = jest.fn(() => {});
+        augur.rpc = jest.fn(() => {});
+        augur.rpc.Constants = {
           ACCOUNT_TYPES: {
             UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
             META_MASK: "metaMask"
@@ -372,7 +375,7 @@ describe("modules/app/actions/init-augur.js", () => {
       });
 
       test("if handles an error object back from AugurJS.connect", () => {
-        augur.mockConnect = (env, cb) => {
+        augur.connect = (env, cb) => {
           cb(
             { error: 2000, message: "There was a mistake." },
             {
@@ -381,8 +384,9 @@ describe("modules/app/actions/init-augur.js", () => {
             }
           );
         };
-
-        augur.mockContracts = {
+        augur.api = jest.fn(() => {});
+        augur.rpc = jest.fn(() => {});
+        augur.Contracts = {
           addresses: {
             4: { Universe: "0xb0b" },
             3: { Universe: "0xc41231e2" }
