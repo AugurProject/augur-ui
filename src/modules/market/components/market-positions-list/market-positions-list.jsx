@@ -59,7 +59,9 @@ export default class MarketPositionsList extends Component {
           className={Styles.MarketPositionsList__heading}
           onClick={() => {
             toggleHeight(this.outcomeList, s.isOpen, () => {
-              this.setState({ isOpen: !s.isOpen });
+              toggleHeight(this.outcomeList2, s.isOpen, () => {
+                this.setState({ isOpen: !s.isOpen });
+              });
             });
           }}
         >
@@ -79,7 +81,7 @@ export default class MarketPositionsList extends Component {
           <div className={Styles.MarketPositionsList__table}>
             {positions.length > 0 && (
               <ul className={Styles["MarketPositionsList__table-header"]}>
-                <li>Position</li>
+                <li>Positions</li>
                 {hasOrders && <li />}
                 <li>
                   <span>Net Position</span>
@@ -124,6 +126,40 @@ export default class MarketPositionsList extends Component {
                   ))}
               </div>
             )}
+          </div>
+          {numCompleteSets &&
+            numCompleteSets.value > 0 && (
+              <div className={Styles.MarketPositionsList__completeSets}>
+                <span>{`You currently have ${
+                  numCompleteSets.full
+                } of all outcomes.`}</span>
+                <button
+                  onClick={e => {
+                    this.setState({ completeSetsSalePending: true });
+                    sellCompleteSets(marketId, numCompleteSets, (err, res) => {
+                      if (err) {
+                        this.setState({ completeSetsSalePending: false });
+                      }
+                    });
+                  }}
+                  disabled={s.completeSetsSalePending}
+                >
+                  Sell Complete Sets
+                </button>
+              </div>
+            )}
+        </div>
+        <div
+          ref={outcomeList2 => {
+            this.outcomeList2 = outcomeList2;
+          }}
+          className={classNames(
+            ToggleHeightStyles["open-on-mobile"],
+            ToggleHeightStyles["toggle-height-target"],
+            ToggleHeightStyles["start-open"]
+          )}
+        >
+          <div className={Styles.MarketOpenOrdersList__table}>
             {(openOrders.length > 0 || orphanedOrders.length > 0) && (
               <ul className={Styles["MarketPositionsList__table-header"]}>
                 <li>Open Orders</li>
@@ -177,27 +213,6 @@ export default class MarketPositionsList extends Component {
                 className={Styles["MarketPositionsList__null-state"]}
                 message="No positions or open orders"
               />
-            )}
-          {numCompleteSets &&
-            numCompleteSets.value > 0 && (
-              <div className={Styles.MarketPositionsList__completeSets}>
-                <span>{`You currently have ${
-                  numCompleteSets.full
-                } of all outcomes.`}</span>
-                <button
-                  onClick={e => {
-                    this.setState({ completeSetsSalePending: true });
-                    sellCompleteSets(marketId, numCompleteSets, (err, res) => {
-                      if (err) {
-                        this.setState({ completeSetsSalePending: false });
-                      }
-                    });
-                  }}
-                  disabled={s.completeSetsSalePending}
-                >
-                  Sell Complete Sets
-                </button>
-              </div>
             )}
         </div>
       </section>

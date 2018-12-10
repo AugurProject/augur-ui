@@ -292,9 +292,13 @@ export default class MarketPortfolioCard extends Component {
                   ))}
             </div>
           </div>
-          {numCompleteSets &&
+          {tableOpen.myPositions &&
+            numCompleteSets &&
             numCompleteSets.value > 0 && (
-              <div className={PositionStyles.MarketPositionsList__completeSets} style={{paddingLeft: "0.5rem"}}>
+              <div
+                className={PositionStyles.MarketPositionsList__completeSets}
+                style={{ paddingLeft: "0.5rem" }}
+              >
                 <span>{`You currently have ${
                   numCompleteSets.full
                 } of all outcomes.`}</span>
