@@ -1,3 +1,4 @@
+import sinon from "sinon";
 import {
   CATEGORICAL,
   SCALAR,
@@ -61,7 +62,7 @@ describe(`modules/reports/selectors/select-dispute-outcomes.js`, () => {
     reportableOutcomes: [{ id: "0.5", name: "Indeterminate" }]
   };
 
-  const calculatePayoutNumeratorsValueStubb = jest.fn(() => null);
+  const calculatePayoutNumeratorsValueStubb = sinon.stub().returns(null);
   calculatePayoutNumeratorsValueStubb
     .withArgs(marketBinary, [10000, 0], false)
     .returns("0");
