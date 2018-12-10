@@ -35,6 +35,13 @@ jest.mock("config/network.json", () => ({
   }
 }));
 
+jest.mock("services/augurjs", () => ({
+  rpc: {
+    eth: { accounts: cb => cb(null, ["0xa11ce"]) }
+  },
+  contracts: { addresses: { 4: { Universe: "0xb0b" } } }
+}));
+
 describe("modules/app/actions/init-augur.js", () => {
   const ethereumNodeConnectionInfo = {
     http: "http://some.eth.node.com",
@@ -76,7 +83,7 @@ describe("modules/app/actions/init-augur.js", () => {
   });
 
   describe("initAugur", () => {
-    augur.mockConnect = (env, cb) => {
+    augur.connect = (env, cb) => {
       cb(null, {
         ethereumNode: {
           ...ethereumNodeConnectionInfo,
@@ -88,15 +95,6 @@ describe("modules/app/actions/init-augur.js", () => {
         },
         augurNode: augurNodeWS
       });
-    };
-
-    augur.rpc.mockEth = { accounts: cb => cb(null, ["0xa11ce"]) };
-    augur.mockContracts = { addresses: { 4: { Universe: "0xb0b" } } };
-    augur.mockConstants = {
-      ACCOUNT_TYPES: {
-        UNLOCKED_ETHEREUM_NODE: "unlockedEthereumNode",
-        META_MASK: "metaMask"
-      }
     };
 
     test("if initializes augur successfully with logged in account", () => {
@@ -120,7 +118,7 @@ describe("modules/app/actions/init-augur.js", () => {
     });
 
     test("if initializes augur successfully when not logged in", () => {
-      augur.mockConnect = (env, cb) => {
+      augur.connect = (env, cb) => {
         cb(null, {
           ethereumNode: {
             ...ethereumNodeConnectionInfo,
@@ -134,9 +132,9 @@ describe("modules/app/actions/init-augur.js", () => {
         });
       };
 
-      augur.mockContracts = { addresses: { 4: { Universe: "0xb0b" } } };
-      augur.rpc.mockEth = { accounts: cb => cb(null, []) };
-      augur.api.mockController = { stopped: () => {} };
+      augur.contracts = { addresses: { 4: { Universe: "0xb0b" } } };
+      augur.rpc.eth = { accounts: cb => cb(null, []) };
+      augur.api.Controller = { stopped: () => {} };
 
       store.dispatch(
         initAugur({}, {}, (err, connInfo) => {
@@ -187,8 +185,8 @@ describe("modules/app/actions/init-augur.js", () => {
         }
       };
 
-      augur.rpc.mockEth = { accounts: cb => cb(null, []) };
-      augur.api.mockController = { stopped: () => {} };
+      augur.rpc.eth = { accounts: cb => cb(null, []) };
+      augur.api.Controller = { stopped: () => {} };
 
       store.dispatch(
         initAugur({}, {}, (err, connInfo) => {
@@ -212,7 +210,7 @@ describe("modules/app/actions/init-augur.js", () => {
 
     describe("connectAugur", () => {
       test("connectAugur as an initial connection, with logged in account", () => {
-        augur.mockConnect = (env, cb) => {
+        augur.connect = (env, cb) => {
           cb(null, {
             ethereumNode: {
               ...ethereumNodeConnectionInfo,
@@ -226,8 +224,8 @@ describe("modules/app/actions/init-augur.js", () => {
           });
         };
 
-        augur.mockContracts = { addresses: { 4: { Universe: "0xb0b" } } };
-        augur.rpc.mockEth = { accounts: cb => cb(null, ["0xa11ce"]) };
+        augur.Contracts = { addresses: { 4: { Universe: "0xb0b" } } };
+        augur.rpc.eth = { accounts: cb => cb(null, ["0xa11ce"]) };
         augur.api.Controller = { stopped: () => {} };
 
         store.dispatch(
@@ -273,8 +271,8 @@ describe("modules/app/actions/init-augur.js", () => {
           }
         };
 
-        augur.rpc.mockEth = { accounts: cb => cb(null, []) };
-        augur.api.mockController = { stopped: () => {} };
+        augur.rpc.eth = { accounts: cb => cb(null, []) };
+        augur.api.Controller = { stopped: () => {} };
       });
 
       store.dispatch(
@@ -316,7 +314,7 @@ describe("modules/app/actions/init-augur.js", () => {
           }
         };
 
-        augur.rpc.mockEth = { accounts: cb => cb(null, []) };
+        augur.rpc.eth = { accounts: cb => cb(null, []) };
 
         store.dispatch(
           connectAugur({}, mockEnv, false, (err, connInfo) => {
@@ -359,7 +357,7 @@ describe("modules/app/actions/init-augur.js", () => {
           }
         };
 
-        augur.rpc.mockEth = { accounts: cb => cb(null, []) };
+        augur.rpc.eth = { accounts: cb => cb(null, []) };
 
         store.dispatch(
           connectAugur({}, mockEnv, false, (err, connInfo) => {
@@ -391,7 +389,7 @@ describe("modules/app/actions/init-augur.js", () => {
           }
         };
 
-        augur.rpc.mockEth = { accounts: cb => cb(null, []) };
+        augur.rpc.eth = { accounts: cb => cb(null, []) };
 
         store.dispatch(
           connectAugur({}, mockEnv, false, (err, connInfo) => {

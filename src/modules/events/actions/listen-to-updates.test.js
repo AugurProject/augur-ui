@@ -10,7 +10,9 @@ import configureMockStore from "redux-mock-store";
 
 jest.mock("services/augurjs");
 jest.mock("src/select-state");
-jest.mock("modules/notifications/actions/notifications");
+jest.mock("modules/notifications/actions/notifications", () => ({
+  type: "UPDATE_NOTIFICATION"
+}));
 
 describe("events/actions/listen-to-updates", () => {
   const middleware = [thunk];

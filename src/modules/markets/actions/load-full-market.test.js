@@ -6,11 +6,24 @@ import {
 } from "modules/markets/constants/market-loading-states";
 import { UPDATE_MARKET_LOADING } from "modules/markets/actions/update-market-loading";
 
-jest.mock("modules/markets/actions/load-markets-info");
-jest.mock("modules/orders/actions/load-bids-asks");
-jest.mock("modules/positions/actions/load-account-trades");
-jest.mock("modules/markets/actions/price-history-management");
-jest.mock("modules/markets/actions/market-trading-history-management");
+jest.mock("modules/markets/actions/load-markets-info", () => ({
+  type: "LOAD_MARKETS_INFO"
+}));
+jest.mock("modules/orders/actions/load-bids-asks", markedId => ({
+  type: "LOAD_BID_ASKS"
+}));
+jest.mock("modules/positions/actions/load-account-trades", () => ({
+  type: "LOAD_ACCOUNT_TRADES"
+}));
+jest.mock("modules/markets/actions/price-history-management", () => ({
+  type: "LOAD_PRICE_HISTORY"
+}));
+jest.mock("modules/markets/actions/market-trading-history-management", () => ({
+  type: "LOAD_MARKET_TRADING_HISTORY"
+}));
+jest.mock("modules/markets/actions/load-markets-info", () => ({
+  type: "LOAD_DISPUTE_MARKETS_INFO"
+}));
 
 describe("loadFullMarket no market data in state", () => {
   const middlewares = [thunk];
