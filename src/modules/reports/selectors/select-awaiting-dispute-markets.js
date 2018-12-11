@@ -32,8 +32,8 @@ const selectMarketsAwaitingDisputeSelector = () =>
               if (
                 !filteredMarkets[marketKey].disputeInfo.stakes[stakeKey]
                   .tentativeWinning &&
-              filteredMarkets[marketKey].disputeInfo.stakes[stakeKey]
-                .bondSizeCurrent
+                filteredMarkets[marketKey].disputeInfo.stakes[stakeKey]
+                  .bondSizeCurrent
               ) {
                 const percentStakedInOutcome = createBigNumber(
                   filteredMarkets[marketKey].disputeInfo.stakes[stakeKey]
