@@ -1,4 +1,4 @@
-import { constants } from "services/augurjs";
+import { constants } from "src/services/constants";
 import { selectMarketsAwaitingDispute } from "modules/reports/selectors/select-awaiting-dispute-markets";
 
 jest.mock("modules/markets/selectors/markets-all");
@@ -14,7 +14,6 @@ describe(`modules/reports/selectors/select-awaiting-dispute-markets.js`, () => {
     });
 
     test(`should return an array populated with matching market objects`, () => {
-      console.log("constants", constants);
       const actual = selectMarketsAwaitingDispute.resultFunc(
         [
           {
