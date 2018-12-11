@@ -5,6 +5,7 @@ import QRCode from "qrcode.react";
 import Clipboard from "clipboard";
 import TextFit from "react-textfit";
 
+import { NETWORK_IDS } from "modules/app/constants/network";
 import {
   Deposit as DepositIcon,
   Copy as CopyIcon
@@ -48,7 +49,9 @@ export default class AccountDeposit extends Component {
       height: "auto",
       width: "100%"
     };
-    const show0xInstant = [1, 42].includes(augurNodeNetworkId);
+    const show0xInstant = [NETWORK_IDS.Mainnet, NETWORK_IDS.Kovan].includes(
+      augurNodeNetworkId
+    );
     return (
       <section
         className={Styles.AccountDeposit}
