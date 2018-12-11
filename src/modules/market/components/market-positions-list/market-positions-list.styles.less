@@ -5,6 +5,7 @@
 }
 
 .MarketPositionsList__completeSets {
+  align-items: center;
   background-color: @color-lightgray-2;
   display: flex;
   justify-content: space-between;
@@ -16,15 +17,14 @@
   }
 
   > button {
-    font-size: @font-size-normal;
-    font-weight: 400;
-    line-height: @font-size-normal;
-    text-decoration: underline;
-    text-transform: capitalize;
+    .button--transparent();
 
-    &:disabled {
-      color: @color-lightergray;
+    &:disabled,
+    &:disabled:hover {
+      border-color: @color-gray;
+      color: @color-gray;
       cursor: not-allowed;
+      text-decoration: none;
     }
   }
 }
@@ -56,7 +56,6 @@
 
 .MarketOpenOrdersList__table {
   display: table;
-  margin-top: 0.5rem;
   position: relative;
   width: 100%;
 }
@@ -68,7 +67,7 @@
   display: table-header-group;
 
   &:first-child > li {
-    padding-top: 0.5rem;
+    padding-top: 1rem;
   }
 
   > li {

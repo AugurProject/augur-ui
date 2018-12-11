@@ -13,12 +13,17 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 
 import Styles from "modules/market/components/market-positions-list/market-positions-list.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
+import {
+  AWAITING_SIGNATURE,
+  PENDING
+} from "modules/transactions/constants/statuses";
 
 export default class MarketPositionsList extends Component {
   static propTypes = {
     openOrders: PropTypes.array,
     positions: PropTypes.array.isRequired,
     numCompleteSets: PropTypes.object,
+    transactionsStatus: PropTypes.object.isRequired,
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
     orphanedOrders: PropTypes.array.isRequired,
@@ -34,8 +39,7 @@ export default class MarketPositionsList extends Component {
     super(props);
 
     this.state = {
-      isOpen: true,
-      completeSetsSalePending: false
+      isOpen: true
     };
   }
 
@@ -44,6 +48,7 @@ export default class MarketPositionsList extends Component {
       openOrders,
       positions,
       numCompleteSets,
+      transactionsStatus,
       sellCompleteSets,
       marketId,
       orphanedOrders,
@@ -52,6 +57,22 @@ export default class MarketPositionsList extends Component {
     const s = this.state;
 
     const hasOrders = openOrders.length > 0 || orphanedOrders.length > 0;
+    const pendingCompleteSetsHash = `pending-${marketId}-${numCompleteSets &&
+      numCompleteSets.fullPrecision}`;
+    const pendingCompleteSetsInfo = transactionsStatus[pendingCompleteSetsHash];
+    const status = pendingCompleteSetsInfo && pendingCompleteSetsInfo.status;
+    let completeSetButtonText = "Sell Complete Sets";
+    switch (status) {
+      case AWAITING_SIGNATURE:
+        completeSetButtonText = "Awaiting Signature...";
+        break;
+      case PENDING:
+        completeSetButtonText = "Pending transaction...";
+        break;
+      default:
+        completeSetButtonText = "Sell Complete Sets";
+        break;
+    }
 
     return (
       <section className={Styles.MarketPositionsList}>
@@ -135,16 +156,11 @@ export default class MarketPositionsList extends Component {
                 } of all outcomes.`}</span>
                 <button
                   onClick={e => {
-                    this.setState({ completeSetsSalePending: true });
-                    sellCompleteSets(marketId, numCompleteSets, (err, res) => {
-                      if (err) {
-                        this.setState({ completeSetsSalePending: false });
-                      }
-                    });
+                    sellCompleteSets(marketId, numCompleteSets, () => {});
                   }}
-                  disabled={s.completeSetsSalePending}
+                  disabled={!!pendingCompleteSetsInfo}
                 >
-                  Sell Complete Sets
+                  {completeSetButtonText}
                 </button>
               </div>
             )}
