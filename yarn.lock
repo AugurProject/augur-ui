@@ -1645,6 +1645,7 @@ augur-core@1.1.0:
 augur.js@^6.1.4:
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/augur.js/-/augur.js-6.1.4.tgz#17eaae5b30a0c6465245f165ca3667d24e9ef096"
+  integrity sha512-cAs+oEtdFzPHxbn26N5HcYfa5jybEfZLkXrs1vgUF+eTvObumNeo8vEJiCmmS97fWj7vT16JI4ty1sZwnHEPFg==
   dependencies:
     async "1.5.2"
     augur-core "1.1.0"
