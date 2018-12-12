@@ -287,7 +287,9 @@ export default class CreateMarketReview extends Component {
             <h4 className={Styles.CreateMarketReview__smallheading}>
               Additional Details
             </h4>
-            <ReactMarkdown source={newMarket.detailsText || "None"} />
+            <label className={Styles["CreateMarketReview__AdditionalDetails-text"]}>
+              <ReactMarkdown source={newMarket.detailsText || "None"} />
+            </label>
           </div>
         </div>
       </article>
