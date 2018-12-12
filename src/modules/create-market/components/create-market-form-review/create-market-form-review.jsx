@@ -4,6 +4,7 @@ import { augur } from "services/augurjs";
 import { createBigNumber } from "utils/create-big-number";
 import getValue from "src/utils/get-value";
 import insufficientFunds from "modules/markets/helpers/insufficient-funds";
+import ReactMarkdown from 'react-markdown';
 
 import { formatEtherEstimate, formatGasCostToEther } from "utils/format-number";
 import {
@@ -291,15 +292,7 @@ export default class CreateMarketReview extends Component {
             <h4 className={Styles.CreateMarketReview__smallheading}>
               Additional Details
             </h4>
-            <textarea
-              ref={additionalDetails => {
-                this.additionalDetails = additionalDetails;
-              }}
-              className={Styles["CreateMarketReview__AdditionalDetails-text"]}
-              disabled
-              readOnly
-              value={newMarket.detailsText || "None"}
-            />
+            <ReactMarkdown source={newMarket.detailsText || "None"} />
           </div>
         </div>
       </article>
