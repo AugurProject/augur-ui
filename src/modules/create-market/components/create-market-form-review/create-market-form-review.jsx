@@ -205,11 +205,6 @@ export default class CreateMarketReview extends Component {
     const { newMarket } = this.props;
     const s = this.state;
 
-    if (this.additionalDetails && this.additionalDetails.scrollHeight) {
-      this.additionalDetails.style.height = `${
-        this.additionalDetails.scrollHeight
-      }px`;
-    }
     return (
       <article className={StylesForm.CreateMarketForm__fields}>
         <div className={Styles.CreateMarketReview}>
