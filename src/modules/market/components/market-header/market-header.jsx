@@ -65,7 +65,7 @@ export default class MarketHeader extends Component {
   }
 
   updateDetailsHeight() {
-    if (this.detailsDiv) this.setState({ detailsHeight: this.detailsDiv.scrollHeight });
+    if (this.detailsContainer) this.setState({ detailsHeight: this.detailsContainer.scrollHeight });
   }
 
   toggleReadMore() {
@@ -145,8 +145,8 @@ export default class MarketHeader extends Component {
                 >
                   <h4>Additional Details</h4>
                   <label
-                    ref={detailsDiv => {
-                      this.detailsDiv = detailsDiv;
+                    ref={detailsContainer => {
+                      this.detailsContainer = detailsContainer;
                     }}
                     className={classNames(
                       Styles["MarketHeader__AdditionalDetails-text"],
