@@ -9,7 +9,7 @@ import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
 
-const OVERFLOW_DETAILS_LENGTH = 89;
+const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
 export default class MarketHeader extends Component {
   static propTypes = {
