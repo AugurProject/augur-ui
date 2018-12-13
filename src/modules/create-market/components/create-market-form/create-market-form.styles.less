@@ -318,18 +318,19 @@
 }
 
 .CreateMarketForm__additionalDetailsRendered {
-  display: block;
+  display: block !important;
   white-space: pre-wrap;
+  text-transform: none !important;
+}
 
-  > ul {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
-  }
+.CreateMarketForm__additionalDetailsRendered ul {
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
 }
 
 @media @breakpoint-mobile-medium {

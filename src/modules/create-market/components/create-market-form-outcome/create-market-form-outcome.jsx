@@ -20,6 +20,7 @@ import {
   CATEGORICAL_OUTCOME_MAX_LENGTH
 } from "modules/markets/constants/new-market-constraints";
 import ReactMarkdown from 'react-markdown';
+import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 
 import {
   ExclamationCircle as InputErrorIcon,
@@ -372,6 +373,7 @@ export default class CreateMarketOutcome extends Component {
     );
 
     const validation = newMarket.validations[newMarket.currentStep];
+
     return (
       <ul className={StylesForm.CreateMarketForm__fields}>
         <li>
@@ -624,12 +626,12 @@ export default class CreateMarketOutcome extends Component {
           </li>
         )}
         {newMarket.type && (
-          <li className={StylesForm["field--50"]} style={{minWidth: '50%'}}>
+          <li className={StylesForm["field--50"]} style={{width: 'unset'}}>
             <label htmlFor="cm__input--details">
               <span>Additional Details</span>
             </label>
             <textarea
-              style={{minWidth: '200px'}}
+              style={{minWidth: '400px', width: '560px'}} //need to adjust for mobile
               id="cm__input--details"
               value={newMarket.detailsText}
               placeholder="Optional - Include any additional information that traders should know about this market."
@@ -640,18 +642,16 @@ export default class CreateMarketOutcome extends Component {
           </li>
         )}
         {newMarket.type && (
-          <li className={StylesForm["field--50"]} style={{width: 'unset'}}>
+          <li className={StylesForm["field--50"]} style={{width: 'unset', minWidth: '40%', maxWidth: '40%'}}>
             <label htmlFor="cm__input--details">
               <span>Additional Details Preview</span>
             </label>
-            <label className={StylesForm.CreateMarketForm__additionalDetailsRendered}>
-              <ReactMarkdown 
-                source={newMarket.detailsText} 
-              />
-            </label>
+            <MarkdownRenderer text={newMarket.detailsText} className={StylesForm.CreateMarketForm__additionalDetailsRendered} />
           </li>
         )}
       </ul>
     );
   }
 }
+
+

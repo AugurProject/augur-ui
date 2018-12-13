@@ -4,8 +4,8 @@ import { augur } from "services/augurjs";
 import { createBigNumber } from "utils/create-big-number";
 import getValue from "src/utils/get-value";
 import insufficientFunds from "modules/markets/helpers/insufficient-funds";
-import ReactMarkdown from 'react-markdown';
 
+import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 import { formatEtherEstimate, formatGasCostToEther } from "utils/format-number";
 import {
   EXPIRY_SOURCE_GENERIC,
@@ -287,9 +287,7 @@ export default class CreateMarketReview extends Component {
             <h4 className={Styles.CreateMarketReview__smallheading}>
               Additional Details
             </h4>
-            <label className={Styles["CreateMarketReview__AdditionalDetails-text"]}>
-              <ReactMarkdown source={newMarket.detailsText || "None"} />
-            </label>
+            <MarkdownRenderer text={newMarket.detailsText || "None"} className={Styles["CreateMarketReview__AdditionalDetails-text"]} />
           </div>
         </div>
       </article>

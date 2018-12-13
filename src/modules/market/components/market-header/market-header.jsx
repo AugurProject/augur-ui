@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import { ChevronLeft } from "modules/common/components/icons";
-import ReactMarkdown from 'react-markdown';
+import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 
 import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
 import { BigNumber } from "bignumber.js";
@@ -141,7 +141,7 @@ export default class MarketHeader extends Component {
                   style={{ marginTop: "20px" }}
                 >
                   <h4>Additional Details</h4>
-                  <label
+                  <MarkdownRenderer 
                     ref={details => {
                       this.details = details;
                     }}
@@ -152,9 +152,9 @@ export default class MarketHeader extends Component {
                           detailsTooLong && this.state.showReadMore
                       }
                     )}
-                  >
-                    <ReactMarkdown source={details} />
-                  </label>
+                    text={details} 
+                  />
+
                   {detailsTooLong && (
                     <button
                       className={Styles.MarketHeader__readMoreButton}
