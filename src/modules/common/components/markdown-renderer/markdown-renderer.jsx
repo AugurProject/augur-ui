@@ -8,11 +8,12 @@ import Styles from "modules/common/components/markdown-renderer/markdown-rendere
 const Remarkable = require("remarkable");
 
 const md = new Remarkable({
-  linkify: false
+  linkify: false,
+  breaks: true,
 });
 md.core.ruler.enable([]);
 md.block.ruler.enable([]);
-md.inline.ruler.enable(["emphasis"]);
+md.inline.ruler.enable(["emphasis", 'newline']);
 md.inline.ruler.disable(["autolink", "links", "backticks"]);
 md.block.ruler.disable([
   "table",
