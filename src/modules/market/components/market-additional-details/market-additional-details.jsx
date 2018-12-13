@@ -21,7 +21,12 @@ const MarketAdditonalDetails = ({
           <h4>Resolution Source:</h4>
           <span>{resolutionSource}</span>
           {details && (
-            <MarkdownRenderer text={details} className={ Styles[`MarketAdditionalDetails__details-details-text`]} />
+            <MarkdownRenderer
+              text={details}
+              className={
+                Styles[`MarketAdditionalDetails__details-details-text`]
+              }
+            />
           )}
           {marketType === SCALAR && (
             <p

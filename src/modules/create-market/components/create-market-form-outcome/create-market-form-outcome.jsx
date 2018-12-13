@@ -19,7 +19,6 @@ import {
   CATEGORICAL_OUTCOMES_MAX_NUM,
   CATEGORICAL_OUTCOME_MAX_LENGTH
 } from "modules/markets/constants/new-market-constraints";
-import ReactMarkdown from 'react-markdown';
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 
 import {
@@ -626,32 +625,43 @@ export default class CreateMarketOutcome extends Component {
           </li>
         )}
         {newMarket.type && (
-          <li className={StylesForm["field--50"]} style={{width: 'unset'}}>
+          <li
+            className={classNames(
+              StylesForm["field--50"],
+              Styles.CreateMarketFormOutcome__details
+            )}
+          >
             <label htmlFor="cm__input--details">
               <span>Additional Details</span>
             </label>
             <textarea
-              style={{minWidth: '400px', width: '560px'}} //need to adjust for mobile
               id="cm__input--details"
               value={newMarket.detailsText}
               placeholder="Optional - Include any additional information that traders should know about this market."
               onChange={e => {
                 updateNewMarket({ detailsText: e.target.value });
               }}
+              className={Styles.CreateMarketForm__textArea}
             />
           </li>
         )}
         {newMarket.type && (
-          <li className={StylesForm["field--50"]} style={{width: 'unset', minWidth: '40%', maxWidth: '40%'}}>
+          <li
+            className={classNames(
+              StylesForm["field--50"],
+              Styles.CreateMarketFormOutcome__detailsPreview
+            )}
+          >
             <label htmlFor="cm__input--details">
               <span>Additional Details Preview</span>
             </label>
-            <MarkdownRenderer text={newMarket.detailsText} className={StylesForm.CreateMarketForm__additionalDetailsRendered} />
+            <MarkdownRenderer
+              text={newMarket.detailsText}
+              className={StylesForm.CreateMarketForm__additionalDetailsRendered}
+            />
           </li>
         )}
       </ul>
     );
   }
 }
-
-

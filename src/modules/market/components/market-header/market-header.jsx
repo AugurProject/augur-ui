@@ -66,7 +66,8 @@ export default class MarketHeader extends Component {
   }
 
   updateDetailsHeight() {
-    if (this.detailsContainer) this.setState({ detailsHeight: this.detailsContainer.scrollHeight });
+    if (this.detailsContainer)
+      this.setState({ detailsHeight: this.detailsContainer.scrollHeight });
   }
 
   toggleReadMore() {
@@ -145,7 +146,7 @@ export default class MarketHeader extends Component {
                   style={{ marginTop: "20px" }}
                 >
                   <h4>Additional Details</h4>
-                  <label 
+                  <label
                     ref={detailsContainer => {
                       this.detailsContainer = detailsContainer;
                     }}
@@ -157,7 +158,7 @@ export default class MarketHeader extends Component {
                       }
                     )}
                   >
-                    <MarkdownRenderer text={details} hideLabel/>
+                    <MarkdownRenderer text={details} hideLabel />
                   </label>
 
                   {detailsTooLong && (
