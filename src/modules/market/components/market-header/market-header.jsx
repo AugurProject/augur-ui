@@ -9,7 +9,7 @@ import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
 
-const OVERFLOW_DETAILS_LENGTH = 560;
+const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
 export default class MarketHeader extends Component {
   static propTypes = {
@@ -39,7 +39,7 @@ export default class MarketHeader extends Component {
     isDesignatedReporter: false,
     tentativeWinner: null,
     scalarDenomination: null,
-    resolutionSource: null,
+    resolutionSource: "General knowledge",
     selectedOutcome: null,
     marketType: null,
     isForking: false
@@ -48,10 +48,24 @@ export default class MarketHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showReadMore: false
+      showReadMore: false,
+      detailsHeight: 0
     };
 
     this.toggleReadMore = this.toggleReadMore.bind(this);
+    this.updateDetailsHeight = this.updateDetailsHeight.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateDetailsHeight();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) this.updateDetailsHeight();
+  }
+
+  updateDetailsHeight() {
+    if (this.detailsContainer) this.setState({ detailsHeight: this.detailsContainer.scrollHeight });
   }
 
   toggleReadMore() {
@@ -81,7 +95,7 @@ export default class MarketHeader extends Component {
     } = this.props;
 
     let { details } = this.props;
-    const detailsTooLong = details.length > OVERFLOW_DETAILS_LENGTH;
+    const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -122,7 +136,7 @@ export default class MarketHeader extends Component {
             <div className={Styles.MarketHeader__descriptionContainer}>
               <div className={Styles.MarketHeader__details}>
                 <h4>Resolution Source</h4>
-                <span>{resolutionSource || "General knowledge"}</span>
+                <span>{resolutionSource}</span>
               </div>
               {details.length > 0 && (
                 <div
@@ -131,6 +145,9 @@ export default class MarketHeader extends Component {
                 >
                   <h4>Additional Details</h4>
                   <label
+                    ref={detailsContainer => {
+                      this.detailsContainer = detailsContainer;
+                    }}
                     className={classNames(
                       Styles["MarketHeader__AdditionalDetails-text"],
                       {

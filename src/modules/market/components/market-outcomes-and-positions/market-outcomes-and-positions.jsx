@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import isPopulated from "utils/is-populated";
 import MarketOutcomesList from "modules/market/components/market-outcomes-list/market-outcomes-list";
 import MarketPositionsList from "modules/market/components/market-positions-list/market-positions-list";
 import MarketPositionsListMobile from "modules/market/components/market-positions-list--mobile/market-positions-list--mobile";
@@ -10,6 +11,7 @@ const MarketOutcomesAndPositions = ({
   marketId,
   outcomes,
   numCompleteSets,
+  transactionsStatus,
   positions,
   orphanedOrders,
   openOrders,
@@ -33,6 +35,7 @@ const MarketOutcomesAndPositions = ({
         positions={positions}
         openOrders={openOrders}
         numCompleteSets={numCompleteSets}
+        transactionsStatus={transactionsStatus}
         marketId={marketId}
         sellCompleteSets={sellCompleteSets}
         orphanedOrders={orphanedOrders}
@@ -41,7 +44,7 @@ const MarketOutcomesAndPositions = ({
     )}
     {isMobile &&
       selectedOutcome &&
-      outcomes.length > 0 && (
+      isPopulated(outcomes) && (
         <MarketPositionsListMobile
           outcome={
             outcomes.filter(outcome => outcome.id === selectedOutcome)[0]
@@ -63,6 +66,7 @@ MarketOutcomesAndPositions.propTypes = {
   marketId: PropTypes.string.isRequired,
   outcomes: PropTypes.array,
   numCompleteSets: PropTypes.object,
+  transactionsStatus: PropTypes.object.isRequired,
   positions: PropTypes.array,
   orphanedOrders: PropTypes.array,
   openOrders: PropTypes.array,
