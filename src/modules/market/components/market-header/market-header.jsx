@@ -145,7 +145,7 @@ export default class MarketHeader extends Component {
                   style={{ marginTop: "20px" }}
                 >
                   <h4>Additional Details</h4>
-                  <MarkdownRenderer 
+                  <label 
                     ref={detailsContainer => {
                       this.detailsContainer = detailsContainer;
                     }}
@@ -156,8 +156,9 @@ export default class MarketHeader extends Component {
                           detailsTooLong && this.state.showReadMore
                       }
                     )}
-                    text={details} 
-                  />
+                  >
+                    <MarkdownRenderer text={details} hideLabel/>
+                  </label>
 
                   {detailsTooLong && (
                     <button

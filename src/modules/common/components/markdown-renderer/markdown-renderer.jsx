@@ -26,19 +26,25 @@ md.block.ruler.disable([ 'table', 'footnote', 'blockquote', 'code', 'fences', 'h
 export default class MarkdownRenderer extends Component {
   static propTypes = {
     text: PropTypes.string.isRequired,
-    className: PropTypes.string
+    className: PropTypes.string,
+    hideLabel: PropTypes.bool,
   };
 
   static defaultProps = {
-    className: undefined
+    className: undefined,
+    hideLabel: false,
   };
 
   render() {
-  	const { className, text } = this.props;
+  	const { className, text, hideLabel } = this.props;
+
+  	if (hideLabel) {
+  		return ReactHtmlParser(md.render(text));
+  	}
 
   	return (
-  		<label className={classNames(Styles.MarkdownRenderer, className)}>
-            {ReactHtmlParser(md.render(text))}
+		<label className={classNames(Styles.MarkdownRenderer, className)}>
+        	{ReactHtmlParser(md.render(text))}
         </label>
   	);
   }
