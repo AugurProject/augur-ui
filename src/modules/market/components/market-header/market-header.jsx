@@ -65,8 +65,9 @@ export default class MarketHeader extends Component {
   }
 
   updateDetailsHeight() {
-    if (this.detailsContainer)
+    if (this.detailsContainer) {
       this.setState({ detailsHeight: this.detailsContainer.scrollHeight });
+    }
   }
 
   toggleReadMore() {
