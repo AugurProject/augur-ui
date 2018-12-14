@@ -78,6 +78,7 @@ export default class AccountDeposit extends Component {
     const show0xInstant = [NETWORK_IDS.Mainnet, NETWORK_IDS.Kovan].includes(
       augurNodeNetworkId
     );
+    const showAirSwap = NETWORK_IDS.Mainnet === augurNodeNetworkId;
     return (
       <section
         className={Styles.AccountDeposit}
@@ -104,9 +105,16 @@ export default class AccountDeposit extends Component {
                 network and Kovan test network.
               </div>
             )}
-            <div className={Styles.AccountDeposit__0xInstantButton}>
-              <button onClick={airSwapOnClick}> Buy REP using AirSwap. </button>
-            </div>
+            {showAirSwap && (
+              <>
+                <br />
+                <div className={Styles.AccountDeposit__0xInstantButton}>
+                  <button onClick={airSwapOnClick}>
+                    Buy REP using AirSwap.
+                  </button>
+                </div>
+              </>
+            )}
           </div>
           <div className={Styles.AccountDeposit__address}>
             <h3 className={Styles.AccountDeposit__addressLabel}>
