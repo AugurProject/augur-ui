@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
@@ -9,11 +9,11 @@ const Remarkable = require("remarkable");
 
 const md = new Remarkable({
   linkify: false,
-  breaks: true,
+  breaks: true
 });
 md.core.ruler.enable([]);
 md.block.ruler.enable([]);
-md.inline.ruler.enable(["emphasis", 'newline']);
+md.inline.ruler.enable(["emphasis", "newline"]);
 md.inline.ruler.disable(["autolink", "links", "backticks"]);
 md.block.ruler.disable([
   "table",
@@ -25,31 +25,31 @@ md.block.ruler.disable([
   "lheading"
 ]);
 
-export default class MarkdownRenderer extends Component {
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    className: PropTypes.string,
-    hideLabel: PropTypes.bool
-  };
-
-  static defaultProps = {
-    className: undefined,
-    hideLabel: false
-  };
-
-  render() {
-    const { className, text, hideLabel } = this.props;
-
-    if (hideLabel) {
-      return (
-        <span className={Styles.MarkdownRenderer}>{ReactHtmlParser(md.render(text))}</span>
-      );
-    }
-
+const MarkdownRenderer = ({ text, className, hideLabel }) => {
+  if (hideLabel) {
     return (
-      <label className={classNames(Styles.MarkdownRenderer, className)}>
+      <span className={Styles.MarkdownRenderer}>
         {ReactHtmlParser(md.render(text))}
-      </label>
+      </span>
     );
   }
-}
+
+  return (
+    <label className={classNames(Styles.MarkdownRenderer, className)}>
+      {ReactHtmlParser(md.render(text))}
+    </label>
+  );
+};
+
+MarkdownRenderer.propTypes = {
+  text: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  hideLabel: PropTypes.bool
+};
+
+MarkdownRenderer.defaultProps = {
+  className: null,
+  hideLabel: false
+};
+
+export default MarkdownRenderer;
