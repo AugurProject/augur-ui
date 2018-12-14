@@ -136,15 +136,15 @@ export default class MarketHeader extends Component {
           <div className={Styles.MarketHeader__descContainer}>
             <h1 className={Styles.MarketHeader__description}>{description}</h1>
             <div className={Styles.MarketHeader__descriptionContainer}>
-              <div className={Styles.MarketHeader__details}>
+              <div
+                className={Styles.MarketHeader__details}
+                style={{ paddingBottom: "1rem" }}
+              >
                 <h4>Resolution Source</h4>
                 <span>{resolutionSource}</span>
               </div>
               {details.length > 0 && (
-                <div
-                  className={Styles.MarketHeader__details}
-                  style={{ marginTop: "20px" }}
-                >
+                <div className={Styles.MarketHeader__details}>
                   <h4>Additional Details</h4>
                   <label
                     ref={detailsContainer => {
