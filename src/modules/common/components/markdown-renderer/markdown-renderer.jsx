@@ -41,7 +41,9 @@ export default class MarkdownRenderer extends Component {
     const { className, text, hideLabel } = this.props;
 
     if (hideLabel) {
-      return ReactHtmlParser(md.render(text));
+      return (
+        <span className={Styles.MarkdownRenderer}>{ReactHtmlParser(md.render(text))}</span>
+      );
     }
 
     return (
