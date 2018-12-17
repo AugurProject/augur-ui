@@ -180,7 +180,9 @@ class PerformanceGraph extends Component {
       startTime,
       endTime,
       null,
+      null,
       (err, rawPerformanceData) => {
+        console.log("getPL updatePerfData", err, rawPerformanceData);
         if (err) return console.error(err);
         // make the first entry into the data a 0 value to make sure we start from 0 PL
         const { aggregate } = rawPerformanceData;

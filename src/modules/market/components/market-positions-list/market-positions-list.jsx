@@ -55,7 +55,7 @@ export default class MarketPositionsList extends Component {
       cancelOrphanedOrder
     } = this.props;
     const s = this.state;
-
+    // console.log(numCompleteSets);
     const hasOrders = openOrders.length > 0 || orphanedOrders.length > 0;
     const pendingCompleteSetsHash = `pending-${marketId}-${numCompleteSets &&
       numCompleteSets.fullPrecision}`;

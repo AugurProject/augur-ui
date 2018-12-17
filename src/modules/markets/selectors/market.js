@@ -246,15 +246,27 @@ export function assembleMarket(
 
         market.reportingFeeRatePercent = formatPercent(
           marketData.reportingFeeRate * 100,
-          { positiveSign: false, decimals: 4, decimalsRounded: 4 }
+          {
+            positiveSign: false,
+            decimals: 4,
+            decimalsRounded: 4
+          }
         );
         market.marketCreatorFeeRatePercent = formatPercent(
           marketData.marketCreatorFeeRate * 100,
-          { positiveSign: false, decimals: 4, decimalsRounded: 4 }
+          {
+            positiveSign: false,
+            decimals: 4,
+            decimalsRounded: 4
+          }
         );
         market.settlementFeePercent = formatPercent(
           marketData.settlementFee * 100,
-          { positiveSign: false, decimals: 4, decimalsRounded: 4 }
+          {
+            positiveSign: false,
+            decimals: 4,
+            decimalsRounded: 4
+          }
         );
         market.openInterest = formatEther(marketData.openInterest, {
           positiveSign: false
@@ -314,7 +326,7 @@ export function assembleMarket(
         market.outcomes = [];
 
         let marketTradeOrders = [];
-
+        // console.log("marketOutcomesData", marketOutcomesData, market);
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];
@@ -371,12 +383,16 @@ export function assembleMarket(
             } else if (createBigNumber(outcome.volume || 0).gt(ZERO)) {
               outcome.lastPricePercent = formatPercent(
                 outcome.lastPrice.value * 100,
-                { positiveSign: false }
+                {
+                  positiveSign: false
+                }
               );
             } else {
               outcome.lastPricePercent = formatPercent(
                 100 / market.numOutcomes,
-                { positiveSign: false }
+                {
+                  positiveSign: false
+                }
               );
             }
 
@@ -426,21 +442,38 @@ export function assembleMarket(
           .sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
 
         let numCompleteSets = createBigNumber(0);
-        if (marketAccountPositions) {
-          numCompleteSets = Object.keys(marketAccountPositions).reduce(
+        const marketAccountPositionsKeys = Object.keys(
+          marketAccountPositions || {}
+        );
+        if (marketAccountPositionsKeys.length === market.numOutcomes) {
+          // console.log(
+          //   "marketAccountPositions/market.outcomes/marketOutcomesData",
+          //   marketAccountPositions,
+          //   market.outcomes,
+          //   market.numOutcomes,
+          //   marketOutcomesData
+          // );
+          numCompleteSets = marketAccountPositionsKeys.reduce(
             (num, outcomePositionId) => {
-              const outcomePosition =
-                marketAccountPositions[outcomePositionId][0];
-              const numShares = createBigNumber(outcomePosition.numShares);
-              if (numShares.eq(0)) {
+              // console.log(
+              //   "outcomePositionId",
+              //   outcomePositionId,
+              //   marketAccountPositions,
+              //   num.toString()
+              // );
+              const outcomePosition = marketAccountPositions[outcomePositionId];
+              const position = createBigNumber(outcomePosition.position);
+              if (position.eq(0)) {
                 return createBigNumber(0);
               }
-              if (numShares.lt(num)) {
-                return numShares;
+              if (position.lt(num)) {
+                return position;
               }
               return num;
             },
-            createBigNumber(marketAccountPositions[0][0].numShares)
+            createBigNumber(
+              marketAccountPositions[marketAccountPositionsKeys[0]].position
+            )
           );
         }
 
@@ -494,7 +527,9 @@ export function assembleMarket(
         //   - formatted reported outcome
         //   - the percentage of correct reports (for binaries only)
         if (marketData.consensus) {
-          market.consensus = { ...marketData.consensus };
+          market.consensus = {
+            ...marketData.consensus
+          };
           if (market.reportableOutcomes.length) {
             const { payout, isInvalid } = market.consensus;
             const winningOutcome = calculatePayoutNumeratorsValue(
@@ -521,7 +556,9 @@ export function assembleMarket(
 
         return market;
       },
-      { max: 1 }
+      {
+        max: 1
+      }
     );
   }
 

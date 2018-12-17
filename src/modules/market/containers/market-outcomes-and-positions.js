@@ -9,6 +9,7 @@ import { selectOrphanOrders } from "src/select-state";
 import { cancelOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { find } from "lodash";
+import { YES_NO_YES_ID } from "modules/markets/constants/market-outcomes";
 
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
@@ -43,7 +44,10 @@ const mapStateToProps = (state, ownProps) => {
         ? outcome.description
         : outcome.name || order.price;
   });
-
+  // console.log("mapStateToProps", market, market.outcomes);
+  const outcomes = market.isYesNo
+    ? [market.outcomes[YES_NO_YES_ID]]
+    : market.outcomes;
   return {
     numCompleteSets:
       (market.myPositionsSummary &&
@@ -51,7 +55,7 @@ const mapStateToProps = (state, ownProps) => {
       undefined,
     transactionsStatus: state.transactionsStatus,
     isMobile: state.appStatus.isMobile,
-    outcomes: market.outcomes || [],
+    outcomes: outcomes || [],
     positions,
     openOrders,
     orphanedOrders: filteredOrphanOrders

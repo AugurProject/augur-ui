@@ -14,13 +14,11 @@ export const generateOutcomePositionSummary = memoize(
     const outcomePositions = Array.isArray(adjustedPosition)
       ? adjustedPosition.length
       : 1;
-    const netPosition = accumulate(
-      adjustedPosition,
-      "numSharesAdjustedForUserIntention"
-    );
-    const qtyShares = accumulate(adjustedPosition, "numShares");
-    const realized = accumulate(adjustedPosition, "realizedProfitLoss");
-    const unrealized = accumulate(adjustedPosition, "unrealizedProfitLoss");
+    // console.log("generateOutcomePositionSummary adjusted/outcome:", adjustedPosition, outcomePositions, Array.isArray(adjustedPosition));
+    const netPosition = accumulate(adjustedPosition, "netPosition");
+    const qtyShares = accumulate(adjustedPosition, "position");
+    const realized = accumulate(adjustedPosition, "realized");
+    const unrealized = accumulate(adjustedPosition, "unrealized");
     // todo: check if this calculation is correct for UI
     const averagePrice = accumulate(adjustedPosition, "averagePrice");
     // use qtyShares if it's not 0 or netPosition if it's not 0, otherwise default to 0.
@@ -71,6 +69,7 @@ export const generateMarketsPositionsSummary = memoize(
         ) {
           return;
         }
+        // console.log("generateMarketsPositionsSummary", outcome.position);
         netPosition = netPosition.plus(
           createBigNumber(outcome.position.netPosition.value, 10)
         );

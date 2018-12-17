@@ -14,6 +14,7 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
   augur.trading.getUserTradingPositions(
     { ...options, account: loginAccount.address, universe: universe.id },
     (err, positions) => {
+      console.log("getUserTradingPositions", err, positions);
       if (err) return callback(err);
       if (positions == null) return callback(null);
       const marketIds = Array.from(
@@ -44,8 +45,13 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
                 position =>
                   position.marketId === marketId &&
                   position.outcome === outcomeId
-              );
+              )[0];
             });
+            // console.log(
+            //   "going to updateAccountPosiitonsData",
+            //   marketPositionData,
+            //   marketPositions
+            // );
             dispatch(updateAccountPositionsData(marketPositionData, marketId));
           });
           dispatch(updateTopBarPL());
