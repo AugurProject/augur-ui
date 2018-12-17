@@ -1,7 +1,72 @@
 @import (reference) "~assets/styles/shared";
 
+.MarketView {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.MarketView__body {
+  color: white; 
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin: 41px;
+  margin-top: 0px;
+}
+
+.MarketView__firstColumn {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.MarketView__secondColumn {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 325px;
+  margin-left: 20px;
+}
+
+.MarketView__component {
+  background-color: #1B1528;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+.MarketView__firstRow {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+}
+
+.MarketView__secondRow {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  margin-top: 12px;
+  min-height: 330px;
+}
+
+.MarketView__innerFirstColumn {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  margin-right: 20px;
+  max-width: 325px;
+  min-height: 677px;
+}
+
+.MarketView__innerSecondColumn {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
 .Market__upper {
   .view();
+  min-height: unset;
 }
 
 .Market__graphs {

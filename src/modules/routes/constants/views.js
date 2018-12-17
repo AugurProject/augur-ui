@@ -1,5 +1,6 @@
 // MAIN VIEWS
 export const MARKET = "market";
+
 export const MARKETS = "markets";
 export const CREATE_MARKET = "create-market";
 export const TRANSACTIONS = "transactions";

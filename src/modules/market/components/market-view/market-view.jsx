@@ -155,6 +155,7 @@ export default class MarketView extends Component {
         ref={node => {
           this.node = node;
         }}
+        className={Styles.MarketView}
       >
         <Helmet>
           <title>{parseMarketTitle(description)}</title>
@@ -167,7 +168,46 @@ export default class MarketView extends Component {
             clearSelectedOutcome={this.clearSelectedOutcome}
             location={location}
           />
-          {s.selectedOutcome === null && (
+        </div>
+        <section className={Styles.MarketView__body}>
+          <div className={Styles.MarketView__firstColumn}>
+            <div className={Styles.MarketView__firstRow}>
+              <div className={Styles.MarketView__innerFirstColumn}>
+                <div className={Styles.MarketView__component}>
+                  Order Form
+                </div>
+              </div>
+              <div className={Styles.MarketView__innerSecondColumn}>
+                <div className={Styles.MarketView__component} style={{backgroundColor: '#1B1528', marginBottom: '12px'}}>
+                  Outcomes Table
+                </div>
+                <div className={Styles.MarketView__component} style={{backgroundColor: '#1B1528'}}>
+                  Charts
+                </div>
+              </div>
+            </div>
+            <div className={Styles.MarketView__secondRow}>
+              <div className={Styles.MarketView__component} style={{backgroundColor: '#1B1528'}}>
+                Open Orders / Filled Orders / Positions
+              </div>
+            </div>
+          </div>
+          <div className={Styles.MarketView__secondColumn}>
+            <div className={Styles.MarketView__component} style={{marginBottom: '12px', minHeight: '400px'}}>
+              Order Book
+            </div>
+             <div className={Styles.MarketView__component} style={{minHeight: '400px'}}>
+              Trade History
+            </div>
+          </div>
+        </section>
+      </section>
+    );
+  }
+}
+
+/**
+{s.selectedOutcome === null && (
             <MarketOutcomesChart
               marketId={marketId}
               fixedPrecision={s.fixedPrecision}
@@ -204,7 +244,4 @@ export default class MarketView extends Component {
             />
           </div>
         </section>
-      </section>
-    );
-  }
-}
+**/
