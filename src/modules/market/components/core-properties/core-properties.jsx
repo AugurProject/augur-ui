@@ -8,7 +8,7 @@ import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
-
+import determineMarketPhase from "utils/determine-market-phase";
 import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
 import { dateHasPassed } from "utils/format-date";
@@ -98,35 +98,6 @@ export default class CoreProperties extends Component {
     };
   }
 
-  determinePhase() {
-    const { reportingState } = this.props.market;
-    switch (reportingState) {
-      case constants.REPORTING_STATE.PRE_REPORTING:
-        return "Open";
-
-      case constants.REPORTING_STATE.DESIGNATED_REPORTING:
-      case constants.REPORTING_STATE.OPEN_REPORTING:
-      case constants.REPORTING_STATE.CROWDSOURCING_DISPUTE:
-      case constants.REPORTING_STATE.AWAITING_NEXT_WINDOW:
-        return "Reporting";
-
-      case constants.REPORTING_STATE.AWAITING_FINALIZATION:
-      case constants.REPORTING_STATE.FINALIZED:
-        return "Resolved";
-
-      case constants.REPORTING_STATE.FORKING:
-        return "Forking";
-
-      case constants.REPORTING_STATE.AWAITING_NO_REPORT_MIGRATION:
-        return "Awaiting No Report Migrated";
-
-      case constants.REPORTING_STATE.AWAITING_FORK_MIGRATION:
-        return "Awaiting Fork Migration";
-
-      default:
-        return "";
-    }
-  }
 
   render() {
     const {
@@ -169,7 +140,7 @@ export default class CoreProperties extends Component {
         },
         {
           name: "phase",
-          value: this.determinePhase()
+          value: determineMarketPhase(reportingState)
         }
       ],
       [

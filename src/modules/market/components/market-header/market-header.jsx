@@ -2,9 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { ChevronLeft } from "modules/common/components/icons";
+import {
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft
+} from "modules/common/components/icons";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
-
+import MarketHeaderBar from "modules/market/components/market-header/market-header-bar";
 import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
@@ -72,7 +76,7 @@ export default class MarketHeader extends Component {
   }
 
   toggleReadMore() {
-     if (this.state.showReadMore && this.detailsContainer) {
+    if (this.state.showReadMore && this.detailsContainer) {
       this.detailsContainer.scrollTop = 0;
     }
     this.setState({ showReadMore: !this.state.showReadMore });
@@ -82,7 +86,6 @@ export default class MarketHeader extends Component {
     const {
       clearSelectedOutcome,
       description,
-      history,
       location,
       marketType,
       resolutionSource,
@@ -113,28 +116,26 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
+        <MarketHeaderBar
+          category={market.category}
+          reportingState={market.reportingState}
+          tags={market.tags}
+        />
         <div
           className={classNames(Styles.MarketHeader__nav, {
             [Styles["MarketHeader__nav-isForking"]]: isForking
           })}
         >
-          {selectedOutcome !== null && marketType === CATEGORICAL ? (
-            <button
-              className={Styles[`MarketHeader__back-button`]}
-              onClick={() => clearSelectedOutcome()}
-            >
-              {ChevronLeft}
-              <span> view all outcomes</span>
-            </button>
-          ) : (
-            <button
-              className={Styles[`MarketHeader__back-button`]}
-              onClick={() => history.goBack()}
-            >
-              {ChevronLeft}
-              <span> back</span>
-            </button>
-          )}
+          {selectedOutcome !== null &&
+            marketType === CATEGORICAL && (
+              <button
+                className={Styles[`MarketHeader__back-button`]}
+                onClick={() => clearSelectedOutcome()}
+              >
+                {ChevronLeft}
+                <span> view all outcomes</span>
+              </button>
+            )}
         </div>
         <div className={Styles[`MarketHeader__main-values`]}>
           <div className={Styles.MarketHeader__descContainer}>
@@ -170,7 +171,12 @@ export default class MarketHeader extends Component {
                       className={Styles.MarketHeader__readMoreButton}
                       onClick={this.toggleReadMore}
                     >
-                      {!this.state.showReadMore ? "read more" : "read less"}
+                      {!this.state.showReadMore
+                        ? ChevronDown({ stroke: "#FFFFFF" })
+                        : ChevronUp()}
+                      <span>
+                        {!this.state.showReadMore ? "More ..." : "less"}
+                      </span>
                     </button>
                   )}
                 </div>
