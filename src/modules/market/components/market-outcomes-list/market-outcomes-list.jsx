@@ -3,11 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import MarketOutcomesListOutcome from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome";
-import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
-import toggleHeight from "utils/toggle-height/toggle-height";
 
 import Styles from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
-import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 export default class MarketOutcomesList extends Component {
   static propTypes = {
@@ -43,27 +40,15 @@ export default class MarketOutcomesList extends Component {
 
     return (
       <section className={Styles.MarketOutcomesList}>
-        <button
+        <div
           className={Styles.MarketOutcomesList__heading}
-          onClick={() => {
-            !isMobile &&
-              toggleHeight(this.outcomeList, s.isOpen, () => {
-                this.setState({ isOpen: !s.isOpen });
-              });
-          }}
         >
-          <h2>Outcomes</h2>
-          {!isMobile && <ChevronFlip big pointDown={!s.isOpen} />}
-        </button>
+          Outcomes
+        </div>
         <div
           ref={outcomeList => {
             this.outcomeList = outcomeList;
           }}
-          className={classNames(
-            ToggleHeightStyles["open-on-mobile"],
-            ToggleHeightStyles["toggle-height-target"],
-            ToggleHeightStyles["start-open"]
-          )}
         >
           <div className={Styles.MarketOutcomesList__table}>
             <ul className={Styles["MarketOutcomesList__table-header"]}>

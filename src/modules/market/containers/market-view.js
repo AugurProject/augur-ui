@@ -21,6 +21,7 @@ const mapStateToProps = (state, ownProps) => {
   const pricePrecision = market && getPrecision(market.tickSize, 4);
 
   return {
+    outcomes: market.outcomes || [],
     isConnected: connection.isConnected && universe.id != null,
     marketType: market.marketType,
     description: market.description || "",

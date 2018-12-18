@@ -4,10 +4,15 @@
   cursor: pointer;
   display: table-row;
   transition: background-color 0.15s ease;
+  background-color: @color-grayish-purple;
 
   &.active,
   &:hover {
-    background-color: @color-lightergray;
+    //background-color: @color-lightergray;
+  }
+
+  &:nth-child(even) {
+    background-color: @color-dark-grayish-purple;
   }
 
   &:first-child > li {
