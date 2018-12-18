@@ -10,7 +10,7 @@ import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome.styles";
 
-const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome }) => {
+const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome, scalarDenomination }) => {
   const outcomeName = getValue(outcome, "name");
 
   const topBidShares = getValue(outcome, "topBid.shares.formatted");
@@ -31,7 +31,7 @@ const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome }) => {
       role="menu"
     >
       <li>
-        {outcomeName}{" "}
+        {outcomeName || scalarDenomination && scalarDenomination}{" "}
         <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
       </li>
       <li>

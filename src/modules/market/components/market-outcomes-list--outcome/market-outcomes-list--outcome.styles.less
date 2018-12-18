@@ -8,7 +8,17 @@
 
   &.active,
   &:hover {
-    //background-color: @color-lightergray;
+    background-color: @color-dark-gray !important;
+  }
+
+  &.active {
+    > li {
+      &:first-child {
+        &::before {
+          width: 6px;
+        }
+      }
+    }
   }
 
   &:nth-child(even) {
@@ -20,35 +30,39 @@
   }
 
   > li {
-    border-top: 1px solid @color-lightest-gray;
     display: table-cell;
     max-width: 19vw;
     overflow: hidden;
-    padding: 1.125rem 0;
+    padding: 12px 0;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
 
     &:first-child {
-      padding-left: 2rem;
+      padding-left: 1.6rem;
       position: relative;
       text-align: left;
+      font-size: 14px;
+      font-family: @roboto;
 
       &::before {
-        border-radius: 100%;
         content: "";
         display: block;
         height: 6px;
-        left: 1rem;
+        left: 0;
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 6px;
+        width: 1px;
+        bottom: 0;
+        height: 40px;
       }
     }
 
     &:last-child {
-      padding-right: 4.5rem;
+      padding-right: 2.5rem;
     }
   }
 
@@ -98,7 +112,6 @@
     }
 
     > li {
-      border-top-color: @color-darkpurple;
       color: inherit;
 
       &:first-child {

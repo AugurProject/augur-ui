@@ -8,7 +8,7 @@ import MarketHeader from "modules/market/containers/market-header";
 // import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 // import MarketTrading from "modules/trading/containers/trading";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
-import MarketOutcomesList from "modules/market/components/market-outcomes-list/market-outcomes-list";
+import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
