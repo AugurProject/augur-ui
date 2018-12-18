@@ -7,6 +7,7 @@ import MarketOutcomesChart from "modules/market-charts/containers/market-outcome
 import MarketOutcomeCharts from "modules/market-charts/containers/market-outcome-charts";
 import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 import MarketTrading from "modules/trading/containers/trading";
+import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
@@ -193,9 +194,13 @@ export default class MarketView extends Component {
             <div className={Styles.MarketView__secondRow}>
               <div
                 className={Styles.MarketView__component}
-                style={{ backgroundColor: "#1B1528" }}
+                style={{ backgroundColor: "#1B1528", padding: "0px" }}
               >
-                Open Orders / Filled Orders / Positions
+                <MarketOrdersPositionsTable
+                  marketId={marketId}
+                  selectedOutcome={s.selectedOutcome}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                />
               </div>
             </div>
           </div>
