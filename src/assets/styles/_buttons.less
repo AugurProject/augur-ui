@@ -203,8 +203,8 @@
 .button--mediumgray {
   .button--transparent;
 
-  border: 0px;
   background-color: @color-medium-gray;
+  border: 0;
   color: @color-white;
 
   &:hover {
@@ -216,9 +216,14 @@
 .button--mediumgray:disabled,
 .button--mediumgray:disabled:hover {
   .button--mediumgray;
-  
+
   background-color: @color-dark-gray !important;
-  border-radius: 0px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
   color: @color-white;
   cursor: default;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500 !important;
+  padding: 4px 12px;
 }

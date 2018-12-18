@@ -31,43 +31,6 @@ export default class OpenOrdersOrder extends Component {
     outcome: null
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showConfirm: false,
-      confirmHeight: "auto",
-      confirmMargin: "0px"
-    };
-
-    this.orderStatusText = {
-      CLOSE_DIALOG_CLOSING: "",
-      CLOSE_DIALOG_FAILED: "Failed to Cancel Order",
-      CLOSE_DIALOG_PENDING: "Cancellation Pending"
-    };
-
-    this.toggleConfirm = this.toggleConfirm.bind(this);
-  }
-
-  toggleConfirm() {
-    let { confirmHeight, confirmMargin } = this.state;
-
-    if (!this.state.showConfirm) {
-      confirmHeight = `${this.order.clientHeight}px`;
-    }
-
-    if (this.order.offsetTop !== this.confirmMessage.offsetTop) {
-      confirmMargin = `${this.order.offsetTop -
-        this.confirmMessage.offsetTop}px`;
-    }
-
-    this.setState({
-      confirmHeight,
-      confirmMargin,
-      showConfirm: !this.state.showConfirm
-    });
-  }
-
   render() {
     const {
       isExtendedDisplay,
@@ -77,16 +40,11 @@ export default class OpenOrdersOrder extends Component {
       pending,
       outcome
     } = this.props;
-    const { orderCancellationStatus } = order;
     const s = this.state;
     const orderPrice = getValue(order, "avgPrice.formatted");
     const orderShares = getValue(order, "unmatchedShares.formatted");
     const orderType = getValue(order, "type");
-    const confirmStyle = {
-      height: s.confirmHeight,
-      marginTop: s.confirmMargin
-    };
-
+    
     return (
       <ul
         ref={order => {
@@ -107,13 +65,7 @@ export default class OpenOrdersOrder extends Component {
             })}
           />
           {outcomeName || orderPrice}
-          {pending && (
-            <span className={Styles.Order__pending}>
-              <span>{`${this.orderStatusText[orderCancellationStatus]}`}</span>
-            </span>
-          )}
         </li>
-        <li />
         <li
           className={classNames(Styles.Order__type, {
             [Styles.Order__typeSell]: orderType === SELL
@@ -139,47 +91,14 @@ export default class OpenOrdersOrder extends Component {
           ) : (
             <button
               className={Styles.Order__cancel}
-              onClick={this.toggleConfirm}
+              onClick={e => {
+                order.cancelOrder(order);
+              }}
             >
               Cancel
             </button>
           )}
         </li>
-        <div
-          ref={confirmMessage => {
-            this.confirmMessage = confirmMessage;
-          }}
-          className={classNames(Styles.Order__confirm, {
-            [`${Styles["is-open"]}`]: s.showConfirm
-          })}
-          style={confirmStyle}
-        >
-          {pending ? (
-            <div className={Styles["Order__confirm-details"]}>
-              <p>Orders cannot be closed while they are pending.</p>
-              <div className={Styles["Order__confirm-options"]}>
-                <button onClick={this.toggleConfirm}>Ok</button>
-              </div>
-            </div>
-          ) : (
-            <div className={Styles["Order__confirm-details"]}>
-              <p>{`Cancel order to ${orderType} ${orderShares} shares ${
-                outcomeName ? `of "${outcomeName}"` : ""
-              } at ${orderPrice} ETH?`}</p>
-              <div className={Styles["Order__confirm-options"]}>
-                <button
-                  onClick={e => {
-                    order.cancelOrder(order);
-                    this.toggleConfirm();
-                  }}
-                >
-                  Yes
-                </button>
-                <button onClick={this.toggleConfirm}>No</button>
-              </div>
-            </div>
-          )}
-        </div>
       </ul>
     );
   }

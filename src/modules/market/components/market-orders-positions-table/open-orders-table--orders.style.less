@@ -74,12 +74,16 @@
 }
 
 .Order__cancel {
-  .button--mediumgray();
+  &:extend(.button--mediumgray all);
 
   display: inline-block;
   font-size: 10px;
   margin-right: -32px; // center button
   padding: 3px 12px 5px;
+
+  &.disabled {
+    &:extend(.button--mediumgray--disabled);
+  }
 }
 
 .Order-not_extended {

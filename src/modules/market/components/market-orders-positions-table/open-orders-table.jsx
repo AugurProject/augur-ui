@@ -23,11 +23,10 @@ export default class OpenOrdersTable extends Component {
     const { openOrders, orphanedOrders, cancelOrphanedOrder } = this.props;
 
     return (
-      <div>
+      <div className={Styles.MarketOpenOrdersList}>
         <div className={Styles.MarketOpenOrdersList__table}>
           <ul className={Styles["OpenOrdersTable__table-header"]}>
             <li>Outcome</li>
-            <li />
             <li>Type</li>
             <li>
               <span>Quantity</span>
