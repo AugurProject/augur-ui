@@ -14,10 +14,8 @@ const MarketOrdersPositionsTable = ({
   positions,
   orphanedOrders,
   openOrders,
-  selectedOutcome,
   cancelOrphanedOrder,
   sellCompleteSets,
-  updateSelectedOutcome
 }) => (
   <section>
     <ModuleTabs selected={0}>
@@ -48,10 +46,8 @@ MarketOrdersPositionsTable.propTypes = {
   positions: PropTypes.array,
   orphanedOrders: PropTypes.array,
   openOrders: PropTypes.array,
-  selectedOutcome: PropTypes.string,
   cancelOrphanedOrder: PropTypes.func.isRequired,
   sellCompleteSets: PropTypes.func.isRequired,
-  updateSelectedOutcome: PropTypes.func.isRequired
 };
 
 MarketOrdersPositionsTable.defaultProps = {
@@ -60,7 +56,6 @@ MarketOrdersPositionsTable.defaultProps = {
   positions: [],
   orphanedOrders: [],
   openOrders: [],
-  selectedOutcome: null
 };
 
 export default MarketOrdersPositionsTable;

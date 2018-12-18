@@ -44,7 +44,7 @@ export default class MarketView extends Component {
     };
 
     this.state = {
-      selectedOutcome: props.marketType === CATEGORICAL ? null : "1",
+      selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       fixedPrecision: 4,
       selectedOutcomeProperties: {
@@ -93,7 +93,7 @@ export default class MarketView extends Component {
       selectedOutcome:
         selectedOutcome === this.state.selectedOutcome &&
         marketType === CATEGORICAL
-          ? null
+          ? 0
           : selectedOutcome,
       selectedOrderProperties: {
         ...this.DEFAULT_ORDER_PROPERTIES
@@ -196,11 +196,7 @@ export default class MarketView extends Component {
                 className={Styles.MarketView__component}
                 style={{ backgroundColor: "#1B1528", padding: "0px" }}
               >
-                <MarketOrdersPositionsTable
-                  marketId={marketId}
-                  selectedOutcome={s.selectedOutcome}
-                  updateSelectedOutcome={this.updateSelectedOutcome}
-                />
+                <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </div>
           </div>
