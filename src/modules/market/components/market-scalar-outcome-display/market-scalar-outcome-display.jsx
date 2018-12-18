@@ -69,8 +69,20 @@ const MarketScalarOutcomeDisplay = ({
       ---------------
       </div>
       <div>
+        <div>
+          Min: {min.toString()}
+        </div>
+        <div>
+          Max: {max.toString()}
+        </div>
       </div>
       <div>
+        <div>
+          {scalarDenomination}
+        </div>
+        <div>
+          {scalarDenomination}
+        </div>
       </div>
      
     </div>
