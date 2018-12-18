@@ -199,3 +199,26 @@
   color: @color-lightergray;
   cursor: default;
 }
+
+.button--mediumgray {
+  .button--transparent;
+
+  border: 0px;
+  background-color: @color-medium-gray;
+  color: @color-white;
+
+  &:hover {
+    background-color: #6a528a;
+  }
+}
+
+.button--mediumgray--disabled,
+.button--mediumgray:disabled,
+.button--mediumgray:disabled:hover {
+  .button--mediumgray;
+  
+  background-color: @color-dark-gray !important;
+  border-radius: 0px !important;
+  color: @color-white;
+  cursor: default;
+}

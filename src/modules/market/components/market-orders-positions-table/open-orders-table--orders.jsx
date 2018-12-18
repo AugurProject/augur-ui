@@ -134,7 +134,7 @@ export default class OpenOrdersOrder extends Component {
         <li>
           {pending ? (
             <button className={Styles.Order__cancel} disabled>
-              Cancel
+              PENDING
             </button>
           ) : (
             <button
