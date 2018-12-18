@@ -7,11 +7,6 @@
   margin-bottom: 24px;
 }
 
-.CoreProperties__rowBorder {
-  border-bottom: 1px solid #5a536b;
-  padding-bottom: 24px;
-}
-
 .CoreProperties__property {
   color: #ffffff;
   display: flex;
@@ -35,49 +30,31 @@
   }
 }
 
-.CoreProperties__propertySmall {
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  font-size: 14px;
-  min-width: 120px;
-  text-transform: capitalize;
-  white-space: nowrap;
-
-  &:first-of-type {
-    min-width: 210px;
-  }
-
-  &:not(:last-of-type) {
-    margin-right: 2.5rem;
-
-    @media @breakpoint-mobile-medium {
-      margin-right: 0.5rem;
-    }
-  }
-
-  span:first-of-type {
-    .caps--small();
-
-    margin-bottom: 0.5em;
-  }
-
-  span:last-of-type {
-    color: @color-white;
-  }
-}
-
 .CoreProperties__coreContainer {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
+.CoreProperties__property-value {
+  color: @color-white;
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+  font-weight: 500;
+  max-height: 0.75rem;
+}
+
+.CoreProperties__property-denomination {
+  margin-left: .25rem;
+  padding-top: .35rem;
+}
+
 .CoreProperties__property-name {
   color: #a7a2b2;
   display: flex;
   flex-direction: row;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 500;
   max-height: 0.75rem;
 }

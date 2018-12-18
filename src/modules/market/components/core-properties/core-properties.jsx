@@ -8,10 +8,8 @@ import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
-import determineMarketPhase from "utils/determine-market-phase";
 import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
-import { dateHasPassed } from "utils/format-date";
 import { constants } from "services/augurjs";
 import { Hint } from "modules/common/components/icons";
 import {
@@ -56,7 +54,14 @@ const Property = ({ numRow, property }) => (
         </div>
       )}
     </span>
-    <span style={property.textStyle}>{property.value}</span>
+    <span className={Styles[`CoreProperties__property-value`]}>
+      {property.value}
+      {property.denomination && (
+        <span className={Styles[`CoreProperties__property-denomination`]}>
+          {property.denomination}
+        </span>
+      )}
+    </span>
   </div>
 );
 
@@ -98,7 +103,6 @@ export default class CoreProperties extends Component {
     };
   }
 
-
   render() {
     const {
       market,
@@ -128,8 +132,21 @@ export default class CoreProperties extends Component {
     const propertyRows = [
       [
         {
-          name: "volume",
-          value: getValue(market, "volume.full")
+          name: "Total Volume",
+          value: getValue(market, "volume.formatted"),
+          denomination: "ETH"
+        },
+        {
+          name: "Open Interest",
+          value: getValue(market, "openInterest.formatted"),
+          denomination: "ETH"
+        }
+      ],
+      [
+        {
+          name: "24hr Volume",
+          value: getValue(market, "volume.formatted"),
+          denomination: "ETH"
         },
         {
           name: "est. fee",
@@ -137,53 +154,35 @@ export default class CoreProperties extends Component {
           tooltip: true,
           marketCreatorFee,
           reportingFee
-        },
-        {
-          name: "phase",
-          value: determineMarketPhase(reportingState)
         }
       ],
       [
-        {
-          name: "created",
-          value: getValue(market, "creationTime.formattedLocal")
-        },
+        // {
+        //   name: "created",
+        //   value: getValue(market, "creationTime.formattedLocal")
+        // },
         {
           name: "type",
           value:
             getValue(market, "marketType") === YES_NO
               ? "Yes/No"
               : getValue(market, "marketType")
-        },
-        {
-          name: "min",
-          value:
-            isScalar && !isMobileSmall
-              ? getValue(market, "minPrice").toString()
-              : null
         }
       ],
       [
-        {
-          name: dateHasPassed(
-            currentTimestamp,
-            getValue(market, "endTime.timestamp")
-          )
-            ? "expired"
-            : "expires",
-          value: getValue(market, "endTime.formattedLocal")
-        },
+        // {
+        //  name: dateHasPassed(
+        //    currentTimestamp,
+        //    getValue(market, "endTime.timestamp")
+        //  )
+        //    ? "expired"
+        //    : "expires",
+        //  value: getValue(market, "endTime.formattedLocal")
+        // },
         {
           name: "denominated in",
           value: getValue(market, "scalarDenomination"),
           textStyle: { textTransform: "none" }
-        },
-        {
-          name: "max",
-          value:
-            isScalar && !isMobileSmall
-              ? getValue(market, "maxPrice").toString()
-              : null
         }
       ]
     ];
@@ -218,11 +217,8 @@ export default class CoreProperties extends Component {
       renderedProperties.push(
         <div
           key={`row${numRow}`}
-          className={classNames(Styles.CoreProperties__row, {
-            [Styles.CoreProperties__rowBorder]: numRow === 0
-          })}
+          className={classNames(Styles.CoreProperties__row)}
         >
-          {" "}
           {row}
         </div>
       );
@@ -361,12 +357,7 @@ export default class CoreProperties extends Component {
     return (
       <div className={Styles.CoreProperties__coreContainer}>
         {headerContent && (
-          <div
-            className={classNames(
-              Styles.CoreProperties__row,
-              Styles.CoreProperties__rowBorder
-            )}
-          >
+          <div className={classNames(Styles.CoreProperties__row)}>
             <div
               className={Styles.CoreProperties__property}
               style={{ flexGrow: "1" }}
