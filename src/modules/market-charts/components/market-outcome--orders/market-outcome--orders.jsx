@@ -6,19 +6,10 @@ import MarketOutcomeHeaderOrders from "modules/market-charts/components/market-o
 
 import { ASKS, BIDS } from "modules/orders/constants/orders";
 import { BUY, SELL } from "modules/transactions/constants/types";
-import MarketOutcomeMidpoint from "modules/market-charts/components/market-outcome-charts--midpoint/market-outcome-charts--midpoint";
 
 import Styles from "modules/market-charts/components/market-outcome--orders/market-outcome--orders.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
 import { isEmpty, isEqual } from "lodash";
-
-function findTrailingZeros(number) {
-  const zeros = number.match(/[0]+$/);
-  if (number.toString().indexOf(".") === -1 || !zeros) {
-    return "";
-  }
-  return (number % 1 === 0 ? "." : "") + zeros;
-}
 
 export default class MarketOutcomeChartsOrders extends Component {
   static propTypes = {
@@ -81,7 +72,6 @@ export default class MarketOutcomeChartsOrders extends Component {
     return (
       <section
         className={Styles.MarketOutcomeOrderBook}
-        style={{ paddingBottom: sharedChartMargins.bottom - 4 }}
       >
         <MarketOutcomeHeaderOrders
           updatePrecision={updatePrecision}
@@ -158,12 +148,7 @@ export default class MarketOutcomeChartsOrders extends Component {
                   style={{justifyContent: 'center'}}
                 >
                   <span>
-                    {parseFloat(order.price.value.toFixed(pricePrecision))}
-                    <span style={{ color: "#6d1d3d", marginLeft: ".5px" }}>
-                      {findTrailingZeros(
-                        order.price.value.toFixed(pricePrecision)
-                      )}
-                    </span>
+                    {order.price.value.toFixed(pricePrecision)}
                   </span>
                 </button>
                 <button
@@ -187,11 +172,12 @@ export default class MarketOutcomeChartsOrders extends Component {
           </div>
         </div>
         <div className={Styles.MarketOutcomeOrderBook__Midmarket}>
-          <MarketOutcomeMidpoint
-            hasOrders={hasOrders}
-            orderBookKeys={orderBookKeys}
-            pricePrecision={pricePrecision}
-          />
+          { hasOrders &&
+            <div>
+              <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>Spread:</span> {orderBookKeys.mid.toFixed(pricePrecision)} 
+              <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>ETH</span>
+            </div>
+          }
         </div>
         <div
           className={classNames(
@@ -259,12 +245,7 @@ export default class MarketOutcomeChartsOrders extends Component {
                   style={{justifyContent: 'center'}}
                 >
                   <span>
-                    {parseFloat(order.price.value.toFixed(pricePrecision))}
-                    <span style={{ color: "#135045", marginLeft: ".5px" }}>
-                      {findTrailingZeros(
-                        order.price.value.toFixed(pricePrecision)
-                      )}
-                    </span>
+                    {order.price.value.toFixed(pricePrecision)}
                   </span>
                 </button>
                 <button

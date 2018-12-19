@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  border-bottom: 8px solid @color-light-purple;
 }
 
 .MarketOutcomeOrderBook__stats {
@@ -19,7 +20,6 @@
 }
 
 .MarketOutcomeOrderBook__side--asks {
-  border-top: 1px solid @color-gray;
   height: auto;
   justify-content: flex-end;
   position: relative;
@@ -40,7 +40,6 @@
 }
 
 .MarketOutcomeOrderBook__side--bids {
-  border-bottom: 1px solid @color-gray;
   height: auto;
   justify-content: flex-end;
   position: relative;
@@ -73,27 +72,27 @@
 }
 
 .MarketOutcomeOrderBook__RowItem_ask {
-  color: @color-gray;
+  color: @color-white;
   display: flex;
   flex: 1;
-  font-size: 0.75rem;
-  font-weight: 700;
   justify-content: flex-end;
   overflow: hidden;
+  font-size: 12px;
+  font-family: 'Roboto Mono', monospace;
 
   &:nth-child(2) {
-    color: @color-negative;
+    color: @color-negative2;
   }
 }
 
 .MarketOutcomeOrderBook__RowItem_bid {
-  color: @color-gray;
+  color: @color-white;
   display: flex;
   flex: 1;
-  font-size: 0.75rem;
-  font-weight: 700;
   justify-content: flex-end;
   overflow: hidden;
+  font-size: 12px;
+  font-family: 'Roboto Mono', monospace;
 
   &:nth-child(2) {
     color: @color-positive;
@@ -102,4 +101,20 @@
 
 .MarketOutcomeOrderBook__Midmarket {
   margin: 1rem 0;
+  background-color: @color-dark-grayish-purple;
+  padding: 12px 49px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+}
+
+.MarketOutcomeOrderBook__MidmarketSpread {
+  font-weight: bold;
+  font-size: 10px;
+  font-family: @roboto;
+}
+
+.MarketOutcomeOrderBook__MidmarketEth {
+  font-size: 10px;
+  margin-left: 2px;
+  font-family: @roboto;
 }
