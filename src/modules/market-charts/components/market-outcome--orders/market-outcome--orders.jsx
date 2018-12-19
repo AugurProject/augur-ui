@@ -107,14 +107,14 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i > s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  updateHoveredPrice(order.price.value);
+                  //updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: ASKS
                   });
                 }}
                 onMouseLeave={() => {
-                  updateHoveredPrice(null);
+                  //updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
@@ -174,7 +174,7 @@ export default class MarketOutcomeChartsOrders extends Component {
         <div className={Styles.MarketOutcomeOrderBook__Midmarket}>
           { hasOrders &&
             <div>
-              <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>Spread:</span> {orderBookKeys.mid.toFixed(pricePrecision)} 
+              <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>Spread:</span> {orderBookKeys.spread.toFixed(pricePrecision)} 
               <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>ETH</span>
             </div>
           }
@@ -204,14 +204,14 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i < s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  updateHoveredPrice(order.price.value);
+                  //updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: BIDS
                   });
                 }}
                 onMouseLeave={() => {
-                  updateHoveredPrice(null);
+                  //updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
