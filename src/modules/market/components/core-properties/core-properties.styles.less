@@ -11,7 +11,7 @@
   color: #ffffff;
   display: flex;
   flex-direction: column;
-  font-size: 18px;
+  font-size: @font-size-large;
   white-space: nowrap;
   text-transform: none;
 
@@ -37,13 +37,18 @@
   flex-grow: 1;
 }
 
+.CoreProperties__property-value-large
 .CoreProperties__property-value {
   color: @color-white;
   display: flex;
   flex-direction: row;
-  font-size: 18px;
+  font-size: @font-size-large;
   font-weight: 500;
   max-height: 0.75rem;
+}
+
+.CoreProperties__property-value {
+  font-size: @font-size-medium;
 }
 
 .CoreProperties__property-denomination {
@@ -55,7 +60,7 @@
   color: #a7a2b2;
   display: flex;
   flex-direction: row;
-  font-size: 18px;
+  font-size: @font-size-large;
   font-weight: 500;
   max-height: 0.75rem;
 }
@@ -115,7 +120,7 @@
 
   @media @breakpoint-mobile-extra-small {
     flex-grow: unset;
-    font-size: 18px;
+    font-size: @font-size-large;
     margin-right: 10px;
   }
 }
@@ -132,4 +137,29 @@
 .CoreProperties__header__finalize {
   display: flex;
   flex-direction: row;
+}
+
+.CoreProperties__property__container {
+  color: #a7a2b2;
+  display: flex;
+  flex-direction: column;
+}
+
+.CoreProperties__property__min__max {
+  color: #a7a2b2;
+  font-size: @font-size-small;
+  margin-bottom: 0.5em
+}
+
+.CoreProperties__dotted__line {
+  border-bottom:1px dashed #a7a2b2;
+  width: 61px;
+}
+
+.CoreProperties__min__max__dots {
+  color: @color-white;
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  font-size: @font-size-medium;
 }
