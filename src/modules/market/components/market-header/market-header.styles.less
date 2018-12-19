@@ -82,7 +82,7 @@
 .MarketHeader__readMoreButton {
   color: @color-white;
   cursor: pointer;
-  font-size: 12px;
+  font-size: @font-size-small;
   font-weight: 700;
   padding-bottom: 1rem;
   padding-top: 0.3rem;
@@ -132,8 +132,9 @@
 }
 
 .MarketHeader__details {
-  &:extend(.caps--small);
-
+  font-size: @font-size-small;
+  font-weight: 400;
+  line-height: @font-size-small;
   padding: 0;
 
   h4 {

@@ -5,6 +5,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .MarketHeaderBar__tag__container {
@@ -13,20 +14,51 @@
 }
 
 .MarketHeaderBar__status {
-  color:@color-white;
-  font-size: 12px;
-  margin-right: 4rem;
+  color: @color-white;
+  font-size: @font-size-small;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 1rem;
 }
 
 .MarketHeaderBar__tags {
   border: 2px solid #2b2438;
   box-sizing: border-box;
   border-radius: 100px;
-  color:@color-white;
+  color: @color-white;
   font-style: normal;
   font-weight: 500;
-  font-size: 12px;
+  font-size: @font-size-small;
   line-height: normal;
-  padding: 0.6rem 1rem;
-  margin-left: 0.6rem;
+  padding: 0.25rem 1rem;
+  margin-right: 0.5rem;
 }
+
+.MarketHeaderBar__underline__open {
+  border-bottom: 2px solid #7dffa8;
+  border-radius: 100px;
+  margin-bottom: 0.25rem;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+}
+
+.MarketHeaderBar__watchlist {
+  border: 2px solid #2b2438;
+  box-sizing: border-box;
+  border-radius: 3px;
+  color: @color-white;
+  padding: 0.5rem 0;
+
+  svg {
+    margin: -0.1rem 0.5rem;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+    vertical-align: top;
+  }
+
+  span {
+    font-size: @font-size-small;
+    padding-right: 1rem;
+  }
+}
+

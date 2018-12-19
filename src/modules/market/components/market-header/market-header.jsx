@@ -8,11 +8,12 @@ import {
   ChevronLeft
 } from "modules/common/components/icons";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
-import MarketHeaderBar from "modules/market/components/market-header/market-header-bar";
+import MarketHeaderBar from "modules/market/containers/market-header-bar";
 import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
+import TimeRange from "modules/market/components/market-header/market-header-time-range";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
@@ -25,7 +26,7 @@ export default class MarketHeader extends Component {
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     market: PropTypes.object.isRequired,
-    currentTimestamp: PropTypes.number.isRequired,
+    currentTime: PropTypes.number,
     tentativeWinner: PropTypes.object,
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
@@ -47,7 +48,8 @@ export default class MarketHeader extends Component {
     resolutionSource: "General knowledge",
     selectedOutcome: null,
     marketType: null,
-    isForking: false
+    isForking: false,
+    currentTime: 0
   };
 
   constructor(props) {
@@ -94,7 +96,7 @@ export default class MarketHeader extends Component {
       maxPrice,
       scalarDenomination,
       market,
-      currentTimestamp,
+      currentTime,
       tentativeWinner,
       isLogged,
       isDesignatedReporter,
@@ -116,11 +118,14 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
-        <MarketHeaderBar
-          category={market.category}
-          reportingState={market.reportingState}
-          tags={market.tags}
-        />
+        {market.id && (
+          <MarketHeaderBar
+            marketId={market.id}
+            category={market.category}
+            reportingState={market.reportingState}
+            tags={market.tags}
+          />
+        )}
         <div
           className={classNames(Styles.MarketHeader__nav, {
             [Styles["MarketHeader__nav-isForking"]]: isForking
@@ -190,13 +195,19 @@ export default class MarketHeader extends Component {
           >
             <CoreProperties
               market={market}
-              currentTimestamp={currentTimestamp}
               tentativeWinner={tentativeWinner}
               isLogged={isLogged}
               isDesignatedReporter={isDesignatedReporter}
               location={location}
               finalizeMarket={finalizeMarket}
               isMobileSmall={isMobileSmall}
+            />
+          </div>
+          <div>
+            <TimeRange
+              currentTime={currentTime}
+              startTime={market.creationTime}
+              endTime={market.endTime}
             />
           </div>
         </div>

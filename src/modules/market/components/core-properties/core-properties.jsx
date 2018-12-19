@@ -1,6 +1,6 @@
 /* eslint react/no-array-index-key: 0 */
 
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
@@ -8,14 +8,8 @@ import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
-import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
-import { constants } from "services/augurjs";
 import { Hint } from "modules/common/components/icons";
-import {
-  TYPE_REPORT,
-  TYPE_DISPUTE
-} from "modules/markets/constants/link-types";
 
 const Property = ({ numRow, property }) => (
   <div
@@ -54,7 +48,10 @@ const Property = ({ numRow, property }) => (
         </div>
       )}
     </span>
-    <span className={Styles[`CoreProperties__property-value`]}>
+    <span
+      className={Styles[`CoreProperties__property-value`]}
+      style={property.textStyle}
+    >
       {property.value}
       {property.denomination && (
         <span className={Styles[`CoreProperties__property-denomination`]}>
@@ -77,297 +74,112 @@ Property.propTypes = {
   }).isRequired
 };
 
-export default class CoreProperties extends Component {
-  static propTypes = {
-    market: PropTypes.object.isRequired,
-    currentTimestamp: PropTypes.number.isRequired,
-    tentativeWinner: PropTypes.object,
-    isLogged: PropTypes.bool.isRequired,
-    isDesignatedReporter: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    finalizeMarket: PropTypes.func.isRequired,
-    isMobileSmall: PropTypes.bool
-  };
+const CoreProperties = ({ market, isMobileSmall }) => {
+  const { marketType } = market;
 
-  static defaultProps = {
-    tentativeWinner: null,
-    isDesignatedReporter: false,
-    isMobileSmall: false
-  };
+  const marketCreatorFee = getValue(market, "marketCreatorFeeRatePercent.full");
+  const reportingFee = getValue(market, "reportingFeeRatePercent.full");
 
-  constructor(props) {
-    super(props);
+  const isScalar = marketType === SCALAR;
 
-    this.state = {
-      disableFinalize: false
-    };
+  const propertyRows = [
+    [
+      {
+        name: "Total Volume",
+        value: getValue(market, "volume.formatted"),
+        denomination: "ETH",
+        textStyle: { fontSize: "18px" }
+      },
+      {
+        name: "Open Interest",
+        value: getValue(market, "openInterest.formatted"),
+        denomination: "ETH",
+        textStyle: { fontSize: "18px" }
+      }
+    ],
+    [
+      {
+        name: "24hr Volume",
+        value: "---",
+        denomination: "ETH"
+      },
+      {
+        name: "Fee",
+        value: getValue(market, "settlementFeePercent.full"),
+        tooltip: true,
+        marketCreatorFee,
+        reportingFee
+      }
+    ],
+    [
+      {
+        name: "Type",
+        value:
+          getValue(market, "marketType") === YES_NO
+            ? "Yes/No"
+            : getValue(market, "marketType")
+      }
+    ],
+    [
+      {
+        name: "denominated in",
+        value: getValue(market, "scalarDenomination"),
+        textStyle: { textTransform: "none" }
+      }
+    ]
+  ];
+
+  if (isMobileSmall && isScalar) {
+    propertyRows.push([
+      {
+        name: "min",
+        value: getValue(market, "minPrice").toString()
+      },
+      {
+        name: "max",
+        value: getValue(market, "maxPrice").toString()
+      }
+    ]);
   }
 
-  render() {
-    const {
-      market,
-      currentTimestamp,
-      tentativeWinner,
-      isLogged,
-      isDesignatedReporter,
-      location,
-      finalizeMarket,
-      isMobileSmall
-    } = this.props;
-
-    const { id, marketType } = market;
-
-    const marketCreatorFee = getValue(
-      market,
-      "marketCreatorFeeRatePercent.full"
-    );
-    const reportingFee = getValue(market, "reportingFeeRatePercent.full");
-
-    const isScalar = marketType === SCALAR;
-    const consensus = getValue(
-      market,
-      isScalar ? "consensus.winningOutcome" : "consensus.outcomeName"
-    );
-
-    const propertyRows = [
-      [
-        {
-          name: "Total Volume",
-          value: getValue(market, "volume.formatted"),
-          denomination: "ETH"
-        },
-        {
-          name: "Open Interest",
-          value: getValue(market, "openInterest.formatted"),
-          denomination: "ETH"
-        }
-      ],
-      [
-        {
-          name: "24hr Volume",
-          value: getValue(market, "volume.formatted"),
-          denomination: "ETH"
-        },
-        {
-          name: "est. fee",
-          value: getValue(market, "settlementFeePercent.full"),
-          tooltip: true,
-          marketCreatorFee,
-          reportingFee
-        }
-      ],
-      [
-        // {
-        //   name: "created",
-        //   value: getValue(market, "creationTime.formattedLocal")
-        // },
-        {
-          name: "type",
-          value:
-            getValue(market, "marketType") === YES_NO
-              ? "Yes/No"
-              : getValue(market, "marketType")
-        }
-      ],
-      [
-        // {
-        //  name: dateHasPassed(
-        //    currentTimestamp,
-        //    getValue(market, "endTime.timestamp")
-        //  )
-        //    ? "expired"
-        //    : "expires",
-        //  value: getValue(market, "endTime.formattedLocal")
-        // },
-        {
-          name: "denominated in",
-          value: getValue(market, "scalarDenomination"),
-          textStyle: { textTransform: "none" }
-        }
-      ]
-    ];
-
-    if (isMobileSmall && isScalar) {
-      propertyRows.push([
-        {
-          name: "min",
-          value: getValue(market, "minPrice").toString()
-        },
-        {
-          name: "max",
-          value: getValue(market, "maxPrice").toString()
-        }
-      ]);
-    }
-
-    const renderedProperties = [];
-    propertyRows.forEach((propertyRow, numRow) => {
-      const row = [];
-      propertyRow.forEach((property, numCol) => {
-        if (property.value) {
-          row.push(
-            <Property
-              key={`property${numRow}${numCol}`}
-              property={property}
-              numRow={numRow}
-            />
-          );
-        }
-      });
-      renderedProperties.push(
-        <div
-          key={`row${numRow}`}
-          className={classNames(Styles.CoreProperties__row)}
-        >
-          {row}
-        </div>
-      );
+  const renderedProperties = [];
+  propertyRows.forEach((propertyRow, numRow) => {
+    const row = [];
+    propertyRow.forEach((property, numCol) => {
+      if (property.value) {
+        row.push(
+          <Property
+            key={`property${numRow}${numCol}`}
+            property={property}
+            numRow={numRow}
+          />
+        );
+      }
     });
-
-    let headerContent = null;
-    const { reportingState } = this.props.market;
-
-    if (consensus) {
-      headerContent = [
-        <div key="consensus">
-          <span className={Styles[`CoreProperties__property-name`]}>
-            <div>Winning Outcome:</div>
-          </span>
-          <span className={Styles[`CoreProperties__property-winningOutcome`]}>
-            <div
-              className={Styles[`CoreProperties__header-firstElement`]}
-              style={{ fontWeight: "700" }}
-            >
-              {consensus}
-            </div>
-            {isLogged &&
-              reportingState ===
-                constants.REPORTING_STATE.AWAITING_FINALIZATION && (
-                <div className={Styles.CoreProperties__header__finalize}>
-                  <label
-                    className={classNames(
-                      TooltipStyles.TooltipHint,
-                      Styles.CoreProperties__header__tooltip
-                    )}
-                    data-tip
-                    data-for="tooltip--finalize"
-                  >
-                    {Hint}
-                  </label>
-                  <ReactTooltip
-                    id="tooltip--finalize"
-                    className={TooltipStyles.Tooltip}
-                    effect="solid"
-                    place="bottom"
-                    type="light"
-                  >
-                    <h4>Market Finalization</h4>
-                    <p>
-                      Finalizing a market allows users to trade in winning
-                      shares for ETH.
-                    </p>
-                  </ReactTooltip>
-                  <button
-                    className={Styles[`CoreProperties__property-button`]}
-                    onClick={() => {
-                      this.setState({ disableFinalize: true });
-                      finalizeMarket(id, err => {
-                        if (err) {
-                          this.setState({ disableFinalize: false });
-                        }
-                      });
-                    }}
-                    disabled={this.state.disableFinalize}
-                  >
-                    FINALIZE
-                  </button>
-                </div>
-              )}
-          </span>
-        </div>
-      ];
-    } else if (
-      reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE ||
-      reportingState === constants.REPORTING_STATE.AWAITING_NEXT_WINDOW
-    ) {
-      headerContent = [
-        <div key="dispute">
-          <span className={Styles[`CoreProperties__property-name`]}>
-            <div>Tentative Winning Outcome:</div>
-          </span>
-          <span
-            className={
-              Styles[`CoreProperties__property-tentativeWinningOutcome`]
-            }
-          >
-            <div className={Styles[`CoreProperties__header-firstElement`]}>
-              {tentativeWinner &&
-                (tentativeWinner.isInvalid ? "Invalid" : tentativeWinner.name)}
-            </div>
-            {isLogged &&
-              reportingState ===
-                constants.REPORTING_STATE.CROWDSOURCING_DISPUTE && (
-                <MarketLink
-                  className={Styles[`CoreProperties__property-button`]}
-                  id={id}
-                  linkType={TYPE_DISPUTE}
-                  location={location}
-                >
-                  DISPUTE
-                </MarketLink>
-              )}
-          </span>
-        </div>
-      ];
-    } else if (
-      isLogged &&
-      ((reportingState === constants.REPORTING_STATE.DESIGNATED_REPORTING &&
-        isDesignatedReporter) ||
-        reportingState === constants.REPORTING_STATE.OPEN_REPORTING)
-    ) {
-      headerContent = [
-        <div key="report">
-          <span
-            className={
-              Styles[`CoreProperties__property-tentativeWinningOutcome`]
-            }
-            style={{ marginBottom: "-0.125rem" }}
-          >
-            <div
-              className={classNames(
-                Styles[`CoreProperties__header-firstElement`],
-                Styles[`CoreProperties__header-Submit`]
-              )}
-            >
-              Submit a Report
-            </div>
-            <MarketLink
-              className={Styles[`CoreProperties__property-button`]}
-              id={id}
-              linkType={TYPE_REPORT}
-              location={location}
-            >
-              REPORT
-            </MarketLink>
-          </span>
-        </div>
-      ];
-    }
-
-    return (
-      <div className={Styles.CoreProperties__coreContainer}>
-        {headerContent && (
-          <div className={classNames(Styles.CoreProperties__row)}>
-            <div
-              className={Styles.CoreProperties__property}
-              style={{ flexGrow: "1" }}
-            >
-              {headerContent}
-            </div>
-          </div>
-        )}
-        {renderedProperties}
+    renderedProperties.push(
+      <div
+        key={`row${numRow}`}
+        className={classNames(Styles.CoreProperties__row)}
+      >
+        {row}
       </div>
     );
-  }
-}
+  });
+
+  return (
+    <div className={Styles.CoreProperties__coreContainer}>
+      {renderedProperties}
+    </div>
+  );
+};
+
+CoreProperties.propTypes = {
+  market: PropTypes.object.isRequired,
+  isMobileSmall: PropTypes.bool
+};
+
+CoreProperties.defaultProps = {
+  isMobileSmall: false
+};
+
+export default CoreProperties;

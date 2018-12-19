@@ -1,0 +1,76 @@
+@import (reference) "~assets/styles/shared";
+@import (reference) "~modules/market/components/market-view/market-view.styles";
+
+.MarketHeaderTimeRange {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.MarketHeaderTimeRange__container {
+  color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+  height: 100%;
+  white-space: nowrap;
+  text-transform: none;
+}
+
+.MarketHeaderTimeRange__percentage {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+
+.MarketHeaderTimeRange__percentage__status {
+  border-left: 1px solid #09cfe1;
+  position: relative;
+  top: 0%;
+  height: 50%;
+}
+
+.MarketHeaderTimeRange__percentage__dot {
+  width: 5px;
+  height: 5px;
+  background: #09cfe1;
+  border-radius: 4px;
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+}
+
+.MarketHeaderTimeRange__percentage__toEnd {
+  border-left: 1px solid #a7a2b2;
+  position: relative;
+  top: 0%;
+  height: 100%;
+}
+
+.MarketHeaderTimeRange__dates {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 0.75rem;
+}
+
+.MarketHeaderTimeRange__properties {
+  color: #a7a2b2;
+  display: flex;
+  flex-direction: row;
+  font-size: @font-size-small;
+  font-weight: 500;
+  max-height: 0.75rem;
+}
+
+.MarketHeaderTimeRange__value {
+  color: @color-white;
+  display: flex;
+  flex-direction: row;
+  font-size: 18px;
+  font-weight: 500;
+  max-height: 0.75rem;
+}
+
+.MarketHeaderTimeRange__utc {
+  font-size: 10px;
+}

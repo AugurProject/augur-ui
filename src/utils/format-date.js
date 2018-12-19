@@ -68,6 +68,9 @@ export function formatDate(d) {
     } ${date.getDate()}, ${date.getFullYear()} ${localTimeTwelve.join(
       ":"
     )} ${localAMPM} (UTC ${localOffsetFormatted})`, // local time
+    formattedLocalShortDate: `${
+      shortMonths[date.getMonth()]
+    } ${date.getDate()}, ${date.getFullYear()}`,
     formattedLocalShort: `${
       shortMonths[date.getMonth()]
     } ${date.getDate()}, ${date.getFullYear()} (UTC ${localOffsetFormatted})`, // local time

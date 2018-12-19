@@ -12,16 +12,17 @@
   display: flex;
   flex-direction: column;
   font-size: 18px;
-  text-transform: capitalize;
   white-space: nowrap;
+  text-transform: none;
 
   &:not(:last-of-type) {
     margin-right: 45px;
   }
 
   span:first-of-type {
-    .caps--small();
-
+    font-size: @font-size-small;
+    font-weight: 400;
+    line-height: @font-size-small;
     margin-bottom: 0.5em;
   }
 
