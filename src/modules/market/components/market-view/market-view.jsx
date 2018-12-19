@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
 import MarketHeader from "modules/market/containers/market-header";
-import MarketOutcomesChart from "modules/market-charts/containers/market-outcomes-chart";
-import MarketOutcomeCharts from "modules/market-charts/containers/market-outcome-charts";
-import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
-import MarketTrading from "modules/trading/containers/trading";
+// import MarketOutcomesChart from "modules/market-charts/containers/market-outcomes-chart";
+// import MarketOutcomeCharts from "modules/market-charts/containers/market-outcome-charts";
+// import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
+// import MarketTrading from "modules/trading/containers/trading";
+import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
@@ -43,7 +44,7 @@ export default class MarketView extends Component {
     };
 
     this.state = {
-      selectedOutcome: props.marketType === CATEGORICAL ? null : "1",
+      selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       fixedPrecision: 4,
       selectedOutcomeProperties: {
@@ -92,7 +93,7 @@ export default class MarketView extends Component {
       selectedOutcome:
         selectedOutcome === this.state.selectedOutcome &&
         marketType === CATEGORICAL
-          ? null
+          ? 0
           : selectedOutcome,
       selectedOrderProperties: {
         ...this.DEFAULT_ORDER_PROPERTIES
@@ -173,30 +174,43 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__firstColumn}>
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
-                <div className={Styles.MarketView__component}>
-                  Order Form
-                </div>
+                <div className={Styles.MarketView__component}>Order Form</div>
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
-                <div className={Styles.MarketView__component} style={{backgroundColor: '#1B1528', marginBottom: '12px'}}>
+                <div
+                  className={Styles.MarketView__component}
+                  style={{ backgroundColor: "#1B1528", marginBottom: "12px" }}
+                >
                   Outcomes Table
                 </div>
-                <div className={Styles.MarketView__component} style={{backgroundColor: '#1B1528'}}>
+                <div
+                  className={Styles.MarketView__component}
+                  style={{ backgroundColor: "#1B1528" }}
+                >
                   Charts
                 </div>
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>
-              <div className={Styles.MarketView__component} style={{backgroundColor: '#1B1528'}}>
-                Open Orders / Filled Orders / Positions
+              <div
+                className={Styles.MarketView__component}
+                style={{ backgroundColor: "#1B1528", padding: "0px" }}
+              >
+                <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </div>
           </div>
           <div className={Styles.MarketView__secondColumn}>
-            <div className={Styles.MarketView__component} style={{marginBottom: '12px', minHeight: '400px'}}>
+            <div
+              className={Styles.MarketView__component}
+              style={{ marginBottom: "12px", minHeight: "400px" }}
+            >
               Order Book
             </div>
-             <div className={Styles.MarketView__component} style={{minHeight: '400px'}}>
+            <div
+              className={Styles.MarketView__component}
+              style={{ minHeight: "400px" }}
+            >
               Trade History
             </div>
           </div>
@@ -244,4 +258,4 @@ export default class MarketView extends Component {
             />
           </div>
         </section>
-**/
+* */
