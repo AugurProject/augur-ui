@@ -5,9 +5,13 @@ import PropTypes from "prop-types";
 import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import getValue from "utils/get-value";
+import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
 
 const CoreProperties = ({ market, isMobileSmall }) => (
   <div className={Styles.CoreProperties__coreContainer}>
+    <div className={Styles.CoreProperties__row}>
+      <MarketHeaderReporting marketId={market.id} />
+    </div>
     <div className={Styles.CoreProperties__row}>
       <div className={Styles.CoreProperties__property}>
         <span className={Styles[`CoreProperties__property-name`]}>

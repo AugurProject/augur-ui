@@ -6,6 +6,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  padding-bottom: 2rem;
 }
 
 .MarketHeaderBar__tag__container {
@@ -23,7 +24,7 @@
 }
 
 .MarketHeaderBar__tags {
-  border: 2px solid #2b2438;
+  border: 2px solid #2B2438;
   box-sizing: border-box;
   border-radius: 100px;
   color: @color-white;
@@ -33,32 +34,31 @@
   line-height: normal;
   padding: 0.25rem 1rem;
   margin-right: 0.5rem;
+
+  &:hover {
+    border: 2px solid #42404B
+  }
+  cursor: pointer;
 }
 
-.MarketHeaderBar__underline__open {
-  border-bottom: 2px solid #7dffa8;
+.MarketHeaderBar__underline__reporting,
+.MarketHeaderBar__underline__resolved,
+.MarketHeaderBar__underline__open,
+.MarketHeaderBar__underline {
   border-radius: 100px;
   margin-bottom: 0.25rem;
   transform: matrix(1, 0, 0, -1, 0, 0);
 }
 
-.MarketHeaderBar__watchlist {
-  border: 2px solid #2b2438;
-  box-sizing: border-box;
-  border-radius: 3px;
-  color: @color-white;
-  padding: 0.5rem 0;
+.MarketHeaderBar__underline__open {
+  border-bottom: 2px solid #7dffa8;
+}
 
-  svg {
-    margin: -0.1rem 0.5rem;
-    max-height: 1.5rem;
-    max-width: 1.5rem;
-    vertical-align: top;
-  }
+.MarketHeaderBar__underline__resolved {
+  border-bottom: 2px solid #F12B00;
+}
 
-  span {
-    font-size: @font-size-small;
-    padding-right: 1rem;
-  }
+.MarketHeaderBar__underline__reporting {
+  border-bottom: 2px solid #F1E700;
 }
 

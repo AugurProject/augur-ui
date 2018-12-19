@@ -29,7 +29,8 @@ const mapStateToProps = (state, ownProps) => {
     isDesignatedReporter:
       market.designatedReporter === state.loginAccount.address,
     isMobileSmall: state.appStatus.isMobileSmall,
-    market
+    market,
+    isFavorite: !!state.favorites[ownProps.marketId]
   };
 };
 

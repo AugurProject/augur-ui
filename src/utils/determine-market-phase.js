@@ -9,7 +9,7 @@ export default function determineMarketPhase(reportingState) {
     case constants.REPORTING_STATE.OPEN_REPORTING:
     case constants.REPORTING_STATE.CROWDSOURCING_DISPUTE:
     case constants.REPORTING_STATE.AWAITING_NEXT_WINDOW:
-      return "Reporting";
+      return "In Reporting";
 
     case constants.REPORTING_STATE.AWAITING_FINALIZATION:
     case constants.REPORTING_STATE.FINALIZED:
@@ -27,4 +27,4 @@ export default function determineMarketPhase(reportingState) {
     default:
       return "";
   }
-};
+}

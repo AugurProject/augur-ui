@@ -1,5 +1,4 @@
 @import (reference) "~assets/styles/shared";
-@import (reference) "~modules/market/components/market-view/market-view.styles";
 
 .MarketHeaderTimeRange {
   display: flex;
@@ -12,7 +11,9 @@
   display: flex;
   flex-direction: row;
   font-size: @font-size-large;
-  height: 100%;
+  margin-top: 2rem;
+  height: 12rem;
+  max-height: 12rem;
   white-space: nowrap;
   text-transform: none;
 }
@@ -20,8 +21,6 @@
 .MarketHeaderTimeRange__percentage {
   display: flex;
   flex-direction: column;
-  align-content: center;
-  justify-content: center;
 }
 
 .MarketHeaderTimeRange__percentage__status {
@@ -53,22 +52,14 @@
   padding-left: 0.75rem;
 }
 
-.MarketHeaderTimeRange__properties {
-  color: #a7a2b2;
-  display: flex;
-  flex-direction: row;
-  font-size: @font-size-small;
-  font-weight: 500;
-  max-height: 0.75rem;
-}
-
 .MarketHeaderTimeRange__value {
   color: @color-white;
   display: flex;
   flex-direction: row;
-  font-size: @font-size-large;
+  font-size: @font-size-medium;
   font-weight: 500;
   max-height: 0.75rem;
+  margin: 0.125rem 0 0;
 }
 
 .MarketHeaderTimeRange__utc {

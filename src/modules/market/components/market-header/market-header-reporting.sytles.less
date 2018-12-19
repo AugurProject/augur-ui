@@ -1,0 +1,46 @@
+@import (reference) "~assets/styles/shared";
+@import (reference) "~modules/market/components/market-view/market-view.styles";
+
+.MarketHeaderReporting__container {
+  background: #1b1528;
+  border-radius: 3px;
+}
+
+.MarketHeaderReporting__button {
+  background: #09cfe1;
+  border-radius: 3px;
+  font-size: @font-size-medium;
+  font-weight: 700;
+  color: #140E1F;
+  padding: 0.75rem 1.5rem;
+  margin-left: 1rem;
+
+  &:hover {
+    background: #00eaff;
+  }
+}
+
+.MarketHeaderReporting__title {
+  color: #999999;
+  font-size: @font-size-small;
+  font-weight: 400;
+  line-height: @font-size-small;
+  margin-bottom: 0.5em;
+}
+
+.MarketHeaderReporting__consensus {
+  font-weight: 700;
+}
+
+.MarketHeaderReporting__winner__container {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.MarketHeaderReporting__winner {
+  color: @color-white;
+  font-size: @font-size-rather-large;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+}

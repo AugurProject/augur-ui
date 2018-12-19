@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-
 import {
+  starIconOpen,
+  starIconFilled,
   ChevronDown,
   ChevronUp,
   ChevronLeft
@@ -37,7 +38,9 @@ export default class MarketHeader extends Component {
     location: PropTypes.object.isRequired,
     finalizeMarket: PropTypes.func.isRequired,
     isMobileSmall: PropTypes.bool.isRequired,
-    isForking: PropTypes.bool
+    isForking: PropTypes.bool,
+    toggleFavorite: PropTypes.func,
+    isFavorite: PropTypes.bool
   };
 
   static defaultProps = {
@@ -49,7 +52,9 @@ export default class MarketHeader extends Component {
     selectedOutcome: null,
     marketType: null,
     isForking: false,
-    currentTime: 0
+    currentTime: 0,
+    isFavorite: false,
+    toggleFavorite: () => {}
   };
 
   constructor(props) {
@@ -84,6 +89,10 @@ export default class MarketHeader extends Component {
     this.setState({ showReadMore: !this.state.showReadMore });
   }
 
+  addToFavorites() {
+    this.props.toggleFavorite(this.props.market.id);
+  }
+
   render() {
     const {
       clearSelectedOutcome,
@@ -102,7 +111,8 @@ export default class MarketHeader extends Component {
       isDesignatedReporter,
       finalizeMarket,
       isMobileSmall,
-      isForking
+      isForking,
+      isFavorite
     } = this.props;
 
     let { details } = this.props;
@@ -118,14 +128,6 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
-        {market.id && (
-          <MarketHeaderBar
-            marketId={market.id}
-            category={market.category}
-            reportingState={market.reportingState}
-            tags={market.tags}
-          />
-        )}
         <div
           className={classNames(Styles.MarketHeader__nav, {
             [Styles["MarketHeader__nav-isForking"]]: isForking
@@ -144,6 +146,14 @@ export default class MarketHeader extends Component {
         </div>
         <div className={Styles[`MarketHeader__main-values`]}>
           <div className={Styles.MarketHeader__descContainer}>
+            {market.id && (
+              <MarketHeaderBar
+                marketId={market.id}
+                category={market.category}
+                reportingState={market.reportingState}
+                tags={market.tags}
+              />
+            )}
             <h1 className={Styles.MarketHeader__description}>{description}</h1>
             <div className={Styles.MarketHeader__descriptionContainer}>
               <div
@@ -208,6 +218,17 @@ export default class MarketHeader extends Component {
             />
           </div>
           <div>
+            <div>
+              <button
+                onClick={() => this.addToFavorites()}
+                className={Styles.MarketHeader__watchlist}
+              >
+                <span>
+                  {isFavorite ? starIconFilled : starIconOpen}
+                  {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
+                </span>
+              </button>
+            </div>
             <TimeRange
               currentTime={currentTime}
               startTime={market.creationTime}
