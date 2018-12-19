@@ -165,6 +165,10 @@ export default class MarketHeader extends Component {
                       {
                         [Styles["MarketHeader__AdditionalDetails-tall"]]:
                           detailsTooLong && this.state.showReadMore
+                      },
+                      {
+                        [Styles["MarketHeader__AdditionalDetails-fade"]]: !this
+                          .state.showReadMore
                       }
                     )}
                   >
