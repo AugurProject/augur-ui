@@ -11,12 +11,18 @@
   border-radius: 3px;
   font-size: @font-size-medium;
   font-weight: 700;
-  color: #140E1F;
+  color: #140e1f;
   padding: 0.75rem 1.5rem;
   margin-left: 1rem;
 
   &:hover {
     background: #00eaff;
+  }
+
+  &:disabled {
+    background: #09cfe1;
+    opacity: 0.3;
+    cursor: default;
   }
 }
 
@@ -38,6 +44,13 @@
   padding: 1rem 1rem 0 1rem;
 }
 
+.MarketHeaderReporting__single__container__disabled {
+  padding: 0.75rem 0.75rem 0.75rem 0.25rem;
+}
+
+.MarketHeaderReporting__single__container {
+  padding: 1.5rem 1.25rem 1.5rem 0.25rem;
+}
 .MarketHeaderReporting__winner {
   color: @color-white;
   font-size: @font-size-rather-large;

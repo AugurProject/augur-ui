@@ -12,95 +12,97 @@ const CoreProperties = ({ market, isMobileSmall }) => (
     <div className={Styles.CoreProperties__row}>
       <MarketHeaderReporting marketId={market.id} />
     </div>
-    <div className={Styles.CoreProperties__row}>
-      <div className={Styles.CoreProperties__property}>
-        <span className={Styles[`CoreProperties__property-name`]}>
-          <div>Total Volume</div>
-        </span>
-        <span className={Styles[`CoreProperties__property-value-large`]}>
-          {getValue(market, "volume.formatted")}
-          <span className={Styles[`CoreProperties__property-denomination`]}>
-            ETH
+    <div className={Styles.CoreProperties__property__container}>
+      <div className={Styles.CoreProperties__row}>
+        <div className={Styles.CoreProperties__property}>
+          <span className={Styles[`CoreProperties__property-name`]}>
+            <div>Total Volume</div>
           </span>
-        </span>
-      </div>
-      <div className={Styles.CoreProperties__property}>
-        <span className={Styles[`CoreProperties__property-name`]}>
-          <div>Open Interest</div>
-        </span>
-        <span className={Styles[`CoreProperties__property-value-large`]}>
-          {getValue(market, "openInterest.formatted")}
-          <span className={Styles[`CoreProperties__property-denomination`]}>
-            ETH
+          <span className={Styles[`CoreProperties__property-value-large`]}>
+            {getValue(market, "volume.formatted")}
+            <span className={Styles[`CoreProperties__property-denomination`]}>
+              ETH
+            </span>
           </span>
-        </span>
-      </div>
-    </div>
-    <div className={Styles.CoreProperties__row}>
-      <div className={Styles.CoreProperties__property}>
-        <span className={Styles[`CoreProperties__property-name`]}>
-          <div>24hr Volume</div>
-        </span>
-        <span className={Styles[`CoreProperties__property-value`]}>
-          {getValue(market, "volume.formatted")}
-          <span className={Styles[`CoreProperties__property-denomination`]}>
-            ETH
+        </div>
+        <div className={Styles.CoreProperties__property}>
+          <span className={Styles[`CoreProperties__property-name`]}>
+            <div>Open Interest</div>
           </span>
-        </span>
+          <span className={Styles[`CoreProperties__property-value-large`]}>
+            {getValue(market, "openInterest.formatted")}
+            <span className={Styles[`CoreProperties__property-denomination`]}>
+              ETH
+            </span>
+          </span>
+        </div>
       </div>
-      <div className={Styles.CoreProperties__property}>
-        <span className={Styles[`CoreProperties__property-name`]}>
-          <div>Fee</div>
-        </span>
-        <span className={Styles[`CoreProperties__property-value`]}>
-          {getValue(market, "settlementFeePercent.full")}
-        </span>
+      <div className={Styles.CoreProperties__row}>
+        <div className={Styles.CoreProperties__property}>
+          <span className={Styles[`CoreProperties__property-name`]}>
+            <div>24hr Volume</div>
+          </span>
+          <span className={Styles[`CoreProperties__property-value`]}>
+            {getValue(market, "volume.formatted")}
+            <span className={Styles[`CoreProperties__property-denomination`]}>
+              ETH
+            </span>
+          </span>
+        </div>
+        <div className={Styles.CoreProperties__property}>
+          <span className={Styles[`CoreProperties__property-name`]}>
+            <div>Fee</div>
+          </span>
+          <span className={Styles[`CoreProperties__property-value`]}>
+            {getValue(market, "settlementFeePercent.full")}
+          </span>
+        </div>
       </div>
-    </div>
-    <div className={Styles.CoreProperties__row}>
-      <div className={Styles.CoreProperties__property}>
-        <span className={Styles[`CoreProperties__property-name`]}>
-          <div>Type</div>
-        </span>
-        <span className={Styles[`CoreProperties__property-value`]}>
-          {getValue(market, "marketType") === YES_NO
-            ? "Yes/No"
-            : getValue(market, "marketType")}
-        </span>
-      </div>
-      {getValue(market, "marketType") === SCALAR && (
-        <div>
-          <div className={Styles.CoreProperties__row}>
-            <div className={Styles.CoreProperties__property}>
-              <span className={Styles[`CoreProperties__property-name`]}>
-                <div>Denominated In</div>
-              </span>
-              <span className={Styles[`CoreProperties__property-value`]}>
-                {getValue(market, "scalarDenomination")}
-              </span>
+      <div className={Styles.CoreProperties__row}>
+        <div className={Styles.CoreProperties__property}>
+          <span className={Styles[`CoreProperties__property-name`]}>
+            <div>Type</div>
+          </span>
+          <span className={Styles[`CoreProperties__property-value`]}>
+            {getValue(market, "marketType") === YES_NO
+              ? "Yes/No"
+              : getValue(market, "marketType")}
+          </span>
+        </div>
+        {getValue(market, "marketType") === SCALAR && (
+          <div>
+            <div className={Styles.CoreProperties__row}>
+              <div className={Styles.CoreProperties__property}>
+                <span className={Styles[`CoreProperties__property-name`]}>
+                  <div>Denominated In</div>
+                </span>
+                <span className={Styles[`CoreProperties__property-value`]}>
+                  {getValue(market, "scalarDenomination")}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className={Styles.CoreProperties__row}>
-            <div className={Styles.CoreProperties__property__container}>
-              <div className={Styles.CoreProperties__min__max__dots}>
-                <div>
-                  <span className={Styles.CoreProperties__property__min__max}>
-                    <div>Min</div>
-                  </span>
-                  <span>{getValue(market, "minPrice").toString()}</span>
-                </div>
-                <span className={Styles.CoreProperties__dotted__line} />
-                <div>
-                  <span className={Styles.CoreProperties__property__min__max}>
-                    <div>Max</div>
-                  </span>
-                  <span>{getValue(market, "maxPrice").toString()}</span>
+            <div className={Styles.CoreProperties__row}>
+              <div className={Styles.CoreProperties__property__container}>
+                <div className={Styles.CoreProperties__min__max__dots}>
+                  <div>
+                    <span className={Styles.CoreProperties__property__min__max}>
+                      <div>Min</div>
+                    </span>
+                    <span>{getValue(market, "minPrice").toString()}</span>
+                  </div>
+                  <span className={Styles.CoreProperties__dotted__line} />
+                  <div>
+                    <span className={Styles.CoreProperties__property__min__max}>
+                      <div>Max</div>
+                    </span>
+                    <span>{getValue(market, "maxPrice").toString()}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   </div>
 );

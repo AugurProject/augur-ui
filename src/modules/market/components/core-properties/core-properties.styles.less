@@ -1,5 +1,5 @@
-@import (reference) '~assets/styles/shared';
-@import (reference) '~modules/market/components/market-view/market-view.styles';
+@import (reference) "~assets/styles/shared";
+@import (reference) "~modules/market/components/market-view/market-view.styles";
 
 .CoreProperties__row {
   display: flex;
@@ -37,8 +37,11 @@
   flex-grow: 1;
 }
 
-.CoreProperties__property-value-large
-.CoreProperties__property-value {
+.CoreProperties__property__container {
+  padding-left: 1rem;
+}
+
+.CoreProperties__property-value-large .CoreProperties__property-value {
   color: @color-white;
   display: flex;
   flex-direction: row;
@@ -52,12 +55,12 @@
 }
 
 .CoreProperties__property-denomination {
-  margin-left: .25rem;
-  padding-top: .35rem;
+  margin-left: 0.25rem;
+  padding-top: 0.35rem;
 }
 
 .CoreProperties__property-name {
-  color: #999999;;
+  color: #999999;
   display: flex;
   flex-direction: row;
   font-size: @font-size-large;
@@ -148,12 +151,15 @@
 .CoreProperties__property__min__max {
   color: #a7a2b2;
   font-size: @font-size-small;
-  margin-bottom: 0.5em
+  margin-bottom: 0.5em;
 }
 
 .CoreProperties__dotted__line {
-  border-bottom:1px dashed #a7a2b2;
   width: 61px;
+  background-image: linear-gradient(to right, white 33%, #a7a2b2 0%);
+  background-position: bottom;
+  background-repeat: repeat-x;
+  background-size: 3px 1px;
 }
 
 .CoreProperties__min__max__dots {

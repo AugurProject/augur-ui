@@ -218,10 +218,11 @@ export default class MarketHeader extends Component {
             />
           </div>
           <div>
-            <div>
+            <div className={Styles.MarketHeader__watchlist__container}>
               <button
                 onClick={() => this.addToFavorites()}
                 className={Styles.MarketHeader__watchlist}
+                disabled={!isLogged}
               >
                 <span>
                   {isFavorite ? starIconFilled : starIconOpen}
