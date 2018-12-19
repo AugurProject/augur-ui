@@ -221,7 +221,7 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__secondColumn}>
             <div
               className={Styles.MarketView__component}
-              style={{ marginBottom: "12px", minHeight: "400px", maxHeight: "400px", display: "flex", flexDirection: "column", height: "100%" }}
+              style={{ marginBottom: "12px", minHeight: "400px", height: "530px", display: "flex", flexDirection: "column" }}
             >
               <MarketOutcomeOrders
                 headerHeight={0}

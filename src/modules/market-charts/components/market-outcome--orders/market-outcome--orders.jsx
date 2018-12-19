@@ -96,7 +96,7 @@ export default class MarketOutcomeChartsOrders extends Component {
             {orderBookAsks.map((order, i) => (
               <div
                 key={order.cumulativeShares}
-                className={classNames(Styles.MarketOutcomeOrderBook__row, {
+                className={classNames(Styles.MarketOutcomeOrderBook__row, Styles.MarketOutcomeOrderBook__rowPositive, {
                   [Styles["MarketOutcomeOrderBook__row--head-bid"]]:
                     i === orderBook.asks.length - 1,
                   [Styles["MarketOutcomeOrderBook__row--hover"]]:
