@@ -94,6 +94,8 @@ export default class PositionsMarketsList extends Component {
     } = this.props;
     const { paginationCount, filteredMarkets } = this.state;
 
+    console.log(filteredMarkets)
+
     return (
       <div>
         <MarketsHeaderLabel title={title} noTopPadding={noTopPadding} />
