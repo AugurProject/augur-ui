@@ -10,7 +10,12 @@ import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome.styles";
 
-const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome, scalarDenomination }) => {
+const Outcome = ({
+  outcome,
+  selectedOutcome,
+  updateSelectedOutcome,
+  scalarDenomination
+}) => {
   const outcomeName = getValue(outcome, "name");
 
   const topBidShares = getValue(outcome, "topBid.shares.formatted");
@@ -31,7 +36,7 @@ const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome, scalarDenomi
       role="menu"
     >
       <li>
-        {outcomeName || scalarDenomination && scalarDenomination}{" "}
+        {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
         <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
       </li>
       <li>
@@ -70,11 +75,13 @@ Outcome.propTypes = {
     lastPricePercent: PropTypes.object
   }).isRequired,
   selectedOutcome: PropTypes.string,
-  updateSelectedOutcome: PropTypes.func.isRequired
+  updateSelectedOutcome: PropTypes.func.isRequired,
+  scalarDenomination: PropTypes.string
 };
 
 Outcome.defaultProps = {
-  selectedOutcome: null
+  selectedOutcome: null,
+  scalarDenomination: null
 };
 
 export default Outcome;

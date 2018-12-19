@@ -40,11 +40,10 @@ export default class OpenOrdersOrder extends Component {
       pending,
       outcome
     } = this.props;
-    const s = this.state;
     const orderPrice = getValue(order, "avgPrice.formatted");
     const orderShares = getValue(order, "unmatchedShares.formatted");
     const orderType = getValue(order, "type");
-    
+
     return (
       <ul
         ref={order => {

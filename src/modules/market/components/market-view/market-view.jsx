@@ -29,14 +29,14 @@ export default class MarketView extends Component {
     loadingState: PropTypes.any,
     pricePrecision: PropTypes.number.isRequired,
     isMobile: PropTypes.bool,
-    outcomes: PropTypes.array,
+    outcomes: PropTypes.array
   };
 
   static defaultProps = {
     marketType: undefined,
     loadingState: null,
     isMobile: false,
-    outcomes: [],
+    outcomes: []
   };
 
   constructor(props) {
@@ -50,7 +50,6 @@ export default class MarketView extends Component {
 
     this.state = {
       selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
-      selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       fixedPrecision: 4,
       selectedOutcomeProperties: {
         1: {
@@ -153,7 +152,7 @@ export default class MarketView extends Component {
   }
 
   render() {
-    const { description, marketId, location, pricePrecision, isMobile, outcomes } = this.props;
+    const { description, marketId, location, isMobile, outcomes } = this.props;
     const s = this.state;
 
     return (
@@ -184,7 +183,11 @@ export default class MarketView extends Component {
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div
                   className={Styles.MarketView__component}
-                  style={{ backgroundColor: "#1B1528", marginBottom: "12px", flexGrow: 'unset' }}
+                  style={{
+                    backgroundColor: "#1B1528",
+                    marginBottom: "12px",
+                    flexGrow: "unset"
+                  }}
                 >
                   <MarketOutcomesList
                     marketId={marketId}

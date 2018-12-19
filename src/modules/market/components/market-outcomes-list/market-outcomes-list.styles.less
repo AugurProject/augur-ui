@@ -6,13 +6,13 @@
 
 .MarketOutcomesList__heading {
   align-items: center;
+  background-color: @color-light-purple;
+  border-bottom: 1px solid @color-extra-darkpurple;
   display: flex;
+  font-size: 16px;
   justify-content: space-between;
   padding: 18px 24px;
   width: 100%;
-  font-size: 16px;
-  background-color: @color-light-purple;
-  border-bottom: 1px solid @color-extra-darkpurple;
 }
 
 .MarketOutcomesList__table {
@@ -23,16 +23,16 @@
 .MarketOutcomesList__table-header {
   &:extend(.caps--small);
 
+  background-color: @color-light-purple;
   color: @color-light-gray;
   display: table-header-group;
-  background-color: @color-light-purple;
   font-size: 12px;
 
   > li {
     display: table-cell;
     padding: 0 0 0.625rem;
-    text-align: right;
     padding-top: 8px;
+    text-align: right;
     text-transform: capitalize;
 
     &:first-child {

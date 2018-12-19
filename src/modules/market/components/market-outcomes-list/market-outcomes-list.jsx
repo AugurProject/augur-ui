@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 import CustomPropTypes from "utils/custom-prop-types";
 import { SCALAR } from "modules/markets/constants/market-types";
@@ -14,7 +13,6 @@ export default class MarketOutcomesList extends Component {
     marketId: PropTypes.string.isRequired,
     outcomes: PropTypes.array.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool,
     selectedOutcome: PropTypes.any,
     scalarDenomination: PropTypes.string,
     marketType: PropTypes.string,
@@ -24,24 +22,14 @@ export default class MarketOutcomesList extends Component {
 
   static defaultProps = {
     selectedOutcome: null,
-    isMobile: false,
     scalarDenomination: null,
     marketType: null,
     minPrice: null,
-    maxPrice: null,
+    maxPrice: null
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isOpen: true
-    };
-  }
 
   render() {
     const {
-      isMobile,
       marketId,
       outcomes,
       selectedOutcome,
@@ -51,15 +39,10 @@ export default class MarketOutcomesList extends Component {
       minPrice,
       maxPrice
     } = this.props;
-    const s = this.state;
 
     return (
       <section className={Styles.MarketOutcomesList}>
-        <div
-          className={Styles.MarketOutcomesList__heading}
-        >
-          Outcomes
-        </div>
+        <div className={Styles.MarketOutcomesList__heading}>Outcomes</div>
         <div
           ref={outcomeList => {
             this.outcomeList = outcomeList;
@@ -105,20 +88,22 @@ export default class MarketOutcomesList extends Component {
                     marketId={marketId}
                     selectedOutcome={selectedOutcome}
                     updateSelectedOutcome={updateSelectedOutcome}
-                    scalarDenomination={marketType === SCALAR && scalarDenomination}
+                    scalarDenomination={
+                      marketType === SCALAR && scalarDenomination
+                    }
                   />
                 ))}
             </div>
           </div>
         </div>
-        {marketType === SCALAR &&
-         <MarketScalarOutcomeDisplay
-          scalarDenomination={scalarDenomination}
-          min={minPrice}
-          max={maxPrice}
-          outcomes={outcomes}
-         />
-        }
+        {marketType === SCALAR && (
+          <MarketScalarOutcomeDisplay
+            scalarDenomination={scalarDenomination}
+            min={minPrice}
+            max={maxPrice}
+            outcomes={outcomes}
+          />
+        )}
       </section>
     );
   }

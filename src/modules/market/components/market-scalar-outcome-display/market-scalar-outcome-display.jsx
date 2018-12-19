@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-import { YES_NO } from "modules/markets/constants/market-types";
+import classNames from "classnames";
 
 import getValue from "utils/get-value";
 import CustomPropTypes from "utils/custom-prop-types";
@@ -40,79 +39,76 @@ const MarketScalarOutcomeDisplay = ({
     left: outcomeVerticalLinePosition() + "%"
   };
 
-  const minValue = `${min} ${scalarDenomination}`;
+  const minValue = `${min}`;
 
-  const maxValue = `${max} ${scalarDenomination}`;
+  const maxValue = `${max}`;
 
-  const lastPriceDenomination = getValue(outcomes[0], "lastPricePercent.denomination");
-
-  const currentMarketStyles = pos => {
-    let size = getValue(outcomes[0], "lastPricePercent.formatted").toString()
-      .length;
-    const isMobileAttrs =
-      window.outerWidth < 590
-        ? { marginTop: 4, fontSize: 16 }
-        : { marginTop: 7, fontSize: 20 };
-    for (let i = 6; i < size; i += 6) {
-      size *= 0.8;
-    }
-    return {
-      marginLeft: pos < 15 ? size + "rem" : 0,
-      marginRight: pos > 85 ? size + "rem" : 0,
-      ...isMobileAttrs
-    };
-  };
+  const lastPriceDenomination = getValue(
+    outcomes[0],
+    "lastPricePercent.denomination"
+  );
 
   return (
     <div className={Styles.MarketScalarOutcomes}>
-      <div>
-      ---------------
+      <div className={Styles.MarketScalarOutcomes__graph}>
+        <div className={Styles.MarketScalarOutcomes__edge} />
+        <div className={Styles.MarketScalarOutcomes__line}>
+          <span
+            className={Styles.MarketScalarOutcomes__current}
+            style={currentValuePosition}
+          >
+            <div>
+              <span
+                className={Styles["MarketScalarOutcomes__current-value"]}
+                data-testid="midpoint"
+              >
+                {getValue(outcomes[0], "lastPricePercent.formatted")}
+              </span>
+              <span
+                className={Styles["MarketScalarOutcomes__current-denomination"]}
+              >
+                {lastPriceDenomination}
+              </span>
+              <MarketOutcomeTradingIndicator
+                outcome={outcomes[0]}
+                location="yes-no-scalar"
+              />
+            </div>
+          </span>
+        </div>
+        <div className={Styles.MarketScalarOutcomes__edge} />
       </div>
-      <div>
-        <div>
-          Min: {min.toString()}
+      <div
+        className={classNames(
+          Styles.MarketScalarOutcomes__row,
+          Styles.MarketScalarOutcomes__minMax
+        )}
+      >
+        <div style={{ flexGrow: "1" }}>
+          Min:{" "}
+          <span className={Styles.MarketScalarOutcomes__minMaxValue}>
+            {minValue}
+          </span>
         </div>
         <div>
-          Max: {max.toString()}
+          Max:{" "}
+          <span className={Styles.MarketScalarOutcomes__minMaxValue}>
+            {maxValue}
+          </span>
         </div>
       </div>
-      <div>
-        <div>
-          {scalarDenomination}
-        </div>
-        <div>
-          {scalarDenomination}
-        </div>
+      <div
+        className={classNames(
+          Styles.MarketScalarOutcomes__row,
+          Styles.MarketScalarOutcomes__denomination
+        )}
+      >
+        <div style={{ flexGrow: "1" }}>{scalarDenomination}</div>
+        <div>{scalarDenomination}</div>
       </div>
-     
     </div>
   );
 };
-
-/**  <div className={Styles.MarketScalarOutcomes__range} />
-      <span className={Styles.MarketScalarOutcomes__min}>{minValue}</span>
-      <span className={Styles.MarketScalarOutcomes__max}>{maxValue}</span>
-      <span
-        className={Styles.MarketScalarOutcomes__current}
-        style={currentValuePosition}
-      >
-        <div style={currentMarketStyles(calculatePosition())}>
-          <span
-            className={Styles["MarketScalarOutcomes__current-value"]}
-            data-testid="midpoint"
-          >
-            {getValue(outcomes[0], "lastPricePercent.formatted")}
-          </span>
-          <span className={Styles["MarketScalarOutcomes__current-denomination"]}>
-            {lastPriceDenomination}
-          </span>
-          <MarketOutcomeTradingIndicator
-            outcome={outcomes[0]}
-            location="yes-no-scalar"
-          />
-        </div>
-      </span>
-      **/
 
 MarketScalarOutcomeDisplay.propTypes = {
   outcomes: PropTypes.array.isRequired,
