@@ -71,7 +71,7 @@ const MarketScalarOutcomeDisplay = ({
               </span>
               <MarketOutcomeTradingIndicator
                 outcome={outcomes[0]}
-                location="yes-no-scalar"
+                location="scalarScale"
               />
             </div>
           </span>

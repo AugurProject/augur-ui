@@ -48,6 +48,14 @@ export default function OutcomeTradingIndicator({
           return { top: "1rem" };
         case "modileTradingForm|up":
           return { bottom: "1rem" };
+        case "tradingPage|up": 
+          return { position: "absolute", borderBottomColor: "#999999", marginLeft: '0.5rem', borderWidth: '0.425rem', opacity: '1' };
+        case "tradingPage|down": 
+          return { position: "absolute", borderTopColor: "#999999", marginLeft: '0.5rem', borderWidth: '0.425rem', opacity: '1' };
+        case "scalarScale|up": 
+          return { position: "absolute", borderBottomColor: "#FFF", marginLeft: '0.5rem', borderWidth: '0.425rem', opacity: '1' };
+        case "scalarScale|down": 
+          return { position: "absolute", borderTopColor: "#FFF", marginLeft: '0.5rem', borderWidth: '0.425rem', opacity: '1' };
         default:
           return {};
       }

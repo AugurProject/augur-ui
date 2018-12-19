@@ -53,7 +53,7 @@ const Outcome = ({
       </li>
       <li style={{ position: "relative" }}>
         <ValueDenomination formatted={lastPrice} />
-        <MarketOutcomeTradingIndicator outcome={outcome} location="outcomes" />
+        <MarketOutcomeTradingIndicator outcome={outcome} location="tradingPage" />
       </li>
     </ul>
   );
