@@ -561,11 +561,11 @@ export default class CreateMarketOutcome extends Component {
                       id="tooltip--market-fees"
                       className={TooltipStyles.Tooltip}
                       effect="solid"
-                      place="right"
+                      place="bottom"
                       type="light"
                     >
                       <h4>Enter a denomination for your scalar market</h4>
-                      <p style={{ color: "#372e4b" }}>
+                      <p style={{ color: "white" }}>
                         {
                           'The denomination specifies what units your market is measured in. For example, a market predicting the temperature on a certain day might be denominated in "Degrees Fahrenheit".'
                         }

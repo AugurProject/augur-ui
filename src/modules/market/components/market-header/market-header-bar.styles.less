@@ -12,6 +12,7 @@
 .MarketHeaderBar__tag__container {
   display: flex;
   flex-direction: row;
+  margin-top: 22px;
 }
 
 .MarketHeaderBar__status {
@@ -25,6 +26,12 @@
 
 .MarketHeaderBar__tags {
   &:extend(.button--transparent--rounded all);
+
+  text-transform: capitalize;
+  
+  &:focus {
+    outline: none;
+  }
 }
 
 .MarketHeaderBar__underline__reporting,

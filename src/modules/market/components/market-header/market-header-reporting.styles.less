@@ -25,7 +25,7 @@
 .MarketHeaderReporting__winner__container {
   display: flex;
   flex-direction: row;
-  padding: 1rem 1rem 0 1rem;
+  padding: 16px;
 }
 
 .MarketHeaderReporting__single__container__disabled {
@@ -39,13 +39,25 @@
 .MarketHeaderReporting__winner__row {
   display: flex;
   flex-direction: row;
+  margin-top: 2px;
 }
 
 .MarketHeaderReporting__winner {
   color: @color-white;
   font-size: @font-size-rather-large;
   font-weight: 700;
-  padding-bottom: 0.5rem;
+  position: relative;
+  padding-left: 14px;
+
+  &:first-child:before {
+    content: " ";
+    background-color: @color-outcome-one;
+    bottom: 20%;
+    left: 0;
+    width: 6px;
+    height: 17px;
+    position: absolute;
+  }
 }
 
 .MarketHeaderReporting__winner__color__8,

@@ -3,10 +3,10 @@
 @import (reference) '~assets/styles/shared';
 
 .Tooltip {
-  background-color: @color-lightergray !important;
-  border-radius: 0 !important;
+  background-color: @color-dark-gray !important;
+  border-radius: 3px !important;
   box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.5);
-  color: @color-darkpurple !important;
+  color: @color-white !important;
   font-size: @font-size-small !important;
   line-height: 0.9375rem;
   max-width: 13.7rem;
@@ -14,6 +14,7 @@
   pointer-events: auto !important;
   text-transform: none;
   white-space: initial;
+  border: 1px solid #443b59 !important;
 
   > h4 {
     font-weight: 500;
@@ -52,7 +53,7 @@
       margin-bottom: -14px;
 
       &::after {
-        border-top-color: @color-lightergray !important;
+        border-top-color: @color-dark-gray !important;
         bottom: -10px !important;
       }
 
@@ -68,7 +69,7 @@
       margin-top: -14px;
 
       &::after {
-        border-bottom-color: @color-lightergray !important;
+        border-bottom-color: @color-dark-gray !important;
         top: -10px !important;
       }
 
@@ -77,6 +78,22 @@
         border-left-width: 10px;
         border-right-width: 10px;
       }
+
+      &::before {
+        content: '';
+        display: block;  
+        position: absolute;
+        bottom: 100%;
+        width: 0;
+        height: 0;
+        border-bottom-color: #443b59 !important;
+        border: 11px solid transparent;
+        border-left: 11px solid transparent !important;
+        border-right: 11px solid transparent !important;
+        left: 50.5% !important;
+        margin-left: -10px !important;
+        top: unset !important;
+      }
     }
 
     &.place-left {
@@ -84,7 +101,7 @@
       margin-top: -5px;
 
       &::after {
-        border-left-color: @color-lightergray !important;
+        border-left-color: @color-dark-gray !important;
         right: -10px !important;
       }
 
@@ -100,7 +117,7 @@
       margin-top: -5px;
 
       &::after {
-        border-right-color: @color-lightergray !important;
+        border-right-color: @color-dark-gray !important;
         left: -10px !important;
       }
 

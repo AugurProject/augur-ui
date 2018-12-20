@@ -117,22 +117,6 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
-        <div
-          className={classNames(Styles.MarketHeader__nav, {
-            [Styles["MarketHeader__nav-isForking"]]: isForking
-          })}
-        >
-          {selectedOutcome !== null &&
-            marketType === CATEGORICAL && (
-              <button
-                className={Styles[`MarketHeader__back-button`]}
-                onClick={() => clearSelectedOutcome()}
-              >
-                {ChevronLeft}
-                <span> view all outcomes</span>
-              </button>
-            )}
-        </div>
         <div className={Styles[`MarketHeader__main-values`]}>
           <div className={Styles.MarketHeader__descContainer}>
             {market.id && (
@@ -183,7 +167,7 @@ export default class MarketHeader extends Component {
                         ? ChevronDown({ stroke: "#FFFFFF" })
                         : ChevronUp()}
                       <span>
-                        {!this.state.showReadMore ? "More ..." : "less"}
+                        {!this.state.showReadMore ? "More..." : "Less"}
                       </span>
                     </button>
                   )}
@@ -194,7 +178,7 @@ export default class MarketHeader extends Component {
           <div className={Styles.MarketHeader__properties}>
             <CoreProperties market={market} isMobileSmall={isMobileSmall} />
           </div>
-          <div>
+          <div className={Styles.MarketHeader__timeStuff}>
             <div className={Styles.MarketHeader__watchlist__container}>
               <button
                 onClick={() => this.addToFavorites()}
