@@ -9,6 +9,7 @@ import MarketHeader from "modules/market/containers/market-header";
 // import MarketTrading from "modules/trading/containers/trading";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
+import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
@@ -46,6 +47,11 @@ export default class MarketView extends Component {
       orderPrice: "",
       orderQuantity: "",
       selectedNav: BUY
+    };
+
+    this.sharedChartMargins = {
+      top: 0,
+      bottom: 30
     };
 
     this.state = {
@@ -184,7 +190,6 @@ export default class MarketView extends Component {
                 <div
                   className={Styles.MarketView__component}
                   style={{
-                    backgroundColor: "#1B1528",
                     marginBottom: "12px",
                     flexGrow: "unset"
                   }}
@@ -197,18 +202,13 @@ export default class MarketView extends Component {
                     isMobile={isMobile}
                   />
                 </div>
-                <div
-                  className={Styles.MarketView__component}
-                  style={{ backgroundColor: "#1B1528" }}
-                >
-                  Charts
-                </div>
+                <div className={Styles.MarketView__component}>Charts</div>
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>
               <div
                 className={Styles.MarketView__component}
-                style={{ backgroundColor: "#1B1528", padding: "0px" }}
+                style={{ padding: "0px" }}
               >
                 <MarketOrdersPositionsTable marketId={marketId} />
               </div>
@@ -217,9 +217,27 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__secondColumn}>
             <div
               className={Styles.MarketView__component}
-              style={{ marginBottom: "12px", minHeight: "400px" }}
+              style={{
+                marginBottom: "12px",
+                minHeight: "380px",
+                height: "380px",
+                display: "flex",
+                flexDirection: "column"
+              }}
             >
-              Order Book
+              <MarketOutcomeOrders
+                headerHeight={0}
+                isMobile={isMobile}
+                sharedChartMargins={this.sharedChartMargins}
+                fixedPrecision={4}
+                pricePrecision={4}
+                hoveredPrice={null}
+                updateHoveredPrice={null}
+                updatePrecision={null}
+                updateSelectedOrderProperties={null}
+                marketId={marketId}
+                selectedOutcome={s.selectedOutcome}
+              />
             </div>
             <div
               className={Styles.MarketView__component}
