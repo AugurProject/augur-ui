@@ -15,9 +15,7 @@ const MarketOutcomeChartsHeaderOrders = ({
     style={{ minHeight: isMobile && headerHeight }}
   >
     {isMobile || (
-      <div className={StylesHeader.MarketOutcomesList__heading}>
-        Order Book
-      </div>
+      <div className={StylesHeader.MarketOutcomesList__heading}>Order Book</div>
     )}
     <div
       className={classNames(
@@ -25,12 +23,18 @@ const MarketOutcomeChartsHeaderOrders = ({
         Styles["MarketOutcomeChartsHeader__stats--orders"]
       )}
     >
-      <div className={Styles["MarketOutcomeChartsHeader__stat--right"]} style={{justifyContent: 'flex-start'}}>
+      <div
+        className={Styles["MarketOutcomeChartsHeader__stat--right"]}
+        style={{ justifyContent: "flex-start" }}
+      >
         <span className={Styles["MarketOutcomeChartsHeader__stat-title"]}>
           quantity
         </span>
       </div>
-      <div className={Styles["MarketOutcomeChartsHeader__stat--right"]} style={{justifyContent: 'center'}}>
+      <div
+        className={Styles["MarketOutcomeChartsHeader__stat--right"]}
+        style={{ justifyContent: "center" }}
+      >
         <span className={Styles["MarketOutcomeChartsHeader__stat-title"]}>
           price
         </span>

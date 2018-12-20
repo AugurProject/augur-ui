@@ -49,7 +49,7 @@ export default class MarketView extends Component {
       selectedNav: BUY
     };
 
-     this.sharedChartMargins = {
+    this.sharedChartMargins = {
       top: 0,
       bottom: 30
     };
@@ -202,11 +202,7 @@ export default class MarketView extends Component {
                     isMobile={isMobile}
                   />
                 </div>
-                <div
-                  className={Styles.MarketView__component}
-                >
-                  Charts
-                </div>
+                <div className={Styles.MarketView__component}>Charts</div>
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>
@@ -221,7 +217,13 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__secondColumn}>
             <div
               className={Styles.MarketView__component}
-              style={{ marginBottom: "12px", minHeight: "400px", height: "530px", display: "flex", flexDirection: "column" }}
+              style={{
+                marginBottom: "12px",
+                minHeight: "380px",
+                height: "380px",
+                display: "flex",
+                flexDirection: "column"
+              }}
             >
               <MarketOutcomeOrders
                 headerHeight={0}

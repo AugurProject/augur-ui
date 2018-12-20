@@ -8,7 +8,6 @@ import { ASKS, BIDS } from "modules/orders/constants/orders";
 import { BUY, SELL } from "modules/transactions/constants/types";
 
 import Styles from "modules/market-charts/components/market-outcome--orders/market-outcome--orders.styles";
-import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
 import { isEmpty, isEqual } from "lodash";
 
 export default class MarketOutcomeChartsOrders extends Component {
@@ -24,8 +23,6 @@ export default class MarketOutcomeChartsOrders extends Component {
     headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
-    marketId: PropTypes.string,
-    selectedOutcome: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -56,8 +53,6 @@ export default class MarketOutcomeChartsOrders extends Component {
       fixedPrecision,
       pricePrecision,
       orderBook,
-      sharedChartMargins,
-      updateHoveredPrice,
       updatePrecision,
       updateSelectedOrderProperties,
       isMobile,
@@ -70,9 +65,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     const orderBookAsks = orderBook.asks || [];
 
     return (
-      <section
-        className={Styles.MarketOutcomeOrderBook}
-      >
+      <section className={Styles.MarketOutcomeOrderBook}>
         <MarketOutcomeHeaderOrders
           updatePrecision={updatePrecision}
           isMobile={isMobile}
@@ -96,31 +89,42 @@ export default class MarketOutcomeChartsOrders extends Component {
             {orderBookAsks.map((order, i) => (
               <div
                 key={order.cumulativeShares}
-                className={classNames(Styles.MarketOutcomeOrderBook__row, Styles.MarketOutcomeOrderBook__rowPositive, {
-                  [Styles["MarketOutcomeOrderBook__row--head-bid"]]:
-                    i === orderBook.asks.length - 1,
-                  [Styles["MarketOutcomeOrderBook__row--hover"]]:
-                    i === s.hoveredOrderIndex && s.hoveredSide === ASKS,
-                  [Styles["MarketOutcomeOrderbook__row--hover-encompassed"]]:
-                    s.hoveredOrderIndex !== null &&
-                    s.hoveredSide === ASKS &&
-                    i > s.hoveredOrderIndex
-                })}
+                className={classNames(
+                  Styles.MarketOutcomeOrderBook__row,
+                  Styles.MarketOutcomeOrderBook__rowPositive,
+                  {
+                    [Styles["MarketOutcomeOrderBook__row--head-bid"]]:
+                      i === orderBook.asks.length - 1,
+                    [Styles["MarketOutcomeOrderBook__row--hover"]]:
+                      i === s.hoveredOrderIndex && s.hoveredSide === ASKS,
+                    [Styles["MarketOutcomeOrderbook__row--hover-encompassed"]]:
+                      s.hoveredOrderIndex !== null &&
+                      s.hoveredSide === ASKS &&
+                      i > s.hoveredOrderIndex
+                  }
+                )}
                 onMouseEnter={() => {
-                  //updateHoveredPrice(order.price.value);
+                  // updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: ASKS
                   });
                 }}
                 onMouseLeave={() => {
-                  //updateHoveredPrice(null);
+                  // updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
                   });
                 }}
               >
+                <div
+                  className={classNames(
+                    Styles.MarketOutcomeOrderBook__rowScale,
+                    Styles.MarketOutcomeOrderBook__rowScaleNeg
+                  )}
+                  style={{ right: order.quantityScale + "%" }}
+                />
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
                   onClick={() =>
@@ -130,7 +134,7 @@ export default class MarketOutcomeChartsOrders extends Component {
                       selectedNav: BUY
                     })
                   }
-                  style={{justifyContent: 'flex-start'}}
+                  style={{ justifyContent: "flex-start" }}
                 >
                   <span>
                     {order.shares.value.toFixed(fixedPrecision).toString()}
@@ -145,11 +149,9 @@ export default class MarketOutcomeChartsOrders extends Component {
                       selectedNav: BUY
                     })
                   }
-                  style={{justifyContent: 'center'}}
+                  style={{ justifyContent: "center" }}
                 >
-                  <span>
-                    {order.price.value.toFixed(pricePrecision)}
-                  </span>
+                  <span>{order.price.value.toFixed(pricePrecision)}</span>
                 </button>
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
@@ -172,12 +174,17 @@ export default class MarketOutcomeChartsOrders extends Component {
           </div>
         </div>
         <div className={Styles.MarketOutcomeOrderBook__Midmarket}>
-          { hasOrders &&
+          {hasOrders && (
             <div>
-              <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>Spread:</span> {orderBookKeys.spread.toFixed(pricePrecision)} 
-              <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>ETH</span>
+              <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>
+                Spread:
+              </span>{" "}
+              {orderBookKeys.spread.toFixed(pricePrecision)}
+              <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>
+                ETH
+              </span>
             </div>
-          }
+          )}
         </div>
         <div
           className={classNames(
@@ -204,20 +211,24 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i < s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  //updateHoveredPrice(order.price.value);
+                  // updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: BIDS
                   });
                 }}
                 onMouseLeave={() => {
-                  //updateHoveredPrice(null);
+                  // updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
                   });
                 }}
               >
+                <div
+                  className={Styles.MarketOutcomeOrderBook__rowScale}
+                  style={{ right: order.quantityScale + "%" }}
+                />
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
                   onClick={() =>
@@ -227,7 +238,7 @@ export default class MarketOutcomeChartsOrders extends Component {
                       selectedNav: SELL
                     })
                   }
-                  style={{justifyContent: 'flex-start'}}
+                  style={{ justifyContent: "flex-start" }}
                 >
                   <span>
                     {order.shares.value.toFixed(fixedPrecision).toString()}
@@ -242,11 +253,9 @@ export default class MarketOutcomeChartsOrders extends Component {
                       selectedNav: SELL
                     })
                   }
-                  style={{justifyContent: 'center'}}
+                  style={{ justifyContent: "center" }}
                 >
-                  <span>
-                    {order.price.value.toFixed(pricePrecision)}
-                  </span>
+                  <span>{order.price.value.toFixed(pricePrecision)}</span>
                 </button>
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}

@@ -31,6 +31,7 @@ const mapStateToProps = (state, ownProps) => {
     userOrders,
     state.loginAccount.address
   );
+
   const marketDepth = orderForMarketDepth(cumulativeOrderBook);
   const orderBookKeys = getOrderBookKeys(marketDepth, minPrice, maxPrice);
   return {

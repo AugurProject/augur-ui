@@ -24,24 +24,38 @@ function calculateMySize(openOrders, loginAccount, price) {
   return null;
 }
 
-function calculateQuantityScale() {
-
+function calculateQuantityScale(outOf, shares) {
+  return createBigNumber(100).minus(
+    createBigNumber(shares)
+      .dividedBy(createBigNumber(outOf))
+      .times(createBigNumber(100))
+  );
 }
 
 const orderAndAssignCumulativeShares = memoize(
   (orderBook, userOpenOrders, loginAccount) => {
     const rawBids = ((orderBook || {})[BIDS] || []).slice();
     const rawAsks = ((orderBook || {})[ASKS] || []).slice();
-    const bidsAsksSort = (rawBids.concat(rawAsks)).sort((a, b) => b.shares.value - a.shares.value);
-    const mostShares = bidsAsksSort[0] && bidsAsksSort[0].shares && bidsAsksSort[0].shares.value;
-   
+    const bidsAsksSort = rawBids
+      .concat(rawAsks)
+      .sort((a, b) => b.shares.value - a.shares.value);
+    const mostShares =
+      bidsAsksSort[0] && bidsAsksSort[0].shares && bidsAsksSort[0].shares.value;
+    const outOf =
+      mostShares &&
+      createBigNumber(mostShares).plus(
+        createBigNumber(mostShares).times(createBigNumber(0.15))
+      );
     const bids = rawBids.sort((a, b) => b.price.value - a.price.value).reduce(
       (p, order, i, orders) => [
         ...p,
         {
           price: order.price,
           shares: order.shares,
-          quantityScale: calculateQuantityScale(),
+          quantityScale: calculateQuantityScale(
+            outOf,
+            order.shares.value
+          ).toString(),
           cumulativeShares:
             p[i - 1] != null
               ? p[i - 1].cumulativeShares.plus(order.shares.fullPrecision)
@@ -62,7 +76,10 @@ const orderAndAssignCumulativeShares = memoize(
           {
             price: order.price,
             shares: order.shares,
-            quantityScale: calculateQuantityScale(),
+            quantityScale: calculateQuantityScale(
+              outOf,
+              order.shares.value
+            ).toString(),
             cumulativeShares:
               p[i - 1] != null
                 ? p[i - 1].cumulativeShares.plus(order.shares.fullPrecision)

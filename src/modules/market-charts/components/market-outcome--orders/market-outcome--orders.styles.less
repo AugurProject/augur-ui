@@ -2,10 +2,10 @@
 
 .MarketOutcomeOrderBook {
   background-color: @color-grayish-purple;
+  border-bottom: 8px solid @color-light-purple;
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-bottom: 8px solid @color-light-purple;
 }
 
 .MarketOutcomeOrderBook__stats {
@@ -47,12 +47,12 @@
 
 .MarketOutcomeOrderBook__row {
   display: flex;
-  width: 100%;
   padding: 4.5px 24px 4.5px 30px;
   position: relative;
-
+  width: 100%;
 
   &::before {
+    background-color: @color-positive;
     bottom: 0;
     content: "";
     display: block;
@@ -62,8 +62,21 @@
     top: 50%;
     transform: translate(-50%, -50%);
     width: 1px;
-    background-color: @color-positive;
   }
+}
+
+.MarketOutcomeOrderBook__rowScale {
+  background-color: @color-positive;
+  bottom: 1px;
+  cursor: pointer;
+  left: 0;
+  opacity: 0.15;
+  position: absolute;
+  top: 1px;
+}
+
+.MarketOutcomeOrderBook__rowScaleNeg {
+  background-color: @color-negative2;
 }
 
 .MarketOutcomeOrderBook__rowPositive {
@@ -100,10 +113,10 @@
   color: @color-white;
   display: flex;
   flex: 1;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
   justify-content: flex-end;
   overflow: hidden;
-  font-size: 12px;
-  font-family: 'Roboto Mono', monospace;
 
   &:nth-child(2) {
     color: @color-negative2;
@@ -114,10 +127,10 @@
   color: @color-white;
   display: flex;
   flex: 1;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
   justify-content: flex-end;
   overflow: hidden;
-  font-size: 12px;
-  font-family: 'Roboto Mono', monospace;
 
   &:nth-child(2) {
     color: @color-positive;
@@ -126,19 +139,21 @@
 
 .MarketOutcomeOrderBook__Midmarket {
   background-color: @color-dark-grayish-purple;
-  padding: 10px 49px;
   font-family: 'Roboto Mono', monospace;
   font-size: 14px;
+  margin: 1px 0;
+  padding: 10px 39px;
 }
 
 .MarketOutcomeOrderBook__MidmarketSpread {
-  font-weight: bold;
-  font-size: 10px;
   font-family: @roboto;
+  font-size: 10px;
+  font-weight: bold;
+  margin-right: 60px;
 }
 
 .MarketOutcomeOrderBook__MidmarketEth {
+  font-family: @roboto;
   font-size: 10px;
   margin-left: 2px;
-  font-family: @roboto;
 }
