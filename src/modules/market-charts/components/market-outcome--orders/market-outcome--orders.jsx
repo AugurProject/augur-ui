@@ -22,7 +22,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     isMobile: PropTypes.bool.isRequired,
     headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
-    orderBookKeys: PropTypes.object.isRequired,
+    orderBookKeys: PropTypes.object.isRequired
   };
 
   constructor(props) {
