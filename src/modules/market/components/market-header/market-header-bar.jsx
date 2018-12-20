@@ -35,16 +35,14 @@ export default class MarketHeaderBar extends Component {
 
   gotoFilter(type, value) {
     const { history } = this.props;
-    let query = null;
-    if (type === "category") {
-      query = {
-        [CATEGORY_PARAM_NAME]: value
-      };
-    } else {
-      query = {
-        [TAGS_PARAM_NAME]: value
-      };
-    }
+    const query =
+      type === "category"
+        ? {
+            [CATEGORY_PARAM_NAME]: value
+          }
+        : {
+            [TAGS_PARAM_NAME]: value
+          };
 
     history.push({
       pathname: "markets",
