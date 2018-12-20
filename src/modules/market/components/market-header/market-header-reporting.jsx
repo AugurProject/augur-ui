@@ -64,7 +64,10 @@ export default class MarketHeaderReporting extends Component {
           className={Styles.MarketHeaderReporting__winner__container}
         >
           <div>
-            <span className={MarketHeaderStyles.MarketHeader__property__header} style={{marginRight: '0px'}}>
+            <span
+              className={MarketHeaderStyles.MarketHeader__property__header}
+              style={{ marginRight: "0px" }}
+            >
               Winning Outcome
             </span>
             <span className={Styles.MarketHeaderReporting__winner__row}>
@@ -84,7 +87,7 @@ export default class MarketHeaderReporting extends Component {
           </div>
           {reportingState ===
             constants.REPORTING_STATE.AWAITING_FINALIZATION && (
-            <div style={{display: 'flex', alignItems: 'center'}}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <button
                 className={Styles.MarketHeaderReporting__button}
                 onClick={() => {
@@ -112,31 +115,33 @@ export default class MarketHeaderReporting extends Component {
           key="dispute"
           className={Styles.MarketHeaderReporting__winner__container}
         >
-            <div>
-              <span className={MarketHeaderStyles.MarketHeader__property__header}>
-                Tentative Winning Outcome
-              </span>
-              <span className={Styles.MarketHeaderReporting__winner__row}>
-                {CatWinnerColorIndex && (
-                  <div
-                    className={
-                      Styles[
-                        `MarketHeaderReporting__winner__color__${CatWinnerColorIndex}`
-                      ]
-                    }
-                  />
-                )}
-                {(tentativeWinner && (tentativeWinner.name || tentativeWinner.isInvalid)) ? 
-                  <div className={Styles.MarketHeaderReporting__winner}>
-                    {tentativeWinner &&
-                      (tentativeWinner.isInvalid
-                        ? "Invalid"
-                        : tentativeWinner.name)}
-                  </div> :
-                  <div style={{minHeight: '20px'}} />
-                }
-              </span>
-            </div>
+          <div>
+            <span className={MarketHeaderStyles.MarketHeader__property__header}>
+              Tentative Winning Outcome
+            </span>
+            <span className={Styles.MarketHeaderReporting__winner__row}>
+              {CatWinnerColorIndex && (
+                <div
+                  className={
+                    Styles[
+                      `MarketHeaderReporting__winner__color__${CatWinnerColorIndex}`
+                    ]
+                  }
+                />
+              )}
+              {tentativeWinner &&
+              (tentativeWinner.name || tentativeWinner.isInvalid) ? (
+                <div className={Styles.MarketHeaderReporting__winner}>
+                  {tentativeWinner &&
+                    (tentativeWinner.isInvalid
+                      ? "Invalid"
+                      : tentativeWinner.name)}
+                </div>
+              ) : (
+                <div style={{ minHeight: "20px" }} />
+              )}
+            </span>
+          </div>
           {reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE &&
             isLogged && (
               <div

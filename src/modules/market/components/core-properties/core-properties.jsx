@@ -13,11 +13,14 @@ import TooltipStyles from "modules/common/less/tooltip.styles";
 
 const CoreProperties = ({ market, isMobileSmall }) => (
   <div className={Styles.CoreProperties__coreContainer}>
-    <div className={Styles.CoreProperties__row} style={{minHeight: '55px'}}>
+    <div className={Styles.CoreProperties__row} style={{ minHeight: "55px" }}>
       <MarketHeaderReporting marketId={market.id} />
     </div>
     <div className={Styles.CoreProperties__property__container}>
-      <div className={Styles.CoreProperties__column} style={{flexGrow: "1", maxWidth: "180px"}}>
+      <div
+        className={Styles.CoreProperties__column}
+        style={{ flexGrow: "1", maxWidth: "180px" }}
+      >
         <div className={Styles.CoreProperties__property}>
           <span>
             <div>Total Volume</div>
@@ -44,7 +47,7 @@ const CoreProperties = ({ market, isMobileSmall }) => (
           <span>
             <div>Type</div>
           </span>
-          <span style={{textTransform: 'capitalize'}}>
+          <span style={{ textTransform: "capitalize" }}>
             {getValue(market, "marketType") === YES_NO
               ? "Yes/No"
               : getValue(market, "marketType")}
