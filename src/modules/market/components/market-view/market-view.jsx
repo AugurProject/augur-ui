@@ -8,6 +8,7 @@ import MarketHeader from "modules/market/containers/market-header";
 // import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 // import MarketTrading from "modules/trading/containers/trading";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
+import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
@@ -26,12 +27,16 @@ export default class MarketView extends Component {
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     loadingState: PropTypes.any,
-    pricePrecision: PropTypes.number.isRequired
+    pricePrecision: PropTypes.number.isRequired,
+    isMobile: PropTypes.bool,
+    outcomes: PropTypes.array
   };
 
   static defaultProps = {
     marketType: undefined,
-    loadingState: null
+    loadingState: null,
+    isMobile: false,
+    outcomes: []
   };
 
   constructor(props) {
@@ -45,7 +50,6 @@ export default class MarketView extends Component {
 
     this.state = {
       selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
-      selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       fixedPrecision: 4,
       selectedOutcomeProperties: {
         1: {
@@ -148,7 +152,7 @@ export default class MarketView extends Component {
   }
 
   render() {
-    const { description, marketId, location, pricePrecision } = this.props;
+    const { description, marketId, location, isMobile, outcomes } = this.props;
     const s = this.state;
 
     return (
@@ -179,9 +183,19 @@ export default class MarketView extends Component {
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div
                   className={Styles.MarketView__component}
-                  style={{ backgroundColor: "#1B1528", marginBottom: "12px" }}
+                  style={{
+                    backgroundColor: "#1B1528",
+                    marginBottom: "12px",
+                    flexGrow: "unset"
+                  }}
                 >
-                  Outcomes Table
+                  <MarketOutcomesList
+                    marketId={marketId}
+                    outcomes={outcomes}
+                    selectedOutcome={s.selectedOutcome}
+                    updateSelectedOutcome={this.updateSelectedOutcome}
+                    isMobile={isMobile}
+                  />
                 </div>
                 <div
                   className={Styles.MarketView__component}

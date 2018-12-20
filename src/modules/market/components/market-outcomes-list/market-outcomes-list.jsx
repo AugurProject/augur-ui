@@ -1,69 +1,52 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
+import CustomPropTypes from "utils/custom-prop-types";
+import { SCALAR } from "modules/markets/constants/market-types";
 import MarketOutcomesListOutcome from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome";
-import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
-import toggleHeight from "utils/toggle-height/toggle-height";
+import MarketScalarOutcomeDisplay from "modules/market/components/market-scalar-outcome-display/market-scalar-outcome-display";
 
 import Styles from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
-import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 export default class MarketOutcomesList extends Component {
   static propTypes = {
     marketId: PropTypes.string.isRequired,
     outcomes: PropTypes.array.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool,
-    selectedOutcome: PropTypes.any
+    selectedOutcome: PropTypes.any,
+    scalarDenomination: PropTypes.string,
+    marketType: PropTypes.string,
+    minPrice: CustomPropTypes.bigNumber,
+    maxPrice: CustomPropTypes.bigNumber
   };
 
   static defaultProps = {
     selectedOutcome: null,
-    isMobile: false
+    scalarDenomination: null,
+    marketType: null,
+    minPrice: null,
+    maxPrice: null
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isOpen: true
-    };
-  }
 
   render() {
     const {
-      isMobile,
       marketId,
       outcomes,
       selectedOutcome,
-      updateSelectedOutcome
+      updateSelectedOutcome,
+      marketType,
+      scalarDenomination,
+      minPrice,
+      maxPrice
     } = this.props;
-    const s = this.state;
 
     return (
       <section className={Styles.MarketOutcomesList}>
-        <button
-          className={Styles.MarketOutcomesList__heading}
-          onClick={() => {
-            !isMobile &&
-              toggleHeight(this.outcomeList, s.isOpen, () => {
-                this.setState({ isOpen: !s.isOpen });
-              });
-          }}
-        >
-          <h2>Outcomes</h2>
-          {!isMobile && <ChevronFlip big pointDown={!s.isOpen} />}
-        </button>
+        <div className={Styles.MarketOutcomesList__heading}>Outcomes</div>
         <div
           ref={outcomeList => {
             this.outcomeList = outcomeList;
           }}
-          className={classNames(
-            ToggleHeightStyles["open-on-mobile"],
-            ToggleHeightStyles["toggle-height-target"],
-            ToggleHeightStyles["start-open"]
-          )}
         >
           <div className={Styles.MarketOutcomesList__table}>
             <ul className={Styles["MarketOutcomesList__table-header"]}>
@@ -105,11 +88,22 @@ export default class MarketOutcomesList extends Component {
                     marketId={marketId}
                     selectedOutcome={selectedOutcome}
                     updateSelectedOutcome={updateSelectedOutcome}
+                    scalarDenomination={
+                      marketType === SCALAR && scalarDenomination
+                    }
                   />
                 ))}
             </div>
           </div>
         </div>
+        {marketType === SCALAR && (
+          <MarketScalarOutcomeDisplay
+            scalarDenomination={scalarDenomination}
+            min={minPrice}
+            max={maxPrice}
+            outcomes={outcomes}
+          />
+        )}
       </section>
     );
   }

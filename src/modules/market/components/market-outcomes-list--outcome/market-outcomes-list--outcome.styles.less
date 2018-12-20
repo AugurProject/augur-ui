@@ -1,13 +1,28 @@
 @import (reference) '~assets/styles/shared';
 
 .Outcome {
+  background-color: @color-grayish-purple;
   cursor: pointer;
   display: table-row;
   transition: background-color 0.15s ease;
 
   &.active,
   &:hover {
-    background-color: @color-lightergray;
+    background-color: @color-dark-gray !important;
+  }
+
+  &.active {
+    > li {
+      &:first-child {
+        &::before {
+          width: 6px;
+        }
+      }
+    }
+  }
+
+  &:nth-child(even) {
+    background-color: @color-dark-grayish-purple;
   }
 
   &:first-child > li {
@@ -15,35 +30,38 @@
   }
 
   > li {
-    border-top: 1px solid @color-lightest-gray;
     display: table-cell;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
     max-width: 19vw;
     overflow: hidden;
-    padding: 1.125rem 0;
+    padding: 12px 0;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     &:first-child {
-      padding-left: 2rem;
+      font-family: @roboto;
+      font-size: 14px;
+      padding-left: 1.6rem;
       position: relative;
       text-align: left;
 
       &::before {
-        border-radius: 100%;
+        bottom: 0;
         content: "";
         display: block;
-        height: 6px;
-        left: 1rem;
+        height: 40px;
+        left: 0;
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 6px;
+        width: 1px;
       }
     }
 
     &:last-child {
-      padding-right: 4.5rem;
+      padding-right: 2.5rem;
     }
   }
 
@@ -93,7 +111,6 @@
     }
 
     > li {
-      border-top-color: @color-darkpurple;
       color: inherit;
 
       &:first-child {
