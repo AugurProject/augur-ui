@@ -202,11 +202,7 @@ export default class MarketHeader extends Component {
               )}
             </div>
           </div>
-          <div
-            className={classNames(Styles.MarketHeader__properties, {
-              [Styles["MarketHeader__scalar-properties"]]: marketType === SCALAR
-            })}
-          >
+          <div className={Styles.MarketHeader__properties}>
             <CoreProperties
               market={market}
               tentativeWinner={tentativeWinner}
