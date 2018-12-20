@@ -23,20 +23,15 @@ export default class MarketHeader extends Component {
     clearSelectedOutcome: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     details: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     market: PropTypes.object.isRequired,
     currentTime: PropTypes.number,
-    tentativeWinner: PropTypes.object,
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
     selectedOutcome: PropTypes.any,
     isLogged: PropTypes.bool,
-    isDesignatedReporter: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    finalizeMarket: PropTypes.func.isRequired,
     isMobileSmall: PropTypes.bool.isRequired,
     isForking: PropTypes.bool,
     toggleFavorite: PropTypes.func,
@@ -45,8 +40,6 @@ export default class MarketHeader extends Component {
 
   static defaultProps = {
     isLogged: false,
-    isDesignatedReporter: false,
-    tentativeWinner: null,
     scalarDenomination: null,
     resolutionSource: "General knowledge",
     selectedOutcome: null,
@@ -97,7 +90,6 @@ export default class MarketHeader extends Component {
     const {
       clearSelectedOutcome,
       description,
-      location,
       marketType,
       resolutionSource,
       selectedOutcome,
@@ -106,10 +98,7 @@ export default class MarketHeader extends Component {
       scalarDenomination,
       market,
       currentTime,
-      tentativeWinner,
       isLogged,
-      isDesignatedReporter,
-      finalizeMarket,
       isMobileSmall,
       isForking,
       isFavorite
@@ -203,15 +192,7 @@ export default class MarketHeader extends Component {
             </div>
           </div>
           <div className={Styles.MarketHeader__properties}>
-            <CoreProperties
-              market={market}
-              tentativeWinner={tentativeWinner}
-              isLogged={isLogged}
-              isDesignatedReporter={isDesignatedReporter}
-              location={location}
-              finalizeMarket={finalizeMarket}
-              isMobileSmall={isMobileSmall}
-            />
+            <CoreProperties market={market} isMobileSmall={isMobileSmall} />
           </div>
           <div>
             <div className={Styles.MarketHeader__watchlist__container}>

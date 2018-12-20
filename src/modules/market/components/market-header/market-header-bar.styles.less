@@ -24,21 +24,7 @@
 }
 
 .MarketHeaderBar__tags {
-  border: 2px solid #2B2438;
-  box-sizing: border-box;
-  border-radius: 100px;
-  color: @color-white;
-  font-style: normal;
-  font-weight: 500;
-  font-size: @font-size-small;
-  line-height: normal;
-  padding: 0.25rem 1rem;
-  margin-right: 0.5rem;
-
-  &:hover {
-    border: 2px solid #42404B
-  }
-  cursor: pointer;
+  &:extend(.button--transparent--rounded all);
 }
 
 .MarketHeaderBar__underline__reporting,
@@ -51,14 +37,14 @@
 }
 
 .MarketHeaderBar__underline__open {
-  border-bottom: 2px solid #7dffa8;
+  border-bottom: 2px solid @color-open-green;
 }
 
 .MarketHeaderBar__underline__resolved {
-  border-bottom: 2px solid #F12B00;
+  border-bottom: 2px solid @color-resolved-red;
 }
 
 .MarketHeaderBar__underline__reporting {
-  border-bottom: 2px solid #F1E700;
+  border-bottom: 2px solid @color-dispute-yellow;
 }
 

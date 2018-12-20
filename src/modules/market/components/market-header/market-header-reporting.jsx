@@ -6,6 +6,7 @@ import Styles from "modules/market/components/market-header/market-header-report
 import { constants } from "services/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
 import MarketHeaderStyles from "modules/market/components/market-header/market-header.styles";
+import { CATEGORICAL } from "modules/markets/constants/market-types";
 import {
   TYPE_REPORT,
   TYPE_DISPUTE
@@ -18,7 +19,6 @@ export default class MarketHeaderReporting extends Component {
     isDesignatedReporter: PropTypes.bool,
     finalizeMarket: PropTypes.func.isRequired,
     tentativeWinner: PropTypes.object,
-    location: PropTypes.object.isRequired,
     isLogged: PropTypes.bool
   };
 
@@ -39,13 +39,23 @@ export default class MarketHeaderReporting extends Component {
   render() {
     const {
       market,
-      isMobileSmall,
       isDesignatedReporter,
       finalizeMarket,
       tentativeWinner,
       isLogged
     } = this.props;
     const { reportingState, id, consensus } = market;
+    let CatWinnerColorIndex = null;
+    if (market.marketType === CATEGORICAL) {
+      if (tentativeWinner && tentativeWinner.id) {
+        CatWinnerColorIndex = (parseInt(tentativeWinner.id, 10) + 1).toString();
+      }
+      if (consensus && consensus.winningOutcome) {
+        CatWinnerColorIndex = (
+          parseInt(consensus.winningOutcome, 10) + 1
+        ).toString();
+      }
+    }
     let content = null;
     if (consensus && consensus.winningOutcome) {
       content = [
@@ -57,9 +67,18 @@ export default class MarketHeaderReporting extends Component {
             <span className={MarketHeaderStyles.MarketHeader__property__header}>
               Winning Outcome
             </span>
-            <span>
+            <span className={Styles.MarketHeaderReporting__winner__row}>
+              {CatWinnerColorIndex && (
+                <div
+                  className={
+                    Styles[
+                      `MarketHeaderReporting__winner__color__${CatWinnerColorIndex}`
+                    ]
+                  }
+                />
+              )}
               <div className={Styles.MarketHeaderReporting__winner}>
-                {consensus.winningOutcome}
+                {consensus.outcomeName || consensus.winningOutcome}
               </div>
             </span>
           </div>
@@ -97,7 +116,16 @@ export default class MarketHeaderReporting extends Component {
             <span className={MarketHeaderStyles.MarketHeader__property__header}>
               Tentative Winning Outcome
             </span>
-            <span>
+            <span className={Styles.MarketHeaderReporting__winner__row}>
+              {CatWinnerColorIndex && (
+                <div
+                  className={
+                    Styles[
+                      `MarketHeaderReporting__winner__color__${CatWinnerColorIndex}`
+                    ]
+                  }
+                />
+              )}
               <div className={Styles.MarketHeaderReporting__winner}>
                 {tentativeWinner &&
                   (tentativeWinner.isInvalid
