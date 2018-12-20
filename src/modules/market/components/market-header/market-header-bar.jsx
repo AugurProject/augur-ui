@@ -3,19 +3,26 @@ import PropTypes from "prop-types";
 import determineMarketPhase from "utils/determine-market-phase";
 import Styles from "modules/market/components/market-header/market-header-bar.styles";
 import classNames from "classnames";
+import makeQuery from "modules/routes/helpers/make-query";
+import {
+  CATEGORY_PARAM_NAME,
+  TAGS_PARAM_NAME
+} from "modules/filter-sort/constants/param-names";
 
 export default class MarketHeaderBar extends Component {
   static propTypes = {
-    marketId: PropTypes.string.isRequired,
-    isLogged: PropTypes.bool,
     category: PropTypes.string,
     reportingState: PropTypes.string,
-    tags: PropTypes.array
+    tags: PropTypes.array,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+      replace: PropTypes.func.isRequired,
+      createHref: PropTypes.func.isRequired
+    }).isRequired
   };
 
   static defaultProps = {
     category: "",
-    isLogged: false,
     tags: [],
     reportingState: ""
   };
@@ -27,8 +34,22 @@ export default class MarketHeaderBar extends Component {
   }
 
   gotoFilter(type, value) {
-    const v = this.props.marketId; // remove this
-    console.log("type", type, "value", value, v);
+    const { history } = this.props;
+    let query = null;
+    if (type === "category") {
+      query = {
+        [CATEGORY_PARAM_NAME]: value
+      };
+    } else {
+      query = {
+        [TAGS_PARAM_NAME]: value
+      };
+    }
+
+    history.push({
+      pathname: "markets",
+      search: makeQuery(query)
+    });
   }
 
   render() {
