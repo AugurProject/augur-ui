@@ -2,10 +2,14 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import getValue from "utils/get-value";
 import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
+import { infoIcon } from "modules/common/components/icons";
+import ReactTooltip from "react-tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
 
 const CoreProperties = ({ market, isMobileSmall }) => (
   <div className={Styles.CoreProperties__coreContainer}>
@@ -13,12 +17,12 @@ const CoreProperties = ({ market, isMobileSmall }) => (
       <MarketHeaderReporting marketId={market.id} />
     </div>
     <div className={Styles.CoreProperties__property__container}>
-      <div className={Styles.CoreProperties__row}>
+      <div className={Styles.CoreProperties__column}>
         <div className={Styles.CoreProperties__property}>
-          <span className={Styles[`CoreProperties__property-name`]}>
+          <span>
             <div>Total Volume</div>
           </span>
-          <span className={Styles[`CoreProperties__property-value-large`]}>
+          <span style={{ fontSize: "1.125rem" }}>
             {getValue(market, "volume.formatted")}
             <span className={Styles[`CoreProperties__property-denomination`]}>
               ETH
@@ -26,78 +30,93 @@ const CoreProperties = ({ market, isMobileSmall }) => (
           </span>
         </div>
         <div className={Styles.CoreProperties__property}>
-          <span className={Styles[`CoreProperties__property-name`]}>
+          <span>
+            <div>24hr Volume</div>
+          </span>
+          <span>
+            {getValue(market, "volume.formatted")}
+            <span className={Styles[`CoreProperties__property-denomination`]}>
+              ETH
+            </span>
+          </span>
+        </div>
+        <div className={Styles.CoreProperties__property}>
+          <span>
+            <div>Type</div>
+          </span>
+          <span>
+            {getValue(market, "marketType") === YES_NO
+              ? "Yes/No"
+              : getValue(market, "marketType")}
+          </span>
+        </div>
+      </div>
+      <div className={Styles.CoreProperties__column}>
+        <div className={Styles.CoreProperties__property}>
+          <span>
             <div>Open Interest</div>
           </span>
-          <span className={Styles[`CoreProperties__property-value-large`]}>
+          <span style={{ fontSize: "1.125rem" }}>
             {getValue(market, "openInterest.formatted")}
             <span className={Styles[`CoreProperties__property-denomination`]}>
               ETH
             </span>
           </span>
         </div>
-      </div>
-      <div className={Styles.CoreProperties__row}>
         <div className={Styles.CoreProperties__property}>
-          <span className={Styles[`CoreProperties__property-name`]}>
-            <div>24hr Volume</div>
+          <span>
+            <div>Estimated Fee</div>
           </span>
-          <span className={Styles[`CoreProperties__property-value`]}>
-            {getValue(market, "volume.formatted")}
-            <span className={Styles[`CoreProperties__property-denomination`]}>
-              ETH
-            </span>
-          </span>
+          <span>{getValue(market, "settlementFeePercent.full")}</span>
         </div>
-        <div className={Styles.CoreProperties__property}>
-          <span className={Styles[`CoreProperties__property-name`]}>
-            <div>Fee</div>
-          </span>
-          <span className={Styles[`CoreProperties__property-value`]}>
-            {getValue(market, "settlementFeePercent.full")}
-          </span>
-        </div>
-      </div>
-      <div className={Styles.CoreProperties__row}>
-        <div className={Styles.CoreProperties__property}>
-          <span className={Styles[`CoreProperties__property-name`]}>
-            <div>Type</div>
-          </span>
-          <span className={Styles[`CoreProperties__property-value`]}>
-            {getValue(market, "marketType") === YES_NO
-              ? "Yes/No"
-              : getValue(market, "marketType")}
-          </span>
+        <div>
+          <label
+            className={classNames(
+              TooltipStyles.TooltipHint,
+              Styles["CoreProperties__property-tooltip"]
+            )}
+            data-tip
+            data-for="tooltip--market-fees"
+          >
+            {infoIcon}
+          </label>
+          <ReactTooltip
+            id="tooltip--market-fees"
+            className={TooltipStyles.Tooltip}
+            effect="solid"
+            place="bottom"
+            type="light"
+          >
+            <h4>Trading Settlement Fee</h4>
+            <p>
+              The trading settlement fee is a combination of the Market Creator
+              Fee (<b>{getValue(market, "marketCreatorFeeRatePercent.full")}</b>
+              ) and the Reporting Fee (
+              <b>{getValue(market, "reportingFeeRatePercent.full")}</b>)
+            </p>
+          </ReactTooltip>
         </div>
         {getValue(market, "marketType") === SCALAR && (
           <div>
-            <div className={Styles.CoreProperties__row}>
-              <div className={Styles.CoreProperties__property}>
-                <span className={Styles[`CoreProperties__property-name`]}>
-                  <div>Denominated In</div>
-                </span>
-                <span className={Styles[`CoreProperties__property-value`]}>
-                  {getValue(market, "scalarDenomination")}
-                </span>
-              </div>
+            <div className={Styles.CoreProperties__property}>
+              <span>
+                <div>Denominated In</div>
+              </span>
+              <span>{getValue(market, "scalarDenomination")}</span>
             </div>
-            <div className={Styles.CoreProperties__row}>
-              <div className={Styles.CoreProperties__property__container}>
-                <div className={Styles.CoreProperties__min__max__dots}>
-                  <div>
-                    <span className={Styles.CoreProperties__property__min__max}>
-                      <div>Min</div>
-                    </span>
-                    <span>{getValue(market, "minPrice").toString()}</span>
-                  </div>
-                  <span className={Styles.CoreProperties__dotted__line} />
-                  <div>
-                    <span className={Styles.CoreProperties__property__min__max}>
-                      <div>Max</div>
-                    </span>
-                    <span>{getValue(market, "maxPrice").toString()}</span>
-                  </div>
-                </div>
+            <div className={Styles.CoreProperties__min__max__dots}>
+              <div>
+                <span className={Styles.CoreProperties__property__min__max}>
+                  <div>Min</div>
+                </span>
+                <span>{getValue(market, "minPrice").toString()}</span>
+              </div>
+              <span className={Styles.CoreProperties__dotted__line} />
+              <div>
+                <span className={Styles.CoreProperties__property__min__max}>
+                  <div>Max</div>
+                </span>
+                <span>{getValue(market, "maxPrice").toString()}</span>
               </div>
             </div>
           </div>
