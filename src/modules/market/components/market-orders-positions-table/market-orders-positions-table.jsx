@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs";
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 import OpenOrdersTable from "modules/market/components/market-orders-positions-table/open-orders-table";
+import PositionsTable from "modules/market/components/market-positions-table/market-positions-table";
 
 const MarketOrdersPositionsTable = ({
   isMobile,
@@ -18,7 +19,7 @@ const MarketOrdersPositionsTable = ({
   sellCompleteSets
 }) => (
   <section>
-    <ModuleTabs selected={0}>
+    <ModuleTabs selected={2}>
       <ModulePane label="Open Orders">
         <OpenOrdersTable
           openOrders={openOrders}
@@ -31,7 +32,13 @@ const MarketOrdersPositionsTable = ({
         <div>Filled Orders!</div>
       </ModulePane>
       <ModulePane label="Positions">
-        <div>Positions!</div>
+         <PositionsTable
+          positions={positions}
+          marketId={marketId}
+          numCompleteSets={numCompleteSets}
+          sellCompleteSets={sellCompleteSets}
+          transactionsStatus={transactionsStatus}
+        />
       </ModulePane>
     </ModuleTabs>
   </section>

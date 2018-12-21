@@ -341,7 +341,7 @@ export default class CreateMarketResolution extends Component {
                   Styles.CreateMarketResolution__tooltipContainer
                 )}
                 effect="solid"
-                place="bottom"
+                place="left"
                 type="light"
               >
                 <h4>Market Expiration Date</h4>
