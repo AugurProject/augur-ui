@@ -561,7 +561,7 @@ export default class CreateMarketOutcome extends Component {
                       id="tooltip--market-fees"
                       className={TooltipStyles.Tooltip}
                       effect="solid"
-                      place="left"
+                      place="right"
                       type="light"
                     >
                       <h4>Enter a denomination for your scalar market</h4>

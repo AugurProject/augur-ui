@@ -161,6 +161,23 @@
         border-right-width: 10px !important;
         border-top-width: 10px;
       }
+
+      &::before {
+        content: '';
+        display: block;  
+        position: absolute;
+        bottom: 100%;
+        width: 0;
+        height: 0;
+        border-right-color: #443b59 !important;
+        border: 11px solid transparent;
+        border-top: 11px solid transparent !important;
+        border-bottom: 11px solid transparent !important;
+        bottom: unset !important;
+        top: 50% !important;
+        right: unset !important;
+        left: -22px !important;
+      }
     }
   }
 }
