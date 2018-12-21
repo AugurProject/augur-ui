@@ -4,7 +4,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+
 import getValue from "utils/get-value";
+import { createBigNumber } from "utils/create-big-number";
+
 import Styles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 
@@ -57,8 +60,10 @@ export default class MarketPositionsListPosition extends Component {
 
     const netPositionShares = getValue(position, "netPosition.formatted");
     const positionShares = getValue(position, "qtyShares.formatted");
+    const netPosition = getValue(position, "netPosition.value");
 
-    console.log(position)
+    // console.log(position)
+    const type = createBigNumber(netPosition).gt("0") ? "LONG" : "SHORT";
 
     return (
       <ul
@@ -74,12 +79,17 @@ export default class MarketPositionsListPosition extends Component {
         }
       >
         <li style={{ position: "relative" }}>
-         
+          <div
+            className={classNames(Styles.Position__typeIndicator, {
+              [Styles.Position__typeIndicatorSell]: type === "LONG"
+            })}
+          />
           {outcomeName || getValue(position, "purchasePrice.formatted")}
         </li>
-        {hasOrders && <li />}
-        <li>{netPositionShares}</li>
-        <li>{positionShares}</li>
+        <li className={classNames(Styles.Position__type, {
+              [Styles.Position__typeSell]: type === "LONG"
+            })}>{type}</li>
+        <li>{type === "LONG" ? netPositionShares : positionShares}</li>
         <li>{getValue(position, "purchasePrice.formatted")}</li>
         {!isMobile &&
           isExtendedDisplay && (
@@ -93,6 +103,7 @@ export default class MarketPositionsListPosition extends Component {
           )}
         {!isMobile && <li>{getValue(position, "unrealizedNet.formatted")} </li>}
         {!isMobile && <li>{getValue(position, "realizedNet.formatted")} </li>}
+        <li></li>
         {isExtendedDisplay && (
           <li>{getValue(position, "totalNet.formatted")}</li>
         )}

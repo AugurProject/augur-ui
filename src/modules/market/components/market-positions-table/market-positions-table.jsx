@@ -75,13 +75,13 @@ export default class MarketPositionsList extends Component {
             <ul className={Styles["MarketPositionsList__table-header"]}>
               <li>Outcome</li>
               <li>
-                <span>Net Position</span>
+                <span>Type</span>
               </li>
               <li>
                 <span>Quantity</span>
               </li>
               <li>
-                <span>Price</span>
+                <span>Average Price</span>
               </li>
               <li>
                 <span>
@@ -94,6 +94,9 @@ export default class MarketPositionsList extends Component {
                   Realized <span />
                   P/L
                 </span>
+              </li>
+              <li>
+                Action
               </li>
             </ul>
             {positions.length === 0 && (
