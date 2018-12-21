@@ -16,7 +16,8 @@ const MarketOrdersPositionsTable = ({
   orphanedOrders,
   openOrders,
   cancelOrphanedOrder,
-  sellCompleteSets
+  sellCompleteSets,
+  market,
 }) => (
   <section>
     <ModuleTabs selected={2}>
@@ -38,6 +39,7 @@ const MarketOrdersPositionsTable = ({
           numCompleteSets={numCompleteSets}
           sellCompleteSets={sellCompleteSets}
           transactionsStatus={transactionsStatus}
+          market={market}
         />
       </ModulePane>
     </ModuleTabs>
@@ -54,7 +56,8 @@ MarketOrdersPositionsTable.propTypes = {
   orphanedOrders: PropTypes.array,
   openOrders: PropTypes.array,
   cancelOrphanedOrder: PropTypes.func.isRequired,
-  sellCompleteSets: PropTypes.func.isRequired
+  sellCompleteSets: PropTypes.func.isRequired,
+  market: PropTypes.object.isRequired,
 };
 
 MarketOrdersPositionsTable.defaultProps = {

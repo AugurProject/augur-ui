@@ -54,7 +54,8 @@ const mapStateToProps = (state, ownProps) => {
     outcomes: market.outcomes || [],
     positions,
     openOrders,
-    orphanedOrders: filteredOrphanOrders
+    orphanedOrders: filteredOrphanOrders,
+    market: market,
   };
 };
 

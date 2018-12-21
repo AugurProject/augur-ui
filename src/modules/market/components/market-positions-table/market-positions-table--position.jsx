@@ -62,7 +62,6 @@ export default class MarketPositionsListPosition extends Component {
     const positionShares = getValue(position, "qtyShares.formatted");
     const netPosition = getValue(position, "netPosition.value");
 
-    // console.log(position)
     const type = createBigNumber(netPosition).gt("0") ? "LONG" : "SHORT";
 
     return (

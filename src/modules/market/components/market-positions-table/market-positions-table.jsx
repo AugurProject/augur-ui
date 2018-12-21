@@ -19,6 +19,7 @@ export default class MarketPositionsList extends Component {
     transactionsStatus: PropTypes.object.isRequired,
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
+    market: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -43,7 +44,8 @@ export default class MarketPositionsList extends Component {
       sellCompleteSets,
       marketId,
       orphanedOrders,
-      cancelOrphanedOrder
+      cancelOrphanedOrder,
+      market
     } = this.props;
     const s = this.state;
 
