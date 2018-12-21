@@ -146,7 +146,7 @@ export default function setNotificationText(notification, callback) {
       case "PUBLICFILLBESTORDER":
       case "PUBLICFILLBESTORDERWITHLIMIT":
       case "PUBLICFILLORDER":
-        notification.title = "Fill order(s)";
+        notification.title = "Place trade";
         if (!notification.description && notification.log) {
           dispatch(
             loadMarketsInfoIfNotLoaded([notification.params._market], () => {
@@ -160,8 +160,8 @@ export default function setNotificationText(notification, callback) {
                 ).name
               );
 
-              notification.description = `${
-                notification.log.orderType === BUY ? "Sold" : "Bought"
+              notification.description = `Fill ${
+                notification.log.orderType === BUY ? "selling" : "buying"
               } ${formatShares(notification.log.amount || 0).formatted} ${
                 formatShares(notification.log.amount || 0).denomination
               } of "${outcomeDescription}" at ${
@@ -171,7 +171,7 @@ export default function setNotificationText(notification, callback) {
               if (notification.log.noFill) {
                 notification.description = `Unable to ${
                   notification.log.orderType === BUY ? "Sell" : "Buy"
-                } Shares of "${outcomeDescription}" at ${augur.utils.convertOnChainPriceToDisplayPrice(
+                } shares of "${outcomeDescription}" at ${augur.utils.convertOnChainPriceToDisplayPrice(
                   createBigNumber(notification.params._price),
                   createBigNumber(marketInfo.minPrice),
                   marketInfo.tickSize
