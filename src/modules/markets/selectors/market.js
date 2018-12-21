@@ -326,7 +326,6 @@ export function assembleMarket(
         market.outcomes = [];
 
         let marketTradeOrders = [];
-        // console.log("marketOutcomesData", marketOutcomesData, market);
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];
@@ -446,21 +445,8 @@ export function assembleMarket(
           marketAccountPositions || {}
         );
         if (marketAccountPositionsKeys.length === market.numOutcomes) {
-          // console.log(
-          //   "marketAccountPositions/market.outcomes/marketOutcomesData",
-          //   marketAccountPositions,
-          //   market.outcomes,
-          //   market.numOutcomes,
-          //   marketOutcomesData
-          // );
           numCompleteSets = marketAccountPositionsKeys.reduce(
             (num, outcomePositionId) => {
-              // console.log(
-              //   "outcomePositionId",
-              //   outcomePositionId,
-              //   marketAccountPositions,
-              //   num.toString()
-              // );
               const outcomePosition = marketAccountPositions[outcomePositionId];
               const position = createBigNumber(outcomePosition.position);
               if (position.eq(0)) {

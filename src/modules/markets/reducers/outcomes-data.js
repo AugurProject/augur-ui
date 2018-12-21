@@ -9,8 +9,7 @@ import {
 import {
   YES_NO_YES_ID,
   SCALAR_UP_ID,
-  YES_NO_YES_OUTCOME_NAME,
-  YES_NO_NO_OUTCOME_NAME
+  YES_NO_YES_OUTCOME_NAME
 } from "modules/markets/constants/market-outcomes";
 
 const DEFAULT_STATE = {};
@@ -96,16 +95,13 @@ function parseOutcomes(newMarketsData, outcomesData) {
 
   function parseYesNoOutcomes(marketData, marketId) {
     return marketData.outcomes.reduce((p, outcome, i) => {
-      // if (outcome.id === YES_NO_YES_ID) {
-      p[outcome.id] = { ...outcome };
-      p[outcome.id].name =
-        outcome.id === YES_NO_YES_ID
-          ? YES_NO_YES_OUTCOME_NAME
-          : YES_NO_NO_OUTCOME_NAME;
-      return p;
-      // }
+      if (outcome.id === YES_NO_YES_ID) {
+        p[outcome.id] = { ...outcome };
+        p[outcome.id].name = YES_NO_YES_OUTCOME_NAME;
+        return p;
+      }
 
-      // return p;
+      return p;
     }, {});
   }
 
@@ -122,7 +118,7 @@ function parseOutcomes(newMarketsData, outcomesData) {
     return marketData.outcomes.reduce((p, outcome) => {
       if (outcome.id !== SCALAR_UP_ID) return p;
       p[outcome.id] = { ...outcome };
-      p[outcome.id].name = "";
+      p[outcome.id].name = outcome.price;
       return p;
     }, {});
   }

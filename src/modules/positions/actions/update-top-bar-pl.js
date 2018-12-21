@@ -9,7 +9,6 @@ export const updateTopBarPL = (options = {}, callback = logError) => (
   const { universe, loginAccount } = getState();
   if (loginAccount.address == null || universe.id == null)
     return callback(null);
-  // make sure we have a timestamp
   augur.augurNode.submitRequest(
     "getProfitLossSummary",
     {
@@ -18,12 +17,11 @@ export const updateTopBarPL = (options = {}, callback = logError) => (
       marketId: null
     },
     (err, ProfitLossData) => {
-      console.log(err, ProfitLossData);
       if (err) return callback(err);
       dispatch(
         updateLoginAccount({
-          totalPLMonth: ProfitLossData[30].total,
-          totalPLDay: ProfitLossData[1].total
+          totalPLMonth: ProfitLossData[30].realized,
+          totalPLDay: ProfitLossData[1].realized
         })
       );
     }

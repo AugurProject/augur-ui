@@ -22,7 +22,7 @@ import {
 
 const PortfolioView = p => (
   <section>
-    {/* <PortfolioHeader /> */}
+    <PortfolioHeader />
     <Switch>
       <AuthenticatedRoute
         path={makePath(MY_POSITIONS)}
