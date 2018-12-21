@@ -57,7 +57,7 @@ export default class MarketPositionsListPosition extends Component {
 
     const netPositionShares = getValue(position, "netPosition.formatted");
     const positionShares = getValue(position, "position.formatted");
-
+    // console.log(position);
     return (
       <ul
         ref={position => {

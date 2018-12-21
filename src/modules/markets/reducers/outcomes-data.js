@@ -118,7 +118,7 @@ function parseOutcomes(newMarketsData, outcomesData) {
     return marketData.outcomes.reduce((p, outcome) => {
       if (outcome.id !== SCALAR_UP_ID) return p;
       p[outcome.id] = { ...outcome };
-      p[outcome.id].name = outcome.price;
+      p[outcome.id].name = "";
       return p;
     }, {});
   }
