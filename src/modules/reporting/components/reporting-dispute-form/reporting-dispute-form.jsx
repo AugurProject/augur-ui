@@ -200,10 +200,6 @@ export default class ReportingDisputeForm extends Component {
     if (stakeValue < 0) {
       updatedValidations.stake = "The stake field must be a positive value.";
     } else if (
-      bnStake.gt(createBigNumber(maxRepObject.formatted.formattedValue, 10))
-    ) {
-      updatedValidations.stake = `Max value is ${maxRepObject.formatted.full}`;
-    } else if (
       createBigNumber(availableRepFormatted.formatted.formattedValue).lt(
         bnStake
       )
