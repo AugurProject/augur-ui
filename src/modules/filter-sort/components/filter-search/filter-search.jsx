@@ -10,7 +10,7 @@ import { FILTER_SEARCH_PARAM } from "modules/filter-sort/constants/param-names";
 import { Hint } from "modules/common/components/icons";
 import Styles from "modules/filter-sort/components/filter-search/filter-search.styles";
 import ReactTooltip from "react-tooltip";
-import TooltipStyles from "modules/common/less/tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
 
 export default class FilterSearch extends Component {
   static propTypes = {
@@ -74,7 +74,9 @@ export default class FilterSearch extends Component {
     clearTimeout(this.timeout);
 
     this.timeout = setTimeout(() => {
-      this.setState({ search });
+      if (this.parent) {
+        this.setState({ search });
+      }
     }, 500);
   }
 
@@ -105,7 +107,12 @@ export default class FilterSearch extends Component {
     const { width, placeholder, search } = this.state;
 
     return (
-      <article className={Styles.FilterSearch}>
+      <article
+        className={Styles.FilterSearch}
+        ref={parent => {
+          this.parent = parent;
+        }}
+      >
         <label
           className={classNames(
             TooltipStyles.TooltipHint,
