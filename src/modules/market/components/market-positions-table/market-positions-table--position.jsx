@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import getValue from "utils/get-value";
-import Styles from "modules/market/components/market-positions-list--position/market-positions-list--position.styles";
+import Styles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 
 export default class MarketPositionsListPosition extends Component {
@@ -58,6 +58,8 @@ export default class MarketPositionsListPosition extends Component {
     const netPositionShares = getValue(position, "netPosition.formatted");
     const positionShares = getValue(position, "qtyShares.formatted");
 
+    console.log(position)
+
     return (
       <ul
         ref={position => {
@@ -71,7 +73,10 @@ export default class MarketPositionsListPosition extends Component {
             : Styles.PortMobile
         }
       >
-        <li>{outcomeName || getValue(position, "purchasePrice.formatted")}</li>
+        <li style={{ position: "relative" }}>
+         
+          {outcomeName || getValue(position, "purchasePrice.formatted")}
+        </li>
         {hasOrders && <li />}
         <li>{netPositionShares}</li>
         <li>{positionShares}</li>

@@ -87,7 +87,7 @@ const CoreProperties = ({ market, isMobileSmall }) => (
             id="tooltip--market-fees"
             className={TooltipStyles.Tooltip}
             effect="solid"
-            place="bottom"
+            place="right"
             type="light"
           >
             <h4>Trading Settlement Fee</h4>

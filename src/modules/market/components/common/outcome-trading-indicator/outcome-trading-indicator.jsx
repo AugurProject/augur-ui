@@ -79,7 +79,8 @@ export default function OutcomeTradingIndicator({
             borderTopColor: "#FFF",
             marginLeft: "0.5rem",
             borderWidth: "0.425rem",
-            opacity: "1"
+            opacity: "1",
+            top: "4px"
           };
         default:
           return {};
