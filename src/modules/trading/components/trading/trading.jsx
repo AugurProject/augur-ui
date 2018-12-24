@@ -141,7 +141,7 @@ class MarketTrading extends Component {
           initialMessage && (
             <div className={Styles["Trading__initial-message"]}>
               <p>
-                {!isLogged ? <span>Log in to trade.</span> : initialMessage}
+                {!isLogged ? <span>Signup or login to trade.</span> : initialMessage}
               </p>
               {!hasFunds &&
                 isLogged && (
