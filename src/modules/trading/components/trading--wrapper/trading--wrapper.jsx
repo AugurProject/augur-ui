@@ -318,9 +318,7 @@ class MarketTradingWrapper extends Component {
 }
 
 function loginClick() {
-  setTimeout(function(){
-    FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis);
-  }, 1000);
+  FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis);
 }
 
 window.FindReact = function(dom) {
