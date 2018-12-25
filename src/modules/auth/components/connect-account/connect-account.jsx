@@ -55,10 +55,9 @@ export default class ConnectAccount extends Component {
   }
 
   toggleDropdown(cb) {
-    toggleHeight(this.ConnectDropdown, this.state.dropdownOpen, () => {
-      this.setState({ dropdownOpen: !this.state.dropdownOpen });
-
-      if (cb && typeof cb === "function") cb();
+    toggleHeight(this.ConnectDropdown, this.state.dropdownOpen, () => console.log("dropped down"));
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+    if (cb && typeof cb === "function") cb();
     });
   }
 
