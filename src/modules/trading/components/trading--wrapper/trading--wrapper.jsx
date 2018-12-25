@@ -250,11 +250,9 @@ class MarketTradingWrapper extends Component {
               </p>
             )}
             {!isLogged && (
-              <span id="login-class" className={Styles["TradingWrapper__button--login"]}>
-                <button id="login-button" onClick={() => loginClick()}>
-                 Sign in to trade
-                </button>
-              </span>
+              <button id="login-button" className={Styles["TradingWrapper__button--login"]} onClick={() => FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis)}>
+               Sign in to trade
+              </button>
             )}
             {initialMessage &&
               isLogged &&
@@ -315,10 +313,6 @@ class MarketTradingWrapper extends Component {
       </section>
     );
   }
-}
-
-function loginClick() {
-  FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis);
 }
 
 window.FindReact = function(dom) {
