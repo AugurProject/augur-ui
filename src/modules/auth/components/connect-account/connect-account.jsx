@@ -61,6 +61,7 @@ export default class ConnectAccount extends Component {
   }
 
   handleWindowOnClick(event) {
+    console.log(event.target);
     if (
       this.state.dropdownOpen &&
       this.connectAccount &&
