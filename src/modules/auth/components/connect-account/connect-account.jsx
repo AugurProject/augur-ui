@@ -61,9 +61,9 @@ export default class ConnectAccount extends Component {
   }
 
   handleWindowOnClick(event) {
-    console.log(event.target);
+    console.log(event.target.id);
     if (
-      this.state.dropdownOpen &&
+      this.state.dropdownOpen && event.target.id!="login-class" && event.target.id!="login-button"
       this.connectAccount &&
       !this.connectAccount.contains(event.target)
     ) {
