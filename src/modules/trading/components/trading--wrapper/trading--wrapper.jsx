@@ -13,6 +13,7 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 
 import getValue from "utils/get-value";
 import { isEqual } from "lodash";
+import { FindReact } from "utils/find-react";
 
 import { BUY, SELL, LIMIT } from "modules/transactions/constants/types";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
@@ -313,18 +314,6 @@ class MarketTradingWrapper extends Component {
       </section>
     );
   }
-}
-
-window.FindReact = function(dom) {
-    let key = Object.keys(dom).find(key=>key.startsWith("__reactInternalInstance$"));
-    let internalInstance = dom[key];
-    if (internalInstance == null) return null;
-
-    if (internalInstance.return) { // react 16+
-        return internalInstance.return.stateNode;
-    } else { // react <16
-        return internalInstance._currentElement._owner._instance;
-    }
 }
 
 export default MarketTradingWrapper;
