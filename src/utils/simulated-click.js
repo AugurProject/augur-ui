@@ -1,4 +1,4 @@
-function simulatedClick(target, options) {
+export function simulatedClick(target, options) {
 
   var event = target.ownerDocument.createEvent('MouseEvents'),
       options = options || {},
