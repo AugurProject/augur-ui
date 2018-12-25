@@ -145,7 +145,7 @@ class MarketTrading extends Component {
               </p>
             {!isLogged && (
               <span className={Styles["TradingWrapper__button--login"]}>
-                <button onclick={() => document.getElementsByClassName('connect-account-styles_ConnectAccount__status')[0].click())}>
+                <button onclick={() => document.getElementsByClassName('connect-account-styles_ConnectAccount__status')[0].click()}>
                  Sign in to trade
                 </button>
               </span>
