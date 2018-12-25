@@ -48,6 +48,10 @@ export default class ConnectAccount extends Component {
     window.removeEventListener("click", this.handleWindowOnClick);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState(nextProps);
+  }
+
   setDropdownOpen(value) {
     this.setState({ dropdownOpen: value }, () => {
       toggleHeight(this.ConnectDropdown, true, () => {});
