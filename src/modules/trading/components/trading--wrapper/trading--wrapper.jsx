@@ -12,6 +12,7 @@ import makePath from "modules/routes/helpers/make-path";
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 
 import getValue from "utils/get-value";
+import "utils/simulated-click";
 import { isEqual } from "lodash";
 
 import { BUY, SELL, LIMIT } from "modules/transactions/constants/types";
@@ -251,7 +252,7 @@ class MarketTradingWrapper extends Component {
             )}
             {!isLogged && (
               <span className={Styles["TradingWrapper__button--login"]}>
-                <button onClick={() => document.getElementsByClassName('connect-account-styles_ConnectAccount__container')[0].click()}>
+                <button onClick={() => simulatedClick(document.getElementsByClassName('connect-account-styles_ConnectAccount__container')[0])}>
                  Sign in to trade
                 </button>
               </span>
