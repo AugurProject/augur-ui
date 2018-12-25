@@ -9,7 +9,6 @@ import classNames from "classnames";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
 import makePath from "modules/routes/helpers/make-path";
-import { simulatedClick } from "utils/simulated-click";
 import Styles from "modules/trading/components/trading/trading.styles";
 
 class MarketTrading extends Component {
@@ -146,7 +145,7 @@ class MarketTrading extends Component {
               </p>
             {!isLogged && (
               <span className={Styles["TradingWrapper__button--login"]}>
-                <button onClick={() => simulatedClick(document.getElementsByClassName('connect-account-styles_ConnectAccount__container')[0])}>
+                <button onClick={() => document.getElementsByClassName('connect-account-styles_ConnectAccount__container')[0].click()}>
                  Sign in to trade
                 </button>
               </span>
