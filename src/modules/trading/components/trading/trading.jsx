@@ -144,11 +144,9 @@ class MarketTrading extends Component {
                 {!isLogged ? <span>Signup or login to trade.</span> : initialMessage}
               </p>
             {!isLogged && (
-              <span className={Styles["TradingWrapper__button--login"]}>
-                <button onClick={FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis)}>
-                 Sign in to trade
-                </button>
-              </span>
+              <button id="login-button" className={Styles["TradingWrapper__button--login"]} onClick={() => FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis)}>
+               Sign in to trade
+              </button>
             )}
               {!hasFunds &&
                 isLogged && (
@@ -177,6 +175,18 @@ class MarketTrading extends Component {
       </section>
     );
   }
+}
+
+window.FindReact = function(dom) {
+    let key = Object.keys(dom).find(key=>key.startsWith("__reactInternalInstance$"));
+    let internalInstance = dom[key];
+    if (internalInstance == null) return null;
+
+    if (internalInstance.return) { // react 16+
+        return internalInstance.return.stateNode;
+    } else { // react <16
+        return internalInstance._currentElement._owner._instance;
+    }
 }
 
 export default MarketTrading;
