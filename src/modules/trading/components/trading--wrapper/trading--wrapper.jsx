@@ -250,7 +250,7 @@ class MarketTradingWrapper extends Component {
               </p>
             )}
             {!isLogged && (
-              <span className={Styles["TradingWrapper__button--login"]} onClick={"document.getElementsByClassName('connect-account-styles_ConnectAccount__status')[0].click();"}>
+              <span className={Styles["TradingWrapper__button--login"]} onClick={document.getElementsByClassName('connect-account-styles_ConnectAccount__status')[0].click();}>
                 Sign in to trade
               </span>
             )}
