@@ -8,6 +8,7 @@ import { isEqual } from "lodash";
 import classNames from "classnames";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
+import { FindReact } from "utils/find-react";
 import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/trading/components/trading/trading.styles";
 
@@ -177,16 +178,5 @@ class MarketTrading extends Component {
   }
 }
 
-window.FindReact = function(dom) {
-    let key = Object.keys(dom).find(key=>key.startsWith("__reactInternalInstance$"));
-    let internalInstance = dom[key];
-    if (internalInstance == null) return null;
-
-    if (internalInstance.return) { // react 16+
-        return internalInstance.return.stateNode;
-    } else { // react <16
-        return internalInstance._currentElement._owner._instance;
-    }
-}
 
 export default MarketTrading;
