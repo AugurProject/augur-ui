@@ -55,13 +55,12 @@ export default class ConnectAccount extends Component {
   }
 
   toggleDropdown(cb) {
-    toggleHeight(this.ConnectDropdown, this.state.dropdownOpen, () => console.log("dropped down"));
+    toggleHeight(this.ConnectDropdown, this.state.dropdownOpen, () => console.log("dropped down login window"));
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
     if (cb && typeof cb === "function") cb();
   }
 
   handleWindowOnClick(event) {
-    console.log(event.target.id);
     if (
       this.state.dropdownOpen && event.target.id!="login-class" && event.target.id!="login-button" &&
       this.connectAccount &&
