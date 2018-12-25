@@ -251,7 +251,7 @@ class MarketTradingWrapper extends Component {
             )}
             {!isLogged && (
               <span className={Styles["TradingWrapper__button--login"]}>
-                <button onClick={() => loginClick();}>
+                <button onClick={() => loginClick()}>
                  Sign in to trade
                 </button>
               </span>
