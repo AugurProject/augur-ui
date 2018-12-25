@@ -246,8 +246,13 @@ class MarketTradingWrapper extends Component {
             </ul>
             {initialMessage && (
               <p className={Styles["TradingWrapper__initial-message"]}>
-                {!isLogged ? <span>Log in to trade.</span> : initialMessage}
+                {!isLogged ? <span>Signup or login to trade.</span> : initialMessage}
               </p>
+            )}
+            {!isLogged && (
+              <span className={Styles["TradingWrapper__button--login"]} onclick="document.getElementsByClassName('connect-account-styles_ConnectAccount__status')[0].click();">
+                Signup or login to trade
+              </span>
             )}
             {initialMessage &&
               isLogged &&
