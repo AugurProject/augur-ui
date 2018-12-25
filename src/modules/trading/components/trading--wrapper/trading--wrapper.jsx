@@ -12,7 +12,7 @@ import makePath from "modules/routes/helpers/make-path";
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 
 import getValue from "utils/get-value";
-import "utils/simulated-click";
+import simulatedClick from "utils/simulated-click";
 import { isEqual } from "lodash";
 
 import { BUY, SELL, LIMIT } from "modules/transactions/constants/types";
