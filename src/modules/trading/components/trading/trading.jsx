@@ -104,7 +104,7 @@ class MarketTrading extends Component {
 
     switch (true) {
       case !isLogged:
-        initialMessage = "Log in to trade.";
+        initialMessage = "Signup or login to trade.";
         break;
       case isLogged && !hasFunds:
         initialMessage = "Add funds to begin trading.";
@@ -143,6 +143,11 @@ class MarketTrading extends Component {
               <p>
                 {!isLogged ? <span>Signup or login to trade.</span> : initialMessage}
               </p>
+            {!isLogged && (
+              <span className={Styles["TradingWrapper__button--login"]} onclick="document.getElementsByClassName('connect-account-styles_ConnectAccount__status')[0].click();">
+                Signup or login to trade
+              </span>
+            )}
               {!hasFunds &&
                 isLogged && (
                   <Link to={makePath(ACCOUNT_DEPOSIT)}>
