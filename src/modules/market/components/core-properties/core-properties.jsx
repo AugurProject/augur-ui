@@ -7,7 +7,7 @@ import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import ReactTooltip from "react-tooltip";
-import TooltipStyles from "modules/common/less/tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
 
 import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
@@ -89,6 +89,14 @@ export default class CoreProperties extends Component {
     isDesignatedReporter: false,
     isMobileSmall: false
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      disableFinalize: false
+    };
+  }
 
   determinePhase() {
     const { reportingState } = this.props.market;
@@ -294,7 +302,15 @@ export default class CoreProperties extends Component {
                   </ReactTooltip>
                   <button
                     className={Styles[`CoreProperties__property-button`]}
-                    onClick={() => finalizeMarket(id)}
+                    onClick={() => {
+                      this.setState({ disableFinalize: true });
+                      finalizeMarket(id, err => {
+                        if (err) {
+                          this.setState({ disableFinalize: false });
+                        }
+                      });
+                    }}
+                    disabled={this.state.disableFinalize}
                   >
                     FINALIZE
                   </button>

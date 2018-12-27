@@ -20,9 +20,11 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import { closeModal } from "modules/modal/actions/close-modal";
 import logError from "utils/log-error";
 import networkConfig from "config/network";
+import { version } from "src/version";
+import { updateVersions } from "modules/app/actions/update-versions";
 
 import { defaultTo, isEmpty } from "lodash";
-
+import { NETWORK_NAMES } from "modules/app/constants/network";
 import {
   MODAL_NETWORK_MISMATCH,
   MODAL_NETWORK_DISCONNECTED,
@@ -36,12 +38,6 @@ import { setSelectedUniverse } from "modules/auth/actions/selected-universe-mana
 const { ACCOUNT_TYPES } = AugurJS.augur.rpc.constants;
 const ACCOUNTS_POLL_INTERVAL_DURATION = 10000;
 const NETWORK_ID_POLL_INTERVAL_DURATION = 10000;
-
-const NETWORK_NAMES = {
-  1: "Mainnet",
-  4: "Rinkeby",
-  12346: "Private"
-};
 
 function pollForAccount(dispatch, getState, callback) {
   const { loginAccount } = getState();
@@ -187,6 +183,17 @@ export function connectAugur(
         dispatch(updateAugurNodeConnectionStatus(true));
         dispatch(getAugurNodeNetworkId());
         dispatch(registerTransactionRelay());
+        AugurJS.augur.augurNode.getSyncData((err, res) => {
+          if (!err && res) {
+            dispatch(
+              updateVersions({
+                augurjs: res.version,
+                augurNode: res.augurNodeVersion,
+                augurui: version
+              })
+            );
+          }
+        });
         let universeId =
           env.universe ||
           AugurJS.augur.contracts.addresses[AugurJS.augur.rpc.getNetworkID()]
@@ -200,7 +207,7 @@ export function connectAugur(
             windowRef.localStorage.getItem(loginAccount.address)
           ).selectedUniverse[
             getState().connection.augurNodeNetworkId ||
-              AugurJS.augur.rpc.getNetworkID()
+              AugurJS.augur.rpc.getNetworkID().toString()
           ];
           universeId = !storedUniverseId ? universeId : storedUniverseId;
         }
