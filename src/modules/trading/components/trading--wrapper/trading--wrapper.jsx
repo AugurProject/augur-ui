@@ -247,12 +247,26 @@ class MarketTradingWrapper extends Component {
             </ul>
             {initialMessage && (
               <p className={Styles["TradingWrapper__initial-message"]}>
-                {!isLogged ? <span>Signup or login to trade.</span> : initialMessage}
+                {!isLogged ? (
+                  <span>Signup or login to trade.</span>
+                ) : (
+                  initialMessage
+                )}
               </p>
             )}
             {!isLogged && (
-              <button id="login-button" className={Styles["TradingWrapper__button--login"]} onClick={() => FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis)}>
-               Sign in to trade
+              <button
+                id="login-button"
+                className={Styles["TradingWrapper__button--login"]}
+                onClick={() =>
+                  FindReact(
+                    document.getElementsByClassName(
+                      "connect-account-styles_ConnectAccount"
+                    )[0]
+                  ).toggleDropdown()
+                }
+              >
+                Sign in to trade
               </button>
             )}
             {initialMessage &&

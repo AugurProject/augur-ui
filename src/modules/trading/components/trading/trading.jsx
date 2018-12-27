@@ -142,13 +142,27 @@ class MarketTrading extends Component {
           initialMessage && (
             <div className={Styles["Trading__initial-message"]}>
               <p>
-                {!isLogged ? <span>Signup or login to trade.</span> : initialMessage}
+                {!isLogged ? (
+                  <span>Signup or login to trade.</span>
+                ) : (
+                  initialMessage
+                )}
               </p>
-            {!isLogged && (
-              <button id="login-button" className={Styles["TradingWrapper__button--login"]} onClick={() => FindReact(document.getElementsByClassName('connect-account-styles_ConnectAccount')[0]).toggleDropdown.call(globalThis)}>
-               Sign in to trade
-              </button>
-            )}
+              {!isLogged && (
+                <button
+                  id="login-button"
+                  className={Styles["TradingWrapper__button--login"]}
+                  onClick={() =>
+                    FindReact(
+                      document.getElementsByClassName(
+                        "connect-account-styles_ConnectAccount"
+                      )[0]
+                    ).toggleDropdown()
+                  }
+                >
+                  Sign in to trade
+                </button>
+              )}
               {!hasFunds &&
                 isLogged && (
                   <Link to={makePath(ACCOUNT_DEPOSIT)}>
@@ -177,6 +191,5 @@ class MarketTrading extends Component {
     );
   }
 }
-
 
 export default MarketTrading;
