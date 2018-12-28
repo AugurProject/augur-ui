@@ -17,9 +17,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
   const state = getState();
   const edgeContext = selectEdgeContextState(state);
   const edgeLoading = selectEdgeLoadingState(state);
-  const loginWindowOptions = {
-    onLogin: edgeAccount => dispatch(loginWithEdge(edgeAccount, history))
-  };
+  edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)));
 
   if (edgeContext) {
     edgeContext.openLoginWindow(loginWindowOptions);
@@ -35,7 +33,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
     }).then(edgeContext => {
       dispatch(updateAuthStatus(EDGE_LOADING, false));
       dispatch(updateAuthStatus(EDGE_CONTEXT, edgeContext));
-      edgeContext.openLoginWindow(loginWindowOptions);
+      edgeContext.showLoginWindow();
     });
   }
 };
