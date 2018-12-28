@@ -92,25 +92,48 @@ export default class AccountDeposit extends Component {
         </div>
         <div className={Styles.AccountDeposit__main}>
           <div className={Styles.AccountDeposit__description}>
-            {show0xInstant && (
+            {(
               <div className={Styles.AccountDeposit__0xInstantButton}>
-                <button onClick={openZeroExInstant}>
-                  Buy REP using 0x instant
+                <button onClick={() => window.open('http://www.sendwyre.com/')}>
+                  Buy ETH (for trading) using Wyre
                 </button>
               </div>
             )}
+            {(
+              <>
+              <br />
+              <div className={Styles.AccountDeposit__0xInstantButton}>
+                <button onClick={() => window.open('http://www.coinbase.com/')}>
+                  Buy ETH (for trading) using Coinbase
+                </button>
+              </div>
+              </>
+            )}
+            {show0xInstant && (
+              <>
+              <br />
+              <div className={Styles.AccountDeposit__0xInstantButton}>
+                <button onClick={openZeroExInstant}>
+                  Buy REP (for reporting) using 0x instant
+                </button>
+              </div>
+              </>
+            )}
             {!show0xInstant && (
+              <>
+              <br />
               <div className={Styles.AccountDeposit__0xInstantButton}>
                 Deposits via 0x Instant are only available on the Ethereum main
                 network and Kovan test network.
               </div>
+              </>
             )}
             {showAirSwap && (
               <>
                 <br />
                 <div className={Styles.AccountDeposit__0xInstantButton}>
                   <button onClick={airSwapOnClick}>
-                    Buy REP using AirSwap.
+                    Buy REP (for reporting) using AirSwap
                   </button>
                 </div>
               </>
