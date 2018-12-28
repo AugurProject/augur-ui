@@ -23,7 +23,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
     edgeContext.showLoginWindow();
   } else if (!edgeLoading) {
     dispatch(updateAuthStatus(EDGE_LOADING, true));
-    const edgeUI = await makeEdgeUiContext({
+    const edgeUI = makeEdgeUiContext({
       apiKey: "e239ec875955ec7474628a1dc3d449c8ea8e1b48",
       appId: "net.augur.app",
       hideKeys: true,
