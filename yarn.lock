@@ -5312,7 +5312,7 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-edge-core-js@^0.12.16:
+edge-core-js@^0.12.4:
   version "0.12.21"
   resolved "https://registry.yarnpkg.com/edge-core-js/-/edge-core-js-0.12.21.tgz#87c4070d69db1aab94fe318ca4a1305c9e612eea"
   integrity sha512-lMzEOzYHcbNAdJT2j9N/vPKn6KMaVv59SHMxWjmgluKCyu2iT3MBaTxTlKDTbe/GqiOAk/WUu7MFm0bcJpmgXg==
@@ -5340,13 +5340,13 @@ edge-core-js@^0.12.16:
     ws "^5.1.1"
     yaob "^0.3.1"
 
-edge-login-ui-web@0.5.10:
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/edge-login-ui-web/-/edge-login-ui-web-0.5.10.tgz#a31f05be1cc0c221328ddb201fcce877fc55a762"
-  integrity sha512-AnPnnIS+eHq05yY0hw2WSFZlyu5u4zB+xXYACxbuIuQNmF1LZrIf+ZdqgYfN1bNqg7V5fM8OVPMDaPaWa3Q0jw==
+edge-login-ui-web@0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/edge-login-ui-web/-/edge-login-ui-web-0.5.7.tgz#f2b1c9d53e937bcdc9a39badf2822d1d23643b2f"
+  integrity sha512-1iCZPaHwC9wIHXlc29zPGeTSZsPw8M4TtF2yyvCj9urZ53OYv13DycexPhSXf3nVtSkGE8pRTUrvWcn/J1qzgQ==
   dependencies:
     cpr "^3.0.1"
-    edge-core-js "^0.12.16"
+    edge-core-js "^0.12.4"
     url-parse "^1.4.3"
     yaob "^0.3.1"
 
