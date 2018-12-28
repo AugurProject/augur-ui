@@ -30,7 +30,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
       vendorName: "Augur",
       vendorImageUrl:
         "https://airbitz.co/go/wp-content/uploads/2016/08/augur_logo_100.png"
-    }).then({console.log(edgeUI);
+    }).then(() => {console.log(edgeUI);
       console.log(5);
     });
     makeEdgeUiContext({
