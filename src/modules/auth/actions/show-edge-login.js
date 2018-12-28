@@ -19,7 +19,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
   const edgeLoading = selectEdgeLoadingState(state);
 
   if (edgeContext) {
-    edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)))
+    // edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)))
     edgeContext.showLoginWindow();
   } else if (!edgeLoading) {
     dispatch(updateAuthStatus(EDGE_LOADING, true));
@@ -31,7 +31,7 @@ export const showEdgeLogin = history => (dispatch, getState) => {
       vendorImageUrl:
         "https://airbitz.co/go/wp-content/uploads/2016/08/augur_logo_100.png"
     }).then(edgeContext => {
-      edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)));
+      // edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)));
       dispatch(updateAuthStatus(EDGE_LOADING, false));
       dispatch(updateAuthStatus(EDGE_CONTEXT, edgeContext));
       edgeContext.showLoginWindow();
