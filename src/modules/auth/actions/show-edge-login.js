@@ -19,7 +19,9 @@ export const showEdgeLogin = history => (dispatch, getState) => {
   const edgeLoading = selectEdgeLoadingState(state);
 
   if (edgeContext) {
-    edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)));
+    edgeContext.on("login", edgeAccount =>
+      dispatch(loginWithEdge(edgeAccount, history))
+    );
     edgeContext.showLoginWindow();
   } else if (!edgeLoading) {
     dispatch(updateAuthStatus(EDGE_LOADING, true));
@@ -33,7 +35,9 @@ export const showEdgeLogin = history => (dispatch, getState) => {
     }).then(edgeContext => {
       dispatch(updateAuthStatus(EDGE_LOADING, false));
       dispatch(updateAuthStatus(EDGE_CONTEXT, edgeContext));
-      edgeContext.on('login', edgeAccount => dispatch(loginWithEdge(edgeAccount, history)));
+      edgeContext.on("login", edgeAccount =>
+        dispatch(loginWithEdge(edgeAccount, history))
+      );
       edgeContext.showLoginWindow();
     });
   }
