@@ -94,14 +94,16 @@ export default class AccountDeposit extends Component {
           <div className={Styles.AccountDeposit__description}>
             {
               <>
+                <p>1. Click on your address on the right to copy it</p>
                 <p>
-                {"1. Click on your address on the right to copy it"}
+                  {
+                    "2. Go to Coinbase or Wyre (below) and buy Ether/ETH, and paste in your address to send it. Note if you want immediate access use a debit card, otherwise you'll have to wait a few days."
+                  }
                 </p>
                 <p>
-                  {"2. Go to Coinbase or Wyre (below) and buy Ether/ETH, and paste in your address to send it. Note if you want immediate access use a debit card, otherwise you'll have to wait a few days."}
-                </p>
-                <p>
-                  {"3. Come back here after and resume whatever you were doing!"}
+                  {
+                    "3. Come back here after and resume whatever you were doing!"
+                  }
                 </p>
               </>
             }
