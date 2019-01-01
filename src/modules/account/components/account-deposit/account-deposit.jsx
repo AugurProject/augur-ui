@@ -93,6 +93,15 @@ export default class AccountDeposit extends Component {
         <div className={Styles.AccountDeposit__main}>
           <div className={Styles.AccountDeposit__description}>
             {
+              <>
+              <p> 1. Click on your address on the right to copy it <br>
+              2. Go to Coinbase or Wyre (below) and buy Ether/ETH, and paste in your address to send it. Note if you want immediate access use a debit card, otherwise you'll have to wait a few days.
+              <br>
+              3. Come back here after and resume whatever you were doing!
+              <br>
+              </>
+            }
+            {
               <div className={Styles.AccountDeposit__0xInstantButton}>
                 <button onClick={() => window.open("http://www.sendwyre.com/")}>
                   Buy ETH (for trading) using Wyre
