@@ -144,7 +144,7 @@ export default class ModalDisclaimer extends Component {
         </div>
         <div className={Styles.ModalDisclaimer__checkbox}>
           <label htmlFor="i_have_read_disclaimer">
-            I have read and understand the above
+            I have read and understand the above (you must read and scroll through the disclaimer in order to check the box)
             <input
               id="i_have_read_disclaimer"
               type="checkbox"
