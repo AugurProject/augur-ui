@@ -99,6 +99,7 @@ export default class AccountDeposit extends Component {
               <br>
               3. Come back here after and resume whatever you were doing!
               <br>
+              </p>
               </>
             }
             {
