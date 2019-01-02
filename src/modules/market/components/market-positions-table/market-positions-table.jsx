@@ -2,7 +2,6 @@
 
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 import MarketPositionsListPosition from "modules/market/components/market-positions-table/market-positions-table--position";
 
@@ -19,35 +18,21 @@ export default class MarketPositionsList extends Component {
     transactionsStatus: PropTypes.object.isRequired,
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
-    market: PropTypes.object.isRequired,
+    market: PropTypes.object.isRequired
   };
 
   static defaultProps = {
-    openOrders: [],
     numCompleteSets: null
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isOpen: true
-    };
-  }
-
   render() {
     const {
-      openOrders,
       positions,
       numCompleteSets,
       transactionsStatus,
       sellCompleteSets,
       marketId,
-      orphanedOrders,
-      cancelOrphanedOrder,
-      market
     } = this.props;
-    const s = this.state;
 
     const pendingCompleteSetsHash = `pending-${marketId}-${numCompleteSets &&
       numCompleteSets.fullPrecision}`;
@@ -97,9 +82,7 @@ export default class MarketPositionsList extends Component {
                   P/L
                 </span>
               </li>
-              <li>
-                Action
-              </li>
+              <li>Action</li>
             </ul>
             {positions.length === 0 && (
               <div className={Styles.MarketPositionsList__empty} />
@@ -112,10 +95,6 @@ export default class MarketPositionsList extends Component {
                       key={i}
                       outcomeName={position.name}
                       position={position}
-                      openOrders={openOrders.filter(
-                        order =>
-                          order.id === position.id && order.pending === true
-                      )}
                       isExtendedDisplay={false}
                       isMobile={false}
                       marketId={marketId}

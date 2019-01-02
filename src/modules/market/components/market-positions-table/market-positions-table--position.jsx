@@ -54,8 +54,7 @@ export default class MarketPositionsListPosition extends Component {
       isMobile,
       outcomeName,
       position,
-      outcome,
-      hasOrders
+      outcome
     } = this.props;
 
     const netPositionShares = getValue(position, "netPosition.formatted");
@@ -85,9 +84,13 @@ export default class MarketPositionsListPosition extends Component {
           />
           {outcomeName || getValue(position, "purchasePrice.formatted")}
         </li>
-        <li className={classNames(Styles.Position__type, {
-              [Styles.Position__typeSell]: type === "LONG"
-            })}>{type}</li>
+        <li
+          className={classNames(Styles.Position__type, {
+            [Styles.Position__typeSell]: type === "LONG"
+          })}
+        >
+          {type}
+        </li>
         <li>{type === "LONG" ? netPositionShares : positionShares}</li>
         <li>{getValue(position, "purchasePrice.formatted")}</li>
         {!isMobile &&
@@ -102,7 +105,7 @@ export default class MarketPositionsListPosition extends Component {
           )}
         {!isMobile && <li>{getValue(position, "unrealizedNet.formatted")} </li>}
         {!isMobile && <li>{getValue(position, "realizedNet.formatted")} </li>}
-        <li></li>
+        <li />
         {isExtendedDisplay && (
           <li>{getValue(position, "totalNet.formatted")}</li>
         )}

@@ -10,7 +10,7 @@ import {
 } from "modules/common/components/icons";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 import MarketHeaderBar from "modules/market/containers/market-header-bar";
-import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
+import { SCALAR } from "modules/markets/constants/market-types";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
@@ -35,7 +35,8 @@ export default class MarketHeader extends Component {
     isMobileSmall: PropTypes.bool.isRequired,
     isForking: PropTypes.bool,
     toggleFavorite: PropTypes.func,
-    isFavorite: PropTypes.bool
+    isFavorite: PropTypes.bool,
+    history: PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -88,11 +89,9 @@ export default class MarketHeader extends Component {
 
   render() {
     const {
-      clearSelectedOutcome,
       description,
       marketType,
       resolutionSource,
-      selectedOutcome,
       minPrice,
       maxPrice,
       scalarDenomination,
@@ -100,8 +99,8 @@ export default class MarketHeader extends Component {
       currentTime,
       isLogged,
       isMobileSmall,
-      isForking,
-      isFavorite
+      isFavorite,
+      history
     } = this.props;
 
     let { details } = this.props;
@@ -117,6 +116,13 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
+        <button
+          className={Styles[`MarketHeader__back-button`]}
+          onClick={() => history.goBack()}
+        >
+          {ChevronLeft}
+          <span> back</span>
+        </button>
         <div className={Styles[`MarketHeader__main-values`]}>
           <div className={Styles.MarketHeader__descContainer}>
             {market.id && (

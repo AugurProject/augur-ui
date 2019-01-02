@@ -3,13 +3,10 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
 import MarketHeader from "modules/market/containers/market-header";
-// import MarketOutcomesChart from "modules/market-charts/containers/market-outcomes-chart";
-// import MarketOutcomeCharts from "modules/market-charts/containers/market-outcome-charts";
-// import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
-// import MarketTrading from "modules/trading/containers/trading";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
+import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
 
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
@@ -21,6 +18,7 @@ import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-prec
 
 export default class MarketView extends Component {
   static propTypes = {
+    market: PropTypes.object.isRequired,
     marketId: PropTypes.string.isRequired,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
@@ -30,7 +28,8 @@ export default class MarketView extends Component {
     loadingState: PropTypes.any,
     pricePrecision: PropTypes.number.isRequired,
     isMobile: PropTypes.bool,
-    outcomes: PropTypes.array
+    outcomes: PropTypes.array,
+    isLogged: PropTypes.isLogged
   };
 
   static defaultProps = {
@@ -55,6 +54,7 @@ export default class MarketView extends Component {
     };
 
     this.state = {
+      selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
       fixedPrecision: 4,
       selectedOutcomeProperties: {
@@ -158,7 +158,15 @@ export default class MarketView extends Component {
   }
 
   render() {
-    const { description, marketId, location, isMobile, outcomes } = this.props;
+    const {
+      isLogged,
+      description,
+      marketId,
+      location,
+      isMobile,
+      outcomes,
+      market
+    } = this.props;
     const s = this.state;
 
     return (
@@ -184,7 +192,24 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__firstColumn}>
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
-                <div className={Styles.MarketView__component}>Order Form</div>
+                <div className={Styles.MarketView__component}>
+                  <MarketTradingWrapper
+                    market={market}
+                    isLogged={isLogged}
+                    selectedOutcome={s.selectedOutcome}
+                    selectedOrderProperties={s.selectedOrderProperties}
+                    initialMessage="initial message"
+                    isMobile={isMobile}
+                    toggleForm={null}
+                    showOrderPlaced={null}
+                    availableFunds={null}
+                    clearTradeInProgress={null}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
+                    gasPrice={0}
+                  />
+                </div>
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div
@@ -251,43 +276,3 @@ export default class MarketView extends Component {
     );
   }
 }
-
-/**
-{s.selectedOutcome === null && (
-            <MarketOutcomesChart
-              marketId={marketId}
-              fixedPrecision={s.fixedPrecision}
-              selectedOutcome={s.selectedOutcome}
-              updateSelectedOutcome={this.updateSelectedOutcome}
-              pricePrecision={pricePrecision}
-            />
-          )}
-          {s.selectedOutcome !== null && (
-            <MarketOutcomeCharts
-              marketId={marketId}
-              fixedPrecision={s.fixedPrecision}
-              updatePrecision={this.updatePrecision}
-              selectedOutcome={s.selectedOutcome}
-              updateSelectedOrderProperties={this.updateSelectedOrderProperties}
-              pricePrecision={pricePrecision}
-            />
-          )}
-        </div>
-        <section className={Styles.Market__details}>
-          <div className={Styles["Market__details-outcomes"]}>
-            <MarketOutcomesAndPositions
-              marketId={marketId}
-              selectedOutcome={s.selectedOutcome}
-              updateSelectedOutcome={this.updateSelectedOutcome}
-            />
-          </div>
-          <div className={Styles["Market__details-trading"]}>
-            <MarketTrading
-              marketId={marketId}
-              selectedOutcome={s.selectedOutcome}
-              selectedOrderProperties={s.selectedOrderProperties}
-              updateSelectedOrderProperties={this.updateSelectedOrderProperties}
-            />
-          </div>
-        </section>
-* */

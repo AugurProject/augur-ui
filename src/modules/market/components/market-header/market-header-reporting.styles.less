@@ -48,17 +48,17 @@
   color: @color-white;
   font-size: @font-size-rather-large;
   font-weight: 700;
-  position: relative;
   padding-left: 14px;
+  position: relative;
 
-  &:first-child:before {
-    content: " ";
+  &:first-child::before {
     background-color: @color-outcome-one;
     bottom: 20%;
-    left: 0;
-    width: 6px;
+    content: " ";
     height: 17px;
+    left: 0;
     position: absolute;
+    width: 6px;
   }
 }
 
@@ -71,9 +71,9 @@
 .MarketHeaderReporting__winner__color__2,
 .MarketHeaderReporting__winner__color__1,
 .MarketHeaderReporting__winner__color {
-  width: 0.375rem;
   height: 1rem;
   margin: 0.25rem 0.5rem 0 0;
+  width: 0.375rem;
 }
 
 .MarketHeaderReporting__winner__color__1 {

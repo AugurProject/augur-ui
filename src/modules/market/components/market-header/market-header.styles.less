@@ -12,8 +12,8 @@
   color: @color-light-gray;
   font-size: @font-size-small;
   font-weight: 500;
-  max-height: 0.75rem;
   margin-right: 24px;
+  max-height: 0.75rem;
 }
 
 .MarketHeader__AdditionalDetails-text,
@@ -38,9 +38,8 @@
 }
 
 .MarketHeader__AdditionalDetails-fade {
-  background: -webkit-linear-gradient(@color-white, rgba(0, 0, 0, 0));
+  background: linear-gradient(@color-white, rgba(0, 0, 0, 0));
   background-clip: text;
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -57,6 +56,8 @@
   .caps--small();
 
   display: flex;
+  font-size: 10px;
+  text-transform: capitalize;
 
   svg {
     height: 1em;
@@ -85,7 +86,7 @@
   padding-bottom: 0;
   padding-left: 0;
   padding-top: 4px;
-  
+
   > p {
     margin-bottom: 0;
   }
@@ -116,8 +117,8 @@
 
 .MarketHeader__descContainer {
   flex-grow: 1;
-  max-width: 654px;
   margin-right: 1.25rem;
+  max-width: 654px;
 }
 
 .MarketHeader__details-wrapper {
@@ -178,15 +179,15 @@
 .MarketHeader__properties {
   display: flex;
   flex: 1;
-  padding-left: 0.5rem;
   min-width: 370px;
+  padding-left: 0.5rem;
 }
 
 .MarketHeader__timeStuff {
+  align-items: flex-end;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  align-items: flex-end;
 }
 
 .MarketHeader__resolution-source--empty_details {
@@ -198,17 +199,17 @@
 }
 
 .MarketHeader__watchlist__container {
+  display: flex;
+  justify-content: flex-end;
   margin-top: 16px;
   min-width: 14rem;
-  justify-content: flex-end;
-  display: flex;
 }
 
 .MarketHeader__watchlist__disabled,
 .MarketHeader__watchlist {
   border: 2px solid @color-dark-gray;
-  box-sizing: border-box;
   border-radius: 3px;
+  box-sizing: border-box;
   color: @color-white;
   padding: 0.5rem 0;
 
@@ -229,10 +230,10 @@
   }
 
   &:disabled {
-    opacity: 0.3;
     background: #1a1627;
     border: 2px solid @color-dark-gray;
     cursor: default;
+    opacity: 0.3;
   }
 }
 

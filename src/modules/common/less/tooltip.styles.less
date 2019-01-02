@@ -4,6 +4,7 @@
 
 .Tooltip {
   background-color: @color-dark-gray !important;
+  border: 1px solid #443b59 !important;
   border-radius: 3px !important;
   box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.5);
   color: @color-white !important;
@@ -14,7 +15,6 @@
   pointer-events: auto !important;
   text-transform: none;
   white-space: initial;
-  border: 1px solid #443b59 !important;
 
   > h4 {
     font-weight: 500;
@@ -63,22 +63,20 @@
         border-top-width: 10px !important;
       }
 
-
       &::before {
-        content: '';
-        display: block;  
-        position: absolute;
-        bottom: 100%;
-        width: 0;
-        height: 0;
-        border-top-color: #443b59 !important;
         border: 11px solid transparent;
         border-left: 11px solid transparent !important;
         border-right: 11px solid transparent !important;
+        border-top-color: #443b59 !important;
+        bottom: -22px !important;
+        content: '';
+        display: block;
+        height: 0;
         left: 50.5% !important;
         margin-left: -10px !important;
-        bottom: -22px !important;
+        position: absolute;
         top: unset !important;
+        width: 0;
       }
     }
 
@@ -98,19 +96,19 @@
       }
 
       &::before {
-        content: '';
-        display: block;  
-        position: absolute;
-        bottom: 100%;
-        width: 0;
-        height: 0;
-        border-bottom-color: #443b59 !important;
         border: 11px solid transparent;
+        border-bottom-color: #443b59 !important;
         border-left: 11px solid transparent !important;
         border-right: 11px solid transparent !important;
+        bottom: 100%;
+        content: '';
+        display: block;
+        height: 0;
         left: 50.5% !important;
         margin-left: -10px !important;
+        position: absolute;
         top: unset !important;
+        width: 0;
       }
     }
 
@@ -130,20 +128,19 @@
       }
 
       &::before {
-        content: '';
-        display: block;  
-        position: absolute;
-        bottom: 100%;
-        width: 0;
-        height: 0;
-        border-left-color: #443b59 !important;
         border: 11px solid transparent;
-        border-top: 11px solid transparent !important;
         border-bottom: 11px solid transparent !important;
+        border-left-color: #443b59 !important;
+        border-top: 11px solid transparent !important;
         bottom: unset !important;
-        top: 50% !important;
-        right: -22px !important;
+        content: '';
+        display: block;
+        height: 0;
         left: unset !important;
+        position: absolute;
+        right: -22px !important;
+        top: 50% !important;
+        width: 0;
       }
     }
 
@@ -163,20 +160,19 @@
       }
 
       &::before {
-        content: '';
-        display: block;  
-        position: absolute;
-        bottom: 100%;
-        width: 0;
-        height: 0;
-        border-right-color: #443b59 !important;
         border: 11px solid transparent;
-        border-top: 11px solid transparent !important;
         border-bottom: 11px solid transparent !important;
+        border-right-color: #443b59 !important;
+        border-top: 11px solid transparent !important;
         bottom: unset !important;
-        top: 50% !important;
-        right: unset !important;
+        content: '';
+        display: block;
+        height: 0;
         left: -22px !important;
+        position: absolute;
+        right: unset !important;
+        top: 50% !important;
+        width: 0;
       }
     }
   }

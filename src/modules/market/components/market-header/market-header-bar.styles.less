@@ -2,10 +2,10 @@
 @import (reference) "~modules/market/components/market-view/market-view.styles";
 
 .MarketHeaderBar__container {
+  align-items: flex-start;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
   padding-bottom: 2rem;
 }
 
@@ -17,9 +17,9 @@
 
 .MarketHeaderBar__status {
   color: @color-white;
-  font-size: @font-size-small;
   display: flex;
   flex-direction: column;
+  font-size: @font-size-small;
   justify-content: space-between;
   padding-right: 1rem;
 }
@@ -28,7 +28,7 @@
   &:extend(.button--transparent--rounded all);
 
   text-transform: capitalize;
-  
+
   &:focus {
     outline: none;
   }

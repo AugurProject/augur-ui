@@ -27,6 +27,7 @@ const mapStateToProps = (state, ownProps) => {
     description: market.description || "",
     loadingState: market.loadingState || null,
     isLogged: authStatus.isLogged,
+    market,
     universe,
     orderBooks,
     isMobile: appStatus.isMobile,

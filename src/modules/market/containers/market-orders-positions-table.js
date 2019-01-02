@@ -55,7 +55,7 @@ const mapStateToProps = (state, ownProps) => {
     positions,
     openOrders,
     orphanedOrders: filteredOrphanOrders,
-    market: market,
+    market
   };
 };
 

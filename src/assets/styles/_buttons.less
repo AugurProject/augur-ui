@@ -229,10 +229,11 @@
 }
 
 .button--transparent--rounded {
-  border-radius: 100px;
   border: 2px solid @color-dark-gray;
+  border-radius: 100px;
   box-sizing: border-box;
   color: @color-white;
+  cursor: pointer;
   font-size: @font-size-small;
   font-style: normal;
   font-weight: 500;
@@ -241,20 +242,18 @@
   padding: 0.25rem 1rem;
 
   &:hover {
-    border: 2px solid #42404b
+    border: 2px solid #42404b;
   }
-
-  cursor: pointer;
 }
 
 .button--bright {
   background: @color-outcome-seven;
   border-radius: 3px;
+  color: #140e1f;
   font-size: @font-size-medium;
   font-weight: 700;
-  color: #140e1f;
-  padding: 0.75rem 1.5rem;
   margin-left: 1rem;
+  padding: 0.75rem 1.5rem;
 
   &:hover {
     background: @color-bright-teal;
@@ -262,7 +261,7 @@
 
   &:disabled {
     background: @color-outcome-seven;
-    opacity: 0.3;
     cursor: default;
+    opacity: 0.3;
   }
 }

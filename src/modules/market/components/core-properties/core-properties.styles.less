@@ -18,9 +18,9 @@
   display: flex;
   flex-direction: column;
   font-size: @font-size-large;
-  white-space: nowrap;
   text-transform: none;
-  
+  white-space: nowrap;
+
   &:not(:last-of-type) {
     margin-right: 45px;
   }
@@ -47,6 +47,7 @@
 }
 
 .CoreProperties__property__container {
+  color: @color-lightgray;
   display: flex;
   flex-direction: row;
   padding-left: 1rem;
@@ -73,12 +74,6 @@
   width: 0.75rem;
 }
 
-.CoreProperties__property__container {
-  color: #a7a2b2;
-  display: flex;
-  flex-direction: row;
-}
-
 .CoreProperties__property__min__max {
   color: #a7a2b2;
   font-size: @font-size-small;
@@ -96,10 +91,10 @@
 }
 
 .CoreProperties__min__max__dots {
+  align-content: space-between;
   color: @color-white;
   display: flex;
   flex-direction: row;
-  align-content: space-between;
   font-size: @font-size-medium;
   padding-top: 1rem;
 }
