@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import MarketPositionsListPosition from "modules/market/components/market-positions-table/market-positions-table--position";
 
+import SharedStyles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 import Styles from "modules/market/components/market-positions-table/market-positions-table.styles";
 import {
   AWAITING_SIGNATURE,
@@ -52,14 +53,14 @@ export default class MarketPositionsList extends Component {
     }
 
     return (
-      <section className={Styles.MarketPositionsList}>
+      <section>
         <div
           ref={outcomeList => {
             this.outcomeList = outcomeList;
           }}
         >
-          <div className={Styles.MarketPositionsList__table}>
-            <ul className={Styles["MarketPositionsList__table-header"]}>
+          <div className={SharedStyles.MarketOpenOrdersList__table}>
+            <ul className={SharedStyles["MarketOpenOrdersList__table-header"]}>
               <li>Outcome</li>
               <li>
                 <span>Type</span>
@@ -85,10 +86,10 @@ export default class MarketPositionsList extends Component {
               <li>Action</li>
             </ul>
             {positions.length === 0 && (
-              <div className={Styles.MarketPositionsList__empty} />
+              <div className={SharedStyles.MarketOpenOrdersList__empty} />
             )}
             {positions.length > 0 && (
-              <div className={Styles["MarketPositionsList__table-body"]}>
+              <div className={SharedStyles["MarketOpenOrdersList__table-body"]}>
                 {positions &&
                   positions.map((position, i) => (
                     <MarketPositionsListPosition
@@ -120,7 +121,7 @@ export default class MarketPositionsList extends Component {
               </div>
             )}
         </div>
-        <div className={Styles.MarketPositionsList__footer} />
+        <div className={SharedStyles.MarketOpenOrdersList__footer} />
       </section>
     );
   }

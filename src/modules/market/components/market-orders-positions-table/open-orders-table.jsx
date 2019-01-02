@@ -13,9 +13,9 @@ const OpenOrdersTable = ({
   orphanedOrders,
   cancelOrphanedOrder
 }) => (
-  <div className={Styles.MarketOpenOrdersList}>
+  <div>
     <div className={Styles.MarketOpenOrdersList__table}>
-      <ul className={Styles["OpenOrdersTable__table-header"]}>
+      <ul className={Styles["MarketOpenOrdersList__table-header"]}>
         <li>Outcome</li>
         <li>Type</li>
         <li>
@@ -30,10 +30,10 @@ const OpenOrdersTable = ({
       </ul>
       {openOrders.length === 0 &&
         orphanedOrders.length === 0 && (
-          <div className={Styles.OpenOrdersTable__empty} />
+          <div className={Styles.MarketOpenOrdersList__empty} />
         )}
       {(openOrders.length > 0 || orphanedOrders.length > 0) && (
-        <div className={Styles["MarketPositionsList__table-body"]}>
+        <div className={Styles["MarketOpenOrdersList__table-body"]}>
           {openOrders.map((order, i) => (
             <OpenOrdersOrder
               key={i}
@@ -58,7 +58,7 @@ const OpenOrdersTable = ({
         </div>
       )}
     </div>
-    <div className={Styles.OpenOrdersTable__footer} />
+    <div className={Styles.MarketOpenOrdersList__footer} />
   </div>
 );
 

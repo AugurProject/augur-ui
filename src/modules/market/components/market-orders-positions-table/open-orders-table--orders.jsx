@@ -7,6 +7,7 @@ import classNames from "classnames";
 import getValue from "utils/get-value";
 import { SELL } from "modules/trades/constants/types";
 
+import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table--orders.style";
 
 export default class OpenOrdersOrder extends Component {
@@ -51,24 +52,25 @@ export default class OpenOrdersOrder extends Component {
         }}
         className={
           !isMobile
-            ? classNames(Styles.Order, {
-                [Styles["Order-not_extended"]]: isExtendedDisplay
+            ? classNames(SharedStyles.Order, {
+                [SharedStyles["Order-not_extended"]]: isExtendedDisplay
               })
-            : Styles.PortMobile
+            : SharedStyles.PortMobile
         }
       >
         <li style={{ position: "relative" }}>
           <div
-            className={classNames(Styles.Order__typeIndicator, {
-              [Styles.Order__typeIndicatorSell]: orderType === SELL
+            className={classNames(SharedStyles.Order__typeIndicator, {
+              [SharedStyles.Order__typeIndicatorSell]: orderType === SELL
             })}
           />
           {outcomeName || orderPrice}
         </li>
         <li
-          className={classNames(Styles.Order__type, {
-            [Styles.Order__typeSell]: orderType === SELL
+          className={classNames(SharedStyles.Order__type, {
+            [SharedStyles.Order__typeSell]: orderType === SELL
           })}
+          style={{textTransform: 'capitalize'}}
         >
           {orderType}
         </li>

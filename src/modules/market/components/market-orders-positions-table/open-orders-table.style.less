@@ -1,66 +1,12 @@
 @import (reference) '~assets/styles/shared';
 
-.MarketPositionsList {
-  border-bottom: 1px solid @color-lightergray;
-}
-
-.MarketPositionsList__completeSets {
-  align-items: center;
-  background-color: @color-lightgray-2;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 2rem;
-  width: 100%;
-
-  > span {
-    flex: 1;
-  }
-
-  > button {
-    .button--transparent();
-
-    &:disabled,
-    &:disabled:hover {
-      border-color: @color-gray;
-      color: @color-gray;
-      cursor: not-allowed;
-      text-decoration: none;
-    }
-  }
-}
-
-.MarketPositionsList__heading {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  width: 100%;
-
-  > h2 {
-    &:extend(.caps--large);
-  }
-}
-
-.MarketPositionsList__null-state {
-  background-color: @color-input-background;
-  color: @color-lightgray;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-.MarketPositionsList__table {
-  display: table;
-  position: relative;
-  width: 100%;
-}
-
 .MarketOpenOrdersList__table {
   display: table;
   position: relative;
   width: 100%;
 }
 
-.OpenOrdersTable__table-header {
+.MarketOpenOrdersList__table-header {
   &:extend(.caps--small);
 
   background-color: @color-light-purple;
@@ -91,50 +37,19 @@
   }
 }
 
-.OpenOrdersTable__footer {
+.MarketOpenOrdersList__footer {
   background-color: @color-light-purple;
   height: 8px;
 }
 
-.OpenOrdersTable__empty {
+.MarketOpenOrdersList__empty {
   background-color: @color-grayish-purple;
   height: 40px;
 }
 
-.MarketPositionsList__table-body {
+.MarketOpenOrdersList__table-body {
   background-color: @color-input-background;
   display: table-row-group;
   font-size: @font-size-large;
   line-height: @font-size-large;
-}
-
-.MarketPositionsList__table-wrapper {
-  max-height: 20.5rem;
-  overflow-y: scroll;
-}
-
-@media @breakpoint-mobile {
-  .MarketPositionsList__table-body {
-    background-color: @color-input-background;
-    display: table-row-group;
-    font-size: @font-size-small;
-    line-height: @font-size-small;
-  }
-
-  .MarketPositionsList__table-header {
-    > li {
-      display: table-cell;
-      padding: 1rem 0 0.625rem;
-      text-align: right;
-
-      &:first-child {
-        padding-left: 0.75rem;
-        text-align: left;
-      }
-
-      &:last-child {
-        padding-right: 0.5rem;
-      }
-    }
-  }
 }
