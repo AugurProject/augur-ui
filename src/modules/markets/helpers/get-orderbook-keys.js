@@ -26,16 +26,10 @@ const getOrderBookKeys = memoize((marketDepth, minPrice, maxPrice) => {
   };
 
   const spread = () => {
-    const bestBid =
-      marketDepth[BIDS].length === 0
-        ? 0
-        : createBigNumber(`${marketDepth[BIDS][0][1]}`, 10);
-    const bestAsk =
-      marketDepth[ASKS].length === 0
-        ? 100
-        : createBigNumber(`${marketDepth[ASKS][0][1]}`, 10);
+    const bestBid = marketDepth[BIDS].length > 0 && createBigNumber(`${marketDepth[BIDS][0][1]}`, 10);
+    const bestAsk = marketDepth[ASKS].length > 0 && createBigNumber(`${marketDepth[ASKS][0][1]}`, 10);
 
-    return createBigNumber(bestAsk).minus(createBigNumber(bestBid));
+    return ((marketDepth[ASKS].length === 0 || marketDepth[BIDS].length === 0) ? null : createBigNumber(bestAsk).minus(createBigNumber(bestBid)));
   };
 
   let max = marketDepth[ASKS].reduce((p, order, i) => {
@@ -50,7 +44,7 @@ const getOrderBookKeys = memoize((marketDepth, minPrice, maxPrice) => {
   return {
     min,
     mid: createBigNumber(mid()),
-    spread: createBigNumber(spread()),
+    spread: spread(),
     max
   };
 });

@@ -179,10 +179,12 @@ export default class MarketOutcomeChartsOrders extends Component {
               <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>
                 Spread:
               </span>{" "}
-              {orderBookKeys.spread.toFixed(pricePrecision)}
-              <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>
-                ETH
-              </span>
+              {orderBookKeys.spread ? orderBookKeys.spread.toFixed(pricePrecision) : "—"}
+              { orderBookKeys.spread && 
+                <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>
+                  ETH
+                </span>
+              }
             </div>
           )}
         </div>
