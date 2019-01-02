@@ -31,7 +31,7 @@ export default class MarketPositionsList extends Component {
       numCompleteSets,
       transactionsStatus,
       sellCompleteSets,
-      marketId,
+      marketId
     } = this.props;
 
     const pendingCompleteSetsHash = `pending-${marketId}-${numCompleteSets &&

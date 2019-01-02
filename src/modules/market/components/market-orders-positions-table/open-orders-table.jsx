@@ -1,6 +1,6 @@
 /* eslint react/no-array-index-key: 0 */
 
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-list--orphaned-order/market-positions-list--orphaned-order";
