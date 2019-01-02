@@ -5,10 +5,14 @@ import MarketOrdersPositionsTable from "modules/market/components/market-orders-
 import { selectMarket } from "modules/markets/selectors/market";
 import { sortOpenOrders } from "modules/orders/selectors/open-orders";
 import { sellCompleteSets } from "modules/positions/actions/sell-complete-sets";
-import { selectOrphanOrders } from "src/select-state";
 import { cancelOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { find } from "lodash";
+import { selectCurrentTimestamp, selectOrphanOrders } from "src/select-state";
+import { constants } from "services/augurjs";
+import { updateModal } from "modules/modal/actions/update-modal";
+import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/modal/constants/modal-types";
+import { createBigNumber } from "utils/create-big-number";
 
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
@@ -44,7 +48,22 @@ const mapStateToProps = (state, ownProps) => {
         : outcome.name || order.price;
   });
 
+  let canClaim = false;
+  if (market.finalizationTime) {
+    const endTimestamp = createBigNumber(market.finalizationTime).plus(
+      createBigNumber(constants.CONTRACT_INTERVAL.CLAIM_PROCEEDS_WAIT_TIME)
+    );
+    const currentTimestamp = selectCurrentTimestamp(state);
+    const timeHasPassed = createBigNumber(currentTimestamp).minus(endTimestamp);
+    canClaim = timeHasPassed.toNumber() > 0;
+  }
+
+  console.log(market.consensus && market.consensus.winningOutcome);
+  console.log(positions);
+
   return {
+    hasClaimableReturns: market.outstandingReturns && canClaim,
+    winningOutcome: market.consensus && market.consensus.winningOutcome,
     numCompleteSets:
       (market.myPositionsSummary &&
         market.myPositionsSummary.numCompleteSets) ||
@@ -62,7 +81,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   sellCompleteSets: (marketId, numCompleteSets, cb) =>
     dispatch(sellCompleteSets(marketId, numCompleteSets, cb)),
-  cancelOrphanedOrder: (order, cb) => dispatch(cancelOrphanedOrder(order, cb))
+  cancelOrphanedOrder: (order, cb) => dispatch(cancelOrphanedOrder(order, cb)),
+  claimTradingProceeds: (marketId, cb) =>
+    dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb }))
 });
 
 const MarketOrdersPositionsTableContainer = withRouter(

@@ -70,7 +70,7 @@ export default class OpenOrdersOrder extends Component {
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL
           })}
-          style={{textTransform: 'capitalize'}}
+          style={{ textTransform: "capitalize" }}
         >
           {orderType}
         </li>

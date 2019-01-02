@@ -7,7 +7,7 @@ import MarketOrdersPositionsTable from "modules/market/containers/market-orders-
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
-
+import { createBigNumber } from "utils/create-big-number";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
 import { CATEGORICAL } from "modules/markets/constants/market-types";
@@ -198,11 +198,11 @@ export default class MarketView extends Component {
                     isLogged={isLogged}
                     selectedOutcome={s.selectedOutcome}
                     selectedOrderProperties={s.selectedOrderProperties}
-                    initialMessage="initial message"
+                    initialMessage="hi"
                     isMobile={isMobile}
                     toggleForm={null}
                     showOrderPlaced={null}
-                    availableFunds={null}
+                    availableFunds={createBigNumber(11)}
                     clearTradeInProgress={null}
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties
