@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 import Styles from "modules/market/components/common/module-tabs/module-tabs.style";
 
 export default class ModuleTabs extends Component {
   static propTypes = {
     selected: PropTypes.number,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element])
-      .isRequired
+    children: PropTypes.arrayOf(ModulePane).isRequired
   };
 
   static defaultProps = {
