@@ -92,69 +92,44 @@ export default class AccountDeposit extends Component {
         </div>
         <div className={Styles.AccountDeposit__main}>
           <div className={Styles.AccountDeposit__description}>
-            {
-              <>
-                <p>1. Click on your address on the right to copy it</p>
-                <p>
-                  {
-                    "2. Go to Coinbase or Wyre (below) and buy Ether/ETH, and paste in your address to send it. Note if you want immediate access use a debit card, otherwise you'll have to wait a few days."
-                  }
-                </p>
-                <p>
-                  {
-                    "3. Come back here after and resume whatever you were doing!"
-                  }
-                </p>
-              </>
-            }
-            {
+            <p>1. Click on your address on the right to copy it</p>
+            <p>
+              2. Go to Coinbase or Wyre (below) and buy Ether/ETH, and paste in
+              your address to send it. Note if you want immediate access use a
+              debit card, otherwise you&apos;ll have to wait a few days.
+            </p>
+            <p>3. Come back here after and resume whatever you were doing!</p>
+            <div className={Styles.AccountDeposit__0xInstantButton}>
+              <button onClick={() => window.open("http://www.sendwyre.com/")}>
+                Buy ETH (for trading) using Wyre
+              </button>
+            </div>
+            <div className={Styles.AccountDeposit__0xInstantButton}>
+              <button
+                onClick={() => window.open("https://www.coinbase.com/buy/ETH")}
+              >
+                Buy ETH (for trading) using Coinbase
+              </button>
+            </div>
+            {show0xInstant && (
               <div className={Styles.AccountDeposit__0xInstantButton}>
-                <button onClick={() => window.open("http://www.sendwyre.com/")}>
-                  Buy ETH (for trading) using Wyre
+                <button onClick={openZeroExInstant}>
+                  Buy REP (for reporting) using 0x instant
                 </button>
               </div>
-            }
-            {
-              <>
-                <br />
-                <div className={Styles.AccountDeposit__0xInstantButton}>
-                  <button
-                    onClick={() => window.open("https://www.coinbase.com/buy/ETH")}
-                  >
-                    Buy ETH (for trading) using Coinbase
-                  </button>
-                </div>
-              </>
-            }
-            {show0xInstant && (
-              <>
-                <br />
-                <br />
-                <div className={Styles.AccountDeposit__0xInstantButton}>
-                  <button onClick={openZeroExInstant}>
-                    Buy REP (for reporting) using 0x instant
-                  </button>
-                </div>
-              </>
             )}
             {!show0xInstant && (
-              <>
-                <br />
-                <div className={Styles.AccountDeposit__0xInstantButton}>
-                  Deposits via 0x Instant are only available on the Ethereum
-                  main network and Kovan test network.
-                </div>
-              </>
+              <div className={Styles.AccountDeposit__0xInstantButton}>
+                Deposits via 0x Instant are only available on the Ethereum main
+                network and Kovan test network.
+              </div>
             )}
             {showAirSwap && (
-              <>
-                <br />
-                <div className={Styles.AccountDeposit__0xInstantButton}>
-                  <button onClick={airSwapOnClick}>
-                    Buy REP (for reporting) using AirSwap
-                  </button>
-                </div>
-              </>
+              <div className={Styles.AccountDeposit__0xInstantButton}>
+                <button onClick={airSwapOnClick}>
+                  Buy REP (for reporting) using AirSwap
+                </button>
+              </div>
             )}
           </div>
           <div className={Styles.AccountDeposit__address}>
