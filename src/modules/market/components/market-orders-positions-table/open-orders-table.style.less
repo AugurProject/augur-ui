@@ -13,18 +13,18 @@
 
   background-color: @color-light-purple;
   color: @color-light-gray;
-  text-transform: none !important;
   display: flex;
   flex-direction: row;
   flex-grow: 1;
   font-size: 12px;
   max-height: 40px;
+  text-transform: none !important;
   transition: background-color 0.15s ease;
 
   &:first-child > li {
+    border-top-width: 0;
     padding-bottom: 1rem;
     padding-top: 1rem;
-    border-top-width: 0;
   }
 
   > li {
@@ -37,10 +37,10 @@
     white-space: nowrap;
 
     &:first-child {
+      max-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
-      max-width: 160px;
     }
 
     &:last-of-type {
@@ -48,7 +48,6 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
-      flex-direction: row;
       padding-right: 3rem;
     }
   }

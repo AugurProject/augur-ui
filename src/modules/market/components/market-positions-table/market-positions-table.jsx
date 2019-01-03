@@ -90,7 +90,9 @@ export default class MarketPositionsList extends Component {
             )}
             <div className={SharedStyles.MarketOpenOrdersList__scrollContainer}>
               {positions.length > 0 && (
-                <div className={SharedStyles["MarketOpenOrdersList__table-body"]}>
+                <div
+                  className={SharedStyles["MarketOpenOrdersList__table-body"]}
+                >
                   {positions &&
                     positions.map((position, i) => (
                       <MarketPositionsListPosition

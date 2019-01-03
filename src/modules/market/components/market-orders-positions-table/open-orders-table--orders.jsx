@@ -74,9 +74,7 @@ export default class OpenOrdersOrder extends Component {
         >
           {orderType}
         </li>
-        <li>
-          {orderShares}
-        </li>
+        <li>{orderShares}</li>
         <li>{orderPrice}</li>
         {isExtendedDisplay &&
           !isMobile &&
