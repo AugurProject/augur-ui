@@ -183,7 +183,7 @@ export default class MarketHeaderReporting extends Component {
             className={Styles.MarketHeaderReporting__single__container}
           >
             <MarketLink
-              className={Styles.MarketHeaderReporting__button}
+              className={Styles.MarketHeaderReporting__buttonNoMargin}
               id={id}
               linkType={TYPE_REPORT}
               location={location}
@@ -201,7 +201,7 @@ export default class MarketHeaderReporting extends Component {
             }
           >
             <button
-              className={Styles.MarketHeaderReporting__button}
+              className={Styles.MarketHeaderReporting__buttonNoMargin}
               disabled={!isLogged}
             >
               Submit a Report
