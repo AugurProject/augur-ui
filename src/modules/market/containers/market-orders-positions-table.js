@@ -59,8 +59,11 @@ const mapStateToProps = (state, ownProps) => {
     canClaim = timeHasPassed.toNumber() > 0;
   }
 
-  const filledOrders = selectFilledOrders(state.marketTradingHistory[ownProps.marketId], state.loginAccount.address)
-  console.log(filledOrders)
+  const filledOrders = selectFilledOrders(
+    state.marketTradingHistory[ownProps.marketId],
+    state.loginAccount.address
+  );
+  console.log(filledOrders);
 
   return {
     hasClaimableReturns: market.outstandingReturns && canClaim,
