@@ -119,7 +119,7 @@ export default class AccountDeposit extends Component {
                 <br />
                 <div className={Styles.AccountDeposit__0xInstantButton}>
                   <button
-                    onClick={() => window.open("http://www.coinbase.com/")}
+                    onClick={() => window.open("https://www.coinbase.com/buy/ETH")}
                   >
                     Buy ETH (for trading) using Coinbase
                   </button>
@@ -128,6 +128,7 @@ export default class AccountDeposit extends Component {
             }
             {show0xInstant && (
               <>
+                <br />
                 <br />
                 <div className={Styles.AccountDeposit__0xInstantButton}>
                   <button onClick={openZeroExInstant}>
