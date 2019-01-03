@@ -79,6 +79,7 @@ export default class AccountDeposit extends Component {
       augurNodeNetworkId
     );
     const showAirSwap = NETWORK_IDS.Mainnet === augurNodeNetworkId;
+
     return (
       <section
         className={Styles.AccountDeposit}
@@ -111,6 +112,7 @@ export default class AccountDeposit extends Component {
                 Buy ETH (for trading) using Coinbase
               </button>
             </div>
+            <br />
             {show0xInstant && (
               <div className={Styles.AccountDeposit__0xInstantButton}>
                 <button onClick={openZeroExInstant}>
