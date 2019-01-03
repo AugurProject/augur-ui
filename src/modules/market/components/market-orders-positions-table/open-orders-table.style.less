@@ -1,7 +1,9 @@
 @import (reference) '~assets/styles/shared';
 
 .MarketOpenOrdersList__table {
-  display: table;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   position: relative;
   width: 100%;
 }
@@ -11,29 +13,46 @@
 
   background-color: @color-light-purple;
   color: @color-light-gray;
-  display: table-header-group;
   text-transform: none !important;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  font-size: 12px;
+  max-height: 40px;
+  transition: background-color 0.15s ease;
 
   &:first-child > li {
-    max-width: 100px;
     padding-bottom: 1rem;
     padding-top: 1rem;
-    width: 280px;
+    border-top-width: 0;
   }
 
   > li {
-    display: table-cell;
-    padding: 2rem 0 0.625rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 100px;
+    overflow: hidden;
+    padding: 11px 0;
+
     text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     &:first-child {
       padding-left: 2rem;
+      position: relative;
       text-align: left;
     }
 
-    &:last-child {
+    &:last-of-type {
       padding-right: 3rem;
+
     }
+  }
+
+  .NotActive {
+    color: @color-lightgray;
   }
 }
 
@@ -49,7 +68,14 @@
 
 .MarketOpenOrdersList__table-body {
   background-color: @color-input-background;
-  display: table-row-group;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   font-size: @font-size-large;
   line-height: @font-size-large;
+}
+
+.MarketOpenOrdersList__scrollContainer {
+  max-height: 250px;
+  overflow-y: auto;
 }

@@ -3,7 +3,9 @@
 .Order,
 .Position {
   background-color: @color-grayish-purple;
-  display: table-row;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
   font-family: "Roboto Mono", monospace;
   font-size: 12px;
   max-height: 40px;
@@ -18,8 +20,10 @@
   }
 
   > li {
-    display: table-cell;
-    max-width: 19vw;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 100px;
     overflow: hidden;
     padding: 11px 0;
     text-align: right;
@@ -29,6 +33,7 @@
     &:first-child {
       font-family: @roboto;
       font-size: 14px;
+      max-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
@@ -39,6 +44,9 @@
     }
 
     &:last-of-type {
+      align-items: center;
+      flex-direction: row;
+      justify-content: flex-end;
       padding-right: 4.5rem;
 
       > button {

@@ -32,31 +32,33 @@ const OpenOrdersTable = ({
         orphanedOrders.length === 0 && (
           <div className={Styles.MarketOpenOrdersList__empty} />
         )}
-      {(openOrders.length > 0 || orphanedOrders.length > 0) && (
-        <div className={Styles["MarketOpenOrdersList__table-body"]}>
-          {openOrders.map((order, i) => (
-            <OpenOrdersOrder
-              key={i}
-              outcomeName={order.name}
-              order={order}
-              pending={order.pending}
-              isExtendedDisplay={false}
-              isMobile={false}
-            />
-          ))}
-          {(orphanedOrders || []).map(order => (
-            <MarketPositionsListOrphanedOrder
-              key={order.orderId}
-              outcomeName={order.outcomeName || order.outcome}
-              order={order}
-              pending={false}
-              isExtendedDisplay={false}
-              outcome={order}
-              cancelOrphanedOrder={cancelOrphanedOrder}
-            />
-          ))}
-        </div>
-      )}
+      <div className={Styles.MarketOpenOrdersList__scrollContainer}>
+        {(openOrders.length > 0 || orphanedOrders.length > 0) && (
+          <div className={Styles["MarketOpenOrdersList__table-body"]}>
+            {openOrders.map((order, i) => (
+              <OpenOrdersOrder
+                key={i}
+                outcomeName={order.name}
+                order={order}
+                pending={order.pending}
+                isExtendedDisplay={false}
+                isMobile={false}
+              />
+            ))}
+            {(orphanedOrders || []).map(order => (
+              <MarketPositionsListOrphanedOrder
+                key={order.orderId}
+                outcomeName={order.outcomeName || order.outcome}
+                order={order}
+                pending={false}
+                isExtendedDisplay={false}
+                outcome={order}
+                cancelOrphanedOrder={cancelOrphanedOrder}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
     <div className={Styles.MarketOpenOrdersList__footer} />
   </div>

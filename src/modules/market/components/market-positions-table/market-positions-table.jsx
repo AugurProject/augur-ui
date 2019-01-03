@@ -88,21 +88,23 @@ export default class MarketPositionsList extends Component {
             {positions.length === 0 && (
               <div className={SharedStyles.MarketOpenOrdersList__empty} />
             )}
-            {positions.length > 0 && (
-              <div className={SharedStyles["MarketOpenOrdersList__table-body"]}>
-                {positions &&
-                  positions.map((position, i) => (
-                    <MarketPositionsListPosition
-                      key={i}
-                      outcomeName={position.name}
-                      position={position}
-                      isExtendedDisplay={false}
-                      isMobile={false}
-                      marketId={marketId}
-                    />
-                  ))}
-              </div>
-            )}
+            <div className={SharedStyles.MarketOpenOrdersList__scrollContainer}>
+              {positions.length > 0 && (
+                <div className={SharedStyles["MarketOpenOrdersList__table-body"]}>
+                  {positions &&
+                    positions.map((position, i) => (
+                      <MarketPositionsListPosition
+                        key={i}
+                        outcomeName={position.name}
+                        position={position}
+                        isExtendedDisplay={false}
+                        isMobile={false}
+                        marketId={marketId}
+                      />
+                    ))}
+                </div>
+              )}
+            </div>
           </div>
           {numCompleteSets &&
             numCompleteSets.value > 0 && (
