@@ -12,8 +12,6 @@ import { formatEther, formatRep, formatShares } from "utils/format-number";
 import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
 import { createBigNumber } from "utils/create-big-number";
 import {
-  CRITICAL,
-  INFO,
   CREATEGENESISUNIVERSE,
   CANCELORPHANEDORDER,
   CANCELORDER,
@@ -25,7 +23,6 @@ import {
   PUBLICSELLCOMPLETESETS,
   PUBLICSELLCOMPLETESETSWITHCASH,
   PUBLICCREATEORDER,
-  BUY,
   BUYPARTICIPATIONTOKENS,
   PUBLICFILLBESTORDER,
   PUBLICFILLBESTORDERWITHLIMIT,
@@ -205,7 +202,7 @@ export default function setNotificationText(notification, callback) {
       }
 
       // FeeWindow & Universe
-      case BUY:
+      case "BUY":
       case BUYPARTICIPATIONTOKENS:
         notification.title = "Buy participation token(s)";
         if (!notification.description && notification.log) {
