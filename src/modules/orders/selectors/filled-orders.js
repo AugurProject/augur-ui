@@ -1,7 +1,11 @@
 import { createBigNumber } from "utils/create-big-number";
-import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
 
-export function selectFilledOrders(marketTradeHistory, accountId, marketType, marketOutcomes) {
+export function selectFilledOrders(
+  marketTradeHistory,
+  accountId,
+  marketType,
+  marketOutcomes
+) {
   if (!marketTradeHistory || marketTradeHistory.length < 1) {
     return [];
   }
@@ -16,36 +20,47 @@ export function selectFilledOrders(marketTradeHistory, accountId, marketType, ma
       { orderId, outcome, amount, price, type, timestamp, transactionHash }
     ) => {
       const foundOrder = order.find(({ id }) => id === orderId);
-      amount = createBigNumber(amount)
-      price = createBigNumber(price)
+      const amountBN = createBigNumber(amount);
+      const priceBN = createBigNumber(price);
 
       const outcomeInfo = marketOutcomes.find(
         outcomeValue => outcomeValue.id === outcome.toString()
       );
 
-      outcome = outcomeInfo ? outcomeInfo.description || outcomeInfo.name : price.toString()
+      const outcomeName = outcomeInfo
+        ? outcomeInfo.description || outcomeInfo.name
+        : priceBN.toString();
 
       if (foundOrder) {
         foundOrder.trades.push({
-          outcome,
-          amount,
-          price,
+          outcome: outcomeName,
+          amount: amountBN,
+          price: priceBN,
           type,
           timestamp,
           transactionHash
         });
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
-        foundOrder.amount = createBigNumber(foundOrder.amount).plus(amount);
+        foundOrder.amount = createBigNumber(foundOrder.amount).plus(amountBN);
       } else {
         order.push({
           id: orderId,
           timestamp,
-          outcome,
+          outcome: outcomeName,
           type,
-          price,
-          amount,
-          trades: [{ outcome, amount, price, type, timestamp, transactionHash }]
+          price: priceBN,
+          amount: amountBN,
+          trades: [
+            {
+              outcome: outcomeName,
+              amount: amountBN,
+              price: priceBN,
+              type,
+              timestamp,
+              transactionHash
+            }
+          ]
         });
       }
       return order;

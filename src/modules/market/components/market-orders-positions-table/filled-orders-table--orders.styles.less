@@ -1,45 +1,53 @@
 @import (reference) '~assets/styles/shared';
 
 .FilledOrder {
+  background-color: transparent;
+
   > li {
     &:last-of-type {
       padding-right: 1rem;
     }
   }
+}
 
-  &:hover {
-    //background-color: @color-grayish-purple;
+.FilledOrder__container {
+  background-color: @color-grayish-purple;
+  cursor: pointer;
+
+  &:nth-child(even) {
+    background-color: @color-dark-grayish-purple;
   }
 }
 
-.FilledOrder__active {
-  //background-color: @color-grayish-purple;
-}
-
 .FilledOrder__chevron {
-  margin-left: 9px;
-  margin-top: 5px;
+  margin-left: 0.5625rem;
+  margin-top: 0.3125rem;
 }
 
-// .FilledOrder__container {
-//   background-color: @color-grayish-purple;
+.FilledOrder__view {
+  &:extend(.button--mediumgray all);
 
-//   &:nth-child(even) {
-//     background-color: @color-dark-grayish-purple;
-//   }
-// }
+  display: inline-block;
+  font-size: 0.625rem;
+  margin-right: -2rem;
+  padding: 0.1875rem 0.75rem;
 
+  &.disabled {
+    &:extend(.button--mediumgray--disabled);
+  }
+}
 
 .FilledOrder__table-header {
-  justify-content: flex-end;
   background-color: @color-extra-darkpurple;
+  justify-content: flex-end;
+  padding: 0 1rem;
 
   > li {
-    max-width: 160px;
-    text-align: center;
+    max-width: 15.38rem;
+    text-align: right;
 
     &:first-child {
-      text-align: center;
+      text-align: right;
     }
 
     &:last-of-type {
@@ -47,7 +55,53 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
+      max-width: 16.25rem;
       padding-right: 1.2rem;
+    }
+  }
+}
+
+.FilledOrder__tradeBody {
+  background-color: @color-grayish-purple;
+  justify-content: flex-end;
+}
+
+.FilledOrder__trade {
+  background-color: @color-grayish-purple !important;
+  border-bottom: 0.0625rem solid @color-extra-darkpurple;
+  justify-content: flex-end;
+  margin: 0 1rem;
+
+  &:last-of-type {
+    border-bottom: 0;
+  }
+
+  > li {
+    align-items: center;
+    background-color: @color-grayish-purple;
+    display: flex;
+    font-size: 0.75rem !important;
+    justify-content: flex-end;
+    max-width: 15.38rem;
+    padding: 1rem 0;
+    text-align: right;
+
+    &:nth-child(even) {
+      background-color: @color-grayish-purple;
+    }
+
+    &:first-child {
+      font-family: "Roboto Mono", monospace;
+      text-align: right;
+    }
+
+    &:last-of-type {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      max-width: 16.25rem;
+      padding-right: 2.2rem;
     }
   }
 }

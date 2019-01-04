@@ -7,8 +7,9 @@ import classNames from "classnames";
 import getValue from "utils/get-value";
 import { SELL } from "modules/trades/constants/types";
 import { formatEther, formatShares } from "utils/format-number";
-import { formatDate } from "utils/format-date";
+import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
+import EtherscanLink from "modules/common/containers/etherscan-link";
 
 import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import Styles from "modules/market/components/market-orders-positions-table/filled-orders-table--orders.styles";
@@ -22,8 +23,8 @@ export default class FilledOrdersOrder extends Component {
       timestamp: PropTypes.number.isRequired,
       price: PropTypes.object.isRequired,
       outcome: PropTypes.string.isRequired,
-      trades: PropTypes.array.isRequired,
-    }).isRequired,
+      trades: PropTypes.array.isRequired
+    }).isRequired
   };
 
   constructor(props) {
@@ -37,14 +38,11 @@ export default class FilledOrdersOrder extends Component {
   }
 
   setShowTrades() {
-    this.setState({showTrades: !this.state.showTrades})
+    this.setState({ showTrades: !this.state.showTrades });
   }
 
   render() {
-    const {
-      isMobile,
-      order,
-    } = this.props;
+    const { isMobile, order } = this.props;
 
     const s = this.state;
 
@@ -61,8 +59,8 @@ export default class FilledOrdersOrder extends Component {
           className={
             !isMobile
               ? classNames(SharedStyles.Order, Styles.FilledOrder, {
-                [Styles.FilledOrder__active]: s.showTrades
-              })
+                  [Styles.FilledOrder__active]: s.showTrades
+                })
               : SharedStyles.PortMobile
           }
           onClick={this.setShowTrades}
@@ -85,21 +83,65 @@ export default class FilledOrdersOrder extends Component {
           </li>
           <li>{orderQuantity}</li>
           <li>{orderPrice}</li>
-          <li>{order.timestamp}</li>
+          <li>
+            {convertUnixToFormattedDate(order.timestamp).formattedShortDate}
+          </li>
           <li>
             {order.trades.length}
-            <ChevronFlip className={Styles.FilledOrder__chevron} pointDown={!s.showTrades}/>
+            <ChevronFlip
+              className={Styles.FilledOrder__chevron}
+              pointDown={!s.showTrades}
+            />
           </li>
         </ul>
-        {s.showTrades && 
+        {s.showTrades && (
           <div className={TableStyles.MarketOpenOrdersList__table}>
-            <ul className={classNames(TableStyles["MarketOpenOrdersList__table-header"], Styles["FilledOrder__table-header"])}>
+            <ul
+              className={classNames(
+                TableStyles["MarketOpenOrdersList__table-header"],
+                Styles["FilledOrder__table-header"]
+              )}
+            >
               <li>Filled</li>
               <li>Time Stamp</li>
               <li>Transaction Details</li>
             </ul>
+            {order.trades.length > 0 && (
+              <div
+                className={classNames(
+                  TableStyles["MarketOpenOrdersList__table-body"],
+                  Styles.FilledOrder__tradeBody
+                )}
+              >
+                {order.trades.map((trade, i) => (
+                  <ul
+                    className={classNames(
+                      SharedStyles.Order,
+                      Styles.FilledOrder__trade
+                    )}
+                  >
+                    <li>{formatEther(trade.amount).formatted}</li>
+                    <li>
+                      {convertUnixToFormattedDate(trade.timestamp).formatted}
+                    </li>
+                    <li>
+                      <button
+                        className={Styles.FilledOrder__view}
+                        onClick={null}
+                      >
+                        <EtherscanLink
+                          showNonLink
+                          txhash={trade.transactionHash}
+                          label="View Transaction Details"
+                        />
+                      </button>
+                    </li>
+                  </ul>
+                ))}
+              </div>
+            )}
           </div>
-        }
+        )}
       </div>
     );
   }

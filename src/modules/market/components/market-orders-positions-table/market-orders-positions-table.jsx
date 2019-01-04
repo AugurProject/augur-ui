@@ -22,7 +22,7 @@ const MarketOrdersPositionsTable = ({
   filledOrders
 }) => (
   <section>
-    <ModuleTabs selected={1}>
+    <ModuleTabs selected={0}>
       <ModulePane label="Open Orders">
         <OpenOrdersTable
           openOrders={openOrders}
@@ -32,9 +32,7 @@ const MarketOrdersPositionsTable = ({
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
-        <FilledOrdersTable
-          filledOrders={filledOrders}
-        />
+        <FilledOrdersTable filledOrders={filledOrders} />
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable
@@ -62,7 +60,7 @@ MarketOrdersPositionsTable.propTypes = {
   cancelOrphanedOrder: PropTypes.func.isRequired,
   sellCompleteSets: PropTypes.func.isRequired,
   market: PropTypes.object.isRequired,
-  filledOrders: PropTypes.array,
+  filledOrders: PropTypes.array
 };
 
 MarketOrdersPositionsTable.defaultProps = {
@@ -71,7 +69,7 @@ MarketOrdersPositionsTable.defaultProps = {
   positions: [],
   orphanedOrders: [],
   openOrders: [],
-  filledOrders: [], 
+  filledOrders: []
 };
 
 export default MarketOrdersPositionsTable;

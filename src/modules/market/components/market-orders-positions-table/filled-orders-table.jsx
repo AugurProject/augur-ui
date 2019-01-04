@@ -9,12 +9,15 @@ import FilledOrdersOrder from "modules/market/components/market-orders-positions
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
-const FilledOrdersTable = ({
-  filledOrders,
-}) => (
+const FilledOrdersTable = ({ filledOrders }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
-      <ul className={classNames(Styles["MarketOpenOrdersList__table-header"], Styles["MarketFilledOrdersList__table-header"])}>
+      <ul
+        className={classNames(
+          Styles["MarketOpenOrdersList__table-header"],
+          Styles["MarketFilledOrdersList__table-header"]
+        )}
+      >
         <li>Outcome</li>
         <li>Type</li>
         <li>
@@ -25,17 +28,13 @@ const FilledOrdersTable = ({
         <li>No. of Fills</li>
       </ul>
       {filledOrders.length === 0 && (
-          <div className={Styles.MarketOpenOrdersList__empty} />
-        )}
+        <div className={Styles.MarketOpenOrdersList__empty} />
+      )}
       <div className={Styles.MarketOpenOrdersList__scrollContainer}>
-        {(filledOrders.length > 0) && (
+        {filledOrders.length > 0 && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {filledOrders.map((order, i) => (
-              <FilledOrdersOrder
-                key={i}
-                order={order}
-                isMobile={false}
-              />
+              <FilledOrdersOrder key={i} order={order} isMobile={false} />
             ))}
           </div>
         )}
@@ -46,7 +45,7 @@ const FilledOrdersTable = ({
 );
 
 FilledOrdersTable.propTypes = {
-  filledOrders: PropTypes.array,
+  filledOrders: PropTypes.array
 };
 
 FilledOrdersTable.defaultProps = {
