@@ -108,7 +108,7 @@ export class Candlestick extends React.Component {
           updateSelectedOrderProperties={() => {}}
           marketMax={maxPrice}
           marketMin={minPrice}
-          outcomeName={"someanem"}
+          outcomeName="someanem"
         />
       </div>
     );
