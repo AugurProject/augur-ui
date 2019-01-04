@@ -17,7 +17,6 @@ import { BUY } from "modules/transactions/constants/types";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
-import { MarketViewCharts } from "src/modules/market/components/market-view-charts/market-view-charts";
 import { BigNumber } from "bignumber.js";
 
 export default class MarketView extends Component {
