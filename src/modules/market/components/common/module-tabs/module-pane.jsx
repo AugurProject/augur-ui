@@ -1,5 +1,5 @@
-import React from "react";
+// import React from "react";
 
-const ModulePane = p => <div>{p.children}</div>;
+const ModulePane = p => p.children;
 
 export default ModulePane;
