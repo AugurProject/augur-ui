@@ -7,6 +7,7 @@ import MarketOrdersPositionsTable from "modules/market/containers/market-orders-
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
+import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
 import { createBigNumber } from "utils/create-big-number";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 
@@ -227,7 +228,12 @@ export default class MarketView extends Component {
                     isMobile={isMobile}
                   />
                 </div>
-                <div className={Styles.MarketView__component}>Charts</div>
+                <div className={Styles.MarketView__component}>
+                  <MarketChartsPane
+                    marketId={marketId}
+                    selectedOutcome={s.selectedOutcome}
+                  />
+                </div>
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>

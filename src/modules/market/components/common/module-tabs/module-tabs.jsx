@@ -43,14 +43,13 @@ export default class ModuleTabs extends Component {
             [Styles.ModuleTabs__activeTab]: this.state.selected === index
           })}
         >
-          <a
-            href="#"
+          <button
             onClick={e => {
               this.handleClick(e, index);
             }}
           >
             {child.props.label}
-          </a>
+          </button>
         </li>
       );
     }
