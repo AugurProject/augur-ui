@@ -249,13 +249,13 @@ export default class MarketView extends Component {
                 </div>
               </div>
             </div>
-          </div>
-          <div className={Styles.MarketView__secondRow}>
-            <div
-              className={Styles.MarketView__component}
-              style={{ padding: "0px" }}
-            >
-              <MarketOrdersPositionsTable marketId={marketId} />
+            <div className={Styles.MarketView__secondRow}>
+              <div
+                className={Styles.MarketView__component}
+                style={{ padding: "0px" }}
+              >
+                <MarketOrdersPositionsTable marketId={marketId} />
+              </div>
             </div>
           </div>
           <div className={Styles.MarketView__secondColumn}>
