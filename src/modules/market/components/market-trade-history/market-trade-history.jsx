@@ -60,7 +60,7 @@ export default class MarketTradeHistory extends Component {
                     <ul
                       key={priceTime.key}
                       className={
-                        Styles["MarketTradeHistory__table-header-trade"]
+                        Styles.MarketTradeHistory__table__trade__data
                       }
                     >
                       <li
