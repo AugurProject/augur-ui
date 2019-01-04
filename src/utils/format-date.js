@@ -39,13 +39,18 @@ export function formatDate(d) {
 
   // UTC Time Formatting
   const utcTime = [date.getUTCHours(), date.getUTCMinutes()];
+  const utcTimeTwelve = getTwelveHourTime(utcTime);
+  const utcTimeWithSeconds = [
+    ("0" + convertToTwelveHour(date.getUTCHours())).slice(-2),
+    ("0" + date.getUTCMinutes()).slice(-2),
+    ("0" + date.getUTCSeconds()).slice(-2)
+  ];
   const utcAMPM = ampm(utcTime[0]);
-  const utcTimeTwelve = getTwelveHour(utcTime);
 
   // Locat Time Formatting
   const localTime = [date.getHours(), date.getMinutes()];
   const localAMPM = ampm(localTime[0]);
-  const localTimeTwelve = getTwelveHour(localTime);
+  const localTimeTwelve = getTwelveHourTime(localTime);
   const localOffset = (date.getTimezoneOffset() / 60) * -1;
   const localOffsetFormatted =
     localOffset > 0 ? `+${localOffset}` : localOffset.toString();
@@ -58,6 +63,12 @@ export function formatDate(d) {
     } ${date.getUTCDate()}, ${date.getUTCFullYear()} ${utcTimeTwelve.join(
       ":"
     )} ${utcAMPM}`, // UTC time
+    formattedShortDate: `${
+      shortMonths[date.getUTCMonth()]
+    } ${date.getUTCDate()} ${date.getUTCFullYear()}`,
+    formattedShortTime: `${utcTimeWithSeconds.join(
+      ":"
+    )}${utcAMPM.toLowerCase()}`,
     formattedShort: `${
       shortMonths[date.getUTCMonth()]
     } ${date.getUTCDate()}, ${date.getUTCFullYear()} ${utcTimeTwelve.join(
@@ -95,9 +106,13 @@ function ampm(time) {
   return time < 12 ? "AM" : "PM";
 }
 
-function getTwelveHour(time) {
-  time[0] = time[0] < 12 ? time[0] : time[0] - 12;
-  time[0] = time[0] || 12;
+function convertToTwelveHour(value) {
+  const hour = value < 12 ? value : value - 12;
+  return hour || 12;
+}
+
+function getTwelveHourTime(time) {
+  time[0] = convertToTwelveHour(time[0]);
   if (time[1] < 10) time[1] = "0" + time[1];
 
   return time;

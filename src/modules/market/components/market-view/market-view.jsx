@@ -9,7 +9,7 @@ import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome
 import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
 import { createBigNumber } from "utils/create-big-number";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
-
+import MarketTradeHistory from "modules/market/containers/market-trade-history";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { BUY } from "modules/transactions/constants/types";
 
@@ -26,17 +26,19 @@ export default class MarketView extends Component {
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     loadingState: PropTypes.any,
-    pricePrecision: PropTypes.number.isRequired,
+    pricePrecision: PropTypes.number,
     isMobile: PropTypes.bool,
     outcomes: PropTypes.array,
     isLogged: PropTypes.isLogged
   };
 
   static defaultProps = {
+    pricePrecision: 4,
     marketType: undefined,
     loadingState: null,
     isMobile: false,
-    outcomes: []
+    outcomes: [],
+    isLogged: false
   };
 
   constructor(props) {
@@ -268,7 +270,14 @@ export default class MarketView extends Component {
               className={Styles.MarketView__component}
               style={{ minHeight: "400px" }}
             >
-              Trade History
+              <div className={Styles.MarketView__component__history}>
+                {marketId && (
+                  <MarketTradeHistory
+                    marketId={marketId}
+                    outcome={s.selectedOutcome}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </section>

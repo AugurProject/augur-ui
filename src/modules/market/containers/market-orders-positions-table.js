@@ -58,9 +58,6 @@ const mapStateToProps = (state, ownProps) => {
     canClaim = timeHasPassed.toNumber() > 0;
   }
 
-  console.log(market.consensus && market.consensus.winningOutcome);
-  console.log(positions);
-
   return {
     hasClaimableReturns: market.outstandingReturns && canClaim,
     winningOutcome: market.consensus && market.consensus.winningOutcome,
