@@ -1,0 +1,53 @@
+@import (reference) '~assets/styles/shared';
+
+.FilledOrder {
+  > li {
+    &:last-of-type {
+      padding-right: 1rem;
+    }
+  }
+
+  &:hover {
+    //background-color: @color-grayish-purple;
+  }
+}
+
+.FilledOrder__active {
+  //background-color: @color-grayish-purple;
+}
+
+.FilledOrder__chevron {
+  margin-left: 9px;
+  margin-top: 5px;
+}
+
+// .FilledOrder__container {
+//   background-color: @color-grayish-purple;
+
+//   &:nth-child(even) {
+//     background-color: @color-dark-grayish-purple;
+//   }
+// }
+
+
+.FilledOrder__table-header {
+  justify-content: flex-end;
+  background-color: @color-extra-darkpurple;
+
+  > li {
+    max-width: 160px;
+    text-align: center;
+
+    &:first-child {
+      text-align: center;
+    }
+
+    &:last-of-type {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      padding-right: 1.2rem;
+    }
+  }
+}

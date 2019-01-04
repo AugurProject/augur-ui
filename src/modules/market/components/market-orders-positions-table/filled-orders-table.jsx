@@ -2,6 +2,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-list--orphaned-order/market-positions-list--orphaned-order";
 import FilledOrdersOrder from "modules/market/components/market-orders-positions-table/filled-orders-table--orders";
@@ -13,7 +14,7 @@ const FilledOrdersTable = ({
 }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
-      <ul className={Styles["MarketOpenOrdersList__table-header"]}>
+      <ul className={classNames(Styles["MarketOpenOrdersList__table-header"], Styles["MarketFilledOrdersList__table-header"])}>
         <li>Outcome</li>
         <li>Type</li>
         <li>

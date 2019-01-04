@@ -1,6 +1,7 @@
 import { createBigNumber } from "utils/create-big-number";
+import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
 
-export function selectFilledOrders(marketTradeHistory, accountId) {
+export function selectFilledOrders(marketTradeHistory, accountId, marketType, marketOutcomes) {
   if (!marketTradeHistory || marketTradeHistory.length < 1) {
     return [];
   }
@@ -17,6 +18,13 @@ export function selectFilledOrders(marketTradeHistory, accountId) {
       const foundOrder = order.find(({ id }) => id === orderId);
       amount = createBigNumber(amount)
       price = createBigNumber(price)
+
+      const outcomeInfo = marketOutcomes.find(
+        outcomeValue => outcomeValue.id === outcome.toString()
+      );
+
+      outcome = outcomeInfo ? outcomeInfo.description || outcomeInfo.name : price.toString()
+
       if (foundOrder) {
         foundOrder.trades.push({
           outcome,
