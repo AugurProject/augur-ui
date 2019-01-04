@@ -24,7 +24,6 @@ class MarketOutcomeCandlestick extends React.Component {
     isMobileSmall: PropTypes.bool.isRequired,
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
-    orderBookKeys: PropTypes.object.isRequired,
     outcomeName: PropTypes.string.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
@@ -45,7 +44,6 @@ class MarketOutcomeCandlestick extends React.Component {
       pricePrecision,
       marketMax,
       marketMin,
-      orderBookKeys,
       priceTimeSeries,
       selectedPeriod,
       selectedRange,
@@ -67,7 +65,6 @@ class MarketOutcomeCandlestick extends React.Component {
       pricePrecision,
       marketMax,
       marketMin,
-      orderBookKeys,
       outcomeBounds,
       priceTimeSeries,
       selectedPeriod,
@@ -172,7 +169,6 @@ class MarketOutcomeCandlestick extends React.Component {
       isMobile,
       marketMax,
       marketMin,
-      orderBookKeys,
       outcomeName,
       priceTimeSeries,
       selectedPeriod,
@@ -243,7 +239,6 @@ class MarketOutcomeCandlestick extends React.Component {
         pricePrecision,
         marketMax,
         marketMin,
-        orderBookKeys,
         priceTimeSeries,
         xScale,
         yDomain,
@@ -304,7 +299,6 @@ class MarketOutcomeCandlestick extends React.Component {
         pricePrecision,
         marketMax,
         marketMin,
-        orderBookKeys,
         priceTimeSeries,
         updateHoveredPeriod: this.updateHoveredPeriod,
         updateHoveredPrice: this.updateHoveredPrice,
@@ -648,7 +642,6 @@ function attachHoverClickHandlers({
   pricePrecision,
   marketMax,
   marketMin,
-  orderBookKeys,
   priceTimeSeries,
   updateHoveredPeriod,
   updateHoveredPrice,
@@ -669,18 +662,7 @@ function attachHoverClickHandlers({
           .toFixed(pricePrecision)
       )
     )
-    .on("mouseout", clearCrosshairs)
-    .on("click", () => {
-      const mouse = d3.mouse(d3.select("#candlestick_chart").node());
-      const orderPrice = yScale.invert(mouse[1]).toFixed(pricePrecision);
-
-      if (orderPrice > marketMin && orderPrice < marketMax) {
-        updateSelectedOrderProperties({
-          selectedNav: orderPrice > orderBookKeys.mid ? BUY : SELL,
-          orderPrice
-        });
-      }
-    });
+    .on("mouseout", clearCrosshairs);
 
   candleChart
     .selectAll("rect.hover")
