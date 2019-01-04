@@ -356,11 +356,9 @@ export default class CreateMarketResolution extends Component {
           <br />
           <p>
             {" "}
-            The market expiration date needs to be a date and time sufficiently
-            *after* the event is over where people can publicly view the result
-            at that time, not before or during. If an event happens on 01/01 and
-            is reported on 01/02, the expiration date should be after the time
-            it&apos;s reported on 01/02.{" "}
+            This should be a date &amp; time sufficiently *after* the event, when the result can be viewed publicly.
+            <br />
+            If an event happens on 01/01 and is reported on 01/02, the expiration date should be after the time it's reported on 01/02.{" "}
           </p>
           <br />
           <SingleDatePicker
