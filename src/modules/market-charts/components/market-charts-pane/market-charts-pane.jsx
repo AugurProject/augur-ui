@@ -56,7 +56,10 @@ export default class MarketChartsPane extends Component {
     return (
       <ModuleTabs selected={0}>
         <ModulePane label="Price History">
-          <MarketOutcomesChart marketId={marketId} />
+            <MarketOutcomesChart
+                marketId={marketId}
+                selectedOutcome={selectedOutcome}
+            />
         </ModulePane>
         <ModulePane label="Candlesticks">
           <Candlestick

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
@@ -107,7 +107,8 @@ export default class MarketOutcomesChart extends Component {
     hasPriceHistory,
     bucketedPriceTimeSeries,
     pricePrecision,
-    isMobileSmall
+    isMobileSmall,
+    selectedOutcome
   }) {
     if (this.outcomesChart) {
       const drawParams = determineDrawParams({
@@ -147,7 +148,8 @@ export default class MarketOutcomesChart extends Component {
         estimatedInitialPrice,
         outcomes,
         drawParams,
-        bucketedPriceTimeSeries
+        bucketedPriceTimeSeries,
+        selectedOutcome
       });
 
       drawCrosshairs({
@@ -338,16 +340,15 @@ function drawXAxisLabels(options) {
     .call(d3.axisBottom(drawParams.xScale));
 }
 
-function drawSeries(options) {
-  const {
-    creationTime,
-    drawParams,
-    estimatedInitialPrice,
-    outcomes,
-    chart,
-    bucketedPriceTimeSeries
-  } = options;
-
+function drawSeries({
+  creationTime,
+  drawParams,
+  estimatedInitialPrice,
+  outcomes,
+  chart,
+  bucketedPriceTimeSeries,
+  selectedOutcome
+}) {
   const initialPoint = {
     price: estimatedInitialPrice.toString(),
     timestamp: creationTime
@@ -359,14 +360,26 @@ function drawSeries(options) {
     .y(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
 
   outcomes.forEach((outcome, i) => {
-    chart
+    const p = chart
       .append("path")
       .data([
         [initialPoint, ...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]]
       ])
+      .attr("d", outcomeLine)
       .classed(`${Styles["MarketOutcomesChart__outcome-line"]}`, true)
-      .classed(`${Styles[`MarketOutcomesChart__outcome-line--${i + 1}`]}`, true)
-      .attr("d", outcomeLine);
+      .classed(
+        `${Styles[`MarketOutcomesChart__outcome-line--${i + 1}`]}`,
+        true
+      );
+    if (!isEmpty(selectedOutcome)) {
+      p.classed(
+        `${Styles[`MarketOutcomesChart__outcome-line-selected`]}`,
+        selectedOutcome === outcome.id
+      ).classed(
+        `${Styles[`MarketOutcomesChart__outcome-line-unselected`]}`,
+        selectedOutcome !== outcome.id
+      );
+    }
   });
 }
 
