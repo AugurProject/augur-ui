@@ -3,40 +3,48 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
 import MarketHeader from "modules/market/containers/market-header";
+import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
+import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
 import { createBigNumber } from "utils/create-big-number";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
-
+import MarketTradeHistory from "modules/market/containers/market-trade-history";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { BUY } from "modules/transactions/constants/types";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
+import { BigNumber } from "bignumber.js";
 
 export default class MarketView extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
+    maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
+    minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     marketId: PropTypes.string.isRequired,
+    currentTimestamp: PropTypes.number.isRequired,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     loadingState: PropTypes.any,
-    pricePrecision: PropTypes.number.isRequired,
+    pricePrecision: PropTypes.number,
     isMobile: PropTypes.bool,
     outcomes: PropTypes.array,
-    isLogged: PropTypes.isLogged
+    isLogged: PropTypes.bool
   };
 
   static defaultProps = {
+    pricePrecision: 4,
     marketType: undefined,
     loadingState: null,
     isMobile: false,
-    outcomes: []
+    outcomes: [],
+    isLogged: false
   };
 
   constructor(props) {
@@ -61,7 +69,8 @@ export default class MarketView extends Component {
         1: {
           ...this.DEFAULT_ORDER_PROPERTIES
         }
-      }
+      },
+      priceTimeSeries: []
     };
 
     this.updateSelectedOutcome = this.updateSelectedOutcome.bind(this);
@@ -159,13 +168,17 @@ export default class MarketView extends Component {
 
   render() {
     const {
+      currentTimestamp,
       isLogged,
       description,
       marketId,
+      maxPrice,
+      minPrice,
       location,
       isMobile,
       outcomes,
-      market
+      market,
+      loadingState
     } = this.props;
     const s = this.state;
 
@@ -227,7 +240,15 @@ export default class MarketView extends Component {
                     isMobile={isMobile}
                   />
                 </div>
-                <div className={Styles.MarketView__component}>Charts</div>
+                <div className={Styles.MarketView__component}>
+                  <MarketChartsPane
+                    marketId={marketId}
+                    selectedOutcome={s.selectedOutcome}
+                    currentTimestamp={currentTimestamp}
+                    maxPrice={maxPrice}
+                    minPrice={minPrice}
+                  />
+                </div>
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>
@@ -268,7 +289,14 @@ export default class MarketView extends Component {
               className={Styles.MarketView__component}
               style={{ minHeight: "400px" }}
             >
-              Trade History
+              <div className={Styles.MarketView__component__history}>
+                {marketId && (
+                  <MarketTradeHistory
+                    marketId={marketId}
+                    outcome={s.selectedOutcome}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </section>

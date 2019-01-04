@@ -6,6 +6,8 @@ import { selectMarket } from "modules/markets/selectors/market";
 import parseQuery from "modules/routes/helpers/parse-query";
 import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
 import getPrecision from "utils/get-number-precision";
+import { selectCurrentTimestampInSeconds } from "src/select-state";
+import { createBigNumber } from "src/utils/create-big-number";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -21,6 +23,7 @@ const mapStateToProps = (state, ownProps) => {
   const pricePrecision = market && getPrecision(market.tickSize, 4);
 
   return {
+    currentTimestamp: selectCurrentTimestampInSeconds(state),
     outcomes: market.outcomes || [],
     isConnected: connection.isConnected && universe.id != null,
     marketType: market.marketType,
@@ -28,6 +31,8 @@ const mapStateToProps = (state, ownProps) => {
     loadingState: market.loadingState || null,
     isLogged: authStatus.isLogged,
     market,
+    minPrice: market.minPrice || createBigNumber(0),
+    maxPrice: market.maxPrice || createBigNumber(0),
     universe,
     orderBooks,
     isMobile: appStatus.isMobile,

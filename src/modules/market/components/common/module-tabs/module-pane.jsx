@@ -1,5 +1,9 @@
-import React from "react";
+import PropTypes from "prop-types";
 
-const ModulePane = p => <div>{p.children}</div>;
+const ModulePane = p => p.children;
+
+ModulePane.propTypes = {
+  label: PropTypes.string
+};
 
 export default ModulePane;
