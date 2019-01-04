@@ -8,16 +8,6 @@ export function selectFilledOrders(marketTradeHistory, accountId) {
   const filledOrders = marketTradeHistory.filter(
     trade => trade.creator === accountId
   );
-  // need to group by order id
-  // [
-  // 	{
-  // 		quantity: 1,
-  // 		outcome: name
-  // 		trades: [
-  // 			{trade}
-  // 		]
-  // 	}
-  // ]
 
   const orders = filledOrders.reduce(
     (
@@ -25,6 +15,8 @@ export function selectFilledOrders(marketTradeHistory, accountId) {
       { orderId, outcome, amount, price, type, timestamp, transactionHash }
     ) => {
       const foundOrder = order.find(({ id }) => id === orderId);
+      amount = createBigNumber(amount)
+      price = createBigNumber(price)
       if (foundOrder) {
         foundOrder.trades.push({
           outcome,
@@ -36,7 +28,7 @@ export function selectFilledOrders(marketTradeHistory, accountId) {
         });
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
-        foundOrder.quantity = createBigNumber(foundOrder.quantity).plus(amount);
+        foundOrder.amount = createBigNumber(foundOrder.amount).plus(amount);
       } else {
         order.push({
           id: orderId,
@@ -44,7 +36,7 @@ export function selectFilledOrders(marketTradeHistory, accountId) {
           outcome,
           type,
           price,
-          quantity: amount,
+          amount,
           trades: [{ outcome, amount, price, type, timestamp, transactionHash }]
         });
       }

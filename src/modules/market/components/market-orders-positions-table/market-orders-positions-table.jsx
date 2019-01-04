@@ -5,6 +5,7 @@ import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 import OpenOrdersTable from "modules/market/components/market-orders-positions-table/open-orders-table";
 import PositionsTable from "modules/market/components/market-positions-table/market-positions-table";
+import FilledOrdersTable from "modules/market/components/market-orders-positions-table/filled-orders-table";
 
 const MarketOrdersPositionsTable = ({
   isMobile,
@@ -17,7 +18,8 @@ const MarketOrdersPositionsTable = ({
   openOrders,
   cancelOrphanedOrder,
   sellCompleteSets,
-  market
+  market,
+  filledOrders
 }) => (
   <section>
     <ModuleTabs selected={0}>
@@ -30,7 +32,9 @@ const MarketOrdersPositionsTable = ({
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
-        <div>Filled Orders!</div>
+        <FilledOrdersTable
+          filledOrders={filledOrders}
+        />
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable
@@ -57,7 +61,8 @@ MarketOrdersPositionsTable.propTypes = {
   openOrders: PropTypes.array,
   cancelOrphanedOrder: PropTypes.func.isRequired,
   sellCompleteSets: PropTypes.func.isRequired,
-  market: PropTypes.object.isRequired
+  market: PropTypes.object.isRequired,
+  filledOrders: PropTypes.array,
 };
 
 MarketOrdersPositionsTable.defaultProps = {
@@ -65,7 +70,8 @@ MarketOrdersPositionsTable.defaultProps = {
   numCompleteSets: null,
   positions: [],
   orphanedOrders: [],
-  openOrders: []
+  openOrders: [],
+  filledOrders: [], 
 };
 
 export default MarketOrdersPositionsTable;

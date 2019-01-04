@@ -63,7 +63,8 @@ const mapStateToProps = (state, ownProps) => {
     state.marketTradingHistory[ownProps.marketId],
     state.loginAccount.address
   );
-  console.log(filledOrders);
+
+  //console.log(filledOrders)
 
   return {
     hasClaimableReturns: market.outstandingReturns && canClaim,
