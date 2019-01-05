@@ -34,7 +34,6 @@ export default class MarketOutcomesChart extends Component {
 
     this.state = {
       chart: null,
-      hoveredOutcome: null,
       drawParams: {},
       hoveredLocation: []
     };
@@ -188,32 +187,10 @@ export default class MarketOutcomesChart extends Component {
   }
 
   render() {
-    const { pricePrecision } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.MarketOutcomesChart}>
-        <h3>price (eth) of each outcome</h3>
-        <div className={Styles[`MarketOutcomesChart__chart-header`]}>
-          <span className={Styles.MarketOutcomesChart__details}>
-            {s.hoveredOutcome === null ? (
-              "select an outcome to begin placing an order"
-            ) : (
-              <span>
-                <span className={Styles.MarketOutcomesChart__name}>
-                  {s.hoveredOutcome.name}
-                </span>
-                <span className={Styles.MarketOutcomesChart__price}>
-                  last: {s.hoveredOutcome.price.toFixed(pricePrecision)} eth
-                </span>
-                <span className={Styles.MarketOutcomesChart__instruction}>
-                  click to view more information about this outcome
-                </span>
-              </span>
-            )}
-          </span>
-          <div />
-        </div>
         <div
           ref={outcomesChart => {
             this.outcomesChart = outcomesChart;
@@ -270,19 +247,9 @@ function determineDrawParams(options) {
   };
 }
 
-function drawTicks(options) {
-  const { drawParams, chart, pricePrecision } = options;
-
+function drawTicks({ drawParams, chart, pricePrecision }) {
   // Y axis
   //  Bounds
-  //    Top
-  chart
-    .append("line")
-    .attr("class", Styles["MarketOutcomesChart__bounding-line"])
-    .attr("x1", 0)
-    .attr("x2", drawParams.containerWidth)
-    .attr("y1", drawParams.chartDim.top)
-    .attr("y2", drawParams.chartDim.top);
   //    Bottom
   chart
     .append("line")
