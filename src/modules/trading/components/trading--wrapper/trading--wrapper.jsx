@@ -13,6 +13,7 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 
 import getValue from "utils/get-value";
 import { isEqual } from "lodash";
+import { FindReact } from "utils/find-react";
 
 import { BUY, SELL, LIMIT } from "modules/transactions/constants/types";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
@@ -33,6 +34,7 @@ class MarketTradingWrapper extends Component {
     clearTradeInProgress: PropTypes.func.isRequired,
     selectedOutcome: PropTypes.object,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
+    handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired
   };
 
@@ -184,7 +186,8 @@ class MarketTradingWrapper extends Component {
       selectedOutcome,
       toggleForm,
       showOrderPlaced,
-      gasPrice
+      gasPrice,
+      handleFilledOnly
     } = this.props;
     const s = this.state;
 
@@ -246,8 +249,27 @@ class MarketTradingWrapper extends Component {
             </ul>
             {initialMessage && (
               <p className={Styles["TradingWrapper__initial-message"]}>
-                {!isLogged ? <span>Log in to trade.</span> : initialMessage}
+                {!isLogged ? (
+                  <span>Signup or login to trade.</span>
+                ) : (
+                  initialMessage
+                )}
               </p>
+            )}
+            {!isLogged && (
+              <button
+                id="login-button"
+                className={Styles["TradingWrapper__button--login"]}
+                onClick={() =>
+                  FindReact(
+                    document.getElementsByClassName(
+                      "connect-account-styles_ConnectAccount"
+                    )[0]
+                  ).toggleDropdown()
+                }
+              >
+                Sign in to trade
+              </button>
             )}
             {initialMessage &&
               isLogged &&
@@ -303,6 +325,7 @@ class MarketTradingWrapper extends Component {
               isMobile={isMobile}
               clearOrderForm={this.clearOrderForm}
               showOrderPlaced={showOrderPlaced}
+              handleFilledOnly={handleFilledOnly}
             />
           )}
       </section>
