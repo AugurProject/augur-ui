@@ -8,6 +8,7 @@ import ReactFauxDOM from "react-faux-dom";
 import { createBigNumber } from "utils/create-big-number";
 
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
+import { checkPropsChange } from "src/utils/check-props-change";
 
 export default class MarketOutcomesChart extends Component {
   static propTypes = {
@@ -49,9 +50,13 @@ export default class MarketOutcomesChart extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { outcomes, pricePrecision } = this.props;
+    const { pricePrecision } = this.props;
 
-    if (!isEqual(outcomes, nextProps.outcomes)) this.drawChart(nextProps);
+    if (
+      checkPropsChange(this.props, nextProps, ["outcomes", "selectedOutcome"])
+    ) {
+      this.drawChart(nextProps);
+    }
 
     if (
       !isEqual(this.state.hoveredLocation, nextState.hoveredLocation) ||
