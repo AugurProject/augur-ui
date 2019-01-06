@@ -287,7 +287,7 @@ export default class MarketView extends Component {
             </div>
             <div
               className={Styles.MarketView__component}
-              style={{ minHeight: "400px" }}
+              style={{ minHeight: "400px", borderBottom: '8px solid #211a32' }}
             >
               <div className={Styles.MarketView__component__history}>
                 {marketId && (

@@ -1,12 +1,5 @@
 @import (reference) "~assets/styles/shared";
 
-.MarketTradeHistory__container {
-  border-bottom: 8px solid @color-light-purple;
-  // todo: fix this, height should inherit from parent
-  height: 25rem;
-  padding-bottom: 1rem;
-}
-
 .MarketTradeHistory__heading {
   align-items: center;
   background-color: @color-light-purple;
@@ -21,7 +14,10 @@
 
 .MarketTradeHistory__table {
   display: table;
+  position: sticky;
+  top: 0;
   width: 100%;
+  z-index: 100;
 }
 
 .MarketTradeHistory__table-header {
@@ -54,9 +50,14 @@
   padding-bottom: 0.25rem;
   width: 100%;
 
+  &:last-child {
+    padding-bottom: 8px;
+  }
+
   > li {
     font-family: 'Roboto Mono', monospace;
-    padding-top: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
 
     &:first-child {
       text-align: left;
@@ -91,8 +92,8 @@
 
   > li {
     display: table-cell;
-    padding: 0 0 0.625rem;
-    padding-top: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     text-align: right;
 
     &:first-child {
@@ -124,6 +125,8 @@
 .MarketTradeHistory__table__data {
   overflow-y: scroll;
   height: inherit;
+  max-height: 47vh;
+  flex-grow: 1;
 }
 
 .MarketTradeHistory__trade__indicatorDown,
