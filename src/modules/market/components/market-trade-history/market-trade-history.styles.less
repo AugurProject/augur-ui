@@ -1,5 +1,11 @@
 @import (reference) "~assets/styles/shared";
 
+.MarketTradeHistory__container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .MarketTradeHistory__heading {
   align-items: center;
   background-color: @color-light-purple;
@@ -124,8 +130,8 @@
 
 .MarketTradeHistory__table__data {
   overflow-y: scroll;
-  height: inherit;
-  max-height: 47vh;
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
 }
 
