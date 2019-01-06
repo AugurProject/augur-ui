@@ -38,7 +38,10 @@ export default class PortfolioReports extends Component {
     resolvedMarkets: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
-    loadMarkets: PropTypes.func.isRequired
+    loadMarkets: PropTypes.func.isRequired,
+    disputableMarketIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    upcomingDisputableMarketIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    loadDisputingDetails: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -112,7 +115,10 @@ export default class PortfolioReports extends Component {
       showUpcomingPagination,
       loadMarketsInfoIfNotLoaded,
       resolvedMarkets,
-      toggleFavorite
+      toggleFavorite,
+      disputableMarketIds,
+      upcomingDisputableMarketIds,
+      loadDisputingDetails
     } = this.props;
     let disableClaimReportingFeesNonforkedMarketsButton = "";
     if (
@@ -183,6 +189,9 @@ export default class PortfolioReports extends Component {
             markets={markets}
             upcomingMarkets={upcomingMarkets}
             upcomingMarketsCount={upcomingMarketsCount}
+            disputableMarketIds={disputableMarketIds}
+            upcomingDisputableMarketIds={upcomingDisputableMarketIds}
+            loadDisputingDetails={loadDisputingDetails}
             isMobile={isMobile}
             isConnected={isConnected}
             loadMarkets={loadMarkets}

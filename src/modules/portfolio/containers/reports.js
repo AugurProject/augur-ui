@@ -1,7 +1,7 @@
 import { constants } from "services/augurjs";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { selectCurrentTimestamp, selectMarketReportState } from "src/select-state";
+import { selectCurrentTimestamp } from "src/select-state";
 import { each, orderBy } from "lodash";
 import PortfolioReports from "modules/portfolio/components/portfolio-reports/portfolio-reports";
 import { updateModal } from "modules/modal/actions/update-modal";
@@ -24,9 +24,6 @@ const mapStateToProps = state => {
   const disputableMarkets = [];
   const upcomingDisputableMarkets = [];
   const resolvedMarkets = [];
-  const disputableMarketIds = selectMarketReportState(state).dispute || [];
-  const upcomingDisputableMarketIds =
-    selectMarketReportState(state).awaiting || [];
 
   const reportedMarkets =
     (state.reports &&
@@ -55,6 +52,11 @@ const mapStateToProps = state => {
   });
 
   orderBy(resolvedMarkets, ["endTime.timestamp"], ["desc"]);
+
+  const disputableMarketIds = disputableMarkets.map(item => item.id);
+  const upcomingDisputableMarketIds = upcomingDisputableMarkets.map(
+    item => item.id
+  );
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
