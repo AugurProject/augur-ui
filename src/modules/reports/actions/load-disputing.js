@@ -9,6 +9,8 @@ import async from "async";
 export const loadDisputing = (callback = logError) => (dispatch, getState) => {
   const { universe } = getState();
   const args = {
+    sortBy: "endTime",
+    isSortDescending: true,
     universe: universe.id
   };
   async.parallel(
@@ -18,7 +20,6 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
           "getMarkets",
           {
             reportingState: constants.REPORTING_STATE.CROWDSOURCING_DISPUTE,
-            sortBy: "endTime",
             ...args
           },
           (err, result) => {
@@ -33,7 +34,6 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
           "getMarkets",
           {
             reportingState: constants.REPORTING_STATE.AWAITING_NEXT_WINDOW,
-            sortBy: "endTime",
             ...args
           },
           (err, result) => {
