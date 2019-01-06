@@ -2,7 +2,7 @@ import configureMockStore from "redux-mock-store";
 
 import thunk from "redux-thunk";
 
-import { augur, constants } from "services/augurjs";
+import { augur } from "services/augurjs";
 
 import { loadDisputing } from "modules/reports/actions/load-disputing";
 
@@ -21,11 +21,6 @@ describe("loadDisputing action", () => {
     universe: {
       id: universeAddress
     }
-  };
-
-  const expectedParams = {
-    sortBy: "endTime",
-    universe: universeAddress
   };
 
   let mockStore;
