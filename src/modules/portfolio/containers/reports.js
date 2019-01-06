@@ -1,7 +1,7 @@
 import { constants } from "services/augurjs";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { selectCurrentTimestamp } from "src/select-state";
+import { selectCurrentTimestamp, selectMarketReportState } from "src/select-state";
 import { each, orderBy } from "lodash";
 import PortfolioReports from "modules/portfolio/components/portfolio-reports/portfolio-reports";
 import { updateModal } from "modules/modal/actions/update-modal";
@@ -13,6 +13,7 @@ import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispu
 import { loadReportingHistory } from "modules/reports/actions/load-reporting-history";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 import { toggleFavorite } from "modules/markets/actions/update-favorites";
+import { loadDisputingDetails } from "modules/reports/actions/load-disputing-details";
 
 const mapStateToProps = state => {
   const PAGINATION_COUNT = 10;
@@ -23,6 +24,9 @@ const mapStateToProps = state => {
   const disputableMarkets = [];
   const upcomingDisputableMarkets = [];
   const resolvedMarkets = [];
+  const disputableMarketIds = selectMarketReportState(state).dispute || [];
+  const upcomingDisputableMarketIds =
+    selectMarketReportState(state).awaiting || [];
 
   const reportedMarkets =
     (state.reports &&
@@ -61,16 +65,18 @@ const mapStateToProps = state => {
     reportingFees: state.reportingWindowStats.reportingFees,
     markets: disputableMarkets,
     showPagination: disputableMarkets.length > PAGINATION_COUNT,
-    disputableMarketsLength: disputableMarkets.length,
+    disputableMarketsLength: disputableMarketIds.length,
     upcomingMarkets: upcomingDisputableMarkets,
-    upcomingMarketsCount: upcomingDisputableMarkets.length,
+    upcomingMarketsCount: upcomingDisputableMarketIds.length,
     showUpcomingPagination: upcomingDisputableMarkets.length > PAGINATION_COUNT,
     paginationCount: PAGINATION_COUNT,
     outcomes: disputeOutcomes,
     resolvedMarkets,
     isForking: state.universe.isForking,
     forkEndTime: state.universe.forkEndTime,
-    forkingMarketId: state.universe.forkingMarket
+    forkingMarketId: state.universe.forkingMarket,
+    disputableMarketIds,
+    upcomingDisputableMarketIds
   };
 };
 
@@ -82,7 +88,9 @@ const mapDispatchToProps = dispatch => ({
   loadMarkets: () => dispatch(loadReportingHistory()),
   loadMarketsInfoIfNotLoaded: marketIds =>
     dispatch(loadMarketsInfoIfNotLoaded(marketIds)),
-  toggleFavorite: marketId => dispatch(toggleFavorite(marketId))
+  toggleFavorite: marketId => dispatch(toggleFavorite(marketId)),
+  loadDisputingDetails: (marketIds, cb) =>
+    dispatch(loadDisputingDetails(marketIds, cb))
 });
 
 export default withRouter(

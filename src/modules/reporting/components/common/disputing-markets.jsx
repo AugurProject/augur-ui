@@ -168,7 +168,7 @@ export default class DisputingMarkets extends Component {
       upcomingMarkets,
       lowerBoundUpcoming,
       boundedLengthUpcoming,
-      showPagination
+      showUpcomingPagination
     );
     if (isForking) {
       forkingMarket = markets.find(market => market.id === forkingMarketId);
