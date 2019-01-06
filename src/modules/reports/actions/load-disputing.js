@@ -10,7 +10,7 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
   const { universe } = getState();
   const args = {
     sortBy: "endTime",
-    isSortDescending: true,
+    isSortDescending: false,
     universe: universe.id
   };
   async.parallel(
