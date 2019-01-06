@@ -43,35 +43,6 @@ describe("loadDisputing action", () => {
     store = mockStore(initialStoreState);
   });
 
-  test("should load upcoming dispute markets for a given user in side the given universe", () => {
-    store.dispatch(loadDisputing());
-
-    expect(augur.augurNode.submitRequest).toHaveBeenNthCalledWith(
-      1,
-      "getMarkets",
-      {
-        reportingState: constants.REPORTING_STATE.CROWDSOURCING_DISPUTE,
-        ...expectedParams
-      },
-      expect.any(Function)
-    );
-    augur.augurNode.submitRequest.mock.calls[0][2](null, ["1111"]);
-
-    expect(augur.augurNode.submitRequest).toHaveBeenNthCalledWith(
-      2,
-      "getMarkets",
-      {
-        reportingState: constants.REPORTING_STATE.AWAITING_NEXT_WINDOW,
-        ...expectedParams
-      },
-      expect.any(Function)
-    );
-    augur.augurNode.submitRequest.mock.calls[0][2](null, ["2222", "3333"]);
-
-    const actual = store.getActions();
-    expect(actual).toHaveLength(2);
-  });
-
   describe("upon error", () => {
     let callback;
     let error;
