@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
-import { loadReporting } from "src/modules/reports/actions/load-reporting";
+import { loadReportingFinal } from "src/modules/reports/actions/load-reporting-final";
 import { selectMarketsToReport } from "modules/reports/selectors/select-markets-to-report";
 import { toggleFavorite } from "modules/markets/actions/update-favorites";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadReporting: () => dispatch(loadReporting()),
+  loadReporting: () => dispatch(loadReportingFinal()),
   loadMarketsInfoIfNotLoaded: marketIds =>
     dispatch(loadMarketsInfoIfNotLoaded(marketIds)),
   toggleFavorite: marketId => dispatch(toggleFavorite(marketId))
