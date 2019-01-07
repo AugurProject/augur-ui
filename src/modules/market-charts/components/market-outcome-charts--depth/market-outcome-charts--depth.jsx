@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
 
-import MarketOutcomeChartHeaderDepth from "modules/market-charts/components/market-outcome-charts--header-depth/market-outcome-charts--header-depth";
 import { createBigNumber } from "utils/create-big-number";
 import { isEqual } from "lodash";
 import CustomPropTypes from "utils/custom-prop-types";
@@ -15,26 +14,25 @@ import Styles from "modules/market-charts/components/market-outcome-charts--dept
 
 export default class MarketOutcomeDepth extends Component {
   static propTypes = {
-    sharedChartMargins: PropTypes.object.isRequired,
+    sharedChartMargins: PropTypes.object,
     marketDepth: PropTypes.object.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
-    fixedPrecision: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    updateChartHeaderHeight: PropTypes.func.isRequired,
     updateHoveredPrice: PropTypes.func.isRequired,
     updateHoveredDepth: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
     marketMax: CustomPropTypes.bigNumber.isRequired,
-    hoveredDepth: PropTypes.array.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    headerHeight: PropTypes.number.isRequired,
-    ordersWidth: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     hoveredPrice: PropTypes.any
   };
 
   static defaultProps = {
+    sharedChartMargins: {
+      top: 0,
+      bottom: 30
+    },
     hoveredPrice: null
   };
 
@@ -93,8 +91,7 @@ export default class MarketOutcomeDepth extends Component {
       sharedChartMargins,
       updateHoveredPrice,
       updateSelectedOrderProperties,
-      isMobile,
-      ordersWidth
+      isMobile
     } = this.props;
     if (
       !isEqual(marketDepth, nextProps.marketDepth) ||
@@ -107,8 +104,7 @@ export default class MarketOutcomeDepth extends Component {
       ) ||
       marketMin !== nextProps.marketMin ||
       marketMax !== nextProps.marketMax ||
-      isMobile !== nextProps.isMobile ||
-      ordersWidth !== nextProps.ordersWidth
+      isMobile !== nextProps.isMobile
     ) {
       this.drawDepth({
         marketDepth: nextProps.marketDepth,
@@ -181,13 +177,13 @@ export default class MarketOutcomeDepth extends Component {
       const depthContainer = new ReactFauxDOM.Element("div");
 
       // padding for overflowing x-axis ticks
-      const widthPadding = 30;
+      // const widthPadding = 30;
 
       const depthChart = d3
         .select(depthContainer)
         .append("svg")
         .attr("id", "depth_chart")
-        .attr("width", drawParams.containerWidth + widthPadding)
+        .attr("width", drawParams.containerWidth)
         .attr("height", drawParams.containerHeight);
 
       drawLines({
@@ -326,34 +322,15 @@ export default class MarketOutcomeDepth extends Component {
   }
 
   render() {
-    const {
-      fixedPrecision,
-      pricePrecision,
-      hoveredDepth,
-      isMobile,
-      headerHeight,
-      updateChartHeaderHeight
-    } = this.props;
-
     return (
-      <section className={Styles.MarketOutcomeDepth}>
-        <MarketOutcomeChartHeaderDepth
-          fixedPrecision={fixedPrecision}
-          pricePrecision={pricePrecision}
-          hoveredDepth={hoveredDepth}
-          isMobile={isMobile}
-          headerHeight={headerHeight}
-          updateChartHeaderHeight={updateChartHeaderHeight}
-        />
-        <div
-          ref={depthChart => {
-            this.depthChart = depthChart;
-          }}
-          className={Styles.MarketOutcomeDepth__container}
-        >
-          {this.state.depthContainer}
-        </div>
-      </section>
+      <div
+        ref={depthChart => {
+          this.depthChart = depthChart;
+        }}
+        className={Styles.MarketOutcomeDepth__container}
+      >
+        {this.state.depthContainer}
+      </div>
     );
   }
 }

@@ -3,8 +3,7 @@
 .MarketOutcomeDepth {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  margin-right: 30px;
+  flex: 1 100%;
 }
 
 .MarketOutcomeDepth__depth-hover-values {
@@ -32,11 +31,6 @@
   flex: 1;
 
   :global {
-    #depth_chart {
-      padding-left: 10px;
-      position: absolute;
-    }
-
     #hovered_price_label {
       .caps--small();
 

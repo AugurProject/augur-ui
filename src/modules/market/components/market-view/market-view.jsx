@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 
 import MarketHeader from "modules/market/containers/market-header";
-import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
+// import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
@@ -69,8 +69,7 @@ export default class MarketView extends Component {
         1: {
           ...this.DEFAULT_ORDER_PROPERTIES
         }
-      },
-      priceTimeSeries: []
+      }
     };
 
     this.updateSelectedOutcome = this.updateSelectedOutcome.bind(this);
@@ -177,8 +176,7 @@ export default class MarketView extends Component {
       location,
       isMobile,
       outcomes,
-      market,
-      loadingState
+      market
     } = this.props;
     const s = this.state;
 
@@ -247,6 +245,9 @@ export default class MarketView extends Component {
                     currentTimestamp={currentTimestamp}
                     maxPrice={maxPrice}
                     minPrice={minPrice}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
                   />
                 </div>
               </div>
@@ -287,7 +288,11 @@ export default class MarketView extends Component {
             </div>
             <div
               className={Styles.MarketView__component}
-              style={{ minHeight: "400px", borderBottom: '8px solid #211a32', maxHeight: '50vh' }}
+              style={{
+                minHeight: "400px",
+                borderBottom: "8px solid #211a32",
+                maxHeight: "50vh"
+              }}
             >
               <div className={Styles.MarketView__component__history}>
                 {marketId && (
