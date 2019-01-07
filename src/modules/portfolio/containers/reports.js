@@ -57,8 +57,8 @@ const mapStateToProps = state => {
     ["desc"]
   );
 
-  const disputableMarketIds = disputableMarkets.map(item => item.id);
-  const resolvedMarketIds = userResolvedMarkets.map(item => item.id);
+  const disputableMarketIds = disputableMarkets.map(item => item.id) || [];
+  const resolvedMarketIds = userResolvedMarkets.map(item => item.id) || [];
   const upcomingDisputableMarketIds = upcomingDisputableMarkets.map(
     item => item.id
   );
