@@ -275,6 +275,8 @@ export default class MarketOutcomeDepth extends Component {
       if (hoveredPrice == null) {
         d3.select("#crosshairs").style("display", "none");
         d3.select("#hovered_price_label").text("");
+        d3.select("#hovered_volume_label").text("");
+        d3.select("#hovered_cost_label").text("");
         updateHoveredDepth([]);
       } else {
         const nearestFillingOrder = nearestCompletelyFillingOrder(
@@ -313,10 +315,24 @@ export default class MarketOutcomeDepth extends Component {
         if (nearestFillingOrder && nearestFillingOrder[4] === ASKS) {
           labelOffset = -40;
         }
-        d3.select("#hovered_price_label")
+        d3
+          .select("#hovered_price_label")
           .attr("x", xScale(hoveredPrice) + labelOffset)
-          .attr("y", containerHeight - sharedChartMargins.bottom - 12)
-          .text(clampedHoveredPrice.toFixed(pricePrecision));
+          .attr("y", yScale(nearestFillingOrder[0])).text(`
+            Price: ${clampedHoveredPrice.toFixed(pricePrecision)}
+          `);
+        d3
+          .select("#hovered_volume_label")
+          .attr("x", xScale(hoveredPrice) + labelOffset)
+          .attr("y", yScale(nearestFillingOrder[0]) + labelOffset + 12).text(`
+            Volume: ${clampedHoveredPrice.toFixed(pricePrecision)}
+          `);
+        d3
+          .select("#hovered_cost_label")
+          .attr("x", xScale(hoveredPrice) + labelOffset)
+          .attr("y", yScale(nearestFillingOrder[0]) + labelOffset + 24).text(`
+            Cost: ${clampedHoveredPrice.toFixed(pricePrecision)}
+          `);
       }
     }
   }
@@ -465,8 +481,6 @@ function drawTicks(options) {
     orderBookKeys,
     pricePrecision,
     isMobile,
-    marketMax,
-    marketMin,
     hasOrders
   } = options;
 
@@ -573,7 +587,11 @@ function drawLines(options) {
   //  Fills
   const subtleGradientBid = chartDefs
     .append("linearGradient")
-    .attr("id", "subtleGradientBid");
+    .attr("id", "subtleGradientBid")
+    .attr("x1", 0)
+    .attr("y1", 1)
+    .attr("x2", 0)
+    .attr("y2", 0);
 
   subtleGradientBid
     .append("stop")
@@ -582,17 +600,21 @@ function drawLines(options) {
 
   subtleGradientBid
     .append("stop")
-    .attr("class", "stop-bottom")
-    .attr("offset", "100%");
+    .attr("class", "stop-bottom-bid")
+    .attr("offset", "80%");
 
   const subtleGradientAsk = chartDefs
     .append("linearGradient")
+    .attr("x1", 0)
+    .attr("y1", 0)
+    .attr("x2", 0)
+    .attr("y2", 1)
     .attr("id", "subtleGradientAsk");
 
   subtleGradientAsk
     .append("stop")
     .attr("class", "stop-bottom-ask")
-    .attr("offset", "0%");
+    .attr("offset", "20%");
 
   subtleGradientAsk
     .append("stop")
@@ -643,6 +665,8 @@ function setupCrosshairs(options) {
   const { depthChart } = options;
 
   depthChart.append("text").attr("id", "hovered_price_label");
+  depthChart.append("text").attr("id", "hovered_volume_label");
+  depthChart.append("text").attr("id", "hovered_cost_label");
 
   // create crosshairs
   const crosshair = depthChart
