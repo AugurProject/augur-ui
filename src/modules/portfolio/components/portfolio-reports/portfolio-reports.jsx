@@ -36,6 +36,7 @@ export default class PortfolioReports extends Component {
     updateModal: PropTypes.func.isRequired,
     reportingFees: PropTypes.object.isRequired,
     resolvedMarkets: PropTypes.array.isRequired,
+    resolvedMarketIds: PropTypes.array.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
     loadMarkets: PropTypes.func.isRequired,
@@ -115,6 +116,7 @@ export default class PortfolioReports extends Component {
       showUpcomingPagination,
       loadMarketsInfoIfNotLoaded,
       resolvedMarkets,
+      resolvedMarketIds,
       toggleFavorite,
       disputableMarketIds,
       upcomingDisputableMarketIds,
@@ -209,11 +211,13 @@ export default class PortfolioReports extends Component {
         <div>
           <ReportingResolved
             location={location}
+            isConnected={isConnected}
             history={history}
             isLogged={isConnected}
             isMobile={isMobile}
             loadMarketsInfoIfNotLoaded={loadMarketsInfoIfNotLoaded}
-            markets={resolvedMarkets}
+            resolvedMarkets={resolvedMarkets}
+            resolvedMarketIds={resolvedMarketIds}
             noShowHeader
             toggleFavorite={toggleFavorite}
             nullMessage="Markets you have staked on will be listed here when resolved."

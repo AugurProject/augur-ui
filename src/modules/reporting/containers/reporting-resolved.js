@@ -11,19 +11,19 @@ import { selectMarket } from "modules/markets/selectors/market";
 
 const mapStateToProps = state => {
   const marketsData = selectMarkets(state);
-  const markets = marketsData.filter(
+  const resolvedMarkets = marketsData.filter(
     market =>
       market.reportingState === constants.REPORTING_STATE.FINALIZED ||
       market.reportingState === constants.REPORTING_STATE.AWAITING_FINALIZATION
   );
-  const marketIds = selectMarketReportState(state).resolved || [];
+  const resolvedMarketIds = selectMarketReportState(state).resolved || [];
 
   return {
     isConnected: !!state.universe.id,
     isLogged: state.authStatus.isLogged,
     isMobile: state.appStatus.isMobile,
-    markets,
-    marketIds,
+    resolvedMarkets,
+    resolvedMarketIds,
     isForkingMarketFinalized: state.universe.isForkingMarketFinalized,
     forkingMarket: state.universe.isForking
       ? selectMarket(state.universe.forkingMarket)

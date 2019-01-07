@@ -16,8 +16,8 @@ export default class ReportingResolved extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    markets: PropTypes.array.isRequired,
-    marketIds: PropTypes.array.isRequired,
+    resolvedMarkets: PropTypes.array.isRequired,
+    resolvedMarketIds: PropTypes.array.isRequired,
     isConnected: PropTypes.bool.isRequired,
     nullMessage: PropTypes.string,
     isLogged: PropTypes.bool.isRequired,
@@ -56,8 +56,8 @@ export default class ReportingResolved extends Component {
       isLogged,
       isMobile,
       loadMarketsInfoIfNotLoaded,
-      markets,
-      marketIds,
+      resolvedMarkets,
+      resolvedMarketIds,
       toggleFavorite,
       isForkingMarketFinalized,
       forkingMarket,
@@ -91,8 +91,8 @@ export default class ReportingResolved extends Component {
         <MarketsList
           isLogged={isLogged}
           isMobile={isMobile}
-          markets={markets}
-          filteredMarkets={marketIds}
+          markets={resolvedMarkets}
+          filteredMarkets={resolvedMarketIds}
           location={location}
           history={history}
           linkType={TYPE_FINALIZE_MARKET}

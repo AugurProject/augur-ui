@@ -51,9 +51,14 @@ const mapStateToProps = state => {
     }
   });
 
-  orderBy(resolvedMarkets, ["endTime.timestamp"], ["desc"]);
+  const userResolvedMarkets = orderBy(
+    resolvedMarkets,
+    ["endTime.timestamp"],
+    ["desc"]
+  );
 
   const disputableMarketIds = disputableMarkets.map(item => item.id);
+  const resolvedMarketIds = userResolvedMarkets.map(item => item.id);
   const upcomingDisputableMarketIds = upcomingDisputableMarkets.map(
     item => item.id
   );
@@ -73,7 +78,8 @@ const mapStateToProps = state => {
     showUpcomingPagination: upcomingDisputableMarkets.length > PAGINATION_COUNT,
     paginationCount: PAGINATION_COUNT,
     outcomes: disputeOutcomes,
-    resolvedMarkets,
+    resolvedMarkets: userResolvedMarkets,
+    resolvedMarketIds,
     isForking: state.universe.isForking,
     forkEndTime: state.universe.forkEndTime,
     forkingMarketId: state.universe.forkingMarket,
