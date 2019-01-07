@@ -12,21 +12,13 @@ import DisputeMarketCard from "modules/reporting/components/dispute-market-card/
 import Styles from "modules/reporting/components/reporting-resolved/reporting-resolved.styles";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";
 
-function getMarketIds(markets) {
-  const filteredMarkets = [];
-  markets.forEach(market => {
-    filteredMarkets.push(market.id);
-  });
-  // Reverse order of filteredMarkets so markets resolved most recently are first
-  filteredMarkets.reverse();
-  return filteredMarkets;
-}
-
 export default class ReportingResolved extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     markets: PropTypes.array.isRequired,
+    marketIds: PropTypes.array.isRequired,
+    isConnected: PropTypes.bool.isRequired,
     nullMessage: PropTypes.string,
     isLogged: PropTypes.bool.isRequired,
     loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
@@ -48,24 +40,14 @@ export default class ReportingResolved extends Component {
     showOutstandingReturns: false
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      filteredMarkets: []
-    };
-  }
-
   componentWillMount() {
-    const { loadReporting } = this.props;
-    if (loadReporting) loadReporting();
+    const { loadReporting, isConnected } = this.props;
+    if (loadReporting && isConnected) loadReporting();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { markets } = this.props;
-    if (nextProps.markets.length > 0 && nextProps.markets !== markets) {
-      const filteredMarkets = getMarketIds(nextProps.markets);
-      this.setState({ filteredMarkets });
+  componentWillUpdate(nextProps, nextState) {
+    if (this.props.isConnected !== nextProps.isConnected) {
+      this.props.loadReporting();
     }
   }
 
@@ -75,6 +57,7 @@ export default class ReportingResolved extends Component {
       isMobile,
       loadMarketsInfoIfNotLoaded,
       markets,
+      marketIds,
       toggleFavorite,
       isForkingMarketFinalized,
       forkingMarket,
@@ -84,7 +67,6 @@ export default class ReportingResolved extends Component {
       history,
       showOutstandingReturns
     } = this.props;
-    const s = this.state;
 
     return (
       <section>
@@ -110,7 +92,7 @@ export default class ReportingResolved extends Component {
           isLogged={isLogged}
           isMobile={isMobile}
           markets={markets}
-          filteredMarkets={s.filteredMarkets}
+          filteredMarkets={marketIds}
           location={location}
           history={history}
           linkType={TYPE_FINALIZE_MARKET}

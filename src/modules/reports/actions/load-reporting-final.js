@@ -1,7 +1,5 @@
 import { augur, constants } from "services/augurjs";
 import logError from "utils/log-error";
-import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
-
 import { updateResolvedMarkets } from "modules/reports/actions/update-markets-in-reporting-state";
 
 export const loadReportingFinal = (callback = logError) => (
@@ -40,12 +38,8 @@ export const loadReportingFinal = (callback = logError) => (
             return callback(null);
           }
 
-          dispatch(
-            loadMarketsInfoIfNotLoaded(marketIds, (err, marketData) => {
-              if (err) return logError(err);
-              dispatch(updateResolvedMarkets(marketIds));
-            })
-          );
+          dispatch(updateResolvedMarkets(marketIds));
+          callback(null, marketIds);
         }
       );
     }
