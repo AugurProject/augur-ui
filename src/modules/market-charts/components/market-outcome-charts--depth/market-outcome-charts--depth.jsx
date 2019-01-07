@@ -177,13 +177,13 @@ export default class MarketOutcomeDepth extends Component {
       const depthContainer = new ReactFauxDOM.Element("div");
 
       // padding for overflowing x-axis ticks
-      // const widthPadding = 30;
+      const widthPadding = 10;
 
       const depthChart = d3
         .select(depthContainer)
         .append("svg")
         .attr("id", "depth_chart")
-        .attr("width", drawParams.containerWidth)
+        .attr("width", drawParams.containerWidth + widthPadding)
         .attr("height", drawParams.containerHeight);
 
       drawLines({
@@ -361,13 +361,14 @@ function determineDrawParams(options) {
     depthChart,
     marketDepth,
     marketMax,
-    marketMin
+    marketMin,
+    orderBookKeys
   } = options;
 
   const chartDim = {
     ...sharedChartMargins, // top, bottom
-    right: 0,
-    left: 0,
+    right: 10,
+    left: 10,
     stick: 5,
     tickOffset: 10
   };
@@ -375,8 +376,20 @@ function determineDrawParams(options) {
   const containerWidth = depthChart.clientWidth;
   const containerHeight = depthChart.clientHeight;
   const drawHeight = containerHeight - chartDim.top - chartDim.bottom;
+  const test = marketMax
+    .minus(orderBookKeys.mid)
+    .gt(marketMin.plus(orderBookKeys.mid));
+  const xoffset = test
+    ? marketMax.minus(orderBookKeys.mid)
+    : marketMin.plus(orderBookKeys.mid);
+  const xDomainMin = test
+    ? marketMin.plus(orderBookKeys.mid.minus(xoffset)).toNumber()
+    : marketMin.toNumber();
+  const xDomainMax = test
+    ? marketMax.toNumber()
+    : marketMax.plus(xoffset.minus(orderBookKeys.mid)).toNumber();
 
-  const xDomain = [marketMin.toNumber(), marketMax.toNumber()];
+  const xDomain = [xDomainMin, xDomainMax];
   const yDomain = [
     0,
     Object.keys(marketDepth)
@@ -480,19 +493,20 @@ function drawTicks(options) {
 
   //  Midpoint Label
   if (!isMobile && hasOrders) {
-    let midOffset = 5;
-    const marketRangeMid = marketMax.minus(marketMin).dividedBy(2);
-    if (orderBookKeys.mid.gt(marketRangeMid)) {
-      midOffset = -70;
-    }
-    const quarter = drawParams.yDomain[1] * 0.8;
+    const midOffset = -25;
+    // const marketRangeMid = marketMax.minus(marketMin).dividedBy(2);
+    // if (orderBookKeys.mid.gt(marketRangeMid)) {
+    //   midOffset = -70;
+    // }
+    const quarter = drawParams.yDomain[1] * 0.9;
     depthChart
       .append("line")
       .attr("class", "tick-line--midpoint")
       .attr("x1", drawParams.xScale(orderBookKeys.mid.toNumber()))
       .attr("y1", 0)
       .attr("x2", drawParams.xScale(orderBookKeys.mid.toNumber()))
-      .attr("y2", drawParams.containerHeight - drawParams.chartDim.bottom);
+      .attr("y2", drawParams.containerHeight - drawParams.chartDim.bottom - 50)
+      .attr("transform", "translate(0, 50)");
     depthChart
       .append("text")
       .attr("class", "tick-value-midpoint")
@@ -544,6 +558,8 @@ function drawTicks(options) {
       `translate(0, ${drawParams.containerHeight - drawParams.chartDim.bottom})`
     )
     .call(d3.axisBottom(drawParams.xScale).ticks(5))
+    .selectAll("text")
+    .text(d => `${d} ETH`)
     .select("path")
     .remove();
 }
@@ -654,6 +670,7 @@ function attachHoverClickHandlers(options) {
     drawParams,
     depthChart,
     marketDepth,
+    orderBookKeys,
     pricePrecision,
     marketMin,
     marketMax,
@@ -667,10 +684,25 @@ function attachHoverClickHandlers(options) {
     .attr("width", drawParams.containerWidth)
     .attr("height", drawParams.containerHeight)
     .on("mouseover", () => d3.select("#crosshairs").style("display", null))
-    .on("mouseout", () => updateHoveredPrice(null))
+    .on("mouseout", () => {
+      updateHoveredPrice(null);
+      d3.select(".depth-line-bids").attr("stroke-width", 1);
+      d3.select(".depth-line-asks").attr("stroke-width", 1);
+    })
     .on("mousemove", () => {
       const mouse = d3.mouse(d3.select("#depth_chart").node());
-
+      const asksDepthLine = ".depth-line-asks";
+      const bidsDepthLine = ".depth-line-bids";
+      const highlightAsks = orderBookKeys.mid.lt(
+        drawParams.xScale.invert(mouse[0]).toFixed(pricePrecision)
+      );
+      if (highlightAsks) {
+        d3.select(bidsDepthLine).attr("stroke-width", 1);
+        d3.select(asksDepthLine).attr("stroke-width", 2);
+      } else {
+        d3.select(bidsDepthLine).attr("stroke-width", 2);
+        d3.select(asksDepthLine).attr("stroke-width", 1);
+      }
       // Determine closest order
       const hoveredPrice = drawParams.xScale
         .invert(mouse[0])
