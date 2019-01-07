@@ -8,6 +8,10 @@ import {
   CATEGORY_PARAM_NAME,
   TAGS_PARAM_NAME
 } from "modules/filter-sort/constants/param-names";
+import {
+  starIconOpen,
+  starIconFilled,
+} from "modules/common/components/icons";
 
 export default class MarketHeaderBar extends Component {
   static propTypes = {
@@ -18,13 +22,20 @@ export default class MarketHeaderBar extends Component {
       push: PropTypes.func.isRequired,
       replace: PropTypes.func.isRequired,
       createHref: PropTypes.func.isRequired
-    }).isRequired
+    }).isRequired,
+    isLogged: PropTypes.bool,
+    isFavorite: PropTypes.bool,
+    addToFavorites: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool,
   };
 
   static defaultProps = {
     category: "",
     tags: [],
-    reportingState: ""
+    reportingState: "",
+    isLogged: false,
+    isFavorite: false,
+    isMobile: false,
   };
 
   constructor(props) {
@@ -51,10 +62,10 @@ export default class MarketHeaderBar extends Component {
   }
 
   render() {
-    const { category, reportingState, tags } = this.props;
+    const { category, reportingState, tags, addToFavorites, isLogged, isFavorite, isMobile } = this.props;
     const phase = determineMarketPhase(reportingState);
     return (
-      <section>
+      <section className={Styles.MarketHeaderBar}>
         <div className={Styles.MarketHeaderBar__container}>
           <div className={Styles.MarketHeaderBar__tag__container}>
             <div className={Styles.MarketHeaderBar__status}>
@@ -98,6 +109,19 @@ export default class MarketHeaderBar extends Component {
               ))}
           </div>
         </div>
+        {isMobile && 
+          <div className={Styles.MarketHeaderBar__watchlist__container}>
+            <button
+              onClick={() => this.props.addToFavorites()}
+              className={Styles.MarketHeaderBar__watchlist}
+              disabled={!isLogged}
+            >
+              <span>
+                {isFavorite ? starIconFilled : starIconOpen}
+              </span>
+            </button>
+          </div>
+        }
       </section>
     );
   }

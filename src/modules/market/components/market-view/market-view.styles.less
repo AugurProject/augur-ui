@@ -4,6 +4,21 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+
+  @media @breakpoint-mobile {
+    margin-top: 25px;
+    position: relative;
+  }
+}
+
+.MarketView__paneContainer--mobile {
+  padding: 15px;
+}
+
+.MarketView__buySellButton--button {
+  position: fixed;
+  bottom: 0;
+  background-color: white;
 }
 
 .MarketView__body {

@@ -1,6 +1,8 @@
 /* eslint react/no-array-index-key: 0 */
 
 import React, { Component } from "react";
+import classNames from "classnames";
+
 import PropTypes from "prop-types";
 import Styles from "modules/market/components/market-header/market-header-reporting.styles";
 import { constants } from "services/constants";
@@ -61,9 +63,11 @@ export default class MarketHeaderReporting extends Component {
       content = [
         <div
           key="consensus"
-          className={Styles.MarketHeaderReporting__winner__container}
+          className={classNames(Styles.MarketHeaderReporting__winner__container, Styles[
+            `MarketHeaderReporting__winner__container__color__${CatWinnerColorIndex}`
+          ])}
         >
-          <div>
+          <div className={Styles.MarketHeaderReporting__outcomeContainer}>
             <span
               className={MarketHeaderStyles.MarketHeader__property__header}
               style={{ marginRight: "0px" }}

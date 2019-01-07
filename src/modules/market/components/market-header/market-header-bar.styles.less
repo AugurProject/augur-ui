@@ -55,3 +55,49 @@
   border-bottom: 2px solid @color-dispute-yellow;
 }
 
+.MarketHeaderBar__watchlist__container {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.MarketHeaderBar__watchlist__disabled,
+.MarketHeaderBar__watchlist {
+  box-sizing: border-box;
+  color: @color-white;
+  padding: 0.5rem 0;
+
+  svg {
+    margin: -0.1rem 0.5rem;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+    vertical-align: top;
+  }
+
+  span {
+    font-size: @font-size-small;
+  }
+
+  &:hover {
+    border: 2px solid #42404b;
+  }
+
+  &:disabled {
+    background: #1a1627;
+    border: 2px solid @color-dark-gray;
+    cursor: default;
+    opacity: 0.3;
+  }
+}
+
+@media @breakpoint-mobile {
+  .MarketHeaderBar {
+    display: flex;
+    padding-bottom: 2rem;
+  }
+
+  .MarketHeaderBar__container {
+    padding-bottom: 0;
+  }
+}
+

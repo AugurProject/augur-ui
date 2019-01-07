@@ -32,7 +32,8 @@ export default class MarketHeader extends Component {
     resolutionSource: PropTypes.any,
     selectedOutcome: PropTypes.any,
     isLogged: PropTypes.bool,
-    isMobileSmall: PropTypes.bool.isRequired,
+    isMobile: PropTypes.bool,
+    isMobileSmall: PropTypes.bool,
     isForking: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
@@ -48,7 +49,9 @@ export default class MarketHeader extends Component {
     isForking: false,
     currentTime: 0,
     isFavorite: false,
-    toggleFavorite: () => {}
+    toggleFavorite: () => {},
+    isMobile: false,
+    isMobileSmall: false,
   };
 
   constructor(props) {
@@ -98,6 +101,7 @@ export default class MarketHeader extends Component {
       currentTime,
       isLogged,
       isMobileSmall,
+      isMobile,
       isFavorite,
       history
     } = this.props;
@@ -130,6 +134,8 @@ export default class MarketHeader extends Component {
                 category={market.category}
                 reportingState={market.reportingState}
                 tags={market.tags}
+                addToFavorites={this.addToFavorites}
+                isMobile={isMobile}
               />
             )}
             <h1 className={Styles.MarketHeader__description}>{description}</h1>
@@ -181,25 +187,28 @@ export default class MarketHeader extends Component {
             </div>
           </div>
           <div className={Styles.MarketHeader__properties}>
-            <CoreProperties market={market} isMobileSmall={isMobileSmall} />
+            <CoreProperties market={market} isMobile={isMobile} isMobileSmall={isMobileSmall} />
           </div>
           <div className={Styles.MarketHeader__timeStuff}>
-            <div className={Styles.MarketHeader__watchlist__container}>
-              <button
-                onClick={() => this.addToFavorites()}
-                className={Styles.MarketHeader__watchlist}
-                disabled={!isLogged}
-              >
-                <span>
-                  {isFavorite ? starIconFilled : starIconOpen}
-                  {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
-                </span>
-              </button>
-            </div>
+            {!isMobile && 
+              <div className={Styles.MarketHeader__watchlist__container}>
+                <button
+                  onClick={() => this.addToFavorites()}
+                  className={Styles.MarketHeader__watchlist}
+                  disabled={!isLogged}
+                >
+                  <span>
+                    {isFavorite ? starIconFilled : starIconOpen}
+                    {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
+                  </span>
+                </button>
+              </div>
+            }
             <TimeRange
               currentTime={currentTime}
               startTime={market.creationTime}
               endTime={market.endTime}
+              isMobile={isMobile}
             />
           </div>
         </div>
