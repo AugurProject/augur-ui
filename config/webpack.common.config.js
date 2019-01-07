@@ -140,6 +140,10 @@ module.exports = {
       {
         from: path.resolve(PATHS.APP, "assets/images"),
         to: path.resolve(PATHS.BUILD, "assets/images")
+      },
+      {
+        from: path.resolve(PATHS.APP, "robots.txt"),
+        to: PATHS.BUILD
       }
     ]),
     new HtmlWebpackPlugin({
