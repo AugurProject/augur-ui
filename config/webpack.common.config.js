@@ -142,10 +142,6 @@ module.exports = {
       {
         from: path.resolve(PATHS.APP, "assets/images"),
         to: path.resolve(PATHS.BUILD, "assets/images")
-      },
-      {
-        from: path.resolve(PATHS.APP, "sitemap.xml"),
-        to: PATHS.BUILD
       }
     ]),
     new HtmlWebpackPlugin({
