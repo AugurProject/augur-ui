@@ -6,16 +6,16 @@ import Styles from "modules/market/components/market-trade-history/market-trade-
 
 export default class MarketTradeHistory extends Component {
   static propTypes = {
-    isMobile: PropTypes.boolean,
-    isMobileSmall: PropTypes.boolean,
+    // isMobile: PropTypes.boolean,
+    // isMobileSmall: PropTypes.boolean,
     // todo figure out how to do keyed objects shape prop type
     groupedTradeHistoryVolume: PropTypes.object.isRequired,
     groupedTradeHistory: PropTypes.object.isRequired
   };
 
   static defaultProps = {
-    isMobile: false,
-    isMobileSmall: false
+    // isMobile: false,
+    // isMobileSmall: false
   };
 
   constructor(props) {
