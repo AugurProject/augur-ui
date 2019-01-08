@@ -283,7 +283,8 @@ export default class MarketOutcomeDepth extends Component {
       } else {
         const nearestFillingOrder = nearestCompletelyFillingOrder(
           hoveredPrice,
-          marketDepth
+          marketDepth,
+          createBigNumber(marketMax).minus(marketMin)
         );
         if (nearestFillingOrder === null) return;
 
@@ -338,7 +339,11 @@ export default class MarketOutcomeDepth extends Component {
   }
 }
 
-export function nearestCompletelyFillingOrder(price, { asks = [], bids = [] }) {
+export function nearestCompletelyFillingOrder(
+  price,
+  { asks = [], bids = [] },
+  marketRange
+) {
   const PRICE_INDEX = 1;
   const items = [
     ...asks.filter(it => it[3]).map(it => [...it, ASKS]),
@@ -354,8 +359,21 @@ export function nearestCompletelyFillingOrder(price, { asks = [], bids = [] }) {
       closestDistance = dist;
     }
   }
+  if (closestIndex !== -1) {
+    let cost = createBigNumber(0);
+    const type = items[closestIndex][4];
+    for (let i = closestIndex; items[i] && items[i][4] === type; i--) {
+      const long = createBigNumber(items[i][2]).times(items[i][1]);
+      const tradeCost =
+        type === BIDS ? long : marketRange.times(items[i][2]).minus(long);
+      cost = cost.plus(tradeCost);
+    }
+    items[closestIndex].push(cost);
+  } else {
+    return null;
+  }
 
-  return closestIndex === -1 ? null : items[closestIndex];
+  return items[closestIndex];
 }
 
 function determineDrawParams(options) {
@@ -751,42 +769,54 @@ function attachHoverClickHandlers(options) {
       const hoveredPrice = drawParams.xScale
         .invert(mouse[0])
         .toFixed(pricePrecision);
+
       const nearestFillingOrder = nearestCompletelyFillingOrder(
         hoveredPrice,
-        marketDepth
+        marketDepth,
+        createBigNumber(marketMax).minus(marketMin)
       );
+
       updateHoveredPrice(hoveredPrice);
 
-      const { xScale, yScale } = drawParams;
-      const yPosition = yScale(hoveredPrice);
-      const clampedHoveredPrice = yScale.invert(yPosition);
+      if (nearestFillingOrder === null) return;
 
-      d3.select("#hovered_tooltip").attr(
-        "transform",
-        `
-        translate(${xScale(nearestFillingOrder[1]) + 12}
+      const { xScale, yScale } = drawParams;
+      // const yPosition = yScale(hoveredPrice);
+      // const clampedHoveredPrice = yScale.invert(yPosition);
+
+      d3.select("#hovered_tooltip")
+        .attr(
+          "transform",
+          `
+        translate(${xScale(nearestFillingOrder[1])}
         , ${yScale(nearestFillingOrder[0])})
         `
-      );
+        )
+        .attr("class", `hovered_tooltip ${nearestFillingOrder[4]}`);
+
       d3.select("#hovered_tooltip_container").style("display", null);
 
       d3
         .select("#hovered_price_label")
-        .attr("x", xScale(nearestFillingOrder[1]) + 18)
+        .attr("x", xScale(nearestFillingOrder[1]))
         .attr("y", yScale(nearestFillingOrder[0]) + 18).text(`
-          Price: ${clampedHoveredPrice.toFixed(pricePrecision)}
+          Price: ${createBigNumber(nearestFillingOrder[1]).toFixed(
+            pricePrecision
+          )}
         `);
       d3
         .select("#hovered_volume_label")
-        .attr("x", xScale(nearestFillingOrder[1]) + 18)
+        .attr("x", xScale(nearestFillingOrder[1]))
         .attr("y", yScale(nearestFillingOrder[0]) + 34).text(`
-          Volume: ${clampedHoveredPrice.toFixed(pricePrecision)}
+          Volume: ${createBigNumber(nearestFillingOrder[0]).toFixed(
+            pricePrecision
+          )}
         `);
       d3
         .select("#hovered_cost_label")
-        .attr("x", xScale(nearestFillingOrder[1]) + 18)
+        .attr("x", xScale(nearestFillingOrder[1]))
         .attr("y", yScale(nearestFillingOrder[0]) + 50).text(`
-          Cost: ${clampedHoveredPrice.toFixed(pricePrecision)}
+          Cost: ${nearestFillingOrder[5].toFixed(pricePrecision)}
         `);
     })
     .on("click", () => {
@@ -796,7 +826,8 @@ function attachHoverClickHandlers(options) {
         .toFixed(pricePrecision);
       const nearestFillingOrder = nearestCompletelyFillingOrder(
         orderPrice,
-        marketDepth
+        marketDepth,
+        createBigNumber(marketMax).minus(marketMin)
       );
 
       if (
