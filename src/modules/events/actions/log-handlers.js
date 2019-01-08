@@ -13,6 +13,8 @@ import { updateOrder } from "modules/orders/actions/update-orders";
 import { removeCanceledOrder } from "modules/orders/actions/update-order-status";
 import { defaultLogHandler } from "modules/events/actions/default-log-handler";
 import { isCurrentMarket } from "modules/trades/helpers/is-current-market";
+import logError from "utils/log-error";
+import { updateCategories } from "modules/categories/actions/update-categories";
 import makePath from "modules/routes/helpers/make-path";
 import { MY_MARKETS, TRANSACTIONS } from "modules/routes/constants/views";
 import { loadReporting } from "src/modules/reports/actions/load-reporting";
@@ -54,13 +56,39 @@ export const handleMarketStateLog = log => dispatch => {
   );
 };
 
+function appendCategoryIfNew(dispatch, categories, marketWithMaybeNewCategory) {
+  const isExistingCategory = categories.find(
+    c => c.categoryName === marketWithMaybeNewCategory.category
+  );
+  if (!isExistingCategory) {
+    dispatch(
+      updateCategories([
+        ...categories,
+        { categoryName: "TODO construct a category literal" }
+      ])
+    );
+  }
+}
+
 export const handleMarketCreatedLog = log => (dispatch, getState) => {
   const isStoredTransaction =
     log.marketCreator === getState().loginAccount.address;
   if (log.removed) {
     dispatch(removeMarket(log.market));
   } else {
-    dispatch(loadMarketsInfo([log.market]));
+    dispatch(
+      loadMarketsInfo([log.market], err => {
+        if (err) {
+          logError(err);
+          return;
+        }
+        appendCategoryIfNew(
+          dispatch,
+          getState().categories,
+          getState().marketsData[log.market]
+        );
+      })
+    );
     // dispatch(loadCategories()); don't reload categories because when market created log comes in, this event will cause the categories to load and re-sort which causes the category list to change. If markets are being traded (OI an change) then multiple markets are getting created there is potential for the user's category list to appear erratic as the list resorts over and over. In future, we might check if the new market's category is new, and append that category to end of categories without user seeing a jittery re-render.
   }
   if (isStoredTransaction) {
