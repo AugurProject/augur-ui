@@ -3,7 +3,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-list--orphaned-order/market-positions-list--orphaned-order";
+import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
