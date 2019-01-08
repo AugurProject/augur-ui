@@ -215,6 +215,10 @@ export default class MarketHeaderReporting extends Component {
       }
     }
 
+    if (!content) {
+      return null;
+    }
+
     return (
       <div className={Styles.MarketHeaderReporting__container}>{content}</div>
     );

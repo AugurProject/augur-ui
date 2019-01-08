@@ -136,6 +136,7 @@ export default class MarketHeader extends Component {
                 tags={market.tags}
                 addToFavorites={this.addToFavorites}
                 isMobile={isMobile}
+                isFavorite={isFavorite}
               />
             )}
             <h1 className={Styles.MarketHeader__description}>{description}</h1>
