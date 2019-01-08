@@ -77,6 +77,7 @@
 .MarketHeader__description {
   color: @color-white;
   flex-grow: 1;
+  font-weight: 500;
 }
 
 .MarketHeader__descriptionContainer {
@@ -238,12 +239,14 @@
 }
 
 @media @breakpoint-mobile {
-  .MarketHeader {
-    margin-top: 3rem;
+  .MarketHeader__description {
+    font-size: 18px;
   }
 
   .MarketHeader__descContainer {
     margin-bottom: 1.25rem;
+    margin-right: 0; 
+    max-width: unset;
   }
 
   .MarketHeader__main-values {
@@ -252,8 +255,11 @@
 
   .MarketHeader__properties {
     flex-direction: column;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0;
     margin-left: 0;
+    padding-left: 0;
+    border-bottom: 1px solid #0F0A19;
+    min-width: unset;
   }
 
   .MarketHeader__property {
@@ -262,5 +268,9 @@
 
   .MarketHeader__nav-isForking {
     margin-top: 0;
+  }
+  
+  .MarketHeader__timeStuff {
+    align-items: normal;
   }
 }

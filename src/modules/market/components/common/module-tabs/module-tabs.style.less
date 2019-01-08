@@ -33,3 +33,41 @@
   flex: 1 100%;
   flex-flow: column nowrap;
 }
+
+.ModuleTabs__tabFillWidth {
+  background-color: #1B1528;
+
+  > li {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    display: flex;
+
+    > button {
+      padding: 1.125rem 0;
+    }
+  }
+}
+
+.ModuleTabs__tabFill {
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  > li {
+    > button {
+      font-size: 14px;
+    }
+  }
+}
+
+.ModuleTabs__activeTabFill {
+  background-color: transparent;
+}
+
+.ModuleTabs__activeSpanFill {
+  border-bottom: 1px solid white;
+}

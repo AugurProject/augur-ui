@@ -32,10 +32,6 @@ export default class MarketOutcomeDepth extends Component {
   };
 
   static defaultProps = {
-    sharedChartMargins: {
-      top: 0,
-      bottom: 30
-    },
     hoveredPrice: null,
     isMobile: false
   };

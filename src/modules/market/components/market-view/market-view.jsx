@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
+import classNames from "classnames";
 
 import MarketHeader from "modules/market/containers/market-header";
 // import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
@@ -14,6 +15,8 @@ import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 import MarketTradeHistory from "modules/market/containers/market-trade-history";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { BUY } from "modules/transactions/constants/types";
+import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs";
+import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
@@ -180,6 +183,91 @@ export default class MarketView extends Component {
     } = this.props;
     const s = this.state;
 
+    if (isMobile) {
+      return (
+        <section
+          ref={node => {
+            this.node = node;
+          }}
+          className={Styles.MarketView}
+          style={{marginTop: '25px'}}
+        >
+          <Helmet>
+            <title>{parseMarketTitle(description)}</title>
+          </Helmet>
+          <ModuleTabs selected={0} fillWidth>
+            <ModulePane label="Market Info">
+              <div className={Styles['MarketView__paneContainer--mobile']}>
+                <MarketHeader
+                  marketId={marketId}
+                  selectedOutcome={s.selectedOutcome}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                  clearSelectedOutcome={this.clearSelectedOutcome}
+                  location={location}
+                  isMobile={isMobile}
+                />
+                <MarketOutcomesList
+                  marketId={marketId}
+                  outcomes={outcomes}
+                  selectedOutcome={s.selectedOutcome}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                  isMobile={isMobile}
+                />
+              </div>
+            </ModulePane>
+            <ModulePane label="Trade">
+              <div className={Styles['MarketView__paneContainer--mobile']}>
+                <ModuleTabs selected={0} fillForMobile>
+                  <ModulePane label="Order Book">
+                    <div className={Styles.MarketView__orders}>
+                      <MarketOutcomeOrders
+                        headerHeight={0}
+                        isMobile={isMobile}
+                        sharedChartMargins={this.sharedChartMargins}
+                        fixedPrecision={4}
+                        pricePrecision={4}
+                        hoveredPrice={null}
+                        updateHoveredPrice={null}
+                        updatePrecision={null}
+                        updateSelectedOrderProperties={null}
+                        marketId={marketId}
+                        selectedOutcome={s.selectedOutcome}
+                      />
+                    </div>
+                  </ModulePane>
+                  <ModulePane label="Trade History">
+                    <div className={Styles.MarketView__history}>
+                      <div className={Styles.MarketView__component__history}>
+                        {marketId && (
+                          <MarketTradeHistory
+                            marketId={marketId}
+                            outcome={s.selectedOutcome}
+                            isMobile={isMobile}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </ModulePane>
+                </ModuleTabs>
+              </div>
+            </ModulePane>
+            <ModulePane label="Orders">
+              <div className={Styles['MarketView__paneContainer--mobile']}>
+                <MarketOrdersPositionsTable marketId={marketId} />
+              </div>
+            </ModulePane>
+          </ModuleTabs>
+          <div className={Styles['MarketView__buySellButton--button']}>
+            <div>
+              <button>
+                Buy / Sell
+              </button>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
     return (
       <section
         ref={node => {
@@ -204,22 +292,7 @@ export default class MarketView extends Component {
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
                 <div className={Styles.MarketView__component}>
-                  <MarketTradingWrapper
-                    market={market}
-                    isLogged={isLogged}
-                    selectedOutcome={s.selectedOutcome}
-                    selectedOrderProperties={s.selectedOrderProperties}
-                    initialMessage="hi"
-                    isMobile={isMobile}
-                    toggleForm={null}
-                    showOrderPlaced={null}
-                    availableFunds={createBigNumber(11)}
-                    clearTradeInProgress={null}
-                    updateSelectedOrderProperties={
-                      this.updateSelectedOrderProperties
-                    }
-                    gasPrice={0}
-                  />
+                  Trading
                 </div>
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
@@ -263,14 +336,7 @@ export default class MarketView extends Component {
           </div>
           <div className={Styles.MarketView__secondColumn}>
             <div
-              className={Styles.MarketView__component}
-              style={{
-                marginBottom: "12px",
-                minHeight: "380px",
-                height: "380px",
-                display: "flex",
-                flexDirection: "column"
-              }}
+              className={classNames(Styles.MarketView__component, Styles.MarketView__orders)}
             >
               <MarketOutcomeOrders
                 headerHeight={0}
@@ -287,18 +353,14 @@ export default class MarketView extends Component {
               />
             </div>
             <div
-              className={Styles.MarketView__component}
-              style={{
-                minHeight: "400px",
-                borderBottom: "8px solid #211a32",
-                maxHeight: "50vh"
-              }}
+              className={classNames(Styles.MarketView__component, Styles.MarketView__history)}
             >
               <div className={Styles.MarketView__component__history}>
                 {marketId && (
                   <MarketTradeHistory
                     marketId={marketId}
                     outcome={s.selectedOutcome}
+                    isMobile={isMobile}
                   />
                 )}
               </div>

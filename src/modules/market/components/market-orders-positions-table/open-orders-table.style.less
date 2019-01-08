@@ -6,6 +6,7 @@
   flex-grow: 1;
   position: relative;
   width: 100%;
+  color: white;
 }
 
 .MarketOpenOrdersList__table-header {
@@ -33,8 +34,7 @@
     overflow: hidden;
     padding: 11px 0;
     text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: pre-wrap;
 
     &:first-child {
       max-width: 160px;
@@ -44,7 +44,6 @@
     }
 
     &:last-of-type {
-      align-items: center;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
@@ -87,4 +86,30 @@
 .MarketOpenOrdersList__scrollContainer {
   max-height: 250px;
   overflow-y: auto;
+}
+
+@media @breakpoint-mobile {
+  .MarketOpenOrdersList__table-header {
+
+    > li {
+      min-width: 100px;
+
+      &:first-child {
+        flex-grow: unset;
+        padding-left: 16px;
+      }
+
+      &:last-of-type {
+        padding-right: 2.5rem;
+      }
+    }
+  }
+}
+
+@media @breakpoint-mobile-small {
+  .MarketOpenOrdersList__table-header {
+    > li {
+      min-width: 50px;
+    }
+  }
 }

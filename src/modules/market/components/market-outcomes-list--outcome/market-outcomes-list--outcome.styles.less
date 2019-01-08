@@ -3,8 +3,8 @@
 .Outcome {
   background-color: @color-grayish-purple;
   cursor: pointer;
-  display: table-row;
   transition: background-color 0.15s ease;
+  position: relative;
 
   &:nth-child(1) {
     &:hover {
@@ -13,6 +13,10 @@
 
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-one, 10%);
+    }
+
+    &::before {
+      background-color: @color-outcome-one;
     }
   }
 
@@ -24,6 +28,10 @@
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-two, 10%);
     }
+
+    &::before {
+      background-color: @color-outcome-two;
+    }
   }
 
   &:nth-child(3) {
@@ -33,6 +41,10 @@
 
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-three, 10%);
+    }
+
+    &::before {
+      background-color: @color-outcome-three;
     }
   }
 
@@ -44,6 +56,10 @@
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-four, 10%);
     }
+
+    &::before {
+      background-color: @color-outcome-four;
+    }
   }
 
   &:nth-child(5) {
@@ -53,6 +69,10 @@
 
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-five, 10%);
+    }
+
+    &::before {
+      background-color: @color-outcome-five;
     }
   }
 
@@ -64,6 +84,10 @@
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-six, 10%);
     }
+
+    &::before {
+      background-color: @color-outcome-six;
+    }
   }
 
   &:nth-child(7) {
@@ -73,6 +97,10 @@
 
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-seven, 10%);
+    }
+    
+    &::before {
+      background-color: @color-outcome-seven;
     }
   }
 
@@ -84,15 +112,16 @@
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-eight, 10%);
     }
+
+    &::before {
+      background-color: @color-outcome-eight;
+    }
   }
 
   &.active {
-    > li {
-      &:first-child {
-        &::before {
-          width: 6px;
-        }
-      }
+    &::before {
+      width: 3px;
+      left: 1px;
     }
   }
 
@@ -104,135 +133,37 @@
     border-top-width: 0;
   }
 
+  &::before {
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 96%;
+    left: 1px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+  }
+
   > li {
-    display: table-cell;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 12px;
-    max-width: 19vw;
-    overflow: hidden;
-    padding: 12px 0;
-    position: relative;
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &:first-child {
-      font-family: @roboto;
-      font-size: 14px;
-      padding-left: 1.6rem;
-      position: relative;
-      text-align: left;
-
-      &::before {
-        bottom: 0;
-        content: "";
-        display: block;
-        height: 40px;
-        left: 0;
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        width: 1px;
-      }
+    &:last-of-type {
+      display: table-cell;
     }
+
 
     &:last-child {
       padding-right: 2.5rem;
     }
   }
 
-  &:nth-child(1) > li:first-child::before {
-    background-color: @color-outcome-one;
-  }
-
-  &:nth-child(2) > li:first-child::before {
-    background-color: @color-outcome-two;
-  }
-
-  &:nth-child(3) > li:first-child::before {
-    background-color: @color-outcome-three;
-  }
-
-  &:nth-child(4) > li:first-child::before {
-    background-color: @color-outcome-four;
-  }
-
-  &:nth-child(5) > li:first-child::before {
-    background-color: @color-outcome-five;
-  }
-
-  &:nth-child(6) > li:first-child::before {
-    background-color: @color-outcome-six;
-  }
-
-  &:nth-child(7) > li:first-child::before {
-    background-color: @color-outcome-seven;
-  }
-
-  &:nth-child(8) > li:first-child::before {
-    background-color: @color-outcome-eight;
+  @media @breakpoint-mobile {
+    &::before {
+      width: 2px;
+    }
   }
 }
 
 .Outcome__percent {
   color: @color-lightgray;
   margin-left: 0.5rem;
-}
-
-@media @breakpoint-mobile {
-  .Outcome {
-    &.active,
-    &:hover {
-      background-color: @color-darkpurple;
-    }
-
-    > li {
-      color: inherit;
-
-      &:first-child {
-        padding-left: 1rem;
-
-        &::before {
-          border-radius: 0;
-          height: 100%;
-          left: 0;
-          width: 3px;
-        }
-      }
-
-      &:last-child {
-        padding-right: 1rem;
-      }
-
-      &:not(:first-child) {
-        color: @color-white;
-      }
-    }
-  }
-}
-
-@media @breakpoint-mobile-medium {
-  .Outcome {
-    &:first-child > li {
-      border-top-width: 1px;
-    }
-
-    > li {
-      font-size: @font-size-medium;
-      line-height: @font-size-medium;
-      max-width: 25vw;
-    }
-  }
-}
-
-@media @breakpoint-mobile-small {
-  .Outcome {
-    > li {
-      font-size: @font-size-extra-small;
-    }
-  }
-
-  .Outcome__percent {
-    margin-left: 0.1rem;
-  }
 }

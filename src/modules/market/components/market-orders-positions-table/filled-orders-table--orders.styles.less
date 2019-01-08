@@ -105,3 +105,42 @@
     }
   }
 }
+
+@media @breakpoint-mobile {
+
+  .FilledOrder__table-header {
+    padding-left: 0;
+    padding-right: 0;
+
+    > li {
+
+      &:first-child {
+        text-align: left;
+        flex-grow: 1;
+      }
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+    }
+  }
+
+  .FilledOrder__trade {
+    margin-left: 0;
+
+    > li {
+      padding-left: 0;
+      padding-right: 0;
+      justify-content: flex-start;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 1rem;
+      }
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+    }
+  }
+}

@@ -22,17 +22,18 @@ const MarketOrdersPositionsTable = ({
   filledOrders
 }) => (
   <section>
-    <ModuleTabs selected={0}>
+    <ModuleTabs selected={0} fillForMobile={isMobile}>
       <ModulePane label="Open Orders">
         <OpenOrdersTable
           openOrders={openOrders}
           orphanedOrders={orphanedOrders}
           cancelOrphanedOrder={cancelOrphanedOrder}
           marketId={marketId}
+          isMobile={isMobile}
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
-        <FilledOrdersTable filledOrders={filledOrders} />
+        <FilledOrdersTable filledOrders={filledOrders} isMobile={isMobile}/>
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable
@@ -42,6 +43,7 @@ const MarketOrdersPositionsTable = ({
           sellCompleteSets={sellCompleteSets}
           transactionsStatus={transactionsStatus}
           market={market}
+          isMobile={isMobile}
         />
       </ModulePane>
     </ModuleTabs>
