@@ -218,7 +218,9 @@ export default class MarketView extends Component {
               <div>2</div>
             </ModulePane>
             <ModulePane label="Orders">
-              <div>3</div>
+              <div className={Styles['MarketView__paneContainer--mobile']}>
+                <MarketOrdersPositionsTable marketId={marketId} />
+              </div>
             </ModulePane>
           </ModuleTabs>
           <div className={Styles['MarketView__buySellButton--button']}>

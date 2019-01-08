@@ -58,7 +58,7 @@ export default class OpenOrdersOrder extends Component {
             : SharedStyles.PortMobile
         }
       >
-        <li style={{ position: "relative" }}>
+        <li>
           <div
             className={classNames(SharedStyles.Order__typeIndicator, {
               [SharedStyles.Order__typeIndicatorSell]: orderType === SELL

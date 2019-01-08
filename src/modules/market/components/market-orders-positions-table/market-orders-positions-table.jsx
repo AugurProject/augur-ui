@@ -29,6 +29,7 @@ const MarketOrdersPositionsTable = ({
           orphanedOrders={orphanedOrders}
           cancelOrphanedOrder={cancelOrphanedOrder}
           marketId={marketId}
+          isMobile={isMobile}
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
@@ -42,6 +43,7 @@ const MarketOrdersPositionsTable = ({
           sellCompleteSets={sellCompleteSets}
           transactionsStatus={transactionsStatus}
           market={market}
+          isMobile={isMobile}
         />
       </ModulePane>
     </ModuleTabs>
