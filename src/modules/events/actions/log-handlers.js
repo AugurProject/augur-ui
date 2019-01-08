@@ -61,7 +61,7 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
     dispatch(removeMarket(log.market));
   } else {
     dispatch(loadMarketsInfo([log.market]));
-    dispatch(loadCategories());
+    // dispatch(loadCategories()); don't reload categories because when market created log comes in, this event will cause the categories to load and re-sort which causes the category list to change. If markets are being traded (OI an change) then multiple markets are getting created there is potential for the user's category list to appear erratic as the list resorts over and over. In future, we might check if the new market's category is new, and append that category to end of categories without user seeing a jittery re-render.
   }
   if (isStoredTransaction) {
     handleNotificationUpdate(log, dispatch, getState);
