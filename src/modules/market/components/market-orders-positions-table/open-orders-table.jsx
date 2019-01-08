@@ -11,7 +11,7 @@ import Styles from "modules/market/components/market-orders-positions-table/open
 const OpenOrdersTable = ({
   openOrders,
   orphanedOrders,
-  cancelOrphanedOrder, 
+  cancelOrphanedOrder,
   isMobile
 }) => (
   <div>
@@ -69,7 +69,7 @@ OpenOrdersTable.propTypes = {
   openOrders: PropTypes.array,
   orphanedOrders: PropTypes.array.isRequired,
   cancelOrphanedOrder: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool
 };
 
 OpenOrdersTable.defaultProps = {

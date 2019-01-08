@@ -27,11 +27,19 @@ export default class MarketTradeHistory extends Component {
   }
 
   render() {
-    const { groupedTradeHistory, groupedTradeHistoryVolume, isMobile } = this.props;
+    const {
+      groupedTradeHistory,
+      groupedTradeHistoryVolume,
+      isMobile
+    } = this.props;
 
     return (
       <section className={Styles.MarketTradeHistory__container}>
-        {!isMobile && <div className={Styles.MarketTradeHistory__heading}>Trade History</div>}
+        {!isMobile && (
+          <div className={Styles.MarketTradeHistory__heading}>
+            Trade History
+          </div>
+        )}
         <div>
           <div className={Styles.MarketTradeHistory__table}>
             <ul className={Styles["MarketTradeHistory__table-header"]}>

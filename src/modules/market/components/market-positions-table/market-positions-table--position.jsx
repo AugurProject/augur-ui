@@ -32,7 +32,7 @@ export default class MarketPositionsListPosition extends Component {
   static defaultProps = {
     hasOrders: false,
     outcome: null,
-    isMovile: false,
+    isMovile: false
   };
 
   static calcAvgDiff(position, order) {
@@ -79,11 +79,11 @@ export default class MarketPositionsListPosition extends Component {
             : Styles.PortMobile
         }
       >
-        {!isMobile && 
+        {!isMobile && (
           <li>
             {outcomeName || getValue(position, "purchasePrice.formatted")}
-          </li> 
-        }
+          </li>
+        )}
         <li
           className={classNames(Styles.Position__type, {
             [Styles.Position__typeSell]: type === LONG

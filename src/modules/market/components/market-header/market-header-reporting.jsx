@@ -102,9 +102,12 @@ export default class MarketHeaderReporting extends Component {
       content = [
         <div
           key="consensus"
-          className={classNames(Styles.MarketHeaderReporting__winner__container, Styles[
-            `MarketHeaderReporting__winner__container__color__${CatWinnerColorIndex}`
-          ])}
+          className={classNames(
+            Styles.MarketHeaderReporting__winner__container,
+            Styles[
+              `MarketHeaderReporting__winner__container__color__${CatWinnerColorIndex}`
+            ]
+          )}
         >
           <div className={Styles.MarketHeaderReporting__outcomeContainer}>
             <span

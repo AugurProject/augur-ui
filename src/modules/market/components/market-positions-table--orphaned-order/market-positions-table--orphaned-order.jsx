@@ -46,13 +46,7 @@ export default class OrphanedOrder extends Component {
   }
 
   render() {
-    const {
-      isMobile,
-      outcomeName,
-      order,
-      pending,
-      outcome
-    } = this.props;
+    const { isMobile, outcomeName, order, pending, outcome } = this.props;
     const { orderCancellationStatus } = order;
     const orderPrice = formatEther(getValue(order, "fullPrecisionPrice"))
       .formatted;
@@ -66,12 +60,9 @@ export default class OrphanedOrder extends Component {
         }}
         className={classNames(SharedStyles.Order, OrphanedStyles.Order, {
           [SharedStyles.Negative]: orderType === SELL
-        })
-        }
+        })}
       >
-        <li>
-          {outcomeName || orderPrice}
-        </li>
+        <li>{outcomeName || orderPrice}</li>
         <li
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL
@@ -80,12 +71,10 @@ export default class OrphanedOrder extends Component {
         >
           {orderType}
         </li>
-        <li>
-          {orderShares}
-        </li>
+        <li>{orderShares}</li>
         <li>{orderPrice}</li>
-        <li/>
-        <li/>
+        <li />
+        <li />
         <li>
           {pending || this.state.disableCancel ? (
             <button className={Styles.Order__cancel} disabled>
@@ -102,9 +91,7 @@ export default class OrphanedOrder extends Component {
             </button>
           )}
         </li>
-        <div
-          className={classNames(OrphanedStyles.Order__learnMore)}
-        >
+        <div className={classNames(OrphanedStyles.Order__learnMore)}>
           This is an orphaned order. Please cancel it.{" "}
           <span className={OrphanedStyles.Order__link}>
             <a

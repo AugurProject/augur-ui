@@ -58,15 +58,12 @@ export default class FilledOrdersOrder extends Component {
             this.order = order;
           }}
           className={classNames(SharedStyles.Order, Styles.FilledOrder, {
-              [Styles.FilledOrder__active]: s.showTrades,
-              [SharedStyles.Negative]: orderType === SELL
-            })
-          }
+            [Styles.FilledOrder__active]: s.showTrades,
+            [SharedStyles.Negative]: orderType === SELL
+          })}
           onClick={this.setShowTrades}
         >
-          <li>
-            {order.outcome || orderPrice}
-          </li>
+          <li>{order.outcome || orderPrice}</li>
           <li
             className={classNames(SharedStyles.Order__type, {
               [SharedStyles.Order__typeSell]: orderType === SELL
@@ -126,7 +123,9 @@ export default class FilledOrdersOrder extends Component {
                         <EtherscanLink
                           showNonLink
                           txhash={trade.transactionHash}
-                          label={isMobile ? "Details" : "View Transaction Details"}
+                          label={
+                            isMobile ? "Details" : "View Transaction Details"
+                          }
                         />
                       </button>
                     </li>

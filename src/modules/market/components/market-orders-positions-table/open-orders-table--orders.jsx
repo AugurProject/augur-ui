@@ -59,9 +59,7 @@ export default class OpenOrdersOrder extends Component {
             : SharedStyles.PortMobile
         }
       >
-        <li>
-          {outcomeName || orderPrice}
-        </li>
+        <li>{outcomeName || orderPrice}</li>
         <li
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL

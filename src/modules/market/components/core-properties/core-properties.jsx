@@ -132,12 +132,12 @@ const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
 CoreProperties.propTypes = {
   market: PropTypes.object.isRequired,
   isMobileSmall: PropTypes.bool,
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool
 };
 
 CoreProperties.defaultProps = {
   isMobileSmall: false,
-  isMobile: false,
+  isMobile: false
 };
 
 export default CoreProperties;

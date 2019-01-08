@@ -10,13 +10,13 @@ export default class ModuleTabs extends Component {
     selected: PropTypes.number,
     children: PropTypes.arrayOf(ModulePane).isRequired,
     fillWidth: PropTypes.bool,
-    fillForMobile: PropTypes.bool,
+    fillForMobile: PropTypes.bool
   };
 
   static defaultProps = {
-    selected: 0, 
+    selected: 0,
     fillWidth: false,
-    fillForMobile: false,
+    fillForMobile: false
   };
 
   constructor(props) {
@@ -45,7 +45,8 @@ export default class ModuleTabs extends Component {
           key={index}
           className={classNames({
             [Styles.ModuleTabs__activeTab]: this.state.selected === index,
-            [Styles.ModuleTabs__activeTabFill]: this.state.selected === index && this.props.fillWidth,
+            [Styles.ModuleTabs__activeTabFill]:
+              this.state.selected === index && this.props.fillWidth
           })}
         >
           <button
@@ -54,22 +55,24 @@ export default class ModuleTabs extends Component {
             }}
           >
             <span
-            className={classNames({
-              [Styles.ModuleTabs__activeSpanFill]: this.state.selected === index && this.props.fillWidth,
-            })}>{child.props.label}</span>
+              className={classNames({
+                [Styles.ModuleTabs__activeSpanFill]:
+                  this.state.selected === index && this.props.fillWidth
+              })}
+            >
+              {child.props.label}
+            </span>
           </button>
         </li>
       );
     }
     return (
-      <ul 
-        className={
-          classNames(Styles.ModuleTabs__tab, 
-            {
-              [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
-              [Styles.ModuleTabs__tabFillWidth]: this.props.fillWidth || this.props.fillForMobile,
-            }
-        )}
+      <ul
+        className={classNames(Styles.ModuleTabs__tab, {
+          [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
+          [Styles.ModuleTabs__tabFillWidth]:
+            this.props.fillWidth || this.props.fillForMobile
+        })}
       >
         {this.props.children.map(labels.bind(this))}
       </ul>
