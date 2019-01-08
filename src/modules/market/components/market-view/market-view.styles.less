@@ -13,12 +13,34 @@
 
 .MarketView__paneContainer--mobile {
   padding: 15px;
+  margin-top: 60px;
+  margin-bottom: 70px;
 }
 
 .MarketView__buySellButton--button {
   position: fixed;
   bottom: 0;
-  background-color: white;
+  left: 0;
+  right: 0;
+
+  > div {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 16px;
+
+     > button {
+      &:extend(.button--transparent--rounded all);
+      
+      font-size: 14px;
+      border: solid 1px white;
+      padding: 18px 80px;
+      margin-right: 0px;
+    }
+  }
 }
 
 .MarketView__body {

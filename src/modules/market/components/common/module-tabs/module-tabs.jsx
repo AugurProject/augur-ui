@@ -8,11 +8,13 @@ import Styles from "modules/market/components/common/module-tabs/module-tabs.sty
 export default class ModuleTabs extends Component {
   static propTypes = {
     selected: PropTypes.number,
-    children: PropTypes.arrayOf(ModulePane).isRequired
+    children: PropTypes.arrayOf(ModulePane).isRequired,
+    fillWidth: PropTypes.bool,
   };
 
   static defaultProps = {
-    selected: 0
+    selected: 0, 
+    fillWidth: false 
   };
 
   constructor(props) {
@@ -40,7 +42,8 @@ export default class ModuleTabs extends Component {
         <li
           key={index}
           className={classNames({
-            [Styles.ModuleTabs__activeTab]: this.state.selected === index
+            [Styles.ModuleTabs__activeTab]: this.state.selected === index,
+            [Styles.ModuleTabs__activeTabFill]: this.state.selected === index && this.props.fillWidth,
           })}
         >
           <button
@@ -48,13 +51,16 @@ export default class ModuleTabs extends Component {
               this.handleClick(e, index);
             }}
           >
-            {child.props.label}
+            <span
+            className={classNames({
+              [Styles.ModuleTabs__activeSpanFill]: this.state.selected === index && this.props.fillWidth,
+            })}>{child.props.label}</span>
           </button>
         </li>
       );
     }
     return (
-      <ul className={Styles.ModuleTabs__tab}>
+      <ul className={classNames(Styles.ModuleTabs__tab, {[Styles.ModuleTabs__tabFill]: this.props.fillWidth})}>
         {this.props.children.map(labels.bind(this))}
       </ul>
     );

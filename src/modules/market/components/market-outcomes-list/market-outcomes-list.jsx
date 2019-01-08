@@ -80,7 +80,7 @@ export default class MarketOutcomesList extends Component {
                 </span>
               </li>
               <li>
-                Last
+                <span>Last</span>
               </li>
             </ul>
             <div className={SharedStyles["MarketOpenOrdersList__table-body"]}>

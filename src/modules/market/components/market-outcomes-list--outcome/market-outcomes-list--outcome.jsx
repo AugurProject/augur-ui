@@ -58,6 +58,7 @@ const Outcome = ({
         <MarketOutcomeTradingIndicator
           outcome={outcome}
           location="tradingPage"
+          style={isMobile ? {bottom: "30%"} : null}
         />
       </li>
     </ul>

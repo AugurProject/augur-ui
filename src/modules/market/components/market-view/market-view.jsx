@@ -194,7 +194,7 @@ export default class MarketView extends Component {
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
           </Helmet>
-          <ModuleTabs selected={0}>
+          <ModuleTabs selected={0} fillWidth>
             <ModulePane label="Market Info">
               <div className={Styles['MarketView__paneContainer--mobile']}>
                 <MarketHeader
@@ -222,9 +222,11 @@ export default class MarketView extends Component {
             </ModulePane>
           </ModuleTabs>
           <div className={Styles['MarketView__buySellButton--button']}>
-            <button>
-              Buy/Sell
-            </button>
+            <div>
+              <button>
+                Buy / Sell
+              </button>
+            </div>
           </div>
         </section>
       );

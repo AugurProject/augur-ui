@@ -43,7 +43,6 @@
     }
 
     &:last-of-type {
-      align-items: center;
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
@@ -103,22 +102,34 @@
 
     > li {
       padding: 34px 0 16px 0;
+      min-width: 100px;
 
       &:first-child {
         position: absolute;
         top: 12px;
         padding: 0;
         bottom: 0;
-        left: 2rem;
+        left: 16px;
         font-weight: 500;
       }
 
       &:nth-child(2) {
         max-width: 160px;
-        padding-left: 2rem;
+        padding-left: 16px;
         position: relative;
         text-align: left;
+        flex-grow: unset;
       }
+    }
+  }
+}
+
+@media @breakpoint-mobile-small {
+  .Outcome,
+  .Order,
+  .Position {
+    > li {
+      min-width: 50px;
     }
   }
 }
