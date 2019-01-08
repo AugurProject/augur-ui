@@ -23,10 +23,10 @@ export default class MarketOutcomeDepth extends Component {
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
     marketMax: CustomPropTypes.bigNumber.isRequired,
-    hoveredDepth: PropTypes.array.isRequired,
+    // hoveredDepth: PropTypes.array.isRequired,
     isMobile: PropTypes.bool,
-    headerHeight: PropTypes.number.isRequired,
-    ordersWidth: PropTypes.number.isRequired,
+    // headerHeight: PropTypes.number.isRequired,
+    // ordersWidth: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     hoveredPrice: PropTypes.any
   };
@@ -272,15 +272,13 @@ export default class MarketOutcomeDepth extends Component {
         containerHeight,
         containerWidth,
         marketMin,
-        marketMax,
-        pricePrecision
+        marketMax
+        // pricePrecision
       } = options;
 
       if (hoveredPrice == null) {
         d3.select("#crosshairs").style("display", "none");
-        d3.select("#hovered_price_label").text("");
-        d3.select("#hovered_volume_label").text("");
-        d3.select("#hovered_cost_label").text("");
+        d3.select("#hovered_tooltip_container").style("display", "none");
         updateHoveredDepth([]);
       } else {
         const nearestFillingOrder = nearestCompletelyFillingOrder(
@@ -306,8 +304,8 @@ export default class MarketOutcomeDepth extends Component {
         } else {
           d3.select("#crosshairX").style("display", "none");
         }
-        const yPosition = yScale(hoveredPrice);
-        const clampedHoveredPrice = yScale.invert(yPosition);
+        // const yPosition = yScale(hoveredPrice);
+        // const clampedHoveredPrice = yScale.invert(yPosition);
 
         d3.select("#crosshairY")
           .attr("x1", 0)
@@ -315,28 +313,13 @@ export default class MarketOutcomeDepth extends Component {
           .attr("x2", containerWidth)
           .attr("y2", yScale(nearestFillingOrder[0]));
 
-        let labelOffset = 5;
-        if (nearestFillingOrder && nearestFillingOrder[4] === ASKS) {
-          labelOffset = -40;
-        }
-        d3
-          .select("#hovered_price_label")
-          .attr("x", xScale(hoveredPrice) + labelOffset)
-          .attr("y", yScale(nearestFillingOrder[0])).text(`
-            Price: ${clampedHoveredPrice.toFixed(pricePrecision)}
-          `);
-        d3
-          .select("#hovered_volume_label")
-          .attr("x", xScale(hoveredPrice) + labelOffset)
-          .attr("y", yScale(nearestFillingOrder[0]) + labelOffset + 12).text(`
-            Volume: ${clampedHoveredPrice.toFixed(pricePrecision)}
-          `);
-        d3
-          .select("#hovered_cost_label")
-          .attr("x", xScale(hoveredPrice) + labelOffset)
-          .attr("y", yScale(nearestFillingOrder[0]) + labelOffset + 24).text(`
-            Cost: ${clampedHoveredPrice.toFixed(pricePrecision)}
-          `);
+        d3.select("#crosshairDot")
+          .attr("cx", xScale(nearestFillingOrder[1]))
+          .attr("cy", yScale(nearestFillingOrder[0]));
+
+        d3.select("#crosshairDotOutline")
+          .attr("cx", xScale(nearestFillingOrder[1]))
+          .attr("cy", yScale(nearestFillingOrder[0]));
       }
     }
   }
@@ -668,9 +651,20 @@ function drawLines(options) {
 function setupCrosshairs(options) {
   const { depthChart } = options;
 
-  depthChart.append("text").attr("id", "hovered_price_label");
-  depthChart.append("text").attr("id", "hovered_volume_label");
-  depthChart.append("text").attr("id", "hovered_cost_label");
+  const tooltip = depthChart
+    .append("g")
+    .attr("id", "hovered_tooltip_container")
+    .style("display", "none");
+
+  tooltip
+    .append("rect")
+    .attr("width", "128")
+    .attr("height", "64")
+    .attr("id", "hovered_tooltip")
+    .attr("class", "hovered_tooltip");
+  tooltip.append("text").attr("id", "hovered_price_label");
+  tooltip.append("text").attr("id", "hovered_volume_label");
+  tooltip.append("text").attr("id", "hovered_cost_label");
 
   // create crosshairs
   const crosshair = depthChart
@@ -678,6 +672,22 @@ function setupCrosshairs(options) {
     .attr("id", "crosshairs")
     .attr("class", "line")
     .style("display", "none");
+
+  crosshair
+    .append("svg:circle")
+    .attr("id", "crosshairDot")
+    .attr("r", 6)
+    .attr("stroke", "white")
+    .attr("fill", "white")
+    .attr("class", "crosshairDot");
+
+  crosshair
+    .append("svg:circle")
+    .attr("id", "crosshairDotOutline")
+    .attr("r", 16)
+    .attr("stroke", "white")
+    .attr("fill", "white")
+    .attr("class", "crosshairDotOutline");
 
   // X Crosshair
   crosshair
@@ -716,6 +726,8 @@ function attachHoverClickHandlers(options) {
       updateHoveredPrice(null);
       d3.select(".depth-line-bids").attr("stroke-width", 1);
       d3.select(".depth-line-asks").attr("stroke-width", 1);
+      d3.select("#crosshairX").attr("class", "crosshair");
+      d3.select("#crosshairY").attr("class", "crosshair");
     })
     .on("mousemove", () => {
       const mouse = d3.mouse(d3.select("#depth_chart").node());
@@ -727,16 +739,55 @@ function attachHoverClickHandlers(options) {
       if (highlightAsks) {
         d3.select(bidsDepthLine).attr("stroke-width", 1);
         d3.select(asksDepthLine).attr("stroke-width", 2);
+        d3.select("#crosshairX").attr("class", "crosshair-ask");
+        d3.select("#crosshairY").attr("class", "crosshair-ask");
       } else {
         d3.select(bidsDepthLine).attr("stroke-width", 2);
         d3.select(asksDepthLine).attr("stroke-width", 1);
+        d3.select("#crosshairX").attr("class", "crosshair-bid");
+        d3.select("#crosshairY").attr("class", "crosshair-bid");
       }
       // Determine closest order
       const hoveredPrice = drawParams.xScale
         .invert(mouse[0])
         .toFixed(pricePrecision);
-
+      const nearestFillingOrder = nearestCompletelyFillingOrder(
+        hoveredPrice,
+        marketDepth
+      );
       updateHoveredPrice(hoveredPrice);
+
+      const { xScale, yScale } = drawParams;
+      const yPosition = yScale(hoveredPrice);
+      const clampedHoveredPrice = yScale.invert(yPosition);
+
+      d3.select("#hovered_tooltip").attr(
+        "transform",
+        `
+        translate(${xScale(nearestFillingOrder[1]) + 12}
+        , ${yScale(nearestFillingOrder[0])})
+        `
+      );
+      d3.select("#hovered_tooltip_container").style("display", null);
+
+      d3
+        .select("#hovered_price_label")
+        .attr("x", xScale(nearestFillingOrder[1]) + 18)
+        .attr("y", yScale(nearestFillingOrder[0]) + 18).text(`
+          Price: ${clampedHoveredPrice.toFixed(pricePrecision)}
+        `);
+      d3
+        .select("#hovered_volume_label")
+        .attr("x", xScale(nearestFillingOrder[1]) + 18)
+        .attr("y", yScale(nearestFillingOrder[0]) + 34).text(`
+          Volume: ${clampedHoveredPrice.toFixed(pricePrecision)}
+        `);
+      d3
+        .select("#hovered_cost_label")
+        .attr("x", xScale(nearestFillingOrder[1]) + 18)
+        .attr("y", yScale(nearestFillingOrder[0]) + 50).text(`
+          Cost: ${clampedHoveredPrice.toFixed(pricePrecision)}
+        `);
     })
     .on("click", () => {
       const mouse = d3.mouse(d3.select("#depth_chart").node());
