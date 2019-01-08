@@ -53,17 +53,13 @@ export default class OpenOrdersOrder extends Component {
         className={
           !isMobile
             ? classNames(SharedStyles.Order, {
-                [SharedStyles["Order-not_extended"]]: isExtendedDisplay
+                [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
+                [SharedStyles.Negative]: orderType === SELL
               })
             : SharedStyles.PortMobile
         }
       >
         <li>
-          <div
-            className={classNames(SharedStyles.Order__typeIndicator, {
-              [SharedStyles.Order__typeIndicatorSell]: orderType === SELL
-            })}
-          />
           {outcomeName || orderPrice}
         </li>
         <li

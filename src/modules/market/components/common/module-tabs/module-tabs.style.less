@@ -34,12 +34,8 @@
   flex-flow: column nowrap;
 }
 
-.ModuleTabs__tabFill {
+.ModuleTabs__tabFillWidth {
   background-color: #1B1528;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
-  position: fixed;
-  left: 0;
-  right: 0;
 
   > li {
     flex-grow: 1;
@@ -49,8 +45,21 @@
     display: flex;
 
     > button {
-      font-size: 14px;
       padding: 1.125rem 0;
+    }
+  }
+}
+
+.ModuleTabs__tabFill {
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+
+  > li {
+    > button {
+      font-size: 14px;
     }
   }
 }

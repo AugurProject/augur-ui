@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
+import classNames from "classnames";
 
 import MarketHeader from "modules/market/containers/market-header";
 // import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
@@ -215,7 +216,40 @@ export default class MarketView extends Component {
               </div>
             </ModulePane>
             <ModulePane label="Trade">
-              <div>2</div>
+              <div className={Styles['MarketView__paneContainer--mobile']}>
+                <ModuleTabs selected={0} fillForMobile>
+                  <ModulePane label="Order Book">
+                    <div className={Styles.MarketView__orders}>
+                      <MarketOutcomeOrders
+                        headerHeight={0}
+                        isMobile={isMobile}
+                        sharedChartMargins={this.sharedChartMargins}
+                        fixedPrecision={4}
+                        pricePrecision={4}
+                        hoveredPrice={null}
+                        updateHoveredPrice={null}
+                        updatePrecision={null}
+                        updateSelectedOrderProperties={null}
+                        marketId={marketId}
+                        selectedOutcome={s.selectedOutcome}
+                      />
+                    </div>
+                  </ModulePane>
+                  <ModulePane label="Trade History">
+                    <div className={Styles.MarketView__history}>
+                      <div className={Styles.MarketView__component__history}>
+                        {marketId && (
+                          <MarketTradeHistory
+                            marketId={marketId}
+                            outcome={s.selectedOutcome}
+                            isMobile={isMobile}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </ModulePane>
+                </ModuleTabs>
+              </div>
             </ModulePane>
             <ModulePane label="Orders">
               <div className={Styles['MarketView__paneContainer--mobile']}>
@@ -302,14 +336,7 @@ export default class MarketView extends Component {
           </div>
           <div className={Styles.MarketView__secondColumn}>
             <div
-              className={Styles.MarketView__component}
-              style={{
-                marginBottom: "12px",
-                minHeight: "380px",
-                height: "380px",
-                display: "flex",
-                flexDirection: "column"
-              }}
+              className={classNames(Styles.MarketView__component, Styles.MarketView__orders)}
             >
               <MarketOutcomeOrders
                 headerHeight={0}
@@ -326,18 +353,14 @@ export default class MarketView extends Component {
               />
             </div>
             <div
-              className={Styles.MarketView__component}
-              style={{
-                minHeight: "400px",
-                borderBottom: "8px solid #211a32",
-                maxHeight: "50vh"
-              }}
+              className={classNames(Styles.MarketView__component, Styles.MarketView__history)}
             >
               <div className={Styles.MarketView__component__history}>
                 {marketId && (
                   <MarketTradeHistory
                     marketId={marketId}
                     outcome={s.selectedOutcome}
+                    isMobile={isMobile}
                   />
                 )}
               </div>

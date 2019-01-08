@@ -1,5 +1,6 @@
 @import (reference) '~assets/styles/shared';
 
+.FilledOrder,
 .Outcome,
 .Order,
 .Position {
@@ -11,6 +12,7 @@
   font-size: 12px;
   max-height: 40px;
   transition: background-color 0.15s ease;
+  position: relative;
 
   &:nth-child(even) {
     background-color: @color-dark-grayish-purple;
@@ -60,6 +62,29 @@
   }
 }
 
+.Outcome,
+.Order,
+.Position {
+  &::before {
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 96%;
+    left: 1px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    background-color: @color-positive;
+  }
+}
+
+.Negative {
+  &::before {
+    background-color: @color-negative2;
+  }
+}
+
 .Order__typeIndicator,
 .Position__typeIndicator {
   background-color: @color-positive;
@@ -73,6 +98,7 @@
 .Order__type,
 .Position__type {
   color: @color-positive;
+  text-transform: capitalize;
 }
 
 .Order__typeSell,
@@ -126,7 +152,7 @@
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        padding-right: 3.5rem;
+        padding-right: 2rem;
       }
     }
   }
@@ -141,11 +167,3 @@
     }
   }
 }
-
-.Position__closeButton {
-  .button--transparent();
-
-  display: inline-block;
-  margin-right: -28px; // center button
-}
-

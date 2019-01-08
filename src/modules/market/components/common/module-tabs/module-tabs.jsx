@@ -10,11 +10,13 @@ export default class ModuleTabs extends Component {
     selected: PropTypes.number,
     children: PropTypes.arrayOf(ModulePane).isRequired,
     fillWidth: PropTypes.bool,
+    fillForMobile: PropTypes.bool,
   };
 
   static defaultProps = {
     selected: 0, 
-    fillWidth: false 
+    fillWidth: false,
+    fillForMobile: false,
   };
 
   constructor(props) {
@@ -60,7 +62,15 @@ export default class ModuleTabs extends Component {
       );
     }
     return (
-      <ul className={classNames(Styles.ModuleTabs__tab, {[Styles.ModuleTabs__tabFill]: this.props.fillWidth})}>
+      <ul 
+        className={
+          classNames(Styles.ModuleTabs__tab, 
+            {
+              [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
+              [Styles.ModuleTabs__tabFillWidth]: this.props.fillWidth || this.props.fillForMobile,
+            }
+        )}
+      >
         {this.props.children.map(labels.bind(this))}
       </ul>
     );

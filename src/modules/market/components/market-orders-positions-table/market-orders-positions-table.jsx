@@ -22,7 +22,7 @@ const MarketOrdersPositionsTable = ({
   filledOrders
 }) => (
   <section>
-    <ModuleTabs selected={0}>
+    <ModuleTabs selected={0} fillForMobile={isMobile}>
       <ModulePane label="Open Orders">
         <OpenOrdersTable
           openOrders={openOrders}
@@ -33,7 +33,7 @@ const MarketOrdersPositionsTable = ({
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
-        <FilledOrdersTable filledOrders={filledOrders} />
+        <FilledOrdersTable filledOrders={filledOrders} isMobile={isMobile}/>
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable
