@@ -455,8 +455,7 @@ export default class ReportingDisputeForm extends Component {
       >
         <li>
           <div className={Styles.ReportingDisputeForm__outcome_selection_msg}>
-            Please choose an outcome below based on the resolution source at the
-            time the market ended.
+            Please choose an outcome below based on the resolution source when the market ends.
           </div>
           <div className={Styles.ReportingDisputeForm__outcome_selection_msg}>
               The market should be considered INVALID if any of the following are true:
