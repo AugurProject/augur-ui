@@ -30,8 +30,8 @@
   background-color: @color-light-purple;
   color: @color-light-gray;
   display: flex;
-  justify-content: space-between;
   font-size: @font-size-small;
+  justify-content: space-between;
   padding: 0.5625rem 1.5rem 0.5625rem 1.875rem;
   width: 100%;
 
@@ -46,14 +46,13 @@
   }
 }
 
-
 .MarketTradeHistory__table__trade__data {
   background-color: @color-light-purple;
   color: @color-white;
   display: flex;
-  position: relative;
   font-size: @font-size-small;
   padding-bottom: 0.25rem;
+  position: relative;
   width: 100%;
 
   &:last-child {
@@ -62,8 +61,8 @@
 
   > li {
     font-family: 'Roboto Mono', monospace;
-    padding-top: 4px;
     padding-bottom: 4px;
+    padding-top: 4px;
 
     &:first-child {
       text-align: left;
@@ -71,20 +70,20 @@
 
     &:nth-child(2) {
       flex: 1;
-      padding-left: 1.75rem;
       justify-content: right;
+      padding-left: 1.75rem;
     }
 
     &:nth-child(3) {
       flex: 1;
-      padding-left: 2rem;
       justify-content: right;
+      padding-left: 2rem;
     }
 
     &:last-child {
-      text-align: right;
       color: @color-light-gray;
       padding-right: 0.8rem;
+      text-align: right;
     }
   }
 }
@@ -98,8 +97,8 @@
 
   > li {
     display: table-cell;
-    padding-top: 6px;
     padding-bottom: 6px;
+    padding-top: 6px;
     text-align: right;
 
     &:first-child {
@@ -129,10 +128,10 @@
 }
 
 .MarketTradeHistory__table__data {
-  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  overflow-y: scroll;
 }
 
 .MarketTradeHistory__trade__indicatorDown,
@@ -151,12 +150,13 @@
 .MarketTradeHistory__sell {
   color: @color-negative2;
 }
+
 .MarketTradeHistory__trade__indicatorUp {
-  top: -0.5rem;
   border-bottom-color: @color-light-gray;
+  top: -0.5rem;
 }
 
 .MarketTradeHistory__trade__indicatorDown {
-  top: 0.75rem;
   border-top-color: @color-light-gray;
+  top: 0.75rem;
 }

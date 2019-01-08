@@ -22,7 +22,7 @@ export default class MarketTradeHistory extends Component {
     super(props);
 
     this.state = {
-      misc: false
+      // misc: false
     };
   }
 
@@ -59,9 +59,7 @@ export default class MarketTradeHistory extends Component {
                   {groupedTradeHistory[date].map(priceTime => (
                     <ul
                       key={priceTime.key}
-                      className={
-                        Styles.MarketTradeHistory__table__trade__data
-                      }
+                      className={Styles.MarketTradeHistory__table__trade__data}
                     >
                       <li
                         className={classNames(

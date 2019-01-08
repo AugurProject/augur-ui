@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-list--orphaned-order/market-positions-list--orphaned-order";
+// import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-list--orphaned-order/market-positions-list--orphaned-order";
 import FilledOrdersOrder from "modules/market/components/market-orders-positions-table/filled-orders-table--orders";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
