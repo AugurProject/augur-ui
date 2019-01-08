@@ -8,7 +8,7 @@ import MarketHeader from "modules/market/containers/market-header";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
-import MarketTradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
+import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
 import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
 import { createBigNumber } from "utils/create-big-number";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
@@ -24,6 +24,10 @@ import { BigNumber } from "bignumber.js";
 
 export default class MarketView extends Component {
   static propTypes = {
+    handleFilledOnly: PropTypes.func.isRequired,
+    clearTradeInProgress: PropTypes.func.isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    gasPrice: PropTypes.number.isRequired,
     market: PropTypes.object.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
@@ -179,7 +183,11 @@ export default class MarketView extends Component {
       location,
       isMobile,
       outcomes,
-      market
+      market,
+      availableFunds,
+      clearTradeInProgress,
+      gasPrice,
+      handleFilledOnly
     } = this.props;
     const s = this.state;
 
@@ -190,14 +198,14 @@ export default class MarketView extends Component {
             this.node = node;
           }}
           className={Styles.MarketView}
-          style={{marginTop: '25px'}}
+          style={{ marginTop: "25px" }}
         >
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
           </Helmet>
           <ModuleTabs selected={0} fillWidth>
             <ModulePane label="Market Info">
-              <div className={Styles['MarketView__paneContainer--mobile']}>
+              <div className={Styles["MarketView__paneContainer--mobile"]}>
                 <MarketHeader
                   marketId={marketId}
                   selectedOutcome={s.selectedOutcome}
@@ -216,7 +224,7 @@ export default class MarketView extends Component {
               </div>
             </ModulePane>
             <ModulePane label="Trade">
-              <div className={Styles['MarketView__paneContainer--mobile']}>
+              <div className={Styles["MarketView__paneContainer--mobile"]}>
                 <ModuleTabs selected={0} fillForMobile>
                   <ModulePane label="Order Book">
                     <div className={Styles.MarketView__orders}>
@@ -252,16 +260,14 @@ export default class MarketView extends Component {
               </div>
             </ModulePane>
             <ModulePane label="Orders">
-              <div className={Styles['MarketView__paneContainer--mobile']}>
+              <div className={Styles["MarketView__paneContainer--mobile"]}>
                 <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </ModulePane>
           </ModuleTabs>
-          <div className={Styles['MarketView__buySellButton--button']}>
+          <div className={Styles["MarketView__buySellButton--button"]}>
             <div>
-              <button>
-                Buy / Sell
-              </button>
+              <button>Buy / Sell</button>
             </div>
           </div>
         </section>
@@ -292,7 +298,22 @@ export default class MarketView extends Component {
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
                 <div className={Styles.MarketView__component}>
-                  Trading
+                  <MarketTradingForm
+                    market={market}
+                    isLogged={isLogged}
+                    selectedOrderProperties={s.selectedOrderProperties}
+                    selectedOutcome={s.selectedOutcome}
+                    isMobile={isMobile}
+                    toggleForm={this.toggleForm}
+                    showOrderPlaced={this.showOrderPlaced}
+                    availableFunds={availableFunds}
+                    clearTradeInProgress={clearTradeInProgress}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
+                    gasPrice={gasPrice}
+                    handleFilledOnly={handleFilledOnly}
+                  />
                 </div>
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
@@ -336,7 +357,10 @@ export default class MarketView extends Component {
           </div>
           <div className={Styles.MarketView__secondColumn}>
             <div
-              className={classNames(Styles.MarketView__component, Styles.MarketView__orders)}
+              className={classNames(
+                Styles.MarketView__component,
+                Styles.MarketView__orders
+              )}
             >
               <MarketOutcomeOrders
                 headerHeight={0}
@@ -353,7 +377,10 @@ export default class MarketView extends Component {
               />
             </div>
             <div
-              className={classNames(Styles.MarketView__component, Styles.MarketView__history)}
+              className={classNames(
+                Styles.MarketView__component,
+                Styles.MarketView__history
+              )}
             >
               <div className={Styles.MarketView__component__history}>
                 {marketId && (
