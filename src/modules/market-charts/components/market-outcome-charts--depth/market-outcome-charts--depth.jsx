@@ -23,17 +23,17 @@ export default class MarketOutcomeDepth extends Component {
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
     marketMax: CustomPropTypes.bigNumber.isRequired,
-    isMobile: PropTypes.bool.isRequired,
+    hoveredDepth: PropTypes.array.isRequired,
+    isMobile: PropTypes.bool,
+    headerHeight: PropTypes.number.isRequired,
+    ordersWidth: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     hoveredPrice: PropTypes.any
   };
 
   static defaultProps = {
-    sharedChartMargins: {
-      top: 0,
-      bottom: 30
-    },
-    hoveredPrice: null
+    hoveredPrice: null,
+    isMobile: false
   };
 
   constructor(props) {
