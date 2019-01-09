@@ -78,7 +78,6 @@ function makeUICategory(categoryName, tagName1, tagName2) {
   };
 }
 
-
 function appendCategoryIfNew(dispatch, categories, marketWithMaybeNewCategory) {
   const isExistingCategory = categories.find(
     c => c.categoryName === marketWithMaybeNewCategory.category
@@ -109,6 +108,7 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
           logError(err);
           return;
         }
+
         // When a new market is created, we might reload all categories with
         // `dispatch(loadCategories())`, but this can cause UI jitter, so
         // instead we'll append the new market's category if it doesn't exist.
