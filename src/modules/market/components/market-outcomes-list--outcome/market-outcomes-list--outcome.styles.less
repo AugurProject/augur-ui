@@ -3,8 +3,8 @@
 .Outcome {
   background-color: @color-grayish-purple;
   cursor: pointer;
-  transition: background-color 0.15s ease;
   position: relative;
+  transition: background-color 0.15s ease;
 
   &:nth-child(1) {
     &:hover {
@@ -98,7 +98,7 @@
     &.active {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-seven, 10%);
     }
-    
+
     &::before {
       background-color: @color-outcome-seven;
     }
@@ -120,8 +120,8 @@
 
   &.active {
     &::before {
-      width: 3px;
       left: 1px;
+      width: 3px;
     }
   }
 
@@ -149,7 +149,6 @@
     &:last-of-type {
       display: table-cell;
     }
-
 
     &:last-child {
       padding-right: 2.5rem;

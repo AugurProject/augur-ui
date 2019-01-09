@@ -32,7 +32,7 @@ export default class MarketPositionsListPosition extends Component {
   static defaultProps = {
     hasOrders: false,
     outcome: null,
-    isMovile: false
+    isMobile: false
   };
 
   static calcAvgDiff(position, order) {
@@ -60,7 +60,7 @@ export default class MarketPositionsListPosition extends Component {
     } = this.props;
 
     const netPositionShares = getValue(position, "netPosition.formatted");
-    const positionShares = getValue(position, "qtyShares.formatted");
+    const positionShares = getValue(position, "position.formatted");
     const netPosition = getValue(position, "netPosition.value");
 
     const type = getValue(position, "type");

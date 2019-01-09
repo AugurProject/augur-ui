@@ -190,7 +190,6 @@ export default class MarketView extends Component {
             this.node = node;
           }}
           className={Styles.MarketView}
-          style={{ marginTop: "25px" }}
         >
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
@@ -293,11 +292,10 @@ export default class MarketView extends Component {
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div
-                  className={Styles.MarketView__component}
-                  style={{
-                    marginBottom: "12px",
-                    flexGrow: "unset"
-                  }}
+                  className={classNames(
+                    Styles.MarketView__component,
+                    Styles.MarketView__outcomesList
+                  )}
                 >
                   <MarketOutcomesList
                     marketId={marketId}
@@ -322,10 +320,7 @@ export default class MarketView extends Component {
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>
-              <div
-                className={Styles.MarketView__component}
-                style={{ padding: "0px" }}
-              >
+              <div className={Styles.MarketView__component}>
                 <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </div>

@@ -12,34 +12,34 @@
 }
 
 .MarketView__paneContainer--mobile {
-  padding: 15px;
-  margin-top: 60px;
   margin-bottom: 70px;
+  margin-top: 60px;
+  padding: 15px;
 }
 
 .MarketView__buySellButton--button {
-  position: fixed;
   bottom: 0;
   left: 0;
+  position: fixed;
   right: 0;
 
   > div {
+    align-content: center;
+    align-items: center;
     display: flex;
     flex-direction: row;
     flex-grow: 1;
     justify-content: center;
-    align-items: center;
-    align-content: center;
     margin-bottom: 16px;
 
     > button {
       &:extend(.button--transparent--rounded all);
-      
-      font-size: 14px;
-      border: solid 2px white;
-      padding: 18px 80px;
-      margin-right: 0;
+
       background: rgba(27, 21, 40, 0.9);
+      border: solid 2px white;
+      font-size: 14px;
+      margin-right: 0;
+      padding: 18px 80px;
       z-index: 200;
     }
   }
@@ -137,17 +137,22 @@
 }
 
 .MarketView__orders {
-  margin-bottom: 12px;
-  min-height: 380px;
-  height: 380px;
   display: flex;
   flex-direction: column;
+  height: 380px;
+  margin-bottom: 12px;
+  min-height: 380px;
 }
 
 .MarketView__history {
-  min-height: 400px;
   border-bottom: 8px solid #211a32;
   max-height: 50vh;
+  min-height: 400px;
+}
+
+.MarketView__outcomesList {
+  flex-grow: unset;
+  margin-bottom: 12px;
 }
 
 @media @breakpoint-mobile {
@@ -170,7 +175,7 @@
   }
 
   .MarketView__history {
-    min-height: unset;
     max-height: unset;
+    min-height: unset;
   }
 }
