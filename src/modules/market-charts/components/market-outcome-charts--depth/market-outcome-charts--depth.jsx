@@ -182,7 +182,6 @@ export default class MarketOutcomeDepth extends Component {
 
       // padding for overflowing x-axis ticks
       const widthPadding = 10;
-      console.log("drawDepth", drawParams);
       const depthChart = d3
         .select(depthContainer)
         .append("svg")
@@ -275,7 +274,7 @@ export default class MarketOutcomeDepth extends Component {
         marketMax
         // pricePrecision
       } = options;
-      console.log("drawCrosshairs", options);
+
       if (hoveredPrice == null) {
         d3.select("#crosshairs").style("display", "none");
         d3.select("#hovered_tooltip_container").style("display", "none");
@@ -372,7 +371,6 @@ export function nearestCompletelyFillingOrder(
   } else {
     return null;
   }
-  console.log("we in nearestCompletelyFillingOrder", items[closestIndex]);
 
   return items[closestIndex];
 }
@@ -394,7 +392,7 @@ function determineDrawParams(options) {
     stick: 5,
     tickOffset: 10
   };
-  console.log("chartDim", chartDim);
+
   const containerWidth = depthChart.clientWidth;
   const containerHeight = depthChart.clientHeight;
   const drawHeight = containerHeight - chartDim.top - chartDim.bottom;
@@ -489,7 +487,6 @@ function drawTicks(options) {
     isMobile,
     hasOrders
   } = options;
-  console.log("drawTicks", options);
   // Y Axis
   //  Chart Bounds
   depthChart
@@ -589,7 +586,6 @@ function drawLines(options) {
 
   // Defs
   const chartDefs = depthChart.append("defs");
-  console.log("drawLines", options);
   //  Fills
   const subtleGradientBid = chartDefs
     .append("linearGradient")
@@ -635,7 +631,7 @@ function drawLines(options) {
     .curve(d3.curveStepBefore)
     .x(d => drawParams.xScale(d[1]))
     .y(d => drawParams.yScale(d[0]));
-  console.log("MarketDepth", marketDepth);
+
   Object.keys(marketDepth).forEach(side => {
     depthChart
       .append("path")
@@ -643,7 +639,7 @@ function drawLines(options) {
       .attr("class", `depth-line-${side} outcome-line-${side}`)
       .attr("d", depthLine);
   });
-  console.log("drawParams after MarketDepth", drawParams);
+
   const areaBid = d3
     .area()
     .curve(d3.curveStepBefore)
@@ -657,7 +653,7 @@ function drawLines(options) {
     .x0(d => drawParams.xScale(d[1]))
     .x1(d => drawParams.xScale(drawParams.xDomain[1]))
     .y(d => drawParams.yScale(d[0]));
-  console.log("MarketDepth2", marketDepth);
+
   Object.keys(marketDepth).forEach(side => {
     depthChart
       .append("path")
