@@ -56,6 +56,29 @@ export const handleMarketStateLog = log => dispatch => {
   );
 };
 
+// makeUICategory returns a new category literal, ie. an
+// object matching the type of augur-node's UICategory<string>.
+function makeUICategory(categoryName, tagName1, tagName2) {
+  function makeTagAggregation(tagName) {
+    return {
+      nonFinalizedOpenInterest: "0",
+      numberOfMarketsWithThisTag: 1,
+      openInterest: "0",
+      tagName
+    };
+  }
+  const tags = [];
+  if (tagName1) tags.push(makeTagAggregation(tagName1));
+  if (tagName2) tags.push(makeTagAggregation(tagName2));
+  return {
+    categoryName,
+    nonFinalizedOpenInterest: "0",
+    openInterest: "0",
+    tags
+  };
+}
+
+
 function appendCategoryIfNew(dispatch, categories, marketWithMaybeNewCategory) {
   const isExistingCategory = categories.find(
     c => c.categoryName === marketWithMaybeNewCategory.category
@@ -64,7 +87,11 @@ function appendCategoryIfNew(dispatch, categories, marketWithMaybeNewCategory) {
     dispatch(
       updateCategories([
         ...categories,
-        { categoryName: "TODO construct a category literal" }
+        makeUICategory(
+          marketWithMaybeNewCategory.category,
+          marketWithMaybeNewCategory.tag1,
+          marketWithMaybeNewCategory.tag2
+        )
       ])
     );
   }
@@ -82,6 +109,9 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
           logError(err);
           return;
         }
+        // When a new market is created, we might reload all categories with
+        // `dispatch(loadCategories())`, but this can cause UI jitter, so
+        // instead we'll append the new market's category if it doesn't exist.
         appendCategoryIfNew(
           dispatch,
           getState().categories,
