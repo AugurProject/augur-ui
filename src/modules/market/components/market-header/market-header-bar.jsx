@@ -8,10 +8,7 @@ import {
   CATEGORY_PARAM_NAME,
   TAGS_PARAM_NAME
 } from "modules/filter-sort/constants/param-names";
-import {
-  starIconOpen,
-  starIconFilled,
-} from "modules/common/components/icons";
+import { starIconOpen, starIconFilled } from "modules/common/components/icons";
 
 export default class MarketHeaderBar extends Component {
   static propTypes = {
@@ -26,7 +23,7 @@ export default class MarketHeaderBar extends Component {
     isLogged: PropTypes.bool,
     isFavorite: PropTypes.bool,
     addToFavorites: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool
   };
 
   static defaultProps = {
@@ -35,7 +32,7 @@ export default class MarketHeaderBar extends Component {
     reportingState: "",
     isLogged: false,
     isFavorite: false,
-    isMobile: false,
+    isMobile: false
   };
 
   constructor(props) {
@@ -62,7 +59,15 @@ export default class MarketHeaderBar extends Component {
   }
 
   render() {
-    const { category, reportingState, tags, addToFavorites, isLogged, isFavorite, isMobile } = this.props;
+    const {
+      category,
+      reportingState,
+      tags,
+      addToFavorites,
+      isLogged,
+      isFavorite,
+      isMobile
+    } = this.props;
     const phase = determineMarketPhase(reportingState);
     return (
       <section className={Styles.MarketHeaderBar}>
@@ -109,19 +114,17 @@ export default class MarketHeaderBar extends Component {
               ))}
           </div>
         </div>
-        {isMobile && 
+        {isMobile && (
           <div className={Styles.MarketHeaderBar__watchlist__container}>
             <button
               onClick={() => this.props.addToFavorites()}
               className={Styles.MarketHeaderBar__watchlist}
               disabled={!isLogged}
             >
-              <span>
-                {isFavorite ? starIconFilled : starIconOpen}
-              </span>
+              <span>{isFavorite ? starIconFilled : starIconOpen}</span>
             </button>
           </div>
-        }
+        )}
       </section>
     );
   }

@@ -20,12 +20,12 @@ export default class MarketPositionsList extends Component {
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
     market: PropTypes.object.isRequired,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool
   };
 
   static defaultProps = {
     numCompleteSets: null,
-    isMobile: false,
+    isMobile: false
   };
 
   render() {

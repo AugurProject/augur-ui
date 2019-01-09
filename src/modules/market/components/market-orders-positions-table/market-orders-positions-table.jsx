@@ -33,7 +33,7 @@ const MarketOrdersPositionsTable = ({
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
-        <FilledOrdersTable filledOrders={filledOrders} isMobile={isMobile}/>
+        <FilledOrdersTable filledOrders={filledOrders} isMobile={isMobile} />
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable

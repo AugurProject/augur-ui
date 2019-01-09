@@ -1,0 +1,43 @@
+@import (reference) '~assets/styles/shared';
+
+.Order__learnMore {
+  background-color: @color-dark-gray;
+  color: @color-white;
+  font-family: @roboto;
+  font-size: @font-size-small;
+  left: 0;
+  margin-top: 45px;
+  padding: 16px 8px;
+  position: absolute;
+  right: 0;
+
+  @media @breakpoint-mobile {
+    margin-top: 65px;
+  }
+}
+
+.Order__link {
+  color: @color-white;
+  font-size: @font-size-small;
+  font-weight: 700;
+  margin-left: 8px;
+  text-decoration: underline;
+}
+
+.Order__learnMore::after {
+  border: solid transparent;
+  border-bottom-color: @color-dark-gray;
+  border-width: 11px;
+  bottom: 100%;
+  content: " ";
+  height: 0;
+  left: 3.1%;
+  margin-left: -11px;
+  pointer-events: none;
+  position: absolute;
+  width: 0;
+}
+
+.Order__learnMore-extended::after {
+  left: 3.4%;
+}

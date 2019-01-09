@@ -19,7 +19,7 @@ export default class MarketOutcomesList extends Component {
     marketType: PropTypes.string,
     minPrice: CustomPropTypes.bigNumber,
     maxPrice: CustomPropTypes.bigNumber,
-    isMobile: PropTypes.bool,
+    isMobile: PropTypes.bool
   };
 
   static defaultProps = {
@@ -28,7 +28,7 @@ export default class MarketOutcomesList extends Component {
     marketType: null,
     minPrice: null,
     maxPrice: null,
-    isMobile: false,
+    isMobile: false
   };
 
   render() {
@@ -41,7 +41,7 @@ export default class MarketOutcomesList extends Component {
       scalarDenomination,
       minPrice,
       maxPrice,
-      isMobile,
+      isMobile
     } = this.props;
 
     return (

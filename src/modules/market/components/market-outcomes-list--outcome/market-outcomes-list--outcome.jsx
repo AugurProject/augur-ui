@@ -39,7 +39,9 @@ const Outcome = ({
     >
       <li>
         {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
-        {!isMobile && <span className={Styles.Outcome__percent}>{lastPricePercent}</span>}
+        {!isMobile && (
+          <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        )}
       </li>
       <li>
         <ValueDenomination formatted={topBidShares} />
@@ -58,7 +60,7 @@ const Outcome = ({
         <MarketOutcomeTradingIndicator
           outcome={outcome}
           location="tradingPage"
-          style={isMobile ? {bottom: "30%"} : null}
+          style={isMobile ? { bottom: "30%" } : null}
         />
       </li>
     </ul>
@@ -83,13 +85,13 @@ Outcome.propTypes = {
   selectedOutcome: PropTypes.string,
   updateSelectedOutcome: PropTypes.func.isRequired,
   scalarDenomination: PropTypes.string,
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool
 };
 
 Outcome.defaultProps = {
   selectedOutcome: null,
   scalarDenomination: null,
-  isMobile: false,
+  isMobile: false
 };
 
 export default Outcome;

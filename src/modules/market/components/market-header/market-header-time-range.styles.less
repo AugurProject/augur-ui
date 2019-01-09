@@ -70,37 +70,26 @@
 }
 
 @media @breakpoint-mobile {
-  .MarketHeaderTimeRange__container {
-    flex-direction: column;
-    margin-top: 0;
-    margin-right: 0;
-  }
-
   .MarketHeaderTimeRange__percentage {
     position: relative;
   }
 
   .MarketHeaderTimeRange__percentage__status {
-    border-top: 1px solid @color-outcome-seven;
     border-left: 0;
+    border-top: 1px solid @color-outcome-seven;
     top: 0.123rem;
     z-index: 10;
   }
 
   .MarketHeaderTimeRange__percentage__toEnd {
-    border-top: 1px solid #a7a2b2;
     border-left: 0;
+    border-top: 1px solid #a7a2b2;
     top: 1px;
   }
 
   .MarketHeaderTimeRange__percentage__dot {
-    z-index: 10;
     position: absolute;
-  }
-
-  .MarketHeaderTimeRange__dates {
-    flex-direction: row;
-    padding-left: 0;
+    z-index: 10;
   }
 
   .MarketHeader__property__headerContainer--mobile {
@@ -117,14 +106,19 @@
   }
 
   .MarketHeaderTimeRange__dates {
+    flex-direction: row;
+    flex-grow: 1;
+    padding-left: 0;
     padding-top: 9px;
-    flex-grow: 1
   }
 
   .MarketHeaderTimeRange__container {
+    background: #211a32;
+    flex-direction: column;
     height: unset;
     margin-bottom: 1rem;
-    background: #211A32;
+    margin-right: 0;
+    margin-top: 0;
     padding: 1rem;
   }
 }

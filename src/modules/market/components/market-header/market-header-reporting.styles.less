@@ -41,8 +41,8 @@
 }
 
 .MarketHeaderReporting__single__container {
+  background: #211a32;
   padding: 1.5rem 1.25rem 1.5rem 0.25rem;
-  background: #211A32;
 }
 
 .MarketHeaderReporting__winner__row {
@@ -129,7 +129,7 @@
   .MarketHeaderReporting__buttonNoMargin {
     display: flex;
     justify-content: center;
-  }  
+  }
 
   .MarketHeaderReporting__button {
     flex-grow: 1;
@@ -142,23 +142,23 @@
 
     &::before {
       background-color: @color-outcome-one;
+      bottom: 0;
       content: " ";
-      top: 0;
       left: 0;
       position: absolute;
+      top: 0;
       width: 2px;
-      bottom: 0;
     }
   }
 
   .MarketHeaderReporting__outcomeContainer {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center
   }
 
   .MarketHeaderReporting__winner {
-    padding-left: 0px;
+    padding-left: 0;
 
     &:first-child::before {
       content: unset;
@@ -177,7 +177,7 @@
 
   .MarketHeaderReporting__winner__container__color__2 {
     &::before {
-    background: @color-outcome-two;
+      background: @color-outcome-two;
     }
   }
 
@@ -188,22 +188,32 @@
   }
 
   .MarketHeaderReporting__winner__container__color__4 {
-    &::before { background: @color-outcome-four;}
+    &::before {
+      background: @color-outcome-four;
+    }
   }
 
   .MarketHeaderReporting__winner__container__color__5 {
-    &::before { background: @color-outcome-five;}
+    &::before {
+      background: @color-outcome-five;
+    }
   }
 
   .MarketHeaderReporting__winner__container__color__6 {
-    &::before { background: @color-outcome-six;}
+    &::before {
+      background: @color-outcome-six;
+    }
   }
 
   .MarketHeaderReporting__winner__container__color__7 {
-    &::before { background: @color-outcome-seven;}
+    &::before {
+      background: @color-outcome-seven;
+    }
   }
 
   .MarketHeaderReporting__winner__container__color__8 {
-    &::before { background: @color-outcome-eight;}
+    &::before {
+      background: @color-outcome-eight;
+    }
   }
 }

@@ -46,12 +46,12 @@ const FilledOrdersTable = ({ filledOrders, isMobile }) => (
 
 FilledOrdersTable.propTypes = {
   filledOrders: PropTypes.array,
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool
 };
 
 FilledOrdersTable.defaultProps = {
   filledOrders: [],
-  isMobile: false,
+  isMobile: false
 };
 
 export default FilledOrdersTable;

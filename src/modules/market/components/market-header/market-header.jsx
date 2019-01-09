@@ -51,7 +51,7 @@ export default class MarketHeader extends Component {
     isFavorite: false,
     toggleFavorite: () => {},
     isMobile: false,
-    isMobileSmall: false,
+    isMobileSmall: false
   };
 
   constructor(props) {
@@ -188,10 +188,14 @@ export default class MarketHeader extends Component {
             </div>
           </div>
           <div className={Styles.MarketHeader__properties}>
-            <CoreProperties market={market} isMobile={isMobile} isMobileSmall={isMobileSmall} />
+            <CoreProperties
+              market={market}
+              isMobile={isMobile}
+              isMobileSmall={isMobileSmall}
+            />
           </div>
           <div className={Styles.MarketHeader__timeStuff}>
-            {!isMobile && 
+            {!isMobile && (
               <div className={Styles.MarketHeader__watchlist__container}>
                 <button
                   onClick={() => this.addToFavorites()}
@@ -204,7 +208,7 @@ export default class MarketHeader extends Component {
                   </span>
                 </button>
               </div>
-            }
+            )}
             <TimeRange
               currentTime={currentTime}
               startTime={market.creationTime}

@@ -28,28 +28,37 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
 
   const percentageDone = 100 - percentageToGo;
 
-  const percentDone = isMobile ? { width: `${percentageDone}%` } : { height: `${percentageDone}%` }
-  const percentToGo = isMobile ? { width: '100%' } : { height: `${percentageToGo}%` }
-  const percentDoneDot = isMobile ? { left: `${percentageDone}%` } : null
+  const percentDone = isMobile
+    ? { width: `${percentageDone}%` }
+    : { height: `${percentageDone}%` };
+  const percentToGo = isMobile
+    ? { width: "100%" }
+    : { height: `${percentageToGo}%` };
+  const percentDoneDot = isMobile ? { left: `${percentageDone}%` } : null;
 
   return (
     <div className={Styles.MarketHeaderTimeRange__container}>
-      {isMobile && 
-        <div className={Styles['MarketHeader__property__headerContainer--mobile']}>
-          <span className={Styles['MarketHeader__property__header--mobile']}>
+      {isMobile && (
+        <div
+          className={Styles["MarketHeader__property__headerContainer--mobile"]}
+        >
+          <span className={Styles["MarketHeader__property__header--mobile"]}>
             Created
           </span>
-          <span className={Styles['MarketHeader__property__header--mobile']}>
+          <span className={Styles["MarketHeader__property__header--mobile"]}>
             {hasPassed ? "Expired" : "Expires"}
           </span>
         </div>
-      }
+      )}
       <div className={Styles.MarketHeaderTimeRange__percentage}>
         <span
           className={Styles.MarketHeaderTimeRange__percentage__status}
           style={percentDone}
         />
-        <span className={Styles.MarketHeaderTimeRange__percentage__dot} style={percentDoneDot} />
+        <span
+          className={Styles.MarketHeaderTimeRange__percentage__dot}
+          style={percentDoneDot}
+        />
         <span
           className={Styles.MarketHeaderTimeRange__percentage__toEnd}
           style={percentToGo}
@@ -57,11 +66,11 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
       </div>
       <div className={Styles.MarketHeaderTimeRange__dates}>
         <div>
-          {!isMobile && 
+          {!isMobile && (
             <span className={MarketHeaderStyles.MarketHeader__property__header}>
               Created
             </span>
-          }
+          )}
           <span className={Styles.MarketHeaderTimeRange__value}>
             {formattedCreationTime.formattedLocalShortDate}
           </span>
@@ -70,11 +79,11 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
           </span>
         </div>
         <div>
-          {!isMobile &&
+          {!isMobile && (
             <span className={MarketHeaderStyles.MarketHeader__property__header}>
               {hasPassed ? "Expired" : "Expires"}
             </span>
-          }
+          )}
           <span className={Styles.MarketHeaderTimeRange__value}>
             {formattedEndTime.formattedLocalShortDate}
           </span>
@@ -91,14 +100,14 @@ TimeRange.propTypes = {
   startTime: PropTypes.object,
   endTime: PropTypes.object,
   currentTime: PropTypes.number,
-  isMobile: PropTypes.bool,
+  isMobile: PropTypes.bool
 };
 
 TimeRange.defaultProps = {
   endTime: {},
   currentTime: 0,
   startTime: {},
-  isMobile: false,
+  isMobile: false
 };
 
 export default TimeRange;
