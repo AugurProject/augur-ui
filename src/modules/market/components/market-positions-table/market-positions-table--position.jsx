@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import getValue from "utils/get-value";
-import { createBigNumber } from "utils/create-big-number";
 import { LONG } from "modules/positions/constants/position-types";
 
 import Styles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
@@ -61,7 +60,7 @@ export default class MarketPositionsListPosition extends Component {
 
     const netPositionShares = getValue(position, "netPosition.formatted");
     const positionShares = getValue(position, "position.formatted");
-    const netPosition = getValue(position, "netPosition.value");
+    // const netPosition = getValue(position, "netPosition.value");
 
     const type = getValue(position, "type");
 

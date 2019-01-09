@@ -117,7 +117,7 @@ export default class MarketHeaderBar extends Component {
         {isMobile && (
           <div className={Styles.MarketHeaderBar__watchlist__container}>
             <button
-              onClick={() => this.props.addToFavorites()}
+              onClick={() => addToFavorites()}
               className={Styles.MarketHeaderBar__watchlist}
               disabled={!isLogged}
             >

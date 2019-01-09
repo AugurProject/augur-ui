@@ -46,8 +46,7 @@ export default class OrphanedOrder extends Component {
   }
 
   render() {
-    const { isMobile, outcomeName, order, pending, outcome } = this.props;
-    const { orderCancellationStatus } = order;
+    const { outcomeName, order, pending } = this.props;
     const orderPrice = formatEther(getValue(order, "fullPrecisionPrice"))
       .formatted;
     const orderShares = formatShares(getValue(order, "amount")).formatted;

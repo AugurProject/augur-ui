@@ -10,7 +10,6 @@ import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
 import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
-import { createBigNumber } from "utils/create-big-number";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 import MarketTradeHistory from "modules/market/containers/market-trade-history";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
@@ -198,10 +197,6 @@ export default class MarketView extends Component {
             this.node = node;
           }}
           className={Styles.MarketView}
-<<<<<<< HEAD
-          style={{ marginTop: "25px" }}
-=======
->>>>>>> 99cde2537d55feaa50294e76c1f821f48b26abbe
         >
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
@@ -318,7 +313,6 @@ export default class MarketView extends Component {
                     handleFilledOnly={handleFilledOnly}
                   />
                 </div>
-
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div
