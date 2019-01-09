@@ -33,7 +33,8 @@ const mapStateToProps = (state, { location }) => {
     category: selectedCategoryName,
     defaultFilter: state.filterSortOptions.marketFilter,
     defaultSort: state.filterSortOptions.marketSort,
-    defaultMaxFee: state.filterSortOptions.maxFee
+    defaultMaxFee: state.filterSortOptions.maxFee,
+    defaultHasOrders: state.filterSortOptions.hasOrders
   };
 };
 
