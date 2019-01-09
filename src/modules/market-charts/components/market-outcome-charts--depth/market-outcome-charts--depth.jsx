@@ -308,9 +308,17 @@ export default class MarketOutcomeDepth extends Component {
         // const clampedHoveredPrice = yScale.invert(yPosition);
 
         d3.select("#crosshairY")
-          .attr("x1", 0)
+          .attr(
+            "x1",
+            nearestFillingOrder[4] === BIDS ? 0 : xScale(nearestFillingOrder[1])
+          )
           .attr("y1", yScale(nearestFillingOrder[0]))
-          .attr("x2", containerWidth)
+          .attr(
+            "x2",
+            nearestFillingOrder[4] === BIDS
+              ? xScale(nearestFillingOrder[1])
+              : containerWidth
+          )
           .attr("y2", yScale(nearestFillingOrder[0]));
 
         d3.select("#crosshairDot")
@@ -673,13 +681,22 @@ function setupCrosshairs(options) {
 
   tooltip
     .append("rect")
-    .attr("width", "128")
-    .attr("height", "64")
+    .attr("width", "113")
+    .attr("height", "53")
+    .attr("rx", "5")
+    .attr("ry", "5")
     .attr("id", "hovered_tooltip")
     .attr("class", "hovered_tooltip");
+  tooltip
+    .append("line")
+    .attr("id", "hovered_side_indicator")
+    .attr("stroke-width", "2");
   tooltip.append("text").attr("id", "hovered_price_label");
   tooltip.append("text").attr("id", "hovered_volume_label");
   tooltip.append("text").attr("id", "hovered_cost_label");
+  tooltip.append("text").attr("id", "hovered_price_value");
+  tooltip.append("text").attr("id", "hovered_volume_value");
+  tooltip.append("text").attr("id", "hovered_cost_value");
 
   // create crosshairs
   const crosshair = depthChart
@@ -780,41 +797,77 @@ function attachHoverClickHandlers(options) {
       const { xScale, yScale } = drawParams;
       // const yPosition = yScale(hoveredPrice);
       // const clampedHoveredPrice = yScale.invert(yPosition);
-
+      // 0,2,4,8,12,16,24,32,40
+      const quarterX = drawParams.xDomain[1] * 0.9;
+      const quarterY = drawParams.yDomain[1] * 0.9;
+      const flipX = xScale(quarterX) < xScale(nearestFillingOrder[1]);
+      const flipY = yScale(quarterY) > yScale(nearestFillingOrder[0]);
+      // console.log(
+      //   flipX,
+      //   flipY
+      // );
+      // size of hover_tooltip 113 x 53
+      const offset = {
+        // 77, 1, 24, 48, 8, 58, 45, 32
+        indicatorY1: flipY ? 24 : -24,
+        indicatorY2: flipY ? 77 : -77,
+        indicatorX: flipX ? -1 : 1,
+        labelX: flipX ? -8 : 8,
+        valueX: flipX ? -48 : 48,
+        priceY: flipY ? 58 : -58,
+        volumeY: flipY ? 45 : -45,
+        costY: flipY ? 32 : -32
+      };
+      d3.select("#hovered_tooltip_container").style("display", null);
       d3.select("#hovered_tooltip")
         .attr(
           "transform",
           `
         translate(${xScale(nearestFillingOrder[1])}
-        , ${yScale(nearestFillingOrder[0])})
+        , ${yScale(nearestFillingOrder[0]) + offset.indicatorY2})
         `
         )
         .attr("class", `hovered_tooltip ${nearestFillingOrder[4]}`);
+      d3.select("#hovered_side_indicator")
+        .attr("class", `${nearestFillingOrder[4]}`)
+        .attr("x1", xScale(nearestFillingOrder[1]) + offset.indicatorX)
+        .attr("x2", xScale(nearestFillingOrder[1]) + offset.indicatorX)
+        .attr("y1", yScale(nearestFillingOrder[0]) + offset.indicatorY1)
+        .attr("y2", yScale(nearestFillingOrder[0]) + offset.indicatorY2);
 
-      d3.select("#hovered_tooltip_container").style("display", null);
+      d3.select("#hovered_price_label")
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.labelX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.priceY)
+        .attr("class", `${nearestFillingOrder[4]}`)
+        .text("Price:");
+      d3.select("#hovered_price_value")
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.valueX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.priceY)
+        .text(
+          `${createBigNumber(nearestFillingOrder[1]).toFixed(pricePrecision)}`
+        );
 
-      d3
-        .select("#hovered_price_label")
-        .attr("x", xScale(nearestFillingOrder[1]))
-        .attr("y", yScale(nearestFillingOrder[0]) + 18).text(`
-          Price: ${createBigNumber(nearestFillingOrder[1]).toFixed(
-            pricePrecision
-          )}
-        `);
-      d3
-        .select("#hovered_volume_label")
-        .attr("x", xScale(nearestFillingOrder[1]))
-        .attr("y", yScale(nearestFillingOrder[0]) + 34).text(`
-          Volume: ${createBigNumber(nearestFillingOrder[0]).toFixed(
-            pricePrecision
-          )}
-        `);
-      d3
-        .select("#hovered_cost_label")
-        .attr("x", xScale(nearestFillingOrder[1]))
-        .attr("y", yScale(nearestFillingOrder[0]) + 50).text(`
-          Cost: ${nearestFillingOrder[5].toFixed(pricePrecision)}
-        `);
+      d3.select("#hovered_volume_label")
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.labelX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.volumeY)
+        .attr("class", `${nearestFillingOrder[4]}`)
+        .text("Volume:");
+      d3.select("#hovered_volume_value")
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.valueX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.volumeY)
+        .text(
+          `${createBigNumber(nearestFillingOrder[0]).toFixed(pricePrecision)}`
+        );
+
+      d3.select("#hovered_cost_label")
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.labelX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.costY)
+        .attr("class", `${nearestFillingOrder[4]}`)
+        .text("Cost:");
+      d3.select("#hovered_cost_value")
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.valueX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.costY)
+        .text(`${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`);
     })
     .on("click", () => {
       const mouse = d3.mouse(d3.select("#depth_chart").node());

@@ -31,22 +31,31 @@
   flex: 1;
 
   :global {
-    #hovered_price_label {
-      .caps--small();
-
-      stroke: @color-white;
-    }
-
-    #hovered_cost_label {
-      .caps--small();
-
-      stroke: @color-white;
-    }
-
+    #hovered_price_label,
+    #hovered_cost_label,
     #hovered_volume_label {
-      .caps--small();
+      font-size: @font-size-smallest;
+    }
 
+    #hovered_price_value {
+      font-size: @font-size-medium;
+      font-weight: bold;
       stroke: @color-white;
+      fill: @color-white;
+    }
+
+    #hovered_cost_value {
+      font-size: @font-size-extra-small;
+      font-weight: bold;
+      stroke: @color-white;
+      fill: @color-white;
+    }
+
+    #hovered_volume_value {
+      font-size: @font-size-extra-small;
+      font-weight: bold;
+      stroke: @color-white;
+      fill: @color-white;
     }
 
     .hovered_tooltip {
