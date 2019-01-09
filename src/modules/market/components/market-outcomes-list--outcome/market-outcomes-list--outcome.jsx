@@ -39,8 +39,14 @@ const Outcome = ({
       role="menu"
     >
       <li>
-        {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
-        <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        <div>
+          <span className={Styles.Outcome__name}>
+            {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
+          </span>
+        </div>
+        <div>
+          <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        </div>
       </li>
       <li>
         <ValueDenomination formatted={topBidShares} />

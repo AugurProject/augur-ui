@@ -39,6 +39,7 @@
 
 .FilledOrder__table-header {
   background-color: @color-extra-darkpurple;
+  grid-template-columns: repeat(5, 1fr);
   justify-content: flex-end;
   padding: 0 1rem;
 
@@ -108,6 +109,7 @@
 
 @media @breakpoint-mobile {
   .FilledOrder__table-header {
+    grid-template-columns: repeat(3, 1fr);
     padding-left: 0;
     padding-right: 0;
 

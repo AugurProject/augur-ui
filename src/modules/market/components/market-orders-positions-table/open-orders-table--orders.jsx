@@ -68,10 +68,14 @@ export default class OpenOrdersOrder extends Component {
         ref={order => {
           this.order = order;
         }}
-        className={classNames(SharedStyles.Order, {
-          [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
-          [SharedStyles.Negative]: orderType === SELL
-        })}
+        className={classNames(
+          SharedStyles.Order,
+          SharedStyles.Order__Extended,
+          {
+            [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
+            [SharedStyles.Negative]: orderType === SELL
+          }
+        )}
       >
         <li>{outcomeName || orderPrice}</li>
         <li
