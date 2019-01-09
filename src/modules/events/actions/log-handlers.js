@@ -14,7 +14,6 @@ import { removeCanceledOrder } from "modules/orders/actions/update-order-status"
 import { defaultLogHandler } from "modules/events/actions/default-log-handler";
 import { isCurrentMarket } from "modules/trades/helpers/is-current-market";
 import logError from "utils/log-error";
-import { updateCategories } from "modules/categories/actions/update-categories";
 import makePath from "modules/routes/helpers/make-path";
 import { MY_MARKETS, TRANSACTIONS } from "modules/routes/constants/views";
 import { loadReporting } from "src/modules/reports/actions/load-reporting";
@@ -33,6 +32,7 @@ import { startOrderSending } from "modules/orders/actions/liquidity-management";
 import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
+import { appendCategoryIfNew } from "modules/categories/actions/append-category";
 
 const handleNotificationUpdate = (log, dispatch, getState) => {
   dispatch(
@@ -55,46 +55,6 @@ export const handleMarketStateLog = log => dispatch => {
     })
   );
 };
-
-// makeUICategory returns a new category literal, ie. an
-// object matching the type of augur-node's UICategory<string>.
-function makeUICategory(categoryName, tagName1, tagName2) {
-  function makeTagAggregation(tagName) {
-    return {
-      nonFinalizedOpenInterest: "0",
-      numberOfMarketsWithThisTag: 1,
-      openInterest: "0",
-      tagName
-    };
-  }
-  const tags = [];
-  if (tagName1) tags.push(makeTagAggregation(tagName1));
-  if (tagName2) tags.push(makeTagAggregation(tagName2));
-  return {
-    categoryName,
-    nonFinalizedOpenInterest: "0",
-    openInterest: "0",
-    tags
-  };
-}
-
-function appendCategoryIfNew(dispatch, categories, marketWithMaybeNewCategory) {
-  const isExistingCategory = categories.find(
-    c => c.categoryName === marketWithMaybeNewCategory.category
-  );
-  if (!isExistingCategory) {
-    dispatch(
-      updateCategories([
-        ...categories,
-        makeUICategory(
-          marketWithMaybeNewCategory.category,
-          marketWithMaybeNewCategory.tag1,
-          marketWithMaybeNewCategory.tag2
-        )
-      ])
-    );
-  }
-}
 
 export const handleMarketCreatedLog = log => (dispatch, getState) => {
   const isStoredTransaction =
