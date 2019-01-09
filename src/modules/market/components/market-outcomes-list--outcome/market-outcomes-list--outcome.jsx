@@ -9,12 +9,14 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome.styles";
+import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 
 const Outcome = ({
   outcome,
   selectedOutcome,
   updateSelectedOutcome,
-  scalarDenomination
+  scalarDenomination,
+  isMobile
 }) => {
   const outcomeName = getValue(outcome, "name");
 
@@ -29,7 +31,7 @@ const Outcome = ({
 
   return (
     <ul
-      className={classNames(Styles.Outcome, {
+      className={classNames(SharedStyles.Outcome, Styles.Outcome, {
         [`${Styles.active}`]: selectedOutcome === outcome.id
       })}
       onClick={e => updateSelectedOutcome(outcome.id)}
@@ -37,7 +39,9 @@ const Outcome = ({
     >
       <li>
         {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
-        <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        {!isMobile && (
+          <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        )}
       </li>
       <li>
         <ValueDenomination formatted={topBidShares} />
@@ -56,6 +60,7 @@ const Outcome = ({
         <MarketOutcomeTradingIndicator
           outcome={outcome}
           location="tradingPage"
+          style={isMobile ? { bottom: "30%" } : null}
         />
       </li>
     </ul>
@@ -79,12 +84,14 @@ Outcome.propTypes = {
   }).isRequired,
   selectedOutcome: PropTypes.string,
   updateSelectedOutcome: PropTypes.func.isRequired,
-  scalarDenomination: PropTypes.string
+  scalarDenomination: PropTypes.string,
+  isMobile: PropTypes.bool
 };
 
 Outcome.defaultProps = {
   selectedOutcome: null,
-  scalarDenomination: null
+  scalarDenomination: null,
+  isMobile: false
 };
 
 export default Outcome;

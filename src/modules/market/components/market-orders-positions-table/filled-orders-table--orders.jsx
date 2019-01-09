@@ -57,23 +57,13 @@ export default class FilledOrdersOrder extends Component {
           ref={order => {
             this.order = order;
           }}
-          className={
-            !isMobile
-              ? classNames(SharedStyles.Order, Styles.FilledOrder, {
-                  [Styles.FilledOrder__active]: s.showTrades
-                })
-              : SharedStyles.PortMobile
-          }
+          className={classNames(SharedStyles.Order, Styles.FilledOrder, {
+            [Styles.FilledOrder__active]: s.showTrades,
+            [SharedStyles.Negative]: orderType === SELL
+          })}
           onClick={this.setShowTrades}
         >
-          <li style={{ position: "relative" }}>
-            <div
-              className={classNames(SharedStyles.Order__typeIndicator, {
-                [SharedStyles.Order__typeIndicatorSell]: orderType === SELL
-              })}
-            />
-            {order.outcome || orderPrice}
-          </li>
+          <li>{order.outcome || orderPrice}</li>
           <li
             className={classNames(SharedStyles.Order__type, {
               [SharedStyles.Order__typeSell]: orderType === SELL
@@ -117,7 +107,7 @@ export default class FilledOrdersOrder extends Component {
                 {order.trades.map((trade, i) => (
                   <ul
                     className={classNames(
-                      SharedStyles.Order,
+                      SharedStyles.FilledOrder,
                       Styles.FilledOrder__trade
                     )}
                   >
@@ -133,7 +123,9 @@ export default class FilledOrdersOrder extends Component {
                         <EtherscanLink
                           showNonLink
                           txhash={trade.transactionHash}
-                          label="View Transaction Details"
+                          label={
+                            isMobile ? "Details" : "View Transaction Details"
+                          }
                         />
                       </button>
                     </li>

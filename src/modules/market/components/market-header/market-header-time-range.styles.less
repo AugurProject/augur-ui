@@ -68,3 +68,57 @@
 .MarketHeaderTimeRange__utc {
   font-size: 10px;
 }
+
+@media @breakpoint-mobile {
+  .MarketHeaderTimeRange__percentage {
+    position: relative;
+  }
+
+  .MarketHeaderTimeRange__percentage__status {
+    border-left: 0;
+    border-top: 1px solid @color-outcome-seven;
+    top: 0.123rem;
+    z-index: 10;
+  }
+
+  .MarketHeaderTimeRange__percentage__toEnd {
+    border-left: 0;
+    border-top: 1px solid #a7a2b2;
+    top: 1px;
+  }
+
+  .MarketHeaderTimeRange__percentage__dot {
+    position: absolute;
+    z-index: 10;
+  }
+
+  .MarketHeader__property__headerContainer--mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-bottom: 6px;
+  }
+
+  .MarketHeader__property__header--mobile {
+    color: @color-light-gray;
+    font-size: @font-size-small;
+    max-height: 0.75rem;
+  }
+
+  .MarketHeaderTimeRange__dates {
+    flex-direction: row;
+    flex-grow: 1;
+    padding-left: 0;
+    padding-top: 9px;
+  }
+
+  .MarketHeaderTimeRange__container {
+    background: #211a32;
+    flex-direction: column;
+    height: unset;
+    margin-bottom: 1rem;
+    margin-right: 0;
+    margin-top: 0;
+    padding: 1rem;
+  }
+}

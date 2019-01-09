@@ -19,11 +19,13 @@ export default class MarketPositionsList extends Component {
     transactionsStatus: PropTypes.object.isRequired,
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
-    market: PropTypes.object.isRequired
+    market: PropTypes.object.isRequired,
+    isMobile: PropTypes.bool
   };
 
   static defaultProps = {
-    numCompleteSets: null
+    numCompleteSets: null,
+    isMobile: false
   };
 
   render() {
@@ -32,7 +34,8 @@ export default class MarketPositionsList extends Component {
       numCompleteSets,
       transactionsStatus,
       sellCompleteSets,
-      marketId
+      marketId,
+      isMobile
     } = this.props;
 
     const pendingCompleteSetsHash = `pending-${marketId}-${numCompleteSets &&
@@ -61,7 +64,7 @@ export default class MarketPositionsList extends Component {
         >
           <div className={SharedStyles.MarketOpenOrdersList__table}>
             <ul className={SharedStyles["MarketOpenOrdersList__table-header"]}>
-              <li>Outcome</li>
+              {!isMobile && <li>Outcome</li>}
               <li>
                 <span>Type</span>
               </li>
@@ -83,7 +86,6 @@ export default class MarketPositionsList extends Component {
                   P/L
                 </span>
               </li>
-              <li>Action</li>
             </ul>
             {positions.length === 0 && (
               <div className={SharedStyles.MarketOpenOrdersList__empty} />

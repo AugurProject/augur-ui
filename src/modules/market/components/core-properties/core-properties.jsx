@@ -11,9 +11,9 @@ import { infoIcon } from "modules/common/components/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 
-const CoreProperties = ({ market, isMobileSmall }) => (
+const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
   <div className={Styles.CoreProperties__coreContainer}>
-    <div className={Styles.CoreProperties__row} style={{ minHeight: "55px" }}>
+    <div className={Styles.CoreProperties__row}>
       <MarketHeaderReporting marketId={market.id} />
     </div>
     <div className={Styles.CoreProperties__property__container}>
@@ -131,11 +131,13 @@ const CoreProperties = ({ market, isMobileSmall }) => (
 
 CoreProperties.propTypes = {
   market: PropTypes.object.isRequired,
-  isMobileSmall: PropTypes.bool
+  isMobileSmall: PropTypes.bool,
+  isMobile: PropTypes.bool
 };
 
 CoreProperties.defaultProps = {
-  isMobileSmall: false
+  isMobileSmall: false,
+  isMobile: false
 };
 
 export default CoreProperties;

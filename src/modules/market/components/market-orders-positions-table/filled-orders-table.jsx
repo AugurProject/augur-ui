@@ -9,7 +9,7 @@ import FilledOrdersOrder from "modules/market/components/market-orders-positions
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
-const FilledOrdersTable = ({ filledOrders }) => (
+const FilledOrdersTable = ({ filledOrders, isMobile }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
       <ul
@@ -18,7 +18,7 @@ const FilledOrdersTable = ({ filledOrders }) => (
           Styles["MarketFilledOrdersList__table-header"]
         )}
       >
-        <li>Outcome</li>
+        {!isMobile && <li>Outcome</li>}
         <li>Type</li>
         <li>
           <span>Quantity</span>
@@ -34,7 +34,7 @@ const FilledOrdersTable = ({ filledOrders }) => (
         {filledOrders.length > 0 && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {filledOrders.map((order, i) => (
-              <FilledOrdersOrder key={i} order={order} isMobile={false} />
+              <FilledOrdersOrder key={i} order={order} isMobile={isMobile} />
             ))}
           </div>
         )}
@@ -45,11 +45,13 @@ const FilledOrdersTable = ({ filledOrders }) => (
 );
 
 FilledOrdersTable.propTypes = {
-  filledOrders: PropTypes.array
+  filledOrders: PropTypes.array,
+  isMobile: PropTypes.bool
 };
 
 FilledOrdersTable.defaultProps = {
-  filledOrders: []
+  filledOrders: [],
+  isMobile: false
 };
 
 export default FilledOrdersTable;

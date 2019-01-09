@@ -7,6 +7,7 @@ import MarketOutcomesListOutcome from "modules/market/components/market-outcomes
 import MarketScalarOutcomeDisplay from "modules/market/components/market-scalar-outcome-display/market-scalar-outcome-display";
 
 import Styles from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
+import SharedStyles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
 export default class MarketOutcomesList extends Component {
   static propTypes = {
@@ -17,7 +18,8 @@ export default class MarketOutcomesList extends Component {
     scalarDenomination: PropTypes.string,
     marketType: PropTypes.string,
     minPrice: CustomPropTypes.bigNumber,
-    maxPrice: CustomPropTypes.bigNumber
+    maxPrice: CustomPropTypes.bigNumber,
+    isMobile: PropTypes.bool
   };
 
   static defaultProps = {
@@ -25,7 +27,8 @@ export default class MarketOutcomesList extends Component {
     scalarDenomination: null,
     marketType: null,
     minPrice: null,
-    maxPrice: null
+    maxPrice: null,
+    isMobile: false
   };
 
   render() {
@@ -37,7 +40,8 @@ export default class MarketOutcomesList extends Component {
       marketType,
       scalarDenomination,
       minPrice,
-      maxPrice
+      maxPrice,
+      isMobile
     } = this.props;
 
     return (
@@ -48,9 +52,9 @@ export default class MarketOutcomesList extends Component {
             this.outcomeList = outcomeList;
           }}
         >
-          <div className={Styles.MarketOutcomesList__table}>
-            <ul className={Styles["MarketOutcomesList__table-header"]}>
-              <li>Outcome</li>
+          <div className={SharedStyles.MarketOpenOrdersList__table}>
+            <ul className={SharedStyles["MarketOpenOrdersList__table-header"]}>
+              {!isMobile && <li>Outcome</li>}
               <li>
                 <span>
                   Bid <span />
@@ -79,7 +83,7 @@ export default class MarketOutcomesList extends Component {
                 <span>Last</span>
               </li>
             </ul>
-            <div className={Styles["MarketOutcomesList__table-body"]}>
+            <div className={SharedStyles["MarketOpenOrdersList__table-body"]}>
               {outcomes &&
                 outcomes.map(outcome => (
                   <MarketOutcomesListOutcome
@@ -88,6 +92,7 @@ export default class MarketOutcomesList extends Component {
                     marketId={marketId}
                     selectedOutcome={selectedOutcome}
                     updateSelectedOutcome={updateSelectedOutcome}
+                    isMobile={isMobile}
                     scalarDenomination={
                       marketType === SCALAR && scalarDenomination
                     }

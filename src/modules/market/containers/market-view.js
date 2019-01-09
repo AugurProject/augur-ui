@@ -8,6 +8,9 @@ import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
 import getPrecision from "utils/get-number-precision";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "src/utils/create-big-number";
+import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-progress";
+import { getGasPrice } from "modules/auth/selectors/get-gas-price";
+import { handleFilledOnly } from "modules/notifications/actions/notifications";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -23,6 +26,8 @@ const mapStateToProps = (state, ownProps) => {
   const pricePrecision = market && getPrecision(market.tickSize, 4);
 
   return {
+    gasPrice: getGasPrice(state),
+    availableFunds: createBigNumber(state.loginAccount.eth || 0),
     currentTimestamp: selectCurrentTimestampInSeconds(state),
     outcomes: market.outcomes || [],
     isConnected: connection.isConnected && universe.id != null,
@@ -43,7 +48,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  loadFullMarket: marketId => dispatch(loadFullMarket(marketId))
+  loadFullMarket: marketId => dispatch(loadFullMarket(marketId)),
+  clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
+  handleFilledOnly: trade => dispatch(handleFilledOnly(trade))
 });
 
 const Market = withRouter(

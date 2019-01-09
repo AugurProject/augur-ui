@@ -60,64 +60,11 @@
 
 @media @breakpoint-mobile {
   .MarketOutcomesList {
-    border-bottom: 0;
+    background: #211a32;
+    color: #ffffff;
   }
 
   .MarketOutcomesList__heading {
-    cursor: default;
-    padding: 2rem 1rem 1.5rem;
-
-    > h2 {
-      color: @color-white;
-      cursor: text;
-      font-size: @font-size-rather-large;
-      font-weight: 400;
-      line-height: @font-size-rather-large;
-      text-transform: none;
-    }
-  }
-
-  .MarketOutcomesList__table-header {
-    color: @color-lightgray;
-
-    > li {
-      &:first-child {
-        padding-left: 1rem;
-      }
-
-      &:last-child {
-        padding-right: 1rem;
-      }
-    }
-  }
-
-  .MarketOutcomesList__table-body {
-    background-color: transparent;
-    color: @color-lightgray;
-  }
-}
-
-@media @breakpoint-mobile-medium {
-  .MarketOutcomesList__heading > h2 {
-    font-size: @font-size-normal;
-    line-height: @font-size-normal;
-  }
-
-  .MarketOutcomesList__table-header {
-    font-size: @font-size-extra-small;
-    line-height: @font-size-medium;
-
-    > li {
-      text-align: left;
-      vertical-align: bottom;
-
-      > span {
-        float: right;
-
-        > span {
-          display: block;
-        }
-      }
-    }
+    padding-left: 16px;
   }
 }

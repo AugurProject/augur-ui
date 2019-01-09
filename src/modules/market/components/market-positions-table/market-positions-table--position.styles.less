@@ -1,5 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
+.FilledOrder,
+.Outcome,
 .Order,
 .Position {
   background-color: @color-grayish-purple;
@@ -9,6 +11,7 @@
   font-family: "Roboto Mono", monospace;
   font-size: 12px;
   max-height: 40px;
+  position: relative;
   transition: background-color 0.15s ease;
 
   &:nth-child(even) {
@@ -32,6 +35,7 @@
       font-family: @roboto;
       font-size: 14px;
       max-width: 160px;
+      min-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
@@ -59,6 +63,29 @@
   }
 }
 
+.Outcome,
+.Order,
+.Position {
+  &::before {
+    background-color: @color-positive;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 96%;
+    left: 1px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+  }
+}
+
+.Negative {
+  &::before {
+    background-color: @color-negative2;
+  }
+}
+
 .Order__typeIndicator,
 .Position__typeIndicator {
   background-color: @color-positive;
@@ -72,6 +99,7 @@
 .Order__type,
 .Position__type {
   color: @color-positive;
+  text-transform: capitalize;
 }
 
 .Order__typeSell,
@@ -93,125 +121,50 @@
   }
 }
 
-.PortMobile {
-  display: table-row;
-  transition: background-color 0.15s ease;
-
-  &:first-child > li {
-    border-top-width: 0;
-  }
-
-  > li {
-    border-top: 1px solid @color-lightest-gray;
-    display: table-cell;
-    max-width: 19vw;
-    overflow: hidden;
-    padding: 1.125rem 0;
-    text-align: right;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &:first-child {
-      padding-left: 2rem;
-      position: relative;
-      text-align: left;
-
-      > .Position__pending {
-        justify-content: flex-start;
-      }
-    }
-
-    &:last-of-type {
-      padding-right: 1rem;
-
-      > button {
-        font-weight: 500;
-      }
-    }
-  }
-}
-
 @media @breakpoint-mobile {
+  .Outcome,
   .Order,
   .Position {
-    &.active,
-    &:hover {
-      background-color: @color-darkpurple;
-    }
+    max-height: 64px;
+    position: relative;
 
     > li {
-      border-top-color: @color-darkpurple;
-      color: @color-darkpurple;
+      min-width: 100px;
+      padding: 34px 0 16px;
 
       &:first-child {
-        padding-left: 1rem;
+        bottom: 0;
+        font-weight: 500;
+        left: 16px;
+        padding: 0;
+        position: absolute;
+        top: 12px;
+      }
+
+      &:nth-child(2) {
+        flex-grow: unset;
+        max-width: 160px;
+        padding-left: 16px;
+        position: relative;
+        text-align: left;
       }
 
       &:last-of-type {
-        padding-right: 1rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-right: 2rem;
       }
-
-      &:not(:first-child) {
-        color: @color-white;
-      }
-    }
-  }
-
-  .PortMobile {
-    > li {
-      border-top-color: @color-lightergray;
-      color: inherit;
-
-      &:first-child {
-        padding-left: 0.5rem;
-      }
-
-      &:last-of-type {
-        padding-right: 0.5rem;
-      }
-    }
-
-    .NotActive {
-      color: @color-lightgray;
     }
   }
 }
 
-@media @breakpoint-mobile-medium {
+@media @breakpoint-mobile-small {
+  .Outcome,
   .Order,
   .Position {
-    &:first-child > li {
-      border-top-width: 1px;
-    }
-
     > li {
-      font-size: @font-size-medium;
-      line-height: @font-size-medium;
-      max-width: 25vw;
-    }
-  }
-
-  .PortMobile {
-    &:first-child > li {
-      border-bottom-width: 1px;
-    }
-
-    > li {
-      font-size: @font-size-medium;
-      line-height: @font-size-medium;
-      max-width: 25vw;
-    }
-
-    .NotActive {
-      color: @color-lightgray;
+      min-width: 50px;
     }
   }
 }
-
-.Position__closeButton {
-  .button--transparent();
-
-  display: inline-block;
-  margin-right: -28px; // center button
-}
-

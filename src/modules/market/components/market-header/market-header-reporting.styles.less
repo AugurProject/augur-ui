@@ -41,6 +41,7 @@
 }
 
 .MarketHeaderReporting__single__container {
+  background: #211a32;
   padding: 1.5rem 1.25rem 1.5rem 0.25rem;
 }
 
@@ -81,6 +82,10 @@
   margin: 0.25rem 0.5rem 0 0;
   margin-right: 0;
   width: 0.375rem;
+
+  @media @breakpoint-mobile {
+    height: 0;
+  }
 }
 
 .MarketHeaderReporting__winner__color__1 {
@@ -113,4 +118,102 @@
 
 .MarketHeaderReporting__winner__color__8 {
   background: @color-outcome-eight;
+}
+
+@media @breakpoint-mobile {
+  .MarketHeaderReporting__container {
+    flex-grow: 1;
+    position: relative;
+  }
+
+  .MarketHeaderReporting__buttonNoMargin {
+    display: flex;
+    justify-content: center;
+  }
+
+  .MarketHeaderReporting__button {
+    flex-grow: 1;
+    margin-left: 0;
+    margin-top: 18px;
+  }
+
+  .MarketHeaderReporting__winner__container {
+    flex-direction: column;
+
+    &::before {
+      background-color: @color-outcome-one;
+      bottom: 0;
+      content: " ";
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 2px;
+    }
+  }
+
+  .MarketHeaderReporting__outcomeContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .MarketHeaderReporting__winner {
+    padding-left: 0;
+
+    &:first-child::before {
+      content: unset;
+    }
+  }
+
+  .MarketHeaderReporting__winner__row {
+    margin-top: 4px;
+  }
+
+  .MarketHeaderReporting__winner__container__color__1 {
+    &::before {
+      background: @color-outcome-one;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__2 {
+    &::before {
+      background: @color-outcome-two;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__3 {
+    &::before {
+      background: @color-outcome-three;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__4 {
+    &::before {
+      background: @color-outcome-four;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__5 {
+    &::before {
+      background: @color-outcome-five;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__6 {
+    &::before {
+      background: @color-outcome-six;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__7 {
+    &::before {
+      background: @color-outcome-seven;
+    }
+  }
+
+  .MarketHeaderReporting__winner__container__color__8 {
+    &::before {
+      background: @color-outcome-eight;
+    }
+  }
 }
