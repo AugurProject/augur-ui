@@ -7,7 +7,34 @@
 
   @media @breakpoint-mobile {
     margin-top: 25px;
-    position: relative;
+  }
+}
+
+.MarketView__overlay {
+  background-color: #211a32;
+  bottom: 0;
+  color: white;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 300;
+}
+
+.MarketView__overlayHeader {
+  display: flex;
+  padding: 24px 20px;
+
+  > span {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  > div {
+    display: flex;
+    flex-grow: 1;
+    font-size: 18px;
+    justify-content: center;
   }
 }
 
@@ -146,7 +173,7 @@
 }
 
 .MarketView__history {
-  border-bottom: 8px solid #211a32;
+  border-bottom: 8px solid @color-light-purple;
   max-height: 50vh;
   min-height: 400px;
 }
@@ -176,7 +203,7 @@
   }
 
   .MarketView__history {
+    background: @color-grayish-purple;
     max-height: unset;
-    min-height: unset;
   }
 }

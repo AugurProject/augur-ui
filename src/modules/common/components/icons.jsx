@@ -1,5 +1,62 @@
 import React from "react";
 
+export const twoArrows = (
+  <svg
+    width="60"
+    height="54"
+    viewBox="0 0 60 54"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M34 31L30 35L26 31"
+      stroke="white"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M34 23L30 19L26 23"
+      stroke="white"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const threeDots = (
+  <svg
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle cx="16" cy="9.5" r="1.5" fill="#76737E" />
+    <circle cx="16" cy="22.5" r="1.5" fill="#76737E" />
+    <circle cx="16" cy="16" r="1.5" fill="#76737E" />
+  </svg>
+);
+
+export const RightChevron = (
+  <svg
+    width="7"
+    height="14"
+    viewBox="0 0 7 14"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      opacity="0.5"
+      d="M0.65686 1.34315C0.65686 1.34315 4.10458 4.79086 6.31372 7L0.65686 12.6568"
+      stroke="white"
+    />
+  </svg>
+);
+
 export const CreateMarketEdit = (
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <g id="Symbols" fill="none" fillRule="evenodd" strokeLinejoin="round">

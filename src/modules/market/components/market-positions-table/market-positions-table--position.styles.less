@@ -157,6 +157,31 @@
       }
     }
   }
+
+  .Order,
+  .Outcome {
+    > div {
+      display: inline-block;
+      min-width: 20px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+    }
+  }
+
+  .Outcome {
+    > li {
+      &:last-of-type {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  .Order {
+    > div {
+      top: 25%;
+    }
+  }
 }
 
 @media @breakpoint-mobile-small {
@@ -165,6 +190,30 @@
   .Position {
     > li {
       min-width: 50px;
+    }
+  }
+
+  .Outcome {
+    > li {
+      &:last-of-type {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  .Order {
+    > li {
+      &:last-of-type {
+        padding-right: 2rem;
+      }
+    }
+  }
+
+  .Position {
+    > li {
+      &:last-of-type {
+        padding-right: 1rem;
+      }
     }
   }
 }

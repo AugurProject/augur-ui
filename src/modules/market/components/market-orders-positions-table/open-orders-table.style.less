@@ -38,6 +38,7 @@
 
     &:first-child {
       max-width: 160px;
+      min-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
@@ -75,7 +76,6 @@
 }
 
 .MarketOpenOrdersList__table-body {
-  background-color: @color-input-background;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -88,6 +88,14 @@
   overflow-y: auto;
 }
 
+.MarketOutcomes__table-header {
+  > li {
+    &:last-of-type {
+      padding-right: 2.5rem;
+    }
+  }
+}
+
 @media @breakpoint-mobile {
   .MarketOpenOrdersList__table-header {
     > li {
@@ -95,11 +103,20 @@
 
       &:first-child {
         flex-grow: unset;
+        min-width: 100px;
         padding-left: 16px;
       }
 
       &:last-of-type {
-        padding-right: 2.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+  }
+
+  .MarketOutcomes__table-header {
+    > li {
+      &:last-of-type {
+        padding-right: 3rem;
       }
     }
   }
@@ -108,7 +125,23 @@
 @media @breakpoint-mobile-small {
   .MarketOpenOrdersList__table-header {
     > li {
-      min-width: 50px;
+      min-width: unset;
+
+      &:first-child {
+        min-width: 50px;
+      }
+
+      &:last-of-type {
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  .MarketOutcomes__table-header {
+    > li {
+      &:last-of-type {
+        padding-right: 3rem;
+      }
     }
   }
 }

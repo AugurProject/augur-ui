@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
 import classNames from "classnames";
 
+import { FindReact } from "utils/find-react";
 import MarketHeader from "modules/market/containers/market-header";
 // import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
@@ -16,6 +17,8 @@ import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { BUY } from "modules/transactions/constants/types";
 import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs";
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
+import MarketOutcomeSelector from "modules/market/components/market-view/market-outcome-selector";
+import { Close } from "modules/common/components/icons";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
@@ -68,6 +71,7 @@ export default class MarketView extends Component {
     };
 
     this.state = {
+      showOutcomeOverlay: false,
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
       fixedPrecision: 4,
@@ -84,6 +88,7 @@ export default class MarketView extends Component {
     );
     this.clearSelectedOutcome = this.clearSelectedOutcome.bind(this);
     this.updatePrecision = this.updatePrecision.bind(this);
+    this.showSelectOutcome = this.showSelectOutcome.bind(this);
   }
 
   componentWillMount() {
@@ -112,7 +117,7 @@ export default class MarketView extends Component {
   }
 
   updateSelectedOutcome(selectedOutcome) {
-    const { marketType } = this.props;
+    const { marketType, isMobile } = this.props;
     this.setState({
       selectedOutcome:
         selectedOutcome === this.state.selectedOutcome &&
@@ -134,6 +139,14 @@ export default class MarketView extends Component {
       this.setState({
         selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
       });
+    }
+
+    if (isMobile) {
+      this.setState({ showOutcomeOverlay: false });
+      FindReact(document.getElementById("tabs_mobileView")).handleClick(
+        null,
+        1
+      );
     }
   }
 
@@ -171,6 +184,10 @@ export default class MarketView extends Component {
     this.setState({ selectedOutcome: null });
   }
 
+  showSelectOutcome() {
+    this.setState({ showOutcomeOverlay: !this.state.showOutcomeOverlay });
+  }
+
   render() {
     const {
       currentTimestamp,
@@ -186,9 +203,17 @@ export default class MarketView extends Component {
       availableFunds,
       clearTradeInProgress,
       gasPrice,
-      handleFilledOnly
+      handleFilledOnly,
+      marketType
     } = this.props;
     const s = this.state;
+
+    const selectedOutcomeName =
+      marketType === CATEGORICAL &&
+      s.selectedOutcome &&
+      outcomes.find(
+        outcomeValue => outcomeValue.id === s.selectedOutcome.toString()
+      ).description;
 
     if (isMobile) {
       return (
@@ -198,10 +223,26 @@ export default class MarketView extends Component {
           }}
           className={Styles.MarketView}
         >
+          {s.showOutcomeOverlay && (
+            <div className={Styles.MarketView__overlay}>
+              <div className={Styles.MarketView__overlayHeader}>
+                <span onClick={this.showSelectOutcome}>{Close}</span>
+                <div>Select an Outcome</div>
+              </div>
+              <MarketOutcomesList
+                marketId={marketId}
+                outcomes={outcomes}
+                selectedOutcome={s.selectedOutcome}
+                updateSelectedOutcome={this.updateSelectedOutcome}
+                isMobile={isMobile}
+                popUp
+              />
+            </div>
+          )}
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
           </Helmet>
-          <ModuleTabs selected={0} fillWidth>
+          <ModuleTabs selected={0} fillWidth id="mobileView">
             <ModulePane label="Market Info">
               <div className={Styles["MarketView__paneContainer--mobile"]}>
                 <MarketHeader
@@ -223,6 +264,13 @@ export default class MarketView extends Component {
             </ModulePane>
             <ModulePane label="Trade">
               <div className={Styles["MarketView__paneContainer--mobile"]}>
+                {marketType === CATEGORICAL && (
+                  <MarketOutcomeSelector
+                    outcome={s.selectedOutcome}
+                    outcomeName={selectedOutcomeName}
+                    selectOutcome={this.showSelectOutcome}
+                  />
+                )}
                 <ModuleTabs selected={0} fillForMobile>
                   <ModulePane label="Order Book">
                     <div className={Styles.MarketView__orders}>
@@ -295,9 +343,7 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__firstColumn}>
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
-                <div className={Styles.MarketView__component}>
-
-                </div>
+                <div className={Styles.MarketView__component} />
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div

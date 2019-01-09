@@ -25,9 +25,11 @@ const OpenOrdersTable = ({
         <li>Price</li>
         <li>Escrowed ETH</li>
         <li>Escrowed Shares</li>
-        <li>
-          <span>Action</span>
-        </li>
+        {!isMobile && (
+          <li>
+            <span>Action</span>
+          </li>
+        )}
       </ul>
       {openOrders.length === 0 &&
         orphanedOrders.length === 0 && (
@@ -43,7 +45,7 @@ const OpenOrdersTable = ({
                 order={order}
                 pending={order.pending}
                 isExtendedDisplay={false}
-                isMobile={false}
+                isMobile={isMobile}
               />
             ))}
             {(orphanedOrders || []).map(order => (
