@@ -50,9 +50,16 @@
     }
 
     .hovered_tooltip {
-      fill: none;
-      fill-opacity: 0.35;
-      stroke: @color-white;
+      fill: @color-almostblack;
+      fill-opacity: 0.5;
+    }
+
+    .asks {
+      stroke: @color-negative;
+    }
+
+    .bids {
+      stroke: @color-positive;
     }
 
     #depth_range_bounds {
@@ -65,7 +72,7 @@
     .bounding-line,
     .tick-line,
     .tick-line--midpoint {
-      stroke: @color-gray;
+      stroke: @color-white;
     }
 
     .tick-line--midpoint {
