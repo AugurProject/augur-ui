@@ -194,7 +194,9 @@ export default class MarketOutcomeDepth extends Component {
         depthChart,
         marketDepth: drawParams.newMarketDepth,
         isMobile,
-        hasOrders
+        hasOrders,
+        marketMin,
+        marketMax
       });
 
       drawTicks({
@@ -534,7 +536,7 @@ function drawTicks(options) {
       .attr("transform", "translate(0, 50)");
     depthChart
       .append("text")
-      .attr("class", "tick-value-midpoint")
+      .attr("class", "tick-value-midpoint-text")
       .attr("x", drawParams.xScale(orderBookKeys.mid.toNumber()))
       .attr("y", drawParams.yScale(quarter) - 15)
       .attr("dx", midOffset)
@@ -590,7 +592,14 @@ function drawTicks(options) {
 }
 
 function drawLines(options) {
-  const { drawParams, depthChart, marketDepth, hasOrders } = options;
+  const {
+    drawParams,
+    depthChart,
+    marketDepth,
+    hasOrders,
+    marketMin,
+    marketMax
+  } = options;
 
   // Defs
   const chartDefs = depthChart.append("defs");
@@ -652,14 +661,14 @@ function drawLines(options) {
     .area()
     .curve(d3.curveStepBefore)
     .x0(d => drawParams.xScale(d[1]))
-    .x1(d => drawParams.xScale(drawParams.xDomain[0]))
+    .x1(d => drawParams.xScale(marketMin))
     .y(d => drawParams.yScale(d[0]));
 
   const areaAsk = d3
     .area()
     .curve(d3.curveStepBefore)
     .x0(d => drawParams.xScale(d[1]))
-    .x1(d => drawParams.xScale(drawParams.xDomain[1]))
+    .x1(d => drawParams.xScale(marketMax))
     .y(d => drawParams.yScale(d[0]));
 
   Object.keys(marketDepth).forEach(side => {
@@ -798,33 +807,30 @@ function attachHoverClickHandlers(options) {
       // const yPosition = yScale(hoveredPrice);
       // const clampedHoveredPrice = yScale.invert(yPosition);
       // 0,2,4,8,12,16,24,32,40
-      const quarterX = drawParams.xDomain[1] * 0.9;
+      const quarterX = drawParams.xDomain[1] * 0.1;
       const quarterY = drawParams.yDomain[1] * 0.9;
-      const flipX = xScale(quarterX) < xScale(nearestFillingOrder[1]);
+      const flipX = xScale(quarterX) > xScale(nearestFillingOrder[1]);
       const flipY = yScale(quarterY) > yScale(nearestFillingOrder[0]);
-      // console.log(
-      //   flipX,
-      //   flipY
-      // );
-      // size of hover_tooltip 113 x 53
+
       const offset = {
-        // 77, 1, 24, 48, 8, 58, 45, 32
+        hoverToolTipX: flipX ? 0 : -113,
+        indicatorX: flipX ? 1 : -1,
+        labelX: flipX ? 8 : -105,
+        valueX: flipX ? 48 : -65,
+        hoverToolTipY: flipY ? 24 : -77,
         indicatorY1: flipY ? 24 : -24,
         indicatorY2: flipY ? 77 : -77,
-        indicatorX: flipX ? -1 : 1,
-        labelX: flipX ? -8 : 8,
-        valueX: flipX ? -48 : 48,
-        priceY: flipY ? 58 : -58,
-        volumeY: flipY ? 45 : -45,
-        costY: flipY ? 32 : -32
+        priceY: flipY ? 43 : -58,
+        volumeY: flipY ? 56 : -45,
+        costY: flipY ? 69 : -32
       };
       d3.select("#hovered_tooltip_container").style("display", null);
       d3.select("#hovered_tooltip")
         .attr(
           "transform",
           `
-        translate(${xScale(nearestFillingOrder[1])}
-        , ${yScale(nearestFillingOrder[0]) + offset.indicatorY2})
+        translate(${xScale(nearestFillingOrder[1]) + offset.hoverToolTipX}
+        , ${yScale(nearestFillingOrder[0]) + offset.hoverToolTipY})
         `
         )
         .attr("class", `hovered_tooltip ${nearestFillingOrder[4]}`);
