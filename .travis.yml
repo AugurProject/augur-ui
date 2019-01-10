@@ -8,6 +8,7 @@ branches:
   only:
     - master
     - stable
+    - sneakpeak
     - mvp
     - petong/travis-ci
     - "/^v\\d+\\.\\d+\\.\\d+(-\\d+)?$/"
@@ -37,6 +38,16 @@ jobs:
     deploy:
       provider: script
       script: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"; npm run docker:release -- stable
+      skip_cleanup: true
+      on:
+        all_branches: true
+  - stage: Deploy to sneakpeak
+    if: (branch = sneakpeak) AND (NOT (type IN (pull_request)))
+    node_js: '10'
+    script: skip
+    deploy:
+      provider: script
+      script: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"; npm run docker:release -- sneakpeak
       skip_cleanup: true
       on:
         all_branches: true

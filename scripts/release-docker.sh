@@ -40,6 +40,11 @@ case ${augur_env} in
         augur_service="try-augur-ui"
         build_environment="dev-optimized"
         ;;
+    sneakpeak)
+        network="rinkeby"
+        cluster="sneakpeak-augur-net"
+        augur_service="sneakpeak-augur-ui"
+        ;;
     *)
         network=${augur_env}
         ;;
