@@ -3,6 +3,10 @@
 .FilledOrder {
   background-color: transparent;
 
+  &:hover {
+    background-color: rgba(41, 24, 57, .3);
+  }
+
   > li {
     &:last-of-type {
       padding-right: 1rem;
@@ -42,9 +46,10 @@ ul.FilledOrder__table-header {
   grid-template-columns: repeat(4, 1fr);
   justify-content: flex-end;
   padding: 0 1rem;
+  box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.25);
 
   > li {
-    max-width: 15.38rem;
+    max-width: unset !important;
     text-align: right;
 
     &:first-child {
@@ -69,12 +74,13 @@ ul.FilledOrder__table-header {
 
 .FilledOrder__trade {
   background-color: @color-grayish-purple !important;
-  border-bottom: 0.0625rem solid @color-extra-darkpurple;
   justify-content: flex-end;
   margin: 0 1rem;
 
   &:last-of-type {
-    border-bottom: 0;
+    > li {
+      border-bottom: 0;
+    }
   }
 
   > li {
@@ -83,9 +89,10 @@ ul.FilledOrder__table-header {
     display: flex;
     font-size: 0.75rem !important;
     justify-content: flex-end;
-    max-width: 15.38rem;
+    max-width: unset !important;
     padding: 1rem 0;
     text-align: right;
+    border-bottom: 0.0625rem solid @color-extra-darkpurple;
 
     &:nth-child(even) {
       background-color: @color-grayish-purple;
@@ -105,6 +112,10 @@ ul.FilledOrder__table-header {
       padding-right: 2.2rem;
     }
   }
+}
+
+.FilledOrder__active {
+  background-color: rgba(68, 59, 89, 0.5) !important;
 }
 
 @media @breakpoint-mobile {

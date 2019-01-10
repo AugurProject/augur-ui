@@ -23,7 +23,7 @@ export function selectFilledOrders(
       const amountBN = createBigNumber(amount);
       const priceBN = createBigNumber(price);
 
-      const outcomeInfo = marketOutcomes.find(
+      const outcomeInfo = marketOutcomes && marketOutcomes.find(
         outcomeValue => outcomeValue.id === outcome.toString()
       );
 
