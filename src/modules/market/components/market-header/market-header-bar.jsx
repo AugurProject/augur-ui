@@ -23,7 +23,7 @@ export default class MarketHeaderBar extends Component {
     isLogged: PropTypes.bool,
     isFavorite: PropTypes.bool,
     addToFavorites: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool
+    isMobile: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -114,7 +114,7 @@ export default class MarketHeaderBar extends Component {
               ))}
           </div>
         </div>
-        {isMobile && (
+        {isMobile && addToFavorites && (
           <div className={Styles.MarketHeaderBar__watchlist__container}>
             <button
               onClick={() => addToFavorites()}
