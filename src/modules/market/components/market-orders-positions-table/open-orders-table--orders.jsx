@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import classNames from "classnames";
 
+import { threeDots } from "modules/common/components/icons";
 import getValue from "utils/get-value";
 import { SELL } from "modules/trades/constants/types";
 
@@ -32,6 +33,20 @@ export default class OpenOrdersOrder extends Component {
     outcome: null
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showCancelButton: false
+    };
+
+    this.toggleCancelButton = this.toggleCancelButton.bind(this);
+  }
+
+  toggleCancelButton() {
+    this.setState({ showCancelButton: !this.state.showCancelButton });
+  }
+
   render() {
     const {
       isExtendedDisplay,
@@ -41,6 +56,9 @@ export default class OpenOrdersOrder extends Component {
       pending,
       outcome
     } = this.props;
+
+    const s = this.state;
+
     const orderPrice = getValue(order, "avgPrice.formatted");
     const orderShares = getValue(order, "unmatchedShares.formatted");
     const orderType = getValue(order, "type");
@@ -50,14 +68,14 @@ export default class OpenOrdersOrder extends Component {
         ref={order => {
           this.order = order;
         }}
-        className={
-          !isMobile
-            ? classNames(SharedStyles.Order, {
-                [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
-                [SharedStyles.Negative]: orderType === SELL
-              })
-            : SharedStyles.PortMobile
-        }
+        className={classNames(
+          SharedStyles.Order,
+          SharedStyles.Order__Extended,
+          {
+            [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
+            [SharedStyles.Negative]: orderType === SELL
+          }
+        )}
       >
         <li>{outcomeName || orderPrice}</li>
         <li
@@ -70,28 +88,46 @@ export default class OpenOrdersOrder extends Component {
         </li>
         <li>{orderShares}</li>
         <li>{orderPrice}</li>
-        {isExtendedDisplay &&
-          !isMobile &&
-          outcome && <li>{getValue(outcome, "lastPrice.formatted")}</li>}
-        {!isMobile && <li>{getValue(order, "tokensEscrowed.formatted")}</li>}
-        {!isMobile && <li>{getValue(order, "sharesEscrowed.formatted")}</li>}
-        {isExtendedDisplay && <li />}
-        <li>
-          {pending ? (
-            <button className={Styles.Order__cancel} disabled>
-              PENDING
-            </button>
-          ) : (
-            <button
-              className={Styles.Order__cancel}
-              onClick={e => {
-                order.cancelOrder(order);
-              }}
-            >
-              Cancel
-            </button>
-          )}
-        </li>
+        {outcome && <li>{getValue(outcome, "lastPrice.formatted")}</li>}
+        {<li>{getValue(order, "tokensEscrowed.formatted")}</li>}
+        {<li>{getValue(order, "sharesEscrowed.formatted")}</li>}
+        {!isMobile && (
+          <li>
+            {pending ? (
+              <button className={Styles.Order__cancel} disabled>
+                PENDING
+              </button>
+            ) : (
+              <button
+                className={Styles.Order__cancel}
+                onClick={e => {
+                  order.cancelOrder(order);
+                }}
+              >
+                Cancel
+              </button>
+            )}
+          </li>
+        )}
+        {isMobile && <div onClick={this.toggleCancelButton}>{threeDots}</div>}
+        {s.showCancelButton && (
+          <div className={Styles.Order__cancelContainer}>
+            {pending ? (
+              <button className={Styles.Order__cancel} disabled>
+                PENDING
+              </button>
+            ) : (
+              <button
+                className={Styles.Order__cancel}
+                onClick={e => {
+                  order.cancelOrder(order);
+                }}
+              >
+                Cancel Order
+              </button>
+            )}
+          </div>
+        )}
       </ul>
     );
   }

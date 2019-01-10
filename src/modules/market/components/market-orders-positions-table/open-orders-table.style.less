@@ -14,10 +14,11 @@
 
   background-color: @color-light-purple;
   color: @color-light-gray;
-  display: flex;
+  display: grid;
   flex-direction: row;
   flex-grow: 1;
   font-size: 12px;
+  grid-template-columns: repeat(6, 1fr);
   max-height: 40px;
   text-transform: none !important;
   transition: background-color 0.15s ease;
@@ -30,7 +31,6 @@
 
   > li {
     flex-grow: 1;
-    min-width: 125px;
     overflow: hidden;
     padding: 11px 0;
     text-align: right;
@@ -56,6 +56,11 @@
   }
 }
 
+.MarketOpenOrdersList__order-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
 .MarketFilledOrdersList__table-header {
   > li {
     &:last-of-type {
@@ -75,7 +80,6 @@
 }
 
 .MarketOpenOrdersList__table-body {
-  background-color: @color-input-background;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -88,18 +92,43 @@
   overflow-y: auto;
 }
 
+.MarketOutcomes__table-header {
+  > li {
+    &:first-child {
+      min-width: 160px;
+    }
+
+    &:last-of-type {
+      padding-right: 2.5rem;
+    }
+  }
+}
+
 @media @breakpoint-mobile {
   .MarketOpenOrdersList__table-header {
-    > li {
-      min-width: 100px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
 
+    > li {
       &:first-child {
         flex-grow: unset;
         padding-left: 16px;
       }
 
       &:last-of-type {
-        padding-right: 2.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+  }
+
+  .MarketOutcomes__table-header {
+    > li {
+      &:first-child {
+        min-width: 100px;
+      }
+
+      &:last-of-type {
+        padding-right: 3rem;
       }
     }
   }
@@ -108,7 +137,23 @@
 @media @breakpoint-mobile-small {
   .MarketOpenOrdersList__table-header {
     > li {
-      min-width: 50px;
+      min-width: unset;
+
+      &:last-of-type {
+        padding-right: 1rem;
+      }
+    }
+  }
+
+  .MarketOutcomes__table-header {
+    > li {
+      &:first-child {
+        min-width: 50px;
+      }
+
+      &:last-of-type {
+        padding-right: 3rem;
+      }
     }
   }
 }

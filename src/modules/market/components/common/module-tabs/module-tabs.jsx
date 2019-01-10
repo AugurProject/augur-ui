@@ -10,13 +10,15 @@ export default class ModuleTabs extends Component {
     selected: PropTypes.number,
     children: PropTypes.arrayOf(ModulePane).isRequired,
     fillWidth: PropTypes.bool,
-    fillForMobile: PropTypes.bool
+    fillForMobile: PropTypes.bool,
+    id: PropTypes.string
   };
 
   static defaultProps = {
     selected: 0,
     fillWidth: false,
-    fillForMobile: false
+    fillForMobile: false,
+    id: "id"
   };
 
   constructor(props) {
@@ -32,7 +34,7 @@ export default class ModuleTabs extends Component {
   }
 
   handleClick(e, index) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.setState({
       selected: index
     });
@@ -89,7 +91,7 @@ export default class ModuleTabs extends Component {
 
   render() {
     return (
-      <div className={Styles.ModuleTabs}>
+      <div className={Styles.ModuleTabs} id={"tabs_" + this.props.id}>
         {this.renderTabs()}
         {this.renderContent()}
       </div>
