@@ -345,7 +345,7 @@ export default class CreateMarketResolution extends Component {
                 type="light"
               >
                 <h4>Market Expiration Date</h4>
-                <p style={{ color: "#372e4b" }}>
+                <p style={{ color: "white" }}>
                   {
                     "Augur is still experimental software, creating markets past six months has been disabled to discourage long running markets."
                   }

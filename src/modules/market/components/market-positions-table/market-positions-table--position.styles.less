@@ -1,0 +1,242 @@
+@import (reference) '~assets/styles/shared';
+
+.FilledOrder,
+.Outcome,
+.Order,
+.Position {
+  background-color: @color-grayish-purple;
+  display: grid;
+  flex-direction: row;
+  flex-grow: 1;
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;
+  grid-template-columns: repeat(6, 1fr);
+  max-height: 40px;
+  position: relative;
+  transition: background-color 0.15s ease;
+
+  &:nth-child(even) {
+    background-color: @color-dark-grayish-purple;
+  }
+
+  &:first-child > li {
+    border-top-width: 0;
+  }
+
+  > li {
+    flex-grow: 1;
+    overflow: hidden;
+    padding: 11px 0;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:first-child {
+      font-family: @roboto;
+      font-size: 14px;
+      max-width: 160px;
+      padding-left: 2rem;
+      position: relative;
+      text-align: left;
+
+      > .Order__pending {
+        justify-content: flex-start;
+      }
+    }
+
+    &:last-of-type {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      padding-right: 4.5rem;
+
+      > button {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .NotActive {
+    color: @color-lightgray;
+  }
+}
+
+.Outcome,
+.Order,
+.Position {
+  &::before {
+    background-color: @color-positive;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 96%;
+    left: 1px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+  }
+}
+
+.Outcome {
+  > li {
+    &:first-child {
+      min-width: 160px;
+    }
+  }
+}
+
+.FilledOrder {
+  grid-template-columns: repeat(5, 1fr);
+
+  > li {
+    max-height: 40px;
+  }
+}
+
+.Order__Extended {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.Negative {
+  &::before {
+    background-color: @color-negative2;
+  }
+}
+
+.Order__typeIndicator,
+.Position__typeIndicator {
+  background-color: @color-positive;
+  bottom: 1px;
+  left: 0;
+  position: absolute;
+  top: 1px;
+  width: 1px;
+}
+
+.Order__type,
+.Position__type {
+  color: @color-positive;
+  text-transform: capitalize;
+}
+
+.Order__typeSell,
+.Position__typeSell {
+  color: @color-negative2;
+}
+
+.Order__typeIndicatorSell,
+.Position__typeIndicatorSell {
+  background-color: @color-negative2;
+}
+
+.Order__not_extended,
+.Position-not_extended {
+  > li {
+    &:first-child {
+      padding-left: 0.5rem;
+    }
+  }
+}
+
+@media @breakpoint-mobile {
+  .FilledOrder {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .Outcome,
+  .Order,
+  .Position {
+    grid-template-columns: repeat(5, 1fr);
+    max-height: 64px;
+    position: relative;
+
+    > li {
+      padding: 34px 0 16px;
+
+      &:first-child {
+        bottom: 0;
+        font-weight: 500;
+        left: 16px;
+        padding: 0;
+        position: absolute;
+        top: 12px;
+      }
+
+      &:nth-child(2) {
+        flex-grow: unset;
+        max-width: 160px;
+        padding-left: 16px;
+        position: relative;
+        text-align: left;
+      }
+
+      &:last-of-type {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-right: 2rem;
+      }
+    }
+  }
+
+  .Order,
+  .Outcome {
+    > div {
+      display: inline-block;
+      min-width: 20px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+    }
+  }
+
+  .Outcome {
+    > li {
+      &:first-child {
+        min-width: 100px;
+      }
+
+      &:last-of-type {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  .Order {
+    > div {
+      top: 25%;
+    }
+  }
+}
+
+@media @breakpoint-mobile-small {
+  .Outcome {
+    > li {
+      &:first-child {
+        min-width: 50px;
+      }
+
+      &:last-of-type {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  .Order {
+    > li {
+      &:last-of-type {
+        padding-right: 2rem;
+      }
+    }
+  }
+
+  .Position {
+    > li {
+      &:last-of-type {
+        padding-right: 1rem;
+      }
+    }
+  }
+}

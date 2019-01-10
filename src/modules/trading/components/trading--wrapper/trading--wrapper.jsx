@@ -20,7 +20,7 @@ import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 
-class MarketTradingWrapper extends Component {
+class TradingWrapper extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
     isLogged: PropTypes.bool.isRequired,
@@ -333,4 +333,4 @@ class MarketTradingWrapper extends Component {
   }
 }
 
-export default MarketTradingWrapper;
+export default TradingWrapper;

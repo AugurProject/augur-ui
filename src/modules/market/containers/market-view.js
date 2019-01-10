@@ -6,6 +6,11 @@ import { selectMarket } from "modules/markets/selectors/market";
 import parseQuery from "modules/routes/helpers/parse-query";
 import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
 import getPrecision from "utils/get-number-precision";
+import { selectCurrentTimestampInSeconds } from "src/select-state";
+import { createBigNumber } from "src/utils/create-big-number";
+import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-progress";
+import { getGasPrice } from "modules/auth/selectors/get-gas-price";
+import { handleFilledOnly } from "modules/notifications/actions/notifications";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -21,11 +26,18 @@ const mapStateToProps = (state, ownProps) => {
   const pricePrecision = market && getPrecision(market.tickSize, 4);
 
   return {
+    gasPrice: getGasPrice(state),
+    availableFunds: createBigNumber(state.loginAccount.eth || 0),
+    currentTimestamp: selectCurrentTimestampInSeconds(state),
+    outcomes: market.outcomes || [],
     isConnected: connection.isConnected && universe.id != null,
     marketType: market.marketType,
     description: market.description || "",
     loadingState: market.loadingState || null,
     isLogged: authStatus.isLogged,
+    market,
+    minPrice: market.minPrice || createBigNumber(0),
+    maxPrice: market.maxPrice || createBigNumber(0),
     universe,
     orderBooks,
     isMobile: appStatus.isMobile,
@@ -36,7 +48,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  loadFullMarket: marketId => dispatch(loadFullMarket(marketId))
+  loadFullMarket: marketId => dispatch(loadFullMarket(marketId)),
+  clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
+  handleFilledOnly: trade => dispatch(handleFilledOnly(trade))
 });
 
 const Market = withRouter(

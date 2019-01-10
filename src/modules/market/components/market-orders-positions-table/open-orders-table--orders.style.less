@@ -1,0 +1,35 @@
+@import (reference) '~assets/styles/shared';
+
+.Order__cancel {
+  &:extend(.button--mediumgray all);
+
+  display: inline-block;
+  font-size: 10px;
+  margin-right: -32px; // center button
+  padding: 3px 12px;
+
+  &.disabled {
+    &:extend(.button--mediumgray--disabled);
+  }
+}
+
+div.Order__cancelContainer {
+  bottom: -20px;
+  position: absolute;
+  right: 10px;
+  top: unset;
+  z-index: 5;
+}
+
+@media @breakpoint-mobile {
+  .Order__cancel {
+    margin-right: 0;
+  }
+}
+
+@media @breakpoint-mobile-small {
+  .Order__cancel {
+    padding: 8px 14px;
+  }
+}
+

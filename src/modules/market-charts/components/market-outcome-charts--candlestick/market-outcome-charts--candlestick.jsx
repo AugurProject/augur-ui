@@ -10,7 +10,7 @@ import { sortBy, maxBy } from "lodash";
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
 import MarketOutcomeChartsHeaderCandlestick from "modules/market-charts/components/market-outcome-charts--header-candlestick/market-outcome-charts--header-candlestick";
 import { ONE } from "modules/trades/constants/numbers";
-import { BUY, SELL } from "modules/transactions/constants/types";
+// import { BUY, SELL } from "modules/transactions/constants/types";
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import { createBigNumber } from "utils/create-big-number";
@@ -24,7 +24,6 @@ class MarketOutcomeCandlestick extends React.Component {
     isMobileSmall: PropTypes.bool,
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
-    orderBookKeys: PropTypes.object.isRequired,
     outcomeName: PropTypes.string.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
@@ -47,7 +46,6 @@ class MarketOutcomeCandlestick extends React.Component {
       pricePrecision,
       marketMax,
       marketMin,
-      orderBookKeys,
       priceTimeSeries,
       selectedPeriod,
       selectedRange,
@@ -69,7 +67,6 @@ class MarketOutcomeCandlestick extends React.Component {
       pricePrecision,
       marketMax,
       marketMin,
-      orderBookKeys,
       outcomeBounds,
       priceTimeSeries,
       selectedPeriod,
@@ -174,7 +171,6 @@ class MarketOutcomeCandlestick extends React.Component {
       isMobile,
       marketMax,
       marketMin,
-      orderBookKeys,
       outcomeName,
       priceTimeSeries,
       selectedPeriod,
@@ -245,7 +241,6 @@ class MarketOutcomeCandlestick extends React.Component {
         pricePrecision,
         marketMax,
         marketMin,
-        orderBookKeys,
         priceTimeSeries,
         xScale,
         yDomain,
@@ -306,7 +301,6 @@ class MarketOutcomeCandlestick extends React.Component {
         pricePrecision,
         marketMax,
         marketMin,
-        orderBookKeys,
         priceTimeSeries,
         updateHoveredPeriod: this.updateHoveredPeriod,
         updateHoveredPrice: this.updateHoveredPrice,
@@ -650,7 +644,6 @@ function attachHoverClickHandlers({
   pricePrecision,
   marketMax,
   marketMin,
-  orderBookKeys,
   priceTimeSeries,
   updateHoveredPeriod,
   updateHoveredPrice,
@@ -671,18 +664,7 @@ function attachHoverClickHandlers({
           .toFixed(pricePrecision)
       )
     )
-    .on("mouseout", clearCrosshairs)
-    .on("click", () => {
-      const mouse = d3.mouse(d3.select("#candlestick_chart").node());
-      const orderPrice = yScale.invert(mouse[1]).toFixed(pricePrecision);
-
-      if (orderPrice > marketMin && orderPrice < marketMax) {
-        updateSelectedOrderProperties({
-          selectedNav: orderPrice > orderBookKeys.mid ? BUY : SELL,
-          orderPrice
-        });
-      }
-    });
+    .on("mouseout", clearCrosshairs);
 
   candleChart
     .selectAll("rect.hover")

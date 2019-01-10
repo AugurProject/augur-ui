@@ -27,7 +27,7 @@ import {
 } from "utils/format-number";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 
-class MarketTradingForm extends Component {
+class TradingForm extends Component {
   static propTypes = {
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -654,4 +654,4 @@ class MarketTradingForm extends Component {
   }
 }
 
-export default MarketTradingForm;
+export default TradingForm;

@@ -5,12 +5,20 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
+import { RightChevron } from "modules/common/components/icons";
 
 import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome.styles";
+import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 
-const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome }) => {
+const Outcome = ({
+  outcome,
+  selectedOutcome,
+  updateSelectedOutcome,
+  scalarDenomination,
+  isMobile
+}) => {
   const outcomeName = getValue(outcome, "name");
 
   const topBidShares = getValue(outcome, "topBid.shares.formatted");
@@ -24,15 +32,21 @@ const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome }) => {
 
   return (
     <ul
-      className={classNames(Styles.Outcome, {
+      className={classNames(SharedStyles.Outcome, Styles.Outcome, {
         [`${Styles.active}`]: selectedOutcome === outcome.id
       })}
       onClick={e => updateSelectedOutcome(outcome.id)}
       role="menu"
     >
       <li>
-        {outcomeName}{" "}
-        <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        <div>
+          <span className={Styles.Outcome__name}>
+            {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
+          </span>
+        </div>
+        <div>
+          <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
+        </div>
       </li>
       <li>
         <ValueDenomination formatted={topBidShares} />
@@ -48,8 +62,13 @@ const Outcome = ({ outcome, selectedOutcome, updateSelectedOutcome }) => {
       </li>
       <li style={{ position: "relative" }}>
         <ValueDenomination formatted={lastPrice} />
-        <MarketOutcomeTradingIndicator outcome={outcome} location="outcomes" />
+        <MarketOutcomeTradingIndicator
+          outcome={outcome}
+          location="tradingPage"
+          style={isMobile ? { bottom: "32%" } : null}
+        />
       </li>
+      {isMobile && <div>{RightChevron}</div>}
     </ul>
   );
 };
@@ -70,11 +89,15 @@ Outcome.propTypes = {
     lastPricePercent: PropTypes.object
   }).isRequired,
   selectedOutcome: PropTypes.string,
-  updateSelectedOutcome: PropTypes.func.isRequired
+  updateSelectedOutcome: PropTypes.func.isRequired,
+  scalarDenomination: PropTypes.string,
+  isMobile: PropTypes.bool
 };
 
 Outcome.defaultProps = {
-  selectedOutcome: null
+  selectedOutcome: null,
+  scalarDenomination: null,
+  isMobile: false
 };
 
 export default Outcome;

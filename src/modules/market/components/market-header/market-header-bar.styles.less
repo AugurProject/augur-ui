@@ -1,0 +1,98 @@
+@import (reference) "~assets/styles/shared";
+@import (reference) "~modules/market/components/market-view/market-view.styles";
+
+.MarketHeaderBar__container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+}
+
+.MarketHeaderBar__tag__container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
+}
+
+.MarketHeaderBar__status {
+  color: @color-white;
+  display: flex;
+  flex-direction: column;
+  font-size: @font-size-small;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
+.MarketHeaderBar__tags {
+  &:extend(.button--transparent--rounded all);
+
+  text-transform: capitalize;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.MarketHeaderBar__underline__reporting,
+.MarketHeaderBar__underline__resolved,
+.MarketHeaderBar__underline__open,
+.MarketHeaderBar__underline {
+  border-radius: 100px;
+  margin-bottom: 0.25rem;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+}
+
+.MarketHeaderBar__underline__open {
+  border-bottom: 2px solid @color-open-green;
+}
+
+.MarketHeaderBar__underline__resolved {
+  border-bottom: 2px solid @color-resolved-red;
+}
+
+.MarketHeaderBar__underline__reporting {
+  border-bottom: 2px solid @color-dispute-yellow;
+}
+
+.MarketHeaderBar__watchlist__container {
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.MarketHeaderBar__watchlist__disabled,
+.MarketHeaderBar__watchlist {
+  box-sizing: border-box;
+  color: @color-white;
+  padding: 0.5rem 0;
+
+  svg {
+    margin: -0.1rem 0.5rem;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+    vertical-align: top;
+  }
+
+  span {
+    font-size: @font-size-small;
+  }
+
+  &:disabled {
+    background: #1a1627;
+    cursor: default;
+    opacity: 0.3;
+  }
+}
+
+@media @breakpoint-mobile {
+  .MarketHeaderBar {
+    display: flex;
+    padding-bottom: 2rem;
+  }
+
+  .MarketHeaderBar__container {
+    padding-bottom: 0;
+  }
+}
+

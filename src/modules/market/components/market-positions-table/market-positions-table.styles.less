@@ -1,0 +1,27 @@
+@import (reference) '~assets/styles/shared';
+
+.MarketPositionsList__completeSets {
+  align-items: center;
+  background-color: @color-dark-gray;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  width: 100%;
+
+  > span {
+    flex: 1;
+  }
+
+  > button {
+    .button--whiteRound();
+
+    &:disabled,
+    &:disabled:hover {
+      border-color: @color-gray;
+      color: @color-gray;
+      cursor: not-allowed;
+      text-decoration: none;
+    }
+  }
+}

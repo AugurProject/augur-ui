@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-
-import { ChevronLeft } from "modules/common/components/icons";
+import {
+  starIconOpen,
+  starIconFilled,
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft
+} from "modules/common/components/icons";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
-
-import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
+import MarketHeaderBar from "modules/market/containers/market-header-bar";
+import { SCALAR } from "modules/markets/constants/market-types";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
+import TimeRange from "modules/market/components/market-header/market-header-time-range";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
@@ -17,33 +23,35 @@ export default class MarketHeader extends Component {
     clearSelectedOutcome: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     details: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     market: PropTypes.object.isRequired,
-    currentTimestamp: PropTypes.number.isRequired,
-    tentativeWinner: PropTypes.object,
+    currentTime: PropTypes.number,
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
     selectedOutcome: PropTypes.any,
     isLogged: PropTypes.bool,
-    isDesignatedReporter: PropTypes.bool,
-    location: PropTypes.object.isRequired,
-    finalizeMarket: PropTypes.func.isRequired,
-    isMobileSmall: PropTypes.bool.isRequired,
-    isForking: PropTypes.bool
+    isMobile: PropTypes.bool,
+    isMobileSmall: PropTypes.bool,
+    isForking: PropTypes.bool,
+    toggleFavorite: PropTypes.func,
+    isFavorite: PropTypes.bool,
+    history: PropTypes.object.isRequired
   };
 
   static defaultProps = {
     isLogged: false,
-    isDesignatedReporter: false,
-    tentativeWinner: null,
     scalarDenomination: null,
     resolutionSource: "General knowledge",
     selectedOutcome: null,
     marketType: null,
-    isForking: false
+    isForking: false,
+    currentTime: 0,
+    isFavorite: false,
+    toggleFavorite: () => {},
+    isMobile: false,
+    isMobileSmall: false
   };
 
   constructor(props) {
@@ -77,26 +85,25 @@ export default class MarketHeader extends Component {
     this.setState({ showReadMore: !this.state.showReadMore });
   }
 
+  addToFavorites() {
+    this.props.toggleFavorite(this.props.market.id);
+  }
+
   render() {
     const {
-      clearSelectedOutcome,
       description,
-      history,
-      location,
       marketType,
       resolutionSource,
-      selectedOutcome,
       minPrice,
       maxPrice,
       scalarDenomination,
       market,
-      currentTimestamp,
-      tentativeWinner,
+      currentTime,
       isLogged,
-      isDesignatedReporter,
-      finalizeMarket,
       isMobileSmall,
-      isForking
+      isMobile,
+      isFavorite,
+      history
     } = this.props;
 
     let { details } = this.props;
@@ -112,31 +119,26 @@ export default class MarketHeader extends Component {
 
     return (
       <section className={Styles.MarketHeader}>
-        <div
-          className={classNames(Styles.MarketHeader__nav, {
-            [Styles["MarketHeader__nav-isForking"]]: isForking
-          })}
+        <button
+          className={Styles[`MarketHeader__back-button`]}
+          onClick={() => history.goBack()}
         >
-          {selectedOutcome !== null && marketType === CATEGORICAL ? (
-            <button
-              className={Styles[`MarketHeader__back-button`]}
-              onClick={() => clearSelectedOutcome()}
-            >
-              {ChevronLeft}
-              <span> view all outcomes</span>
-            </button>
-          ) : (
-            <button
-              className={Styles[`MarketHeader__back-button`]}
-              onClick={() => history.goBack()}
-            >
-              {ChevronLeft}
-              <span> back</span>
-            </button>
-          )}
-        </div>
+          {ChevronLeft}
+          <span> back</span>
+        </button>
         <div className={Styles[`MarketHeader__main-values`]}>
           <div className={Styles.MarketHeader__descContainer}>
+            {market.id && (
+              <MarketHeaderBar
+                marketId={market.id}
+                category={market.category}
+                reportingState={market.reportingState}
+                tags={market.tags}
+                addToFavorites={this.addToFavorites}
+                isMobile={isMobile}
+                isFavorite={isFavorite}
+              />
+            )}
             <h1 className={Styles.MarketHeader__description}>{description}</h1>
             <div className={Styles.MarketHeader__descriptionContainer}>
               <div
@@ -158,6 +160,10 @@ export default class MarketHeader extends Component {
                       {
                         [Styles["MarketHeader__AdditionalDetails-tall"]]:
                           detailsTooLong && this.state.showReadMore
+                      },
+                      {
+                        [Styles["MarketHeader__AdditionalDetails-fade"]]:
+                          detailsTooLong && !this.state.showReadMore
                       }
                     )}
                   >
@@ -169,27 +175,45 @@ export default class MarketHeader extends Component {
                       className={Styles.MarketHeader__readMoreButton}
                       onClick={this.toggleReadMore}
                     >
-                      {!this.state.showReadMore ? "read more" : "read less"}
+                      {!this.state.showReadMore
+                        ? ChevronDown({ stroke: "#FFFFFF" })
+                        : ChevronUp()}
+                      <span>
+                        {!this.state.showReadMore ? "More..." : "Less"}
+                      </span>
                     </button>
                   )}
                 </div>
               )}
             </div>
           </div>
-          <div
-            className={classNames(Styles.MarketHeader__properties, {
-              [Styles["MarketHeader__scalar-properties"]]: marketType === SCALAR
-            })}
-          >
+          <div className={Styles.MarketHeader__properties}>
             <CoreProperties
               market={market}
-              currentTimestamp={currentTimestamp}
-              tentativeWinner={tentativeWinner}
-              isLogged={isLogged}
-              isDesignatedReporter={isDesignatedReporter}
-              location={location}
-              finalizeMarket={finalizeMarket}
+              isMobile={isMobile}
               isMobileSmall={isMobileSmall}
+            />
+          </div>
+          <div className={Styles.MarketHeader__timeStuff}>
+            {!isMobile && (
+              <div className={Styles.MarketHeader__watchlist__container}>
+                <button
+                  onClick={() => this.addToFavorites()}
+                  className={Styles.MarketHeader__watchlist}
+                  disabled={!isLogged}
+                >
+                  <span>
+                    {isFavorite ? starIconFilled : starIconOpen}
+                    {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
+                  </span>
+                </button>
+              </div>
+            )}
+            <TimeRange
+              currentTime={currentTime}
+              startTime={market.creationTime}
+              endTime={market.endTime}
+              isMobile={isMobile}
             />
           </div>
         </div>

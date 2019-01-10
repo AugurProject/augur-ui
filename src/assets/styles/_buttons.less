@@ -199,3 +199,79 @@
   color: @color-lightergray;
   cursor: default;
 }
+
+.button--mediumgray {
+  .button--transparent;
+
+  background-color: @color-medium-gray;
+  border: 0;
+  color: @color-white;
+
+  &:hover {
+    background-color: #665789;
+  }
+}
+
+.button--mediumgray--disabled,
+.button--mediumgray:disabled,
+.button--mediumgray:disabled:hover {
+  .button--mediumgray;
+
+  background-color: @color-dark-gray !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  color: @color-white;
+  cursor: default;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 500 !important;
+  padding: 4px 12px;
+}
+
+.button--transparent--rounded {
+  border: 2px solid @color-dark-gray;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: @color-white;
+  cursor: pointer;
+  font-size: @font-size-small;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-right: 0.5rem;
+  padding: 0.25rem 1rem;
+
+  &:hover {
+    border: 2px solid #42404b;
+  }
+}
+
+.button--whiteRound {
+  .button--mediumgray();
+
+  background-color: white;
+  color: @color-gray-light-purple;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.button--bright {
+  background: @color-outcome-seven;
+  border-radius: 3px;
+  color: #140e1f;
+  font-size: @font-size-medium;
+  font-weight: 700;
+  margin-left: 1rem;
+  padding: 0.75rem 1.5rem;
+
+  &:hover {
+    background: @color-bright-teal;
+  }
+
+  &:disabled {
+    background: @color-outcome-seven;
+    cursor: default;
+    opacity: 0.3;
+  }
+}
