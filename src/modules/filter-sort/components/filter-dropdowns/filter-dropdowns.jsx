@@ -13,6 +13,7 @@ import {
   MARKET_REPORTING,
   MARKET_CLOSED
 } from "modules/filter-sort/constants/market-states";
+import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import Dropdown from "modules/common/components/dropdown/dropdown";
 import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropdowns.styles";
 import parseQuery from "modules/routes/helpers/parse-query";
@@ -62,6 +63,7 @@ export default class FilterSearch extends Component {
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
+    hasOrders: PropTypes.bool.isRequired,
     updateFilterOption: PropTypes.func.isRequired,
     updateSortOption: PropTypes.func.isRequired,
     updateMaxFee: PropTypes.func.isRequired,
@@ -75,6 +77,7 @@ export default class FilterSearch extends Component {
     this.changeFilterDropdown = this.changeFilterDropdown.bind(this);
     this.changeMaxFees = this.changeMaxFees.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
+    this.changeHasOrders = this.changeHasOrders.bind(this);
   }
 
   goToPageOne() {
@@ -90,31 +93,53 @@ export default class FilterSearch extends Component {
   }
 
   changeSortDropdown(value) {
-    const { filter, updateSortOption, updateFilter, maxFee } = this.props;
+    const {
+      filter,
+      updateSortOption,
+      updateFilter,
+      maxFee,
+      hasOrders
+    } = this.props;
 
     this.goToPageOne();
     updateSortOption(value);
-    updateFilter({ filter, sort: value, maxFee });
+    updateFilter({ filter, sort: value, maxFee, hasOrders });
   }
 
   changeFilterDropdown(value) {
-    const { sort, updateFilterOption, updateFilter, maxFee } = this.props;
+    const {
+      sort,
+      updateFilterOption,
+      updateFilter,
+      maxFee,
+      hasOrders
+    } = this.props;
 
     this.goToPageOne();
     updateFilterOption(value);
-    updateFilter({ filter: value, sort, maxFee });
+    updateFilter({ filter: value, sort, maxFee, hasOrders });
   }
 
   changeMaxFees(maxFee) {
-    const { sort, filter, updateMaxFee, updateFilter } = this.props;
+    const { sort, filter, updateMaxFee, hasOrders, updateFilter } = this.props;
 
     this.goToPageOne();
     updateMaxFee(maxFee);
-    updateFilter({ filter, sort, maxFee });
+    updateFilter({ filter, sort, maxFee, hasOrders });
+  }
+
+  changeHasOrders(event) {
+    const { filter, sort, maxFee, updateFilter, hasOrders } = this.props;
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      hasOrders: !hasOrders
+    });
   }
 
   render() {
-    const { defaultFilter, defaultSort, defaultMaxFee } = this.props;
+    const { defaultFilter, defaultSort, defaultMaxFee, hasOrders } = this.props;
 
     return (
       <div className={Styles.FilterDropdowns}>
@@ -134,6 +159,17 @@ export default class FilterSearch extends Component {
           onChange={this.changeMaxFees}
           options={maxFeesOptions}
         />
+        <div className={Styles.FilterDropdowns__hasOrders}>
+          <Checkbox
+            id="has-orders"
+            type="checkbox"
+            name="hasOrders"
+            isChecked={hasOrders}
+            value={hasOrders}
+            onClick={this.changeHasOrders}
+          />{" "}
+          <label htmlFor="has-orders">has open orders</label>
+        </div>
       </div>
     );
   }
