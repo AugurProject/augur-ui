@@ -31,21 +31,24 @@
   flex: 1;
 
   :global {
-    #hovered_price_label {
-      .caps--small();
-
-      stroke: @color-white;
-    }
-
-    #hovered_cost_label {
-      .caps--small();
-
-      stroke: @color-white;
-    }
-
+    #hovered_price_label,
+    #hovered_cost_label,
     #hovered_volume_label {
-      .caps--small();
+      font-size: @font-size-smallest;
+    }
 
+    #hovered_price_value {
+      fill: @color-white;
+      font-size: @font-size-medium;
+      font-weight: bold;
+      stroke: @color-white;
+    }
+
+    #hovered_cost_value,
+    #hovered_volume_value {
+      fill: @color-white;
+      font-size: @font-size-extra-small;
+      font-weight: bold;
       stroke: @color-white;
     }
 
@@ -72,17 +75,39 @@
     .bounding-line,
     .tick-line,
     .tick-line--midpoint {
-      stroke: @color-white;
+      stroke: @color-lightgray;
     }
 
     .tick-line--midpoint {
-      opacity: 0.5;
+      stroke: @color-white;
       stroke-dasharray: 3;
     }
 
     .tick-line {
-      color: @color-lightergray;
+      color: @color-lightgray;
       stroke-width: 1px;
+    }
+
+    .tick-value {
+      &:extend(.caps--extra-small all);
+
+      fill: @color-white;
+    }
+
+    .tick-value-midpoint {
+      fill: @color-white;
+      font-size: @font-size-medium;
+    }
+
+    .tick-value-midpoint-text {
+      &:extend(.caps--extra-small all);
+
+      font-size: @font-size-small;
+      text-transform: none;
+    }
+
+    .tick > text {
+      stroke: @color-white;
     }
 
     .depth-line-bids {
@@ -93,18 +118,6 @@
     .depth-line-asks {
       fill: none;
       stroke: @color-negative;
-    }
-
-    .tick-value-midpoint,
-    .tick-value {
-      &:extend(.caps--extra-small all);
-
-      fill: @color-lightgray;
-    }
-
-    .tick-value-midpoint {
-      font-size: @font-size-small;
-      text-transform: none;
     }
 
     .stop-top-bid {
