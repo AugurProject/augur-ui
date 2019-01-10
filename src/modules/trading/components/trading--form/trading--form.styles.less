@@ -5,8 +5,13 @@
 
   > li {
     align-items: center;
+    background-color: @color-dark-grayish-purple;
+    border: 1px solid @color-dark-gray;
     display: flex;
     flex-wrap: nowrap;
+    color: @color-white;
+    font-size: @font-size-normal;
+    padding: 0.75rem 0.75rem 0.75rem 1.5rem;
     justify-content: space-between;
 
     &:not(:last-child) {
@@ -54,8 +59,6 @@
     > div,
     > input,
     > ul {
-      width: 70%;
-
       &:not(:last-child) {
         width: 12%;
       }

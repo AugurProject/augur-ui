@@ -1,11 +1,12 @@
 @import (reference) '~assets/styles/shared';
 
 .Dropdown {
-  color: @color-lightgray;
+  color: inherit;
   cursor: pointer;
   display: flex;
   margin-right: 1em;
   position: relative;
+  width: 100%;
   z-index: 1;
 
   &:last-child {
@@ -14,6 +15,7 @@
 }
 
 .Dropdown__angle-down {
+  color: @color-white;
   position: absolute;
   right: 0;
   top: 50%;
@@ -22,8 +24,6 @@
 }
 
 .Dropdown__label {
-  &:extend(.caps--medium);
-
   padding: 0.5rem 1rem 0.5rem 0;
 }
 
@@ -32,8 +32,8 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   color: @color-darkpurple;
   display: none;
-  font-size: @font-size-small;
-  line-height: @font-size-small;
+  font-size: @font-size-normal;
+  line-height: @font-size-normal;
   padding: 0.5rem 0;
   position: absolute;
   right: 0;

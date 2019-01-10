@@ -69,7 +69,7 @@ export default class MarketView extends Component {
 
     this.state = {
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
-      selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
+      selectedOutcome: props.marketType === CATEGORICAL ? "0" : "1",
       fixedPrecision: 4,
       selectedOutcomeProperties: {
         1: {
@@ -296,7 +296,23 @@ export default class MarketView extends Component {
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
                 <div className={Styles.MarketView__component}>
-
+                  <MarketTradingForm
+                    market={market}
+                    isLogged={isLogged}
+                    selectedOrderProperties={s.selectedOrderProperties}
+                    selectedOutcome={s.selectedOutcome}
+                    isMobile={isMobile}
+                    toggleForm={this.toggleForm}
+                    showOrderPlaced={this.showOrderPlaced}
+                    availableFunds={availableFunds}
+                    clearTradeInProgress={clearTradeInProgress}
+                    updateSelectedOutcome={this.updateSelectedOutcome}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
+                    gasPrice={gasPrice}
+                    handleFilledOnly={handleFilledOnly}
+                  />
                 </div>
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>

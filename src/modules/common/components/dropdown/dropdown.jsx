@@ -26,8 +26,24 @@ class Dropdown extends Component {
     window.addEventListener("click", this.handleWindowOnClick);
   }
 
+  componentWillUpdate(nextProps) {
+    if (this.props.default !== nextProps.default) {
+      this.setDefaultValue(nextProps.default, nextProps);
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener("click", this.handleWindowOnClick);
+  }
+
+  setDefaultValue(defaultValue, props) {
+    const defaultOption =
+      props.options.find(option => option.value === defaultValue) || false;
+
+    this.setState({
+      label: (defaultOption && defaultOption.label) || props.options[0].label,
+      value: (defaultOption && defaultOption.value) || props.options[0].value
+    });
   }
 
   dropdownSelect(label, value) {

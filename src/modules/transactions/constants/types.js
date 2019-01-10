@@ -21,5 +21,3 @@ export const BID = "bid";
 export const ASK = "ask";
 export const MATCH_BID = "match_bid";
 export const MATCH_ASK = "match_ask";
-export const MARKET = "market";
-export const LIMIT = "limit";
