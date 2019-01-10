@@ -51,7 +51,6 @@ export default function OutcomeTradingIndicator({
         case "tradingPage|up":
           return {
             position: "absolute",
-            borderBottomColor: "#999999",
             marginLeft: "0.3rem",
             borderWidth: "5px",
             opacity: "1"
@@ -59,7 +58,6 @@ export default function OutcomeTradingIndicator({
         case "tradingPage|down":
           return {
             position: "absolute",
-            borderTopColor: "#999999",
             marginLeft: "0.3rem",
             borderWidth: "5px",
             opacity: "1",

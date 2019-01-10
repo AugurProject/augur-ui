@@ -1,10 +1,10 @@
 @import (reference) '~assets/styles/shared';
 
 .MarketCommon__container {
-  .border(true);
 
-  background-color: @color-white;
-  margin: 0.5em 0;
+  background-color: @color-grayish-purple;
+  margin: 1rem 0;
+  color: white;
 
   &.single-card {
     margin-bottom: 0;
@@ -19,12 +19,17 @@
   margin-bottom: 1.625rem;
 }
 
+.MarketCommon__description {
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .MarketCommon__small-label {
-  color: @color-lightgray;
-  font-size: 0.75rem;
+  color: @color-light-gray;
+  font-size: 0.625rem;
   font-weight: 400;
   margin-right: 2.16em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .MarketCommon_description {

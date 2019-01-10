@@ -56,10 +56,10 @@
 }
 
 .MarketOutcomesCategorical__outcome-value {
-  &:extend(.number--large);
-
   margin-left: 1.75rem;
   position: relative;
+  font-weight: bold;
+  font-size: 18px;
 
   @media @breakpoint-mobile-small {
     font-size: 0.875rem;
@@ -67,9 +67,9 @@
 }
 
 .MarketOutcomesCategorical__show-more {
-  &:extend(.caps--medium);
-
-  color: @color-lightgray;
+  text-transform: lowercase;
+  font-size: 14px;
+  color: @color-white;
   cursor: pointer;
   position: absolute;
   right: 0;

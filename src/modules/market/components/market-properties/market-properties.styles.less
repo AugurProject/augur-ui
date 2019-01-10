@@ -60,14 +60,16 @@
     }
 
     > span {
-      color: @color-purple;
+      color: @color-white;
+      font-weight: bold;
+      font-size: 12px;
       display: block;
 
       &:first-child {
-        &:extend(.caps--small);
-
-        color: @color-lightgray;
-        margin-bottom: 0.625rem;
+        font-size: 10px;
+        font-weight: 400;
+        color: @color-light-gray;
+        margin-bottom: 2px;
       }
     }
   }
@@ -83,13 +85,9 @@
 }
 
 .MarketProperties__trade {
-  &:extend(.button--purple all);
+  &:extend(.button--bright all);
 
-  &.disabled {
-    &:extend(.button--purple--disabled);
-
-    pointer-events: none;
-  }
+  text-transform: capitalize;
 }
 
 .MarketProperties__migrate {
