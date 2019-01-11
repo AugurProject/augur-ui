@@ -180,13 +180,12 @@ export default class MarketOutcomeDepth extends Component {
 
       const depthContainer = new ReactFauxDOM.Element("div");
 
-      // padding for overflowing x-axis ticks
-      const widthPadding = 10;
       const depthChart = d3
         .select(depthContainer)
+        .style("display", "flex")
         .append("svg")
         .attr("id", "depth_chart")
-        .attr("width", drawParams.containerWidth + widthPadding)
+        .attr("width", drawParams.containerWidth)
         .attr("height", drawParams.containerHeight);
 
       drawLines({
@@ -306,8 +305,6 @@ export default class MarketOutcomeDepth extends Component {
         } else {
           d3.select("#crosshairX").style("display", "none");
         }
-        // const yPosition = yScale(hoveredPrice);
-        // const clampedHoveredPrice = yScale.invert(yPosition);
 
         d3.select("#crosshairY")
           .attr(
@@ -438,7 +435,7 @@ function determineDrawParams(options) {
   const xScale = d3
     .scaleLinear()
     .domain(d3.extent(xDomain))
-    .range([chartDim.left, containerWidth - chartDim.right - 1]);
+    .range([chartDim.left, containerWidth - chartDim.right - chartDim.left]);
 
   const yScale = d3
     .scaleLinear()
@@ -525,7 +522,7 @@ function drawTicks(options) {
     // if (orderBookKeys.mid.gt(marketRangeMid)) {
     //   midOffset = -70;
     // }
-    const quarter = drawParams.yDomain[1] * 0.9;
+    const quarter = drawParams.yDomain[1] * 0.8;
     depthChart
       .append("line")
       .attr("class", "tick-line--midpoint")
