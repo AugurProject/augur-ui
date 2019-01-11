@@ -35,6 +35,7 @@ const MarketTradingConfirm = ({
   const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
   return (
     <section className={Styles.TradingConfirm}>
+      <span className={Styles.TradingConfirm__dotted__line} />
       <ul className={Styles.TradingConfirm__details}>
         <li>
           <span>Quantity</span>
