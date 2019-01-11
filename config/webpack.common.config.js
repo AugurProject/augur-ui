@@ -76,9 +76,7 @@ module.exports = {
               "@babel/preset-env",
               {
                 modules: "cjs",
-                targets: {
-                  chrome: 41
-                }
+                targets: "> 0.25%, not dead, Chrome >= 40"
               }
             ],
             "@babel/preset-react"
