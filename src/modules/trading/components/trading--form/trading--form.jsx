@@ -398,8 +398,6 @@ class TradingForm extends Component {
       isMobile,
       market,
       marketType,
-      orderEthEstimate,
-      orderShareEstimate,
       selectedOutcome,
       maxPrice,
       minPrice,
