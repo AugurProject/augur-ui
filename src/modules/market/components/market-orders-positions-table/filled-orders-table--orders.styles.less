@@ -4,7 +4,7 @@
   background-color: transparent;
 
   &:hover {
-    background-color: rgba(41, 24, 57, .3);
+    background-color: rgba(41, 24, 57, 0.3);
   }
 
   > li {
@@ -43,10 +43,10 @@
 
 ul.FilledOrder__table-header {
   background-color: @color-light-purple;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.25);
   grid-template-columns: repeat(4, 1fr);
   justify-content: flex-end;
   padding: 0 1rem;
-  box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.25);
 
   > li {
     max-width: unset !important;
@@ -86,13 +86,13 @@ ul.FilledOrder__table-header {
   > li {
     align-items: center;
     background-color: @color-grayish-purple;
+    border-bottom: 0.0625rem solid @color-extra-darkpurple;
     display: flex;
     font-size: 0.75rem !important;
     justify-content: flex-end;
     max-width: unset !important;
     padding: 1rem 0;
     text-align: right;
-    border-bottom: 0.0625rem solid @color-extra-darkpurple;
 
     &:nth-child(even) {
       background-color: @color-grayish-purple;

@@ -1,35 +1,30 @@
-import React, { Component } from "react";
+/* eslint-disable jsx-a11y/no-static-element-interaction */
+
+import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 import { twoArrows } from "modules/common/components/icons";
 
 import Styles from "modules/market/components/market-view/market-outcome-selector.styles";
 
-export default class MarketOutcomeSelector extends Component {
-  static propTypes = {
-    outcome: PropTypes.any,
-    outcomeName: PropTypes.string,
-    selectOutcome: PropTypes.func.isRequired
-  };
+const MarketOutcomeSelector = ({ outcomeName, outcome, selectOutcome }) => {
+  return (
+    <div className={Styles.MarketOutcomeSelector} onClick={selectOutcome}>
+      <div>{outcome ? outcomeName : "Select an Outcome"}</div>
+      <span>{twoArrows}</span>
+    </div>
+  );
+};
 
-  static defaultProps = {
-    outcome: null,
-    outcomeName: ""
-  };
+MarketOutcomeSelector.propTypes = {
+  outcome: PropTypes.any,
+  outcomeName: PropTypes.string,
+  selectOutcome: PropTypes.func.isRequired
+};
 
-  constructor(props) {
-    super(props);
-  }
+MarketOutcomeSelector.defaultProps = {
+  outcome: null,
+  outcomeName: ""
+};
 
-  render() {
-    const { outcomeName, outcome, selectOutcome } = this.props;
-
-    return (
-      <div className={Styles.MarketOutcomeSelector} onClick={selectOutcome}>
-        <div>{outcome ? outcomeName : "Select an Outcome"}</div>
-        <span>{twoArrows}</span>
-      </div>
-    );
-  }
-}
+export default MarketOutcomeSelector;

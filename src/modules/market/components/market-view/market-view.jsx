@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interaction */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
@@ -9,7 +11,7 @@ import MarketHeader from "modules/market/containers/market-header";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
-import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
+// import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
 import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 import MarketTradeHistory from "modules/market/containers/market-trade-history";
@@ -72,7 +74,7 @@ export default class MarketView extends Component {
 
     this.state = {
       showOutcomeOverlay: false,
-      selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
+      //selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
       fixedPrecision: 4,
       selectedOutcomeProperties: {
@@ -123,10 +125,10 @@ export default class MarketView extends Component {
         selectedOutcome === this.state.selectedOutcome &&
         marketType === CATEGORICAL
           ? 0
-          : selectedOutcome,
-      selectedOrderProperties: {
-        ...this.DEFAULT_ORDER_PROPERTIES
-      }
+          : selectedOutcome
+      // selectedOrderProperties: {
+      //   ...this.DEFAULT_ORDER_PROPERTIES
+      // }
     });
 
     const { selectedOutcomeProperties } = this.state;
@@ -136,9 +138,9 @@ export default class MarketView extends Component {
       };
       this.setState({ selectedOutcomeProperties });
     } else {
-      this.setState({
-        selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
-      });
+      // this.setState({
+      //   selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
+      // });
     }
 
     if (isMobile) {
@@ -151,21 +153,21 @@ export default class MarketView extends Component {
   }
 
   updateSelectedOrderProperties(selectedOrderProperties) {
-    this.setState({
-      selectedOrderProperties: {
-        ...this.DEFAULT_ORDER_PROPERTIES,
-        ...selectedOrderProperties
-      }
-    });
+    // this.setState({
+    //   selectedOrderProperties: {
+    //     ...this.DEFAULT_ORDER_PROPERTIES,
+    //     ...selectedOrderProperties
+    //   }
+    // });
 
-    if (this.state.selectedOutcome) {
-      const { selectedOutcomeProperties } = this.state;
-      selectedOutcomeProperties[this.state.selectedOutcome] = {
-        ...this.DEFAULT_ORDER_PROPERTIES,
-        ...selectedOrderProperties
-      };
-      this.setState({ selectedOutcomeProperties });
-    }
+    // if (this.state.selectedOutcome) {
+    //   const { selectedOutcomeProperties } = this.state;
+    //   selectedOutcomeProperties[this.state.selectedOutcome] = {
+    //     ...this.DEFAULT_ORDER_PROPERTIES,
+    //     ...selectedOrderProperties
+    //   };
+    //   this.setState({ selectedOutcomeProperties });
+    // }
   }
 
   updatePrecision(isIncreasing) {
@@ -191,7 +193,7 @@ export default class MarketView extends Component {
   render() {
     const {
       currentTimestamp,
-      isLogged,
+     // isLogged,
       description,
       marketId,
       maxPrice,
@@ -199,11 +201,11 @@ export default class MarketView extends Component {
       location,
       isMobile,
       outcomes,
-      market,
-      availableFunds,
+     // market,
+     // availableFunds,
       clearTradeInProgress,
-      gasPrice,
-      handleFilledOnly,
+     // gasPrice,
+     // handleFilledOnly,
       marketType
     } = this.props;
     const s = this.state;
