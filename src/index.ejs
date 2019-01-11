@@ -68,36 +68,18 @@
   <meta name="viewport"
         content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,minimal-ui,user-scalable=0">
   <meta name="e840127dba35b2939858e9ed30d25cb70b353e25" content="117ae21d29f8732b0bde7381da50aa67b1548bd9">
-  <link rel="preload" href="fonts/Roboto-Light.woff2" as="font">
-  <link rel="preload" href="fonts/Roboto-Regular.woff2" as="font">
-  <link rel="preload" href="fonts/Roboto-Medium.woff2" as="font">
-  <link rel="preload" href="fonts/Roboto-Bold.woff2" as="font">
-  <link rel="preload" href="fonts/Roboto-Mono-Regular.woff2" as="font">
+  <link rel="preload" crossorigin href="fonts/Roboto-Light.woff2" as="font">
+  <link rel="preload" crossorigin href="fonts/Roboto-Regular.woff2" as="font">
+  <link rel="preload" crossorigin href="fonts/Roboto-Medium.woff2" as="font">
+  <link rel="preload" crossorigin href="fonts/Roboto-Bold.woff2" as="font">
+  <link rel="preload" crossorigin href="fonts/Roboto-Mono-Regular.woff2" as="font">
   <link rel="stylesheet" type="text/css" href="assets/styles/splash.css">
 
-  <script type="application/javascript">
-    document.documentElement.className += (("ontouchstart" in document.documentElement) ? " touch-enabled" : " touch-disabled");
-    if (window.navigator && navigator.serviceWorker) {
-      navigator.serviceWorker.getRegistrations()
-        .then(function(registrations) {
-          if (registrations.length === 0) return;
-          var p = registrations.map(function(registration) {
-            return registration.unregister();
-          });
-
-          return Promise.all(p).then(function() {
-            // We must reload to prevent unregistered service workers from running.
-            window.location.reload();
-          });
-        });
-    }
-  </script>
-
   <!-- 0x widget -->
-  <script src="https://instant.0xproject.com/instant.js"></script>
+  <script src="https://instant.0xproject.com/instant.js" async defer></script>
 
   <!-- AirSwap Widget -->
-  <script src="//cdn.airswap.io/gallery/airswap-trader.js"></script>
+  <script src="//cdn.airswap.io/gallery/airswap-trader.js" async defer></script>
   <% if(htmlWebpackPlugin.options.environment === 'development') { %>
     <meta name="google-site-verification" content="0yoO8otlMdNBBDxuvq_KxlJyoSzIhBc8eK_7FzJ1_qg" />
   <% } %>
