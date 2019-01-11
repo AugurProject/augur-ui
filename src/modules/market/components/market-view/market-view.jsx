@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interaction */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
@@ -136,9 +138,9 @@ export default class MarketView extends Component {
       };
       this.setState({ selectedOutcomeProperties });
     } else {
-      this.setState({
-        selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
-      });
+      // this.setState({
+      //   selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
+      // });
     }
 
     if (isMobile) {
@@ -151,21 +153,20 @@ export default class MarketView extends Component {
   }
 
   updateSelectedOrderProperties(selectedOrderProperties) {
-    this.setState({
-      selectedOrderProperties: {
-        ...this.DEFAULT_ORDER_PROPERTIES,
-        ...selectedOrderProperties
-      }
-    });
-
-    if (this.state.selectedOutcome) {
-      const { selectedOutcomeProperties } = this.state;
-      selectedOutcomeProperties[this.state.selectedOutcome] = {
-        ...this.DEFAULT_ORDER_PROPERTIES,
-        ...selectedOrderProperties
-      };
-      this.setState({ selectedOutcomeProperties });
-    }
+    // this.setState({
+    //   selectedOrderProperties: {
+    //     ...this.DEFAULT_ORDER_PROPERTIES,
+    //     ...selectedOrderProperties
+    //   }
+    // });
+    // if (this.state.selectedOutcome) {
+    //   const { selectedOutcomeProperties } = this.state;
+    //   selectedOutcomeProperties[this.state.selectedOutcome] = {
+    //     ...this.DEFAULT_ORDER_PROPERTIES,
+    //     ...selectedOrderProperties
+    //   };
+    //   this.setState({ selectedOutcomeProperties });
+    // }
   }
 
   updatePrecision(isIncreasing) {
@@ -362,7 +363,6 @@ export default class MarketView extends Component {
                     handleFilledOnly={handleFilledOnly}
                   />
                 </div>
-
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div

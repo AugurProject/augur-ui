@@ -27,10 +27,16 @@
 .MarketHeaderBar__tags {
   &:extend(.button--transparent--rounded all);
 
+  color: @color-light-gray;
   text-transform: capitalize;
+  white-space: nowrap;
 
   &:focus {
     outline: none;
+  }
+
+  &:hover {
+    color: @color-white;
   }
 }
 

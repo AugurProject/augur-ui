@@ -61,8 +61,8 @@ const MarketOutcomes = ({
       .length;
     const isMobileAttrs =
       window.outerWidth < 590
-        ? { marginTop: 4, fontSize: 16 }
-        : { marginTop: 7, fontSize: 20 };
+        ? { marginTop: 0, fontSize: 16, fontWeight: "bold" }
+        : { marginTop: 0, fontSize: 18, fontWeight: "bold" };
     for (let i = 6; i < size; i += 6) {
       size *= 0.8;
     }

@@ -1,8 +1,6 @@
 @import (reference) '~assets/styles/shared';
 
 .WordTrail {
-  .caps--medium;
-
   display: inline-flex;
   // Required to make ellipsis work.
   min-width: 0;
@@ -11,18 +9,31 @@
     color: @color-lightgray;
 
     &::after {
-      content: "/";
       margin: 0 4px;
     }
   }
 
   > button {
-    .caps--medium;
     .overflow-ellipsis;
 
     &:not(:first-of-type)::before {
-      content: "/";
       margin: 0 4px;
     }
+  }
+}
+
+.WordTrail__button {
+  &:extend(.button--transparent--rounded all);
+
+  color: @color-light-gray;
+  text-transform: capitalize;
+  white-space: nowrap;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    color: @color-white;
   }
 }
