@@ -2,7 +2,7 @@
 
 .TopBar {
   align-items: center;
-  background: @color-purple;
+  background: @color-light-purple;
   display: flex;
   font-size: @font-size-medium;
   height: 100%;
@@ -21,7 +21,6 @@
 }
 
 .TopBar__stats {
-  border-right: 0.0625rem solid @color-lightpurple;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -31,15 +30,11 @@
   align-items: baseline;
   display: flex;
   letter-spacing: 0.05em;
-  margin: 0 1.5rem;
+  margin: 0 1rem;
 
   @media @breakpoint-mobile-small {
     margin: 0 0.2rem;
   }
-}
-
-.TopBar__leftBorder {
-  border-left: 0.0625rem solid @color-lightpurple;
 }
 
 .TopBar__performance-stat {
@@ -54,7 +49,7 @@ div.TopBar__notifications {
   width: unset;
 
   &:hover {
-    background-color: @color-lightpurple;
+    background-color: @color-medium-gray;
   }
 
   &:focus {
@@ -66,7 +61,7 @@ div.TopBar__notificationsDisabled {
   cursor: default;
 
   &:hover {
-    background-color: @color-purple;
+    background-color: @color-light-purple;
   }
 
   @media @breakpoint-mobile {
@@ -75,11 +70,10 @@ div.TopBar__notificationsDisabled {
 }
 
 .TopBar__notificationsDark {
-  background-color: @color-lightpurple;
+  background-color: @color-light-purple;
 }
 
 .TopBar__notifications-container {
-  border-left: 0.0625rem solid @color-lightpurple;
   display: flex;
   padding-left: 1.8rem;
 
@@ -138,10 +132,6 @@ div.TopBar__notificationsDisabled {
 
   .TopBar__notifications {
     display: none;
-  }
-
-  .TopBar__regular-stats {
-    border-left: 0.0625rem solid @color-lightpurple;
   }
 }
 

@@ -6,6 +6,8 @@
 }
 
 .InnerNav__menu {
+  border-left: 1px solid @color-almost-black;
+  border-top: 1px solid @color-almost-black;
   height: 100%;
   list-style: none;
   margin: 0;
@@ -21,7 +23,7 @@
   transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
 
   *:hover {
-    background: @color-lightpurple;
+    background: @color-medium-gray;
   }
 
   a,
@@ -43,7 +45,7 @@
     text-align: inherit;
     text-decoration: none;
     text-overflow: ellipsis;
-    text-transform: uppercase;
+    text-transform: capitalize;
     transform: translateY(-50%) scaleY(0);
     transition: transform 0.3s ease-in-out;
     white-space: nowrap;
@@ -66,22 +68,32 @@
 }
 
 .InnerNav__menu-item--selected {
-  background: @color-lightpurple;
+  background: @color-medium-gray;
 }
 
 .InnerNav__menu--main {
-  background: @color-darkgray;
+  background: @color-light-purple;
   position: relative;
   z-index: @mask;
 }
 
 .InnerNav__menu--submenu {
-  background: @color-darkpurple;
+  background: @color-medium-gray;
   left: 0;
   position: absolute;
   top: 0;
   width: 6.875rem;
   z-index: @above-all-content-above;
+
+  > .InnerNav__menu-item {
+    *:hover {
+      background: @color-light-purple;
+    }
+  }
+
+  > .InnerNav__menu-item--selected {
+    background: @color-light-purple;
+  }
 }
 
 @media @breakpoint-mobile {
