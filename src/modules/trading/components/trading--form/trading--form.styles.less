@@ -99,8 +99,17 @@
   > span {
     background: @color-dark-gray;
     font-size: @font-size-small;
-    min-width: 4rem;
+    min-width: 4.375rem;
     padding: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+
+    &.isScalar {
+      max-width: 10rem;
+      width: 100%
+    }
   }
 
   > label {

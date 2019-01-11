@@ -62,7 +62,8 @@ class TradingForm extends Component {
     this.INPUT_TYPES = {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
-      DO_NOT_CREATE_ORDERS: "doNotCreateOrders"
+      DO_NOT_CREATE_ORDERS: "doNotCreateOrders",
+      EST_ETH: "orderEstimateEth"
     };
     this.gas = {
       fillGasLimit: augur.constants.WORST_CASE_FILL[props.market.numOutcomes],
@@ -81,11 +82,13 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
       [this.INPUT_TYPES.PRICE]: props.orderPrice,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
+      [this.INPUT_TYPES.EST_ETH]: props.orderEthEstimate,
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
         [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
-        [this.TRADE_MAX_COST]: []
+        [this.TRADE_MAX_COST]: [],
+        [this.INPUT_TYPES.EST_ETH]: []
       }
     };
     this.state = {
@@ -106,6 +109,7 @@ class TradingForm extends Component {
     // make sure to keep Quantity and Price as bigNumbers
     const nextQuantity = nextProps[this.INPUT_TYPES.QUANTITY];
     const nextPrice = nextProps[this.INPUT_TYPES.PRICE];
+    const nextEstEth = nextProps[this.INPUT_TYPES.EST_ETH];
 
     const newStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: nextQuantity
@@ -118,11 +122,16 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]:
         nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE],
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
-        nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]
+        nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
+      [this.INPUT_TYPES.EST_ETH]:
+        nextEstEth && nextEstEth !== ""
+          ? createBigNumber(nextEstEth, 10)
+          : nextEstEth
     };
     const currentStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
+      [this.INPUT_TYPES.EST_ETH]: this.state[this.INPUT_TYPES.EST_ETH],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[
         this.INPUT_TYPES.MARKET_ORDER_SIZE
       ],
@@ -226,6 +235,7 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: [],
       [this.INPUT_TYPES.PRICE]: [],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
+      [this.INPUT_TYPES.EST_ETH]: [],
       [this.TRADE_MAX_COST]: []
     };
     let isOrderValid = true;
@@ -388,8 +398,8 @@ class TradingForm extends Component {
       isMobile,
       market,
       marketType,
-      // orderEthEstimate,
-      // orderShareEstimate,
+      orderEthEstimate,
+      orderShareEstimate,
       selectedOutcome,
       maxPrice,
       minPrice,
@@ -460,7 +470,9 @@ class TradingForm extends Component {
             </div>
           </li>
           <li className={Styles["TradingForm__limit-price"]}>
-            <label htmlFor="tr__input--limit-price">Limit Price</label>
+            <label htmlFor="tr__input--limit-price">
+              {marketType === SCALAR ? "Outcome" : "Limit Price"}
+            </label>
             <div className={Styles.TradingForm__input__container}>
               <input
                 className={classNames(FormStyles.Form__input, {
@@ -481,7 +493,15 @@ class TradingForm extends Component {
                   this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
                 }
               />
-              <span>ETH</span>
+              <span
+                className={classNames({
+                  [`${Styles.isScalar}`]: marketType === SCALAR
+                })}
+              >
+                {marketType === SCALAR && market.scalarDenomination
+                  ? market.scalarDenomination
+                  : "ETH"}
+              </span>
             </div>
           </li>
           <li className={Styles["TradingForm__limit-price"]}>
@@ -489,7 +509,7 @@ class TradingForm extends Component {
             <div className={Styles.TradingForm__input__container}>
               <input
                 className={classNames(FormStyles.Form__input, {
-                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.EST_ETH].length
                 })}
                 id="tr__input--limit-price"
                 type="number"
@@ -498,12 +518,12 @@ class TradingForm extends Component {
                 min={min}
                 placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
                 value={
-                  BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
-                    ? s[this.INPUT_TYPES.PRICE].toNumber()
-                    : s[this.INPUT_TYPES.PRICE]
+                  BigNumber.isBigNumber(s[this.INPUT_TYPES.EST_ETH])
+                    ? s[this.INPUT_TYPES.EST_ETH].toNumber()
+                    : s[this.INPUT_TYPES.EST_ETH]
                 }
                 onChange={e =>
-                  this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
+                  this.validateForm(this.INPUT_TYPES.EST_ETH, e.target.value)
                 }
               />
               <span>ETH</span>
