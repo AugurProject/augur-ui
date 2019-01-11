@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const DeadCodePlugin = require('webpack-deadcode-plugin');
+const DeadCodePlugin = require("webpack-deadcode-plugin");
 
 const PATHS = {
   BUILD: path.resolve(__dirname, "../build"),
@@ -23,7 +23,7 @@ module.exports = {
       "moment",
       "react-datetime"
     ],
-    main: `${PATHS.APP}/main`
+    main: ["@babel/polyfill", `${PATHS.APP}/main`]
   },
   output: {
     filename: "[name].[chunkhash].js",
@@ -68,8 +68,31 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: "babel-loader"
+        loader: "babel-loader",
+        options: {
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                modules: "cjs",
+                targets: {
+                  chrome: 41
+                }
+              }
+            ],
+            "@babel/preset-react"
+          ],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "@babel/plugin-syntax-dynamic-import"
+          ]
+        },
+        exclude: function(modulePath) {
+          return (
+            /node_modules/.test(modulePath) &&
+            /node_modules\/(core-js|lodash|react|websocket)/.test(modulePath)
+          );
+        }
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
@@ -107,20 +130,18 @@ module.exports = {
   optimization: {
     // https://webpack.js.org/configuration/optimization/#optimization-usedexports
     // `unusedExports: true` is required by DeadCodePlugin
-    usedExports: true,
+    usedExports: true
   },
   plugins: [
     new DeadCodePlugin({
       // failOnHint: true, // (default: false), if true will stop the build if unused code/files are found.
-      patterns: [
-        'src/**/*.(js|jsx|css)',
-      ],
+      patterns: ["src/**/*.(js|jsx|css)"],
       exclude: [
-        '**/*.(stories|spec).(js|jsx)',
-        '**/*.test.js', // certain test files (executed by `yarn test`) live in the src/ dir and so DeadCodePlugin interprets them as dead even though they're not
-        '**/__mocks__/**', // DeadCodePlugin interprets __mocks__/* files as dead because these files aren't used explicitly, they are part of mocking magic during `yarn test`
-        '**/splash.css', // splash.css is hardcoded into build process and appears dead to DeadCodePlugin
-      ],
+        "**/*.(stories|spec).(js|jsx)",
+        "**/*.test.js", // certain test files (executed by `yarn test`) live in the src/ dir and so DeadCodePlugin interprets them as dead even though they're not
+        "**/__mocks__/**", // DeadCodePlugin interprets __mocks__/* files as dead because these files aren't used explicitly, they are part of mocking magic during `yarn test`
+        "**/splash.css" // splash.css is hardcoded into build process and appears dead to DeadCodePlugin
+      ]
     }),
     new CopyWebpackPlugin([
       {
