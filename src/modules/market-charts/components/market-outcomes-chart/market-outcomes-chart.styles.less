@@ -76,6 +76,7 @@
 
 .MarketOutcomesChart__tick-line {
   stroke: @color-gray;
+  stroke-dasharray: 1 4;
   stroke-width: 1px;
 }
 
@@ -98,6 +99,15 @@
       stroke: @color-gray;
     }
   }
+}
+
+.MarketOutcomesChart__outcome-line-selected {
+  stroke-width: 2px;
+}
+
+.MarketOutcomesChart__outcome-line-unselected {
+  opacity: 0.4;
+  stroke-width: 1px;
 }
 
 .MarketOutcomesChart__crosshair {
