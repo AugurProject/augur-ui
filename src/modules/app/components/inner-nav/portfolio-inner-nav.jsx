@@ -28,7 +28,7 @@ export default class PorfolioInnerNav extends BaseInnerNav {
         }
       },
       {
-        label: "Favorites",
+        label: "Watchlist",
         visible: true,
         isSelected: currentBasePath === FAVORITES,
         link: {

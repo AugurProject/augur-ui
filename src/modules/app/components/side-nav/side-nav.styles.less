@@ -1,13 +1,13 @@
 @import (reference) '~assets/styles/shared';
 
 .SideNav {
-  background: @color-purple;
+  background: @color-light-purple;
   display: flex;
   flex-flow: column nowrap;
 }
 
 .SideNav__nav {
-  border: 1px solid @color-grayish-purple;
+  border: 1px solid @color-almost-black;
   border-left: none;
   border-right: none;
   list-style: none;
@@ -15,7 +15,7 @@
   padding: 0;
 
   > li {
-    border-bottom: 1px solid #573980;
+    border-bottom: 1px solid @color-almost-black;
 
     &:last-child { border: none; }
   }
@@ -51,11 +51,11 @@
     width: 100%;
 
     &.selected {
-      background: @color-lightpurple;
+      background: @color-medium-gray;
     }
 
     &:hover {
-      background: @color-lightpurple;
+      background: @color-medium-gray;
       cursor: pointer;
     }
 
@@ -64,10 +64,11 @@
     > span {
       color: @color-white;
       display: block;
+      font-size: 11px;
       font-weight: 400;
       letter-spacing: 0.01875rem;
       text-align: center;
-      text-transform: uppercase;
+      text-transform: capitalize;
       width: 100%;
     }
 
@@ -96,7 +97,7 @@
 }
 
 .SideNav__item--selected {
-  background: @color-lightpurple;
+  background: @color-medium-gray;
 }
 
 .SideNav__container {
@@ -172,7 +173,6 @@
 
   .SideNav__amt {
     align-self: flex-end;
-    border-bottom: 0.0625rem solid @color-lightpurple;
     display: none;
     font-size: 0.925rem;
     width: 100%;
