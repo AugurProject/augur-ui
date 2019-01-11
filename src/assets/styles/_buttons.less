@@ -259,7 +259,8 @@
 .button--bright {
   background: @color-outcome-seven;
   border-radius: 3px;
-  color: #140e1f;
+  color: @color-extra-darkpurple;
+  font-family: @roboto;
   font-size: @font-size-medium;
   font-weight: 700;
   margin-left: 1rem;
@@ -267,11 +268,19 @@
 
   &:hover {
     background: @color-bright-teal;
+    border: 0;
+    color: @color-extra-darkpurple;
   }
 
   &:disabled {
     background: @color-outcome-seven;
+    border: 0;
     cursor: default;
     opacity: 0.3;
+
+    &:hover {
+      background: @color-outcome-seven;
+      border: 0;
+    }
   }
 }
