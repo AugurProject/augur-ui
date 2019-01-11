@@ -4,8 +4,8 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 
-import MarketTradingForm from "modules/trading/components/trading--form/trading--form";
-import MarketTradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
+import TradingForm from "modules/trading/components/trading--form/trading--form";
+import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
 import { Close } from "modules/common/components/icons";
 
 import makePath from "modules/routes/helpers/make-path";
@@ -15,7 +15,7 @@ import getValue from "utils/get-value";
 import { isEqual } from "lodash";
 import { FindReact } from "utils/find-react";
 
-import { BUY, SELL, LIMIT } from "modules/transactions/constants/types";
+import { BUY, SELL } from "modules/transactions/constants/types";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
@@ -35,7 +35,8 @@ class TradingWrapper extends Component {
     selectedOutcome: PropTypes.object,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     handleFilledOnly: PropTypes.func.isRequired,
-    gasPrice: PropTypes.number.isRequired
+    gasPrice: PropTypes.number.isRequired,
+    updateSelectedOutcome: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -46,13 +47,10 @@ class TradingWrapper extends Component {
     super(props);
 
     this.state = {
-      orderType: LIMIT,
       orderPrice: props.selectedOrderProperties.price || "",
       orderQuantity: props.selectedOrderProperties.quantity || "",
       orderEthEstimate: "0",
       orderShareEstimate: "0",
-      marketOrderTotal: "",
-      marketQuantity: "",
       selectedNav: props.selectedOrderProperties.selectedNav || BUY,
       currentPage: 0,
       doNotCreateOrders:
@@ -89,7 +87,7 @@ class TradingWrapper extends Component {
       nextProps.selectedOutcome.trade.shareCost.formattedValue,
       10
     );
-    // console.log('ests', nextTotalCost.toString(), nextShareCost.toString());
+
     if (nextTotalCost.abs().toString() !== this.state.orderEthEstimate) {
       this.setState({
         orderEthEstimate: nextTotalCost.abs().toString()
@@ -118,8 +116,6 @@ class TradingWrapper extends Component {
         orderQuantity: "",
         orderEthEstimate: "0",
         orderShareEstimate: "0",
-        marketOrderTotal: "",
-        marketQuantity: "",
         doNotCreateOrders: false
       });
       this.props.updateSelectedOrderProperties({
@@ -157,8 +153,6 @@ class TradingWrapper extends Component {
       orderQuantity: "",
       orderEthEstimate: "0",
       orderShareEstimate: "0",
-      marketOrderTotal: "",
-      marketQuantity: "",
       currentPage: 0,
       doNotCreateOrders: false
     });
@@ -187,7 +181,8 @@ class TradingWrapper extends Component {
       toggleForm,
       showOrderPlaced,
       gasPrice,
-      handleFilledOnly
+      handleFilledOnly,
+      updateSelectedOutcome
     } = this.props;
     const s = this.state;
 
@@ -207,7 +202,7 @@ class TradingWrapper extends Component {
               {Close}
             </button>
             <span className={Styles["TradingWrapper__mobile-header-outcome"]}>
-              {selectedOutcome.name}
+              {selectedOutcome.name} Blah
             </span>
             <span className={Styles["TradingWrapper__mobile-header-last"]}>
               <ValueDenomination formatted={lastPrice} />
@@ -283,41 +278,37 @@ class TradingWrapper extends Component {
                 </Link>
               )}
             {!initialMessage && (
-              <MarketTradingForm
+              <TradingForm
                 market={market}
                 marketType={getValue(this.props, "market.marketType")}
                 maxPrice={getValue(this.props, "market.maxPrice")}
                 minPrice={getValue(this.props, "market.minPrice")}
                 availableFunds={availableFunds}
                 selectedNav={s.selectedNav}
-                orderType={s.orderType}
                 orderPrice={s.orderPrice}
                 orderQuantity={s.orderQuantity}
                 orderEthEstimate={s.orderEthEstimate}
                 orderShareEstimate={s.orderShareEstimate}
-                marketOrderTotal={s.marketOrderTotal}
-                marketQuantity={s.marketQuantity}
                 doNotCreateOrders={s.doNotCreateOrders}
                 selectedOutcome={selectedOutcome}
                 nextPage={this.nextPage}
                 updateState={this.updateState}
                 isMobile={isMobile}
                 gasPrice={gasPrice}
+                updateSelectedOutcome={updateSelectedOutcome}
               />
             )}
           </div>
         )}
-        {s.currentPage === 1 &&
-          selectedOutcome && (
-            <MarketTradingConfirm
+        {selectedOutcome &&
+          selectedOutcome.trade &&
+          selectedOutcome.trade.limitPrice && (
+            <TradingConfirm
               market={market}
               selectedNav={s.selectedNav}
-              orderType={s.orderType}
               orderPrice={s.orderPrice}
               orderQuantity={s.orderQuantity}
               orderEthEstimate={s.orderEthEstimate}
-              marketOrderTotal={s.marketOrderTotal}
-              marketQuantity={s.marketQuantity}
               doNotCreateOrders={s.doNotCreateOrders}
               selectedOutcome={selectedOutcome}
               prevPage={this.prevPage}

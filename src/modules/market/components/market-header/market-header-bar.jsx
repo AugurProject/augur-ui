@@ -114,17 +114,18 @@ export default class MarketHeaderBar extends Component {
               ))}
           </div>
         </div>
-        {isMobile && (
-          <div className={Styles.MarketHeaderBar__watchlist__container}>
-            <button
-              onClick={() => addToFavorites()}
-              className={Styles.MarketHeaderBar__watchlist}
-              disabled={!isLogged}
-            >
-              <span>{isFavorite ? starIconFilled : starIconOpen}</span>
-            </button>
-          </div>
-        )}
+        {isMobile &&
+          addToFavorites && (
+            <div className={Styles.MarketHeaderBar__watchlist__container}>
+              <button
+                onClick={() => addToFavorites()}
+                className={Styles.MarketHeaderBar__watchlist}
+                disabled={!isLogged}
+              >
+                <span>{isFavorite ? starIconFilled : starIconOpen}</span>
+              </button>
+            </div>
+          )}
       </section>
     );
   }

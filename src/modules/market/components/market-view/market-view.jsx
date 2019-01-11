@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interaction */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Helmet } from "react-helmet";
@@ -73,7 +75,7 @@ export default class MarketView extends Component {
     this.state = {
       showOutcomeOverlay: false,
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
-      selectedOutcome: props.marketType === CATEGORICAL ? 0 : "1",
+      selectedOutcome: props.marketType === CATEGORICAL ? "0" : "1",
       fixedPrecision: 4,
       selectedOutcomeProperties: {
         1: {
@@ -136,9 +138,9 @@ export default class MarketView extends Component {
       };
       this.setState({ selectedOutcomeProperties });
     } else {
-      this.setState({
-        selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
-      });
+      // this.setState({
+      //   selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
+      // });
     }
 
     if (isMobile) {
@@ -151,21 +153,26 @@ export default class MarketView extends Component {
   }
 
   updateSelectedOrderProperties(selectedOrderProperties) {
-    this.setState({
-      selectedOrderProperties: {
-        ...this.DEFAULT_ORDER_PROPERTIES,
-        ...selectedOrderProperties
-      }
-    });
+    console.log(
+      "updateSelectedOrderProperties called",
+      selectedOrderProperties,
+      this.market.id
+    );
 
-    if (this.state.selectedOutcome) {
-      const { selectedOutcomeProperties } = this.state;
-      selectedOutcomeProperties[this.state.selectedOutcome] = {
-        ...this.DEFAULT_ORDER_PROPERTIES,
-        ...selectedOrderProperties
-      };
-      this.setState({ selectedOutcomeProperties });
-    }
+    // this.setState({
+    //   selectedOrderProperties: {
+    //     ...this.DEFAULT_ORDER_PROPERTIES,
+    //     ...selectedOrderProperties
+    //   }
+    // });
+    // if (this.state.selectedOutcome) {
+    //   const { selectedOutcomeProperties } = this.state;
+    //   selectedOutcomeProperties[this.state.selectedOutcome] = {
+    //     ...this.DEFAULT_ORDER_PROPERTIES,
+    //     ...selectedOrderProperties
+    //   };
+    //   this.setState({ selectedOutcomeProperties });
+    // }
   }
 
   updatePrecision(isIncreasing) {
@@ -226,7 +233,13 @@ export default class MarketView extends Component {
           {s.showOutcomeOverlay && (
             <div className={Styles.MarketView__overlay}>
               <div className={Styles.MarketView__overlayHeader}>
-                <span onClick={this.showSelectOutcome}>{Close}</span>
+                <span
+                  role="button"
+                  tabIndex="-1"
+                  onClick={this.showSelectOutcome}
+                >
+                  {Close}
+                </span>
                 <div>Select an Outcome</div>
               </div>
               <MarketOutcomesList
@@ -343,7 +356,25 @@ export default class MarketView extends Component {
           <div className={Styles.MarketView__firstColumn}>
             <div className={Styles.MarketView__firstRow}>
               <div className={Styles.MarketView__innerFirstColumn}>
-                <div className={Styles.MarketView__component} />
+                <div className={Styles.MarketView__component}>
+                  <MarketTradingForm
+                    market={market}
+                    isLogged={isLogged}
+                    selectedOrderProperties={s.selectedOrderProperties}
+                    selectedOutcome={s.selectedOutcome}
+                    isMobile={isMobile}
+                    toggleForm={this.toggleForm}
+                    showOrderPlaced={this.showOrderPlaced}
+                    availableFunds={availableFunds}
+                    clearTradeInProgress={clearTradeInProgress}
+                    updateSelectedOutcome={this.updateSelectedOutcome}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
+                    gasPrice={gasPrice}
+                    handleFilledOnly={handleFilledOnly}
+                  />
+                </div>
               </div>
               <div className={Styles.MarketView__innerSecondColumn}>
                 <div

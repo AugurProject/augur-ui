@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { MARKET, LIMIT } from "modules/transactions/constants/types";
 import { ZERO, MIN_QUANTITY } from "modules/trades/constants/numbers";
 import {
   YES_NO,
@@ -12,19 +11,20 @@ import {
   SCALAR
 } from "modules/markets/constants/market-types";
 import { isEqual } from "lodash";
-import ReactTooltip from "react-tooltip";
-import TooltipStyles from "modules/common/less/tooltip.styles";
+// import ReactTooltip from "react-tooltip";
+// import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
-  Hint,
+  //   Hint,
   ExclamationCircle as InputErrorIcon
 } from "modules/common/components/icons";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import {
-  formatEther,
-  formatShares,
+  //   formatEther,
+  //   formatShares,
   formatGasCostToEther
 } from "utils/format-number";
+import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 
 class TradingForm extends Component {
@@ -32,8 +32,6 @@ class TradingForm extends Component {
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
-    marketQuantity: PropTypes.string.isRequired,
-    marketOrderTotal: PropTypes.string.isRequired,
     marketType: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
@@ -50,12 +48,12 @@ class TradingForm extends Component {
       PropTypes.number,
       PropTypes.object
     ]).isRequired,
-    orderType: PropTypes.string.isRequired,
     selectedNav: PropTypes.string.isRequired,
     selectedOutcome: PropTypes.object.isRequired,
     updateState: PropTypes.func.isRequired,
     doNotCreateOrders: PropTypes.bool.isRequired,
-    gasPrice: PropTypes.number.isRequired
+    gasPrice: PropTypes.number.isRequired,
+    updateSelectedOutcome: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -64,7 +62,6 @@ class TradingForm extends Component {
     this.INPUT_TYPES = {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
-      MARKET_ORDER_SIZE: "marketOrderTotal",
       DO_NOT_CREATE_ORDERS: "doNotCreateOrders"
     };
     this.gas = {
@@ -83,7 +80,6 @@ class TradingForm extends Component {
     const startState = {
       [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
       [this.INPUT_TYPES.PRICE]: props.orderPrice,
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: props.marketOrderTotal,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
@@ -96,6 +92,7 @@ class TradingForm extends Component {
       ...startState,
       isOrderValid: this.orderValidation(startState).isOrderValid
     };
+    this.changeOutcomeDropdown = this.changeOutcomeDropdown.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -260,7 +257,8 @@ class TradingForm extends Component {
 
     if (
       (nextProps && nextProps.selectedOutcome.trade.potentialEthLoss) ||
-      this.props.selectedOutcome.trade.potentialEthLoss
+      (this.props.selectedOutcome &&
+        this.props.selectedOutcome.trade.potentialEthLoss)
     ) {
       const { selectedOutcome } = nextProps || this.props;
       const { availableFunds, gasPrice } = this.props;
@@ -379,16 +377,19 @@ class TradingForm extends Component {
       isOrderValid
     });
   }
+
+  changeOutcomeDropdown(value) {
+    const { updateSelectedOutcome } = this.props;
+    updateSelectedOutcome(value);
+  }
+
   render() {
     const {
       isMobile,
       market,
-      marketQuantity,
       marketType,
-      nextPage,
-      orderEthEstimate,
-      orderShareEstimate,
-      orderType,
+      // orderEthEstimate,
+      // orderShareEstimate,
       selectedOutcome,
       maxPrice,
       minPrice,
@@ -414,114 +415,30 @@ class TradingForm extends Component {
           ? s[this.INPUT_TYPES.QUANTITY].dp(8, 0).toFixed()
           : s[this.INPUT_TYPES.QUANTITY].toNumber();
     }
-
-    if (orderType === MARKET) {
-      return (
+    const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
+    return (
+      <div className={Styles.TradingForm__form__container}>
         <ul className={Styles["TradingForm__form-body"]}>
           {!isMobile &&
             market.marketType === CATEGORICAL && (
               <li>
-                <label>Outcome</label>
-                <div className={Styles["TradingForm__static-field"]}>
-                  {selectedOutcome.name}
-                </div>
+                <TradingOutcomesDropdown
+                  default={defaultOutcome}
+                  onChange={this.changeOutcomeDropdown}
+                  options={market.outcomes.map(outcome => ({
+                    label: outcome.name,
+                    value: outcome.id
+                  }))}
+                />
               </li>
             )}
-          <li>
-            <label htmlFor="tr__input--total-cost">Total Cost</label>
-            <input
-              className={classNames(FormStyles.Form__input, {
-                [`${Styles.error}`]: s.errors[
-                  this.INPUT_TYPES.MARKET_ORDER_SIZE
-                ].length
-              })}
-              id="tr__input--total-cost"
-              type="number"
-              step={tickSize}
-              placeholder={`${marketType === SCALAR ? tickSize : "0.0001"} ETH`}
-              value={
-                BigNumber.isBigNumber(s[this.INPUT_TYPES.MARKET_ORDER_SIZE])
-                  ? s[this.INPUT_TYPES.MARKET_ORDER_SIZE].toNumber()
-                  : s[this.INPUT_TYPES.MARKET_ORDER_SIZE]
-              }
-              onChange={e =>
-                this.validateForm(
-                  this.INPUT_TYPES.MARKET_ORDER_SIZE,
-                  e.target.value
-                )
-              }
-            />
-          </li>
-          <li>
-            <label>Quantity</label>
-            <div className={Styles["TradingForm__static-field"]}>
-              {marketQuantity}
-            </div>
-          </li>
-          {errors.length > 0 && (
-            <li className={Styles["TradingForm__error-message"]}>
-              {InputErrorIcon}{" "}
-              {errors.map(error => (
-                <p key={error}>{error}</p>
-              ))}
-            </li>
-          )}
-          <li
-            className={
-              marketType === YES_NO
-                ? Styles["TradingForm__button__yes_no--review"]
-                : Styles["TradingForm__button--review"]
-            }
-          >
-            {marketType === YES_NO && (
-              <label
-                className={TooltipStyles.TooltipHint}
-                data-tip
-                data-for="tooltip--participation-tokens"
-              >
-                {Hint}
-              </label>
+          {!isMobile &&
+            market.marketType === YES_NO && (
+              <li className={Styles.yesOption}>Yes</li>
             )}
-            <ReactTooltip
-              id="tooltip--participation-tokens"
-              className={TooltipStyles.Tooltip}
-              effect="solid"
-              place="left"
-              type="light"
-            >
-              <h4>Don&apos;t think this event is going to happen?</h4>
-              <p>
-                Bet against this event occuring by selling shares of Yes (even
-                though you don&apos;t own them). Learn more at
-                docs.augur.net/#short-position
-              </p>
-            </ReactTooltip>
-            <button
-              disabled={!s.isOrderValid}
-              onClick={s.isOrderValid ? nextPage : undefined}
-            >
-              Review
-            </button>
-          </li>
-        </ul>
-      );
-    }
-
-    if (orderType === LIMIT) {
-      return (
-        <div>
-          <ul className={Styles["TradingForm__form-body"]}>
-            {!isMobile &&
-              market.marketType === CATEGORICAL && (
-                <li>
-                  <label>Outcome</label>
-                  <div className={Styles["TradingForm__static-field"]}>
-                    {selectedOutcome.name}
-                  </div>
-                </li>
-              )}
-            <li className={Styles["TradingForm__limit-quantity"]}>
-              <label htmlFor="tr__input--quantity">Quantity</label>
+          <li className={Styles["TradingForm__limit-quantity"]}>
+            <label htmlFor="tr__input--quantity">Quantity</label>
+            <div className={Styles.TradingForm__input__container}>
               <input
                 className={classNames(FormStyles.Form__input, {
                   [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY]
@@ -533,15 +450,18 @@ class TradingForm extends Component {
                 min={MIN_QUANTITY.toFixed()}
                 placeholder={`${
                   marketType === SCALAR ? tickSize : MIN_QUANTITY.toFixed()
-                } Shares`}
+                }`}
                 value={quantityValue}
                 onChange={e =>
                   this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
                 }
               />
-            </li>
-            <li className={Styles["TradingForm__limit-price"]}>
-              <label htmlFor="tr__input--limit-price">Limit Price</label>
+              <span>Shares</span>
+            </div>
+          </li>
+          <li className={Styles["TradingForm__limit-price"]}>
+            <label htmlFor="tr__input--limit-price">Limit Price</label>
+            <div className={Styles.TradingForm__input__container}>
               <input
                 className={classNames(FormStyles.Form__input, {
                   [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
@@ -551,9 +471,7 @@ class TradingForm extends Component {
                 step={tickSize}
                 max={max}
                 min={min}
-                placeholder={`${
-                  marketType === SCALAR ? tickSize : "0.0001"
-                } ETH`}
+                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
                 value={
                   BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
                     ? s[this.INPUT_TYPES.PRICE].toNumber()
@@ -563,94 +481,67 @@ class TradingForm extends Component {
                   this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
                 }
               />
-            </li>
-            <li className={Styles["TradingForm__do-no-create-orders"]}>
-              <Checkbox
-                id="tr__input--do-no-create-orders"
-                type="checkbox"
-                isChecked={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
-                value={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
-                onClick={e =>
-                  updateState(
-                    this.INPUT_TYPES.DO_NOT_CREATE_ORDERS,
-                    !s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]
-                  )
+              <span>ETH</span>
+            </div>
+          </li>
+          <li className={Styles["TradingForm__limit-price"]}>
+            <label htmlFor="tr__input--limit-price">Total Order Value</label>
+            <div className={Styles.TradingForm__input__container}>
+              <input
+                className={classNames(FormStyles.Form__input, {
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
+                })}
+                id="tr__input--limit-price"
+                type="number"
+                step={tickSize}
+                max={max}
+                min={min}
+                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
+                value={
+                  BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
+                    ? s[this.INPUT_TYPES.PRICE].toNumber()
+                    : s[this.INPUT_TYPES.PRICE]
+                }
+                onChange={e =>
+                  this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
                 }
               />
-              <label htmlFor="tr__input--do-no-create-orders">
-                Fill Orders Only
-              </label>
-            </li>
-          </ul>
-          <ul className={Styles["TradingForm__form-estimated-cost"]}>
-            <li>
-              <span>Est. Cost</span>
-            </li>
-            <li>
-              <span>
-                {orderEthEstimate &&
-                  `${formatEther(orderEthEstimate).fullPrecision}${
-                    formatEther(orderEthEstimate).denomination
-                  }`}
-              </span>
-              <span>
-                {orderShareEstimate &&
-                  `${formatShares(orderShareEstimate).fullPrecision}${
-                    formatShares(orderShareEstimate).denomination
-                  }`}
-              </span>
-            </li>
-          </ul>
-          <ul className={Styles["TradingForm__form-body"]}>
-            {errors.length > 0 && (
-              <li className={Styles["TradingForm__error-message"]}>
-                {InputErrorIcon}{" "}
-                {errors.map(error => (
-                  <p key={error}>{error}</p>
-                ))}
-              </li>
-            )}
-            <li
-              className={
-                marketType === YES_NO
-                  ? Styles["TradingForm__button__yes_no--review"]
-                  : Styles["TradingForm__button--review"]
+              <span>ETH</span>
+            </div>
+            <label className={Styles.smallLabel}>
+              (Max cost of ETH will be escrowed)
+            </label>
+          </li>
+          <li>
+            <Checkbox
+              id="tr__input--do-no-create-orders"
+              type="checkbox"
+              isChecked={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
+              value={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
+              onClick={e =>
+                updateState(
+                  this.INPUT_TYPES.DO_NOT_CREATE_ORDERS,
+                  !s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]
+                )
               }
-            >
-              {marketType === YES_NO && (
-                <label
-                  className={TooltipStyles.TooltipHint}
-                  data-tip
-                  data-for="tooltip--participation-tokens"
-                >
-                  {Hint}
-                </label>
-              )}
-              <ReactTooltip
-                id="tooltip--participation-tokens"
-                className={TooltipStyles.Tooltip}
-                effect="solid"
-                place="left"
-                type="light"
-              >
-                <h4>Don&apos;t think this event is going to happen?</h4>
-                <p>
-                  Bet against this event occuring by selling shares of Yes (even
-                  though you don&apos;t own them). Learn more at
-                  docs.augur.net/#short-position
-                </p>
-              </ReactTooltip>
-              <button
-                disabled={!s.isOrderValid}
-                onClick={s.isOrderValid ? nextPage : undefined}
-              >
-                Review
-              </button>
+            />
+            <label htmlFor="tr__input--do-no-create-orders">
+              Fill Orders Only
+            </label>
+          </li>
+        </ul>
+        <ul className={Styles["TradingForm__form-body"]}>
+          {errors.length > 0 && (
+            <li className={Styles["TradingForm__error-message"]}>
+              {InputErrorIcon}{" "}
+              {errors.map(error => (
+                <p key={error}>{error}</p>
+              ))}
             </li>
-          </ul>
-        </div>
-      );
-    }
+          )}
+        </ul>
+      </div>
+    );
   }
 }
 

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import { twoArrows } from "modules/common/components/icons";
+import Styles from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown.styles";
 
-import Styles from "modules/common/components/dropdown/dropdown.styles";
-
-class Dropdown extends Component {
+class TradingOutcomesDropdown extends Component {
   constructor(props) {
     super(props);
 
@@ -72,18 +72,21 @@ class Dropdown extends Component {
     const { options, alignLeft } = this.props;
     return (
       <div
-        className={Styles.Dropdown}
+        className={Styles.TradingOutcomesDropdown}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
       >
-        <button className={Styles.Dropdown__label} onClick={this.toggleList}>
+        <button
+          className={Styles.TradingOutcomesDropdown__label}
+          onClick={this.toggleList}
+        >
           {this.state.label}
         </button>
         <div
           className={classNames(
-            Styles.Dropdown__list,
-            { [Styles.Dropdown__listLeft]: alignLeft },
+            Styles.TradingOutcomesDropdown__list,
+            { [Styles.TradingOutcomesDropdown__listLeft]: alignLeft },
             { [`${Styles.active}`]: this.state.showList }
           )}
         >
@@ -101,7 +104,7 @@ class Dropdown extends Component {
           ))}
         </div>
         <select
-          className={Styles.Dropdown__select}
+          className={Styles.TradingOutcomesDropdown__select}
           onChange={e => {
             this.dropdownSelect(
               e.target.options[e.target.selectedIndex].text,
@@ -116,27 +119,21 @@ class Dropdown extends Component {
             </option>
           ))}
         </select>
-        <i
-          className={classNames(
-            Styles["Dropdown__angle-down"],
-            "fa",
-            "fa-angle-down"
-          )}
-        />
+        <span>{twoArrows}</span>
       </div>
     );
   }
 }
 
-Dropdown.propTypes = {
+TradingOutcomesDropdown.propTypes = {
   onChange: PropTypes.func.isRequired,
   default: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   alignLeft: PropTypes.bool
 };
 
-Dropdown.defaultProps = {
+TradingOutcomesDropdown.defaultProps = {
   alignLeft: false
 };
 
-export default Dropdown;
+export default TradingOutcomesDropdown;
