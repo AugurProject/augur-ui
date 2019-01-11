@@ -3,7 +3,7 @@ module.exports = {
     [
       "@babel/preset-env",
       {
-        "targets": "> 0.25%, not dead, Chrome >= 40"
+        "targets": "> 0.25%, not dead, Chrome >= 41"
       }
     ],
     "@babel/preset-react"
