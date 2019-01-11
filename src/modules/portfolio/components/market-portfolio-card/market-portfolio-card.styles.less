@@ -2,12 +2,13 @@
 @import '~modules/market/components/common/market-common.styles.less';
 
 .MarketCard__topcontent {
-  border-bottom: 1px solid @color-lightgray;
-  padding-bottom: 0.3125rem;
+  border: 1px solid rgba(15, 10, 25, .45);
+  padding-bottom: 19px;
 }
 
 .MarketCard__header {
   margin-left: 0.4rem;
+  margin-bottom: 16px;
 }
 
 .MarketCard__headertext {
@@ -42,19 +43,26 @@
 
 .MarketCard__statlabel {
   .MarketCommon__small-label();
+
+  font-size: 12px;
+  margin-right: 8px;
+  letter-spacing: 0.3px;
+  color: @color-light-gray;
 }
 
 .MarketCard__statvalue {
-  bottom: -0.165rem;
-  font-size: 1.5rem;
   margin-right: 0.208em;
   position: relative;
+  color: @color-white;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .MarketCard__statunit {
-  color: @color-purple;
-  font-size: 0.875rem;
-  margin-right: 3.375rem;
+  color: @color-white;
+  margin-right: 38px;
+  font-weight: bold;
+  font-size: 18px;
   text-transform: uppercase;
 
   @media @breakpoint-1-0 {
@@ -72,15 +80,17 @@
   .MarketCommon__small-label();
 
   display: block;
-  font-weight: 500;
   margin-bottom: 0.25rem;
   margin-right: 0;
+  font-size: 12px;
+  color: @color-light-gray;
 }
 
 .MarketCard__expirationvalue {
-  color: @color-darkpurple;
   display: block;
-  font-size: 1rem;
+  font-weight: bold;
+  font-size: 14px;
+  color: @color-white;
 }
 
 .MarketCard__expiration--mobile {
@@ -261,6 +271,7 @@
     bottom: auto;
     font-size: 1.125rem;
     position: static;
+
   }
 
   .MarketCard__statlabel {
