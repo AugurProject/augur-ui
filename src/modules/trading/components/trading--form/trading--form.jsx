@@ -35,7 +35,6 @@ class TradingForm extends Component {
     marketType: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
-    nextPage: PropTypes.func.isRequired,
     orderEthEstimate: PropTypes.string.isRequired,
     orderShareEstimate: PropTypes.string.isRequired,
     orderPrice: PropTypes.oneOfType([
