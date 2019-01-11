@@ -107,7 +107,9 @@ const MarketPortfolioCardFooter = ({
               )}
             <button
               data-testid={"claimButton-" + marketId}
-              className={classNames(Styles["MarketCard__action-footer-light"])}
+              className={classNames(Styles["MarketCard__action-footer-light"], {
+                [Styles.MarketCard__claim]: linkType === TYPE_CLAIM_PROCEEDS
+              })}
               onClick={buttonAction}
               disabled={
                 (linkType === TYPE_CLAIM_PROCEEDS &&

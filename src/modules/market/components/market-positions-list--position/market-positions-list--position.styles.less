@@ -2,9 +2,9 @@
 
 .Position {
   background-color: @color-dark-grayish-purple;
-  font-family: "Roboto Mono", monospace;
-  font-size: 12px;  
   display: table-row;
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;
   transition: background-color 0.15s ease;
 
   &:first-child > li {
@@ -17,24 +17,23 @@
     }
   }
 
-
   > li {
+    border-bottom: 1px solid @color-almost-black;
     display: table-cell;
+    max-height: 40px;
     max-width: 19vw;
     padding: 11px 0;
-    max-height: 40px;
     position: relative;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
-    border-bottom: 1px solid @color-almost-black;
 
     &:first-child {
+      font-family: @roboto;
+      font-size: 14px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
-      font-family: @roboto;
-      font-size: 14px;
 
       > .Position__pending {
         justify-content: flex-start;
@@ -64,9 +63,9 @@
 }
 
 .PortMobile {
+  background-color: @color-dark-grayish-purple;
   display: table-row;
   transition: background-color 0.15s ease;
-  background-color: @color-dark-grayish-purple;
 
   &:first-child > li {
     border-top-width: 0;

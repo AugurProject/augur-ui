@@ -2,13 +2,13 @@
 @import '~modules/market/components/common/market-common.styles.less';
 
 .MarketCard__topcontent {
-  border: 1px solid rgba(15, 10, 25, .45);
+  border: 1px solid rgba(15, 10, 25, 0.45);
   padding-bottom: 19px;
 }
 
 .MarketCard__header {
-  margin-left: 0.4rem;
   margin-bottom: 16px;
+  margin-left: 0.4rem;
 }
 
 .MarketCard__headertext {
@@ -44,25 +44,25 @@
 .MarketCard__statlabel {
   .MarketCommon__small-label();
 
-  font-size: 12px;
-  margin-right: 8px;
-  letter-spacing: 0.3px;
   color: @color-light-gray;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  margin-right: 8px;
 }
 
 .MarketCard__statvalue {
+  color: @color-white;
+  font-size: 18px;
+  font-weight: bold;
   margin-right: 0.208em;
   position: relative;
-  color: @color-white;
-  font-weight: bold;
-  font-size: 18px;
 }
 
 .MarketCard__statunit {
   color: @color-white;
-  margin-right: 38px;
-  font-weight: bold;
   font-size: 18px;
+  font-weight: bold;
+  margin-right: 38px;
   text-transform: uppercase;
 
   @media @breakpoint-1-0 {
@@ -79,18 +79,18 @@
 .MarketCard__expirationlabel {
   .MarketCommon__small-label();
 
+  color: @color-light-gray;
   display: block;
+  font-size: 12px;
   margin-bottom: 0.25rem;
   margin-right: 0;
-  font-size: 12px;
-  color: @color-light-gray;
 }
 
 .MarketCard__expirationvalue {
-  display: block;
-  font-weight: bold;
-  font-size: 14px;
   color: @color-white;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .MarketCard__expiration--mobile {
@@ -124,21 +124,21 @@
 }
 
 .MarketCard__tablesection-footer-light {
-  background-color: #2B2438;
+  background-color: #2b2438;
   justify-content: flex-start;
   padding: 10px 16px;
 }
 
 .MarketCard__light-text {
-  padding-left: 1.3rem;
+  font-size: @font-size-large;
   line-height: 21px;
-  font-size: 18px;
+  padding-left: 1.3rem;
 }
 
 .MarketCard__heavy-text {
-  padding: 0 1rem;
+  font-size: @font-size-large;
   line-height: 23px;
-  font-size: 18px;
+  padding: 0 1rem;
 }
 
 .MarketCard__proceeds-text {
@@ -179,11 +179,11 @@
   color: @color-white;
   flex: 1;
   float: left;
+  font-size: 16px;
+  line-height: 21px;
   margin: 0 0 0.5rem;
   padding-left: 0.5rem;
   text-transform: capitalize;
-  line-height: 21px;
-  font-size: 16px;
 }
 
 .MarketCard__tabletoggle {
@@ -206,6 +206,10 @@
 .MarketCard__action-footer-light {
   display: flex;
   &:extend(.button--whiteRound all);
+}
+
+.MarketCard__claim {
+  &:extend(.button--bright all);
 }
 
 .MarketCard__proceeds-container {
@@ -269,7 +273,6 @@
     bottom: auto;
     font-size: 1.125rem;
     position: static;
-
   }
 
   .MarketCard__statlabel {
