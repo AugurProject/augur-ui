@@ -153,6 +153,12 @@ export default class MarketView extends Component {
   }
 
   updateSelectedOrderProperties(selectedOrderProperties) {
+    console.log(
+      "updateSelectedOrderProperties called",
+      selectedOrderProperties,
+      this.market.id
+    );
+
     // this.setState({
     //   selectedOrderProperties: {
     //     ...this.DEFAULT_ORDER_PROPERTIES,
@@ -227,7 +233,13 @@ export default class MarketView extends Component {
           {s.showOutcomeOverlay && (
             <div className={Styles.MarketView__overlay}>
               <div className={Styles.MarketView__overlayHeader}>
-                <span onClick={this.showSelectOutcome}>{Close}</span>
+                <span
+                  role="button"
+                  tabIndex="-1"
+                  onClick={this.showSelectOutcome}
+                >
+                  {Close}
+                </span>
                 <div>Select an Outcome</div>
               </div>
               <MarketOutcomesList

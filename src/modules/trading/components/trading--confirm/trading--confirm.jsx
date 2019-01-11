@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 import classNames from "classnames";
-import { CATEGORICAL } from "modules/markets/constants/market-types";
-import { BUY, SELL } from "modules/transactions/constants/types";
+// import { CATEGORICAL } from "modules/markets/constants/market-types";
+import { BUY } from "modules/transactions/constants/types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { Hint } from "modules/common/components/icons";

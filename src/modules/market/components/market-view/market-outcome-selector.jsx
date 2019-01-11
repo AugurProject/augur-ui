@@ -7,14 +7,17 @@ import { twoArrows } from "modules/common/components/icons";
 
 import Styles from "modules/market/components/market-view/market-outcome-selector.styles";
 
-const MarketOutcomeSelector = ({ outcomeName, outcome, selectOutcome }) => {
-  return (
-    <div className={Styles.MarketOutcomeSelector} onClick={selectOutcome}>
-      <div>{outcome ? outcomeName : "Select an Outcome"}</div>
-      <span>{twoArrows}</span>
-    </div>
-  );
-};
+const MarketOutcomeSelector = ({ outcomeName, outcome, selectOutcome }) => (
+  <div
+    role="button"
+    tabIndex="-1"
+    className={Styles.MarketOutcomeSelector}
+    onClick={selectOutcome}
+  >
+    <div>{outcome ? outcomeName : "Select an Outcome"}</div>
+    <span>{twoArrows}</span>
+  </div>
+);
 
 MarketOutcomeSelector.propTypes = {
   outcome: PropTypes.any,

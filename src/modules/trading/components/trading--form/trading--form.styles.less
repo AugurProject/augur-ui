@@ -4,10 +4,9 @@
   padding: 1rem;
 
   > li {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
     color: @color-white;
+    display: flex;
+    flex-flow: column nowrap;
     font-size: @font-size-normal;
     width: 100%;
 
@@ -24,9 +23,9 @@
     }
 
     &:last-child {
-      flex-direction: row;
       align-items: center;
       border: none;
+      flex-direction: row;
 
       > label {
         padding: 0.25rem 2rem;
@@ -58,8 +57,8 @@
       color: @color-light-gray;
       font-size: @font-size-small;
       font-weight: 500;
-      padding-bottom: 0.25rem;
       margin-bottom: 0;
+      padding-bottom: 0.25rem;
       width: 100%;
 
       &.smallLabel {
@@ -75,16 +74,16 @@
 }
 
 .TradingForm__input__container {
+  align-items: center;
   background-color: @color-grayish-purple;
   border: 1px solid @color-dark-gray;
   display: flex;
   flex-direction: row;
-  align-items: center;
 
   > input[type="number"] {
-    color: @color-white;
     background-color: @color-dark-grayish-purple;
     border-width: 1px;
+    color: @color-white;
     width: 100%;
 
     &::placeholder {
@@ -111,7 +110,7 @@
 }
 
 .TradingForm__form_container {
-  border: 1px solid #FFFFFF;
+  border: 1px solid @color-white;
   opacity: 0.4;
 }
 

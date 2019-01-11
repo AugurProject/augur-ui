@@ -11,17 +11,17 @@ import {
   SCALAR
 } from "modules/markets/constants/market-types";
 import { isEqual } from "lodash";
-import ReactTooltip from "react-tooltip";
-import TooltipStyles from "modules/common/less/tooltip.styles";
+// import ReactTooltip from "react-tooltip";
+// import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
-  Hint,
+  //   Hint,
   ExclamationCircle as InputErrorIcon
 } from "modules/common/components/icons";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import {
-  formatEther,
-  formatShares,
+  //   formatEther,
+  //   formatShares,
   formatGasCostToEther
 } from "utils/format-number";
 import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
@@ -388,9 +388,8 @@ class TradingForm extends Component {
       isMobile,
       market,
       marketType,
-      nextPage,
-      orderEthEstimate,
-      orderShareEstimate,
+      // orderEthEstimate,
+      // orderShareEstimate,
       selectedOutcome,
       maxPrice,
       minPrice,
