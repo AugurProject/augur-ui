@@ -5,11 +5,12 @@
 .Order,
 .Position {
   background-color: @color-grayish-purple;
-  display: flex;
+  display: grid;
   flex-direction: row;
   flex-grow: 1;
   font-family: "Roboto Mono", monospace;
   font-size: 12px;
+  grid-template-columns: repeat(6, 1fr);
   max-height: 40px;
   position: relative;
   transition: background-color 0.15s ease;
@@ -24,7 +25,6 @@
 
   > li {
     flex-grow: 1;
-    min-width: 125px;
     overflow: hidden;
     padding: 11px 0;
     text-align: right;
@@ -35,7 +35,6 @@
       font-family: @roboto;
       font-size: 14px;
       max-width: 160px;
-      min-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
@@ -80,6 +79,26 @@
   }
 }
 
+.Outcome {
+  > li {
+    &:first-child {
+      min-width: 160px;
+    }
+  }
+}
+
+.FilledOrder {
+  grid-template-columns: repeat(5, 1fr);
+
+  > li {
+    max-height: 40px;
+  }
+}
+
+.Order__Extended {
+  grid-template-columns: repeat(7, 1fr);
+}
+
 .Negative {
   &::before {
     background-color: @color-negative2;
@@ -122,14 +141,18 @@
 }
 
 @media @breakpoint-mobile {
+  .FilledOrder {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .Outcome,
   .Order,
   .Position {
+    grid-template-columns: repeat(5, 1fr);
     max-height: 64px;
     position: relative;
 
     > li {
-      min-width: 100px;
       padding: 34px 0 16px;
 
       &:first-child {
@@ -157,14 +180,63 @@
       }
     }
   }
+
+  .Order,
+  .Outcome {
+    > div {
+      display: inline-block;
+      min-width: 20px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+    }
+  }
+
+  .Outcome {
+    > li {
+      &:first-child {
+        min-width: 100px;
+      }
+
+      &:last-of-type {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  .Order {
+    > div {
+      top: 25%;
+    }
+  }
 }
 
 @media @breakpoint-mobile-small {
-  .Outcome,
-  .Order,
+  .Outcome {
+    > li {
+      &:first-child {
+        min-width: 50px;
+      }
+
+      &:last-of-type {
+        padding-right: 3rem;
+      }
+    }
+  }
+
+  .Order {
+    > li {
+      &:last-of-type {
+        padding-right: 2rem;
+      }
+    }
+  }
+
   .Position {
     > li {
-      min-width: 50px;
+      &:last-of-type {
+        padding-right: 1rem;
+      }
     }
   }
 }

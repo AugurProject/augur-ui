@@ -24,7 +24,7 @@ import {
   formatShares,
   formatGasCostToEther
 } from "utils/format-number";
-import Dropdown from "modules/common/components/dropdown/dropdown";
+import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 
 class TradingForm extends Component {
@@ -418,12 +418,12 @@ class TradingForm extends Component {
     }
     const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
     return (
-      <div>
+      <div className={Styles.TradingForm__form__container}>
         <ul className={Styles["TradingForm__form-body"]}>
           {!isMobile &&
             market.marketType === CATEGORICAL && (
               <li>
-                <Dropdown
+                <TradingOutcomesDropdown
                   default={defaultOutcome}
                   onChange={this.changeOutcomeDropdown}
                   options={market.outcomes.map(outcome => ({
@@ -433,48 +433,87 @@ class TradingForm extends Component {
                 />
               </li>
             )}
+          {!isMobile &&
+            market.marketType === YES_NO && (
+              <li className={Styles.yesOption}>Yes</li>
+            )}
           <li className={Styles["TradingForm__limit-quantity"]}>
             <label htmlFor="tr__input--quantity">Quantity</label>
-            <input
-              className={classNames(FormStyles.Form__input, {
-                [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY].length
-              })}
-              id="tr__input--quantity"
-              type="number"
-              step={MIN_QUANTITY.toFixed()}
-              min={MIN_QUANTITY.toFixed()}
-              placeholder={`${
-                marketType === SCALAR ? tickSize : MIN_QUANTITY.toFixed()
-              } Shares`}
-              value={quantityValue}
-              onChange={e =>
-                this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
-              }
-            />
+            <div className={Styles.TradingForm__input__container}>
+              <input
+                className={classNames(FormStyles.Form__input, {
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY]
+                    .length
+                })}
+                id="tr__input--quantity"
+                type="number"
+                step={MIN_QUANTITY.toFixed()}
+                min={MIN_QUANTITY.toFixed()}
+                placeholder={`${
+                  marketType === SCALAR ? tickSize : MIN_QUANTITY.toFixed()
+                }`}
+                value={quantityValue}
+                onChange={e =>
+                  this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
+                }
+              />
+              <span>Shares</span>
+            </div>
           </li>
           <li className={Styles["TradingForm__limit-price"]}>
             <label htmlFor="tr__input--limit-price">Limit Price</label>
-            <input
-              className={classNames(FormStyles.Form__input, {
-                [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
-              })}
-              id="tr__input--limit-price"
-              type="number"
-              step={tickSize}
-              max={max}
-              min={min}
-              placeholder={`${marketType === SCALAR ? tickSize : "0.0001"} ETH`}
-              value={
-                BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
-                  ? s[this.INPUT_TYPES.PRICE].toNumber()
-                  : s[this.INPUT_TYPES.PRICE]
-              }
-              onChange={e =>
-                this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
-              }
-            />
+            <div className={Styles.TradingForm__input__container}>
+              <input
+                className={classNames(FormStyles.Form__input, {
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
+                })}
+                id="tr__input--limit-price"
+                type="number"
+                step={tickSize}
+                max={max}
+                min={min}
+                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
+                value={
+                  BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
+                    ? s[this.INPUT_TYPES.PRICE].toNumber()
+                    : s[this.INPUT_TYPES.PRICE]
+                }
+                onChange={e =>
+                  this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
+                }
+              />
+              <span>ETH</span>
+            </div>
           </li>
-          <li className={Styles["TradingForm__do-no-create-orders"]}>
+          <li className={Styles["TradingForm__limit-price"]}>
+            <label htmlFor="tr__input--limit-price">Total Order Value</label>
+            <div className={Styles.TradingForm__input__container}>
+              <input
+                className={classNames(FormStyles.Form__input, {
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
+                })}
+                id="tr__input--limit-price"
+                type="number"
+                step={tickSize}
+                max={max}
+                min={min}
+                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
+                value={
+                  BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
+                    ? s[this.INPUT_TYPES.PRICE].toNumber()
+                    : s[this.INPUT_TYPES.PRICE]
+                }
+                onChange={e =>
+                  this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
+                }
+              />
+              <span>ETH</span>
+            </div>
+            <label className={Styles.smallLabel}>
+              (Max cost of ETH will be escrowed)
+            </label>
+          </li>
+          <li>
             <Checkbox
               id="tr__input--do-no-create-orders"
               type="checkbox"

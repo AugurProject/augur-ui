@@ -93,6 +93,8 @@ export default class FilledOrdersOrder extends Component {
                 Styles["FilledOrder__table-header"]
               )}
             >
+              {!isMobile && <li />}
+              {!isMobile && <li />}
               <li>Filled</li>
               <li>Time Stamp</li>
               <li>Transaction Details</li>
@@ -111,6 +113,8 @@ export default class FilledOrdersOrder extends Component {
                       Styles.FilledOrder__trade
                     )}
                   >
+                    {!isMobile && <li />}
+                    {!isMobile && <li />}
                     <li>{formatEther(trade.amount).formatted}</li>
                     <li>
                       {convertUnixToFormattedDate(trade.timestamp).formatted}

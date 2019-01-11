@@ -2,6 +2,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
@@ -16,7 +17,12 @@ const OpenOrdersTable = ({
 }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
-      <ul className={Styles["MarketOpenOrdersList__table-header"]}>
+      <ul
+        className={classNames(
+          Styles["MarketOpenOrdersList__table-header"],
+          Styles["MarketOpenOrdersList__order-header"]
+        )}
+      >
         {!isMobile && <li>Outcome</li>}
         <li>Type</li>
         <li>
@@ -25,9 +31,11 @@ const OpenOrdersTable = ({
         <li>Price</li>
         <li>Escrowed ETH</li>
         <li>Escrowed Shares</li>
-        <li>
-          <span>Action</span>
-        </li>
+        {!isMobile && (
+          <li>
+            <span>Action</span>
+          </li>
+        )}
       </ul>
       {openOrders.length === 0 &&
         orphanedOrders.length === 0 && (
@@ -43,7 +51,7 @@ const OpenOrdersTable = ({
                 order={order}
                 pending={order.pending}
                 isExtendedDisplay={false}
-                isMobile={false}
+                isMobile={isMobile}
               />
             ))}
             {(orphanedOrders || []).map(order => (

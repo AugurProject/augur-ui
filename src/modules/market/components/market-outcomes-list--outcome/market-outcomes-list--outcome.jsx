@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
+import { RightChevron } from "modules/common/components/icons";
 
 import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
@@ -38,10 +39,14 @@ const Outcome = ({
       role="menu"
     >
       <li>
-        {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
-        {!isMobile && (
+        <div>
+          <span className={Styles.Outcome__name}>
+            {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
+          </span>
+        </div>
+        <div>
           <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
-        )}
+        </div>
       </li>
       <li>
         <ValueDenomination formatted={topBidShares} />
@@ -60,9 +65,10 @@ const Outcome = ({
         <MarketOutcomeTradingIndicator
           outcome={outcome}
           location="tradingPage"
-          style={isMobile ? { bottom: "30%" } : null}
+          style={isMobile ? { bottom: "32%" } : null}
         />
       </li>
+      {isMobile && <div>{RightChevron}</div>}
     </ul>
   );
 };

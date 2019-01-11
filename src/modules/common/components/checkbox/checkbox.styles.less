@@ -10,14 +10,14 @@
 }
 
 .Checkbox__checkmark {
-  background-color: white;
-  border: 1px solid @color-lightergray;
-  border-radius: 1px;
-  height: 23px;
+  background-color: @color-dark-grayish-purple;
+  border: 2px solid @color-dark-gray;
+  border-radius: 2px;
+  height: 24px;
   left: 0;
   position: absolute;
   top: 0;
-  width: 23px;
+  width: 24px;
 }
 
 .Checkbox__checkmark:focus {
@@ -33,8 +33,7 @@
 }
 
 .Checkbox input:checked ~ .Checkbox__checkmark {
-  background-color: @color-purple;
-  border: 0;
+  border: 2px solid @color-white;
 }
 
 .Checkbox input:checked ~ .Checkbox__checkmark::after {
@@ -48,11 +47,11 @@
 }
 
 .Checkbox .Checkbox__checkmark::after {
-  border: solid white;
-  border-width: 0 1px 1px 0;
-  height: 13px;
+  border: 2px solid @color-white;
+  border-width: 0 2px 2px 0;
+  height: 10px;
   left: 8px;
   top: 3px;
   transform: rotate(45deg);
-  width: 7px;
+  width: 3px;
 }

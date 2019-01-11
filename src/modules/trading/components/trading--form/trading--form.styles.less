@@ -1,25 +1,36 @@
 @import (reference) "~assets/styles/shared";
 
 .TradingForm__form-body {
-  padding: 1.875rem;
+  padding: 1rem;
 
   > li {
-    align-items: center;
-    background-color: @color-dark-grayish-purple;
-    border: 1px solid @color-dark-gray;
     display: flex;
+    flex-direction: column;
     flex-wrap: nowrap;
     color: @color-white;
     font-size: @font-size-normal;
-    padding: 0.75rem 0.75rem 0.75rem 1.5rem;
-    justify-content: space-between;
+    width: 100%;
+
+    &:first-child {
+      background-color: @color-dark-grayish-purple;
+    }
+
+    &.yesOption {
+      padding: 1rem 2rem;
+    }
 
     &:not(:last-child) {
       margin-bottom: 1rem;
     }
 
     &:last-child {
-      margin-top: 1.5rem;
+      flex-direction: row;
+      align-items: center;
+      border: none;
+
+      > label {
+        padding: 0.25rem 2rem;
+      }
     }
 
     &.TradingForm__error-message {
@@ -44,40 +55,64 @@
     }
 
     > label {
-      &:extend(.caps--small);
-
-      color: @color-darkpurple;
+      color: @color-light-gray;
+      font-size: @font-size-small;
       font-weight: 500;
+      padding-bottom: 0.25rem;
       margin-bottom: 0;
-      width: 4.6rem;
+      width: 100%;
+
+      &.smallLabel {
+        font-size: @font-size-extra-small;
+        padding-top: 0.5rem;
+      }
 
       &:last-child {
-        width: 88%;
-      }
-    }
-
-    > div,
-    > input,
-    > ul {
-      &:not(:last-child) {
-        width: 12%;
-      }
-    }
-
-    > input[type="number"] {
-      background-color: @color-input-background;
-      border-width: 1px;
-
-      &::placeholder {
-        color: @color-lightgray;
-        line-height: @font-size-rather-large;
-      }
-
-      &.error {
-        border-color: @color-red;
+        border: none;
       }
     }
   }
+}
+
+.TradingForm__input__container {
+  background-color: @color-grayish-purple;
+  border: 1px solid @color-dark-gray;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  > input[type="number"] {
+    color: @color-white;
+    background-color: @color-dark-grayish-purple;
+    border-width: 1px;
+    width: 100%;
+
+    &::placeholder {
+      color: @color-lightgray;
+      line-height: @font-size-rather-large;
+    }
+
+    &.error {
+      border-color: @color-red;
+    }
+  }
+
+  > span {
+    background: @color-dark-gray;
+    font-size: @font-size-small;
+    min-width: 4rem;
+    padding: 1rem;
+  }
+
+  > label {
+    color: @color-light-gray;
+    font-size: @font-size-small;
+  }
+}
+
+.TradingForm__form_container {
+  border: 1px solid #FFFFFF;
+  opacity: 0.4;
 }
 
 .TradingForm__form-estimated-cost {
@@ -103,8 +138,6 @@
       white-space: nowrap;
 
       &:first-child {
-        &:extend(.caps--small);
-
         color: @color-darkpurple;
         font-weight: 500;
         margin: 0 1.5rem 0 0;
@@ -161,8 +194,6 @@
   display: flex;
 
   > button {
-    &:extend(.caps--small);
-
     background-color: @color-lightgray;
     color: @color-lightergray;
     font-weight: 500;

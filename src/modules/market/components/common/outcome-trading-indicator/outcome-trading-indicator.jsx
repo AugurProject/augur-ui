@@ -52,16 +52,16 @@ export default function OutcomeTradingIndicator({
           return {
             position: "absolute",
             borderBottomColor: "#999999",
-            marginLeft: "0.5rem",
-            borderWidth: "0.425rem",
+            marginLeft: "0.3rem",
+            borderWidth: "5px",
             opacity: "1"
           };
         case "tradingPage|down":
           return {
             position: "absolute",
             borderTopColor: "#999999",
-            marginLeft: "0.5rem",
-            borderWidth: "0.425rem",
+            marginLeft: "0.3rem",
+            borderWidth: "5px",
             opacity: "1",
             marginBottom: "-8px"
           };
@@ -69,16 +69,16 @@ export default function OutcomeTradingIndicator({
           return {
             position: "absolute",
             borderBottomColor: "#FFF",
-            marginLeft: "0.5rem",
-            borderWidth: "0.425rem",
+            marginLeft: "0.3rem",
+            borderWidth: "5px",
             opacity: "1"
           };
         case "scalarScale|down":
           return {
             position: "absolute",
             borderTopColor: "#FFF",
-            marginLeft: "0.5rem",
-            borderWidth: "0.425rem",
+            marginLeft: "0.3rem",
+            borderWidth: "5px",
             opacity: "1",
             top: "4px"
           };

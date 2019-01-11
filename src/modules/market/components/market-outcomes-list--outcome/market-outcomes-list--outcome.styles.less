@@ -146,6 +146,10 @@
   }
 
   > li {
+    &:first-child {
+      display: flex;
+    }
+
     &:last-of-type {
       display: table-cell;
     }
@@ -153,16 +157,35 @@
     &:last-child {
       padding-right: 2.5rem;
     }
-  }
 
-  @media @breakpoint-mobile {
-    &::before {
-      width: 2px;
+    > div {
+      display: inline-block;
     }
   }
 }
 
+.Outcome__name {
+  display: inline-block;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .Outcome__percent {
   color: @color-lightgray;
+  display: inline-block;
   margin-left: 0.5rem;
+}
+
+@media @breakpoint-mobile {
+  .Outcome {
+    &::before {
+      width: 2px;
+    }
+  }
+
+  .Outcome__percent {
+    margin-left: 0.25rem;
+  }
 }

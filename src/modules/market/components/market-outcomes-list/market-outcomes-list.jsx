@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 import CustomPropTypes from "utils/custom-prop-types";
 import { SCALAR } from "modules/markets/constants/market-types";
@@ -19,7 +20,8 @@ export default class MarketOutcomesList extends Component {
     marketType: PropTypes.string,
     minPrice: CustomPropTypes.bigNumber,
     maxPrice: CustomPropTypes.bigNumber,
-    isMobile: PropTypes.bool
+    isMobile: PropTypes.bool,
+    popUp: PropTypes.bool
   };
 
   static defaultProps = {
@@ -28,7 +30,8 @@ export default class MarketOutcomesList extends Component {
     marketType: null,
     minPrice: null,
     maxPrice: null,
-    isMobile: false
+    isMobile: false,
+    popUp: false
   };
 
   render() {
@@ -41,19 +44,27 @@ export default class MarketOutcomesList extends Component {
       scalarDenomination,
       minPrice,
       maxPrice,
-      isMobile
+      isMobile,
+      popUp
     } = this.props;
 
     return (
       <section className={Styles.MarketOutcomesList}>
-        <div className={Styles.MarketOutcomesList__heading}>Outcomes</div>
+        {!popUp && (
+          <div className={Styles.MarketOutcomesList__heading}>Outcomes</div>
+        )}
         <div
           ref={outcomeList => {
             this.outcomeList = outcomeList;
           }}
         >
           <div className={SharedStyles.MarketOpenOrdersList__table}>
-            <ul className={SharedStyles["MarketOpenOrdersList__table-header"]}>
+            <ul
+              className={classNames(
+                SharedStyles["MarketOpenOrdersList__table-header"],
+                SharedStyles["MarketOutcomes__table-header"]
+              )}
+            >
               {!isMobile && <li>Outcome</li>}
               <li>
                 <span>

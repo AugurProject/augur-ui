@@ -1,0 +1,89 @@
+@import (reference) '~assets/styles/shared';
+
+.TradingOutcomesDropdown {
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.TradingOutcomesDropdown__angle-down {
+  color: @color-white;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.TradingOutcomesDropdown__label {
+  padding-left: 0.75rem;
+  white-space: nowrap;
+}
+
+.TradingOutcomesDropdown__list {
+  background-color: @color-dark-grayish-purple;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  color: @color-white;
+  display: none;
+  font-size: @font-size-normal;
+  line-height: @font-size-normal;
+  position: absolute;
+  right: 0;
+  top: 100%;
+
+  &.active {
+    display: block;
+  }
+
+  > button {
+    background-color: inherit;
+    cursor: pointer;
+    padding: 0.75rem 0.75rem;
+    text-align: left;
+    transition: background-color 0.15s ease;
+    white-space: nowrap;
+    width: 100%;
+
+    &:hover,
+    &.active {
+      background-color: @color-dark-gray;
+    }
+  }
+}
+
+.TradingOutcomesDropdown__listLeft {
+  right: unset;
+}
+
+.TradingOutcomesDropdown__select {
+  display: none;
+  padding: 0.5rem 1rem 0.5rem 0;
+}
+
+@media @breakpoint-mobile-medium {
+  .TradingOutcomesDropdown__label,
+  .TradingOutcomesDropdown__list,
+  .TradingOutcomesDropdown__list.active {
+    display: none;
+  }
+
+  .TradingOutcomesDropdown__select {
+    display: block;
+    font-size: @font-size-medium;
+  }
+}
+
+@media @breakpoint-mobile-extra-small {
+  .TradingOutcomesDropdown__select {
+    font-size: 0.69rem;
+  }
+}
