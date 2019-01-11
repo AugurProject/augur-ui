@@ -5,7 +5,7 @@ import Styles from "./single-slice-pie-graph.styles";
 
 export default function SingleSlicePieGraph({
   percentage,
-  backgroundColor = "white"
+  backgroundColor = "transparent"
 }) {
   const degree = 180 - 360 * percentage - 90;
   const purple = "#fff"; // @color-purple

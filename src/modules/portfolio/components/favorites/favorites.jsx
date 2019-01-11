@@ -11,7 +11,7 @@ const Favorites = p => (
     <Helmet>
       <title>Favorites</title>
     </Helmet>
-    <MarketsHeaderLabel title="Favorites" noTopPadding />
+    <MarketsHeaderLabel title="watchlist" noTopPadding />
     <MarketsList {...p} />
   </section>
 );
