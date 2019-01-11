@@ -78,7 +78,7 @@ export default class MarketHeaderReporting extends Component {
 
     let CatWinnerColorIndex = null;
     let canClaim = false;
-    if ((finalizationTime, outstandingReturns)) {
+    if (finalizationTime && outstandingReturns) {
       const endTimestamp = createBigNumber(finalizationTime).plus(
         createBigNumber(constants.CONTRACT_INTERVAL.CLAIM_PROCEEDS_WAIT_TIME)
       );
