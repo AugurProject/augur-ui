@@ -1,27 +1,40 @@
 @import (reference) '~assets/styles/shared';
 
 .Order {
+  background-color: @color-dark-grayish-purple;
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;  
   display: table-row;
   transition: background-color 0.15s ease;
+
+  &:last-of-type {
+    > li {
+      border-bottom: 0;
+    }
+  }
+
 
   &:first-child > li {
     border-top-width: 0;
   }
 
   > li {
-    border-top: 1px solid @color-lightest-gray;
     display: table-cell;
     max-width: 19vw;
     overflow: hidden;
-    padding: 1.125rem 0;
+    padding: 11px 0;
+    max-height: 40px;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border-bottom: 1px solid @color-almost-black;
 
     &:first-child {
       padding-left: 2rem;
       position: relative;
       text-align: left;
+      font-family: @roboto;
+      font-size: 14px;
 
       > .Order__pending {
         justify-content: flex-start;
@@ -43,10 +56,17 @@
 }
 
 .Order__cancel {
-  .button--transparent();
+  &:extend(.button--mediumgray all);
 
   display: inline-block;
-  margin-right: -32px; // center button
+  margin-right: -15px; // center button
+  padding: 3px 12px;
+  font-size: 10px;
+
+
+  &.disabled {
+    &:extend(.button--mediumgray--disabled);
+  }
 }
 
 .Order-not_extended {
@@ -60,13 +80,14 @@
 .PortMobile {
   display: table-row;
   transition: background-color 0.15s ease;
+  background-color: @color-dark-grayish-purple;
 
   &:first-child > li {
     border-top-width: 0;
   }
 
   > li {
-    border-top: 1px solid @color-lightest-gray;
+    border-top: 1px solid @color-almost-black;
     display: table-cell;
     max-width: 19vw;
     overflow: hidden;
@@ -174,7 +195,6 @@
 
   .PortMobile {
     > li {
-      border-top-color: @color-lightergray;
       color: inherit;
 
       &:first-child {

@@ -1,6 +1,9 @@
 @import (reference) '~assets/styles/shared';
 
 .Position {
+  background-color: @color-dark-grayish-purple;
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;  
   display: table-row;
   transition: background-color 0.15s ease;
 
@@ -8,20 +11,30 @@
     border-top-width: 0;
   }
 
+  &:last-of-type {
+    > li {
+      border-bottom: 0;
+    }
+  }
+
+
   > li {
-    border-top: 1px solid @color-lightest-gray;
     display: table-cell;
     max-width: 19vw;
-    padding: 1.125rem 0;
+    padding: 11px 0;
+    max-height: 40px;
     position: relative;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
+    border-bottom: 1px solid @color-almost-black;
 
     &:first-child {
       padding-left: 2rem;
       position: relative;
       text-align: left;
+      font-family: @roboto;
+      font-size: 14px;
 
       > .Position__pending {
         justify-content: flex-start;
@@ -53,6 +66,7 @@
 .PortMobile {
   display: table-row;
   transition: background-color 0.15s ease;
+  background-color: @color-dark-grayish-purple;
 
   &:first-child > li {
     border-top-width: 0;
@@ -194,7 +208,7 @@
 
   .PortMobile {
     > li {
-      border-top-color: @color-lightergray;
+      border-top-color: @color-almost-black;
       color: inherit;
 
       &:first-child {
