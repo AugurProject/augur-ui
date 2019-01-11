@@ -78,6 +78,10 @@
       stroke: @color-lightgray;
     }
 
+    .bounding-line:first-of-type {
+      stroke: none;
+    }
+
     .tick-line--midpoint {
       stroke: @color-white;
       stroke-dasharray: 3;
@@ -102,6 +106,7 @@
     .tick-value-midpoint-text {
       &:extend(.caps--extra-small all);
 
+      fill: @color-lightgray;
       font-size: @font-size-small;
       text-transform: none;
     }
