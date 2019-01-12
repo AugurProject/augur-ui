@@ -7,7 +7,7 @@
 }
 
 .MarketCard__header {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   margin-left: 0.4rem;
 }
 
@@ -22,6 +22,36 @@
 .MarketCard__topstats {
   overflow: hidden;
   position: relative;
+}
+
+.MarketCard__status {
+  color: @color-white;
+  display: flex;
+  flex-direction: column;
+  font-size: @font-size-small;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
+.MarketCard__underline__reporting,
+.MarketCard__underline__resolved,
+.MarketCard__underline__open,
+.MarketCard__underline {
+  border-radius: 100px;
+  margin-bottom: 0.25rem;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+}
+
+.MarketCard__underline__open {
+  border-bottom: 2px solid @color-open-green;
+}
+
+.MarketCard__underline__resolved {
+  border-bottom: 2px solid @color-resolved-red;
+}
+
+.MarketCard__underline__reporting {
+  border-bottom: 2px solid @color-dispute-yellow;
 }
 
 .MarketCard__leftstats {

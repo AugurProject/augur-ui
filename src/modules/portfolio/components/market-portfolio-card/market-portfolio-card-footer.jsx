@@ -100,7 +100,7 @@ const MarketPortfolioCardFooter = ({
                       startDate={startTime}
                       endTime={finalTime}
                       currentTimestamp={currentTimestamp * 1000}
-                      backgroundColor="#ceccd8"
+                      backgroundColor="transparent"
                     />
                   </span>
                 </div>
