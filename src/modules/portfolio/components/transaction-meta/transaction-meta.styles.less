@@ -1,13 +1,14 @@
 @import (reference) '~assets/styles/shared';
 
 .TransactionMetaSubsectionContainer {
-  background-color: @color-lightergray;
+  background-color: #2e233e;
   padding: 0 2rem 1rem;
 }
 
 .TransactionMeta {
-  background-color: @color-lightergray;
-  border-top: 1px solid @color-lightergray-2;
+  background-color: #2e233e;
+  border-top: 1px solid @color-almost-black;
+  color: white;
   display: table;
   padding: 1rem 2rem;
   width: 100%;
@@ -21,6 +22,7 @@
 
     > span {
       display: table-cell;
+      text-transform: capitalize;
       white-space: nowrap;
 
       &:first-child {
@@ -46,8 +48,8 @@
 }
 
 .TransactionMetaSubsectionHeader {
-  background-color: @color-lightergray;
-  border-top: 1px solid @color-lightergray-2;
+  border-top: 1px solid @color-lightgray;
+  color: @color-white;
   display: table;
   font-weight: 700;
   padding: 1rem 0;
