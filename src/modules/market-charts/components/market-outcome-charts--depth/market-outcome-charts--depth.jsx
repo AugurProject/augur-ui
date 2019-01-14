@@ -279,7 +279,6 @@ export default class MarketOutcomeDepth extends Component {
         containerWidth,
         marketMin,
         marketMax
-        // pricePrecision
       } = options;
 
       if (hoveredPrice == null) {
@@ -856,19 +855,28 @@ function attachHoverClickHandlers(options) {
         `${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`
       );
       const borderPadding = flipY ? 3 : 2;
+      const verticalSpacing = 24;
+      // 27 comes from the padding/border/margins so 1rem total for horz
+      // padding .5 rem for label/value seperation, + borderpx of 3 (2 on line
+      // side, 1 on the other)
+      const testWidth =
+        d3.select("#hovered_tooltip_values").node().clientWidth +
+        d3.select("#hovered_tooltip_labels").node().clientWidth +
+        27 +
+        borderPadding;
       const offset = {
-        hoverToolTipX: flipX
-          ? borderPadding
-          : (d3.select("#hovered_tooltip").node().clientWidth + borderPadding) *
-            -1,
+        hoverToolTipX: flipX ? 0 : testWidth * -1,
         hoverToolTipY: flipY
-          ? 24
-          : (d3.select("#hovered_tooltip").node().clientHeight + 24) * -1
+          ? verticalSpacing
+          : (d3.select("#hovered_tooltip").node().clientHeight +
+              verticalSpacing) *
+            -1
       };
-      console.log("x", flipX, offset.hoverToolTipX);
+
       const tooltip = d3
         .select("#hovered_tooltip_container")
-        .style("display", null);
+        .style("display", "flex")
+        .style("width", testWidth);
       tooltip
         .attr("x", xScale(nearestFillingOrder[1]) + offset.hoverToolTipX)
         .attr("y", yScale(nearestFillingOrder[0]) + offset.hoverToolTipY);

@@ -52,11 +52,23 @@
     }
 
     .hovered_tooltip_div.bids {
-      border-color: @color-positive;
+      border-color: fade(@color-positive, 30%);
+      border-right-color: @color-positive;
+    }
+
+    .hovered_tooltip_div.bids.flip {
+      border-left-color: @color-positive;
+      border-right-color: fade(@color-positive, 30%);
     }
 
     .hovered_tooltip_div.asks {
-      border-color: @color-negative;
+      border-color: fade(@color-negative, 30%);
+      border-right-color: @color-negative;
+    }
+
+    .hovered_tooltip_div.asks.flip {
+      border-left-color: @color-negative;
+      border-right-color: fade(@color-negative, 30%);
     }
 
     .hovered_tooltip_labels {
@@ -65,6 +77,7 @@
       flex-flow: column nowrap;
 
       > div {
+        flex: 1;
         font-size: @font-size-smallest;
         margin-bottom: 0.25rem;
         text-align: left;
@@ -81,12 +94,13 @@
 
     .hovered_tooltip_values {
       display: flex;
-      flex: 1;
+      flex: 0 0 auto;
       flex-flow: column nowrap;
       margin-left: 0.5rem;
 
       > div {
         color: @color-white;
+        flex: 1;
         font-size: @font-size-extra-small;
         line-height: @font-size-medium;
         text-align: left;
