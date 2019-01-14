@@ -185,8 +185,14 @@ export default class MarketOutcomeDepth extends Component {
         .style("display", "flex")
         .append("svg")
         .attr("id", "depth_chart")
-        .attr("width", drawParams.containerWidth)
-        .attr("height", drawParams.containerHeight);
+        .attr(
+          "width",
+          drawParams.containerWidth -
+            drawParams.chartDim.left -
+            drawParams.chartDim.right
+        )
+        .attr("height", drawParams.containerHeight)
+        .style("margin", "0 0.5rem");
 
       drawLines({
         drawParams,
@@ -435,7 +441,10 @@ function determineDrawParams(options) {
   const xScale = d3
     .scaleLinear()
     .domain(d3.extent(xDomain))
-    .range([chartDim.left, containerWidth - chartDim.right - chartDim.left]);
+    .range([
+      chartDim.left + 8,
+      containerWidth - chartDim.right - chartDim.left - 16
+    ]);
 
   const yScale = d3
     .scaleLinear()
@@ -504,8 +513,14 @@ function drawTicks(options) {
     .enter()
     .append("line")
     .attr("class", "bounding-line")
-    .attr("x1", 0)
-    .attr("x2", drawParams.containerWidth)
+    .attr("x1", drawParams.chartDim.left)
+    .attr(
+      "x2",
+      drawParams.containerWidth -
+        drawParams.chartDim.right -
+        drawParams.chartDim.left -
+        16
+    )
     .attr(
       "y1",
       (d, i) => (drawParams.containerHeight - drawParams.chartDim.bottom) * i
@@ -679,30 +694,42 @@ function drawLines(options) {
 
 function setupCrosshairs(options) {
   const { depthChart } = options;
-
+  // create tooltip
   const tooltip = depthChart
-    .append("g")
+    .append("foreignObject")
     .attr("id", "hovered_tooltip_container")
     .style("display", "none");
 
-  tooltip
-    .append("rect")
-    .attr("width", "113")
-    .attr("height", "53")
-    .attr("rx", "5")
-    .attr("ry", "5")
+  const tooltipDiv = tooltip
+    .append("div")
     .attr("id", "hovered_tooltip")
-    .attr("class", "hovered_tooltip");
-  tooltip
-    .append("line")
-    .attr("id", "hovered_side_indicator")
-    .attr("stroke-width", "2");
-  tooltip.append("text").attr("id", "hovered_price_label");
-  tooltip.append("text").attr("id", "hovered_volume_label");
-  tooltip.append("text").attr("id", "hovered_cost_label");
-  tooltip.append("text").attr("id", "hovered_price_value");
-  tooltip.append("text").attr("id", "hovered_volume_value");
-  tooltip.append("text").attr("id", "hovered_cost_value");
+    .attr("class", "hovered_tooltip_div");
+
+  const labels = tooltipDiv
+    .append("div")
+    .attr("id", "hovered_tooltip_labels")
+    .attr("class", "hovered_tooltip_labels");
+  const values = tooltipDiv
+    .append("div")
+    .attr("id", "hovered_tooltip_values")
+    .attr("class", "hovered_tooltip_values");
+
+  labels
+    .append("div")
+    .attr("id", "price_label")
+    .html("price:");
+  labels
+    .append("div")
+    .attr("id", "volume_label")
+    .html("volume:");
+  labels
+    .append("div")
+    .attr("id", "cost_label")
+    .html("cost:");
+
+  values.append("div").attr("id", "price_value");
+  values.append("div").attr("id", "volume_value");
+  values.append("div").attr("id", "cost_value");
 
   // create crosshairs
   const crosshair = depthChart
@@ -757,7 +784,12 @@ function attachHoverClickHandlers(options) {
   depthChart
     .append("rect")
     .attr("class", "overlay")
-    .attr("width", drawParams.containerWidth)
+    .attr(
+      "width",
+      drawParams.containerWidth -
+        drawParams.chartDim.left -
+        drawParams.chartDim.right
+    )
     .attr("height", drawParams.containerHeight)
     .on("mouseover", () => d3.select("#crosshairs").style("display", null))
     .on("mouseout", () => {
@@ -801,76 +833,45 @@ function attachHoverClickHandlers(options) {
       if (nearestFillingOrder === null) return;
 
       const { xScale, yScale } = drawParams;
-      // const yPosition = yScale(hoveredPrice);
-      // const clampedHoveredPrice = yScale.invert(yPosition);
-      // 0,2,4,8,12,16,24,32,40
       const quarterX = drawParams.xDomain[1] * 0.1;
       const quarterY = drawParams.yDomain[1] * 0.9;
       const flipX = xScale(quarterX) > xScale(nearestFillingOrder[1]);
       const flipY = yScale(quarterY) > yScale(nearestFillingOrder[0]);
 
+      d3.select("#hovered_tooltip").attr(
+        "class",
+        `hovered_tooltip_div ${nearestFillingOrder[4]} ${flipX ? "flip" : ""}`
+      );
+
+      d3.select("#price_label").attr("class", `${nearestFillingOrder[4]}`);
+      d3.select("#volume_label").attr("class", `${nearestFillingOrder[4]}`);
+      d3.select("#cost_label").attr("class", `${nearestFillingOrder[4]}`);
+      d3.select("#price_value").html(
+        `${createBigNumber(nearestFillingOrder[1]).toFixed(pricePrecision)}`
+      );
+      d3.select("#volume_value").html(
+        `${createBigNumber(nearestFillingOrder[0]).toFixed(pricePrecision)}`
+      );
+      d3.select("#cost_value").html(
+        `${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`
+      );
+      const borderPadding = flipY ? 3 : 2;
       const offset = {
-        hoverToolTipX: flipX ? 0 : -113,
-        indicatorX: flipX ? 1 : -1,
-        labelX: flipX ? 8 : -105,
-        valueX: flipX ? 48 : -65,
-        hoverToolTipY: flipY ? 24 : -77,
-        indicatorY1: flipY ? 24 : -24,
-        indicatorY2: flipY ? 77 : -77,
-        priceY: flipY ? 43 : -58,
-        volumeY: flipY ? 56 : -45,
-        costY: flipY ? 69 : -32
+        hoverToolTipX: flipX
+          ? borderPadding
+          : (d3.select("#hovered_tooltip").node().clientWidth + borderPadding) *
+            -1,
+        hoverToolTipY: flipY
+          ? 24
+          : (d3.select("#hovered_tooltip").node().clientHeight + 24) * -1
       };
-      d3.select("#hovered_tooltip_container").style("display", null);
-      d3.select("#hovered_tooltip")
-        .attr(
-          "transform",
-          `
-        translate(${xScale(nearestFillingOrder[1]) + offset.hoverToolTipX}
-        , ${yScale(nearestFillingOrder[0]) + offset.hoverToolTipY})
-        `
-        )
-        .attr("class", `hovered_tooltip ${nearestFillingOrder[4]}`);
-      d3.select("#hovered_side_indicator")
-        .attr("class", `${nearestFillingOrder[4]}`)
-        .attr("x1", xScale(nearestFillingOrder[1]) + offset.indicatorX)
-        .attr("x2", xScale(nearestFillingOrder[1]) + offset.indicatorX)
-        .attr("y1", yScale(nearestFillingOrder[0]) + offset.indicatorY1)
-        .attr("y2", yScale(nearestFillingOrder[0]) + offset.indicatorY2);
-
-      d3.select("#hovered_price_label")
-        .attr("x", xScale(nearestFillingOrder[1]) + offset.labelX)
-        .attr("y", yScale(nearestFillingOrder[0]) + offset.priceY)
-        .attr("class", `${nearestFillingOrder[4]}`)
-        .text("Price:");
-      d3.select("#hovered_price_value")
-        .attr("x", xScale(nearestFillingOrder[1]) + offset.valueX)
-        .attr("y", yScale(nearestFillingOrder[0]) + offset.priceY)
-        .text(
-          `${createBigNumber(nearestFillingOrder[1]).toFixed(pricePrecision)}`
-        );
-
-      d3.select("#hovered_volume_label")
-        .attr("x", xScale(nearestFillingOrder[1]) + offset.labelX)
-        .attr("y", yScale(nearestFillingOrder[0]) + offset.volumeY)
-        .attr("class", `${nearestFillingOrder[4]}`)
-        .text("Volume:");
-      d3.select("#hovered_volume_value")
-        .attr("x", xScale(nearestFillingOrder[1]) + offset.valueX)
-        .attr("y", yScale(nearestFillingOrder[0]) + offset.volumeY)
-        .text(
-          `${createBigNumber(nearestFillingOrder[0]).toFixed(pricePrecision)}`
-        );
-
-      d3.select("#hovered_cost_label")
-        .attr("x", xScale(nearestFillingOrder[1]) + offset.labelX)
-        .attr("y", yScale(nearestFillingOrder[0]) + offset.costY)
-        .attr("class", `${nearestFillingOrder[4]}`)
-        .text("Cost:");
-      d3.select("#hovered_cost_value")
-        .attr("x", xScale(nearestFillingOrder[1]) + offset.valueX)
-        .attr("y", yScale(nearestFillingOrder[0]) + offset.costY)
-        .text(`${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`);
+      console.log("x", flipX, offset.hoverToolTipX);
+      const tooltip = d3
+        .select("#hovered_tooltip_container")
+        .style("display", null);
+      tooltip
+        .attr("x", xScale(nearestFillingOrder[1]) + offset.hoverToolTipX)
+        .attr("y", yScale(nearestFillingOrder[0]) + offset.hoverToolTipY);
     })
     .on("click", () => {
       const mouse = d3.mouse(d3.select("#depth_chart").node());
