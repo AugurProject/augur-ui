@@ -24,6 +24,8 @@ addons:
       - g++-4.8
       - build-essential
       - libusb-1.0-0-dev
+before_install:
+    - pyenv global 2.7.13
 script:
   - yarn lint && yarn test;
   # This is here to confirm the build works.
