@@ -44,7 +44,7 @@ case ${augur_env} in
     sneakpeak)
         network="rinkeby"
         cluster="sneakpeak-augur-net"
-        augur_service="sneakpeak-augur-ui"
+        augur_service="sneakpeak-ui"
         ;;
     *)
         network=${augur_env}
