@@ -122,42 +122,41 @@ class MarketTradingForm extends Component {
     }
 
     return (
-      <section className={classNames(Styles.Trading, "market-trading-wrapper")}>
-        {(!isMobile || s.showForm) && (
-          <TradingWrapper
-            market={market}
-            isLogged={isLogged}
-            selectedOutcome={s.selectedOutcome}
-            selectedOrderProperties={selectedOrderProperties}
-            initialMessage={initialMessage}
-            isMobile={isMobile}
-            toggleForm={this.toggleForm}
-            showOrderPlaced={this.showOrderPlaced}
-            availableFunds={availableFunds}
-            clearTradeInProgress={clearTradeInProgress}
-            updateSelectedOrderProperties={
-              this.props.updateSelectedOrderProperties
-            }
-            gasPrice={gasPrice}
-            handleFilledOnly={handleFilledOnly}
-            updateSelectedOutcome={updateSelectedOutcome}
-          />
-        )}
-        {isMobile &&
-          hasSelectedOutcome &&
-          initialMessage && (
-            <div className={Styles["Trading__initial-message"]}>
+      <section className={classNames(Styles.MarketTradingForm)}>
+        {(!isMobile || s.showForm) &&
+          !initialMessage && (
+            <TradingWrapper
+              market={market}
+              isLogged={isLogged}
+              selectedOutcome={s.selectedOutcome}
+              selectedOrderProperties={selectedOrderProperties}
+              initialMessage={initialMessage}
+              isMobile={isMobile}
+              toggleForm={this.toggleForm}
+              showOrderPlaced={this.showOrderPlaced}
+              availableFunds={availableFunds}
+              clearTradeInProgress={clearTradeInProgress}
+              updateSelectedOrderProperties={
+                this.props.updateSelectedOrderProperties
+              }
+              gasPrice={gasPrice}
+              handleFilledOnly={handleFilledOnly}
+              updateSelectedOutcome={updateSelectedOutcome}
+            />
+          )}
+        {initialMessage && (
+          <div className={Styles["MarketTradingForm__initial-message"]}>
+            {!hasSelectedOutcome && (
               <p>
-                {!isLogged ? (
-                  <span>Signup or login to trade.</span>
-                ) : (
-                  initialMessage
-                )}
+                <span>{initialMessage}</span>
               </p>
-              {!isLogged && (
+            )}
+            {!isLogged && (
+              <div>
+                {initialMessage}
                 <button
                   id="login-button"
-                  className={Styles["TradingWrapper__button--login"]}
+                  className={Styles["MarketTradingForm__button--message"]}
                   onClick={() =>
                     FindReact(
                       document.getElementsByClassName(
@@ -168,27 +167,28 @@ class MarketTradingForm extends Component {
                 >
                   Sign in to trade
                 </button>
+              </div>
+            )}
+            {!hasFunds &&
+              isLogged && (
+                <Link to={makePath(ACCOUNT_DEPOSIT)}>
+                  <span className={Styles["MarketTradingForm__deposit-button"]}>
+                    Add Funds
+                  </span>
+                </Link>
               )}
-              {!hasFunds &&
-                isLogged && (
-                  <Link to={makePath(ACCOUNT_DEPOSIT)}>
-                    <span className={Styles["Trading__deposit-button"]}>
-                      Add Funds
-                    </span>
-                  </Link>
-                )}
-            </div>
-          )}
+          </div>
+        )}
         {isMobile &&
         hasSelectedOutcome &&
         !initialMessage &&
         !s.showForm && ( // this needs to be changed to use p.selectedOutcome (should only show on mobile when an outcome has been selected)
-            <div className={Styles["Trading__button--trade"]}>
+            <div className={Styles["MarketTradingForm__button--trade"]}>
               <button onClick={this.toggleForm}>Trade</button>
             </div>
           )}
         {s.showOrderPlaced && (
-          <div className={Styles["Trading__button--order-placed"]}>
+          <div className={Styles["MarketTradingForm__button--order-placed"]}>
             <span>{Check} Order placed!</span>
             <button onClick={e => this.toggleShowOrderPlaced()}>{Close}</button>
           </div>
