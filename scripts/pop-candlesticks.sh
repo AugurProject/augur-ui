@@ -10,7 +10,7 @@ MARKET_ID=$1;
 
 MARKET_TYPE=$(npx flash market-info -m $MARKET_ID | grep marketType | cut -d " " -f2);
 NUM_OF_OUTCOMES=1;
-if [ "$MARKET_TYPE" != "yesNo" ]; then
+if [ "$MARKET_TYPE" = "categorical" ]; then
 NUM_OF_OUTCOMES=$(npx flash market-info -m $MARKET_ID | grep numOutcomes | cut -d " " -f2);
 fi
 
