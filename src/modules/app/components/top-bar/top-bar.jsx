@@ -102,12 +102,12 @@ const TopBar = props => (
             ? Notifications(
                 "99+",
                 "7.4591451",
-                props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.25)"
+                props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
               )
             : Notifications(
                 props.unseenCount,
                 "6.4591451",
-                props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.25)"
+                props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
               )}
         </div>
       </div>
