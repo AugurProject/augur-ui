@@ -25,7 +25,7 @@ addons:
       - build-essential
       - libusb-1.0-0-dev
 before_install:
-    - pyenv global 2.7.13
+    - pyenv versions && pyenv global
 script:
   - yarn lint && yarn test;
   # This is here to confirm the build works.
