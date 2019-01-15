@@ -109,7 +109,7 @@ class MarketTradingForm extends Component {
 
     switch (true) {
       case !isLogged:
-        initialMessage = "Signup or login to trade.";
+        initialMessage = "Connect a wallet to place order.";
         break;
       case isLogged && !hasFunds:
         initialMessage = "Add funds to begin trading.";
@@ -154,19 +154,21 @@ class MarketTradingForm extends Component {
             {!isLogged && (
               <div>
                 {initialMessage}
-                <button
-                  id="login-button"
-                  className={Styles["MarketTradingForm__button--message"]}
-                  onClick={() =>
-                    FindReact(
-                      document.getElementsByClassName(
-                        "connect-account-styles_ConnectAccount"
-                      )[0]
-                    ).toggleDropdown()
-                  }
-                >
-                  Sign in to trade
-                </button>
+                <div>
+                  <button
+                    id="login-button"
+                    className={Styles["MarketTradingForm__button--message"]}
+                    onClick={() =>
+                      FindReact(
+                        document.getElementsByClassName(
+                          "connect-account-styles_ConnectAccount"
+                        )[0]
+                      ).toggleDropdown()
+                    }
+                  >
+                    Connect
+                  </button>
+                </div>
               </div>
             )}
             {!hasFunds &&

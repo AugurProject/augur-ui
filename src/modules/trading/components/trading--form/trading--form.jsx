@@ -13,10 +13,6 @@ import {
 import { isEqual } from "lodash";
 // import ReactTooltip from "react-tooltip";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
-// import {
-//   Hint,
-//  ExclamationCircle as InputErrorIcon
-// } from "modules/common/components/icons";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import {
@@ -407,14 +403,14 @@ class TradingForm extends Component {
     const tickSize = parseFloat(market.tickSize);
     const max = maxPrice.toString();
     const min = minPrice.toString();
-    //    const errors = Array.from(
-    //      new Set([
-    //        ...s.errors[this.INPUT_TYPES.QUANTITY],
-    //        ...s.errors[this.INPUT_TYPES.PRICE],
-    //        ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE],
-    //        ...s.errors[this.TRADE_MAX_COST]
-    //      ])
-    //    );
+    const errors = Array.from(
+      new Set([
+        ...s.errors[this.INPUT_TYPES.QUANTITY],
+        ...s.errors[this.INPUT_TYPES.PRICE],
+        ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE],
+        ...s.errors[this.TRADE_MAX_COST]
+      ])
+    );
     let quantityValue = s[this.INPUT_TYPES.QUANTITY];
     if (BigNumber.isBigNumber(quantityValue)) {
       quantityValue =
@@ -449,7 +445,11 @@ class TradingForm extends Component {
         <ul className={Styles["TradingForm__form-body"]}>
           <li className={Styles["TradingForm__limit-quantity"]}>
             <label htmlFor="tr__input--quantity">Quantity</label>
-            <div className={Styles.TradingForm__input__container}>
+            <div
+              className={classNames(Styles.TradingForm__input__container, {
+                [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY].length
+              })}
+            >
               <input
                 className={classNames(FormStyles.Form__input, {
                   [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY]
@@ -474,11 +474,13 @@ class TradingForm extends Component {
             <label htmlFor="tr__input--limit-price">
               {marketType === SCALAR ? "Outcome" : "Limit Price"}
             </label>
-            <div className={Styles.TradingForm__input__container}>
+            <div
+              className={classNames(Styles.TradingForm__input__container, {
+                [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
+              })}
+            >
               <input
-                className={classNames(FormStyles.Form__input, {
-                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
-                })}
+                className={FormStyles.Form__input}
                 id="tr__input--limit-price"
                 type="number"
                 step={tickSize}
@@ -496,7 +498,8 @@ class TradingForm extends Component {
               />
               <span
                 className={classNames({
-                  [`${Styles.isScalar}`]: marketType === SCALAR
+                  [`${Styles.isScalar}`]: marketType === SCALAR,
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.PRICE].length
                 })}
               >
                 {marketType === SCALAR && market.scalarDenomination
@@ -507,7 +510,11 @@ class TradingForm extends Component {
           </li>
           <li className={Styles["TradingForm__limit-price"]}>
             <label htmlFor="tr__input--limit-price">Total Order Value</label>
-            <div className={Styles.TradingForm__input__container}>
+            <div
+              className={classNames(Styles.TradingForm__input__container, {
+                [`${Styles.error}`]: s.errors[this.INPUT_TYPES.EST_ETH].length
+              })}
+            >
               <input
                 className={classNames(FormStyles.Form__input, {
                   [`${Styles.error}`]: s.errors[this.INPUT_TYPES.EST_ETH].length
@@ -551,6 +558,15 @@ class TradingForm extends Component {
             </label>
           </li>
         </ul>
+        {errors.length > 0 && (
+          <div className={Styles.TradingForm__error_message_container}>
+            {errors.map(error => (
+              <div key={error} className={Styles.TradingForm__error_message}>
+                {error}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   }
