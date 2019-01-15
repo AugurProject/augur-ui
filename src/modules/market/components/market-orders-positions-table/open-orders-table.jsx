@@ -6,6 +6,7 @@ import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
+import { SCALAR } from "modules/markets/constants/market-types";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
@@ -13,7 +14,8 @@ const OpenOrdersTable = ({
   openOrders,
   orphanedOrders,
   cancelOrphanedOrder,
-  isMobile
+  isMobile,
+  market
 }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
@@ -47,7 +49,11 @@ const OpenOrdersTable = ({
             {openOrders.map((order, i) => (
               <OpenOrdersOrder
                 key={i}
-                outcomeName={order.name}
+                outcomeName={
+                  market.marketType === SCALAR
+                    ? market.scalarDenomination
+                    : order.name
+                }
                 order={order}
                 pending={order.pending}
                 isExtendedDisplay={false}
@@ -58,7 +64,11 @@ const OpenOrdersTable = ({
             {(orphanedOrders || []).map(order => (
               <MarketPositionsListOrphanedOrder
                 key={order.orderId}
-                outcomeName={order.outcomeName || order.outcome}
+                outcomeName={
+                  market.marketType === SCALAR
+                    ? market.scalarDenomination
+                    : order.outcomeName || order.outcome
+                }
                 order={order}
                 pending={false}
                 isExtendedDisplay={false}
@@ -78,7 +88,8 @@ OpenOrdersTable.propTypes = {
   openOrders: PropTypes.array,
   orphanedOrders: PropTypes.array.isRequired,
   cancelOrphanedOrder: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool
+  isMobile: PropTypes.bool,
+  market: PropTypes.object.isRequired
 };
 
 OpenOrdersTable.defaultProps = {
