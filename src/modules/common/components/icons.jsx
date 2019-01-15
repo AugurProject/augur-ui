@@ -732,7 +732,7 @@ export const Deposit = (
       <g
         id="Account_1"
         transform="translate(-575.000000, -448.000000)"
-        stroke="#372E4B"
+        stroke="#fff"
       >
         <g id="Icon/Deposit" transform="translate(574.000000, 447.000000)">
           <path
@@ -767,7 +767,7 @@ export const Withdraw = (
       <g
         id="Account_2"
         transform="translate(-615.000000, -452.000000)"
-        stroke="#372E4B"
+        stroke="#fff"
       >
         <g id="Icon/Withdraw" transform="translate(614.000000, 448.000000)">
           <g id="Page-1" transform="translate(1.000000, 4.000000)">
@@ -796,7 +796,7 @@ export const Copy = (
       <g
         id="Account_2"
         transform="translate(-1291.000000, -549.000000)"
-        stroke="#372E4B"
+        stroke="#fff"
       >
         <g id="Icon/Copy" transform="translate(1288.000000, 549.000000)">
           <g id="Page-1" transform="translate(3.428571, 0.857143)">
