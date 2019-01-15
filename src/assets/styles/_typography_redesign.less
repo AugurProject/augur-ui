@@ -1,0 +1,180 @@
+:global {
+  @import (less) '_typ_font-awesome.css';
+  @import (less) '_typ_icofont.css';
+}
+// THIS IS A WORK IN PROGRESS
+// TODO: have full parity with new redesign text/number sizes and spacing
+@import '_type_font-face';
+
+// font-families
+@roboto: 'roboto', sans-serif;
+@roboto-mono: 'roboto mono', sans-serif;
+
+// sizes
+@size-tiny: 0.5625rem; // 9px (only used for numbers)
+@size-smallest: 0.625rem; // 10px
+@size-smaller: 0.75rem; // 12px
+@size-small: 0.875rem; // 14px
+@size-normal: 1rem; // 16px
+@size-medium: 1.125rem; // 18px;
+@size-large: 1.5rem; // 24px
+@size-larger: 1.875rem; // 30px
+@size-largest: 2.25rem; // 36px
+
+// font-weights
+@weight-light: 300; // 300
+@weight-normal: normal; // 400
+@weight-medium: 500; // 500
+@weight-bold: bold; // 700
+
+// line-heights
+@line-height-normal: normal; // this is 120% of the font-size. 10px = 12px
+@line-height-paragraph: 1.25rem; // 20px for the 12px paragraph font-size
+@line-height-small-spacing: 0.9375rem; // 15px for smallest text
+
+// defaults
+.text-default {
+  font-family: @roboto;
+  font-style: normal;
+  font-weight: @weight-normal;
+  line-height: @line-height-normal;
+}
+
+.number-default {
+  .text-default;
+
+  font-family: @roboto-mono;
+}
+
+// text sizes
+.text-largest {
+  .text-default;
+
+  font-size: @size-largest;
+  font-weight: @weight-light;
+}
+
+.text-largest-bold {
+  .text-largest;
+
+  font-weight: @weight-bold;
+}
+
+.text-larger {
+  .text-default;
+
+  font-size: @size-larger;
+  font-weight: @weight-bold;
+}
+
+.text-large {
+  .text-default;
+
+  font-size: @size-large;
+  font-weight: @weight-bold;
+}
+
+.text-medium {
+  .text-default;
+
+  font-size: @size-medium;
+  font-weight: @weight-bold;
+}
+
+.text-normal {
+  .text-default;
+
+  font-size: @size-normal;
+}
+
+.text-normal-bold {
+  .text-normal;
+
+  font-weight: @weight-medium;
+}
+
+.text-small {
+  .text-default;
+
+  font-size: @size-small;
+}
+
+.text-small-medium {
+  .text-small;
+
+  font-weight: @weight-medium;
+}
+
+.text-small-bold {
+  .text-small;
+
+  font-weight: @weight-bold;
+}
+
+.text-smaller {
+  .text-default;
+
+  font-size: @text-smaller;
+}
+
+.text-smaller-bold {
+  .text-smaller;
+
+  font-weight: @weight-bold;
+}
+
+.text-pargraph {
+  .text-smaller;
+
+  line-height: @line-height-paragraph;
+}
+
+.text-smallest {
+  .text-default;
+
+  font-size: @text-smallest;
+  line-height: @line-height-small-spacing;
+}
+
+// number sizes
+.number-large {
+  .number-default;
+
+  font-size: @text-small;
+}
+
+.number-large-bold {
+  .number-large;
+
+  font-weight: @weight-bold;
+}
+
+.number-medium {
+  .number-default;
+
+  font-size: @text-smaller;
+}
+
+.number-medium-bold {
+  .number-medium;
+
+  font-weight: @weight-bold;
+}
+
+.number-small {
+  .number-default;
+
+  font-size: @text-smallest;
+}
+
+.number-small-bold {
+  .number-small;
+
+  font-weight: @weight-bold;
+}
+
+.number-smallest {
+  .number-default;
+
+  font-size: @text-tiny;
+}
