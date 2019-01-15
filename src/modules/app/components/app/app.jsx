@@ -529,7 +529,9 @@ export default class AppView extends Component {
             onClick={e => this.mainSectionClickHandler(e, false)}
             role="presentation"
           >
-            <Logo isLoading={isLoading} />
+            <div className={Styles.Logo}>
+              <Logo isLoading={isLoading} />
+            </div>
             {this.renderMobileMenuButton(unseenCount)}
             <SideNav
               defaultMobileClick={() =>

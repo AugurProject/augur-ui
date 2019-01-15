@@ -1012,7 +1012,7 @@ export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
           id="Page-1"
           transform="translate(4.000000, 1.000000)"
           stroke={stroke}
-          strokeWidth="0.894"
+          strokeWidth="0"
         >
           <path
             d="M7.9209 2.57172V1.94672C7.9209 1.12172 8.5959 0.446716 9.4209 0.446716C10.2459 0.446716 10.9209 1.12172 10.9209 1.94672V2.54672"
@@ -1036,7 +1036,7 @@ export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
             d="M18.3389 17.4491C16.5789 14.4471 15.2629 11.4471 15.4209 8.44708C15.5789 5.44708 12.7349 2.44708 9.42091 2.44708C6.10691 2.44708 3.24691 5.13808 3.42091 8.44708C3.57891 11.4471 2.57891 14.4471 0.578907 17.4471C-1.42109 20.4471 20.0989 20.4501 18.3389 17.4491Z"
             fill={stroke}
             stroke={stroke}
-            strokeWidth="0.894"
+            strokeWidth="0"
           />
         </g>
         {!!unseenCount && (
