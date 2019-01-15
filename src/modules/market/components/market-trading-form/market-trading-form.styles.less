@@ -40,7 +40,7 @@
   min-height: 3.125rem;
 
   > button {
-    &:extend(.button--purple all);
+    &:extend(.button--bright all);
 
     border-radius: 0;
     bottom: 0;
@@ -52,15 +52,23 @@
   }
 }
 
+.MarketTradingForm__button--message {
+  &:extend(.button--bright all);
+
+  margin: 2rem auto 0;
+  max-width: 9.5rem;
+}
+
 .MarketTradingForm__initial-message {
-  border-top: 1px solid @color-darkpurple-2;
-  color: @color-lightgray;
-  padding: 3.5rem 0;
+  font-size: @font-size-large;
+  line-height: @font-size-rather-large;
+  margin: 7.75rem auto 0;
+  max-width: 14rem;
   text-align: center;
 }
 
 .MarketTradingForm__deposit-button {
-  &:extend(.button--purple all);
+  &:extend(.button--bright all);
 
   margin: 2rem auto 0;
   max-width: 9.5rem;

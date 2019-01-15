@@ -124,7 +124,7 @@ export default class MarketView extends Component {
       selectedOutcome:
         selectedOutcome === this.state.selectedOutcome &&
         marketType === CATEGORICAL
-          ? 0
+          ? null
           : selectedOutcome,
       selectedOrderProperties: {
         ...this.DEFAULT_ORDER_PROPERTIES

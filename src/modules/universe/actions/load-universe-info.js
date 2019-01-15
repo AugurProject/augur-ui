@@ -246,7 +246,7 @@ function getUniverseName(parentUniverseData, universeData) {
   return outComeLabel || "Unidentified";
 }
 
-export function getForkingInfo(universe, callback) {
+export function getForkingInfo(universe, callback = logError) {
   return (dispatch, getState) => {
     const universePayload = { tx: { to: universe.id } };
     // Getting current fork data
@@ -355,7 +355,7 @@ export function getUniverseProperties(universe, callback) {
           augur.api.Universe.getDisputeThresholdForFork(
             universePayload,
             (err, disputeThresholdForFork) => {
-              if (err) return callback(err);
+              if (err) return next(err);
               const forkThreshold = createBigNumber(
                 disputeThresholdForFork,
                 10
@@ -378,6 +378,7 @@ export function getUniverseProperties(universe, callback) {
       },
       (err, universeData) => {
         dispatch(updateUniverse(universeData));
+        if (callback) callback(err, universeData);
       }
     );
   };

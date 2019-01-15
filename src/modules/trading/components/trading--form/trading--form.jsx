@@ -13,10 +13,10 @@ import {
 import { isEqual } from "lodash";
 // import ReactTooltip from "react-tooltip";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
-import {
-  //   Hint,
-  ExclamationCircle as InputErrorIcon
-} from "modules/common/components/icons";
+// import {
+//   Hint,
+//  ExclamationCircle as InputErrorIcon
+// } from "modules/common/components/icons";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import {
@@ -407,14 +407,14 @@ class TradingForm extends Component {
     const tickSize = parseFloat(market.tickSize);
     const max = maxPrice.toString();
     const min = minPrice.toString();
-    const errors = Array.from(
-      new Set([
-        ...s.errors[this.INPUT_TYPES.QUANTITY],
-        ...s.errors[this.INPUT_TYPES.PRICE],
-        ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE],
-        ...s.errors[this.TRADE_MAX_COST]
-      ])
-    );
+    //    const errors = Array.from(
+    //      new Set([
+    //        ...s.errors[this.INPUT_TYPES.QUANTITY],
+    //        ...s.errors[this.INPUT_TYPES.PRICE],
+    //        ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE],
+    //        ...s.errors[this.TRADE_MAX_COST]
+    //      ])
+    //    );
     let quantityValue = s[this.INPUT_TYPES.QUANTITY];
     if (BigNumber.isBigNumber(quantityValue)) {
       quantityValue =
@@ -550,16 +550,6 @@ class TradingForm extends Component {
               Fill Orders Only
             </label>
           </li>
-        </ul>
-        <ul className={Styles["TradingForm__form-body"]}>
-          {errors.length > 0 && (
-            <li className={Styles["TradingForm__error-message"]}>
-              {InputErrorIcon}{" "}
-              {errors.map(error => (
-                <p key={error}>{error}</p>
-              ))}
-            </li>
-          )}
         </ul>
       </div>
     );

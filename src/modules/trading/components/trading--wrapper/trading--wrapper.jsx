@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 
 import TradingForm from "modules/trading/components/trading--form/trading--form";
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
 import { Close } from "modules/common/components/icons";
 
-import makePath from "modules/routes/helpers/make-path";
 import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 
 import getValue from "utils/get-value";
@@ -16,7 +14,6 @@ import { isEqual } from "lodash";
 import { FindReact } from "utils/find-react";
 import { SCALAR } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
-import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 
@@ -25,8 +22,6 @@ class TradingWrapper extends Component {
     market: PropTypes.object.isRequired,
     isLogged: PropTypes.bool.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
-    initialMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
-      .isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
     toggleForm: PropTypes.func.isRequired,
@@ -65,7 +60,11 @@ class TradingWrapper extends Component {
   componentWillReceiveProps(nextProps) {
     const { selectedOrderProperties } = this.props;
 
-    if (this.props.selectedOutcome === null) return this.clearOrderForm();
+    if (
+      this.props.selectedOutcome === null ||
+      !(nextProps.selectedOutcome || {}).trade
+    )
+      return this.clearOrderForm();
     const nextTotalCost = createBigNumber(
       nextProps.selectedOutcome.trade.totalCost.formattedValue,
       10
@@ -131,7 +130,6 @@ class TradingWrapper extends Component {
   render() {
     const {
       availableFunds,
-      initialMessage,
       isLogged,
       isMobile,
       market,
@@ -218,15 +216,6 @@ class TradingWrapper extends Component {
           {market.marketType === SCALAR && (
             <div className={Styles.TradingWrapper__scalar__line} />
           )}
-          {initialMessage && (
-            <p className={Styles["TradingWrapper__initial-message"]}>
-              {!isLogged ? (
-                <span>Signup or login to trade.</span>
-              ) : (
-                initialMessage
-              )}
-            </p>
-          )}
           {!isLogged && (
             <button
               id="login-button"
@@ -242,37 +231,24 @@ class TradingWrapper extends Component {
               Sign in to trade
             </button>
           )}
-          {initialMessage &&
-            isLogged &&
-            availableFunds &&
-            availableFunds.lte(0) && (
-              <Link
-                className={Styles["TradingWrapper__button--add-funds"]}
-                to={makePath(ACCOUNT_DEPOSIT)}
-              >
-                Add Funds
-              </Link>
-            )}
-          {!initialMessage && (
-            <TradingForm
-              market={market}
-              marketType={getValue(this.props, "market.marketType")}
-              maxPrice={getValue(this.props, "market.maxPrice")}
-              minPrice={getValue(this.props, "market.minPrice")}
-              availableFunds={availableFunds}
-              selectedNav={s.selectedNav}
-              orderPrice={s.orderPrice}
-              orderQuantity={s.orderQuantity}
-              orderEthEstimate={s.orderEthEstimate}
-              orderShareEstimate={s.orderShareEstimate}
-              doNotCreateOrders={s.doNotCreateOrders}
-              selectedOutcome={selectedOutcome}
-              updateState={this.updateState}
-              isMobile={isMobile}
-              gasPrice={gasPrice}
-              updateSelectedOutcome={updateSelectedOutcome}
-            />
-          )}
+          <TradingForm
+            market={market}
+            marketType={getValue(this.props, "market.marketType")}
+            maxPrice={getValue(this.props, "market.maxPrice")}
+            minPrice={getValue(this.props, "market.minPrice")}
+            availableFunds={availableFunds}
+            selectedNav={s.selectedNav}
+            orderPrice={s.orderPrice}
+            orderQuantity={s.orderQuantity}
+            orderEthEstimate={s.orderEthEstimate}
+            orderShareEstimate={s.orderShareEstimate}
+            doNotCreateOrders={s.doNotCreateOrders}
+            selectedOutcome={selectedOutcome}
+            updateState={this.updateState}
+            isMobile={isMobile}
+            gasPrice={gasPrice}
+            updateSelectedOutcome={updateSelectedOutcome}
+          />
         </div>
 
         {selectedOutcome &&

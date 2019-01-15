@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
+// import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 import classNames from "classnames";
 // import { CATEGORICAL } from "modules/markets/constants/market-types";
-import { BUY } from "modules/transactions/constants/types";
+import { BUY, SELL } from "modules/transactions/constants/types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { Hint } from "modules/common/components/icons";
@@ -19,140 +19,125 @@ const MarketTradingConfirm = ({
   doNotCreateOrders,
   showOrderPlaced,
   handleFilledOnly
+  // errors
 }) => {
   const {
-    numShares,
+    // numShares,
     limitPrice,
-    tradingFees,
+    // tradingFees,
     potentialEthProfit,
-    potentialProfitPercent,
-    potentialEthLoss,
-    potentialLossPercent,
-    totalCost,
-    shareCost
+    // potentialProfitPercent,
+    potentialEthLoss
+    // potentialLossPercent,
+    // totalCost,
+    // shareCost
   } = trade;
-  const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
+  // const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
   return (
     <section className={Styles.TradingConfirm}>
-      <span className={Styles.TradingConfirm__dotted__line} />
-      <ul className={Styles.TradingConfirm__details}>
-        <li>
-          <span>Close Position</span>
-        </li>
-        <li>
-          <span>{numShares} Shares</span>
-        </li>
-        <li>
-          <span>Limit Price</span>
-          <span>{limitPrice} ETH</span>
-        </li>
-        <li>
-          <span className={Styles.TradingConfirm__FeeLabel}>Est. Fee</span>
-          <span className={Styles.TradingConfirm__TooltipContainer}>
-            <label
-              className={classNames(
-                TooltipStyles.TooltipHint,
-                Styles.TradingConfirm__TooltipHint
-              )}
-              data-tip
-              data-for="tooltip--fee"
-            >
-              {Hint}
-            </label>
-            <ReactTooltip
-              id="tooltip--fee"
-              className={TooltipStyles.Tooltip}
-              effect="solid"
-              place="bottom"
-              type="light"
-            >
-              <p>
-                The reporting fee adjusts every week, which may cause the
-                market‘s total fee to go up or down.
-              </p>
-              <a
-                href="http://docs.augur.net/#reporting-fee"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {" "}
-                Learn more here.
-              </a>
-            </ReactTooltip>
-          </span>
-          <span>
-            {tradingFees ? tradingFees.formattedValue : "0"} <span>ETH</span>
-          </span>
-        </li>
-      </ul>
-      <ul className={Styles.TradingConfirm__total}>
-        <li>
-          <span>Est. Cost</span>
-        </li>
-        <li>
-          <span>
-            <ValueDenomination
-              formatted={totalCost ? totalCost.fullPrecision : "0"}
-            />{" "}
-            <span>ETH</span>
-          </span>
-          <span>
-            <ValueDenomination
-              formatted={shareCost ? shareCost.fullPrecision : "0"}
-            />{" "}
-            <span>Shares</span>
-          </span>
-        </li>
-      </ul>
-      <ul className={Styles.TradingConfirm__potential}>
-        <li>
-          <span>Potential Profit</span>
-          <span
-            className={classNames({
-              [`${Styles.negative__profit}`]: negativeProfit
-            })}
-          >
-            <ValueDenomination
-              formatted={
-                potentialEthProfit
-                  ? potentialEthProfit.formattedValue.toString()
-                  : "0"
-              }
-            />{" "}
+      <div className={Styles.TradingConfirm__details}>
+        <div className={Styles.TradingConfirm__position}>
+          <div className={Styles.TradingConfirm__position__properties}>
+            Close Position
+          </div>
+          <div className={Styles.TradingConfirm__agg_position}>
             <span
               className={classNames({
-                [`${Styles.negative__profit}`]: negativeProfit
+                [Styles.long]: selectedNav === BUY,
+                [Styles.short]: selectedNav === SELL
               })}
             >
-              ETH (
-              {potentialProfitPercent ? potentialProfitPercent.formatted : "0"}
-              %)
+              Short
             </span>
-          </span>
-        </li>
-        <li>
-          <span>Potential Loss</span>
-          <span>
-            <span>
-              <ValueDenomination
-                formatted={
-                  potentialEthLoss
-                    ? potentialEthLoss.formattedValue.toString()
-                    : "0"
-                }
-              />{" "}
-              <span>
-                ETH (
-                {potentialLossPercent ? potentialLossPercent.formatted : "0"}
-                %)
-              </span>
+            <span>2.000</span>
+            Shares @ <span>{limitPrice}</span>
+          </div>
+          <div className={Styles.TradingConfirm__position__properties}>
+            <div>
+              <div>Estimate Fee</div>
+              <div className={Styles.TradingConfirm__property__value}>
+                0.1000
+                <span>ETH</span>
+              </div>
+            </div>
+            <div className={Styles.TradingConfirm__vert__line} />
+            <div>
+              <div>Profit</div>
+              <div className={Styles.TradingConfirm__property__value}>
+                0.2000
+                <span>ETH</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={Styles.TradingConfirm__details}>
+        <div className={Styles.TradingConfirm__position}>
+          <div className={Styles.TradingConfirm__position__properties}>
+            New Position
+            <span className={Styles.TradingConfirm__TooltipContainer}>
+              <label
+                className={classNames(
+                  TooltipStyles.TooltipHint,
+                  Styles.TradingConfirm__TooltipHint
+                )}
+                data-tip
+                data-for="tooltip--fee"
+              >
+                {Hint}
+              </label>
+              <ReactTooltip
+                id="tooltip--fee"
+                className={TooltipStyles.Tooltip}
+                effect="solid"
+                place="bottom"
+                type="light"
+              >
+                <p>
+                  This means you believe {selectedNav} has a (higher or lower
+                  depending on buying or selling) then (limit price to %) change
+                  of happening
+                </p>
+              </ReactTooltip>
             </span>
-          </span>
-        </li>
-      </ul>
+          </div>
+          <div className={Styles.TradingConfirm__agg_position}>
+            <span
+              className={classNames({
+                [Styles.long]: selectedNav === BUY,
+                [Styles.short]: selectedNav === SELL
+              })}
+            >
+              Short
+            </span>
+            <span>2.000</span>
+            Shares @ <span>{limitPrice}</span>
+          </div>
+          <div className={Styles.TradingConfirm__position__properties}>
+            <div>
+              <div>Max Profit</div>
+              <div className={Styles.TradingConfirm__property__value}>
+                {potentialEthProfit.formatted}
+                <span>ETH</span>
+              </div>
+            </div>
+            <div className={Styles.TradingConfirm__vert__line} />
+            <div>
+              <div>Max Loss</div>
+              <div className={Styles.TradingConfirm__property__value}>
+                {potentialEthLoss.formatted}
+                <span>ETH</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className={Styles.TradingConfirmation__actions}>
         <button
-          className={Styles["TradingConfirmation__button--submit"]}
+          className={classNames(Styles["TradingConfirmation__button--submit"], {
+            [Styles.long]: selectedNav === BUY,
+            [Styles.short]: selectedNav === SELL
+          })}
           onClick={e => {
             e.preventDefault();
             market.onSubmitPlaceTrade(
