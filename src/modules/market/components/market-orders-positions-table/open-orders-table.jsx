@@ -52,6 +52,7 @@ const OpenOrdersTable = ({
                 pending={order.pending}
                 isExtendedDisplay={false}
                 isMobile={isMobile}
+                oddNumber={openOrders.length % 2 !== 0}
               />
             ))}
             {(orphanedOrders || []).map(order => (

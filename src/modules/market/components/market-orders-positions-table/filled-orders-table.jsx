@@ -34,7 +34,12 @@ const FilledOrdersTable = ({ filledOrders, isMobile }) => (
         {filledOrders.length > 0 && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {filledOrders.map((order, i) => (
-              <FilledOrdersOrder key={i} order={order} isMobile={isMobile} />
+              <FilledOrdersOrder
+                key={i}
+                order={order}
+                isMobile={isMobile}
+                oddNumber={filledOrders.length % 2 !== 0}
+              />
             ))}
           </div>
         )}
