@@ -32,7 +32,7 @@ export default class OpenOrdersOrder extends Component {
 
   static defaultProps = {
     outcome: null,
-    evenNumber: false
+    oddNumber: false
   };
 
   constructor(props) {
