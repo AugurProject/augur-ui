@@ -1,12 +1,15 @@
 @import (reference) '~assets/styles/shared';
 
 .CreateMarketPreview {
-  background-color: @color-white;
-  padding: 4.25rem 0 3.5rem;
+  background-color: @color-grayish-purple;
+  color: @color-white;
+  padding: 2.4375rem 0 5.375rem;
 }
 
 .CreateMarketPreview__description {
-  line-height: 2.4rem;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 1.125rem;
   overflow: hidden;
 }
 
@@ -29,12 +32,12 @@
 }
 
 .CreateMarketPreview__header {
-  padding-bottom: 2.5rem;
+  padding-bottom: 1.125rem;
 }
 
 .CreateMarketPreview__footer {
-  border-top: 1px solid @color-lightest-gray;
-  padding-top: 1rem;
+  border-top: 1px solid @color-almost-black;
+  padding-top: 1.125rem;
 }
 
 .CreateMarketPreview__meta {
@@ -50,13 +53,16 @@
     > span {
       &:extend(.caps--medium);
 
-      color: @color-purple;
+      color: @color-white;
       display: block;
+      font-size: @font-size-small;
+      font-weight: bold;
 
       &:first-child {
         &:extend(.caps--small);
 
-        color: @color-lightgray;
+        color: @color-light-gray;
+        font-size: @font-size-extra-small;
         margin-bottom: 0.625rem;
       }
     }
@@ -64,11 +70,11 @@
 }
 
 .CreateMarketPreview__outcome {
-  min-height: 2.75rem;
+  font-size: 14px;
 }
 
 .CreateMarketPreview__tags {
-  margin-bottom: 1.625rem;
+  margin-bottom: 1.5rem;
   padding-right: 2.125rem;
 }
 

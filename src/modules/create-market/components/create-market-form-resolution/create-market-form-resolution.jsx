@@ -219,6 +219,35 @@ export default class CreateMarketResolution extends Component {
               </button>
               {newMarket.expirySourceType === EXPIRY_SOURCE_SPECIFIC && (
                 <div>
+                  <div style={{ display: "inline-block" }}>
+                    <label
+                      className={classNames(
+                        TooltipStyles.TooltipHint,
+                        Styles.CreateMarketResolution__tooltip
+                      )}
+                      data-tip
+                      data-for="tooltip--resolution-source"
+                    >
+                      {Hint}
+                    </label>
+                    <ReactTooltip
+                      id="tooltip--resolution-source"
+                      className={classNames(
+                        TooltipStyles.Tooltip,
+                        Styles.CreateMarketResolution__tooltipContainer
+                      )}
+                      effect="solid"
+                      place="left"
+                      type="light"
+                    >
+                      <h4>Market Resolution Source</h4>
+                      <p style={{ color: "white" }}>
+                        {
+                          "A market's resolution source should be a specific URL that provides consistent results across all timezones. Ideally, the market description should provide details for how to use this source."
+                        }
+                      </p>
+                    </ReactTooltip>
+                  </div>
                   <input
                     type="text"
                     value={newMarket.expirySource}

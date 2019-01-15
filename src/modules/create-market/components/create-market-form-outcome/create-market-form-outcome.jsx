@@ -426,6 +426,11 @@ export default class CreateMarketOutcome extends Component {
                 </span>
               )}
             </label>
+            <p style={{ marginBottom: "0.5rem" }}>
+              To reduce ambiguity, categorical markets should cover all possible
+              outcomes. This can be done by including an outcome such as
+              &quot;Other&quot;
+            </p>
             <div className={Styles.CreateMarketOutcome__categorical}>
               {[...Array(s.outcomeFieldCount).keys()].map(i => {
                 const placeholderText = i < 2 ? "Outcome" : "Optional Outcome";
