@@ -117,7 +117,7 @@ const MarketTradingConfirm = ({
             <div>
               <div>Max Profit</div>
               <div className={Styles.TradingConfirm__property__value}>
-                {potentialEthProfit.formatted}
+                {potentialEthProfit && potentialEthProfit.formatted}
                 <span>ETH</span>
               </div>
             </div>
@@ -125,7 +125,7 @@ const MarketTradingConfirm = ({
             <div>
               <div>Max Loss</div>
               <div className={Styles.TradingConfirm__property__value}>
-                {potentialEthLoss.formatted}
+                {potentialEthLoss && potentialEthLoss.formatted}
                 <span>ETH</span>
               </div>
             </div>

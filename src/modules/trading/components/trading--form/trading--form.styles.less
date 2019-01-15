@@ -32,27 +32,6 @@
       }
     }
 
-    &.TradingForm__error-message {
-      color: @color-red;
-      display: block;
-      font-size: @font-size-medium;
-      line-height: @font-size-medium;
-      margin-bottom: 2rem;
-
-      > p {
-        display: inline-block;
-        margin: 0;
-        margin-bottom: 0.5rem;
-      }
-
-      > svg {
-        margin: -0.1rem 0.2rem 0;
-        max-height: 1rem;
-        max-width: 1rem;
-        vertical-align: top;
-      }
-    }
-
     > label {
       color: @color-light-gray;
       font-size: @font-size-small;
@@ -71,6 +50,22 @@
       }
     }
   }
+}
+
+.TradingForm__error_message_container {
+  background: rgba(255, 39, 39, 0.2);
+  border: 1px solid rgba(255, 39, 39, 0.2);
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: block;
+  font-size: @font-size-small;
+  line-height: @font-size-medium;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.TradingForm__error_message {
+  color: @color-white;
 }
 
 .TradingForm__outcome__container {
@@ -102,10 +97,10 @@
       color: @color-lightgray;
       line-height: @font-size-rather-large;
     }
+  }
 
-    &.error {
-      border-color: @color-red;
-    }
+  &.error {
+    border: 1px solid rgba(255, 39, 39, 0.5);
   }
 
   > span {
@@ -120,6 +115,12 @@
 
     &.isScalar {
       max-width: 10rem;
+    }
+
+    &.error {
+      background: rgba(255, 39, 39, 0.2);
+      border-radius: 3px;
+      opacity: 0.5;
     }
   }
 
@@ -274,10 +275,6 @@
   .TradingForm__static-field {
     color: @color-white;
   }
-}
-
-.TradingForm__error-message p:not(:first-of-type) {
-  margin-left: 1.65rem !important;
 }
 
 @media @breakpoint-mobile-extra-small {
