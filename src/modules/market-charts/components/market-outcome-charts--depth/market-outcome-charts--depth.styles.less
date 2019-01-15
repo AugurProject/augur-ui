@@ -31,37 +31,94 @@
   flex: 1;
 
   :global {
-    #hovered_price_label,
-    #hovered_cost_label,
-    #hovered_volume_label {
-      font-size: @font-size-smallest;
+    .hovered_tooltip_div {
+      background-color: @color-almostblack;
+      border: 1px solid @color-white;
+      border-radius: 0.5rem 0 0 0.5rem;
+      border-right-width: 2px;
+      color: @color-white;
+      display: flex;
+      flex: 1 113px;
+      flex-flow: row nowrap;
+      height: 3.3125rem;
+      min-width: 113px;
+      padding: 0.25rem 0.5rem;
     }
 
-    #hovered_price_value {
-      fill: @color-white;
-      font-size: @font-size-medium;
-      font-weight: bold;
-      stroke: @color-white;
+    .hovered_tooltip_div.flip {
+      border-left-width: 2px;
+      border-radius: 0 0.5rem 0.5rem 0;
+      border-right-width: 1px;
     }
 
-    #hovered_cost_value,
-    #hovered_volume_value {
-      fill: @color-white;
-      font-size: @font-size-extra-small;
-      font-weight: bold;
-      stroke: @color-white;
+    .hovered_tooltip_div.bids {
+      border-color: fade(@color-positive, 30%);
+      border-right-color: @color-positive;
     }
 
-    .hovered_tooltip {
-      fill: @color-almostblack;
-      fill-opacity: 0.5;
+    .hovered_tooltip_div.bids.flip {
+      border-left-color: @color-positive;
+      border-right-color: fade(@color-positive, 30%);
+    }
+
+    .hovered_tooltip_div.asks {
+      border-color: fade(@color-negative, 30%);
+      border-right-color: @color-negative;
+    }
+
+    .hovered_tooltip_div.asks.flip {
+      border-left-color: @color-negative;
+      border-right-color: fade(@color-negative, 30%);
+    }
+
+    .hovered_tooltip_labels {
+      display: flex;
+      flex: 0;
+      flex-flow: column nowrap;
+
+      > div {
+        flex: 1;
+        font-size: @font-size-smallest;
+        margin-bottom: 0.25rem;
+        text-align: left;
+      }
+
+      > div#price_label {
+        margin-top: 0.375rem;
+      }
+
+      > div#cost_label {
+        margin-bottom: 0;
+      }
+    }
+
+    .hovered_tooltip_values {
+      display: flex;
+      flex: 0 0 auto;
+      flex-flow: column nowrap;
+      margin-left: 0.5rem;
+
+      > div {
+        color: @color-white;
+        flex: 1;
+        font-size: @font-size-extra-small;
+        line-height: @font-size-medium;
+        text-align: left;
+      }
+
+      > div#price_value {
+        font-size: @font-size-medium;
+        line-height: @font-size-large;
+      }
     }
 
     .asks {
+      color: @color-negative;
       stroke: @color-negative;
     }
 
     .bids {
+      color: @color-positive;
       stroke: @color-positive;
     }
 
@@ -78,6 +135,10 @@
       stroke: @color-lightgray;
     }
 
+    .bounding-line:first-of-type {
+      stroke: none;
+    }
+
     .tick-line--midpoint {
       stroke: @color-white;
       stroke-dasharray: 3;
@@ -92,6 +153,7 @@
       &:extend(.caps--extra-small all);
 
       fill: @color-white;
+      font-size: @font-size-small;
     }
 
     .tick-value-midpoint {
@@ -102,6 +164,7 @@
     .tick-value-midpoint-text {
       &:extend(.caps--extra-small all);
 
+      fill: @color-lightgray;
       font-size: @font-size-small;
       text-transform: none;
     }

@@ -6,7 +6,9 @@ import Styles from "modules/account/components/account-rep-faucet/account-rep-fa
 const AccountRepFaucet = ({ repFaucet }) => (
   <section className={Styles.AccountRepFaucet}>
     <div className={Styles.AccountRepFaucet__heading}>
-      <h1>Account: REP Faucet</h1>
+      <h1>
+        Account: <span>REP Faucet</span>
+      </h1>
     </div>
     <div className={Styles.AccountRepFaucet__main}>
       <div className={Styles.AccountRepFaucet__description}>

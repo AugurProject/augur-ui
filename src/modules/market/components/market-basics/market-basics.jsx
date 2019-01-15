@@ -62,6 +62,7 @@ const MarketBasics = ({
           startDate={p.endTime.value}
           endTime={endTime}
           currentTimestamp={p.currentTimestamp}
+          backgroundColor="transparent"
         />
       </div>
     );

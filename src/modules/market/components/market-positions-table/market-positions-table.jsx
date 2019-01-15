@@ -104,6 +104,7 @@ export default class MarketPositionsList extends Component {
                         isExtendedDisplay={false}
                         isMobile={false}
                         marketId={marketId}
+                        oddNumber={positions.length % 2 !== 0}
                       />
                     ))}
                 </div>

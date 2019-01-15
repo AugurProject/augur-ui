@@ -75,7 +75,7 @@ const Outcome = ({ className, outcome, marketId }) => {
           data-testid={"winning-" + marketId + "-" + outcome.id}
           className={Styles["MarketReportingPayouts__winning-outcome-message"]}
         >
-          tentative winning outcome
+          Tentative Winning Outcome
         </div>
       )}
       {!outcome.tentativeWinning && (

@@ -73,6 +73,18 @@
   }
 }
 
+.TradingForm__outcome__container {
+  background-color: @color-light-purple;
+  padding: 0.5rem 0.75rem 0.5rem 0.25rem;
+}
+
+.TradingForm__outcome__container__yes {
+  background-color: @color-dark-grayish-purple;
+  border: 1px solid @color-dark-gray;
+  padding: 1rem;
+  width: 100%;
+}
+
 .TradingForm__input__container {
   align-items: center;
   background-color: @color-grayish-purple;
@@ -99,8 +111,16 @@
   > span {
     background: @color-dark-gray;
     font-size: @font-size-small;
-    min-width: 4rem;
+    min-width: 4.375rem;
+    overflow: hidden;
     padding: 1rem;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+    white-space: nowrap;
+
+    &.isScalar {
+      max-width: 10rem;
+    }
   }
 
   > label {

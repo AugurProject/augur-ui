@@ -14,7 +14,6 @@ const MarketTradingConfirm = ({
   trade,
   isMobile,
   selectedNav,
-  prevPage,
   market,
   selectedOutcome,
   doNotCreateOrders,
@@ -35,9 +34,12 @@ const MarketTradingConfirm = ({
   const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
   return (
     <section className={Styles.TradingConfirm}>
+      <span className={Styles.TradingConfirm__dotted__line} />
       <ul className={Styles.TradingConfirm__details}>
         <li>
-          <span>Quantity</span>
+          <span>Close Position</span>
+        </li>
+        <li>
           <span>{numShares} Shares</span>
         </li>
         <li>
@@ -168,10 +170,9 @@ const MarketTradingConfirm = ({
               },
               doNotCreateOrders
             );
-            prevPage(e, true);
           }}
         >
-          Place {selectedNav === BUY ? "buy" : "sell"} order
+          Place {selectedNav === BUY ? "Buy" : "Sell"} Order
         </button>
       </div>
     </section>
@@ -183,7 +184,6 @@ MarketTradingConfirm.propTypes = {
   selectedNav: PropTypes.string.isRequired,
   doNotCreateOrders: PropTypes.bool.isRequired,
   selectedOutcome: PropTypes.object.isRequired,
-  prevPage: PropTypes.func.isRequired,
   trade: PropTypes.shape({
     numShares: PropTypes.string,
     limitPrice: PropTypes.string,

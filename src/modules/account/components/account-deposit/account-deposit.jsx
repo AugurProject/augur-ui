@@ -88,7 +88,9 @@ export default class AccountDeposit extends Component {
         }}
       >
         <div className={Styles.AccountDeposit__heading}>
-          <h1>Account: Deposit</h1>
+          <h1>
+            Account: <span>Deposit</span>
+          </h1>
           {DepositIcon}
         </div>
         <div className={Styles.AccountDeposit__main}>

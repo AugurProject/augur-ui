@@ -100,14 +100,16 @@ const MarketPortfolioCardFooter = ({
                       startDate={startTime}
                       endTime={finalTime}
                       currentTimestamp={currentTimestamp * 1000}
-                      backgroundColor="#ceccd8"
+                      backgroundColor="transparent"
                     />
                   </span>
                 </div>
               )}
             <button
               data-testid={"claimButton-" + marketId}
-              className={classNames(Styles["MarketCard__action-footer-light"])}
+              className={classNames(Styles["MarketCard__action-footer-light"], {
+                [Styles.MarketCard__claim]: linkType === TYPE_CLAIM_PROCEEDS
+              })}
               onClick={buttonAction}
               disabled={
                 (linkType === TYPE_CLAIM_PROCEEDS &&

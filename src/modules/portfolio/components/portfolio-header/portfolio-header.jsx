@@ -45,7 +45,7 @@ function getTitle(path) {
     case MY_MARKETS:
       return "my markets";
     case FAVORITES:
-      return "favorites";
+      return "watchlist";
     case TRANSACTIONS:
       return "transactions";
     case PORTFOLIO_REPORTS:

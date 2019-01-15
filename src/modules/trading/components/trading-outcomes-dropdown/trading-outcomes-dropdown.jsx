@@ -41,8 +41,12 @@ class TradingOutcomesDropdown extends Component {
       props.options.find(option => option.value === defaultValue) || false;
 
     this.setState({
-      label: (defaultOption && defaultOption.label) || props.options[0].label,
-      value: (defaultOption && defaultOption.value) || props.options[0].value
+      label: !defaultOption
+        ? defaultValue
+        : (defaultOption && defaultOption.label) || props.options[0].label,
+      value: !defaultOption
+        ? ""
+        : (defaultOption && defaultOption.value) || props.options[0].value
     });
   }
 

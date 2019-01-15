@@ -167,7 +167,9 @@ export default class AccountWithdraw extends Component {
     return (
       <section className={Styles.AccountWithdraw}>
         <div className={Styles.AccountWithdraw__heading}>
-          <h1>Account: Withdraw</h1>
+          <h1>
+            Account: <span>Withdraw</span>
+          </h1>
           {Withdraw}
         </div>
         <div className={Styles.AccountWithdraw__main}>

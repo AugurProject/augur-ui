@@ -25,13 +25,15 @@ export default class MarketPositionsListPosition extends Component {
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool,
     outcome: PropTypes.object,
-    hasOrders: PropTypes.bool
+    hasOrders: PropTypes.bool,
+    oddNumber: PropTypes.bool
   };
 
   static defaultProps = {
     hasOrders: false,
     outcome: null,
-    isMobile: false
+    isMobile: false,
+    oddNumber: false
   };
 
   static calcAvgDiff(position, order) {
@@ -55,7 +57,8 @@ export default class MarketPositionsListPosition extends Component {
       isMobile,
       outcomeName,
       position,
-      outcome
+      outcome,
+      oddNumber
     } = this.props;
 
     const netPositionShares = getValue(position, "netPosition.formatted");
@@ -73,7 +76,8 @@ export default class MarketPositionsListPosition extends Component {
           !isMobile
             ? classNames(Styles.Position, {
                 [Styles["Position-not_extended"]]: isExtendedDisplay,
-                [Styles.Negative]: type === LONG
+                [Styles.Negative]: type === LONG,
+                [Styles.TableItemDark]: oddNumber
               })
             : Styles.PortMobile
         }

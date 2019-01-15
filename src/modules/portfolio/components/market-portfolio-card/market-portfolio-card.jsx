@@ -22,6 +22,7 @@ import {
   AWAITING_SIGNATURE,
   PENDING
 } from "modules/transactions/constants/statuses";
+import determineMarketPhase from "utils/determine-market-phase";
 
 export default class MarketPortfolioCard extends Component {
   static propTypes = {
@@ -36,12 +37,14 @@ export default class MarketPortfolioCard extends Component {
     orphanedOrders: PropTypes.array.isRequired,
     transactionsStatus: PropTypes.object.isRequired,
     cancelOrphanedOrder: PropTypes.func.isRequired,
-    sellCompleteSets: PropTypes.func.isRequired
+    sellCompleteSets: PropTypes.func.isRequired,
+    reportingState: PropTypes.string
   };
 
   static defaultProps = {
     positionsDefault: true,
-    linkType: null
+    linkType: null,
+    reportingState: ""
   };
 
   constructor(props) {
@@ -97,7 +100,8 @@ export default class MarketPortfolioCard extends Component {
       orphanedOrders,
       cancelOrphanedOrder,
       sellCompleteSets,
-      transactionsStatus
+      transactionsStatus,
+      reportingState
     } = this.props;
     const { tableOpen, claimClicked, disableFinalize } = this.state;
     const myPositionsSummary = getValue(market, "myPositionsSummary");
@@ -136,6 +140,8 @@ export default class MarketPortfolioCard extends Component {
         completeSetButtonText = "Sell Complete Sets";
         break;
     }
+    const phase = determineMarketPhase(reportingState);
+
     return (
       <article className={CommonStyles.MarketCommon__container}>
         <section
@@ -163,7 +169,28 @@ export default class MarketPortfolioCard extends Component {
                 <MarketLink id={market.id}>{market.description}</MarketLink>
               </h1>
             </div>
+            {!isMobile && (
+              <div className={Styles.MarketCard__status}>
+                <span style={{ marginTop: "0.125rem" }}>{phase}</span>
+                <span
+                  className={classNames(
+                    {
+                      [Styles.MarketCard__underline__open]: phase === "Open"
+                    },
+                    {
+                      [Styles.MarketCard__underline__resolved]:
+                        phase === "Resolved"
+                    },
+                    {
+                      [Styles.MarketCard__underline__reporting]:
+                        phase !== "Resolved" && phase !== "Open"
+                    }
+                  )}
+                />
+              </div>
+            )}
           </div>
+
           <div className={Styles.MarketCard__topstats}>
             <div className={Styles.MarketCard__leftstats}>
               <div className={Styles.MarketCard__stat}>

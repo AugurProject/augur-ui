@@ -3,6 +3,8 @@ import * as PropTypes from "prop-types";
 
 import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs";
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
+import MarketOutcomesChart from "src/modules/market-charts/containers/market-outcomes-chart";
+
 import { Candlestick } from "src/modules/market/components/market-view-charts/candlestick";
 import MarketDepth from "modules/market-charts/containers/market-outcome-chart-depth";
 import { BigNumber } from "bignumber.js";
@@ -53,7 +55,13 @@ export default class MarketChartsPane extends Component {
 
     return (
       <ModuleTabs selected={0}>
-        <ModulePane label="Price History">Price History</ModulePane>
+        <ModulePane label="Price History">
+          <MarketOutcomesChart
+            marketId={marketId}
+            selectedOutcome={selectedOutcome}
+            pricePrecision={4}
+          />
+        </ModulePane>
         <ModulePane label="Candlesticks">
           <Candlestick
             currentTimeInSeconds={currentTimestamp}

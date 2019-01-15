@@ -149,7 +149,7 @@ class PerformanceGraph extends Component {
     const selectedSeriesData = [
       {
         name: graphType,
-        color: "#553580"
+        color: "#09cfe1"
       }
     ];
     const seriesData = [];

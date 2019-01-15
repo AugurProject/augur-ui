@@ -6,8 +6,15 @@ if [ $# -eq 0 ]
     exit 1;
 fi
 
-MARKET_ID=$1
-OUTCOME=1
+MARKET_ID=$1;
+
+MARKET_TYPE=$(npx flash market-info -m $MARKET_ID | grep marketType | cut -d " " -f2);
+NUM_OF_OUTCOMES=1;
+if [ "$MARKET_TYPE" != "yesNo" ]; then
+NUM_OF_OUTCOMES=$(npx flash market-info -m $MARKET_ID | grep numOutcomes | cut -d " " -f2);
+fi
+
+echo "Number of outcomes: $NUM_OF_OUTCOMES";
 
 # Data in form of:
 # open	high	low	close	volume
@@ -16,6 +23,7 @@ curl https://gist.githubusercontent.com/justinbarry/bf6cd9afcd8778027e211105562b
 while IFS=$'\t' read -r -a dataArray
 do
   for ((i = 0; i < ${#dataArray[@]}; ++i)); do
+    OUTCOME=$((RANDOM % $NUM_OF_OUTCOMES));
     if ! ((i % 2)); then
       TRANS_ONE_TYPE='sell'
       TRANS_TWO_TYPE='buy'

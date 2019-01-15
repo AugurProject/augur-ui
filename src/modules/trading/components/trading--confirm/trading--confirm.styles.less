@@ -1,5 +1,12 @@
 @import (reference) "~assets/styles/shared";
 
+.TradingConfirm__dotted__line {
+  background-image: radial-gradient(white 5%, transparent 15%);
+  background-position: 0 0, 0.5em 0.5em;
+  background-repeat: repeat-x;
+  background-size: 0.4em 0.8em;
+}
+
 .TradingConfirmation__actions {
   display: flex;
   justify-content: flex-end;
@@ -18,8 +25,13 @@
 }
 
 .TradingConfirm__details {
-  border-bottom: 1px solid @color-lightgray;
+  background-image: radial-gradient(white 5%, transparent 15%);
+  background-position: 0 0, 0.5em 0.5em;
+  background-repeat: repeat-x;
+  background-size: 0.4em 0.8em;
+  margin: 1rem 0.25rem 0;
   padding: 1.5rem 2rem;
+  width: 100%;
 
   > li {
     align-items: center;

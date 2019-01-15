@@ -14,7 +14,7 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 import getValue from "utils/get-value";
 import { isEqual } from "lodash";
 import { FindReact } from "utils/find-react";
-
+import { SCALAR } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
@@ -52,13 +52,10 @@ class TradingWrapper extends Component {
       orderEthEstimate: "0",
       orderShareEstimate: "0",
       selectedNav: props.selectedOrderProperties.selectedNav || BUY,
-      currentPage: 0,
       doNotCreateOrders:
         props.selectedOrderProperties.doNotCreateOrders || false
     };
 
-    this.prevPage = this.prevPage.bind(this);
-    this.nextPage = this.nextPage.bind(this);
     this.updateState = this.updateState.bind(this);
     this.clearOrderForm = this.clearOrderForm.bind(this);
     this.updateOrderEthEstimate = this.updateOrderEthEstimate.bind(this);
@@ -68,17 +65,7 @@ class TradingWrapper extends Component {
   componentWillReceiveProps(nextProps) {
     const { selectedOrderProperties } = this.props;
 
-    if (!nextProps.selectedOutcome || !nextProps.selectedOutcome.trade) {
-      this.setState({ currentPage: 0 });
-      return;
-    }
     if (this.props.selectedOutcome === null) return this.clearOrderForm();
-    if (
-      this.props.selectedOutcome &&
-      this.props.selectedOutcome.name !== nextProps.selectedOutcome.name
-    ) {
-      this.setState({ currentPage: 0 });
-    }
     const nextTotalCost = createBigNumber(
       nextProps.selectedOutcome.trade.totalCost.formattedValue,
       10
@@ -106,34 +93,6 @@ class TradingWrapper extends Component {
     }
   }
 
-  prevPage(e, orderSent = false) {
-    const newPage =
-      this.state.currentPage <= 0 ? 0 : this.state.currentPage - 1;
-    if (orderSent) {
-      this.setState({
-        currentPage: newPage,
-        orderPrice: "",
-        orderQuantity: "",
-        orderEthEstimate: "0",
-        orderShareEstimate: "0",
-        doNotCreateOrders: false
-      });
-      this.props.updateSelectedOrderProperties({
-        orderPrice: "",
-        orderQuantity: "",
-        doNotCreateOrders: false
-      });
-    } else {
-      this.setState({ currentPage: newPage });
-    }
-  }
-
-  nextPage() {
-    const newPage =
-      this.state.currentPage >= 1 ? 1 : this.state.currentPage + 1;
-    this.setState({ currentPage: newPage });
-  }
-
   updateState(property, value) {
     this.setState({ [property]: value }, () => {
       this.props.updateSelectedOrderProperties({
@@ -153,7 +112,6 @@ class TradingWrapper extends Component {
       orderQuantity: "",
       orderEthEstimate: "0",
       orderShareEstimate: "0",
-      currentPage: 0,
       doNotCreateOrders: false
     });
   }
@@ -202,7 +160,7 @@ class TradingWrapper extends Component {
               {Close}
             </button>
             <span className={Styles["TradingWrapper__mobile-header-outcome"]}>
-              {selectedOutcome.name} Blah
+              {selectedOutcome.name}
             </span>
             <span className={Styles["TradingWrapper__mobile-header-last"]}>
               <ValueDenomination formatted={lastPrice} />
@@ -214,92 +172,109 @@ class TradingWrapper extends Component {
             </span>
           </div>
         )}
-        {s.currentPage === 0 && (
-          <div>
-            <ul
-              className={
-                s.selectedNav === BUY
-                  ? Styles.TradingWrapper__header_buy
-                  : Styles.TradingWrapper__header_sell
+        <div>
+          <ul
+            className={classNames({
+              [Styles.TradingWrapper__header_buy]: s.selectedNav === BUY,
+              [Styles.TradingWrapper__header_sell]: s.selectedNav === SELL
+            })}
+          >
+            <li
+              className={classNames({
+                [`${Styles.active_buy}`]: s.selectedNav === BUY
+              })}
+            >
+              <div>
+                <button onClick={() => this.setState({ selectedNav: BUY })}>
+                  Buy Shares
+                </button>
+                <span
+                  className={classNames(Styles.TradingWrapper__underline__buy, {
+                    [`${Styles.notActive}`]: s.selectedNav === SELL
+                  })}
+                />
+              </div>
+            </li>
+            <li
+              className={classNames({
+                [`${Styles.active_sell}`]: s.selectedNav === SELL
+              })}
+            >
+              <div>
+                <button onClick={() => this.setState({ selectedNav: SELL })}>
+                  Sell Shares
+                </button>
+                <span
+                  className={classNames(
+                    Styles.TradingWrapper__underline__sell,
+                    {
+                      [`${Styles.notActive}`]: s.selectedNav === BUY
+                    }
+                  )}
+                />
+              </div>
+            </li>
+          </ul>
+          {market.marketType === SCALAR && (
+            <div className={Styles.TradingWrapper__scalar__line} />
+          )}
+          {initialMessage && (
+            <p className={Styles["TradingWrapper__initial-message"]}>
+              {!isLogged ? (
+                <span>Signup or login to trade.</span>
+              ) : (
+                initialMessage
+              )}
+            </p>
+          )}
+          {!isLogged && (
+            <button
+              id="login-button"
+              className={Styles["TradingWrapper__button--login"]}
+              onClick={() =>
+                FindReact(
+                  document.getElementsByClassName(
+                    "connect-account-styles_ConnectAccount"
+                  )[0]
+                ).toggleDropdown()
               }
             >
-              <li
-                className={classNames({
-                  [`${Styles.active_buy}`]: s.selectedNav === BUY
-                })}
+              Sign in to trade
+            </button>
+          )}
+          {initialMessage &&
+            isLogged &&
+            availableFunds &&
+            availableFunds.lte(0) && (
+              <Link
+                className={Styles["TradingWrapper__button--add-funds"]}
+                to={makePath(ACCOUNT_DEPOSIT)}
               >
-                <button onClick={() => this.setState({ selectedNav: BUY })}>
-                  Buy
-                </button>
-              </li>
-              <li
-                className={classNames({
-                  [`${Styles.active_sell}`]: s.selectedNav === SELL
-                })}
-              >
-                <button onClick={() => this.setState({ selectedNav: SELL })}>
-                  Sell
-                </button>
-              </li>
-            </ul>
-            {initialMessage && (
-              <p className={Styles["TradingWrapper__initial-message"]}>
-                {!isLogged ? (
-                  <span>Signup or login to trade.</span>
-                ) : (
-                  initialMessage
-                )}
-              </p>
+                Add Funds
+              </Link>
             )}
-            {!isLogged && (
-              <button
-                id="login-button"
-                className={Styles["TradingWrapper__button--login"]}
-                onClick={() =>
-                  FindReact(
-                    document.getElementsByClassName(
-                      "connect-account-styles_ConnectAccount"
-                    )[0]
-                  ).toggleDropdown()
-                }
-              >
-                Sign in to trade
-              </button>
-            )}
-            {initialMessage &&
-              isLogged &&
-              availableFunds &&
-              availableFunds.lte(0) && (
-                <Link
-                  className={Styles["TradingWrapper__button--add-funds"]}
-                  to={makePath(ACCOUNT_DEPOSIT)}
-                >
-                  Add Funds
-                </Link>
-              )}
-            {!initialMessage && (
-              <TradingForm
-                market={market}
-                marketType={getValue(this.props, "market.marketType")}
-                maxPrice={getValue(this.props, "market.maxPrice")}
-                minPrice={getValue(this.props, "market.minPrice")}
-                availableFunds={availableFunds}
-                selectedNav={s.selectedNav}
-                orderPrice={s.orderPrice}
-                orderQuantity={s.orderQuantity}
-                orderEthEstimate={s.orderEthEstimate}
-                orderShareEstimate={s.orderShareEstimate}
-                doNotCreateOrders={s.doNotCreateOrders}
-                selectedOutcome={selectedOutcome}
-                nextPage={this.nextPage}
-                updateState={this.updateState}
-                isMobile={isMobile}
-                gasPrice={gasPrice}
-                updateSelectedOutcome={updateSelectedOutcome}
-              />
-            )}
-          </div>
-        )}
+          {!initialMessage && (
+            <TradingForm
+              market={market}
+              marketType={getValue(this.props, "market.marketType")}
+              maxPrice={getValue(this.props, "market.maxPrice")}
+              minPrice={getValue(this.props, "market.minPrice")}
+              availableFunds={availableFunds}
+              selectedNav={s.selectedNav}
+              orderPrice={s.orderPrice}
+              orderQuantity={s.orderQuantity}
+              orderEthEstimate={s.orderEthEstimate}
+              orderShareEstimate={s.orderShareEstimate}
+              doNotCreateOrders={s.doNotCreateOrders}
+              selectedOutcome={selectedOutcome}
+              updateState={this.updateState}
+              isMobile={isMobile}
+              gasPrice={gasPrice}
+              updateSelectedOutcome={updateSelectedOutcome}
+            />
+          )}
+        </div>
+
         {selectedOutcome &&
           selectedOutcome.trade &&
           selectedOutcome.trade.limitPrice && (
@@ -311,7 +286,6 @@ class TradingWrapper extends Component {
               orderEthEstimate={s.orderEthEstimate}
               doNotCreateOrders={s.doNotCreateOrders}
               selectedOutcome={selectedOutcome}
-              prevPage={this.prevPage}
               trade={selectedOutcome.trade}
               isMobile={isMobile}
               clearOrderForm={this.clearOrderForm}

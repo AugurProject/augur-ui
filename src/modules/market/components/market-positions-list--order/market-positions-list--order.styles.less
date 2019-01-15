@@ -1,24 +1,36 @@
 @import (reference) '~assets/styles/shared';
 
 .Order {
+  background-color: @color-dark-grayish-purple;
   display: table-row;
+  font-family: "Roboto Mono", monospace;
+  font-size: @font-size-small;
   transition: background-color 0.15s ease;
+
+  &:last-of-type {
+    > li {
+      border-bottom: 0;
+    }
+  }
 
   &:first-child > li {
     border-top-width: 0;
   }
 
   > li {
-    border-top: 1px solid @color-lightest-gray;
+    border-bottom: 1px solid @color-almost-black;
     display: table-cell;
+    max-height: 40px;
     max-width: 19vw;
     overflow: hidden;
-    padding: 1.125rem 0;
+    padding: 11px 0;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     &:first-child {
+      font-family: @roboto;
+      font-size: 14px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
@@ -43,10 +55,16 @@
 }
 
 .Order__cancel {
-  .button--transparent();
+  &:extend(.button--mediumgray all);
 
   display: inline-block;
-  margin-right: -32px; // center button
+  font-size: 10px;
+  margin-right: -15px; // center button
+  padding: 3px 12px;
+
+  &.disabled {
+    &:extend(.button--mediumgray--disabled);
+  }
 }
 
 .Order-not_extended {
@@ -58,6 +76,7 @@
 }
 
 .PortMobile {
+  background-color: @color-dark-grayish-purple;
   display: table-row;
   transition: background-color 0.15s ease;
 
@@ -66,7 +85,7 @@
   }
 
   > li {
-    border-top: 1px solid @color-lightest-gray;
+    border-top: 1px solid @color-almost-black;
     display: table-cell;
     max-width: 19vw;
     overflow: hidden;
@@ -96,8 +115,10 @@
 }
 
 .Order__confirm {
-  background-color: @color-purple;
+  background-color: @color-medium-gray;
   color: @color-white;
+  font-family: @roboto;
+  font-size: @font-size-small;
   left: 0;
   opacity: 0;
   padding: 1.19rem 4.5rem 1.19rem 1rem;
@@ -174,7 +195,6 @@
 
   .PortMobile {
     > li {
-      border-top-color: @color-lightergray;
       color: inherit;
 
       &:first-child {

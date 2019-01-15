@@ -26,11 +26,13 @@ export default class OpenOrdersOrder extends Component {
       cancelOrder: PropTypes.func.isRequired
     }).isRequired,
     pending: PropTypes.bool.isRequired,
-    outcome: PropTypes.object
+    outcome: PropTypes.object,
+    oddNumber: PropTypes.bool
   };
 
   static defaultProps = {
-    outcome: null
+    outcome: null,
+    oddNumber: false
   };
 
   constructor(props) {
@@ -54,7 +56,8 @@ export default class OpenOrdersOrder extends Component {
       outcomeName,
       order,
       pending,
-      outcome
+      outcome,
+      oddNumber
     } = this.props;
 
     const s = this.state;
@@ -73,7 +76,8 @@ export default class OpenOrdersOrder extends Component {
           SharedStyles.Order__Extended,
           {
             [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
-            [SharedStyles.Negative]: orderType === SELL
+            [SharedStyles.Negative]: orderType === SELL,
+            [SharedStyles.TableItemDark]: oddNumber
           }
         )}
       >

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { isEqual } from "lodash";
+import { isEmpty, isEqual } from "lodash";
 
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
@@ -8,6 +8,7 @@ import ReactFauxDOM from "react-faux-dom";
 import { createBigNumber } from "utils/create-big-number";
 
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
+import { checkPropsChange } from "src/utils/check-props-change";
 
 export default class MarketOutcomesChart extends Component {
   static propTypes = {
@@ -33,7 +34,6 @@ export default class MarketOutcomesChart extends Component {
 
     this.state = {
       chart: null,
-      hoveredOutcome: null,
       drawParams: {},
       hoveredLocation: []
     };
@@ -49,9 +49,13 @@ export default class MarketOutcomesChart extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { outcomes, pricePrecision } = this.props;
+    const { pricePrecision } = this.props;
 
-    if (!isEqual(outcomes, nextProps.outcomes)) this.drawChart(nextProps);
+    if (
+      checkPropsChange(this.props, nextProps, ["outcomes", "selectedOutcome"])
+    ) {
+      this.drawChart(nextProps);
+    }
 
     if (
       !isEqual(this.state.hoveredLocation, nextState.hoveredLocation) ||
@@ -107,7 +111,8 @@ export default class MarketOutcomesChart extends Component {
     hasPriceHistory,
     bucketedPriceTimeSeries,
     pricePrecision,
-    isMobileSmall
+    isMobileSmall,
+    selectedOutcome
   }) {
     if (this.outcomesChart) {
       const drawParams = determineDrawParams({
@@ -147,7 +152,8 @@ export default class MarketOutcomesChart extends Component {
         estimatedInitialPrice,
         outcomes,
         drawParams,
-        bucketedPriceTimeSeries
+        bucketedPriceTimeSeries,
+        selectedOutcome
       });
 
       drawCrosshairs({
@@ -181,32 +187,10 @@ export default class MarketOutcomesChart extends Component {
   }
 
   render() {
-    const { pricePrecision } = this.props;
     const s = this.state;
 
     return (
       <div className={Styles.MarketOutcomesChart}>
-        <h3>price (eth) of each outcome</h3>
-        <div className={Styles[`MarketOutcomesChart__chart-header`]}>
-          <span className={Styles.MarketOutcomesChart__details}>
-            {s.hoveredOutcome === null ? (
-              "select an outcome to begin placing an order"
-            ) : (
-              <span>
-                <span className={Styles.MarketOutcomesChart__name}>
-                  {s.hoveredOutcome.name}
-                </span>
-                <span className={Styles.MarketOutcomesChart__price}>
-                  last: {s.hoveredOutcome.price.toFixed(pricePrecision)} eth
-                </span>
-                <span className={Styles.MarketOutcomesChart__instruction}>
-                  click to view more information about this outcome
-                </span>
-              </span>
-            )}
-          </span>
-          <div />
-        </div>
         <div
           ref={outcomesChart => {
             this.outcomesChart = outcomesChart;
@@ -263,19 +247,9 @@ function determineDrawParams(options) {
   };
 }
 
-function drawTicks(options) {
-  const { drawParams, chart, pricePrecision } = options;
-
+function drawTicks({ drawParams, chart, pricePrecision }) {
   // Y axis
   //  Bounds
-  //    Top
-  chart
-    .append("line")
-    .attr("class", Styles["MarketOutcomesChart__bounding-line"])
-    .attr("x1", 0)
-    .attr("x2", drawParams.containerWidth)
-    .attr("y1", drawParams.chartDim.top)
-    .attr("y2", drawParams.chartDim.top);
   //    Bottom
   chart
     .append("line")
@@ -338,16 +312,15 @@ function drawXAxisLabels(options) {
     .call(d3.axisBottom(drawParams.xScale));
 }
 
-function drawSeries(options) {
-  const {
-    creationTime,
-    drawParams,
-    estimatedInitialPrice,
-    outcomes,
-    chart,
-    bucketedPriceTimeSeries
-  } = options;
-
+function drawSeries({
+  creationTime,
+  drawParams,
+  estimatedInitialPrice,
+  outcomes,
+  chart,
+  bucketedPriceTimeSeries,
+  selectedOutcome
+}) {
   const initialPoint = {
     price: estimatedInitialPrice.toString(),
     timestamp: creationTime
@@ -359,14 +332,26 @@ function drawSeries(options) {
     .y(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
 
   outcomes.forEach((outcome, i) => {
-    chart
+    const p = chart
       .append("path")
       .data([
         [initialPoint, ...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]]
       ])
+      .attr("d", outcomeLine)
       .classed(`${Styles["MarketOutcomesChart__outcome-line"]}`, true)
-      .classed(`${Styles[`MarketOutcomesChart__outcome-line--${i + 1}`]}`, true)
-      .attr("d", outcomeLine);
+      .classed(
+        `${Styles[`MarketOutcomesChart__outcome-line--${i + 1}`]}`,
+        true
+      );
+    if (!isEmpty(selectedOutcome)) {
+      p.classed(
+        `${Styles[`MarketOutcomesChart__outcome-line-selected`]}`,
+        selectedOutcome === outcome.id
+      ).classed(
+        `${Styles[`MarketOutcomesChart__outcome-line-unselected`]}`,
+        selectedOutcome !== outcome.id
+      );
+    }
   });
 }
 

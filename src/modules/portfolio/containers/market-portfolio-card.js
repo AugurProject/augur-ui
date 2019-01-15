@@ -39,7 +39,8 @@ const mapStateToProps = (state, ownProps) => {
         selectMarket(ownProps.market.id),
         state.loginAccount
       ),
-    orphanedOrders: filteredOrphanOrders
+    orphanedOrders: filteredOrphanOrders,
+    reportingState: ownProps.market.reportingState
   };
 };
 

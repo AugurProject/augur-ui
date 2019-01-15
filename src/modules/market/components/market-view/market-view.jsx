@@ -156,7 +156,7 @@ export default class MarketView extends Component {
     console.log(
       "updateSelectedOrderProperties called",
       selectedOrderProperties,
-      this.market.id
+      this.props.market.id
     );
 
     // this.setState({
