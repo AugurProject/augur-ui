@@ -7,7 +7,14 @@ if [ $# -eq 0 ]
 fi
 
 MARKET_ID=$1;
-NUM_OF_OUTCOMES=$2;
+
+MARKET_TYPE=$(npx flash market-info -m $MARKET_ID | grep marketType | cut -d " " -f2);
+NUM_OF_OUTCOMES=1;
+if [ "$MARKET_TYPE" != "yesNo" ]; then
+NUM_OF_OUTCOMES=$(npx flash market-info -m $MARKET_ID | grep numOutcomes | cut -d " " -f2);
+fi
+
+echo "Number of outcomes: $NUM_OF_OUTCOMES";
 
 # Data in form of:
 # open	high	low	close	volume
