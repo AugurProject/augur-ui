@@ -41,7 +41,8 @@ class TradingForm extends Component {
     selectedOutcome: PropTypes.object.isRequired,
     updateState: PropTypes.func.isRequired,
     doNotCreateOrders: PropTypes.bool.isRequired,
-    updateSelectedOutcome: PropTypes.func.isRequired
+    updateSelectedOutcome: PropTypes.func.isRequired,
+    clearOrderForm: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -51,7 +52,7 @@ class TradingForm extends Component {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
       DO_NOT_CREATE_ORDERS: "doNotCreateOrders",
-      EST_ETH: "orderEstimateEth",
+      EST_ETH: "orderEthEstimate",
       MARKET_ORDER_SIZE: "marketOrderSize"
     };
 
@@ -65,8 +66,7 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
       [this.INPUT_TYPES.PRICE]: props.orderPrice,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
-      [this.INPUT_TYPES.EST_ETH]:
-        props.orderEthEstimate === "0" ? undefined : props.orderEthEstimate,
+      [this.INPUT_TYPES.EST_ETH]: "",
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
@@ -83,20 +83,15 @@ class TradingForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      orderEthEstimate,
-      orderShareEstimate,
-      selectedNav,
-      selectedOutcome,
-      updateState
-    } = this.props;
+    const { orderEthEstimate, orderShareEstimate, selectedNav } = this.props;
     // make sure to keep Quantity and Price as bigNumbers
     const nextQuantity = nextProps[this.INPUT_TYPES.QUANTITY];
     const nextPrice = nextProps[this.INPUT_TYPES.PRICE];
     const nextEstEth =
-      nextProps.orderEthEstimate === "0"
-        ? undefined
-        : nextProps.orderEthEstimate;
+      nextProps[this.INPUT_TYPES.EST_ETH] === "0"
+        ? ""
+        : nextProps[this.INPUT_TYPES.EST_ETH];
+    const ethEstimate = orderEthEstimate === "0" ? "" : orderEthEstimate;
 
     const newStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: nextQuantity
@@ -111,15 +106,14 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
         nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
       [this.INPUT_TYPES.EST_ETH]:
-        nextEstEth && nextEstEth !== undefined
+        nextEstEth && nextEstEth !== ""
           ? createBigNumber(nextEstEth, 10)
           : nextEstEth
     };
     const currentStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
-      [this.INPUT_TYPES.EST_ETH]:
-        orderEthEstimate === "0" ? undefined : orderEthEstimate,
+      [this.INPUT_TYPES.EST_ETH]: this.state[this.INPUT_TYPES.EST_ETH],
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[
         this.INPUT_TYPES.MARKET_ORDER_SIZE
       ],
@@ -128,13 +122,12 @@ class TradingForm extends Component {
       ]
     };
     const newOrderInfo = {
-      orderEthEstimate: nextProps.orderEthEstimate,
+      orderEthEstimate: ethEstimate,
       orderShareEstimate: nextProps.orderShareEstimate,
       selectedNav: nextProps.selectedNav,
       ...newStateInfo
     };
     const currentOrderInfo = {
-      orderEthEstimate,
       orderShareEstimate,
       selectedNav,
       ...currentStateInfo
@@ -151,12 +144,12 @@ class TradingForm extends Component {
         this.updateTrade(newStateInfo, nextProps);
       }
 
-      const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice;
-      const prevTradePrice = selectedOutcome.trade.limitPrice;
+      // const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice;
+      // const prevTradePrice = selectedOutcome.trade.limitPrice;
       // limitPrice is being defaulted and we had no value in the input box
-      const priceChange = prevTradePrice === null && nextTradePrice !== null;
+      // const priceChange = prevTradePrice === null && nextTradePrice !== null;
       // limitPrice is being updated in the background, but we have no limitPrice input set.
-      const forcePriceUpdate =
+      /*      const forcePriceUpdate =
         prevTradePrice === nextTradePrice &&
         nextTradePrice !== null &&
         isNaN(
@@ -167,7 +160,8 @@ class TradingForm extends Component {
           nextProps[this.INPUT_TYPES.PRICE] &&
             createBigNumber(nextProps[this.INPUT_TYPES.PRICE], 10)
         );
-
+*/
+      /*
       if (priceChange || forcePriceUpdate) {
         // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user as to where estimates are coming from.
         updateState(
@@ -175,7 +169,7 @@ class TradingForm extends Component {
           createBigNumber(nextTradePrice, 10)
         );
       }
-
+*/
       // orderValidation
       const { isOrderValid, errors, errorCount } = this.orderValidation(
         newStateInfo,
@@ -236,21 +230,36 @@ class TradingForm extends Component {
     let isOrderValid = true;
     let errorCount = 0;
 
-    const quantity =
+    const price =
+      order[this.INPUT_TYPES.PRICE] &&
+      createBigNumber(order[this.INPUT_TYPES.PRICE]);
+
+    let quantity =
       order[this.INPUT_TYPES.QUANTITY] &&
       createBigNumber(order[this.INPUT_TYPES.QUANTITY]);
+
+    const totalValue =
+      order[this.INPUT_TYPES.EST_ETH] &&
+      createBigNumber(order[this.INPUT_TYPES.EST_ETH]);
+    if (
+      !order[this.INPUT_TYPES.QUANTITY] &&
+      order[this.INPUT_TYPES.EST_ETH] &&
+      order[this.INPUT_TYPES.PRICE]
+    ) {
+      quantity = totalValue.dividedBy(price).toFixed();
+      this.props.updateState(this.INPUT_TYPES.QUANTITY, quantity);
+    }
+
     const {
       isOrderValid: quantityValid,
       errors: quantityErrors,
       errorCount: quantityErrorCount
     } = this.testQuantity(quantity, errors, isOrderValid, nextProps);
+
     isOrderValid = quantityValid;
     errorCount += quantityErrorCount;
     errors = { ...errors, ...quantityErrors };
 
-    const price =
-      order[this.INPUT_TYPES.PRICE] &&
-      createBigNumber(order[this.INPUT_TYPES.PRICE]);
     const {
       isOrderValid: priceValid,
       errors: priceErrors,
@@ -281,12 +290,14 @@ class TradingForm extends Component {
       shares = null;
       limitPrice = SCALAR ? "" : "0";
     }
-    props.selectedOutcome.trade.updateTradeOrder(
-      shares,
-      limitPrice,
-      side,
-      null
-    );
+    if (limitPrice && shares) {
+      props.selectedOutcome.trade.updateTradeOrder(
+        shares,
+        limitPrice,
+        side,
+        null
+      );
+    }
   }
 
   validateForm(property, rawValue) {
@@ -313,6 +324,13 @@ class TradingForm extends Component {
       ...this.state,
       [property]: value
     };
+    if (
+      property === this.INPUT_TYPES.EST_ETH &&
+      updatedState.orderPrice.toString
+    ) {
+      // clear quantity to be recalculated
+      updatedState.orderQuantity = "";
+    }
     const { isOrderValid, errors, errorCount } = this.orderValidation(
       updatedState,
       this.props
@@ -321,7 +339,7 @@ class TradingForm extends Component {
     // only update the trade if there were no errors detected.
     updateState(property, value);
 
-    if (errorCount === 0) {
+    if (errorCount === 0 && isOrderValid) {
       this.updateTrade(updatedState);
     }
     // update the local state of this form
@@ -348,7 +366,8 @@ class TradingForm extends Component {
       selectedOutcome,
       maxPrice,
       minPrice,
-      updateState
+      updateState,
+      clearOrderForm
     } = this.props;
     const s = this.state;
 
@@ -521,6 +540,12 @@ class TradingForm extends Component {
             <label htmlFor="tr__input--do-no-create-orders">
               Fill Orders Only
             </label>
+            <button
+              className={Styles.TradingForm__button__clear}
+              onClick={() => clearOrderForm()}
+            >
+              Clear
+            </button>
           </li>
         </ul>
         {errors.length > 0 && (

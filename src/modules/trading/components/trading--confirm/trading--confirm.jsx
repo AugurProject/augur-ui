@@ -184,34 +184,6 @@ const MarketTradingConfirm = ({
           <div>{errorMessage.message}</div>
         </div>
       )}
-      <div className={Styles.TradingConfirmation__actions}>
-        <button
-          className={classNames(Styles["TradingConfirmation__button--submit"], {
-            [Styles.long]: selectedNav === BUY,
-            [Styles.short]: selectedNav === SELL
-          })}
-          onClick={e => {
-            e.preventDefault();
-            market.onSubmitPlaceTrade(
-              selectedOutcome.id,
-              (err, tradeGroupID) => {
-                // onSent/onFailed CB
-                if (!err) {
-                  showOrderPlaced();
-                }
-              },
-              res => {
-                if (doNotCreateOrders && res.res !== res.sharesToFill)
-                  handleFilledOnly(res.tradeInProgress);
-                // onComplete CB
-              },
-              doNotCreateOrders
-            );
-          }}
-        >
-          Place {selectedNav === BUY ? "Buy" : "Sell"} Order
-        </button>
-      </div>
     </section>
   );
 };
