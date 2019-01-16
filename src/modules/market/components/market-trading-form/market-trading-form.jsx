@@ -152,7 +152,6 @@ class MarketTradingForm extends Component {
             )}
             {!isLogged && (
               <div>
-                {initialMessage}
                 <div>
                   <button
                     id="login-button"

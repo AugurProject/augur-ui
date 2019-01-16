@@ -46,7 +46,9 @@ export default class DisputingMarkets extends Component {
       lowerBound: 1,
       boundedLength: paginationCount,
       lowerBoundUpcoming: 1,
-      boundedLengthUpcoming: paginationCount
+      boundedLengthUpcoming: paginationCount,
+      filteredNonForkingMarkets: [],
+      filteredUpcomingMarkets: []
     };
 
     this.setSegment = this.setSegment.bind(this);
@@ -70,7 +72,8 @@ export default class DisputingMarkets extends Component {
       this.loadDisputingMarkets(
         this.props.disputableMarketIds,
         nextState.lowerBound,
-        nextState.boundedLength
+        nextState.boundedLength,
+        false
       );
     }
     if (
@@ -80,24 +83,31 @@ export default class DisputingMarkets extends Component {
       this.loadDisputingMarkets(
         this.props.upcomingDisputableMarketIds,
         nextState.lowerBoundUpcoming,
-        nextState.boundedLengthUpcoming
+        nextState.boundedLengthUpcoming,
+        true
       );
     }
-    if (this.props.disputableMarketIds !== nextProps.disputableMarketIds) {
+    if (
+      this.props.disputableMarketIds !== nextProps.disputableMarketIds ||
+      this.props.markets.length !== nextProps.markets.length
+    ) {
       this.loadDisputingMarkets(
         nextProps.disputableMarketIds,
         nextState.lowerBound,
-        nextState.boundedLength
+        nextState.boundedLength,
+        false
       );
     }
     if (
       this.props.upcomingDisputableMarketIds !==
-      nextProps.upcomingDisputableMarketIds
+        nextProps.upcomingDisputableMarketIds ||
+      this.props.upcomingMarkets.length !== nextProps.upcomingMarkets.length
     ) {
       this.loadDisputingMarkets(
         nextProps.upcomingDisputableMarketIds,
         nextState.lowerBoundUpcoming,
-        nextState.boundedLengthUpcoming
+        nextState.boundedLengthUpcoming,
+        true
       );
     }
   }
@@ -110,11 +120,26 @@ export default class DisputingMarkets extends Component {
     this.setState({ lowerBoundUpcoming, boundedLengthUpcoming });
   }
 
-  loadDisputingMarkets(marketIds, lowerBound, boundedLength) {
+  loadDisputingMarkets(marketIds, lowerBound, boundedLength, isUpcoming) {
     const { loadDisputingDetails } = this.props;
     const marketIdLength = boundedLength + (lowerBound - 1);
     const newMarketIdArray = marketIds.slice(lowerBound - 1, marketIdLength);
-    loadDisputingDetails([...newMarketIdArray]);
+    loadDisputingDetails([...newMarketIdArray], () => {
+      const { upcomingMarkets, markets } = this.props;
+      const marketCollection = isUpcoming ? upcomingMarkets : markets;
+      const filtered = marketCollection.filter(
+        m => newMarketIdArray.indexOf(m.id) !== -1
+      );
+      if (isUpcoming) {
+        this.setState({
+          filteredUpcomingMarkets: filtered
+        });
+      } else {
+        this.setState({
+          filteredNonForkingMarkets: filtered
+        });
+      }
+    });
   }
 
   filterMarkets(markets, lowerBound, boundedLength, showPagination) {
@@ -139,7 +164,6 @@ export default class DisputingMarkets extends Component {
       location,
       markets,
       outcomes,
-      upcomingMarkets,
       upcomingMarketsCount,
       forkingMarketId,
       paginationCount,
@@ -150,29 +174,13 @@ export default class DisputingMarkets extends Component {
       nullUpcomingMessage,
       addNullPadding
     } = this.props;
-    const {
-      lowerBound,
-      boundedLength,
-      lowerBoundUpcoming,
-      boundedLengthUpcoming
-    } = this.state;
+    const { filteredNonForkingMarkets, filteredUpcomingMarkets } = this.state;
 
     let forkingMarket = null;
-    let nonForkingMarkets = this.filterMarkets(
-      markets,
-      lowerBound,
-      boundedLength,
-      showPagination
-    );
-    const filteredUpcomingMarkets = this.filterMarkets(
-      upcomingMarkets,
-      lowerBoundUpcoming,
-      boundedLengthUpcoming,
-      showUpcomingPagination
-    );
+    let nonForkingMarkets = filteredNonForkingMarkets;
     if (isForking) {
       forkingMarket = markets.find(market => market.id === forkingMarketId);
-      nonForkingMarkets = nonForkingMarkets.filter(
+      nonForkingMarkets = filteredNonForkingMarkets.filter(
         market => market.id !== forkingMarketId
       );
     }
