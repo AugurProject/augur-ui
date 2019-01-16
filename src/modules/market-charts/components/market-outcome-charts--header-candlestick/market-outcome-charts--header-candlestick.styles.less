@@ -2,20 +2,45 @@
 
 .MarketOutcomeChartsHeader__chart-interaction {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-
+  margin-top: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+  
   div:first-of-type {
     flex: 1;
   }
 }
 
 .MarketOutcomeChartsHeader__selector {
-  margin-left: 1em;
+  margin-left: 8px;
+  margin-right: 72px;
 }
 
 .MarketOutcomeChartsHeader__selector--mobile {
   display: flex;
   flex-basis: 100%;
   justify-content: flex-end;
+}
+
+span.MarketOutcomeChartsHeader__stat {
+  min-width: 55px;
+  margin-right: 16px;
+}
+
+.MarketOutcomeChartsHeader__stat-value,
+.MarketOutcomeChartsHeader__stat-title {
+  font-family: 'Roboto Mono', monospace;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 10px;
+  color: #FFFFFF;
+}
+
+.MarketOutcomeChartsHeader__stat-value {
+  margin-left: 3px;
+}
+
+div.MarketOutcomeChartsHeader__stats {
+  justify-content: normal
 }

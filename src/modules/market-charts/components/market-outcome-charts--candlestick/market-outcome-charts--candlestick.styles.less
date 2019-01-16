@@ -4,8 +4,9 @@
   display: flex;
   flex: 1 100%;
   flex-direction: column;
-  margin-right: 30px;
   position: relative;
+  min-height: 400px;
+  margin-left: 8px;
 }
 
 .MarketOutcomeCandlestick__period-stats {
@@ -70,6 +71,8 @@
       &:extend(.caps--extra-small all);
 
       fill: @color-lightgray;
+      font-size: 12px;
+      font-family: 'Roboto Mono', monospace;
     }
 
     .tick-value-volume {
@@ -85,7 +88,7 @@
       }
 
       &.down-period {
-        fill: @color-negative;
+        fill: @color-negative2;
       }
     }
 
@@ -95,7 +98,7 @@
       }
 
       &.down-period {
-        stroke: @color-negative;
+        stroke: @color-negative2;
       }
     }
 
@@ -107,7 +110,7 @@
     .line .crosshair {
       fill: none;
       stroke: @color-white;
-      stroke-dasharray: 5;
+      stroke-dasharray: 1 4;
     }
 
     .period-hover {
