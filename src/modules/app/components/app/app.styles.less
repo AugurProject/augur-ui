@@ -94,8 +94,19 @@ h6 {
   background: @color-light-purple;
   border-right: 1px solid @color-almost-black;
   height: 100vh;
-  position: relative;
+  padding-top: 72px;
   z-index: @mask-above;
+
+  @media @breakpoint-mobile {
+    padding-top: 0;
+  }
+}
+
+.Logo {
+  background: @color-light-purple;
+  left: 40px;
+  position: absolute;
+  top: 0;
 }
 
 .SideBar__mobile-bars {

@@ -30,10 +30,15 @@ const MarketOrdersPositionsTable = ({
           cancelOrphanedOrder={cancelOrphanedOrder}
           marketId={marketId}
           isMobile={isMobile}
+          market={market}
         />
       </ModulePane>
       <ModulePane label="Filled Orders">
-        <FilledOrdersTable filledOrders={filledOrders} isMobile={isMobile} />
+        <FilledOrdersTable
+          filledOrders={filledOrders}
+          scalarDenomination={market.scalarDenomination}
+          isMobile={isMobile}
+        />
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable

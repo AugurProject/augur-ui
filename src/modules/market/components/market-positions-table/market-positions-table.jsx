@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import MarketPositionsListPosition from "modules/market/components/market-positions-table/market-positions-table--position";
+import { SCALAR } from "modules/markets/constants/market-types";
 
 import SharedStyles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 import Styles from "modules/market/components/market-positions-table/market-positions-table.styles";
@@ -35,7 +36,8 @@ export default class MarketPositionsList extends Component {
       transactionsStatus,
       sellCompleteSets,
       marketId,
-      isMobile
+      isMobile,
+      market
     } = this.props;
 
     const pendingCompleteSetsHash = `pending-${marketId}-${numCompleteSets &&
@@ -99,7 +101,11 @@ export default class MarketPositionsList extends Component {
                     positions.map((position, i) => (
                       <MarketPositionsListPosition
                         key={i}
-                        outcomeName={position.name}
+                        outcomeName={
+                          market.marketType === SCALAR
+                            ? market.scalarDenomination
+                            : position.name
+                        }
                         position={position}
                         isExtendedDisplay={false}
                         isMobile={false}

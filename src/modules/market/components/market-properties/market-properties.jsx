@@ -293,7 +293,7 @@ export default class MarketProperties extends Component {
             <span
               className={Styles["MarketProperties__additional-details-chevron"]}
             >
-              <ChevronFlip pointDown={showingDetails} />
+              <ChevronFlip pointDown={showingDetails} stroke="#fff" />
             </span>
           </button>
         )}

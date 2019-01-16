@@ -1,4 +1,5 @@
 import { createBigNumber } from "utils/create-big-number";
+import { SCALAR } from "modules/markets/constants/market-types";
 
 export function selectFilledOrders(
   marketTradeHistory,
@@ -29,9 +30,11 @@ export function selectFilledOrders(
           outcomeValue => outcomeValue.id === outcome.toString()
         );
 
-      const outcomeName = outcomeInfo
-        ? outcomeInfo.description || outcomeInfo.name
-        : priceBN.toString();
+      let outcomeName =
+        outcomeInfo && (outcomeInfo.description || outcomeInfo.name);
+      if (marketType === SCALAR) {
+        outcomeName = null;
+      }
 
       if (foundOrder) {
         foundOrder.trades.push({

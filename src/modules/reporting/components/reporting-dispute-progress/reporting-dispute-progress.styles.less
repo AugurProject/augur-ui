@@ -34,32 +34,33 @@
 }
 
 .ReportingDisputeProgress__dispute-label-total-rep-text {
-  color: @color-lightergray;
-  font-size: @font-size-medium;
-  font-weight: 500;
+  color: @color-white;
+  font-size: 16px;
+  line-height: 0.9em;
+  margin-left: 1em;
 }
 
 .ReportingDisputeProgress__dispute-label-break {
-  color: @color-lightgray;
+  color: @color-white;
   font-size: @font-size-medium;
-  font-weight: 500;
-  margin-left: 0.2em;
+  line-height: 0.9em;
+  margin-left: 0.4em;
 }
 
 .ReportingDisputeProgress__dispute-label-goal-text {
-  color: @color-lightgray;
-  font-size: @font-size-small;
-  font-weight: 500;
-  line-height: 1em;
-  margin-left: 0.2em;
+  color: @color-white;
+  font-size: 14px;
+  line-height: 0.9em;
+  margin-left: 0.4em;
   white-space: nowrap;
 }
 
 .ReportingDisputeProgress__dispute-tentative {
   &:extend(.ReportingDisputeProgress__dispute-label);
 
-  color: @color-lighter-purple;
+  color: @color-bright-teal;
   font-size: @font-size-small;
+  font-weight: bold;
   margin-left: 1.5rem;
   text-transform: uppercase;
 
@@ -74,20 +75,20 @@
 }
 
 .ReportingDisputeProgress__graph-current {
-  background: #4f4761;
+  background: #292531;
   display: flex;
   min-width: 8em;
   position: relative;
   width: 15rem;
 
   > div:first-child {
-    background: @color-purple;
+    background: @color-bright-teal;
     height: 100%;
     transition: width 0.4s linear;
   }
 
   > div:last-child {
-    background: @color-lighter-purple;
+    background: @color-dark-teal;
     height: 100%;
     transition: width 0.4s linear;
   }

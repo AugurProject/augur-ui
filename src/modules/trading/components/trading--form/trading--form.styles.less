@@ -1,7 +1,7 @@
 @import (reference) "~assets/styles/shared";
 
 .TradingForm__form-body {
-  padding: 1rem 1rem 0;
+  padding: 0.75rem 1rem 0;
 
   > li {
     color: @color-white;
@@ -9,10 +9,6 @@
     flex-flow: column nowrap;
     font-size: @font-size-normal;
     width: 100%;
-
-    &:first-child {
-      background-color: @color-dark-grayish-purple;
-    }
 
     &.yesOption {
       padding: 1rem 2rem;
@@ -32,31 +28,9 @@
       }
     }
 
-    &.TradingForm__error-message {
-      color: @color-red;
-      display: block;
-      font-size: @font-size-medium;
-      line-height: @font-size-medium;
-      margin-bottom: 2rem;
-
-      > p {
-        display: inline-block;
-        margin: 0;
-        margin-bottom: 0.5rem;
-      }
-
-      > svg {
-        margin: -0.1rem 0.2rem 0;
-        max-height: 1rem;
-        max-width: 1rem;
-        vertical-align: top;
-      }
-    }
-
     > label {
       color: @color-light-gray;
       font-size: @font-size-small;
-      font-weight: 500;
       margin-bottom: 0;
       padding-bottom: 0.25rem;
       width: 100%;
@@ -73,9 +47,25 @@
   }
 }
 
+.TradingForm__error_message_container {
+  background: rgba(255, 39, 39, 0.2);
+  border: 1px solid rgba(255, 39, 39, 0.2);
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: block;
+  font-size: @font-size-small;
+  line-height: @font-size-medium;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.TradingForm__error_message {
+  color: @color-white;
+}
+
 .TradingForm__outcome__container {
   background-color: @color-light-purple;
-  padding: 0.5rem 0.75rem 0.5rem 0.25rem;
+  padding: 0.5rem 1rem;
 }
 
 .TradingForm__outcome__container__yes {
@@ -85,33 +75,37 @@
   width: 100%;
 }
 
+.TradingForm__input {
+  display: flex;
+  flex-grow: 1;
+  width: unset;
+}
+
 .TradingForm__input__container {
   align-items: center;
-  background-color: @color-grayish-purple;
+  background-color: @color-dark-grayish-purple;
   border: 1px solid @color-dark-gray;
   display: flex;
   flex-direction: row;
 
   > input[type="number"] {
     background-color: @color-dark-grayish-purple;
-    border-width: 1px;
+    border-width: 0;
     color: @color-white;
-    width: 100%;
 
     &::placeholder {
-      color: @color-lightgray;
-      line-height: @font-size-rather-large;
+      color: rgba(255, 255, 255, 0.2);
     }
+  }
 
-    &.error {
-      border-color: @color-red;
-    }
+  &.error {
+    border: 1px solid rgba(255, 39, 39, 0.5) !important;
   }
 
   > span {
     background: @color-dark-gray;
     font-size: @font-size-small;
-    min-width: 4.375rem;
+    min-width: 55px;
     overflow: hidden;
     padding: 1rem;
     text-overflow: ellipsis;
@@ -121,11 +115,29 @@
     &.isScalar {
       max-width: 10rem;
     }
+
+    &.error {
+      background: rgba(255, 39, 39, 0.2) !important;
+      border-radius: 3px;
+      opacity: 0.5;
+    }
   }
 
   > label {
     color: @color-light-gray;
     font-size: @font-size-small;
+  }
+
+  &:focus-within {
+    border: 1px solid #665789;
+
+    > span {
+      background: #665789;
+    }
+
+    > input {
+      border: 0;
+    }
   }
 }
 
@@ -274,10 +286,6 @@
   .TradingForm__static-field {
     color: @color-white;
   }
-}
-
-.TradingForm__error-message p:not(:first-of-type) {
-  margin-left: 1.65rem !important;
 }
 
 @media @breakpoint-mobile-extra-small {

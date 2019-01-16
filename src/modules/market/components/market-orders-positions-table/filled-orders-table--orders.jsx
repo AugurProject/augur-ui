@@ -23,14 +23,16 @@ export default class FilledOrdersOrder extends Component {
       type: PropTypes.string.isRequired,
       timestamp: PropTypes.number.isRequired,
       price: PropTypes.object.isRequired,
-      outcome: PropTypes.string.isRequired,
+      outcome: PropTypes.any.isRequired,
       trades: PropTypes.array.isRequired
     }).isRequired,
-    oddNumber: PropTypes.bool
+    oddNumber: PropTypes.bool,
+    scalarDenomination: PropTypes.string
   };
 
   static defaultProps = {
-    oddNumber: false
+    oddNumber: false,
+    scalarDenomination: ""
   };
 
   constructor(props) {
@@ -48,7 +50,7 @@ export default class FilledOrdersOrder extends Component {
   }
 
   render() {
-    const { isMobile, order, oddNumber } = this.props;
+    const { isMobile, order, oddNumber, scalarDenomination } = this.props;
 
     const s = this.state;
 
@@ -69,7 +71,7 @@ export default class FilledOrdersOrder extends Component {
           })}
           onClick={this.setShowTrades}
         >
-          <li>{order.outcome || orderPrice}</li>
+          <li>{order.outcome || scalarDenomination}</li>
           <li
             className={classNames(SharedStyles.Order__type, {
               [SharedStyles.Order__typeSell]: orderType === SELL

@@ -3,7 +3,7 @@ import React from "react";
 export const twoArrows = (
   <svg
     width="60"
-    height="54"
+    height="48"
     viewBox="0 0 60 54"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -732,7 +732,7 @@ export const Deposit = (
       <g
         id="Account_1"
         transform="translate(-575.000000, -448.000000)"
-        stroke="#372E4B"
+        stroke="#fff"
       >
         <g id="Icon/Deposit" transform="translate(574.000000, 447.000000)">
           <path
@@ -767,7 +767,7 @@ export const Withdraw = (
       <g
         id="Account_2"
         transform="translate(-615.000000, -452.000000)"
-        stroke="#372E4B"
+        stroke="#fff"
       >
         <g id="Icon/Withdraw" transform="translate(614.000000, 448.000000)">
           <g id="Page-1" transform="translate(1.000000, 4.000000)">
@@ -796,7 +796,7 @@ export const Copy = (
       <g
         id="Account_2"
         transform="translate(-1291.000000, -549.000000)"
-        stroke="#372E4B"
+        stroke="#fff"
       >
         <g id="Icon/Copy" transform="translate(1288.000000, 549.000000)">
           <g id="Page-1" transform="translate(3.428571, 0.857143)">
@@ -998,7 +998,7 @@ export const ChevronFlipFilledIcon = (className = "", fillColor = "#FFF") => (
 );
 
 export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
-  <svg viewBox="0 0 24 24">
+  <svg width="34" height="24" viewBox="0 0 34 24">
     <defs />
     <g
       id="Symbols"
@@ -1012,43 +1012,57 @@ export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
           id="Page-1"
           transform="translate(4.000000, 1.000000)"
           stroke={stroke}
-          strokeWidth="0.894"
+          strokeWidth="0"
         >
           <path
-            d="M7.9209,2.5717 L7.9209,1.9467 C7.9209,1.1217 8.5959,0.4467 9.4209,0.4467 C10.2459,0.4467 10.9209,1.1217 10.9209,1.9467 L10.9209,2.5467"
-            id="Stroke-1"
+            d="M7.9209 2.57172V1.94672C7.9209 1.12172 8.5959 0.446716 9.4209 0.446716C10.2459 0.446716 10.9209 1.12172 10.9209 1.94672V2.54672"
+            stroke={stroke}
+            strokeWidth="0.894"
           />
           <path
-            d="M11.4209,19.4472 C11.4209,20.5512 10.5249,21.4472 9.4209,21.4472 C8.3169,21.4472 7.4209,20.5512 7.4209,19.4472"
-            id="Stroke-3"
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M11.4209 20.4472C11.4209 21.5512 10.5249 22.4472 9.4209 22.4472C8.3169 22.4472 7.4209 21.5512 7.4209 20.4472"
+            fill={stroke}
           />
           <path
-            d="M18.3389,17.4491 C16.5789,14.4471 15.2629,11.4471 15.4209,8.4471 C15.5789,5.4471 12.7349,2.4471 9.4209,2.4471 C6.1069,2.4471 3.2469,5.1381 3.4209,8.4471 C3.5789,11.4471 2.5789,14.4471 0.5789,17.4471 C-1.4211,20.4471 20.0989,20.4501 18.3389,17.4491 Z"
-            id="Stroke-5"
+            d="M11.4209 20.4472C11.4209 21.5512 10.5249 22.4472 9.4209 22.4472C8.3169 22.4472 7.4209 21.5512 7.4209 20.4472C7.4209 20.4472 8.63985 20.4472 9.4209 20.4472C10.2019 20.4472 11.4209 20.4472 11.4209 20.4472Z"
+            stroke={stroke}
+            strokeWidth="0.894"
+          />
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M18.3389 17.4491C16.5789 14.4471 15.2629 11.4471 15.4209 8.44708C15.5789 5.44708 12.7349 2.44708 9.42091 2.44708C6.10691 2.44708 3.24691 5.13808 3.42091 8.44708C3.57891 11.4471 2.57891 14.4471 0.578907 17.4471C-1.42109 20.4471 20.0989 20.4501 18.3389 17.4491Z"
+            fill={stroke}
+            stroke={stroke}
+            strokeWidth="0"
           />
         </g>
         {!!unseenCount && (
           <g
             id="Group-14"
-            transform="translate(1.000000, 2.000000)"
+            transform="translate(13.000000, 2.000000)"
             textAnchor="middle"
           >
-            <ellipse
+            <rect
               id="Oval"
+              x="0.5"
+              y="0.5"
+              width="21"
+              height="13"
+              rx="6.5"
               fill={stroke}
-              cx="6.4591451"
-              cy="7.00261291"
-              rx={rxWidth}
-              ry="6.43043779"
+              stroke="#211A32"
             />
             <text
               id="1"
               fontFamily="roboto-Bold, roboto"
               fontSize="8"
               fontWeight="bold"
-              fill="#341D53"
+              fill="#000000"
             >
-              <tspan x="6.01902362" y="10.0428031">
+              <tspan x="11.01902362" y="10.0428031">
                 {unseenCount}
               </tspan>
             </text>
