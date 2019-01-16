@@ -15,6 +15,10 @@
   &:last-child {
     margin-right: 0;
   }
+
+  &.active {
+    border-bottom: 0;
+  }
 }
 
 .TradingOutcomesDropdown__angle-down {
@@ -27,29 +31,35 @@
 }
 
 .TradingOutcomesDropdown__label {
-  padding-left: 0.75rem;
+  flex-grow: 1;
+  font-size: @font-size-normal;
+  font-weight: 500;
+  padding-left: 1.5rem;
+  text-align: left;
   white-space: nowrap;
 }
 
 .TradingOutcomesDropdown__list {
   background-color: @color-dark-grayish-purple;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   color: @color-white;
   display: none;
-  font-size: @font-size-normal;
+  font-size: @font-size-medium;
+  left: -1px;
   line-height: @font-size-normal;
   position: absolute;
-  right: 0;
+  right: -1px;
   top: 100%;
 
   &.active {
+    border: 1px solid @color-dark-gray;
+    border-top: 0;
     display: block;
   }
 
   > button {
     background-color: inherit;
     cursor: pointer;
-    padding: 0.75rem;
+    padding: 0.75rem 1.5rem;
     text-align: left;
     transition: background-color 0.15s ease;
     white-space: nowrap;
