@@ -58,7 +58,8 @@ class TradingForm extends Component {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
       DO_NOT_CREATE_ORDERS: "doNotCreateOrders",
-      EST_ETH: "orderEstimateEth"
+      EST_ETH: "orderEstimateEth",
+      MARKET_ORDER_SIZE: "marketOrderSize"
     };
     this.gas = {
       fillGasLimit: augur.constants.WORST_CASE_FILL[props.market.numOutcomes],
@@ -77,7 +78,8 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
       [this.INPUT_TYPES.PRICE]: props.orderPrice,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
-      [this.INPUT_TYPES.EST_ETH]: props.orderEthEstimate,
+      [this.INPUT_TYPES.EST_ETH]:
+        props.orderEthEstimate === "0" ? undefined : props.orderEthEstimate,
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
@@ -104,7 +106,10 @@ class TradingForm extends Component {
     // make sure to keep Quantity and Price as bigNumbers
     const nextQuantity = nextProps[this.INPUT_TYPES.QUANTITY];
     const nextPrice = nextProps[this.INPUT_TYPES.PRICE];
-    const nextEstEth = nextProps[this.INPUT_TYPES.EST_ETH];
+    const nextEstEth =
+      nextProps.orderEthEstimate === "0"
+        ? undefined
+        : nextProps.orderEthEstimate;
 
     const newStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: nextQuantity
@@ -119,14 +124,15 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
         nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
       [this.INPUT_TYPES.EST_ETH]:
-        nextEstEth && nextEstEth !== ""
+        nextEstEth && nextEstEth !== undefined
           ? createBigNumber(nextEstEth, 10)
           : nextEstEth
     };
     const currentStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
-      [this.INPUT_TYPES.EST_ETH]: this.state[this.INPUT_TYPES.EST_ETH],
+      [this.INPUT_TYPES.EST_ETH]:
+        orderEthEstimate === "0" ? undefined : orderEthEstimate,
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[
         this.INPUT_TYPES.MARKET_ORDER_SIZE
       ],
@@ -148,9 +154,15 @@ class TradingForm extends Component {
     };
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
-      // test quantity
-      // trade has changed, lets update trade.
-      this.updateTrade(newStateInfo, nextProps);
+      const validation = this.orderValidation(newStateInfo, nextProps);
+      if (
+        validation.errorCount === 0 &&
+        newStateInfo.orderPrice &&
+        newStateInfo.orderQuantity
+      ) {
+        // trade has changed, lets update trade.
+        this.updateTrade(newStateInfo, nextProps);
+      }
 
       const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice;
       const prevTradePrice = selectedOutcome.trade.limitPrice;
@@ -522,10 +534,9 @@ class TradingForm extends Component {
                 })}
                 id="tr__input--limit-price"
                 type="number"
-                step={tickSize}
-                max={max}
-                min={min}
-                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
+                step={MIN_QUANTITY.toFixed()}
+                min={MIN_QUANTITY.toFixed()}
+                placeholder="0.0000"
                 value={
                   BigNumber.isBigNumber(s[this.INPUT_TYPES.EST_ETH])
                     ? s[this.INPUT_TYPES.EST_ETH].toNumber()
