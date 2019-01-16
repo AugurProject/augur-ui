@@ -81,8 +81,7 @@ export default class PeriodSelector extends Component {
       <section className={Styles.PeriodSelector}>
         <button
           className={classNames(Styles.PeriodSelector__button, {
-            [Styles["PeriodSelector__button--active"]]:
-              s.isModalActive
+            [Styles["PeriodSelector__button--active"]]: s.isModalActive
           })}
           onClick={e => {
             e.stopPropagation();
@@ -94,7 +93,7 @@ export default class PeriodSelector extends Component {
               ? `${selectedRangeLabel}, ${selectedPeriodLabel}`
               : "Range, Period"}
           </span>
-          <ChevronFlip pointDown={!s.isModalActive} stroke={"#fff"}/>
+          <ChevronFlip pointDown={!s.isModalActive} stroke="#fff" />
         </button>
         <div
           ref={periodSelector => {

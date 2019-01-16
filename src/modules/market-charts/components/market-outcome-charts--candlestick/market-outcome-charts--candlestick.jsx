@@ -316,7 +316,7 @@ class MarketOutcomeCandlestick extends React.Component {
         hoveredPrice,
         yScale,
         containerWidth,
-        pricePrecision, 
+        pricePrecision,
         containerWidth
       );
     }

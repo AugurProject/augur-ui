@@ -8,17 +8,15 @@
 .PeriodSelector__button {
   &:extend(.caps--small);
 
-  background-color: transparent;
-  color: @color-white;
-  display: flex;
-  margin-bottom: 0.66em;
-  white-space: nowrap;
-
-  font-size: 10px;
-  padding: 6px 12px;
   background: @color-dark-grayish-purple;
   border: 1px solid @color-dark-gray;
   border-radius: 3px;
+  color: @color-white;
+  display: flex;
+  font-size: 10px;
+  margin-bottom: 0.66em;
+  padding: 6px 12px;
+  white-space: nowrap;
 
   svg {
     margin-left: 10px;
@@ -39,16 +37,15 @@
 }
 
 .PeriodSelector__modal {
-  display: none;
-  position: absolute;
-  left: 0;
-  width: 12rem;
-  top: 28px;
-
   background: @color-dark-grayish-purple;
-  border-radius: 3px;
   border: 1px solid @color-dark-gray;
+  border-radius: 3px;
   color: @color-white;
+  display: none;
+  left: 0;
+  position: absolute;
+  top: 28px;
+  width: 12rem;
 
   &--active {
     display: flex;

@@ -38,16 +38,22 @@ const MarketOutcomeCandlestickHeader = ({
           selectedRange={selectedRange}
         />
       </div>
-      <div className={classNames(StylesHeader.MarketOutcomeChartsHeader__stats, Styles.MarketOutcomeChartsHeader__stats)}>
-        <span className={classNames(StylesHeader.MarketOutcomeChartsHeader__stat, Styles.MarketOutcomeChartsHeader__stat)}>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-          >
+      <div
+        className={classNames(
+          StylesHeader.MarketOutcomeChartsHeader__stats,
+          Styles.MarketOutcomeChartsHeader__stats
+        )}
+      >
+        <span
+          className={classNames(
+            StylesHeader.MarketOutcomeChartsHeader__stat,
+            Styles.MarketOutcomeChartsHeader__stat
+          )}
+        >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
             o:
           </span>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-          >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
             {open ? (
               open.toFixed(pricePrecision).toString()
             ) : (
@@ -55,15 +61,16 @@ const MarketOutcomeCandlestickHeader = ({
             )}
           </span>
         </span>
-        <span className={classNames(StylesHeader.MarketOutcomeChartsHeader__stat, Styles.MarketOutcomeChartsHeader__stat)}>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-          >
+        <span
+          className={classNames(
+            StylesHeader.MarketOutcomeChartsHeader__stat,
+            Styles.MarketOutcomeChartsHeader__stat
+          )}
+        >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
             c:
           </span>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-          >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
             {close ? (
               close.toFixed(pricePrecision).toString()
             ) : (
@@ -71,15 +78,16 @@ const MarketOutcomeCandlestickHeader = ({
             )}
           </span>
         </span>
-        <span className={classNames(StylesHeader.MarketOutcomeChartsHeader__stat, Styles.MarketOutcomeChartsHeader__stat)}>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-          >
+        <span
+          className={classNames(
+            StylesHeader.MarketOutcomeChartsHeader__stat,
+            Styles.MarketOutcomeChartsHeader__stat
+          )}
+        >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
             h:
           </span>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-          >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
             {high ? (
               high.toFixed(pricePrecision).toString()
             ) : (
@@ -87,15 +95,16 @@ const MarketOutcomeCandlestickHeader = ({
             )}
           </span>
         </span>
-        <span className={classNames(StylesHeader.MarketOutcomeChartsHeader__stat, Styles.MarketOutcomeChartsHeader__stat)}>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-          >
+        <span
+          className={classNames(
+            StylesHeader.MarketOutcomeChartsHeader__stat,
+            Styles.MarketOutcomeChartsHeader__stat
+          )}
+        >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
             l:
           </span>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-          >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
             {low ? (
               low.toFixed(pricePrecision).toString()
             ) : (
@@ -103,15 +112,16 @@ const MarketOutcomeCandlestickHeader = ({
             )}
           </span>
         </span>
-        <span className={classNames(StylesHeader.MarketOutcomeChartsHeader__stat, Styles.MarketOutcomeChartsHeader__stat)}>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-          >
+        <span
+          className={classNames(
+            StylesHeader.MarketOutcomeChartsHeader__stat,
+            Styles.MarketOutcomeChartsHeader__stat
+          )}
+        >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
             v:
           </span>
-          <span
-            className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-          >
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
             {volume ? (
               volume.toFixed(fixedPrecision).toString()
             ) : (
