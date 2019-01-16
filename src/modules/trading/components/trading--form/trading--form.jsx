@@ -83,13 +83,7 @@ class TradingForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      orderEthEstimate,
-      orderShareEstimate,
-      selectedNav,
-      selectedOutcome,
-      updateState
-    } = this.props;
+    const { orderEthEstimate, orderShareEstimate, selectedNav } = this.props;
     // make sure to keep Quantity and Price as bigNumbers
     const nextQuantity = nextProps[this.INPUT_TYPES.QUANTITY];
     const nextPrice = nextProps[this.INPUT_TYPES.PRICE];
