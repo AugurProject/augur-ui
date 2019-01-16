@@ -13,8 +13,8 @@
 }
 
 .TradingConfirmation__actions {
-  margin-top: 1rem;
-  padding: 1rem;
+  margin-top: 0.5rem;
+  padding: 0 1rem;
 }
 
 .TradingConfirmation__button--back {
@@ -227,7 +227,31 @@
   width: 0.9rem;
 }
 
+.TradingConfirm__error_message_container {
+  background: rgba(255, 39, 39, 0.2);
+  border: 1px solid @color-error-text;
+  border-radius: 3px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-size: @font-size-small;
+  line-height: @font-size-medium;
+  margin: 0 1rem;
+  padding: 0.75rem;
+
+  div:first-child {
+    color: @color-error-text;
+    font-weight: 500;
+    padding-bottom: 0.25rem;
+  }
+
+  div:last-child {
+    color: @color-white;
+  }
+}
+
 .TradingConfirm__TooltipContainer {
+  margin-left: 0.5rem;
   width: 5rem;
 }
 

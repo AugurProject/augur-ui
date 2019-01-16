@@ -1,10 +1,9 @@
 /* eslint jsx-a11y/label-has-for: 0 */
-import { augur } from "services/augurjs";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { ZERO, MIN_QUANTITY } from "modules/trades/constants/numbers";
+import { MIN_QUANTITY } from "modules/trades/constants/numbers";
 import {
   YES_NO,
   CATEGORICAL,
@@ -15,17 +14,12 @@ import { isEqual } from "lodash";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
-import {
-  //   formatEther,
-  //   formatShares,
-  formatGasCostToEther
-} from "utils/format-number";
+
 import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 
 class TradingForm extends Component {
   static propTypes = {
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
     marketType: PropTypes.string.isRequired,
@@ -47,7 +41,6 @@ class TradingForm extends Component {
     selectedOutcome: PropTypes.object.isRequired,
     updateState: PropTypes.func.isRequired,
     doNotCreateOrders: PropTypes.bool.isRequired,
-    gasPrice: PropTypes.number.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired
   };
 
@@ -58,15 +51,10 @@ class TradingForm extends Component {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
       DO_NOT_CREATE_ORDERS: "doNotCreateOrders",
-      EST_ETH: "orderEstimateEth"
+      EST_ETH: "orderEstimateEth",
+      MARKET_ORDER_SIZE: "marketOrderSize"
     };
-    this.gas = {
-      fillGasLimit: augur.constants.WORST_CASE_FILL[props.market.numOutcomes],
-      placeOrderNoSharesGasLimit:
-        augur.constants.PLACE_ORDER_NO_SHARES[props.market.numOutcomes],
-      placeOrderWithSharesGasLimit:
-        augur.constants.PLACE_ORDER_WITH_SHARES[props.market.numOutcomes]
-    };
+
     this.TRADE_MAX_COST = "tradeMaxCost";
     this.MINIMUM_TRADE_VALUE = createBigNumber(1, 10).dividedBy(10000);
     this.orderValidation = this.orderValidation.bind(this);
@@ -77,7 +65,8 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
       [this.INPUT_TYPES.PRICE]: props.orderPrice,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
-      [this.INPUT_TYPES.EST_ETH]: props.orderEthEstimate,
+      [this.INPUT_TYPES.EST_ETH]:
+        props.orderEthEstimate === "0" ? undefined : props.orderEthEstimate,
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
@@ -104,7 +93,10 @@ class TradingForm extends Component {
     // make sure to keep Quantity and Price as bigNumbers
     const nextQuantity = nextProps[this.INPUT_TYPES.QUANTITY];
     const nextPrice = nextProps[this.INPUT_TYPES.PRICE];
-    const nextEstEth = nextProps[this.INPUT_TYPES.EST_ETH];
+    const nextEstEth =
+      nextProps.orderEthEstimate === "0"
+        ? undefined
+        : nextProps.orderEthEstimate;
 
     const newStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: nextQuantity
@@ -119,14 +111,15 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
         nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
       [this.INPUT_TYPES.EST_ETH]:
-        nextEstEth && nextEstEth !== ""
+        nextEstEth && nextEstEth !== undefined
           ? createBigNumber(nextEstEth, 10)
           : nextEstEth
     };
     const currentStateInfo = {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
-      [this.INPUT_TYPES.EST_ETH]: this.state[this.INPUT_TYPES.EST_ETH],
+      [this.INPUT_TYPES.EST_ETH]:
+        orderEthEstimate === "0" ? undefined : orderEthEstimate,
       [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[
         this.INPUT_TYPES.MARKET_ORDER_SIZE
       ],
@@ -148,9 +141,15 @@ class TradingForm extends Component {
     };
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
-      // test quantity
-      // trade has changed, lets update trade.
-      this.updateTrade(newStateInfo, nextProps);
+      const validation = this.orderValidation(newStateInfo, nextProps);
+      if (
+        validation.errorCount === 0 &&
+        newStateInfo.orderPrice &&
+        newStateInfo.orderQuantity
+      ) {
+        // trade has changed, lets update trade.
+        this.updateTrade(newStateInfo, nextProps);
+      }
 
       const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice;
       const prevTradePrice = selectedOutcome.trade.limitPrice;
@@ -260,54 +259,6 @@ class TradingForm extends Component {
     isOrderValid = priceValid;
     errorCount += priceErrorCount;
     errors = { ...errors, ...priceErrors };
-
-    if (
-      (nextProps && nextProps.selectedOutcome.trade.potentialEthLoss) ||
-      (this.props.selectedOutcome &&
-        this.props.selectedOutcome.trade.potentialEthLoss)
-    ) {
-      const { selectedOutcome } = nextProps || this.props;
-      const { availableFunds, gasPrice } = this.props;
-      const { trade } = selectedOutcome;
-      const { totalCost } = trade;
-      if (
-        totalCost &&
-        createBigNumber(totalCost.formattedValue, 10).gte(
-          createBigNumber(availableFunds, 10)
-        )
-      ) {
-        isOrderValid = false;
-        errors = {
-          ...errors,
-          [this.TRADE_MAX_COST]: ["You need more ETH to make this trade."]
-        };
-        errorCount += 1;
-      }
-
-      const gas =
-        trade.shareCost.formattedValue > 0
-          ? this.gas.placeOrderWithSharesGasLimit
-          : this.gas.fillGasLimit;
-      const gasCost = formatGasCostToEther(
-        gas,
-        { decimalsRounded: 4 },
-        gasPrice
-      );
-      const tradeTotalCost = createBigNumber(totalCost.formattedValue, 10);
-      if (
-        tradeTotalCost.gt(ZERO) &&
-        createBigNumber(gasCost).gt(createBigNumber(tradeTotalCost))
-      ) {
-        errors = {
-          ...errors,
-          [this.TRADE_MAX_COST]: [
-            `Est. gas cost ${gasCost} ETH, higher than order cost`
-          ]
-        };
-        errorCount += 1;
-      }
-    }
-
     return { isOrderValid, errors, errorCount };
   }
 
@@ -536,11 +487,9 @@ class TradingForm extends Component {
                 )}
                 id="tr__input--limit-price"
                 type="number"
-                step={tickSize}
-                max={max}
-                min={min}
-                noFocus
-                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
+                step={MIN_QUANTITY.toFixed()}
+                min={MIN_QUANTITY.toFixed()}
+                placeholder="0.0000"
                 value={
                   BigNumber.isBigNumber(s[this.INPUT_TYPES.EST_ETH])
                     ? s[this.INPUT_TYPES.EST_ETH].toNumber()

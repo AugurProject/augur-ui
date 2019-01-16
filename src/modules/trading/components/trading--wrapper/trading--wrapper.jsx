@@ -232,7 +232,6 @@ class TradingWrapper extends Component {
             marketType={getValue(this.props, "market.marketType")}
             maxPrice={getValue(this.props, "market.maxPrice")}
             minPrice={getValue(this.props, "market.minPrice")}
-            availableFunds={availableFunds}
             selectedNav={s.selectedNav}
             orderPrice={s.orderPrice}
             orderQuantity={s.orderQuantity}
@@ -242,7 +241,6 @@ class TradingWrapper extends Component {
             selectedOutcome={selectedOutcome}
             updateState={this.updateState}
             isMobile={isMobile}
-            gasPrice={gasPrice}
             updateSelectedOutcome={updateSelectedOutcome}
           />
         </div>
@@ -263,6 +261,8 @@ class TradingWrapper extends Component {
               clearOrderForm={this.clearOrderForm}
               showOrderPlaced={showOrderPlaced}
               handleFilledOnly={handleFilledOnly}
+              gasPrice={gasPrice}
+              availableFunds={availableFunds}
             />
           )}
       </section>

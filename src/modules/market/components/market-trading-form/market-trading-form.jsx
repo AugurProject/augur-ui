@@ -130,7 +130,6 @@ class MarketTradingForm extends Component {
               isLogged={isLogged}
               selectedOutcome={s.selectedOutcome}
               selectedOrderProperties={selectedOrderProperties}
-              initialMessage={initialMessage}
               isMobile={isMobile}
               toggleForm={this.toggleForm}
               showOrderPlaced={this.showOrderPlaced}
