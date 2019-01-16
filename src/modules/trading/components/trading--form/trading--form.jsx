@@ -148,6 +148,8 @@ class TradingForm extends Component {
     };
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
+
+      // test quantity
       // trade has changed, lets update trade.
       this.updateTrade(newStateInfo, nextProps);
 
