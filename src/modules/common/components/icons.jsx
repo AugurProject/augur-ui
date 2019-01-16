@@ -3,7 +3,7 @@ import React from "react";
 export const twoArrows = (
   <svg
     width="60"
-    height="54"
+    height="48"
     viewBox="0 0 60 54"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

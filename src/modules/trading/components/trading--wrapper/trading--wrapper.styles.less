@@ -3,6 +3,7 @@
 .TradingWrapper__header_buy,
 .TradingWrapper__header_sell,
 .TradingWrapper__header {
+  border-bottom: 1px solid @color-very-dark-purple;
   color: @color-light-gray;
   display: flex;
 
@@ -21,17 +22,23 @@
       color: @color-white;
     }
 
-    > button {
+    &:hover {
+      color: @color-white;
+    }
+
+    > div {
       padding: 1.25rem 0;
       width: 100%;
     }
 
-    > div {
+    > button {
+      align-content: center;
       align-items: center;
       display: flex;
       flex-direction: column;
-      min-height: 4rem;
-      padding: 1.25rem 0;
+      height: 56px;
+      justify-content: center;
+      padding: 1.125rem 0;
       width: 100%;
     }
   }

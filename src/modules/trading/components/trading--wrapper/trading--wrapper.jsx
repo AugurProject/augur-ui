@@ -182,26 +182,22 @@ class TradingWrapper extends Component {
                 [`${Styles.active_buy}`]: s.selectedNav === BUY
               })}
             >
-              <div>
-                <button onClick={() => this.setState({ selectedNav: BUY })}>
-                  Buy Shares
-                </button>
+              <button onClick={() => this.setState({ selectedNav: BUY })}>
+                <div>Buy Shares</div>
                 <span
                   className={classNames(Styles.TradingWrapper__underline__buy, {
                     [`${Styles.notActive}`]: s.selectedNav === SELL
                   })}
                 />
-              </div>
+              </button>
             </li>
             <li
               className={classNames({
                 [`${Styles.active_sell}`]: s.selectedNav === SELL
               })}
             >
-              <div>
-                <button onClick={() => this.setState({ selectedNav: SELL })}>
-                  Sell Shares
-                </button>
+              <button onClick={() => this.setState({ selectedNav: SELL })}>
+                <div>Sell Shares</div>
                 <span
                   className={classNames(
                     Styles.TradingWrapper__underline__sell,
@@ -210,7 +206,7 @@ class TradingWrapper extends Component {
                     }
                   )}
                 />
-              </div>
+              </button>
             </li>
           </ul>
           {market.marketType === SCALAR && (

@@ -464,10 +464,14 @@ class TradingForm extends Component {
               })}
             >
               <input
-                className={classNames(FormStyles.Form__input, {
-                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY]
-                    .length
-                })}
+                className={classNames(
+                  FormStyles.Form__input,
+                  Styles.TradingForm__input,
+                  {
+                    [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY]
+                      .length
+                  }
+                )}
                 id="tr__input--quantity"
                 type="number"
                 step={MIN_QUANTITY.toFixed()}
@@ -475,6 +479,7 @@ class TradingForm extends Component {
                 placeholder={`${
                   marketType === SCALAR ? tickSize : MIN_QUANTITY.toFixed()
                 }`}
+                noFocus
                 value={quantityValue}
                 onChange={e =>
                   this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
@@ -493,7 +498,10 @@ class TradingForm extends Component {
               })}
             >
               <input
-                className={FormStyles.Form__input}
+                className={classNames(
+                  FormStyles.Form__input,
+                  Styles.TradingForm__input
+                )}
                 id="tr__input--limit-price"
                 type="number"
                 step={tickSize}
@@ -505,6 +513,7 @@ class TradingForm extends Component {
                     ? s[this.INPUT_TYPES.PRICE].toNumber()
                     : s[this.INPUT_TYPES.PRICE]
                 }
+                noFocus
                 onChange={e =>
                   this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
                 }
@@ -529,14 +538,20 @@ class TradingForm extends Component {
               })}
             >
               <input
-                className={classNames(FormStyles.Form__input, {
-                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.EST_ETH].length
-                })}
+                className={classNames(
+                  FormStyles.Form__input,
+                  Styles.TradingForm__input,
+                  {
+                    [`${Styles.error}`]: s.errors[this.INPUT_TYPES.EST_ETH]
+                      .length
+                  }
+                )}
                 id="tr__input--limit-price"
                 type="number"
                 step={MIN_QUANTITY.toFixed()}
                 min={MIN_QUANTITY.toFixed()}
                 placeholder="0.0000"
+
                 value={
                   BigNumber.isBigNumber(s[this.INPUT_TYPES.EST_ETH])
                     ? s[this.INPUT_TYPES.EST_ETH].toNumber()

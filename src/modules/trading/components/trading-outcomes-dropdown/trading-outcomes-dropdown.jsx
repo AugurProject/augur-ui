@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -76,15 +78,15 @@ class TradingOutcomesDropdown extends Component {
     const { options, alignLeft } = this.props;
     return (
       <div
-        className={Styles.TradingOutcomesDropdown}
+        className={classNames(Styles.TradingOutcomesDropdown, {
+          [`${Styles.active}`]: this.state.showList
+        })}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
+        onClick={this.toggleList}
       >
-        <button
-          className={Styles.TradingOutcomesDropdown__label}
-          onClick={this.toggleList}
-        >
+        <button className={Styles.TradingOutcomesDropdown__label}>
           {this.state.label}
         </button>
         <div
