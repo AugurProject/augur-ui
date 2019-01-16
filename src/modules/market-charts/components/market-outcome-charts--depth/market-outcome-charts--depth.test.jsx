@@ -24,12 +24,18 @@ describe("src/modules/market-charts/components/market-outcome-charts--depth/mark
     ]
   };
 
-  const marketRange = createBigNumber(1);
+  const marketMax = createBigNumber(1);
+  const marketMin = createBigNumber(0);
 
   describe("price 0.19", () => {
     beforeEach(() => {
       price = 0.19;
-      result = nearestCompletelyFillingOrder(price, marketDepth, marketRange);
+      result = nearestCompletelyFillingOrder(
+        price,
+        marketDepth,
+        marketMin,
+        marketMax
+      );
     });
 
     test("should return an order with depth 0.006", () => {
@@ -52,7 +58,12 @@ describe("src/modules/market-charts/components/market-outcome-charts--depth/mark
   describe("price 0.4", () => {
     beforeEach(() => {
       price = 0.4;
-      result = nearestCompletelyFillingOrder(price, marketDepth, marketRange);
+      result = nearestCompletelyFillingOrder(
+        price,
+        marketDepth,
+        marketMin,
+        marketMax
+      );
     });
 
     test("should return the order with matching price", () => {
@@ -69,7 +80,8 @@ describe("src/modules/market-charts/components/market-outcome-charts--depth/mark
       result = nearestCompletelyFillingOrder(
         undefined,
         marketDepth,
-        marketRange
+        marketMin,
+        marketMax
       );
     });
 
@@ -96,7 +108,12 @@ describe("src/modules/market-charts/components/market-outcome-charts--depth/mark
 
     test("should work be selectable", () => {
       price = 0.35;
-      result = nearestCompletelyFillingOrder(price, marketDepth, marketRange);
+      result = nearestCompletelyFillingOrder(
+        price,
+        marketDepth,
+        marketMin,
+        marketMax
+      );
 
       expect(result[3]).toBeTruthy();
     });
