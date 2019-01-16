@@ -91,26 +91,25 @@ export class Candlestick extends React.Component {
   }
 
   render() {
-    const { maxPrice, minPrice } = this.props;
+    const { maxPrice, minPrice, currentTimeInSeconds } = this.props;
     const { priceTimeSeries, selectedPeriod, selectedRange } = this.state;
     return (
-      <div>
-        <MarketOutcomeCandlestick
-          priceTimeSeries={priceTimeSeries}
-          isMobile={false}
-          isMobileSmall={false}
-          fixedPrecision={4}
-          pricePrecision={4}
-          selectedPeriod={selectedPeriod}
-          selectedRange={selectedRange}
-          updateSelectedPeriod={this.updateSelectedPeriod}
-          updateSelectedRange={this.updateSelectedRange}
-          updateSelectedOrderProperties={() => {}}
-          marketMax={maxPrice}
-          marketMin={minPrice}
-          outcomeName="someanem"
-        />
-      </div>
+      <MarketOutcomeCandlestick
+        priceTimeSeries={priceTimeSeries}
+        isMobile={false}
+        isMobileSmall={false}
+        fixedPrecision={4}
+        pricePrecision={4}
+        selectedPeriod={selectedPeriod}
+        selectedRange={selectedRange}
+        updateSelectedPeriod={this.updateSelectedPeriod}
+        updateSelectedRange={this.updateSelectedRange}
+        updateSelectedOrderProperties={() => {}}
+        marketMax={maxPrice}
+        marketMin={minPrice}
+        outcomeName="someanem"
+        currentTimeInSeconds={currentTimeInSeconds}
+      />
     );
   }
 }
