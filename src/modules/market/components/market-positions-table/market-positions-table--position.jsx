@@ -76,7 +76,7 @@ export default class MarketPositionsListPosition extends Component {
           !isMobile
             ? classNames(Styles.Position, {
                 [Styles["Position-not_extended"]]: isExtendedDisplay,
-                [Styles.Negative]: type === LONG,
+                [Styles.Negative]: type !== LONG,
                 [Styles.TableItemDark]: oddNumber
               })
             : Styles.PortMobile
@@ -89,7 +89,7 @@ export default class MarketPositionsListPosition extends Component {
         )}
         <li
           className={classNames(Styles.Position__type, {
-            [Styles.Position__typeSell]: type === LONG
+            [Styles.Position__typeSell]: type !== LONG
           })}
         >
           {type}
