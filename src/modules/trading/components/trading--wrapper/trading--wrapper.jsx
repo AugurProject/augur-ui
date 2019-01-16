@@ -53,8 +53,6 @@ class TradingWrapper extends Component {
 
     this.updateState = this.updateState.bind(this);
     this.clearOrderForm = this.clearOrderForm.bind(this);
-    this.updateOrderEthEstimate = this.updateOrderEthEstimate.bind(this);
-    this.updateOrderShareEstimate = this.updateOrderShareEstimate.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,27 +63,26 @@ class TradingWrapper extends Component {
       !(nextProps.selectedOutcome || {}).trade
     )
       return this.clearOrderForm();
-    const nextTotalCost = createBigNumber(
-      nextProps.selectedOutcome.trade.totalCost.formattedValue,
-      10
-    );
-    const nextShareCost = createBigNumber(
-      nextProps.selectedOutcome.trade.shareCost.formattedValue,
-      10
-    );
 
-    if (nextTotalCost.abs().toString() !== this.state.orderEthEstimate) {
-      this.setState({
-        orderEthEstimate: nextTotalCost.abs().toString()
-      });
+    if (
+      nextProps.selectedOutcome.trade.limitPrice &&
+      nextProps.selectedOutcome.trade.numShares
+    ) {
+      const nextTotalCost = nextProps.selectedOutcome.trade.totalCost.formattedValue.toString();
+      const nextShareCost = nextProps.selectedOutcome.trade.shareCost.formattedValue.toString();
+
+      if (nextTotalCost !== this.state.orderEthEstimate) {
+        this.setState({
+          orderEthEstimate: nextTotalCost
+        });
+      }
+
+      if (nextShareCost !== this.state.orderShareEstimate) {
+        this.setState({
+          orderShareEstimate: nextShareCost
+        });
+      }
     }
-
-    if (nextShareCost !== this.state.orderShareEstimate) {
-      this.setState({
-        orderShareEstimate: nextShareCost.abs().toString()
-      });
-    }
-
     // Updates from chart clicks
     if (!isEqual(selectedOrderProperties, nextProps.selectedOrderProperties)) {
       this.setState({ ...nextProps.selectedOrderProperties });
@@ -112,18 +109,6 @@ class TradingWrapper extends Component {
       orderEthEstimate: "0",
       orderShareEstimate: "0",
       doNotCreateOrders: false
-    });
-  }
-
-  updateOrderEthEstimate(orderEthEstimate) {
-    this.setState({
-      orderEthEstimate
-    });
-  }
-
-  updateOrderShareEstimate(orderShareEstimate) {
-    this.setState({
-      orderShareEstimate
     });
   }
 
@@ -241,6 +226,7 @@ class TradingWrapper extends Component {
             selectedOutcome={selectedOutcome}
             updateState={this.updateState}
             isMobile={isMobile}
+            clearOrderForm={this.clearOrderForm}
             updateSelectedOutcome={updateSelectedOutcome}
           />
         </div>
@@ -265,6 +251,35 @@ class TradingWrapper extends Component {
               availableFunds={availableFunds}
             />
           )}
+        <div className={Styles.TradingWrapper__actions}>
+          <button
+            className={classNames(Styles["TradingWrapper__button--submit"], {
+              [Styles.long]: s.selectedNav === BUY,
+              [Styles.short]: s.selectedNav === SELL,
+              [Styles.disabled]: !selectedOutcome.trade.limitPrice
+            })}
+            onClick={e => {
+              e.preventDefault();
+              market.onSubmitPlaceTrade(
+                selectedOutcome.id,
+                (err, tradeGroupID) => {
+                  // onSent/onFailed CB
+                  if (!err) {
+                    showOrderPlaced();
+                  }
+                },
+                res => {
+                  if (s.doNotCreateOrders && res.res !== res.sharesToFill)
+                    handleFilledOnly(res.tradeInProgress);
+                  // onComplete CB
+                },
+                s.doNotCreateOrders
+              );
+            }}
+          >
+            Place {s.selectedNav === BUY ? "Buy" : "Sell"} Order
+          </button>
+        </div>
       </section>
     );
   }
