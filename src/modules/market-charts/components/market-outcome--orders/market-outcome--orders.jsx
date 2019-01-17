@@ -87,7 +87,7 @@ export default class MarketOutcomeChartsOrders extends Component {
             }}
           >
             {orderBookAsks.map((order, i) => (
-              <div
+              <button
                 key={order.cumulativeShares}
                 className={classNames(
                   Styles.MarketOutcomeOrderBook__row,
@@ -117,6 +117,13 @@ export default class MarketOutcomeChartsOrders extends Component {
                     hoveredSide: null
                   });
                 }}
+                onClick={() =>
+                  updateSelectedOrderProperties({
+                    orderPrice: order.price.value.toString(),
+                    orderQuantity: order.cumulativeShares.toString(),
+                    selectedNav: BUY
+                  })
+                }
               >
                 <div
                   className={classNames(
@@ -127,13 +134,6 @@ export default class MarketOutcomeChartsOrders extends Component {
                 />
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
-                  onClick={() =>
-                    updateSelectedOrderProperties({
-                      orderPrice: order.price.value.toString(),
-                      orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: BUY
-                    })
-                  }
                   style={{ justifyContent: "flex-start" }}
                 >
                   <span>
@@ -142,34 +142,18 @@ export default class MarketOutcomeChartsOrders extends Component {
                 </button>
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
-                  onClick={() =>
-                    updateSelectedOrderProperties({
-                      orderPrice: order.price.value.toString(),
-                      orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: BUY
-                    })
-                  }
                   style={{ justifyContent: "center" }}
                 >
                   <span>{order.price.value.toFixed(pricePrecision)}</span>
                 </button>
-                <button
-                  className={Styles.MarketOutcomeOrderBook__RowItem_ask}
-                  onClick={() =>
-                    updateSelectedOrderProperties({
-                      orderPrice: order.price.value.toString(),
-                      orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: BUY
-                    })
-                  }
-                >
+                <button className={Styles.MarketOutcomeOrderBook__RowItem_ask}>
                   <span>
                     {order.mySize
                       ? order.mySize.value.toFixed(fixedPrecision).toString()
                       : "—"}
                   </span>
                 </button>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -203,7 +187,7 @@ export default class MarketOutcomeChartsOrders extends Component {
             }}
           >
             {(orderBook.bids || []).map((order, i) => (
-              <div
+              <button
                 key={order.cumulativeShares}
                 className={classNames(Styles.MarketOutcomeOrderBook__row, {
                   [Styles["MarketOutcomeOrderBook__row--head-ask"]]: i === 0,
@@ -228,6 +212,13 @@ export default class MarketOutcomeChartsOrders extends Component {
                     hoveredSide: null
                   });
                 }}
+                onClick={() =>
+                  updateSelectedOrderProperties({
+                    orderPrice: order.price.value.toString(),
+                    orderQuantity: order.cumulativeShares.toString(),
+                    selectedNav: SELL
+                  })
+                }
               >
                 <div
                   className={Styles.MarketOutcomeOrderBook__rowScale}
@@ -235,13 +226,6 @@ export default class MarketOutcomeChartsOrders extends Component {
                 />
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
-                  onClick={() =>
-                    updateSelectedOrderProperties({
-                      orderPrice: order.price.value.toString(),
-                      orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: SELL
-                    })
-                  }
                   style={{ justifyContent: "flex-start" }}
                 >
                   <span>
@@ -250,34 +234,18 @@ export default class MarketOutcomeChartsOrders extends Component {
                 </button>
                 <button
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
-                  onClick={() =>
-                    updateSelectedOrderProperties({
-                      orderPrice: order.price.value.toString(),
-                      orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: SELL
-                    })
-                  }
                   style={{ justifyContent: "center" }}
                 >
                   <span>{order.price.value.toFixed(pricePrecision)}</span>
                 </button>
-                <button
-                  className={Styles.MarketOutcomeOrderBook__RowItem_bid}
-                  onClick={() =>
-                    updateSelectedOrderProperties({
-                      orderPrice: order.price.value.toString(),
-                      orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: SELL
-                    })
-                  }
-                >
+                <button className={Styles.MarketOutcomeOrderBook__RowItem_bid}>
                   <span>
                     {order.mySize
                       ? order.mySize.value.toFixed(fixedPrecision).toString()
                       : "—"}
                   </span>
                 </button>
-              </div>
+              </button>
             ))}
           </div>
         </div>
