@@ -123,69 +123,70 @@ const MarketTradingConfirm = ({
             </div>
           </div>
         )}
-      {tradeTotalCost && (
-        <div className={Styles.TradingConfirm__details}>
-          <div className={Styles.TradingConfirm__position}>
-            <div className={Styles.TradingConfirm__position__properties}>
-              New Position
-              <span className={Styles.TradingConfirm__TooltipContainer}>
-                <label
-                  className={classNames(
-                    TooltipStyles.TooltipHint,
-                    Styles.TradingConfirm__TooltipHint
-                  )}
-                  data-tip
-                  data-for="tooltip--fee"
-                >
-                  {Hint}
-                </label>
-                <ReactTooltip
-                  id="tooltip--fee"
-                  className={TooltipStyles.Tooltip}
-                  effect="solid"
-                  place="bottom"
-                  type="light"
-                >
-                  <p>
-                    This means you believe {selectedNav} has a (higher or lower
-                    depending on buying or selling) then (limit price to %)
-                    change of happening
-                  </p>
-                </ReactTooltip>
-              </span>
-            </div>
-            <div className={Styles.TradingConfirm__agg_position}>
-              <span
-                className={classNames({
-                  [Styles.long]: selectedNav === BUY,
-                  [Styles.short]: selectedNav === SELL
-                })}
-              >
-                {side === BUY ? "Long" : "Short"}
-              </span>
-              <span>{newOrderAmount}</span>
-              Shares @ <span>{limitPrice}</span>
-            </div>
-            <div className={Styles.TradingConfirm__position__properties}>
-              <div>
-                <div>Max Profit</div>
-                <div className={Styles.TradingConfirm__property__value}>
-                  {potentialEthProfit && potentialEthProfit.formatted}
-                  <span>ETH</span>
-                </div>
+      {totalCost &&
+        totalCost.value !== 0 && (
+          <div className={Styles.TradingConfirm__details}>
+            <div className={Styles.TradingConfirm__position}>
+              <div className={Styles.TradingConfirm__position__properties}>
+                New Position
+                <span className={Styles.TradingConfirm__TooltipContainer}>
+                  <label
+                    className={classNames(
+                      TooltipStyles.TooltipHint,
+                      Styles.TradingConfirm__TooltipHint
+                    )}
+                    data-tip
+                    data-for="tooltip--fee"
+                  >
+                    {Hint}
+                  </label>
+                  <ReactTooltip
+                    id="tooltip--fee"
+                    className={TooltipStyles.Tooltip}
+                    effect="solid"
+                    place="bottom"
+                    type="light"
+                  >
+                    <p>
+                      This means you believe {selectedNav} has a (higher or
+                      lower depending on buying or selling) then (limit price to
+                      %) change of happening
+                    </p>
+                  </ReactTooltip>
+                </span>
               </div>
-              <div className={Styles.TradingConfirm__vert__line} />
-              <div>
-                <div>Max Loss</div>
-                <div className={Styles.TradingConfirm__property__value}>
-                  {potentialEthLoss && potentialEthLoss.formatted}
-                  <span>ETH</span>
+              <div className={Styles.TradingConfirm__agg_position}>
+                <span
+                  className={classNames({
+                    [Styles.long]: selectedNav === BUY,
+                    [Styles.short]: selectedNav === SELL
+                  })}
+                >
+                  {side === BUY ? "Long" : "Short"}
+                </span>
+                <span>{newOrderAmount}</span>
+                Shares @ <span>{limitPrice}</span>
+              </div>
+              <div className={Styles.TradingConfirm__position__properties}>
+                <div>
+                  <div>Max Profit</div>
+                  <div className={Styles.TradingConfirm__property__value}>
+                    {potentialEthProfit && potentialEthProfit.formatted}
+                    <span>ETH</span>
+                  </div>
+                </div>
+                <div className={Styles.TradingConfirm__vert__line} />
+                <div>
+                  <div>Max Loss</div>
+                  <div className={Styles.TradingConfirm__property__value}>
+                    {potentialEthLoss && potentialEthLoss.formatted}
+                    <span>ETH</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       {errorMessage && (
         <div className={Styles.TradingConfirm__error_message_container}>
           <div>{errorMessage.header}</div>
