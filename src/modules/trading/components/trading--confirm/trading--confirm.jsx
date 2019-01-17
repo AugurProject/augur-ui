@@ -18,7 +18,7 @@ const MarketTradingConfirm = ({
   selectedNav,
   market,
   gasPrice,
-  availableFunds
+  availableFunds,
 }) => {
   const {
     limitPrice,
@@ -199,7 +199,6 @@ const MarketTradingConfirm = ({
 MarketTradingConfirm.propTypes = {
   market: PropTypes.object.isRequired,
   selectedNav: PropTypes.string.isRequired,
-  doNotCreateOrders: PropTypes.bool.isRequired,
   trade: PropTypes.shape({
     numShares: PropTypes.string,
     limitPrice: PropTypes.string,

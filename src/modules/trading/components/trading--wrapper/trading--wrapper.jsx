@@ -237,7 +237,6 @@ class TradingWrapper extends Component {
               selectedNav={s.selectedNav}
               orderPrice={s.orderPrice}
               orderQuantity={s.orderQuantity}
-              doNotCreateOrders={s.doNotCreateOrders}
               selectedOutcome={selectedOutcome}
               trade={selectedOutcome.trade}
               isMobile={isMobile}
