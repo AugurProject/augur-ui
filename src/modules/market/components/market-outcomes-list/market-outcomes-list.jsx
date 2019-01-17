@@ -16,7 +16,7 @@ export default class MarketOutcomesList extends Component {
     outcomes: PropTypes.array.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
     selectedOutcome: PropTypes.any,
-    scalarDenomination: PropTypes.string,
+    scalarDenomination: PropTypes.any,
     marketType: PropTypes.string,
     minPrice: CustomPropTypes.bigNumber,
     maxPrice: CustomPropTypes.bigNumber,

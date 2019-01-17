@@ -26,9 +26,9 @@ export default class MarketOutcomeChartsOrders extends Component {
     orderBook: PropTypes.object.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    updateHoveredPrice: PropTypes.func.isRequired,
+    // updateHoveredPrice: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
-    updatePrecision: PropTypes.func.isRequired,
+    // updatePrecision: PropTypes.func.isRequired,
     isMobile: PropTypes.bool,
     headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
@@ -68,8 +68,8 @@ export default class MarketOutcomeChartsOrders extends Component {
       pricePrecision,
       orderBook,
       sharedChartMargins,
-      updateHoveredPrice,
-      updatePrecision,
+      // updateHoveredPrice,
+      // updatePrecision,
       updateSelectedOrderProperties,
       isMobile,
       headerHeight,
@@ -86,7 +86,7 @@ export default class MarketOutcomeChartsOrders extends Component {
         style={{ paddingBottom: sharedChartMargins.bottom - 4 }}
       >
         <MarketOutcomeChartHeaderOrders
-          updatePrecision={updatePrecision}
+          // updatePrecision={updatePrecision}
           isMobile={isMobile}
           headerHeight={headerHeight}
         />
@@ -119,14 +119,14 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i > s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  updateHoveredPrice(order.price.value);
+                  // updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: ASKS
                   });
                 }}
                 onMouseLeave={() => {
-                  updateHoveredPrice(null);
+                  // updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
@@ -218,14 +218,14 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i < s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  updateHoveredPrice(order.price.value);
+                  // updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: BIDS
                   });
                 }}
                 onMouseLeave={() => {
-                  updateHoveredPrice(null);
+                  // updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null

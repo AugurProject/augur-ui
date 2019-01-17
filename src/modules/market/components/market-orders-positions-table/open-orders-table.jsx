@@ -80,7 +80,6 @@ const OpenOrdersTable = ({
         )}
       </div>
     </div>
-    <div className={Styles.MarketOpenOrdersList__footer} />
   </div>
 );
 

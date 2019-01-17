@@ -211,7 +211,6 @@ MarketTradingConfirm.propTypes = {
     totalCost: PropTypes.object,
     shareCost: PropTypes.object
   }).isRequired,
-  isMobile: PropTypes.bool.isRequired,
   gasPrice: PropTypes.number.isRequired,
   availableFunds: PropTypes.instanceOf(BigNumber).isRequired
 };

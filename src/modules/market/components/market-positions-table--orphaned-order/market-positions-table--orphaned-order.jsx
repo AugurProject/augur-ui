@@ -14,18 +14,14 @@ import Styles from "modules/market/components/market-orders-positions-table/open
 
 export default class OrphanedOrder extends Component {
   static propTypes = {
-    isExtendedDisplay: PropTypes.bool.isRequired,
-    isMobile: PropTypes.bool,
     outcomeName: PropTypes.string,
     order: PropTypes.object.isRequired,
     pending: PropTypes.bool.isRequired,
-    outcome: PropTypes.object.isRequired,
     cancelOrphanedOrder: PropTypes.func.isRequired
   };
 
   static defaultProps = {
-    outcomeName: null,
-    isMobile: false
+    outcomeName: null
   };
 
   constructor(props) {

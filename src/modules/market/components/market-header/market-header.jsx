@@ -20,7 +20,6 @@ const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label m
 
 export default class MarketHeader extends Component {
   static propTypes = {
-    clearSelectedOutcome: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     details: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
@@ -30,11 +29,9 @@ export default class MarketHeader extends Component {
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
-    selectedOutcome: PropTypes.any,
     isLogged: PropTypes.bool,
     isMobile: PropTypes.bool,
     isMobileSmall: PropTypes.bool,
-    isForking: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
     history: PropTypes.object.isRequired
@@ -44,9 +41,7 @@ export default class MarketHeader extends Component {
     isLogged: false,
     scalarDenomination: null,
     resolutionSource: "General knowledge",
-    selectedOutcome: null,
     marketType: null,
-    isForking: false,
     currentTime: 0,
     isFavorite: false,
     toggleFavorite: () => {},

@@ -12,13 +12,12 @@ import { isEmpty, isEqual } from "lodash";
 
 export default class MarketOutcomeChartsOrders extends Component {
   static propTypes = {
-    sharedChartMargins: PropTypes.object.isRequired,
     orderBook: PropTypes.object.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    updateHoveredPrice: PropTypes.func.isRequired,
+    // updateHoveredPrice: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
-    updatePrecision: PropTypes.func.isRequired,
+    // updatePrecision: PropTypes.func.isRequired,
     isMobile: PropTypes.bool.isRequired,
     headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
@@ -53,7 +52,6 @@ export default class MarketOutcomeChartsOrders extends Component {
       fixedPrecision,
       pricePrecision,
       orderBook,
-      updatePrecision,
       updateSelectedOrderProperties,
       isMobile,
       headerHeight,
@@ -67,7 +65,6 @@ export default class MarketOutcomeChartsOrders extends Component {
     return (
       <section className={Styles.MarketOutcomeOrderBook}>
         <MarketOutcomeHeaderOrders
-          updatePrecision={updatePrecision}
           isMobile={isMobile}
           headerHeight={headerHeight}
         />
@@ -132,27 +129,27 @@ export default class MarketOutcomeChartsOrders extends Component {
                   )}
                   style={{ right: order.quantityScale + "%" }}
                 />
-                <button
+                <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
                   style={{ justifyContent: "flex-start" }}
                 >
                   <span>
                     {order.shares.value.toFixed(fixedPrecision).toString()}
                   </span>
-                </button>
-                <button
+                </div>
+                <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
                   style={{ justifyContent: "center" }}
                 >
                   <span>{order.price.value.toFixed(pricePrecision)}</span>
-                </button>
-                <button className={Styles.MarketOutcomeOrderBook__RowItem_ask}>
+                </div>
+                <div className={Styles.MarketOutcomeOrderBook__RowItem_ask}>
                   <span>
                     {order.mySize
                       ? order.mySize.value.toFixed(fixedPrecision).toString()
                       : "—"}
                   </span>
-                </button>
+                </div>
               </button>
             ))}
           </div>
@@ -224,27 +221,27 @@ export default class MarketOutcomeChartsOrders extends Component {
                   className={Styles.MarketOutcomeOrderBook__rowScale}
                   style={{ right: order.quantityScale + "%" }}
                 />
-                <button
+                <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
                   style={{ justifyContent: "flex-start" }}
                 >
                   <span>
                     {order.shares.value.toFixed(fixedPrecision).toString()}
                   </span>
-                </button>
-                <button
+                </div>
+                <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
                   style={{ justifyContent: "center" }}
                 >
                   <span>{order.price.value.toFixed(pricePrecision)}</span>
-                </button>
-                <button className={Styles.MarketOutcomeOrderBook__RowItem_bid}>
+                </div>
+                <div className={Styles.MarketOutcomeOrderBook__RowItem_bid}>
                   <span>
                     {order.mySize
                       ? order.mySize.value.toFixed(fixedPrecision).toString()
                       : "—"}
                   </span>
-                </button>
+                </div>
               </button>
             ))}
           </div>

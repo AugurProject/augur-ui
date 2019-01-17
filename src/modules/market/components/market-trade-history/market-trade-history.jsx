@@ -1,3 +1,5 @@
+/* eslint react/no-array-index-key: 0 */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -51,8 +53,8 @@ export default class MarketTradeHistory extends Component {
         </div>
         <div className={Styles.MarketTradeHistory__table__data}>
           {groupedTradeHistory &&
-            Object.keys(groupedTradeHistory).map(date => (
-              <div>
+            Object.keys(groupedTradeHistory).map((date, index) => (
+              <div key={index}>
                 <div className={Styles.MarketTradeHistory__table}>
                   <ul
                     key={date}
