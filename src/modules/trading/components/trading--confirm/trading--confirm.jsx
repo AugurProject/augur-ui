@@ -76,7 +76,7 @@ const MarketTradingConfirm = ({
     };
   }
   let newOrderAmount = "0";
-  if (totalCost.fullPrecision && shareCost.fullPrecision) {
+  if (numShares && totalCost.fullPrecision && shareCost.fullPrecision) {
     newOrderAmount = createBigNumber(numShares)
       .minus(shareCost.fullPrecision)
       .toFixed();

@@ -397,7 +397,15 @@ export function assembleMarket(
             }
 
             outcome.trade = generateTrade(
-              market,
+              {
+                id: market.id,
+                settlementFee: market.settlementFee,
+                marketType: market.marketType,
+                maxPrice: market.maxPrice,
+                minPrice: market.minPrice,
+                cumulativeScale: market.cumulativeScale,
+                makerFee: market.makerFee
+              },
               outcome,
               outcomeTradeInProgress,
               orderBooks || {}
