@@ -137,6 +137,24 @@
   stroke-dasharray: 5;
 }
 
+.MarketOutcomesChart__scalar_denomination_label {
+  fill: @color-white;
+  .text-small;
+}
+
+.MarketOutcomesChart__scalar_gradient_stop_top {
+  stop-color: transparent;
+}
+
+.MarketOutcomesChart__scalar_gradient_stop_bottom {
+  stop-color: extract(@color-outcome-list, 2)
+}
+
+.MarketOutcomesChart__scalar_gradient_fill {
+  fill: url("#scalarGradient");
+  opacity: 0.25;
+}
+
 each(@color-outcome-list, {
   @newIndex: @index - 1;
 

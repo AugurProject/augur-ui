@@ -5,6 +5,8 @@ import { get, isEmpty, isEqual, minBy } from "lodash";
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
 
+import { NUMBER_OF_SECONDS_IN_A_DAY } from "utils/format-date";
+
 import { createBigNumber } from "utils/create-big-number";
 
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
@@ -22,11 +24,16 @@ export default class MarketOutcomesChart extends Component {
     hasPriceHistory: PropTypes.bool.isRequired,
     bucketedPriceTimeSeries: PropTypes.object.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    isMobileSmall: PropTypes.bool
+    isMobileSmall: PropTypes.bool,
+    isScalar: PropTypes.bool,
+    scalarDenomination: PropTypes.string,
+    selectedOutcome: PropTypes.string.isRequired
   };
 
   static defaultProps = {
-    isMobileSmall: false
+    isMobileSmall: false,
+    isScalar: false,
+    scalarDenomination: ""
   };
 
   constructor(props) {
@@ -49,8 +56,6 @@ export default class MarketOutcomesChart extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { pricePrecision } = this.props;
-
     if (
       checkPropsChange(this.props, nextProps, [
         "currentTimestamp",
@@ -70,7 +75,7 @@ export default class MarketOutcomesChart extends Component {
         hoveredLocation: nextState.hoveredLocation,
         drawParams: nextState.drawParams,
         selectedOutcome: nextProps.selectedOutcome,
-        pricePrecision
+        isScalar: nextProps.isScalar
       });
     }
   }
@@ -90,7 +95,9 @@ export default class MarketOutcomesChart extends Component {
       outcomes,
       hasPriceHistory,
       bucketedPriceTimeSeries,
-      isMobileSmall
+      isMobileSmall,
+      isScalar,
+      selectedOutcome
     } = this.props;
     // this is stupid but done for prop-type validation.
     this.drawChart({
@@ -103,7 +110,9 @@ export default class MarketOutcomesChart extends Component {
       outcomes,
       hasPriceHistory,
       bucketedPriceTimeSeries,
-      isMobileSmall
+      isMobileSmall,
+      isScalar,
+      selectedOutcome
     });
   }
 
@@ -118,7 +127,10 @@ export default class MarketOutcomesChart extends Component {
     bucketedPriceTimeSeries,
     pricePrecision,
     isMobileSmall,
-    selectedOutcome
+    selectedOutcome,
+    isScalar,
+    scalarDenomination,
+    fixedPrecision
   }) {
     if (this.outcomesChart) {
       const drawParams = determineDrawParams({
@@ -131,7 +143,9 @@ export default class MarketOutcomesChart extends Component {
         outcomes,
         hasPriceHistory,
         bucketedPriceTimeSeries,
-        isMobileSmall
+        isMobileSmall,
+        isScalar,
+        fixedPrecision
       });
       const fauxDiv = new ReactFauxDOM.Element("div");
       const chart = d3
@@ -140,6 +154,26 @@ export default class MarketOutcomesChart extends Component {
         .attr("id", "priceTimeSeries_chart")
         .attr("width", drawParams.width)
         .attr("height", drawParams.height);
+
+      //  Fills
+      const linearGradient = chart
+        .append("defs")
+        .append("linearGradient")
+        .attr("id", "scalarGradient")
+        .attr("x1", 0)
+        .attr("y1", 1)
+        .attr("x2", 0)
+        .attr("y2", 0);
+
+      linearGradient
+        .append("stop")
+        .attr("class", Styles.MarketOutcomesChart__scalar_gradient_stop_top)
+        .attr("offset", "0%");
+
+      linearGradient
+        .append("stop")
+        .attr("class", Styles.MarketOutcomesChart__scalar_gradient_stop_bottom)
+        .attr("offset", "80%");
 
       drawTicks({
         drawParams,
@@ -159,7 +193,8 @@ export default class MarketOutcomesChart extends Component {
         outcomes,
         drawParams,
         bucketedPriceTimeSeries,
-        selectedOutcome
+        selectedOutcome,
+        isScalar
       });
 
       drawCrosshairs({
@@ -178,6 +213,17 @@ export default class MarketOutcomesChart extends Component {
           drawParams,
           chart
         });
+      }
+
+      if (isScalar) {
+        chart
+          .append("text")
+          .attr("class", Styles.MarketOutcomesChart__scalar_denomination_label)
+          .attr("x", drawParams.containerWidth / 2)
+          .attr("y", 12)
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "central")
+          .text(scalarDenomination);
       }
 
       this.setState({
@@ -211,12 +257,23 @@ export default class MarketOutcomesChart extends Component {
   }
 }
 
+function yTickFormatFn(fixedPrecision, isScalar) {
+  return price => {
+    const fixedPrice = createBigNumber(price)
+      .toNumber()
+      .toFixed(fixedPrecision);
+
+    return isScalar ? `${fixedPrice}` : `${fixedPrice} ETH`;
+  };
+}
+
 function determineDrawParams({
   drawContainer,
   maxPrice,
   minPrice,
   bucketedPriceTimeSeries,
-  isMobileSmall
+  isScalar,
+  fixedPrecision
 }) {
   const chartDim = {
     top: 0,
@@ -231,11 +288,29 @@ function determineDrawParams({
   const xDomain = bucketedPriceTimeSeries.timeBuckets;
   const yDomain = [minPrice, maxPrice];
 
+  const xExtents = d3.extent(xDomain);
   const xScale = d3
     .scaleTime()
-    .domain(d3.extent(xDomain))
+    .domain(xExtents)
     .range([chartDim.left, containerWidth])
     .nice();
+
+  const numberOfDaysElapsed =
+    Math.floor(
+      Math.abs(xExtents[0] - xExtents[1]) / (NUMBER_OF_SECONDS_IN_A_DAY * 1000)
+    ) <= 1;
+
+  let timeFormat;
+  switch (true) {
+    case numberOfDaysElapsed <= 1:
+      timeFormat = d3.timeFormat("%I %p");
+      break;
+    case numberOfDaysElapsed <= 31:
+      timeFormat = d3.timeFormat("%b-%d");
+      break;
+    default:
+      timeFormat = d3.timeFormat("%b");
+  }
 
   const yScale = d3
     .scaleLinear()
@@ -243,7 +318,8 @@ function determineDrawParams({
     .range([containerHeight - chartDim.bottom, chartDim.top]);
 
   return {
-    timeFormat: d3.timeFormat("%b-%d"),
+    timeFormat,
+    yTickFormat: yTickFormatFn(fixedPrecision, isScalar),
     chartDim,
     containerWidth,
     containerHeight,
@@ -277,9 +353,9 @@ function drawTicks({ drawParams, chart, pricePrecision }) {
     .enter()
     .append("text")
     .classed(Styles["MarketOutcomesChart__tick-value"], true)
-    .attr("x", 0)
+    .attr("x", drawParams.chartDim.left)
     .attr("y", drawParams.yScale)
-    .text(d => `${d.toFixed(pricePrecision)} ETH`);
+    .text(drawParams.yTickFormat);
 }
 
 function drawXAxisLabels({ chart, drawParams }) {
@@ -313,11 +389,12 @@ function drawSeries({
   outcomes,
   chart,
   bucketedPriceTimeSeries,
-  selectedOutcome
+  selectedOutcome,
+  isScalar
 }) {
   const initialPoint = {
     price: estimatedInitialPrice.toString(),
-    timestamp: creationTime
+    timestamp: drawParams.xScale.domain()[0]
   };
 
   const outcomeLine = d3
@@ -325,15 +402,36 @@ function drawSeries({
     .x(d => drawParams.xScale(d.timestamp))
     .y(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
 
-  outcomes.forEach((outcome, i) => {
+  outcomes.forEach(outcome => {
+    const data = [
+      initialPoint,
+      ...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]
+    ];
+
+    if (isScalar) {
+      const area = d3
+        .area()
+        .x(d => drawParams.xScale(d.timestamp))
+        .y0(drawParams.containerHeight - drawParams.chartDim.bottom)
+        .y1(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
+
+      chart
+        .append("path")
+        .datum(data)
+        .attr("class", Styles.MarketOutcomesChart__scalar_gradient_fill)
+        .attr("d", area);
+    }
+
     const p = chart
       .append("path")
-      .data([
-        [initialPoint, ...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]]
-      ])
+      .data([data])
       .attr("d", outcomeLine)
       .classed(`${Styles["MarketOutcomesChart__outcome-line"]}`, true)
-      .classed(`${Styles[`MarketOutcomesChart__outcome-line--${i}`]}`, true);
+      .classed(
+        `${Styles[`MarketOutcomesChart__outcome-line--${outcome.id}`]}`,
+        true
+      );
+
     if (!isEmpty(selectedOutcome)) {
       p.classed(
         `${Styles[`MarketOutcomesChart__outcome-line-selected`]}`,
@@ -463,7 +561,8 @@ function updateHoveredLocationCrosshairPosition(
   drawParams,
   pricePrecision,
   { price, timestamp },
-  selectedOutcome
+  selectedOutcome,
+  isScalar
 ) {
   d3.select("#priceTimeSeries_crosshairs").style("display", null);
   d3.select("#priceTimeSeries_crosshairY")
@@ -477,24 +576,28 @@ function updateHoveredLocationCrosshairPosition(
     .attr("x2", drawParams.xScale(timestamp))
     .attr("y2", drawParams.containerHeight - drawParams.chartDim.bottom + 4);
 
-  d3.select("#crosshairDot")
-    .style("display", "inline-block")
-    .classed(
-      Styles[`MarketOutcomesChart__outcome-dot--${selectedOutcome}`],
-      true
-    )
-    .attr("cx", drawParams.xScale(timestamp))
-    .attr("cy", drawParams.yScale(price));
+  if (selectedOutcome) {
+    d3.select("#crosshairDot")
+      .style("display", "inline-block")
+      .classed(
+        Styles[`MarketOutcomesChart__outcome-dot--${selectedOutcome}`],
+        true
+      )
+      .attr("cx", drawParams.xScale(timestamp))
+      .attr("cy", drawParams.yScale(price));
 
-  d3.select("#crosshairDotOutline")
-    .style("display", "inline-block")
-    .classed(
-      Styles[`MarketOutcomesChart__outcome-dot-outline--${selectedOutcome}`],
-      true
-    )
-
-    .attr("cx", drawParams.xScale(timestamp))
-    .attr("cy", drawParams.yScale(price));
+    d3.select("#crosshairDotOutline")
+      .style("display", "inline-block")
+      .classed(
+        Styles[`MarketOutcomesChart__outcome-dot-outline--${selectedOutcome}`],
+        true
+      )
+      .attr("cx", drawParams.xScale(timestamp))
+      .attr("cy", drawParams.yScale(price));
+  } else {
+    d3.select("#crosshairDot").style("display", "none");
+    d3.select("#crosshairDotOutline").style("display", "none");
+  }
 
   d3.select("#hovered_priceTimeSeries_price_label")
     .style("display", "inline-block")
@@ -502,9 +605,7 @@ function updateHoveredLocationCrosshairPosition(
     .attr("y", drawParams.yScale(price));
 
   d3.select("#hovered_priceTimeSeries_price_label-inner").html(
-    `${createBigNumber(price)
-      .toNumber()
-      .toFixed(pricePrecision)} ETH`
+    drawParams.yTickFormat(price)
   );
 
   d3.select("#hovered_priceTimeSeries_date_label")
