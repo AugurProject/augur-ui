@@ -68,11 +68,9 @@
     }
 
     .tick-value {
-      &:extend(.caps--extra-small all);
+      .number-medium;
 
-      fill: @color-lightgray;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 12px;
+      fill: @color-white;
     }
 
     .tick-value-volume {
@@ -128,7 +126,9 @@
       }
 
       text {
-        fill: @color-lightgray;
+        .number-small;
+
+        fill: @color-white;
       }
     }
   }
