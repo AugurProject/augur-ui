@@ -23,7 +23,11 @@ curl https://gist.githubusercontent.com/justinbarry/bf6cd9afcd8778027e211105562b
 while IFS=$'\t' read -r -a dataArray
 do
   for ((i = 0; i < ${#dataArray[@]}; ++i)); do
-    OUTCOME=$((RANDOM % $NUM_OF_OUTCOMES));
+    if [ "$MARKET_TYPE" = "categorical" ]; then
+      OUTCOME=$((RANDOM % $NUM_OF_OUTCOMES));
+    else
+      OUTCOME=1
+    fi
     if ! ((i % 2)); then
       TRANS_ONE_TYPE='sell'
       TRANS_TWO_TYPE='buy'
