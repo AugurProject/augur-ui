@@ -28,10 +28,7 @@ const MarketTradingConfirm = ({
     totalCost,
     shareCost,
     side,
-    tradingFees,
-    sharesFilled,
-    orderShareEstimate,
-    orderEthEstimate
+    tradingFees
   } = trade;
 
   let errorMessage = null;
@@ -79,9 +76,9 @@ const MarketTradingConfirm = ({
     };
   }
   let newOrderAmount = "0";
-  if (orderShareEstimate && numShares) {
-    newOrderAmount = createBigNumber(orderShareEstimate)
-      .minus(numShares)
+  if (totalCost.fullPrecision && shareCost.fullPrecision) {
+    newOrderAmount = createBigNumber(numShares)
+      .minus(shareCost.fullPrecision)
       .toFixed();
   }
 
@@ -103,7 +100,7 @@ const MarketTradingConfirm = ({
                 >
                   {side !== BUY ? "Long" : "Short"}
                 </span>
-                <span>{orderShareEstimate}</span>
+                <span>{shareCost.value}</span>
                 Shares @ <span>{limitPrice}</span>
               </div>
               <div className={Styles.TradingConfirm__position__properties}>
@@ -126,7 +123,7 @@ const MarketTradingConfirm = ({
             </div>
           </div>
         )}
-      {orderEthEstimate && (
+      {tradeTotalCost && (
         <div className={Styles.TradingConfirm__details}>
           <div className={Styles.TradingConfirm__position}>
             <div className={Styles.TradingConfirm__position__properties}>
@@ -203,8 +200,6 @@ MarketTradingConfirm.propTypes = {
   market: PropTypes.object.isRequired,
   selectedNav: PropTypes.string.isRequired,
   doNotCreateOrders: PropTypes.bool.isRequired,
-  orderShareEstimate: PropTypes.string,
-  orderEthEstimate: PropTypes.string,
   trade: PropTypes.shape({
     numShares: PropTypes.string,
     limitPrice: PropTypes.string,
@@ -219,11 +214,6 @@ MarketTradingConfirm.propTypes = {
   isMobile: PropTypes.bool.isRequired,
   gasPrice: PropTypes.number.isRequired,
   availableFunds: PropTypes.instanceOf(BigNumber).isRequired
-};
-
-MarketTradingConfirm.defaultProps = {
-  orderShareEstimate: "0",
-  orderEthEstimate: "0"
 };
 
 export default MarketTradingConfirm;

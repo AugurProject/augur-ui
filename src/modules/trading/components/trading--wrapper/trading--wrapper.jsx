@@ -237,7 +237,6 @@ class TradingWrapper extends Component {
               selectedNav={s.selectedNav}
               orderPrice={s.orderPrice}
               orderQuantity={s.orderQuantity}
-              orderEthEstimate={s.orderEthEstimate}
               doNotCreateOrders={s.doNotCreateOrders}
               selectedOutcome={selectedOutcome}
               trade={selectedOutcome.trade}
@@ -246,7 +245,6 @@ class TradingWrapper extends Component {
               handleFilledOnly={handleFilledOnly}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
-              orderShareEstimate={s.orderShareEstimate}
             />
           )}
         <div className={Styles.TradingWrapper__actions}>
