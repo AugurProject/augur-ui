@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import TradingWrapper from "modules/trading/components/trading--wrapper/trading--wrapper";
-import { Check, Close } from "modules/common/components/icons";
 import { isEqual } from "lodash";
 import classNames from "classnames";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";

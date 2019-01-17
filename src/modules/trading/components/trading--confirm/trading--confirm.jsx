@@ -18,7 +18,7 @@ const MarketTradingConfirm = ({
   selectedNav,
   market,
   gasPrice,
-  availableFunds,
+  availableFunds
 }) => {
   const {
     limitPrice,

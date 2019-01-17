@@ -94,7 +94,7 @@ export default class MarketPositionsListPosition extends Component {
         >
           {type}
         </li>
-        <li>{type === LONG ? netPositionShares : positionShares}</li>
+        <li>{type !== LONG ? netPositionShares : positionShares}</li>
         <li>{getValue(position, "purchasePrice.formatted")}</li>
         {!isMobile &&
           isExtendedDisplay && (
