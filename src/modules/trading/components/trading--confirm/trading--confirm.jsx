@@ -79,7 +79,7 @@ const MarketTradingConfirm = ({
   if (numShares && totalCost.fullPrecision && shareCost.fullPrecision) {
     newOrderAmount = createBigNumber(numShares)
       .minus(shareCost.fullPrecision)
-      .toFixed();
+      .toFixed(4);
   }
 
   return (
