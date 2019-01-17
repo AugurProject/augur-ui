@@ -17,6 +17,7 @@
     # "declaration-block-trailing-semicolon": "never",
     selector-pseudo-class-no-unknown: [true, {
       ignorePseudoClasses: ["global", "local"]
-    }],
-  }
+    }]
+  },
+  "ignoreFiles": ["src/modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles.less"]
 }

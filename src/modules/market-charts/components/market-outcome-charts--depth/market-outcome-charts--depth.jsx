@@ -597,7 +597,6 @@ function drawTicks(options) {
   let hasAddedMax = false;
   const { length } = drawParams.xScale.ticks(tickCount);
   const xTicks = drawParams.xScale.ticks(tickCount).reduce((acc, tickValue) => {
-    console.log(tickValue, hasAddedMin, hasAddedMax);
     // min check
     if (marketMin.eq(tickValue) || (!hasAddedMin && marketMin.lt(tickValue))) {
       hasAddedMin = true;
