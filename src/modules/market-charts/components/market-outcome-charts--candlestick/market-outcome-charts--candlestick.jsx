@@ -499,7 +499,7 @@ function drawTicks({
     .attr("y", d => yScale(d))
     .attr("dx", 0)
     .attr("dy", chartDim.tickOffset)
-    .text(d => d.toFixed(pricePrecision));
+    .text(d => `${d.toFixed(pricePrecision)} ETH`);
   // make the bottom line solid.
   yTicks.select("line").attr("stroke-dasharray", "0");
 }
@@ -718,7 +718,7 @@ function updateHoveredPriceCrosshair(
     d3.select("#hovered_candlestick_price_label")
       .attr("x", containerWidth + 8)
       .attr("y", yScale(hoveredPrice))
-      .text(clampedHoveredPrice.toFixed(pricePrecision));
+      .text(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
   }
 }
 
