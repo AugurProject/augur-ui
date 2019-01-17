@@ -70,6 +70,7 @@ export default class MarketTradeHistory extends Component {
                       className={Styles.MarketTradeHistory__table__trade__data}
                     >
                       <li
+                        key={priceTime.key + priceTime.type}
                         className={classNames(
                           Styles.MarketTradeHistory__trade__bar,
                           {
@@ -78,8 +79,11 @@ export default class MarketTradeHistory extends Component {
                           }
                         )}
                       />
-                      <li>{priceTime.amount}</li>
+                      <li key={priceTime.key + priceTime.amount}>
+                        {priceTime.amount}
+                      </li>
                       <li
+                        key={priceTime.key + priceTime.price}
                         className={classNames({
                           [`${Styles.MarketTradeHistory__buy}`]:
                             priceTime.type !== SELL,
@@ -89,6 +93,7 @@ export default class MarketTradeHistory extends Component {
                       >
                         {priceTime.price}
                         <span
+                          key={priceTime.key + priceTime.time}
                           className={classNames({
                             [Styles.MarketTradeHistory__trade__indicatorUp]:
                               priceTime.type !== SELL,
