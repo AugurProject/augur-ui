@@ -25,7 +25,6 @@ class TradingWrapper extends Component {
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
     toggleForm: PropTypes.func.isRequired,
-    showOrderPlaced: PropTypes.func.isRequired,
     clearTradeInProgress: PropTypes.func.isRequired,
     selectedOutcome: PropTypes.object,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
@@ -120,7 +119,6 @@ class TradingWrapper extends Component {
       market,
       selectedOutcome,
       toggleForm,
-      showOrderPlaced,
       gasPrice,
       handleFilledOnly,
       updateSelectedOutcome
@@ -245,10 +243,10 @@ class TradingWrapper extends Component {
               trade={selectedOutcome.trade}
               isMobile={isMobile}
               clearOrderForm={this.clearOrderForm}
-              showOrderPlaced={showOrderPlaced}
               handleFilledOnly={handleFilledOnly}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
+              orderShareEstimate={s.orderShareEstimate}
             />
           )}
         <div className={Styles.TradingWrapper__actions}>
@@ -265,7 +263,7 @@ class TradingWrapper extends Component {
                 (err, tradeGroupID) => {
                   // onSent/onFailed CB
                   if (!err) {
-                    showOrderPlaced();
+                    this.clearOrderForm();
                   }
                 },
                 res => {

@@ -36,7 +36,6 @@ class MarketTradingForm extends Component {
 
     this.state = {
       showForm: false,
-      showOrderPlaced: false,
       selectedOutcome:
         props.selectedOutcome !== null && props.market.outcomes
           ? props.market.outcomes.find(
@@ -46,8 +45,6 @@ class MarketTradingForm extends Component {
     };
 
     this.toggleForm = this.toggleForm.bind(this);
-    this.toggleShowOrderPlaced = this.toggleShowOrderPlaced.bind(this);
-    this.showOrderPlaced = this.showOrderPlaced.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,16 +73,6 @@ class MarketTradingForm extends Component {
 
   toggleForm() {
     this.setState({ showForm: !this.state.showForm });
-  }
-
-  toggleShowOrderPlaced() {
-    this.setState({ showOrderPlaced: !this.state.showOrderPlaced });
-  }
-
-  showOrderPlaced() {
-    this.setState({ showOrderPlaced: true });
-    // automatically close the order placed ribbon after 3 seconds.
-    setTimeout(() => this.setState({ showOrderPlaced: false }), 3000);
   }
 
   render() {
@@ -132,7 +119,6 @@ class MarketTradingForm extends Component {
               selectedOrderProperties={selectedOrderProperties}
               isMobile={isMobile}
               toggleForm={this.toggleForm}
-              showOrderPlaced={this.showOrderPlaced}
               availableFunds={availableFunds}
               clearTradeInProgress={clearTradeInProgress}
               updateSelectedOrderProperties={
@@ -177,20 +163,6 @@ class MarketTradingForm extends Component {
                   </span>
                 </Link>
               )}
-          </div>
-        )}
-        {isMobile &&
-        hasSelectedOutcome &&
-        !initialMessage &&
-        !s.showForm && ( // this needs to be changed to use p.selectedOutcome (should only show on mobile when an outcome has been selected)
-            <div className={Styles["MarketTradingForm__button--trade"]}>
-              <button onClick={this.toggleForm}>Trade</button>
-            </div>
-          )}
-        {s.showOrderPlaced && (
-          <div className={Styles["MarketTradingForm__button--order-placed"]}>
-            <span>{Check} Order placed!</span>
-            <button onClick={e => this.toggleShowOrderPlaced()}>{Close}</button>
           </div>
         )}
       </section>

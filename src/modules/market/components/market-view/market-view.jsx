@@ -367,7 +367,6 @@ export default class MarketView extends Component {
                     selectedOutcome={s.selectedOutcome}
                     isMobile={isMobile}
                     toggleForm={this.toggleForm}
-                    showOrderPlaced={this.showOrderPlaced}
                     availableFunds={availableFunds}
                     clearTradeInProgress={clearTradeInProgress}
                     updateSelectedOutcome={this.updateSelectedOutcome}
