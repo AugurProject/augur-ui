@@ -159,6 +159,9 @@ export default class MarketView extends Component {
       this.props.market.id
     );
 
+    this.setState({
+      selectedOrderProperties
+    });
     // this.setState({
     //   selectedOrderProperties: {
     //     ...this.DEFAULT_ORDER_PROPERTIES,
@@ -427,7 +430,9 @@ export default class MarketView extends Component {
                 hoveredPrice={null}
                 updateHoveredPrice={null}
                 updatePrecision={null}
-                updateSelectedOrderProperties={null}
+                updateSelectedOrderProperties={
+                  this.updateSelectedOrderProperties
+                }
                 marketId={marketId}
                 selectedOutcome={s.selectedOutcome}
               />

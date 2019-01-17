@@ -145,7 +145,7 @@ class MarketTradingForm extends Component {
           )}
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>
-            {!hasSelectedOutcome && (
+            {initialMessage && (
               <p>
                 <span>{initialMessage}</span>
               </p>
