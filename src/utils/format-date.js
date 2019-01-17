@@ -41,7 +41,7 @@ export function formatDate(d) {
   const utcTime = [date.getUTCHours(), date.getUTCMinutes()];
   const utcTimeTwelve = getTwelveHourTime(utcTime);
   const utcTimeWithSeconds = [
-    ("0" + convertToTwelveHour(date.getUTCHours())).slice(-2),
+    ("0" + date.getUTCHours()).slice(-2),
     ("0" + date.getUTCMinutes()).slice(-2),
     ("0" + date.getUTCSeconds()).slice(-2)
   ];
@@ -66,9 +66,7 @@ export function formatDate(d) {
     formattedShortDate: `${
       shortMonths[date.getUTCMonth()]
     } ${date.getUTCDate()} ${date.getUTCFullYear()}`,
-    formattedShortTime: `${utcTimeWithSeconds.join(
-      ":"
-    )}${utcAMPM.toLowerCase()}`,
+    formattedShortTime: `${utcTimeWithSeconds.join(":")}`,
     formattedShort: `${
       shortMonths[date.getUTCMonth()]
     } ${date.getUTCDate()}, ${date.getUTCFullYear()} ${utcTimeTwelve.join(

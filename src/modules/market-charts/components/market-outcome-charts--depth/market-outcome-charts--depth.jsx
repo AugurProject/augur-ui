@@ -537,7 +537,7 @@ function drawTicks(options) {
   //  Midpoint Label
   if (!isMobile && hasOrders) {
     const midOffset = -25;
-    let quarter = drawParams.yScale(drawParams.yDomain[1] * 0.8);
+    let quarter = drawParams.yScale(drawParams.yDomain[1] * 0.85);
     quarter = quarter < 40 ? 40 : quarter;
     depthChart
       .append("line")
@@ -569,33 +569,50 @@ function drawTicks(options) {
         orderBookKeys.mid && `${orderBookKeys.mid.toFixed(pricePrecision)} ETH`
       );
   }
+
+  const tickCount = 5;
+
   if (hasOrders) {
-    const offsetTicks = Array.from(new Array(11), (val, index) =>
-      createBigNumber(drawParams.yDomain[1].toString())
-        .times(0.1)
-        .times(index)
-        .toNumber()
-    ).slice(1, 11);
+    const yTicksValues = drawParams.yScale
+      .ticks(tickCount)
+      .reduce((acc, tickValue) => {
+        if (marketMin.lte(tickValue) && marketMax.gte(tickValue))
+          acc.push(tickValue);
+        return acc;
+      }, []);
 
     const yTicks = depthChart.append("g").attr("id", "depth_y_ticks");
 
     yTicks
+      .call(d3.axisRight(drawParams.yScale).tickValues(yTicksValues))
+      .attr("transform", `translate(${drawParams.chartDim.left}, 0)`)
       .selectAll("text")
-      .data(offsetTicks)
-      .enter()
-      .append("text")
-      .attr("class", "tick-value")
-      .attr("x", 0)
-      .attr("y", d => drawParams.yScale(d))
-      .attr("dx", 0)
-      .attr("dy", drawParams.chartDim.tickOffset)
-      .text(d => d.toFixed(pricePrecision));
+      .text(d => d)
+      .select("path")
+      .remove();
   }
 
   // X Axis
-  const xTicks = drawParams.xScale.ticks(5).reduce((acc, tickValue) => {
-    if (marketMin.lte(tickValue) && marketMax.gte(tickValue))
-      acc.push(tickValue);
+  let hasAddedMin = false;
+  let hasAddedMax = false;
+  const { length } = drawParams.xScale.ticks(tickCount);
+  const xTicks = drawParams.xScale.ticks(tickCount).reduce((acc, tickValue) => {
+    // min check
+    if (marketMin.eq(tickValue) || (!hasAddedMin && marketMin.lt(tickValue))) {
+      hasAddedMin = true;
+      acc.push(marketMin.toNumber());
+    }
+    // max check
+    if (marketMax.eq(tickValue) || (!hasAddedMax && marketMax.lt(tickValue))) {
+      hasAddedMax = true;
+      acc.push(marketMax.toNumber());
+    }
+    if (marketMin.lt(tickValue) && marketMax.gt(tickValue)) acc.push(tickValue);
+    // final max check (make sure we add max if this is the last tickValue)
+    if (acc.length === length && !hasAddedMax) {
+      hasAddedMax = true;
+      acc.push(marketMax.toNumber());
+    }
     return acc;
   }, []);
   depthChart
@@ -868,7 +885,7 @@ function attachHoverClickHandlers(options) {
       d3.select("#cost_value").html(
         `${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`
       );
-      const borderPadding = flipY ? 3 : 2;
+      const borderPadding = 2;
       const verticalSpacing = 24;
       // 27 comes from the padding/border/margins so 1rem total for horz
       // padding .5 rem for label/value seperation, + borderpx of 3 (2 on line

@@ -96,7 +96,7 @@ export const generateTrade = memoize(
           market.settlementFee,
           market.cumulativeScale,
           outcomeTradeInProgress,
-          market.type === "scalar" ? market.minPrice : null
+          market.marketType === "scalar" ? market.minPrice : null
         )
       );
     } else {
