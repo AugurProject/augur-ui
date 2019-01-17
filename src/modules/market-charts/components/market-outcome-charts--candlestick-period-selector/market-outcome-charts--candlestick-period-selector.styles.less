@@ -8,26 +8,43 @@
 .PeriodSelector__button {
   &:extend(.caps--small);
 
-  background-color: transparent;
-  color: @color-lightgray;
+  background: @color-dark-grayish-purple;
+  border: 1px solid @color-dark-gray;
+  border-radius: 3px;
+  color: @color-white;
   display: flex;
+  font-size: 10px;
   margin-bottom: 0.66em;
+  padding: 6px 12px;
   white-space: nowrap;
 
   svg {
-    margin-left: 0.1875em;
+    margin-left: 10px;
     min-height: 1em;
     min-width: 1em;
     width: 1em;
   }
+
+  &:hover {
+    background: rgba(68, 59, 89, 0.1);
+    border: 1px solid @color-medium-gray;
+  }
+
+  &--active {
+    background: rgba(68, 59, 89, 0.1);
+    border: 1px solid @color-medium-gray;
+  }
 }
 
 .PeriodSelector__modal {
-  background-color: @color-selection-modal-background;
-  box-shadow: @box-shadow-small-modal;
+  background: @color-dark-grayish-purple;
+  border: 1px solid @color-dark-gray;
+  border-radius: 3px;
+  color: @color-white;
   display: none;
+  left: 0;
   position: absolute;
-  right: 0;
+  top: 28px;
   width: 12rem;
 
   &--active {
@@ -44,6 +61,8 @@
     h1 {
       margin: 1em 0 0.75em 1.33em;
     }
+
+    border-right: 1px solid @color-dark-gray;
   }
 
   &:last-of-type {
@@ -65,15 +84,15 @@
 
 .PeriodSelector__value {
   button {
-    font-size: @font-size-small;
+    font-size: 10px;
     height: 100%;
-    padding: 0.25em 0 0.5em 1.33em;
+    padding: 6px 12px;
     text-align: left;
     width: 100%;
 
     &:hover:not(:disabled) {
-      background-color: @color-lightergray;
-      cursor: default;
+      background-color: @color-medium-gray;
+      cursor: pointer;
     }
 
     &:disabled {
@@ -82,6 +101,6 @@
   }
 
   &--active {
-    background-color: @color-lightergray;
+    font-weight: bold;
   }
 }

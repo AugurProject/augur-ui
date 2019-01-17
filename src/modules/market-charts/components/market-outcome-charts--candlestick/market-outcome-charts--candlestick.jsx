@@ -16,6 +16,8 @@ import Styles from "modules/market-charts/components/market-outcome-charts--cand
 import { createBigNumber } from "utils/create-big-number";
 import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
+const rightMargin = 78;
+
 class MarketOutcomeCandlestick extends React.Component {
   static propTypes = {
     currentTimeInSeconds: PropTypes.number,
@@ -86,9 +88,9 @@ class MarketOutcomeCandlestick extends React.Component {
     this.state = MarketOutcomeCandlestick.getDerivedStateFromProps(props, {
       chartDim: {
         right: 0,
-        left: props.isMobileSmall ? 20 : 50,
+        left: props.isMobileSmall ? 20 : 10,
         stick: 5,
-        tickOffset: 10
+        tickOffset: 5
       },
       candleDim: {
         width: 6,
@@ -136,7 +138,7 @@ class MarketOutcomeCandlestick extends React.Component {
 
   getContainerWidths() {
     return {
-      containerWidth: this.drawContainer.clientWidth,
+      containerWidth: this.drawContainer.clientWidth - rightMargin,
       containerHeight: this.drawContainer.clientHeight
     };
   }
@@ -221,7 +223,7 @@ class MarketOutcomeCandlestick extends React.Component {
       const candleTicks = d3
         .select(candleTicksContainer)
         .append("svg")
-        .attr("width", containerWidth)
+        .attr("width", containerWidth + rightMargin)
         .attr("height", containerHeight);
       const candleChart = d3
         .select(candleChartContainer)
@@ -314,7 +316,8 @@ class MarketOutcomeCandlestick extends React.Component {
         hoveredPrice,
         yScale,
         containerWidth,
-        pricePrecision
+        pricePrecision,
+        containerWidth
       );
     }
 
@@ -365,9 +368,9 @@ function determineDrawParams({
     top: 0,
     bottom: 30,
     right: 0,
-    left: isMobileSmall ? 20 : 50,
+    left: isMobileSmall ? 20 : 10,
     stick: 5,
-    tickOffset: 10
+    tickOffset: 5
   };
 
   // Domain
@@ -491,7 +494,7 @@ function drawTicks({
     .enter()
     .append("text")
     .attr("class", "tick-value")
-    .attr("x", 0)
+    .attr("x", containerWidth + 7)
     .attr("y", d => yScale(d))
     .attr("dx", 0)
     .attr("dy", chartDim.tickOffset)
@@ -694,7 +697,8 @@ function updateHoveredPriceCrosshair(
   hoveredPrice,
   yScale,
   chartWidth,
-  pricePrecision
+  pricePrecision,
+  containerWidth
 ) {
   if (hoveredPrice == null) {
     d3.select("#candlestick_crosshairs").style("display", "none");
@@ -709,8 +713,8 @@ function updateHoveredPriceCrosshair(
       .attr("x2", chartWidth)
       .attr("y2", yPosition);
     d3.select("#hovered_candlestick_price_label")
-      .attr("x", 0)
-      .attr("y", yScale(hoveredPrice) + 12)
+      .attr("x", containerWidth + 8)
+      .attr("y", yScale(hoveredPrice))
       .text(clampedHoveredPrice.toFixed(pricePrecision));
   }
 }
