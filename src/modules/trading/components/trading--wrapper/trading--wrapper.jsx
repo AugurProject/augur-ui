@@ -64,18 +64,22 @@ class TradingWrapper extends Component {
       return this.clearOrderForm();
 
     if (
-      nextProps.selectedOutcome.trade.limitPrice &&
-      nextProps.selectedOutcome.trade.numShares
+      this.state.orderEthEstimate !==
+      nextProps.selectedOutcome.trade.totalCost.formattedValue.toString()
     ) {
       const nextTotalCost = nextProps.selectedOutcome.trade.totalCost.formattedValue.toString();
-      const nextShareCost = nextProps.selectedOutcome.trade.shareCost.formattedValue.toString();
 
       if (nextTotalCost !== this.state.orderEthEstimate) {
         this.setState({
           orderEthEstimate: nextTotalCost
         });
       }
-
+    }
+    if (
+      this.state.orderShareEstimate !==
+      nextProps.selectedOutcome.trade.shareCost.formattedValue.toString()
+    ) {
+      const nextShareCost = nextProps.selectedOutcome.trade.shareCost.formattedValue.toString();
       if (nextShareCost !== this.state.orderShareEstimate) {
         this.setState({
           orderShareEstimate: nextShareCost

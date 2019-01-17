@@ -246,19 +246,14 @@ class TradingForm extends Component {
     if (propsToUse) props = propsToUse;
     const side = props.selectedNav;
     let limitPrice = updatedState[this.INPUT_TYPES.PRICE];
-    let shares = updatedState[this.INPUT_TYPES.QUANTITY];
-    const oldShares = this.state[this.INPUT_TYPES.QUANTITY];
+    const shares = updatedState[this.INPUT_TYPES.QUANTITY];
+    // const oldShares = this.state[this.INPUT_TYPES.QUANTITY];
     if (shares === null || shares === undefined || shares === "") {
-      shares = "0";
       limitPrice = null;
     }
-    // keep auto-filling functionality
-    if (
-      oldShares !== "" &&
-      (limitPrice === null || limitPrice === undefined || limitPrice === "")
-    ) {
-      shares = null;
-      limitPrice = SCALAR ? "" : "0";
+
+    if (limitPrice === null || limitPrice === undefined || limitPrice === "") {
+      limitPrice = props.marketType === SCALAR ? "" : "0";
     }
     props.selectedOutcome.trade.updateTradeOrder(
       shares,
