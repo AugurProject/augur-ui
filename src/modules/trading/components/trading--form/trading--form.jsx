@@ -135,41 +135,11 @@ class TradingForm extends Component {
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
       const validation = this.orderValidation(newStateInfo, nextProps);
-      if (
-        validation.errorCount === 0 &&
-        newStateInfo.orderPrice &&
-        newStateInfo.orderQuantity
-      ) {
+      if (validation.errorCount === 0) {
         // trade has changed, lets update trade.
         this.updateTrade(newStateInfo, nextProps);
       }
 
-      // const nextTradePrice = nextProps.selectedOutcome.trade.limitPrice;
-      // const prevTradePrice = selectedOutcome.trade.limitPrice;
-      // limitPrice is being defaulted and we had no value in the input box
-      // const priceChange = prevTradePrice === null && nextTradePrice !== null;
-      // limitPrice is being updated in the background, but we have no limitPrice input set.
-      /*      const forcePriceUpdate =
-        prevTradePrice === nextTradePrice &&
-        nextTradePrice !== null &&
-        isNaN(
-          this.state[this.INPUT_TYPES.PRICE] &&
-            createBigNumber(this.state[this.INPUT_TYPES.PRICE], 10)
-        ) &&
-        isNaN(
-          nextProps[this.INPUT_TYPES.PRICE] &&
-            createBigNumber(nextProps[this.INPUT_TYPES.PRICE], 10)
-        );
-*/
-      /*
-      if (priceChange || forcePriceUpdate) {
-        // if limitPrice input hasn't been changed and we have defaulted the limitPrice, populate the field so as to not confuse the user as to where estimates are coming from.
-        updateState(
-          this.INPUT_TYPES.PRICE,
-          createBigNumber(nextTradePrice, 10)
-        );
-      }
-*/
       // orderValidation
       const { isOrderValid, errors, errorCount } = this.orderValidation(
         newStateInfo,
@@ -290,14 +260,12 @@ class TradingForm extends Component {
       shares = null;
       limitPrice = SCALAR ? "" : "0";
     }
-    if (limitPrice && shares) {
-      props.selectedOutcome.trade.updateTradeOrder(
-        shares,
-        limitPrice,
-        side,
-        null
-      );
-    }
+    props.selectedOutcome.trade.updateTradeOrder(
+      shares,
+      limitPrice,
+      side,
+      null
+    );
   }
 
   validateForm(property, rawValue) {
