@@ -29,7 +29,7 @@ export default function OutcomeTradingIndicator({
     if (direction !== NONE) {
       switch (`${loc}|${direction}`) {
         case "yes-no-scalar|up":
-          return { bottom: "0.975rem" };
+          return { bottom: "0.875rem" };
         case "yes-no-scalar|down":
           return { top: "1.075rem" };
         case "categorical|up":
