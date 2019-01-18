@@ -43,6 +43,8 @@ jobs:
         all_branches: true
   - stage: Deploy to sneakpeak
     if: (branch = sneakpeak) AND (NOT (type IN (pull_request)))
+    node_js: '10'
+
     script: skip
     deploy:
       provider: script

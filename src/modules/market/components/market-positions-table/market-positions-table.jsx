@@ -134,7 +134,6 @@ export default class MarketPositionsList extends Component {
               </div>
             )}
         </div>
-        <div className={SharedStyles.MarketOpenOrdersList__footer} />
       </section>
     );
   }

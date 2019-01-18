@@ -28,7 +28,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     pricePrecision: PropTypes.number.isRequired,
     updateHoveredPrice: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
-    updatePrecision: PropTypes.func.isRequired,
+    // updatePrecision: PropTypes.func.isRequired,
     isMobile: PropTypes.bool,
     headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
@@ -69,7 +69,7 @@ export default class MarketOutcomeChartsOrders extends Component {
       orderBook,
       sharedChartMargins,
       updateHoveredPrice,
-      updatePrecision,
+      // updatePrecision,
       updateSelectedOrderProperties,
       isMobile,
       headerHeight,
@@ -86,7 +86,7 @@ export default class MarketOutcomeChartsOrders extends Component {
         style={{ paddingBottom: sharedChartMargins.bottom - 4 }}
       >
         <MarketOutcomeChartHeaderOrders
-          updatePrecision={updatePrecision}
+          // updatePrecision={updatePrecision}
           isMobile={isMobile}
           headerHeight={headerHeight}
         />

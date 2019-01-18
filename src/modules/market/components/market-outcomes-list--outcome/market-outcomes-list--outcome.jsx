@@ -90,7 +90,7 @@ Outcome.propTypes = {
   }).isRequired,
   selectedOutcome: PropTypes.string,
   updateSelectedOutcome: PropTypes.func.isRequired,
-  scalarDenomination: PropTypes.string,
+  scalarDenomination: PropTypes.any,
   isMobile: PropTypes.bool
 };
 

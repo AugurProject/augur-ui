@@ -5,11 +5,7 @@ import classNames from "classnames";
 import Styles from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders.styles";
 import StylesHeader from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
 
-const MarketOutcomeChartsHeaderOrders = ({
-  updatePrecision,
-  isMobile,
-  headerHeight
-}) => (
+const MarketOutcomeChartsHeaderOrders = ({ isMobile, headerHeight }) => (
   <section
     className={Styles.MarketOutcomeChartsHeader__orders}
     style={{ minHeight: isMobile && headerHeight }}
@@ -51,7 +47,6 @@ const MarketOutcomeChartsHeaderOrders = ({
 export default MarketOutcomeChartsHeaderOrders;
 
 MarketOutcomeChartsHeaderOrders.propTypes = {
-  updatePrecision: PropTypes.func.isRequired,
   isMobile: PropTypes.bool.isRequired,
   headerHeight: PropTypes.number.isRequired
 };

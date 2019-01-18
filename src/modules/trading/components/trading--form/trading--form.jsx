@@ -252,8 +252,8 @@ class TradingForm extends Component {
       limitPrice = null;
     }
 
-    if (limitPrice === null || limitPrice === undefined || limitPrice === "") {
-      limitPrice = props.marketType === SCALAR ? "" : "0";
+    if (limitPrice === undefined || limitPrice === "") {
+      limitPrice = null;
     }
     props.selectedOutcome.trade.updateTradeOrder(
       shares,

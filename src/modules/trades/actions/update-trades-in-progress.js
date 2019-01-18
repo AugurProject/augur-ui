@@ -65,7 +65,7 @@ export function updateTradesInProgress({
           details: {
             side: cleanSide,
             numShares: "",
-            limitPrice: outcomeTradeInProgress.limitPrice
+            limitPrice: ""
           }
         }
       });

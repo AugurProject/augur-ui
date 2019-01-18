@@ -299,7 +299,9 @@ export default class MarketView extends Component {
                         hoveredPrice={null}
                         updateHoveredPrice={null}
                         updatePrecision={null}
-                        updateSelectedOrderProperties={null}
+                        updateSelectedOrderProperties={
+                          this.updateSelectedOrderProperties
+                        }
                         marketId={marketId}
                         selectedOutcome={s.selectedOutcome}
                       />
@@ -322,7 +324,12 @@ export default class MarketView extends Component {
               </div>
             </ModulePane>
             <ModulePane label="Orders">
-              <div className={Styles["MarketView__paneContainer--mobile"]}>
+              <div
+                className={classNames(
+                  Styles["MarketView__paneContainer--mobile"],
+                  Styles.MarketView__orderPositionsTable
+                )}
+              >
                 <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </ModulePane>
@@ -408,7 +415,12 @@ export default class MarketView extends Component {
               </div>
             </div>
             <div className={Styles.MarketView__secondRow}>
-              <div className={Styles.MarketView__component}>
+              <div
+                className={classNames(
+                  Styles.MarketView__component,
+                  Styles.MarketView__orderPositionsTable
+                )}
+              >
                 <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </div>

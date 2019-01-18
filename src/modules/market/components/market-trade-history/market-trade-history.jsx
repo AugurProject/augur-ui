@@ -1,3 +1,5 @@
+/* eslint react/no-array-index-key: 0 */
+
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -51,8 +53,8 @@ export default class MarketTradeHistory extends Component {
         </div>
         <div className={Styles.MarketTradeHistory__table__data}>
           {groupedTradeHistory &&
-            Object.keys(groupedTradeHistory).map(date => (
-              <div>
+            Object.keys(groupedTradeHistory).map((date, index) => (
+              <div key={index}>
                 <div className={Styles.MarketTradeHistory__table}>
                   <ul
                     key={date}
@@ -70,6 +72,7 @@ export default class MarketTradeHistory extends Component {
                       className={Styles.MarketTradeHistory__table__trade__data}
                     >
                       <li
+                        key={priceTime.key + priceTime.type}
                         className={classNames(
                           Styles.MarketTradeHistory__trade__bar,
                           {
@@ -78,8 +81,11 @@ export default class MarketTradeHistory extends Component {
                           }
                         )}
                       />
-                      <li>{priceTime.amount}</li>
+                      <li key={priceTime.key + priceTime.amount}>
+                        {priceTime.amount}
+                      </li>
                       <li
+                        key={priceTime.key + priceTime.price}
                         className={classNames({
                           [`${Styles.MarketTradeHistory__buy}`]:
                             priceTime.type !== SELL,
@@ -89,6 +95,7 @@ export default class MarketTradeHistory extends Component {
                       >
                         {priceTime.price}
                         <span
+                          key={priceTime.key + priceTime.time}
                           className={classNames({
                             [Styles.MarketTradeHistory__trade__indicatorUp]:
                               priceTime.type !== SELL,
