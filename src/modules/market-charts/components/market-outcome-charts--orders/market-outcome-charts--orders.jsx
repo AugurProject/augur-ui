@@ -26,7 +26,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     orderBook: PropTypes.object.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    // updateHoveredPrice: PropTypes.func.isRequired,
+    updateHoveredPrice: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     // updatePrecision: PropTypes.func.isRequired,
     isMobile: PropTypes.bool,
@@ -68,7 +68,7 @@ export default class MarketOutcomeChartsOrders extends Component {
       pricePrecision,
       orderBook,
       sharedChartMargins,
-      // updateHoveredPrice,
+      updateHoveredPrice,
       // updatePrecision,
       updateSelectedOrderProperties,
       isMobile,
@@ -119,14 +119,14 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i > s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  // updateHoveredPrice(order.price.value);
+                  updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: ASKS
                   });
                 }}
                 onMouseLeave={() => {
-                  // updateHoveredPrice(null);
+                  updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
@@ -218,14 +218,14 @@ export default class MarketOutcomeChartsOrders extends Component {
                     i < s.hoveredOrderIndex
                 })}
                 onMouseEnter={() => {
-                  // updateHoveredPrice(order.price.value);
+                  updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: BIDS
                   });
                 }}
                 onMouseLeave={() => {
-                  // updateHoveredPrice(null);
+                  updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
