@@ -1,5 +1,6 @@
 import { createBigNumber } from "utils/create-big-number";
 import { SCALAR } from "modules/markets/constants/market-types";
+import { BUY, SELL } from "modules/transactions/constants/types";
 
 export function selectFilledOrders(
   marketTradeHistory,
@@ -23,6 +24,7 @@ export function selectFilledOrders(
       const foundOrder = order.find(({ id }) => id === orderId);
       const amountBN = createBigNumber(amount);
       const priceBN = createBigNumber(price);
+      const typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
 
       const outcomeInfo =
         marketOutcomes &&
@@ -41,7 +43,7 @@ export function selectFilledOrders(
           outcome: outcomeName,
           amount: amountBN,
           price: priceBN,
-          type,
+          type: typeOp,
           timestamp,
           transactionHash
         });
@@ -53,7 +55,7 @@ export function selectFilledOrders(
           id: orderId,
           timestamp,
           outcome: outcomeName,
-          type,
+          type: typeOp,
           price: priceBN,
           amount: amountBN,
           trades: [
@@ -61,7 +63,7 @@ export function selectFilledOrders(
               outcome: outcomeName,
               amount: amountBN,
               price: priceBN,
-              type,
+              type: typeOp,
               timestamp,
               transactionHash
             }
