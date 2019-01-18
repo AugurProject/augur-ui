@@ -627,7 +627,11 @@ function drawXAxisLabels({
 }
 
 function drawCrosshairs({ candleTicks }) {
-  candleTicks.append("text").attr("id", "hovered_candlestick_price_label");
+  // candleTicks.append("text").attr("id", "hovered_candlestick_price_label");
+  candleTicks
+    .append("foreignObject")
+    .attr("id", "hovered_candlestick_price_label")
+    .style("display", "none");
 
   const crosshair = candleTicks
     .append("g")
@@ -705,7 +709,8 @@ function updateHoveredPriceCrosshair(
 ) {
   if (hoveredPrice == null) {
     d3.select("#candlestick_crosshairs").style("display", "none");
-    d3.select("#hovered_candlestick_price_label").text("");
+    d3.select("#hovered_candlestick_price_label").style("display", "none");
+    // d3.select("#hovered_candlestick_price_label").text("");
   } else {
     const yPosition = yScale(hoveredPrice);
     const clampedHoveredPrice = yScale.invert(yPosition);
@@ -718,7 +723,9 @@ function updateHoveredPriceCrosshair(
     d3.select("#hovered_candlestick_price_label")
       .attr("x", containerWidth + 8)
       .attr("y", yScale(hoveredPrice))
-      .text(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
+      .style("display", "block")
+      .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`)
+      .style("width", 72);
   }
 }
 
