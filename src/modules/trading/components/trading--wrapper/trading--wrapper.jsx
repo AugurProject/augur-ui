@@ -7,14 +7,11 @@ import TradingForm from "modules/trading/components/trading--form/trading--form"
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
 import { Close } from "modules/common/components/icons";
 
-import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
-
 import getValue from "utils/get-value";
 import { isEqual } from "lodash";
 import { FindReact } from "utils/find-react";
 import { SCALAR } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
-import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 
 class TradingWrapper extends Component {
@@ -30,7 +27,8 @@ class TradingWrapper extends Component {
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
-    updateSelectedOutcome: PropTypes.func.isRequired
+    updateSelectedOutcome: PropTypes.func.isRequired,
+    toggleMobileView: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -122,42 +120,26 @@ class TradingWrapper extends Component {
       isMobile,
       market,
       selectedOutcome,
-      toggleForm,
       gasPrice,
       handleFilledOnly,
-      updateSelectedOutcome
+      updateSelectedOutcome,
+      toggleMobileView
     } = this.props;
     const s = this.state;
 
-    const lastPrice = getValue(
-      this.props,
-      "selectedOutcome.lastPrice.formatted"
-    );
-
     return (
       <section className={Styles.TradingWrapper}>
-        {isMobile && (
-          <div className={Styles["TradingWrapper__mobile-header"]}>
-            <button
-              className={Styles["TradingWrapper__mobile-header-close"]}
-              onClick={toggleForm}
+        <div className={Styles.TradingWrapper__container}>
+          {isMobile && (
+            <span
+              role="button"
+              tabIndex="-1"
+              onClick={toggleMobileView}
+              className={Styles.TradingWrapper__close}
             >
               {Close}
-            </button>
-            <span className={Styles["TradingWrapper__mobile-header-outcome"]}>
-              {selectedOutcome.name}
             </span>
-            <span className={Styles["TradingWrapper__mobile-header-last"]}>
-              <ValueDenomination formatted={lastPrice} />
-              <MarketOutcomeTradingIndicator
-                isMobile={isMobile}
-                outcome={selectedOutcome}
-                location="modileTradingForm"
-              />
-            </span>
-          </div>
-        )}
-        <div>
+          )}
           <ul
             className={classNames({
               [Styles.TradingWrapper__header_buy]: s.selectedNav === BUY,

@@ -34,8 +34,11 @@
   flex-grow: 1;
   font-size: @font-size-normal;
   font-weight: 500;
+  max-width: 15rem;
+  overflow: hidden;
   padding-left: 1.5rem;
   text-align: left;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -60,8 +63,11 @@
   > button {
     background-color: inherit;
     cursor: pointer;
+    max-width: 25rem;
+    overflow: hidden;
     padding: 0.75rem 1.5rem;
     text-align: left;
+    text-overflow: ellipsis;
     transition: background-color 0.15s ease;
     white-space: nowrap;
     width: 100%;
@@ -69,6 +75,10 @@
     &:hover,
     &.active {
       background-color: @color-dark-gray;
+    }
+
+    @media @breakpoint-mobile {
+      max-width: unset;
     }
   }
 }
@@ -92,6 +102,7 @@
   .TradingOutcomesDropdown__select {
     display: block;
     font-size: @font-size-medium;
+    padding-left: 1rem;
   }
 }
 

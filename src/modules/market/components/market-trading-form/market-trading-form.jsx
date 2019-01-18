@@ -23,7 +23,8 @@ class MarketTradingForm extends Component {
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
-    updateSelectedOutcome: PropTypes.func.isRequired
+    updateSelectedOutcome: PropTypes.func.isRequired,
+    toggleMobileView: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -84,7 +85,8 @@ class MarketTradingForm extends Component {
       selectedOrderProperties,
       gasPrice,
       handleFilledOnly,
-      updateSelectedOutcome
+      updateSelectedOutcome,
+      toggleMobileView
     } = this.props;
     const s = this.state;
 
@@ -109,25 +111,25 @@ class MarketTradingForm extends Component {
 
     return (
       <section className={classNames(Styles.MarketTradingForm)}>
-        {(!isMobile || s.showForm) &&
-          !initialMessage && (
-            <TradingWrapper
-              market={market}
-              isLogged={isLogged}
-              selectedOutcome={s.selectedOutcome}
-              selectedOrderProperties={selectedOrderProperties}
-              isMobile={isMobile}
-              toggleForm={this.toggleForm}
-              availableFunds={availableFunds}
-              clearTradeInProgress={clearTradeInProgress}
-              updateSelectedOrderProperties={
-                this.props.updateSelectedOrderProperties
-              }
-              gasPrice={gasPrice}
-              handleFilledOnly={handleFilledOnly}
-              updateSelectedOutcome={updateSelectedOutcome}
-            />
-          )}
+        {!initialMessage && (
+          <TradingWrapper
+            market={market}
+            isLogged={isLogged}
+            selectedOutcome={s.selectedOutcome}
+            selectedOrderProperties={selectedOrderProperties}
+            isMobile={isMobile}
+            toggleForm={this.toggleForm}
+            availableFunds={availableFunds}
+            clearTradeInProgress={clearTradeInProgress}
+            updateSelectedOrderProperties={
+              this.props.updateSelectedOrderProperties
+            }
+            gasPrice={gasPrice}
+            handleFilledOnly={handleFilledOnly}
+            updateSelectedOutcome={updateSelectedOutcome}
+            toggleMobileView={toggleMobileView}
+          />
+        )}
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>
             {initialMessage && (

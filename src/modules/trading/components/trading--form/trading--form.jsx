@@ -333,7 +333,6 @@ class TradingForm extends Component {
 
   render() {
     const {
-      isMobile,
       market,
       marketType,
       selectedOutcome,
@@ -364,27 +363,25 @@ class TradingForm extends Component {
     const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
     return (
       <div className={Styles.TradingForm__form__container}>
-        {!isMobile &&
-          market.marketType === CATEGORICAL && (
-            <div className={Styles.TradingForm__outcome__container}>
-              <TradingOutcomesDropdown
-                default={defaultOutcome}
-                onChange={this.changeOutcomeDropdown}
-                options={market.outcomes.map(outcome => ({
-                  label: outcome.name,
-                  value: outcome.id
-                }))}
-              />
+        {market.marketType === CATEGORICAL && (
+          <div className={Styles.TradingForm__outcome__container}>
+            <TradingOutcomesDropdown
+              default={defaultOutcome}
+              onChange={this.changeOutcomeDropdown}
+              options={market.outcomes.map(outcome => ({
+                label: outcome.name,
+                value: outcome.id
+              }))}
+            />
+          </div>
+        )}
+        {market.marketType === YES_NO && (
+          <div className={Styles.TradingForm__outcome__container}>
+            <div className={Styles.TradingForm__outcome__container__yes}>
+              Yes
             </div>
-          )}
-        {!isMobile &&
-          market.marketType === YES_NO && (
-            <div className={Styles.TradingForm__outcome__container}>
-              <div className={Styles.TradingForm__outcome__container__yes}>
-                Yes
-              </div>
-            </div>
-          )}
+          </div>
+        )}
         <ul className={Styles["TradingForm__form-body"]}>
           <li className={Styles["TradingForm__limit-quantity"]}>
             <label htmlFor="tr__input--quantity">Quantity</label>
