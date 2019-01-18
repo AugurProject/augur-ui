@@ -573,18 +573,14 @@ function drawTicks(options) {
   const tickCount = 5;
 
   if (hasOrders) {
-    const yTicksValues = drawParams.yScale
-      .ticks(tickCount)
-      .reduce((acc, tickValue) => {
-        if (marketMin.lte(tickValue) && marketMax.gte(tickValue))
-          acc.push(tickValue);
-        return acc;
-      }, []);
-
     const yTicks = depthChart.append("g").attr("id", "depth_y_ticks");
 
     yTicks
-      .call(d3.axisRight(drawParams.yScale).tickValues(yTicksValues))
+      .call(
+        d3
+          .axisRight(drawParams.yScale)
+          .tickValues(drawParams.yScale.ticks(tickCount))
+      )
       .attr("transform", `translate(${drawParams.chartDim.left}, 0)`)
       .selectAll("text")
       .text(d => d)

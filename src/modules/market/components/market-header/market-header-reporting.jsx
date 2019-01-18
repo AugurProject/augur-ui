@@ -19,7 +19,6 @@ export default class MarketHeaderReporting extends Component {
   static propTypes = {
     currentTimestamp: PropTypes.number.isRequired,
     market: PropTypes.object.isRequired,
-    isMobileSmall: PropTypes.bool,
     isDesignatedReporter: PropTypes.bool,
     finalizeMarket: PropTypes.func.isRequired,
     claimTradingProceeds: PropTypes.func.isRequired,
@@ -29,7 +28,6 @@ export default class MarketHeaderReporting extends Component {
   };
 
   static defaultProps = {
-    isMobileSmall: false,
     isDesignatedReporter: false,
     tentativeWinner: {},
     isLogged: false

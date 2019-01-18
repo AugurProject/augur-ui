@@ -30,7 +30,7 @@ const shortMonths = [
   "Dec"
 ];
 
-const NUMBER_OF_SECONDS_IN_A_DAY = 86400;
+export const NUMBER_OF_SECONDS_IN_A_DAY = 86400;
 const HOURS_IN_A_DAY = 24;
 const MINUTES_IN_A_HOUR = 60;
 

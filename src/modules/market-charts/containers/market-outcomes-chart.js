@@ -14,6 +14,8 @@ const mapStateToProps = (state, ownProps) => {
     maxPrice = createBigNumber(1),
     minPrice = createBigNumber(0),
     outcomes = [],
+    isScalar,
+    scalarDenomination,
     volume = { formatted: "0" }
   } = selectMarket(ownProps.marketId);
 
@@ -41,9 +43,12 @@ const mapStateToProps = (state, ownProps) => {
     estimatedInitialPrice,
     maxPrice: maxPrice.toNumber(),
     minPrice: minPrice.toNumber(),
+    fixedPrecision: 4,
     outcomes,
     hasPriceHistory,
-    bucketedPriceTimeSeries
+    bucketedPriceTimeSeries,
+    isScalar,
+    scalarDenomination
   };
 };
 

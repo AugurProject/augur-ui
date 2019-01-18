@@ -46,7 +46,6 @@ const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
         )}
       </div>
     </div>
-    <div className={Styles.MarketOpenOrdersList__footer} />
   </div>
 );
 

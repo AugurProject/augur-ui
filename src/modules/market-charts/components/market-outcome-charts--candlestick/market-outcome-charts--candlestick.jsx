@@ -214,10 +214,10 @@ class MarketOutcomeCandlestick extends React.Component {
       "class",
       `${Styles["MarketOutcomeCandlestick__chart-container"]}`
     );
-    candleChartContainer.setAttribute("style", {
-      width: `${containerWidth - chartDim.left}px`,
-      left: chartDim.left
-    });
+    // candleChartContainer.setAttribute("style", {
+    //   width: `${containerWidth - chartDim.left}px`,
+    //   left: chartDim.left
+    // });
 
     if (containerHeight > 0 && containerWidth > 0 && currentTimeInSeconds) {
       const candleTicks = d3
@@ -365,7 +365,7 @@ function determineDrawParams({
 }) {
   // Dimensions/Positioning
   const chartDim = {
-    top: 0,
+    top: 5,
     bottom: 30,
     right: 0,
     left: isMobileSmall ? 20 : 10,
@@ -462,8 +462,8 @@ function drawTicks({
 }) {
   //  Ticks
   const offsetTicks = [
-    yDomain[0],
     yDomain[1],
+    yDomain[0],
     createBigNumber(yDomain[1])
       .plus(boundDiff)
       .toNumber(),
@@ -483,6 +483,7 @@ function drawTicks({
     .enter()
     .append("line")
     .attr("class", "tick-line")
+    .attr("stroke-dasharray", "1 3")
     .attr("x1", 0)
     .attr("x2", containerWidth)
     .attr("y1", d => yScale(d))
@@ -498,7 +499,9 @@ function drawTicks({
     .attr("y", d => yScale(d))
     .attr("dx", 0)
     .attr("dy", chartDim.tickOffset)
-    .text(d => d.toFixed(pricePrecision));
+    .text(d => `${d.toFixed(pricePrecision)} ETH`);
+  // make the bottom line solid.
+  yTicks.select("line").attr("stroke-dasharray", "0");
 }
 
 function drawCandles({
@@ -715,7 +718,7 @@ function updateHoveredPriceCrosshair(
     d3.select("#hovered_candlestick_price_label")
       .attr("x", containerWidth + 8)
       .attr("y", yScale(hoveredPrice))
-      .text(clampedHoveredPrice.toFixed(pricePrecision));
+      .text(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
   }
 }
 

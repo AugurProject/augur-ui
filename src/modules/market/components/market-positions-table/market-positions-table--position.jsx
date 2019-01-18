@@ -25,12 +25,10 @@ export default class MarketPositionsListPosition extends Component {
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool,
     outcome: PropTypes.object,
-    hasOrders: PropTypes.bool,
     oddNumber: PropTypes.bool
   };
 
   static defaultProps = {
-    hasOrders: false,
     outcome: null,
     isMobile: false,
     oddNumber: false
