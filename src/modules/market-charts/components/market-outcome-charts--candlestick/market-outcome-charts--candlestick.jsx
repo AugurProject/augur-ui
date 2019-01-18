@@ -483,7 +483,7 @@ function drawTicks({
     .enter()
     .append("line")
     .attr("class", "tick-line")
-    .attr("stroke-dasharray", "3")
+    .attr("stroke-dasharray", "1 3")
     .attr("x1", 0)
     .attr("x2", containerWidth)
     .attr("y1", d => yScale(d))
