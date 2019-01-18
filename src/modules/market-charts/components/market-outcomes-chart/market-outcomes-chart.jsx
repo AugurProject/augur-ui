@@ -295,21 +295,17 @@ function determineDrawParams({
     .range([chartDim.left, containerWidth])
     .nice();
 
-  const numberOfDaysElapsed =
-    Math.floor(
-      Math.abs(xExtents[0] - xExtents[1]) / (NUMBER_OF_SECONDS_IN_A_DAY * 1000)
-    ) <= 1;
+  const numberOfDaysElapsed = Math.floor(
+    Math.abs(xExtents[0] - xExtents[1]) / (NUMBER_OF_SECONDS_IN_A_DAY * 1000)
+  );
 
   let timeFormat;
   switch (true) {
-    case numberOfDaysElapsed <= 1:
+    case numberOfDaysElapsed < 2:
       timeFormat = d3.timeFormat("%I %p");
       break;
-    case numberOfDaysElapsed <= 31:
-      timeFormat = d3.timeFormat("%b-%d");
-      break;
     default:
-      timeFormat = d3.timeFormat("%b");
+      timeFormat = d3.timeFormat("%b-%d");
   }
 
   const yScale = d3
