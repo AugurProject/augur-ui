@@ -406,7 +406,10 @@ export function assembleMarket(
                 cumulativeScale: market.cumulativeScale,
                 makerFee: market.makerFee
               },
-              outcome,
+              {
+                id: outcome.id,
+                name: outcome.name
+              },
               outcomeTradeInProgress,
               orderBooks || {}
             );

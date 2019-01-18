@@ -52,8 +52,7 @@ class TradingForm extends Component {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
       DO_NOT_CREATE_ORDERS: "doNotCreateOrders",
-      EST_ETH: "orderEthEstimate",
-      MARKET_ORDER_SIZE: "marketOrderSize"
+      EST_ETH: "orderEthEstimate"
     };
 
     this.TRADE_MAX_COST = "tradeMaxCost";
@@ -61,6 +60,7 @@ class TradingForm extends Component {
     this.orderValidation = this.orderValidation.bind(this);
     this.testQuantity = this.testQuantity.bind(this);
     this.testPrice = this.testPrice.bind(this);
+    this.testTotal = this.testTotal.bind(this);
     this.updateTrade = this.updateTrade.bind(this);
     const startState = {
       [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
@@ -70,7 +70,6 @@ class TradingForm extends Component {
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
         [this.INPUT_TYPES.PRICE]: [],
-        [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
         [this.TRADE_MAX_COST]: [],
         [this.INPUT_TYPES.EST_ETH]: []
       }
@@ -101,8 +100,6 @@ class TradingForm extends Component {
         nextPrice && nextPrice !== ""
           ? createBigNumber(nextPrice, 10)
           : nextPrice,
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]:
-        nextProps[this.INPUT_TYPES.MARKET_ORDER_SIZE],
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
         nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
       [this.INPUT_TYPES.EST_ETH]:
@@ -114,9 +111,6 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: this.state[this.INPUT_TYPES.QUANTITY],
       [this.INPUT_TYPES.PRICE]: this.state[this.INPUT_TYPES.PRICE],
       [this.INPUT_TYPES.EST_ETH]: this.state[this.INPUT_TYPES.EST_ETH],
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: this.state[
-        this.INPUT_TYPES.MARKET_ORDER_SIZE
-      ],
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: this.state[
         this.INPUT_TYPES.DO_NOT_CREATE_ORDERS
       ]
@@ -135,7 +129,7 @@ class TradingForm extends Component {
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
       const validation = this.orderValidation(newStateInfo, nextProps);
-      if (validation.errorCount === 0) {
+      if (validation.errorCount === 0 && validation.isOrderValid) {
         // trade has changed, lets update trade.
         this.updateTrade(newStateInfo, nextProps);
       }
@@ -148,6 +142,22 @@ class TradingForm extends Component {
       // update state
       this.setState({ ...newStateInfo, errors, isOrderValid, errorCount });
     }
+  }
+
+  testTotal(value, errors, isOrderValid, price) {
+    let errorCount = 0;
+    let passedTest = !!isOrderValid;
+    if (!BigNumber.isBigNumber(value) || !BigNumber.isBigNumber(price)) {
+      return { isOrderValid: false, errors, errorCount };
+    }
+    if (value && value.lte(0)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.QUANTITY].push(
+        "Total Order Value must be greater than 0"
+      );
+    }
+    return { isOrderValid: passedTest, errors, errorCount };
   }
 
   testQuantity(value, errors, isOrderValid) {
@@ -193,7 +203,6 @@ class TradingForm extends Component {
     let errors = {
       [this.INPUT_TYPES.QUANTITY]: [],
       [this.INPUT_TYPES.PRICE]: [],
-      [this.INPUT_TYPES.MARKET_ORDER_SIZE]: [],
       [this.INPUT_TYPES.EST_ETH]: [],
       [this.TRADE_MAX_COST]: []
     };
@@ -204,21 +213,22 @@ class TradingForm extends Component {
       order[this.INPUT_TYPES.PRICE] &&
       createBigNumber(order[this.INPUT_TYPES.PRICE]);
 
-    let quantity =
+    const quantity =
       order[this.INPUT_TYPES.QUANTITY] &&
       createBigNumber(order[this.INPUT_TYPES.QUANTITY]);
 
-    const totalValue =
+    const total =
       order[this.INPUT_TYPES.EST_ETH] &&
       createBigNumber(order[this.INPUT_TYPES.EST_ETH]);
-    if (
-      !order[this.INPUT_TYPES.QUANTITY] &&
-      order[this.INPUT_TYPES.EST_ETH] &&
-      order[this.INPUT_TYPES.PRICE]
-    ) {
-      quantity = totalValue.dividedBy(price).toFixed();
-      this.props.updateState(this.INPUT_TYPES.QUANTITY, quantity);
-    }
+
+    const {
+      isOrderValid: priceValid,
+      errors: priceErrors,
+      errorCount: priceErrorCount
+    } = this.testPrice(price, errors, isOrderValid, nextProps);
+
+    errorCount += priceErrorCount;
+    errors = { ...errors, ...priceErrors };
 
     const {
       isOrderValid: quantityValid,
@@ -226,18 +236,20 @@ class TradingForm extends Component {
       errorCount: quantityErrorCount
     } = this.testQuantity(quantity, errors, isOrderValid, nextProps);
 
-    isOrderValid = quantityValid;
     errorCount += quantityErrorCount;
     errors = { ...errors, ...quantityErrors };
 
     const {
-      isOrderValid: priceValid,
-      errors: priceErrors,
-      errorCount: priceErrorCount
-    } = this.testPrice(price, errors, isOrderValid, nextProps);
-    isOrderValid = priceValid;
-    errorCount += priceErrorCount;
-    errors = { ...errors, ...priceErrors };
+      isOrderValid: totalValid,
+      errors: totalErrors,
+      errorCount: totalErrorCount
+    } = this.testTotal(total, errors, isOrderValid, price);
+
+    errorCount += totalErrorCount;
+    errors = { ...errors, ...totalErrors };
+
+    isOrderValid = priceValid && (quantityValid || totalValid);
+
     return { isOrderValid, errors, errorCount };
   }
 
@@ -246,20 +258,17 @@ class TradingForm extends Component {
     if (propsToUse) props = propsToUse;
     const side = props.selectedNav;
     let limitPrice = updatedState[this.INPUT_TYPES.PRICE];
-    const shares = updatedState[this.INPUT_TYPES.QUANTITY];
-    // const oldShares = this.state[this.INPUT_TYPES.QUANTITY];
-    if (shares === null || shares === undefined || shares === "") {
-      limitPrice = null;
-    }
+    const quantity = updatedState[this.INPUT_TYPES.QUANTITY];
+    const maxCost = updatedState[this.INPUT_TYPES.EST_ETH];
 
     if (limitPrice === undefined || limitPrice === "") {
       limitPrice = null;
     }
     props.selectedOutcome.trade.updateTradeOrder(
-      shares,
+      quantity,
       limitPrice,
       side,
-      null
+      maxCost
     );
   }
 
@@ -279,6 +288,7 @@ class TradingForm extends Component {
     }
     if (
       !(property === this.INPUT_TYPES.DO_NOT_CREATE_ORDERS) &&
+      !(property === this.INPUT_TYPES.EST_ETH) &&
       !BigNumber.isBigNumber(value) &&
       value !== ""
     )
@@ -341,7 +351,6 @@ class TradingForm extends Component {
       new Set([
         ...s.errors[this.INPUT_TYPES.QUANTITY],
         ...s.errors[this.INPUT_TYPES.PRICE],
-        ...s.errors[this.INPUT_TYPES.MARKET_ORDER_SIZE],
         ...s.errors[this.TRADE_MAX_COST]
       ])
     );

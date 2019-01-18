@@ -31,7 +31,8 @@ export function updateTradesInProgress({
       marketsData,
       loginAccount,
       orderBooks,
-      orderCancellation
+      orderCancellation,
+      accountPositions
     } = getState();
     const outcomeTradeInProgress =
       (tradesInProgress &&
@@ -71,9 +72,9 @@ export function updateTradesInProgress({
       });
     }
     if (
-      (limitPrice === "" ||
-        (parseFloat(limitPrice) === 0 && market.marketType !== SCALAR)) &&
-      numShares === null
+      limitPrice === "" ||
+      limitPrice === null ||
+      (parseFloat(limitPrice) === 0 && market.marketType !== SCALAR)
     ) {
       // limitPrice cleared
       return dispatch({
@@ -87,6 +88,33 @@ export function updateTradesInProgress({
             numShares: outcomeTradeInProgress.numShares
           }
         }
+      });
+    }
+    if (
+      limitPrice !== "" &&
+      limitPrice !== null &&
+      (numShares === "" || numShares === null) &&
+      (maxCost !== "" || maxCost !== null)
+    ) {
+      const cleanSide = side || outcomeTradeInProgress.side;
+      const newTradeDetails = {
+        side: cleanSide,
+        numShares,
+        limitPrice,
+        totalFee: "0",
+        totalCost: "0"
+      };
+      // calculate shares
+      let newShares = createBigNumber(maxCost).dividedBy(limitPrice);
+      const marketPosition = accountPositions[marketId];
+      if (marketPosition && marketPosition[outcomeId]) {
+        const position = marketPosition[outcomeId];
+        newShares = newShares.plus(createBigNumber(position.netPosition));
+      }
+      newTradeDetails.numShares = newShares;
+      return dispatch({
+        type: UPDATE_TRADE_IN_PROGRESS,
+        data: { marketId, outcomeId, details: newTradeDetails }
       });
     }
     // find top order to default limit price to
