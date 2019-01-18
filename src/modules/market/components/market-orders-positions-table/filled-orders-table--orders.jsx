@@ -59,15 +59,18 @@ export default class FilledOrdersOrder extends Component {
     const orderType = getValue(order, "type");
 
     return (
-      <div className={Styles.FilledOrder__container}>
+      <div
+        className={classNames(Styles.FilledOrder__container, {
+          [SharedStyles.TableItemDark]: oddNumber
+        })}
+      >
         <ul
           ref={order => {
             this.order = order;
           }}
           className={classNames(SharedStyles.Order, Styles.FilledOrder, {
             [Styles.FilledOrder__active]: s.showTrades,
-            [SharedStyles.Negative]: orderType === SELL,
-            [SharedStyles.TableItemDark]: oddNumber
+            [SharedStyles.Negative]: orderType === SELL
           })}
           onClick={this.setShowTrades}
         >
