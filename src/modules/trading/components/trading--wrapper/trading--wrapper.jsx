@@ -232,20 +232,16 @@ class TradingWrapper extends Component {
             updateSelectedOutcome={updateSelectedOutcome}
           />
         </div>
-
         {selectedOutcome &&
           selectedOutcome.trade &&
-          selectedOutcome.trade.limitPrice && (
+          (selectedOutcome.trade.shareCost.value !== 0 ||
+            selectedOutcome.trade.totalCost.value !== 0) && (
             <TradingConfirm
-              market={market}
+              numOutcomes={market.numOutcomes}
               selectedNav={s.selectedNav}
               orderPrice={s.orderPrice}
-              orderQuantity={s.orderQuantity}
-              selectedOutcome={selectedOutcome}
               trade={selectedOutcome.trade}
               isMobile={isMobile}
-              clearOrderForm={this.clearOrderForm}
-              handleFilledOnly={handleFilledOnly}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
             />

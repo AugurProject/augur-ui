@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { augur } from "services/augurjs";
-// import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 import classNames from "classnames";
-// import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
@@ -16,7 +14,7 @@ import { BigNumber, createBigNumber } from "utils/create-big-number";
 const MarketTradingConfirm = ({
   trade,
   selectedNav,
-  market,
+  numOutcomes,
   gasPrice,
   availableFunds
 }) => {
@@ -33,11 +31,11 @@ const MarketTradingConfirm = ({
 
   let errorMessage = null;
   const gasValues = {
-    fillGasLimit: augur.constants.WORST_CASE_FILL[market.numOutcomes],
+    fillGasLimit: augur.constants.WORST_CASE_FILL[numOutcomes],
     placeOrderNoSharesGasLimit:
-      augur.constants.PLACE_ORDER_NO_SHARES[market.numOutcomes],
+      augur.constants.PLACE_ORDER_NO_SHARES[numOutcomes],
     placeOrderWithSharesGasLimit:
-      augur.constants.PLACE_ORDER_WITH_SHARES[market.numOutcomes]
+      augur.constants.PLACE_ORDER_WITH_SHARES[numOutcomes]
   };
   const gas =
     trade.shareCost.formattedValue > 0
@@ -198,7 +196,7 @@ const MarketTradingConfirm = ({
 };
 
 MarketTradingConfirm.propTypes = {
-  market: PropTypes.object.isRequired,
+  numOutcomes: PropTypes.number.isRequired,
   selectedNav: PropTypes.string.isRequired,
   trade: PropTypes.shape({
     numShares: PropTypes.string,
