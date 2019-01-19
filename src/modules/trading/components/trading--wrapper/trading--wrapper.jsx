@@ -82,7 +82,7 @@ class TradingWrapper extends Component {
       if (
         createBigNumber(numShares).eq(createBigNumber(orderQuantity || "0")) &&
         createBigNumber(orderEthEstimate || "0").eq(
-          createBigNumber(totalCost.formatted)
+          createBigNumber(totalCost.value)
         )
       )
         return;
@@ -91,7 +91,7 @@ class TradingWrapper extends Component {
         orderEthEstimate &&
         createBigNumber(orderEthEstimate).eq(createBigNumber(totalCost.value))
           ? orderEthEstimate
-          : totalCost.formatted;
+          : totalCost.value;
 
       // calculating cost when numShares is filled in
       if (numShares !== orderQuantity) {
