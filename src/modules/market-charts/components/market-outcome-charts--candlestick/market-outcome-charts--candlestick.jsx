@@ -214,10 +214,6 @@ class MarketOutcomeCandlestick extends React.Component {
       "class",
       `${Styles["MarketOutcomeCandlestick__chart-container"]}`
     );
-    // candleChartContainer.setAttribute("style", {
-    //   width: `${containerWidth - chartDim.left}px`,
-    //   left: chartDim.left
-    // });
 
     if (containerHeight > 0 && containerWidth > 0 && currentTimeInSeconds) {
       const candleTicks = d3
@@ -231,6 +227,26 @@ class MarketOutcomeCandlestick extends React.Component {
         .attr("id", "candlestick_chart")
         .attr("height", containerHeight)
         .attr("width", drawableWidth);
+
+      const defs = candleChart.append("defs");
+      defs
+        .append("filter")
+        .attr("id", "dilate-filter")
+        .append("feMorphology")
+        .attr("operator", "erode")
+        .attr("radius", 1)
+        .attr("in", "SourceGraphic");
+
+      defs
+        .append("mask")
+        .attr("class", "candle-mask")
+        .attr("id", "candle-mask")
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("height", "100%")
+        .attr("width", "100%")
+        .attr("fill", "white");
 
       drawTicks({
         boundDiff,
@@ -517,6 +533,21 @@ function drawCandles({
     drawNullState({ candleChart, containerWidth, containerHeight });
   } else {
     candleChart
+      .select("mask.candle-mask")
+      .selectAll("rect.candle-mask-rect")
+      .data(priceTimeSeries)
+      .enter()
+      .append("rect")
+      .attr("class", "candle-mask-rect")
+      .attr("x", d => xScale(d.period))
+      .attr("y", d => yScale(d3.max([d.open, d.close])))
+      .attr("height", d =>
+        Math.max(Math.abs(yScale(d.open) - yScale(d.close)), 1)
+      )
+      .attr("width", candleDim.width)
+      .attr("fill", "Black");
+
+    candleChart
       .selectAll("rect.candle")
       .data(priceTimeSeries)
       .enter()
@@ -527,19 +558,19 @@ function drawCandles({
         Math.max(Math.abs(yScale(d.open) - yScale(d.close)), 1)
       )
       .attr("width", candleDim.width)
-      .attr("class", d => (d.close > d.open ? "up-period" : "down-period")); // eslint-disable-line no-confusing-arrow
+      .attr("class", d => (d.close > d.open ? "up-period" : "down-period"));
 
     candleChart
-      .selectAll("line.stem")
+      .selectAll("rect.stem")
       .data(priceTimeSeries)
       .enter()
-      .append("line")
+      .append("rect")
       .attr("class", "stem")
-      .attr("x1", d => xScale(d.period) + candleDim.width / 2)
-      .attr("x2", d => xScale(d.period) + candleDim.width / 2)
-      .attr("y1", d => yScale(d.high))
-      .attr("y2", d => yScale(d.low))
-      .attr("class", d => (d.close > d.open ? "up-period" : "down-period")); // eslint-disable-line no-confusing-arrow
+      .attr("x", d => xScale(d.period) + candleDim.width / 2)
+      .attr("width", 1)
+      .attr("y", d => yScale(d.high))
+      .attr("height", d => yScale(d.low) - yScale(d.high))
+      .attr("class", d => (d.close > d.open ? "up-period" : "down-period"));
   }
 }
 
@@ -677,7 +708,6 @@ function attachHoverClickHandlers({
     .data(priceTimeSeries)
     .enter()
     .append("rect")
-    .attr("id", "testing")
     .attr("x", d => xScale(d.period) - candleDim.gap * 0.5)
     .attr("y", 0)
     .attr("height", containerHeight - chartDim.bottom)

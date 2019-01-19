@@ -44,6 +44,21 @@ const OpenOrdersTable = ({
           <div className={Styles.MarketOpenOrdersList__empty} />
         )}
       <div className={Styles.MarketOpenOrdersList__scrollContainer}>
+        {(orphanedOrders || []).map(order => (
+          <MarketPositionsListOrphanedOrder
+            key={order.orderId}
+            outcomeName={
+              market.marketType === SCALAR
+                ? market.scalarDenomination
+                : order.outcomeName || order.outcome
+            }
+            order={order}
+            pending={false}
+            isExtendedDisplay={false}
+            outcome={order}
+            cancelOrphanedOrder={cancelOrphanedOrder}
+          />
+        ))}
         {(openOrders.length > 0 || orphanedOrders.length > 0) && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {openOrders.map((order, i) => (
@@ -59,21 +74,6 @@ const OpenOrdersTable = ({
                 isExtendedDisplay={false}
                 isMobile={isMobile}
                 oddNumber={openOrders.length % 2 !== 0}
-              />
-            ))}
-            {(orphanedOrders || []).map(order => (
-              <MarketPositionsListOrphanedOrder
-                key={order.orderId}
-                outcomeName={
-                  market.marketType === SCALAR
-                    ? market.scalarDenomination
-                    : order.outcomeName || order.outcome
-                }
-                order={order}
-                pending={false}
-                isExtendedDisplay={false}
-                outcome={order}
-                cancelOrphanedOrder={cancelOrphanedOrder}
               />
             ))}
           </div>

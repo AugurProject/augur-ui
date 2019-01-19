@@ -16,7 +16,12 @@ export default class MarketChartsPane extends Component {
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     selectedOutcome: PropTypes.string.isRequired,
-    updateSelectedOrderProperties: PropTypes.func.isRequired
+    updateSelectedOrderProperties: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isMobile: false
   };
 
   constructor(props) {
@@ -49,9 +54,42 @@ export default class MarketChartsPane extends Component {
       selectedOutcome,
       maxPrice,
       minPrice,
-      updateSelectedOrderProperties
+      updateSelectedOrderProperties,
+      isMobile
     } = this.props;
     const s = this.state;
+
+    if (isMobile) {
+      return (
+        <ModuleTabs selected={0} fillForMobile>
+          <ModulePane label="Candlesticks">
+            <Candlestick
+              currentTimeInSeconds={currentTimestamp}
+              marketId={marketId}
+              selectedOutcome={selectedOutcome}
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+            />
+          </ModulePane>
+          <ModulePane
+            ref={ordersContainer => {
+              this.ordersContainer = ordersContainer;
+            }}
+            label="Market Depth"
+          >
+            <MarketDepth
+              marketId={marketId}
+              selectedOutcome={selectedOutcome}
+              updateSelectedOrderProperties={updateSelectedOrderProperties}
+              hoveredPrice={s.hoveredPrice}
+              hoveredDepth={s.hoveredDepth}
+              updateHoveredDepth={this.updateHoveredDepth}
+              updateHoveredPrice={this.updateHoveredPrice}
+            />
+          </ModulePane>
+        </ModuleTabs>
+      );
+    }
 
     return (
       <ModuleTabs selected={0}>

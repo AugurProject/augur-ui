@@ -21,6 +21,7 @@ import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 import MarketOutcomeSelector from "modules/market/components/market-view/market-outcome-selector";
 import { Close } from "modules/common/components/icons";
+import MarketOutcomesChart from "src/modules/market-charts/containers/market-outcomes-chart";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
@@ -73,6 +74,7 @@ export default class MarketView extends Component {
     };
 
     this.state = {
+      showTradingForm: false,
       showOutcomeOverlay: false,
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       selectedOutcome: props.marketType === CATEGORICAL ? "0" : "1",
@@ -91,6 +93,7 @@ export default class MarketView extends Component {
     this.clearSelectedOutcome = this.clearSelectedOutcome.bind(this);
     this.updatePrecision = this.updatePrecision.bind(this);
     this.showSelectOutcome = this.showSelectOutcome.bind(this);
+    this.toggleTradingForm = this.toggleTradingForm.bind(this);
   }
 
   componentWillMount() {
@@ -198,6 +201,10 @@ export default class MarketView extends Component {
     this.setState({ showOutcomeOverlay: !this.state.showOutcomeOverlay });
   }
 
+  toggleTradingForm() {
+    this.setState({ showTradingForm: !this.state.showTradingForm });
+  }
+
   render() {
     const {
       currentTimestamp,
@@ -233,26 +240,49 @@ export default class MarketView extends Component {
           }}
           className={Styles.MarketView}
         >
-          {s.showOutcomeOverlay && (
+          {(s.showOutcomeOverlay || s.showTradingForm) && (
             <div className={Styles.MarketView__overlay}>
-              <div className={Styles.MarketView__overlayHeader}>
-                <span
-                  role="button"
-                  tabIndex="-1"
-                  onClick={this.showSelectOutcome}
-                >
-                  {Close}
-                </span>
-                <div>Select an Outcome</div>
-              </div>
-              <MarketOutcomesList
-                marketId={marketId}
-                outcomes={outcomes}
-                selectedOutcome={s.selectedOutcome}
-                updateSelectedOutcome={this.updateSelectedOutcome}
-                isMobile={isMobile}
-                popUp
-              />
+              {s.showOutcomeOverlay && (
+                <section>
+                  <div className={Styles.MarketView__overlayHeader}>
+                    <span
+                      role="button"
+                      tabIndex="-1"
+                      onClick={this.showSelectOutcome}
+                    >
+                      {Close}
+                    </span>
+                    <div>Select an Outcome</div>
+                  </div>
+                  <MarketOutcomesList
+                    marketId={marketId}
+                    outcomes={outcomes}
+                    selectedOutcome={s.selectedOutcome}
+                    updateSelectedOutcome={this.updateSelectedOutcome}
+                    isMobile={isMobile}
+                    popUp
+                  />
+                </section>
+              )}
+              {s.showTradingForm && (
+                <MarketTradingForm
+                  market={market}
+                  isLogged={isLogged}
+                  selectedOrderProperties={s.selectedOrderProperties}
+                  selectedOutcome={s.selectedOutcome}
+                  isMobile={isMobile}
+                  toggleForm={this.toggleForm}
+                  availableFunds={availableFunds}
+                  clearTradeInProgress={clearTradeInProgress}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                  updateSelectedOrderProperties={
+                    this.updateSelectedOrderProperties
+                  }
+                  gasPrice={gasPrice}
+                  handleFilledOnly={handleFilledOnly}
+                  toggleMobileView={this.toggleTradingForm}
+                />
+              )}
             </div>
           )}
           <Helmet>
@@ -276,6 +306,14 @@ export default class MarketView extends Component {
                   updateSelectedOutcome={this.updateSelectedOutcome}
                   isMobile={isMobile}
                 />
+                <div className={Styles.MarketView__priceHistoryChart}>
+                  <p>Price History</p>
+                  <MarketOutcomesChart
+                    marketId={marketId}
+                    selectedOutcome={s.selectedOutcome}
+                    pricePrecision={4}
+                  />
+                </div>
               </div>
             </ModulePane>
             <ModulePane label="Trade">
@@ -287,7 +325,22 @@ export default class MarketView extends Component {
                     selectOutcome={this.showSelectOutcome}
                   />
                 )}
-                <ModuleTabs selected={0} fillForMobile>
+                <MarketChartsPane
+                  marketId={marketId}
+                  selectedOutcome={s.selectedOutcome}
+                  currentTimestamp={currentTimestamp}
+                  maxPrice={maxPrice}
+                  minPrice={minPrice}
+                  updateSelectedOrderProperties={
+                    this.updateSelectedOrderProperties
+                  }
+                  isMobile={isMobile}
+                />
+                <ModuleTabs
+                  selected={0}
+                  fillForMobile
+                  style={{ marginTop: "0.5rem" }}
+                >
                   <ModulePane label="Order Book">
                     <div className={Styles.MarketView__orders}>
                       <MarketOutcomeOrders
@@ -336,7 +389,7 @@ export default class MarketView extends Component {
           </ModuleTabs>
           <div className={Styles["MarketView__buySellButton--button"]}>
             <div>
-              <button>Buy / Sell</button>
+              <button onClick={this.toggleTradingForm}>Buy / Sell</button>
             </div>
           </div>
         </section>
@@ -382,6 +435,7 @@ export default class MarketView extends Component {
                     }
                     gasPrice={gasPrice}
                     handleFilledOnly={handleFilledOnly}
+                    toggleMobileView={this.toggleTradingForm}
                   />
                 </div>
               </div>
