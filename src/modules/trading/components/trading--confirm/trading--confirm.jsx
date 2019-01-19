@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { augur } from "services/augurjs";
 import classNames from "classnames";
 import { BUY, SELL } from "modules/transactions/constants/types";
+import { SCALAR } from "modules/markets/constants/market-types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { Hint } from "modules/common/components/icons";
@@ -16,7 +17,11 @@ const MarketTradingConfirm = ({
   selectedNav,
   numOutcomes,
   gasPrice,
-  availableFunds
+  availableFunds,
+  selectedOutcome,
+  marketType,
+  maxPrice,
+  minPrice
 }) => {
   const {
     limitPrice,
@@ -28,6 +33,13 @@ const MarketTradingConfirm = ({
     side,
     tradingFees
   } = trade;
+  const outcomeName = marketType === SCALAR ? limitPrice : selectedOutcome.name;
+  const higherLower = selectedNav === BUY ? "higher" : "lower";
+  const marketRange = maxPrice.minus(minPrice).abs();
+  const limitPricePercentage = createBigNumber(limitPrice)
+    .dividedBy(marketRange)
+    .times(100)
+    .toFixed();
 
   let errorMessage = null;
   const gasValues = {
@@ -134,21 +146,20 @@ const MarketTradingConfirm = ({
                       Styles.TradingConfirm__TooltipHint
                     )}
                     data-tip
-                    data-for="tooltip--fee"
+                    data-for="tooltip--confirm"
                   >
                     {Hint}
                   </label>
                   <ReactTooltip
-                    id="tooltip--fee"
+                    id="tooltip--confirm"
                     className={TooltipStyles.Tooltip}
                     effect="solid"
                     place="bottom"
                     type="light"
                   >
                     <p>
-                      This means you believe {selectedNav} has a (higher or
-                      lower depending on buying or selling) then (limit price to
-                      %) change of happening
+                      This means you believe {outcomeName} has a {higherLower}{" "}
+                      then {limitPricePercentage}% change of happening.
                     </p>
                   </ReactTooltip>
                 </span>
@@ -210,7 +221,11 @@ MarketTradingConfirm.propTypes = {
     shareCost: PropTypes.object
   }).isRequired,
   gasPrice: PropTypes.number.isRequired,
-  availableFunds: PropTypes.instanceOf(BigNumber).isRequired
+  availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+  selectedOutcome: PropTypes.object.isRequired,
+  marketType: PropTypes.string.isRequired,
+  maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
+  minPrice: PropTypes.instanceOf(BigNumber).isRequired
 };
 
 export default MarketTradingConfirm;

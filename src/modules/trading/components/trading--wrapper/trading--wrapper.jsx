@@ -278,11 +278,15 @@ class TradingWrapper extends Component {
             selectedOutcome.trade.totalCost.value !== 0) && (
             <TradingConfirm
               numOutcomes={market.numOutcomes}
+              marketType={getValue(this.props, "market.marketType")}
+              maxPrice={getValue(this.props, "market.maxPrice")}
+              minPrice={getValue(this.props, "market.minPrice")}
               selectedNav={s.selectedNav}
               trade={selectedOutcome.trade}
               isMobile={isMobile}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
+              selectedOutcome={selectedOutcome}
             />
           )}
         <div className={Styles.TradingWrapper__actions}>
