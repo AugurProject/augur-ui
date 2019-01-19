@@ -163,7 +163,7 @@ const MarketTradingConfirm = ({
                   >
                     <p>
                       This means you believe {outcomeName} has a {higherLower}{" "}
-                      then {limitPricePercentage}% change of happening.
+                      then {limitPricePercentage}% chance of happening.
                     </p>
                   </ReactTooltip>
                 </span>
