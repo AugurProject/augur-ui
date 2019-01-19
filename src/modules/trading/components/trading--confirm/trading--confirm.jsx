@@ -36,10 +36,14 @@ const MarketTradingConfirm = ({
   const outcomeName = marketType === SCALAR ? limitPrice : selectedOutcome.name;
   const higherLower = selectedNav === BUY ? "higher" : "lower";
   const marketRange = maxPrice.minus(minPrice).abs();
-  const limitPricePercentage = createBigNumber(limitPrice)
+
+  const limitPricePercentage = (selectedNav === BUY
+    ? createBigNumber(limitPrice)
+    : maxPrice.minus(createBigNumber(limitPrice))
+  )
     .dividedBy(marketRange)
     .times(100)
-    .toFixed();
+    .toFixed(0);
 
   let errorMessage = null;
   const gasValues = {

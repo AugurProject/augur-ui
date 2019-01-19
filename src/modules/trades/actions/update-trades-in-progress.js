@@ -136,6 +136,7 @@ export function updateTradesInProgress({
 
       return runSimulateTrade(
         newTradeDetails,
+        marketId,
         market,
         outcomeId,
         loginAccount,
@@ -236,6 +237,7 @@ export function updateTradesInProgress({
       return runSimulateTrade(
         newTradeDetails,
         market,
+        marketId,
         outcomeId,
         loginAccount,
         orderBooks,
@@ -253,13 +255,13 @@ export function updateTradesInProgress({
 function runSimulateTrade(
   newTradeDetails,
   market,
+  marketId,
   outcomeId,
   loginAccount,
   orderBooks,
   dispatch,
   callback
 ) {
-  const { id: marketId } = market;
   dispatch(
     loadUsershareBalances(
       { market: market.id },
