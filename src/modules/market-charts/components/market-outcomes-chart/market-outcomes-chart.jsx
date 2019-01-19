@@ -23,7 +23,6 @@ export default class MarketOutcomesChart extends Component {
     // fixedPrecision: PropTypes.number.isRequired,
     hasPriceHistory: PropTypes.bool.isRequired,
     bucketedPriceTimeSeries: PropTypes.object.isRequired,
-    pricePrecision: PropTypes.number.isRequired,
     isMobileSmall: PropTypes.bool,
     isScalar: PropTypes.bool,
     scalarDenomination: PropTypes.string,
@@ -97,6 +96,7 @@ export default class MarketOutcomesChart extends Component {
       bucketedPriceTimeSeries,
       isMobileSmall,
       isScalar,
+      scalarDenomination,
       selectedOutcome
     } = this.props;
     // this is stupid but done for prop-type validation.
@@ -112,6 +112,7 @@ export default class MarketOutcomesChart extends Component {
       bucketedPriceTimeSeries,
       isMobileSmall,
       isScalar,
+      scalarDenomination,
       selectedOutcome
     });
   }
@@ -125,7 +126,6 @@ export default class MarketOutcomesChart extends Component {
     outcomes,
     hasPriceHistory,
     bucketedPriceTimeSeries,
-    pricePrecision,
     isMobileSmall,
     selectedOutcome,
     isScalar,
@@ -177,8 +177,7 @@ export default class MarketOutcomesChart extends Component {
 
       drawTicks({
         drawParams,
-        chart,
-        pricePrecision
+        chart
       });
 
       drawXAxisLabels({
@@ -326,7 +325,7 @@ function determineDrawParams({
   };
 }
 
-function drawTicks({ drawParams, chart, pricePrecision }) {
+function drawTicks({ drawParams, chart }) {
   const numberOfTicks = 6;
   const ticks = drawParams.yScale.ticks(numberOfTicks).slice(1, 5);
 
@@ -514,7 +513,6 @@ function updateHoveredLocationCrosshairs({
   bucketedPriceTimeSeries: { priceTimeSeries, timeBuckets },
   drawParams,
   hoveredLocation,
-  pricePrecision,
   selectedOutcome
 }) {
   // The cursor is not currently on the graph.
@@ -526,7 +524,6 @@ function updateHoveredLocationCrosshairs({
   if (!selectedOutcome) {
     updateHoveredLocationCrosshairPosition(
       drawParams,
-      pricePrecision,
       hoveredLocation,
       selectedOutcome
     );
@@ -547,7 +544,6 @@ function updateHoveredLocationCrosshairs({
 
   updateHoveredLocationCrosshairPosition(
     drawParams,
-    pricePrecision,
     nearestDataPoint,
     selectedOutcome
   );
@@ -555,7 +551,6 @@ function updateHoveredLocationCrosshairs({
 
 function updateHoveredLocationCrosshairPosition(
   drawParams,
-  pricePrecision,
   { price, timestamp },
   selectedOutcome,
   isScalar
