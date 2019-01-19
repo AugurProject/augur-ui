@@ -136,8 +136,8 @@ export function updateTradesInProgress({
 
       return runSimulateTrade(
         newTradeDetails,
-        marketId,
         market,
+        marketId,
         outcomeId,
         loginAccount,
         orderBooks,
