@@ -77,6 +77,7 @@ class TradingWrapper extends Component {
 
     if (
       limitPrice !== null &&
+      orderPrice !== "" &&
       createBigNumber(limitPrice).eq(createBigNumber(orderPrice))
     ) {
       if (
