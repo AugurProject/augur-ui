@@ -17,6 +17,7 @@ import ModalNetworkConnect from "modules/modal/containers/modal-network-connect"
 import ModalDisclaimer from "modules/modal/containers/modal-disclaimer";
 import ModalGasPrice from "modules/modal/containers/modal-gas-price";
 import ModalClaimTradingProceeds from "modules/modal/containers/modal-claim-trading-proceeds";
+import ModalTradingOverlay from "modules/modal/components/modal-trading-overlay";
 
 import * as TYPES from "modules/modal/constants/modal-types";
 
@@ -42,7 +43,9 @@ export default class ModalView extends Component {
         <div
           className={classNames(Styles.ModalView__content, {
             [`${Styles["ModalView__content--taller"]}`]:
-              modal.type === TYPES.MODAL_DISCLAIMER
+              modal.type === TYPES.MODAL_DISCLAIMER,
+            [`${Styles["ModalView__content--full"]}`]:
+              modal.type === TYPES.MODAL_TRADING_OVERLAY,
           })}
         >
           {modal.type === TYPES.MODAL_CLAIM_TRADING_PROCEEDS && (
@@ -84,6 +87,9 @@ export default class ModalView extends Component {
           )}
           {modal.type === TYPES.MODAL_DISCLAIMER && (
             <ModalDisclaimer {...modal} />
+          )}
+          {modal.type === TYPES.MODAL_TRADING_OVERLAY && (
+            <ModalTradingOverlay {...modal} closeModal={closeModal} />
           )}
         </div>
       </section>

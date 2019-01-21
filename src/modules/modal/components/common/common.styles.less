@@ -544,6 +544,23 @@ div.ErrorField:focus {
   }
 }
 
+.ModalView__content--full {
+  padding: 0;
+  background-color: #161022;
+}
+
+.ModalContainer__full {
+  background: transparent;;
+  border: 0;
+  border-radius: 0;
+  color: @color-white;
+  max-width: unset;
+  padding: 0;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
 @media @breakpoint-mobile {
   .ModalDisclaimer__TextBox {
     margin: 0 1rem 1.5rem;
@@ -555,6 +572,10 @@ div.ErrorField:focus {
 @media @breakpoint-mobile-small {
   .ModalView__content {
     padding: 1rem;
+  }
+
+  .ModalView__content--full {
+    padding: 0;
   }
 
   .ModalView__content--taller {
