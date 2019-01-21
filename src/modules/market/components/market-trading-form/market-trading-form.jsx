@@ -24,7 +24,9 @@ class MarketTradingForm extends Component {
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    toggleMobileView: PropTypes.func.isRequired
+    toggleMobileView: PropTypes.func.isRequired,
+    updateTradeCost: PropTypes.func.isRequired,
+    updateTradeShares: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -86,7 +88,9 @@ class MarketTradingForm extends Component {
       gasPrice,
       handleFilledOnly,
       updateSelectedOutcome,
-      toggleMobileView
+      toggleMobileView,
+      updateTradeCost,
+      updateTradeShares
     } = this.props;
     const s = this.state;
 
@@ -128,6 +132,8 @@ class MarketTradingForm extends Component {
             handleFilledOnly={handleFilledOnly}
             updateSelectedOutcome={updateSelectedOutcome}
             toggleMobileView={toggleMobileView}
+            updateTradeCost={updateTradeCost}
+            updateTradeShares={updateTradeShares}
           />
         )}
         {initialMessage && (

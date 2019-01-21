@@ -25,27 +25,15 @@ class TradingForm extends Component {
     marketType: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
-    orderPrice: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.object
-    ]).isRequired,
-    orderQuantity: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.object
-    ]).isRequired,
-    orderEthEstimate: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.object
-    ]).isRequired,
-    selectedNav: PropTypes.string.isRequired,
+    updatedOrderValues: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.object.isRequired,
     updateState: PropTypes.func.isRequired,
+    updateOrderProperty: PropTypes.func.isRequired,
     doNotCreateOrders: PropTypes.bool.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    clearOrderForm: PropTypes.func.isRequired
+    clearOrderForm: PropTypes.func.isRequired,
+    updateTradeTotalCost: PropTypes.func.isRequired,
+    updateTradeNumShares: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -65,8 +53,8 @@ class TradingForm extends Component {
     this.testTotal = this.testTotal.bind(this);
 
     const startState = {
-      [this.INPUT_TYPES.QUANTITY]: props.orderQuantity,
-      [this.INPUT_TYPES.PRICE]: props.orderPrice,
+      [this.INPUT_TYPES.QUANTITY]: props.updatedOrderValues.orderQuantity,
+      [this.INPUT_TYPES.PRICE]: props.updatedOrderValues.orderPrice,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
       [this.INPUT_TYPES.EST_ETH]: "",
       errors: {
@@ -83,12 +71,14 @@ class TradingForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { updatedOrderValues, updateTradeTotalCost } = this.props;
     const {
       orderPrice,
       orderQuantity,
       orderEthEstimate,
-      selectedNav
-    } = this.props;
+      selectedNav,
+      event
+    } = updatedOrderValues;
 
     const newOrderInfo = {
       [this.INPUT_TYPES.QUANTITY]: orderQuantity,
@@ -96,7 +86,7 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
         nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
       [this.INPUT_TYPES.EST_ETH]: orderEthEstimate,
-      selectedNav: nextProps.selectedNav
+      selectedNav
     };
 
     const currentOrderInfo = {
@@ -109,12 +99,25 @@ class TradingForm extends Component {
       selectedNav
     };
 
+    // FROM_ORDER_BOOK
+    // CLEAR_ORDER_FORM
+    // UPDATE_EST_ETH
+    // UPDATE_QUANTITY
+    // UPDATE_PROPERTY
+
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
       const { isOrderValid, errors, errorCount } = this.orderValidation(
         newOrderInfo,
         nextProps
       );
-      this.setState({ ...newOrderInfo, errors, isOrderValid, errorCount });
+      this.setState(
+        { ...newOrderInfo, errors, isOrderValid, errorCount },
+        () => {
+          if (isOrderValid && event === "FROM_ORDER_BOOK") {
+            updateTradeTotalCost(newOrderInfo);
+          }
+        }
+      );
     }
   }
 
@@ -227,7 +230,12 @@ class TradingForm extends Component {
   }
 
   validateForm(property, rawValue) {
-    const { updateState } = this.props;
+    const {
+      updateOrderProperty,
+      updateTradeTotalCost,
+      updateTradeNumShares,
+      updatedOrderValues
+    } = this.props;
     const value = rawValue;
 
     const updatedState = {
@@ -240,17 +248,23 @@ class TradingForm extends Component {
       this.props
     );
 
-    if (errorCount === 0) {
-      // if total order value is updated clear quantity, it'll be calculated
-      if (
+    updateOrderProperty({
+      [property]: value
+    });
+
+    if (errorCount === 0 && isOrderValid) {
+      let orderQuantity = updatedState[this.INPUT_TYPES.QUANTITY];
+      const orderPrice = updatedState[this.INPUT_TYPES.PRICE];
+      let orderEthEstimate = updatedState[this.INPUT_TYPES.EST_ETH];
+
+      if (property === this.INPUT_TYPES.QUANTITY) {
+        orderEthEstimate = "";
+      } else if (
         property === this.INPUT_TYPES.EST_ETH ||
         (property === this.INPUT_TYPES.EST_ETH && value === "")
       ) {
-        updatedState[this.INPUT_TYPES.QUANTITY] = "";
+        orderQuantity = "";
       }
-      const orderQuantity = updatedState[this.INPUT_TYPES.QUANTITY];
-      const orderPrice = updatedState[this.INPUT_TYPES.PRICE];
-      const orderEthEstimate = updatedState[this.INPUT_TYPES.EST_ETH];
 
       const order = {
         [this.INPUT_TYPES.QUANTITY]: BigNumber.isBigNumber(orderQuantity)
@@ -261,10 +275,15 @@ class TradingForm extends Component {
           : orderPrice,
         [this.INPUT_TYPES.EST_ETH]: BigNumber.isBigNumber(orderEthEstimate)
           ? orderEthEstimate.toFixed()
-          : orderEthEstimate
+          : orderEthEstimate,
+        selectedNav: updatedOrderValues.selectedNav
       };
 
-      updateState(order);
+      if (property === this.INPUT_TYPES.EST_ETH) {
+        updateTradeNumShares(order);
+      } else {
+        updateTradeTotalCost(order);
+      }
     }
 
     // update the local state of this form
