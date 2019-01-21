@@ -9,7 +9,7 @@ import { Close } from "modules/common/components/icons";
 
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
-import { FindReact } from "utils/find-react";
+// import { FindReact } from "utils/find-react";
 import { SCALAR } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
@@ -218,7 +218,6 @@ class TradingWrapper extends Component {
   render() {
     const {
       availableFunds,
-      isLogged,
       isMobile,
       market,
       selectedOutcome,
@@ -341,7 +340,9 @@ class TradingWrapper extends Component {
             className={classNames(Styles["TradingWrapper__button--submit"], {
               [Styles.long]: selectedNav === BUY,
               [Styles.short]: selectedNav === SELL,
-              [Styles.disabled]: !selectedOutcome || (selectedOutcome && !selectedOutcome.trade.limitPrice)
+              [Styles.disabled]:
+                !selectedOutcome ||
+                (selectedOutcome && !selectedOutcome.trade.limitPrice)
             })}
             onClick={e => {
               e.preventDefault();

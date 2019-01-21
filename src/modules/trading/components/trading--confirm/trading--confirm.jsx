@@ -108,7 +108,12 @@ const MarketTradingConfirm = ({
         shareCost.value !== 0 && (
           <div className={Styles.TradingConfirm__details}>
             <div className={Styles.TradingConfirm__position}>
-              <div className={Styles.TradingConfirm__position__properties}>
+              <div
+                className={classNames(
+                  Styles.TradingConfirm__position__properties,
+                  Styles.TradingConfirm__position__tooltipContainer
+                )}
+              >
                 Close Position
               </div>
               <div className={Styles.TradingConfirm__agg_position}>
@@ -147,7 +152,12 @@ const MarketTradingConfirm = ({
         totalCost.value !== 0 && (
           <div className={Styles.TradingConfirm__details}>
             <div className={Styles.TradingConfirm__position}>
-              <div className={className(Styles.TradingConfirm__position__properties, Styles.TradingConfirm__position__tooltipContainer)}>
+              <div
+                className={classNames(
+                  Styles.TradingConfirm__position__properties,
+                  Styles.TradingConfirm__position__tooltipContainer
+                )}
+              >
                 New Position
                 <span className={Styles.TradingConfirm__TooltipContainer}>
                   <label
