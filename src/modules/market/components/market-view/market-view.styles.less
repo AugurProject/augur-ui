@@ -11,40 +11,25 @@
 }
 
 .MarketView__overlay {
-  background-color: #211a32;
+  background-color: @color-light-purple;
   bottom: 0;
   color: white;
+  height: 100vh;
   left: 0;
+  min-height: 800px;
   position: absolute;
   right: 0;
   top: 0;
-  z-index: 300;
+  width: 100vw;
+  z-index: 100;
 }
 
 .MarketView__orderPositionsTable {
   border-bottom: 8px solid @color-light-purple;
 }
 
-.MarketView__overlayHeader {
-  display: flex;
-  padding: 24px 20px;
-
-  > span {
-    height: 1rem;
-    width: 1rem;
-  }
-
-  > div {
-    display: flex;
-    flex-grow: 1;
-    font-size: 18px;
-    justify-content: center;
-  }
-}
-
 .MarketView__paneContainer--mobile {
   margin-bottom: 70px;
-  margin-top: 60px;
   padding: 15px;
 }
 
