@@ -43,7 +43,8 @@ class TradingForm extends Component {
       QUANTITY: "orderQuantity",
       PRICE: "orderPrice",
       DO_NOT_CREATE_ORDERS: "doNotCreateOrders",
-      EST_ETH: "orderEthEstimate"
+      EST_ETH: "orderEthEstimate",
+      SELECTED_NAV: "selectedNav"
     };
 
     this.MINIMUM_TRADE_VALUE = createBigNumber(1, 10).dividedBy(10000);
@@ -56,6 +57,7 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.QUANTITY]: props.updatedOrderValues.orderQuantity,
       [this.INPUT_TYPES.PRICE]: props.updatedOrderValues.orderPrice,
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: props.doNotCreateOrders,
+      [this.INPUT_TYPES.SELECTED_NAV]: props.updatedOrderValues.selectedNav,
       [this.INPUT_TYPES.EST_ETH]: "",
       errors: {
         [this.INPUT_TYPES.QUANTITY]: [],
@@ -86,7 +88,7 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]:
         nextProps[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS],
       [this.INPUT_TYPES.EST_ETH]: orderEthEstimate,
-      selectedNav
+      [this.INPUT_TYPES.SELECTED_NAV]: selectedNav
     };
 
     const currentOrderInfo = {
@@ -96,10 +98,10 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: this.state[
         this.INPUT_TYPES.DO_NOT_CREATE_ORDERS
       ],
-      selectedNav
+      [this.INPUT_TYPES.SELECTED_NAV]: this.state[this.INPUT_TYPES.SELECTED_NAV]
     };
 
-    // FROM_ORDER_BOOK
+    // RECALCULATE_TRADE
     // CLEAR_ORDER_FORM
     // UPDATE_EST_ETH
     // UPDATE_QUANTITY
@@ -113,7 +115,7 @@ class TradingForm extends Component {
       this.setState(
         { ...newOrderInfo, errors, isOrderValid, errorCount },
         () => {
-          if (isOrderValid && event === "FROM_ORDER_BOOK") {
+          if (isOrderValid && event === "RECALCULATE_TRADE") {
             updateTradeTotalCost(newOrderInfo);
           }
         }
