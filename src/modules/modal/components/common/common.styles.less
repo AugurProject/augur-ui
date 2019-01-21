@@ -545,12 +545,13 @@ div.ErrorField:focus {
 }
 
 .ModalView__content--full {
-  padding: 0;
   background-color: #161022;
+  justify-content: normal;
+  padding: 0;
 }
 
 .ModalContainer__full {
-  background: transparent;;
+  background: transparent;
   border: 0;
   border-radius: 0;
   color: @color-white;
@@ -559,6 +560,23 @@ div.ErrorField:focus {
   position: relative;
   text-align: left;
   width: 100%;
+}
+
+.Modal__overlayHeader {
+  display: flex;
+  padding: 24px 20px;
+
+  > span {
+    height: 1rem;
+    width: 1rem;
+  }
+
+  > div {
+    display: flex;
+    flex-grow: 1;
+    font-size: 18px;
+    justify-content: center;
+  }
 }
 
 @media @breakpoint-mobile {

@@ -45,7 +45,7 @@ export default class ModalView extends Component {
             [`${Styles["ModalView__content--taller"]}`]:
               modal.type === TYPES.MODAL_DISCLAIMER,
             [`${Styles["ModalView__content--full"]}`]:
-              modal.type === TYPES.MODAL_TRADING_OVERLAY,
+              modal.type === TYPES.MODAL_TRADING_OVERLAY
           })}
         >
           {modal.type === TYPES.MODAL_CLAIM_TRADING_PROCEEDS && (
