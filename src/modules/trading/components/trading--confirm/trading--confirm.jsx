@@ -47,10 +47,10 @@ const MarketTradingConfirm = ({
     .toFixed(0);
 
   let tooltip = `This means you believe ${outcomeName} has a ${higherLower}
-                      then ${limitPricePercentage}% chance of happening.`;
+                      than ${limitPricePercentage}% chance of happening.`;
   if (marketType === SCALAR) {
     tooltip = `This means you believe the result will be ${higherLower}
-  then ${limitPrice} ${scalarDenomination}`;
+  than ${limitPrice} ${scalarDenomination}`;
   }
   let errorMessage = null;
   const gasValues = {
