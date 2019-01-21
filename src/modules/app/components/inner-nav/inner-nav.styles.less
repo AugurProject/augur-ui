@@ -2,7 +2,17 @@
 
 .InnerNav {
   height: 100vh;
+  width: 7.1rem;
   position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgb(64, 36, 104);
 }
 
 .InnerNav__menu {
@@ -43,7 +53,7 @@
     text-align: inherit;
     text-decoration: none;
     text-overflow: ellipsis;
-    text-transform: uppercase;
+    text-transform: none;
     transform: translateY(-50%) scaleY(0);
     transition: transform 0.3s ease-in-out;
     white-space: nowrap;
@@ -57,6 +67,8 @@
 
 .InnerNav__menu-item--visible {
   height: 1.625rem;
+  margin: 5px;
+  margin-bottom: 15px;
   opacity: 1;
 
   a,
@@ -66,17 +78,18 @@
 }
 
 .InnerNav__menu-item--selected {
+  margin-bottom: 15px;
   background: @color-lightpurple;
 }
 
 .InnerNav__menu--main {
-  background: @color-darkgray;
+  background: @color-darkpurple-3;
   position: relative;
   z-index: @mask;
 }
 
 .InnerNav__menu--submenu {
-  background: @color-darkpurple;
+  background: @color-darkpurple-3;
   left: 0;
   position: absolute;
   top: 0;
