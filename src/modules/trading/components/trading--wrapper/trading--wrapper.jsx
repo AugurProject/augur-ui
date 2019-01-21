@@ -28,7 +28,9 @@ class TradingWrapper extends Component {
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    toggleMobileView: PropTypes.func.isRequired
+    toggleMobileView: PropTypes.func.isRequired,
+    updateTradeCost: PropTypes.func.isRequired,
+    updateTradeShares: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -39,19 +41,22 @@ class TradingWrapper extends Component {
     super(props);
 
     this.state = {
-      orderPrice: props.selectedOrderProperties.price || "",
-      orderQuantity: props.selectedOrderProperties.quantity || "",
-      orderEthEstimate: "",
-      selectedNav: props.selectedOrderProperties.selectedNav || BUY,
+      updatedOrderValues: {
+        orderPrice: props.selectedOrderProperties.price || "",
+        orderQuantity: props.selectedOrderProperties.quantity || "",
+        orderEthEstimate: "",
+        selectedNav: props.selectedOrderProperties.selectedNav || BUY
+      },
       doNotCreateOrders:
-        props.selectedOrderProperties.doNotCreateOrders || false,
-      processingOrder: {}
+        props.selectedOrderProperties.doNotCreateOrders || false
     };
 
     this.updateState = this.updateState.bind(this);
     this.clearOrderForm = this.clearOrderForm.bind(this);
     this.calculateTrade = this.calculateTrade.bind(this);
-    this.updateFormValues = this.updateFormValues.bind(this);
+    this.updateTradeTotalCost = this.updateTradeTotalCost.bind(this);
+    this.updateTradeNumShares = this.updateTradeNumShares.bind(this);
+    this.updateOrderProperty = this.updateOrderProperty.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -65,15 +70,23 @@ class TradingWrapper extends Component {
 
     // Updates from chart clicks
     if (!isEqual(selectedOrderProperties, nextProps.selectedOrderProperties)) {
-      this.calculateTrade({ ...nextProps.selectedOrderProperties });
+      this.updateState({
+        updatedOrderValues: {
+          event: "FROM_ORDER_BOOK",
+          ...nextProps.selectedOrderProperties,
+          orderEthEstimate: ""
+        }
+      });
     }
 
+    /*
     const {
       limitPrice,
       numShares,
       totalCost
     } = nextProps.selectedOutcome.trade;
     const { orderPrice, orderQuantity, orderEthEstimate } = this.state;
+
 
     if (
       limitPrice !== null &&
@@ -105,13 +118,7 @@ class TradingWrapper extends Component {
         orderEthEstimate: cost
       });
     }
-  }
-
-  updateFormValues(order) {
-    this.setState({
-      ...this.state,
-      ...order
-    });
+    */
   }
 
   calculateTrade(order) {
@@ -125,32 +132,88 @@ class TradingWrapper extends Component {
     });
   }
   // updates from form input
-  updateState(formValues) {
-    if (
-      formValues.orderPrice &&
-      (formValues.orderQuantity || formValues.orderEthEstimate)
-    ) {
-      // call to calculate trade based on input changes
-      this.calculateTrade({
-        ...this.state,
-        ...formValues
-      });
-    } else {
-      this.setState({ ...formValues });
-    }
+  updateState(stateValues) {
+    this.setState({ ...this.state, ...stateValues });
   }
 
   clearOrderForm() {
     const { clearTradeInProgress, market } = this.props;
     this.setState(
       {
-        orderPrice: "",
-        orderQuantity: "",
-        orderEthEstimate: "",
-        doNotCreateOrders: false
+        updatedOrderValues: {
+          event: "CLEAR_ORDER_FORM",
+          orderPrice: "",
+          orderQuantity: "",
+          orderEthEstimate: "",
+          doNotCreateOrders: false
+        }
       },
       () => {
         if (market.id) clearTradeInProgress(market.id);
+      }
+    );
+  }
+
+  updateOrderProperty(property) {
+    this.updateState({
+      updatedOrderValues: {
+        ...this.state.updatedOrderValues,
+        ...property,
+        event: "UPDATE_PROPERTY"
+      }
+    });
+  }
+
+  updateTradeTotalCost(order) {
+    const { updateTradeCost, selectedOutcome, market } = this.props;
+    updateTradeCost(
+      market.id,
+      selectedOutcome.id,
+      {
+        limitPrice: order.orderPrice,
+        side: order.selectedNav,
+        numShares: order.orderQuantity
+      },
+      (err, newOrder) => {
+        if (err) return console.log(err); // what to do with error here
+
+        console.log(newOrder);
+
+        this.updateState({
+          updatedOrderValues: {
+            ...this.state.updatedOrderValues,
+            ...order,
+            event: "UPDATE_EST_ETH",
+            orderEthEstimate: newOrder.totalCost.formattedValue
+          }
+        });
+      }
+    );
+  }
+
+  updateTradeNumShares(order) {
+    const { updateTradeShares, selectedOutcome, market } = this.props;
+    updateTradeShares(
+      market.id,
+      selectedOutcome.id,
+      {
+        limitPrice: order.orderPrice,
+        side: order.selectedNav,
+        maxCost: order.orderEthEstimate
+      },
+      (err, newOrder) => {
+        if (err) return console.log(err); // what to do with error here
+
+        console.log(newOrder);
+
+        this.updateState({
+          updatedOrderValues: {
+            ...this.state.updatedOrderValues,
+            ...order,
+            event: "UPDATE_QUANTITY",
+            orderQuantity: newOrder.totalCost.formattedValue.toString()
+          }
+        });
       }
     );
   }
@@ -168,6 +231,7 @@ class TradingWrapper extends Component {
       toggleMobileView
     } = this.props;
     const s = this.state;
+    const { selectedNav } = s.updatedOrderValues;
 
     return (
       <section className={Styles.TradingWrapper}>
@@ -184,40 +248,56 @@ class TradingWrapper extends Component {
           )}
           <ul
             className={classNames({
-              [Styles.TradingWrapper__header_buy]: s.selectedNav === BUY,
-              [Styles.TradingWrapper__header_sell]: s.selectedNav === SELL
+              [Styles.TradingWrapper__header_buy]: selectedNav === BUY,
+              [Styles.TradingWrapper__header_sell]: selectedNav === SELL
             })}
           >
             <li
               className={classNames({
-                [`${Styles.active_buy}`]: s.selectedNav === BUY
+                [`${Styles.active_buy}`]: selectedNav === BUY
               })}
             >
               <button
-                onClick={() => this.updateState({ ...s, selectedNav: BUY })}
+                onClick={() =>
+                  this.updateState({
+                    ...s,
+                    updatedOrderValues: {
+                      ...s.updatedOrderValues,
+                      selectedNav: BUY
+                    }
+                  })
+                }
               >
                 <div>Buy Shares</div>
                 <span
                   className={classNames(Styles.TradingWrapper__underline__buy, {
-                    [`${Styles.notActive}`]: s.selectedNav === SELL
+                    [`${Styles.notActive}`]: selectedNav === SELL
                   })}
                 />
               </button>
             </li>
             <li
               className={classNames({
-                [`${Styles.active_sell}`]: s.selectedNav === SELL
+                [`${Styles.active_sell}`]: selectedNav === SELL
               })}
             >
               <button
-                onClick={() => this.updateState({ ...s, selectedNav: SELL })}
+                onClick={() =>
+                  this.updateState({
+                    ...s,
+                    updatedOrderValues: {
+                      ...s.updatedOrderValues,
+                      selectedNav: SELL
+                    }
+                  })
+                }
               >
                 <div>Sell Shares</div>
                 <span
                   className={classNames(
                     Styles.TradingWrapper__underline__sell,
                     {
-                      [`${Styles.notActive}`]: s.selectedNav === BUY
+                      [`${Styles.notActive}`]: selectedNav === BUY
                     }
                   )}
                 />
@@ -247,16 +327,17 @@ class TradingWrapper extends Component {
             marketType={getValue(this.props, "market.marketType")}
             maxPrice={getValue(this.props, "market.maxPrice")}
             minPrice={getValue(this.props, "market.minPrice")}
+            updatedOrderValues={s.updatedOrderValues}
             selectedNav={s.selectedNav}
-            orderPrice={s.orderPrice}
-            orderQuantity={s.orderQuantity}
-            orderEthEstimate={s.orderEthEstimate}
             doNotCreateOrders={s.doNotCreateOrders}
             selectedOutcome={selectedOutcome}
             updateState={this.updateState}
+            updateOrderProperty={this.updateOrderProperty}
             isMobile={isMobile}
             clearOrderForm={this.clearOrderForm}
             updateSelectedOutcome={updateSelectedOutcome}
+            updateTradeTotalCost={this.updateTradeTotalCost}
+            updateTradeNumShares={this.updateTradeNumShares}
           />
         </div>
         {selectedOutcome &&

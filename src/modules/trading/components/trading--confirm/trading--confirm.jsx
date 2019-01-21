@@ -6,7 +6,7 @@ import { BUY, SELL } from "modules/transactions/constants/types";
 import { SCALAR } from "modules/markets/constants/market-types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
-import { Hint } from "modules/common/components/icons";
+import { infoIcon } from "modules/common/components/icons";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
 import { ZERO } from "modules/trades/constants/numbers";
@@ -14,7 +14,6 @@ import { BigNumber, createBigNumber } from "utils/create-big-number";
 
 const MarketTradingConfirm = ({
   trade,
-  selectedNav,
   numOutcomes,
   gasPrice,
   availableFunds,
@@ -35,10 +34,10 @@ const MarketTradingConfirm = ({
     tradingFees
   } = trade;
   const outcomeName = marketType === SCALAR ? limitPrice : selectedOutcome.name;
-  const higherLower = selectedNav === BUY ? "higher" : "lower";
+  const higherLower = side === BUY ? "higher" : "lower";
   const marketRange = maxPrice.minus(minPrice).abs();
 
-  const limitPricePercentage = (selectedNav === BUY
+  const limitPricePercentage = (side === BUY
     ? createBigNumber(limitPrice)
     : maxPrice.minus(createBigNumber(limitPrice))
   )
@@ -115,8 +114,8 @@ const MarketTradingConfirm = ({
               <div className={Styles.TradingConfirm__agg_position}>
                 <span
                   className={classNames({
-                    [Styles.long]: selectedNav !== BUY,
-                    [Styles.short]: selectedNav !== SELL
+                    [Styles.long]: side !== BUY,
+                    [Styles.short]: side !== SELL
                   })}
                 >
                   {side !== BUY ? "Long" : "Short"}
@@ -126,7 +125,7 @@ const MarketTradingConfirm = ({
               </div>
               <div className={Styles.TradingConfirm__position__properties}>
                 <div>
-                  <div>Estimate Fee</div>
+                  <div>Estimated Fee</div>
                   <div className={Styles.TradingConfirm__property__value}>
                     {tradingFees.formatted}
                     <span>ETH</span>
@@ -159,13 +158,13 @@ const MarketTradingConfirm = ({
                     data-tip
                     data-for="tooltip--confirm"
                   >
-                    {Hint}
+                    {infoIcon}
                   </label>
                   <ReactTooltip
                     id="tooltip--confirm"
                     className={TooltipStyles.Tooltip}
                     effect="solid"
-                    place="bottom"
+                    place="top"
                     type="light"
                   >
                     <p>{tooltip}</p>
@@ -175,8 +174,8 @@ const MarketTradingConfirm = ({
               <div className={Styles.TradingConfirm__agg_position}>
                 <span
                   className={classNames({
-                    [Styles.long]: selectedNav === BUY,
-                    [Styles.short]: selectedNav === SELL
+                    [Styles.long]: side === BUY,
+                    [Styles.short]: side === SELL
                   })}
                 >
                   {side === BUY ? "Long" : "Short"}
@@ -216,7 +215,6 @@ const MarketTradingConfirm = ({
 
 MarketTradingConfirm.propTypes = {
   numOutcomes: PropTypes.number.isRequired,
-  selectedNav: PropTypes.string.isRequired,
   trade: PropTypes.shape({
     numShares: PropTypes.string,
     limitPrice: PropTypes.string,

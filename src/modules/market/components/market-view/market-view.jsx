@@ -41,6 +41,8 @@ export default class MarketView extends Component {
     currentTimestamp: PropTypes.number.isRequired,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
+    updateTradeCost: PropTypes.func.isRequired,
+    updateTradeShares: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
@@ -254,7 +256,9 @@ export default class MarketView extends Component {
       gasPrice,
       handleFilledOnly,
       marketType,
-      updateModal
+      updateModal,
+      updateTradeCost,
+      updateTradeShares
     } = this.props;
     const s = this.state;
 
@@ -274,6 +278,8 @@ export default class MarketView extends Component {
       gasPrice: gasPrice,
       handleFilledOnly: handleFilledOnly,
       outcomes: outcomes,
+      updateTradeCost:updateTradeCost,
+      updateTradeShares:updateTradeShares
     });
   }
 
@@ -293,7 +299,9 @@ export default class MarketView extends Component {
       clearTradeInProgress,
       gasPrice,
       handleFilledOnly,
-      marketType
+      marketType,
+      updateTradeCost,
+      updateTradeShares
     } = this.props;
     const s = this.state;
 
@@ -461,6 +469,8 @@ export default class MarketView extends Component {
                     gasPrice={gasPrice}
                     handleFilledOnly={handleFilledOnly}
                     toggleMobileView={this.toggleTradingForm}
+                    updateTradeCost={updateTradeCost}
+                    updateTradeShares={updateTradeShares}
                   />
                 </div>
               </div>

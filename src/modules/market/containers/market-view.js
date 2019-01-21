@@ -12,6 +12,8 @@ import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-pr
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { handleFilledOnly } from "modules/notifications/actions/notifications";
 import { updateModal } from "modules/modal/actions/update-modal";
+import { updateTradeCost } from "modules/trades/actions/update-trade-cost";
+import { updateTradeShares } from "modules/trades/actions/update-trade-shares";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -53,6 +55,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
   handleFilledOnly: trade => dispatch(handleFilledOnly(trade)),
   updateModal: modal => dispatch(updateModal(modal)),
+  updateTradeCost: (marketId, outcomeId, order, callback) =>
+    dispatch(updateTradeCost({ marketId, outcomeId, ...order, callback })),
+  updateTradeShares: (order, cb) => dispatch(updateTradeShares(order, cb))
 });
 
 const Market = withRouter(
