@@ -462,14 +462,14 @@ function drawCrosshairs({ chart, drawParams }) {
   chart
     .append("svg:circle")
     .attr("id", "crosshairDot")
-    .attr("r", 6)
+    .attr("r", 3)
     .attr("class", "crosshairDot")
     .style("display", "none");
 
   chart
     .append("svg:circle")
     .attr("id", "crosshairDotOutline")
-    .attr("r", 16)
+    .attr("r", 8)
     .attr("fill", "none")
     .attr("class", "crosshairDotOutline")
     .style("display", "none");
