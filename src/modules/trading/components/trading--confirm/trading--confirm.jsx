@@ -21,7 +21,8 @@ const MarketTradingConfirm = ({
   selectedOutcome,
   marketType,
   maxPrice,
-  minPrice
+  minPrice,
+  scalarDenomination
 }) => {
   const {
     limitPrice,
@@ -45,6 +46,12 @@ const MarketTradingConfirm = ({
     .times(100)
     .toFixed(0);
 
+  let tooltip = `This means you believe ${outcomeName} has a ${higherLower}
+                      then ${limitPricePercentage}% chance of happening.`;
+  if (marketType === SCALAR) {
+    tooltip = `This means you believe the result will be ${higherLower}
+  then ${limitPrice} ${scalarDenomination}`;
+  }
   let errorMessage = null;
   const gasValues = {
     fillGasLimit: augur.constants.WORST_CASE_FILL[numOutcomes],
@@ -161,10 +168,7 @@ const MarketTradingConfirm = ({
                     place="bottom"
                     type="light"
                   >
-                    <p>
-                      This means you believe {outcomeName} has a {higherLower}{" "}
-                      then {limitPricePercentage}% chance of happening.
-                    </p>
+                    <p>{tooltip}</p>
                   </ReactTooltip>
                 </span>
               </div>
@@ -229,7 +233,8 @@ MarketTradingConfirm.propTypes = {
   selectedOutcome: PropTypes.object.isRequired,
   marketType: PropTypes.string.isRequired,
   maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
-  minPrice: PropTypes.instanceOf(BigNumber).isRequired
+  minPrice: PropTypes.instanceOf(BigNumber).isRequired,
+  scalarDenomination: PropTypes.string
 };
 
 export default MarketTradingConfirm;

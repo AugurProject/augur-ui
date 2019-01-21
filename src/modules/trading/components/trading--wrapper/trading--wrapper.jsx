@@ -83,7 +83,7 @@ class TradingWrapper extends Component {
       if (
         createBigNumber(numShares).eq(createBigNumber(orderQuantity || "0")) &&
         createBigNumber(orderEthEstimate || "0").eq(
-          createBigNumber(totalCost.value)
+          createBigNumber(totalCost.formattedValue)
         )
       )
         return;
@@ -92,7 +92,7 @@ class TradingWrapper extends Component {
         orderEthEstimate &&
         createBigNumber(orderEthEstimate).eq(createBigNumber(totalCost.value))
           ? orderEthEstimate
-          : totalCost.value;
+          : totalCost.formattedValue;
 
       // calculating cost when numShares is filled in
       if (numShares !== orderQuantity) {
@@ -193,7 +193,9 @@ class TradingWrapper extends Component {
                 [`${Styles.active_buy}`]: s.selectedNav === BUY
               })}
             >
-              <button onClick={() => this.setState({ selectedNav: BUY })}>
+              <button
+                onClick={() => this.updateState({ ...s, selectedNav: BUY })}
+              >
                 <div>Buy Shares</div>
                 <span
                   className={classNames(Styles.TradingWrapper__underline__buy, {
@@ -207,7 +209,9 @@ class TradingWrapper extends Component {
                 [`${Styles.active_sell}`]: s.selectedNav === SELL
               })}
             >
-              <button onClick={() => this.setState({ selectedNav: SELL })}>
+              <button
+                onClick={() => this.updateState({ ...s, selectedNav: SELL })}
+              >
                 <div>Sell Shares</div>
                 <span
                   className={classNames(
@@ -270,6 +274,7 @@ class TradingWrapper extends Component {
               gasPrice={gasPrice}
               availableFunds={availableFunds}
               selectedOutcome={selectedOutcome}
+              scalarDenomination={market.scalarDenomination}
             />
           )}
         <div className={Styles.TradingWrapper__actions}>
