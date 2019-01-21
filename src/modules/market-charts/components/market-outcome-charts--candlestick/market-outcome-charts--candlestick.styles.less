@@ -83,8 +83,13 @@
     }
 
     rect {
+      &.candle-mask-rect {
+        filter: url("#dilate-filter");
+      }
+
       &.up-period {
         fill: @color-positive;
+        mask: url("#candle-mask");
       }
 
       &.down-period {

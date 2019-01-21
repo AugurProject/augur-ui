@@ -1,20 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { BigNumber } from "utils/create-big-number";
+import { BigNumber, createBigNumber } from "utils/create-big-number";
 
 import TradingForm from "modules/trading/components/trading--form/trading--form";
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
 import { Close } from "modules/common/components/icons";
-
-import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 
 import getValue from "utils/get-value";
 import { isEqual } from "lodash";
 import { FindReact } from "utils/find-react";
 import { SCALAR } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
-import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 
 class TradingWrapper extends Component {
@@ -30,7 +27,8 @@ class TradingWrapper extends Component {
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
-    updateSelectedOutcome: PropTypes.func.isRequired
+    updateSelectedOutcome: PropTypes.func.isRequired,
+    toggleMobileView: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -43,15 +41,17 @@ class TradingWrapper extends Component {
     this.state = {
       orderPrice: props.selectedOrderProperties.price || "",
       orderQuantity: props.selectedOrderProperties.quantity || "",
-      orderEthEstimate: "0",
-      orderShareEstimate: "0",
+      orderEthEstimate: "",
       selectedNav: props.selectedOrderProperties.selectedNav || BUY,
       doNotCreateOrders:
-        props.selectedOrderProperties.doNotCreateOrders || false
+        props.selectedOrderProperties.doNotCreateOrders || false,
+      processingOrder: {}
     };
 
     this.updateState = this.updateState.bind(this);
     this.clearOrderForm = this.clearOrderForm.bind(this);
+    this.calculateTrade = this.calculateTrade.bind(this);
+    this.updateFormValues = this.updateFormValues.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,56 +63,96 @@ class TradingWrapper extends Component {
     )
       return this.clearOrderForm();
 
-    if (
-      this.state.orderEthEstimate !==
-      nextProps.selectedOutcome.trade.totalCost.formattedValue.toString()
-    ) {
-      const nextTotalCost = nextProps.selectedOutcome.trade.totalCost.formattedValue.toString();
-
-      if (nextTotalCost !== this.state.orderEthEstimate) {
-        this.setState({
-          orderEthEstimate: nextTotalCost
-        });
-      }
-    }
-    if (
-      this.state.orderShareEstimate !==
-      nextProps.selectedOutcome.trade.shareCost.formattedValue.toString()
-    ) {
-      const nextShareCost = nextProps.selectedOutcome.trade.shareCost.formattedValue.toString();
-      if (nextShareCost !== this.state.orderShareEstimate) {
-        this.setState({
-          orderShareEstimate: nextShareCost
-        });
-      }
-    }
     // Updates from chart clicks
     if (!isEqual(selectedOrderProperties, nextProps.selectedOrderProperties)) {
-      this.setState({ ...nextProps.selectedOrderProperties });
+      this.calculateTrade({ ...nextProps.selectedOrderProperties });
+    }
+
+    const {
+      limitPrice,
+      numShares,
+      totalCost
+    } = nextProps.selectedOutcome.trade;
+    const { orderPrice, orderQuantity, orderEthEstimate } = this.state;
+
+    if (
+      limitPrice !== null &&
+      orderPrice !== "" &&
+      createBigNumber(limitPrice).eq(createBigNumber(orderPrice))
+    ) {
+      if (
+        createBigNumber(numShares).eq(createBigNumber(orderQuantity || "0")) &&
+        createBigNumber(orderEthEstimate || "0").eq(
+          createBigNumber(totalCost.formattedValue)
+        )
+      )
+        return;
+      // calculating cost when numShares is ""
+      let cost =
+        orderEthEstimate &&
+        createBigNumber(orderEthEstimate).eq(createBigNumber(totalCost.value))
+          ? orderEthEstimate
+          : totalCost.formattedValue;
+
+      // calculating cost when numShares is filled in
+      if (numShares !== orderQuantity) {
+        cost = orderEthEstimate;
+      }
+
+      this.updateFormValues({
+        orderPrice: limitPrice,
+        orderQuantity: numShares,
+        orderEthEstimate: cost
+      });
     }
   }
 
-  updateState(property, value) {
-    this.setState({ [property]: value }, () => {
-      this.props.updateSelectedOrderProperties({
-        orderPrice: this.state.orderPrice,
-        orderQuantity: this.state.orderQuantity,
-        doNotCreateOrders: this.state.doNotCreateOrders,
-        selectedNav: this.state.selectedNav
-      });
+  updateFormValues(order) {
+    this.setState({
+      ...this.state,
+      ...order
     });
+  }
+
+  calculateTrade(order) {
+    this.setState({ ...order }, () => {
+      this.props.selectedOutcome.trade.updateTradeOrder(
+        order.orderQuantity.toString(),
+        order.orderPrice.toString(),
+        order.selectedNav,
+        order.orderEthEstimate ? order.orderEthEstimate.toString() : undefined
+      );
+    });
+  }
+  // updates from form input
+  updateState(formValues) {
+    if (
+      formValues.orderPrice &&
+      (formValues.orderQuantity || formValues.orderEthEstimate)
+    ) {
+      // call to calculate trade based on input changes
+      this.calculateTrade({
+        ...this.state,
+        ...formValues
+      });
+    } else {
+      this.setState({ ...formValues });
+    }
   }
 
   clearOrderForm() {
     const { clearTradeInProgress, market } = this.props;
-    if (market.id) clearTradeInProgress(market.id);
-    this.setState({
-      orderPrice: "",
-      orderQuantity: "",
-      orderEthEstimate: "0",
-      orderShareEstimate: "0",
-      doNotCreateOrders: false
-    });
+    this.setState(
+      {
+        orderPrice: "",
+        orderQuantity: "",
+        orderEthEstimate: "",
+        doNotCreateOrders: false
+      },
+      () => {
+        if (market.id) clearTradeInProgress(market.id);
+      }
+    );
   }
 
   render() {
@@ -122,42 +162,26 @@ class TradingWrapper extends Component {
       isMobile,
       market,
       selectedOutcome,
-      toggleForm,
       gasPrice,
       handleFilledOnly,
-      updateSelectedOutcome
+      updateSelectedOutcome,
+      toggleMobileView
     } = this.props;
     const s = this.state;
 
-    const lastPrice = getValue(
-      this.props,
-      "selectedOutcome.lastPrice.formatted"
-    );
-
     return (
       <section className={Styles.TradingWrapper}>
-        {isMobile && (
-          <div className={Styles["TradingWrapper__mobile-header"]}>
-            <button
-              className={Styles["TradingWrapper__mobile-header-close"]}
-              onClick={toggleForm}
+        <div className={Styles.TradingWrapper__container}>
+          {isMobile && (
+            <span
+              role="button"
+              tabIndex="-1"
+              onClick={toggleMobileView}
+              className={Styles.TradingWrapper__close}
             >
               {Close}
-            </button>
-            <span className={Styles["TradingWrapper__mobile-header-outcome"]}>
-              {selectedOutcome.name}
             </span>
-            <span className={Styles["TradingWrapper__mobile-header-last"]}>
-              <ValueDenomination formatted={lastPrice} />
-              <MarketOutcomeTradingIndicator
-                isMobile={isMobile}
-                outcome={selectedOutcome}
-                location="modileTradingForm"
-              />
-            </span>
-          </div>
-        )}
-        <div>
+          )}
           <ul
             className={classNames({
               [Styles.TradingWrapper__header_buy]: s.selectedNav === BUY,
@@ -169,7 +193,9 @@ class TradingWrapper extends Component {
                 [`${Styles.active_buy}`]: s.selectedNav === BUY
               })}
             >
-              <button onClick={() => this.setState({ selectedNav: BUY })}>
+              <button
+                onClick={() => this.updateState({ ...s, selectedNav: BUY })}
+              >
                 <div>Buy Shares</div>
                 <span
                   className={classNames(Styles.TradingWrapper__underline__buy, {
@@ -183,7 +209,9 @@ class TradingWrapper extends Component {
                 [`${Styles.active_sell}`]: s.selectedNav === SELL
               })}
             >
-              <button onClick={() => this.setState({ selectedNav: SELL })}>
+              <button
+                onClick={() => this.updateState({ ...s, selectedNav: SELL })}
+              >
                 <div>Sell Shares</div>
                 <span
                   className={classNames(
@@ -223,7 +251,6 @@ class TradingWrapper extends Component {
             orderPrice={s.orderPrice}
             orderQuantity={s.orderQuantity}
             orderEthEstimate={s.orderEthEstimate}
-            orderShareEstimate={s.orderShareEstimate}
             doNotCreateOrders={s.doNotCreateOrders}
             selectedOutcome={selectedOutcome}
             updateState={this.updateState}
@@ -238,12 +265,16 @@ class TradingWrapper extends Component {
             selectedOutcome.trade.totalCost.value !== 0) && (
             <TradingConfirm
               numOutcomes={market.numOutcomes}
+              marketType={getValue(this.props, "market.marketType")}
+              maxPrice={getValue(this.props, "market.maxPrice")}
+              minPrice={getValue(this.props, "market.minPrice")}
               selectedNav={s.selectedNav}
-              orderPrice={s.orderPrice}
               trade={selectedOutcome.trade}
               isMobile={isMobile}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
+              selectedOutcome={selectedOutcome}
+              scalarDenomination={market.scalarDenomination}
             />
           )}
         <div className={Styles.TradingWrapper__actions}>

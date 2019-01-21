@@ -6,6 +6,13 @@
   flex-grow: 1;
 }
 
+.TradingWrapper__close {
+  max-height: 1.25rem;
+  max-width: 1.25rem;
+  padding-left: 0.625rem;
+  padding-top: 0.625rem;
+}
+
 .TradingWrapper__header_buy,
 .TradingWrapper__header_sell,
 .TradingWrapper__header {
@@ -174,11 +181,11 @@
 
 @media @breakpoint-mobile {
   .TradingWrapper {
-    background-color: @color-almostblack;
+    bottom: 0;
     height: 100vh;
     overflow-y: auto;
     position: fixed;
-    top: 2.3rem;
+    top: 0;
     width: 100vw;
     z-index: 30;
   }
@@ -186,31 +193,46 @@
   .TradingWrapper__header_buy,
   .TradingWrapper__header_sell,
   .TradingWrapper__header {
-    padding: 0.5rem 0 0;
+    background: @color-dark-grayish-purple;
+    border-radius: 625rem;
+    margin: 1.125rem auto;
+    max-height: 2.25rem;
+    width: 14.5rem;
 
     > li {
-      border-bottom: 8px solid transparent;
-      color: @color-lightgray;
+      border: 1px solid @color-dark-grayish-purple;
+      border-radius: 625rem;
+      color: @color-light-gray;
+      font-size: 1rem;
+      font-weight: 400;
       text-align: center;
-      width: 50%;
+      white-space: nowrap;
+      width: 7.25rem;
 
-      &.active_buy {
-        border-bottom-color: @color-positive;
-        color: @color-positive;
-      }
-
+      &.active_buy,
       &.active_sell {
-        border-bottom-color: @color-negative;
-        color: @color-negative;
+        background: @color-light-purple;
+        color: @color-white;
       }
 
       > button {
         &:extend(.caps--large);
 
-        font-weight: 700;
-        padding: 1.25rem 0;
+        font-weight: 400;
+        max-height: 2.25rem;
+        padding: 11px 0;
         width: 100%;
       }
     }
+  }
+
+  .TradingWrapper__underline__sell,
+  .TradingWrapper__underline__buy,
+  .TradingWrapper__underline {
+    display: none;
+  }
+
+  .TradingWrapper__container {
+    display: contents;
   }
 }
