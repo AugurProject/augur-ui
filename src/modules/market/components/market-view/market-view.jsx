@@ -325,22 +325,20 @@ export default class MarketView extends Component {
                     selectOutcome={this.showSelectOutcome}
                   />
                 )}
-                <MarketChartsPane
-                  marketId={marketId}
-                  selectedOutcome={s.selectedOutcome}
-                  currentTimestamp={currentTimestamp}
-                  maxPrice={maxPrice}
-                  minPrice={minPrice}
-                  updateSelectedOrderProperties={
-                    this.updateSelectedOrderProperties
-                  }
-                  isMobile={isMobile}
-                />
-                <ModuleTabs
-                  selected={0}
-                  fillForMobile
-                  style={{ marginTop: "0.5rem" }}
-                >
+                <section style={{ marginBottom: "0.5rem" }}>
+                  <MarketChartsPane
+                    marketId={marketId}
+                    selectedOutcome={s.selectedOutcome}
+                    currentTimestamp={currentTimestamp}
+                    maxPrice={maxPrice}
+                    minPrice={minPrice}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
+                    isMobile={isMobile}
+                  />
+                </section>
+                <ModuleTabs selected={0} fillForMobile>
                   <ModulePane label="Order Book">
                     <div className={Styles.MarketView__orders}>
                       <MarketOutcomeOrders
