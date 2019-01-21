@@ -228,7 +228,10 @@ class TradingWrapper extends Component {
       toggleMobileView
     } = this.props;
     const s = this.state;
-    const { selectedNav } = s.updatedOrderValues;
+    let { selectedNav } = s.updatedOrderValues;
+    if (!selectedNav) {
+      selectedNav = BUY;
+    }
 
     return (
       <section className={Styles.TradingWrapper}>
@@ -298,21 +301,6 @@ class TradingWrapper extends Component {
           {market.marketType === SCALAR && (
             <div className={Styles.TradingWrapper__scalar__line} />
           )}
-          {!isLogged && (
-            <button
-              id="login-button"
-              className={Styles["TradingWrapper__button--login"]}
-              onClick={() =>
-                FindReact(
-                  document.getElementsByClassName(
-                    "connect-account-styles_ConnectAccount"
-                  )[0]
-                ).toggleDropdown()
-              }
-            >
-              Sign in to trade
-            </button>
-          )}
           <TradingForm
             market={market}
             marketType={getValue(this.props, "market.marketType")}
@@ -353,7 +341,7 @@ class TradingWrapper extends Component {
             className={classNames(Styles["TradingWrapper__button--submit"], {
               [Styles.long]: selectedNav === BUY,
               [Styles.short]: selectedNav === SELL,
-              [Styles.disabled]: !selectedOutcome.trade.limitPrice
+              [Styles.disabled]: !selectedOutcome || (selectedOutcome && !selectedOutcome.trade.limitPrice)
             })}
             onClick={e => {
               e.preventDefault();

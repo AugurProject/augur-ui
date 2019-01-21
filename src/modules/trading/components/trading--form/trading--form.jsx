@@ -317,8 +317,8 @@ class TradingForm extends Component {
     const s = this.state;
 
     const tickSize = parseFloat(market.tickSize);
-    const max = maxPrice.toString();
-    const min = minPrice.toString();
+    const max = maxPrice && maxPrice.toString();
+    const min = minPrice && minPrice.toString();
     const errors = Array.from(
       new Set([
         ...s.errors[this.INPUT_TYPES.QUANTITY],

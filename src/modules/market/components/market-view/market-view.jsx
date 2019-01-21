@@ -126,6 +126,9 @@ export default class MarketView extends Component {
 
   updateSelectedOutcome(selectedOutcome) {
     const { marketType, isMobile } = this.props;
+    if (selectedOutcome === this.state.selectedOutcome) {
+      return;
+    }
     this.setState({
       selectedOutcome:
         selectedOutcome === this.state.selectedOutcome &&
