@@ -102,7 +102,7 @@
   }
 
   &.disabled {
-    //opacity: 0.4;
+    opacity: 0.4;
     pointer-events: none;
   }
 }
@@ -184,11 +184,21 @@
   .TradingWrapper {
     bottom: 0;
     height: 100vh;
-    min-height: 800px;
+    min-height: 560px;
     overflow-y: auto;
     top: 0;
     width: 100vw;
     z-index: 30;
+  }
+
+  .TradingWrapper__darkbg {
+    // margin-top: 0;
+    background: #211A32;
+    padding-bottom: 10px;
+  }
+
+  .TradingWrapper__actions {
+    min-height: 50px;
   }
 
   .TradingWrapper__header_buy,

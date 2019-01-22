@@ -126,30 +126,29 @@ export default class MarketView extends Component {
 
   updateSelectedOutcome(selectedOutcome) {
     const { marketType, isMobile } = this.props;
-    if (selectedOutcome === this.state.selectedOutcome) {
-      return;
-    }
-    this.setState({
-      selectedOutcome:
-        selectedOutcome === this.state.selectedOutcome &&
-        marketType === CATEGORICAL
-          ? null
-          : selectedOutcome,
-      selectedOrderProperties: {
-        ...this.DEFAULT_ORDER_PROPERTIES
-      }
-    });
+    if (selectedOutcome !== this.state.selectedOutcome) {
+      this.setState({
+        selectedOutcome:
+          selectedOutcome === this.state.selectedOutcome &&
+          marketType === CATEGORICAL
+            ? null
+            : selectedOutcome,
+        selectedOrderProperties: {
+          ...this.DEFAULT_ORDER_PROPERTIES
+        }
+      });
 
-    const { selectedOutcomeProperties } = this.state;
-    if (!selectedOutcomeProperties[selectedOutcome]) {
-      selectedOutcomeProperties[selectedOutcome] = {
-        ...this.DEFAULT_ORDER_PROPERTIES
-      };
-      this.setState({ selectedOutcomeProperties });
-    } else {
-      // this.setState({
-      //   selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
-      // });
+      const { selectedOutcomeProperties } = this.state;
+      if (!selectedOutcomeProperties[selectedOutcome]) {
+        selectedOutcomeProperties[selectedOutcome] = {
+          ...this.DEFAULT_ORDER_PROPERTIES
+        };
+        this.setState({ selectedOutcomeProperties });
+      } else {
+        // this.setState({
+        //   selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
+        // });
+      }
     }
 
     if (isMobile) {

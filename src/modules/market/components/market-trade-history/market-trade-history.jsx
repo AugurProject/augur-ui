@@ -57,7 +57,6 @@ export default class MarketTradeHistory extends Component {
               <div key={index}>
                 <div className={Styles.MarketTradeHistory__table}>
                   <ul
-                    key={date}
                     className={Styles.MarketTradeHistory__table__header__day}
                   >
                     <li>{groupedTradeHistoryVolume[date]} Shares</li>
@@ -66,13 +65,12 @@ export default class MarketTradeHistory extends Component {
                   </ul>
                 </div>
                 <div className={Styles.MarketTradeHistory__table__price}>
-                  {groupedTradeHistory[date].map(priceTime => (
+                  {groupedTradeHistory[date].map((priceTime, indexJ) => (
                     <ul
-                      key={priceTime.key}
+                      key={priceTime.key + index + indexJ}
                       className={Styles.MarketTradeHistory__table__trade__data}
                     >
                       <li
-                        key={priceTime.key + priceTime.type}
                         className={classNames(
                           Styles.MarketTradeHistory__trade__bar,
                           {
@@ -81,11 +79,10 @@ export default class MarketTradeHistory extends Component {
                           }
                         )}
                       />
-                      <li key={priceTime.key + priceTime.amount}>
+                      <li>
                         {priceTime.amount}
                       </li>
                       <li
-                        key={priceTime.key + priceTime.price}
                         className={classNames({
                           [`${Styles.MarketTradeHistory__buy}`]:
                             priceTime.type !== SELL,
@@ -95,7 +92,6 @@ export default class MarketTradeHistory extends Component {
                       >
                         {priceTime.price}
                         <span
-                          key={priceTime.key + priceTime.time}
                           className={classNames({
                             [Styles.MarketTradeHistory__trade__indicatorUp]:
                               priceTime.type !== SELL,

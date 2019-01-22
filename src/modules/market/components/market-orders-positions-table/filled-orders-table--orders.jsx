@@ -118,6 +118,7 @@ export default class FilledOrdersOrder extends Component {
               >
                 {order.trades.map((trade, i) => (
                   <ul
+                    key={i}
                     className={classNames(
                       SharedStyles.FilledOrder,
                       Styles.FilledOrder__trade

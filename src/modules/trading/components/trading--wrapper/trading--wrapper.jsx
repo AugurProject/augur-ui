@@ -235,68 +235,70 @@ class TradingWrapper extends Component {
     return (
       <section className={Styles.TradingWrapper}>
         <div className={Styles.TradingWrapper__container}>
-          {isMobile && (
-            <span
-              role="button"
-              tabIndex="-1"
-              onClick={toggleMobileView}
-              className={Styles.TradingWrapper__close}
-            >
-              {Close}
-            </span>
-          )}
-          <ul
-            className={classNames({
-              [Styles.TradingWrapper__header_buy]: selectedNav === BUY,
-              [Styles.TradingWrapper__header_sell]: selectedNav === SELL
-            })}
-          >
-            <li
+          <section className={Styles.TradingWrapper__darkbg}>
+            {isMobile && (
+              <span
+                role="button"
+                tabIndex="-1"
+                onClick={toggleMobileView}
+                className={Styles.TradingWrapper__close}
+              >
+                {Close}
+              </span>
+            )}
+            <ul
               className={classNames({
-                [`${Styles.active_buy}`]: selectedNav === BUY
+                [Styles.TradingWrapper__header_buy]: selectedNav === BUY,
+                [Styles.TradingWrapper__header_sell]: selectedNav === SELL
               })}
             >
-              <button
-                onClick={() =>
-                  this.updateOrderProperty({
-                    event: "RECALCULATE_TRADE",
-                    selectedNav: BUY
-                  })
-                }
+              <li
+                className={classNames({
+                  [`${Styles.active_buy}`]: selectedNav === BUY
+                })}
               >
-                <div>Buy Shares</div>
-                <span
-                  className={classNames(Styles.TradingWrapper__underline__buy, {
-                    [`${Styles.notActive}`]: selectedNav === SELL
-                  })}
-                />
-              </button>
-            </li>
-            <li
-              className={classNames({
-                [`${Styles.active_sell}`]: selectedNav === SELL
-              })}
-            >
-              <button
-                onClick={() =>
-                  this.updateOrderProperty({
-                    event: "RECALCULATE_TRADE",
-                    selectedNav: SELL
-                  })
-                }
+                <button
+                  onClick={() =>
+                    this.updateOrderProperty({
+                      event: "RECALCULATE_TRADE",
+                      selectedNav: BUY
+                    })
+                  }
+                >
+                  <div>Buy Shares</div>
+                  <span
+                    className={classNames(Styles.TradingWrapper__underline__buy, {
+                      [`${Styles.notActive}`]: selectedNav === SELL
+                    })}
+                  />
+                </button>
+              </li>
+              <li
+                className={classNames({
+                  [`${Styles.active_sell}`]: selectedNav === SELL
+                })}
               >
-                <div>Sell Shares</div>
-                <span
-                  className={classNames(
-                    Styles.TradingWrapper__underline__sell,
-                    {
-                      [`${Styles.notActive}`]: selectedNav === BUY
-                    }
-                  )}
-                />
-              </button>
-            </li>
-          </ul>
+                <button
+                  onClick={() =>
+                    this.updateOrderProperty({
+                      event: "RECALCULATE_TRADE",
+                      selectedNav: SELL
+                    })
+                  }
+                >
+                  <div>Sell Shares</div>
+                  <span
+                    className={classNames(
+                      Styles.TradingWrapper__underline__sell,
+                      {
+                        [`${Styles.notActive}`]: selectedNav === BUY
+                      }
+                    )}
+                  />
+                </button>
+              </li>
+            </ul>
+          </section>
           {market.marketType === SCALAR && (
             <div className={Styles.TradingWrapper__scalar__line} />
           )}
