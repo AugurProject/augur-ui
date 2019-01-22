@@ -103,7 +103,6 @@ class TradingWrapper extends Component {
         ) {
           return this.clearOrderForm();
         }
-        console.log("get properties", nextProps.selectedOrderProperties);
         this.updateTradeTotalCost({ ...nextProps.selectedOrderProperties });
       }
     }
@@ -249,8 +248,8 @@ class TradingWrapper extends Component {
             >
               <button
                 onClick={() =>
-                  this.updateOrderProperty({
-                    event: "RECALCULATE_TRADE",
+                  this.updateTradeTotalCost({
+                    ...s.updatedOrderValues,
                     selectedNav: BUY
                   })
                 }
@@ -270,8 +269,8 @@ class TradingWrapper extends Component {
             >
               <button
                 onClick={() =>
-                  this.updateOrderProperty({
-                    event: "RECALCULATE_TRADE",
+                  this.updateTradeTotalCost({
+                    ...s.updatedOrderValues,
                     selectedNav: SELL
                   })
                 }
