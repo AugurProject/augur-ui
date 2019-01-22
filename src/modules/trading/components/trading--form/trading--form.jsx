@@ -109,7 +109,7 @@ class TradingForm extends Component {
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
       if (event === "UPDATE_PROPERTY") return;
-      if (event === "CLEAR_ORDER_FORM") {
+      if (event === "CLEAR_ORDER_FORM" || event === "UPDATE_EST_ETH") {
         return this.setState({
           ...newOrderInfo,
           errors: {

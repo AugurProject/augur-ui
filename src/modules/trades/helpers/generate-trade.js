@@ -1,4 +1,4 @@
-import { BigNumber, createBigNumber } from "utils/create-big-number";
+import { createBigNumber } from "utils/create-big-number";
 import memoize from "memoizee";
 import { formatPercent, formatShares, formatEther } from "utils/format-number";
 import calcOrderProfitLossPercents from "modules/trades/helpers/calc-order-profit-loss-percents";
