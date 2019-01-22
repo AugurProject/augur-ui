@@ -19,5 +19,5 @@
       ignorePseudoClasses: ["global", "local"]
     }]
   },
-  "ignoreFiles": ["src/modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles.less"]
+  "ignoreFiles": ["src/assets/styles/_colors.less"]
 }

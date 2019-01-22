@@ -56,6 +56,13 @@
 @color-outcome-eight: #5cdf88;
 @color-outcome-list: @color-outcome-one @color-outcome-two @color-outcome-three @color-outcome-four @color-outcome-five @color-outcome-six @color-outcome-seven @color-outcome-eight;
 
+.generate-indexed-color-outcome-classes(@rules) {
+  each(@color-outcome-list, {
+    @newIndex: @index - 1;
+    @rules();
+  });
+}
+
 // new theme
 @color-extra-darkpurple: #140e1f;
 @color-light-purple: #211a32;
