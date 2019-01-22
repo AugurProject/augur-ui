@@ -254,27 +254,6 @@ class TradingWrapper extends Component {
                       selectedNav: BUY
                     })
                   }
-                />
-              </li>
-            </ul>
-            <ul
-              className={classNames({
-                [Styles.TradingWrapper__header_buy]: selectedNav === BUY,
-                [Styles.TradingWrapper__header_sell]: selectedNav === SELL
-              })}
-            >
-              <li
-                className={classNames({
-                  [`${Styles.active_buy}`]: selectedNav === BUY
-                })}
-              >
-                <button
-                  onClick={() =>
-                    this.updateTradeTotalCost({
-                      ...s.updatedOrderValues,
-                      selectedNav: SELL
-                    })
-                  }
                 >
                   <div>Buy Shares</div>
                   <span
@@ -294,8 +273,8 @@ class TradingWrapper extends Component {
               >
                 <button
                   onClick={() =>
-                    this.updateOrderProperty({
-                      event: "RECALCULATE_TRADE",
+                    this.updateTradeTotalCost({
+                      ...s.updatedOrderValues,
                       selectedNav: SELL
                     })
                   }

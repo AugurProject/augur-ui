@@ -128,8 +128,6 @@ class TradingForm extends Component {
         { ...newOrderInfo, errors, isOrderValid, errorCount },
         () => {
           if (isOrderValid && event === "RECALCULATE_TRADE") {
-            console.log("calling to update trade total costs");
-
             updateTradeTotalCost(newOrderInfo);
           }
         }
