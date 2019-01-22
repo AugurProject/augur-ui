@@ -97,6 +97,13 @@ class TradingWrapper extends Component {
         nextProps.selectedOrderProperties.selectedNav !==
           this.state.updatedOrderValues.selectedNav
       ) {
+        if (
+          !nextProps.selectedOrderProperties.orderPrice &&
+          !nextProps.selectedOrderProperties.orderQuantity
+        ) {
+          return this.clearOrderForm();
+        }
+
         this.updateState({
           updatedOrderValues: {
             event: "RECALCULATE_TRADE",
