@@ -6,7 +6,7 @@ import { BigNumber } from "utils/create-big-number";
 import TradingForm from "modules/trading/components/trading--form/trading--form";
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
 import { Close } from "modules/common/components/icons";
-
+import { generateTrade } from "modules/trades/helpers/generate-trade";
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
 // import { FindReact } from "utils/find-react";
@@ -17,12 +17,9 @@ import Styles from "modules/trading/components/trading--wrapper/trading--wrapper
 class TradingWrapper extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
-    isLogged: PropTypes.bool.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
-    toggleForm: PropTypes.func.isRequired,
-    clearTradeInProgress: PropTypes.func.isRequired,
     selectedOutcome: PropTypes.object,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     handleFilledOnly: PropTypes.func.isRequired,
@@ -36,6 +33,28 @@ class TradingWrapper extends Component {
   static defaultProps = {
     selectedOutcome: null
   };
+
+  static getDefaultTrade(props) {
+    if (!(props.market || {}).marketType || !(props.selectedOutcome || {}).id)
+      return null;
+    return generateTrade(
+      {
+        id: props.market.id,
+        settlementFee: props.market.settlementFee,
+        marketType: props.market.marketType,
+        maxPrice: props.market.maxPrice,
+        minPrice: props.market.minPrice,
+        cumulativeScale: props.market.cumulativeScale,
+        makerFee: props.market.makerFee
+      },
+      {
+        id: props.selectedOutcome.id,
+        name: props.selectedOutcome.name
+      },
+      {},
+      {}
+    );
+  }
 
   constructor(props) {
     super(props);
@@ -58,89 +77,63 @@ class TradingWrapper extends Component {
     this.updateOrderProperty = this.updateOrderProperty.bind(this);
   }
 
+  componentWillMount() {
+    this.setState({
+      ...this.state,
+      trade: TradingWrapper.getDefaultTrade(this.props)
+    });
+  }
+
   componentWillReceiveProps(nextProps, nextState) {
     const { selectedOrderProperties } = this.props;
 
-    if (
-      this.props.selectedOutcome === null ||
-      !(nextProps.selectedOutcome || {}).trade
-    )
-      return this.clearOrderForm();
-
     // Updates from chart clicks
     if (!isEqual(selectedOrderProperties, nextProps.selectedOrderProperties)) {
-      this.updateState({
-        updatedOrderValues: {
-          event: "RECALCULATE_TRADE",
-          ...nextProps.selectedOrderProperties,
-          orderEthEstimate: ""
-        }
-      });
-    }
-
-    /*
-    const {
-      limitPrice,
-      numShares,
-      totalCost
-    } = nextProps.selectedOutcome.trade;
-    const { orderPrice, orderQuantity, orderEthEstimate } = this.state;
-
-
-    if (
-      limitPrice !== null &&
-      orderPrice !== "" &&
-      createBigNumber(limitPrice).eq(createBigNumber(orderPrice))
-    ) {
       if (
-        createBigNumber(numShares).eq(createBigNumber(orderQuantity || "0")) &&
-        createBigNumber(orderEthEstimate || "0").eq(
-          createBigNumber(totalCost.formattedValue)
-        )
-      )
-        return;
-      // calculating cost when numShares is ""
-      let cost =
-        orderEthEstimate &&
-        createBigNumber(orderEthEstimate).eq(createBigNumber(totalCost.value))
-          ? orderEthEstimate
-          : totalCost.formattedValue;
-
-      // calculating cost when numShares is filled in
-      if (numShares !== orderQuantity) {
-        cost = orderEthEstimate;
+        nextProps.selectedOrderProperties.orderPrice !==
+          this.state.updatedOrderValues.orderPrice ||
+        nextProps.selectedOrderProperties.orderQuantity !==
+          this.state.updatedOrderValues.orderQuantity ||
+        nextProps.selectedOrderProperties.selectedNav !==
+          this.state.updatedOrderValues.selectedNav
+      ) {
+        if (
+          !nextProps.selectedOrderProperties.orderPrice &&
+          !nextProps.selectedOrderProperties.orderQuantity
+        ) {
+          return this.clearOrderForm();
+        }
+        console.log("get properties", nextProps.selectedOrderProperties);
+        this.updateTradeTotalCost({ ...nextProps.selectedOrderProperties });
       }
-
-      this.updateFormValues({
-        orderPrice: limitPrice,
-        orderQuantity: numShares,
-        orderEthEstimate: cost
-      });
     }
-    */
   }
 
   // updates from form input
   updateState(stateValues, cb) {
-    this.setState({ ...this.state, ...stateValues }, () => cb);
+    this.setState(currentState => ({ ...currentState, ...stateValues }), cb);
   }
 
-  clearOrderForm() {
-    const { clearTradeInProgress, market } = this.props;
-    this.setState(
-      {
+  clearOrderForm(wholeForm = true) {
+    const trade = TradingWrapper.getDefaultTrade(this.props);
+
+    if (wholeForm) {
+      this.updateState({
         updatedOrderValues: {
           event: "CLEAR_ORDER_FORM",
           orderPrice: "",
           orderQuantity: "",
           orderEthEstimate: "",
-          doNotCreateOrders: false
-        }
-      },
-      () => {
-        if (market.id) clearTradeInProgress(market.id);
-      }
-    );
+          doNotCreateOrders: false,
+          selectedNav: "buy"
+        },
+        trade
+      });
+    } else {
+      this.updateState({
+        trade
+      });
+    }
   }
 
   updateOrderProperty(property) {
@@ -174,15 +167,14 @@ class TradingWrapper extends Component {
       (err, newOrder) => {
         if (err) return console.log(err); // what to do with error here
 
-        console.log(newOrder);
-
         this.updateState({
           updatedOrderValues: {
             ...this.state.updatedOrderValues,
             ...order,
             event: "UPDATE_EST_ETH",
             orderEthEstimate: newOrder.totalCost.formattedValue
-          }
+          },
+          trade: newOrder
         });
       }
     );
@@ -201,15 +193,14 @@ class TradingWrapper extends Component {
       (err, newOrder) => {
         if (err) return console.log(err); // what to do with error here
 
-        console.log(newOrder);
-
         this.updateState({
           updatedOrderValues: {
             ...this.state.updatedOrderValues,
             ...order,
             event: "UPDATE_QUANTITY",
             orderQuantity: newOrder.totalCost.formattedValue.toString()
-          }
+          },
+          trade: newOrder
         });
       }
     );
@@ -302,34 +293,35 @@ class TradingWrapper extends Component {
           {market.marketType === SCALAR && (
             <div className={Styles.TradingWrapper__scalar__line} />
           )}
-          <TradingForm
-            market={market}
-            marketType={getValue(this.props, "market.marketType")}
-            maxPrice={getValue(this.props, "market.maxPrice")}
-            minPrice={getValue(this.props, "market.minPrice")}
-            updatedOrderValues={s.updatedOrderValues}
-            selectedNav={selectedNav}
-            doNotCreateOrders={s.doNotCreateOrders}
-            selectedOutcome={selectedOutcome}
-            updateState={this.updateState}
-            updateOrderProperty={this.updateOrderProperty}
-            isMobile={isMobile}
-            clearOrderForm={this.clearOrderForm}
-            updateSelectedOutcome={updateSelectedOutcome}
-            updateTradeTotalCost={this.updateTradeTotalCost}
-            updateTradeNumShares={this.updateTradeNumShares}
-          />
+          {market &&
+            market.marketType && (
+              <TradingForm
+                market={market}
+                marketType={getValue(this.props, "market.marketType")}
+                maxPrice={getValue(this.props, "market.maxPrice")}
+                minPrice={getValue(this.props, "market.minPrice")}
+                updatedOrderValues={s.updatedOrderValues}
+                selectedNav={selectedNav}
+                doNotCreateOrders={s.doNotCreateOrders}
+                selectedOutcome={selectedOutcome}
+                updateState={this.updateState}
+                updateOrderProperty={this.updateOrderProperty}
+                isMobile={isMobile}
+                clearOrderForm={this.clearOrderForm}
+                updateSelectedOutcome={updateSelectedOutcome}
+                updateTradeTotalCost={this.updateTradeTotalCost}
+                updateTradeNumShares={this.updateTradeNumShares}
+              />
+            )}
         </div>
-        {selectedOutcome &&
-          selectedOutcome.trade &&
-          (selectedOutcome.trade.shareCost.value !== 0 ||
-            selectedOutcome.trade.totalCost.value !== 0) && (
+        {s.trade &&
+          (s.trade.shareCost.value !== 0 || s.trade.totalCost.value !== 0) && (
             <TradingConfirm
               numOutcomes={market.numOutcomes}
               marketType={getValue(this.props, "market.marketType")}
               maxPrice={getValue(this.props, "market.maxPrice")}
               minPrice={getValue(this.props, "market.minPrice")}
-              trade={selectedOutcome.trade}
+              trade={s.trade}
               isMobile={isMobile}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
@@ -343,8 +335,7 @@ class TradingWrapper extends Component {
               [Styles.long]: selectedNav === BUY,
               [Styles.short]: selectedNav === SELL,
               [Styles.disabled]:
-                !selectedOutcome ||
-                (selectedOutcome && !selectedOutcome.trade.limitPrice)
+                !selectedOutcome || (s.trade && !s.trade.limitPrice)
             })}
             onClick={e => {
               e.preventDefault();

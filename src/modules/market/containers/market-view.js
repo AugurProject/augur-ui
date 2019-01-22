@@ -12,8 +12,10 @@ import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-pr
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { handleFilledOnly } from "modules/notifications/actions/notifications";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { updateTradeCost } from "modules/trades/actions/update-trade-cost";
-import { updateTradeShares } from "modules/trades/actions/update-trade-shares";
+import {
+  updateTradeCost,
+  updateTradeShares
+} from "modules/trades/actions/update-trade-cost";
 
 const mapStateToProps = (state, ownProps) => {
   const {

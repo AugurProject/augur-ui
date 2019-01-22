@@ -108,6 +108,18 @@ class TradingForm extends Component {
     // UPDATE_PROPERTY
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
+      if (event === "UPDATE_PROPERTY") return;
+      if (event === "CLEAR_ORDER_FORM" || event === "UPDATE_EST_ETH") {
+        return this.setState({
+          ...newOrderInfo,
+          errors: {
+            [this.INPUT_TYPES.QUANTITY]: [],
+            [this.INPUT_TYPES.PRICE]: [],
+            [this.INPUT_TYPES.EST_ETH]: []
+          },
+          errorCount: 0
+        });
+      }
       const { isOrderValid, errors, errorCount } = this.orderValidation(
         newOrderInfo,
         nextProps
@@ -116,6 +128,8 @@ class TradingForm extends Component {
         { ...newOrderInfo, errors, isOrderValid, errorCount },
         () => {
           if (isOrderValid && event === "RECALCULATE_TRADE") {
+            console.log("calling to update trade total costs");
+
             updateTradeTotalCost(newOrderInfo);
           }
         }
@@ -236,7 +250,8 @@ class TradingForm extends Component {
       updateOrderProperty,
       updateTradeTotalCost,
       updateTradeNumShares,
-      updatedOrderValues
+      updatedOrderValues,
+      clearOrderForm
     } = this.props;
     const value = rawValue;
 
@@ -249,6 +264,10 @@ class TradingForm extends Component {
       updatedState,
       this.props
     );
+
+    if (errorCount > 0) {
+      clearOrderForm(false);
+    }
 
     updateOrderProperty({
       [property]: value
@@ -326,13 +345,8 @@ class TradingForm extends Component {
         ...s.errors[this.INPUT_TYPES.EST_ETH]
       ])
     );
-    let quantityValue = s[this.INPUT_TYPES.QUANTITY];
-    if (BigNumber.isBigNumber(quantityValue)) {
-      quantityValue =
-        s[this.INPUT_TYPES.QUANTITY].dp() > MIN_QUANTITY.dp()
-          ? s[this.INPUT_TYPES.QUANTITY].dp(8, 0).toFixed()
-          : s[this.INPUT_TYPES.QUANTITY].toNumber();
-    }
+
+    const quantityValue = s[this.INPUT_TYPES.QUANTITY];
     const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
     return (
       <div className={Styles.TradingForm__form__container}>
