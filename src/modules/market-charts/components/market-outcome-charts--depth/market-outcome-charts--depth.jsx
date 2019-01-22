@@ -193,7 +193,7 @@ export default class MarketOutcomeDepth extends Component {
         )
         .attr("height", drawParams.containerHeight)
         .style("margin", "0 0.5rem");
-      
+
       drawTicks({
         drawParams,
         depthChart,
@@ -868,7 +868,7 @@ function attachHoverClickHandlers(options) {
       d3.select("#cost_value").html(
         `${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`
       );
-      
+
       // 27 comes from the padding/border/margins so 1rem total for horz
       // padding .5 rem for label/value seperation, + borderpx of 3 (2 on line
       // side, 1 on the other)
@@ -881,7 +881,8 @@ function attachHoverClickHandlers(options) {
         d3.select("#hovered_tooltip_labels").node().clientWidth +
         27 +
         borderPadding;
-      const testHeight = d3.select("#hovered_tooltip").node().clientHeight + verticalSpacing;
+      const testHeight =
+        d3.select("#hovered_tooltip").node().clientHeight + verticalSpacing;
       let quarterX = xScale(drawParams.xDomain[1] * 0.1);
       let quarterY = yScale(drawParams.yDomain[1] * 0.9);
       quarterX = quarterX > testWidth ? quarterX : testWidth;
@@ -894,9 +895,7 @@ function attachHoverClickHandlers(options) {
       );
       const offset = {
         hoverToolTipX: flipX ? 0 : testWidth * -1,
-        hoverToolTipY: flipY
-          ? verticalSpacing
-          : testHeight * -1
+        hoverToolTipY: flipY ? verticalSpacing : testHeight * -1
       };
       const tooltip = d3
         .select("#hovered_tooltip_container")
