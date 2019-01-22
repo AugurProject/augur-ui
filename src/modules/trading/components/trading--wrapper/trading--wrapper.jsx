@@ -103,14 +103,8 @@ class TradingWrapper extends Component {
         ) {
           return this.clearOrderForm();
         }
-
-        this.updateState({
-          updatedOrderValues: {
-            event: "RECALCULATE_TRADE",
-            ...nextProps.selectedOrderProperties,
-            orderEthEstimate: ""
-          }
-        });
+        console.log("get properties", nextProps.selectedOrderProperties);
+        this.updateTradeTotalCost({ ...nextProps.selectedOrderProperties });
       }
     }
   }

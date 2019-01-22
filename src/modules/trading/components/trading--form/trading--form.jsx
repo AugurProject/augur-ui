@@ -128,6 +128,8 @@ class TradingForm extends Component {
         { ...newOrderInfo, errors, isOrderValid, errorCount },
         () => {
           if (isOrderValid && event === "RECALCULATE_TRADE") {
+            console.log("calling to update trade total costs");
+
             updateTradeTotalCost(newOrderInfo);
           }
         }
@@ -343,13 +345,8 @@ class TradingForm extends Component {
         ...s.errors[this.INPUT_TYPES.EST_ETH]
       ])
     );
-    let quantityValue = s[this.INPUT_TYPES.QUANTITY];
-    if (BigNumber.isBigNumber(quantityValue)) {
-      quantityValue =
-        s[this.INPUT_TYPES.QUANTITY].dp() > MIN_QUANTITY.dp()
-          ? s[this.INPUT_TYPES.QUANTITY].dp(8, 0).toFixed()
-          : s[this.INPUT_TYPES.QUANTITY].toNumber();
-    }
+
+    const quantityValue = s[this.INPUT_TYPES.QUANTITY];
     const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
     return (
       <div className={Styles.TradingForm__form__container}>
