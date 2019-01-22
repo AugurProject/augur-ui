@@ -108,7 +108,6 @@ class TradingWrapper extends Component {
     }
   }
 
-  // updates from form input
   updateState(stateValues, cb) {
     this.setState(currentState => ({ ...currentState, ...stateValues }), cb);
   }
@@ -155,6 +154,11 @@ class TradingWrapper extends Component {
 
   updateTradeTotalCost(order) {
     const { updateTradeCost, selectedOutcome, market } = this.props;
+    this.updateState({
+      ...this.state.updatedOrderValues,
+      event: "UPDATE_EST_ETH",
+      orderEthEstimate: ""
+    });
     updateTradeCost(
       market.id,
       selectedOutcome.id,

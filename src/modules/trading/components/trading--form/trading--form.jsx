@@ -101,7 +101,6 @@ class TradingForm extends Component {
       [this.INPUT_TYPES.SELECTED_NAV]: this.state[this.INPUT_TYPES.SELECTED_NAV]
     };
 
-    // RECALCULATE_TRADE
     // CLEAR_ORDER_FORM
     // UPDATE_EST_ETH
     // UPDATE_QUANTITY
@@ -124,14 +123,7 @@ class TradingForm extends Component {
         newOrderInfo,
         nextProps
       );
-      this.setState(
-        { ...newOrderInfo, errors, isOrderValid, errorCount },
-        () => {
-          if (isOrderValid && event === "RECALCULATE_TRADE") {
-            updateTradeTotalCost(newOrderInfo);
-          }
-        }
-      );
+      this.setState({ ...newOrderInfo, errors, isOrderValid, errorCount });
     }
   }
 
