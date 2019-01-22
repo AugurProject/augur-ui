@@ -624,3 +624,40 @@ div.ErrorField:focus {
     }
   }
 }
+
+@media @breakpoint-mobile-smaller-height,
+  @breakpoint-mobile-extra-small-height {
+  .ModalDisclaimer {
+    max-height: 75vh;
+    max-width: 90vw;
+    padding: 0.5rem 0;
+
+    > h1 {
+      margin: 0 0 0.5rem;
+    }
+
+    .ActionButtons {
+      margin: 0;
+      max-width: 90vw;
+      padding: 0.5rem 0 0;
+    }
+  }
+
+  .ModalDisclaimer__TextBox {
+    margin: 0 0.5rem 0.5rem;
+    max-height: 6rem;
+    max-width: none;
+    padding: 0 0.5rem;
+  }
+
+  .ModalDisclaimer__helperText,
+  .ModalDisclaimer__checkbox {
+    margin-bottom: 0.5rem;
+
+    > label {
+      font-size: @font-size-small;
+      line-height: @font-size-small;
+      margin: 0 1rem;
+    }
+  }
+}
