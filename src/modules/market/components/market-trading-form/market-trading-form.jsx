@@ -115,27 +115,25 @@ class MarketTradingForm extends Component {
 
     return (
       <section className={classNames(Styles.MarketTradingForm)}>
-        {!initialMessage && (
-          <TradingWrapper
-            market={market}
-            isLogged={isLogged}
-            selectedOutcome={s.selectedOutcome}
-            selectedOrderProperties={selectedOrderProperties}
-            isMobile={isMobile}
-            toggleForm={this.toggleForm}
-            availableFunds={availableFunds}
-            clearTradeInProgress={clearTradeInProgress}
-            updateSelectedOrderProperties={
-              this.props.updateSelectedOrderProperties
-            }
-            gasPrice={gasPrice}
-            handleFilledOnly={handleFilledOnly}
-            updateSelectedOutcome={updateSelectedOutcome}
-            toggleMobileView={toggleMobileView}
-            updateTradeCost={updateTradeCost}
-            updateTradeShares={updateTradeShares}
-          />
-        )}
+        <TradingWrapper
+          market={market}
+          isLogged={isLogged}
+          selectedOutcome={s.selectedOutcome}
+          selectedOrderProperties={selectedOrderProperties}
+          isMobile={isMobile}
+          toggleForm={this.toggleForm}
+          availableFunds={availableFunds}
+          clearTradeInProgress={clearTradeInProgress}
+          updateSelectedOrderProperties={
+            this.props.updateSelectedOrderProperties
+          }
+          gasPrice={gasPrice}
+          handleFilledOnly={handleFilledOnly}
+          updateSelectedOutcome={updateSelectedOutcome}
+          toggleMobileView={toggleMobileView}
+          updateTradeCost={updateTradeCost}
+          updateTradeShares={updateTradeShares}
+        />
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>
             {initialMessage && (

@@ -33,6 +33,8 @@ export default function(
 ) {
   // tradeTotalCost is the "orderbook stays the same when this trade gets processed" value, not the maximum possible cost of the trade.
   if (
+    !minPrice ||
+    !maxPrice ||
     !numShares ||
     !sharesFilled ||
     !side ||

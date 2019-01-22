@@ -8,20 +8,6 @@
 
   &:nth-child(1) {
     &:hover {
-      box-shadow: inset 0 0 0 1000px fade(@color-outcome-two, 5%);
-    }
-
-    &.active {
-      box-shadow: inset 0 0 0 1000px fade(@color-outcome-two, 10%);
-    }
-
-    &::before {
-      background-color: @color-outcome-two;
-    }
-  }
-
-  &:nth-child(2) {
-    &:hover {
       box-shadow: inset 0 0 0 1000px fade(@color-outcome-one, 5%);
     }
 
@@ -31,6 +17,20 @@
 
     &::before {
       background-color: @color-outcome-one;
+    }
+  }
+
+  &:nth-child(2) {
+    &:hover {
+      box-shadow: inset 0 0 0 1000px fade(@color-outcome-two, 5%);
+    }
+
+    &.active {
+      box-shadow: inset 0 0 0 1000px fade(@color-outcome-two, 10%);
+    }
+
+    &::before {
+      background-color: @color-outcome-two;
     }
   }
 
