@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */ // needed because <button> cannot take the place <ul> in the table structure
+/* eslint react/no-array-index-key: 0 */
 
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -118,6 +119,7 @@ export default class FilledOrdersOrder extends Component {
               >
                 {order.trades.map((trade, i) => (
                   <ul
+                    key={i}
                     className={classNames(
                       SharedStyles.FilledOrder,
                       Styles.FilledOrder__trade

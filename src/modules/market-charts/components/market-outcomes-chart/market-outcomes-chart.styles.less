@@ -1,6 +1,9 @@
 @import (reference) "~assets/styles/shared";
 
 .MarketOutcomesChart {
+  display: flex;
+  flex-grow: 1;
+
   h3 {
     .caps--medium();
 
@@ -37,9 +40,10 @@
   align-items: center;
   cursor: cell;
   display: flex;
-  height: 400px;
+  min-height: 400px;
   justify-content: center;
   width: 100%;
+  flex-grow: 1;
 
   & > div {
     height: 100%;
