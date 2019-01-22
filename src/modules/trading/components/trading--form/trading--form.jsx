@@ -108,6 +108,18 @@ class TradingForm extends Component {
     // UPDATE_PROPERTY
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
+      if (event === "UPDATE_PROPERTY") return;
+      if (event === "CLEAR_ORDER_FORM") {
+        return this.setState({
+          ...newOrderInfo,
+          errors: {
+            [this.INPUT_TYPES.QUANTITY]: [],
+            [this.INPUT_TYPES.PRICE]: [],
+            [this.INPUT_TYPES.EST_ETH]: []
+          },
+          errorCount: 0
+        });
+      }
       const { isOrderValid, errors, errorCount } = this.orderValidation(
         newOrderInfo,
         nextProps
@@ -236,7 +248,8 @@ class TradingForm extends Component {
       updateOrderProperty,
       updateTradeTotalCost,
       updateTradeNumShares,
-      updatedOrderValues
+      updatedOrderValues,
+      clearOrderForm
     } = this.props;
     const value = rawValue;
 
@@ -249,6 +262,10 @@ class TradingForm extends Component {
       updatedState,
       this.props
     );
+
+    if (errorCount > 0) {
+      clearOrderForm(false);
+    }
 
     updateOrderProperty({
       [property]: value

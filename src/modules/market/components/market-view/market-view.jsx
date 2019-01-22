@@ -161,29 +161,9 @@ export default class MarketView extends Component {
   }
 
   updateSelectedOrderProperties(selectedOrderProperties) {
-    console.log(
-      "updateSelectedOrderProperties called",
-      selectedOrderProperties,
-      this.props.market.id
-    );
-
     this.setState({
       selectedOrderProperties
     });
-    // this.setState({
-    //   selectedOrderProperties: {
-    //     ...this.DEFAULT_ORDER_PROPERTIES,
-    //     ...selectedOrderProperties
-    //   }
-    // });
-    // if (this.state.selectedOutcome) {
-    //   const { selectedOutcomeProperties } = this.state;
-    //   selectedOutcomeProperties[this.state.selectedOutcome] = {
-    //     ...this.DEFAULT_ORDER_PROPERTIES,
-    //     ...selectedOrderProperties
-    //   };
-    //   this.setState({ selectedOutcomeProperties });
-    // }
   }
 
   updatePrecision(isIncreasing) {

@@ -2,7 +2,6 @@ import { createBigNumber } from "utils/create-big-number";
 import { augur } from "services/augurjs";
 import { BUY } from "modules/transactions/constants/types";
 import logError from "utils/log-error";
-import { loadUsershareBalances } from "modules/positions/actions/load-user-share-balances";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 
 export const UPDATE_TRADE_IN_PROGRESS = "UPDATE_TRADE_IN_PROGRESS";
@@ -51,6 +50,44 @@ export function updateTradeCost({
       accountPositions,
       dispatch,
       callback
+    );
+  };
+}
+
+export function updateTradeShares({
+  marketId,
+  outcomeId,
+  side,
+  maxCost,
+  limitPrice,
+  callback = logError
+}) {
+  return (dispatch, getState) => {
+    if (!side || !maxCost || !limitPrice) {
+      return callback("side or numShare or limitPrice is not provided");
+    }
+
+    const { marketsData, loginAccount, orderBooks } = getState();
+    const market = marketsData[marketId];
+
+    const newTradeDetails = {
+      side,
+      maxCost,
+      limitPrice,
+      totalFee: "0",
+      totalCost: "0"
+    };
+
+    // need to figure out how many shares user can purchase given maxCost
+
+    return runSimulateTrade(
+      newTradeDetails,
+      market,
+      marketId,
+      outcomeId,
+      loginAccount,
+      orderBooks,
+      dispatch
     );
   };
 }
