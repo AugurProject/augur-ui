@@ -122,7 +122,7 @@ class TradingWrapper extends Component {
 
   // updates from form input
   updateState(stateValues, cb) {
-    this.setState({ ...this.state, ...stateValues }, () => cb);
+    this.setState({ ...this.state, ...stateValues }, cb);
   }
 
   clearOrderForm() {
@@ -134,7 +134,8 @@ class TradingWrapper extends Component {
           orderPrice: "",
           orderQuantity: "",
           orderEthEstimate: "",
-          doNotCreateOrders: false
+          doNotCreateOrders: false,
+          selectedNav: "buy"
         }
       },
       () => {

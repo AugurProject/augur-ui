@@ -46,18 +46,8 @@ export const generateTrade = memoize(
       10
     );
     const marketType = (market && market.marketType) || null;
-    const minPrice =
-      market &&
-      (typeof market.minPrice === "number" ||
-        BigNumber.isBigNumber(market.minPrice))
-        ? market.minPrice
-        : null;
-    const maxPrice =
-      market &&
-      (typeof market.maxPrice === "number" ||
-        BigNumber.isBigNumber(market.maxPrice))
-        ? market.maxPrice
-        : null;
+    const minPrice = createBigNumber(market.minPrice);
+    const maxPrice = createBigNumber(market.maxPrice);
     const adjustedTotalCost = totalCost.gt("0")
       ? totalCost
           .minus(totalFee)
