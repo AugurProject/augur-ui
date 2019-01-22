@@ -258,9 +258,12 @@ class TradingWrapper extends Component {
                 >
                   <div>Buy Shares</div>
                   <span
-                    className={classNames(Styles.TradingWrapper__underline__buy, {
-                      [`${Styles.notActive}`]: selectedNav === SELL
-                    })}
+                    className={classNames(
+                      Styles.TradingWrapper__underline__buy,
+                      {
+                        [`${Styles.notActive}`]: selectedNav === SELL
+                      }
+                    )}
                   />
                 </button>
               </li>

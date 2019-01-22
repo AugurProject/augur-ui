@@ -56,9 +56,7 @@ export default class MarketTradeHistory extends Component {
             Object.keys(groupedTradeHistory).map((date, index) => (
               <div key={index}>
                 <div className={Styles.MarketTradeHistory__table}>
-                  <ul
-                    className={Styles.MarketTradeHistory__table__header__day}
-                  >
+                  <ul className={Styles.MarketTradeHistory__table__header__day}>
                     <li>{groupedTradeHistoryVolume[date]} Shares</li>
                     <li />
                     <li>{date}</li>
@@ -79,9 +77,7 @@ export default class MarketTradeHistory extends Component {
                           }
                         )}
                       />
-                      <li>
-                        {priceTime.amount}
-                      </li>
+                      <li>{priceTime.amount}</li>
                       <li
                         className={classNames({
                           [`${Styles.MarketTradeHistory__buy}`]:
