@@ -73,7 +73,7 @@ class TradingForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { updatedOrderValues, updateTradeTotalCost } = this.props;
+    const { updatedOrderValues } = this.props;
     const {
       orderPrice,
       orderQuantity,
