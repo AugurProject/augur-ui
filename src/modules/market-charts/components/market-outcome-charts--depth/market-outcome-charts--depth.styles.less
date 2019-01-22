@@ -46,7 +46,7 @@
       flex-flow: row nowrap;
       height: 3.3125rem;
       min-width: 113px;
-      padding: 0.25rem 0.5rem;
+      padding: 0 0.5rem;
     }
 
     .hovered_tooltip_div.flip {
@@ -84,16 +84,17 @@
         .text-smallest;
 
         flex: 1;
-        line-height: @size-smallest;
+        line-height: @size-smaller;
         text-align: left;
+        margin-bottom: 0.125rem;
       }
 
       > div#price_label {
-        margin-top: 0.4rem;
+        margin-top: @size-tiny;
       }
 
       > div#cost_label {
-        margin-bottom: 0;
+        margin-bottom: 0.25rem;
       }
     }
 
@@ -108,11 +109,19 @@
 
         color: @color-white;
         flex: 1;
+        line-height: @size-small;
         text-align: left;
       }
 
       > div#price_value {
         .number-large;
+
+        line-height: @size-medium;
+        margin-top: 0.25rem;
+      }
+
+      > div#cost_value {
+        margin-bottom: 0.25rem;
       }
     }
 

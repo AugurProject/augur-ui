@@ -193,17 +193,7 @@ export default class MarketOutcomeDepth extends Component {
         )
         .attr("height", drawParams.containerHeight)
         .style("margin", "0 0.5rem");
-
-      drawLines({
-        drawParams,
-        depthChart,
-        marketDepth: drawParams.newMarketDepth,
-        isMobile,
-        hasOrders,
-        marketMin,
-        marketMax
-      });
-
+      
       drawTicks({
         drawParams,
         depthChart,
@@ -213,6 +203,16 @@ export default class MarketOutcomeDepth extends Component {
         marketMin,
         isMobile,
         hasOrders
+      });
+
+      drawLines({
+        drawParams,
+        depthChart,
+        marketDepth: drawParams.newMarketDepth,
+        isMobile,
+        hasOrders,
+        marketMin,
+        marketMax
       });
 
       setupCrosshairs({
@@ -856,19 +856,6 @@ function attachHoverClickHandlers(options) {
       if (nearestFillingOrder === null) return;
 
       const { xScale, yScale } = drawParams;
-      const defaultHeight = 51;
-      const defaultWidth = 113;
-      let quarterX = xScale(drawParams.xDomain[1] * 0.1);
-      let quarterY = yScale(drawParams.yDomain[1] * 0.9);
-      quarterX = quarterX > defaultWidth ? quarterX : defaultWidth;
-      quarterY = quarterY > defaultHeight ? quarterY : defaultHeight;
-      const flipX = quarterX > xScale(nearestFillingOrder[1]);
-      const flipY = quarterY > yScale(nearestFillingOrder[0]);
-      d3.select("#hovered_tooltip").attr(
-        "class",
-        `hovered_tooltip_div ${nearestFillingOrder[4]} ${flipX ? "flip" : ""}`
-      );
-
       d3.select("#price_label").attr("class", `${nearestFillingOrder[4]}`);
       d3.select("#volume_label").attr("class", `${nearestFillingOrder[4]}`);
       d3.select("#cost_label").attr("class", `${nearestFillingOrder[4]}`);
@@ -881,21 +868,35 @@ function attachHoverClickHandlers(options) {
       d3.select("#cost_value").html(
         `${nearestFillingOrder[5].toFixed(pricePrecision)} ETH`
       );
-      const borderPadding = 2;
-      const verticalSpacing = 24;
+      
       // 27 comes from the padding/border/margins so 1rem total for horz
       // padding .5 rem for label/value seperation, + borderpx of 3 (2 on line
       // side, 1 on the other)
+      // const defaultHeight = 51;
+      // const defaultWidth = 113;
+      const borderPadding = 2;
+      const verticalSpacing = 24;
       const testWidth =
         d3.select("#hovered_tooltip_values").node().clientWidth +
         d3.select("#hovered_tooltip_labels").node().clientWidth +
         27 +
         borderPadding;
+      const testHeight = d3.select("#hovered_tooltip").node().clientHeight + verticalSpacing;
+      let quarterX = xScale(drawParams.xDomain[1] * 0.1);
+      let quarterY = yScale(drawParams.yDomain[1] * 0.9);
+      quarterX = quarterX > testWidth ? quarterX : testWidth;
+      quarterY = quarterY > testHeight ? quarterY : testHeight;
+      const flipX = quarterX > xScale(nearestFillingOrder[1]);
+      const flipY = quarterY > yScale(nearestFillingOrder[0]);
+      d3.select("#hovered_tooltip").attr(
+        "class",
+        `hovered_tooltip_div ${nearestFillingOrder[4]} ${flipX ? "flip" : ""}`
+      );
       const offset = {
         hoverToolTipX: flipX ? 0 : testWidth * -1,
         hoverToolTipY: flipY
           ? verticalSpacing
-          : (defaultHeight + verticalSpacing) * -1
+          : testHeight * -1
       };
       const tooltip = d3
         .select("#hovered_tooltip_container")
