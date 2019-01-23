@@ -65,6 +65,9 @@ class TradingOutcomesDropdown extends Component {
   }
 
   toggleList() {
+    if (this.props.isMobile) {
+      return this.props.showSelectOutcome(true);
+    }
     this.setState({ showList: !this.state.showList });
   }
 
@@ -87,25 +90,9 @@ class TradingOutcomesDropdown extends Component {
           }}
           onClick={this.toggleList}
         >
-          <button className={Styles.TradingOutcomesDropdown__label}>
+          <div className={Styles.TradingOutcomesDropdown__label}>
             {this.state.label}
-          </button>
-          <select
-            className={Styles.TradingOutcomesDropdown__select}
-            onChange={e => {
-              this.dropdownSelect(
-                e.target.options[e.target.selectedIndex].text,
-                e.target.value
-              );
-            }}
-            value={this.state.value}
-          >
-            {options.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          </div>
           <span>{twoArrows}</span>
         </div>
         <div
@@ -137,11 +124,14 @@ TradingOutcomesDropdown.propTypes = {
   onChange: PropTypes.func.isRequired,
   default: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
-  alignLeft: PropTypes.bool
+  alignLeft: PropTypes.bool,
+  isMobile: PropTypes.bool,
+  showSelectOutcome: PropTypes.func.isRequired
 };
 
 TradingOutcomesDropdown.defaultProps = {
-  alignLeft: false
+  alignLeft: false,
+  isMobile: false
 };
 
 export default TradingOutcomesDropdown;

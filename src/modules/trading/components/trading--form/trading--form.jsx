@@ -33,7 +33,8 @@ class TradingForm extends Component {
     updateSelectedOutcome: PropTypes.func.isRequired,
     clearOrderForm: PropTypes.func.isRequired,
     updateTradeTotalCost: PropTypes.func.isRequired,
-    updateTradeNumShares: PropTypes.func.isRequired
+    updateTradeNumShares: PropTypes.func.isRequired,
+    showSelectOutcome: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -329,7 +330,9 @@ class TradingForm extends Component {
       maxPrice,
       minPrice,
       updateState,
-      clearOrderForm
+      clearOrderForm,
+      showSelectOutcome,
+      isMobile
     } = this.props;
     const s = this.state;
 
@@ -353,6 +356,8 @@ class TradingForm extends Component {
             <TradingOutcomesDropdown
               default={defaultOutcome}
               onChange={this.changeOutcomeDropdown}
+              showSelectOutcome={showSelectOutcome}
+              isMobile={isMobile}
               options={market.outcomes.map(outcome => ({
                 label: outcome.name,
                 value: outcome.id
