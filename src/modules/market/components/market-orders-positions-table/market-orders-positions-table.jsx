@@ -33,7 +33,7 @@ const MarketOrdersPositionsTable = ({
           market={market}
         />
       </ModulePane>
-      <ModulePane label="Filled Orders">
+      <ModulePane label="My Fills">
         <FilledOrdersTable
           filledOrders={filledOrders}
           scalarDenomination={market.scalarDenomination}

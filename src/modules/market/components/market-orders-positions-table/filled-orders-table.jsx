@@ -21,6 +21,9 @@ const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
         {!isMobile && <li>Outcome</li>}
         <li>Type</li>
         <li>
+          <span>Filled Quantity</span>
+        </li>
+        <li>
           <span>Quantity</span>
         </li>
         <li>Price</li>
