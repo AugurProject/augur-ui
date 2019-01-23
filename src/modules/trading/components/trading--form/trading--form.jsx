@@ -33,7 +33,8 @@ class TradingForm extends Component {
     updateSelectedOutcome: PropTypes.func.isRequired,
     clearOrderForm: PropTypes.func.isRequired,
     updateTradeTotalCost: PropTypes.func.isRequired,
-    updateTradeNumShares: PropTypes.func.isRequired
+    updateTradeNumShares: PropTypes.func.isRequired,
+    showSelectOutcome: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -168,7 +169,7 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.PRICE].push(
-        `Price must be between ${minPrice} - ${maxPrice}`
+        `Limit price must be between ${minPrice} - ${maxPrice}`
       );
     }
     // removed this validation for now, let's let augur.js handle this.
@@ -176,7 +177,7 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.PRICE].push(
-        `Price must be a multiple of ${tickSize}`
+        `Limit price must be a multiple of ${tickSize}`
       );
     }
     return { isOrderValid: passedTest, errors, errorCount };
@@ -321,7 +322,9 @@ class TradingForm extends Component {
       maxPrice,
       minPrice,
       updateState,
-      clearOrderForm
+      clearOrderForm,
+      showSelectOutcome,
+      isMobile
     } = this.props;
     const s = this.state;
 
@@ -345,6 +348,8 @@ class TradingForm extends Component {
             <TradingOutcomesDropdown
               default={defaultOutcome}
               onChange={this.changeOutcomeDropdown}
+              showSelectOutcome={showSelectOutcome}
+              isMobile={isMobile}
               options={market.outcomes.map(outcome => ({
                 label: outcome.name,
                 value: outcome.id

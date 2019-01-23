@@ -57,7 +57,6 @@
 .MarketTradingForm__button--message {
   &:extend(.button--bright all);
 
-  margin: 2rem auto 0;
   max-width: 9.5rem;
 
   > button {
@@ -70,10 +69,10 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
-  font-size: @font-size-large;
+  font-size: @font-size-rather-large;
   justify-content: center;
   left: 0;
-  line-height: @font-size-rather-large;
+  line-height: @font-size-maximum;
   padding: 0 2.5rem;
   position: absolute;
   right: 0;
@@ -89,12 +88,24 @@
   max-width: 9.5rem;
 }
 
+.MarketTradingForm__close {
+  height: 1rem;
+  left: 0.45rem;
+  position: absolute;
+  top: 0.7rem;
+  width: 1rem;
+}
+
 @media @breakpoint-mobile {
   .MarketTradingForm {
+    flex-grow: 1;
     max-height: 800px;
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
-    padding-bottom: 100px;
+  }
+
+  .MarketTradingForm__initial-message {
+    z-index: 200;
   }
 
   .MarketTradingForm__button--order-placed {

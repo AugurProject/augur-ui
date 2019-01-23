@@ -40,10 +40,10 @@
   align-items: center;
   cursor: cell;
   display: flex;
-  min-height: 400px;
-  justify-content: center;
-  width: 100%;
   flex-grow: 1;
+  justify-content: center;
+  min-height: 400px;
+  width: 100%;
 
   & > div {
     height: 100%;
@@ -52,7 +52,8 @@
 }
 
 .MarketOutcomesChart__outcomes-axis {
-  line, path {
+  line,
+  path {
     stroke: @color-lightgray;
     stroke-width: 1px;
   }
@@ -69,6 +70,7 @@
 
   text {
     &:extend(.caps--small all);
+
     fill: @color-white;
     text-anchor: middle;
   }
@@ -77,12 +79,13 @@
 .MarketOutcomesChart__price_label {
   &-inner {
     &:extend(.caps--extra-small all);
-    color: @color-white;
-    height: 1.2rem;
-    padding: 0.25rem;
+
     background-color: @color-light-purple;
     border: 1px solid @color-white;
     border-radius: 3px;
+    color: @color-white;
+    height: 1.2rem;
+    padding: 0.25rem;
     transform: translateY(-50%);
   }
 }
@@ -90,13 +93,14 @@
 .MarketOutcomesChart__date_label {
   &-inner {
     &:extend(.caps--extra-small all);
+
+    background-color: @color-light-purple;
+    border: 1px solid @color-white;
+    border-radius: 3px;
     color: @color-white;
     display: inline-block;
     height: 1.2rem;
     padding: 0.25rem;
-    background-color: @color-light-purple;
-    border: 1px solid @color-white;
-    border-radius: 3px;
     transform: translateX(-50%);
     white-space: nowrap;
   }
@@ -119,6 +123,7 @@
 
 .MarketOutcomesChart__tick-value {
   &:extend(.caps--small all);
+
   fill: @color-white;
 }
 
@@ -151,7 +156,7 @@
 }
 
 .MarketOutcomesChart__scalar_gradient_stop_bottom {
-  stop-color: extract(@color-outcome-list, 2)
+  stop-color: extract(@color-outcome-list, 2);
 }
 
 .MarketOutcomesChart__scalar_gradient_fill {
@@ -159,23 +164,15 @@
   opacity: 0.25;
 }
 
-each(@color-outcome-list, {
-  @newIndex: @index - 1;
-
-  .MarketOutcomesChart__outcome-line--@{newIndex} {
-    stroke: @value;
-  }
-
-  .MarketOutcomesChart__outcome-dot--@{newIndex} {
-    fill: @value;
-    stroke: @value;
-  }
-
-  .MarketOutcomesChart__outcome-dot-outline--@{newIndex} {
-    fill: none;
-    stroke: @value;
-  }
-});
+.generate-indexed-color-outcome-classes({ .MarketOutcomesChart__outcome-line--@{newIndex} {
+  stroke: @value;
+} .MarketOutcomesChart__outcome-dot--@{newIndex} {
+  fill: @value;
+  stroke: @value;
+} .MarketOutcomesChart__outcome-dot-outline--@{newIndex} {
+  fill: none;
+  stroke: @value;
+} });
 
 .MarketOutcomesChart__hover-overlay {
   fill: none;

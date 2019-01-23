@@ -5,6 +5,7 @@
   color: white;
   flex-direction: column;
   justify-content: center;
+  position: relative;
   z-index: @above-all-content-above;
 
   &:hover {
@@ -99,15 +100,11 @@
   box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.5);
   height: 0;
   position: absolute;
-  right: 4.563rem;
+  right: 0;
   text-align: left;
-  top: @top-bar-height;
+  top: 100%;
   width: 308px;
   z-index: @above-all-content;
-
-  @media @breakpoint-mobile {
-    top: 3.1rem;
-  }
 
   @media @breakpoint-mobile {
     right: 0;

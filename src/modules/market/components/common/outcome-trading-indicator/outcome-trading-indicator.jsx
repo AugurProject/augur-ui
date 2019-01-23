@@ -54,14 +54,14 @@ export default function OutcomeTradingIndicator({
         case "tradingPage|up":
           return {
             position: "absolute",
-            marginLeft: "0.8rem",
+            marginLeft: "1rem",
             borderWidth: "5px",
             opacity: "1"
           };
         case "tradingPage|down":
           return {
             position: "absolute",
-            marginLeft: "0.8rem",
+            marginLeft: "1rem",
             borderWidth: "5px",
             opacity: "1",
             marginBottom: "-8px"

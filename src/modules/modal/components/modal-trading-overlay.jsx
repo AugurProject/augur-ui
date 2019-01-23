@@ -27,7 +27,8 @@ export default class ModalTradingOverlay extends Component {
     outcomes: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
     updateTradeShares: PropTypes.func.isRequired,
-    updateTradeCost: PropTypes.func.isRequired
+    updateTradeCost: PropTypes.func.isRequired,
+    showSelectOutcome: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -64,7 +65,8 @@ export default class ModalTradingOverlay extends Component {
       gasPrice,
       handleFilledOnly,
       updateTradeCost,
-      updateTradeShares
+      updateTradeShares,
+      showSelectOutcome
     } = this.props;
 
     return (
@@ -90,6 +92,7 @@ export default class ModalTradingOverlay extends Component {
             toggleMobileView={closeModal}
             updateTradeCost={updateTradeCost}
             updateTradeShares={updateTradeShares}
+            showSelectOutcome={showSelectOutcome}
           />
         )}
         {!tradingForm && (

@@ -27,7 +27,8 @@ class TradingWrapper extends Component {
     updateSelectedOutcome: PropTypes.func.isRequired,
     toggleMobileView: PropTypes.func.isRequired,
     updateTradeCost: PropTypes.func.isRequired,
-    updateTradeShares: PropTypes.func.isRequired
+    updateTradeShares: PropTypes.func.isRequired,
+    showSelectOutcome: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -218,7 +219,8 @@ class TradingWrapper extends Component {
       gasPrice,
       handleFilledOnly,
       updateSelectedOutcome,
-      toggleMobileView
+      toggleMobileView,
+      showSelectOutcome
     } = this.props;
     const s = this.state;
     let { selectedNav } = s.updatedOrderValues;
@@ -317,6 +319,7 @@ class TradingWrapper extends Component {
                 updateSelectedOutcome={updateSelectedOutcome}
                 updateTradeTotalCost={this.updateTradeTotalCost}
                 updateTradeNumShares={this.updateTradeNumShares}
+                showSelectOutcome={showSelectOutcome}
               />
             )}
         </div>

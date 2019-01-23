@@ -88,37 +88,11 @@
   }
 }
 
-.MarketHeaderReporting__winner__color__1 {
-  background: @color-outcome-one;
-}
-
-.MarketHeaderReporting__winner__color__2 {
-  background: @color-outcome-two;
-}
-
-.MarketHeaderReporting__winner__color__3 {
-  background: @color-outcome-three;
-}
-
-.MarketHeaderReporting__winner__color__4 {
-  background: @color-outcome-four;
-}
-
-.MarketHeaderReporting__winner__color__5 {
-  background: @color-outcome-five;
-}
-
-.MarketHeaderReporting__winner__color__6 {
-  background: @color-outcome-six;
-}
-
-.MarketHeaderReporting__winner__color__7 {
-  background: @color-outcome-seven;
-}
-
-.MarketHeaderReporting__winner__color__8 {
-  background: @color-outcome-eight;
-}
+.generate-indexed-color-outcome-classes({
+  .MarketHeaderReporting__winner__color__@{newIndex} {
+    background: @value;
+  }
+});
 
 @media @breakpoint-mobile {
   .MarketHeaderReporting__container {

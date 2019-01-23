@@ -97,6 +97,7 @@ export default class MarketView extends Component {
     this.showSelectOutcome = this.showSelectOutcome.bind(this);
     this.toggleTradingForm = this.toggleTradingForm.bind(this);
     this.showModal = this.showModal.bind(this);
+    this.updateOutcomeReturn = this.updateOutcomeReturn.bind(this);
   }
 
   componentWillMount() {
@@ -124,19 +125,30 @@ export default class MarketView extends Component {
     }
   }
 
-  updateSelectedOutcome(selectedOutcome) {
+  updateOutcomeReturn(selectedOutcome) {
+    this.updateSelectedOutcome(selectedOutcome, true);
+  }
+
+  updateSelectedOutcome(selectedOutcome, showTradingForm) {
     const { marketType, isMobile } = this.props;
     if (selectedOutcome !== this.state.selectedOutcome) {
-      this.setState({
-        selectedOutcome:
-          selectedOutcome === this.state.selectedOutcome &&
-          marketType === CATEGORICAL
-            ? null
-            : selectedOutcome,
-        selectedOrderProperties: {
-          ...this.DEFAULT_ORDER_PROPERTIES
+      this.setState(
+        {
+          selectedOutcome:
+            selectedOutcome === this.state.selectedOutcome &&
+            marketType === CATEGORICAL
+              ? null
+              : selectedOutcome,
+          selectedOrderProperties: {
+            ...this.DEFAULT_ORDER_PROPERTIES
+          }
+        },
+        () => {
+          if (showTradingForm) {
+            this.toggleTradingForm();
+          }
         }
-      });
+      );
 
       const { selectedOutcomeProperties } = this.state;
       if (!selectedOutcomeProperties[selectedOutcome]) {
@@ -149,6 +161,8 @@ export default class MarketView extends Component {
         //   selectedOrderProperties: selectedOutcomeProperties[selectedOutcome]
         // });
       }
+    } else if (showTradingForm) {
+      this.toggleTradingForm();
     }
 
     if (isMobile) {
@@ -181,15 +195,15 @@ export default class MarketView extends Component {
     this.setState({ selectedOutcome: null });
   }
 
-  showSelectOutcome() {
-    this.showModal(false);
+  showSelectOutcome(returnToTradingForm) {
+    this.showModal(false, returnToTradingForm);
   }
 
   toggleTradingForm() {
-    this.showModal(true);
+    this.showModal(true, false);
   }
 
-  showModal(tradingForm) {
+  showModal(tradingForm, returnToTradingForm) {
     const {
       isLogged,
       marketId,
@@ -217,14 +231,17 @@ export default class MarketView extends Component {
       toggleForm: this.toggleForm,
       availableFunds,
       clearTradeInProgress,
-      updateSelectedOutcome: this.updateSelectedOutcome,
+      updateSelectedOutcome: returnToTradingForm
+        ? this.updateOutcomeReturn
+        : this.updateSelectedOutcome,
       updateSelectedOrderProperties: this.updateSelectedOrderProperties,
       gasPrice,
       handleFilledOnly,
       outcomes,
       updateTradeCost,
       updateTradeShares,
-      marketId
+      marketId,
+      showSelectOutcome: this.showSelectOutcome
     });
   }
 
@@ -416,6 +433,7 @@ export default class MarketView extends Component {
                     toggleMobileView={this.toggleTradingForm}
                     updateTradeCost={updateTradeCost}
                     updateTradeShares={updateTradeShares}
+                    showSelectOutcome={this.showSelectOutcome}
                   />
                 </div>
               </div>

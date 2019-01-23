@@ -10,6 +10,7 @@ import { BigNumber } from "utils/create-big-number";
 import { FindReact } from "utils/find-react";
 import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/market/components/market-trading-form/market-trading-form.styles";
+import { Close } from "modules/common/components/icons";
 
 class MarketTradingForm extends Component {
   static propTypes = {
@@ -26,7 +27,8 @@ class MarketTradingForm extends Component {
     updateSelectedOutcome: PropTypes.func.isRequired,
     toggleMobileView: PropTypes.func.isRequired,
     updateTradeCost: PropTypes.func.isRequired,
-    updateTradeShares: PropTypes.func.isRequired
+    updateTradeShares: PropTypes.func.isRequired,
+    showSelectOutcome: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -90,7 +92,8 @@ class MarketTradingForm extends Component {
       updateSelectedOutcome,
       toggleMobileView,
       updateTradeCost,
-      updateTradeShares
+      updateTradeShares,
+      showSelectOutcome
     } = this.props;
     const s = this.state;
 
@@ -101,7 +104,7 @@ class MarketTradingForm extends Component {
 
     switch (true) {
       case !isLogged:
-        initialMessage = "Connect a wallet to place order.";
+        initialMessage = "Connect a wallet to place an order.";
         break;
       case isLogged && !hasFunds:
         initialMessage = "Add funds to begin trading.";
@@ -133,9 +136,20 @@ class MarketTradingForm extends Component {
           toggleMobileView={toggleMobileView}
           updateTradeCost={updateTradeCost}
           updateTradeShares={updateTradeShares}
+          showSelectOutcome={showSelectOutcome}
         />
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>
+            {isMobile && (
+              <span
+                role="button"
+                tabIndex="-1"
+                onClick={toggleMobileView}
+                className={Styles.MarketTradingForm__close}
+              >
+                {Close}
+              </span>
+            )}
             {initialMessage && (
               <p>
                 <span>{initialMessage}</span>
@@ -155,7 +169,7 @@ class MarketTradingForm extends Component {
                       ).toggleDropdown()
                     }
                   >
-                    Connect
+                    Connect a Wallet
                   </button>
                 </div>
               </div>

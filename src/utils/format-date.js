@@ -45,7 +45,7 @@ export function formatDate(d) {
     ("0" + date.getUTCMinutes()).slice(-2),
     ("0" + date.getUTCSeconds()).slice(-2)
   ];
-  const utcAMPM = ampm(utcTime[0]);
+  const utcAMPM = ampm(("0" + date.getUTCHours()).slice(-2));
 
   // Locat Time Formatting
   const localTime = [date.getHours(), date.getMinutes()];

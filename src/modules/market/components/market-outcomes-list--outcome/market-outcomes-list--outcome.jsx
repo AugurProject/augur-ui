@@ -32,9 +32,14 @@ const Outcome = ({
 
   return (
     <ul
-      className={classNames(SharedStyles.Outcome, Styles.Outcome, {
-        [`${Styles.active}`]: selectedOutcome === outcome.id
-      })}
+      className={classNames(
+        SharedStyles.Outcome,
+        Styles.Outcome,
+        Styles[`Outcome-${outcome.id}`],
+        {
+          [`${Styles.active}`]: selectedOutcome === outcome.id
+        }
+      )}
       onClick={e => updateSelectedOutcome(outcome.id)}
       role="menu"
     >
