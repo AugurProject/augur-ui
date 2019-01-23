@@ -825,20 +825,9 @@ function attachHoverClickHandlers(options) {
       const mouse = d3.mouse(d3.select("#depth_chart").node());
       const asksDepthLine = ".depth-line-asks";
       const bidsDepthLine = ".depth-line-bids";
-      const highlightAsks = orderBookKeys.mid.lt(
-        drawParams.xScale.invert(mouse[0]).toFixed(pricePrecision)
-      );
-      if (highlightAsks) {
-        d3.select(bidsDepthLine).attr("stroke-width", 1);
-        d3.select(asksDepthLine).attr("stroke-width", 2);
-        d3.select("#crosshairX").attr("class", "crosshair-ask");
-        d3.select("#crosshairY").attr("class", "crosshair-ask");
-      } else {
-        d3.select(bidsDepthLine).attr("stroke-width", 2);
-        d3.select(asksDepthLine).attr("stroke-width", 1);
-        d3.select("#crosshairX").attr("class", "crosshair-bid");
-        d3.select("#crosshairY").attr("class", "crosshair-bid");
-      }
+      // const highlightAsks = orderBookKeys.mid.lt(
+      //   drawParams.xScale.invert(mouse[0]).toFixed(pricePrecision)
+      // );
       // Determine closest order
       const hoveredPrice = drawParams.xScale
         .invert(mouse[0])
@@ -849,6 +838,22 @@ function attachHoverClickHandlers(options) {
         marketDepth,
         marketMin,
         marketMax
+      );
+      d3.select(bidsDepthLine).attr(
+        "stroke-width",
+        nearestFillingOrder[4] === ASKS ? 1 : 2
+      );
+      d3.select(asksDepthLine).attr(
+        "stroke-width",
+        nearestFillingOrder[4] === ASKS ? 2 : 1
+      );
+      d3.select("#crosshairX").attr(
+        "class",
+        `crosshair-${nearestFillingOrder[4]}`
+      );
+      d3.select("#crosshairY").attr(
+        "class",
+        `crosshair-${nearestFillingOrder[4]}`
       );
 
       updateHoveredPrice(hoveredPrice);

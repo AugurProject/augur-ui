@@ -162,6 +162,7 @@ class MarketOutcomeCandlestick extends React.Component {
   clearCrosshairs() {
     this.updateHoveredPrice(null);
     this.updateHoveredPeriod({});
+    d3.selectAll("#hovered_candlestick_price_label").stlye("display", "none");
     updateHoveredPriceCrosshair(null);
   }
 
@@ -219,6 +220,7 @@ class MarketOutcomeCandlestick extends React.Component {
       const candleTicks = d3
         .select(candleTicksContainer)
         .append("svg")
+        .attr("id", "candle_ticks_container")
         .attr("width", containerWidth + rightMargin)
         .attr("height", containerHeight);
       const candleChart = d3
@@ -333,7 +335,8 @@ class MarketOutcomeCandlestick extends React.Component {
         yScale,
         containerWidth,
         pricePrecision,
-        containerWidth
+        containerWidth,
+        candleTicks
       );
     }
 
@@ -659,11 +662,6 @@ function drawXAxisLabels({
 
 function drawCrosshairs({ candleTicks }) {
   // candleTicks.append("text").attr("id", "hovered_candlestick_price_label");
-  candleTicks
-    .append("foreignObject")
-    .attr("id", "hovered_candlestick_price_label")
-    .style("display", "none");
-
   const crosshair = candleTicks
     .append("g")
     .attr("id", "candlestick_crosshairs")
@@ -737,10 +735,9 @@ function updateHoveredPriceCrosshair(
   pricePrecision,
   containerWidth
 ) {
+  d3.selectAll("#hovered_candlestick_price_label").style("display", "none");
   if (hoveredPrice == null) {
     d3.select("#candlestick_crosshairs").style("display", "none");
-    d3.select("#hovered_candlestick_price_label").style("display", "none");
-    // d3.select("#hovered_candlestick_price_label").text("");
   } else {
     const yPosition = yScale(hoveredPrice);
     const clampedHoveredPrice = yScale.invert(yPosition);
@@ -750,12 +747,14 @@ function updateHoveredPriceCrosshair(
       .attr("y1", yPosition)
       .attr("x2", chartWidth)
       .attr("y2", yPosition);
-    d3.select("#hovered_candlestick_price_label")
-      .attr("x", containerWidth + 8)
-      .attr("y", yScale(hoveredPrice))
+    d3.select("#hovered_candlestick_price_label").remove();
+    d3.select("#candle_ticks_container")
+      .append("foreignObject")
+      .attr("id", "hovered_candlestick_price_label")
+      .attr("x", containerWidth + 4)
+      .attr("y", yScale(hoveredPrice) - 12)
       .style("display", "block")
-      .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`)
-      .style("width", 72);
+      .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
   }
 }
 
