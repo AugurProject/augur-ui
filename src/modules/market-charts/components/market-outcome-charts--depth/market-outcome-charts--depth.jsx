@@ -795,7 +795,6 @@ function attachHoverClickHandlers(options) {
     drawParams,
     depthChart,
     marketDepth,
-    orderBookKeys,
     pricePrecision,
     marketMin,
     marketMax,
