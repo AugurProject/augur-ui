@@ -35,7 +35,7 @@ function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrd
         outcomeName = null;
       }
 
-      const amountTotal = foundOrder ? createBigNumber(foundOrder.amount).plus(amountBN) : amountBN;
+      const amountTotal = foundOrder && accountId === creator ? createBigNumber(foundOrder.amount).plus(amountBN) : amountBN;
       let originalQuantity = amountTotal;
 
       if (accountId === creator) {
@@ -46,7 +46,7 @@ function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrd
         originalQuantity = matchingOpenOrder && matchingOpenOrder.unmatchedShares && createBigNumber(matchingOpenOrder.unmatchedShares.fullPrecision).plus(amountTotal) || amountTotal;
       }
 
-      if (foundOrder) {
+      if (foundOrder && accountId === creator) {
         foundOrder.trades.push({
           outcome: outcomeName,
           amount: amountTotal,
@@ -56,6 +56,7 @@ function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrd
           transactionHash,
           originalQuantity: originalQuantity,
         });
+       // foundOrder.originalQuantity = foundOrder.oringialQuantity.plus(amountTotal);
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
       } else {

@@ -55,10 +55,10 @@ export default class FilledOrdersOrder extends Component {
 
     const s = this.state;
 
-    const orderQuantity = formatShares(order.amount).formatted;
+    const orderQuantity = formatShares(order.amount).fullPrecision;
     const orderPrice = formatEther(order.price).formatted;
     const orderType = getValue(order, "type");
-    const orderQuantityOriginal = formatShares(order.originalQuantity).formatted;
+    const orderQuantityOriginal = formatShares(order.originalQuantity).fullPrecision;
 
     return (
       <div
@@ -128,7 +128,7 @@ export default class FilledOrdersOrder extends Component {
                     )}
                   >
                     {!isMobile && <li />}
-                    <li>{formatEther(trade.amount).formatted}</li>
+                    <li>{formatShares(trade.amount).fullPrecision}</li>
                     <li>
                       {convertUnixToFormattedDate(trade.timestamp).formatted}
                     </li>
