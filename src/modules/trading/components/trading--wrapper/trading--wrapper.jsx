@@ -155,58 +155,70 @@ class TradingWrapper extends Component {
 
   updateTradeTotalCost(order) {
     const { updateTradeCost, selectedOutcome, market } = this.props;
-    this.updateState({
-      ...this.state.updatedOrderValues,
-      event: "UPDATE_EST_ETH",
-      orderEthEstimate: ""
-    });
-    updateTradeCost(
-      market.id,
-      selectedOutcome.id,
+    this.updateState(
       {
-        limitPrice: order.orderPrice,
-        side: order.selectedNav,
-        numShares: order.orderQuantity
+        ...this.state.updatedOrderValues,
+        event: "UPDATE_EST_ETH",
+        orderEthEstimate: ""
       },
-      (err, newOrder) => {
-        if (err) return console.log(err); // what to do with error here
-
-        this.updateState({
-          updatedOrderValues: {
-            ...this.state.updatedOrderValues,
-            ...order,
-            event: "UPDATE_EST_ETH",
-            orderEthEstimate: newOrder.totalCost.formattedValue
+      () => {
+        updateTradeCost(
+          market.id,
+          selectedOutcome.id,
+          {
+            limitPrice: order.orderPrice,
+            side: order.selectedNav,
+            numShares: order.orderQuantity
           },
-          trade: newOrder
-        });
+          (err, newOrder) => {
+            if (err) return console.log(err); // what to do with error here
+
+            this.updateState({
+              updatedOrderValues: {
+                ...this.state.updatedOrderValues,
+                ...order,
+                event: "UPDATE_EST_ETH",
+                orderEthEstimate: newOrder.totalCost.formattedValue
+              },
+              trade: newOrder
+            });
+          }
+        );
       }
     );
   }
 
   updateTradeNumShares(order) {
     const { updateTradeShares, selectedOutcome, market } = this.props;
-    updateTradeShares(
-      market.id,
-      selectedOutcome.id,
+    this.updateState(
       {
-        limitPrice: order.orderPrice,
-        side: order.selectedNav,
-        maxCost: order.orderEthEstimate
+        ...this.state.updatedOrderValues,
+        event: "UPDATE_QUANTITY",
+        orderQuantity: ""
       },
-      (err, newOrder) => {
-        if (err) return console.log(err); // what to do with error here
-
-        this.updateState({
-          updatedOrderValues: {
-            ...this.state.updatedOrderValues,
-            ...order,
-            event: "UPDATE_QUANTITY",
-            orderQuantity: newOrder.totalCost.formattedValue.toString()
+      () =>
+        updateTradeShares(
+          market.id,
+          selectedOutcome.id,
+          {
+            limitPrice: order.orderPrice,
+            side: order.selectedNav,
+            maxCost: order.orderEthEstimate
           },
-          trade: newOrder
-        });
-      }
+          (err, newOrder) => {
+            if (err) return console.log(err); // what to do with error here
+
+            this.updateState({
+              updatedOrderValues: {
+                ...this.state.updatedOrderValues,
+                ...order,
+                event: "UPDATE_QUANTITY",
+                orderQuantity: newOrder.totalCost.formattedValue.toString()
+              },
+              trade: newOrder
+            });
+          }
+        )
     );
   }
 
