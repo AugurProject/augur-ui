@@ -77,18 +77,37 @@ class TradingOutcomesDropdown extends Component {
   render() {
     const { options, alignLeft } = this.props;
     return (
-      <div
-        className={classNames(Styles.TradingOutcomesDropdown, {
-          [`${Styles.active}`]: this.state.showList
-        })}
-        ref={dropdown => {
-          this.refDropdown = dropdown;
-        }}
-        onClick={this.toggleList}
-      >
-        <button className={Styles.TradingOutcomesDropdown__label}>
-          {this.state.label}
-        </button>
+      <section className={Styles.TradingOutcomesDropdown__sect}>
+        <div
+          className={classNames(Styles.TradingOutcomesDropdown, {
+            [`${Styles.active}`]: this.state.showList
+          })}
+          ref={dropdown => {
+            this.refDropdown = dropdown;
+          }}
+          onClick={this.toggleList}
+        >
+          <button className={Styles.TradingOutcomesDropdown__label}>
+            {this.state.label}
+          </button>
+          <select
+            className={Styles.TradingOutcomesDropdown__select}
+            onChange={e => {
+              this.dropdownSelect(
+                e.target.options[e.target.selectedIndex].text,
+                e.target.value
+              );
+            }}
+            value={this.state.value}
+          >
+            {options.map(option => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <span>{twoArrows}</span>
+        </div>
         <div
           className={classNames(
             Styles.TradingOutcomesDropdown__list,
@@ -109,24 +128,7 @@ class TradingOutcomesDropdown extends Component {
             </button>
           ))}
         </div>
-        <select
-          className={Styles.TradingOutcomesDropdown__select}
-          onChange={e => {
-            this.dropdownSelect(
-              e.target.options[e.target.selectedIndex].text,
-              e.target.value
-            );
-          }}
-          value={this.state.value}
-        >
-          {options.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <span>{twoArrows}</span>
-      </div>
+      </section>
     );
   }
 }

@@ -176,7 +176,7 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.PRICE].push(
-        `Price must be between ${minPrice} - ${maxPrice}`
+        `Limit price must be between ${minPrice} - ${maxPrice}`
       );
     }
     // removed this validation for now, let's let augur.js handle this.
@@ -184,7 +184,7 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.PRICE].push(
-        `Price must be a multiple of ${tickSize}`
+        `Limit price must be a multiple of ${tickSize}`
       );
     }
     return { isOrderValid: passedTest, errors, errorCount };
