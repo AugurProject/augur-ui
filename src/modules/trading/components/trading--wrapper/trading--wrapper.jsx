@@ -157,9 +157,12 @@ class TradingWrapper extends Component {
     const { updateTradeCost, selectedOutcome, market } = this.props;
     this.updateState(
       {
-        ...this.state.updatedOrderValues,
-        event: "UPDATE_EST_ETH",
-        orderEthEstimate: ""
+        ...this.state,
+        updatedOrderValues: {
+          ...this.state.updatedOrderValues,
+          event: "UPDATE_EST_ETH",
+          orderEthEstimate: ""
+        }
       },
       () => {
         updateTradeCost(
@@ -192,9 +195,11 @@ class TradingWrapper extends Component {
     const { updateTradeShares, selectedOutcome, market } = this.props;
     this.updateState(
       {
-        ...this.state.updatedOrderValues,
-        event: "UPDATE_QUANTITY",
-        orderQuantity: ""
+        updatedOrderValues: {
+          ...this.state.updatedOrderValues,
+          event: "UPDATE_QUANTITY",
+          orderQuantity: ""
+        }
       },
       () =>
         updateTradeShares(
