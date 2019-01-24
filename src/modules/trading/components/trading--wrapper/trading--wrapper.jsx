@@ -104,14 +104,9 @@ class TradingWrapper extends Component {
         ) {
           return this.clearOrderForm();
         }
-        this.updateState(
-          {
-            updatedOrderValues: {
-              ...nextProps.selectedOrderProperties,
-              event: "NEW_ORDER_VALUES"
-            }
-          },
-          this.updateTradeTotalCost({ ...nextProps.selectedOrderProperties })
+        this.updateTradeTotalCost(
+          { ...nextProps.selectedOrderProperties },
+          true
         );
       }
     }
@@ -161,15 +156,25 @@ class TradingWrapper extends Component {
     });
   }
 
-  updateTradeTotalCost(order) {
+  updateTradeTotalCost(order, fromOrderBook = false) {
     const { updateTradeCost, selectedOutcome, market } = this.props;
+    let useValues = {
+      ...order,
+      event: "NEW_ORDER_VALUES",
+      orderEthEstimate: ""
+    };
+    if (!fromOrderBook) {
+      useValues = {
+        ...this.state.updatedOrderValues,
+        event: "UPDATE_EST_ETH",
+        orderEthEstimate: ""
+      };
+    }
     this.updateState(
       {
         ...this.state,
         updatedOrderValues: {
-          ...this.state.updatedOrderValues,
-          event: "UPDATE_EST_ETH",
-          orderEthEstimate: ""
+          ...useValues
         }
       },
       () => {
