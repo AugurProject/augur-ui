@@ -58,8 +58,6 @@ export default class FilledOrdersOrder extends Component {
     const orderQuantity = formatShares(order.amount).formatted;
     const orderPrice = formatEther(order.price).formatted;
     const orderType = getValue(order, "type");
-    const orderQuantityOriginal = formatShares(order.originalQuantity)
-      .formatted;
 
     return (
       <div
@@ -87,7 +85,6 @@ export default class FilledOrdersOrder extends Component {
             {orderType === SELL ? "Sold" : "Bought"}
           </li>
           <li>{orderQuantity}</li>
-          <li>{orderQuantityOriginal}</li>
           <li>{orderPrice}</li>
           <li>
             {convertUnixToFormattedDate(order.timestamp).formattedShortDate}

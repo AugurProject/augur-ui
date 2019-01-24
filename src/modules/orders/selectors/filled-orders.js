@@ -40,20 +40,8 @@ function findOrders(
         outcomeName = null;
       }
 
-      let originalQuantity = amountBN;
-
       if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
-        const matchingOpenOrder = openOrders.find(
-          openOrder => openOrder.id === orderId
-        );
-        originalQuantity =
-          (matchingOpenOrder &&
-            matchingOpenOrder.unmatchedShares &&
-            createBigNumber(
-              matchingOpenOrder.unmatchedShares.fullPrecision
-            ).plus(amountBN)) ||
-          amountBN;
       }
 
       if (foundOrder) {
@@ -65,16 +53,9 @@ function findOrders(
           timestamp,
           transactionHash
         });
-        foundOrder.originalQuantity = foundOrder.originalQuantity.plus(
-          amountBN
-        );
         foundOrder.amount = foundOrder.amount.plus(amountBN);
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
-
-        if (accountId !== creator) {
-          foundOrder.originalQuantity = foundOrder.amount;
-        }
       } else {
         order.push({
           id: orderId,
@@ -83,7 +64,6 @@ function findOrders(
           type: typeOp,
           price: priceBN,
           amount: amountBN,
-          originalQuantity,
           trades: [
             {
               outcome: outcomeName,

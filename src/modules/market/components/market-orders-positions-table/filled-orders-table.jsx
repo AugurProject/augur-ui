@@ -23,9 +23,6 @@ const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
         <li>
           <span>Filled Quantity</span>
         </li>
-        <li>
-          <span>Quantity</span>
-        </li>
         <li>Price</li>
         <li>Fill Date</li>
         <li>No. of Fills</li>

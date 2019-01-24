@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
+  starIconOutline,
   starIconOpen,
   starIconFilled,
   ChevronDown,
@@ -197,7 +198,18 @@ export default class MarketHeader extends Component {
                   disabled={!isLogged}
                 >
                   <span>
-                    {isFavorite ? starIconFilled : starIconOpen}
+                    {isFavorite ? (
+                      starIconFilled
+                    ) : (
+                      <span className={Styles.MarketHeader__hoverContainer}>
+                        <span className={Styles.MarketHeader__iconDefault}>
+                          {starIconOpen}
+                        </span>
+                        <span className={Styles.MarketHeader__iconHover}>
+                          {starIconOutline}
+                        </span>
+                      </span>
+                    )}
                     {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
                   </span>
                 </button>

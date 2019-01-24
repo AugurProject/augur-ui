@@ -230,7 +230,8 @@
 
   span {
     font-size: @font-size-small;
-    padding-right: 1rem;
+    padding-right: 0.8rem;
+    vertical-align: middle;
   }
 
   &:hover {
@@ -244,6 +245,29 @@
     cursor: default;
     opacity: 0.3;
   }
+}
+
+span.MarketHeader__iconHover {
+  display: none;
+  padding: 0;
+}
+
+span.MarketHeader__iconDefault {
+  padding: 0;
+}
+
+span.MarketHeader__hoverContainer {
+  display: inline-block;
+  margin-top: -0.25rem;
+  padding: 0;
+}
+
+.MarketHeader__watchlist:hover .MarketHeader__iconDefault {
+  display: none;
+}
+
+.MarketHeader__watchlist:hover .MarketHeader__iconHover {
+  display: block;
 }
 
 @media @breakpoint-mobile {

@@ -2,7 +2,6 @@
 
 .FilledOrder {
   background-color: transparent;
-  grid-template-columns: repeat(7, 1fr);
 
   &:hover {
     background-color: rgba(41, 24, 57, 0.3);
@@ -120,10 +119,6 @@ ul.FilledOrder__table-header {
 }
 
 @media @breakpoint-mobile {
-  .FilledOrder {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
   ul.FilledOrder__table-header {
     grid-template-columns: repeat(3, 1fr);
     padding-left: 0;
@@ -136,6 +131,7 @@ ul.FilledOrder__table-header {
       }
 
       &:nth-child(2) {
+        justify-content: center;
         text-align: center;
       }
     }
