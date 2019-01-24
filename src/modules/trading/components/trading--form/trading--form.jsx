@@ -475,10 +475,11 @@ class TradingForm extends Component {
               isChecked={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
               value={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
               onClick={e =>
-                updateState(
-                  this.INPUT_TYPES.DO_NOT_CREATE_ORDERS,
-                  !s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]
-                )
+                updateState({
+                  [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: !s[
+                    this.INPUT_TYPES.DO_NOT_CREATE_ORDERS
+                  ]
+                })
               }
             />
             <label htmlFor="tr__input--do-no-create-orders">
