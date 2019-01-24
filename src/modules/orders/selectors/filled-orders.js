@@ -2,7 +2,13 @@ import { createBigNumber } from "utils/create-big-number";
 import { SCALAR } from "modules/markets/constants/market-types";
 import { BUY, SELL } from "modules/transactions/constants/types";
 
-function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrders) {
+function findOrders(
+  filledOrders,
+  accountId,
+  marketType,
+  marketOutcomes,
+  openOrders
+) {
   const orders = filledOrders.reduce(
     (
       order,
@@ -21,7 +27,6 @@ function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrd
       const amountBN = createBigNumber(amount);
       const priceBN = createBigNumber(price);
       let typeOp = type;
-   
 
       const outcomeInfo =
         marketOutcomes &&
@@ -35,30 +40,41 @@ function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrd
         outcomeName = null;
       }
 
-      const amountTotal = foundOrder && accountId === creator ? createBigNumber(foundOrder.amount).plus(amountBN) : amountBN;
-      let originalQuantity = amountTotal;
+      let originalQuantity = amountBN;
 
-      if (accountId === creator) {
+      if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
         const matchingOpenOrder = openOrders.find(
-           openOrder => openOrder.id === orderId
+          openOrder => openOrder.id === orderId
         );
-        originalQuantity = matchingOpenOrder && matchingOpenOrder.unmatchedShares && createBigNumber(matchingOpenOrder.unmatchedShares.fullPrecision).plus(amountTotal) || amountTotal;
+        originalQuantity =
+          (matchingOpenOrder &&
+            matchingOpenOrder.unmatchedShares &&
+            createBigNumber(
+              matchingOpenOrder.unmatchedShares.fullPrecision
+            ).plus(amountBN)) ||
+          amountBN;
       }
 
-      if (foundOrder && accountId === creator) {
+      if (foundOrder) {
         foundOrder.trades.push({
           outcome: outcomeName,
-          amount: amountTotal,
+          amount: amountBN,
           price: priceBN,
           type: typeOp,
           timestamp,
-          transactionHash,
-          originalQuantity: originalQuantity,
+          transactionHash
         });
-       // foundOrder.originalQuantity = foundOrder.oringialQuantity.plus(amountTotal);
+        foundOrder.originalQuantity = foundOrder.originalQuantity.plus(
+          amountBN
+        );
+        foundOrder.amount = foundOrder.amount.plus(amountBN);
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
+
+        if (accountId !== creator) {
+          foundOrder.originalQuantity = foundOrder.amount;
+        }
       } else {
         order.push({
           id: orderId,
@@ -66,12 +82,12 @@ function findOrders(filledOrders, accountId, marketType, marketOutcomes, openOrd
           outcome: outcomeName,
           type: typeOp,
           price: priceBN,
-          amount: amountTotal,
-          originalQuantity: originalQuantity,
+          amount: amountBN,
+          originalQuantity,
           trades: [
             {
               outcome: outcomeName,
-              amount: amountTotal,
+              amount: amountBN,
               price: priceBN,
               type: typeOp,
               timestamp,

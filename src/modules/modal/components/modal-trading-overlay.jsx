@@ -33,7 +33,8 @@ export default class ModalTradingOverlay extends Component {
 
   static defaultProps = {
     tradingForm: false,
-    outcomes: []
+    outcomes: [],
+    selectedOutcome: null
   };
 
   constructor(props) {

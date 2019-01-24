@@ -145,7 +145,6 @@ export default class MarketHeader extends Component {
               </div>
               {details.length > 0 && (
                 <div className={Styles.MarketHeader__details}>
-                  <h4>Additional Details</h4>
                   <label
                     ref={detailsContainer => {
                       this.detailsContainer = detailsContainer;

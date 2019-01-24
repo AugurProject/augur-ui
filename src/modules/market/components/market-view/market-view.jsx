@@ -47,7 +47,6 @@ export default class MarketView extends Component {
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
     loadingState: PropTypes.any,
-    pricePrecision: PropTypes.number,
     isMobile: PropTypes.bool,
     outcomes: PropTypes.array,
     isLogged: PropTypes.bool,
@@ -55,7 +54,6 @@ export default class MarketView extends Component {
   };
 
   static defaultProps = {
-    pricePrecision: 4,
     marketType: undefined,
     loadingState: null,
     isMobile: false,

@@ -55,10 +55,11 @@ export default class FilledOrdersOrder extends Component {
 
     const s = this.state;
 
-    const orderQuantity = formatShares(order.amount).fullPrecision;
+    const orderQuantity = formatShares(order.amount).formatted;
     const orderPrice = formatEther(order.price).formatted;
     const orderType = getValue(order, "type");
-    const orderQuantityOriginal = formatShares(order.originalQuantity).fullPrecision;
+    const orderQuantityOriginal = formatShares(order.originalQuantity)
+      .formatted;
 
     return (
       <div
@@ -83,7 +84,7 @@ export default class FilledOrdersOrder extends Component {
             })}
             style={{ textTransform: "capitalize" }}
           >
-            {orderType === SELL ? 'Sold' : 'Bought'}
+            {orderType === SELL ? "Sold" : "Bought"}
           </li>
           <li>{orderQuantity}</li>
           <li>{orderQuantityOriginal}</li>
@@ -128,7 +129,7 @@ export default class FilledOrdersOrder extends Component {
                     )}
                   >
                     {!isMobile && <li />}
-                    <li>{formatShares(trade.amount).fullPrecision}</li>
+                    <li>{formatShares(trade.amount).formatted}</li>
                     <li>
                       {convertUnixToFormattedDate(trade.timestamp).formatted}
                     </li>
