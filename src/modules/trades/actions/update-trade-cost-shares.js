@@ -3,9 +3,7 @@ import { augur } from "services/augurjs";
 import { BUY } from "modules/transactions/constants/types";
 import logError from "utils/log-error";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
-
-export const UPDATE_TRADE_IN_PROGRESS = "UPDATE_TRADE_IN_PROGRESS";
-export const CLEAR_TRADE_IN_PROGRESS = "CLEAR_TRADE_IN_PROGRESS";
+import { ZERO } from "modules/trades/constants/numbers";
 
 // Updates user's trade. Only defined (i.e. !== null) parameters are updated
 export function updateTradeCost({
@@ -67,7 +65,13 @@ export function updateTradeShares({
       return callback("side or numShare or limitPrice is not provided");
     }
 
-    const { marketsData, loginAccount, orderBooks } = getState();
+    const {
+      marketsData,
+      loginAccount,
+      outcomesData,
+      accountPositions,
+      orderBooks
+    } = getState();
     const market = marketsData[marketId];
 
     const newTradeDetails = {
@@ -80,6 +84,34 @@ export function updateTradeShares({
 
     // need to figure out how many shares user can purchase given maxCost
 
+    // calculate num shares
+    const marketMaxPrice = createBigNumber(market.maxPrice);
+    const marketRange = marketMaxPrice.minus(market.minPrice).abs();
+    const bnPrice = createBigNumber(limitPrice);
+    const price =
+      side === BUY
+        ? bnPrice.minus(market.minPrice).dividedBy(marketRange)
+        : marketMaxPrice.minus(bnPrice).dividedBy(marketRange);
+
+    let newShares = createBigNumber(maxCost).dividedBy(price);
+
+    const marketPosition = accountPositions[marketId];
+    if (marketPosition && marketPosition[outcomeId]) {
+      // How many shares user can buy with totalCost/maxCost amount
+      // don't think this can be figured out here.
+      const position = marketPosition[outcomeId];
+      const netPosition = createBigNumber(position.netPosition);
+      if (side === BUY) {
+        if (netPosition.lt(ZERO)) {
+          newShares = newShares.plus(netPosition.abs());
+        }
+      } else if (netPosition.gt(ZERO)) {
+        newShares = newShares.plus(netPosition);
+      }
+    }
+    newTradeDetails.numShares = newShares.toFixed(4);
+    const outcome = outcomesData[marketId][outcomeId];
+
     return runSimulateTrade(
       newTradeDetails,
       market,
@@ -87,7 +119,10 @@ export function updateTradeShares({
       outcomeId,
       loginAccount,
       orderBooks,
-      dispatch
+      outcome,
+      accountPositions,
+      dispatch,
+      callback
     );
   };
 }
@@ -141,18 +176,7 @@ function runSimulateTrade(
     .dividedBy(createBigNumber(simulatedTrade.tokensDepleted, 10))
     .toFixed();
   if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = "0";
-  dispatch({
-    type: UPDATE_TRADE_IN_PROGRESS,
-    data: {
-      marketId,
-      outcomeId,
-      details: {
-        ...newTradeDetails,
-        ...simulatedTrade,
-        tradeGroupId: augur.trading.generateTradeGroupId()
-      }
-    }
-  });
+
   const order = generateTrade(
     market,
     outcome,

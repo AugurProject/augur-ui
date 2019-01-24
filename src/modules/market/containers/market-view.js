@@ -15,7 +15,7 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import {
   updateTradeCost,
   updateTradeShares
-} from "modules/trades/actions/update-trade-cost";
+} from "modules/trades/actions/update-trade-cost-shares";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -59,7 +59,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   updateModal: modal => dispatch(updateModal(modal)),
   updateTradeCost: (marketId, outcomeId, order, callback) =>
     dispatch(updateTradeCost({ marketId, outcomeId, ...order, callback })),
-  updateTradeShares: (order, cb) => dispatch(updateTradeShares(order, cb))
+  updateTradeShares: (marketId, outcomeId, order, callback) =>
+    dispatch(updateTradeShares({ marketId, outcomeId, ...order, callback }))
 });
 
 const Market = withRouter(
