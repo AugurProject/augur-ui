@@ -106,10 +106,17 @@ class TradingForm extends Component {
     // UPDATE_EST_ETH
     // UPDATE_QUANTITY
     // UPDATE_PROPERTY
+    // NEW_ORDER_VALUES
 
     if (!isEqual(newOrderInfo, currentOrderInfo)) {
       if (event === "UPDATE_PROPERTY") return;
-      if (event === "CLEAR_ORDER_FORM" || event === "UPDATE_EST_ETH") {
+      if (event === "UPDATE_EST_ETH") {
+        return this.setState({
+          ...this.state,
+          [this.INPUT_TYPES.EST_ETH]: orderEthEstimate
+        });
+      }
+      if (event === "CLEAR_ORDER_FORM") {
         return this.setState({
           ...newOrderInfo,
           errors: {

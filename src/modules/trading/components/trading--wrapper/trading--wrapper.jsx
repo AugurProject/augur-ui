@@ -104,7 +104,15 @@ class TradingWrapper extends Component {
         ) {
           return this.clearOrderForm();
         }
-        this.updateTradeTotalCost({ ...nextProps.selectedOrderProperties });
+        this.updateState(
+          {
+            updatedOrderValues: {
+              ...nextProps.selectedOrderProperties,
+              event: "NEW_ORDER_VALUES"
+            }
+          },
+          this.updateTradeTotalCost({ ...nextProps.selectedOrderProperties })
+        );
       }
     }
   }
