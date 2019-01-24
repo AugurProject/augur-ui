@@ -1,5 +1,7 @@
+import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
+import PeriodSelector from "modules/market-charts/components/market-outcome-charts--candlestick-period-selector/market-outcome-charts--candlestick-period-selector";
 import CustomPropTypes from "utils/custom-prop-types";
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
@@ -8,25 +10,24 @@ import { map } from "lodash/fp";
 import { sortBy, maxBy } from "lodash";
 
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
-import MarketOutcomeChartsHeaderCandlestick from "modules/market-charts/components/market-outcome-charts--header-candlestick/market-outcome-charts--header-candlestick";
 import { ONE } from "modules/trades/constants/numbers";
 // import { BUY, SELL } from "modules/transactions/constants/types";
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
+import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
+
 import { createBigNumber } from "utils/create-big-number";
 import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
-const rightMargin = 78;
-
 class MarketOutcomeCandlestick extends React.Component {
   static propTypes = {
-    currentTimeInSeconds: PropTypes.number,
+    // currentTimeInSeconds: PropTypes.number,
     fixedPrecision: PropTypes.number.isRequired,
     isMobile: PropTypes.bool,
-    isMobileSmall: PropTypes.bool,
+    // isMobileSmall: PropTypes.bool,
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
-    outcomeName: PropTypes.string.isRequired,
+    // outcomeName: PropTypes.string.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     selectedRange: PropTypes.number.isRequired,
@@ -37,13 +38,13 @@ class MarketOutcomeCandlestick extends React.Component {
   };
 
   static defaultProps = {
-    currentTimeInSeconds: null,
-    isMobile: false,
-    isMobileSmall: false
+    // currentTimeInSeconds: null,
+    isMobile: false
+    // isMobileSmall: false
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const {
+  static getDerivedStateFromProps(
+    {
       currentTimeInSeconds,
       pricePrecision,
       marketMax,
@@ -52,9 +53,10 @@ class MarketOutcomeCandlestick extends React.Component {
       selectedPeriod,
       selectedRange,
       isMobileSmall
-    } = nextProps;
-
-    const { candleDim, containerHeight, containerWidth } = prevState;
+    },
+    state
+  ) {
+    const { candleDim, containerHeight, containerWidth } = state;
 
     const outcomeBounds = findPeriodSeriesBounds(
       priceTimeSeries,
@@ -77,7 +79,7 @@ class MarketOutcomeCandlestick extends React.Component {
     });
 
     return {
-      ...prevState,
+      ...state,
       ...drawParams
     };
   }
@@ -86,12 +88,6 @@ class MarketOutcomeCandlestick extends React.Component {
     super(props);
 
     this.state = MarketOutcomeCandlestick.getDerivedStateFromProps(props, {
-      chartDim: {
-        right: 0,
-        left: props.isMobileSmall ? 20 : 10,
-        stick: 5,
-        tickOffset: 5
-      },
       candleDim: {
         width: 6,
         gap: 9
@@ -100,7 +96,8 @@ class MarketOutcomeCandlestick extends React.Component {
       containerWidth: 0,
       yScale: null,
       hoveredPrice: null,
-      hoveredPeriod: {}
+      hoveredPeriod: {},
+      chart: null
     });
 
     this.getContainerWidths = this.getContainerWidths.bind(this);
@@ -108,12 +105,11 @@ class MarketOutcomeCandlestick extends React.Component {
     this.updateHoveredPrice = this.updateHoveredPrice.bind(this);
     this.updateHoveredPeriod = this.updateHoveredPeriod.bind(this);
     this.clearCrosshairs = this.clearCrosshairs.bind(this);
+    this.drawChart = this.drawChart.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener("resize", this.updateContainerWidths);
-
-    this.drawContainer.addEventListener("mouseout", this.clearCrosshairs);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -133,12 +129,11 @@ class MarketOutcomeCandlestick extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateContainerWidths);
-    this.drawContainer.removeEventListener("mouseout", this.clearCrosshairs);
   }
 
   getContainerWidths() {
     return {
-      containerWidth: this.drawContainer.clientWidth - rightMargin,
+      containerWidth: this.drawContainer.clientWidth,
       containerHeight: this.drawContainer.clientHeight
     };
   }
@@ -162,24 +157,16 @@ class MarketOutcomeCandlestick extends React.Component {
   clearCrosshairs() {
     this.updateHoveredPrice(null);
     this.updateHoveredPeriod({});
-    d3.selectAll("#hovered_candlestick_price_label").stlye("display", "none");
-    updateHoveredPriceCrosshair(null);
   }
 
-  render() {
+  drawChart() {
+    const candleChartContainer = new ReactFauxDOM.Element("div");
     const {
-      currentTimeInSeconds,
-      fixedPrecision,
       pricePrecision,
-      isMobile,
       marketMax,
       marketMin,
-      outcomeName,
       priceTimeSeries,
-      selectedPeriod,
       selectedRange,
-      updateSelectedPeriod,
-      updateSelectedRange,
       updateSelectedOrderProperties
     } = this.props;
 
@@ -193,179 +180,282 @@ class MarketOutcomeCandlestick extends React.Component {
       xScale,
       yDomain,
       yScale,
-      hoveredPrice,
-      hoveredPeriod
+      hoveredPrice
     } = this.state;
 
-    const candleChartContainer = ReactFauxDOM.createElement("div");
-    const candleTicksContainer = ReactFauxDOM.createElement("div");
+    const candleChartSvg = d3.select(candleChartContainer).append("svg");
+    const candleChart = candleChartSvg
+      .attr("id", "candlestick_chart")
+      .attr("height", containerHeight)
+      .attr("width", drawableWidth);
 
-    // Faux DOM
-    //  Tick Element (Fixed)
-    candleTicksContainer.setAttribute(
-      "class",
-      `${Styles["MarketOutcomeCandlestick__ticks-container"]}`
+    const defs = candleChartSvg.append("defs");
+    defs
+      .append("filter")
+      .attr("id", "dilate-filter")
+      .append("feMorphology")
+      .attr("operator", "erode")
+      .attr("radius", 1)
+      .attr("in", "SourceGraphic");
+
+    defs
+      .append("mask")
+      .attr("class", "candle-mask")
+      .attr("id", "candle-mask")
+      .append("rect")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("height", "100%")
+      .attr("width", "100%")
+      .attr("fill", "white");
+
+    drawTicks({
+      boundDiff,
+      candleDim,
+      candleChartSvg,
+      chartDim,
+      containerHeight,
+      containerWidth,
+      pricePrecision,
+      marketMax,
+      marketMin,
+      priceTimeSeries,
+      xScale,
+      yDomain,
+      yScale
+    });
+
+    drawCandles({
+      boundDiff,
+      candleChart,
+      candleDim,
+      chartDim,
+      containerHeight,
+      containerWidth,
+      priceTimeSeries,
+      xScale,
+      yDomain,
+      yScale
+    });
+
+    drawVolume({
+      boundDiff,
+      candleChart,
+      candleDim,
+      chartDim,
+      containerHeight,
+      containerWidth,
+      priceTimeSeries,
+      xScale,
+      yScale
+    });
+
+    const tickInterval = getTickIntervalForRange(selectedRange);
+
+    drawXAxisLabels({
+      priceTimeSeries,
+      candleChart,
+      containerWidth,
+      containerHeight,
+      chartDim,
+      candleDim,
+      boundDiff,
+      tickInterval,
+      yDomain,
+      xScale
+    });
+
+    attachHoverClickHandlers({
+      candleChart,
+      candleDim,
+      chartDim,
+      containerHeight,
+      containerWidth,
+      pricePrecision,
+      marketMax,
+      marketMin,
+      priceTimeSeries,
+      updateHoveredPeriod: this.updateHoveredPeriod,
+      updateHoveredPrice: this.updateHoveredPrice,
+      updateSelectedOrderProperties,
+      yScale,
+      xScale,
+      clearCrosshairs: this.clearCrosshairs
+    });
+
+    drawCrosshairs(
+      candleChart,
+      hoveredPrice,
+      yScale,
+      containerWidth,
+      pricePrecision,
+      containerWidth
     );
-    candleTicksContainer.setAttribute("key", "candlestick_ticks_container");
 
-    //  Chart Element (Scrollable)
-    candleChartContainer.setAttribute("key", "candlestick_chart_container");
-    candleChartContainer.setAttribute("id", "candlestick_chart_container");
-    candleChartContainer.setAttribute(
-      "class",
-      `${Styles["MarketOutcomeCandlestick__chart-container"]}`
-    );
+    return candleChartContainer.toReact();
+  }
 
-    if (containerHeight > 0 && containerWidth > 0 && currentTimeInSeconds) {
-      const candleTicks = d3
-        .select(candleTicksContainer)
-        .append("svg")
-        .attr("id", "candle_ticks_container")
-        .attr("width", containerWidth + rightMargin)
-        .attr("height", containerHeight);
-      const candleChart = d3
-        .select(candleChartContainer)
-        .append("svg")
-        .attr("id", "candlestick_chart")
-        .attr("height", containerHeight)
-        .attr("width", drawableWidth);
+  render() {
+    const {
+      fixedPrecision,
+      pricePrecision,
+      isMobile,
+      priceTimeSeries,
+      selectedPeriod,
+      selectedRange,
+      updateSelectedPeriod,
+      updateSelectedRange
+    } = this.props;
 
-      const defs = candleChart.append("defs");
-      defs
-        .append("filter")
-        .attr("id", "dilate-filter")
-        .append("feMorphology")
-        .attr("operator", "erode")
-        .attr("radius", 1)
-        .attr("in", "SourceGraphic");
+    const { hoveredPeriod } = this.state;
 
-      defs
-        .append("mask")
-        .attr("class", "candle-mask")
-        .attr("id", "candle-mask")
-        .append("rect")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("height", "100%")
-        .attr("width", "100%")
-        .attr("fill", "white");
-
-      drawTicks({
-        boundDiff,
-        candleChart,
-        candleDim,
-        candleTicks,
-        chartDim,
-        containerHeight,
-        containerWidth,
-        pricePrecision,
-        marketMax,
-        marketMin,
-        priceTimeSeries,
-        xScale,
-        yDomain,
-        yScale
-      });
-
-      drawCandles({
-        boundDiff,
-        candleChart,
-        candleDim,
-        chartDim,
-        containerHeight,
-        containerWidth,
-        priceTimeSeries,
-        xScale,
-        yDomain,
-        yScale
-      });
-
-      drawVolume({
-        boundDiff,
-        candleChart,
-        candleDim,
-        chartDim,
-        containerHeight,
-        containerWidth,
-        priceTimeSeries,
-        xScale,
-        yDomain,
-        candleTicks
-      });
-
-      const tickInterval = getTickIntervalForRange(selectedRange);
-
-      drawXAxisLabels({
-        priceTimeSeries,
-        candleChart,
-        containerWidth,
-        containerHeight,
-        chartDim,
-        candleDim,
-        boundDiff,
-        tickInterval,
-        yDomain,
-        xScale
-      });
-
-      drawCrosshairs({
-        candleTicks
-      });
-
-      attachHoverClickHandlers({
-        candleChart,
-        candleDim,
-        chartDim,
-        containerHeight,
-        containerWidth,
-        pricePrecision,
-        marketMax,
-        marketMin,
-        priceTimeSeries,
-        updateHoveredPeriod: this.updateHoveredPeriod,
-        updateHoveredPrice: this.updateHoveredPrice,
-        updateSelectedOrderProperties,
-        yScale,
-        xScale,
-        clearCrosshairs: this.clearCrosshairs
-      });
-
-      updateHoveredPriceCrosshair(
-        hoveredPrice,
-        yScale,
-        containerWidth,
-        pricePrecision,
-        containerWidth,
-        candleTicks
-      );
-    }
+    const chart = this.drawChart();
 
     return (
       <section className={Styles.MarketOutcomeCandlestick}>
-        <MarketOutcomeChartsHeaderCandlestick
-          outcomeName={outcomeName}
-          isMobile={isMobile}
-          volume={hoveredPeriod.volume}
-          open={hoveredPeriod.open}
-          high={hoveredPeriod.high}
-          low={hoveredPeriod.low}
-          close={hoveredPeriod.close}
-          priceTimeSeries={priceTimeSeries}
-          fixedPrecision={fixedPrecision}
-          pricePrecision={pricePrecision}
-          selectedPeriod={selectedPeriod}
-          selectedRange={selectedRange}
-          updateSelectedPeriod={updateSelectedPeriod}
-          updateSelectedRange={updateSelectedRange}
-        />
+        <section>
+          <div
+            className={Styles["MarketOutcomeChartsHeader__chart-interaction"]}
+          >
+            <div
+              className={classNames(
+                Styles.MarketOutcomeChartsHeader__selector,
+                {
+                  [Styles[
+                    "MarketOutcomeChartsHeader__selector--mobile"
+                  ]]: isMobile
+                }
+              )}
+            >
+              <PeriodSelector
+                priceTimeSeries={priceTimeSeries}
+                updateSelectedPeriod={updateSelectedPeriod}
+                updateSelectedRange={updateSelectedRange}
+                selectedPeriod={selectedPeriod}
+                selectedRange={selectedRange}
+              />
+            </div>
+            <div
+              className={classNames(
+                StylesHeader.MarketOutcomeChartsHeader__stats,
+                Styles.MarketOutcomeChartsHeader__stats
+              )}
+            >
+              <span
+                className={classNames(
+                  StylesHeader.MarketOutcomeChartsHeader__stat,
+                  Styles.MarketOutcomeChartsHeader__stat
+                )}
+              >
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
+                >
+                  o:
+                </span>
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
+                >
+                  {hoveredPeriod.open ? (
+                    hoveredPeriod.open.toFixed(pricePrecision).toString()
+                  ) : (
+                    <span>&mdash;</span>
+                  )}
+                </span>
+              </span>
+              <span
+                className={classNames(
+                  StylesHeader.MarketOutcomeChartsHeader__stat,
+                  Styles.MarketOutcomeChartsHeader__stat
+                )}
+              >
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
+                >
+                  c:
+                </span>
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
+                >
+                  {hoveredPeriod.close ? (
+                    hoveredPeriod.close.toFixed(pricePrecision).toString()
+                  ) : (
+                    <span>&mdash;</span>
+                  )}
+                </span>
+              </span>
+              <span
+                className={classNames(
+                  StylesHeader.MarketOutcomeChartsHeader__stat,
+                  Styles.MarketOutcomeChartsHeader__stat
+                )}
+              >
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
+                >
+                  h:
+                </span>
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
+                >
+                  {hoveredPeriod.high ? (
+                    hoveredPeriod.high.toFixed(pricePrecision).toString()
+                  ) : (
+                    <span>&mdash;</span>
+                  )}
+                </span>
+              </span>
+              <span
+                className={classNames(
+                  StylesHeader.MarketOutcomeChartsHeader__stat,
+                  Styles.MarketOutcomeChartsHeader__stat
+                )}
+              >
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
+                >
+                  l:
+                </span>
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
+                >
+                  {hoveredPeriod.low ? (
+                    hoveredPeriod.low.toFixed(pricePrecision).toString()
+                  ) : (
+                    <span>&mdash;</span>
+                  )}
+                </span>
+              </span>
+              <span
+                className={classNames(
+                  StylesHeader.MarketOutcomeChartsHeader__stat,
+                  Styles.MarketOutcomeChartsHeader__stat
+                )}
+              >
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
+                >
+                  v:
+                </span>
+                <span
+                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
+                >
+                  {hoveredPeriod.volume ? (
+                    hoveredPeriod.volume.toFixed(fixedPrecision).toString()
+                  ) : (
+                    <span>&mdash;</span>
+                  )}
+                </span>
+              </span>
+            </div>
+          </div>
+        </section>
         <div
           ref={drawContainer => {
             this.drawContainer = drawContainer;
           }}
           className={Styles.MarketOutcomeCandlestick__container}
         >
-          {candleTicksContainer.toReact()}
-          {candleChartContainer.toReact()}
+          {chart}
         </div>
       </section>
     );
@@ -386,10 +476,10 @@ function determineDrawParams({
   const chartDim = {
     top: 5,
     bottom: 30,
-    right: 0,
+    right: 70,
     left: isMobileSmall ? 20 : 10,
     stick: 5,
-    tickOffset: 5
+    tickOffset: 70
   };
 
   // Domain
@@ -398,8 +488,6 @@ function determineDrawParams({
     new Date((currentTimeInSeconds - selectedRange) * 1000),
     new Date(currentTimeInSeconds * 1000)
   ];
-
-  const drawableWidth = containerWidth;
 
   //  Y
   const highValues = sortBy(priceTimeSeries, ["high"]);
@@ -452,7 +540,7 @@ function determineDrawParams({
   const xScale = d3
     .scaleTime()
     .domain(d3.extent(xDomain))
-    .range([chartDim.left, drawableWidth - chartDim.left - chartDim.right]);
+    .range([chartDim.left, containerWidth - chartDim.left - chartDim.right]);
 
   const yScale = d3
     .scaleLinear()
@@ -462,7 +550,7 @@ function determineDrawParams({
 
   return {
     chartDim,
-    drawableWidth,
+    drawableWidth: containerWidth,
     boundDiff,
     yDomain,
     xScale,
@@ -472,55 +560,39 @@ function determineDrawParams({
 
 function drawTicks({
   boundDiff,
-  candleTicks,
+  candleChartSvg,
   chartDim,
   containerWidth,
   pricePrecision,
-  yDomain,
+  xScale,
   yScale
 }) {
+  const [x1, x2] = xScale.range();
   //  Ticks
-  const offsetTicks = [
-    yDomain[1],
-    yDomain[0],
-    createBigNumber(yDomain[1])
-      .plus(boundDiff)
-      .toNumber(),
-    createBigNumber(yDomain[0])
-      .minus(boundDiff.dividedBy(2))
-      .toNumber(),
-    createBigNumber(yDomain[1])
-      .plus(boundDiff.dividedBy(2))
-      .toNumber()
-  ];
+  const offsetTicks = yScale.ticks(3);
 
-  const yTicks = candleTicks.append("g").attr("id", "depth_y_ticks");
-
-  yTicks
+  candleChartSvg
     .selectAll("line")
     .data(offsetTicks)
     .enter()
     .append("line")
     .attr("class", "tick-line")
-    .attr("stroke-dasharray", "1 3")
-    .attr("x1", 0)
-    .attr("x2", containerWidth)
+    .attr("x1", x1)
+    .attr("x2", x2)
     .attr("y1", d => yScale(d))
     .attr("y2", d => yScale(d));
 
-  yTicks
+  candleChartSvg
     .selectAll("text")
     .data(offsetTicks)
     .enter()
     .append("text")
     .attr("class", "tick-value")
-    .attr("x", containerWidth + 7)
+    .attr("x", containerWidth)
     .attr("y", d => yScale(d))
     .attr("dx", 0)
     .attr("dy", chartDim.tickOffset)
     .text(d => `${d.toFixed(pricePrecision)} ETH`);
-  // make the bottom line solid.
-  yTicks.select("line").attr("stroke-dasharray", "0");
 }
 
 function drawCandles({
@@ -584,18 +656,15 @@ function drawVolume({
   chartDim,
   candleDim,
   xScale,
-  containerWidth,
-  candleTicks
+  yScale,
+  containerWidth
 }) {
   const yVolumeDomain = [0, ...map("volume")(priceTimeSeries)];
-
+  const [yMax] = yScale.range();
   const yVolumeScale = d3
     .scaleLinear()
     .domain(d3.extent(yVolumeDomain))
-    .range([
-      containerHeight - chartDim.bottom,
-      chartDim.top + (containerHeight - chartDim.bottom) * 0.85
-    ]);
+    .range([yMax, yMax * 0.85]);
 
   candleChart
     .selectAll("rect.volume")
@@ -604,10 +673,7 @@ function drawVolume({
     .append("rect")
     .attr("x", d => xScale(d.period))
     .attr("y", d => yVolumeScale(d.volume))
-    .attr(
-      "height",
-      d => containerHeight - chartDim.bottom - yVolumeScale(d.volume)
-    )
+    .attr("height", d => yMax - yVolumeScale(d.volume))
     .attr("width", d => candleDim.width)
     .attr("class", "period-volume");
 
@@ -615,18 +681,6 @@ function drawVolume({
   if (!maxVolume || maxVolume.volume === 0) return;
 
   const volumeTicks = [maxVolume, { volume: maxVolume.volume / 2 }];
-  const yTicks = candleTicks.append("g").attr("id", "depth_y_ticks");
-
-  yTicks
-    .selectAll("line")
-    .data(volumeTicks)
-    .enter()
-    .append("line")
-    .attr("class", "tick-line-volume")
-    .attr("x1", 0)
-    .attr("x2", containerWidth)
-    .attr("y1", d => yVolumeScale(d.volume))
-    .attr("y2", d => yVolumeScale(d.volume));
 
   candleChart
     .selectAll("text")
@@ -655,23 +709,16 @@ function drawXAxisLabels({
     .append("g")
     .attr("id", "candlestick-x-axis")
     .attr("transform", `translate(0, ${containerHeight - chartDim.bottom})`)
-    .call(tickInterval(d3.axisBottom(xScale)))
-    .select("path")
-    .remove();
-}
+    .call(tickInterval(d3.axisBottom(xScale)));
 
-function drawCrosshairs({ candleTicks }) {
-  // candleTicks.append("text").attr("id", "hovered_candlestick_price_label");
-  const crosshair = candleTicks
-    .append("g")
-    .attr("id", "candlestick_crosshairs")
-    .attr("class", "line")
-    .style("display", "none");
+  candleChart
+    .select(`#candlestick-x-axis`)
+    .attr("font", null)
+    .attr("font-family", null)
+    .attr("font-size", null)
+    .attr("text-anchor", null);
 
-  crosshair
-    .append("line")
-    .attr("id", "candlestick_crosshairY")
-    .attr("class", "crosshair");
+  candleChart.selectAll(".tick text").attr("fill", null);
 }
 
 function attachHoverClickHandlers({
@@ -728,32 +775,34 @@ function attachHoverClickHandlers({
   candleChart.on("mouseout", clearCrosshairs);
 }
 
-function updateHoveredPriceCrosshair(
+function drawCrosshairs(
+  candleChart,
   hoveredPrice,
   yScale,
   chartWidth,
   pricePrecision,
   containerWidth
 ) {
-  d3.selectAll("#hovered_candlestick_price_label").style("display", "none");
-  if (hoveredPrice == null) {
-    d3.select("#candlestick_crosshairs").style("display", "none");
-  } else {
+  if (hoveredPrice != null) {
     const yPosition = yScale(hoveredPrice);
     const clampedHoveredPrice = yScale.invert(yPosition);
-    d3.select("#candlestick_crosshairs").style("display", null);
-    d3.select("#candlestick_crosshairY")
+
+    candleChart
+      .append("g")
+      .attr("id", "candlestick_crosshairs")
+      .attr("class", "line")
       .attr("x1", 0)
       .attr("y1", yPosition)
       .attr("x2", chartWidth)
-      .attr("y2", yPosition);
-    d3.select("#hovered_candlestick_price_label").remove();
-    d3.select("#candle_ticks_container")
+      .attr("y2", yPosition)
+      .append("line")
+      .attr("id", "candlestick_crosshairY")
+      .attr("class", "crosshair");
+    candleChart
       .append("foreignObject")
       .attr("id", "hovered_candlestick_price_label")
       .attr("x", containerWidth + 4)
       .attr("y", yScale(hoveredPrice) - 12)
-      .style("display", "block")
       .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
   }
 }
