@@ -7,6 +7,7 @@ import { SCALAR } from "modules/markets/constants/market-types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { infoIcon } from "modules/common/components/icons";
+import { DashlineLong } from "modules/common/components/dashline/dashline";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
 import { ZERO } from "modules/trades/constants/numbers";
@@ -107,6 +108,7 @@ const MarketTradingConfirm = ({
       {shareCost &&
         shareCost.value !== 0 && (
           <div className={Styles.TradingConfirm__details}>
+            <DashlineLong />
             <div className={Styles.TradingConfirm__position}>
               <div
                 className={classNames(
@@ -151,6 +153,7 @@ const MarketTradingConfirm = ({
       {totalCost &&
         totalCost.value !== 0 && (
           <div className={Styles.TradingConfirm__details}>
+            <DashlineLong />
             <div className={Styles.TradingConfirm__position}>
               <div
                 className={classNames(

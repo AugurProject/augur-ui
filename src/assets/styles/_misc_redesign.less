@@ -1,0 +1,28 @@
+// Redesigned Borders, Border Radius, Box Shadow, and Dash Lines values
+
+// borders
+
+// border radius
+
+// box shadows
+
+// dash lines
+@dash-normal: 1 3;
+@dash-long: 1 5;
+
+.default-dashline {
+  fill: none;
+  stroke: @color-white;
+}
+
+.dashline-normal {
+  .default-dashline;
+
+  stroke-dasharray: @dash-normal;
+}
+
+.dashline-long {
+  .default-dashline;
+
+  stroke-dasharray: @dash-long;
+}

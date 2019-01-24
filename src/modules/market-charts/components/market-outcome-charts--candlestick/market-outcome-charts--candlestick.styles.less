@@ -119,11 +119,16 @@ div.MarketOutcomeChartsHeader__stats {
     }
 
     .tick-line {
-      stroke: @color-gray;
+      .dashline-long;
 
       &--midpoint {
         stroke-width: 2px;
       }
+    }
+
+    .tick-line:first-of-type {
+      stroke: @color-gray;
+      stroke-dasharray: 0;
     }
 
     .tick-value {
@@ -170,9 +175,7 @@ div.MarketOutcomeChartsHeader__stats {
     }
 
     .line .crosshair {
-      fill: none;
-      stroke: @color-white;
-      stroke-dasharray: 1;
+      .dashline-normal;
     }
 
     .period-hover {

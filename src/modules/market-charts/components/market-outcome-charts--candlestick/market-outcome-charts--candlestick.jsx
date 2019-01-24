@@ -21,13 +21,13 @@ import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
 class MarketOutcomeCandlestick extends React.Component {
   static propTypes = {
-    currentTimeInSeconds: PropTypes.number,
+    // currentTimeInSeconds: PropTypes.number,
     fixedPrecision: PropTypes.number.isRequired,
     isMobile: PropTypes.bool,
-    isMobileSmall: PropTypes.bool,
+    // isMobileSmall: PropTypes.bool,
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
-    outcomeName: PropTypes.string.isRequired,
+    // outcomeName: PropTypes.string.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     selectedRange: PropTypes.number.isRequired,
@@ -38,9 +38,9 @@ class MarketOutcomeCandlestick extends React.Component {
   };
 
   static defaultProps = {
-    currentTimeInSeconds: null,
-    isMobile: false,
-    isMobileSmall: false
+    // currentTimeInSeconds: null,
+    isMobile: false
+    // isMobileSmall: false
   };
 
   static getDerivedStateFromProps(
@@ -577,7 +577,6 @@ function drawTicks({
     .enter()
     .append("line")
     .attr("class", "tick-line")
-    .attr("stroke-dasharray", "1 3")
     .attr("x1", x1)
     .attr("x2", x2)
     .attr("y1", d => yScale(d))

@@ -153,8 +153,7 @@
     }
 
     .tick-line--midpoint {
-      stroke: @color-white;
-      stroke-dasharray: 3;
+      .dashline-normal
     }
 
     .tick-line {
@@ -222,9 +221,7 @@
     }
 
     .line .crosshair {
-      fill: none;
-      stroke: @color-white;
-      stroke-dasharray: 5;
+      .dashline-normal;
     }
 
     .line .crosshairDot {
@@ -238,15 +235,15 @@
     }
 
     .line .crosshair-bids {
-      fill: none;
+      .dashline-normal;
+
       stroke: @color-positive;
-      stroke-dasharray: 5;
     }
 
     .line .crosshair-asks {
-      fill: none;
+      .dashline-normal;
+
       stroke: @color-negative;
-      stroke-dasharray: 5;
     }
 
     .overlay {

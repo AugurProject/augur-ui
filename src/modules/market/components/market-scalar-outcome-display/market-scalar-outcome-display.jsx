@@ -5,6 +5,7 @@ import classNames from "classnames";
 import getValue from "utils/get-value";
 import CustomPropTypes from "utils/custom-prop-types";
 import { createBigNumber } from "utils/create-big-number";
+import { DashlineLong } from "modules/common/components/dashline/dashline";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-scalar-outcome-display/market-scalar-outcome-display.styles";
 
@@ -53,6 +54,7 @@ const MarketScalarOutcomeDisplay = ({
       <div className={Styles.MarketScalarOutcomes__graph}>
         <div className={Styles.MarketScalarOutcomes__edge} />
         <div className={Styles.MarketScalarOutcomes__line}>
+          <DashlineLong />
           <span
             className={Styles.MarketScalarOutcomes__current}
             style={currentValuePosition}

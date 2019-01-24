@@ -112,9 +112,7 @@
 }
 
 .MarketOutcomesChart__tick-line {
-  stroke: @color-gray;
-  stroke-dasharray: 1 4;
-  stroke-width: 1px;
+  .dashline-long;
 }
 
 .MarketOutcomesChart__tick-line--excluded {
@@ -141,9 +139,7 @@
 }
 
 .MarketOutcomesChart__crosshair {
-  fill: none;
-  stroke: @color-white;
-  stroke-dasharray: 1 4;
+  .dashline-normal;
 }
 
 .MarketOutcomesChart__scalar_denomination_label {
