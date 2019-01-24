@@ -245,4 +245,8 @@ MarketTradingConfirm.propTypes = {
   scalarDenomination: PropTypes.string
 };
 
+MarketTradingConfirm.defaultProps = {
+  scalarDenomination: ""
+};
+
 export default MarketTradingConfirm;
