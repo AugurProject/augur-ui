@@ -82,7 +82,21 @@ export function updateTradeShares({
       totalCost: "0"
     };
 
-    // need to figure out how many shares user can purchase given maxCost
+    /*
+    market -5 => 10
+    Ultimate values we want: quantity 10, price 0, maxCost 50/100 (long/short)
+
+    Range = Max - Min = 10 - -5 = 15
+    scaledPrice = price + abs(min) = 0 + [-5] = 5
+
+    Find MaxCost:
+    quantity * scaledPrice = MaxCostLong => 10 * 5 = 50
+    (Range * quantity) - MaxCostLong = maxCostShort => (15 * 10) - 50 = 100
+
+    Find Quantity:
+    MaxCostLong / scaledPrice = quantityLong => 50 / 5 = 10
+    MaxCostShort /(range - scaledPrice) = quantityShort => 100 / (15 - 5) = 10
+    */
 
     // calculate num shares
     const marketMaxPrice = createBigNumber(market.maxPrice);
