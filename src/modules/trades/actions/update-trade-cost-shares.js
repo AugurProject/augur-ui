@@ -86,15 +86,16 @@ export function updateTradeShares({
 
     // calculate num shares
     const marketMaxPrice = createBigNumber(market.maxPrice);
-    const marketRange = marketMaxPrice.minus(market.minPrice).abs();
-    const bnPrice = createBigNumber(limitPrice);
-    const price =
-      side === BUY
-        ? bnPrice.minus(market.minPrice).dividedBy(marketRange)
-        : marketMaxPrice.minus(bnPrice).dividedBy(marketRange);
+    const marketMinPrice = createBigNumber(market.minPrice);
+    const marketRange = marketMaxPrice.minus(market.minPrice);
+    const scaledPrice = createBigNumber(limitPrice).plus(marketMinPrice.abs());
 
-    let newShares = createBigNumber(maxCost).dividedBy(price);
-
+    let newShares = createBigNumber(maxCost).dividedBy(
+      marketRange.minus(scaledPrice)
+    );
+    if (side === BUY) {
+      newShares = createBigNumber(maxCost).dividedBy(scaledPrice);
+    }
     const marketPosition = accountPositions[marketId];
     if (marketPosition && marketPosition[outcomeId]) {
       // How many shares user can buy with totalCost/maxCost amount
