@@ -124,13 +124,13 @@ class PerformanceGraph extends Component {
   changeDropdown(value) {
     let { graphType, graphPeriod, startTime } = this.state;
 
-    this.state.graphTypeOptions.forEach((type, ind) => {
+    this.state.graphTypeOptions.forEach(type => {
       if (type.value === value) {
         graphType = value;
       }
     });
 
-    this.state.graphPeriodOptions.forEach((period, ind) => {
+    this.state.graphPeriodOptions.forEach(period => {
       if (period.value === value) {
         graphPeriod = value;
       }
@@ -153,10 +153,9 @@ class PerformanceGraph extends Component {
       }
     ];
     const seriesData = [];
-    performanceData.forEach((object, index) => {
+    performanceData.forEach(profitLoss => {
       const plotPoint = [];
-      const { profitLoss } = object;
-      plotPoint.push(object.timestamp * 1000);
+      plotPoint.push(profitLoss.timestamp * 1000);
       if (profitLoss && profitLoss[graphType]) {
         plotPoint.push(formatEther(profitLoss[graphType]).formattedValue);
       } else {
@@ -180,18 +179,9 @@ class PerformanceGraph extends Component {
       startTime,
       endTime,
       null,
-      (err, rawPerformanceData) => {
+      null,
+      (err, performanceData) => {
         if (err) return console.error(err);
-        // make the first entry into the data a 0 value to make sure we start from 0 PL
-        const { aggregate } = rawPerformanceData;
-        const interval = aggregate[1].timestamp - aggregate[0].timestamp;
-        let performanceData = [
-          {
-            timestamp: aggregate[0].timestamp - interval,
-            profitLoss: { unrealized: "0", realized: "0", total: "0" }
-          }
-        ];
-        performanceData = performanceData.concat(aggregate);
         if (this.componentWrapper)
           this.setState({ performanceData }, () => {
             if (this.componentWrapper) this.parsePerformanceData();
@@ -290,8 +280,6 @@ class PerformanceGraph extends Component {
     // x axis
     chart
       .append("g")
-      .attr("fill", "#fff")
-      .attr("stroke", "#fff")
       .attr("transform", `translate(0, ${height})`)
       .call(
         d3
@@ -299,21 +287,15 @@ class PerformanceGraph extends Component {
           .tickFormat(dateTickFormat)
           .ticks(tickCount)
       )
-      .attr("stroke", "#fff")
-      .select(".domain")
-      .attr("stroke", "#fff");
+      .select(".domain");
     // y axis
     chart
       .append("g")
-      .attr("stroke", "#fff")
       .call(
         d3.axisLeft(y).tickFormat(v => `${formatEther(v).formattedValue} ETH`)
       )
-      .attr("stroke", "#fff")
       .select(".domain")
-      .attr("stroke", "#fff")
       .append("text")
-      .attr("fill", "#fff")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
       .attr("dy", "0.71em")
@@ -323,27 +305,27 @@ class PerformanceGraph extends Component {
     chart
       .append("path")
       .datum(selectedSeriesData[0].data)
-      .attr("fill", "none")
       .attr("stroke", `${selectedSeriesData[0].color}`)
       .attr("stroke-linejoin", "round")
       .attr("stroke-linecap", "round")
       .attr("stroke-width", 2)
       .attr("d", line);
-    chart
-      .selectAll("g")
-      .selectAll(".tick line")
-      .attr("stroke", "#fff");
+    chart.selectAll("g").selectAll(".tick line");
 
-    const focus = this.chart
-      .append("g")
-      .attr("stroke", "#fff")
-      .attr("color", "#fff")
-      .attr("fill", "#fff")
-      .style("display", "none");
+    const focus = this.chart.append("g").style("display", "none");
 
-    focus.append("circle").attr("r", 4.5);
-    focus.append("text").attr("id", "crosshair_text_eth");
-    focus.append("text").attr("id", "crosshair_text_date");
+    focus
+      .append("circle")
+      .attr("r", 4.5)
+      .attr("fill", "white");
+    focus
+      .append("text")
+      .attr("id", "crosshair_text_eth")
+      .attr("fill", "white");
+    focus
+      .append("text")
+      .attr("id", "crosshair_text_date")
+      .attr("fill", "white");
 
     this.chart
       .append("rect")

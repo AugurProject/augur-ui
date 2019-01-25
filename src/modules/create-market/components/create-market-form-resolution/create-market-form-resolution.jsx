@@ -353,6 +353,15 @@ export default class CreateMarketResolution extends Component {
               </ReactTooltip>
             </div>
           </label>
+          <p>
+            This should be a date and time sufficiently <b>after</b> the event,
+            when the result can be viewed publicly.
+          </p>
+          <p style={{ marginBottom: "1rem" }}>
+            If an event happens on 01/01 and is reported on 01/02, the
+            expiration date should be after the time it&apos;s reported on
+            01/02.
+          </p>
           <SingleDatePicker
             id="cm__input--date"
             date={this.state.date}

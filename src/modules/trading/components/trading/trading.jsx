@@ -8,6 +8,7 @@ import { isEqual } from "lodash";
 import classNames from "classnames";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
+import { FindReact } from "utils/find-react";
 import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/trading/components/trading/trading.styles";
 
@@ -21,6 +22,7 @@ class MarketTrading extends Component {
     selectedOrderProperties: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
+    handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired
   };
 
@@ -93,7 +95,8 @@ class MarketTrading extends Component {
       isMobile,
       market,
       selectedOrderProperties,
-      gasPrice
+      gasPrice,
+      handleFilledOnly
     } = this.props;
     const s = this.state;
 
@@ -104,7 +107,7 @@ class MarketTrading extends Component {
 
     switch (true) {
       case !isLogged:
-        initialMessage = "Log in to trade.";
+        initialMessage = "Signup or login to trade.";
         break;
       case isLogged && !hasFunds:
         initialMessage = "Add funds to begin trading.";
@@ -134,6 +137,7 @@ class MarketTrading extends Component {
               this.props.updateSelectedOrderProperties
             }
             gasPrice={gasPrice}
+            handleFilledOnly={handleFilledOnly}
           />
         )}
         {isMobile &&
@@ -141,8 +145,27 @@ class MarketTrading extends Component {
           initialMessage && (
             <div className={Styles["Trading__initial-message"]}>
               <p>
-                {!isLogged ? <span>Log in to trade.</span> : initialMessage}
+                {!isLogged ? (
+                  <span>Signup or login to trade.</span>
+                ) : (
+                  initialMessage
+                )}
               </p>
+              {!isLogged && (
+                <button
+                  id="login-button"
+                  className={Styles["TradingWrapper__button--login"]}
+                  onClick={() =>
+                    FindReact(
+                      document.getElementsByClassName(
+                        "connect-account-styles_ConnectAccount"
+                      )[0]
+                    ).toggleDropdown()
+                  }
+                >
+                  Sign in to trade
+                </button>
+              )}
               {!hasFunds &&
                 isLogged && (
                   <Link to={makePath(ACCOUNT_DEPOSIT)}>
