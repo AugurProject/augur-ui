@@ -17,6 +17,7 @@ import Styles from "modules/trading/components/trading--form/trading--form.style
 
 import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
+import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 
 class TradingForm extends Component {
   static propTypes = {
@@ -37,7 +38,8 @@ class TradingForm extends Component {
     clearOrderForm: PropTypes.func.isRequired,
     updateTradeTotalCost: PropTypes.func.isRequired,
     updateTradeNumShares: PropTypes.func.isRequired,
-    showSelectOutcome: PropTypes.func.isRequired
+    showSelectOutcome: PropTypes.func.isRequired,
+    updateSelectedOrderProperties: PropTypes.func.isRequired
   };
 
   static isFloatValue(value) {
@@ -405,7 +407,8 @@ class TradingForm extends Component {
       minPrice,
       updateState,
       showSelectOutcome,
-      isMobile
+      isMobile,
+      updateSelectedOrderProperties
     } = this.props;
     const s = this.state;
 
@@ -438,12 +441,28 @@ class TradingForm extends Component {
             />
           </div>
         )}
-        {market.marketType === YES_NO && (
-          <div className={Styles.TradingForm__outcome__container}>
-            <div className={Styles.TradingForm__outcome__container__yes}>
-              Yes
+        {market.marketType === YES_NO &&
+          !isMobile && (
+            <div className={Styles.TradingForm__outcome__container}>
+              <div className={Styles.TradingForm__outcome__container__yes}>
+                Yes
+              </div>
             </div>
-          </div>
+          )}
+        {isMobile && (
+          <MarketOutcomeOrders
+            headerHeight={0}
+            isMobile={isMobile}
+            fixedPrecision={4}
+            pricePrecision={4}
+            hoveredPrice={null}
+            updateHoveredPrice={null}
+            updatePrecision={null}
+            updateSelectedOrderProperties={updateSelectedOrderProperties}
+            marketId={market.id}
+            selectedOutcome={selectedOutcome && selectedOutcome.id}
+            onMobileTradingPage
+          />
         )}
         <ul className={Styles["TradingForm__form-body"]}>
           <li className={Styles["TradingForm__limit-quantity"]}>

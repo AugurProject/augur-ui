@@ -158,3 +158,20 @@
   font-size: 10px;
   margin-left: 2px;
 }
+
+@media @breakpoint-mobile {
+  .MarketOutcomeOrderBook__trading {
+    height: 300px;
+    margin: 0 1rem;
+    margin-bottom: 1.5rem;
+    max-height: 300px;
+  }
+
+  .MarketOutcomeOrderBook__row__trading {
+    min-height: 30px;
+
+    &::before {
+      height: 28px;
+    }
+  }
+}

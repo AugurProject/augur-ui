@@ -5,7 +5,7 @@ import { BigNumber, createBigNumber } from "utils/create-big-number";
 
 import TradingForm from "modules/trading/components/trading--form/trading--form";
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
-import { Close } from "modules/common/components/icons";
+import { downChevron } from "modules/common/components/icons";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
@@ -238,7 +238,8 @@ class TradingWrapper extends Component {
       handleFilledOnly,
       updateSelectedOutcome,
       toggleMobileView,
-      showSelectOutcome
+      showSelectOutcome,
+      updateSelectedOrderProperties
     } = this.props;
     const s = this.state;
     const {
@@ -260,7 +261,7 @@ class TradingWrapper extends Component {
                 onClick={toggleMobileView}
                 className={Styles.TradingWrapper__close}
               >
-                {Close}
+                {downChevron}
               </span>
             )}
             <ul
@@ -343,6 +344,7 @@ class TradingWrapper extends Component {
                 updateTradeTotalCost={this.updateTradeTotalCost}
                 updateTradeNumShares={this.updateTradeNumShares}
                 showSelectOutcome={showSelectOutcome}
+                updateSelectedOrderProperties={updateSelectedOrderProperties}
               />
             )}
         </div>

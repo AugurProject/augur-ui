@@ -21,7 +21,12 @@ export default class MarketOutcomeChartsOrders extends Component {
     isMobile: PropTypes.bool.isRequired,
     headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
-    orderBookKeys: PropTypes.object.isRequired
+    orderBookKeys: PropTypes.object.isRequired,
+    onMobileTradingPage: PropTypes.bool
+  };
+
+  static defaultProps = {
+    onMobileTradingPage: false
   };
 
   constructor(props) {
@@ -56,14 +61,19 @@ export default class MarketOutcomeChartsOrders extends Component {
       isMobile,
       headerHeight,
       hasOrders,
-      orderBookKeys
+      orderBookKeys,
+      onMobileTradingPage
     } = this.props;
     const s = this.state;
 
     const orderBookAsks = orderBook.asks || [];
 
     return (
-      <section className={Styles.MarketOutcomeOrderBook}>
+      <section
+        className={classNames(Styles.MarketOutcomeOrderBook, {
+          [Styles.MarketOutcomeOrderBook__trading]: onMobileTradingPage
+        })}
+      >
         <MarketOutcomeHeaderOrders
           isMobile={isMobile}
           headerHeight={headerHeight}
@@ -97,7 +107,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     [Styles["MarketOutcomeOrderbook__row--hover-encompassed"]]:
                       s.hoveredOrderIndex !== null &&
                       s.hoveredSide === ASKS &&
-                      i > s.hoveredOrderIndex
+                      i > s.hoveredOrderIndex,
+                    [Styles.MarketOutcomeOrderBook__row__trading]: onMobileTradingPage
                   }
                 )}
                 onMouseEnter={() => {
@@ -193,7 +204,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                   [Styles["MarketOutcomeOrderbook__row--hover-encompassed"]]:
                     s.hoveredOrderIndex !== null &&
                     s.hoveredSide === BIDS &&
-                    i < s.hoveredOrderIndex
+                    i < s.hoveredOrderIndex,
+                  [Styles.MarketOutcomeOrderBook__row__trading]: onMobileTradingPage
                 })}
                 onMouseEnter={() => {
                   // updateHoveredPrice(order.price.value);

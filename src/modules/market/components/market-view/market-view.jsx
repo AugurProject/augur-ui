@@ -480,7 +480,6 @@ export default class MarketView extends Component {
               <MarketOutcomeOrders
                 headerHeight={0}
                 isMobile={isMobile}
-                sharedChartMargins={this.sharedChartMargins}
                 fixedPrecision={4}
                 pricePrecision={4}
                 hoveredPrice={null}

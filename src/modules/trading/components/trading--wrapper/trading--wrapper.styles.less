@@ -8,10 +8,11 @@
 
 .TradingWrapper__close {
   display: block;
+  left: 20px;
   max-height: 1.25rem;
   max-width: 1.25rem;
-  padding-left: 0.625rem;
-  padding-top: 0.625rem;
+  position: absolute;
+  top: 40%;
 }
 
 .TradingWrapper__header_buy,
@@ -184,7 +185,7 @@
   .TradingWrapper {
     bottom: 0;
     height: 100vh;
-    min-height: 660px;
+    min-height: 1000px;
     overflow-y: auto;
     top: 0;
     width: 100vw;
@@ -192,9 +193,12 @@
   }
 
   .TradingWrapper__darkbg {
-    // margin-top: 0;
     background: @color-light-purple;
-    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 1rem;
+    position: relative;
   }
 
   .TradingWrapper__actions {
@@ -208,7 +212,7 @@
   .TradingWrapper__header {
     background: @color-dark-grayish-purple;
     border-radius: 625rem;
-    margin: 1.125rem auto;
+    margin: 0 auto;
     max-height: 2.25rem;
     width: 14.5rem;
 
