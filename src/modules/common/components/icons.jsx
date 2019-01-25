@@ -1,5 +1,12 @@
 import React from "react";
 
+export const BackArrow = (
+  <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 1L1 5L5 9" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="2" y="4" width="16" height="2" rx="1" fill="white"/>
+  </svg>
+);
+
 export const twoArrows = (
   <svg
     width="60"
@@ -967,37 +974,8 @@ export const ChevronFlipIcon = (className = "", fillColor = "#A7A2B2") => (
 );
 
 export const ChevronFlipFilledIcon = (className = "", fillColor = "#FFF") => (
-  <svg
-    width="12px"
-    height="8px"
-    viewBox="0 0 12 8"
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <defs />
-    <g
-      id="Create/Connect-Account"
-      stroke="none"
-      strokeWidth="1"
-      fill="none"
-      fillRule="evenodd"
-    >
-      <g
-        id="SoftwareWalletDisconnectedInactive"
-        transform="translate(-281.000000, -32.000000)"
-        fill={fillColor}
-        fillRule="nonzero"
-      >
-        <g id="connectWallet" transform="translate(125.000000, 0.000000)">
-          <polygon
-            id="Triangle"
-            transform="translate(162.000000, 36.000000) scale(1, -1) translate(-162.000000, -36.000000) "
-            points="162 32 168 40 156 40"
-          />
-        </g>
-      </g>
-    </g>
+  <svg className={className} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 1L5 5L1 1" stroke={fillColor} stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 );
 
@@ -1034,14 +1012,7 @@ export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
             stroke={stroke}
             strokeWidth="0.894"
           />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M18.3389 17.4491C16.5789 14.4471 15.2629 11.4471 15.4209 8.44708C15.5789 5.44708 12.7349 2.44708 9.42091 2.44708C6.10691 2.44708 3.24691 5.13808 3.42091 8.44708C3.57891 11.4471 2.57891 14.4471 0.578907 17.4471C-1.42109 20.4471 20.0989 20.4501 18.3389 17.4491Z"
-            fill={stroke}
-            stroke={stroke}
-            strokeWidth="0"
-          />
+         <path fill-rule="evenodd" clip-rule="evenodd" d="M18.3387 17.4493C16.5787 14.4473 15.2627 11.4473 15.4207 8.44727C15.5787 5.44727 12.7347 2.44727 9.42066 2.44727C6.10666 2.44727 3.24666 5.13827 3.42066 8.44727C3.57866 11.4473 2.57866 14.4473 0.578663 17.4473C-1.42134 20.4473 20.0987 20.4503 18.3387 17.4493Z" fill={stroke} stroke={stroke} stroke-width="0.894"/>
         </g>
         {!!unseenCount && (
           <g

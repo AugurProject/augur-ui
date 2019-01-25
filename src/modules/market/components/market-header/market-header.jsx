@@ -7,7 +7,7 @@ import {
   starIconFilled,
   ChevronDown,
   ChevronUp,
-  ChevronLeft
+  BackArrow
 } from "modules/common/components/icons";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 import MarketHeaderBar from "modules/market/containers/market-header-bar";
@@ -119,7 +119,7 @@ export default class MarketHeader extends Component {
           className={Styles[`MarketHeader__back-button`]}
           onClick={() => history.goBack()}
         >
-          {ChevronLeft}
+          {BackArrow}
           <span> back</span>
         </button>
         <div className={Styles[`MarketHeader__main-values`]}>
