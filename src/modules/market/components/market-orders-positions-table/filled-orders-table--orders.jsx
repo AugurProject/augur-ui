@@ -24,7 +24,7 @@ export default class FilledOrdersOrder extends Component {
       type: PropTypes.string.isRequired,
       timestamp: PropTypes.number.isRequired,
       price: PropTypes.object.isRequired,
-      outcome: PropTypes.any.isRequired,
+      outcome: PropTypes.any,
       trades: PropTypes.array.isRequired
     }).isRequired,
     oddNumber: PropTypes.bool,
