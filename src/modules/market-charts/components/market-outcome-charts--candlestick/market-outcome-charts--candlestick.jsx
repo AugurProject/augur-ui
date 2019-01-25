@@ -89,7 +89,7 @@ class MarketOutcomeCandlestick extends React.Component {
 
     this.state = MarketOutcomeCandlestick.getDerivedStateFromProps(props, {
       candleDim: {
-        width: 6,
+        width: 12,
         gap: 9
       },
       containerHeight: 0,
