@@ -123,7 +123,7 @@ class TradingWrapper extends Component {
         orderQuantity: "",
         orderEthEstimate: "",
         doNotCreateOrders: false,
-        selectedNav: "buy",
+        selectedNav: this.state.selectedNav,
         trade
       });
     } else {
