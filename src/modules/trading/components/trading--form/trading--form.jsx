@@ -9,7 +9,7 @@ import {
   CATEGORICAL,
   SCALAR
 } from "modules/markets/constants/market-types";
-import { isEqual } from "lodash";
+import { isEqual, reverse } from "lodash";
 // import ReactTooltip from "react-tooltip";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
 import FormStyles from "modules/common/less/form";
@@ -43,11 +43,27 @@ class TradingForm extends Component {
   };
 
   static isFloatValue(value) {
+    // need a better approach to this
     let testValue = value;
     if (value === "") return false;
     if (typeof value === "string" && value.startsWith("."))
       testValue = `0${testValue}`;
     const isfloatValue = parseFloat(testValue);
+    if (typeof testValue === "string") {
+      // trim ending zeros
+      let purned = "";
+      let foundStopper = false;
+      reverse(testValue.split("")).forEach(chara => {
+        if (chara === "." || chara !== "0") foundStopper = true;
+        if ((chara !== "0" && !foundStopper) || foundStopper) {
+          purned += chara;
+        }
+      });
+      testValue =
+        reverse(purned.split(""))
+          .join("")
+          .replace(/\.$/, "") || testValue;
+    }
     if (isfloatValue.toString() !== testValue.toString()) return false;
     return true;
   }
@@ -132,10 +148,10 @@ class TradingForm extends Component {
   testTotal(value, errors, isOrderValid, price) {
     let errorCount = 0;
     let passedTest = !!isOrderValid;
-    if (!BigNumber.isBigNumber(value) || !BigNumber.isBigNumber(price)) {
+    if (value === "") {
       return { isOrderValid: false, errors, errorCount };
     }
-    if (value && value.lt(0)) {
+    if (value && createBigNumber(value).lt(0)) {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.EST_ETH].push(
@@ -145,7 +161,9 @@ class TradingForm extends Component {
     if (!TradingForm.isFloatValue(value)) {
       errorCount += 1;
       passedTest = false;
-      errors[this.INPUT_TYPES.EST_ETH].push("value is not a number");
+      errors[this.INPUT_TYPES.EST_ETH].push(
+        "Total Order Value is not a number"
+      );
     }
     return { isOrderValid: passedTest, errors, errorCount };
   }
@@ -163,7 +181,7 @@ class TradingForm extends Component {
     if (!TradingForm.isFloatValue(value)) {
       errorCount += 1;
       passedTest = false;
-      errors[this.INPUT_TYPES.QUANTITY].push("value is not a number");
+      errors[this.INPUT_TYPES.QUANTITY].push("Quantity is not a number");
     }
     return { isOrderValid: passedTest, errors, errorCount };
   }
@@ -186,7 +204,7 @@ class TradingForm extends Component {
     if (!TradingForm.isFloatValue(value)) {
       errorCount += 1;
       passedTest = false;
-      errors[this.INPUT_TYPES.PRICE].push("value is not a number");
+      errors[this.INPUT_TYPES.PRICE].push("Price is not a number");
     }
     // removed this validation for now, let's let augur.js handle this.
     if (value && value.mod(tickSize).gt("0")) {
@@ -295,10 +313,10 @@ class TradingForm extends Component {
 
     const validationResults = this.orderValidation(updatedState, this.props);
 
-    if (!TradingForm.isFloatValue(value)) {
+    if (value !== "" && !TradingForm.isFloatValue(value)) {
       validationResults.errorCount += 1;
       validationResults.isOrderValid = false;
-      validationResults.errors[property].push("value is not a number");
+      validationResults.errors[property].push("Value is not a number");
     }
 
     if (validationResults.errorCount > 0) {
@@ -354,12 +372,14 @@ class TradingForm extends Component {
             ) {
               if (
                 order[this.INPUT_TYPES.EST_ETH] &&
-                order[this.INPUT_TYPES.PRICE]
+                order[this.INPUT_TYPES.PRICE] &&
+                order[this.INPUT_TYPES.EST_ETH] !== "0"
               ) {
                 updateTradeNumShares(order);
               } else if (
                 order[this.INPUT_TYPES.QUANTITY] &&
-                order[this.INPUT_TYPES.PRICE]
+                order[this.INPUT_TYPES.PRICE] &&
+                order[this.INPUT_TYPES.QUANTITY] !== "0"
               ) {
                 updateTradeTotalCost(order);
               }
@@ -493,7 +513,14 @@ class TradingForm extends Component {
                   this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
                 }
               />
-              <span>Shares</span>
+              <span
+                className={classNames({
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.QUANTITY]
+                    .length
+                })}
+              >
+                Shares
+              </span>
             </div>
           </li>
           <li className={Styles["TradingForm__limit-price"]}>
@@ -567,7 +594,13 @@ class TradingForm extends Component {
                   this.validateForm(this.INPUT_TYPES.EST_ETH, e.target.value)
                 }
               />
-              <span>ETH</span>
+              <span
+                className={classNames({
+                  [`${Styles.error}`]: s.errors[this.INPUT_TYPES.EST_ETH].length
+                })}
+              >
+                ETH
+              </span>
             </div>
             <label className={Styles.smallLabel}>
               (Max cost of ETH will be escrowed)
