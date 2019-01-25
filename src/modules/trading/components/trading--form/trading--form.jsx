@@ -41,9 +41,12 @@ class TradingForm extends Component {
   };
 
   static isFloatValue(value) {
+    let testValue = value;
     if (value === "") return false;
-    const isfloatValue = parseFloat(value);
-    if (isfloatValue.toString() !== value.toString()) return false;
+    if (typeof value === "string" && value.startsWith("."))
+      testValue = `0${testValue}`;
+    const isfloatValue = parseFloat(testValue);
+    if (isfloatValue.toString() !== testValue.toString()) return false;
     return true;
   }
 
@@ -82,6 +85,7 @@ class TradingForm extends Component {
     };
     this.changeOutcomeDropdown = this.changeOutcomeDropdown.bind(this);
     this.updateTestProperty = this.updateTestProperty.bind(this);
+    this.clearOrderFormProperties = this.clearOrderFormProperties.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -335,6 +339,29 @@ class TradingForm extends Component {
     );
   }
 
+  clearOrderFormProperties() {
+    const { selectedNav, clearOrderForm } = this.props;
+    const startState = {
+      [this.INPUT_TYPES.QUANTITY]: "",
+      [this.INPUT_TYPES.PRICE]: "",
+      [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: false,
+      [this.INPUT_TYPES.SELECTED_NAV]: selectedNav,
+      [this.INPUT_TYPES.EST_ETH]: "",
+      errors: {
+        [this.INPUT_TYPES.QUANTITY]: [],
+        [this.INPUT_TYPES.PRICE]: [],
+        [this.INPUT_TYPES.EST_ETH]: []
+      }
+    };
+    this.setState(
+      {
+        ...startState,
+        isOrderValid: false
+      },
+      () => clearOrderForm()
+    );
+  }
+
   changeOutcomeDropdown(value) {
     const { updateSelectedOutcome } = this.props;
     updateSelectedOutcome(value);
@@ -348,7 +375,6 @@ class TradingForm extends Component {
       maxPrice,
       minPrice,
       updateState,
-      clearOrderForm,
       showSelectOutcome,
       isMobile
     } = this.props;
@@ -518,7 +544,7 @@ class TradingForm extends Component {
             </label>
             <button
               className={Styles.TradingForm__button__clear}
-              onClick={() => clearOrderForm()}
+              onClick={() => this.clearOrderFormProperties()}
             >
               Clear
             </button>

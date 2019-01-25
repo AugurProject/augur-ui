@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { BigNumber } from "utils/create-big-number";
+import { BigNumber, createBigNumber } from "utils/create-big-number";
 
 import TradingForm from "modules/trading/components/trading--form/trading--form";
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
@@ -215,11 +215,12 @@ class TradingWrapper extends Component {
           (err, newOrder) => {
             if (err) return console.log(err); // what to do with error here
 
+            const numShares = createBigNumber(newOrder.numShares).toFixed(4);
             this.updateState({
               ...this.state,
               ...order,
               event: "UPDATE_QUANTITY",
-              orderQuantity: newOrder.numShares.toString(),
+              orderQuantity: numShares,
               trade: newOrder
             });
           }
