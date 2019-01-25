@@ -169,6 +169,23 @@
       "broadcast": false
     }
   },
+  "mainnet-dynamic": {
+    "augur-node": "AUGUR_NODE_TO_REPLACE",
+    "ethereum-node": {
+      "http": "ETHEREUM_HTTP_TO_REPLACE",
+      "ws": "ETHEREUM_WS_TO_REPLACE",
+      "pollingIntervalMilliseconds": 10000,
+      "blockRetention": 100,
+      "connectionTimeout": 60000
+    },
+    "universe": null,
+    "bug-bounty": false,
+    "bug-bounty-address": null,
+    "debug": {
+      "connect": true,
+      "broadcast": false
+    }
+  },
   "mainnet": {
     "augur-node": "ws://127.0.0.1:9001",
     "ethereum-node": {
