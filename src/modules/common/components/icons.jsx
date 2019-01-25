@@ -1,9 +1,22 @@
 import React from "react";
 
 export const BackArrow = (
-  <svg width="18" height="10" viewBox="0 0 18 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 1L1 5L5 9" stroke="white" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-    <rect x="2" y="4" width="16" height="2" rx="1" fill="white"/>
+  <svg
+    width="18"
+    height="10"
+    viewBox="0 0 18 10"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M5 1L1 5L5 9"
+      stroke="white"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <rect x="2" y="4" width="16" height="2" rx="1" fill="white" />
   </svg>
 );
 
@@ -974,8 +987,22 @@ export const ChevronFlipIcon = (className = "", fillColor = "#A7A2B2") => (
 );
 
 export const ChevronFlipFilledIcon = (className = "", fillColor = "#FFF") => (
-  <svg className={className} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M9 1L5 5L1 1" stroke={fillColor} stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <svg
+    className={className}
+    width="10"
+    height="6"
+    viewBox="0 0 10 6"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M9 1L5 5L1 1"
+      stroke={fillColor}
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -1012,7 +1039,14 @@ export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
             stroke={stroke}
             strokeWidth="0.894"
           />
-         <path fill-rule="evenodd" clip-rule="evenodd" d="M18.3387 17.4493C16.5787 14.4473 15.2627 11.4473 15.4207 8.44727C15.5787 5.44727 12.7347 2.44727 9.42066 2.44727C6.10666 2.44727 3.24666 5.13827 3.42066 8.44727C3.57866 11.4473 2.57866 14.4473 0.578663 17.4473C-1.42134 20.4473 20.0987 20.4503 18.3387 17.4493Z" fill={stroke} stroke={stroke} stroke-width="0.894"/>
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M18.3387 17.4493C16.5787 14.4473 15.2627 11.4473 15.4207 8.44727C15.5787 5.44727 12.7347 2.44727 9.42066 2.44727C6.10666 2.44727 3.24666 5.13827 3.42066 8.44727C3.57866 11.4473 2.57866 14.4473 0.578663 17.4473C-1.42134 20.4473 20.0987 20.4503 18.3387 17.4493Z"
+            fill={stroke}
+            stroke={stroke}
+            strokeWidth="0.894"
+          />
         </g>
         {!!unseenCount && (
           <g
