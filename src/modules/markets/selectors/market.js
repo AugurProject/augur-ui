@@ -318,7 +318,6 @@ export function assembleMarket(
 
         market.outcomes = [];
 
-        let marketTradeOrders = [];
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];

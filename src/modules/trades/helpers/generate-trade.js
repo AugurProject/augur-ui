@@ -5,7 +5,6 @@ import calcOrderProfitLossPercents from "modules/trades/helpers/calc-order-profi
 import { augur } from "services/augurjs";
 import { calculateMaxPossibleShares } from "modules/markets/helpers/calculate-max-possible-shares";
 import { BIDS, ASKS } from "modules/orders/constants/orders";
-import { ZERO } from "modules/trades/constants/numbers";
 import * as TRANSACTIONS_TYPES from "modules/transactions/constants/types";
 import { selectAggregateOrderBook } from "modules/orders/helpers/select-order-book";
 import store from "src/store";
