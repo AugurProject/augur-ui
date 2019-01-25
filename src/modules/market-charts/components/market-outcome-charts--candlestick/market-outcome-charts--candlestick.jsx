@@ -225,6 +225,18 @@ class MarketOutcomeCandlestick extends React.Component {
       yScale
     });
 
+    drawVolume({
+      boundDiff,
+      candleChart,
+      candleDim,
+      chartDim,
+      containerHeight,
+      containerWidth,
+      priceTimeSeries,
+      xScale,
+      yScale
+    });
+
     drawCandles({
       boundDiff,
       candleChart,
@@ -238,20 +250,6 @@ class MarketOutcomeCandlestick extends React.Component {
       yScale
     });
 
-    drawVolume({
-      boundDiff,
-      candleChart,
-      candleDim,
-      chartDim,
-      containerHeight,
-      containerWidth,
-      priceTimeSeries,
-      xScale,
-      yScale
-    });
-
-    const tickInterval = getTickIntervalForRange(selectedRange);
-
     drawXAxisLabels({
       priceTimeSeries,
       candleChart,
@@ -260,7 +258,7 @@ class MarketOutcomeCandlestick extends React.Component {
       chartDim,
       candleDim,
       boundDiff,
-      tickInterval,
+      tickInterval: getTickIntervalForRange(selectedRange),
       yDomain,
       xScale
     });
