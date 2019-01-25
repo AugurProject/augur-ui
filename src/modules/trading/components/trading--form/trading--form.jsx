@@ -428,7 +428,8 @@ class TradingForm extends Component {
       updateState,
       showSelectOutcome,
       isMobile,
-      updateSelectedOrderProperties
+      // updateSelectedOrderProperties,
+      updateOrderProperty
     } = this.props;
     const s = this.state;
 
@@ -478,7 +479,7 @@ class TradingForm extends Component {
             hoveredPrice={null}
             updateHoveredPrice={null}
             updatePrecision={null}
-            updateSelectedOrderProperties={updateSelectedOrderProperties}
+            updateSelectedOrderProperties={updateOrderProperty}
             marketId={market.id}
             selectedOutcome={selectedOutcome && selectedOutcome.id}
             onMobileTradingPage
