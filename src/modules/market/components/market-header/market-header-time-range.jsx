@@ -7,6 +7,7 @@ import {
   convertUnixToFormattedDate,
   getHoursRemaining
 } from "utils/format-date";
+import classNames from "classnames";
 
 const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
   const startTimestamp = startTime.timestamp || 0;
@@ -42,7 +43,12 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
         <div
           className={Styles["MarketHeader__property__headerContainer--mobile"]}
         >
-          <span className={Styles["MarketHeader__property__header--mobile"]}>
+          <span
+            className={classNames(
+              Styles["MarketHeader__property__header--mobile"],
+              Styles.MarketHeader__property__headerCreated
+            )}
+          >
             Created
           </span>
           <span className={Styles["MarketHeader__property__header--mobile"]}>
@@ -65,9 +71,14 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
         />
       </div>
       <div className={Styles.MarketHeaderTimeRange__dates}>
-        <div>
+        <div className={Styles.MarketHeaderTimeRange__datesContainer}>
           {!isMobile && (
-            <span className={MarketHeaderStyles.MarketHeader__property__header}>
+            <span
+              className={classNames(
+                MarketHeaderStyles.MarketHeader__property__header,
+                Styles.MarketHeader__property__headerCreated
+              )}
+            >
               Created
             </span>
           )}
