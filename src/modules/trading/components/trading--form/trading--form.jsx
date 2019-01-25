@@ -40,6 +40,13 @@ class TradingForm extends Component {
     showSelectOutcome: PropTypes.func.isRequired
   };
 
+  static isFloatValue(value) {
+    if (value === "") return false;
+    const isfloatValue = parseFloat(value);
+    if (isfloatValue.toString() !== value.toString()) return false;
+    return true;
+  }
+
   constructor(props) {
     super(props);
 
@@ -129,6 +136,11 @@ class TradingForm extends Component {
         "Total Order Value must be greater than 0"
       );
     }
+    if (!TradingForm.isFloatValue(value)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.EST_ETH].push("value is not a number");
+    }
     return { isOrderValid: passedTest, errors, errorCount };
   }
 
@@ -141,6 +153,11 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push("Quantity must be greater than 0");
+    }
+    if (!TradingForm.isFloatValue(value)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.QUANTITY].push("value is not a number");
     }
     return { isOrderValid: passedTest, errors, errorCount };
   }
@@ -159,6 +176,11 @@ class TradingForm extends Component {
       errors[this.INPUT_TYPES.PRICE].push(
         `Limit price must be between ${minPrice} - ${maxPrice}`
       );
+    }
+    if (!TradingForm.isFloatValue(value)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.PRICE].push("value is not a number");
     }
     // removed this validation for now, let's let augur.js handle this.
     if (value && value.mod(tickSize).gt("0")) {
@@ -239,12 +261,15 @@ class TradingForm extends Component {
       [property]: value
     };
 
-    const { isOrderValid, errors, errorCount } = this.orderValidation(
-      updatedState,
-      this.props
-    );
+    const validationResults = this.orderValidation(updatedState, this.props);
 
-    if (errorCount > 0) {
+    if (!TradingForm.isFloatValue(value)) {
+      validationResults.errorCount += 1;
+      validationResults.isOrderValid = false;
+      validationResults.errors[property].push("value is not a number");
+    }
+
+    if (validationResults.errorCount > 0) {
       clearOrderForm(false);
     }
 
@@ -285,13 +310,16 @@ class TradingForm extends Component {
             ...updatedState,
             errors: {
               ...currentState.errors,
-              ...errors
+              ...validationResults.errors
             },
-            errorCount,
-            isOrderValid
+            errorCount: validationResults.errorCount,
+            isOrderValid: validationResults.isOrderValid
           }),
           () => {
-            if (errorCount === 0 && isOrderValid) {
+            if (
+              validationResults.errorCount === 0 &&
+              validationResults.isOrderValid
+            ) {
               if (
                 property === this.INPUT_TYPES.EST_ETH &&
                 createBigNumber(value).gt(ZERO)
