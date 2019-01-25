@@ -197,6 +197,24 @@ class TradingForm extends Component {
     return { isOrderValid: passedTest, errors, errorCount };
   }
 
+  testPropertyCombo(quantity, price, estEth, errors) {
+    let errorCount = 0;
+    if ((quantity || estEth) && !price) {
+      errorCount += 1;
+      errors[this.INPUT_TYPES.PRICE].push(
+        "Price is needed with either quantity or total order value"
+      );
+    }
+    if (!quantity && !estEth && price) {
+      errorCount += 1;
+      errors[this.INPUT_TYPES.PRICE].push(
+        "Price is needed with either quantity or total order value"
+      );
+    }
+
+    return { isOrderValid: errorCount === 0, errors, errorCount };
+  }
+
   orderValidation(order, nextProps = null) {
     let errors = {
       [this.INPUT_TYPES.QUANTITY]: [],
@@ -245,7 +263,21 @@ class TradingForm extends Component {
     errorCount += totalErrorCount;
     errors = { ...errors, ...totalErrors };
 
-    isOrderValid = priceValid && (quantityValid || totalValid);
+    const {
+      isOrderValid: comboValid,
+      errors: comboErrors,
+      errorCount: comboErrorCount
+    } = this.testPropertyCombo(
+      order[this.INPUT_TYPES.QUANTITY],
+      order[this.INPUT_TYPES.PRICE],
+      order[this.INPUT_TYPES.EST_ETH],
+      errors
+    );
+
+    errors = { ...errors, ...comboErrors };
+    errorCount += comboErrorCount;
+
+    isOrderValid = priceValid && (quantityValid || totalValid) && comboValid;
 
     return { isOrderValid, errors, errorCount };
   }
@@ -325,11 +357,14 @@ class TradingForm extends Component {
               validationResults.isOrderValid
             ) {
               if (
-                property === this.INPUT_TYPES.EST_ETH &&
-                createBigNumber(value).gt(ZERO)
+                order[this.INPUT_TYPES.EST_ETH] &&
+                order[this.INPUT_TYPES.PRICE]
               ) {
                 updateTradeNumShares(order);
-              } else if (createBigNumber(value).gt(ZERO)) {
+              } else if (
+                order[this.INPUT_TYPES.QUANTITY] &&
+                order[this.INPUT_TYPES.PRICE]
+              ) {
                 updateTradeTotalCost(order);
               }
             }
