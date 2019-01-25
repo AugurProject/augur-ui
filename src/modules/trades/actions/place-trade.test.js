@@ -76,7 +76,7 @@ describe(`modules/trades/actions/place-trade.js`, () => {
         marketId: "testYesNoMarketId",
         outcomeId: "1",
         tradeInProgress: {
-          totalCost: "10000000",
+          totalCost: { value: "10000000" },
           sharesDepleted: "0",
           otherSharesDepleted: "0",
           limitPrice: "0.3",
@@ -111,7 +111,7 @@ describe(`modules/trades/actions/place-trade.js`, () => {
         marketId: "testYesNoMarketId",
         outcomeId: "1",
         tradeInProgress: {
-          totalCost: "10000000",
+          totalCost: { value: "10000000" },
           sharesDepleted: "0",
           otherSharesDepleted: "0",
           limitPrice: "0.3",
