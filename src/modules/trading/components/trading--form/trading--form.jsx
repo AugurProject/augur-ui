@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { MIN_QUANTITY } from "modules/trades/constants/numbers";
+import { MIN_QUANTITY, ZERO } from "modules/trades/constants/numbers";
 import {
   YES_NO,
   CATEGORICAL,
@@ -292,9 +292,12 @@ class TradingForm extends Component {
           }),
           () => {
             if (errorCount === 0 && isOrderValid) {
-              if (property === this.INPUT_TYPES.EST_ETH) {
+              if (
+                property === this.INPUT_TYPES.EST_ETH &&
+                createBigNumber(value).gt(ZERO)
+              ) {
                 updateTradeNumShares(order);
-              } else {
+              } else if (createBigNumber(value).gt(ZERO)) {
                 updateTradeTotalCost(order);
               }
             }

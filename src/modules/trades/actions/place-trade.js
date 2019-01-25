@@ -99,7 +99,7 @@ export const placeTrade = ({
   if (
     bnAllowance === undefined ||
     bnAllowance.lte(0) ||
-    bnAllowance.lte(createBigNumber(tradeInProgress.totalCost))
+    bnAllowance.lte(createBigNumber(tradeInProgress.totalCost.value))
   ) {
     dispatch(
       checkAccountAllowance((err, allowance) => {
