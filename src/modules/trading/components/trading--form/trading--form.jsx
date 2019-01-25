@@ -370,12 +370,14 @@ class TradingForm extends Component {
             ) {
               if (
                 order[this.INPUT_TYPES.EST_ETH] &&
-                order[this.INPUT_TYPES.PRICE]
+                order[this.INPUT_TYPES.PRICE] &&
+                order[this.INPUT_TYPES.EST_ETH] !== "0"
               ) {
                 updateTradeNumShares(order);
               } else if (
                 order[this.INPUT_TYPES.QUANTITY] &&
-                order[this.INPUT_TYPES.PRICE]
+                order[this.INPUT_TYPES.PRICE] &&
+                order[this.INPUT_TYPES.QUANTITY] !== "0"
               ) {
                 updateTradeTotalCost(order);
               }
