@@ -124,7 +124,7 @@ export function updateTradeShares({
         newShares = newShares.plus(netPosition);
       }
     }
-    newTradeDetails.numShares = newShares.toFixed(4);
+    newTradeDetails.numShares = newShares.abs().toFixed(4);
     const outcome = outcomesData[marketId][outcomeId];
 
     return runSimulateTrade(
