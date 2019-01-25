@@ -191,6 +191,7 @@ function runSimulateTrade(
     .dividedBy(createBigNumber(simulatedTrade.tokensDepleted, 10))
     .toFixed();
   if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = "0";
+  simulatedTrade.tradeGroupId = augur.trading.generateTradeGroupId();
 
   const order = generateTrade(
     market,
@@ -198,5 +199,5 @@ function runSimulateTrade(
     { ...newTradeDetails, ...simulatedTrade },
     orderBooks
   );
-  if (callback) callback(null, order);
+  if (callback) callback(null, { ...order, ...simulatedTrade });
 }

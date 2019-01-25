@@ -289,6 +289,7 @@ export function assembleMarket(
         market.isReportTabVisible = market.isRequiredToReportByAccount;
 
         market.onSubmitPlaceTrade = (
+          trade,
           outcomeId,
           callback,
           onComplete,
@@ -298,7 +299,7 @@ export function assembleMarket(
             placeTrade({
               marketId,
               outcomeId,
-              tradeInProgress: marketTradeInProgress[outcomeId],
+              tradeInProgress: trade,
               doNotCreateOrders,
               callback,
               onComplete

@@ -371,6 +371,7 @@ class TradingWrapper extends Component {
             onClick={e => {
               e.preventDefault();
               market.onSubmitPlaceTrade(
+                s.trade,
                 selectedOutcome.id,
                 (err, tradeGroupID) => {
                   // onSent/onFailed CB
