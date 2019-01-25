@@ -46,12 +46,11 @@ div.MarketOutcomeChartsHeader__stats {
 }
 
 .MarketOutcomeCandlestick {
-  background: @color-light-purple;
   display: flex;
   flex: 1 100%;
   flex-direction: column;
+  margin-left: 8px;
   min-height: 400px;
-  padding-left: 0.5rem;
   position: relative;
 }
 
@@ -120,16 +119,11 @@ div.MarketOutcomeChartsHeader__stats {
     }
 
     .tick-line {
-      .dashline-long;
+      stroke: @color-gray;
 
       &--midpoint {
         stroke-width: 2px;
       }
-    }
-
-    .tick-line:first-of-type {
-      stroke: @color-gray;
-      stroke-dasharray: 0;
     }
 
     .tick-value {
@@ -175,17 +169,15 @@ div.MarketOutcomeChartsHeader__stats {
       opacity: 0.2;
     }
 
-    .line .crosshair {
-      .dashline-normal;
+    line.crosshair {
+      fill: none;
+      stroke: @color-white;
+      stroke-dasharray: 1;
     }
 
     .period-hover {
       fill: none;
       pointer-events: visible;
-    }
-
-    #candlestick_crosshairs {
-      pointer-events: none;
     }
 
     #candlestick-x-axis {
