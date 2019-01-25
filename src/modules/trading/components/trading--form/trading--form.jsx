@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { MIN_QUANTITY, ZERO } from "modules/trades/constants/numbers";
+import { MIN_QUANTITY } from "modules/trades/constants/numbers";
 import {
   YES_NO,
   CATEGORICAL,
@@ -40,6 +40,16 @@ class TradingForm extends Component {
     showSelectOutcome: PropTypes.func.isRequired
   };
 
+  static isFloatValue(value) {
+    let testValue = value;
+    if (value === "") return false;
+    if (typeof value === "string" && value.startsWith("."))
+      testValue = `0${testValue}`;
+    const isfloatValue = parseFloat(testValue);
+    if (isfloatValue.toString() !== testValue.toString()) return false;
+    return true;
+  }
+
   constructor(props) {
     super(props);
 
@@ -75,6 +85,7 @@ class TradingForm extends Component {
     };
     this.changeOutcomeDropdown = this.changeOutcomeDropdown.bind(this);
     this.updateTestProperty = this.updateTestProperty.bind(this);
+    this.clearOrderFormProperties = this.clearOrderFormProperties.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -129,6 +140,11 @@ class TradingForm extends Component {
         "Total Order Value must be greater than 0"
       );
     }
+    if (!TradingForm.isFloatValue(value)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.EST_ETH].push("value is not a number");
+    }
     return { isOrderValid: passedTest, errors, errorCount };
   }
 
@@ -141,6 +157,11 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push("Quantity must be greater than 0");
+    }
+    if (!TradingForm.isFloatValue(value)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.QUANTITY].push("value is not a number");
     }
     return { isOrderValid: passedTest, errors, errorCount };
   }
@@ -160,6 +181,11 @@ class TradingForm extends Component {
         `Limit price must be between ${minPrice} - ${maxPrice}`
       );
     }
+    if (!TradingForm.isFloatValue(value)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.PRICE].push("value is not a number");
+    }
     // removed this validation for now, let's let augur.js handle this.
     if (value && value.mod(tickSize).gt("0")) {
       errorCount += 1;
@@ -169,6 +195,24 @@ class TradingForm extends Component {
       );
     }
     return { isOrderValid: passedTest, errors, errorCount };
+  }
+
+  testPropertyCombo(quantity, price, estEth, errors) {
+    let errorCount = 0;
+    if ((quantity || estEth) && !price) {
+      errorCount += 1;
+      errors[this.INPUT_TYPES.PRICE].push(
+        "Price is needed with either quantity or total order value"
+      );
+    }
+    if (!quantity && !estEth && price) {
+      errorCount += 1;
+      errors[this.INPUT_TYPES.PRICE].push(
+        "Price is needed with either quantity or total order value"
+      );
+    }
+
+    return { isOrderValid: errorCount === 0, errors, errorCount };
   }
 
   orderValidation(order, nextProps = null) {
@@ -219,7 +263,21 @@ class TradingForm extends Component {
     errorCount += totalErrorCount;
     errors = { ...errors, ...totalErrors };
 
-    isOrderValid = priceValid && (quantityValid || totalValid);
+    const {
+      isOrderValid: comboValid,
+      errors: comboErrors,
+      errorCount: comboErrorCount
+    } = this.testPropertyCombo(
+      order[this.INPUT_TYPES.QUANTITY],
+      order[this.INPUT_TYPES.PRICE],
+      order[this.INPUT_TYPES.EST_ETH],
+      errors
+    );
+
+    errors = { ...errors, ...comboErrors };
+    errorCount += comboErrorCount;
+
+    isOrderValid = priceValid && (quantityValid || totalValid) && comboValid;
 
     return { isOrderValid, errors, errorCount };
   }
@@ -239,12 +297,15 @@ class TradingForm extends Component {
       [property]: value
     };
 
-    const { isOrderValid, errors, errorCount } = this.orderValidation(
-      updatedState,
-      this.props
-    );
+    const validationResults = this.orderValidation(updatedState, this.props);
 
-    if (errorCount > 0) {
+    if (!TradingForm.isFloatValue(value)) {
+      validationResults.errorCount += 1;
+      validationResults.isOrderValid = false;
+      validationResults.errors[property].push("value is not a number");
+    }
+
+    if (validationResults.errorCount > 0) {
       clearOrderForm(false);
     }
 
@@ -285,25 +346,54 @@ class TradingForm extends Component {
             ...updatedState,
             errors: {
               ...currentState.errors,
-              ...errors
+              ...validationResults.errors
             },
-            errorCount,
-            isOrderValid
+            errorCount: validationResults.errorCount,
+            isOrderValid: validationResults.isOrderValid
           }),
           () => {
-            if (errorCount === 0 && isOrderValid) {
+            if (
+              validationResults.errorCount === 0 &&
+              validationResults.isOrderValid
+            ) {
               if (
-                property === this.INPUT_TYPES.EST_ETH &&
-                createBigNumber(value).gt(ZERO)
+                order[this.INPUT_TYPES.EST_ETH] &&
+                order[this.INPUT_TYPES.PRICE]
               ) {
                 updateTradeNumShares(order);
-              } else if (createBigNumber(value).gt(ZERO)) {
+              } else if (
+                order[this.INPUT_TYPES.QUANTITY] &&
+                order[this.INPUT_TYPES.PRICE]
+              ) {
                 updateTradeTotalCost(order);
               }
             }
           }
         );
       }
+    );
+  }
+
+  clearOrderFormProperties() {
+    const { selectedNav, clearOrderForm } = this.props;
+    const startState = {
+      [this.INPUT_TYPES.QUANTITY]: "",
+      [this.INPUT_TYPES.PRICE]: "",
+      [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: false,
+      [this.INPUT_TYPES.SELECTED_NAV]: selectedNav,
+      [this.INPUT_TYPES.EST_ETH]: "",
+      errors: {
+        [this.INPUT_TYPES.QUANTITY]: [],
+        [this.INPUT_TYPES.PRICE]: [],
+        [this.INPUT_TYPES.EST_ETH]: []
+      }
+    };
+    this.setState(
+      {
+        ...startState,
+        isOrderValid: false
+      },
+      () => clearOrderForm()
     );
   }
 
@@ -320,7 +410,6 @@ class TradingForm extends Component {
       maxPrice,
       minPrice,
       updateState,
-      clearOrderForm,
       showSelectOutcome,
       isMobile
     } = this.props;
@@ -490,7 +579,7 @@ class TradingForm extends Component {
             </label>
             <button
               className={Styles.TradingForm__button__clear}
-              onClick={() => clearOrderForm()}
+              onClick={() => this.clearOrderFormProperties()}
             >
               Clear
             </button>

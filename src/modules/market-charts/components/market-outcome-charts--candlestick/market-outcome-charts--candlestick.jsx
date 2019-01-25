@@ -286,7 +286,9 @@ class MarketOutcomeCandlestick extends React.Component {
     drawCrosshairs(
       candleChart,
       hoveredPrice,
+      xScale,
       yScale,
+      chartDim,
       containerWidth,
       pricePrecision,
       containerWidth
@@ -476,10 +478,10 @@ function determineDrawParams({
   const chartDim = {
     top: 5,
     bottom: 30,
-    right: 70,
+    right: 5,
     left: isMobileSmall ? 20 : 10,
     stick: 5,
-    tickOffset: 70
+    tickOffset: 90
   };
 
   // Domain
@@ -540,7 +542,10 @@ function determineDrawParams({
   const xScale = d3
     .scaleTime()
     .domain(d3.extent(xDomain))
-    .range([chartDim.left, containerWidth - chartDim.left - chartDim.right]);
+    .range([
+      chartDim.left,
+      containerWidth - chartDim.left - chartDim.tickOffset
+    ]);
 
   const yScale = d3
     .scaleLinear()
@@ -583,15 +588,13 @@ function drawTicks({
     .attr("y2", d => yScale(d));
 
   candleChartSvg
-    .selectAll("text")
+    .selectAll("text.tick-value")
     .data(offsetTicks)
     .enter()
     .append("text")
     .attr("class", "tick-value")
-    .attr("x", containerWidth)
+    .attr("x", x2 + chartDim.right)
     .attr("y", d => yScale(d))
-    .attr("dx", 0)
-    .attr("dy", chartDim.tickOffset)
     .text(d => `${d.toFixed(pricePrecision)} ETH`);
 }
 
@@ -739,17 +742,10 @@ function attachHoverClickHandlers({
   clearCrosshairs
 }) {
   candleChart
-    .append("rect")
-    .attr("class", "overlay")
-    .attr("width", drawableWidth)
-    .attr("height", containerHeight)
-    .on("mousemove", () =>
-      updateHoveredPrice(
-        yScale
-          .invert(d3.mouse(d3.select("#candlestick_chart").node())[1])
-          .toFixed(pricePrecision)
-      )
-    )
+    .on("mousemove", () => {
+      const y = d3.mouse(d3.event.target)[1];
+      updateHoveredPrice(yScale.invert(y).toFixed(pricePrecision));
+    })
     .on("mouseout", clearCrosshairs);
 
   candleChart
@@ -763,14 +759,10 @@ function attachHoverClickHandlers({
     .attr("width", candleDim.width + candleDim.gap)
     .attr("class", "period-hover")
     .on("mouseover", d => updateHoveredPeriod(d))
-    .on("mousemove", () =>
-      updateHoveredPrice(
-        yScale
-          .invert(d3.mouse(d3.select("#candlestick_chart").node())[1])
-          .toFixed(pricePrecision)
-      )
-    )
-    .on("mouseout", clearCrosshairs);
+    .on("mousemove", d => {
+      const y = d3.mouse(d3.event.target)[1];
+      updateHoveredPrice(yScale.invert(y).toFixed(pricePrecision));
+    });
 
   candleChart.on("mouseout", clearCrosshairs);
 }
@@ -778,30 +770,29 @@ function attachHoverClickHandlers({
 function drawCrosshairs(
   candleChart,
   hoveredPrice,
+  xScale,
   yScale,
+  chartDim,
   chartWidth,
   pricePrecision,
   containerWidth
 ) {
   if (hoveredPrice != null) {
+    const [x1, x2] = xScale.range();
     const yPosition = yScale(hoveredPrice);
     const clampedHoveredPrice = yScale.invert(yPosition);
 
     candleChart
-      .append("g")
-      .attr("id", "candlestick_crosshairs")
-      .attr("class", "line")
-      .attr("x1", 0)
-      .attr("y1", yPosition)
-      .attr("x2", chartWidth)
-      .attr("y2", yPosition)
       .append("line")
-      .attr("id", "candlestick_crosshairY")
-      .attr("class", "crosshair");
+      .attr("class", "crosshair")
+      .attr("x1", x1)
+      .attr("y1", yPosition)
+      .attr("x2", x2)
+      .attr("y2", yPosition);
     candleChart
       .append("foreignObject")
       .attr("id", "hovered_candlestick_price_label")
-      .attr("x", containerWidth + 4)
+      .attr("x", x2 + chartDim.right)
       .attr("y", yScale(hoveredPrice) - 12)
       .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
   }
