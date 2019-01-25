@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { MIN_QUANTITY, ZERO } from "modules/trades/constants/numbers";
+import { MIN_QUANTITY } from "modules/trades/constants/numbers";
 import {
   YES_NO,
   CATEGORICAL,
