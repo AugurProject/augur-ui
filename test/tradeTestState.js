@@ -378,7 +378,6 @@ export const tradeTestState = {
       }
     }
   },
-  tradesInProgress: {},
   transactionsData: {
     trans1: {
       data: {

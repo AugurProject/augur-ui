@@ -1,6 +1,5 @@
 import { augur } from "services/augurjs";
 import { BUY } from "modules/transactions/constants/types";
-import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-progress";
 import { createBigNumber } from "utils/create-big-number";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { checkAccountAllowance } from "modules/auth/actions/approve-account";
@@ -21,10 +20,9 @@ export const placeTrade = ({
   const { loginAccount, marketsData } = getState();
   const market = marketsData[marketId];
   if (!tradeInProgress || !market || outcomeId == null) {
-    console.error(
-      `trade-in-progress not found for market ${marketId} outcome ${outcomeId}`
+    return console.error(
+      `required parameters not found for market ${marketId} outcome ${outcomeId}`
     );
-    return dispatch(clearTradeInProgress(marketId));
   }
   const bnAllowance = createBigNumber(loginAccount.allowance, 10);
   const sharesDepleted = createBigNumber(tradeInProgress.sharesDepleted, 10);
@@ -76,7 +74,6 @@ export const placeTrade = ({
 
   const sendTrade = () => {
     augur.trading.placeTrade(placeTradeParams);
-    dispatch(clearTradeInProgress(marketId));
   };
 
   const promptApprovalandSend = () => {

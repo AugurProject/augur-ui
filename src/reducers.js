@@ -37,7 +37,6 @@ import reportingWindowStats from "modules/reports/reducers/reporting-window-stat
 import reports from "modules/reports/reducers/reports";
 import scalarMarketsShareDenomination from "modules/markets/reducers/scalar-markets-share-denomination";
 import selectedMarketId from "modules/markets/reducers/selected-market-id";
-import tradesInProgress from "modules/trades/reducers/trades-in-progress";
 import transactionsData from "modules/transactions/reducers/transactions-data";
 import transactionsStatus from "modules/transactions/reducers/transactions-status";
 import universe from "modules/universe/reducers/universe";
@@ -84,7 +83,6 @@ export function createReducer() {
     reports,
     scalarMarketsShareDenomination,
     selectedMarketId,
-    tradesInProgress,
     transactionsData,
     transactionsStatus,
     universe,

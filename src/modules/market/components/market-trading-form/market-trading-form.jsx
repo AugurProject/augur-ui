@@ -15,7 +15,6 @@ import { Close } from "modules/common/components/icons";
 class MarketTradingForm extends Component {
   static propTypes = {
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
-    clearTradeInProgress: PropTypes.func.isRequired,
     isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
@@ -70,11 +69,6 @@ class MarketTradingForm extends Component {
     }
   }
 
-  componentWillUnmount() {
-    const { clearTradeInProgress, market } = this.props;
-    clearTradeInProgress(market.id);
-  }
-
   toggleForm() {
     this.setState({ showForm: !this.state.showForm });
   }
@@ -82,7 +76,6 @@ class MarketTradingForm extends Component {
   render() {
     const {
       availableFunds,
-      clearTradeInProgress,
       isLogged,
       isMobile,
       market,
@@ -126,7 +119,6 @@ class MarketTradingForm extends Component {
           isMobile={isMobile}
           toggleForm={this.toggleForm}
           availableFunds={availableFunds}
-          clearTradeInProgress={clearTradeInProgress}
           updateSelectedOrderProperties={
             this.props.updateSelectedOrderProperties
           }

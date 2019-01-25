@@ -8,7 +8,6 @@ import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
 import getPrecision from "utils/get-number-precision";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "src/utils/create-big-number";
-import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-progress";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { handleFilledOnly } from "modules/notifications/actions/notifications";
 import { updateModal } from "modules/modal/actions/update-modal";
@@ -54,7 +53,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   loadFullMarket: marketId => dispatch(loadFullMarket(marketId)),
-  clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
   handleFilledOnly: trade => dispatch(handleFilledOnly(trade)),
   updateModal: modal => dispatch(updateModal(modal)),
   updateTradeCost: (marketId, outcomeId, order, callback) =>

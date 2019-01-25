@@ -31,7 +31,6 @@ import { BigNumber } from "bignumber.js";
 export default class MarketView extends Component {
   static propTypes = {
     handleFilledOnly: PropTypes.func.isRequired,
-    clearTradeInProgress: PropTypes.func.isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     gasPrice: PropTypes.number.isRequired,
     market: PropTypes.object.isRequired,
@@ -209,7 +208,6 @@ export default class MarketView extends Component {
       outcomes,
       market,
       availableFunds,
-      clearTradeInProgress,
       gasPrice,
       handleFilledOnly,
       updateModal,
@@ -228,7 +226,6 @@ export default class MarketView extends Component {
       isMobile,
       toggleForm: this.toggleForm,
       availableFunds,
-      clearTradeInProgress,
       updateSelectedOutcome: returnToTradingForm
         ? this.updateOutcomeReturn
         : this.updateSelectedOutcome,
@@ -256,7 +253,6 @@ export default class MarketView extends Component {
       outcomes,
       market,
       availableFunds,
-      clearTradeInProgress,
       gasPrice,
       handleFilledOnly,
       marketType,
@@ -421,7 +417,6 @@ export default class MarketView extends Component {
                     isMobile={isMobile}
                     toggleForm={this.toggleForm}
                     availableFunds={availableFunds}
-                    clearTradeInProgress={clearTradeInProgress}
                     updateSelectedOutcome={this.updateSelectedOutcome}
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties

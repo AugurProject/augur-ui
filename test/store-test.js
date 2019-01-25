@@ -18,7 +18,6 @@ import store from "src/store";
   tags: '',
   selectedFilters: { isOpen: true },
   selectedSort: { prop: 'volume', isDesc: true },
-  tradesInProgress: {},
   outcomes: {},
   bidsAsks: {},
   accountTrades: {},
@@ -71,17 +70,6 @@ describe(`store.js`, () => {
     assert.isOk(state.reports, "reports is not defined");
     assert.isObject(state.reports, "reports is not an object");
     assert.deepEqual(state.reports, {}, "reports is not an empty object");
-
-    assert.isOk(state.tradesInProgress, "tradesInProgress is not defined");
-    assert.isObject(
-      state.tradesInProgress,
-      "tradesInProgress is not an object"
-    );
-    assert.deepEqual(
-      state.tradesInProgress,
-      {},
-      "tradesInProgress is not an empty object"
-    );
 
     assert.isOk(state.outcomesData, "outcomes is not defined");
     assert.isObject(state.outcomesData, "outcomes is not an object");

@@ -1,6 +1,6 @@
 import mocks from "test/mockStore";
 
-// import { BUY, SELL } from 'modules/transactions/constants/types';
+import { BUY } from "modules/transactions/constants/types";
 
 import { formatEther, formatPercent } from "utils/format-number";
 
@@ -10,7 +10,14 @@ describe("modules/trades/helpers/generate-trade.js", () => {
   const trade = generateTrade(
     state.marketsData.testMarketId,
     state.outcomesData.testMarketId["1"],
-    state.tradesInProgress.testMarketId["1"],
+    {
+      numShares: 5000,
+      limitPrice: "0.50",
+      totalCost: "2500",
+      type: "yes/no ",
+      side: BUY,
+      sharesFilled: 5000
+    },
     state.orderBooks.testMarketId
   );
 
@@ -57,20 +64,6 @@ describe("modules/trades/helpers/generate-trade.js", () => {
         roundedValue: 0,
         value: 0
       },
-      tradeSummary: {
-        totalGas: {
-          denomination: " ETH",
-          formatted: "0",
-          formattedValue: 0,
-          full: "0 ETH",
-          fullPrecision: "0",
-          minimized: "0",
-          rounded: "0.0000",
-          roundedValue: 0,
-          value: 0
-        },
-        tradeOrders: []
-      },
       tradeTypeOptions: [
         {
           label: "buy",
@@ -81,10 +74,8 @@ describe("modules/trades/helpers/generate-trade.js", () => {
           value: "sell"
         }
       ],
-      totalSharesUpToOrder: trade.totalSharesUpToOrder,
-      updateTradeOrder: trade.updateTradeOrder // self reference for function
+      totalSharesUpToOrder: trade.totalSharesUpToOrder
     });
-    expect(typeof trade.updateTradeOrder).toBe("function");
   });
 
   // FIXME

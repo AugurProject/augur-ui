@@ -69,11 +69,6 @@ import {
 import getOrderBookSeries from "modules/orders/selectors/order-book-series";
 
 import {
-  generateTrade,
-  generateTradeSummary
-} from "modules/trades/helpers/generate-trade";
-import hasUserEnoughFunds from "modules/trades/helpers/has-user-enough-funds";
-import {
   generateOutcomePositionSummary,
   generateMarketsPositionsSummary
 } from "modules/positions/selectors/positions-summary";
@@ -98,7 +93,6 @@ export const selectMarket = marketId => {
     reports,
     outcomesData,
     accountTrades,
-    tradesInProgress,
     priceHistory,
     orderBooks,
     universe,
@@ -132,7 +126,6 @@ export const selectMarket = marketId => {
     selectMarketReport(marketId, reports[universe.id || UNIVERSE_ID]),
     (accountPositions || {})[marketId],
     (accountTrades || {})[marketId],
-    tradesInProgress[marketId],
 
     // the reason we pass in the date parts broken up like this, is because date objects are never equal, thereby always triggering re-assembly, and never hitting the memoization cache
     endTime.value.getFullYear(),
@@ -163,7 +156,6 @@ export function assembleMarket(
   marketReport,
   marketAccountPositions,
   marketAccountTrades,
-  marketTradeInProgress,
   endTimeYear,
   endTimeMonth,
   endTimeDay,
@@ -188,7 +180,6 @@ export function assembleMarket(
         marketReport,
         marketAccountPositions,
         marketAccountTrades,
-        marketTradeInProgress,
         endTimeYear,
         endTimeMonth,
         endTimeDay,
@@ -331,8 +322,6 @@ export function assembleMarket(
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];
-            const outcomeTradeInProgress =
-              marketTradeInProgress && marketTradeInProgress[outcomeId];
             const volume = createBigNumber(outcomeData.volume);
 
             const outcome = {
@@ -397,24 +386,6 @@ export function assembleMarket(
               );
             }
 
-            outcome.trade = generateTrade(
-              {
-                id: market.id,
-                settlementFee: market.settlementFee,
-                marketType: market.marketType,
-                maxPrice: market.maxPrice,
-                minPrice: market.minPrice,
-                cumulativeScale: market.cumulativeScale,
-                makerFee: market.makerFee
-              },
-              {
-                id: outcome.id,
-                name: outcome.name
-              },
-              outcomeTradeInProgress,
-              orderBooks || {}
-            );
-
             const orderBook = selectAggregateOrderBook(
               outcome.id,
               orderBooks,
@@ -445,10 +416,6 @@ export function assembleMarket(
                 outcome.position.name = "";
               }
             }
-
-            marketTradeOrders = marketTradeOrders.concat(
-              outcome.trade.tradeSummary.tradeOrders
-            );
 
             outcome.userOpenOrders = selectUserOpenOrders(
               marketId,
@@ -518,12 +485,6 @@ export function assembleMarket(
 
         market.userOpenOrdersSummary = selectUserOpenOrdersSummary(
           market.outcomes
-        );
-
-        market.tradeSummary = generateTradeSummary(marketTradeOrders);
-        market.tradeSummary.hasUserEnoughFunds = hasUserEnoughFunds(
-          market.outcomes.map(outcome => outcome.trade),
-          loginAccount
         );
 
         if (marketAccountTrades || marketAccountPositions) {

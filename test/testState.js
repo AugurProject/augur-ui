@@ -270,18 +270,6 @@ const testState = {
       name: "tag"
     }
   },
-  tradesInProgress: {
-    testMarketId: {
-      1: {
-        numShares: 5000,
-        limitPrice: "0.50",
-        totalCost: "2500",
-        type: "yes/no ",
-        side: BUY,
-        sharesFilled: 5000
-      }
-    }
-  },
   transactionsData: {
     testtransaction12345: {
       id: "testtransaction12345",

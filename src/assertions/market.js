@@ -159,17 +159,6 @@ export default function(market) {
           expect(typeof trade.limitPrice).toBe("number");
         });
 
-        test(`market.outcomes[${i}].trade.tradeSummary`, () => {
-          // NOTE -- shallow check here due to deep check further down of the same selector method
-          expect(trade.tradeSummary).toBeDefined();
-          expect(typeof trade.tradeSummary).toBe("object");
-        });
-
-        test(`market.outcomes[${i}].trade.updateTradeOrder`, () => {
-          expect(trade.updateTradeOrder).toBeDefined();
-          expect(typeof trade.updateTradeOrder).toBe("function");
-        });
-
         const { orderBook } = outcome;
         test(`market.outcomes[${i}].orderBook`, () => {
           // NOTE -- shallow check here due to deep check further down of the same selector method
@@ -271,86 +260,6 @@ export default function(market) {
     test("market.reportableOutcomes[market.reportableOutcomes.length - 1] (indeterminateItem.name)", () => {
       expect(indeterminateItem.name).toBeDefined();
       expect(typeof indeterminateItem.name).toBe("string");
-    });
-
-    const { tradeSummary } = market;
-    test("market.tradeSummary", () => {
-      expect(tradeSummary).toBeDefined();
-      expect(typeof tradeSummary).toBe("object");
-    });
-
-    test("market.tradeSummary.totalGas", () => {
-      expect(tradeSummary.totalGas).toBeDefined();
-      assertFormattedNumber(tradeSummary.totalGas, "tradeSummary.totalGas");
-    });
-
-    test("market.tradeSummary.hasUserEnoughFunds", () => {
-      expect(typeof tradeSummary.hasUserEnoughFunds).toBe("boolean");
-    });
-
-    const { tradeOrders } = tradeSummary;
-    test("market.tradeSummary.tradeOrders", () => {
-      expect(tradeOrders).toBeDefined();
-      expect(Array.isArray(tradeOrders)).toBe(true);
-    });
-
-    tradeOrders.forEach((trade, i) => {
-      test(`market.tradeSummary.tradeOrders${i}.shares`, () => {
-        expect(trade.shares).toBeDefined();
-        expect(typeof trade.shares).toBe("object");
-        assertFormattedNumber(trade.shares, "trade.shares");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.limitPrice`, () => {
-        expect(trade.limitPrice).toBeDefined();
-        expect(typeof trade.limitPrice).toBe("number");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.ether`, () => {
-        expect(trade.ether).toBeDefined();
-        expect(typeof trade.ether).toBe("object");
-        assertFormattedNumber(trade.ether, "trade.ether");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.gas`, () => {
-        expect(trade.gas).toBeDefined();
-        expect(typeof trade.gas).toBe("object");
-      });
-      test(`market.tradeSummary.tradeOrders${i}.gas.value`, () => {
-        expect(trade.gas.value).toBeDefined();
-        expect(typeof trade.gas.value).toBe("number");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.data`, () => {
-        expect(trade.data).toBeDefined();
-        expect(typeof trade.data).toBe("object");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.data.marketId`, () => {
-        expect(trade.data.marketId).toBeDefined();
-        expect(typeof trade.data.marketId).toBe("string");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.data.outcomeId`, () => {
-        expect(trade.data.outcomeId).toBeDefined();
-        expect(typeof trade.data.outcomeId).toBe("string");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.description`, () => {
-        expect(trade.description).toBeDefined();
-        expect(typeof trade.description).toBe("string");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.data.outcomeName`, () => {
-        expect(trade.data.outcomeName).toBeDefined();
-        expect(typeof trade.data.outcomeName).toBe("string");
-      });
-
-      test(`market.tradeSummary.tradeOrders${i}.data.avgPrice`, () => {
-        expect(trade.data.avgPrice).toBeDefined();
-        expect(typeof trade.data.avgPrice).toBe("object");
-        assertFormattedNumber(trade.data.avgPrice, "trade.data.avgPrice");
-      });
     });
 
     test("market.userOpenOrdersSummary", () => {

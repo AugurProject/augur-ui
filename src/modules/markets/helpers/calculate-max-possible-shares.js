@@ -15,18 +15,9 @@ import speedomatic from "speedomatic";
  * @param makerFee {String}
  * @param settlementFee {String}
  * @param range {String}
- * @param outcomeTradeInProgress {Object} used to bust memoizerific cache
  */
 export const calculateMaxPossibleShares = memoize(
-  (
-    loginAccount,
-    orders,
-    makerFee,
-    settlementFee,
-    range,
-    outcomeTradeInProgress,
-    scalarMinValue
-  ) => {
+  (loginAccount, orders, makerFee, settlementFee, range, scalarMinValue) => {
     if (loginAccount.address == null) {
       return null;
     }

@@ -7,7 +7,6 @@ import { calculateMaxPossibleShares } from "modules/markets/helpers/calculate-ma
 import { BIDS, ASKS } from "modules/orders/constants/orders";
 import { ZERO } from "modules/trades/constants/numbers";
 import * as TRANSACTIONS_TYPES from "modules/transactions/constants/types";
-import { updateTradesInProgress } from "modules/trades/actions/update-trades-in-progress";
 import { selectAggregateOrderBook } from "modules/orders/helpers/select-order-book";
 import store from "src/store";
 
@@ -85,7 +84,6 @@ export const generateTrade = memoize(
           market.makerFee,
           market.settlementFee,
           market.cumulativeScale,
-          outcomeTradeInProgress,
           market.marketType === "scalar" ? market.minPrice : null
         )
       );
@@ -126,20 +124,6 @@ export const generateTrade = memoize(
         { label: TRANSACTIONS_TYPES.SELL, value: TRANSACTIONS_TYPES.SELL }
       ],
 
-      tradeSummary: generateTradeSummary(
-        generateTradeOrders(market, outcome, outcomeTradeInProgress)
-      ),
-      updateTradeOrder: (numShares, limitPrice, side, maxCost) =>
-        store.dispatch(
-          updateTradesInProgress({
-            marketId: market.id,
-            outcomeId: outcome.id,
-            side,
-            numShares,
-            limitPrice,
-            maxCost
-          })
-        ),
       totalSharesUpToOrder: (orderIndex, side) =>
         totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks)
     };
@@ -160,26 +144,6 @@ const totalSharesUpToOrder = memoize(
     return sideOrders
       .filter((order, i) => i <= orderIndex)
       .reduce((p, order) => p + order.shares.value, 0);
-  },
-  { max: 5 }
-);
-
-export const generateTradeSummary = memoize(
-  tradeOrders => {
-    let tradeSummary = { totalGas: ZERO, tradeOrders: [] };
-
-    if (tradeOrders && tradeOrders.length) {
-      tradeSummary = tradeOrders.reduce((p, tradeOrder) => {
-        // trade order
-        p.tradeOrders.push(tradeOrder);
-
-        return p;
-      }, tradeSummary);
-    }
-
-    tradeSummary.totalGas = formatEther(tradeSummary.totalGas);
-
-    return tradeSummary;
   },
   { max: 5 }
 );

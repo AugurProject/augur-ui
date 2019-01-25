@@ -34,22 +34,10 @@ describe(`modules/trades/actions/place-trade.js`, () => {
     store.dispatch(
       placeTrade({ marketId: "testYesNoMarketId", outcomeId: null })
     );
-    expect(store.getActions()).toEqual([
-      {
-        type: "CLEAR_TRADE_IN_PROGRESS",
-        data: { marketId: "testYesNoMarketId" }
-      }
-    ]);
     store.clearActions();
     store.dispatch(
       placeTrade({ marketId: "testYesNoMarketId", outcomeId: undefined })
     );
-    expect(store.getActions()).toEqual([
-      {
-        type: "CLEAR_TRADE_IN_PROGRESS",
-        data: { marketId: "testYesNoMarketId" }
-      }
-    ]);
   });
   test("should handle a null/undefined marketId", () => {
     const { state, mockStore } = mocks.default;
@@ -121,14 +109,7 @@ describe(`modules/trades/actions/place-trade.js`, () => {
       })
     );
     const storeActions = store.getActions();
-    expect(storeActions).toHaveLength(1);
-    const Expected = [
-      {
-        type: "CLEAR_TRADE_IN_PROGRESS",
-        data: { marketId: "testYesNoMarketId" }
-      }
-    ];
-    expect(storeActions).toEqual(Expected);
+    expect(storeActions).toHaveLength(0);
     store.clearActions();
   });
 });

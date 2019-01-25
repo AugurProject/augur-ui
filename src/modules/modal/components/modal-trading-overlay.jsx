@@ -14,7 +14,6 @@ export default class ModalTradingOverlay extends Component {
     tradingForm: PropTypes.bool,
     marketId: PropTypes.string.isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
-    clearTradeInProgress: PropTypes.func.isRequired,
     isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
@@ -60,7 +59,6 @@ export default class ModalTradingOverlay extends Component {
       selectedOutcome,
       isMobile,
       availableFunds,
-      clearTradeInProgress,
       updateSelectedOutcome,
       updateSelectedOrderProperties,
       gasPrice,
@@ -85,7 +83,6 @@ export default class ModalTradingOverlay extends Component {
             selectedOutcome={selectedOutcome}
             isMobile={isMobile}
             availableFunds={availableFunds}
-            clearTradeInProgress={clearTradeInProgress}
             updateSelectedOutcome={updateSelectedOutcome}
             updateSelectedOrderProperties={updateSelectedOrderProperties}
             gasPrice={gasPrice}
