@@ -199,13 +199,7 @@ class TradingForm extends Component {
 
   testPropertyCombo(quantity, price, estEth, errors) {
     let errorCount = 0;
-    if ((quantity || estEth) && !price) {
-      errorCount += 1;
-      errors[this.INPUT_TYPES.PRICE].push(
-        "Price is needed with either quantity or total order value"
-      );
-    }
-    if (!quantity && !estEth && price) {
+    if (quantity && estEth && !price) {
       errorCount += 1;
       errors[this.INPUT_TYPES.PRICE].push(
         "Price is needed with either quantity or total order value"
