@@ -49,7 +49,7 @@ class TradingForm extends Component {
     if (typeof value === "string" && value.startsWith("."))
       testValue = `0${testValue}`;
     const isfloatValue = parseFloat(testValue);
-    if (typeof testValue === "string") {
+    if (typeof testValue === "string" && testValue.indexOf(".") !== -1) {
       // trim ending zeros
       let purned = "";
       let foundStopper = false;
