@@ -9,7 +9,7 @@ import {
   CATEGORICAL,
   SCALAR
 } from "modules/markets/constants/market-types";
-import { isEqual, reverse } from "lodash";
+import { isEqual } from "lodash";
 // import ReactTooltip from "react-tooltip";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
 import FormStyles from "modules/common/less/form";
