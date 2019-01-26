@@ -74,6 +74,7 @@ class TradingWrapper extends Component {
     this.updateTradeTotalCost = this.updateTradeTotalCost.bind(this);
     this.updateTradeNumShares = this.updateTradeNumShares.bind(this);
     this.updateOrderProperty = this.updateOrderProperty.bind(this);
+    this.updateNewOrderProperties = this.updateNewOrderProperties.bind(this);
   }
 
   componentWillMount() {
@@ -83,10 +84,9 @@ class TradingWrapper extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps, nextState) {
+  componentWillUpdate(nextProps) {
     const { selectedOrderProperties } = this.props;
 
-    // Updates from chart clicks
     if (!isEqual(selectedOrderProperties, nextProps.selectedOrderProperties)) {
       if (
         nextProps.selectedOrderProperties.orderPrice !==
@@ -131,6 +131,10 @@ class TradingWrapper extends Component {
         trade
       });
     }
+  }
+
+  updateNewOrderProperties(selectedOrderProperties) {
+    this.updateTradeTotalCost({ ...selectedOrderProperties }, true);
   }
 
   updateOrderProperty(property, callback) {
@@ -238,8 +242,7 @@ class TradingWrapper extends Component {
       handleFilledOnly,
       updateSelectedOutcome,
       toggleMobileView,
-      showSelectOutcome,
-      updateSelectedOrderProperties
+      showSelectOutcome
     } = this.props;
     const s = this.state;
     const {
@@ -344,7 +347,7 @@ class TradingWrapper extends Component {
                 updateTradeTotalCost={this.updateTradeTotalCost}
                 updateTradeNumShares={this.updateTradeNumShares}
                 showSelectOutcome={showSelectOutcome}
-                updateSelectedOrderProperties={updateSelectedOrderProperties}
+                updateNewOrderProperties={this.updateNewOrderProperties}
               />
             )}
         </div>

@@ -39,7 +39,7 @@ class TradingForm extends Component {
     updateTradeTotalCost: PropTypes.func.isRequired,
     updateTradeNumShares: PropTypes.func.isRequired,
     showSelectOutcome: PropTypes.func.isRequired,
-    updateSelectedOrderProperties: PropTypes.func.isRequired
+    updateNewOrderProperties: PropTypes.func.isRequired
   };
 
   static isFloatValue(value) {
@@ -428,8 +428,7 @@ class TradingForm extends Component {
       updateState,
       showSelectOutcome,
       isMobile,
-      // updateSelectedOrderProperties,
-      updateOrderProperty
+      updateNewOrderProperties
     } = this.props;
     const s = this.state;
 
@@ -479,7 +478,7 @@ class TradingForm extends Component {
             hoveredPrice={null}
             updateHoveredPrice={null}
             updatePrecision={null}
-            updateSelectedOrderProperties={updateOrderProperty}
+            updateSelectedOrderProperties={updateNewOrderProperties}
             marketId={market.id}
             selectedOutcome={selectedOutcome && selectedOutcome.id}
             onMobileTradingPage
