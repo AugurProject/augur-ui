@@ -42,32 +42,6 @@ class TradingForm extends Component {
     updateNewOrderProperties: PropTypes.func.isRequired
   };
 
-  static isFloatValue(value) {
-    // need a better approach to this
-    let testValue = value;
-    if (value === "") return false;
-    if (typeof value === "string" && value.startsWith("."))
-      testValue = `0${testValue}`;
-    const isfloatValue = parseFloat(testValue);
-    if (typeof testValue === "string" && testValue.indexOf(".") !== -1) {
-      // trim ending zeros
-      let purned = "";
-      let foundStopper = false;
-      reverse(testValue.split("")).forEach(chara => {
-        if (chara === "." || chara !== "0") foundStopper = true;
-        if ((chara !== "0" && !foundStopper) || foundStopper) {
-          purned += chara;
-        }
-      });
-      testValue =
-        reverse(purned.split(""))
-          .join("")
-          .replace(/\.$/, "") || testValue;
-    }
-    if (isfloatValue.toString() !== testValue.toString()) return false;
-    return true;
-  }
-
   constructor(props) {
     super(props);
 
@@ -158,13 +132,6 @@ class TradingForm extends Component {
         "Total Order Value must be greater than 0"
       );
     }
-    if (!TradingForm.isFloatValue(value)) {
-      errorCount += 1;
-      passedTest = false;
-      errors[this.INPUT_TYPES.EST_ETH].push(
-        "Total Order Value is not a number"
-      );
-    }
     return { isOrderValid: passedTest, errors, errorCount };
   }
 
@@ -177,11 +144,6 @@ class TradingForm extends Component {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push("Quantity must be greater than 0");
-    }
-    if (!TradingForm.isFloatValue(value)) {
-      errorCount += 1;
-      passedTest = false;
-      errors[this.INPUT_TYPES.QUANTITY].push("Quantity is not a number");
     }
     return { isOrderValid: passedTest, errors, errorCount };
   }
@@ -200,11 +162,6 @@ class TradingForm extends Component {
       errors[this.INPUT_TYPES.PRICE].push(
         `Limit price must be between ${minPrice} - ${maxPrice}`
       );
-    }
-    if (!TradingForm.isFloatValue(value)) {
-      errorCount += 1;
-      passedTest = false;
-      errors[this.INPUT_TYPES.PRICE].push("Price is not a number");
     }
     // removed this validation for now, let's let augur.js handle this.
     if (value && value.mod(tickSize).gt("0")) {
@@ -304,7 +261,7 @@ class TradingForm extends Component {
       selectedNav,
       clearOrderForm
     } = this.props;
-    const value = rawValue;
+    const value = rawValue.toString();
 
     const updatedState = {
       ...this.state,
@@ -313,10 +270,22 @@ class TradingForm extends Component {
 
     const validationResults = this.orderValidation(updatedState, this.props);
 
-    if (value !== "" && !TradingForm.isFloatValue(value)) {
+    if (value === "NaN") {
       validationResults.errorCount += 1;
       validationResults.isOrderValid = false;
-      validationResults.errors[property].push("Value is not a number");
+      validationResults.errors[property].push(
+        "Value has too many decimals or is malformed"
+      );
+      clearOrderForm(false);
+      return this.setState(currentState => ({
+        ...this.state,
+        errors: {
+          ...currentState.errors,
+          ...validationResults.errors
+        },
+        errorCount: validationResults.errorCount,
+        isOrderValid: validationResults.isOrderValid
+      }));
     }
 
     if (validationResults.errorCount > 0) {
@@ -510,7 +479,12 @@ class TradingForm extends Component {
                 }`}
                 value={quantityValue}
                 onChange={e =>
-                  this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
+                  this.validateForm(
+                    this.INPUT_TYPES.QUANTITY,
+                    e.target.value === "" && e.target.validity.badInput
+                      ? e.target.valueAsNumber
+                      : e.target.value
+                  )
                 }
               />
               <span
@@ -549,7 +523,12 @@ class TradingForm extends Component {
                     : s[this.INPUT_TYPES.PRICE]
                 }
                 onChange={e =>
-                  this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
+                  this.validateForm(
+                    this.INPUT_TYPES.PRICE,
+                    e.target.value === "" && e.target.validity.badInput
+                      ? e.target.valueAsNumber
+                      : e.target.value
+                  )
                 }
               />
               <span
@@ -590,9 +569,14 @@ class TradingForm extends Component {
                     ? s[this.INPUT_TYPES.EST_ETH].toNumber()
                     : s[this.INPUT_TYPES.EST_ETH]
                 }
-                onChange={e =>
-                  this.validateForm(this.INPUT_TYPES.EST_ETH, e.target.value)
-                }
+                onChange={e => {
+                  this.validateForm(
+                    this.INPUT_TYPES.EST_ETH,
+                    e.target.value === "" && e.target.validity.badInput
+                      ? e.target.valueAsNumber
+                      : e.target.value
+                  );
+                }}
               />
               <span
                 className={classNames({
