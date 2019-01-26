@@ -120,6 +120,8 @@ div.MarketOutcomeChartsHeader__stats {
     }
 
     .tick-line {
+      .dashline-long;
+
       stroke: @color-gray;
 
       &--midpoint {
@@ -166,8 +168,20 @@ div.MarketOutcomeChartsHeader__stats {
     }
 
     .period-volume {
-      fill: @color-white;
-      opacity: 0.2;
+      fill: @color-dark-grayish-purple;
+
+      &.hovered {
+        fill: @color-bright-gray-purple;
+      }
+    }
+
+    .period-volume-background {
+      fill: @color-gray-color;
+      opacity: 0;
+
+      &.hovered {
+        opacity: 0.1;
+      }
     }
 
     line.crosshair {
