@@ -46,7 +46,6 @@ export function updateTradeCost({
       orderBooks,
       outcome,
       accountPositions,
-      dispatch,
       callback
     );
   };
@@ -124,7 +123,7 @@ export function updateTradeShares({
         newShares = newShares.plus(netPosition);
       }
     }
-    newTradeDetails.numShares = newShares.abs().toFixed(4);
+    newTradeDetails.numShares = newShares.abs().toFixed(9);
     const outcome = outcomesData[marketId][outcomeId];
 
     return runSimulateTrade(
@@ -136,7 +135,6 @@ export function updateTradeShares({
       orderBooks,
       outcome,
       accountPositions,
-      dispatch,
       callback
     );
   };
@@ -151,7 +149,6 @@ function runSimulateTrade(
   orderBooks,
   outcome,
   accountPositions,
-  dispatch,
   callback
 ) {
   let userShareBalance = new Array(market.numOutcomes).fill("0");
