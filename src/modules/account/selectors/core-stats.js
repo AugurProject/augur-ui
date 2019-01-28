@@ -78,6 +78,37 @@ export const selectCoreStats = createSelector(
   (loginAccount, loginAccountPositions, positions) => {
     // console.log("positions, loginAccountPositions");
     // console.log(positions, loginAccountPositions);
+    const positionsArray = Object.keys(positions);
+
+    let positionsETH = createBigNumber(0);
+    let ordersETH = createBigNumber(0);
+    positionsArray.forEach(marketId => {
+      const marketPositions = Object.keys(positions[marketId]);
+      marketPositions.forEach(outcomeId => {
+        const outcomePosition = positions[marketId][outcomeId];
+        positionsETH = createBigNumber(outcomePosition.cost).plus(positionsETH);
+      });
+    });
+    loginAccountPositions.markets.forEach(market => {
+      market.outcomes.forEach(marketOutcome => {
+        if (
+          marketOutcome.userOpenOrders &&
+          marketOutcome.userOpenOrders.length > 0
+        ) {
+          marketOutcome.userOpenOrders.forEach(openOrder => {
+            if (openOrder && openOrder.tokensEscrowed) {
+              ordersETH = createBigNumber(
+                openOrder.tokensEscrowed.formattedValue
+              ).plus(ordersETH);
+            }
+          });
+        }
+      });
+    });
+    const portfolioBalance = formatEther(ordersETH.plus(positionsETH));
+    const totalBalance = formatEther(
+      ordersETH.plus(positionsETH).plus(loginAccount.eth.fullPrecision || 0)
+    );
 
     return [
       // Group 1
@@ -96,6 +127,16 @@ export const selectCoreStats = createSelector(
           label: "REP",
           title: "Reputation -- event voting currency",
           value: { ...loginAccount.rep, denomination: null }
+        },
+        portfolioBalance: {
+          label: "ETH",
+          title: "Ether",
+          value: { ...portfolioBalance, denomination: null }
+        },
+        totalBalance: {
+          label: "ETH",
+          title: "Ether",
+          value: { ...totalBalance, denomination: null }
         }
       },
       // Group 2

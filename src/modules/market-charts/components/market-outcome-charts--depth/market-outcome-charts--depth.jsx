@@ -839,7 +839,7 @@ function attachHoverClickHandlers(options) {
         marketMax
       );
       if (nearestFillingOrder === null) return;
-      
+
       d3.select(bidsDepthLine).attr(
         "stroke-width",
         nearestFillingOrder[4] === ASKS ? 1 : 2
