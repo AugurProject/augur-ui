@@ -6,13 +6,9 @@ import Styles from "modules/market-charts/components/market-outcome--header-orde
 import StylesHeader from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
 
 const MarketOutcomeChartsHeaderOrders = ({ title, headers, isMobile }) => (
-  <section
-    className={Styles.MarketOutcomeChartsHeader__orders}
-  >
+  <section className={Styles.MarketOutcomeChartsHeader__orders}>
     {isMobile || (
-      <div className={StylesHeader.MarketOutcomesList__heading}>
-        {title}
-      </div>
+      <div className={StylesHeader.MarketOutcomesList__heading}>{title}</div>
     )}
     <div
       className={classNames(
