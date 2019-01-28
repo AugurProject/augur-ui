@@ -568,6 +568,38 @@ function drawTicks({
     .text(d => `${d.toFixed(pricePrecision)} ETH`);
 }
 
+function twoUpperCornerRoundedRect(x, y, width, height, radius) {
+  return (
+    "M" +
+    (x + width) +
+    "," +
+    (y + height) +
+    "v" +
+    -(height - radius) +
+    "a" +
+    radius +
+    "," +
+    radius +
+    " 0 0 0 " +
+    -radius +
+    "," +
+    -radius +
+    "h" +
+    -(width - 2 * radius) +
+    "a" +
+    radius +
+    "," +
+    radius +
+    " 0 0 0 " +
+    -radius +
+    "," +
+    radius +
+    "v" +
+    (height - radius) +
+    "z"
+  );
+}
+
 function drawCandles({
   priceTimeSeries,
   updateHoveredPeriod,
@@ -628,11 +660,16 @@ function drawCandles({
       .attr("class", "period-volume-background")
       .classed("hovered", d => d.period === hoveredPeriod.period);
 
-    g.append("rect")
-      .attr("x", d => xScale(d.period))
-      .attr("y", d => yVolumeScale(d.volume))
-      .attr("height", d => yMax - yVolumeScale(d.volume))
-      .attr("width", () => candleDim.width)
+    g.append("path")
+      .attr("d", d =>
+        twoUpperCornerRoundedRect(
+          xScale(d.period),
+          yVolumeScale(d.volume),
+          candleDim.width,
+          yMax - yVolumeScale(d.volume),
+          2
+        )
+      )
       .attr("class", "period-volume")
       .classed("hovered", d => d.period === hoveredPeriod.period);
 
