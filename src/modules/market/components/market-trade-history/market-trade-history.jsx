@@ -3,7 +3,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+
 import { SELL } from "modules/trades/constants/types";
+import MarketOutcomeHeaderOrders from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders";
 import Styles from "modules/market/components/market-trade-history/market-trade-history.styles";
 
 export default class MarketTradeHistory extends Component {
@@ -37,20 +39,11 @@ export default class MarketTradeHistory extends Component {
 
     return (
       <section className={Styles.MarketTradeHistory__container}>
-        {!isMobile && (
-          <div className={Styles.MarketTradeHistory__heading}>
-            Trade History
-          </div>
-        )}
-        <div>
-          <div className={Styles.MarketTradeHistory__table}>
-            <ul className={Styles["MarketTradeHistory__table-header"]}>
-              <li>Quantity</li>
-              <li>Price</li>
-              <li>Time</li>
-            </ul>
-          </div>
-        </div>
+        <MarketOutcomeHeaderOrders
+          isMobile={isMobile}
+          title="Trade History"
+          headers={["quantity", "price", "time"]}
+        />
         <div className={Styles.MarketTradeHistory__table__data}>
           {groupedTradeHistory &&
             Object.keys(groupedTradeHistory).map((date, index) => (

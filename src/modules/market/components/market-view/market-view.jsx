@@ -333,7 +333,6 @@ export default class MarketView extends Component {
                   <ModulePane label="Order Book">
                     <div className={Styles.MarketView__orders}>
                       <MarketOutcomeOrders
-                        headerHeight={0}
                         isMobile={isMobile}
                         sharedChartMargins={this.sharedChartMargins}
                         fixedPrecision={4}
@@ -478,7 +477,6 @@ export default class MarketView extends Component {
               )}
             >
               <MarketOutcomeOrders
-                headerHeight={0}
                 isMobile={isMobile}
                 fixedPrecision={4}
                 pricePrecision={4}

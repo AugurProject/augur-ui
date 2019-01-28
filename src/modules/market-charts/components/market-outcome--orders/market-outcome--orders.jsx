@@ -19,7 +19,6 @@ export default class MarketOutcomeChartsOrders extends Component {
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     // updatePrecision: PropTypes.func.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    headerHeight: PropTypes.number.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
     onMobileTradingPage: PropTypes.bool
@@ -59,7 +58,6 @@ export default class MarketOutcomeChartsOrders extends Component {
       orderBook,
       updateSelectedOrderProperties,
       isMobile,
-      headerHeight,
       hasOrders,
       orderBookKeys,
       onMobileTradingPage
@@ -76,7 +74,8 @@ export default class MarketOutcomeChartsOrders extends Component {
       >
         <MarketOutcomeHeaderOrders
           isMobile={isMobile}
-          headerHeight={headerHeight}
+          title="Order Book"
+          headers={["quantity", "price", "my quantity"]}
         />
         <div
           className={classNames(
