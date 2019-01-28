@@ -33,7 +33,8 @@ import NavCreateIcon from "modules/common/components/nav-create-icon";
 import NavMarketsIcon from "modules/common/components/nav-markets-icon";
 import NavPortfolioIcon from "modules/common/components/nav-portfolio-icon";
 import { NavReportingIcon } from "modules/common/components/icons";
-
+import { Link } from "react-router-dom";
+import makePath from "modules/routes/helpers/make-path";
 import parsePath from "modules/routes/helpers/parse-path";
 import parseQuery from "modules/routes/helpers/parse-query";
 
@@ -53,7 +54,8 @@ import {
   CREATE_MARKET,
   REPORTING_DISPUTE_MARKETS,
   REPORTING_REPORT_MARKETS,
-  REPORTING_RESOLVED_MARKETS
+  REPORTING_RESOLVED_MARKETS,
+  DEFAULT_VIEW
 } from "modules/routes/constants/views";
 import { MODAL_NETWORK_CONNECT } from "modules/modal/constants/modal-types";
 import { CATEGORY_PARAM_NAME } from "modules/filter-sort/constants/param-names";
@@ -530,7 +532,9 @@ export default class AppView extends Component {
             role="presentation"
           >
             <div className={Styles.Logo}>
-              <Logo isLoading={isLoading} />
+              <Link to={makePath(DEFAULT_VIEW)}>
+                <Logo isLoading={isLoading} />
+              </Link>
             </div>
             {this.renderMobileMenuButton(unseenCount)}
             <SideNav
