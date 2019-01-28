@@ -371,8 +371,7 @@ class TradingWrapper extends Component {
             className={classNames(Styles["TradingWrapper__button--submit"], {
               [Styles.long]: selectedNav === BUY,
               [Styles.short]: selectedNav === SELL,
-              [Styles.disabled]:
-                !selectedOutcome || (s.trade && !s.trade.limitPrice)
+              [Styles.disabled]: !s.trade || !s.trade.limitPrice
             })}
             onClick={e => {
               e.preventDefault();
