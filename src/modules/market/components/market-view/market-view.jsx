@@ -11,7 +11,7 @@ import MarketHeader from "modules/market/containers/market-header";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
-import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
+import MarketTradingForm from "modules/market/containers/market-trading-form";
 import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 import MarketTradeHistory from "modules/market/containers/market-trade-history";
@@ -30,18 +30,13 @@ import { BigNumber } from "bignumber.js";
 
 export default class MarketView extends Component {
   static propTypes = {
-    handleFilledOnly: PropTypes.func.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
-    gasPrice: PropTypes.number.isRequired,
     market: PropTypes.object.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     marketId: PropTypes.string.isRequired,
-    currentTimestamp: PropTypes.number.isRequired,
+    currentTimestamp: PropTypes.number,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
-    updateTradeCost: PropTypes.func.isRequired,
-    updateTradeShares: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
@@ -57,7 +52,8 @@ export default class MarketView extends Component {
     loadingState: null,
     isMobile: false,
     outcomes: [],
-    isLogged: false
+    isLogged: false,
+    currentTimestamp: 0
   };
 
   constructor(props) {
@@ -207,12 +203,7 @@ export default class MarketView extends Component {
       isMobile,
       outcomes,
       market,
-      availableFunds,
-      gasPrice,
-      handleFilledOnly,
-      updateModal,
-      updateTradeCost,
-      updateTradeShares
+      updateModal
     } = this.props;
     const s = this.state;
 
@@ -225,16 +216,11 @@ export default class MarketView extends Component {
       selectedOutcome: s.selectedOutcome,
       isMobile,
       toggleForm: this.toggleForm,
-      availableFunds,
       updateSelectedOutcome: returnToTradingForm
         ? this.updateOutcomeReturn
         : this.updateSelectedOutcome,
       updateSelectedOrderProperties: this.updateSelectedOrderProperties,
-      gasPrice,
-      handleFilledOnly,
       outcomes,
-      updateTradeCost,
-      updateTradeShares,
       marketId,
       showSelectOutcome: this.showSelectOutcome
     });
@@ -243,7 +229,6 @@ export default class MarketView extends Component {
   render() {
     const {
       currentTimestamp,
-      isLogged,
       description,
       marketId,
       maxPrice,
@@ -252,12 +237,7 @@ export default class MarketView extends Component {
       isMobile,
       outcomes,
       market,
-      availableFunds,
-      gasPrice,
-      handleFilledOnly,
-      marketType,
-      updateTradeCost,
-      updateTradeShares
+      marketType
     } = this.props;
     const s = this.state;
 
@@ -411,21 +391,14 @@ export default class MarketView extends Component {
                 <div className={Styles.MarketView__component}>
                   <MarketTradingForm
                     market={market}
-                    isLogged={isLogged}
                     selectedOrderProperties={s.selectedOrderProperties}
                     selectedOutcome={s.selectedOutcome}
-                    isMobile={isMobile}
                     toggleForm={this.toggleForm}
-                    availableFunds={availableFunds}
                     updateSelectedOutcome={this.updateSelectedOutcome}
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties
                     }
-                    gasPrice={gasPrice}
-                    handleFilledOnly={handleFilledOnly}
                     toggleMobileView={this.toggleTradingForm}
-                    updateTradeCost={updateTradeCost}
-                    updateTradeShares={updateTradeShares}
                     showSelectOutcome={this.showSelectOutcome}
                   />
                 </div>
