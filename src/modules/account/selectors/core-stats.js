@@ -4,7 +4,8 @@ import {
   selectAccountTradesState,
   selectCurrentTimestamp,
   selectBlockchainState,
-  selectOutcomesDataState
+  selectOutcomesDataState,
+  selectAccountPositionsState
 } from "src/select-state";
 import { augur } from "services/augurjs";
 import { formatEther } from "utils/format-number";
@@ -69,69 +70,66 @@ export const createPeriodPLSelector = period =>
   );
 
 export const selectCoreStats = createSelector(
-  selectAccountTradesState,
-  selectBlockchainState,
-  selectOutcomesDataState,
   selectLoginAccount,
   selectLoginAccountPositions,
+  selectAccountPositionsState,
   createPeriodPLSelector(30),
   createPeriodPLSelector(1),
-  (
-    accountTrades,
-    blockchain,
-    outcomesData,
-    loginAccount,
-    loginAccountPositions
-  ) => [
-    // Group 1
-    {
-      totalEth: {
-        label: "ETH Tokens",
-        title: "Ether Tokens -- outcome trading currency",
-        value: { ...loginAccount.ethTokens, denomination: null }
+  (loginAccount, loginAccountPositions, positions) => {
+    // console.log("positions, loginAccountPositions");
+    // console.log(positions, loginAccountPositions);
+
+    return [
+      // Group 1
+      {
+        totalEth: {
+          label: "ETH Tokens",
+          title: "Ether Tokens -- outcome trading currency",
+          value: { ...loginAccount.ethTokens, denomination: null }
+        },
+        totalRealEth: {
+          label: "ETH",
+          title: "Ether -- pays transaction gas fees",
+          value: { ...loginAccount.eth, denomination: null }
+        },
+        totalRep: {
+          label: "REP",
+          title: "Reputation -- event voting currency",
+          value: { ...loginAccount.rep, denomination: null }
+        }
       },
-      totalRealEth: {
-        label: "ETH",
-        title: "Ether -- pays transaction gas fees",
-        value: { ...loginAccount.eth, denomination: null }
-      },
-      totalRep: {
-        label: "REP",
-        title: "Reputation -- event voting currency",
-        value: { ...loginAccount.rep, denomination: null }
+      // Group 2
+      // NOTE -- group two is excluded for now due to not having all OPEN orders available without calling against every market
+      // {
+      //  totalRiskedEth: {
+      //    label: 'Risked ETH',
+      //    title: 'Risked Ether -- Ether tied up in positions',
+      //    value: totalRiskedEth
+      //  },
+      //  totalAvailableEth: {
+      //    label: 'Available ETH',
+      //    title: 'Available Ether -- Ether not tied up in positions',
+      //    value: totalAvailableEth
+      //  }
+      // },
+      // Group 3
+      {
+        totalPL: {
+          label: "Total P/L",
+          title: "Profit/Loss -- net of all trades",
+          value: getValue(loginAccountPositions, "summary.totalNet")
+        },
+        totalPLMonth: {
+          label: "30 Day P/L",
+          title: "Profit/Loss -- net of all trades over the last 30 days",
+          value: formatEther(loginAccount.totalPLMonth)
+        },
+        totalPLDay: {
+          label: "1 Day P/L",
+          title: "Profit/Loss -- net of all trades over the last day",
+          value: formatEther(loginAccount.totalPLDay)
+        }
       }
-    },
-    // Group 2
-    // NOTE -- group two is excluded for now due to not having all OPEN orders available without calling against every market
-    // {
-    //  totalRiskedEth: {
-    //    label: 'Risked ETH',
-    //    title: 'Risked Ether -- Ether tied up in positions',
-    //    value: totalRiskedEth
-    //  },
-    //  totalAvailableEth: {
-    //    label: 'Available ETH',
-    //    title: 'Available Ether -- Ether not tied up in positions',
-    //    value: totalAvailableEth
-    //  }
-    // },
-    // Group 3
-    {
-      totalPL: {
-        label: "Total P/L",
-        title: "Profit/Loss -- net of all trades",
-        value: getValue(loginAccountPositions, "summary.totalNet")
-      },
-      totalPLMonth: {
-        label: "30 Day P/L",
-        title: "Profit/Loss -- net of all trades over the last 30 days",
-        value: formatEther(loginAccount.totalPLMonth)
-      },
-      totalPLDay: {
-        label: "1 Day P/L",
-        title: "Profit/Loss -- net of all trades over the last day",
-        value: formatEther(loginAccount.totalPLDay)
-      }
-    }
-  ]
+    ];
+  }
 );
