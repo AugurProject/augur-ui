@@ -268,25 +268,19 @@ class TradingForm extends Component {
       [property]: value
     };
 
-    const validationResults = this.orderValidation(updatedState, this.props);
-
-    if (value === "NaN") {
-      validationResults.errorCount += 1;
-      validationResults.isOrderValid = false;
-      validationResults.errors[property].push(
-        "Value has too many decimals or is malformed"
-      );
+    if (value === "") {
       clearOrderForm(false);
-      return this.setState(currentState => ({
-        ...this.state,
-        errors: {
-          ...currentState.errors,
-          ...validationResults.errors
+      return this.setState(
+        {
+          [property]: ""
         },
-        errorCount: validationResults.errorCount,
-        isOrderValid: validationResults.isOrderValid
-      }));
+        () => {
+          updateOrderProperty({ [property]: value });
+        }
+      );
     }
+
+    const validationResults = this.orderValidation(updatedState, this.props);
 
     if (validationResults.errorCount > 0) {
       clearOrderForm(false);
@@ -479,12 +473,7 @@ class TradingForm extends Component {
                 }`}
                 value={quantityValue}
                 onChange={e =>
-                  this.validateForm(
-                    this.INPUT_TYPES.QUANTITY,
-                    e.target.value === "" && e.target.validity.badInput
-                      ? e.target.valueAsNumber
-                      : e.target.value
-                  )
+                  this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
                 }
               />
               <span
@@ -523,12 +512,7 @@ class TradingForm extends Component {
                     : s[this.INPUT_TYPES.PRICE]
                 }
                 onChange={e =>
-                  this.validateForm(
-                    this.INPUT_TYPES.PRICE,
-                    e.target.value === "" && e.target.validity.badInput
-                      ? e.target.valueAsNumber
-                      : e.target.value
-                  )
+                  this.validateForm(this.INPUT_TYPES.PRICE, e.target.value)
                 }
               />
               <span
@@ -569,14 +553,9 @@ class TradingForm extends Component {
                     ? s[this.INPUT_TYPES.EST_ETH].toNumber()
                     : s[this.INPUT_TYPES.EST_ETH]
                 }
-                onChange={e => {
-                  this.validateForm(
-                    this.INPUT_TYPES.EST_ETH,
-                    e.target.value === "" && e.target.validity.badInput
-                      ? e.target.valueAsNumber
-                      : e.target.value
-                  );
-                }}
+                onChange={e =>
+                  this.validateForm(this.INPUT_TYPES.EST_ETH, e.target.value)
+                }
               />
               <span
                 className={classNames({
