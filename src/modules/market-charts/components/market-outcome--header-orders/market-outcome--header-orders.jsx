@@ -2,13 +2,21 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import {
+  collapseIcon,
+  expandIcon,
+} from "modules/common/components/icons";
+
 import Styles from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders.styles";
 import StylesHeader from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
 
 const MarketOutcomeChartsHeaderOrders = ({ title, headers, isMobile }) => (
   <section className={Styles.MarketOutcomeChartsHeader__orders}>
     {isMobile || (
-      <div className={StylesHeader.MarketOutcomesList__heading}>{title}</div>
+      <div className={StylesHeader.MarketOutcomesList__heading}>
+        {title}
+        <span>{collapseIcon}</span>
+      </div>
     )}
     <div
       className={classNames(
