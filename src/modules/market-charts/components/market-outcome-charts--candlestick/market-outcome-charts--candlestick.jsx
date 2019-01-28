@@ -644,13 +644,7 @@ function drawCandles({
       .data(priceTimeSeries)
       .enter()
       .append("g")
-      .attr("class", "periods")
-      .on("mouseover", updateHoveredPeriod)
-      .on("mousemove", () => {
-        const y = d3.mouse(d3.event.target)[1];
-        updateHoveredPrice(yScale.invert(y).toFixed(pricePrecision));
-      })
-      .on("mouseleave", clearCrosshairs);
+      .attr("class", "periods");
 
     g.append("rect")
       .attr("x", d => xScale(d.period))
@@ -688,6 +682,19 @@ function drawCandles({
       .attr("y", d => yScale(d.high))
       .attr("height", d => yScale(d.low) - yScale(d.high))
       .attr("class", d => (d.close > d.open ? "up-period" : "down-period"));
+
+    g.append("rect")
+      .attr("class", "period-hover-target")
+      .attr("x", d => xScale(d.period))
+      .attr("y", () => ymin)
+      .attr("height", () => yMax - ymin)
+      .attr("width", () => candleDim.width)
+      .on("mouseover", updateHoveredPeriod)
+      .on("mousemove", () => {
+        const y = d3.mouse(d3.event.target)[1];
+        updateHoveredPrice(yScale.invert(y).toFixed(pricePrecision));
+      })
+      .on("mouseout", clearCrosshairs);
   }
 }
 
