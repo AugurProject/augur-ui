@@ -94,12 +94,13 @@ export default class MarketHeaderReporting extends Component {
       }
     }
     let content = null;
-    if (consensus && consensus.winningOutcome) {
+    if (consensus && (consensus.winningOutcome || consensus.isInvalid)) {
       content = [
         <div
           key="consensus"
           className={classNames(
             Styles.MarketHeaderReporting__winner__container,
+            Styles.MarketHeaderReporting__winner__container__set,
             Styles[
               `MarketHeaderReporting__winner__container__color__${CatWinnerColorIndex}`
             ]
@@ -114,7 +115,9 @@ export default class MarketHeaderReporting extends Component {
             </span>
             <span className={Styles.MarketHeaderReporting__winner__row}>
               <div className={Styles.MarketHeaderReporting__winner}>
-                {consensus.outcomeName || consensus.winningOutcome}
+                {consensus.isInvalid
+                  ? "Invalid"
+                  : consensus.outcomeName || consensus.winningOutcome}
               </div>
             </span>
           </div>
