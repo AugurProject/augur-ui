@@ -1,11 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
-import { selectMarket } from "modules/markets/selectors/market";
-import parseQuery from "modules/routes/helpers/parse-query";
-import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
-import getPrecision from "utils/get-number-precision";
-import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "src/utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { handleFilledOnly } from "modules/notifications/actions/notifications";
