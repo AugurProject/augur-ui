@@ -631,6 +631,8 @@ function drawCandles({
       .enter()
       .append("rect")
       .attr("class", "candle-mask-rect")
+      .attr("rx", 2)
+      .attr("ry", 2)
       .attr("x", d => xScale(d.period))
       .attr("y", d => yScale(d3.max([d.open, d.close])))
       .attr("height", d =>
@@ -668,6 +670,8 @@ function drawCandles({
       .classed("hovered", d => d.period === hoveredPeriod.period);
 
     g.append("rect")
+      .attr("rx", 2)
+      .attr("ry", 2)
       .attr("x", d => xScale(d.period))
       .attr("y", d => yScale(d3.max([d.open, d.close])))
       .attr("height", d =>
