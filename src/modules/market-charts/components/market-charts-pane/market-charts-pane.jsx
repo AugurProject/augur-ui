@@ -11,7 +11,7 @@ import { BigNumber } from "bignumber.js";
 
 export default class MarketChartsPane extends Component {
   static propTypes = {
-    currentTimestamp: PropTypes.number.isRequired,
+    currentTimestamp: PropTypes.number,
     marketId: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
@@ -21,7 +21,8 @@ export default class MarketChartsPane extends Component {
   };
 
   static defaultProps = {
-    isMobile: false
+    isMobile: false,
+    currentTimestamp: 0
   };
 
   constructor(props) {

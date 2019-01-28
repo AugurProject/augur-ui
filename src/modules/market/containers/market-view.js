@@ -8,13 +8,7 @@ import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
 import getPrecision from "utils/get-number-precision";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "src/utils/create-big-number";
-import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import { handleFilledOnly } from "modules/notifications/actions/notifications";
 import { updateModal } from "modules/modal/actions/update-modal";
-import {
-  updateTradeCost,
-  updateTradeShares
-} from "modules/trades/actions/update-trade-cost-shares";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -30,7 +24,6 @@ const mapStateToProps = (state, ownProps) => {
   const pricePrecision = market && getPrecision(market.tickSize, 4);
 
   return {
-    gasPrice: getGasPrice(state),
     availableFunds: createBigNumber(state.loginAccount.eth || 0),
     currentTimestamp: selectCurrentTimestampInSeconds(state),
     outcomes: market.outcomes || [],
@@ -53,12 +46,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   loadFullMarket: marketId => dispatch(loadFullMarket(marketId)),
-  handleFilledOnly: trade => dispatch(handleFilledOnly(trade)),
-  updateModal: modal => dispatch(updateModal(modal)),
-  updateTradeCost: (marketId, outcomeId, order, callback) =>
-    dispatch(updateTradeCost({ marketId, outcomeId, ...order, callback })),
-  updateTradeShares: (marketId, outcomeId, order, callback) =>
-    dispatch(updateTradeShares({ marketId, outcomeId, ...order, callback }))
+  updateModal: modal => dispatch(updateModal(modal))
 });
 
 const Market = withRouter(
