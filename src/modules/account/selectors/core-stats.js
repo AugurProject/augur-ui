@@ -76,8 +76,6 @@ export const selectCoreStats = createSelector(
   createPeriodPLSelector(30),
   createPeriodPLSelector(1),
   (loginAccount, loginAccountPositions, positions) => {
-    // console.log("positions, loginAccountPositions");
-    // console.log(positions, loginAccountPositions);
     const positionsArray = Object.keys(positions);
 
     let positionsETH = createBigNumber(0);

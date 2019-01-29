@@ -12,6 +12,7 @@ const AccountHeader = ({ stats }) => {
   return (
     <TextFit mode="single" min={16} max={90}>
       <div className={Styles.AccountHeader}>
+        <h4>Available Balance</h4>
         <div className={Styles.AccountHeader__Currency}>
           <span className="eth_value"> {ethValue} </span>
           <span className={Styles["AccountHeader__Currency-label"]}>

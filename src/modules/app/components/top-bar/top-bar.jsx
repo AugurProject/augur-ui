@@ -50,7 +50,9 @@ const TopBar = props => (
             place="bottom"
             type="light"
           >
-            <h4>Portfolio Balance</h4>
+            <h4>
+              <u>Portfolio Balance</u>
+            </h4>
             <p>
               <span
                 className={Styles["TopBar__stat-value-tooltip"]}
@@ -60,7 +62,9 @@ const TopBar = props => (
               </span>
               <span className={Styles["TopBar__stat-label-tooltip"]}>ETH</span>
             </p>
-            <h4>Available Balance</h4>
+            <h4>
+              <u>Available Balance</u>
+            </h4>
             <p>
               <span
                 className={Styles["TopBar__stat-value-tooltip"]}
