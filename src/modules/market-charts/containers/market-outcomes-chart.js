@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
     maxPrice = createBigNumber(1),
     minPrice = createBigNumber(0),
     outcomes = [],
+    isYesNo,
     isScalar,
     scalarDenomination,
     volume = { formatted: "0" }
@@ -47,6 +48,7 @@ const mapStateToProps = (state, ownProps) => {
     outcomes,
     hasPriceHistory,
     bucketedPriceTimeSeries,
+    isYesNo,
     isScalar,
     scalarDenomination
   };

@@ -23,6 +23,7 @@ export default class MarketOutcomesChart extends Component {
     hasPriceHistory: PropTypes.bool.isRequired,
     bucketedPriceTimeSeries: PropTypes.object.isRequired,
     isMobileSmall: PropTypes.bool,
+    isYesNo: PropTypes.bool,
     isScalar: PropTypes.bool,
     scalarDenomination: PropTypes.string,
     selectedOutcome: PropTypes.string.isRequired
@@ -30,6 +31,7 @@ export default class MarketOutcomesChart extends Component {
 
   static defaultProps = {
     isMobileSmall: false,
+    isYesNo: false,
     isScalar: false,
     scalarDenomination: ""
   };
@@ -94,6 +96,7 @@ export default class MarketOutcomesChart extends Component {
       hasPriceHistory,
       bucketedPriceTimeSeries,
       isMobileSmall,
+      isYesNo,
       isScalar,
       scalarDenomination,
       selectedOutcome
@@ -110,6 +113,7 @@ export default class MarketOutcomesChart extends Component {
       hasPriceHistory,
       bucketedPriceTimeSeries,
       isMobileSmall,
+      isYesNo,
       isScalar,
       scalarDenomination,
       selectedOutcome
@@ -127,6 +131,7 @@ export default class MarketOutcomesChart extends Component {
     bucketedPriceTimeSeries,
     isMobileSmall,
     selectedOutcome,
+    isYesNo,
     isScalar,
     scalarDenomination,
     fixedPrecision
@@ -192,6 +197,7 @@ export default class MarketOutcomesChart extends Component {
         drawParams,
         bucketedPriceTimeSeries,
         selectedOutcome,
+        isYesNo,
         isScalar
       });
 
@@ -371,13 +377,9 @@ function drawSeries({
   chart,
   bucketedPriceTimeSeries,
   selectedOutcome,
+  isYesNo,
   isScalar
 }) {
-  const initialPoint = {
-    price: estimatedInitialPrice.toString(),
-    timestamp: drawParams.xScale.domain()[0]
-  };
-
   const outcomeLine = d3
     .line()
     .x(d => drawParams.xScale(d.timestamp))
@@ -389,7 +391,7 @@ function drawSeries({
       ...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]
     ];
 
-    if (isScalar) {
+    if (isScalar || isYesNo) {
       const area = d3
         .area()
         .x(d => drawParams.xScale(d.timestamp))
@@ -590,7 +592,7 @@ function updateHoveredLocationCrosshairPosition(
     .attr("y", drawParams.containerHeight - drawParams.chartDim.bottom + 4);
 
   d3.select("#hovered_priceTimeSeries_date_label-inner").html(
-    drawParams.timeFormat(timestamp)
+    drawParams.timeFormat(new Date(timestamp))
   );
 }
 
