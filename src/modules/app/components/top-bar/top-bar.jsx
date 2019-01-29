@@ -68,7 +68,7 @@ const TopBar = props => (
             <p>
               <span
                 className={Styles["TopBar__stat-value-tooltip"]}
-                id="core-bar-eth-tooltip"
+                id="core-bar-rep-tooltip"
               >
                 {props.stats[0].totalRealEth.value.formatted}
               </span>
