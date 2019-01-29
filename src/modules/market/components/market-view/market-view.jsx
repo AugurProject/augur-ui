@@ -476,9 +476,6 @@ export default class MarketView extends Component {
           </div>
           <div className={Styles.MarketView__secondColumn}>
             <div
-              ref={orders => {
-                this.orders = orders;
-              }}
               className={classNames(
                 Styles.MarketView__component,
                 Styles.MarketView__orders,
@@ -506,9 +503,6 @@ export default class MarketView extends Component {
               />
             </div>
             <div
-              ref={history => {
-                this.history = history;
-              }}
               className={classNames(
                 Styles.MarketView__component,
                 Styles.MarketView__history,
