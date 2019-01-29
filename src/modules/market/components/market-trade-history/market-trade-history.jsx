@@ -17,7 +17,7 @@ export default class MarketTradeHistory extends Component {
     groupedTradeHistory: PropTypes.object.isRequired,
     toggle: PropTypes.func.isRequired,
     extend: PropTypes.bool.isRequired,
-    hide: PropTypes.bool.isRequired,
+    hide: PropTypes.bool.isRequired
   };
 
   static defaultProps = {

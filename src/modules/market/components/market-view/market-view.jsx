@@ -23,8 +23,6 @@ import MarketOutcomeSelector from "modules/market/components/market-view/market-
 // import { Close } from "modules/common/components/icons";
 import MarketOutcomesChart from "src/modules/market-charts/containers/market-outcomes-chart";
 import { MODAL_TRADING_OVERLAY } from "modules/modal/constants/modal-types";
-import toggleHeight from "utils/toggle-height/toggle-height";
-import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
@@ -110,26 +108,6 @@ export default class MarketView extends Component {
     this.node.scrollIntoView();
   }
 
-  toggleOrderBook() {
-    
-    if (!this.state.extendOrderBook && this.state.extendTradeHistory) {
-      this.setState({extendOrderBook: false, extendTradeHistory: false})
-    } else {
-       // this.setState({ extendOrderBook: !this.state.extendOrderBook }, () => {
-       //    toggleHeight(this.orders, this.state.extendOrderBook, () => {});
-       //  });
-      this.setState({extendTradeHistory: false}); 
-    }
-  }
-
-  toggleTradeHistory() {
-    if (!this.state.extendTradeHistory && this.state.extendOrderBook) {
-      this.setState({extendTradeHistory: false, extendOrderBook: false})
-    } else {
-      this.setState({extendTradeHistory: !this.state.extendTradeHistory, extendOrderBook: false}); 
-    }
-  }
-
   componentWillUpdate(nextProps, nextState) {
     const { isConnected, loadingState, marketId } = this.props;
     if (
@@ -141,6 +119,28 @@ export default class MarketView extends Component {
         (nextProps.marketId !== marketId || nextProps.marketType === undefined))
     ) {
       nextProps.loadFullMarket(nextProps.marketId);
+    }
+  }
+
+  toggleOrderBook() {
+    if (!this.state.extendOrderBook && this.state.extendTradeHistory) {
+      this.setState({ extendOrderBook: false, extendTradeHistory: false });
+    } else {
+      this.setState({
+        extendOrderBook: !this.state.extendOrderBook,
+        extendTradeHistory: false
+      });
+    }
+  }
+
+  toggleTradeHistory() {
+    if (!this.state.extendTradeHistory && this.state.extendOrderBook) {
+      this.setState({ extendTradeHistory: false, extendOrderBook: false });
+    } else {
+      this.setState({
+        extendTradeHistory: !this.state.extendTradeHistory,
+        extendOrderBook: false
+      });
     }
   }
 
@@ -266,7 +266,6 @@ export default class MarketView extends Component {
       marketType
     } = this.props;
     const s = this.state;
-
 
     const selectedOutcomeName =
       marketType === CATEGORICAL &&
@@ -483,7 +482,6 @@ export default class MarketView extends Component {
               className={classNames(
                 Styles.MarketView__component,
                 Styles.MarketView__orders,
-                ToggleHeightStyles["toggle-height-target"],
                 {
                   [Styles.MarketView__hide]: s.extendTradeHistory,
                   [Styles.MarketView__show]: s.extendOrderBook
@@ -514,7 +512,6 @@ export default class MarketView extends Component {
               className={classNames(
                 Styles.MarketView__component,
                 Styles.MarketView__history,
-                ToggleHeightStyles["toggle-height-target"],
                 {
                   [Styles.MarketView__hide]: s.extendOrderBook,
                   [Styles.MarketView__show]: s.extendTradeHistory

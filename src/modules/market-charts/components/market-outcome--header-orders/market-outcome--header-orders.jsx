@@ -2,23 +2,33 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import {
-  collapseIcon,
-  expandIcon,
-} from "modules/common/components/icons";
+import { collapseIcon, expandIcon } from "modules/common/components/icons";
 
 import Styles from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders.styles";
 import StylesHeader from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
 
-const MarketOutcomeChartsHeaderOrders = ({ title, headers, isMobile, extended, toggle, hide }) => (
+const MarketOutcomeChartsHeaderOrders = ({
+  title,
+  headers,
+  isMobile,
+  extended,
+  toggle,
+  hide
+}) => (
   <section className={Styles.MarketOutcomeChartsHeader__orders}>
     {isMobile || (
-      <div className={classNames(StylesHeader.MarketOutcomesList__heading, Styles.MarketOutcomeChartsHeader__heading)} onClick={toggle}>
+      <button
+        className={classNames(
+          StylesHeader.MarketOutcomesList__heading,
+          Styles.MarketOutcomeChartsHeader__heading
+        )}
+        onClick={toggle}
+      >
         {title}
         <span>{extended ? expandIcon : collapseIcon}</span>
-      </div>
+      </button>
     )}
-    {!hide && 
+    {!hide && (
       <div
         className={classNames(
           Styles.MarketOutcomeChartsHeader__stats,
@@ -47,7 +57,7 @@ const MarketOutcomeChartsHeaderOrders = ({ title, headers, isMobile, extended, t
           </span>
         </div>
       </div>
-    }
+    )}
   </section>
 );
 
@@ -59,4 +69,5 @@ MarketOutcomeChartsHeaderOrders.propTypes = {
   headers: PropTypes.array.isRequired,
   extended: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
+  hide: PropTypes.bool.isRequired
 };

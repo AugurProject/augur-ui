@@ -24,7 +24,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     onMobileTradingPage: PropTypes.bool,
     toggle: PropTypes.func.isRequired,
     extend: PropTypes.bool.isRequired,
-    hide: PropTypes.bool.isRequired,
+    hide: PropTypes.bool.isRequired
   };
 
   static defaultProps = {
@@ -173,23 +173,27 @@ export default class MarketOutcomeChartsOrders extends Component {
             ))}
           </div>
         </div>
-        <div className={Styles.MarketOutcomeOrderBook__Midmarket}>
-          {hasOrders && (
-            <div>
-              <span className={Styles.MarketOutcomeOrderBook__MidmarketSpread}>
-                Spread:
-              </span>{" "}
-              {orderBookKeys.spread
-                ? orderBookKeys.spread.toFixed(pricePrecision)
-                : "—"}
-              {orderBookKeys.spread && (
-                <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>
-                  ETH
-                </span>
-              )}
-            </div>
-          )}
-        </div>
+        {!hide && (
+          <div className={Styles.MarketOutcomeOrderBook__Midmarket}>
+            {hasOrders && (
+              <div>
+                <span
+                  className={Styles.MarketOutcomeOrderBook__MidmarketSpread}
+                >
+                  Spread:
+                </span>{" "}
+                {orderBookKeys.spread
+                  ? orderBookKeys.spread.toFixed(pricePrecision)
+                  : "—"}
+                {orderBookKeys.spread && (
+                  <span className={Styles.MarketOutcomeOrderBook__MidmarketEth}>
+                    ETH
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         <div
           className={classNames(
             Styles.MarketOutcomeOrderBook__Side,
