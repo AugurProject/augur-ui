@@ -253,16 +253,17 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       xScale
     });
 
-    drawCrosshairs(
+    drawCrosshairs({
       candleChart,
-      hoveredPrice,
-      xScale,
-      yScale,
+      candleDim,
       chartDim,
-      containerWidth,
+      containerHeight,
+      hoveredPeriod,
+      hoveredPrice,
       pricePrecision,
-      containerWidth
-    );
+      xScale,
+      yScale
+    });
 
     return candleChartContainer.toReact();
   }
@@ -711,12 +712,12 @@ function drawXAxisLabels({
 }) {
   candleChart
     .append("g")
-    .attr("id", "candlestick-x-axis")
+    .attr("class", "candlestick-x-axis")
     .attr("transform", `translate(0, ${containerHeight - chartDim.bottom})`)
     .call(tickInterval(d3.axisBottom(xScale)));
 
   candleChart
-    .select(`#candlestick-x-axis`)
+    .select(`.candlestick-x-axis`)
     .attr("font", null)
     .attr("font-family", null)
     .attr("font-size", null)
@@ -725,15 +726,18 @@ function drawXAxisLabels({
   candleChart.selectAll(".tick text").attr("fill", null);
 }
 
-function drawCrosshairs(
+function drawCrosshairs({
   candleChart,
-  hoveredPrice,
-  xScale,
-  yScale,
+  candleDim,
   chartDim,
   chartWidth,
-  pricePrecision
-) {
+  containerHeight,
+  hoveredPeriod: { period },
+  hoveredPrice,
+  pricePrecision,
+  xScale,
+  yScale
+}) {
   if (hoveredPrice != null) {
     const [x1, x2] = xScale.range();
     const yPosition = yScale(hoveredPrice);
@@ -746,11 +750,22 @@ function drawCrosshairs(
       .attr("y1", yPosition)
       .attr("x2", x2)
       .attr("y2", yPosition);
+
     candleChart
       .append("foreignObject")
-      .attr("id", "hovered_candlestick_price_label")
       .attr("x", x2 + chartDim.right)
-      .attr("y", yScale(hoveredPrice) - 12)
+      .attr("y", yScale(hoveredPrice))
+      .append("div")
+      .style("min-width", chartDim.tickOffset - 2)
+      .attr("class", Styles["MarketOutcomeCandlestick__price_label-inner"])
+      .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
+
+    candleChart
+      .append("foreignObject")
+      .attr("x", xScale(period) + candleDim.width / 2)
+      .attr("y", containerHeight - chartDim.bottom)
+      .append("div")
+      .attr("class", Styles["MarketOutcomeCandlestick__date_label-inner"])
       .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
   }
 }
