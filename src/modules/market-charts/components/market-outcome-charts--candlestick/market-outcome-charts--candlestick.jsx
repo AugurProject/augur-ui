@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import PeriodSelector from "modules/market-charts/components/market-outcome-charts--candlestick-period-selector/market-outcome-charts--candlestick-period-selector";
+import { timeFormat } from "src/utils/time-format";
 import CustomPropTypes from "utils/custom-prop-types";
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
@@ -714,7 +715,7 @@ function drawXAxisLabels({
     .append("g")
     .attr("class", "candlestick-x-axis")
     .attr("transform", `translate(0, ${containerHeight - chartDim.bottom})`)
-    .call(tickInterval(d3.axisBottom(xScale)));
+    .call(tickInterval(d3.axisBottom(xScale).tickFormat(timeFormat)));
 
   candleChart
     .select(`.candlestick-x-axis`)
@@ -766,7 +767,7 @@ function drawCrosshairs({
       .attr("y", containerHeight - chartDim.bottom)
       .append("div")
       .attr("class", Styles["MarketOutcomeCandlestick__date_label-inner"])
-      .html(`${clampedHoveredPrice.toFixed(pricePrecision)} ETH`);
+      .html(timeFormat(period));
   }
 }
 
