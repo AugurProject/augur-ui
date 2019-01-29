@@ -111,6 +111,7 @@ class TradingForm extends Component {
           };
           const { isOrderValid, errors, errorCount } = this.orderValidation(
             newOrderInfo,
+            null,
             nextProps
           );
           this.setState({ ...newOrderInfo, errors, isOrderValid, errorCount });
@@ -174,7 +175,7 @@ class TradingForm extends Component {
     return { isOrderValid: passedTest, errors, errorCount };
   }
 
-  testPropertyCombo(quantity, price, estEth, errors) {
+  testPropertyCombo(quantity, price, estEth, changedProperty, errors) {
     let errorCount = 0;
     if (quantity && estEth && !price) {
       errorCount += 1;
@@ -182,11 +183,27 @@ class TradingForm extends Component {
         "Price is needed with either quantity or total order value"
       );
     }
+    if (
+      changedProperty === this.INPUT_TYPES.QUANTITY &&
+      createBigNumber(quantity).lte(0)
+    ) {
+      errorCount += 1;
+      errors[this.INPUT_TYPES.QUANTITY].push("Quantity must be greater than 0");
+    }
+    if (
+      changedProperty === this.INPUT_TYPES.EST_ETH &&
+      createBigNumber(estEth).lte(0)
+    ) {
+      errorCount += 1;
+      errors[this.INPUT_TYPES.EST_ETH].push(
+        "Total Order Value must be greater than 0"
+      );
+    }
 
     return { isOrderValid: errorCount === 0, errors, errorCount };
   }
 
-  orderValidation(order, nextProps = null) {
+  orderValidation(order, changedProperty, nextProps = null) {
     let errors = {
       [this.INPUT_TYPES.QUANTITY]: [],
       [this.INPUT_TYPES.PRICE]: [],
@@ -242,6 +259,7 @@ class TradingForm extends Component {
       order[this.INPUT_TYPES.QUANTITY],
       order[this.INPUT_TYPES.PRICE],
       order[this.INPUT_TYPES.EST_ETH],
+      changedProperty,
       errors
     );
 
@@ -280,7 +298,11 @@ class TradingForm extends Component {
       );
     }
 
-    const validationResults = this.orderValidation(updatedState, this.props);
+    const validationResults = this.orderValidation(
+      updatedState,
+      property,
+      this.props
+    );
 
     if (validationResults.errorCount > 0) {
       clearOrderForm(false);

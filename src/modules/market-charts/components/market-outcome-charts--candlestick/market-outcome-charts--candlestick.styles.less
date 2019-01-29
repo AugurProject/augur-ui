@@ -55,6 +55,36 @@ div.MarketOutcomeChartsHeader__stats {
   position: relative;
 }
 
+.MarketOutcomeCandlestick__price_label {
+  &-inner {
+    &:extend(.caps--extra-small all);
+
+    background-color: @color-light-purple;
+    border: 1px solid @color-white;
+    border-radius: 3px;
+    color: @color-white;
+    height: 1.2rem;
+    padding: 0.25rem;
+    transform: translateY(-50%);
+  }
+}
+
+.MarketOutcomeCandlestick__date_label {
+  &-inner {
+    &:extend(.caps--extra-small all);
+
+    background-color: @color-light-purple;
+    border: 1px solid @color-white;
+    border-radius: 3px;
+    color: @color-white;
+    display: inline-block;
+    height: 1.2rem;
+    padding: 0.25rem;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+}
+
 .MarketOutcomeCandlestick__period-stats {
   &:extend(.caps--small all);
 
@@ -86,7 +116,7 @@ div.MarketOutcomeChartsHeader__stats {
   }
 
   :global {
-    #hovered_candlestick_price_label {
+    .hovered_candlestick_price_label {
       .number-small;
 
       background-color: rgba(33, 26, 50, 0.9);
@@ -136,7 +166,7 @@ div.MarketOutcomeChartsHeader__stats {
     }
 
     .tick-value-volume {
-      &:extend(.caps--extra-small all);
+      .number-small;
 
       fill: @color-lightgray;
       opacity: 0.55;
@@ -185,6 +215,10 @@ div.MarketOutcomeChartsHeader__stats {
       }
     }
 
+    .period-hover-target {
+      fill-opacity: 0;
+    }
+
     line.crosshair {
       fill: none;
       stroke: @color-white;
@@ -196,7 +230,7 @@ div.MarketOutcomeChartsHeader__stats {
       pointer-events: visible;
     }
 
-    #candlestick-x-axis {
+    .candlestick-x-axis {
       line,
       path {
         stroke: @color-lightgray;
