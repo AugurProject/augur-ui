@@ -83,6 +83,7 @@
   margin-left: 20px;
   max-width: 325px;
   min-width: 325px;
+  min-height: 100vh;
 }
 
 .MarketView__component {
@@ -160,10 +161,25 @@
   margin-bottom: 12px;
 }
 
+.MarketView__hide {
+  height: 55px !important;
+  max-height: 55px !important;
+}
+
+.MarketView__show {
+  height: calc(~"100vh - 55px") !important;
+  max-height: unset !important;
+}
+
 .MarketView__history {
   border-bottom: 8px solid @color-light-purple;
-  height: 55vh;
-  max-height: 55vh;
+  height: 50vh;
+  max-height: 50vh;
+}
+
+.MarketView__history, 
+.MarketView__orders {
+//  transition: max-height .2s ease;
 }
 
 .MarketView__outcomesList {

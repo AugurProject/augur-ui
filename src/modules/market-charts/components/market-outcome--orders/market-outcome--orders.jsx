@@ -21,7 +21,10 @@ export default class MarketOutcomeChartsOrders extends Component {
     isMobile: PropTypes.bool.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     orderBookKeys: PropTypes.object.isRequired,
-    onMobileTradingPage: PropTypes.bool
+    onMobileTradingPage: PropTypes.bool,
+    toggle: PropTypes.func.isRequired,
+    extend: PropTypes.bool.isRequired,
+    hide: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -60,7 +63,10 @@ export default class MarketOutcomeChartsOrders extends Component {
       isMobile,
       hasOrders,
       orderBookKeys,
-      onMobileTradingPage
+      onMobileTradingPage,
+      toggle,
+      extend,
+      hide
     } = this.props;
     const s = this.state;
 
@@ -76,6 +82,9 @@ export default class MarketOutcomeChartsOrders extends Component {
           isMobile={isMobile}
           title="Order Book"
           headers={["quantity", "price", "my quantity"]}
+          toggle={toggle}
+          extended={extend}
+          hide={hide}
         />
         <div
           className={classNames(

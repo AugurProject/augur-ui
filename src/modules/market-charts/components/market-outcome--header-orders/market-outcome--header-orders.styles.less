@@ -12,6 +12,30 @@
   }
 }
 
+.MarketOutcomeChartsHeader__heading {
+  &:hover {
+    cursor: pointer;
+
+    > span {
+      > svg {
+        > rect,
+        > path,
+        > line {
+        stroke: @color-white;
+        }
+
+        > g {
+          > rect,
+          > path,
+          > line {
+          stroke: @color-white;
+          }
+        }
+      } 
+    }
+  }
+}
+
 .MarketOutcomeChartsHeader {
   display: flex;
   width: 100%;
