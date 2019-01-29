@@ -382,6 +382,7 @@ function drawSeries({
 }) {
   const outcomeLine = d3
     .line()
+    .curve(d3.curveBasis)
     .x(d => drawParams.xScale(d.timestamp))
     .y(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
 
@@ -391,6 +392,7 @@ function drawSeries({
     if (isScalar || isYesNo) {
       const area = d3
         .area()
+        .curve(d3.curveBasis)
         .x(d => drawParams.xScale(d.timestamp))
         .y0(drawParams.containerHeight - drawParams.chartDim.bottom)
         .y1(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
