@@ -5,13 +5,10 @@ import classNames from "classnames";
 import Styles from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders.styles";
 import StylesHeader from "modules/market/components/market-outcomes-list/market-outcomes-list.styles";
 
-const MarketOutcomeChartsHeaderOrders = ({ isMobile, headerHeight }) => (
-  <section
-    className={Styles.MarketOutcomeChartsHeader__orders}
-    style={{ minHeight: isMobile && headerHeight }}
-  >
+const MarketOutcomeChartsHeaderOrders = ({ title, headers, isMobile }) => (
+  <section className={Styles.MarketOutcomeChartsHeader__orders}>
     {isMobile || (
-      <div className={StylesHeader.MarketOutcomesList__heading}>Order Book</div>
+      <div className={StylesHeader.MarketOutcomesList__heading}>{title}</div>
     )}
     <div
       className={classNames(
@@ -24,7 +21,7 @@ const MarketOutcomeChartsHeaderOrders = ({ isMobile, headerHeight }) => (
         style={{ justifyContent: "flex-start" }}
       >
         <span className={Styles["MarketOutcomeChartsHeader__stat-title"]}>
-          quantity
+          {headers[0]}
         </span>
       </div>
       <div
@@ -32,12 +29,12 @@ const MarketOutcomeChartsHeaderOrders = ({ isMobile, headerHeight }) => (
         style={{ justifyContent: "center" }}
       >
         <span className={Styles["MarketOutcomeChartsHeader__stat-title"]}>
-          price
+          {headers[1]}
         </span>
       </div>
       <div className={Styles["MarketOutcomeChartsHeader__stat--right"]}>
         <span className={Styles["MarketOutcomeChartsHeader__stat-title"]}>
-          my quantity
+          {headers[2]}
         </span>
       </div>
     </div>
@@ -48,5 +45,6 @@ export default MarketOutcomeChartsHeaderOrders;
 
 MarketOutcomeChartsHeaderOrders.propTypes = {
   isMobile: PropTypes.bool.isRequired,
-  headerHeight: PropTypes.number.isRequired
+  title: PropTypes.string.isRequired,
+  headers: PropTypes.array.isRequired
 };

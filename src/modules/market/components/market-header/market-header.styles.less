@@ -60,15 +60,35 @@
   text-transform: capitalize;
 
   span {
-    color: @color-white;
+    color: @color-dark-light-gray;
   }
 
   svg {
     height: 1em;
     margin-right: 0.5rem;
 
-    polyline {
-      stroke: @color-lightgray;
+    rect {
+      fill: @color-dark-light-gray;
+    }
+
+    path {
+      stroke: @color-dark-light-gray;
+    }
+  }
+
+  &:hover {
+    span {
+      color: @color-white;
+    }
+
+    svg {
+      rect {
+        fill: @color-white;
+      }
+
+      path {
+        stroke: @color-white;
+      }
     }
   }
 }
@@ -237,6 +257,7 @@
     font-size: @font-size-small;
     padding-right: 0.8rem;
     vertical-align: middle;
+    white-space: nowrap;
   }
 
   &:hover {

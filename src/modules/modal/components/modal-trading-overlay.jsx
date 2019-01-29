@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { BigNumber } from "utils/create-big-number";
-import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
+import MarketTradingForm from "modules/market/containers/market-trading-form";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import { Close } from "modules/common/components/icons";
 
@@ -13,20 +12,14 @@ export default class ModalTradingOverlay extends Component {
   static propTypes = {
     tradingForm: PropTypes.bool,
     marketId: PropTypes.string.isRequired,
-    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
-    isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
-    handleFilledOnly: PropTypes.func.isRequired,
-    gasPrice: PropTypes.number.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
     outcomes: PropTypes.array,
     closeModal: PropTypes.func.isRequired,
-    updateTradeShares: PropTypes.func.isRequired,
-    updateTradeCost: PropTypes.func.isRequired,
     showSelectOutcome: PropTypes.func.isRequired
   };
 
@@ -54,17 +47,11 @@ export default class ModalTradingOverlay extends Component {
       outcomes,
       tradingForm,
       market,
-      isLogged,
       selectedOrderProperties,
       selectedOutcome,
       isMobile,
-      availableFunds,
       updateSelectedOutcome,
       updateSelectedOrderProperties,
-      gasPrice,
-      handleFilledOnly,
-      updateTradeCost,
-      updateTradeShares,
       showSelectOutcome
     } = this.props;
 
@@ -78,18 +65,11 @@ export default class ModalTradingOverlay extends Component {
         {tradingForm && (
           <MarketTradingForm
             market={market}
-            isLogged={isLogged}
             selectedOrderProperties={selectedOrderProperties}
             selectedOutcome={selectedOutcome}
-            isMobile={isMobile}
-            availableFunds={availableFunds}
             updateSelectedOutcome={updateSelectedOutcome}
             updateSelectedOrderProperties={updateSelectedOrderProperties}
-            gasPrice={gasPrice}
-            handleFilledOnly={handleFilledOnly}
             toggleMobileView={closeModal}
-            updateTradeCost={updateTradeCost}
-            updateTradeShares={updateTradeShares}
             showSelectOutcome={showSelectOutcome}
           />
         )}
