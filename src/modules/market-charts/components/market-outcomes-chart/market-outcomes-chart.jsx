@@ -296,8 +296,7 @@ function determineDrawParams({
   const xScale = d3
     .scaleTime()
     .domain(xExtents)
-    .range([chartDim.left, containerWidth])
-    .nice();
+    .range([chartDim.tickOffset, containerWidth]);
 
   const yScale = d3
     .scaleLinear()
@@ -348,6 +347,7 @@ function drawTicks({ drawParams, chart }) {
 function drawXAxisLabels({ chart, drawParams }) {
   const axis = d3
     .axisBottom(drawParams.xScale)
+    .ticks(6)
     .tickFormat(drawParams.timeFormat);
 
   chart
@@ -386,10 +386,7 @@ function drawSeries({
     .y(d => drawParams.yScale(createBigNumber(d.price).toNumber()));
 
   outcomes.forEach(outcome => {
-    const data = [
-      initialPoint,
-      ...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]
-    ];
+    const data = [...bucketedPriceTimeSeries.priceTimeSeries[outcome.id]];
 
     if (isScalar || isYesNo) {
       const area = d3
