@@ -235,7 +235,11 @@ export default class MarketHeader extends Component {
                   >
                     <span>
                       {isFavorite ? (
-                        starIconFilled
+                        <span className={Styles.MarketHeader__hoverContainer}>
+                          <span className={Styles.MarketHeader__filledIcon}>
+                            {starIconFilled}
+                          </span>
+                        </span>
                       ) : (
                         <span className={Styles.MarketHeader__hoverContainer}>
                           <span className={Styles.MarketHeader__iconDefault}>
