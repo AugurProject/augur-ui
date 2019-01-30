@@ -142,11 +142,8 @@ class TradingWrapper extends Component {
       ...property
     };
     this.updateState(values, () => {
-      const updatedValues = {
-        ...pick(this.state, keys(this.props.selectedOrderProperties))
-      };
       this.props.updateSelectedOrderProperties({
-        ...updatedValues
+        ...pick(this.state, keys(this.props.selectedOrderProperties))
       });
       if (callback) callback();
     });
@@ -223,9 +220,12 @@ class TradingWrapper extends Component {
             this.updateState({
               ...this.state,
               ...order,
-              event: "UPDATE_QUANTITY",
               orderQuantity: numShares,
               trade: newOrder
+            }, () => {
+              this.props.updateSelectedOrderProperties({
+                ...pick(this.state, keys(this.props.selectedOrderProperties))
+              });
             });
           }
         )
