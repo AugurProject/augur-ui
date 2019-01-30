@@ -20,8 +20,6 @@ import { createBigNumber } from "utils/create-big-number";
 import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "./market-header-collapsed";
-import toggleHeight from "utils/toggle-height/toggle-height";
-import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
