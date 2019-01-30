@@ -14,6 +14,7 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/modal/constants/modal-types";
 import { createBigNumber } from "utils/create-big-number";
 import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
+import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";
 
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
@@ -90,7 +91,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(sellCompleteSets(marketId, numCompleteSets, cb)),
   cancelOrphanedOrder: (order, cb) => dispatch(cancelOrphanedOrder(order, cb)),
   claimTradingProceeds: (marketId, cb) =>
-    dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb }))
+    dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb })),
+  cancelAllOpenOrders: (orders, cb) => dispatch(cancelAllOpenOrders(orders, cb)),
 });
 
 const MarketOrdersPositionsTableContainer = withRouter(

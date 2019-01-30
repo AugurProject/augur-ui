@@ -15,6 +15,13 @@ const TIME_TO_WAIT_BEFORE_FINAL_ACTION_MILLIS = 3000;
 //   outcome,
 //   orderTypeLabel,
 // }
+
+export const cancelAllOpenOrders = (orders, cb) => (dispatch, getState) => {
+  orders.map(order => {
+    order.cancelOrder(order);
+  });
+};
+
 export const cancelOrder = (
   { orderId, marketId, outcome, orderTypeLabel },
   callback = logError
