@@ -16,6 +16,10 @@ import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
 import TimeRange from "modules/market/components/market-header/market-header-time-range";
+import { createBigNumber } from "utils/create-big-number";
+import { convertUnixToFormattedDate } from "utils/format-date";
+import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
+import { MarketHeaderCollapsed } from "./market-header-collapsed";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
@@ -54,7 +58,8 @@ export default class MarketHeader extends Component {
     super(props);
     this.state = {
       showReadMore: false,
-      detailsHeight: 0
+      detailsHeight: 0,
+      headerCollapsed: false
     };
 
     this.toggleReadMore = this.toggleReadMore.bind(this);
@@ -101,9 +106,16 @@ export default class MarketHeader extends Component {
       isFavorite,
       history
     } = this.props;
-
     let { details } = this.props;
+    const { headerCollapsed } = this.state;
+
+    const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
     const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
+    const formattedEndTime =
+      (endTimestamp && convertUnixToFormattedDate(endTimestamp)) || {};
+    const hasPassed = createBigNumber(currentTime).gt(
+      createBigNumber(endTimestamp)
+    );
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -122,107 +134,141 @@ export default class MarketHeader extends Component {
           {BackArrow}
           <span> back</span>
         </button>
-        <div className={Styles[`MarketHeader__main-values`]}>
-          <div className={Styles.MarketHeader__descContainer}>
-            {market.id && (
-              <MarketHeaderBar
-                marketId={market.id}
-                category={market.category}
-                reportingState={market.reportingState}
-                tags={market.tags}
-                addToFavorites={this.addToFavorites}
-                isMobile={isMobile}
-                isFavorite={isFavorite}
-              />
-            )}
-            <h1 className={Styles.MarketHeader__description}>{description}</h1>
-            <div className={Styles.MarketHeader__descriptionContainer}>
-              <div
-                className={Styles.MarketHeader__details}
-                style={{ paddingBottom: "1rem" }}
-              >
-                <h4>Resolution Source</h4>
-                <span>{resolutionSource}</span>
-              </div>
-              {details.length > 0 && (
-                <div className={Styles.MarketHeader__details}>
-                  <label
-                    ref={detailsContainer => {
-                      this.detailsContainer = detailsContainer;
-                    }}
-                    className={classNames(
-                      Styles["MarketHeader__AdditionalDetails-text"],
-                      {
-                        [Styles["MarketHeader__AdditionalDetails-tall"]]:
-                          detailsTooLong && this.state.showReadMore
-                      },
-                      {
-                        [Styles["MarketHeader__AdditionalDetails-fade"]]:
-                          detailsTooLong && !this.state.showReadMore
-                      }
-                    )}
-                  >
-                    <MarkdownRenderer text={details} hideLabel />
-                  </label>
+        {headerCollapsed && (
+          <MarketHeaderCollapsed
+            description={description}
+            market={market}
+            currentTime={currentTime}
+            marketType={marketType}
+            toggleFavorite={this.addToFavorites}
+            isFavorite={isFavorite}
+          />
+        )}
+        {!headerCollapsed && (
+          <div className={Styles[`MarketHeader__main-values`]}>
+            <div
+              className={classNames(Styles.MarketHeader__descContainer, {
+                [Styles.MarketHeader__collapsed]: headerCollapsed
+              })}
+            >
+              {market.id && (
+                <MarketHeaderBar
+                  marketId={market.id}
+                  category={market.category}
+                  reportingState={market.reportingState}
+                  tags={market.tags}
+                  addToFavorites={this.addToFavorites}
+                  isMobile={isMobile}
+                  isFavorite={isFavorite}
+                  collapsedView={headerCollapsed}
+                  marketType={marketType}
+                  description={description}
+                />
+              )}
 
-                  {detailsTooLong && (
-                    <button
-                      className={Styles.MarketHeader__readMoreButton}
-                      onClick={this.toggleReadMore}
+              <h1 className={Styles.MarketHeader__description}>
+                {description}
+              </h1>
+
+              <div className={Styles.MarketHeader__descriptionContainer}>
+                <div
+                  className={Styles.MarketHeader__details}
+                  style={{ paddingBottom: "1rem" }}
+                >
+                  <h4>Resolution Source</h4>
+                  <span>{resolutionSource}</span>
+                </div>
+                {details.length > 0 && (
+                  <div className={Styles.MarketHeader__details}>
+                    <label
+                      ref={detailsContainer => {
+                        this.detailsContainer = detailsContainer;
+                      }}
+                      className={classNames(
+                        Styles["MarketHeader__AdditionalDetails-text"],
+                        {
+                          [Styles["MarketHeader__AdditionalDetails-tall"]]:
+                            detailsTooLong && this.state.showReadMore
+                        },
+                        {
+                          [Styles["MarketHeader__AdditionalDetails-fade"]]:
+                            detailsTooLong && !this.state.showReadMore
+                        }
+                      )}
                     >
-                      {!this.state.showReadMore
-                        ? ChevronDown({ stroke: "#FFFFFF" })
-                        : ChevronUp()}
-                      <span>
-                        {!this.state.showReadMore ? "More..." : "Less"}
-                      </span>
-                    </button>
-                  )}
+                      <MarkdownRenderer text={details} hideLabel />
+                    </label>
+
+                    {detailsTooLong && (
+                      <button
+                        className={Styles.MarketHeader__readMoreButton}
+                        onClick={this.toggleReadMore}
+                      >
+                        {!this.state.showReadMore
+                          ? ChevronDown({ stroke: "#FFFFFF" })
+                          : ChevronUp()}
+                        <span>
+                          {!this.state.showReadMore ? "More..." : "Less"}
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className={Styles.MarketHeader__properties}>
+              <CoreProperties
+                market={market}
+                isMobile={isMobile}
+                isMobileSmall={isMobileSmall}
+              />
+            </div>
+
+            <div className={Styles.MarketHeader__timeStuff}>
+              {!isMobile && (
+                <div className={Styles.MarketHeader__watchlist__container}>
+                  <button
+                    onClick={() => this.addToFavorites()}
+                    className={Styles.MarketHeader__watchlist}
+                    disabled={!isLogged}
+                  >
+                    <span>
+                      {isFavorite ? (
+                        starIconFilled
+                      ) : (
+                        <span className={Styles.MarketHeader__hoverContainer}>
+                          <span className={Styles.MarketHeader__iconDefault}>
+                            {starIconOpen}
+                          </span>
+                          <span className={Styles.MarketHeader__iconHover}>
+                            {starIconOutline}
+                          </span>
+                        </span>
+                      )}
+                      {isFavorite
+                        ? "Remove from watchlist"
+                        : "Add to watchlist"}
+                    </span>
+                  </button>
                 </div>
               )}
+              <TimeRange
+                currentTime={currentTime}
+                startTime={market.creationTime}
+                endTimestamp={endTimestamp}
+                hasPassed={hasPassed}
+                formattedEndTime={formattedEndTime}
+                isMobile={isMobile}
+              />
             </div>
           </div>
-          <div className={Styles.MarketHeader__properties}>
-            <CoreProperties
-              market={market}
-              isMobile={isMobile}
-              isMobileSmall={isMobileSmall}
-            />
-          </div>
-          <div className={Styles.MarketHeader__timeStuff}>
-            {!isMobile && (
-              <div className={Styles.MarketHeader__watchlist__container}>
-                <button
-                  onClick={() => this.addToFavorites()}
-                  className={Styles.MarketHeader__watchlist}
-                  disabled={!isLogged}
-                >
-                  <span>
-                    {isFavorite ? (
-                      starIconFilled
-                    ) : (
-                      <span className={Styles.MarketHeader__hoverContainer}>
-                        <span className={Styles.MarketHeader__iconDefault}>
-                          {starIconOpen}
-                        </span>
-                        <span className={Styles.MarketHeader__iconHover}>
-                          {starIconOutline}
-                        </span>
-                      </span>
-                    )}
-                    {isFavorite ? "Remove from watchlist" : "Add to watchlist"}
-                  </span>
-                </button>
-              </div>
-            )}
-            <TimeRange
-              currentTime={currentTime}
-              startTime={market.creationTime}
-              endTime={market.endTime}
-              isMobile={isMobile}
-            />
-          </div>
-        </div>
+        )}
+        <button
+          onClick={() => this.setState({ headerCollapsed: !headerCollapsed })}
+        >
+          <ChevronFlip pointDown={headerCollapsed} />
+        </button>
       </section>
     );
   }

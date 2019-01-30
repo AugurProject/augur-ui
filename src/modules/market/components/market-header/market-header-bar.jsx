@@ -23,7 +23,10 @@ export default class MarketHeaderBar extends Component {
     isLogged: PropTypes.bool,
     isFavorite: PropTypes.bool,
     addToFavorites: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool
+    isMobile: PropTypes.bool,
+    collapsedView: PropTypes.bool,
+    description: PropTypes.string.isRequired,
+    marketType: PropTypes.string.isRequired
   };
 
   static defaultProps = {
@@ -32,7 +35,8 @@ export default class MarketHeaderBar extends Component {
     reportingState: "",
     isLogged: false,
     isFavorite: false,
-    isMobile: false
+    isMobile: false,
+    collapsedView: false
   };
 
   constructor(props) {
@@ -66,12 +70,19 @@ export default class MarketHeaderBar extends Component {
       addToFavorites,
       isLogged,
       isFavorite,
-      isMobile
+      isMobile,
+      collapsedView,
+      description,
+      marketType
     } = this.props;
     const phase = determineMarketPhase(reportingState);
     return (
       <section className={Styles.MarketHeaderBar}>
-        <div className={Styles.MarketHeaderBar__container}>
+        <div
+          className={classNames(Styles.MarketHeaderBar__container, {
+            [Styles.MarketHeaderBar__container__collapsed]: collapsedView
+          })}
+        >
           <div className={Styles.MarketHeaderBar__tag__container}>
             <div className={Styles.MarketHeaderBar__status}>
               <span style={{ marginTop: "0.125rem" }}>{phase}</span>
@@ -91,15 +102,18 @@ export default class MarketHeaderBar extends Component {
                 )}
               />
             </div>
-            <div
-              className={Styles.MarketHeaderBar__tags}
-              role="Button"
-              tabIndex="-1"
-              onClick={() => this.gotoFilter("category", category)}
-            >
-              {category}
-            </div>
+            {!collapsedView && (
+              <div
+                className={Styles.MarketHeaderBar__tags}
+                role="Button"
+                tabIndex="-1"
+                onClick={() => this.gotoFilter("category", category)}
+              >
+                {category}
+              </div>
+            )}
             {tags &&
+              !collapsedView &&
               tags.length > 0 &&
               tags.map(tag => (
                 <div
@@ -113,6 +127,12 @@ export default class MarketHeaderBar extends Component {
                 </div>
               ))}
           </div>
+          {collapsedView && (
+            <div className={Styles.MarketHeaderBar__description}>
+              <div>{description}</div>
+              <div>{marketType}</div>
+            </div>
+          )}
         </div>
         {isMobile &&
           addToFavorites && (

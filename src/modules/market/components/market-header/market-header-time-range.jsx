@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/market/components/market-header/market-header-time-range.styles";
 import MarketHeaderStyles from "modules/market/components/market-header/market-header.styles";
 import {
@@ -9,9 +8,15 @@ import {
 } from "utils/format-date";
 import classNames from "classnames";
 
-const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
+const TimeRange = ({
+  startTime,
+  endTimestamp,
+  currentTime,
+  hasPassed,
+  formattedEndTime,
+  isMobile
+}) => {
   const startTimestamp = startTime.timestamp || 0;
-  const endTimestamp = endTime.timestamp || 0;
   const totalHours =
     (startTime && getHoursRemaining(endTimestamp, startTimestamp)) || 0;
   const hoursLeft =
@@ -21,11 +26,6 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
   );
   const formattedCreationTime =
     (startTimestamp && convertUnixToFormattedDate(startTimestamp)) || {};
-  const formattedEndTime =
-    (endTimestamp && convertUnixToFormattedDate(endTimestamp)) || {};
-  const hasPassed = createBigNumber(currentTime).gt(
-    createBigNumber(endTimestamp)
-  );
 
   const percentageDone = 100 - percentageToGo;
 
@@ -109,15 +109,19 @@ const TimeRange = ({ startTime, endTime, currentTime, isMobile }) => {
 
 TimeRange.propTypes = {
   startTime: PropTypes.object,
-  endTime: PropTypes.object,
+  endTimestamp: PropTypes.number,
+  formattedEndTime: PropTypes.object,
   currentTime: PropTypes.number,
+  hasPassed: PropTypes.bool,
   isMobile: PropTypes.bool
 };
 
 TimeRange.defaultProps = {
-  endTime: {},
+  endTimestamp: 0,
   currentTime: 0,
   startTime: {},
+  formattedEndTime: {},
+  hasPassed: false,
   isMobile: false
 };
 

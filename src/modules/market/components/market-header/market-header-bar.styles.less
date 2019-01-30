@@ -9,6 +9,11 @@
   padding-bottom: 2rem;
 }
 
+.MarketHeaderBar__container__collapsed {
+  justify-content: start;
+  padding-bottom: 0.25rem;
+}
+
 .MarketHeaderBar__tag__container {
   display: flex;
   flex-direction: row;
@@ -37,6 +42,22 @@
 
   &:hover {
     color: @color-white;
+  }
+}
+
+.MarketHeaderBar__description {
+  color: @color-white;
+  flex-grow: 1;
+  font-size: @font-size-medium;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+
+  > div:nth-child(2) {
+    color: @color-light-gray;
+    font-size: @font-size-small;
+    padding-top: 0.25rem;
+    text-transform: capitalize;
   }
 }
 
