@@ -70,16 +70,13 @@ MarketHeaderCollapsed.propTypes = {
   market: PropTypes.object.isRequired,
   currentTime: PropTypes.number,
   marketType: PropTypes.string,
-  isMobile: PropTypes.bool,
   toggleFavorite: PropTypes.func,
-  isFavorite: PropTypes.bool,
-  history: PropTypes.object.isRequired
+  isFavorite: PropTypes.bool
 };
 
 MarketHeaderCollapsed.defaultProps = {
   marketType: null,
   currentTime: 0,
   isFavorite: false,
-  toggleFavorite: () => {},
-  isMobile: false
+  toggleFavorite: () => {}
 };
