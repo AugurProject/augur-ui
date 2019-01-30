@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
     outcomes = [],
     isYesNo,
     isScalar,
-    scalarDenomination,
+    scalarDenomination = "ETH",
     volume = { formatted: "0" }
   } = selectMarket(ownProps.marketId);
 

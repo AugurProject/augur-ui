@@ -208,11 +208,13 @@ export function assembleMarket(
             market.isYesNo = true;
             market.isCategorical = false;
             market.isScalar = false;
+            delete market.scalarDenomination;
             break;
           case CATEGORICAL:
             market.isYesNo = false;
             market.isCategorical = true;
             market.isScalar = false;
+            delete market.scalarDenomination;
             break;
           case SCALAR:
             market.isYesNo = false;

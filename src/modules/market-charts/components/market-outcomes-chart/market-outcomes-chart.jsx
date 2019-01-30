@@ -25,15 +25,14 @@ export default class MarketOutcomesChart extends Component {
     isMobileSmall: PropTypes.bool,
     isYesNo: PropTypes.bool,
     isScalar: PropTypes.bool,
-    scalarDenomination: PropTypes.string,
+    scalarDenomination: PropTypes.string.isRequired,
     selectedOutcome: PropTypes.string.isRequired
   };
 
   static defaultProps = {
     isMobileSmall: false,
     isYesNo: false,
-    isScalar: false,
-    scalarDenomination: ""
+    isScalar: false
   };
 
   constructor(props) {
@@ -179,6 +178,14 @@ export default class MarketOutcomesChart extends Component {
         .attr("class", Styles.MarketOutcomesChart__scalar_gradient_stop_bottom)
         .attr("offset", "80%");
 
+      chart
+        .append("text")
+        .attr("class", Styles.MarketOutcomesChart__scalar_denomination_label)
+        .attr("x", drawParams.containerWidth / 2)
+        .attr("y", 40)
+        .attr("text-anchor", "middle")
+        .text(scalarDenomination);
+
       drawTicks({
         drawParams,
         chart
@@ -219,17 +226,6 @@ export default class MarketOutcomesChart extends Component {
         });
       }
 
-      if (isScalar) {
-        chart
-          .append("text")
-          .attr("class", Styles.MarketOutcomesChart__scalar_denomination_label)
-          .attr("x", drawParams.containerWidth / 2)
-          .attr("y", 12)
-          .attr("text-anchor", "middle")
-          .attr("dominant-baseline", "central")
-          .text(scalarDenomination);
-      }
-
       this.setState({
         chart: fauxDiv.toReact(),
         drawParams
@@ -267,7 +263,7 @@ function yTickFormatFn(fixedPrecision, isScalar) {
       .toNumber()
       .toFixed(fixedPrecision);
 
-    return isScalar ? `${fixedPrice}` : `${fixedPrice} ETH`;
+    return isScalar ? `${fixedPrice}` : `${fixedPrice}`;
   };
 }
 
