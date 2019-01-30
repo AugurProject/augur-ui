@@ -10,6 +10,8 @@ const formatWeek = d3.timeFormat("%b %d");
 const formatMonth = d3.timeFormat("%B");
 const formatYear = d3.timeFormat("%Y");
 
+export const formatTick = d3.timeFormat("%a %d %Y");
+
 // Define filter conditions
 export function timeFormat(date) {
   let f;
@@ -18,7 +20,6 @@ export function timeFormat(date) {
   if (d3.timeMinute(date) < date) f = formatSecond;
   if (d3.timeHour(date) < date) f = formatMinute;
   if (d3.timeDay(date) < date) f = formatHour;
-
   if (d3.timeMonth(date) < date) {
     if (d3.timeWeek(date) < date) {
       f = formatDay;
