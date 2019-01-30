@@ -92,7 +92,7 @@ const mapDispatchToProps = dispatch => ({
   cancelOrphanedOrder: (order, cb) => dispatch(cancelOrphanedOrder(order, cb)),
   claimTradingProceeds: (marketId, cb) =>
     dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb })),
-  cancelAllOpenOrders: (orders, cb) => dispatch(cancelAllOpenOrders(orders, cb)),
+  cancelAllOpenOrders: (orders, cb) => dispatch(cancelAllOpenOrders(orders, cb))
 });
 
 const MarketOrdersPositionsTableContainer = withRouter(

@@ -36,7 +36,11 @@ const MarketOrdersPositionsTable = ({
           market={market}
         />
         <div className={Styles.MarketOrders__cancelAll}>
-          {openOrders.length > 0 && <button onClick={() => cancelAllOpenOrders(openOrders)}>Cancel All Open Orders</button>}
+          {openOrders.length > 0 && (
+            <button onClick={() => cancelAllOpenOrders(openOrders)}>
+              Cancel All Open Orders
+            </button>
+          )}
         </div>
       </ModulePane>
       <ModulePane label="My Fills">
@@ -45,7 +49,7 @@ const MarketOrdersPositionsTable = ({
           scalarDenomination={market.scalarDenomination}
           isMobile={isMobile}
         />
-        <div className={Styles.MarketOrders__cancelAll}/>
+        <div className={Styles.MarketOrders__cancelAll} />
       </ModulePane>
       <ModulePane label="Positions">
         <PositionsTable
@@ -57,7 +61,7 @@ const MarketOrdersPositionsTable = ({
           market={market}
           isMobile={isMobile}
         />
-        <div className={Styles.MarketOrders__cancelAll}/>
+        <div className={Styles.MarketOrders__cancelAll} />
       </ModulePane>
     </ModuleTabs>
   </section>
@@ -76,7 +80,7 @@ MarketOrdersPositionsTable.propTypes = {
   sellCompleteSets: PropTypes.func.isRequired,
   market: PropTypes.object.isRequired,
   filledOrders: PropTypes.array,
-  cancelAllOpenOrders: PropTypes.func.isRequired,
+  cancelAllOpenOrders: PropTypes.func.isRequired
 };
 
 MarketOrdersPositionsTable.defaultProps = {
