@@ -71,6 +71,8 @@ export default class MarketView extends Component {
     };
 
     this.state = {
+      extendOrderBook: false,
+      extendTradeHistory: false,
       selectedOrderProperties: this.DEFAULT_ORDER_PROPERTIES,
       selectedOutcome: props.marketType === CATEGORICAL ? "0" : "1",
       fixedPrecision: 4,
@@ -91,6 +93,8 @@ export default class MarketView extends Component {
     this.toggleTradingForm = this.toggleTradingForm.bind(this);
     this.showModal = this.showModal.bind(this);
     this.updateOutcomeReturn = this.updateOutcomeReturn.bind(this);
+    this.toggleOrderBook = this.toggleOrderBook.bind(this);
+    this.toggleTradeHistory = this.toggleTradeHistory.bind(this);
   }
 
   componentWillMount() {
@@ -115,6 +119,28 @@ export default class MarketView extends Component {
         (nextProps.marketId !== marketId || nextProps.marketType === undefined))
     ) {
       nextProps.loadFullMarket(nextProps.marketId);
+    }
+  }
+
+  toggleOrderBook() {
+    if (!this.state.extendOrderBook && this.state.extendTradeHistory) {
+      this.setState({ extendOrderBook: false, extendTradeHistory: false });
+    } else {
+      this.setState({
+        extendOrderBook: !this.state.extendOrderBook,
+        extendTradeHistory: false
+      });
+    }
+  }
+
+  toggleTradeHistory() {
+    if (!this.state.extendTradeHistory && this.state.extendOrderBook) {
+      this.setState({ extendTradeHistory: false, extendOrderBook: false });
+    } else {
+      this.setState({
+        extendTradeHistory: !this.state.extendTradeHistory,
+        extendOrderBook: false
+      });
     }
   }
 
@@ -325,6 +351,9 @@ export default class MarketView extends Component {
                         }
                         marketId={marketId}
                         selectedOutcome={s.selectedOutcome}
+                        toggle={this.toggleOrderBook}
+                        extend={s.extendOrderBook}
+                        hide={s.extendTradeHistory}
                       />
                     </div>
                   </ModulePane>
@@ -336,6 +365,9 @@ export default class MarketView extends Component {
                             marketId={marketId}
                             outcome={s.selectedOutcome}
                             isMobile={isMobile}
+                            toggle={this.toggleTradeHistory}
+                            extend={s.extendTradeHistory}
+                            hide={s.extendOrderBook}
                           />
                         )}
                       </div>
@@ -446,7 +478,11 @@ export default class MarketView extends Component {
             <div
               className={classNames(
                 Styles.MarketView__component,
-                Styles.MarketView__orders
+                Styles.MarketView__orders,
+                {
+                  [Styles.MarketView__hide]: s.extendTradeHistory,
+                  [Styles.MarketView__show]: s.extendOrderBook
+                }
               )}
             >
               <MarketOutcomeOrders
@@ -461,12 +497,19 @@ export default class MarketView extends Component {
                 }
                 marketId={marketId}
                 selectedOutcome={s.selectedOutcome}
+                toggle={this.toggleOrderBook}
+                extend={s.extendOrderBook}
+                hide={s.extendTradeHistory}
               />
             </div>
             <div
               className={classNames(
                 Styles.MarketView__component,
-                Styles.MarketView__history
+                Styles.MarketView__history,
+                {
+                  [Styles.MarketView__hide]: s.extendOrderBook,
+                  [Styles.MarketView__show]: s.extendTradeHistory
+                }
               )}
             >
               <div className={Styles.MarketView__component__history}>
@@ -475,6 +518,9 @@ export default class MarketView extends Component {
                     marketId={marketId}
                     outcome={s.selectedOutcome}
                     isMobile={isMobile}
+                    toggle={this.toggleTradeHistory}
+                    extend={s.extendTradeHistory}
+                    hide={s.extendOrderBook}
                   />
                 )}
               </div>

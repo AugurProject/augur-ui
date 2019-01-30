@@ -14,7 +14,10 @@ export default class MarketTradeHistory extends Component {
     // isMobileSmall: PropTypes.boolean,
     // todo figure out how to do keyed objects shape prop type
     groupedTradeHistoryVolume: PropTypes.object.isRequired,
-    groupedTradeHistory: PropTypes.object.isRequired
+    groupedTradeHistory: PropTypes.object.isRequired,
+    toggle: PropTypes.func.isRequired,
+    extend: PropTypes.bool.isRequired,
+    hide: PropTypes.bool.isRequired
   };
 
   static defaultProps = {
@@ -34,7 +37,10 @@ export default class MarketTradeHistory extends Component {
     const {
       groupedTradeHistory,
       groupedTradeHistoryVolume,
-      isMobile
+      isMobile,
+      toggle,
+      extend,
+      hide
     } = this.props;
 
     return (
@@ -43,6 +49,9 @@ export default class MarketTradeHistory extends Component {
           isMobile={isMobile}
           title="Trade History"
           headers={["quantity", "price", "time"]}
+          toggle={toggle}
+          extended={extend}
+          hide={hide}
         />
         <div className={Styles.MarketTradeHistory__table__data}>
           {groupedTradeHistory &&

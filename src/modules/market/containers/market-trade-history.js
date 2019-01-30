@@ -31,6 +31,7 @@ const mergeProps = (sP, dP, oP) => {
   }
 
   return {
+    ...oP,
     ...sP,
     ...dP,
     groupedTradeHistory,
