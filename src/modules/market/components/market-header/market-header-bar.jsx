@@ -85,7 +85,13 @@ export default class MarketHeaderBar extends Component {
         >
           <div className={Styles.MarketHeaderBar__tag__container}>
             <div className={Styles.MarketHeaderBar__status}>
-              <span style={{ marginTop: "0.125rem" }}>{phase}</span>
+              <span
+                className={classNames({
+                  [Styles.MarketHeaderBar__collapsed]: collapsedView
+                })}
+              >
+                {phase}
+              </span>
               <span
                 className={classNames(
                   {

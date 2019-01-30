@@ -20,6 +20,8 @@ import { createBigNumber } from "utils/create-big-number";
 import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "./market-header-collapsed";
+import toggleHeight from "utils/toggle-height/toggle-height";
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
@@ -126,7 +128,11 @@ export default class MarketHeader extends Component {
     }
 
     return (
-      <section className={Styles.MarketHeader}>
+      <section
+        className={classNames(Styles.MarketHeader, {
+          [Styles.MarketHeader__container__collapsed]: headerCollapsed
+        })}
+      >
         <button
           className={Styles[`MarketHeader__back-button`]}
           onClick={() => history.goBack()}
@@ -269,7 +275,12 @@ export default class MarketHeader extends Component {
           </div>
         )}
         <button
-          onClick={() => this.setState({ headerCollapsed: !headerCollapsed })}
+          className={classNames({
+            [Styles.MarketHeader__button__collapsed]: headerCollapsed
+          })}
+          onClick={() => {
+            this.setState({ headerCollapsed: !headerCollapsed });
+          }}
         >
           <ChevronFlip pointDown={headerCollapsed} />
         </button>
