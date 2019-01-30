@@ -16,22 +16,20 @@
 
 .TopBar__statsContainer {
   flex: 1;
-  margin-left: 4.5rem;
   width: unset;
-
-  @media @breakpoint-mobile {
-    margin-left: 0;
-  }
-
-  @media @breakpoint-mobile-mid {
-    margin-left: 0;
-  }
 }
 
 .TopBar__stats {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  > label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+  }
 }
 
 .TopBar__stat {
@@ -118,6 +116,22 @@ div.TopBar__notificationsDisabled {
   line-height: 1.25rem;
 }
 
+.TopBar__stat-label-tooltip {
+  color: @color-light-gray;
+  display: inline;
+  font-size: @font-size-extra-small;
+  font-weight: 400 !important;
+  line-height: 1.25rem;
+  margin-left: 0.35rem;
+}
+
+.TopBar__stat-value-tooltip {
+  color: @color-white;
+  font-size: @font-size-medium;
+  font-weight: 700;
+  line-height: 1.25rem;
+}
+
 .TopBar__logo-text {
   color: @color-white;
   display: none;
@@ -134,10 +148,6 @@ div.TopBar__notificationsDisabled {
 }
 
 @media @breakpoint-mobile {
-  .TopBar {
-    padding-left: 2.875rem;
-  }
-
   .TopBar__notifications {
     display: none;
   }

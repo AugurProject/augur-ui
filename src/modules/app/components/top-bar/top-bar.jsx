@@ -10,6 +10,9 @@ import BlockInfoData from "modules/block-info/containers/block-info-data";
 
 import makePath from "modules/routes/helpers/make-path";
 import { MARKETS } from "modules/routes/constants/views";
+import ReactTooltip from "react-tooltip";
+
+import TooltipStyles from "modules/common/less/tooltip.styles";
 import Styles from "modules/app/components/top-bar/top-bar.styles";
 
 const TopBar = props => (
@@ -22,18 +25,56 @@ const TopBar = props => (
             Styles["TopBar__regular-stats"]
           )}
         >
-          <div className={Styles.TopBar__stat}>
-            <span className={Styles["TopBar__stat-label"]}>ETH</span>
-            <span className={Styles["TopBar__stat-value"]} id="core-bar-eth">
-              {props.stats[0].totalRealEth.value.formatted}
-            </span>
-          </div>
-          <div className={Styles.TopBar__stat}>
-            <span className={Styles["TopBar__stat-label"]}>REP</span>
-            <span className={Styles["TopBar__stat-value"]} id="core-bar-rep">
-              {props.stats[0].totalRep.value.formatted}
-            </span>
-          </div>
+          <label
+            className={classNames(TooltipStyles.TooltipHint)}
+            data-tip
+            data-for="tooltip--funds"
+          >
+            <div className={Styles.TopBar__stat}>
+              <span className={Styles["TopBar__stat-label"]}>ETH</span>
+              <span className={Styles["TopBar__stat-value"]} id="core-bar-eth">
+                {props.stats[0].totalBalance.value.formatted}
+              </span>
+            </div>
+            <div className={Styles.TopBar__stat}>
+              <span className={Styles["TopBar__stat-label"]}>REP</span>
+              <span className={Styles["TopBar__stat-value"]} id="core-bar-rep">
+                {props.stats[0].totalRep.value.formatted}
+              </span>
+            </div>
+          </label>
+          <ReactTooltip
+            id="tooltip--funds"
+            className={TooltipStyles.Tooltip}
+            effect="solid"
+            place="bottom"
+            type="light"
+          >
+            <h4>
+              <u>Portfolio Balance</u>
+            </h4>
+            <p>
+              <span
+                className={Styles["TopBar__stat-value-tooltip"]}
+                id="core-bar-eth-tooltip"
+              >
+                {props.stats[0].totalBalance.value.formatted}
+              </span>
+              <span className={Styles["TopBar__stat-label-tooltip"]}>ETH</span>
+            </p>
+            <h4>
+              <u>Available Balance</u>
+            </h4>
+            <p>
+              <span
+                className={Styles["TopBar__stat-value-tooltip"]}
+                id="core-bar-rep-tooltip"
+              >
+                {props.stats[0].totalRealEth.value.formatted}
+              </span>
+              <span className={Styles["TopBar__stat-label-tooltip"]}>ETH</span>
+            </p>
+          </ReactTooltip>
         </div>
         <div
           className={classNames(

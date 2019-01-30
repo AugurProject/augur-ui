@@ -3,7 +3,15 @@
 .AccountHeader {
   color: white;
   display: flex;
+  flex-flow: row wrap;
   margin: 10rem 4.625rem 1.75rem;
+
+  > h4 {
+    .text-large;
+
+    color: @color-light-gray;
+    flex: 0 0 100%;
+  }
 }
 
 .AccountHeader__Currency {
@@ -12,6 +20,10 @@
 
   &:not(:first-child) {
     margin-left: 0.4em;
+  }
+
+  &:first-of-type {
+    margin-left: 0;
   }
 }
 
@@ -26,6 +38,10 @@
   .AccountHeader {
     display: block;
     margin: 4rem 2.25rem 3.2rem;
+
+    > h4 {
+      .text-medium;
+    }
   }
 
   .AccountHeader__Currency:not(:first-child) {

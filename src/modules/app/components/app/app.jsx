@@ -511,7 +511,7 @@ export default class AppView extends Component {
 
       tagsMargin = 110 * subMenu.scalar;
     }
-
+    // console.log(coreStats);
     return (
       <main>
         <Helmet

@@ -838,6 +838,8 @@ function attachHoverClickHandlers(options) {
         marketMin,
         marketMax
       );
+      if (nearestFillingOrder === null) return;
+
       d3.select(bidsDepthLine).attr(
         "stroke-width",
         nearestFillingOrder[4] === ASKS ? 1 : 2
@@ -856,9 +858,6 @@ function attachHoverClickHandlers(options) {
       );
 
       updateHoveredPrice(hoveredPrice);
-
-      if (nearestFillingOrder === null) return;
-
       const { xScale, yScale } = drawParams;
       d3.select("#price_label").attr("class", `${nearestFillingOrder[4]}`);
       d3.select("#volume_label").attr("class", `${nearestFillingOrder[4]}`);
