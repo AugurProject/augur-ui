@@ -217,16 +217,19 @@ class TradingWrapper extends Component {
             if (err) return console.log(err); // what to do with error here
 
             const numShares = createBigNumber(newOrder.numShares).toFixed(9);
-            this.updateState({
-              ...this.state,
-              ...order,
-              orderQuantity: numShares,
-              trade: newOrder
-            }, () => {
-              this.props.updateSelectedOrderProperties({
-                ...pick(this.state, keys(this.props.selectedOrderProperties))
-              });
-            });
+            this.updateState(
+              {
+                ...this.state,
+                ...order,
+                orderQuantity: numShares,
+                trade: newOrder
+              },
+              () => {
+                this.props.updateSelectedOrderProperties({
+                  ...pick(this.state, keys(this.props.selectedOrderProperties))
+                });
+              }
+            );
           }
         )
     );
