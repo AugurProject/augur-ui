@@ -45,6 +45,9 @@ export default class PeriodSelector extends Component {
 
   selectRange(range) {
     const { selectedRange, updateSelectedRange } = this.props;
+    if (range === selectedRange) {
+      return;
+    }
 
     updateSelectedRange(range.duration === selectedRange ? -1 : range.duration);
     this.setState({
@@ -54,6 +57,9 @@ export default class PeriodSelector extends Component {
 
   selectPeriod(period) {
     const { selectedPeriod, updateSelectedPeriod } = this.props;
+    if (period === selectedPeriod) {
+      return;
+    }
 
     updateSelectedPeriod(
       period.duration === selectedPeriod ? -1 : period.duration

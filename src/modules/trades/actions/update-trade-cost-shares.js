@@ -3,7 +3,6 @@ import { augur } from "services/augurjs";
 import { BUY } from "modules/transactions/constants/types";
 import logError from "utils/log-error";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
-import { ZERO } from "modules/trades/constants/numbers";
 
 // Updates user's trade. Only defined (i.e. !== null) parameters are updated
 export function updateTradeCost({
@@ -109,6 +108,7 @@ export function updateTradeShares({
     if (side === BUY) {
       newShares = createBigNumber(maxCost).dividedBy(scaledPrice);
     }
+    /*
     const marketPosition = accountPositions[marketId];
     if (marketPosition && marketPosition[outcomeId]) {
       // How many shares user can buy with totalCost/maxCost amount
@@ -123,6 +123,7 @@ export function updateTradeShares({
         newShares = newShares.plus(netPosition);
       }
     }
+    */
     newTradeDetails.numShares = newShares.abs().toFixed(9);
     const outcome = outcomesData[marketId][outcomeId];
 
