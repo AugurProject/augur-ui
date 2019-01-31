@@ -23,12 +23,12 @@ export default class NotificationsView extends Component {
 
   componentWillUpdate(nextProps) {
     if (!this.props.notificationsVisible && nextProps.notificationsVisible) {
-      toggleHeight(this.notificationsContainer, false, () => {});
+      toggleHeight(this.notificationsContainer, false);
     } else if (
       this.props.notificationsVisible &&
       !nextProps.notificationsVisible
     ) {
-      toggleHeight(this.notificationsContainer, true, () => {});
+      toggleHeight(this.notificationsContainer, true);
 
       const { updateNotification, notifications } = this.props;
       notifications.forEach(notification => {

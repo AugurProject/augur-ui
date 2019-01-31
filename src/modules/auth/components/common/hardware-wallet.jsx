@@ -257,11 +257,11 @@ export default class HardwareWallet extends Component {
   }
 
   showAdvanced(value) {
-    toggleHeight(this.advanced, value, () => {});
+    toggleHeight(this.advanced, value);
   }
 
   showHardwareWallet() {
-    toggleHeight(this.hardwareContent, false, () => {
+    toggleHeight(this.hardwareContent, false, 0, () => {
       this.setState({ showWallet: true });
     });
   }
@@ -269,7 +269,7 @@ export default class HardwareWallet extends Component {
   hideHardwareWallet() {
     const { setShowAdvancedButton } = this.props;
     setShowAdvancedButton(false);
-    toggleHeight(this.hardwareContent, true, () => {
+    toggleHeight(this.hardwareContent, true, 0, () => {
       this.setState({ showWallet: false });
     });
   }

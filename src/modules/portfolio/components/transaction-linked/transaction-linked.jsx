@@ -31,7 +31,7 @@ export default class LinkedTransaction extends Component {
         <button
           className={Styles.LinkedTransaction__message}
           onClick={() => {
-            toggleHeight(this.metaWrapper, s.isOpen, () => {
+            toggleHeight(this.metaWrapper, s.isOpen, 0, () => {
               this.setState({ isOpen: !s.isOpen });
             });
           }}

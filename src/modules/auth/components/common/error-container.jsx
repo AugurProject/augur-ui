@@ -51,13 +51,13 @@ export default class ErrorContainer extends Component {
 
   showError() {
     this.setState({ errorShown: true }, () => {
-      toggleHeight(this.error, false, () => {});
+      toggleHeight(this.error, false);
     });
   }
 
   hideError() {
     this.setState({ errorShown: false }, () => {
-      toggleHeight(this.error, true, () => {});
+      toggleHeight(this.error, true);
     });
   }
 
