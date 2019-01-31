@@ -45,7 +45,7 @@ export default class PeriodSelector extends Component {
 
   selectRange(range) {
     const { selectedRange, updateSelectedRange } = this.props;
-    if (range === selectedRange) {
+    if (range.duration === selectedRange) {
       return;
     }
 
@@ -57,7 +57,7 @@ export default class PeriodSelector extends Component {
 
   selectPeriod(period) {
     const { selectedPeriod, updateSelectedPeriod } = this.props;
-    if (period === selectedPeriod) {
+    if (period.duration === selectedPeriod) {
       return;
     }
 
