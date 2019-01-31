@@ -262,7 +262,7 @@ export default class CreateMarketResolution extends Component {
                     <span
                       className={StylesForm["CreateMarketForm__error--bottom"]}
                     >
-                      {InputErrorIcon}{" "}
+                      {InputErrorIcon()}{" "}
                       {
                         newMarket.validations[newMarket.currentStep]
                           .expirySource
@@ -338,7 +338,7 @@ export default class CreateMarketResolution extends Component {
                   <span
                     className={StylesForm["CreateMarketForm__error--bottom"]}
                   >
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {
                       newMarket.validations[newMarket.currentStep]
                         .designatedReporterAddress
@@ -427,13 +427,13 @@ export default class CreateMarketResolution extends Component {
             <span>Expiration Time (UTC {utcLocalOffset})</span>
             {newMarket.validations[newMarket.currentStep].hour && (
               <span className={StylesForm.CreateMarketForm__error}>
-                {InputErrorIcon}
+                {InputErrorIcon()}
                 {newMarket.validations[newMarket.currentStep].hour}
               </span>
             )}
             {newMarket.validations[newMarket.currentStep].minute && (
               <span className={StylesForm.CreateMarketForm__error}>
-                {InputErrorIcon}
+                {InputErrorIcon()}
                 {newMarket.validations[newMarket.currentStep].minute}
               </span>
             )}

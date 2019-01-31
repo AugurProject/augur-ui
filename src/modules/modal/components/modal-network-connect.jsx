@@ -149,7 +149,7 @@ export default class ModalNetworkConnect extends Component {
         {AugurNodeInValid &&
           formErrors.augurNode.map(error => (
             <p key={error} className={Styles.Error}>
-              {InputErrorIcon} {error}
+              {InputErrorIcon()} {error}
             </p>
           ))}
         <label htmlFor="modal__ethNode-input">Ethereum Node address:</label>
@@ -176,13 +176,13 @@ export default class ModalNetworkConnect extends Component {
           ethereumNodeInValid &&
           formErrors.ethereumNode.map(error => (
             <p key={error} className={Styles.Error}>
-              {InputErrorIcon} {error}
+              {InputErrorIcon()} {error}
             </p>
           ))}
         {hasConnectionErrors &&
           connectErrors.map(error => (
             <p key={error} className={Styles.Error}>
-              {InputErrorIcon} {error}
+              {InputErrorIcon()} {error}
             </p>
           ))}
         <ModalActions

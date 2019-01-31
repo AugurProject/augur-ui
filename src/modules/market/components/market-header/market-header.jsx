@@ -273,9 +273,6 @@ export default class MarketHeader extends Component {
           </div>
         )}
         <button
-          className={classNames({
-            [Styles.MarketHeader__button__collapsed]: headerCollapsed
-          })}
           onClick={() => {
             this.setState({ headerCollapsed: !headerCollapsed });
           }}

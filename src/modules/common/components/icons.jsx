@@ -636,7 +636,8 @@ export const Alert = (
   </svg>
 );
 
-export const ExclamationCircle = (
+export const WarningExclamationCircle = () => ExclamationCircle("#00eaff");
+export const ExclamationCircle = (c = "#ff2727") => (
   <svg viewBox="0 0 16 16">
     <g
       id="Updated-Screens"
@@ -647,14 +648,7 @@ export const ExclamationCircle = (
     >
       <g id="New-Market_11" transform="translate(-682.000000, -464.000000)">
         <g id="Icon/Error" transform="translate(682.000000, 464.000000)">
-          <circle
-            id="Oval"
-            stroke="#FF0068"
-            strokeWidth="1"
-            cx="8"
-            cy="8"
-            r="7"
-          />
+          <circle id="Oval" stroke={c} strokeWidth="1" cx="8" cy="8" r="7" />
           <text
             id="!"
             transform="translate(8.000000, 7.500000) scale(-1, 1) translate(-8.000000, -7.500000) "
@@ -662,9 +656,9 @@ export const ExclamationCircle = (
             fontSize="10.5"
             fontWeight="normal"
             letterSpacing="0.262500018"
-            fill="#FF0068"
+            fill={c}
           >
-            <tspan x="6.1" y="11">
+            <tspan x="6.7" y="11.5">
               !
             </tspan>
           </text>

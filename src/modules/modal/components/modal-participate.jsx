@@ -174,7 +174,7 @@ export default class ModalParticipate extends Component {
             {!!errors.length &&
               errors.map((error, index) => (
                 <p key={error} className={Styles.Error}>
-                  {InputErrorIcon} {error}
+                  {InputErrorIcon()} {error}
                 </p>
               ))}
             <ModalActions

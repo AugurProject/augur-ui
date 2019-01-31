@@ -135,7 +135,7 @@ export default class CreateMarketDefine extends Component {
             <span>Market Question</span>
             {newMarket.validations[newMarket.currentStep].description && (
               <span className={StylesForm.CreateMarketForm__error}>
-                {InputErrorIcon}
+                {InputErrorIcon()}
                 {newMarket.validations[newMarket.currentStep].description}
               </span>
             )}
@@ -193,7 +193,7 @@ export default class CreateMarketDefine extends Component {
             <span
               className={[`${StylesForm["CreateMarketForm__error--bottom"]}`]}
             >
-              {InputErrorIcon}
+              {InputErrorIcon()}
               {newMarket.validations[newMarket.currentStep].category}
             </span>
           )}
@@ -254,7 +254,7 @@ export default class CreateMarketDefine extends Component {
                   StylesForm["CreateMarketForm__error--lessSpace"]
                 )}
               >
-                {InputErrorIcon}
+                {InputErrorIcon()}
                 {tagMessage}
               </span>
             )}

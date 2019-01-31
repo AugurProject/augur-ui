@@ -14,7 +14,7 @@ import { isEqual } from "lodash";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
-
+import { ExclamationCircle } from "modules/common/components/icons";
 import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
@@ -620,7 +620,7 @@ class TradingForm extends Component {
           <div className={Styles.TradingForm__error_message_container}>
             {errors.map(error => (
               <div key={error} className={Styles.TradingForm__error_message}>
-                {error}
+                {ExclamationCircle()} <span>{error}</span>
               </div>
             ))}
           </div>

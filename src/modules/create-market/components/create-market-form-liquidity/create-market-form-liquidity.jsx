@@ -552,7 +552,7 @@ export default class CreateMarketLiquidity extends Component {
             <span
               className={[`${StylesForm["CreateMarketForm__error--bottom"]}`]}
             >
-              {InputErrorIcon}{" "}
+              {InputErrorIcon()}{" "}
               {newMarket.validations[newMarket.currentStep].settlementFee}
             </span>
           )}

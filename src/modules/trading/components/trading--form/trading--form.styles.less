@@ -64,11 +64,22 @@
   font-size: @font-size-small;
   line-height: @font-size-medium;
   margin: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .TradingForm__error_message {
-  color: @color-white;
+  color: @color-error-text;
+  svg {
+    margin: 0 0.2rem;
+    min-height: 1.75em;
+    min-width: 1.75em;
+    width: 1.75em;
+    vertical-align: middle;
+  }
+
+  span {
+    white-space: nowrap;
+  }
 }
 
 .TradingForm__outcome__container {

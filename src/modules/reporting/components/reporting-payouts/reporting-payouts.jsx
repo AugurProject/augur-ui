@@ -43,7 +43,7 @@ const Outcome = ({ className, outcome, marketId }) => {
               data-tip
               data-for="tooltip--potential-fork"
             >
-              {ExclamationCircle}
+              {ExclamationCircle()}
             </div>
             <ReactTooltip
               id="tooltip--potential-fork"

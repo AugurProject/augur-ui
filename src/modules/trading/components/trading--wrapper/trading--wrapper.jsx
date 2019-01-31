@@ -127,9 +127,16 @@ class TradingWrapper extends Component {
         trade
       });
     } else {
-      this.updateState({
-        trade
-      });
+      this.updateState(
+        {
+          trade
+        },
+        () => {
+          this.props.updateSelectedOrderProperties({
+            ...pick(this.state, keys(this.props.selectedOrderProperties))
+          });
+        }
+      );
     }
   }
 

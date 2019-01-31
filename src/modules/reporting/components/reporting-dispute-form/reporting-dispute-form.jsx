@@ -628,7 +628,7 @@ export default class ReportingDisputeForm extends Component {
                   <li>
                     {s.validations.hasOwnProperty("err") && (
                       <span className={FormStyles.Form__error__space}>
-                        {InputErrorIcon}
+                        {InputErrorIcon()}
                         {s.validations.err}
                       </span>
                     )}
@@ -668,7 +668,7 @@ export default class ReportingDisputeForm extends Component {
               {s.validations.hasOwnProperty("stake") &&
                 s.validations.stake.length && (
                   <span className={FormStyles["Form__error--even"]}>
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {s.validations.stake}
                   </span>
                 )}
@@ -677,7 +677,7 @@ export default class ReportingDisputeForm extends Component {
               !s.validations.isDisputeActive && (
                 <label>
                   <span className={Styles.ReportingDisputeForm__disputeEnded}>
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {`Dispute round has ended, wait for next round to dispute`}
                   </span>
                 </label>

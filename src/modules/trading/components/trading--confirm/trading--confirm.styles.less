@@ -193,8 +193,8 @@
 }
 
 .TradingConfirm__error_message_container {
-  background: rgba(241, 231, 0, 0.2);
-  border: 1px solid @color-dispute-yellow;
+  background: rgba(0, 234, 255, 0.2);
+  border: 1px solid @color-bright-teal;
   border-radius: 3px;
   box-sizing: border-box;
   display: flex;
@@ -205,9 +205,17 @@
   padding: 0.75rem;
 
   div:first-child {
-    color: @color-dispute-yellow;
+    color: @color-bright-teal;
     font-weight: 500;
     padding-bottom: 0.25rem;
+
+    svg {
+      margin: 0 0.2rem;
+      min-height: 1.75em;
+      min-width: 1.75em;
+      width: 1.75em;
+      vertical-align: middle;
+    }
   }
 
   div:last-child {

@@ -421,7 +421,7 @@ export default class CreateMarketOutcome extends Component {
               <span>Potential Outcomes</span>
               {validation.outcomes && (
                 <span className={StylesForm.CreateMarketForm__error}>
-                  {InputErrorIcon}
+                  {InputErrorIcon()}
                   {validation.outcomes}
                 </span>
               )}
@@ -510,7 +510,7 @@ export default class CreateMarketOutcome extends Component {
                   <span
                     className={StylesForm["CreateMarketForm__error--bottom"]}
                   >
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {validation.scalarSmallNum}
                   </span>
                 )}
@@ -543,7 +543,7 @@ export default class CreateMarketOutcome extends Component {
                   <span
                     className={StylesForm["CreateMarketForm__error--bottom"]}
                   >
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {validation.scalarBigNum}
                   </span>
                 )}
@@ -595,7 +595,7 @@ export default class CreateMarketOutcome extends Component {
                 />
                 {validation.scalarDenomination && (
                   <span className={StylesForm.CreateMarketForm__error_tick}>
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {validation.scalarDenomination}
                   </span>
                 )}
@@ -621,7 +621,7 @@ export default class CreateMarketOutcome extends Component {
                 />
                 {validation.tickSize && (
                   <span className={StylesForm.CreateMarketForm__error_tick}>
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {validation.tickSize}
                   </span>
                 )}

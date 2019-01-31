@@ -227,7 +227,7 @@ export default class AccountWithdraw extends Component {
                 {s.errors.hasOwnProperty("amount") &&
                   s.errors.amount.length && (
                     <span className={FormStyles["Form__error--even__space"]}>
-                      {InputErrorIcon}
+                      {InputErrorIcon()}
                       {s.errors.amount}
                     </span>
                   )}
@@ -246,7 +246,7 @@ export default class AccountWithdraw extends Component {
                 {s.errors.hasOwnProperty("address") &&
                   s.errors.address.length && (
                     <span className={FormStyles["Form__error--even__space"]}>
-                      {InputErrorIcon}
+                      {InputErrorIcon()}
                       {s.errors.address}
                     </span>
                   )}

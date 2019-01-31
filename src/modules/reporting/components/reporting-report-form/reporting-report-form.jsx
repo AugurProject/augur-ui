@@ -340,7 +340,7 @@ export default class ReportingReportForm extends Component {
               <li>
                 {validations.hasOwnProperty("err") && (
                   <span className={FormStyles.Form__error}>
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {validations.err}
                   </span>
                 )}
@@ -351,7 +351,7 @@ export default class ReportingReportForm extends Component {
         {errorMessage && (
           <label>
             <span className={Styles["ReportingReport__insufficient-funds"]}>
-              {InputErrorIcon}
+              {InputErrorIcon()}
               {errorMessage}
             </span>
           </label>
@@ -368,7 +368,7 @@ export default class ReportingReportForm extends Component {
           !validations.neverReported && (
             <label>
               <span className={Styles["ReportingReport__insufficient-funds"]}>
-                {InputErrorIcon}
+                {InputErrorIcon()}
                 {`Market has already been reported on`}
               </span>
             </label>

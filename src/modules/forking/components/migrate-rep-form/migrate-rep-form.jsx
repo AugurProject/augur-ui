@@ -263,7 +263,7 @@ export default class MigrateRepForm extends Component {
                 <li>
                   {validations.hasOwnProperty("err") && (
                     <span className={FormStyles.Form__error}>
-                      {InputErrorIcon}
+                      {InputErrorIcon()}
                       {validations.err}
                     </span>
                   )}
@@ -304,7 +304,7 @@ export default class MigrateRepForm extends Component {
               {validations.hasOwnProperty("repAmount") &&
                 validations.repAmount.length && (
                   <span className={FormStyles["Form__error--even"]}>
-                    {InputErrorIcon}
+                    {InputErrorIcon()}
                     {validations.repAmount}
                   </span>
                 )}
