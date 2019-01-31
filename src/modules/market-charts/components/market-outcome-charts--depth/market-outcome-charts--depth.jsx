@@ -192,7 +192,7 @@ export default class MarketOutcomeDepth extends Component {
             drawParams.chartDim.right
         )
         .attr("height", drawParams.containerHeight)
-        .style("margin", "0 0.5rem");
+        .style("margin", "0.75rem 0.5rem 0");
 
       drawTicks({
         drawParams,
@@ -410,7 +410,7 @@ function determineDrawParams(options) {
   };
 
   const containerWidth = depthChart.clientWidth;
-  const containerHeight = depthChart.clientHeight;
+  const containerHeight = depthChart.clientHeight - 12;
   const drawHeight = containerHeight - chartDim.top - chartDim.bottom;
 
   const midPrice = orderBookKeys.mid;
@@ -539,6 +539,15 @@ function drawTicks(options) {
     const midOffset = -25;
     let quarter = drawParams.yScale(drawParams.yDomain[1] * 0.85);
     quarter = quarter < 40 ? 40 : quarter;
+
+    const denominationWidth = 17;
+    const priceWidth =
+      orderBookKeys.mid.toFixed(pricePrecision).toString().length * 10 +
+      denominationWidth;
+    const pricePlacement = -1 * (priceWidth / 2);
+    const denominationPlacement =
+      pricePlacement + priceWidth - denominationWidth;
+
     depthChart
       .append("line")
       .attr("class", "tick-line--midpoint")
@@ -554,7 +563,7 @@ function drawTicks(options) {
       .append("text")
       .attr("class", "tick-value-midpoint-text")
       .attr("x", drawParams.xScale(orderBookKeys.mid.toNumber()))
-      .attr("y", quarter - 27)
+      .attr("y", quarter - 30)
       .attr("dx", midOffset)
       .attr("dy", 0)
       .text(orderBookKeys.mid && "Mid Price");
@@ -563,11 +572,20 @@ function drawTicks(options) {
       .attr("class", "tick-value-midpoint")
       .attr("x", drawParams.xScale(orderBookKeys.mid.toNumber()))
       .attr("y", quarter - 12)
-      .attr("dx", midOffset)
+      .attr("dx", pricePlacement)
       .attr("dy", 0)
       .text(
-        orderBookKeys.mid && `${orderBookKeys.mid.toFixed(pricePrecision)} ETH`
+        orderBookKeys.mid && `${orderBookKeys.mid.toFixed(pricePrecision)}`
       );
+
+    depthChart
+      .append("text")
+      .attr("class", "tick-value-denomination")
+      .attr("x", drawParams.xScale(orderBookKeys.mid.toNumber()))
+      .attr("y", quarter - 12)
+      .attr("dx", denominationPlacement)
+      .attr("dy", 0)
+      .text(" ETH");
   }
 
   const tickCount = 5;
@@ -580,6 +598,8 @@ function drawTicks(options) {
         d3
           .axisRight(drawParams.yScale)
           .tickValues(drawParams.yScale.ticks(tickCount))
+          .tickSize(9)
+          .tickPadding(4)
       )
       .attr("transform", `translate(${drawParams.chartDim.left}, 0)`)
       .selectAll("text")
@@ -618,7 +638,13 @@ function drawTicks(options) {
       "transform",
       `translate(0, ${drawParams.containerHeight - drawParams.chartDim.bottom})`
     )
-    .call(d3.axisBottom(drawParams.xScale).tickValues(xTicks))
+    .call(
+      d3
+        .axisBottom(drawParams.xScale)
+        .tickValues(xTicks)
+        .tickSize(9)
+        .tickPadding(4)
+    )
     .selectAll("text")
     .text(d => `${d} ETH`)
     .select("path")
@@ -739,15 +765,15 @@ function setupCrosshairs(options) {
   labels
     .append("div")
     .attr("id", "price_label")
-    .html("price:");
+    .html("Price:");
   labels
     .append("div")
     .attr("id", "volume_label")
-    .html("volume:");
+    .html("Volume:");
   labels
     .append("div")
     .attr("id", "cost_label")
-    .html("cost:");
+    .html("Cost:");
 
   values.append("div").attr("id", "price_value");
   values.append("div").attr("id", "volume_value");
