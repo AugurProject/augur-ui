@@ -150,20 +150,20 @@ describe("modules/trades/helpers/calc-order-profit-loss-percents.js", () => {
   test(`should return the expected profit and loss values for user closing position`, () => {
     const actual = calcProfits(
       "10",
-      "0.2",
+      "0.75",
       SELL,
       "0",
       "1",
       YES_NO,
       "10",
-      "0.1",
+      "0.25",
       "0",
       "0.2"
     );
 
     const expected = {
-      potentialEthProfit: createBigNumber("5"),
-      potentialEthLoss: createBigNumber("8"),
+      potentialEthProfit: createBigNumber("3"),
+      potentialEthLoss: createBigNumber("2.5"),
       potentialProfitPercent: createBigNumber("100"),
       potentialLossPercent: createBigNumber("100"),
       tradingFees: createBigNumber("2")

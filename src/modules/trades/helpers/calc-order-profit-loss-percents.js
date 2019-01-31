@@ -92,12 +92,12 @@ export default function(
     );
 
     if (side === BUY) {
-      shortETHpotentialProfit = longETH
+      shortETHpotentialProfit = shortETH
         .minus(filledSharesCost)
         .minus(winningSettlementCost);
       totalETHValueWinnable = shortETHpotentialProfit;
     } else {
-      longETHpotentialProfit = shortETH
+      longETHpotentialProfit = longETH
         .minus(filledSharesCost)
         .minus(winningSettlementCost);
       totalETHValueWinnable = longETHpotentialProfit;
