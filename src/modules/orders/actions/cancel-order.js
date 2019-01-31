@@ -1,3 +1,4 @@
+import { eachOf } from "async";
 import { augur } from "services/augurjs";
 import {
   CLOSE_DIALOG_CLOSING,
@@ -15,6 +16,11 @@ const TIME_TO_WAIT_BEFORE_FINAL_ACTION_MILLIS = 3000;
 //   outcome,
 //   orderTypeLabel,
 // }
+
+export const cancelAllOpenOrders = (orders, cb) => (dispatch, getState) => {
+  eachOf(orders, order => order.cancelOrder(order));
+};
+
 export const cancelOrder = (
   { orderId, marketId, outcome, orderTypeLabel },
   callback = logError
