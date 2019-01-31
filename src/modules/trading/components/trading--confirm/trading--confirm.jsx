@@ -6,7 +6,10 @@ import { BUY, SELL } from "modules/transactions/constants/types";
 import { SCALAR } from "modules/markets/constants/market-types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
-import { infoIcon, WarningExclamationCircle } from "modules/common/components/icons";
+import {
+  infoIcon,
+  WarningExclamationCircle
+} from "modules/common/components/icons";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
