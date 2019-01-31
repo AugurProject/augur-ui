@@ -1,7 +1,7 @@
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { BUY } from "modules/transactions/constants/types";
 import { SCALAR } from "modules/markets/constants/market-types";
-
+import { ZERO } from "modules/trades/constants/numbers";
 /**
  *
  * @param numShares number of shares the user wants to buy or sell
@@ -27,7 +27,8 @@ export default function(
   minPrice,
   maxPrice,
   type,
-  sharesFilled,
+  shareCost,
+  sharesFilledAvgPrice,
   tradeTotalCost,
   settlementFee
 ) {
@@ -36,7 +37,7 @@ export default function(
     !minPrice ||
     !maxPrice ||
     !numShares ||
-    !sharesFilled ||
+    !shareCost ||
     !side ||
     !type ||
     (!limitPrice && tradeTotalCost == null)
@@ -76,9 +77,30 @@ export default function(
     .dividedBy(maxTotalTradeCostNoFee)
     .times(100);
 
-  const longETHpotentialProfit = longETH.minus(winningSettlementCost);
-  const shortETHpotentialProfit = shortETH.minus(winningSettlementCost);
-  const totalETHValueWinnable = side === BUY ? longETH : shortETH;
+  let longETHpotentialProfit = longETH.minus(winningSettlementCost);
+  let shortETHpotentialProfit = shortETH.minus(winningSettlementCost);
+  let totalETHValueWinnable = side === BUY ? longETH : shortETH;
+
+  // use user's filled shares average purchase price to calculate profit and loss
+  if (sharesFilledAvgPrice && createBigNumber(shareCost).gt(ZERO)) {
+    const filledSharesPrice = createBigNumber(sharesFilledAvgPrice, 10);
+    const filledSharesCost = filledSharesPrice.times(
+      createBigNumber(shareCost).times(marketRange)
+    );
+
+    if (side === BUY) {
+      shortETHpotentialProfit = longETH
+        .minus(filledSharesCost)
+        .minus(winningSettlementCost);
+      totalETHValueWinnable = shortETHpotentialProfit;
+    } else {
+      longETHpotentialProfit = shortETH
+        .minus(filledSharesCost)
+        .minus(winningSettlementCost);
+      totalETHValueWinnable = longETHpotentialProfit;
+    }
+  }
+
   const longETHPercentProfit = longETHpotentialProfit
     .dividedBy(totalETHValueWinnable)
     .times(100);

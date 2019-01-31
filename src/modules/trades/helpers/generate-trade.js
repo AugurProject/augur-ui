@@ -27,6 +27,9 @@ export const generateTrade = memoize(
       (outcomeTradeInProgress && outcomeTradeInProgress.numShares) || null;
     const sharesFilled =
       (outcomeTradeInProgress && outcomeTradeInProgress.sharesFilled) || null;
+    const sharesFilledAvgPrice =
+      (outcomeTradeInProgress && outcomeTradeInProgress.sharesFilledAvgPrice) ||
+      null;
     const limitPrice =
       (outcomeTradeInProgress && outcomeTradeInProgress.limitPrice) || null;
     const totalFee = createBigNumber(
@@ -59,7 +62,8 @@ export const generateTrade = memoize(
       minPrice,
       maxPrice,
       marketType,
-      sharesFilled,
+      shareCost,
+      sharesFilledAvgPrice,
       adjustedTotalCost,
       settlementFee
     );

@@ -152,6 +152,7 @@ function runSimulateTrade(
   callback
 ) {
   let userShareBalance = new Array(market.numOutcomes).fill("0");
+  let sharesFilledAvgPrice = "";
   const positions = accountPositions[marketId];
   if (positions) {
     userShareBalance = Object.keys(positions).reduce((arr, outcomeId) => {
@@ -159,6 +160,7 @@ function runSimulateTrade(
       arr[position.outcome] = position.position;
       return arr;
     }, userShareBalance);
+    sharesFilledAvgPrice = (positions[outcomeId] || {}).averagePrice;
   }
 
   const simulatedTrade = augur.trading.simulateTrade({
@@ -193,7 +195,7 @@ function runSimulateTrade(
   const order = generateTrade(
     market,
     outcome,
-    { ...newTradeDetails, ...simulatedTrade },
+    { ...newTradeDetails, ...simulatedTrade, sharesFilledAvgPrice },
     orderBooks
   );
   if (callback) callback(null, { ...order, ...simulatedTrade });
