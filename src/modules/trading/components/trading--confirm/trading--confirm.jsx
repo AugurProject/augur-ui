@@ -35,7 +35,6 @@ const MarketTradingConfirm = ({
     totalCost,
     shareCost,
     side,
-    tradingFees,
     orderShareProfit,
     orderShareTradingFee
   } = trade;

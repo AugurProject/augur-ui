@@ -3,7 +3,6 @@ import { augur } from "services/augurjs";
 import { BUY } from "modules/transactions/constants/types";
 import logError from "utils/log-error";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
-import { ZERO } from "modules/trades/constants/numbers";
 
 // Updates user's trade. Only defined (i.e. !== null) parameters are updated
 export function updateTradeCost({
