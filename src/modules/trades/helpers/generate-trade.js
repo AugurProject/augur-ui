@@ -54,22 +54,21 @@ export const generateTrade = memoize(
     const minPrice = createBigNumber(market.minPrice);
     const maxPrice = createBigNumber(market.maxPrice);
 
-    const orderShareProfitLoss =
-      shareCost !== "0"
-        ? calcOrderShareProfitLoss(
-            limitPrice,
-            side,
-            minPrice,
-            maxPrice,
-            marketType,
-            shareCost,
-            sharesFilledAvgPrice,
-            settlementFee
-          )
-        : null;
+    const orderShareProfitLoss = shareCost.gt(0)
+      ? calcOrderShareProfitLoss(
+          limitPrice,
+          side,
+          minPrice,
+          maxPrice,
+          marketType,
+          shareCost,
+          sharesFilledAvgPrice,
+          settlementFee
+        )
+      : null;
 
     const preOrderProfitLoss = calcOrderProfitLossPercents(
-      shareCost !== "0" && numShares
+      shareCost.gt(0) && numShares
         ? createBigNumber(numShares)
             .minus(shareCost)
             .toFixed(9)

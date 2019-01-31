@@ -16,7 +16,8 @@ describe("modules/trades/helpers/generate-trade.js", () => {
       totalCost: "2500",
       type: "yes/no ",
       side: BUY,
-      sharesFilled: 5000
+      sharesFilled: 5000,
+      sharesFilledAvgPrice: ""
     },
     state.orderBooks.testMarketId
   );
@@ -35,8 +36,10 @@ describe("modules/trades/helpers/generate-trade.js", () => {
         roundedValue: 0,
         value: 0
       },
+      orderShareProfit: null,
+      orderShareTradingFee: null,
       potentialEthProfit: formatEther("7499.49999999403477"),
-      potentialEthLoss: formatEther(-2500),
+      potentialEthLoss: formatEther("-2500.50000000596523"),
       potentialProfitPercent: formatPercent("-299.9799999997613908"),
       potentialLossPercent: formatPercent(100),
       tradingFees: formatEther("0.50000000596523"),
@@ -74,6 +77,7 @@ describe("modules/trades/helpers/generate-trade.js", () => {
           value: "sell"
         }
       ],
+      totalOrderValue: formatEther(-2500),
       totalSharesUpToOrder: trade.totalSharesUpToOrder
     });
   });
