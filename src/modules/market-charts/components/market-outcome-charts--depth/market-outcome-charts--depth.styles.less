@@ -38,15 +38,15 @@
 
   :global {
     .hovered_tooltip_div {
-      background-color: @color-almostblack;
+      background-color: @color-grayish-purple;
       border: 1px solid @color-white;
-      border-radius: 0.5rem 0 0 0.5rem;
+      border-radius: 0.125rem 0 0 0.125rem;
       border-right-width: 2px;
       color: @color-white;
       display: flex;
       flex: 1 113px;
       flex-flow: row nowrap;
-      height: 3.3125rem;
+      height: 3.5rem;
       min-width: 113px;
       padding: 0 0.5rem;
     }
@@ -68,13 +68,13 @@
     }
 
     .hovered_tooltip_div.asks {
-      border-color: fade(@color-negative, 30%);
-      border-right-color: @color-negative;
+      border-color: fade(@color-negative2, 30%);
+      border-right-color: @color-negative2;
     }
 
     .hovered_tooltip_div.asks.flip {
-      border-left-color: @color-negative;
-      border-right-color: fade(@color-negative, 30%);
+      border-left-color: @color-negative2;
+      border-right-color: fade(@color-negative2, 30%);
     }
 
     .hovered_tooltip_labels {
@@ -111,6 +111,7 @@
 
         color: @color-white;
         flex: 1;
+        font-weight: bold;
         line-height: @size-small;
         text-align: left;
       }
@@ -118,18 +119,20 @@
       > div#price_value {
         .number-large;
 
+        font-weight: bold;
         line-height: @size-medium;
         margin-top: 0.25rem;
       }
 
       > div#cost_value {
+        font-weight: bold;
         margin-bottom: 0.25rem;
       }
     }
 
     .asks {
-      color: @color-negative;
-      stroke: @color-negative;
+      color: @color-negative2;
+      stroke: @color-negative2;
     }
 
     .bids {
@@ -147,7 +150,7 @@
     .bounding-line,
     .tick-line,
     .tick-line--midpoint {
-      stroke: @color-lightgray;
+      stroke: @color-dark-gray2;
     }
 
     .bounding-line:first-of-type {
@@ -159,7 +162,7 @@
     }
 
     .tick-line {
-      color: @color-lightgray;
+      color: @color-dark-gray2;
       stroke-width: 1px;
     }
 
@@ -179,7 +182,13 @@
     .tick-value-midpoint-text {
       .text-smaller;
 
-      fill: @color-lightgray;
+      fill: @color-medium-gray2;
+    }
+
+    .tick-value-denomination {
+      fill: @color-white;
+      font-family: @roboto;
+      font-size: @font-size-small;
     }
 
     .tick > text {
@@ -193,7 +202,7 @@
 
     .depth-line-asks {
       fill: none;
-      stroke: @color-negative;
+      stroke: @color-negative2;
     }
 
     .stop-top-bid {
@@ -205,7 +214,7 @@
     }
 
     .stop-bottom-ask {
-      stop-color: @color-negative;
+      stop-color: @color-negative2;
     }
 
     .stop-bottom-bid {
@@ -245,7 +254,7 @@
     .line .crosshair-asks {
       .dashline-normal;
 
-      stroke: @color-negative;
+      stroke: @color-negative2;
     }
 
     .overlay {
@@ -256,11 +265,11 @@
     #depth_y_ticks,
     #depth-x-axis {
       path {
-        stroke: @color-lightgray;
+        stroke: @color-dark-gray2;
       }
 
       line {
-        stroke: @color-lightgray;
+        stroke: @color-dark-gray2;
       }
 
       text {
