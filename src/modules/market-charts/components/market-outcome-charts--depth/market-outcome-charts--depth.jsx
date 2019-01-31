@@ -540,7 +540,7 @@ function drawTicks(options) {
     let quarter = drawParams.yScale(drawParams.yDomain[1] * 0.85);
     quarter = quarter < 40 ? 40 : quarter;
 
-    const denominationWidth = 17;
+    const denominationWidth = 15;
     const priceWidth =
       orderBookKeys.mid.toFixed(pricePrecision).toString().length * 10 +
       denominationWidth;
@@ -585,7 +585,7 @@ function drawTicks(options) {
       .attr("y", quarter - 12)
       .attr("dx", denominationPlacement)
       .attr("dy", 0)
-      .text(" ETH");
+      .text("ETH");
   }
 
   const tickCount = 5;
