@@ -41,8 +41,9 @@ export default function(
     !side ||
     !type ||
     (!limitPrice && tradeTotalCost == null)
-  )
+  ) {
     return null;
+  }
 
   if (
     type === SCALAR &&
@@ -50,8 +51,10 @@ export default function(
       (!BigNumber.isBigNumber(minPrice) && isNaN(minPrice)) ||
       !maxPrice ||
       (!BigNumber.isBigNumber(maxPrice) && isNaN(maxPrice)))
-  )
+  ) {
     return null;
+  }
+
   const max = createBigNumber(maxPrice, 10);
   const min = createBigNumber(minPrice, 10);
   const marketRange = max.minus(min).abs();
