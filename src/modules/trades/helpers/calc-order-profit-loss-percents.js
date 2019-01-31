@@ -1,7 +1,7 @@
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { BUY } from "modules/transactions/constants/types";
 import { SCALAR } from "modules/markets/constants/market-types";
-import { ZERO } from "modules/trades/constants/numbers";
+
 /**
  *
  * @param numShares number of shares the user wants to buy or sell
@@ -10,8 +10,7 @@ import { ZERO } from "modules/trades/constants/numbers";
  * @param minPrice only relevant for scalar markets; all other markets min is created and set to 0
  * @param maxPrice only relevant for scalar markets; all other markets max is created and set to 1
  * @param type the market type
- * @param sharesFilled
- * @param tradeTotalCost
+ * @param settlementFee
  * @returns object with the following properties
  *    potentialEthProfit:     number, maximum number of ether that can be made according to the current numShares and limit price
  *    potentialEthLoss:       number, maximum number of ether that can be lost according to the current numShares and limit price
@@ -20,28 +19,16 @@ import { ZERO } from "modules/trades/constants/numbers";
  *    potentialLossPercent:   number, the max percentage loss that can be lost with current numShares and limit price; for SELLs loss is always 100%
  */
 
-export default function(
+export const calcOrderProfitLossPercents = (
   numShares,
   limitPrice,
   side,
   minPrice,
   maxPrice,
   type,
-  shareCost,
-  sharesFilledAvgPrice,
-  tradeTotalCost,
   settlementFee
-) {
-  // tradeTotalCost is the "orderbook stays the same when this trade gets processed" value, not the maximum possible cost of the trade.
-  if (
-    !minPrice ||
-    !maxPrice ||
-    !numShares ||
-    !shareCost ||
-    !side ||
-    !type ||
-    (!limitPrice && tradeTotalCost == null)
-  ) {
+) => {
+  if (!minPrice || !maxPrice || !numShares || !side || !type || !limitPrice) {
     return null;
   }
 
@@ -80,29 +67,9 @@ export default function(
     .dividedBy(maxTotalTradeCostNoFee)
     .times(100);
 
-  let longETHpotentialProfit = longETH.minus(winningSettlementCost);
-  let shortETHpotentialProfit = shortETH.minus(winningSettlementCost);
-  let totalETHValueWinnable = side === BUY ? longETH : shortETH;
-
-  // use user's filled shares average purchase price to calculate profit and loss
-  if (sharesFilledAvgPrice && createBigNumber(shareCost).gt(ZERO)) {
-    const filledSharesPrice = createBigNumber(sharesFilledAvgPrice, 10);
-    const filledSharesCost = filledSharesPrice.times(
-      createBigNumber(shareCost).times(marketRange)
-    );
-
-    if (side === BUY) {
-      shortETHpotentialProfit = shortETH
-        .minus(filledSharesCost)
-        .minus(winningSettlementCost);
-      totalETHValueWinnable = shortETHpotentialProfit;
-    } else {
-      longETHpotentialProfit = longETH
-        .minus(filledSharesCost)
-        .minus(winningSettlementCost);
-      totalETHValueWinnable = longETHpotentialProfit;
-    }
-  }
+  const longETHpotentialProfit = longETH.minus(winningSettlementCost);
+  const shortETHpotentialProfit = shortETH.minus(winningSettlementCost);
+  const totalETHValueWinnable = side === BUY ? longETH : shortETH;
 
   const longETHPercentProfit = longETHpotentialProfit
     .dividedBy(totalETHValueWinnable)
@@ -114,7 +81,8 @@ export default function(
   const potentialEthProfit =
     side === BUY ? shortETHpotentialProfit : longETHpotentialProfit;
 
-  const potentialEthLoss = side === BUY ? longETH : shortETH;
+  const potentialEthLoss =
+    side === BUY ? longETHpotentialProfit : shortETHpotentialProfit;
 
   const potentialProfitPercent =
     side === BUY ? shortETHPercentProfit : longETHPercentProfit;
@@ -131,4 +99,107 @@ export default function(
     potentialLossPercent,
     tradingFees
   };
-}
+};
+
+export const calcOrderShareProfitLoss = (
+  limitPrice,
+  side,
+  minPrice,
+  maxPrice,
+  type,
+  shareCost,
+  sharesFilledAvgPrice,
+  settlementFee
+) => {
+  if (!minPrice || !maxPrice || !shareCost || !side || !type || !limitPrice) {
+    return null;
+  }
+
+  if (
+    type === SCALAR &&
+    (!minPrice ||
+      (!BigNumber.isBigNumber(minPrice) && isNaN(minPrice)) ||
+      !maxPrice ||
+      (!BigNumber.isBigNumber(maxPrice) && isNaN(maxPrice)))
+  ) {
+    return null;
+  }
+
+  const max = createBigNumber(maxPrice, 10);
+  const min = createBigNumber(minPrice, 10);
+  const marketRange = max.minus(min).abs();
+
+  const displayLimit = createBigNumber(limitPrice, 10);
+  const userAveragePrice = createBigNumber(sharesFilledAvgPrice, 10);
+  const totalUserShareCost = userAveragePrice.times(
+    createBigNumber(shareCost).times(marketRange)
+  );
+
+  const sharePriceLong = displayLimit.minus(min).dividedBy(marketRange);
+  const sharePriceShort = max.minus(displayLimit).dividedBy(marketRange);
+
+  const longETH = sharePriceLong.times(shareCost).times(marketRange);
+  const shortETH = sharePriceShort.times(shareCost).times(marketRange);
+
+  const bnSettlementFee = createBigNumber(settlementFee, 10);
+  const totalShareValue = longETH.plus(shortETH);
+  const winningSettlementCost = totalShareValue.times(bnSettlementFee);
+
+  let longETHpotentialProfit = longETH.minus(winningSettlementCost);
+  let shortETHpotentialProfit = shortETH.minus(winningSettlementCost);
+
+  if (side === BUY) {
+    shortETHpotentialProfit = shortETH
+      .minus(totalUserShareCost)
+      .minus(winningSettlementCost);
+  } else {
+    longETHpotentialProfit = longETH
+      .minus(totalUserShareCost)
+      .minus(winningSettlementCost);
+  }
+
+  const potentialEthProfit =
+    side === BUY ? shortETHpotentialProfit : longETHpotentialProfit;
+
+  return {
+    potentialEthProfit,
+    tradingFees: winningSettlementCost
+  };
+};
+
+export const calculateTotalOrderValue = (
+  numShares,
+  limitPrice,
+  side,
+  minPrice,
+  maxPrice,
+  type
+) => {
+  if (!minPrice || !maxPrice || !side || !type || !limitPrice) {
+    return null;
+  }
+
+  if (
+    type === SCALAR &&
+    (!minPrice ||
+      (!BigNumber.isBigNumber(minPrice) && isNaN(minPrice)) ||
+      !maxPrice ||
+      (!BigNumber.isBigNumber(maxPrice) && isNaN(maxPrice)))
+  ) {
+    return null;
+  }
+
+  const max = createBigNumber(maxPrice, 10);
+  const min = createBigNumber(minPrice, 10);
+  const marketRange = max.minus(min).abs();
+
+  const displayLimit = createBigNumber(limitPrice, 10);
+
+  const sharePriceLong = displayLimit.minus(min).dividedBy(marketRange);
+  const sharePriceShort = max.minus(displayLimit).dividedBy(marketRange);
+
+  const longETH = sharePriceLong.times(numShares).times(marketRange);
+  const shortETH = sharePriceShort.times(numShares).times(marketRange);
+
+  return side === BUY ? longETH : shortETH;
+};

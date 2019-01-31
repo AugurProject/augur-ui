@@ -64,6 +64,7 @@ class TradingWrapper extends Component {
       orderPrice: props.selectedOrderProperties.price || "",
       orderQuantity: props.selectedOrderProperties.quantity || "",
       orderEthEstimate: "",
+      orderEscrowdEth: "",
       selectedNav: props.selectedOrderProperties.selectedNav || BUY,
       doNotCreateOrders:
         props.selectedOrderProperties.doNotCreateOrders || false
@@ -122,6 +123,7 @@ class TradingWrapper extends Component {
         orderPrice: "",
         orderQuantity: "",
         orderEthEstimate: "",
+        orderEscrowdEth: "",
         doNotCreateOrders: false,
         selectedNav: this.state.selectedNav,
         trade
@@ -188,14 +190,16 @@ class TradingWrapper extends Component {
               return this.updateState({
                 ...this.state,
                 ...order,
-                orderEthEstimate: ""
+                orderEthEstimate: "",
+                orderEscrowdEth: ""
               });
             }
 
             this.updateState({
               ...this.state,
               ...order,
-              orderEthEstimate: newOrder.totalCost.formattedValue.toString(),
+              orderEthEstimate: newOrder.totalOrderValue.formattedValue.toString(),
+              orderEscrowdEth: newOrder.potentialEthLoss.formattedValue,
               trade: newOrder
             });
           }
@@ -209,7 +213,8 @@ class TradingWrapper extends Component {
     this.updateState(
       {
         ...order,
-        orderQuantity: ""
+        orderQuantity: "",
+        orderEscrowdEth: ""
       },
       () =>
         updateTradeShares(
@@ -229,6 +234,7 @@ class TradingWrapper extends Component {
                 ...this.state,
                 ...order,
                 orderQuantity: numShares,
+                orderEscrowdEth: newOrder.potentialEthLoss.formattedValue,
                 trade: newOrder
               },
               () => {
@@ -260,6 +266,7 @@ class TradingWrapper extends Component {
       orderPrice,
       orderQuantity,
       orderEthEstimate,
+      orderEscrowdEth,
       doNotCreateOrders
     } = s;
 
@@ -347,6 +354,7 @@ class TradingWrapper extends Component {
                 orderPrice={orderPrice}
                 orderQuantity={orderQuantity}
                 orderEthEstimate={orderEthEstimate}
+                orderEscrowdEth={orderEscrowdEth}
                 doNotCreateOrders={doNotCreateOrders}
                 selectedOutcome={selectedOutcome}
                 updateState={this.updateState}

@@ -109,6 +109,7 @@ export function updateTradeShares({
     if (side === BUY) {
       newShares = createBigNumber(maxCost).dividedBy(scaledPrice);
     }
+    /*
     const marketPosition = accountPositions[marketId];
     if (marketPosition && marketPosition[outcomeId]) {
       // How many shares user can buy with totalCost/maxCost amount
@@ -123,6 +124,7 @@ export function updateTradeShares({
         newShares = newShares.plus(netPosition);
       }
     }
+    */
     newTradeDetails.numShares = newShares.abs().toFixed(9);
     const outcome = outcomesData[marketId][outcomeId];
 

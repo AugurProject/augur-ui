@@ -29,6 +29,7 @@ class TradingForm extends Component {
     orderQuantity: PropTypes.string.isRequired,
     orderPrice: PropTypes.string.isRequired,
     orderEthEstimate: PropTypes.string.isRequired,
+    orderEscrowdEth: PropTypes.string.isRequired,
     selectedNav: PropTypes.string.isRequired,
     selectedOutcome: PropTypes.object.isRequired,
     updateState: PropTypes.func.isRequired,
@@ -73,7 +74,8 @@ class TradingForm extends Component {
     };
     this.state = {
       ...startState,
-      isOrderValid: this.orderValidation(startState).isOrderValid
+      isOrderValid: this.orderValidation(startState).isOrderValid,
+      lastInputModified: null
     };
     this.changeOutcomeDropdown = this.changeOutcomeDropdown.bind(this);
     this.updateTestProperty = this.updateTestProperty.bind(this);
@@ -356,19 +358,24 @@ class TradingForm extends Component {
               validationResults.isOrderValid
             ) {
               if (
-                order[this.INPUT_TYPES.EST_ETH] &&
-                order[this.INPUT_TYPES.PRICE] &&
-                order[this.INPUT_TYPES.EST_ETH] !== "0"
-              ) {
-                updateTradeNumShares(order);
-              } else if (
                 order[this.INPUT_TYPES.QUANTITY] &&
                 order[this.INPUT_TYPES.PRICE] &&
-                order[this.INPUT_TYPES.QUANTITY] !== "0"
+                order[this.INPUT_TYPES.QUANTITY] !== "0" &&
+                this.state.lastInputModified !== this.INPUT_TYPES.EST_ETH
               ) {
                 updateTradeTotalCost(order);
+              } else if (
+                order[this.INPUT_TYPES.EST_ETH] &&
+                order[this.INPUT_TYPES.PRICE] &&
+                order[this.INPUT_TYPES.EST_ETH] !== "0" &&
+                this.state.lastInputModified !== this.INPUT_TYPES.QUANTITY
+              ) {
+                updateTradeNumShares(order);
               }
             }
+            this.setState({
+              lastInputModified: [property]
+            });
           }
         );
       }
@@ -413,7 +420,8 @@ class TradingForm extends Component {
       updateState,
       showSelectOutcome,
       isMobile,
-      updateNewOrderProperties
+      updateNewOrderProperties,
+      orderEscrowdEth
     } = this.props;
     const s = this.state;
 
@@ -587,9 +595,9 @@ class TradingForm extends Component {
                 ETH
               </span>
             </div>
-            <label className={Styles.smallLabel}>
-              (Max cost of ETH will be escrowed)
-            </label>
+            <label
+              className={Styles.smallLabel}
+            >{`(Max cost of ${orderEscrowdEth} ETH will be escrowed)`}</label>
           </li>
           <li>
             <Checkbox

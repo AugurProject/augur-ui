@@ -35,7 +35,9 @@ const MarketTradingConfirm = ({
     totalCost,
     shareCost,
     side,
-    tradingFees
+    tradingFees,
+    orderShareProfit,
+    orderShareTradingFee
   } = trade;
   const outcomeName = marketType === SCALAR ? limitPrice : selectedOutcome.name;
   const higherLower = side === BUY ? "higher" : "lower";
@@ -92,8 +94,11 @@ const MarketTradingConfirm = ({
     };
   }
 
-  const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
-  if (negativeProfit) {
+  const negativeShareProfit =
+    orderShareProfit && createBigNumber(orderShareProfit.value).lte(0);
+  const negativeProfit =
+    totalCost.value > 0 && potentialEthProfit && potentialEthProfit.value <= 0;
+  if (negativeProfit || negativeShareProfit) {
     errorMessage = {
       header: "Not Profitable",
       message: `This trade will likely be unprofitable, check your calculations`
@@ -137,7 +142,7 @@ const MarketTradingConfirm = ({
                 <div>
                   <div>Estimated Fee</div>
                   <div className={Styles.TradingConfirm__property__value}>
-                    {tradingFees.formatted}
+                    {orderShareTradingFee && orderShareTradingFee.formatted}
                     <span>ETH</span>
                   </div>
                 </div>
@@ -145,7 +150,7 @@ const MarketTradingConfirm = ({
                 <div>
                   <div>Profit</div>
                   <div className={Styles.TradingConfirm__property__value}>
-                    {potentialEthProfit && potentialEthProfit.formatted}
+                    {orderShareProfit && orderShareProfit.formatted}
                     <span>ETH</span>
                   </div>
                 </div>

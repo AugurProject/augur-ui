@@ -1,7 +1,11 @@
 import { createBigNumber } from "utils/create-big-number";
 import memoize from "memoizee";
 import { formatPercent, formatShares, formatEther } from "utils/format-number";
-import calcOrderProfitLossPercents from "modules/trades/helpers/calc-order-profit-loss-percents";
+import {
+  calcOrderProfitLossPercents,
+  calcOrderShareProfitLoss,
+  calculateTotalOrderValue
+} from "modules/trades/helpers/calc-order-profit-loss-percents";
 import { augur } from "services/augurjs";
 import { calculateMaxPossibleShares } from "modules/markets/helpers/calculate-max-possible-shares";
 import { BIDS, ASKS } from "modules/orders/constants/orders";
@@ -49,23 +53,42 @@ export const generateTrade = memoize(
     const marketType = (market && market.marketType) || null;
     const minPrice = createBigNumber(market.minPrice);
     const maxPrice = createBigNumber(market.maxPrice);
-    const adjustedTotalCost = totalCost.gt("0")
-      ? totalCost
-          .minus(totalFee)
-          .abs()
-          .toFixed()
-      : null;
+
+    const orderShareProfitLoss =
+      shareCost !== "0"
+        ? calcOrderShareProfitLoss(
+            limitPrice,
+            side,
+            minPrice,
+            maxPrice,
+            marketType,
+            shareCost,
+            sharesFilledAvgPrice,
+            settlementFee
+          )
+        : null;
+
     const preOrderProfitLoss = calcOrderProfitLossPercents(
-      numShares,
+      shareCost !== "0" && numShares
+        ? createBigNumber(numShares)
+            .minus(shareCost)
+            .toFixed(9)
+        : numShares,
       limitPrice,
       side,
       minPrice,
       maxPrice,
       marketType,
-      shareCost,
-      sharesFilledAvgPrice,
-      adjustedTotalCost,
       settlementFee
+    );
+
+    const totalOrderValue = calculateTotalOrderValue(
+      numShares,
+      limitPrice,
+      side,
+      minPrice,
+      maxPrice,
+      marketType
     );
 
     let maxNumShares;
@@ -100,7 +123,13 @@ export const generateTrade = memoize(
       limitPrice,
       maxNumShares,
       sharesFilled,
-
+      totalOrderValue: totalOrderValue ? formatEther(totalOrderValue) : null,
+      orderShareProfit: orderShareProfitLoss
+        ? formatEther(orderShareProfitLoss.potentialEthProfit)
+        : null,
+      orderShareTradingFee: orderShareProfitLoss
+        ? formatEther(orderShareProfitLoss.tradingFees)
+        : null,
       potentialEthProfit: preOrderProfitLoss
         ? formatEther(preOrderProfitLoss.potentialEthProfit)
         : null,
