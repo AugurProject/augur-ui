@@ -7,13 +7,9 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-height: 9rem;
-  transition: all 0.2s ease;
 }
 
 .MarketHeader__container__collapsed {
-  max-height: 6.25rem;
-  min-height: 4.5rem;
   position: relative;
 }
 
@@ -240,6 +236,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  min-height: fit-content;
 }
 
 .MarketHeader__resolution-source--empty_details {
@@ -260,8 +257,8 @@
 .MarketHeader__watchlist__disabled,
 .MarketHeader__watchlist {
   background: @color-very-dark-purple;
-  border-radius: 3px;
   border: 2px solid @color-dark-gray;
+  border-radius: 3px;
   box-sizing: border-box;
   color: @color-white;
   min-height: 38px;
