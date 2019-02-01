@@ -66,6 +66,7 @@ export default class MarketHeader extends Component {
 
     this.toggleReadMore = this.toggleReadMore.bind(this);
     this.updateDetailsHeight = this.updateDetailsHeight.bind(this);
+    this.toggleMarketHeader = this.toggleMarketHeader.bind(this);
   }
 
   componentDidMount() {
@@ -89,6 +90,17 @@ export default class MarketHeader extends Component {
       this.detailsContainer.scrollTop = 0;
     }
     this.setState({ showReadMore: !this.state.showReadMore });
+  }
+
+  toggleMarketHeader(headerCollapsed, currentHeight) {
+    setTimeout(
+      () =>
+        this.setState({
+          headerCollapsed,
+          marketHeaderHeight: currentHeight
+        }),
+      100
+    );
   }
 
   addToFavorites() {
@@ -288,10 +300,7 @@ export default class MarketHeader extends Component {
               headerCollapsed,
               marketHeaderHeight
             );
-            this.setState({
-              headerCollapsed: !headerCollapsed,
-              marketHeaderHeight: currentHeight
-            });
+            this.toggleMarketHeader(!headerCollapsed, currentHeight);
           }}
         >
           <ChevronFlip pointDown={headerCollapsed} />
