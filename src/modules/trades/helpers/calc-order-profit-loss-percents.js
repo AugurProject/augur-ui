@@ -67,8 +67,8 @@ export const calcOrderProfitLossPercents = (
     .dividedBy(maxTotalTradeCostNoFee)
     .times(100);
 
-  const longETHpotentialProfit = longETH.minus(winningSettlementCost);
-  const shortETHpotentialProfit = shortETH.minus(winningSettlementCost);
+  const longETHpotentialProfit = longETH;
+  const shortETHpotentialProfit = shortETH;
   const totalETHValueWinnable = side === BUY ? longETH : shortETH;
 
   const longETHPercentProfit = longETHpotentialProfit

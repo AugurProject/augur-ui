@@ -52,9 +52,9 @@ describe("modules/trades/helpers/calc-order-profit-loss-percents.js", () => {
     const actual = calcProfits("10", "0.4", BUY, "0", "1", YES_NO, "0.02");
 
     const expected = {
-      potentialEthProfit: createBigNumber("5.8"),
-      potentialEthLoss: createBigNumber("3.8"),
-      potentialProfitPercent: createBigNumber("145"),
+      potentialEthProfit: createBigNumber("6"),
+      potentialEthLoss: createBigNumber("4"),
+      potentialProfitPercent: createBigNumber("150"),
       potentialLossPercent: createBigNumber("100"),
       tradingFees: createBigNumber("0.2")
     };
@@ -66,9 +66,9 @@ describe("modules/trades/helpers/calc-order-profit-loss-percents.js", () => {
     const actual = calcProfits("10", "0.4", SELL, "0", "1", YES_NO, "0.04");
 
     const expected = {
-      potentialEthProfit: createBigNumber("3.6"),
-      potentialEthLoss: createBigNumber("5.6"),
-      potentialProfitPercent: createBigNumber("60"),
+      potentialEthProfit: createBigNumber("4"),
+      potentialEthLoss: createBigNumber("6"),
+      potentialProfitPercent: createBigNumber("66.666666666666666667"),
       potentialLossPercent: createBigNumber("100"),
       tradingFees: createBigNumber("0.4")
     };
@@ -80,9 +80,9 @@ describe("modules/trades/helpers/calc-order-profit-loss-percents.js", () => {
     const actual = calcProfits("10", "1", BUY, "-5", "10", SCALAR, "0.25");
 
     const expected = {
-      potentialEthProfit: createBigNumber("52.5"),
-      potentialEthLoss: createBigNumber("22.5"),
-      potentialProfitPercent: createBigNumber("87.5"),
+      potentialEthProfit: createBigNumber("90"),
+      potentialEthLoss: createBigNumber("60"),
+      potentialProfitPercent: createBigNumber("150"),
       potentialLossPercent: createBigNumber("100"),
       tradingFees: createBigNumber("37.5")
     };
@@ -94,9 +94,9 @@ describe("modules/trades/helpers/calc-order-profit-loss-percents.js", () => {
     const actual = calcProfits("10", "1", SELL, "-5", "10", SCALAR, "0.2");
 
     const expected = {
-      potentialEthProfit: createBigNumber("30"),
-      potentialEthLoss: createBigNumber("60"),
-      potentialProfitPercent: createBigNumber("33.333333333333333333"),
+      potentialEthProfit: createBigNumber("60"),
+      potentialEthLoss: createBigNumber("90"),
+      potentialProfitPercent: createBigNumber("66.666666666666666667"),
       potentialLossPercent: createBigNumber("100"),
       tradingFees: createBigNumber("30")
     };

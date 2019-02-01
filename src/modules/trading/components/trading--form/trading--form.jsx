@@ -116,7 +116,12 @@ class TradingForm extends Component {
             null,
             nextProps
           );
-          this.setState({ ...newOrderInfo, errors, isOrderValid, errorCount });
+          this.setState({
+            ...newOrderInfo,
+            errors,
+            isOrderValid,
+            errorCount
+          });
         }
       );
     }
@@ -373,9 +378,11 @@ class TradingForm extends Component {
                 updateTradeNumShares(order);
               }
             }
-            this.setState({
-              lastInputModified: [property]
-            });
+            if (property !== this.INPUT_TYPES.PRICE) {
+              this.setState({
+                lastInputModified: property
+              });
+            }
           }
         );
       }

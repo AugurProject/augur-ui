@@ -199,7 +199,7 @@ class TradingWrapper extends Component {
               ...this.state,
               ...order,
               orderEthEstimate: newOrder.totalOrderValue.formattedValue.toString(),
-              orderEscrowdEth: newOrder.potentialEthLoss.formattedValue,
+              orderEscrowdEth: newOrder.potentialEthLoss.formatted,
               trade: newOrder
             });
           }
@@ -234,7 +234,7 @@ class TradingWrapper extends Component {
                 ...this.state,
                 ...order,
                 orderQuantity: numShares,
-                orderEscrowdEth: newOrder.potentialEthLoss.formattedValue,
+                orderEscrowdEth: newOrder.potentialEthLoss.formatted,
                 trade: newOrder
               },
               () => {
