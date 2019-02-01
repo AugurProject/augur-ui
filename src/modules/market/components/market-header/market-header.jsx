@@ -22,8 +22,10 @@ import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
 
-const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
+const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
+const MIN_COLLAPSED_MARKET_HEADER = 80;
 export default class MarketHeader extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
@@ -60,8 +62,7 @@ export default class MarketHeader extends Component {
     this.state = {
       showReadMore: false,
       detailsHeight: 0,
-      headerCollapsed: false,
-      marketHeaderHeight: 310
+      headerCollapsed: false
     };
 
     this.toggleReadMore = this.toggleReadMore.bind(this);
@@ -80,8 +81,7 @@ export default class MarketHeader extends Component {
   updateDetailsHeight() {
     if (this.detailsContainer)
       this.setState({
-        detailsHeight: this.detailsContainer.scrollHeight,
-        marketHeaderHeight: this.marketHeaderContainer.scrollHeight
+        detailsHeight: this.detailsContainer.scrollHeight
       });
   }
 
@@ -93,14 +93,9 @@ export default class MarketHeader extends Component {
   }
 
   toggleMarketHeader(headerCollapsed, currentHeight) {
-    setTimeout(
-      () =>
-        this.setState({
-          headerCollapsed,
-          marketHeaderHeight: currentHeight
-        }),
-      100
-    );
+    this.setState({
+      headerCollapsed
+    });
   }
 
   addToFavorites() {
@@ -124,7 +119,7 @@ export default class MarketHeader extends Component {
       history
     } = this.props;
     let { details } = this.props;
-    const { headerCollapsed, marketHeaderHeight } = this.state;
+    const { headerCollapsed } = this.state;
 
     const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
     const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
@@ -147,9 +142,15 @@ export default class MarketHeader extends Component {
         ref={marketHeaderContainer => {
           this.marketHeaderContainer = marketHeaderContainer;
         }}
-        className={classNames(Styles.MarketHeader, {
-          [Styles.MarketHeader__container__collapsed]: headerCollapsed
-        })}
+        className={classNames(
+          Styles.MarketHeader,
+          ToggleHeightStyles["toggle-height-target"],
+          ToggleHeightStyles["start-open"],
+          ToggleHeightStyles["toggle-height-target-quick"],
+          {
+            [Styles.MarketHeader__container__collapsed]: headerCollapsed
+          }
+        )}
       >
         <button
           className={Styles[`MarketHeader__back-button`]}
@@ -297,13 +298,16 @@ export default class MarketHeader extends Component {
             [Styles.MarketHeader__button__collapsed]: headerCollapsed
           })}
           onClick={() => {
-            const currentHeight = this.marketHeaderContainer.scrollHeight;
             toggleHeight(
               this.marketHeaderContainer,
-              headerCollapsed,
-              marketHeaderHeight
+              !headerCollapsed,
+              MIN_COLLAPSED_MARKET_HEADER,
+              () => {
+                setTimeout(() => {
+                  this.toggleMarketHeader(!headerCollapsed);
+                }, 200);
+              }
             );
-            this.toggleMarketHeader(!headerCollapsed, currentHeight);
           }}
         >
           <ChevronFlip pointDown={headerCollapsed} hover />
