@@ -95,13 +95,11 @@ export default class MarketHeader extends Component {
   toggleMarketHeader() {
     if (this.state.headerCollapsed) {
       this.setState({ headerCollapsed: !this.state.headerCollapsed }, () => {
-        setTimeout(() => {
-          toggleHeight(
-            this.marketHeaderContainer,
-            this.state.headerCollapsed,
-            MIN_COLLAPSED_MARKET_HEADER
-          );
-        }, 200);
+        toggleHeight(
+          this.marketHeaderContainer,
+          this.state.headerCollapsed,
+          MIN_COLLAPSED_MARKET_HEADER
+        );
       });
     } else {
       toggleHeight(
