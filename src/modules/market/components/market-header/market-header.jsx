@@ -303,7 +303,7 @@ export default class MarketHeader extends Component {
             this.toggleMarketHeader(!headerCollapsed, currentHeight);
           }}
         >
-          <ChevronFlip pointDown={headerCollapsed} />
+          <ChevronFlip pointDown={headerCollapsed} hover />
         </button>
       </section>
     );

@@ -19,4 +19,18 @@
   &.quick {
     transition: transform 0.2s ease-in-out;
   }
+
+  &.hover {
+    &:hover {
+      > g {
+        > g {
+          stroke: @color-white;
+        }
+      }
+
+      > path {
+        stroke: @color-white;
+      }
+    }
+  }
 }

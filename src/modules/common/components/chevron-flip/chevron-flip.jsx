@@ -14,7 +14,8 @@ const ChevronFlip = ({
   pointDown,
   big,
   quick,
-  stroke
+  stroke,
+  hover
 }) => (
   <span>
     {filledInIcon
@@ -22,7 +23,8 @@ const ChevronFlip = ({
           classNames(Styles.ChevronFlip, className, {
             [Styles.pointDown]: pointDown,
             [Styles.big]: big,
-            [Styles.quick]: quick
+            [Styles.quick]: quick,
+            [Styles.hover]: hover
           }),
           stroke
         )
@@ -30,7 +32,8 @@ const ChevronFlip = ({
           classNames(Styles.ChevronFlip, className, {
             [Styles.pointDown]: pointDown,
             [Styles.big]: big,
-            [Styles.quick]: quick
+            [Styles.quick]: quick,
+            [Styles.hover]: hover
           }),
           stroke
         )}
@@ -43,7 +46,8 @@ ChevronFlip.propTypes = {
   stroke: PropTypes.string,
   big: PropTypes.bool,
   filledInIcon: PropTypes.bool,
-  quick: PropTypes.bool
+  quick: PropTypes.bool,
+  hover: PropTypes.bool
 };
 
 ChevronFlip.defaultProps = {
@@ -52,7 +56,8 @@ ChevronFlip.defaultProps = {
   stroke: undefined,
   big: undefined,
   filledInIcon: undefined,
-  quick: false
+  quick: false,
+  hover: false
 };
 
 export default ChevronFlip;
