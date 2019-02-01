@@ -100,7 +100,7 @@ const MarketTradingConfirm = ({
   if (negativeProfit || negativeShareProfit) {
     errorMessage = {
       header: "Not Profitable",
-      message: `This trade will likely be unprofitable, check your calculations`
+      message: `This trade will likely be unprofitable.`
     };
   }
   let newOrderAmount = "0";
