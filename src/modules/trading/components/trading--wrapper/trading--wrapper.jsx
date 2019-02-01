@@ -119,27 +119,36 @@ class TradingWrapper extends Component {
     const trade = TradingWrapper.getDefaultTrade(this.props);
 
     if (wholeForm) {
-      this.updateState({
-        orderPrice: "",
-        orderQuantity: "",
-        orderEthEstimate: "",
-        orderEscrowdEth: "",
-        doNotCreateOrders: false,
-        selectedNav: this.state.selectedNav,
-        trade
-      });
+      this.updateState(
+        {
+          orderPrice: "",
+          orderQuantity: "",
+          orderEthEstimate: "",
+          orderEscrowdEth: "",
+          doNotCreateOrders: false,
+          selectedNav: this.state.selectedNav,
+          trade
+        },
+        () => {
+          this.updateParentOrderValues();
+        }
+      );
     } else {
       this.updateState(
         {
           trade
         },
         () => {
-          this.props.updateSelectedOrderProperties({
-            ...pick(this.state, keys(this.props.selectedOrderProperties))
-          });
+          this.updateParentOrderValues();
         }
       );
     }
+  }
+
+  updateParentOrderValues() {
+    this.props.updateSelectedOrderProperties({
+      ...pick(this.state, keys(this.props.selectedOrderProperties))
+    });
   }
 
   updateNewOrderProperties(selectedOrderProperties) {
@@ -151,9 +160,7 @@ class TradingWrapper extends Component {
       ...property
     };
     this.updateState(values, () => {
-      this.props.updateSelectedOrderProperties({
-        ...pick(this.state, keys(this.props.selectedOrderProperties))
-      });
+      this.updateParentOrderValues();
       if (callback) callback();
     });
   }
@@ -238,9 +245,7 @@ class TradingWrapper extends Component {
                 trade: newOrder
               },
               () => {
-                this.props.updateSelectedOrderProperties({
-                  ...pick(this.state, keys(this.props.selectedOrderProperties))
-                });
+                this.updateParentOrderValues();
               }
             );
           }
