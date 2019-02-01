@@ -60,8 +60,7 @@ export default class MarketHeader extends Component {
     this.state = {
       showReadMore: false,
       detailsHeight: 0,
-      headerCollapsed: false,
-      marketHeaderHeight: 310
+      headerCollapsed: false
     };
 
     this.toggleReadMore = this.toggleReadMore.bind(this);
@@ -80,8 +79,7 @@ export default class MarketHeader extends Component {
   updateDetailsHeight() {
     if (this.detailsContainer)
       this.setState({
-        detailsHeight: this.detailsContainer.scrollHeight,
-        marketHeaderHeight: this.marketHeaderContainer.scrollHeight
+        detailsHeight: this.detailsContainer.scrollHeight
       });
   }
 
@@ -92,15 +90,10 @@ export default class MarketHeader extends Component {
     this.setState({ showReadMore: !this.state.showReadMore });
   }
 
-  toggleMarketHeader(headerCollapsed, currentHeight) {
-    setTimeout(
-      () =>
-        this.setState({
-          headerCollapsed,
-          marketHeaderHeight: currentHeight
-        }),
-      100
-    );
+  toggleMarketHeader(headerCollapsed) {
+    this.setState({
+      headerCollapsed
+    });
   }
 
   addToFavorites() {
@@ -124,7 +117,7 @@ export default class MarketHeader extends Component {
       history
     } = this.props;
     let { details } = this.props;
-    const { headerCollapsed, marketHeaderHeight } = this.state;
+    const { headerCollapsed } = this.state;
 
     const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
     const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
@@ -294,9 +287,8 @@ export default class MarketHeader extends Component {
         )}
         <button
           onClick={() => {
-            const currentHeight = this.marketHeaderContainer.scrollHeight;
             toggleHeight(this.marketHeaderContainer, headerCollapsed);
-            this.toggleMarketHeader(!headerCollapsed, currentHeight);
+            this.toggleMarketHeader(!headerCollapsed);
           }}
         >
           <ChevronFlip pointDown={headerCollapsed} />
