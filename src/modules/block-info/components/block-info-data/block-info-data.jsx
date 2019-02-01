@@ -49,7 +49,7 @@ export default class BlockInfoData extends Component {
   }
 
   toggleDropdown(cb) {
-    toggleHeight(this.blockInfoDropdown, this.state.dropdownOpen, () => {
+    toggleHeight(this.blockInfoDropdown, this.state.dropdownOpen, 0, () => {
       this.setState({ dropdownOpen: !this.state.dropdownOpen });
 
       if (cb && typeof cb === "function") cb();

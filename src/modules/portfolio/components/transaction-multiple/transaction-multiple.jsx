@@ -38,7 +38,7 @@ export default class TransactionMultiple extends Component {
         <button
           className={CommonStyles["Transaction__linked-more"]}
           onClick={() => {
-            toggleHeight(this.multipleTransactions, s.isOpen, () => {
+            toggleHeight(this.multipleTransactions, s.isOpen, 0, () => {
               this.setState({ isOpen: !s.isOpen });
             });
           }}

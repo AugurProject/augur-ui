@@ -64,7 +64,7 @@ export default class MarketPreview extends Component {
   }
 
   toggleDetails() {
-    toggleHeight(this.additionalDetails, this.state.showingDetails, () => {
+    toggleHeight(this.additionalDetails, this.state.showingDetails, 0, () => {
       this.setState({ showingDetails: !this.state.showingDetails });
     });
   }

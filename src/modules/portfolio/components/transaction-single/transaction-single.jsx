@@ -32,7 +32,7 @@ export default class TransactionSingle extends Component {
         <button
           className={CommonStyles.Transaction__body}
           onClick={() => {
-            toggleHeight(this.singleTransactionMeta, s.isOpen, () => {
+            toggleHeight(this.singleTransactionMeta, s.isOpen, 0, () => {
               this.setState({ isOpen: !s.isOpen });
             });
           }}

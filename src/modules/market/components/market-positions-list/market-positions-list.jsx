@@ -78,8 +78,8 @@ export default class MarketPositionsList extends Component {
         <button
           className={Styles.MarketPositionsList__heading}
           onClick={() => {
-            toggleHeight(this.outcomeList, s.isOpen, () => {
-              toggleHeight(this.outcomeList2, s.isOpen, () => {
+            toggleHeight(this.outcomeList, s.isOpen, 0, () => {
+              toggleHeight(this.outcomeList2, s.isOpen, 0, () => {
                 this.setState({ isOpen: !s.isOpen });
               });
             });

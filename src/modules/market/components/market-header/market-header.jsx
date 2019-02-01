@@ -295,7 +295,11 @@ export default class MarketHeader extends Component {
         <button
           onClick={() => {
             const currentHeight = this.marketHeaderContainer.scrollHeight;
-            toggleHeight(this.marketHeaderContainer, headerCollapsed);
+            toggleHeight(
+              this.marketHeaderContainer,
+              headerCollapsed,
+              marketHeaderHeight
+            );
             this.toggleMarketHeader(!headerCollapsed, currentHeight);
           }}
         >
