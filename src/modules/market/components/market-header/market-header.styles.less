@@ -7,14 +7,9 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  max-height: 60rem;
-  min-height: 9rem;
-  transition: all 0.2s ease;
 }
 
 .MarketHeader__container__collapsed {
-  max-height: 6.25rem;
-  min-height: 4.5rem;
   position: relative;
 }
 
@@ -231,6 +226,7 @@
   display: flex;
   flex: 1;
   margin-left: 3rem;
+  min-height: fit-content;
   min-width: 370px;
   padding-left: 0.5rem;
 }
@@ -240,6 +236,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  min-height: fit-content;
 }
 
 .MarketHeader__resolution-source--empty_details {
@@ -264,6 +261,7 @@
   border-radius: 3px;
   box-sizing: border-box;
   color: @color-white;
+  min-height: 38px;
   padding: 0.5rem 0;
 
   svg {

@@ -92,10 +92,27 @@ export default class MarketHeader extends Component {
     this.setState({ showReadMore: !this.state.showReadMore });
   }
 
-  toggleMarketHeader(headerCollapsed, currentHeight) {
-    this.setState({
-      headerCollapsed
-    });
+  toggleMarketHeader() {
+    if (this.state.headerCollapsed) {
+      this.setState({ headerCollapsed: !this.state.headerCollapsed }, () => {
+        toggleHeight(
+          this.marketHeaderContainer,
+          this.state.headerCollapsed,
+          MIN_COLLAPSED_MARKET_HEADER
+        );
+      });
+    } else {
+      toggleHeight(
+        this.marketHeaderContainer,
+        !this.state.headerCollapsed,
+        MIN_COLLAPSED_MARKET_HEADER,
+        () => {
+          setTimeout(() => {
+            this.setState({ headerCollapsed: !this.state.headerCollapsed });
+          }, 200);
+        }
+      );
+    }
   }
 
   addToFavorites() {
@@ -297,18 +314,7 @@ export default class MarketHeader extends Component {
           className={classNames({
             [Styles.MarketHeader__button__collapsed]: headerCollapsed
           })}
-          onClick={() => {
-            toggleHeight(
-              this.marketHeaderContainer,
-              !headerCollapsed,
-              MIN_COLLAPSED_MARKET_HEADER,
-              () => {
-                setTimeout(() => {
-                  this.toggleMarketHeader(!headerCollapsed);
-                }, 200);
-              }
-            );
-          }}
+          onClick={() => this.toggleMarketHeader()}
         >
           <ChevronFlip pointDown={headerCollapsed} hover />
         </button>
