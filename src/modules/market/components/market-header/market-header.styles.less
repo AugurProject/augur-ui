@@ -7,7 +7,6 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  max-height: 1000px;
   min-height: 310px;
   transition: all .2s ease;
 }
@@ -224,6 +223,7 @@
   display: flex;
   flex: 1;
   margin-left: 3rem;
+  min-height: 279px;
   min-width: 370px;
   padding-left: 0.5rem;
 }
@@ -253,10 +253,11 @@
 .MarketHeader__watchlist__disabled,
 .MarketHeader__watchlist {
   background: @color-very-dark-purple;
-  border: 2px solid @color-dark-gray;
   border-radius: 3px;
+  border: 2px solid @color-dark-gray;
   box-sizing: border-box;
   color: @color-white;
+  min-height: 38px;
   padding: 0.5rem 0;
 
   svg {

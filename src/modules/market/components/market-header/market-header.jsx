@@ -302,9 +302,9 @@ export default class MarketHeader extends Component {
               this.marketHeaderContainer,
               !headerCollapsed,
               100, () => {
-                setTimeout(() => {
+                //setTimeout(() => {
                   this.toggleMarketHeader(!headerCollapsed, currentHeight);
-                }, 200);
+                //}, 100);
               }
             );
           }}
