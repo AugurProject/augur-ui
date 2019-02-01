@@ -22,6 +22,8 @@ import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
 
+import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
+
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
 
 export default class MarketHeader extends Component {
@@ -93,14 +95,12 @@ export default class MarketHeader extends Component {
   }
 
   toggleMarketHeader(headerCollapsed, currentHeight) {
-    setTimeout(
-      () =>
+    // setTimeout(
+    //   () =>
         this.setState({
           headerCollapsed,
           marketHeaderHeight: currentHeight
-        }),
-      100
-    );
+        })
   }
 
   addToFavorites() {
@@ -147,7 +147,10 @@ export default class MarketHeader extends Component {
         ref={marketHeaderContainer => {
           this.marketHeaderContainer = marketHeaderContainer;
         }}
-        className={classNames(Styles.MarketHeader, {
+        className={classNames(Styles.MarketHeader, 
+          ToggleHeightStyles["toggle-height-target"],
+          ToggleHeightStyles["start-open"], 
+          ToggleHeightStyles["toggle-height-target-quick"], {
           [Styles.MarketHeader__container__collapsed]: headerCollapsed
         })}
       >
@@ -297,10 +300,13 @@ export default class MarketHeader extends Component {
             const currentHeight = this.marketHeaderContainer.scrollHeight;
             toggleHeight(
               this.marketHeaderContainer,
-              headerCollapsed,
-              marketHeaderHeight
+              !headerCollapsed,
+              100, () => {
+                setTimeout(() => {
+                  this.toggleMarketHeader(!headerCollapsed, currentHeight);
+                }, 200);
+              }
             );
-            this.toggleMarketHeader(!headerCollapsed, currentHeight);
           }}
         >
           <ChevronFlip pointDown={headerCollapsed} hover />
