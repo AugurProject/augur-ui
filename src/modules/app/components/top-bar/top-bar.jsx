@@ -45,34 +45,33 @@ const TopBar = props => (
           </label>
           <ReactTooltip
             id="tooltip--funds"
-            className={TooltipStyles.Tooltip}
+            className={classNames(
+              TooltipStyles.Tooltip,
+              Styles.TopBar__tooltip
+            )}
             effect="solid"
             place="bottom"
             type="light"
           >
-            <h4>
-              <u>Portfolio Balance</u>
-            </h4>
+            <h4>Portfolio Value</h4>
             <p>
-              <span
-                className={Styles["TopBar__stat-value-tooltip"]}
-                id="core-bar-eth-tooltip"
-              >
+              <span id="core-bar-eth-tooltip">
                 {props.stats[0].totalBalance.value.formatted}
               </span>
-              <span className={Styles["TopBar__stat-label-tooltip"]}>ETH</span>
+              <span className={Styles["TopBar__tooltip-denomination"]}>
+                {" "}
+                ETH
+              </span>
             </p>
-            <h4>
-              <u>Available Balance</u>
-            </h4>
+            <h4>Available Funds</h4>
             <p>
-              <span
-                className={Styles["TopBar__stat-value-tooltip"]}
-                id="core-bar-rep-tooltip"
-              >
+              <span id="core-bar-rep-tooltip">
                 {props.stats[0].totalRealEth.value.formatted}
               </span>
-              <span className={Styles["TopBar__stat-label-tooltip"]}>ETH</span>
+              <span className={Styles["TopBar__tooltip-denomination"]}>
+                {" "}
+                ETH
+              </span>
             </p>
           </ReactTooltip>
         </div>
