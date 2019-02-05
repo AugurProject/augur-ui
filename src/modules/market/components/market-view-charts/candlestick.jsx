@@ -8,8 +8,10 @@ import {
   clampPeriodByRange,
   defaultRangePeriodDurations
 } from "src/modules/markets/helpers/range";
-import MarketOutcomeCandlestick from "src/modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick";
+// import MarketOutcomeCandlestick from "src/modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick";
 import { BigNumber } from "bignumber.js";
+import Highcharts from "highcharts/highstock";
+import HighchartsReact from "highcharts-react-official";
 
 export class Candlestick extends React.Component {
   static propTypes = {
@@ -93,7 +95,24 @@ export class Candlestick extends React.Component {
   render() {
     const { maxPrice, minPrice, currentTimeInSeconds } = this.props;
     const { priceTimeSeries, selectedPeriod, selectedRange } = this.state;
+    const options = {
+      title: {
+        text: "My stock chart"
+      },
+      series: [
+        {
+          data: [1, 2, 3]
+        }
+      ]
+    };
+
     return (
+      <HighchartsReact
+        highcharts={Highcharts}
+        constructorType="stockChart"
+        options={options}
+      />
+      /*
       <MarketOutcomeCandlestick
         priceTimeSeries={priceTimeSeries}
         isMobile={false}
@@ -110,6 +129,7 @@ export class Candlestick extends React.Component {
         outcomeName="someanem"
         currentTimeInSeconds={currentTimeInSeconds}
       />
+      */
     );
   }
 }
