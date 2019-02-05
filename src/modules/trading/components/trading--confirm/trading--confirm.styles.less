@@ -5,6 +5,13 @@
   flex-direction: column;
   flex-grow: 1;
   padding-top: 1rem;
+  position: relative;
+}
+
+.TrandingConfirm__topBorder {
+  background: @color-grayish-purple;
+  height: 2px;
+  margin: 0 1rem;
 }
 
 .TradingConfirm__dotted__line {
@@ -22,7 +29,49 @@
   flex-direction: column;
   margin-left: 1rem;
   margin-right: 1rem;
-  padding-top: 0.125rem;
+  padding-top: 12px;
+
+  > svg {
+    > line {
+      stroke: fade(@color-white, 40%);
+    }
+  }
+}
+
+.TradingConfirm__position__details {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin-bottom: 0.1875rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  > div {
+    color: @color-light-gray;
+    font-size: @font-size-small;
+    white-space: nowrap;
+  }
+
+  > svg {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+
+    > line {
+      stroke: fade(@color-white, 40%);
+    }
+  }
+
+  > span {
+    color: @color-white;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12px;
+    font-weight: normal;
+  }
 }
 
 .TradingConfirm__position {
@@ -31,12 +80,12 @@
 }
 
 .TradingConfirm__position__properties {
-  color: @color-light-gray;
+  color: @color-white;
   display: flex;
   flex-direction: row;
-  font-size: @font-size-small;
-  padding: 0.25rem;
-  padding-bottom: 0;
+  font-size: @font-size-extra-small;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
 .TradingConfirm__position__tooltipContainer {
@@ -48,7 +97,6 @@
 .TradingConfirm__property__value {
   color: @color-white;
   font-size: @font-size-medium;
-  font-weight: bold;
 
   > span {
     color: @color-white;
@@ -60,13 +108,11 @@
 .TradingConfirm__agg_position {
   color: @color-white;
   font-size: @font-size-small;
-  padding-bottom: 0.5rem;
-
-  > span {
-    padding: 0.25rem;
-  }
+  padding-bottom: 0.1875rem;
 
   span:first-child {
+    margin-right: 0.1875rem;
+
     &.short {
       color: @color-negative2;
     }
@@ -74,16 +120,6 @@
     &.long {
       color: @color-positive;
     }
-  }
-
-  span:nth-child(2) {
-    font-size: @font-size-medium;
-    font-weight: bold;
-  }
-
-  span:nth-child(3) {
-    font-size: @font-size-medium;
-    font-weight: bold;
   }
 }
 
@@ -193,16 +229,19 @@
 }
 
 .TradingConfirm__error_message_container {
-  background: rgba(0, 234, 255, 0.2);
+  background: @color-darker-teal;
   border: 1px solid @color-bright-teal;
   border-radius: 3px;
+  bottom: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   font-size: @font-size-small;
+  left: 1rem;
   line-height: @font-size-medium;
-  margin: 0 1rem;
   padding: 0.75rem;
+  position: absolute;
+  right: 1rem;
 
   div:first-child {
     color: @color-bright-teal;
@@ -216,6 +255,15 @@
       vertical-align: middle;
       width: 1.75em;
     }
+
+    > button {
+      float: right;
+
+      > svg {
+        min-height: unset;
+        min-width: unset;
+      }
+    }
   }
 
   div:last-child {
@@ -224,10 +272,9 @@
 }
 
 .TradingConfirm__TooltipContainer {
-  left: 100%;
-  margin-left: 0.1rem;
+  margin-left: 0.5rem;
   position: absolute;
-  top: 2px;
+  top: -0.1875rem;
   width: 5rem;
 }
 
@@ -238,6 +285,7 @@ span.negative__profit > * {
 
 @media @breakpoint-mobile {
   .TradingConfirm {
+    margin-bottom: 80px;
     min-height: 200px;
   }
 

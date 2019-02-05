@@ -389,7 +389,13 @@ class TradingWrapper extends Component {
               scalarDenomination={market.scalarDenomination}
             />
           )}
-        <div className={Styles.TradingWrapper__actions}>
+        <div
+          className={classNames(Styles.TradingWrapper__actions, {
+            [Styles.TradingWrapper__fullActions]:
+              s.trade &&
+              (s.trade.shareCost.value !== 0 || s.trade.totalCost.value !== 0)
+          })}
+        >
           <button
             className={classNames(Styles["TradingWrapper__button--submit"], {
               [Styles.long]: selectedNav === BUY,

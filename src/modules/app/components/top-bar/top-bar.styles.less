@@ -147,6 +147,33 @@ div.TopBar__notificationsDisabled {
   margin-left: 0.25rem;
 }
 
+div.TopBar__tooltip {
+  padding: 0.75rem 0.75rem 0.5rem !important;
+
+  &::before {
+    margin-left: -0.5625rem !important;
+  }
+
+  > h4 {
+    color: @color-light-gray;
+    font-size: @font-size-extra-small;
+    font-weight: normal;
+    line-height: normal;
+    margin-bottom: 0.125rem;
+  }
+
+  > p {
+    color: @color-white;
+    font-size: @font-size-small;
+    line-height: normal;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.TopBar__tooltip-denomination {
+  font-size: @font-size-smallest;
+}
+
 @media @breakpoint-mobile {
   .TopBar__notifications {
     display: none;

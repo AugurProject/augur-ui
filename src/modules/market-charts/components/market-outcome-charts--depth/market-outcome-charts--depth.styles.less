@@ -30,10 +30,10 @@
   background: @color-light-purple;
   cursor: cell;
   flex: 1;
-  min-height: 300px;
+  min-height: @charts-min-height;
 
   @media @breakpoint-mobile {
-    min-height: 300px;
+    min-height: @charts-min-height;
   }
 
   :global {
@@ -53,7 +53,7 @@
 
     .hovered_tooltip_div.flip {
       border-left-width: 2px;
-      border-radius: 0 0.5rem 0.5rem 0;
+      border-radius: 0 0.125rem 0.125rem 0;
       border-right-width: 1px;
     }
 

@@ -18,6 +18,7 @@ import { ExclamationCircle } from "modules/common/components/icons";
 import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
+import { DashlineLong } from "modules/common/components/dashline/dashline";
 
 class TradingForm extends Component {
   static propTypes = {
@@ -466,6 +467,9 @@ class TradingForm extends Component {
             <div className={Styles.TradingForm__outcome__container}>
               <div className={Styles.TradingForm__outcome__container__yes}>
                 Yes
+                <span>
+                  <DashlineLong />
+                </span>
               </div>
             </div>
           )}
@@ -604,7 +608,7 @@ class TradingForm extends Component {
             </div>
             <label
               className={Styles.smallLabel}
-            >{`(Max cost of ${orderEscrowdEth} ETH will be escrowed)`}</label>
+            >{` Max cost of ${orderEscrowdEth} ETH will be escrowed`}</label>
           </li>
           <li>
             <Checkbox
