@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { augur } from "services/augurjs";
 import classNames from "classnames";
 import { BUY, SELL } from "modules/transactions/constants/types";
-import { SCALAR } from "modules/markets/constants/market-types";
+import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
@@ -155,8 +155,10 @@ class MarketTradingConfirm extends Component {
     const { errorMessage } = this.state;
 
     const outcomeName =
-      marketType === SCALAR ? limitPrice : selectedOutcome.name;
+      marketType === YES_NO ? "this event" : selectedOutcome.name;
+    const greaterLess = side === BUY ? "greater" : "less";
     const higherLower = side === BUY ? "higher" : "lower";
+
     const marketRange = maxPrice.minus(minPrice).abs();
 
     const limitPricePercentage = (side === BUY
@@ -167,10 +169,10 @@ class MarketTradingConfirm extends Component {
       .times(100)
       .toFixed(0);
 
-    let tooltip = `This means you believe ${outcomeName} has a ${higherLower}
-                        than ${limitPricePercentage}% chance of happening.`;
+    let tooltip = `You believe ${outcomeName} has a ${greaterLess}
+                        than ${limitPricePercentage}% chance to occur.`;
     if (marketType === SCALAR) {
-      tooltip = `This means you believe the result will be ${higherLower}
+      tooltip = `You believe the outcome of this event will be ${higherLower}
     than ${limitPrice} ${scalarDenomination}`;
     }
 
