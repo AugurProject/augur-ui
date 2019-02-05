@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Styles from "modules/common/components/checkbox/checkbox.styles";
 
-const Checkbox = ({ id, isChecked, value, onClick, disabled }) => (
+const Checkbox = ({ id, small, isChecked, value, onClick, disabled }) => (
   <div className={Styles.Checkbox}>
     <input
       id={id}
