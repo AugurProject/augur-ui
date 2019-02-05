@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { twoArrows } from "modules/common/components/icons";
+import { DashlineLong } from "modules/common/components/dashline/dashline";
+
 import Styles from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown.styles";
 
 class TradingOutcomesDropdown extends Component {
@@ -94,6 +96,9 @@ class TradingOutcomesDropdown extends Component {
             {this.state.label}
           </div>
           <span>{twoArrows}</span>
+          <span>
+            <DashlineLong />
+          </span>
         </div>
         <div
           className={classNames(

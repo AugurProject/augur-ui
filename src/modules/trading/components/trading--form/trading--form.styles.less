@@ -15,7 +15,7 @@
     }
 
     &:not(:last-child) {
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
 
     &:last-child {
@@ -33,10 +33,11 @@
       color: @color-light-gray;
       font-size: @font-size-small;
       margin-bottom: 0;
-      padding-bottom: 0.375rem;
+      padding-bottom: 0.125rem;
       width: 100%;
 
       &.smallLabel {
+        color: @color-white;
         font-size: @font-size-extra-small;
         padding-top: 0.5rem;
       }
@@ -84,20 +85,38 @@
 }
 
 .TradingForm__outcome__container {
-  background-color: @color-light-purple;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem 0;
 }
 
 .TradingForm__outcome__container__yes {
-  background-color: @color-dark-grayish-purple;
-  padding: 1rem;
+  background-color: fade(@color-dark-grayish-purple, 40%);
+  font-weight: 500;
+  padding: 0.625rem 0.625rem 0.625rem 1rem;
+  position: relative;
   width: 100%;
+
+  > span {
+    bottom: 0;
+    height: 14px;
+    left: 0.0625rem;
+    position: absolute;
+
+    > svg {
+      > line {
+        stroke: fade(@color-white, 40%);
+      }
+    }
+  }
+}
+
+.TradingForm__dashline {
+  stroke: fade(@color-white, 40%);
 }
 
 .TradingForm__input {
   display: flex;
   flex-grow: 1;
-  width: unset;
+  padding: 0.4375rem 1rem;
 }
 
 .TradingForm__input__container {
@@ -106,27 +125,33 @@
   border: 1px solid @color-dark-gray;
   display: flex;
   flex-direction: row;
+  font-family: 'Roboto Mono', monospace;
 
   > input[type="number"] {
     background-color: @color-dark-grayish-purple;
     border-width: 0;
     color: @color-white;
+    font-family: 'Roboto Mono', monospace;
+    font-size: @font-size-medium;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.2);
+      font-family: 'Roboto Mono', monospace;
+      font-size: @font-size-medium;
     }
   }
 
   &.error {
-    border: 1px solid rgba(255, 39, 39, 0.5) !important;
+    border: 0.0625rem solid rgba(255, 39, 39, 0.5) !important;
   }
 
   > span {
-    background: @color-dark-gray;
+    background: @color-grayish-purple;
+    border-left: 0.0625rem solid @color-dark-gray;
     font-size: @font-size-small;
-    min-width: 4.25rem;
+    min-width: 4.28rem;
     overflow: hidden;
-    padding: 1rem;
+    padding: 0.59375rem 0.75rem;
     text-align: center;
     text-overflow: ellipsis;
     text-transform: capitalize;
@@ -138,7 +163,7 @@
 
     &.error {
       background: rgba(255, 39, 39, 0.2) !important;
-      border-radius: 3px;
+      border-left: 0;
       opacity: 0.5;
     }
   }
@@ -149,10 +174,11 @@
   }
 
   &:focus-within {
-    border: 1px solid #665789;
+    border: 0.0625rem solid @color-bright-gray-purple;
 
     > span {
-      background: #665789;
+      background: @color-bright-gray-purple;
+      border-left: 0;
     }
 
     > input {
