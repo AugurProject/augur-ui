@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { augur } from "services/augurjs";
 import classNames from "classnames";
@@ -8,122 +8,190 @@ import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
   infoIcon,
-  WarningExclamationCircle
+  WarningExclamationCircle,
+  closeIcon
 } from "modules/common/components/icons";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
 import { ZERO } from "modules/trades/constants/numbers";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
+import { isEqual } from "lodash";
 
-const MarketTradingConfirm = ({
-  trade,
-  numOutcomes,
-  gasPrice,
-  availableFunds,
-  selectedOutcome,
-  marketType,
-  maxPrice,
-  minPrice,
-  scalarDenomination
-}) => {
-  const {
-    limitPrice,
-    numShares,
-    potentialEthProfit,
-    potentialEthLoss,
-    totalCost,
-    shareCost,
-    side,
-    orderShareProfit,
-    orderShareTradingFee
-  } = trade;
-  const outcomeName = marketType === SCALAR ? limitPrice : selectedOutcome.name;
-  const higherLower = side === BUY ? "higher" : "lower";
-  const marketRange = maxPrice.minus(minPrice).abs();
-
-  const limitPricePercentage = (side === BUY
-    ? createBigNumber(limitPrice)
-    : maxPrice.minus(createBigNumber(limitPrice))
-  )
-    .dividedBy(marketRange)
-    .times(100)
-    .toFixed(0);
-
-  let tooltip = `This means you believe ${outcomeName} has a ${higherLower}
-                      than ${limitPricePercentage}% chance of happening.`;
-  if (marketType === SCALAR) {
-    tooltip = `This means you believe the result will be ${higherLower}
-  than ${limitPrice} ${scalarDenomination}`;
-  }
-  let errorMessage = null;
-  const gasValues = {
-    fillGasLimit: augur.constants.WORST_CASE_FILL[numOutcomes],
-    placeOrderNoSharesGasLimit:
-      augur.constants.PLACE_ORDER_NO_SHARES[numOutcomes],
-    placeOrderWithSharesGasLimit:
-      augur.constants.PLACE_ORDER_WITH_SHARES[numOutcomes]
+class MarketTradingConfirm extends Component {
+  static propTypes = {
+    numOutcomes: PropTypes.number.isRequired,
+    trade: PropTypes.shape({
+      numShares: PropTypes.string,
+      limitPrice: PropTypes.string,
+      tradingFees: PropTypes.object,
+      potentialEthProfit: PropTypes.object,
+      potentialProfitPercent: PropTypes.object,
+      potentialEthLoss: PropTypes.object,
+      potentialLossPercent: PropTypes.object,
+      totalCost: PropTypes.object,
+      shareCost: PropTypes.object
+    }).isRequired,
+    gasPrice: PropTypes.number.isRequired,
+    availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
+    selectedOutcome: PropTypes.object.isRequired,
+    marketType: PropTypes.string.isRequired,
+    maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
+    minPrice: PropTypes.instanceOf(BigNumber).isRequired,
+    scalarDenomination: PropTypes.string
   };
-  const gas =
-    trade.shareCost.formattedValue > 0
-      ? gasValues.placeOrderWithSharesGasLimit
-      : gasValues.fillGasLimit;
-  const gasCost = formatGasCostToEther(gas, { decimalsRounded: 4 }, gasPrice);
-  const tradeTotalCost = createBigNumber(totalCost.formattedValue, 10);
 
-  if (
-    tradeTotalCost.gt(ZERO) &&
-    createBigNumber(gasCost).gt(createBigNumber(tradeTotalCost))
-  ) {
-    errorMessage = {
-      header: "Gas Higher than Order",
-      message: `Est. gas cost ${gasCost} ETH, higher than order cost`
+  static defaultProps = {
+    scalarDenomination: ""
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      errorMessage: this.constructErrorMessage(props)
     };
+
+    this.constructErrorMessage = this.constructErrorMessage.bind(this);
+    this.clearErrorMessage = this.clearErrorMessage.bind(this);
   }
 
-  if (
-    totalCost &&
-    createBigNumber(totalCost.formattedValue, 10).gte(
-      createBigNumber(availableFunds, 10)
+  componentWillReceiveProps(nextProps) {
+    if (
+      !isEqual(this.props.trade, nextProps.trade) ||
+      !isEqual(this.props.gasPrice, nextProps.gasPrice) ||
+      !isEqual(this.props.availableFunds, nextProps.availableFunds)
+    ) {
+      this.setState({
+        errorMessage: this.constructErrorMessage(nextProps)
+      });
+    }
+  }
+
+  constructErrorMessage(props) {
+    const { trade, numOutcomes, gasPrice, availableFunds } =
+      props || this.props;
+
+    const { potentialEthProfit, totalCost, orderShareProfit } = trade;
+
+    let errorMessage = null;
+    const gasValues = {
+      fillGasLimit: augur.constants.WORST_CASE_FILL[numOutcomes],
+      placeOrderNoSharesGasLimit:
+        augur.constants.PLACE_ORDER_NO_SHARES[numOutcomes],
+      placeOrderWithSharesGasLimit:
+        augur.constants.PLACE_ORDER_WITH_SHARES[numOutcomes]
+    };
+    const gas =
+      trade.shareCost.formattedValue > 0
+        ? gasValues.placeOrderWithSharesGasLimit
+        : gasValues.fillGasLimit;
+    const gasCost = formatGasCostToEther(gas, { decimalsRounded: 4 }, gasPrice);
+    const tradeTotalCost = createBigNumber(totalCost.formattedValue, 10);
+
+    if (
+      tradeTotalCost.gt(ZERO) &&
+      createBigNumber(gasCost).gt(createBigNumber(tradeTotalCost))
+    ) {
+      errorMessage = {
+        header: "Gas Higher than Order",
+        message: `Est. gas cost ${gasCost} ETH, higher than order cost`
+      };
+    }
+
+    if (
+      totalCost &&
+      createBigNumber(totalCost.formattedValue, 10).gte(
+        createBigNumber(availableFunds, 10)
+      )
+    ) {
+      errorMessage = {
+        header: "Insufficient Funds",
+        message: "You do not have enough funds to place this order"
+      };
+    }
+
+    const negativeShareProfit =
+      orderShareProfit && createBigNumber(orderShareProfit.value).lte(0);
+    const negativeProfit =
+      totalCost.value > 0 &&
+      potentialEthProfit &&
+      potentialEthProfit.value <= 0;
+    if (negativeProfit || negativeShareProfit) {
+      errorMessage = {
+        header: "Not Profitable",
+        message: `This trade will likely be unprofitable.`
+      };
+    }
+
+    return errorMessage;
+  }
+
+  clearErrorMessage() {
+    this.setState({ errorMessage: null });
+  }
+
+  render() {
+    const {
+      trade,
+      selectedOutcome,
+      marketType,
+      maxPrice,
+      minPrice,
+      scalarDenomination
+    } = this.props;
+
+    const {
+      limitPrice,
+      numShares,
+      potentialEthProfit,
+      potentialEthLoss,
+      totalCost,
+      shareCost,
+      side,
+      orderShareProfit,
+      orderShareTradingFee
+    } = trade;
+
+    const { errorMessage } = this.state;
+
+    const outcomeName =
+      marketType === SCALAR ? limitPrice : selectedOutcome.name;
+    const higherLower = side === BUY ? "higher" : "lower";
+    const marketRange = maxPrice.minus(minPrice).abs();
+
+    const limitPricePercentage = (side === BUY
+      ? createBigNumber(limitPrice)
+      : maxPrice.minus(createBigNumber(limitPrice))
     )
-  ) {
-    errorMessage = {
-      header: "Insufficient Funds",
-      message: "You do not have enough funds to place this order"
-    };
-  }
+      .dividedBy(marketRange)
+      .times(100)
+      .toFixed(0);
 
-  const negativeShareProfit =
-    orderShareProfit && createBigNumber(orderShareProfit.value).lte(0);
-  const negativeProfit =
-    totalCost.value > 0 && potentialEthProfit && potentialEthProfit.value <= 0;
-  if (negativeProfit || negativeShareProfit) {
-    errorMessage = {
-      header: "Not Profitable",
-      message: `This trade will likely be unprofitable.`
-    };
-  }
-  let newOrderAmount = "0";
-  if (numShares && totalCost.fullPrecision && shareCost.fullPrecision) {
-    newOrderAmount = createBigNumber(numShares)
-      .minus(shareCost.fullPrecision)
-      .toFixed(4);
-  }
+    let tooltip = `This means you believe ${outcomeName} has a ${higherLower}
+                        than ${limitPricePercentage}% chance of happening.`;
+    if (marketType === SCALAR) {
+      tooltip = `This means you believe the result will be ${higherLower}
+    than ${limitPrice} ${scalarDenomination}`;
+    }
 
-  return (
-    <section className={Styles.TradingConfirm}>
-      {shareCost &&
-        shareCost.value !== 0 && (
-          <div className={Styles.TradingConfirm__details}>
-            <DashlineLong />
-            <div className={Styles.TradingConfirm__position}>
-              <div
-                className={classNames(
-                  Styles.TradingConfirm__position__properties,
-                  Styles.TradingConfirm__position__tooltipContainer
-                )}
-              >
-                Close Position
+    let newOrderAmount = "0";
+    if (numShares && totalCost.fullPrecision && shareCost.fullPrecision) {
+      newOrderAmount = createBigNumber(numShares)
+        .minus(shareCost.fullPrecision)
+        .toFixed(4);
+    }
+
+    return (
+      <section className={Styles.TradingConfirm}>
+        {((shareCost && shareCost.value !== 0) ||
+          (totalCost && totalCost.value !== 0)) && (
+          <div className={Styles.TrandingConfirm__topBorder} />
+        )}
+        {shareCost &&
+          shareCost.value !== 0 && (
+            <div className={Styles.TradingConfirm__details}>
+              <div className={Styles.TradingConfirm__position__properties}>
+                CLOSING POSITION
               </div>
               <div className={Styles.TradingConfirm__agg_position}>
                 <span
@@ -134,41 +202,37 @@ const MarketTradingConfirm = ({
                 >
                   {side !== BUY ? "Long" : "Short"}
                 </span>
-                <span>{shareCost.value}</span>
-                Shares @ <span>{limitPrice}</span>
+                <span> {shareCost.value} </span>
+                Shares @ <span> {limitPrice}</span>
               </div>
-              <div className={Styles.TradingConfirm__position__properties}>
-                <div>
-                  <div>Estimated Fee</div>
-                  <div className={Styles.TradingConfirm__property__value}>
-                    {orderShareTradingFee && orderShareTradingFee.formatted}
-                    <span>ETH</span>
-                  </div>
-                </div>
-                <div className={Styles.TradingConfirm__vert__line} />
-                <div>
-                  <div>Profit</div>
-                  <div className={Styles.TradingConfirm__property__value}>
-                    {orderShareProfit && orderShareProfit.formatted}
-                    <span>ETH</span>
-                  </div>
-                </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Estimated Fee</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {orderShareTradingFee && orderShareTradingFee.formatted}
+                  <span>ETH</span>
+                </span>
+              </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Profit</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {orderShareProfit && orderShareProfit.formatted}
+                  <span>ETH</span>
+                </span>
               </div>
             </div>
-          </div>
-        )}
-      {totalCost &&
-        totalCost.value !== 0 && (
-          <div className={Styles.TradingConfirm__details}>
-            <DashlineLong />
-            <div className={Styles.TradingConfirm__position}>
+          )}
+        {totalCost &&
+          totalCost.value !== 0 && (
+            <div className={Styles.TradingConfirm__details}>
               <div
                 className={classNames(
                   Styles.TradingConfirm__position__properties,
                   Styles.TradingConfirm__position__tooltipContainer
                 )}
               >
-                New Position
+                NEW POSITION
                 <span className={Styles.TradingConfirm__TooltipContainer}>
                   <label
                     className={classNames(
@@ -200,65 +264,39 @@ const MarketTradingConfirm = ({
                 >
                   {side === BUY ? "Long" : "Short"}
                 </span>
-                <span>{newOrderAmount}</span>
-                Shares @ <span>{limitPrice}</span>
+                <span> {newOrderAmount} </span>
+                Shares @ <span> {limitPrice}</span>
               </div>
-              <div className={Styles.TradingConfirm__position__properties}>
-                <div>
-                  <div>Max Profit</div>
-                  <div className={Styles.TradingConfirm__property__value}>
-                    {potentialEthProfit && potentialEthProfit.formatted}
-                    <span>ETH</span>
-                  </div>
-                </div>
-                <div className={Styles.TradingConfirm__vert__line} />
-                <div>
-                  <div>Max Loss</div>
-                  <div className={Styles.TradingConfirm__property__value}>
-                    {potentialEthLoss && potentialEthLoss.formatted}
-                    <span>ETH</span>
-                  </div>
-                </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Max Profit</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {potentialEthProfit && potentialEthProfit.formatted}
+                  <span>ETH</span>
+                </span>
+              </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Max Loss</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {potentialEthLoss && potentialEthLoss.formatted}
+                  <span>ETH</span>
+                </span>
               </div>
             </div>
+          )}
+        {errorMessage && (
+          <div className={Styles.TradingConfirm__error_message_container}>
+            <div>
+              {WarningExclamationCircle()} <span>{errorMessage.header}</span>
+              <button onClick={this.clearErrorMessage}>{closeIcon}</button>
+            </div>
+            <div>{errorMessage.message}</div>
           </div>
         )}
-      {errorMessage && (
-        <div className={Styles.TradingConfirm__error_message_container}>
-          <div>
-            {WarningExclamationCircle()} <span>{errorMessage.header}</span>
-          </div>
-          <div>{errorMessage.message}</div>
-        </div>
-      )}
-    </section>
-  );
-};
-
-MarketTradingConfirm.propTypes = {
-  numOutcomes: PropTypes.number.isRequired,
-  trade: PropTypes.shape({
-    numShares: PropTypes.string,
-    limitPrice: PropTypes.string,
-    tradingFees: PropTypes.object,
-    potentialEthProfit: PropTypes.object,
-    potentialProfitPercent: PropTypes.object,
-    potentialEthLoss: PropTypes.object,
-    potentialLossPercent: PropTypes.object,
-    totalCost: PropTypes.object,
-    shareCost: PropTypes.object
-  }).isRequired,
-  gasPrice: PropTypes.number.isRequired,
-  availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
-  selectedOutcome: PropTypes.object.isRequired,
-  marketType: PropTypes.string.isRequired,
-  maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
-  minPrice: PropTypes.instanceOf(BigNumber).isRequired,
-  scalarDenomination: PropTypes.string
-};
-
-MarketTradingConfirm.defaultProps = {
-  scalarDenomination: ""
-};
+      </section>
+    );
+  }
+}
 
 export default MarketTradingConfirm;

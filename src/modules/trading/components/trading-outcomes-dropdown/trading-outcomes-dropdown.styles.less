@@ -1,8 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
 .TradingOutcomesDropdown {
-  background-color: @color-dark-grayish-purple;
-  border: 1px solid @color-dark-gray;
+  background-color: fade(@color-dark-grayish-purple, 40%);
   color: inherit;
   cursor: pointer;
   display: flex;
@@ -17,11 +16,25 @@
   }
 
   &.active {
-    border-bottom: 0;
+    background-color: fade(@color-dark-grayish-purple, 30%);
+    border: 0;
   }
 
   &:hover {
-    background-color: @color-dark-gray;
+    background-color: fade(@color-dark-grayish-purple, 30%);
+  }
+
+  > span:nth-of-type(2) {
+    bottom: 0;
+    height: 14px;
+    left: 0.0625rem;
+    position: absolute;
+
+    > svg {
+      > line {
+        stroke: fade(@color-white, 40%);
+      }
+    }
   }
 }
 
@@ -39,13 +52,14 @@
 }
 
 .TradingOutcomesDropdown__label {
+  align-items: center;
+  display: flex;
   flex-grow: 1;
   font-size: @font-size-normal;
   font-weight: 500;
   max-width: 15rem;
   overflow: hidden;
-  padding: 1.1rem;
-  padding-left: 1.5rem;
+  padding: 0.625rem 0.625rem 0.625rem 1rem;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -61,7 +75,7 @@
   line-height: @font-size-normal;
   position: absolute;
   right: 0;
-  top: 100%;
+  top: 102%;
   z-index: 2;
 
   &.active {
@@ -83,7 +97,7 @@
     width: 100%;
 
     &:hover {
-      background-color: @color-dark-gray;
+      background-color: fade(@color-medium-gray, 10%);
     }
 
     &.active {
