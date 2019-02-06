@@ -324,14 +324,16 @@ export default class MarketHeader extends Component {
             </div>
           </div>
         )}
-        <button
-          className={classNames({
-            [Styles.MarketHeader__button__collapsed]: headerCollapsed
-          })}
-          onClick={() => this.toggleMarketHeader()}
-        >
-          <ChevronFlip pointDown={headerCollapsed} hover />
-        </button>
+        {!isMobile && 
+          <button
+            className={classNames({
+              [Styles.MarketHeader__button__collapsed]: headerCollapsed
+            })}
+            onClick={() => this.toggleMarketHeader()}
+          >
+            <ChevronFlip pointDown={headerCollapsed} hover />
+          </button>
+        }
       </section>
     );
   }
