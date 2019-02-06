@@ -23,8 +23,8 @@ export const selectBucketedPriceTimeSeries = (
   }
 
   const bnRange = bnCurrentTimestamp.minus(bnCreationTimestamp);
-  let numBuckets = Math.ceil(bnRange.dividedBy(bucket).toNumber());
-  numBuckets = createBigNumber(numBuckets).gt(ZERO) ? numBuckets : 1;
+  const buckets = Math.ceil(bnRange.dividedBy(bucket).toNumber());
+  const numBuckets = createBigNumber(buckets).gt(ZERO) ? buckets : 1;
   const timeBuckets = Array.from(new Array(numBuckets), (val, index) =>
     Math.ceil(
       bnCreationTimestamp.plus(createBigNumber(index).times(bucket)).toNumber()
