@@ -8,7 +8,7 @@ import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
   infoIcon,
-  WarningExclamationCircle,
+  darkBgExclamationCircle,
   closeIcon
 } from "modules/common/components/icons";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
@@ -290,7 +290,8 @@ class MarketTradingConfirm extends Component {
         {errorMessage && (
           <div className={Styles.TradingConfirm__error_message_container}>
             <div>
-              {WarningExclamationCircle()} <span>{errorMessage.header}</span>
+              {darkBgExclamationCircle("#09CFE1")}{" "}
+              <span>{errorMessage.header}</span>
               <button onClick={this.clearErrorMessage}>{closeIcon}</button>
             </div>
             <div>{errorMessage.message}</div>

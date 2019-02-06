@@ -24,8 +24,8 @@
       flex-direction: row;
 
       > label {
-        padding: 0.25rem 2rem;
-        padding-top: 0.4rem;
+        padding: 0;
+        padding-left: 1.5rem;
       }
     }
 
@@ -70,6 +70,11 @@
 
 .TradingForm__error_message {
   color: @color-error-text;
+  margin-bottom: 0.25rem;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 
   svg {
     margin: 0 0.2rem;

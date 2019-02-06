@@ -1,5 +1,6 @@
 import { createBigNumber } from "utils/create-big-number";
 import { sortBy, last, each, pullAll } from "lodash";
+import { ZERO } from "modules/trades/constants/numbers";
 
 export const selectBucketedPriceTimeSeries = (
   creationTime,
@@ -22,7 +23,8 @@ export const selectBucketedPriceTimeSeries = (
   }
 
   const bnRange = bnCurrentTimestamp.minus(bnCreationTimestamp);
-  const numBuckets = Math.ceil(bnRange.dividedBy(bucket).toNumber());
+  let numBuckets = Math.ceil(bnRange.dividedBy(bucket).toNumber());
+  numBuckets = createBigNumber(numBuckets).gt(ZERO) ? numBuckets : 1;
   const timeBuckets = Array.from(new Array(numBuckets), (val, index) =>
     Math.ceil(
       bnCreationTimestamp.plus(createBigNumber(index).times(bucket)).toNumber()

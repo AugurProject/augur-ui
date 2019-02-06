@@ -14,7 +14,7 @@ import { isEqual } from "lodash";
 // import TooltipStyles from "modules/common/less/tooltip.styles";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
-import { ExclamationCircle } from "modules/common/components/icons";
+import { darkBgExclamationCircle } from "modules/common/components/icons";
 import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
@@ -446,6 +446,7 @@ class TradingForm extends Component {
 
     const quantityValue = s[this.INPUT_TYPES.QUANTITY];
     const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
+
     return (
       <div className={Styles.TradingForm__form__container}>
         {market.marketType === CATEGORICAL && (
@@ -507,8 +508,11 @@ class TradingForm extends Component {
                 )}
                 id="tr__input--quantity"
                 type="number"
-                step={MIN_QUANTITY.toFixed()}
-                min={MIN_QUANTITY.toFixed()}
+                step={
+                  quantityValue && quantityValue !== ""
+                    ? MIN_QUANTITY.toFixed()
+                    : 1
+                }
                 placeholder={`${
                   marketType === SCALAR ? tickSize : MIN_QUANTITY.toFixed()
                 }`}
@@ -616,6 +620,7 @@ class TradingForm extends Component {
               type="checkbox"
               isChecked={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
               value={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
+              small
               onClick={e =>
                 updateState({
                   [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: !s[
@@ -639,7 +644,7 @@ class TradingForm extends Component {
           <div className={Styles.TradingForm__error_message_container}>
             {errors.map(error => (
               <div key={error} className={Styles.TradingForm__error_message}>
-                {ExclamationCircle()} <span>{error}</span>
+                {darkBgExclamationCircle("#FF2727", "0.5")} <span>{error}</span>
               </div>
             ))}
           </div>
