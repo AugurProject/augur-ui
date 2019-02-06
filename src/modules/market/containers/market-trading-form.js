@@ -9,6 +9,11 @@ import {
   updateTradeShares
 } from "modules/trades/actions/update-trade-cost-shares";
 
+import {
+  updateAuthStatus,
+  IS_CONNECTION_TRAY_OPEN
+} from "modules/auth/actions/update-auth-status";
+
 const mapStateToProps = (state, ownProps) => {
   const { authStatus, appStatus } = state;
 
@@ -16,11 +21,14 @@ const mapStateToProps = (state, ownProps) => {
     gasPrice: getGasPrice(state),
     availableFunds: createBigNumber(state.loginAccount.eth || 0),
     isLogged: authStatus.isLogged,
+    isConnectionTrayOpen: authStatus.isConnectionTrayOpen,
     isMobile: appStatus.isMobile
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+  toggleConnectionTray: value =>
+    dispatch(updateAuthStatus(IS_CONNECTION_TRAY_OPEN, value)),
   handleFilledOnly: trade => dispatch(handleFilledOnly(trade)),
   updateTradeCost: (marketId, outcomeId, order, callback) =>
     dispatch(updateTradeCost({ marketId, outcomeId, ...order, callback })),

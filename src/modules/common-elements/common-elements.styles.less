@@ -1,0 +1,22 @@
+@import (reference) '~assets/styles/shared';
+
+.PrimaryButton {
+  .text-small-bold;
+
+  background: @color-primary-button-background;
+  border: @border-default;
+  border-radius: @border-radius-default;
+  color: @color-primary-button-text;
+  cursor: @button-cursor;
+  max-height: @button-height-default;
+  padding: @size-smaller @size-large;
+
+  &:disabled {
+    background: @color-primary-button-background-disabled;
+    cursor: @button-cursor-disabled;
+  }
+
+  &:hover:enabled {
+    background: @color-primary-button-background-hover;
+  }
+}

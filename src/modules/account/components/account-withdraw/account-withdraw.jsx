@@ -15,6 +15,8 @@ import {
 import { formatEther, formatRep } from "utils/format-number";
 import isAddress from "modules/auth/helpers/is-address";
 import FormStyles from "modules/common/less/form";
+import { PrimaryButton } from "modules/common-elements/primary-button";
+
 import Styles from "modules/account/components/account-withdraw/account-withdraw.styles";
 
 export default class AccountWithdraw extends Component {
@@ -252,14 +254,11 @@ export default class AccountWithdraw extends Component {
                   )}
               </div>
             </div>
-            <button
-              className={Styles.AccountWithdraw__submitButton}
+            <PrimaryButton
+              action={this.withdrawReview}
+              text="Withdraw"
               disabled={!s.isValid}
-              onClick={this.withdrawReview}
-              id="withdraw-button"
-            >
-              Withdraw
-            </button>
+            />
           </div>
         </div>
       </section>

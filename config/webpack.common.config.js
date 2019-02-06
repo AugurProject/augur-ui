@@ -34,7 +34,7 @@ module.exports = {
   },
   resolve: {
     modules: ["node_modules", PATHS.APP],
-    extensions: [".html", ".less", ".json", ".js", ".jsx"],
+    extensions: [".html", ".less", ".json", ".js", ".jsx", ".ts", ".tsx"],
     alias: {
       // NOTE --  these aliases are utilized during build + linting,
       //          only testing utilizes the aliases w/in .babelrc
@@ -84,6 +84,34 @@ module.exports = {
           plugins: [
             "@babel/plugin-proposal-class-properties",
             "@babel/plugin-syntax-dynamic-import"
+          ]
+        },
+        exclude: function(modulePath) {
+          return (
+            /node_modules/.test(modulePath) &&
+            /node_modules\/(core-js|lodash|react|websocket|autolinker|remarkable|moment|regenerator-runtime)/.test(modulePath)
+          );
+        }
+      },
+      {
+        test: /\.tsx?$/,
+        loader: "babel-loader",
+        options: {
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                modules: "cjs",
+                "targets": "> 0.5%, not dead, chrome >= 41, not ie <=11"
+              }
+            ],
+            "@babel/preset-react",
+            "@babel/preset-typescript"
+          ],
+          plugins: [
+            "@babel/plugin-proposal-class-properties",
+            "@babel/plugin-syntax-dynamic-import",
+            "@babel/plugin-transform-typescript"
           ]
         },
         exclude: function(modulePath) {

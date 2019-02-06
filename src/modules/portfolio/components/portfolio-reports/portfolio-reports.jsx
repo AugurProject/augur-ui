@@ -13,6 +13,8 @@ import DisputingMarkets from "modules/reporting/components/common/disputing-mark
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";
 
+import { PrimaryButton } from "modules/common-elements/primary-button";
+
 export default class PortfolioReports extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
@@ -156,13 +158,11 @@ export default class PortfolioReports extends Component {
                 <span>{reportingFees.unclaimedEth.formatted}</span>
               </li>
             </ul>
-            <button
-              className={Styles.PortfolioReports__claim}
+            <PrimaryButton
+              text="Claim"
+              action={this.handleClaimReportingFeesNonforkedMarkets}
               disabled={disableClaimReportingFeesNonforkedMarketsButton}
-              onClick={this.handleClaimReportingFeesNonforkedMarkets}
-            >
-              Claim
-            </button>
+            />
           </div>
         </section>
         {userHasClaimableForkFees && (
