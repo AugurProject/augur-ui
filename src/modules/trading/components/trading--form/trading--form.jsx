@@ -610,9 +610,10 @@ class TradingForm extends Component {
                 ETH
               </span>
             </div>
-            <label
-              className={Styles.smallLabel}
-            >{darkBgExclamationCircle()}{` Max cost of ${orderEscrowdEth} ETH will be escrowed`}</label>
+            <label className={Styles.smallLabel}>
+              {darkBgExclamationCircle()}
+              {` Max cost of ${orderEscrowdEth} ETH will be escrowed`}
+            </label>
           </li>
           <li>
             <Checkbox
