@@ -10,10 +10,7 @@ import MarketLink from "modules/market/components/market-link/market-link";
 import MarketHeaderStyles from "modules/market/components/market-header/market-header.styles";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { createBigNumber } from "utils/create-big-number";
-import {
-  TYPE_REPORT,
-  TYPE_DISPUTE
-} from "modules/markets/constants/link-types";
+import { TYPE_DISPUTE } from "modules/markets/constants/link-types";
 
 export default class MarketHeaderReporting extends Component {
   static propTypes = {
@@ -108,7 +105,10 @@ export default class MarketHeaderReporting extends Component {
         >
           <div className={Styles.MarketHeaderReporting__outcomeContainer}>
             <span
-              className={MarketHeaderStyles.MarketHeader__property__header}
+              className={classNames(
+                MarketHeaderStyles.MarketHeader__property__header,
+                Styles.MarketHeader__winning
+              )}
               style={{ marginRight: "0px" }}
             >
               Winning Outcome
@@ -123,7 +123,7 @@ export default class MarketHeaderReporting extends Component {
           </div>
           {reportingState ===
             constants.REPORTING_STATE.AWAITING_FINALIZATION && (
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div className={Styles.MarketHeaderReporting__buttonContainer}>
               <button
                 className={Styles.MarketHeaderReporting__button}
                 onClick={() => {
@@ -142,7 +142,7 @@ export default class MarketHeaderReporting extends Component {
           )}
           {canClaim &&
             reportingState === constants.REPORTING_STATE.FINALIZED && (
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className={Styles.MarketHeaderReporting__buttonContainer}>
                 <button
                   className={Styles.MarketHeaderReporting__button}
                   onClick={() => {
@@ -166,19 +166,15 @@ export default class MarketHeaderReporting extends Component {
           className={Styles.MarketHeaderReporting__winner__container}
         >
           <div>
-            <span className={MarketHeaderStyles.MarketHeader__property__header}>
+            <span
+              className={classNames(
+                MarketHeaderStyles.MarketHeader__property__header,
+                Styles.MarketHeader__tentative
+              )}
+            >
               Tentative Winning Outcome
             </span>
             <span className={Styles.MarketHeaderReporting__winner__row}>
-              {CatWinnerColorIndex && (
-                <div
-                  className={
-                    Styles[
-                      `MarketHeaderReporting__winner__color__${CatWinnerColorIndex}`
-                    ]
-                  }
-                />
-              )}
               {tentativeWinner &&
               (tentativeWinner.name || tentativeWinner.isInvalid) ? (
                 <div className={Styles.MarketHeaderReporting__winner}>
@@ -195,7 +191,10 @@ export default class MarketHeaderReporting extends Component {
           {reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE &&
             isLogged && (
               <div
-                className={Styles.MarketHeaderReporting__winner}
+                className={classNames(
+                  Styles.MarketHeaderReporting__winner,
+                  Styles.MarketHeaderReporting__buttonContainer
+                )}
                 style={{ marginTop: "0.5rem" }}
               >
                 <MarketLink
@@ -210,7 +209,7 @@ export default class MarketHeaderReporting extends Component {
             )}
           {reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE &&
             !isLogged && (
-              <div>
+              <div className={Styles.MarketHeaderReporting__buttonContainer}>
                 <button
                   className={Styles.MarketHeaderReporting__button}
                   disabled={!isLogged}
@@ -226,39 +225,42 @@ export default class MarketHeaderReporting extends Component {
         isDesignatedReporter) ||
       reportingState === constants.REPORTING_STATE.OPEN_REPORTING
     ) {
-      if (isLogged) {
-        content = [
-          <div
-            key="report"
-            className={Styles.MarketHeaderReporting__single__container}
-          >
-            <MarketLink
-              className={Styles.MarketHeaderReporting__buttonNoMargin}
-              id={id}
-              linkType={TYPE_REPORT}
-              location={location}
+      content = [
+        <div className={Styles.MarketHeaderReporting__winner__container}>
+          <div className={Styles.MarketHeaderReporting__info}>
+            <span
+              className={classNames(
+                MarketHeaderStyles.MarketHeader__property__header,
+                Styles.MarketHeader__reporting
+              )}
             >
-            Report
-            </MarketLink>
+              Reporting has started
+            </span>
+            <span className={Styles.MarketHeaderReporting__reporting__row}>
+              Go to the reporting form to decide on an outcome
+            </span>
           </div>
-        ];
-      } else {
-        content = [
-          <div
-            key="disabledReport"
-            className={
-              Styles.MarketHeaderReporting__single__container__disabled
-            }
-          >
-            <button
-              className={Styles.MarketHeaderReporting__buttonNoMargin}
-              disabled={!isLogged}
-            >
-              Report
-            </button>
+          <div className={Styles.MarketHeaderReporting__buttonContainer}>
+            {isLogged ? (
+              <MarketLink
+                className={Styles.MarketHeaderReporting__buttonNoMargin}
+                id={id}
+                location={location}
+                disabled={!isLogged}
+              >
+                Report
+              </MarketLink>
+            ) : (
+              <button
+                className={Styles.MarketHeaderReporting__buttonNoMargin}
+                disabled={!isLogged}
+              >
+                Report
+              </button>
+            )}
           </div>
-        ];
-      }
+        </div>
+      ];
     }
 
     if (!content) {

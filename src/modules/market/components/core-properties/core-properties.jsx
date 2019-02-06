@@ -3,7 +3,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
+import { SCALAR } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import getValue from "utils/get-value";
 import { infoIcon } from "modules/common/components/icons";

@@ -2,9 +2,9 @@
 @import (reference) "~modules/market/components/market-view/market-view.styles";
 
 .MarketHeaderBar {
-  display: flex;
   align-items: center;
-  margin-bottom: 24px;
+  display: flex;
+  margin-bottom: 1.5rem;
 }
 
 .MarketHeaderBar__container__collapsed {
@@ -21,7 +21,7 @@
   margin-left: 1rem;
   padding: 0.375rem 0.5rem;
   text-transform: capitalize;
-  
+
   &:hover {
     background-color: @color-medium-gray;
     border-color: @color-medium-gray;
@@ -82,9 +82,9 @@
 
 .MarketHeaderBar__watchlist__container {
   display: flex;
+  flex-grow: 1;
   justify-content: flex-end;
   min-width: 177px;
-  flex-grow: 1;
 }
 
 .MarketHeaderBar__watchlist__disabled,

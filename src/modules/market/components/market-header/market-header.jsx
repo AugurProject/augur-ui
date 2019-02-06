@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
-  starIconOutline,
-  starIconOpen,
-  starIconFilled,
   ChevronDown,
   ChevronUp,
   BackArrow
@@ -45,7 +42,6 @@ export default class MarketHeader extends Component {
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
-    isLogged: PropTypes.bool,
     isMobile: PropTypes.bool,
     isMobileSmall: PropTypes.bool,
     toggleFavorite: PropTypes.func,
@@ -54,7 +50,6 @@ export default class MarketHeader extends Component {
   };
 
   static defaultProps = {
-    isLogged: false,
     scalarDenomination: null,
     resolutionSource: "General knowledge",
     marketType: null,
@@ -129,7 +124,6 @@ export default class MarketHeader extends Component {
     this.props.toggleFavorite(this.props.market.id);
   }
 
-
   gotoFilter(type, value) {
     const { history } = this.props;
     const query =
@@ -157,7 +151,6 @@ export default class MarketHeader extends Component {
       scalarDenomination,
       market,
       currentTime,
-      isLogged,
       isMobileSmall,
       isMobile,
       isFavorite,
@@ -185,13 +178,17 @@ export default class MarketHeader extends Component {
     const process = (...arr) =>
       compact(arr).map(label => ({
         label,
-        onClick: () => {this.gotoFilter("category", label)}
+        onClick: () => {
+          this.gotoFilter("category", label);
+        }
       }));
 
     const categoriesWithClick = process(market.category);
     const tagsWithClick = compact(market.tags).map(tag => ({
       label: tag,
-      onClick: () => {this.gotoFilter("tag", tag)}
+      onClick: () => {
+        this.gotoFilter("tag", tag);
+      }
     }));
 
     return (
@@ -215,7 +212,7 @@ export default class MarketHeader extends Component {
             onClick={() => history.goBack()}
           >
             {BackArrow}
-          </button> 
+          </button>
           <CategoryTagTrail
             categories={categoriesWithClick}
             tags={tagsWithClick}
@@ -248,7 +245,9 @@ export default class MarketHeader extends Component {
                   style={{ paddingBottom: "1rem" }}
                 >
                   <h4>Resolution Source</h4>
-                  <span className={Styles.Marketheader__resolutionSource}>{resolutionSource}</span>
+                  <span className={Styles.Marketheader__resolutionSource}>
+                    {resolutionSource}
+                  </span>
                 </div>
                 {details.length > 0 && (
                   <div className={Styles.MarketHeader__details}>
