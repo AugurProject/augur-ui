@@ -46,10 +46,6 @@ export const RANGES = [
 
 export const PERIODS = [
   {
-    duration: 30,
-    label: "Every thirty seconds"
-  },
-  {
     duration: 60,
     label: "Every minute"
   },
