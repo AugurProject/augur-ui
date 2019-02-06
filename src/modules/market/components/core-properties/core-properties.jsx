@@ -6,16 +6,12 @@ import classNames from "classnames";
 import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import getValue from "utils/get-value";
-import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
 import { infoIcon } from "modules/common/components/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 
 const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
   <div className={Styles.CoreProperties__coreContainer}>
-    <div className={Styles.CoreProperties__row}>
-      <MarketHeaderReporting marketId={market.id} />
-    </div>
     <div className={Styles.CoreProperties__property__container}>
       <div
         className={Styles.CoreProperties__column}
@@ -43,16 +39,14 @@ const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
             </span>
           </span>
         </div>
-        <div className={Styles.CoreProperties__property}>
-          <span>
-            <div>Type</div>
-          </span>
-          <span style={{ textTransform: "capitalize" }}>
-            {getValue(market, "marketType") === YES_NO
-              ? "Yes/No"
-              : getValue(market, "marketType")}
-          </span>
-        </div>
+        {getValue(market, "marketType") === SCALAR && (
+          <div className={Styles.CoreProperties__property}>
+            <span>
+              <div>Denominated In</div>
+            </span>
+            <span>{getValue(market, "scalarDenomination")}</span>
+          </div>
+        )}
       </div>
       <div className={Styles.CoreProperties__column}>
         <div className={Styles.CoreProperties__property}>
@@ -100,27 +94,19 @@ const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
           </ReactTooltip>
         </div>
         {getValue(market, "marketType") === SCALAR && (
-          <div>
-            <div className={Styles.CoreProperties__property}>
-              <span>
-                <div>Denominated In</div>
+          <div className={Styles.CoreProperties__min__max__dots}>
+            <div>
+              <span className={Styles.CoreProperties__property__min__max}>
+                <div>Min</div>
               </span>
-              <span>{getValue(market, "scalarDenomination")}</span>
+              <span>{getValue(market, "minPrice").toString()}</span>
             </div>
-            <div className={Styles.CoreProperties__min__max__dots}>
-              <div>
-                <span className={Styles.CoreProperties__property__min__max}>
-                  <div>Min</div>
-                </span>
-                <span>{getValue(market, "minPrice").toString()}</span>
-              </div>
-              <span className={Styles.CoreProperties__dotted__line} />
-              <div>
-                <span className={Styles.CoreProperties__property__min__max}>
-                  <div>Max</div>
-                </span>
-                <span>{getValue(market, "maxPrice").toString()}</span>
-              </div>
+            <span className={Styles.CoreProperties__dotted__line} />
+            <div>
+              <span className={Styles.CoreProperties__property__min__max}>
+                <div>Max</div>
+              </span>
+              <span>{getValue(market, "maxPrice").toString()}</span>
             </div>
           </div>
         )}

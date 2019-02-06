@@ -238,7 +238,7 @@ export default class MarketHeaderReporting extends Component {
               linkType={TYPE_REPORT}
               location={location}
             >
-              Submit a Report
+            Report
             </MarketLink>
           </div>
         ];
@@ -254,7 +254,7 @@ export default class MarketHeaderReporting extends Component {
               className={Styles.MarketHeaderReporting__buttonNoMargin}
               disabled={!isLogged}
             >
-              Submit a Report
+              Report
             </button>
           </div>
         ];
@@ -262,7 +262,7 @@ export default class MarketHeaderReporting extends Component {
     }
 
     if (!content) {
-      return null;
+      return <div className={Styles.MarketHeaderReporting__break} />;
     }
 
     return (

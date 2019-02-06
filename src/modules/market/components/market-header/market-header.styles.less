@@ -76,7 +76,7 @@
 
   svg {
     height: 1em;
-    margin-right: 0.5rem;
+    margin-right: 1.25rem;
 
     rect {
       fill: @color-dark-light-gray;
@@ -112,7 +112,9 @@
 .MarketHeader__description {
   color: @color-white;
   flex-grow: 1;
+  font-size: @font-size-rather-large;
   font-weight: bold;
+  margin: 1rem 0;
 }
 
 .MarketHeader__descriptionContainer {
@@ -189,6 +191,10 @@
   overflow: auto;
 }
 
+.MarketHeader__topContainer {
+  display: flex;
+}
+
 .MarketHeader__details {
   color: @color-light-gray;
   font-size: @font-size-small;
@@ -222,9 +228,14 @@
   }
 }
 
+.Marketheader__resolutionSource {
+  font-family: 'Roboto Mono', monospace;
+}
+
 .MarketHeader__properties {
   display: flex;
   flex: 1;
+  flex-direction: column;
   margin-left: 3rem;
   min-height: fit-content;
   min-width: 370px;
@@ -247,78 +258,15 @@
   margin-top: 1.4rem;
 }
 
-.MarketHeader__watchlist__container {
+.MarketHeader__properties__core {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
-  min-width: 177px;
-}
-
-.MarketHeader__watchlist__disabled,
-.MarketHeader__watchlist {
-  background: @color-very-dark-purple;
-  border: 2px solid @color-dark-gray;
-  border-radius: 3px;
-  box-sizing: border-box;
-  color: @color-white;
-  min-height: 38px;
-  padding: 0.5rem 0;
-
-  svg {
-    margin: -0.1rem 0.5rem;
-    max-height: 1.5rem;
-    max-width: 1.5rem;
-    vertical-align: top;
-  }
-
-  span {
-    font-size: @font-size-small;
-    padding-right: 0.8rem;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-
-  &:hover {
-    background: #191226;
-    border: 2px solid #42404b;
-  }
-
-  &:disabled {
-    background: #1a1627;
-    border: 2px solid @color-dark-gray;
-    cursor: default;
-    opacity: 0.3;
-  }
-}
-
-span.MarketHeader__filledIcon {
-  padding-right: 0;
-}
-
-span.MarketHeader__iconHover {
-  display: none;
-  padding: 0;
-}
-
-span.MarketHeader__iconDefault {
-  padding: 0;
-}
-
-span.MarketHeader__hoverContainer {
-  display: inline-block;
-  margin-top: -5px;
-  padding: 0;
-}
-
-.MarketHeader__watchlist:hover .MarketHeader__iconDefault {
-  display: none;
-}
-
-.MarketHeader__watchlist:hover .MarketHeader__iconHover {
-  display: block;
 }
 
 @media @breakpoint-mobile {
+
+  .MarketHeader__properties__core {
+    flex-direction: column;
+  }
   .MarketHeader__description {
     font-size: 18px;
   }
