@@ -202,16 +202,18 @@
 .button--mediumgray {
   .button--transparent;
 
-  background-color: @color-medium-gray;
-  border: 0;
-  color: @color-white;
+  background-color: @color-transparent;
+  border: 1px solid @color-medium-gray;
+  color: @color-dark-light-gray;
   font-family: 'Roboto Mono', monospace;
   font-size: 10px;
   font-weight: 400;
-  padding: 3px 12px;
+  padding: 4px 12px;
 
   &:hover {
-    background-color: #665789;
+    background-color: @color-bright-gray-purple;
+    border: 1px solid @color-bright-gray-purple;
+    color: @color-white;
   }
 }
 
