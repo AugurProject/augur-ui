@@ -2,8 +2,13 @@
 @import (reference) "~modules/market/components/market-view/market-view.styles";
 
 .MarketHeaderReporting__container {
-  background: #1b1528;
+  background: @color-grayish-purple;
   border-radius: 3px;
+}
+
+.MarketHeaderReporting__break {
+  background: @color-grayish-purple;
+  height: 0.125rem;
 }
 
 .MarketHeaderReporting__button {
@@ -31,7 +36,6 @@
 }
 
 .MarketHeaderReporting__winner__container {
-  border: 1px solid @color-outcome-two;
   border-radius: 3px;
   display: flex;
   flex-direction: row;
@@ -64,11 +68,41 @@
   position: relative;
 }
 
-.generate-indexed-color-outcome-classes({
-  .MarketHeaderReporting__winner__container__color__@{newIndex} {
-    border: 1px solid @value;
-  }
-});
+.MarketHeaderReporting__buttonContainer {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.MarketHeader__winning {
+  color: @color-negative2;
+  font-size: @font-size-medium;
+  font-weight: bold;
+}
+
+.MarketHeader__tentative {
+  color: @color-milky-gray;
+  font-size: @font-size-medium;
+  font-weight: bold;
+}
+
+.MarketHeader__reporting {
+  color: @color-white;
+  font-size: @font-size-medium;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.MarketHeaderReporting__reporting__row {
+  color: @color-white;
+  font-size: @font-size-medium;
+}
+
+.MarketHeaderReporting__info {
+  display: flex;
+  flex-direction: column;
+}
 
 @media @breakpoint-mobile {
   .MarketHeaderReporting__container {
