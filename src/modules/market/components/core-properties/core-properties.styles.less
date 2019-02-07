@@ -48,17 +48,18 @@
 .CoreProperties__coreContainer {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  margin-top: 0.5rem;
+  min-width: 300px;
 }
 
 .CoreProperties__property__container {
   color: @color-lightgray;
   display: flex;
   flex-direction: row;
-  padding-left: 1rem;
 
   @media @breakpoint-mobile {
-    background-color: #211a32;
+    background-color: @color-light-purple;
+    padding: 0 1rem;
   }
 }
 
