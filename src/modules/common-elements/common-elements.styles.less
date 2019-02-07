@@ -1,22 +1,70 @@
 @import (reference) '~assets/styles/shared';
 
-.PrimaryButton {
+.Button {
   .text-small-bold;
 
-  background: @color-primary-button-background;
   border: @border-default;
   border-radius: @border-radius-default;
-  color: @color-primary-button-text;
   cursor: @button-cursor;
+
+  &:disabled {
+    cursor: @button-cursor-disabled;
+  }
+}
+
+.PrimaryButton {
+  .Button;
+
+  background: @color-primary-button-background;
+  color: @color-primary-button-text;
   max-height: @button-height-default;
   padding: @size-smaller @size-large;
 
   &:disabled {
     background: @color-primary-button-background-disabled;
-    cursor: @button-cursor-disabled;
   }
 
   &:hover:enabled {
     background: @color-primary-button-background-hover;
+  }
+}
+
+.BuyOrderButton {
+  .Button;
+
+  background: @color-buy-order-button-background;
+  border-color: @color-buy-order-button-border;
+  color: @color-order-button-text;
+  max-height: @button-height-orders;
+  padding: @button-padding-orders;
+
+  &:disabled {
+    background: @color-buy-order-button-background-disabled;
+    border-color: @color-buy-order-button-border-disabled;
+    color: @color-order-button-text-disabled;
+  }
+
+  &:hover:enabled {
+    background: @color-buy-order-button-background-hover;
+  }
+}
+
+.SellOrderButton {
+  .Button;
+
+  background: @color-sell-order-button-background;
+  border-color: @color-sell-order-button-border;
+  color: @color-order-button-text;
+  max-height: @button-height-orders;
+  padding: @button-padding-orders;
+
+  &:disabled {
+    background: @color-sell-order-button-background-disabled;
+    border-color: @color-sell-order-button-border-disabled;
+    color: @color-order-button-text-disabled;
+  }
+
+  &:hover:enabled {
+    background: @color-sell-order-button-background-hover;
   }
 }

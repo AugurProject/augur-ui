@@ -1,12 +1,22 @@
 import React from "react";
 
+import * as constants from "modules/common-elements/constants";
 import Styles from "modules/common-elements/common-elements.styles";
+
+export enum OrderButtonTypes {
+  BUY = constants.BUY,
+  SELL = constants.SELL,
+}
 
 export interface DefaultButtonProps {
   text: string;
   action: Function;
   disabled?: boolean;
   title?: string;
+}
+
+export interface OrderButtonProps extends DefaultButtonProps {
+  type: OrderButtonTypes;
 }
 
 export const PrimaryButton = (props: DefaultButtonProps) => 
@@ -17,4 +27,14 @@ export const PrimaryButton = (props: DefaultButtonProps) =>
     title={props.title || props.text}
   >
     {props.text}
+  </button>;
+
+export const OrderButton = (props: OrderButtonProps) => 
+  <button
+    onClick={props.action}
+    className={props.type === constants.BUY ? Styles.BuyOrderButton : Styles.SellOrderButton}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {props.type === constants.BUY ? "Place Buy Order" : "Place Sell Order"}
   </button>;
