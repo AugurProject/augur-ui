@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import {
-  starIconOutline,
-  starIconOpen,
-  starIconFilled,
   ChevronDown,
   ChevronUp,
   BackArrow
@@ -21,6 +18,14 @@ import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
+import makeQuery from "modules/routes/helpers/make-query";
+import { CategoryTagTrail } from "src/modules/common/components/category-tag-trail/category-tag-trail";
+import { compact } from "lodash";
+import {
+  CATEGORY_PARAM_NAME,
+  TAGS_PARAM_NAME
+} from "modules/filter-sort/constants/param-names";
+import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
 
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
@@ -37,7 +42,6 @@ export default class MarketHeader extends Component {
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
-    isLogged: PropTypes.bool,
     isMobile: PropTypes.bool,
     isMobileSmall: PropTypes.bool,
     toggleFavorite: PropTypes.func,
@@ -46,7 +50,6 @@ export default class MarketHeader extends Component {
   };
 
   static defaultProps = {
-    isLogged: false,
     scalarDenomination: null,
     resolutionSource: "General knowledge",
     marketType: null,
@@ -65,9 +68,11 @@ export default class MarketHeader extends Component {
       headerCollapsed: false
     };
 
+    this.gotoFilter = this.gotoFilter.bind(this);
     this.toggleReadMore = this.toggleReadMore.bind(this);
     this.updateDetailsHeight = this.updateDetailsHeight.bind(this);
     this.toggleMarketHeader = this.toggleMarketHeader.bind(this);
+    this.addToFavorites = this.addToFavorites.bind(this);
   }
 
   componentDidMount() {
@@ -119,6 +124,23 @@ export default class MarketHeader extends Component {
     this.props.toggleFavorite(this.props.market.id);
   }
 
+  gotoFilter(type, value) {
+    const { history } = this.props;
+    const query =
+      type === "category"
+        ? {
+            [CATEGORY_PARAM_NAME]: value
+          }
+        : {
+            [TAGS_PARAM_NAME]: value
+          };
+
+    history.push({
+      pathname: "markets",
+      search: makeQuery(query)
+    });
+  }
+
   render() {
     const {
       description,
@@ -129,7 +151,6 @@ export default class MarketHeader extends Component {
       scalarDenomination,
       market,
       currentTime,
-      isLogged,
       isMobileSmall,
       isMobile,
       isFavorite,
@@ -154,6 +175,22 @@ export default class MarketHeader extends Component {
       details += warningText;
     }
 
+    const process = (...arr) =>
+      compact(arr).map(label => ({
+        label,
+        onClick: () => {
+          this.gotoFilter("category", label);
+        }
+      }));
+
+    const categoriesWithClick = process(market.category);
+    const tagsWithClick = compact(market.tags).map(tag => ({
+      label: tag,
+      onClick: () => {
+        this.gotoFilter("tag", tag);
+      }
+    }));
+
     return (
       <section
         ref={marketHeaderContainer => {
@@ -169,13 +206,18 @@ export default class MarketHeader extends Component {
           }
         )}
       >
-        <button
-          className={Styles[`MarketHeader__back-button`]}
-          onClick={() => history.goBack()}
-        >
-          {BackArrow}
-          <span> back</span>
-        </button>
+        <div className={Styles.MarketHeader__topContainer}>
+          <button
+            className={Styles[`MarketHeader__back-button`]}
+            onClick={() => history.goBack()}
+          >
+            {BackArrow}
+          </button>
+          <CategoryTagTrail
+            categories={categoriesWithClick}
+            tags={tagsWithClick}
+          />
+        </div>
         {headerCollapsed && (
           <MarketHeaderCollapsed
             description={description}
@@ -193,21 +235,6 @@ export default class MarketHeader extends Component {
                 [Styles.MarketHeader__collapsed]: headerCollapsed
               })}
             >
-              {market.id && (
-                <MarketHeaderBar
-                  marketId={market.id}
-                  category={market.category}
-                  reportingState={market.reportingState}
-                  tags={market.tags}
-                  addToFavorites={this.addToFavorites}
-                  isMobile={isMobile}
-                  isFavorite={isFavorite}
-                  collapsedView={headerCollapsed}
-                  marketType={marketType}
-                  description={description}
-                />
-              )}
-
               <h1 className={Styles.MarketHeader__description}>
                 {description}
               </h1>
@@ -218,10 +245,13 @@ export default class MarketHeader extends Component {
                   style={{ paddingBottom: "1rem" }}
                 >
                   <h4>Resolution Source</h4>
-                  <span>{resolutionSource}</span>
+                  <span className={Styles.Marketheader__resolutionSource}>
+                    {resolutionSource}
+                  </span>
                 </div>
                 {details.length > 0 && (
                   <div className={Styles.MarketHeader__details}>
+                    <h4>Additional Details</h4>
                     <label
                       ref={detailsContainer => {
                         this.detailsContainer = detailsContainer;
@@ -258,66 +288,52 @@ export default class MarketHeader extends Component {
                 )}
               </div>
             </div>
-
             <div className={Styles.MarketHeader__properties}>
-              <CoreProperties
-                market={market}
-                isMobile={isMobile}
-                isMobileSmall={isMobileSmall}
-              />
-            </div>
-
-            <div className={Styles.MarketHeader__timeStuff}>
-              {!isMobile && (
-                <div className={Styles.MarketHeader__watchlist__container}>
-                  <button
-                    onClick={() => this.addToFavorites()}
-                    className={Styles.MarketHeader__watchlist}
-                    disabled={!isLogged}
-                  >
-                    <span>
-                      {isFavorite ? (
-                        <span className={Styles.MarketHeader__hoverContainer}>
-                          <span className={Styles.MarketHeader__filledIcon}>
-                            {starIconFilled}
-                          </span>
-                        </span>
-                      ) : (
-                        <span className={Styles.MarketHeader__hoverContainer}>
-                          <span className={Styles.MarketHeader__iconDefault}>
-                            {starIconOpen}
-                          </span>
-                          <span className={Styles.MarketHeader__iconHover}>
-                            {starIconOutline}
-                          </span>
-                        </span>
-                      )}
-                      {isFavorite
-                        ? "Remove from watchlist"
-                        : "Add to watchlist"}
-                    </span>
-                  </button>
-                </div>
+              {market.id && (
+                <MarketHeaderBar
+                  marketId={market.id}
+                  reportingState={market.reportingState}
+                  addToFavorites={this.addToFavorites}
+                  isMobile={isMobile}
+                  isFavorite={isFavorite}
+                  collapsedView={headerCollapsed}
+                  marketType={marketType}
+                  description={description}
+                />
               )}
-              <TimeRange
-                currentTime={currentTime}
-                startTime={market.creationTime}
-                endTimestamp={endTimestamp}
-                hasPassed={hasPassed}
-                formattedEndTime={formattedEndTime}
-                isMobile={isMobile}
-              />
+              <div className={Styles.MarketHeader__properties__reporting}>
+                <MarketHeaderReporting marketId={market.id} />
+              </div>
+              <div className={Styles.MarketHeader__properties__core}>
+                <CoreProperties
+                  market={market}
+                  isMobile={isMobile}
+                  isMobileSmall={isMobileSmall}
+                />
+                <div className={Styles.MarketHeader__timeStuff}>
+                  <TimeRange
+                    currentTime={currentTime}
+                    startTime={market.creationTime}
+                    endTimestamp={endTimestamp}
+                    hasPassed={hasPassed}
+                    formattedEndTime={formattedEndTime}
+                    isMobile={isMobile}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         )}
-        <button
-          className={classNames({
-            [Styles.MarketHeader__button__collapsed]: headerCollapsed
-          })}
-          onClick={() => this.toggleMarketHeader()}
-        >
-          <ChevronFlip pointDown={headerCollapsed} hover />
-        </button>
+        {!isMobile && 
+          <button
+            className={classNames({
+              [Styles.MarketHeader__button__collapsed]: headerCollapsed
+            })}
+            onClick={() => this.toggleMarketHeader()}
+          >
+            <ChevronFlip pointDown={headerCollapsed} hover />
+          </button>
+        }
       </section>
     );
   }
