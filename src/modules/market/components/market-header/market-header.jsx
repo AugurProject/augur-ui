@@ -324,7 +324,7 @@ export default class MarketHeader extends Component {
             </div>
           </div>
         )}
-        {!isMobile && 
+        {!isMobile && (
           <button
             className={classNames({
               [Styles.MarketHeader__button__collapsed]: headerCollapsed
@@ -333,7 +333,7 @@ export default class MarketHeader extends Component {
           >
             <ChevronFlip pointDown={headerCollapsed} hover />
           </button>
-        }
+        )}
       </section>
     );
   }

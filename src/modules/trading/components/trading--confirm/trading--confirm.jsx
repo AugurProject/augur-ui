@@ -20,7 +20,6 @@ import { isEqual } from "lodash";
 
 class MarketTradingConfirm extends Component {
   static propTypes = {
-    numOutcomes: PropTypes.number.isRequired,
     trade: PropTypes.shape({
       numShares: PropTypes.string,
       limitPrice: PropTypes.string,
