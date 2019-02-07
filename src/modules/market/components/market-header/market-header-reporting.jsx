@@ -142,7 +142,10 @@ export default class MarketHeaderReporting extends Component {
           )}
           {canClaim &&
             reportingState === constants.REPORTING_STATE.FINALIZED && (
-              <div className={Styles.MarketHeaderReporting__buttonContainer}>
+              <div
+                key="claim"
+                className={Styles.MarketHeaderReporting__buttonContainer}
+              >
                 <button
                   className={Styles.MarketHeaderReporting__button}
                   onClick={() => {
@@ -226,7 +229,10 @@ export default class MarketHeaderReporting extends Component {
       reportingState === constants.REPORTING_STATE.OPEN_REPORTING
     ) {
       content = [
-        <div className={Styles.MarketHeaderReporting__winner__container}>
+        <div
+          key="winner"
+          className={Styles.MarketHeaderReporting__winner__container}
+        >
           <div className={Styles.MarketHeaderReporting__info}>
             <span
               className={classNames(
@@ -268,7 +274,9 @@ export default class MarketHeaderReporting extends Component {
     }
 
     return (
-      <div className={Styles.MarketHeaderReporting__container}>{content}</div>
+      <div key="content" className={Styles.MarketHeaderReporting__container}>
+        {content}
+      </div>
     );
   }
 }
