@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { SELL } from "modules/trades/constants/types";
+import { SELL } from "modules/common-elements/constants";
 import MarketOutcomeHeaderOrders from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders";
 import Styles from "modules/market/components/market-trade-history/market-trade-history.styles";
 

@@ -7,7 +7,7 @@ import {
   CATEGORY_PARAM_NAME,
   TAGS_PARAM_NAME,
   FILTER_SEARCH_PARAM
-} from "modules/filter-sort/constants/param-names";
+} from "modules/common-elements/constants";
 import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
 import { selectIsMobile, selectCategoriesState } from "src/select-state";
 

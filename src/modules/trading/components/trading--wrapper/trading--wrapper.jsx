@@ -9,8 +9,7 @@ import { downChevron } from "modules/common/components/icons";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
-import { SCALAR } from "modules/markets/constants/market-types";
-import { BUY, SELL } from "modules/transactions/constants/types";
+import { SCALAR, BUY, SELL } from "modules/common-elements/constants";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 
 class TradingWrapper extends Component {

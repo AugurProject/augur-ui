@@ -5,7 +5,7 @@ import QRCode from "qrcode.react";
 import Clipboard from "clipboard";
 import TextFit from "react-textfit";
 
-import { NETWORK_IDS } from "modules/app/constants/network";
+import { NETWORK_IDS } from "modules/common-elements/constants";
 import {
   Deposit as DepositIcon,
   Copy as CopyIcon
@@ -13,7 +13,7 @@ import {
 
 import { augur } from "services/augurjs";
 
-import { PrimaryButton } from "modules/common-elements/primary-button";
+import { PrimaryButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/account/components/account-deposit/account-deposit.styles";
 

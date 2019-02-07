@@ -3,7 +3,7 @@ import {
   MARKET_INFO_LOADING,
   MARKET_FULLY_LOADED,
   MARKET_FULLY_LOADING
-} from "modules/markets/constants/market-loading-states";
+} from "modules/common-elements/constants";
 import { isLoading } from "modules/markets/selectors/is-loading";
 
 describe(`modules/markets/selectors/is-loading.js`, () => {

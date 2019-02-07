@@ -10,15 +10,15 @@ import {
   TYPE_DISPUTE,
   TYPE_VIEW,
   TYPE_CLAIM_PROCEEDS,
-  TYPE_TRADE
-} from "modules/markets/constants/link-types";
-import { SCALAR } from "modules/markets/constants/market-types";
+  TYPE_TRADE,
+  SCALAR,
+  MODAL_MIGRATE_MARKET
+} from "modules/common-elements/constants";
 
 import getValue from "utils/get-value";
 import { dateHasPassed } from "utils/format-date";
 import Styles from "modules/market/components/market-properties/market-properties.styles";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
-import { MODAL_MIGRATE_MARKET } from "modules/modal/constants/modal-types";
 import { constants } from "services/augurjs";
 
 const {

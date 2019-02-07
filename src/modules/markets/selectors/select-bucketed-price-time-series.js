@@ -1,6 +1,6 @@
 import { createBigNumber } from "utils/create-big-number";
 import { sortBy, last, each, pullAll } from "lodash";
-import { ZERO } from "modules/trades/constants/numbers";
+import { ZERO } from "modules/common-elements/constants";
 
 export const selectBucketedPriceTimeSeries = (
   creationTime,

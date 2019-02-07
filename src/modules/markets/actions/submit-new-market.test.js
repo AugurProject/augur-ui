@@ -1,7 +1,7 @@
 import { createBigNumber } from "utils/create-big-number";
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
-import { BUY, SELL } from "modules/transactions/constants/types";
+import { BUY, SELL } from "modules/common-elements/constants";
 import { buildCreateMarket } from "modules/markets/helpers/build-create-market";
 
 jest.mock("modules/transactions/actions/add-transactions", () => ({

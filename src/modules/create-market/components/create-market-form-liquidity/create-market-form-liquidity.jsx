@@ -11,9 +11,14 @@ import InputDropdown from "modules/common/components/input-dropdown/input-dropdo
 import { ExclamationCircle as InputErrorIcon } from "modules/common/components/icons";
 import CreateMarketFormLiquidityCharts from "modules/market-charts/containers/create-market-form-liquidity-charts";
 
-import { BID, ASK } from "modules/transactions/constants/types";
-import { CATEGORICAL, SCALAR } from "modules/markets/constants/market-types";
-import { ONE, ZERO } from "modules/trades/constants/numbers";
+import {
+  CATEGORICAL,
+  SCALAR,
+  BID,
+  ASK,
+  ONE,
+  ZERO
+} from "modules/common-elements/constants";
 import getValue from "utils/get-value";
 import isPopulated from "utils/is-populated";
 

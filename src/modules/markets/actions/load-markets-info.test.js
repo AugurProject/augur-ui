@@ -4,7 +4,7 @@ import configureMockStore from "redux-mock-store";
 import {
   MARKET_INFO_LOADING,
   MARKET_INFO_LOADED
-} from "modules/markets/constants/market-loading-states";
+} from "modules/common-elements/constants";
 import {
   UPDATE_MARKET_LOADING,
   REMOVE_MARKET_LOADING

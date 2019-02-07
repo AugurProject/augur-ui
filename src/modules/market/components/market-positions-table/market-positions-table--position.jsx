@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import getValue from "utils/get-value";
-import { LONG } from "modules/positions/constants/position-types";
+import { LONG } from "modules/common-elements/constants";
 
 import Styles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";

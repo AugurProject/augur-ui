@@ -8,7 +8,7 @@ import {
   PENDING,
   SUBMITTED,
   INTERRUPTED
-} from "modules/transactions/constants/statuses";
+} from "modules/common-elements/constants";
 
 import { formatShares, formatEther, formatRep } from "utils/format-number";
 import { formatDate } from "utils/format-date";

@@ -2,8 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { augur } from "services/augurjs";
 import classNames from "classnames";
-import { BUY, SELL } from "modules/transactions/constants/types";
-import { SCALAR, YES_NO } from "modules/markets/constants/market-types";
+import {
+  SCALAR,
+  YES_NO,
+  BUY,
+  SELL,
+  ZERO
+} from "modules/common-elements/constants";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
@@ -14,7 +19,6 @@ import {
 import { DashlineLong } from "modules/common/components/dashline/dashline";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
-import { ZERO } from "modules/trades/constants/numbers";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { isEqual } from "lodash";
 

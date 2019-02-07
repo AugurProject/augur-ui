@@ -6,20 +6,10 @@ import {
   MARKET_END_DATE,
   MARKET_RECENTLY_TRADED,
   MARKET_FEE,
-  MARKET_OPEN_INTEREST
-} from "modules/filter-sort/constants/market-sort-params";
-import {
+  MARKET_OPEN_INTEREST,
   MARKET_OPEN,
   MARKET_REPORTING,
-  MARKET_CLOSED
-} from "modules/filter-sort/constants/market-states";
-import Checkbox from "src/modules/common/components/checkbox/checkbox";
-import Dropdown from "modules/common/components/dropdown/dropdown";
-import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropdowns.styles";
-import parseQuery from "modules/routes/helpers/parse-query";
-import makeQuery from "modules/routes/helpers/make-query";
-import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
-import {
+  MARKET_CLOSED,
   MAX_FEE_02_PERCENT,
   MAX_FEE_05_PERCENT,
   MAX_FEE_100_PERCENT,
@@ -27,7 +17,13 @@ import {
   MAX_FEE_20_PERCENT,
   MAX_FEE_30_PERCENT,
   MAX_FEE_40_PERCENT
-} from "src/modules/filter-sort/constants/market-max-fees";
+} from "modules/common-elements/constants";
+import Checkbox from "src/modules/common/components/checkbox/checkbox";
+import Dropdown from "modules/common/components/dropdown/dropdown";
+import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropdowns.styles";
+import parseQuery from "modules/routes/helpers/parse-query";
+import makeQuery from "modules/routes/helpers/make-query";
+import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },

@@ -1,7 +1,7 @@
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import { transferFunds } from "modules/auth/actions/transfer-funds";
-import { ETH, REP } from "modules/account/constants/asset-types";
+import { ETH, REP } from "modules/common-elements/constants";
 import { augur } from "services/augurjs";
 import * as updateAssetsModule from "modules/auth/actions/update-assets";
 import * as notificationsModule from "modules/notifications/actions/notifications";

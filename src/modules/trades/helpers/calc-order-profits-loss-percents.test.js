@@ -5,8 +5,7 @@ import {
   calcOrderShareProfitLoss
 } from "modules/trades/helpers/calc-order-profit-loss-percents";
 
-import { BUY, SELL } from "modules/transactions/constants/types";
-import { YES_NO, SCALAR } from "modules/markets/constants/market-types";
+import { YES_NO, SCALAR, BUY, SELL } from "modules/common-elements/constants";
 
 describe("modules/trades/helpers/calc-order-profit-loss-percents.js", () => {
   test(`should return null when an argument is missing`, () => {

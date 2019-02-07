@@ -4,8 +4,7 @@ import classNames from "classnames";
 
 import MarketOutcomeHeaderOrders from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders";
 
-import { ASKS, BIDS } from "modules/orders/constants/orders";
-import { BUY, SELL } from "modules/transactions/constants/types";
+import { ASKS, BIDS, BUY, SELL } from "modules/common-elements/constants";
 
 import Styles from "modules/market-charts/components/market-outcome--orders/market-outcome--orders.styles";
 import { isEmpty, isEqual } from "lodash";
@@ -15,9 +14,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     orderBook: PropTypes.object.isRequired,
     fixedPrecision: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
-    // updateHoveredPrice: PropTypes.func.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
-    // updatePrecision: PropTypes.func.isRequired,
     isMobile: PropTypes.bool.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     orderBookKeys: PropTypes.object.isRequired,

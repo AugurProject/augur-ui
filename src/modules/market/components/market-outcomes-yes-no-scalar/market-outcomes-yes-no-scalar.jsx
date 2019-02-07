@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { YES_NO } from "modules/markets/constants/market-types";
+import { YES_NO } from "modules/common-elements/constants";
 
 import getValue from "utils/get-value";
 import CustomPropTypes from "utils/custom-prop-types";

@@ -7,12 +7,10 @@ import {
   MARKET_END_DATE,
   MARKET_RECENTLY_TRADED,
   MARKET_FEE,
-  MARKET_OPEN_INTEREST
-} from "modules/filter-sort/constants/market-sort-params";
-import {
+  MARKET_OPEN_INTEREST,
   MARKET_REPORTING,
   MARKET_CLOSED
-} from "modules/filter-sort/constants/market-states";
+} from "modules/common-elements/constants";
 import { updateMarketsData } from "modules/markets/actions/update-markets-data";
 import {
   updateAppStatus,

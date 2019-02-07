@@ -6,8 +6,7 @@ import PropTypes from "prop-types";
 import { createBigNumber, BigNumber } from "utils/create-big-number";
 import Input from "modules/common/components/input/input";
 import InputDropdown from "modules/common/components/input-dropdown/input-dropdown";
-import { ZERO } from "modules/trades/constants/numbers";
-import { ETH, REP } from "modules/account/constants/asset-types";
+import { ETH, REP, ZERO } from "modules/common-elements/constants";
 import {
   ExclamationCircle as InputErrorIcon,
   Withdraw
@@ -15,7 +14,7 @@ import {
 import { formatEther, formatRep } from "utils/format-number";
 import isAddress from "modules/auth/helpers/is-address";
 import FormStyles from "modules/common/less/form";
-import { PrimaryButton } from "modules/common-elements/primary-button";
+import { PrimaryButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/account/components/account-withdraw/account-withdraw.styles";
 

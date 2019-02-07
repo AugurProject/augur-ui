@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { PrimaryButton } from "modules/common-elements/primary-button";
+import { PrimaryButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/account/components/account-rep-faucet/account-rep-faucet.styles";
 

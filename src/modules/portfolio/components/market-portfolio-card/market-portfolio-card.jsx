@@ -10,18 +10,16 @@ import MarketPositionsListOrder from "modules/market/components/market-positions
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import MarketLink from "modules/market/components/market-link/market-link";
 import {
+  AWAITING_SIGNATURE,
+  PENDING,
   TYPE_CLAIM_PROCEEDS,
   TYPE_FINALIZE_MARKET
-} from "modules/markets/constants/link-types";
+} from "modules/common-elements/constants";
 import { dateHasPassed } from "utils/format-date";
 import CommonStyles from "modules/market/components/common/market-common.styles";
 import PositionStyles from "modules/market/components/market-positions-list/market-positions-list.styles";
 import Styles from "modules/portfolio/components/market-portfolio-card/market-portfolio-card.styles";
 import MarketPortfolioCardFooter from "modules/portfolio/components/market-portfolio-card/market-portfolio-card-footer";
-import {
-  AWAITING_SIGNATURE,
-  PENDING
-} from "modules/transactions/constants/statuses";
 import determineMarketPhase from "utils/determine-market-phase";
 
 export default class MarketPortfolioCard extends Component {

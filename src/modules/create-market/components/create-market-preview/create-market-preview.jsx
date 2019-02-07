@@ -8,11 +8,7 @@ import { createBigNumber } from "utils/create-big-number";
 import speedomatic from "speedomatic";
 import { formatPercent } from "utils/format-number";
 
-import {
-  YES_NO,
-  CATEGORICAL,
-  SCALAR
-} from "modules/markets/constants/market-types";
+import { YES_NO, CATEGORICAL, SCALAR } from "modules/common-elements/constants";
 
 import CreateMarketPreviewRange from "modules/create-market/components/create-market-preview-range/create-market-preview-range";
 import CreateMarketPreviewCategorical from "modules/create-market/components/create-market-preview-categorical/create-market-preview-categorical";

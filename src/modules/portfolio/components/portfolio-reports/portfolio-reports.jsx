@@ -4,16 +4,16 @@ import { Helmet } from "react-helmet";
 
 import PortfolioReportsForkedMarketCard from "modules/portfolio/components/portfolio-reports/portfolio-reports-forked-market-card";
 import {
+  TYPE_CLAIM_PROCEEDS,
   MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET,
   MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS
-} from "modules/modal/constants/modal-types";
-import { TYPE_CLAIM_PROCEEDS } from "modules/markets/constants/link-types";
+} from "modules/common-elements/constants";
 import Styles from "modules/portfolio/components/portfolio-reports/portfolio-reports.styles";
 import DisputingMarkets from "modules/reporting/components/common/disputing-markets";
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";
 
-import { PrimaryButton } from "modules/common-elements/primary-button";
+import { PrimaryButton } from "modules/common-elements/buttons";
 
 export default class PortfolioReports extends Component {
   static propTypes = {

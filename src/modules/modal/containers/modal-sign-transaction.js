@@ -2,10 +2,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import ModalSignTransaction from "modules/modal/components/modal-sign-transaction";
 import { closeModal } from "modules/modal/actions/close-modal";
-import {
-  MODAL_LEDGER,
-  MODAL_TREZOR
-} from "modules/modal/constants/modal-types";
+import { MODAL_LEDGER, MODAL_TREZOR } from "modules/common-elements/constants";
 
 const signerTypes = {
   [MODAL_LEDGER]: "Ledger",

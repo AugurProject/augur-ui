@@ -1,7 +1,7 @@
 import {
   NOT_CONNECTED,
   ATTEMPTING_CONNECTION
-} from "modules/auth/constants/ledger-status";
+} from "modules/common-elements/constants";
 import {
   IS_LOGGED,
   LEDGER_STATUS,

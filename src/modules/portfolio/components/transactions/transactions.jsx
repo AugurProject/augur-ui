@@ -6,13 +6,11 @@ import TransactionSingle from "modules/portfolio/components/transaction-single/t
 import TransactionMultiple from "modules/portfolio/components/transaction-multiple/transaction-multiple";
 import Dropdown from "modules/common/components/dropdown/dropdown";
 import Paginator from "modules/common/components/paginator/paginator";
+
 import {
   DAY,
   WEEK,
-  MONTH
-} from "modules/transactions/constants/transaction-periods";
-
-import {
+  MONTH,
   ALL,
   MARKET_CREATION,
   TRANSFER,
@@ -20,7 +18,7 @@ import {
   TRADE,
   OPEN_ORDER,
   COMPLETE_SETS_SOLD
-} from "modules/transactions/constants/types";
+} from "modules/common-elements/constants";
 
 import { getBeginDate } from "src/utils/format-date";
 import { isEqual, orderBy } from "lodash";

@@ -6,11 +6,7 @@ import classNames from "classnames";
 import { createBigNumber } from "utils/create-big-number";
 import { constants } from "services/augurjs";
 
-import {
-  YES_NO,
-  CATEGORICAL,
-  SCALAR
-} from "modules/markets/constants/market-types";
+import { YES_NO, CATEGORICAL, SCALAR } from "modules/common-elements/constants";
 
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-report-form/reporting-report-form.styles";

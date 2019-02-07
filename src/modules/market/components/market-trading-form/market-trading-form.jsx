@@ -11,7 +11,7 @@ import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/market/components/market-trading-form/market-trading-form.styles";
 import { Close } from "modules/common/components/icons";
 
-import { PrimaryButton } from "modules/common-elements/primary-button";
+import { PrimaryButton } from "modules/common-elements/buttons";
 
 class MarketTradingForm extends Component {
   static propTypes = {
