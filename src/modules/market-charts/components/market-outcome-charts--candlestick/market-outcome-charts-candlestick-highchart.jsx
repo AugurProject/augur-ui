@@ -25,6 +25,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           type: "candlestick",
           styledMode: false,
           backgroundColor: "#211a32",
+          zoomType: "x",
           className: Styles.MarketOutcomeChartsCandlestickHighchart
         },
         xAxis: {
@@ -105,13 +106,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
     // set the allowed units for data grouping
     const groupingUnits = [
-      [
-        "hour", // unit name
-        [1] // allowed multiples
-      ],
-      ["day", [1, 2, 3, 4, 5, 6, 7]]
+      ["minute", [30]],
+      ["hour", [1, 2, 3, 4, 6, 8, 12]],
+      ["day", [1]],
+      ["week", [1]],
+      ["month", [1, 3, 6]],
+      ["year", [1]]
     ];
-
     const ohlc = [];
     const volume = [];
     each(priceTimeSeries, item => {
