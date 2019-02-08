@@ -84,7 +84,9 @@ export const selectCoreStats = createSelector(
       const marketPositions = Object.keys(positions[marketId]);
       marketPositions.forEach(outcomeId => {
         const outcomePosition = positions[marketId][outcomeId];
-        positionsETH = createBigNumber(outcomePosition.cost).plus(positionsETH);
+        positionsETH = createBigNumber(outcomePosition.averagePrice).plus(
+          positionsETH
+        );
       });
     });
     loginAccountPositions.markets.forEach(market => {
