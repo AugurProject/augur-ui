@@ -15,7 +15,7 @@ import logError from "utils/log-error";
 import {
   MARKET_FULLY_LOADING,
   MARKET_FULLY_LOADED
-} from "modules/markets/constants/market-loading-states";
+} from "modules/common-elements/constants";
 
 export const loadFullMarket = (marketId, callback = logError) => (
   dispatch,

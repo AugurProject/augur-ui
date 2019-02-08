@@ -4,6 +4,7 @@
 import React from "react";
 
 import { shallow } from "enzyme";
+import { PrimaryButton } from "src/modules/common-elements/buttons";
 
 import PortfolioReports from "src/modules/portfolio/components/portfolio-reports/portfolio-reports";
 
@@ -83,7 +84,7 @@ describe("portfolio-reports", () => {
 
       describe("claim-reporting-fees-nonforked-markets-button", () => {
         test("Is disabled", () => {
-          const button = Cmp.find("button");
+          const button = Cmp.find(PrimaryButton);
           expect(button.html()).toEqual(expect.stringContaining("disabled"));
         });
       });

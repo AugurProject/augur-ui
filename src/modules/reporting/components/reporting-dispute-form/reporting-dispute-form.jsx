@@ -4,15 +4,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { createBigNumber } from "utils/create-big-number";
-import { ZERO } from "modules/trades/constants/numbers";
-import { SCALAR } from "modules/markets/constants/market-types";
+import {
+  SCALAR,
+  MALFORMED_OUTCOME,
+  ZERO
+} from "modules/common-elements/constants";
 import { formatAttoRep, formatNumber } from "utils/format-number";
 import { augur } from "services/augurjs";
 import { ExclamationCircle as InputErrorIcon } from "modules/common/components/icons";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-dispute-form/reporting-dispute-form.styles";
 import ReportingDisputeProgress from "modules/reporting/components/reporting-dispute-progress/reporting-dispute-progress";
-import { MALFORMED_OUTCOME } from "utils/constants";
 import Input from "modules/common/components/input/input";
 
 const { ETHER } = augur.rpc.constants;

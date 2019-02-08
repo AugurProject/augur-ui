@@ -1,6 +1,5 @@
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { BUY } from "modules/transactions/constants/types";
-import { SCALAR } from "modules/markets/constants/market-types";
+import { SCALAR, BUY } from "modules/common-elements/constants";
 
 /**
  *

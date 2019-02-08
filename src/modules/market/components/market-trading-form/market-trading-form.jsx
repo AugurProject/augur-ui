@@ -7,16 +7,18 @@ import { isEqual } from "lodash";
 import classNames from "classnames";
 import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
-import { FindReact } from "utils/find-react";
 import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/market/components/market-trading-form/market-trading-form.styles";
 import { Close } from "modules/common/components/icons";
+
+import { PrimaryButton } from "modules/common-elements/buttons";
 
 class MarketTradingForm extends Component {
   static propTypes = {
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isLogged: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
+    isConnectionTrayOpen: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string,
@@ -27,7 +29,8 @@ class MarketTradingForm extends Component {
     toggleMobileView: PropTypes.func.isRequired,
     updateTradeCost: PropTypes.func.isRequired,
     updateTradeShares: PropTypes.func.isRequired,
-    showSelectOutcome: PropTypes.func.isRequired
+    showSelectOutcome: PropTypes.func.isRequired,
+    toggleConnectionTray: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -78,6 +81,7 @@ class MarketTradingForm extends Component {
       availableFunds,
       isLogged,
       isMobile,
+      isConnectionTrayOpen,
       market,
       selectedOrderProperties,
       gasPrice,
@@ -86,7 +90,8 @@ class MarketTradingForm extends Component {
       toggleMobileView,
       updateTradeCost,
       updateTradeShares,
-      showSelectOutcome
+      showSelectOutcome,
+      toggleConnectionTray
     } = this.props;
     const s = this.state;
 
@@ -142,29 +147,13 @@ class MarketTradingForm extends Component {
                 {Close}
               </span>
             )}
-            {initialMessage && (
-              <p>
-                <span>{initialMessage}</span>
-              </p>
-            )}
+            {initialMessage && <p>{initialMessage}</p>}
             {!isLogged && (
-              <div>
-                <div>
-                  <button
-                    id="login-button"
-                    className={Styles["MarketTradingForm__button--message"]}
-                    onClick={() =>
-                      FindReact(
-                        document.getElementsByClassName(
-                          "connect-account-styles_ConnectAccount"
-                        )[0]
-                      ).toggleDropdown()
-                    }
-                  >
-                    Connect a Wallet
-                  </button>
-                </div>
-              </div>
+              <PrimaryButton
+                id="login-button"
+                action={() => toggleConnectionTray(!isConnectionTrayOpen)}
+                text="Connect a Wallet"
+              />
             )}
             {!hasFunds && isLogged && (
               <Link to={makePath(ACCOUNT_DEPOSIT)}>

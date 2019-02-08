@@ -6,11 +6,7 @@ import {
   updateTransactionStatus,
   clearTransactionStatus
 } from "modules/transactions/actions/update-transactions-status";
-import {
-  AWAITING_SIGNATURE,
-  PENDING
-} from "modules/transactions/constants/statuses";
-// import noop from "utils/noop";
+import { AWAITING_SIGNATURE, PENDING } from "modules/common-elements/constants";
 
 export function sellCompleteSets(
   marketId,

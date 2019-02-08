@@ -12,11 +12,7 @@ import toggleTag from "modules/routes/helpers/toggle-tag";
 import toggleCategory from "modules/routes/helpers/toggle-category";
 import { formatDate } from "utils/format-date";
 import getValue from "utils/get-value";
-import {
-  YES_NO,
-  SCALAR,
-  CATEGORICAL
-} from "modules/markets/constants/market-types";
+import { YES_NO, SCALAR, CATEGORICAL } from "modules/common-elements/constants";
 
 import CommonStyles from "modules/market/components/common/market-common.styles";
 import Styles from "modules/market/components/market-basics/market-basics.styles";

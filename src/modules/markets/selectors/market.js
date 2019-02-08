@@ -37,18 +37,17 @@ import {
   isMarketDataOpen,
   isMarketDataExpired
 } from "utils/is-market-data-open";
-import { ZERO } from "modules/trades/constants/numbers";
-import { UNIVERSE_ID } from "modules/app/constants/network";
 import {
   YES_NO,
   CATEGORICAL,
-  SCALAR
-} from "modules/markets/constants/market-types";
-import {
+  SCALAR,
+  ZERO,
+  UNIVERSE_ID,
   YES_NO_INDETERMINATE_OUTCOME_ID,
   CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID,
-  INDETERMINATE_OUTCOME_NAME
-} from "modules/markets/constants/market-outcomes";
+  INDETERMINATE_OUTCOME_NAME,
+  LONG
+} from "modules/common-elements/constants";
 
 import { placeTrade } from "modules/trades/actions/place-trade";
 import { submitReport } from "modules/reports/actions/submit-report";
@@ -76,7 +75,6 @@ import {
 import { selectReportableOutcomes } from "modules/reports/selectors/reportable-outcomes";
 
 import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
-import { LONG } from "modules/positions/constants/position-types";
 
 export default function() {
   return selectSelectedMarket(store.getState());

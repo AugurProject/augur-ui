@@ -8,7 +8,7 @@ import {
   starIconOpen,
   starIconFilled
 } from "modules/common/components/icons";
-import { YES_NO } from "modules/markets/constants/market-types";
+import { YES_NO } from "modules/common-elements/constants";
 
 const MarketHeaderBar = ({
   reportingState,

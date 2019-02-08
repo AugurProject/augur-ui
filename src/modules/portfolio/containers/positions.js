@@ -11,7 +11,7 @@ import { constants } from "services/augurjs";
 import { orderBy } from "lodash";
 import { selectMarket } from "modules/markets/selectors/market";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/modal/constants/modal-types";
+import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 
 const mapStateToProps = state => {
   const positions = getLoginAccountPositions();

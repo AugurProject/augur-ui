@@ -1,5 +1,5 @@
 import * as updateNotifications from "modules/notifications/actions/notifications";
-import * as notificationLevels from "modules/notifications/constants/notifications";
+import * as notificationLevels from "modules/common-elements/constants";
 import thunk from "redux-thunk";
 import testState from "test/testState";
 import configureMockStore from "redux-mock-store";

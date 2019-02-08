@@ -15,7 +15,7 @@ import {
   EXPIRY_SOURCE_SPECIFIC,
   DESIGNATED_REPORTER_SELF,
   DESIGNATED_REPORTER_SPECIFIC
-} from "modules/markets/constants/new-market-constraints";
+} from "modules/common-elements/constants";
 import isAddress from "modules/auth/helpers/is-address";
 
 import InputDropdown from "modules/common/components/input-dropdown/input-dropdown";

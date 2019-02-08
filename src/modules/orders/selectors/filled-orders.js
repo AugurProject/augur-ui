@@ -1,6 +1,5 @@
 import { createBigNumber } from "utils/create-big-number";
-import { SCALAR } from "modules/markets/constants/market-types";
-import { BUY, SELL } from "modules/transactions/constants/types";
+import { SCALAR, BUY, SELL } from "modules/common-elements/constants";
 
 function findOrders(
   filledOrders,

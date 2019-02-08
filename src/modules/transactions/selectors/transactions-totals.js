@@ -6,7 +6,7 @@ import {
   SUCCESS,
   FAILED,
   INTERRUPTED
-} from "modules/transactions/constants/statuses";
+} from "modules/common-elements/constants";
 
 export default function() {
   return selectTransactionsTotals(store.getState());

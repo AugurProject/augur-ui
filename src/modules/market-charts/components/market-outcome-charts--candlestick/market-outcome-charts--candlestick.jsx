@@ -10,7 +10,6 @@ import ReactFauxDOM from "react-faux-dom";
 import { map, sortBy } from "lodash";
 
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
-// import { BUY, SELL } from "modules/transactions/constants/types";
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
@@ -20,13 +19,10 @@ import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
 class MarketOutcomeCandlestick extends React.PureComponent {
   static propTypes = {
-    // currentTimeInSeconds: PropTypes.number,
     fixedPrecision: PropTypes.number.isRequired,
     isMobile: PropTypes.bool,
-    // isMobileSmall: PropTypes.bool,
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
-    // outcomeName: PropTypes.string.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     selectedRange: PropTypes.number.isRequired,
@@ -36,9 +32,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
   };
 
   static defaultProps = {
-    // currentTimeInSeconds: null,
     isMobile: false
-    // isMobileSmall: false
   };
 
   static getDerivedStateFromProps(

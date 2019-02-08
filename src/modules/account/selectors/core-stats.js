@@ -9,7 +9,7 @@ import {
 } from "src/select-state";
 import { augur } from "services/augurjs";
 import { formatEther } from "utils/format-number";
-import { ZERO } from "modules/trades/constants/numbers";
+import { ZERO } from "modules/common-elements/constants";
 import { selectLoginAccount } from "modules/auth/selectors/login-account";
 import selectLoginAccountPositions from "modules/positions/selectors/login-account-positions";
 import getValue from "utils/get-value";
@@ -84,7 +84,9 @@ export const selectCoreStats = createSelector(
       const marketPositions = Object.keys(positions[marketId]);
       marketPositions.forEach(outcomeId => {
         const outcomePosition = positions[marketId][outcomeId];
-        positionsETH = createBigNumber(outcomePosition.cost).plus(positionsETH);
+        positionsETH = createBigNumber(outcomePosition.averagePrice).plus(
+          positionsETH
+        );
       });
     });
     loginAccountPositions.markets.forEach(market => {

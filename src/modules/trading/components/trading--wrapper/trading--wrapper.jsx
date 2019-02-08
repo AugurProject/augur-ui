@@ -9,10 +9,9 @@ import { downChevron } from "modules/common/components/icons";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
-// import { FindReact } from "utils/find-react";
-import { SCALAR } from "modules/markets/constants/market-types";
-import { BUY, SELL } from "modules/transactions/constants/types";
+import { SCALAR, BUY, SELL } from "modules/common-elements/constants";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
+import { OrderButton } from "modules/common-elements/buttons";
 
 class TradingWrapper extends Component {
   static propTypes = {
@@ -395,13 +394,9 @@ class TradingWrapper extends Component {
               (s.trade.shareCost.value !== 0 || s.trade.totalCost.value !== 0)
           })}
         >
-          <button
-            className={classNames(Styles["TradingWrapper__button--submit"], {
-              [Styles.long]: selectedNav === BUY,
-              [Styles.short]: selectedNav === SELL,
-              [Styles.disabled]: !s.trade || !s.trade.limitPrice
-            })}
-            onClick={e => {
+          <OrderButton
+            type={selectedNav}
+            action={e => {
               e.preventDefault();
               market.onSubmitPlaceTrade(
                 s.trade,
@@ -420,9 +415,8 @@ class TradingWrapper extends Component {
                 s.doNotCreateOrders
               );
             }}
-          >
-            Place {selectedNav === BUY ? "Buy" : "Sell"} Order
-          </button>
+            disabled={!s.trade || !s.trade.limitPrice}
+          />
         </div>
       </section>
     );

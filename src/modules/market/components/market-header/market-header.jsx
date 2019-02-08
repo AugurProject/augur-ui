@@ -8,7 +8,6 @@ import {
 } from "modules/common/components/icons";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 import MarketHeaderBar from "modules/market/containers/market-header-bar";
-import { SCALAR } from "modules/markets/constants/market-types";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
@@ -23,8 +22,9 @@ import { CategoryTagTrail } from "src/modules/common/components/category-tag-tra
 import { compact } from "lodash";
 import {
   CATEGORY_PARAM_NAME,
-  TAGS_PARAM_NAME
-} from "modules/filter-sort/constants/param-names";
+  TAGS_PARAM_NAME,
+  SCALAR
+} from "modules/common-elements/constants";
 import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
 
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";

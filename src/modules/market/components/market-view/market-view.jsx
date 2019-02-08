@@ -15,14 +15,15 @@ import MarketTradingForm from "modules/market/containers/market-trading-form";
 import MarketChartsPane from "modules/market-charts/components/market-charts-pane/market-charts-pane";
 import parseMarketTitle from "modules/markets/helpers/parse-market-title";
 import MarketTradeHistory from "modules/market/containers/market-trade-history";
-import { CATEGORICAL } from "modules/markets/constants/market-types";
-import { BUY } from "modules/transactions/constants/types";
+import {
+  CATEGORICAL,
+  BUY,
+  MODAL_TRADING_OVERLAY
+} from "modules/common-elements/constants";
 import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs";
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 import MarketOutcomeSelector from "modules/market/components/market-view/market-outcome-selector";
-// import { Close } from "modules/common/components/icons";
 import MarketOutcomesChart from "src/modules/market-charts/containers/market-outcomes-chart";
-import { MODAL_TRADING_OVERLAY } from "modules/modal/constants/modal-types";
 
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";

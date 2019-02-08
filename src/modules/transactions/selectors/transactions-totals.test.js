@@ -3,7 +3,7 @@ import {
   SUCCESS,
   FAILED,
   INTERRUPTED
-} from "modules/transactions/constants/statuses";
+} from "modules/common-elements/constants";
 import * as transactions from "modules/transactions/selectors/transactions";
 
 import { selectTransactionsTotalsCreator } from "src/modules/transactions/selectors/transactions-totals";

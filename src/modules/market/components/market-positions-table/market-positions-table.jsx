@@ -4,14 +4,14 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import MarketPositionsListPosition from "modules/market/components/market-positions-table/market-positions-table--position";
-import { SCALAR } from "modules/markets/constants/market-types";
+import {
+  SCALAR,
+  AWAITING_SIGNATURE,
+  PENDING
+} from "modules/common-elements/constants";
 
 import SharedStyles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 import Styles from "modules/market/components/market-positions-table/market-positions-table.styles";
-import {
-  AWAITING_SIGNATURE,
-  PENDING
-} from "modules/transactions/constants/statuses";
 
 export default class MarketPositionsList extends Component {
   static propTypes = {

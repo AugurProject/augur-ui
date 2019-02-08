@@ -5,7 +5,7 @@ import store from "src/store";
 
 import { isOrderOfUser } from "modules/orders/helpers/is-order-of-user";
 
-import { BUY, SELL } from "modules/transactions/constants/types";
+import { BUY, SELL } from "modules/common-elements/constants";
 
 import { formatNone, formatEther, formatShares } from "utils/format-number";
 import { cancelOrder } from "modules/orders/actions/cancel-order";

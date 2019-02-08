@@ -11,7 +11,7 @@ import {
   TYPE_TRADE,
   TYPE_REPORT,
   TYPE_FINALIZE_MARKET
-} from "modules/markets/constants/link-types";
+} from "modules/common-elements/constants";
 import { constants } from "services/augurjs";
 import { CREATE_MARKET } from "modules/routes/constants/views";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";

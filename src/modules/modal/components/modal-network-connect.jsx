@@ -9,7 +9,7 @@ import Styles from "modules/modal/components/common/common.styles";
 import ModalActions from "modules/modal/components/common/modal-actions";
 import { windowRef } from "src/utils/window-ref";
 import { editEndpointParams } from "src/utils/edit-endpoint-params";
-import { MODAL_NETWORK_CONNECT } from "modules/modal/constants/modal-types";
+import { MODAL_NETWORK_CONNECT } from "modules/common-elements/constants";
 
 export default class ModalNetworkConnect extends Component {
   static propTypes = {

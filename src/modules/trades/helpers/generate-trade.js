@@ -8,8 +8,7 @@ import {
 } from "modules/trades/helpers/calc-order-profit-loss-percents";
 import { augur } from "services/augurjs";
 import { calculateMaxPossibleShares } from "modules/markets/helpers/calculate-max-possible-shares";
-import { BIDS, ASKS } from "modules/orders/constants/orders";
-import * as TRANSACTIONS_TYPES from "modules/transactions/constants/types";
+import * as constants from "modules/common-elements/constants";
 import { selectAggregateOrderBook } from "modules/orders/helpers/select-order-book";
 import store from "src/store";
 
@@ -25,8 +24,7 @@ export const generateTrade = memoize(
     const { loginAccount } = store.getState();
     const { settlementFee } = market;
     const side =
-      (outcomeTradeInProgress && outcomeTradeInProgress.side) ||
-      TRANSACTIONS_TYPES.BUY;
+      (outcomeTradeInProgress && outcomeTradeInProgress.side) || constants.BUY;
     const numShares =
       (outcomeTradeInProgress && outcomeTradeInProgress.numShares) || null;
     const sharesFilled =
@@ -94,9 +92,7 @@ export const generateTrade = memoize(
     if (limitPrice != null) {
       const orders = augur.trading.filterAndSortByPrice({
         singleOutcomeOrderBookSide: (orderBooks[outcome.id] || {})[
-          side === TRANSACTIONS_TYPES.BUY
-            ? TRANSACTIONS_TYPES.SELL
-            : TRANSACTIONS_TYPES.BUY
+          side === constants.BUY ? constants.SELL : constants.BUY
         ],
         orderType: side,
         price: limitPrice,
@@ -151,8 +147,8 @@ export const generateTrade = memoize(
       shareCost: formatEther(shareCost.abs().toFixed(), { blankZero: false }), // These are actually shares, but they can be formatted like ETH
 
       tradeTypeOptions: [
-        { label: TRANSACTIONS_TYPES.BUY, value: TRANSACTIONS_TYPES.BUY },
-        { label: TRANSACTIONS_TYPES.SELL, value: TRANSACTIONS_TYPES.SELL }
+        { label: constants.BUY, value: constants.BUY },
+        { label: constants.SELL, value: constants.SELL }
       ],
 
       totalSharesUpToOrder: (orderIndex, side) =>
@@ -170,7 +166,7 @@ const totalSharesUpToOrder = memoize(
       outcomeId,
       orderBooks,
       orderCancellation
-    )[side === TRANSACTIONS_TYPES.BUY ? BIDS : ASKS];
+    )[side === constants.BUY ? constants.BIDS : constants.ASKS];
 
     return sideOrders
       .filter((order, i) => i <= orderIndex)
@@ -205,7 +201,7 @@ export const generateTradeOrders = memoize(
           ? outcomeTradeInProgress.limitPrice
           : tradeAction.noFeePrice;
       return {
-        type: TRANSACTIONS_TYPES[tradeAction.action],
+        type: constants[tradeAction.action],
         data: {
           marketId,
           outcomeId,

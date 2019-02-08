@@ -8,7 +8,7 @@ import {
   addCompleteSetsSoldLogs
 } from "modules/transactions/actions/add-transactions";
 import { updateTransactionsData } from "modules/transactions/actions/update-transactions-data";
-import { SUCCESS } from "modules/transactions/constants/statuses";
+import { SUCCESS } from "modules/common-elements/constants";
 import { formatEther } from "utils/format-number";
 import { convertUnixToFormattedDate } from "utils/format-date";
 import logError from "utils/log-error";

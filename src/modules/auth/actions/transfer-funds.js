@@ -5,7 +5,7 @@ import {
   addNotification
 } from "modules/notifications/actions/notifications";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
-import { ETH, REP } from "modules/account/constants/asset-types";
+import { ETH, REP } from "modules/common-elements/constants";
 
 export function transferFunds(amount, currency, toAddress) {
   return (dispatch, getState) => {

@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
-import { SCALAR } from "modules/markets/constants/market-types";
+import { SCALAR } from "modules/common-elements/constants";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 

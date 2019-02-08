@@ -3,14 +3,14 @@ import { createBigNumber } from "utils/create-big-number";
 import store from "src/store";
 import { selectTransactionsDataState } from "src/select-state";
 
-import { BUY } from "modules/transactions/constants/types";
 import {
+  BUY,
   PENDING,
   SUCCESS,
   FAILED,
   SUBMITTED,
   INTERRUPTED
-} from "modules/transactions/constants/statuses";
+} from "modules/common-elements/constants";
 
 import getValue from "utils/get-value";
 import { formatShares, formatEther, formatRep } from "utils/format-number";

@@ -19,7 +19,7 @@ import ModalGasPrice from "modules/modal/containers/modal-gas-price";
 import ModalClaimTradingProceeds from "modules/modal/containers/modal-claim-trading-proceeds";
 import ModalTradingOverlay from "modules/modal/components/modal-trading-overlay";
 
-import * as TYPES from "modules/modal/constants/modal-types";
+import * as TYPES from "modules/common-elements/constants";
 
 import Styles from "modules/modal/components/common/common.styles";
 

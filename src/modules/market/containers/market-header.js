@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import MarketHeader from "modules/market/components/market-header/market-header";
-import { ZERO } from "modules/trades/constants/numbers";
+import { ZERO } from "modules/common-elements/constants";
 import { selectMarket } from "modules/markets/selectors/market";
 import { toggleFavorite } from "modules/markets/actions/update-favorites";
 

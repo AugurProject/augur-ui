@@ -6,7 +6,7 @@ import parseQuery from "modules/routes/helpers/parse-query";
 import makeQuery from "modules/routes/helpers/make-query";
 
 import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
-import { FILTER_SEARCH_PARAM } from "modules/filter-sort/constants/param-names";
+import { FILTER_SEARCH_PARAM } from "modules/common-elements/constants";
 import { Hint } from "modules/common/components/icons";
 import Styles from "modules/filter-sort/components/filter-search/filter-search.styles";
 import ReactTooltip from "react-tooltip";

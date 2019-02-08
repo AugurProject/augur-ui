@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 
-import { RANGES, PERIODS } from "modules/markets/constants/permissible-periods";
+import { RANGES, PERIODS } from "modules/common-elements/constants";
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick-period-selector/market-outcome-charts--candlestick-period-selector.styles";
 import { limitPeriodByRange } from "modules/markets/helpers/range";

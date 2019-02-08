@@ -3,7 +3,7 @@ import { compose, find, partial, property } from "lodash/fp";
 // 'full' meaning no partial application
 import { clampPeriodByRange as fullClampPeriodByRange } from "modules/markets/helpers/clamp-period-by-range";
 import { getDefaultRangePeriodDuration } from "modules/markets/helpers/get-default-range-period-durations";
-import { PERIODS, RANGES } from "modules/markets/constants/permissible-periods";
+import { PERIODS, RANGES } from "modules/common-elements/constants";
 import { limitPeriodByRange as fullLimitPeriodByRange } from "modules/markets/helpers/limit-period-by-range";
 
 export const clampPeriodByRange = partial(fullClampPeriodByRange, [PERIODS]);
