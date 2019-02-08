@@ -5,11 +5,11 @@ import { map, mapValues } from "lodash/fp";
 
 const mutatePeriod = map(
   ({ max, min, start, end, startTimestamp, volume }) => ({
-    period: startTimestamp,
+    period: startTimestamp * 1000,
     open: parseFloat(start),
-    close: parseFloat(end),
-    low: parseFloat(min),
     high: parseFloat(max),
+    low: parseFloat(min),
+    close: parseFloat(end),
     volume: parseFloat(volume)
   })
 );

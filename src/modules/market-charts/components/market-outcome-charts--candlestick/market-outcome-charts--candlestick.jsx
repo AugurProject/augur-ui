@@ -14,7 +14,7 @@ import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-b
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
-
+import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart";
 import { createBigNumber } from "utils/create-big-number";
 import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
@@ -131,8 +131,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
 
   getContainerWidths() {
     return {
-      containerWidth: this.drawContainer.clientWidth,
-      containerHeight: this.drawContainer.clientHeight
+      containerWidth: 200, // this.drawContainer.clientWidth,
+      containerHeight: 100 // this.drawContainer.clientHeight
     };
   }
 
@@ -423,14 +423,12 @@ class MarketOutcomeCandlestick extends React.PureComponent {
             </div>
           </div>
         </section>
-        <div
-          ref={drawContainer => {
-            this.drawContainer = drawContainer;
-          }}
-          className={Styles.MarketOutcomeCandlestick__container}
-        >
-          {chart}
-        </div>
+        <MarketOutcomeChartsCandlestickHighchart
+          priceTimeSeries={priceTimeSeries}
+          selectedRange={selectedRange}
+          selectedPeriod={selectedPeriod}
+          pricePrecision={pricePrecision}
+        />
       </section>
     );
   }
