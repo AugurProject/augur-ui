@@ -34,14 +34,14 @@
 
   background: @color-buy-order-button-background;
   border-color: @color-buy-order-button-border;
-  color: @color-order-button-text;
+  color: @color-secondary-button-text;
   max-height: @button-height-orders;
   padding: @button-padding-orders;
 
   &:disabled {
     background: @color-buy-order-button-background-disabled;
     border-color: @color-buy-order-button-border-disabled;
-    color: @color-order-button-text-disabled;
+    color: @color-secondary-button-text-disabled;
   }
 
   &:hover:enabled {
@@ -54,17 +54,76 @@
 
   background: @color-sell-order-button-background;
   border-color: @color-sell-order-button-border;
-  color: @color-order-button-text;
+  color: @color-secondary-button-text;
   max-height: @button-height-orders;
   padding: @button-padding-orders;
 
   &:disabled {
     background: @color-sell-order-button-background-disabled;
     border-color: @color-sell-order-button-border-disabled;
-    color: @color-order-button-text-disabled;
+    color: @color-secondary-button-text-disabled;
   }
 
   &:hover:enabled {
     background: @color-sell-order-button-background-hover;
+  }
+}
+
+.FavoriteButton {
+  .text-smaller;
+
+  align-items: center;
+  color: @color-secondary-button-text;
+  cursor: @button-cursor;
+  display: flex;
+  flex-flow: row nowrap;
+
+  > svg {
+    margin-right: 0.5rem;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+  }
+
+  > svg > path {
+    fill: @color-secondary-button-text;
+    fill-opacity: 0.1;
+    stroke: @color-secondary-button-text;
+  }
+
+  &:disabled {
+    color: @color-secondary-button-text-disabled;
+    cursor: @button-cursor-disabled;
+
+    > svg > path {
+      fill-opacity: 0.1;
+      stroke: @color-secondary-button-text-disabled;
+      stroke-opacity: 0.3;
+    }
+  }
+
+  &:hover:enabled {
+    > svg > path {
+      fill: @color-primary;
+      fill-opacity: 0.1;
+      stroke: @color-primary;
+    }
+  }
+}
+
+.FavoriteButton_Favorite {
+  .FavoriteButton;
+
+  > svg > path {
+    fill: @color-primary;
+    fill-opacity: 1;
+    stroke: @color-primary;
+  }
+
+  &:hover:enabled {
+    > svg > path {
+      fill: @color-primary;
+      fill-opacity: 0.5;
+      stroke: @color-primary;
+    }
   }
 }
