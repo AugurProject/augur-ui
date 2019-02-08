@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import HighchartsReact from "modules/common/components/highcharts/highcharts-react";
+import Highcharts from "highcharts/highstock";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestic.-highchart.styles";
 import { each, isEqual } from "lodash";
 
@@ -14,27 +14,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
   static defaultProps = {};
 
-  static processArray(data) {
-    const data2Price = [];
-    const data2Volume = [];
-    let i = 0;
-    const dataLength = data.length;
-    for (i; i < dataLength; i += 1) {
-      data2Price.push([
-        data[i][0], // the date
-        data[i][1], // open
-        data[i][2], // high
-        data[i][3], // low
-        data[i][4] // close
-      ]);
-
-      data2Volume.push([
-        data[i][0], // the date
-        data[i][5] // the volume
-      ]);
-    }
-    return { ohlc: data2Price, volume: data2Volume };
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -45,16 +24,67 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         chart: {
           type: "candlestick",
           styledMode: false,
+          backgroundColor: "#211a32",
           className: Styles.MarketOutcomeChartsCandlestickHighchart
+        },
+        xAxis: {
+          labels: {
+            style: {
+              color: "#E0E0E3"
+            }
+          },
+          lineColor: "#707073",
+          minorGridLineColor: "#505053",
+          tickColor: "#707073"
+        },
+        yAxis: [
+          {
+            labels: {
+              align: "right",
+              x: -3
+            },
+            className:
+              Styles.MarketOutcomeChartsCandlestickHighchart__openClose_axis,
+            title: {
+              text: ""
+            },
+            height: "60%",
+            lineWidth: 1,
+            resize: {
+              enabled: true
+            }
+          },
+          {
+            // volume
+            labels: {
+              align: "right",
+              x: -3
+            },
+            className:
+              Styles.MarketOutcomeChartsCandlestickHighchart__volume_axis,
+            title: {
+              text: ""
+            },
+            top: "65%",
+            height: "35%",
+            offset: 0,
+            lineWidth: 1
+          }
+        ],
+        tooltip: { enabled: false },
+        rangeSelector: {
+          enabled: false
         }
       }
     };
     this.buidOptions = this.buidOptions.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { priceTimeSeries } = this.props;
-    this.buidOptions(priceTimeSeries);
+    this.buidOptions(priceTimeSeries, options => {
+      this.chart = Highcharts.stockChart(this.container, options);
+    });
   }
 
   componentWillUpdate(nextProps) {
@@ -63,7 +93,14 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
   }
 
-  buidOptions(priceTimeSeries) {
+  componentWillUnmount() {
+    if (this.chart) {
+      this.chart.destroy();
+      this.chart = null;
+    }
+  }
+
+  buidOptions(priceTimeSeries, callback) {
     const { options } = this.state;
 
     // set the allowed units for data grouping
@@ -83,45 +120,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       volume.push([period, item.volume]);
     });
 
-    const dataOptions = Object.assign(options, {
-      yAxis: [
-        {
-          labels: {
-            align: "right",
-            x: -3
-          },
-          className:
-            Styles.MarketOutcomeChartsCandlestickHighchart__openClose_axis,
-          title: {
-            text: ""
-          },
-          height: "60%",
-          lineWidth: 1,
-          resize: {
-            enabled: true
-          }
-        },
-        {
-          // volume
-          labels: {
-            align: "right",
-            x: -3
-          },
-          className:
-            Styles.MarketOutcomeChartsCandlestickHighchart__volume_axis,
-          title: {
-            text: ""
-          },
-          top: "65%",
-          height: "35%",
-          offset: 0,
-          lineWidth: 1
-        }
-      ],
-      tooltip: { enabled: false },
-      rangeSelector: {
-        enabled: false
-      },
+    const newOptions = Object.assign(options, {
       series: [
         {
           type: "candlestick",
@@ -146,11 +145,20 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       ]
     });
 
-    this.setState({ options: dataOptions });
+    this.setState({ options: newOptions });
+    if (this.chart) {
+      this.chart.update(newOptions);
+    }
+    if (callback) callback(newOptions);
   }
-  render() {
-    const { options } = this.state;
 
-    return <HighchartsReact options={options} />;
+  render() {
+    return (
+      <div
+        ref={container => {
+          this.container = container;
+        }}
+      />
+    );
   }
 }
