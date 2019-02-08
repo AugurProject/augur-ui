@@ -45,27 +45,29 @@ const orderAndAssignCumulativeShares = memoize(
       createBigNumber(mostShares).plus(
         createBigNumber(mostShares).times(createBigNumber(0.15))
       );
-    const bids = rawBids.sort((a, b) => b.price.value - a.price.value).reduce(
-      (p, order, i, orders) => [
-        ...p,
-        {
-          price: order.price,
-          shares: order.shares,
-          quantityScale: calculateQuantityScale(
-            outOf,
-            order.shares.value
-          ).toString(),
-          cumulativeShares:
-            p[i - 1] != null
-              ? p[i - 1].cumulativeShares.plus(order.shares.fullPrecision)
-              : createBigNumber(order.shares.fullPrecision),
-          mySize: userOpenOrders
-            ? calculateMySize(userOpenOrders.buy, loginAccount, order.price)
-            : order.shares // use shares for creating market
-        }
-      ],
-      []
-    );
+    const bids = rawBids
+      .sort((a, b) => b.price.value - a.price.value)
+      .reduce(
+        (p, order, i, orders) => [
+          ...p,
+          {
+            price: order.price,
+            shares: order.shares,
+            quantityScale: calculateQuantityScale(
+              outOf,
+              order.shares.value
+            ).toString(),
+            cumulativeShares:
+              p[i - 1] != null
+                ? p[i - 1].cumulativeShares.plus(order.shares.fullPrecision)
+                : createBigNumber(order.shares.fullPrecision),
+            mySize: userOpenOrders
+              ? calculateMySize(userOpenOrders.buy, loginAccount, order.price)
+              : order.shares // use shares for creating market
+          }
+        ],
+        []
+      );
 
     const asks = rawAsks
       .sort((a, b) => a.price.value - b.price.value)

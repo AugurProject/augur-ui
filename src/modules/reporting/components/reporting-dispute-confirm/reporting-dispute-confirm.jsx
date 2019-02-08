@@ -19,13 +19,12 @@ const ReportingDisputeConfirm = ({
               <span>Proposed Outcome</span>
               <span>{!isMarketInValid ? selectedOutcome : "Invalid"}</span>
             </li>
-            {stakeInfo &&
-              stakeInfo.displayValue && (
-                <li>
-                  <span>Stake</span>
-                  <span>{stakeInfo.displayValue} REP</span>
-                </li>
-              )}
+            {stakeInfo && stakeInfo.displayValue && (
+              <li>
+                <span>Stake</span>
+                <span>{stakeInfo.displayValue} REP</span>
+              </li>
+            )}
             <li>
               <span>Gas</span>
               <span>{gasEstimate} ETH</span>

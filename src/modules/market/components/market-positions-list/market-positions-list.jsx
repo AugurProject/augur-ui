@@ -144,22 +144,21 @@ export default class MarketPositionsList extends Component {
               </div>
             )}
           </div>
-          {numCompleteSets &&
-            numCompleteSets.value > 0 && (
-              <div className={Styles.MarketPositionsList__completeSets}>
-                <span>{`You currently have ${
-                  numCompleteSets.full
-                } of all outcomes.`}</span>
-                <button
-                  onClick={e => {
-                    sellCompleteSets(marketId, numCompleteSets, () => {});
-                  }}
-                  disabled={!!pendingCompleteSetsInfo}
-                >
-                  {completeSetButtonText}
-                </button>
-              </div>
-            )}
+          {numCompleteSets && numCompleteSets.value > 0 && (
+            <div className={Styles.MarketPositionsList__completeSets}>
+              <span>{`You currently have ${
+                numCompleteSets.full
+              } of all outcomes.`}</span>
+              <button
+                onClick={e => {
+                  sellCompleteSets(marketId, numCompleteSets, () => {});
+                }}
+                disabled={!!pendingCompleteSetsInfo}
+              >
+                {completeSetButtonText}
+              </button>
+            </div>
+          )}
         </div>
         <div
           ref={outcomeList2 => {

@@ -189,17 +189,16 @@ export default class MarketsList extends Component {
             message={nullMessage}
           />
         )}
-        {!!marketsLength &&
-          s.showPagination && (
-            <Paginator
-              itemsLength={marketsLength}
-              itemsPerPage={PAGINATION_COUNT}
-              location={location}
-              history={history}
-              setSegment={this.setSegment}
-              pageParam={paginationPageParam}
-            />
-          )}
+        {!!marketsLength && s.showPagination && (
+          <Paginator
+            itemsLength={marketsLength}
+            itemsPerPage={PAGINATION_COUNT}
+            location={location}
+            history={history}
+            setSegment={this.setSegment}
+            pageParam={paginationPageParam}
+          />
+        )}
       </article>
     );
   }

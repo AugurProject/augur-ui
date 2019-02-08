@@ -86,14 +86,13 @@ const ReportingDisputeProgress = ({
             {bondSizeCurrentFormatted.formatted} REP
           </span>
         </div>
-        {userStaked &&
-          totalPercentageComplete >= 100 && (
-            <div
-              className={Styles["ReportingDisputeProgress__dispute-tentative"]}
-            >
-              New tentative outcome
-            </div>
-          )}
+        {userStaked && totalPercentageComplete >= 100 && (
+          <div
+            className={Styles["ReportingDisputeProgress__dispute-tentative"]}
+          >
+            New tentative outcome
+          </div>
+        )}
       </section>
     </article>
   );

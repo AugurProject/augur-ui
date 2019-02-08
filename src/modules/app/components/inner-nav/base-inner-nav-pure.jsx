@@ -55,9 +55,11 @@ const BaseInnerNavPure = ({
         )}
         style={subMenuAnimatedStyle}
       >
-        {submenuItems.filter(item => !isNull(item.label)).map(item => (
-          <DataToItem key={item.label} {...item} />
-        ))}
+        {submenuItems
+          .filter(item => !isNull(item.label))
+          .map(item => (
+            <DataToItem key={item.label} {...item} />
+          ))}
       </ul>
       <ul
         className={classNames(

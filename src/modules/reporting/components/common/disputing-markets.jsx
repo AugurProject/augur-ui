@@ -188,18 +188,17 @@ export default class DisputingMarkets extends Component {
 
     return (
       <section>
-        {isForking &&
-          forkingMarket && (
-            <DisputeMarketCard
-              key={forkingMarketId}
-              market={forkingMarket}
-              isMobile={isMobile}
-              location={location}
-              history={history}
-              outcomes={outcomes}
-              isForkingMarket
-            />
-          )}
+        {isForking && forkingMarket && (
+          <DisputeMarketCard
+            key={forkingMarketId}
+            market={forkingMarket}
+            isMobile={isMobile}
+            location={location}
+            history={history}
+            outcomes={outcomes}
+            isForkingMarket
+          />
+        )}
         {nonForkingMarketsCount > 0 &&
           !isForking &&
           nonForkingMarkets.map(market => (
@@ -212,18 +211,16 @@ export default class DisputingMarkets extends Component {
               outcomes={outcomes}
             />
           ))}
-        {nonForkingMarketsCount > 0 &&
-          !isForking &&
-          showPagination && (
-            <Paginator
-              itemsLength={disputableMarketsLength}
-              itemsPerPage={paginationCount}
-              location={location}
-              history={history}
-              setSegment={this.setSegment}
-              pageParam="disputing"
-            />
-          )}
+        {nonForkingMarketsCount > 0 && !isForking && showPagination && (
+          <Paginator
+            itemsLength={disputableMarketsLength}
+            itemsPerPage={paginationCount}
+            location={location}
+            history={history}
+            setSegment={this.setSegment}
+            pageParam="disputing"
+          />
+        )}
         {nonForkingMarketsCount === 0 &&
           (!isForking || (isForking && !forkingMarket)) && (
             <NullStateMessage message={nullDisputeMessage} />
@@ -254,17 +251,16 @@ export default class DisputingMarkets extends Component {
               outcomes={outcomes}
             />
           ))}
-        {upcomingMarketsCount > 0 &&
-          showUpcomingPagination && (
-            <Paginator
-              itemsLength={upcomingMarketsCount}
-              itemsPerPage={paginationCount}
-              location={location}
-              history={history}
-              setSegment={this.setSegmentUpcoming}
-              pageParam="upcoming"
-            />
-          )}
+        {upcomingMarketsCount > 0 && showUpcomingPagination && (
+          <Paginator
+            itemsLength={upcomingMarketsCount}
+            itemsPerPage={paginationCount}
+            location={location}
+            history={history}
+            setSegment={this.setSegmentUpcoming}
+            pageParam="upcoming"
+          />
+        )}
         {(upcomingMarketsCount === 0 ||
           (nonForkingMarketsCount === 0 &&
             upcomingMarketsCount === 0 &&

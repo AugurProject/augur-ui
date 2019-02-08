@@ -347,31 +347,30 @@ class TradingWrapper extends Component {
           {market.marketType === SCALAR && (
             <div className={Styles.TradingWrapper__scalar__line} />
           )}
-          {market &&
-            market.marketType && (
-              <TradingForm
-                market={market}
-                marketType={getValue(this.props, "market.marketType")}
-                maxPrice={getValue(this.props, "market.maxPrice")}
-                minPrice={getValue(this.props, "market.minPrice")}
-                selectedNav={selectedNav}
-                orderPrice={orderPrice}
-                orderQuantity={orderQuantity}
-                orderEthEstimate={orderEthEstimate}
-                orderEscrowdEth={orderEscrowdEth}
-                doNotCreateOrders={doNotCreateOrders}
-                selectedOutcome={selectedOutcome}
-                updateState={this.updateState}
-                updateOrderProperty={this.updateOrderProperty}
-                isMobile={isMobile}
-                clearOrderForm={this.clearOrderForm}
-                updateSelectedOutcome={updateSelectedOutcome}
-                updateTradeTotalCost={this.updateTradeTotalCost}
-                updateTradeNumShares={this.updateTradeNumShares}
-                showSelectOutcome={showSelectOutcome}
-                updateNewOrderProperties={this.updateNewOrderProperties}
-              />
-            )}
+          {market && market.marketType && (
+            <TradingForm
+              market={market}
+              marketType={getValue(this.props, "market.marketType")}
+              maxPrice={getValue(this.props, "market.maxPrice")}
+              minPrice={getValue(this.props, "market.minPrice")}
+              selectedNav={selectedNav}
+              orderPrice={orderPrice}
+              orderQuantity={orderQuantity}
+              orderEthEstimate={orderEthEstimate}
+              orderEscrowdEth={orderEscrowdEth}
+              doNotCreateOrders={doNotCreateOrders}
+              selectedOutcome={selectedOutcome}
+              updateState={this.updateState}
+              updateOrderProperty={this.updateOrderProperty}
+              isMobile={isMobile}
+              clearOrderForm={this.clearOrderForm}
+              updateSelectedOutcome={updateSelectedOutcome}
+              updateTradeTotalCost={this.updateTradeTotalCost}
+              updateTradeNumShares={this.updateTradeNumShares}
+              showSelectOutcome={showSelectOutcome}
+              updateNewOrderProperties={this.updateNewOrderProperties}
+            />
+          )}
         </div>
         {s.trade &&
           (s.trade.shareCost.value !== 0 || s.trade.totalCost.value !== 0) && (

@@ -139,23 +139,22 @@ export default class MarketHeaderReporting extends Component {
               </button>
             </div>
           )}
-          {canClaim &&
-            reportingState === constants.REPORTING_STATE.FINALIZED && (
-              <div
-                key="claim"
-                className={Styles.MarketHeaderReporting__buttonContainer}
+          {canClaim && reportingState === constants.REPORTING_STATE.FINALIZED && (
+            <div
+              key="claim"
+              className={Styles.MarketHeaderReporting__buttonContainer}
+            >
+              <button
+                className={Styles.MarketHeaderReporting__button}
+                onClick={() => {
+                  claimTradingProceeds(id);
+                }}
+                disabled={!isLogged}
               >
-                <button
-                  className={Styles.MarketHeaderReporting__button}
-                  onClick={() => {
-                    claimTradingProceeds(id);
-                  }}
-                  disabled={!isLogged}
-                >
-                  Claim Proceeds
-                </button>
-              </div>
-            )}
+                Claim Proceeds
+              </button>
+            </div>
+          )}
         </div>
       ];
     } else if (

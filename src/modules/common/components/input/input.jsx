@@ -239,33 +239,30 @@ export default class Input extends Component {
           </div>
         )}
 
-        {isClearable &&
-          !isMultiline &&
-          !!value && (
-            <button
-              type="button"
-              className={Styles.close}
-              onClick={this.handleClear}
-            >
-              {CloseDark}
-            </button>
-          )}
+        {isClearable && !isMultiline && !!value && (
+          <button
+            type="button"
+            className={Styles.close}
+            onClick={this.handleClear}
+          >
+            {CloseDark}
+          </button>
+        )}
 
-        {canToggleVisibility &&
-          value && (
-            <button
-              type="button"
-              className="button--text-only"
-              onClick={this.handleToggleVisibility}
-              tabIndex="-1"
-            >
-              {isHiddenContentVisible ? (
-                <i className="fa fa-eye-slash" />
-              ) : (
-                <i className="fa fa-eye" />
-              )}
-            </button>
-          )}
+        {canToggleVisibility && value && (
+          <button
+            type="button"
+            className="button--text-only"
+            onClick={this.handleToggleVisibility}
+            tabIndex="-1"
+          >
+            {isHiddenContentVisible ? (
+              <i className="fa fa-eye-slash" />
+            ) : (
+              <i className="fa fa-eye" />
+            )}
+          </button>
+        )}
 
         {maxButton && (
           <button
@@ -279,16 +276,15 @@ export default class Input extends Component {
           </button>
         )}
 
-        {shouldMatchValue &&
-          value && (
-            <div className="input-value-comparison">
-              {value === comparisonValue ? (
-                <i className="fa fa-check-circle input-does-match" />
-              ) : (
-                <i className="fa fa-times-circle input-does-not-match" />
-              )}
-            </div>
-          )}
+        {shouldMatchValue && value && (
+          <div className="input-value-comparison">
+            {value === comparisonValue ? (
+              <i className="fa fa-check-circle input-does-match" />
+            ) : (
+              <i className="fa fa-times-circle input-does-not-match" />
+            )}
+          </div>
+        )}
 
         {isIncrementable && (
           <div className={Styles.value__incrementers}>

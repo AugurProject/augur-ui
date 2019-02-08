@@ -195,12 +195,11 @@ export default class Transactions extends Component {
             <span>Loading...</span>
           </div>
         )}
-        {!transactionsLoading &&
-          !hasTransactions && (
-            <div className={PortfolioStyles.NoMarkets__container}>
-              <span>You don&apos;t have any transactions.</span>
-            </div>
-          )}
+        {!transactionsLoading && !hasTransactions && (
+          <div className={PortfolioStyles.NoMarkets__container}>
+            <span>You don&apos;t have any transactions.</span>
+          </div>
+        )}
         <div className={Styles.Transactions__list}>
           {!transactionsLoading &&
             hasTransactions &&
@@ -230,16 +229,15 @@ export default class Transactions extends Component {
               return null;
             })}
         </div>
-        {!transactionsLoading &&
-          hasTransactions && (
-            <Paginator
-              itemsLength={filteredTransactions.length}
-              itemsPerPage={10}
-              location={location}
-              history={history}
-              setSegment={this.setSegment}
-            />
-          )}
+        {!transactionsLoading && hasTransactions && (
+          <Paginator
+            itemsLength={filteredTransactions.length}
+            itemsPerPage={10}
+            location={location}
+            history={history}
+            setSegment={this.setSegment}
+          />
+        )}
       </section>
     );
   }

@@ -113,9 +113,9 @@ export default class Order extends Component {
           {orderType === SELL ? <span>-</span> : <span>+</span>} {orderShares}
         </li>
         <li>{orderPrice}</li>
-        {isExtendedDisplay &&
-          !isMobile &&
-          outcome && <li>{getValue(outcome, "lastPrice.formatted")}</li>}
+        {isExtendedDisplay && !isMobile && outcome && (
+          <li>{getValue(outcome, "lastPrice.formatted")}</li>
+        )}
         {!isMobile && <li>{getValue(order, "tokensEscrowed.formatted")}</li>}
         {!isMobile && <li>{getValue(order, "sharesEscrowed.formatted")}</li>}
         {isExtendedDisplay && <li />}

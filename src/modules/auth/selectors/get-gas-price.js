@@ -10,14 +10,17 @@ export default function() {
   return getGasPrice(store.getState());
 }
 
-export const getGasPrice = createSelector(selectGasPriceInfo, gasPriceInfo => {
-  const gweiValue = gasPriceInfo.userDefinedGasPrice || gasPriceInfo.average;
-  let weiValue = augur.rpc.getGasPrice();
+export const getGasPrice = createSelector(
+  selectGasPriceInfo,
+  gasPriceInfo => {
+    const gweiValue = gasPriceInfo.userDefinedGasPrice || gasPriceInfo.average;
+    let weiValue = augur.rpc.getGasPrice();
 
-  if (gweiValue) {
-    weiValue = createBigNumber(gweiValue)
-      .times(createBigNumber(GWEI_CONVERSION))
-      .toNumber();
+    if (gweiValue) {
+      weiValue = createBigNumber(gweiValue)
+        .times(createBigNumber(GWEI_CONVERSION))
+        .toNumber();
+    }
+    return weiValue;
   }
-  return weiValue;
-});
+);
