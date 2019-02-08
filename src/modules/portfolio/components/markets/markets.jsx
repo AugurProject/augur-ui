@@ -159,9 +159,10 @@ class MyMarkets extends Component {
         <Helmet>
           <title>My Markets</title>
         </Helmet>
-        {myMarkets && !!myMarkets.length && (
-          <MarketsHeaderLabel title="Open" noTopPadding />
-        )}
+        {myMarkets &&
+          !!myMarkets.length && (
+            <MarketsHeaderLabel title="Open" noTopPadding />
+          )}
         {haveMarkets && (
           <MarketsList
             testid="open"

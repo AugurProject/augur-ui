@@ -8,11 +8,14 @@ export const connect = (env, callback = logError) => {
     useWeb3Transport: env.useWeb3Transport
   };
   if (env.debug) augur.rpc.setDebugOptions(env.debug);
-  augur.connect(connectOptions, (err, connectionInfo) => {
-    if (err) return callback(err);
-    console.log("connected:", connectionInfo);
-    callback(null, connectionInfo);
-  });
+  augur.connect(
+    connectOptions,
+    (err, connectionInfo) => {
+      if (err) return callback(err);
+      console.log("connected:", connectionInfo);
+      callback(null, connectionInfo);
+    }
+  );
 };
 
 export const augur = new Augur();

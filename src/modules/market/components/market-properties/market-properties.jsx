@@ -204,20 +204,21 @@ export default class MarketProperties extends Component {
             )}
           </ul>
           <div className={Styles.MarketProperties__actions}>
-            {isLogged && toggleFavorite && (
-              <button
-                className={classNames(Styles.MarketProperties__favorite, {
-                  [Styles.favorite]: isFavorite
-                })}
-                onClick={() => toggleFavorite(id)}
-              >
-                {isFavorite ? (
-                  <i className="fa fa-star" />
-                ) : (
-                  <i className="fa fa-star-o" />
-                )}
-              </button>
-            )}
+            {isLogged &&
+              toggleFavorite && (
+                <button
+                  className={classNames(Styles.MarketProperties__favorite, {
+                    [Styles.favorite]: isFavorite
+                  })}
+                  onClick={() => toggleFavorite(id)}
+                >
+                  {isFavorite ? (
+                    <i className="fa fa-star" />
+                  ) : (
+                    <i className="fa fa-star-o" />
+                  )}
+                </button>
+              )}
             {(!linkType ||
               (linkType &&
                 linkType !== TYPE_FINALIZE_MARKET &&

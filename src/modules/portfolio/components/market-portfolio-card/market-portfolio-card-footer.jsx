@@ -59,48 +59,52 @@ const MarketPortfolioCardFooter = ({
             Styles["MarketCard__headingcontainer-footer-light"]
           )}
         >
-          {linkType === TYPE_CLAIM_PROCEEDS && userHasClaimableForkFees && (
-            <span className={Styles["MarketCard__light-text"]}>
-              Outstanding Returns
-              <span className={Styles["MarketCard__heavy-text"]}>
-                {unclaimedForkEth.formattedValue} ETH
-              </span>
-              |
-              <span className={Styles["MarketCard__heavy-text"]}>
-                {unclaimedForkRepStaked.formattedValue} REP
-              </span>
-            </span>
-          )}
-          {linkType === TYPE_CLAIM_PROCEEDS && !userHasClaimableForkFees && (
-            <span className={Styles["MarketCard__light-text"]}>
-              Outstanding Returns
-              <span className={Styles["MarketCard__heavy-text"]}>
-                {formatEther(outstandingReturns).formattedValue} ETH
-              </span>
-            </span>
-          )}
-          <div className={Styles["MarketCard__action-container"]}>
-            {linkType === TYPE_CLAIM_PROCEEDS && finalizationTime && !canClaim && (
-              <div className={Styles["MarketCard__proceeds-container"]}>
-                <span className={Styles["MarketCard__proceeds-text"]}>
-                  Proceeds Available
+          {linkType === TYPE_CLAIM_PROCEEDS &&
+            userHasClaimableForkFees && (
+              <span className={Styles["MarketCard__light-text"]}>
+                Outstanding Returns
+                <span className={Styles["MarketCard__heavy-text"]}>
+                  {unclaimedForkEth.formattedValue} ETH
                 </span>
-                <span className={Styles["MarketCard__proceeds-text-small"]}>
-                  {
-                    convertUnixToFormattedDate(endTimestamp.toNumber())
-                      .formattedLocal
-                  }
+                |
+                <span className={Styles["MarketCard__heavy-text"]}>
+                  {unclaimedForkRepStaked.formattedValue} REP
                 </span>
-                <span className={Styles["MarketCard__proceeds-clock"]}>
-                  <WrappedGraph
-                    startDate={startTime}
-                    endTime={finalTime}
-                    currentTimestamp={currentTimestamp * 1000}
-                    backgroundColor="transparent"
-                  />
-                </span>
-              </div>
+              </span>
             )}
+          {linkType === TYPE_CLAIM_PROCEEDS &&
+            !userHasClaimableForkFees && (
+              <span className={Styles["MarketCard__light-text"]}>
+                Outstanding Returns
+                <span className={Styles["MarketCard__heavy-text"]}>
+                  {formatEther(outstandingReturns).formattedValue} ETH
+                </span>
+              </span>
+            )}
+          <div className={Styles["MarketCard__action-container"]}>
+            {linkType === TYPE_CLAIM_PROCEEDS &&
+              finalizationTime &&
+              !canClaim && (
+                <div className={Styles["MarketCard__proceeds-container"]}>
+                  <span className={Styles["MarketCard__proceeds-text"]}>
+                    Proceeds Available
+                  </span>
+                  <span className={Styles["MarketCard__proceeds-text-small"]}>
+                    {
+                      convertUnixToFormattedDate(endTimestamp.toNumber())
+                        .formattedLocal
+                    }
+                  </span>
+                  <span className={Styles["MarketCard__proceeds-clock"]}>
+                    <WrappedGraph
+                      startDate={startTime}
+                      endTime={finalTime}
+                      currentTimestamp={currentTimestamp * 1000}
+                      backgroundColor="transparent"
+                    />
+                  </span>
+                </div>
+              )}
             <button
               data-testid={"claimButton-" + marketId}
               className={classNames(Styles["MarketCard__action-footer-light"], {

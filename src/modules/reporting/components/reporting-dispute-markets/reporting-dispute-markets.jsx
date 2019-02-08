@@ -80,13 +80,14 @@ export default class ReportingDisputeMarkets extends Component {
             isForking={isForking}
             forkEndTime={forkEndTime}
           />
-          {!doesUserHaveRep && !forkEndTime && (
-            <ReportDisputeNoRepState
-              btnText="Add Funds"
-              message="You have 0 REP available. Add funds to dispute markets or purchase participation tokens."
-              onClickHandler={navigateToAccountDepositHandler}
-            />
-          )}
+          {!doesUserHaveRep &&
+            !forkEndTime && (
+              <ReportDisputeNoRepState
+                btnText="Add Funds"
+                message="You have 0 REP available. Add funds to dispute markets or purchase participation tokens."
+                onClickHandler={navigateToAccountDepositHandler}
+              />
+            )}
         </section>
         <DisputingMarkets
           location={location}

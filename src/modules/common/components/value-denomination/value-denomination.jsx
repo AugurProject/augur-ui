@@ -17,32 +17,38 @@ const ValueDenomination = ({
   value
 }) => (
   <span className={Styles[className]}>
-    {prefix && !hidePrefix && (
-      <span className={Styles.ValueDenomination__prefix}>{prefix}</span>
-    )}
-    {formatted && fullPrecision && (
-      <span
-        data-tip={fullPrecision}
-        data-event="click focus"
-        className={`value_${valueClassname}`}
-      >
-        {formatted}
-      </span>
-    )}
-    {formatted && !fullPrecision && (
-      <span className={`value_${valueClassname}`}>{formatted}</span>
-    )}
-    {denomination && !hideDenomination && (
-      <span className={Styles.ValueDenomination__denomination}>
-        {denomination}
-      </span>
-    )}
-    {postfix && !hidePostfix && (
-      <span className={Styles.ValueDenomimntion__postfix}>{postfix}</span>
-    )}
-    {!value && value !== 0 && !formatted && formatted !== "0" && (
-      <span>&mdash;</span>
-    ) // null/undefined state handler
+    {prefix &&
+      !hidePrefix && (
+        <span className={Styles.ValueDenomination__prefix}>{prefix}</span>
+      )}
+    {formatted &&
+      fullPrecision && (
+        <span
+          data-tip={fullPrecision}
+          data-event="click focus"
+          className={`value_${valueClassname}`}
+        >
+          {formatted}
+        </span>
+      )}
+    {formatted &&
+      !fullPrecision && (
+        <span className={`value_${valueClassname}`}>{formatted}</span>
+      )}
+    {denomination &&
+      !hideDenomination && (
+        <span className={Styles.ValueDenomination__denomination}>
+          {denomination}
+        </span>
+      )}
+    {postfix &&
+      !hidePostfix && (
+        <span className={Styles.ValueDenomimntion__postfix}>{postfix}</span>
+      )}
+    {!value &&
+      value !== 0 &&
+      !formatted &&
+      formatted !== "0" && <span>&mdash;</span> // null/undefined state handler
     }
   </span>
 );

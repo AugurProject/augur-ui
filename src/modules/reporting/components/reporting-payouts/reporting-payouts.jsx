@@ -64,11 +64,12 @@ const Outcome = ({ className, outcome, marketId }) => {
           {outcomeName}
         </span>
       </div>
-      {outcome.tentativeWinning && outcome.id === MALFORMED_OUTCOME && (
-        <label className={Styles.MarketReportingPayouts__malformed}>
-          Malformed Outcome
-        </label>
-      )}
+      {outcome.tentativeWinning &&
+        outcome.id === MALFORMED_OUTCOME && (
+          <label className={Styles.MarketReportingPayouts__malformed}>
+            Malformed Outcome
+          </label>
+        )}
       {outcome.tentativeWinning && (
         <div
           data-testid={"winning-" + marketId + "-" + outcome.id}

@@ -94,15 +94,16 @@ export default class MarketPositionsListPosition extends Component {
         </li>
         <li>{type !== LONG ? netPositionShares : positionShares}</li>
         <li>{getValue(position, "purchasePrice.formatted")}</li>
-        {!isMobile && isExtendedDisplay && (
-          <li>
-            {getValue(outcome, "lastPrice.formatted")}
-            <MarketOutcomeTradingIndicator
-              outcome={outcome}
-              location="positions"
-            />
-          </li>
-        )}
+        {!isMobile &&
+          isExtendedDisplay && (
+            <li>
+              {getValue(outcome, "lastPrice.formatted")}
+              <MarketOutcomeTradingIndicator
+                outcome={outcome}
+                location="positions"
+              />
+            </li>
+          )}
         {!isMobile && <li>{getValue(position, "unrealizedNet.formatted")} </li>}
         {!isMobile && <li>{getValue(position, "realizedNet.formatted")} </li>}
       </ul>

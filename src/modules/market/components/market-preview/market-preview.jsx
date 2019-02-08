@@ -94,38 +94,40 @@ export default class MarketPreview extends Component {
               toggleDetails={this.toggleDetails}
             />
           </div>
-          {p.unclaimedCreatorFees.value > 0 && p.showOutstandingReturns && (
-            <div
-              className={classNames(Styles.MarketPreview__returns, {
-                [`${Styles["single-card"]}`]: p.cardStyle === "single-card"
-              })}
-            >
-              <OutstandingReturns
-                id={p.id}
-                unclaimedCreatorFees={p.unclaimedCreatorFees}
-                collectMarketCreatorFees={p.collectMarketCreatorFees}
-              />
-            </div>
-          )}
+          {p.unclaimedCreatorFees.value > 0 &&
+            p.showOutstandingReturns && (
+              <div
+                className={classNames(Styles.MarketPreview__returns, {
+                  [`${Styles["single-card"]}`]: p.cardStyle === "single-card"
+                })}
+              >
+                <OutstandingReturns
+                  id={p.id}
+                  unclaimedCreatorFees={p.unclaimedCreatorFees}
+                  collectMarketCreatorFees={p.collectMarketCreatorFees}
+                />
+              </div>
+            )}
           <MarketLiquidity
             marketId={p.id}
             market={p}
             pendingLiquidityOrders={p.pendingLiquidityOrders}
           />
         </article>
-        {!isEmpty(p) && p.showAdditionalDetailsToggle && (
-          <div
-            ref={additionalDetails => {
-              this.additionalDetails = additionalDetails;
-            }}
-            className={classNames(
-              ToggleHeightStyles["toggle-height-target"],
-              ToggleHeightStyles["start-open"]
-            )}
-          >
-            <MarketAdditonalDetails {...p} />
-          </div>
-        )}
+        {!isEmpty(p) &&
+          p.showAdditionalDetailsToggle && (
+            <div
+              ref={additionalDetails => {
+                this.additionalDetails = additionalDetails;
+              }}
+              className={classNames(
+                ToggleHeightStyles["toggle-height-target"],
+                ToggleHeightStyles["start-open"]
+              )}
+            >
+              <MarketAdditonalDetails {...p} />
+            </div>
+          )}
       </div>
     );
   }
