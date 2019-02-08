@@ -6,9 +6,7 @@ import ReactFauxDOM from "react-faux-dom";
 import { createBigNumber } from "utils/create-big-number";
 import { isEqual } from "lodash";
 import CustomPropTypes from "utils/custom-prop-types";
-import { ZERO } from "modules/trades/constants/numbers";
-import { BUY, SELL } from "modules/transactions/constants/types";
-import { ASKS, BIDS } from "modules/orders/constants/orders";
+import { ASKS, BIDS, BUY, SELL, ZERO } from "modules/common-elements/constants";
 
 import Styles from "modules/market-charts/components/market-outcome-charts--depth/market-outcome-charts--depth.styles";
 

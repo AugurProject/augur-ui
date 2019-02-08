@@ -63,6 +63,12 @@
   }
 }
 
+.AccountWithdraw__form {
+  > button {
+    float: right;
+  }
+}
+
 .AccountWithdraw__form-fields {
   display: flex;
   flex-wrap: wrap;
@@ -89,12 +95,6 @@
     color: @color-light-gray;
     font-weight: 500;
   }
-}
-
-.AccountWithdraw__submitButton {
-  &:extend(.button--bright all);
-
-  float: right;
 }
 
 @media @breakpoint-mobile {

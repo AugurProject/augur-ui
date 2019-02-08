@@ -8,9 +8,8 @@ import Styles from "modules/market/components/market-header/market-header-report
 import { constants } from "services/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
 import MarketHeaderStyles from "modules/market/components/market-header/market-header.styles";
-import { CATEGORICAL } from "modules/markets/constants/market-types";
+import { CATEGORICAL, TYPE_DISPUTE } from "modules/common-elements/constants";
 import { createBigNumber } from "utils/create-big-number";
-import { TYPE_DISPUTE } from "modules/markets/constants/link-types";
 
 export default class MarketHeaderReporting extends Component {
   static propTypes = {

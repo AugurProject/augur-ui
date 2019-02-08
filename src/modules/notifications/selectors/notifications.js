@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 import { selectNotificationsState } from "src/select-state";
 import store from "src/store";
 
-import * as notificationLevels from "modules/notifications/constants/notifications";
+import * as notificationLevels from "modules/common-elements/constants";
 
 import { augur } from "services/augurjs";
 import getValue from "utils/get-value";

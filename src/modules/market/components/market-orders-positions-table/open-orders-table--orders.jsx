@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import { threeDots } from "modules/common/components/icons";
 import getValue from "utils/get-value";
-import { SELL } from "modules/trades/constants/types";
+import { SELL } from "modules/common-elements/constants";
 
 import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table--orders.style";

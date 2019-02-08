@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import classNames from "classnames";
 
 import getValue from "utils/get-value";
-import { SELL } from "modules/trades/constants/types";
+import { SELL } from "modules/common-elements/constants";
 import { formatEther, formatShares } from "utils/format-number";
 import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";

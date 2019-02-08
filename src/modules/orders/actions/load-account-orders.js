@@ -5,7 +5,7 @@ import { ungroupBy } from "utils/ungroupBy";
 import { addOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import { updateOrderBook } from "modules/orders/actions/update-order-book";
 import { addOpenOrderTransactions } from "modules/transactions/actions/add-transactions";
-import { OPEN } from "modules/orders/constants/orders";
+import { OPEN } from "modules/common-elements/constants";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 
 export const loadAccountOrders = (options = {}, callback = logError) => (

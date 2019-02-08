@@ -1,14 +1,12 @@
 import store from "src/store";
 import { augur } from "services/augurjs";
-import * as notificationLevels from "modules/notifications/constants/notifications";
+import * as constants from "modules/common-elements/constants";
 import setNotificationText from "modules/notifications/actions/set-notification-text";
 import { createBigNumber } from "utils/create-big-number";
 import makePath from "modules/routes/helpers/make-path";
 import { TRANSACTIONS } from "modules/routes/constants/views";
-import { PENDING, SUCCESS } from "modules/transactions/constants/statuses";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { updateNotification as updateNotificationAction } from "modules/notifications/actions/notifications";
-import { BUY, SELL } from "modules/trades/constants/types";
 
 export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
 export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
@@ -37,13 +35,13 @@ export function handleFilledOnly(tradeInProgress = null) {
   return (dispatch, getState) => {
     const { notifications, transactionsData } = store.getState();
     for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].status.toLowerCase() === PENDING) {
+      if (notifications[i].status.toLowerCase() === constants.PENDING) {
         const tradeGroupId = notifications[i].params._tradeGroupId;
         if (
           tradeInProgress &&
           tradeInProgress.tradeGroupId === tradeGroupId &&
           notifications[i].params.type.toUpperCase() ===
-            "PUBLICFILLBESTORDERWITHLIMIT" &&
+            constants.PUBLICFILLBESTORDERWITHLIMIT &&
           notifications[i].description === ""
         ) {
           const difference = createBigNumber(tradeInProgress.numShares).minus(
@@ -60,7 +58,9 @@ export function handleFilledOnly(tradeInProgress = null) {
               log: {
                 noFill: true,
                 orderType:
-                  notifications[i].params._direction === "0x1" ? BUY : SELL,
+                  notifications[i].params._direction === "0x1"
+                    ? constants.BUY
+                    : constants.SELL,
                 difference: difference.toFixed()
               }
             })
@@ -72,9 +72,10 @@ export function handleFilledOnly(tradeInProgress = null) {
               transactionsData[key].transactions.length &&
               transactionsData[key].transactions[0].tradeGroupId ===
                 tradeGroupId &&
-              transactionsData[key].status.toLowerCase() === SUCCESS &&
+              transactionsData[key].status.toLowerCase() ===
+                constants.SUCCESS &&
               notifications[i].params.type.toUpperCase() ===
-                "PUBLICFILLBESTORDERWITHLIMIT" &&
+                constants.PUBLICFILLBESTORDERWITHLIMIT &&
               notifications[i].description === ""
             ) {
               // handle fill only orders notifications updates.
@@ -89,7 +90,9 @@ export function handleFilledOnly(tradeInProgress = null) {
                   log: {
                     noFill: true,
                     orderType:
-                      notifications[i].params._direction === "0x1" ? BUY : SELL
+                      notifications[i].params._direction === "0x1"
+                        ? constants.BUY
+                        : constants.SELL
                   }
                 })
               );
@@ -107,7 +110,7 @@ export function loadNotifications() {
   return (dispatch, getState) => {
     const { notifications, transactionsData } = store.getState();
     for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].status.toLowerCase() === PENDING) {
+      if (notifications[i].status.toLowerCase() === constants.PENDING) {
         const regex = new RegExp(notifications[i].id, "g");
         const tradeGroupId = notifications[i].params._tradeGroupId;
         Object.keys(transactionsData).some(key => {
@@ -116,9 +119,9 @@ export function loadNotifications() {
             transactionsData[key].transactions.length &&
             transactionsData[key].transactions[0].tradeGroupId ===
               tradeGroupId &&
-            transactionsData[key].status.toLowerCase() === SUCCESS &&
+            transactionsData[key].status.toLowerCase() === constants.SUCCESS &&
             notifications[i].params.type.toUpperCase() ===
-              "PUBLICFILLBESTORDERWITHLIMIT" &&
+              constants.PUBLICFILLBESTORDERWITHLIMIT &&
             notifications[i].description === ""
           ) {
             // handle fill only orders notifications updates.
@@ -133,7 +136,9 @@ export function loadNotifications() {
                 log: {
                   noFill: true,
                   orderType:
-                    notifications[i].params._direction === "0x1" ? BUY : SELL
+                    notifications[i].params._direction === "0x1"
+                      ? constants.BUY
+                      : constants.SELL
                 }
               })
             );
@@ -141,7 +146,7 @@ export function loadNotifications() {
           }
           if (
             key.match(regex) !== null &&
-            transactionsData[key].status.toLowerCase() === SUCCESS
+            transactionsData[key].status.toLowerCase() === constants.SUCCESS
           ) {
             const transaction =
               transactionsData[key].transactions &&
@@ -158,8 +163,9 @@ export function loadNotifications() {
             );
             return true;
           } else if (
-            notifications[i].params.type.toUpperCase() === "CANCELORDER" &&
-            transactionsData[key].status.toLowerCase() === SUCCESS
+            notifications[i].params.type.toUpperCase() ===
+              constants.CANCELORDER &&
+            transactionsData[key].status.toLowerCase() === constants.SUCCESS
           ) {
             const groupedTransactions = transactionsData[key].transactions;
             groupedTransactions.forEach(transaction => {
@@ -180,7 +186,9 @@ export function loadNotifications() {
                 return true;
               }
             });
-          } else if (transactionsData[key].status.toLowerCase() === SUCCESS) {
+          } else if (
+            transactionsData[key].status.toLowerCase() === constants.SUCCESS
+          ) {
             const groupedTransactions = transactionsData[key].transactions;
             groupedTransactions.forEach(transaction => {
               if (
@@ -210,7 +218,7 @@ export function loadNotifications() {
 
 export function addCriticalNotification(notification) {
   return addNotification({
-    level: notificationLevels.CRITICAL,
+    level: constants.CRITICAL,
     ...notification
   });
 }
@@ -225,7 +233,7 @@ export function addNotification(notification) {
           data: {
             notification: {
               seen: false,
-              level: notificationLevels.INFO,
+              level: constants.INFO,
               networkId: augur.rpc.getNetworkID(),
               universe: universe.id,
               ...notification
@@ -288,10 +296,9 @@ export function updateNotification(id, notification) {
           ) {
             return dispatch(
               addNotification({
-                id:
-                  notification.log.transactionHash +
-                  "-" +
-                  notification.log.orderId,
+                id: `${notification.log.transactionHash}-${
+                  notification.log.orderId
+                }`,
                 timestamp: notification.timestamp,
                 blockNumber: notification.log.blockNumber,
                 log: notification.log,
@@ -309,9 +316,7 @@ export function updateNotification(id, notification) {
 }
 // We clear by 'notification level'.
 // This will not surface in the UI just yet.
-export function clearNotifications(
-  notificationLevel = notificationLevels.INFO
-) {
+export function clearNotifications(notificationLevel = constants.INFO) {
   return {
     type: CLEAR_NOTIFICATIONS,
     data: {

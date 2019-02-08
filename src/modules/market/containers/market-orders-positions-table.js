@@ -6,12 +6,14 @@ import { selectMarket } from "modules/markets/selectors/market";
 import { sortOpenOrders } from "modules/orders/selectors/open-orders";
 import { sellCompleteSets } from "modules/positions/actions/sell-complete-sets";
 import { cancelOrphanedOrder } from "modules/orders/actions/orphaned-orders";
-import { CATEGORICAL } from "modules/markets/constants/market-types";
+import {
+  CATEGORICAL,
+  MODAL_CLAIM_TRADING_PROCEEDS
+} from "modules/common-elements/constants";
 import { find } from "lodash";
 import { selectCurrentTimestamp, selectOrphanOrders } from "src/select-state";
 import { constants } from "services/augurjs";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/modal/constants/modal-types";
 import { createBigNumber } from "utils/create-big-number";
 import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";

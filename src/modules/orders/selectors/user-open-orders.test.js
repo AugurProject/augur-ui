@@ -1,5 +1,5 @@
 import { formatEther, formatShares, formatNone } from "utils/format-number";
-import { CLOSE_DIALOG_CLOSING } from "modules/markets/constants/close-dialog-status";
+import { CLOSE_DIALOG_CLOSING } from "modules/common-elements/constants";
 import store from "src/store";
 
 jest.mock("src/store");

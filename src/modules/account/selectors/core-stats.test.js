@@ -1,5 +1,5 @@
 import { createBigNumber } from "utils/create-big-number";
-import { ZERO } from "modules/trades/constants/numbers";
+import { ZERO } from "modules/common-elements/constants";
 import { augur } from "services/augurjs";
 
 jest.mock("modules/auth/actions/use-unlocked-account", () => {});

@@ -1,10 +1,12 @@
 import { augur } from "services/augurjs";
-import { BUY } from "modules/transactions/constants/types";
 import { createBigNumber } from "utils/create-big-number";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { checkAccountAllowance } from "modules/auth/actions/approve-account";
-import { ZERO } from "modules/trades/constants/numbers";
-import { MODAL_ACCOUNT_APPROVAL } from "modules/modal/constants/modal-types";
+import {
+  BUY,
+  ZERO,
+  MODAL_ACCOUNT_APPROVAL
+} from "modules/common-elements/constants";
 import logError from "utils/log-error";
 import noop from "utils/noop";
 

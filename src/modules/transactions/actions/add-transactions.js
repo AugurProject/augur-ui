@@ -7,16 +7,18 @@ import {
   OPEN_ORDER,
   BUY,
   SELL,
-  COMPLETE_SETS_SOLD
-} from "modules/transactions/constants/types";
-import { SUCCESS, PENDING } from "modules/transactions/constants/statuses";
+  COMPLETE_SETS_SOLD,
+  YES_NO,
+  CATEGORICAL,
+  SUCCESS,
+  PENDING
+} from "modules/common-elements/constants";
 import { updateTransactionsData } from "modules/transactions/actions/update-transactions-data";
 import { eachOf, each } from "async";
 import { unfix } from "speedomatic";
 import { isNull, orderBy } from "lodash";
 import { createBigNumber } from "utils/create-big-number";
 import { convertUnixToFormattedDate } from "src/utils/format-date";
-import { YES_NO, CATEGORICAL } from "modules/markets/constants/market-types";
 import {
   formatAttoRep,
   formatShares,

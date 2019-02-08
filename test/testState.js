@@ -4,7 +4,7 @@ import network from "config/network";
 
 import { formatNumber, formatShares } from "utils/format-number";
 import { formatDate } from "utils/format-date";
-import { BUY } from "modules/transactions/constants/types";
+import { BUY } from "modules/common-elements/constants";
 
 const testState = {
   marketLoading: [],

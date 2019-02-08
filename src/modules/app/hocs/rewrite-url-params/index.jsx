@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import parseQuery from "src/modules/routes/helpers/parse-query";
-import * as keys from "src/modules/app/constants/endpoint-url-params";
+import parseQuery from "modules/routes/helpers/parse-query";
+import * as keys from "modules/common-elements/constants";
 
 import { createPath } from "history";
 

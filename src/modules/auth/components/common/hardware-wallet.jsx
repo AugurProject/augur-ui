@@ -10,7 +10,7 @@ import classNames from "classnames";
 import AddressPickerContent from "modules/auth/components/common/address-picker-content";
 import DerivationPathEditor from "modules/auth/components/common/derivation-path-editor";
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { ERROR_TYPES } from "modules/auth/constants/connect-nav";
+import { ERROR_TYPES } from "modules/common-elements/constants";
 import { errorIcon } from "modules/common/components/icons";
 import { filter } from "lodash";
 import Styles from "modules/auth/components/common/hardware-wallet.styles";

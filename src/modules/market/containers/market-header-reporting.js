@@ -6,7 +6,7 @@ import { sendFinalizeMarket } from "modules/markets/actions/finalize-market";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
 import { selectCurrentTimestamp } from "src/select-state";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/modal/constants/modal-types";
+import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 
 const mapStateToProps = (state, ownProps) => {

@@ -16,7 +16,7 @@ import {
   TRADE,
   OPEN_ORDER,
   COMPLETE_SETS_SOLD
-} from "modules/transactions/constants/types";
+} from "modules/common-elements/constants";
 import { clearTransactions } from "modules/transactions/actions/update-transactions-data";
 import { loadNotifications } from "modules/notifications/actions/notifications";
 import { augur } from "services/augurjs";

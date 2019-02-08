@@ -11,7 +11,7 @@ import getOrderBookKeys from "modules/markets/helpers/get-orderbook-keys";
 
 import { selectMarket } from "modules/markets/selectors/market";
 
-import { ASKS, BIDS } from "modules/orders/constants/orders";
+import { ASKS, BIDS } from "modules/common-elements/constants";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 
 const mapStateToProps = (state, ownProps) => {

@@ -12,10 +12,12 @@ import { sendFinalizeMarket } from "modules/markets/actions/finalize-market";
 import { sellCompleteSets } from "modules/positions/actions/sell-complete-sets";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { cancelOrphanedOrder } from "modules/orders/actions/orphaned-orders";
-import { CATEGORICAL } from "modules/markets/constants/market-types";
+import {
+  CATEGORICAL,
+  MODAL_CLAIM_TRADING_PROCEEDS
+} from "modules/common-elements/constants";
 import { find } from "lodash";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/modal/constants/modal-types";
 
 const mapStateToProps = (state, ownProps) => {
   const filteredOrphanOrders = selectOrphanOrders(state).filter(

@@ -5,9 +5,11 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import { checkAccountAllowance } from "modules/auth/actions/approve-account";
 import { createBigNumber } from "utils/create-big-number";
 
-import { MODAL_ACCOUNT_APPROVAL } from "modules/modal/constants/modal-types";
-import { BID } from "modules/transactions/constants/types";
-import { CATEGORICAL } from "modules/markets/constants/market-types";
+import {
+  CATEGORICAL,
+  MODAL_ACCOUNT_APPROVAL,
+  BID
+} from "modules/common-elements/constants";
 
 export const UPDATE_LIQUIDITY_ORDER = "UPDATE_LIQUIDITY_ORDER";
 export const ADD_MARKET_LIQUIDITY_ORDERS = "ADD_MARKET_LIQUIDITY_ORDERS";

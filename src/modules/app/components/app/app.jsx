@@ -57,8 +57,10 @@ import {
   REPORTING_RESOLVED_MARKETS,
   DEFAULT_VIEW
 } from "modules/routes/constants/views";
-import { MODAL_NETWORK_CONNECT } from "modules/modal/constants/modal-types";
-import { CATEGORY_PARAM_NAME } from "modules/filter-sort/constants/param-names";
+import {
+  MODAL_NETWORK_CONNECT,
+  CATEGORY_PARAM_NAME
+} from "modules/common-elements/constants";
 
 import Styles from "modules/app/components/app/app.styles";
 import MarketsInnerNavContainer from "modules/app/containers/markets-inner-nav";

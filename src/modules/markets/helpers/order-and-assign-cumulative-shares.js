@@ -1,7 +1,6 @@
 import memoize from "memoizee";
 import { createBigNumber } from "utils/create-big-number";
-import { ZERO } from "modules/trades/constants/numbers";
-import { BIDS, ASKS } from "modules/orders/constants/orders";
+import { BIDS, ASKS, ZERO } from "modules/common-elements/constants";
 import { formatEther } from "utils/format-number";
 
 function calculateMySize(openOrders, loginAccount, price) {

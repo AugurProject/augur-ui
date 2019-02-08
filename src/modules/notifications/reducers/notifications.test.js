@@ -1,4 +1,4 @@
-import * as notificationLevels from "modules/notifications/constants/notifications";
+import * as notificationLevels from "modules/common-elements/constants";
 
 import {
   ADD_NOTIFICATION,

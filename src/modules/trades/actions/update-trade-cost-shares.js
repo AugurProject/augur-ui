@@ -1,6 +1,6 @@
 import { createBigNumber } from "utils/create-big-number";
 import { augur } from "services/augurjs";
-import { BUY } from "modules/transactions/constants/types";
+import { BUY } from "modules/common-elements/constants";
 import logError from "utils/log-error";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 

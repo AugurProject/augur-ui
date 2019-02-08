@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { PrimaryButton } from "modules/common-elements/buttons";
+
 import Styles from "modules/account/components/account-rep-faucet/account-rep-faucet.styles";
 
 const AccountRepFaucet = ({ repFaucet }) => (
@@ -16,12 +18,7 @@ const AccountRepFaucet = ({ repFaucet }) => (
           <p>
             On Test Nets you may get REP by making a TX with the button below.
           </p>
-          <button
-            onClick={repFaucet}
-            className={Styles.AccountRepFaucet__button}
-          >
-            Get REP
-          </button>
+          <PrimaryButton text="Get Rep" action={repFaucet} />
         </div>
       </div>
     </div>

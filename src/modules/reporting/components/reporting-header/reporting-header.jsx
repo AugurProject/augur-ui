@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { formatAttoRep, formatAttoEth } from "utils/format-number";
 import Styles from "modules/reporting/components/reporting-header/reporting-header.styles";
-import { MODAL_PARTICIPATE } from "modules/modal/constants/modal-types";
+import { MODAL_PARTICIPATE } from "modules/common-elements/constants";
 import ForkingContent from "modules/forking/components/forking-content/forking-content";
 import { showMore } from "modules/common/components/icons";
 import TimeProgressBar from "modules/reporting/components/time-progress-bar/time-progress-bar";

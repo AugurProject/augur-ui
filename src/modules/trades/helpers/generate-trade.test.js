@@ -1,6 +1,6 @@
 import mocks from "test/mockStore";
 
-import { BUY } from "modules/transactions/constants/types";
+import { BUY } from "modules/common-elements/constants";
 
 import { formatEther, formatPercent } from "utils/format-number";
 

@@ -3,15 +3,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
-import { MIN_QUANTITY } from "modules/trades/constants/numbers";
 import {
   YES_NO,
   CATEGORICAL,
-  SCALAR
-} from "modules/markets/constants/market-types";
+  SCALAR,
+  MIN_QUANTITY
+} from "modules/common-elements/constants";
 import { isEqual } from "lodash";
-// import ReactTooltip from "react-tooltip";
-// import TooltipStyles from "modules/common/less/tooltip.styles";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import { darkBgExclamationCircle } from "modules/common/components/icons";

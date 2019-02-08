@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { PARAMS, ERROR_TYPES } from "modules/auth/constants/connect-nav";
+import { PARAMS, ERROR_TYPES } from "modules/common-elements/constants";
 import { errorIcon } from "modules/common/components/icons";
 
 import StylesDropdown from "modules/auth/components/connect-dropdown/connect-dropdown.styles";

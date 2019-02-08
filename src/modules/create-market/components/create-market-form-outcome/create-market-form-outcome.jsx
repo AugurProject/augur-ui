@@ -11,14 +11,12 @@ import { formatNumber, cutOffDecimal } from "utils/format-number";
 import {
   YES_NO,
   CATEGORICAL,
-  SCALAR
-} from "modules/markets/constants/market-types";
-import { ZERO } from "modules/trades/constants/numbers";
-import {
+  SCALAR,
   CATEGORICAL_OUTCOMES_MIN_NUM,
   CATEGORICAL_OUTCOMES_MAX_NUM,
-  CATEGORICAL_OUTCOME_MAX_LENGTH
-} from "modules/markets/constants/new-market-constraints";
+  CATEGORICAL_OUTCOME_MAX_LENGTH,
+  ZERO
+} from "modules/common-elements/constants";
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 
 import {

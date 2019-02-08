@@ -3,8 +3,10 @@ import {
   clearNewMarket
 } from "modules/markets/actions/update-new-market";
 import { addNewMarketCreationTransactions } from "modules/transactions/actions/add-transactions";
-import { ZERO } from "modules/trades/constants/numbers";
-import { MODAL_ACCOUNT_APPROVAL } from "modules/modal/constants/modal-types";
+import {
+  MODAL_ACCOUNT_APPROVAL,
+  ZERO
+} from "modules/common-elements/constants";
 import makePath from "modules/routes/helpers/make-path";
 import noop from "utils/noop";
 import { createBigNumber } from "utils/create-big-number";

@@ -5,7 +5,7 @@ import classNames from "classnames";
 import toggleHeight from "utils/toggle-height/toggle-height";
 import { createBigNumber } from "utils/create-big-number";
 import { formatNumber, formatPercent } from "utils/format-number";
-import { ZERO } from "modules/trades/constants/numbers";
+import { ZERO } from "modules/common-elements/constants";
 
 import Styles from "modules/block-info/components/block-info-data/block-info-data.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";

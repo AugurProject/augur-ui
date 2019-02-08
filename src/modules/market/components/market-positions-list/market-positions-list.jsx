@@ -13,10 +13,7 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 
 import Styles from "modules/market/components/market-positions-list/market-positions-list.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
-import {
-  AWAITING_SIGNATURE,
-  PENDING
-} from "modules/transactions/constants/statuses";
+import { AWAITING_SIGNATURE, PENDING } from "modules/common-elements/constants";
 
 export default class MarketPositionsList extends Component {
   static propTypes = {

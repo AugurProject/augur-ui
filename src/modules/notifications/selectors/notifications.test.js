@@ -2,7 +2,7 @@ import {
   selectNotificationsByLevel,
   selectInfoNotificationsAndSeenCount
 } from "modules/notifications/selectors/notifications";
-import * as notificationLevels from "src/modules/notifications/constants/notifications";
+import * as notificationLevels from "src/modules/common-elements/constants";
 
 describe("modules/notifications/selectors/notifications", () => {
   let state;

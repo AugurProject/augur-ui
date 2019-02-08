@@ -6,7 +6,7 @@ import {
 } from "speedomatic";
 import { augur } from "services/augurjs";
 import { constants } from "services/constants";
-import { ZERO, TEN } from "modules/trades/constants/numbers";
+import { ZERO, TEN } from "modules/common-elements/constants";
 import addCommas from "utils/add-commas-to-number";
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
