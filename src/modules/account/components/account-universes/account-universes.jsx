@@ -88,48 +88,46 @@ export default class AccountUniverses extends Component {
               />
             </div>
           )}
-          {currentLevel &&
-            currentLevel.length > 0 && (
-              <div className={Styles.AccountUniverses__description}>
-                <h4>Current Universe and Siblings</h4>
-                {currentLevel.map(universeInfo => (
-                  <AccountUniverseDescription
-                    switchUniverse={switchUniverse}
-                    getUniverses={this.getUniverses}
-                    isCurrentUniverse={universeInfo.universe === universe}
-                    universeDescription={universeInfo.description}
-                    accountRep={universeInfo.balance}
-                    universeRep={universeInfo.supply}
-                    openInterest={universeInfo.openInterest}
-                    numMarkets={universeInfo.numMarkets}
-                    isWinningUniverse={universeInfo.isWinningUniverse}
-                    key={universeInfo.universe}
-                    universe={universeInfo.universe}
-                  />
-                ))}
-              </div>
-            )}
-          {children &&
-            children.length > 0 && (
-              <div className={Styles.AccountUniverses__description}>
-                <h4>Child Universes</h4>
-                {children.map(universeInfo => (
-                  <AccountUniverseDescription
-                    switchUniverse={switchUniverse}
-                    getUniverses={this.getUniverses}
-                    isCurrentUniverse={false}
-                    universeDescription={universeInfo.description}
-                    accountRep={universeInfo.balance}
-                    universeRep={universeInfo.supply}
-                    openInterest={universeInfo.openInterest}
-                    numMarkets={universeInfo.numMarkets}
-                    isWinningUniverse={universeInfo.isWinningUniverse}
-                    key={universeInfo.universe}
-                    universe={universeInfo.universe}
-                  />
-                ))}
-              </div>
-            )}
+          {currentLevel && currentLevel.length > 0 && (
+            <div className={Styles.AccountUniverses__description}>
+              <h4>Current Universe and Siblings</h4>
+              {currentLevel.map(universeInfo => (
+                <AccountUniverseDescription
+                  switchUniverse={switchUniverse}
+                  getUniverses={this.getUniverses}
+                  isCurrentUniverse={universeInfo.universe === universe}
+                  universeDescription={universeInfo.description}
+                  accountRep={universeInfo.balance}
+                  universeRep={universeInfo.supply}
+                  openInterest={universeInfo.openInterest}
+                  numMarkets={universeInfo.numMarkets}
+                  isWinningUniverse={universeInfo.isWinningUniverse}
+                  key={universeInfo.universe}
+                  universe={universeInfo.universe}
+                />
+              ))}
+            </div>
+          )}
+          {children && children.length > 0 && (
+            <div className={Styles.AccountUniverses__description}>
+              <h4>Child Universes</h4>
+              {children.map(universeInfo => (
+                <AccountUniverseDescription
+                  switchUniverse={switchUniverse}
+                  getUniverses={this.getUniverses}
+                  isCurrentUniverse={false}
+                  universeDescription={universeInfo.description}
+                  accountRep={universeInfo.balance}
+                  universeRep={universeInfo.supply}
+                  openInterest={universeInfo.openInterest}
+                  numMarkets={universeInfo.numMarkets}
+                  isWinningUniverse={universeInfo.isWinningUniverse}
+                  key={universeInfo.universe}
+                  universe={universeInfo.universe}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     );

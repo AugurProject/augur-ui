@@ -42,22 +42,18 @@ const MarketOutcomesAndPositions = ({
         cancelOrphanedOrder={cancelOrphanedOrder}
       />
     )}
-    {isMobile &&
-      selectedOutcome &&
-      isPopulated(outcomes) && (
-        <MarketPositionsListMobile
-          outcome={
-            outcomes.filter(outcome => outcome.id === selectedOutcome)[0]
-          }
-          positions={positions.filter(
-            position =>
-              parseInt(position.outcomeId, 10) === parseInt(selectedOutcome, 10)
-          )}
-          openOrders={openOrders.filter(
-            order => order.outcomeId === selectedOutcome
-          )}
-        />
-      )}
+    {isMobile && selectedOutcome && isPopulated(outcomes) && (
+      <MarketPositionsListMobile
+        outcome={outcomes.filter(outcome => outcome.id === selectedOutcome)[0]}
+        positions={positions.filter(
+          position =>
+            parseInt(position.outcomeId, 10) === parseInt(selectedOutcome, 10)
+        )}
+        openOrders={openOrders.filter(
+          order => order.outcomeId === selectedOutcome
+        )}
+      />
+    )}
   </section>
 );
 

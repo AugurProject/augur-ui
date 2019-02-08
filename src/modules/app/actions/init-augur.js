@@ -169,79 +169,76 @@ export function connectAugur(
 ) {
   return (dispatch, getState) => {
     const { modal, loginAccount } = getState();
-    AugurJS.connect(
-      env,
-      (err, ConnectionInfo) => {
-        if (err || !ConnectionInfo.augurNode || !ConnectionInfo.ethereumNode) {
-          return callback(err, ConnectionInfo);
-        }
-        const ethereumNodeConnectionInfo = ConnectionInfo.ethereumNode;
-        dispatch(updateConnectionStatus(true));
-        dispatch(updateContractAddresses(ethereumNodeConnectionInfo.contracts));
-        dispatch(updateFunctionsAPI(ethereumNodeConnectionInfo.abi.functions));
-        dispatch(updateEventsAPI(ethereumNodeConnectionInfo.abi.events));
-        dispatch(updateAugurNodeConnectionStatus(true));
-        dispatch(getAugurNodeNetworkId());
-        dispatch(registerTransactionRelay());
-        AugurJS.augur.augurNode.getSyncData((err, res) => {
-          if (!err && res) {
-            dispatch(
-              updateVersions({
-                augurjs: res.version,
-                augurNode: res.augurNodeVersion,
-                augurui: version
-              })
-            );
-          }
-        });
-        let universeId =
-          env.universe ||
-          AugurJS.augur.contracts.addresses[AugurJS.augur.rpc.getNetworkID()]
-            .Universe;
-        if (
-          windowRef.localStorage &&
-          windowRef.localStorage.getItem &&
-          loginAccount.address
-        ) {
-          const storedUniverseId = JSON.parse(
-            windowRef.localStorage.getItem(loginAccount.address)
-          ).selectedUniverse[
-            getState().connection.augurNodeNetworkId ||
-              AugurJS.augur.rpc.getNetworkID().toString()
-          ];
-          universeId = !storedUniverseId ? universeId : storedUniverseId;
-        }
-
-        const doIt = () => {
-          dispatch(loadUniverse(universeId, history));
-          if (modal && modal.type === MODAL_NETWORK_DISCONNECTED)
-            dispatch(closeModal());
-          if (isInitialConnection) {
-            pollForAccount(dispatch, getState);
-            pollForNetwork(dispatch, getState);
-          }
-          callback();
-        };
-
-        if (process.env.NODE_ENV === "development") {
-          AugurJS.augur.api.Augur.isKnownUniverse(
-            {
-              _universe: universeId
-            },
-            (err, data) => {
-              if (data === false) {
-                dispatch(setSelectedUniverse());
-                location.reload();
-              }
-
-              doIt();
-            }
-          );
-        } else {
-          doIt();
-        }
+    AugurJS.connect(env, (err, ConnectionInfo) => {
+      if (err || !ConnectionInfo.augurNode || !ConnectionInfo.ethereumNode) {
+        return callback(err, ConnectionInfo);
       }
-    );
+      const ethereumNodeConnectionInfo = ConnectionInfo.ethereumNode;
+      dispatch(updateConnectionStatus(true));
+      dispatch(updateContractAddresses(ethereumNodeConnectionInfo.contracts));
+      dispatch(updateFunctionsAPI(ethereumNodeConnectionInfo.abi.functions));
+      dispatch(updateEventsAPI(ethereumNodeConnectionInfo.abi.events));
+      dispatch(updateAugurNodeConnectionStatus(true));
+      dispatch(getAugurNodeNetworkId());
+      dispatch(registerTransactionRelay());
+      AugurJS.augur.augurNode.getSyncData((err, res) => {
+        if (!err && res) {
+          dispatch(
+            updateVersions({
+              augurjs: res.version,
+              augurNode: res.augurNodeVersion,
+              augurui: version
+            })
+          );
+        }
+      });
+      let universeId =
+        env.universe ||
+        AugurJS.augur.contracts.addresses[AugurJS.augur.rpc.getNetworkID()]
+          .Universe;
+      if (
+        windowRef.localStorage &&
+        windowRef.localStorage.getItem &&
+        loginAccount.address
+      ) {
+        const storedUniverseId = JSON.parse(
+          windowRef.localStorage.getItem(loginAccount.address)
+        ).selectedUniverse[
+          getState().connection.augurNodeNetworkId ||
+            AugurJS.augur.rpc.getNetworkID().toString()
+        ];
+        universeId = !storedUniverseId ? universeId : storedUniverseId;
+      }
+
+      const doIt = () => {
+        dispatch(loadUniverse(universeId, history));
+        if (modal && modal.type === MODAL_NETWORK_DISCONNECTED)
+          dispatch(closeModal());
+        if (isInitialConnection) {
+          pollForAccount(dispatch, getState);
+          pollForNetwork(dispatch, getState);
+        }
+        callback();
+      };
+
+      if (process.env.NODE_ENV === "development") {
+        AugurJS.augur.api.Augur.isKnownUniverse(
+          {
+            _universe: universeId
+          },
+          (err, data) => {
+            if (data === false) {
+              dispatch(setSelectedUniverse());
+              location.reload();
+            }
+
+            doIt();
+          }
+        );
+      } else {
+        doIt();
+      }
+    });
   };
 }
 

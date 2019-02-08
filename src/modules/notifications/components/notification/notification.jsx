@@ -67,14 +67,13 @@ export default class Notification extends Component {
             <div className={Styles.Notification__row}>
               <span className={Styles.Notification__title}>{title}</span>
             </div>
-            {description &&
-              description !== "" && (
-                <div className={Styles.Notification__row}>
-                  <span className={Styles.Notification__description}>
-                    {description}
-                  </span>
-                </div>
-              )}
+            {description && description !== "" && (
+              <div className={Styles.Notification__row}>
+                <span className={Styles.Notification__description}>
+                  {description}
+                </span>
+              </div>
+            )}
           </Link>
           <div className={Styles.Notification__row}>
             <span className={Styles.Notification__etherLink}>

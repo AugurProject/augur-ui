@@ -130,6 +130,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
   }
 
   getContainerWidths() {
+    console.log("refactor", this.props.marketMin);
     return {
       containerWidth: 200, // this.drawContainer.clientWidth,
       containerHeight: 100 // this.drawContainer.clientHeight
@@ -283,7 +284,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
 
     const { hoveredPeriod } = this.state;
 
-    const chart = this.drawChart();
+    // const chart = this.drawChart();
 
     return (
       <section className={Styles.MarketOutcomeCandlestick}>

@@ -164,106 +164,105 @@ export default class MarketLiquidity extends Component {
             <ChevronFlip big stroke="#fff" pointDown={!isOpen} />
           </div>
         </button>
-        {isOpen &&
-          pendingLiquidityOrders && (
-            <div className={Styles.MarketLiquidity__ExtendedContainer}>
-              <h1>Initial Liquidity Orders</h1>
-              <div
-                ref={tableScrollHeader => {
-                  this.tableScrollHeader = tableScrollHeader;
-                }}
-                className={Styles.MarketLiquidity__TableWrapper}
-                style={{ paddingRight: headerPadding }}
-              >
-                <ul className={Styles.MarketLiquidity__TableHeader}>
-                  <li>Type</li>
-                  <li>Outcome</li>
-                  <li>Quantity</li>
-                  <li>Limit Price</li>
-                  <li>Cost</li>
-                  <li />
-                </ul>
-              </div>
-              <div
-                ref={tableScroll => {
-                  this.tableScroll = tableScroll;
-                }}
-                className={classNames(Styles.MarketLiquidity__TableScroll, {
-                  [Styles.extended]: showAllOrders
-                })}
-              >
-                <div className={Styles.MarketLiquidity__TableWrapper}>
-                  {marketOutcomes &&
-                    marketOutcomes.map(outcome => (
-                      <MarketLiquidityTable
-                        key={`${outcome}-${marketId}-${market.marketType}`}
-                        marketType={market.marketType}
-                        outcomeOrders={marketOrders[outcome]}
-                        removeOrderFromNewMarket={this.handleCancelOrder}
-                        selectedOutcome={outcome}
-                      />
-                    ))}
-                </div>
-              </div>
-              <button
-                className={classNames(Styles.MarketLiquidity__showMore, {
-                  [Styles.MarketLiquidity__hidden]: tenOrLess
-                })}
-                onClick={() => {
-                  this.setState({ showAllOrders: !showAllOrders });
-                }}
-              >
-                <h1>{showAllOrders ? "Show Less" : "Show All"}</h1>
-                <ChevronFlip stroke="#fff" pointDown={!showAllOrders} />
-              </button>
-              <div className={Styles.MarketLiquidity__costs}>
-                <div className={Styles["MarketLiquidity__costs-labels"]}>
-                  <h4>Estimasted Gas</h4>
-                  <h3>Total Cost</h3>
-                </div>
-                <div className={Styles["MarketLiquidity__costs-values"]}>
-                  <h4>
-                    {
-                      formatEther(
-                        formatGasCostToEther(
-                          estimatedGas,
-                          { decimalsRounded: 4 },
-                          gasPrice
-                        )
-                      ).full
-                    }
-                  </h4>
-                  <h3>{formatEther(totalCost).full}</h3>
-                </div>
-              </div>
-              <div className={Styles["MarketLiquidity__submit-container"]}>
-                <button
-                  className={Styles.MarketLiquidity__submit}
-                  onClick={this.handleSubmitOrders}
-                >
-                  Submit Orders
-                </button>
-                <button
-                  className={Styles.MarketLiquidity__clearAll}
-                  onClick={e => {
-                    e.preventDefault();
-                    updateModal({
-                      title: "Cancel all unsigned orders?",
-                      description: [
-                        "Cancelling will permenantly remove them from your initial liquidity list"
-                      ],
-                      cancelAction: closeModal,
-                      cancelButtonText: "keep orders",
-                      submitAction: this.handleClearAllMarketOrders,
-                      submitButtonText: "cancel orders"
-                    });
-                  }}
-                >
-                  Cancel All
-                </button>
+        {isOpen && pendingLiquidityOrders && (
+          <div className={Styles.MarketLiquidity__ExtendedContainer}>
+            <h1>Initial Liquidity Orders</h1>
+            <div
+              ref={tableScrollHeader => {
+                this.tableScrollHeader = tableScrollHeader;
+              }}
+              className={Styles.MarketLiquidity__TableWrapper}
+              style={{ paddingRight: headerPadding }}
+            >
+              <ul className={Styles.MarketLiquidity__TableHeader}>
+                <li>Type</li>
+                <li>Outcome</li>
+                <li>Quantity</li>
+                <li>Limit Price</li>
+                <li>Cost</li>
+                <li />
+              </ul>
+            </div>
+            <div
+              ref={tableScroll => {
+                this.tableScroll = tableScroll;
+              }}
+              className={classNames(Styles.MarketLiquidity__TableScroll, {
+                [Styles.extended]: showAllOrders
+              })}
+            >
+              <div className={Styles.MarketLiquidity__TableWrapper}>
+                {marketOutcomes &&
+                  marketOutcomes.map(outcome => (
+                    <MarketLiquidityTable
+                      key={`${outcome}-${marketId}-${market.marketType}`}
+                      marketType={market.marketType}
+                      outcomeOrders={marketOrders[outcome]}
+                      removeOrderFromNewMarket={this.handleCancelOrder}
+                      selectedOutcome={outcome}
+                    />
+                  ))}
               </div>
             </div>
-          )}
+            <button
+              className={classNames(Styles.MarketLiquidity__showMore, {
+                [Styles.MarketLiquidity__hidden]: tenOrLess
+              })}
+              onClick={() => {
+                this.setState({ showAllOrders: !showAllOrders });
+              }}
+            >
+              <h1>{showAllOrders ? "Show Less" : "Show All"}</h1>
+              <ChevronFlip stroke="#fff" pointDown={!showAllOrders} />
+            </button>
+            <div className={Styles.MarketLiquidity__costs}>
+              <div className={Styles["MarketLiquidity__costs-labels"]}>
+                <h4>Estimasted Gas</h4>
+                <h3>Total Cost</h3>
+              </div>
+              <div className={Styles["MarketLiquidity__costs-values"]}>
+                <h4>
+                  {
+                    formatEther(
+                      formatGasCostToEther(
+                        estimatedGas,
+                        { decimalsRounded: 4 },
+                        gasPrice
+                      )
+                    ).full
+                  }
+                </h4>
+                <h3>{formatEther(totalCost).full}</h3>
+              </div>
+            </div>
+            <div className={Styles["MarketLiquidity__submit-container"]}>
+              <button
+                className={Styles.MarketLiquidity__submit}
+                onClick={this.handleSubmitOrders}
+              >
+                Submit Orders
+              </button>
+              <button
+                className={Styles.MarketLiquidity__clearAll}
+                onClick={e => {
+                  e.preventDefault();
+                  updateModal({
+                    title: "Cancel all unsigned orders?",
+                    description: [
+                      "Cancelling will permenantly remove them from your initial liquidity list"
+                    ],
+                    cancelAction: closeModal,
+                    cancelButtonText: "keep orders",
+                    submitAction: this.handleClearAllMarketOrders,
+                    submitButtonText: "cancel orders"
+                  });
+                }}
+              >
+                Cancel All
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

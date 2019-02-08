@@ -166,14 +166,13 @@ class MarketTradingForm extends Component {
                 </div>
               </div>
             )}
-            {!hasFunds &&
-              isLogged && (
-                <Link to={makePath(ACCOUNT_DEPOSIT)}>
-                  <span className={Styles["MarketTradingForm__deposit-button"]}>
-                    Add Funds
-                  </span>
-                </Link>
-              )}
+            {!hasFunds && isLogged && (
+              <Link to={makePath(ACCOUNT_DEPOSIT)}>
+                <span className={Styles["MarketTradingForm__deposit-button"]}>
+                  Add Funds
+                </span>
+              </Link>
+            )}
           </div>
         )}
       </section>

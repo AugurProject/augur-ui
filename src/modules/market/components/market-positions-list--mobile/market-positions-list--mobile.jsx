@@ -45,11 +45,10 @@ export default class MarketPositionsListMobile extends Component {
               Open Orders
             </h2>
             <div className={Styles.MarketPositionsListMobile__orders}>
-              {[...Array(s.visibleOrders)].map(
-                (unused, i) =>
-                  openOrders[i] ? (
-                    <MobileOrder key={i} order={openOrders[i]} />
-                  ) : null
+              {[...Array(s.visibleOrders)].map((unused, i) =>
+                openOrders[i] ? (
+                  <MobileOrder key={i} order={openOrders[i]} />
+                ) : null
               )}
             </div>
             {s.showViewMore && (

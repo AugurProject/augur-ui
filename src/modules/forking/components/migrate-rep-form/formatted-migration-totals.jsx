@@ -91,13 +91,12 @@ export default class FormattedMigrationTotals extends Component {
                 <span className={Styles.MigrateRepForm__outcome_rep_total}>
                   {(outcome && outcome.rep.formatted) || "0"} REP Migrated
                 </span>
-                {outcome &&
-                  outcome.winner && (
-                    <span className={Styles.MigrateRepForm__winning_outcome}>
-                      {" "}
-                      WINNING UNIVERSE
-                    </span>
-                  )}
+                {outcome && outcome.winner && (
+                  <span className={Styles.MigrateRepForm__winning_outcome}>
+                    {" "}
+                    WINNING UNIVERSE
+                  </span>
+                )}
               </button>
             </li>
           ))}

@@ -224,13 +224,12 @@ export default class AccountWithdraw extends Component {
                   updateValue={amount => this.validateForm(amount, s.address)}
                   onChange={amount => this.validateForm(amount, s.address)}
                 />
-                {s.errors.hasOwnProperty("amount") &&
-                  s.errors.amount.length && (
-                    <span className={FormStyles["Form__error--even__space"]}>
-                      {InputErrorIcon()}
-                      {s.errors.amount}
-                    </span>
-                  )}
+                {s.errors.hasOwnProperty("amount") && s.errors.amount.length && (
+                  <span className={FormStyles["Form__error--even__space"]}>
+                    {InputErrorIcon()}
+                    {s.errors.amount}
+                  </span>
+                )}
               </div>
               <div className={Styles["AccountWithdraw__input-wrapper"]}>
                 <label htmlFor="address">Recipient Account Address</label>
@@ -243,13 +242,12 @@ export default class AccountWithdraw extends Component {
                   updateValue={address => this.validateForm(s.amount, address)}
                   onChange={address => this.validateForm(s.amount, address)}
                 />
-                {s.errors.hasOwnProperty("address") &&
-                  s.errors.address.length && (
-                    <span className={FormStyles["Form__error--even__space"]}>
-                      {InputErrorIcon()}
-                      {s.errors.address}
-                    </span>
-                  )}
+                {s.errors.hasOwnProperty("address") && s.errors.address.length && (
+                  <span className={FormStyles["Form__error--even__space"]}>
+                    {InputErrorIcon()}
+                    {s.errors.address}
+                  </span>
+                )}
               </div>
             </div>
             <button

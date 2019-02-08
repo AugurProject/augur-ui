@@ -495,8 +495,9 @@ export default class ReportingDisputeForm extends Component {
               </span>
             )}
             {winner.isInvalid ? "Invalid" : winner.name}
-            {market.marketType === SCALAR &&
-              !winner.isInvalid && <label>{market.scalarDenomination}</label>}
+            {market.marketType === SCALAR && !winner.isInvalid && (
+              <label>{market.scalarDenomination}</label>
+            )}
             {s.currentDisputeRound !== disputeRound && (
               <label className={Styles.ReportingDisputeForm__tentative}>
                 New tentative outcome

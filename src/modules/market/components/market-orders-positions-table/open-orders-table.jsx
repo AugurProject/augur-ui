@@ -39,10 +39,9 @@ const OpenOrdersTable = ({
           </li>
         )}
       </ul>
-      {openOrders.length === 0 &&
-        orphanedOrders.length === 0 && (
-          <div className={Styles.MarketOpenOrdersList__empty} />
-        )}
+      {openOrders.length === 0 && orphanedOrders.length === 0 && (
+        <div className={Styles.MarketOpenOrdersList__empty} />
+      )}
       <div className={Styles.MarketOpenOrdersList__scrollContainer}>
         {(orphanedOrders || []).map(order => (
           <MarketPositionsListOrphanedOrder

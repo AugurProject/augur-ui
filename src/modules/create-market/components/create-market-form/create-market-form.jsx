@@ -395,15 +395,14 @@ export default class CreateMarketForm extends Component {
               liquidityState={s.liquidityState}
             />
           )}
-          {newMarket.currentStep === 4 &&
-            s.awaitingSignature && (
-              <div className={Styles["CreateMarketForm__submit-wrapper"]}>
-                <div className={Styles.CreateMarketForm__submitWarning}>
-                  {InputErrorIcon()} Please sign transaction(s) to complete
-                  market creation.
-                </div>
+          {newMarket.currentStep === 4 && s.awaitingSignature && (
+            <div className={Styles["CreateMarketForm__submit-wrapper"]}>
+              <div className={Styles.CreateMarketForm__submitWarning}>
+                {InputErrorIcon()} Please sign transaction(s) to complete market
+                creation.
               </div>
-            )}
+            </div>
+          )}
         </div>
       </article>
     );

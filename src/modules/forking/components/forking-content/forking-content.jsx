@@ -110,15 +110,14 @@ const ForkingContent = ({
               Migrate REP
             </MarketLink>
           )}
-          {!forkWindowActive &&
-            !isForkingMarketFinalized && (
-              <button
-                className={Styles.ForkingContent__migrate_rep_button}
-                onClick={() => finalizeMarket(forkingMarket)}
-              >
-                Finalize
-              </button>
-            )}
+          {!forkWindowActive && !isForkingMarketFinalized && (
+            <button
+              className={Styles.ForkingContent__migrate_rep_button}
+              onClick={() => finalizeMarket(forkingMarket)}
+            >
+              Finalize
+            </button>
+          )}
         </div>
       </div>
     </section>

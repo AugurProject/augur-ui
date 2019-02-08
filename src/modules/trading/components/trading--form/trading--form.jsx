@@ -468,17 +468,16 @@ class TradingForm extends Component {
             />
           </div>
         )}
-        {market.marketType === YES_NO &&
-          !isMobile && (
-            <div className={Styles.TradingForm__outcome__container}>
-              <div className={Styles.TradingForm__outcome__container__yes}>
-                Yes
-                <span>
-                  <DashlineLong />
-                </span>
-              </div>
+        {market.marketType === YES_NO && !isMobile && (
+          <div className={Styles.TradingForm__outcome__container}>
+            <div className={Styles.TradingForm__outcome__container__yes}>
+              Yes
+              <span>
+                <DashlineLong />
+              </span>
             </div>
-          )}
+          </div>
+        )}
         {isMobile && (
           <MarketOutcomeOrders
             headerHeight={0}
