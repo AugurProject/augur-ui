@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { createBigNumber } from "utils/create-big-number";
-import Highcharts, { time } from "highcharts/highstock";
-import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestic.-highchart.styles";
+import Highcharts from "highcharts/highstock";
+import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
 import { each, isEqual } from "lodash";
 
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
@@ -43,38 +43,97 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             fontFamily: "'Roboto Mono', monospace"
           }
         },
+        scrollbar: { enabled: false },
         navigator: { enabled: false },
         xAxis: {
           labels: {
             style: {
-              color: "#E0E0E3"
+              color: "#ffffff"
             }
           },
-          lineColor: "#707073",
-          minorGridLineColor: "#505053",
-          tickColor: "#707073",
-          fillColor: "#211a32"
+          lineWidth: 1,
+          minorGridLineWidth: 1,
+          plotBands: []
         },
         yAxis: [
           {
+            lineWidth: 0,
+            minorGridLineWidth: 0,
+            lineColor: "transparent",
+            gridLineWidth: 0,
+            minorTickLength: 0,
+            tickLength: 0,
+            showFirstLabel: true,
+            showLastLabel: true,
             labels: {
-              align: "right",
-              x: -3
+              enabled: false
             },
             title: {
               text: ""
             },
-            height: "60%",
-            lineWidth: 1,
+            height: "100%",
             resize: {
               enabled: true
-            }
+            },
+            plotLines: [
+              // to be dynamically created
+              // https://www.highcharts.com/docs/chart-concepts/plot-bands-and-plot-lines
+              {
+                value: 0.2,
+                width: 1,
+                color: "#ffffff",
+                dashStyle: "dash",
+                label: {
+                  text: "0.2000",
+                  align: "right",
+                  y: 12,
+                  x: 0
+                }
+              },
+              {
+                value: 0.4,
+                width: 1,
+                color: "#ffffff",
+                dashStyle: "dash",
+                label: {
+                  text: "0.4000",
+                  align: "right",
+                  y: 12,
+                  x: 0
+                }
+              },
+              {
+                value: 0.6,
+                width: 1,
+                color: "#ffffff",
+                dashStyle: "dash",
+                label: {
+                  text: "0.6000",
+                  align: "right",
+                  y: 12,
+                  x: 0
+                }
+              },
+              {
+                value: 0.8,
+                width: 1,
+                color: "#ffffff",
+                dashStyle: "dash",
+                label: {
+                  text: "0.8000",
+                  align: "right",
+                  y: 12,
+                  x: 0
+                }
+              }
+            ]
           },
           {
-            top: "65%",
-            height: "35%",
-            offset: 0,
-            lineWidth: 1
+            min: 0,
+            top: "85%",
+            height: "15%",
+            opposite: true,
+            gridLineColor: "#211a32"
           }
         ],
         tooltip: { enabled: false },
@@ -110,16 +169,27 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
   displayCandleInfo(evt) {
     const { updateHoveredPeriod, priceTimeSeries } = this.props;
-    const { open, close, high, low, x: timestamp } = evt.target;
-    if (open) {
-      const pts = priceTimeSeries.find(p => p.period === timestamp);
+    const { x: timestamp } = evt.target;
+    const { pointRange } = this.chart.axes[0];
+    const pts = priceTimeSeries.find(p => p.period === timestamp);
+    if (pts) {
+      const range = pointRange / 4;
       updateHoveredPeriod({
-        open: createBigNumber(open),
-        close: createBigNumber(close),
-        high: createBigNumber(high),
-        low: createBigNumber(low),
+        open: createBigNumber(pts.open),
+        close: createBigNumber(pts.close),
+        high: createBigNumber(pts.high),
+        low: createBigNumber(pts.low),
         volume: pts && createBigNumber(pts.volume)
       });
+      const plotBand = {
+        id: "new-plot-band",
+        from: timestamp - range,
+        to: timestamp + range,
+        className: Styles.MarketOutcomeChartsCandlestickHighchart__plot_band,
+        color: "#C4C4C4",
+        zIndex: -1
+      };
+      this.chart.xAxis[0].addPlotBand(plotBand);
     }
   }
 
@@ -132,6 +202,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       low: "",
       volume: ""
     });
+    this.chart.xAxis[0].removePlotBand("new-plot-band");
   }
 
   buidOptions(priceTimeSeries, callback) {
@@ -166,12 +237,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         {
           type: "candlestick",
           upLineColor: "#00F1C4",
-          upColor: "#00F1C4",
+          upColor: "transparent",
           color: "#FF7D5E",
           lineColor: "#FF7D5E",
           lineWidth: "1",
           name: "ohlc",
           data: ohlc,
+          yAxis: 0,
           dataGrouping: {
             units: groupingUnits
           }

@@ -124,7 +124,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
   }
 
   getContainerWidths() {
-    console.log("refactor", this.props.marketMin);
     return {
       containerWidth: 200, // this.drawContainer.clientWidth,
       containerHeight: 100 // this.drawContainer.clientHeight
