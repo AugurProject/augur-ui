@@ -192,102 +192,104 @@ class MarketTradingConfirm extends Component {
           (totalCost && totalCost.value !== 0)) && (
           <div className={Styles.TrandingConfirm__topBorder} />
         )}
-        {shareCost && shareCost.value !== 0 && (
-          <div className={Styles.TradingConfirm__details}>
-            <div className={Styles.TradingConfirm__position__properties}>
-              CLOSING POSITION
-            </div>
-            <div className={Styles.TradingConfirm__agg_position}>
-              <span
-                className={classNames({
-                  [Styles.long]: side !== BUY,
-                  [Styles.short]: side !== SELL
-                })}
-              >
-                {side !== BUY ? "Long" : "Short"}
-              </span>
-              <span> {shareCost.value} </span>
-              Shares @ <span> {limitPrice}</span>
-            </div>
-            <div className={Styles.TradingConfirm__position__details}>
-              <div>Estimated Fee</div>
-              <DashlineLong />
-              <span className={Styles.TradingConfirm__property__value}>
-                {orderShareTradingFee && orderShareTradingFee.formatted}
-                <span>ETH</span>
-              </span>
-            </div>
-            <div className={Styles.TradingConfirm__position__details}>
-              <div>Profit</div>
-              <DashlineLong />
-              <span className={Styles.TradingConfirm__property__value}>
-                {orderShareProfit && orderShareProfit.formatted}
-                <span>ETH</span>
-              </span>
-            </div>
-          </div>
-        )}
-        {totalCost && totalCost.value !== 0 && (
-          <div className={Styles.TradingConfirm__details}>
-            <div
-              className={classNames(
-                Styles.TradingConfirm__position__properties,
-                Styles.TradingConfirm__position__tooltipContainer
-              )}
-            >
-              NEW POSITION
-              <span className={Styles.TradingConfirm__TooltipContainer}>
-                <label
-                  className={classNames(
-                    TooltipStyles.TooltipHint,
-                    Styles.TradingConfirm__TooltipHint
-                  )}
-                  data-tip
-                  data-for="tooltip--confirm"
+        {shareCost &&
+          shareCost.value !== 0 && (
+            <div className={Styles.TradingConfirm__details}>
+              <div className={Styles.TradingConfirm__position__properties}>
+                CLOSING POSITION
+              </div>
+              <div className={Styles.TradingConfirm__agg_position}>
+                <span
+                  className={classNames({
+                    [Styles.long]: side !== BUY,
+                    [Styles.short]: side !== SELL
+                  })}
                 >
-                  {infoIcon}
-                </label>
-                <ReactTooltip
-                  id="tooltip--confirm"
-                  className={TooltipStyles.Tooltip}
-                  effect="solid"
-                  place="top"
-                  type="light"
-                >
-                  <p>{tooltip}</p>
-                </ReactTooltip>
-              </span>
+                  {side !== BUY ? "Long" : "Short"}
+                </span>
+                <span> {shareCost.value} </span>
+                Shares @ <span> {limitPrice}</span>
+              </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Estimated Fee</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {orderShareTradingFee && orderShareTradingFee.formatted}
+                  <span>ETH</span>
+                </span>
+              </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Profit</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {orderShareProfit && orderShareProfit.formatted}
+                  <span>ETH</span>
+                </span>
+              </div>
             </div>
-            <div className={Styles.TradingConfirm__agg_position}>
-              <span
-                className={classNames({
-                  [Styles.long]: side === BUY,
-                  [Styles.short]: side === SELL
-                })}
+          )}
+        {totalCost &&
+          totalCost.value !== 0 && (
+            <div className={Styles.TradingConfirm__details}>
+              <div
+                className={classNames(
+                  Styles.TradingConfirm__position__properties,
+                  Styles.TradingConfirm__position__tooltipContainer
+                )}
               >
-                {side === BUY ? "Long" : "Short"}
-              </span>
-              <span> {newOrderAmount} </span>
-              Shares @ <span> {limitPrice}</span>
+                NEW POSITION
+                <span className={Styles.TradingConfirm__TooltipContainer}>
+                  <label
+                    className={classNames(
+                      TooltipStyles.TooltipHint,
+                      Styles.TradingConfirm__TooltipHint
+                    )}
+                    data-tip
+                    data-for="tooltip--confirm"
+                  >
+                    {infoIcon}
+                  </label>
+                  <ReactTooltip
+                    id="tooltip--confirm"
+                    className={TooltipStyles.Tooltip}
+                    effect="solid"
+                    place="top"
+                    type="light"
+                  >
+                    <p>{tooltip}</p>
+                  </ReactTooltip>
+                </span>
+              </div>
+              <div className={Styles.TradingConfirm__agg_position}>
+                <span
+                  className={classNames({
+                    [Styles.long]: side === BUY,
+                    [Styles.short]: side === SELL
+                  })}
+                >
+                  {side === BUY ? "Long" : "Short"}
+                </span>
+                <span> {newOrderAmount} </span>
+                Shares @ <span> {limitPrice}</span>
+              </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Max Profit</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {potentialEthProfit && potentialEthProfit.formatted}
+                  <span>ETH</span>
+                </span>
+              </div>
+              <div className={Styles.TradingConfirm__position__details}>
+                <div>Max Loss</div>
+                <DashlineLong />
+                <span className={Styles.TradingConfirm__property__value}>
+                  {potentialEthLoss && potentialEthLoss.formatted}
+                  <span>ETH</span>
+                </span>
+              </div>
             </div>
-            <div className={Styles.TradingConfirm__position__details}>
-              <div>Max Profit</div>
-              <DashlineLong />
-              <span className={Styles.TradingConfirm__property__value}>
-                {potentialEthProfit && potentialEthProfit.formatted}
-                <span>ETH</span>
-              </span>
-            </div>
-            <div className={Styles.TradingConfirm__position__details}>
-              <div>Max Loss</div>
-              <DashlineLong />
-              <span className={Styles.TradingConfirm__property__value}>
-                {potentialEthLoss && potentialEthLoss.formatted}
-                <span>ETH</span>
-              </span>
-            </div>
-          </div>
-        )}
+          )}
         {errorMessage && (
           <div className={Styles.TradingConfirm__error_message_container}>
             <div>

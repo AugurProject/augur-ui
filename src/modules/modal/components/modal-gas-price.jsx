@@ -84,12 +84,13 @@ export default class ModalGasPrice extends Component {
     return (
       <section className={Styles.TightModalContainer}>
         <h1>Gas Price (gwei)</h1>
-        {showLowAlert && !disableButton && (
-          <p className={Styles.Warning}>
-            {yellowAlertIcon} Transactions are unlikely to be processed at your
-            current gas price.
-          </p>
-        )}
+        {showLowAlert &&
+          !disableButton && (
+            <p className={Styles.Warning}>
+              {yellowAlertIcon} Transactions are unlikely to be processed at
+              your current gas price.
+            </p>
+          )}
         <Input
           id="price"
           name="price"

@@ -38,12 +38,13 @@ const ReportingReportConfirm = ({
         </ul>
       </div>
     </div>
-    {isOpenReporting && designatedReportNoShowReputationBond && (
-      <div className={ConfirmStyles.Confirm__note_text}>
-        If your report is accepted as the winning outcome, you will receive at
-        least {designatedReportNoShowReputationBond.formatted} REP
-      </div>
-    )}
+    {isOpenReporting &&
+      designatedReportNoShowReputationBond && (
+        <div className={ConfirmStyles.Confirm__note_text}>
+          If your report is accepted as the winning outcome, you will receive at
+          least {designatedReportNoShowReputationBond.formatted} REP
+        </div>
+      )}
   </article>
 );
 

@@ -423,6 +423,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
           selectedRange={selectedRange}
           selectedPeriod={selectedPeriod}
           pricePrecision={pricePrecision}
+          updateHoveredPeriod={this.updateHoveredPeriod}
         />
       </section>
     );
