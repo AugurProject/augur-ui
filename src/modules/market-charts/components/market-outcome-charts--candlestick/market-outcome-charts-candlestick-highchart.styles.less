@@ -4,10 +4,21 @@
   background-color: @color-light-purple;
 }
 
+.MarketOutcomeChartsCandlestickHighchart__plotline_price,
 .MarketOutcomeChartsCandlestickHighchart__openClose_axis {
+  border: 1px solid #ffffff;
+  opacity: 0.4;
   fill: #ffffff;
   font-family: @roboto-mono;
   font-size: 12px;
+}
+
+.MarketOutcomeChartsCandlestickHighchart__plotline_price {
+  background-color: #211A32;
+  border: 1px solid #ffffff;
+  box-sizing: border-box;
+  border-radius: 3px;
+  opacity: 0.4;
 }
 
 .MarketOutcomeChartsCandlestickHighchart__volume_axis {
@@ -15,7 +26,10 @@
   color: #2a2a2b;
 }
 
-
 .MarketOutcomeChartsCandlestickHighchart__plot_band {
-  opacity: 0.4;
+  opacity: 0.1;
+}
+
+.MarketOutcomeChartsCandlestickHighchart__volume_bar {
+  border-radius: 2px;
 }
