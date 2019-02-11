@@ -17,7 +17,12 @@ export class Candlestick extends React.Component {
     marketId: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
-    selectedOutcome: PropTypes.string.isRequired
+    selectedOutcome: PropTypes.string.isRequired,
+    lastPrice: PropTypes.string
+  };
+
+  static defaultProps = {
+    lastPrice: null
   };
 
   constructor(props) {
@@ -43,7 +48,8 @@ export class Candlestick extends React.Component {
       checkPropsChange(prevProps, this.props, [
         "currentTimeInSeconds",
         "selectedOutcome",
-        "marketId"
+        "marketId",
+        "lastPrice"
       ]) ||
       checkPropsChange(prevState, this.state, ["selectedPeriod"])
     ) {

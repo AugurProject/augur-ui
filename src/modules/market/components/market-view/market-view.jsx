@@ -275,6 +275,16 @@ export default class MarketView extends Component {
         outcomeValue => outcomeValue.id === s.selectedOutcome.toString()
       ).description;
 
+    const lastPrice =
+      (s.selectedOutcome &&
+        outcomes.length > 0 &&
+        (
+          outcomes.find(
+            outcomeValue => outcomeValue.id === s.selectedOutcome.toString()
+          ).lastPrice || {}
+        ).value.toString()) ||
+      null;
+
     if (isMobile) {
       return (
         <section
@@ -333,6 +343,7 @@ export default class MarketView extends Component {
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties
                     }
+                    lastPrice={lastPrice}
                     isMobile={isMobile}
                   />
                 </div>
@@ -460,6 +471,7 @@ export default class MarketView extends Component {
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties
                     }
+                    lastPrice={lastPrice}
                   />
                 </div>
               </div>
