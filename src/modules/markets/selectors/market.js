@@ -45,8 +45,7 @@ import {
   UNIVERSE_ID,
   YES_NO_INDETERMINATE_OUTCOME_ID,
   CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID,
-  INDETERMINATE_OUTCOME_NAME,
-  LONG
+  INDETERMINATE_OUTCOME_NAME
 } from "modules/common-elements/constants";
 
 import { placeTrade } from "modules/trades/actions/place-trade";

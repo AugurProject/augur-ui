@@ -6,7 +6,6 @@ import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
-import { SCALAR } from "modules/common-elements/constants";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
@@ -60,11 +59,7 @@ const OpenOrdersTable = ({
             {openOrders.map((order, i) => (
               <OpenOrdersOrder
                 key={i}
-                outcomeName={
-                  market.marketType === SCALAR
-                    ? market.scalarDenomination
-                    : order.name
-                }
+                outcomeName={order.name}
                 order={order}
                 pending={order.pending}
                 isExtendedDisplay={false}
