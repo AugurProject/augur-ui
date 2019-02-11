@@ -47,11 +47,7 @@ const OpenOrdersTable = ({
         {(orphanedOrders || []).map(order => (
           <MarketPositionsListOrphanedOrder
             key={order.orderId}
-            outcomeName={
-              market.marketType === SCALAR
-                ? market.scalarDenomination
-                : order.outcomeName || order.outcome
-            }
+            outcomeName={order.outcomeName || order.outcome}
             order={order}
             pending={false}
             isExtendedDisplay={false}

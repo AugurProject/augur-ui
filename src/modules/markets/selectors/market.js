@@ -401,6 +401,9 @@ export function assembleMarket(
             if (market.isScalar) {
               outcome.name = market.scalarDenomination;
             }
+            if (outcome.position && market.isScalar) {
+              outcome.position.name = market.scalarDenomination;
+            }
 
             outcome.userOpenOrders = selectUserOpenOrders(
               marketId,
@@ -411,6 +414,9 @@ export function assembleMarket(
             if (outcome.userOpenOrders)
               outcome.userOpenOrders.forEach(item => {
                 item.name = outcome.name;
+                if (market.isScalar) {
+                  item.name = market.scalarDenomination;
+                }
               });
 
             outcome.priceTimeSeries = selectPriceTimeSeries(

@@ -101,11 +101,7 @@ export default class MarketPositionsList extends Component {
                     positions.map((position, i) => (
                       <MarketPositionsListPosition
                         key={i}
-                        outcomeName={
-                          market.marketType === SCALAR
-                            ? market.scalarDenomination
-                            : position.name
-                        }
+                        outcomeName={position.name}
                         position={position}
                         isExtendedDisplay={false}
                         isMobile={false}
