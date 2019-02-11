@@ -398,22 +398,8 @@ export function assembleMarket(
               (marketAccountPositions || {})[outcomeId]
             );
             if (outcome.position) outcome.position.name = outcome.name;
-            if (outcome.position && market.isScalar) {
-              const long = createBigNumber(
-                outcome.position.purchasePrice.fullPrecision
-              )
-                .plus(market.minPrice)
-                .toString();
-              const short = createBigNumber(market.maxPrice)
-                .minus(outcome.position.purchasePrice.fullPrecision)
-                .toString();
-              outcome.name = outcome.position.type === LONG ? long : short;
-              if (
-                outcome.position.netPosition.value === 0 &&
-                outcome.position.position.value === 0
-              ) {
-                outcome.position.name = "";
-              }
+            if (market.isScalar) {
+              outcome.name = market.scalarDenomination;
             }
 
             outcome.userOpenOrders = selectUserOpenOrders(
