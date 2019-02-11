@@ -1,6 +1,6 @@
 import React from "react";
-
 import * as constants from "modules/common-elements/constants";
+import { starIcon } from "modules/common/components/icons";
 import Styles from "modules/common-elements/common-elements.styles";
 
 export enum OrderButtonTypes {
@@ -17,6 +17,11 @@ export interface DefaultButtonProps {
 
 export interface OrderButtonProps extends DefaultButtonProps {
   type: OrderButtonTypes;
+}
+
+export interface FavoritesButton extends DefaultButtonProps {
+  isFavorite: boolean;
+  hideText?: boolean;
 }
 
 export const PrimaryButton = (props: DefaultButtonProps) => 
@@ -37,4 +42,23 @@ export const OrderButton = (props: OrderButtonProps) =>
     title={props.title}
   >
     {props.type === constants.BUY ? "Place Buy Order" : "Place Sell Order"}
+  </button>;
+
+export const FavoritesButton = (props: FavoritesButton) =>
+  <button
+    onClick={props.action}
+    className={
+      props.isFavorite ?
+        Styles.FavoriteButton_Favorite :
+        Styles.FavoriteButton
+    }
+    disabled={props.disabled}
+    title={props.title}
+    style={props.hideText ? { marginRight: "0.5rem" } : null}
+  >
+    {starIcon} {!props.hideText && `${
+      props.isFavorite ?
+        "Remove from" :
+        "Add to"
+    } watchlist`}
   </button>;

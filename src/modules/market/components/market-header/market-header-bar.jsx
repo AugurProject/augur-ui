@@ -3,11 +3,7 @@ import PropTypes from "prop-types";
 import determineMarketPhase from "utils/determine-market-phase";
 import Styles from "modules/market/components/market-header/market-header-bar.styles";
 import classNames from "classnames";
-import {
-  starIconOutline,
-  starIconOpen,
-  starIconFilled
-} from "modules/common/components/icons";
+import { FavoritesButton } from "modules/common-elements/buttons";
 import { YES_NO } from "modules/common-elements/constants";
 
 const MarketHeaderBar = ({
@@ -61,32 +57,11 @@ const MarketHeaderBar = ({
       </div>
       {addToFavorites && (
         <div className={Styles.MarketHeaderBar__watchlist__container}>
-          <button
-            onClick={() => addToFavorites()}
-            className={Styles.MarketHeaderBar__watchlist}
+          <FavoritesButton
+            action={() => addToFavorites()}
+            isFavorite={isFavorite}
             disabled={!isLogged}
-          >
-            <span>
-              {isFavorite ? (
-                <span className={Styles.MarketHeaderBar__hoverContainer}>
-                  <span className={Styles.MarketHeaderBar__filledIcon}>
-                    {starIconFilled}
-                  </span>
-                </span>
-              ) : (
-                <span className={Styles.MarketHeaderBar__hoverContainer}>
-                  <span className={Styles.MarketHeaderBar__iconDefault}>
-                    {starIconOpen}
-                  </span>
-                  <span className={Styles.MarketHeaderBar__iconHover}>
-                    {starIconOutline}
-                  </span>
-                </span>
-              )}
-              {!isMobile &&
-                (isFavorite ? "Remove from watchlist" : "Add to watchlist")}
-            </span>
-          </button>
+          />
         </div>
       )}
     </section>
