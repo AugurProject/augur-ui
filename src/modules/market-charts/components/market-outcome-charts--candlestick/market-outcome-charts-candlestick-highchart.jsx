@@ -45,7 +45,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           }
         },
         scrollbar: { enabled: false },
-        navigator: { enabled: false },
+        navigator: { enabled: true },
         xAxis: {
           labels: {
             style: {
@@ -156,6 +156,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         low: createBigNumber(pts.low),
         volume: pts && createBigNumber(pts.volume)
       });
+
       const plotBand = {
         id: "new-plot-band",
         from: timestamp - range,
@@ -191,25 +192,29 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       d => d && d.x === timestamp
     );
     if (bar) {
-      bar.update({
-        color: isHover ? "#665789" : "#161022"
-      });
+      const currentColor = bar.color;
+      const color = isHover ? "#665789" : "#161022";
+      if (currentColor !== color) {
+        bar.update({
+          color
+        });
+      }
     }
   }
 
   buildPlotLinesAfterZoom(evt) {
     const { priceTimeSeries } = this.props;
-    const { userMin, userMax } = evt;
-    if (!userMin || !userMax) return;
+    if (!priceTimeSeries || priceTimeSeries.length === 0) return;
+    const { userMin, userMax, dataMax, dataMin } = evt;
 
-    each(this.chart.xAxis[0].plotLinesAndBands, line =>
-      this.chart.xAxis[0].removePlotLine(undefined)
-    );
+    each(this.chart.yAxis[0].plotLinesAndBands, line => {
+      this.chart.yAxis[0].removePlotLine("plot-line");
+    });
 
     const inRangePriceTimeSeries = priceTimeSeries.filter(
       x =>
-        createBigNumber(userMin).lt(createBigNumber(x.period)) &&
-        createBigNumber(x.period).lt(createBigNumber(userMax))
+        createBigNumber(userMin || dataMin).lt(createBigNumber(x.period)) &&
+        createBigNumber(x.period).lt(createBigNumber(userMax || dataMax))
     );
 
     const plotLines = this.buildPlotLines(
@@ -217,8 +222,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       max(inRangePriceTimeSeries.map(x => x.high))
     );
 
-    each(plotLines, line => this.chart.xAxis[0].addPlotLine(line));
-    console.log("redrawing b/c zoom ");
+    each(plotLines, line => this.chart.yAxis[0].addPlotLine(line));
   }
 
   buildPlotLines(min, max) {
@@ -231,6 +235,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     for (let i = 0; i < NumberOfPlotLines; i++) {
       startingValue = startingValue.plus(interval);
       plotLines.push({
+        id: "plot-line",
         value: startingValue.toFixed(pricePrecision).toString(),
         width: 1,
         className:
