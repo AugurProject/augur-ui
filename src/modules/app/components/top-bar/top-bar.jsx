@@ -33,7 +33,7 @@ const TopBar = props => (
             <div className={Styles.TopBar__stat}>
               <span className={Styles["TopBar__stat-label"]}>ETH</span>
               <span className={Styles["TopBar__stat-value"]} id="core-bar-eth">
-                {props.stats[0].totalBalance.value.formatted}
+                {props.stats[0].totalRealEth.value.formatted}
               </span>
             </div>
             <div className={Styles.TopBar__stat}>
