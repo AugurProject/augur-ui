@@ -124,10 +124,9 @@ export default class AccountDeposit extends Component {
             </h3>
             {show0xInstant && (
               <div className={Styles.AccountDeposit__0xInstantButton}>
-                <PrimaryButton
-                  text="Buy REP using 0x instant"
-                  action={openZeroExInstant}
-                />
+                <button onClick={openZeroExInstant}>
+                  Buy REP using 0x instant
+                </button>
               </div>
             )}
             {!show0xInstant && (
