@@ -4,9 +4,9 @@
   .number-small;
 
   background: @color-primary-light;
-  border-radius: 0.375rem;
+  border-radius: @border-radius-rounded;
   color: @color-secondary-text;
-  max-height: 1.5rem;
+  max-height: @size-large;
   padding: 0.3125rem 0.5rem;
   text-transform: capitalize;
 }
@@ -36,4 +36,22 @@
 
 .MarketStatus_resolved {
   border-bottom-color: @color-resolved;
+}
+
+.PendingLabel {
+  .number-small;
+
+  align-items: center;
+  background: @color-primary-light;
+  border-radius: @border-radius-rounded;
+  color: @color-secondary-text;
+  display: flex;
+  flex-flow: row nowrap;
+  height: 1rem;
+  padding: 1px 0.375rem;
+
+  > div {
+    border-width: 1px;
+    margin-left: 0.3125rem;
+  }
 }
