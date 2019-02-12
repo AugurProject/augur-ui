@@ -7,8 +7,7 @@ import classNames from "classnames";
 import getValue from "utils/get-value";
 import Styles from "modules/market/components/market-positions-list--position/market-positions-list--position.styles";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
-import { BUY, SELL } from "modules/transactions/constants/types";
-import { LONG } from "modules/positions/constants/position-types";
+import { BUY, SELL, LONG } from "modules/common-elements/constants";
 import { createBigNumber } from "utils/create-big-number";
 
 export default class MarketPositionsListPosition extends Component {

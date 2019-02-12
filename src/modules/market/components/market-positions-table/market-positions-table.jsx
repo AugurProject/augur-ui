@@ -16,7 +16,6 @@ export default class MarketPositionsList extends Component {
     transactionsStatus: PropTypes.object.isRequired,
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
-    market: PropTypes.object.isRequired,
     isMobile: PropTypes.bool
   };
 
