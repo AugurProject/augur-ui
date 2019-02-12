@@ -1,7 +1,7 @@
 import { augur, constants } from "services/augurjs";
 import logError from "utils/log-error";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
-import { each } from "lodash";
+import { filter, head } from "lodash";
 import {
   updateDesignatedReportingMarkets,
   updateUpcomingDesignatedReportingMarkets,
@@ -64,9 +64,7 @@ export const loadReporting = (marketIdsParam, callback = logError) => (
             dispatch(updateUpcomingDesignatedReportingMarkets([]));
             return resolve(null);
           }
-          dispatch(
-            dispatch(updateUpcomingDesignatedReportingMarkets(marketIds))
-          );
+          dispatch(updateUpcomingDesignatedReportingMarkets(marketIds));
           resolve(null);
         }
       );
@@ -82,15 +80,11 @@ export const loadReporting = (marketIdsParam, callback = logError) => (
         },
         (err, marketIds) => {
           if (err) return resolve(err);
-          if (
-            !marketIds ||
-            marketIds.length === 0 ||
-            isNaN(loginAccount.address)
-          ) {
+          if (!marketIds || marketIds.length === 0 || !loginAccount.address) {
             dispatch(updateDesignatedReportingMarkets([]));
             return resolve(null);
           }
-          dispatch(dispatch(updateDesignatedReportingMarkets(marketIds)));
+          dispatch(updateDesignatedReportingMarkets(marketIds));
           resolve(null);
         }
       );
@@ -111,16 +105,14 @@ export const loadReporting = (marketIdsParam, callback = logError) => (
           dispatch(updateOpenMarkets([]));
           return resolve(null);
         }
-        dispatch(dispatch(updateOpenMarkets(marketIds)));
+        dispatch(updateOpenMarkets(marketIds));
         resolve(null);
       }
     );
   });
 
   Promise.all([openPromise, prePromise, designatedPromise]).then(errors => {
-    each(errors, err => {
-      if (err !== null) return callback(err);
-    });
-    callback(null);
+    const nonNullErrors = head(filter(errors, err => err !== null));
+    callback(nonNullErrors);
   });
 };
