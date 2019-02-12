@@ -272,7 +272,9 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       selectedPeriod,
       selectedRange,
       updateSelectedPeriod,
-      updateSelectedRange
+      updateSelectedRange,
+      marketMin,
+      marketMax
     } = this.props;
 
     const { hoveredPeriod } = this.state;
@@ -423,6 +425,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
           selectedPeriod={selectedPeriod}
           pricePrecision={pricePrecision}
           updateHoveredPeriod={this.updateHoveredPeriod}
+          marketMin={marketMin}
+          marketMax={marketMax}
         />
       </section>
     );
