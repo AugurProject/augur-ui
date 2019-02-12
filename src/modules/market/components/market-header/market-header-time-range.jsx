@@ -51,7 +51,12 @@ const TimeRange = ({
           >
             Created
           </span>
-          <span className={Styles["MarketHeader__property__header--mobile"]}>
+          <span
+            className={classNames(
+              Styles["MarketHeader__property__header--mobile"],
+              Styles.MarketHeader__property__headerCreated
+            )}
+          >
             {hasPassed ? "Expired" : "Expires"}
           </span>
         </div>
@@ -89,9 +94,14 @@ const TimeRange = ({
             {formattedCreationTime.clockTimeLocal}
           </span>
         </div>
-        <div>
+        <div className={Styles.MarketHeaderTimeRange__datesContainer}>
           {!isMobile && (
-            <span className={MarketHeaderStyles.MarketHeader__property__header}>
+            <span
+              className={classNames(
+                MarketHeaderStyles.MarketHeader__property__header,
+                Styles.MarketHeader__property__headerCreated
+              )}
+            >
               {hasPassed ? "Expired" : "Expires"}
             </span>
           )}
