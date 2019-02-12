@@ -30,7 +30,7 @@ import MarketHeaderReporting from "modules/market/containers/market-header-repor
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
-const MIN_COLLAPSED_MARKET_HEADER = 80;
+const MIN_COLLAPSED_MARKET_HEADER = 100;
 export default class MarketHeader extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
@@ -325,14 +325,16 @@ export default class MarketHeader extends Component {
           </div>
         )}
         {!isMobile && (
-          <button
-            className={classNames({
-              [Styles.MarketHeader__button__collapsed]: headerCollapsed
-            })}
-            onClick={() => this.toggleMarketHeader()}
-          >
-            <ChevronFlip pointDown={headerCollapsed} hover />
-          </button>
+          <div className={Styles.MarketHeader__buttonContainer}>
+            <button
+              className={classNames(Styles.MarketHeader__button, {
+                [Styles.MarketHeader__button__collapsed]: headerCollapsed
+              })}
+              onClick={() => this.toggleMarketHeader()}
+            >
+              <ChevronFlip pointDown={headerCollapsed} stroke="white" />
+            </button>
+          </div>
         )}
       </section>
     );

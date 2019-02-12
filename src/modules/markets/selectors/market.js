@@ -45,8 +45,7 @@ import {
   UNIVERSE_ID,
   YES_NO_INDETERMINATE_OUTCOME_ID,
   CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID,
-  INDETERMINATE_OUTCOME_NAME,
-  LONG
+  INDETERMINATE_OUTCOME_NAME
 } from "modules/common-elements/constants";
 
 import { placeTrade } from "modules/trades/actions/place-trade";
@@ -398,22 +397,11 @@ export function assembleMarket(
               (marketAccountPositions || {})[outcomeId]
             );
             if (outcome.position) outcome.position.name = outcome.name;
+            if (market.isScalar) {
+              outcome.name = market.scalarDenomination;
+            }
             if (outcome.position && market.isScalar) {
-              const long = createBigNumber(
-                outcome.position.purchasePrice.fullPrecision
-              )
-                .plus(market.minPrice)
-                .toString();
-              const short = createBigNumber(market.maxPrice)
-                .minus(outcome.position.purchasePrice.fullPrecision)
-                .toString();
-              outcome.name = outcome.position.type === LONG ? long : short;
-              if (
-                outcome.position.netPosition.value === 0 &&
-                outcome.position.position.value === 0
-              ) {
-                outcome.position.name = "";
-              }
+              outcome.position.name = market.scalarDenomination;
             }
 
             outcome.userOpenOrders = selectUserOpenOrders(
@@ -425,6 +413,9 @@ export function assembleMarket(
             if (outcome.userOpenOrders)
               outcome.userOpenOrders.forEach(item => {
                 item.name = outcome.name;
+                if (market.isScalar) {
+                  item.name = market.scalarDenomination;
+                }
               });
 
             outcome.priceTimeSeries = selectPriceTimeSeries(

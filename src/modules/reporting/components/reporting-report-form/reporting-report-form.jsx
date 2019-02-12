@@ -126,6 +126,7 @@ export default class ReportingReportForm extends Component {
     const updatedValidations = { ...validations };
     this.setState({ activeButton: ReportingReportForm.BUTTONS.SCALAR_VALUE });
     const minValue = parseFloat(min);
+    const bnMinPrice = createBigNumber(min);
     const maxValue = parseFloat(max);
     const valueValue = parseFloat(value);
     const bnValue = createBigNumber(value || 0);
@@ -145,7 +146,10 @@ export default class ReportingReportForm extends Component {
       case valueValue > maxValue || valueValue < minValue:
         updatedValidations.err = `Please enter a ${humanName} between ${min} and ${max}.`;
         break;
-      case bnValue.mod(bnTickSize).gt("0"):
+      case bnValue
+        .minus(bnMinPrice)
+        .mod(bnTickSize)
+        .gt("0"):
         updatedValidations.err = `The ${humanName} field must be a multiple of ${tickSize}.`;
         break;
       default:
@@ -200,6 +204,13 @@ export default class ReportingReportForm extends Component {
           <div className={Styles.ReportingReport__outcome_selection_msg}>
             Please choose an outcome below based on the resolution source when
             the market ends.
+          </div>
+          <div className={Styles.ReportingReport__outcome_selection_msg}>
+            If a timezone isn&apos;t provided, use&nbsp;
+            <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">
+              UTC
+            </a>
+            &nbsp;time to determine the date/time.
           </div>
           <div className={Styles.ReportingReport__outcome_selection_msg}>
             The market should be considered INVALID if any of the following are

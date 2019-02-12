@@ -9,14 +9,27 @@
   flex-direction: column;
 }
 
-.MarketHeader__container__collapsed {
-  position: relative;
+.MarketHeader__buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.625rem;
 }
 
-.MarketHeader__button__collapsed {
-  position: absolute;
-  top: 3.5rem;
-  width: 100%;
+.MarketHeader__button {
+  background: @color-dark-gray;
+  border-radius: 6rem;
+  height: 1.5rem;
+  width: 4rem;
+
+  &:hover {
+    background-color: @color-bright-gray-purple;
+  }
+
+  > span {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .MarketHeader__property__header {
@@ -114,6 +127,7 @@
   flex-grow: 1;
   font-size: @font-size-rather-large;
   font-weight: bold;
+  line-height: normal;
   margin: 1rem 0;
 }
 
@@ -230,6 +244,7 @@
 
 .Marketheader__resolutionSource {
   font-family: 'Roboto Mono', monospace;
+  line-height: normal;
 }
 
 .MarketHeader__properties {

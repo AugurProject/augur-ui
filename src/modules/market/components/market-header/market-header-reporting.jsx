@@ -8,7 +8,11 @@ import Styles from "modules/market/components/market-header/market-header-report
 import { constants } from "services/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
 import MarketHeaderStyles from "modules/market/components/market-header/market-header.styles";
-import { CATEGORICAL, TYPE_DISPUTE } from "modules/common-elements/constants";
+import {
+  CATEGORICAL,
+  TYPE_DISPUTE,
+  TYPE_REPORT
+} from "modules/common-elements/constants";
 import { createBigNumber } from "utils/create-big-number";
 
 export default class MarketHeaderReporting extends Component {
@@ -20,7 +24,8 @@ export default class MarketHeaderReporting extends Component {
     claimTradingProceeds: PropTypes.func.isRequired,
     getWinningBalances: PropTypes.func.isRequired,
     tentativeWinner: PropTypes.object,
-    isLogged: PropTypes.bool
+    isLogged: PropTypes.bool,
+    location: PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -60,7 +65,8 @@ export default class MarketHeaderReporting extends Component {
       claimTradingProceeds,
       tentativeWinner,
       isLogged,
-      currentTimestamp
+      currentTimestamp,
+      location
     } = this.props;
     const {
       reportingState,
@@ -252,6 +258,7 @@ export default class MarketHeaderReporting extends Component {
                 id={id}
                 location={location}
                 disabled={!isLogged}
+                linkType={TYPE_REPORT}
               >
                 Report
               </MarketLink>
