@@ -30,8 +30,8 @@ const OpenOrdersTable = ({
           <span>Quantity</span>
         </li>
         <li>Price</li>
-        <li>Escrowed ETH</li>
-        <li>Escrowed Shares</li>
+        <li>Total Cost (ETH)</li>
+        <li>Total Cost (Shares)</li>
         {!isMobile && (
           <li>
             <span>Action</span>
