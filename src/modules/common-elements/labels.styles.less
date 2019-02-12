@@ -1,0 +1,39 @@
+@import (reference) '~assets/styles/shared';
+
+.MarketTypeLabel {
+  .number-small;
+
+  background: @color-primary-light;
+  border-radius: 0.375rem;
+  color: @color-secondary-text;
+  max-height: 1.5rem;
+  padding: 0.3125rem 0.5rem;
+  text-transform: capitalize;
+}
+
+.MarketStatus {
+  .text-smaller-bold;
+
+  border-bottom: 2px solid transparent;
+  color: @color-secondary-text;
+  padding-bottom: 0.25rem;
+}
+
+.MarketStatus_mini {
+  .number-smallest;
+
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+}
+
+.MarketStatus_open {
+  border-bottom-color: @color-open;
+}
+
+.MarketStatus_reporting {
+  border-bottom-color: @color-in-reporting;
+}
+
+.MarketStatus_resolved {
+  border-bottom-color: @color-resolved;
+}

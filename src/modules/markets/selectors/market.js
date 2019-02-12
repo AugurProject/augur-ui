@@ -45,8 +45,13 @@ import {
   UNIVERSE_ID,
   YES_NO_INDETERMINATE_OUTCOME_ID,
   CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID,
-  INDETERMINATE_OUTCOME_NAME
+  INDETERMINATE_OUTCOME_NAME,
+  MARKET_OPEN,
+  MARKET_REPORTING,
+  MARKET_CLOSED
 } from "modules/common-elements/constants";
+
+import { constants } from "services/constants";
 
 import { placeTrade } from "modules/trades/actions/place-trade";
 import { submitReport } from "modules/reports/actions/submit-report";
@@ -234,6 +239,19 @@ export function assembleMarket(
         market.isOpen = isOpen;
         // market.isExpired = isExpired;
         market.isFavorite = isFavorite;
+
+        switch (market.reportingState) {
+          case constants.REPORTING_STATE.PRE_REPORTING:
+            market.marketStatus = MARKET_OPEN;
+            break;
+          case constants.REPORTING_STATE.AWAITING_FINALIZATION:
+          case constants.REPORTING_STATE.FINALIZED:
+            market.marketStatus = MARKET_CLOSED;
+            break;
+          default:
+            market.marketStatus = MARKET_REPORTING;
+            break;
+        }
 
         market.reportingFeeRatePercent = formatPercent(
           marketData.reportingFeeRate * 100,

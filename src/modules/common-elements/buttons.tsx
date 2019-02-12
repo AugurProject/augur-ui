@@ -1,9 +1,9 @@
 import React from "react";
-import * as constants from "modules/common-elements/constants";
+import * as constants from "./constants";
 import { starIcon } from "modules/common/components/icons";
-import Styles from "modules/common-elements/common-elements.styles";
+import Styles from "./buttons.styles";
 
-export enum OrderButtonTypes {
+export enum OrderTypes {
   BUY = constants.BUY,
   SELL = constants.SELL,
 }
@@ -16,7 +16,7 @@ export interface DefaultButtonProps {
 }
 
 export interface OrderButtonProps extends DefaultButtonProps {
-  type: OrderButtonTypes;
+  type: OrderTypes;
 }
 
 export interface FavoritesButton extends DefaultButtonProps {
@@ -26,7 +26,7 @@ export interface FavoritesButton extends DefaultButtonProps {
 
 export const PrimaryButton = (props: DefaultButtonProps) => 
   <button
-    onClick={props.action}
+    onClick={() => props.action}
     className={Styles.PrimaryButton}
     disabled={props.disabled}
     title={props.title || props.text}
@@ -36,7 +36,7 @@ export const PrimaryButton = (props: DefaultButtonProps) =>
 
 export const OrderButton = (props: OrderButtonProps) => 
   <button
-    onClick={props.action}
+    onClick={() => props.action}
     className={props.type === constants.BUY ? Styles.BuyOrderButton : Styles.SellOrderButton}
     disabled={props.disabled}
     title={props.title}
@@ -46,7 +46,7 @@ export const OrderButton = (props: OrderButtonProps) =>
 
 export const FavoritesButton = (props: FavoritesButton) =>
   <button
-    onClick={props.action}
+    onClick={() => props.action}
     className={
       props.isFavorite ?
         Styles.FavoriteButton_Favorite :
@@ -54,7 +54,7 @@ export const FavoritesButton = (props: FavoritesButton) =>
     }
     disabled={props.disabled}
     title={props.title}
-    style={props.hideText ? { marginRight: "0.5rem" } : null}
+    style={props.hideText ? { marginRight: "0.5rem" } : undefined}
   >
     {starIcon} {!props.hideText && `${
       props.isFavorite ?

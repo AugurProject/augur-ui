@@ -174,6 +174,16 @@ export const MARKET_OPEN = "open";
 export const MARKET_REPORTING = "reporting";
 export const MARKET_CLOSED = "closed";
 
+// # Market Status Messages
+export const MARKET_STATUS_MESSAGES = {
+  OPEN: "Open",
+  IN_REPORTING: "In Reporting",
+  RESOLVED: "Resolved",
+  FORKING: "Forking",
+  AWAITING_NO_REPORT_MIGRATION: "Awaiting No Report Migrated",
+  AWAITING_FORK_MIGRATION: "Awaiting Fork Migration"
+}
+
 // # Search/Filter Param Names
 export const FILTER_SEARCH_PARAM = "keywords";
 export const TAGS_PARAM_NAME = "tags";
