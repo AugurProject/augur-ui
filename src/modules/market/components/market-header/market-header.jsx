@@ -332,7 +332,7 @@ export default class MarketHeader extends Component {
               })}
               onClick={() => this.toggleMarketHeader()}
             >
-              <ChevronFlip pointDown={headerCollapsed} hover />
+              <ChevronFlip pointDown={headerCollapsed} stroke="white" />
             </button>
           </div>
         )}

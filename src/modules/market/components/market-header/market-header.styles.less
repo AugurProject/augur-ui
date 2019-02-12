@@ -11,9 +11,8 @@
 
 .MarketHeader__buttonContainer {
   display: flex;
-  flex-grow: 1;
   justify-content: center;
-  margin-top: 3rem;
+  margin-top: 0.625rem;
 }
 
 .MarketHeader__button {
@@ -21,6 +20,10 @@
   border-radius: 6rem;
   height: 1.5rem;
   width: 4rem;
+
+  &:hover {
+    background-color: @color-bright-gray-purple;
+  }
 
   > span {
     align-items: center;
