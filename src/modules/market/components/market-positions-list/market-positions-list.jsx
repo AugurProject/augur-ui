@@ -24,12 +24,14 @@ export default class MarketPositionsList extends Component {
     sellCompleteSets: PropTypes.func.isRequired,
     marketId: PropTypes.string.isRequired,
     orphanedOrders: PropTypes.array.isRequired,
-    cancelOrphanedOrder: PropTypes.func.isRequired
+    cancelOrphanedOrder: PropTypes.func.isRequired,
+    updateSelectedOrderProperties: PropTypes.func
   };
 
   static defaultProps = {
     openOrders: [],
-    numCompleteSets: null
+    numCompleteSets: null,
+    updateSelectedOrderProperties: null
   };
 
   constructor(props) {
@@ -49,7 +51,8 @@ export default class MarketPositionsList extends Component {
       sellCompleteSets,
       marketId,
       orphanedOrders,
-      cancelOrphanedOrder
+      cancelOrphanedOrder,
+      updateSelectedOrderProperties
     } = this.props;
     const s = this.state;
     const hasOrders = openOrders.length > 0 || orphanedOrders.length > 0;
@@ -139,6 +142,9 @@ export default class MarketPositionsList extends Component {
                       isMobile={false}
                       marketId={marketId}
                       hasOrders={hasOrders}
+                      updateSelectedOrderProperties={
+                        updateSelectedOrderProperties
+                      }
                     />
                   ))}
               </div>

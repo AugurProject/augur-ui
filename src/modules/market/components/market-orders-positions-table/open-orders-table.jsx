@@ -6,7 +6,6 @@ import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
-import { SCALAR } from "modules/common-elements/constants";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
@@ -31,8 +30,8 @@ const OpenOrdersTable = ({
           <span>Quantity</span>
         </li>
         <li>Price</li>
-        <li>Escrowed ETH</li>
-        <li>Escrowed Shares</li>
+        <li>Total Cost (ETH)</li>
+        <li>Total Cost (Shares)</li>
         {!isMobile && (
           <li>
             <span>Action</span>
@@ -47,11 +46,7 @@ const OpenOrdersTable = ({
         {(orphanedOrders || []).map(order => (
           <MarketPositionsListOrphanedOrder
             key={order.orderId}
-            outcomeName={
-              market.marketType === SCALAR
-                ? market.scalarDenomination
-                : order.outcomeName || order.outcome
-            }
+            outcomeName={order.outcomeName || order.outcome}
             order={order}
             pending={false}
             isExtendedDisplay={false}
@@ -64,11 +59,7 @@ const OpenOrdersTable = ({
             {openOrders.map((order, i) => (
               <OpenOrdersOrder
                 key={i}
-                outcomeName={
-                  market.marketType === SCALAR
-                    ? market.scalarDenomination
-                    : order.name
-                }
+                outcomeName={order.name}
                 order={order}
                 pending={order.pending}
                 isExtendedDisplay={false}

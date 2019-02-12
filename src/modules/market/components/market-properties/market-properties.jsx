@@ -20,6 +20,7 @@ import { dateHasPassed } from "utils/format-date";
 import Styles from "modules/market/components/market-properties/market-properties.styles";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { constants } from "services/augurjs";
+import { FavoritesButton } from "modules/common-elements/buttons";
 
 const {
   DESIGNATED_REPORTING,
@@ -206,18 +207,11 @@ export default class MarketProperties extends Component {
           <div className={Styles.MarketProperties__actions}>
             {isLogged &&
               toggleFavorite && (
-                <button
-                  className={classNames(Styles.MarketProperties__favorite, {
-                    [Styles.favorite]: isFavorite
-                  })}
-                  onClick={() => toggleFavorite(id)}
-                >
-                  {isFavorite ? (
-                    <i className="fa fa-star" />
-                  ) : (
-                    <i className="fa fa-star-o" />
-                  )}
-                </button>
+                <FavoritesButton
+                  action={() => toggleFavorite(id)}
+                  isFavorite={isFavorite}
+                  hideText
+                />
               )}
             {(!linkType ||
               (linkType &&
