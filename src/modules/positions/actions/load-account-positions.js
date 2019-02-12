@@ -3,6 +3,7 @@ import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets
 import { updateAccountPositionsData } from "modules/positions/actions/update-account-trades-data";
 import logError from "utils/log-error";
 import { updateTopBarPL } from "modules/positions/actions/update-top-bar-pl";
+import { loadUsershareBalances } from "modules/positions/actions/load-user-share-balances";
 
 export const loadAccountPositions = (options = {}, callback = logError) => (
   dispatch,
@@ -21,6 +22,7 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
           ...positions.reduce((p, position) => [...p, position.marketId], [])
         ])
       );
+      dispatch(loadUsershareBalances(marketIds));
       if (marketIds.length === 0) return callback(null);
       dispatch(
         loadMarketsInfoIfNotLoaded(marketIds, err => {
