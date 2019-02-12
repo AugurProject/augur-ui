@@ -21,23 +21,13 @@ const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
           <span>
             <div>Total Volume</div>
           </span>
-          <span style={{ fontSize: "1.125rem" }}>
-            {getValue(market, "volume.formatted")}
-            <span className={Styles[`CoreProperties__property-denomination`]}>
-              ETH
-            </span>
-          </span>
+          <span>{getValue(market, "volume.formatted")} ETH</span>
         </div>
         <div className={Styles.CoreProperties__property}>
           <span>
             <div>24hr Volume</div>
           </span>
-          <span>
-            {getValue(market, "volume.formatted")}
-            <span className={Styles[`CoreProperties__property-denomination`]}>
-              ETH
-            </span>
-          </span>
+          <span>{getValue(market, "volume.formatted")} ETH</span>
         </div>
         {getValue(market, "marketType") === SCALAR && (
           <div className={Styles.CoreProperties__property}>
@@ -53,12 +43,7 @@ const CoreProperties = ({ market, isMobileSmall, isMobile }) => (
           <span>
             <div>Open Interest</div>
           </span>
-          <span style={{ fontSize: "1.125rem" }}>
-            {getValue(market, "openInterest.formatted")}
-            <span className={Styles[`CoreProperties__property-denomination`]}>
-              ETH
-            </span>
-          </span>
+          <span>{getValue(market, "openInterest.formatted")} ETH</span>
         </div>
         <div className={Styles.CoreProperties__property}>
           <span>
