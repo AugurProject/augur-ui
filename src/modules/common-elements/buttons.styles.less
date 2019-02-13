@@ -127,3 +127,21 @@
     }
   }
 }
+
+.CompactButton {
+  .Button;
+  .number-small;
+
+  border: @border-default;
+  border-color: @color-primary-light;
+  border-radius: @border-radius-full-round;
+  color: @color-alternate-text;
+  height: 1.25rem;
+  line-height: @size-smallest;
+  padding: 3px 0.75rem;
+
+  &:hover:enabled {
+    background: @color-primary-light;
+    color: @color-secondary-button-text;
+  }
+}
