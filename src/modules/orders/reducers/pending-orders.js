@@ -20,11 +20,17 @@ export default function(pendingOrders = DEFAULT_STATE(), { type, data }) {
     }
     case REMOVE_PENDING_ORDER: {
       const { id, marketId } = data;
-      let orders = pendingOrders[marketId];
+      let orders = pendingOrders[marketId] || [];
       orders = orders.filter(obj => obj.id !== id);
+      if (orders.length > 0) {
+        return {
+          ...pendingOrders,
+          [marketId]: orders
+        };
+      }
+      delete pendingOrders[marketId];
       return {
-        ...pendingOrders,
-        [marketId]: orders
+        ...pendingOrders
       };
     }
     case LOAD_PENDING_ORDERS: {

@@ -14,7 +14,10 @@ import {
   removePendingOrder
 } from "modules/orders/actions/pending-orders-management";
 import { formatEther, formatShares } from "utils/format-number";
-import getOutcomeName from "modules/markets/helpers/get-outcome-name";
+
+function getOutcomeName(outcomesData, outcomeId) {
+  return outcomesData[outcomeId].name || outcomesData[outcomeId].description;
+}
 
 export const placeTrade = ({
   marketId,
@@ -25,7 +28,7 @@ export const placeTrade = ({
   onComplete = noop
 }) => (dispatch, getState) => {
   if (!marketId) return null;
-  const { loginAccount, marketsData, blockchain } = getState();
+  const { loginAccount, marketsData, blockchain, outcomesData } = getState();
   const market = marketsData[marketId];
   if (!tradeInProgress || !market || outcomeId == null) {
     return console.error(
@@ -51,6 +54,7 @@ export const placeTrade = ({
     maxDisplayPrice: market.maxPrice
   });
   const sharesToFill = tradeCost.onChainAmount;
+  let hash = null;
   // make sure that we actually have an updated allowance.
   const placeTradeParams = {
     meta: loginAccount.meta,
@@ -66,15 +70,19 @@ export const placeTrade = ({
     _tradeGroupId: tradeInProgress.tradeGroupId,
     doNotCreateOrders,
     onSent: res => {
+      ({ hash } = res);
       dispatch(checkAccountAllowance());
 
       dispatch(
         addPendingOrder(
           {
-            id: tradeInProgress.tradeGroupId,
+            id: hash,
             avgPrice: formatEther(tradeInProgress.limitPrice),
             unmatchedShares: formatShares(tradeInProgress.numShares),
-            name: getOutcomeName(market, parseInt(outcomeId, 10)),
+            name: getOutcomeName(
+              outcomesData[marketId],
+              parseInt(outcomeId, 10)
+            ),
             type: tradeInProgress.side,
             pendingOrder: true,
             pending: false,
@@ -87,12 +95,12 @@ export const placeTrade = ({
       callback(null, tradeInProgress.tradeGroupId);
     },
     onFailed: () => {
-      dispatch(removePendingOrder(tradeInProgress.tradeGroupId, marketId));
+      if (hash) {
+        dispatch(removePendingOrder(hash, marketId));
+      }
       callback();
     },
     onSuccess: res => {
-      dispatch(removePendingOrder(tradeInProgress.tradeGroupId, marketId));
-
       if (bnAllowance.lte(0)) dispatch(checkAccountAllowance());
       onComplete({
         res,
