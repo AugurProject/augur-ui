@@ -9,6 +9,12 @@ import {
 } from "modules/common-elements/constants";
 import logError from "utils/log-error";
 import noop from "utils/noop";
+import {
+  addPendingOrder,
+  removePendingOrder
+} from "modules/orders/actions/pending-orders-management";
+import { formatEther, formatShares } from "utils/format-number";
+import getOutcomeName from "modules/markets/helpers/get-outcome-name";
 
 export const placeTrade = ({
   marketId,
@@ -19,7 +25,7 @@ export const placeTrade = ({
   onComplete = noop
 }) => (dispatch, getState) => {
   if (!marketId) return null;
-  const { loginAccount, marketsData } = getState();
+  const { loginAccount, marketsData, blockchain } = getState();
   const market = marketsData[marketId];
   if (!tradeInProgress || !market || outcomeId == null) {
     return console.error(
@@ -61,10 +67,29 @@ export const placeTrade = ({
     doNotCreateOrders,
     onSent: res => {
       dispatch(checkAccountAllowance());
+
+      dispatch(
+        addPendingOrder(
+          {
+            id: tradeInProgress.tradeGroupId,
+            avgPrice: formatEther(tradeInProgress.limitPrice),
+            unmatchedShares: formatShares(tradeInProgress.numShares),
+            name: getOutcomeName(market, parseInt(outcomeId, 10)),
+            type: tradeInProgress.side,
+            pendingOrder: true,
+            pending: false,
+            blockNumber: blockchain.currentBlockNumber
+          },
+          marketId
+        )
+      );
+
       callback(null, tradeInProgress.tradeGroupId);
     },
     onFailed: callback,
     onSuccess: res => {
+      dispatch(removePendingOrder(tradeInProgress.tradeGroupId, marketId));
+
       if (bnAllowance.lte(0)) dispatch(checkAccountAllowance());
       onComplete({
         res,

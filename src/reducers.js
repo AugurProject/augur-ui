@@ -41,6 +41,7 @@ import transactionsData from "modules/transactions/reducers/transactions-data";
 import transactionsStatus from "modules/transactions/reducers/transactions-status";
 import universe from "modules/universe/reducers/universe";
 import versions from "modules/app/reducers/versions";
+import pendingOrders from "modules/orders/reducers/pending-orders";
 
 export function createReducer() {
   return {
@@ -78,6 +79,7 @@ export function createReducer() {
     outcomesData,
     participationTokens,
     pendingLiquidityOrders,
+    pendingOrders,
     priceHistory,
     reportingWindowStats,
     reports,

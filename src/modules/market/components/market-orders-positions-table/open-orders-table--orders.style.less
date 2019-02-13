@@ -1,5 +1,28 @@
 @import (reference) '~assets/styles/shared';
 
+.Order {
+  > li {
+    &:first-child {
+      position: relative;
+
+      > span {
+        &:extend(.button--mediumgray all);
+
+        background-color: @color-medium-gray;
+        border-radius: 0.5rem;
+        color: @color-white;
+        cursor: default;
+        margin-left: 1rem;
+        padding: 2px 6px;
+        position: absolute;
+        right: 0;
+        text-transform: capitalize;
+        top: 18%;
+      }
+    }
+  }
+}
+
 .Order__cancel {
   &:extend(.button--mediumgray all);
 
@@ -23,6 +46,21 @@ div.Order__cancelContainer {
 @media @breakpoint-mobile {
   .Order__cancel {
     margin-right: 0;
+  }
+
+  .Order {
+    > li {
+      &:first-child {
+        position: absolute;
+        right: 0;
+
+        > span {
+          left: 30px;
+          right: unset;
+          top: 0;
+        }
+      }
+    }
   }
 }
 

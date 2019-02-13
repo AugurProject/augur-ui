@@ -23,7 +23,7 @@ export default class OpenOrdersOrder extends Component {
       unmatchedShares: PropTypes.object,
       tokensEscrowed: PropTypes.object,
       sharesEscrowed: PropTypes.object,
-      cancelOrder: PropTypes.func.isRequired
+      cancelOrder: PropTypes.func
     }).isRequired,
     pending: PropTypes.bool.isRequired,
     outcome: PropTypes.object,
@@ -74,6 +74,7 @@ export default class OpenOrdersOrder extends Component {
         className={classNames(
           SharedStyles.Order,
           SharedStyles.Order__Extended,
+          Styles.Order,
           {
             [SharedStyles["Order-not_extended"]]: isExtendedDisplay,
             [SharedStyles.Negative]: orderType === SELL,
@@ -81,7 +82,10 @@ export default class OpenOrdersOrder extends Component {
           }
         )}
       >
-        <li>{outcomeName || orderPrice}</li>
+        <li>
+          {outcomeName || orderPrice}
+          {order.pendingOrder && <span>Pending</span>}
+        </li>
         <li
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL
@@ -95,24 +99,25 @@ export default class OpenOrdersOrder extends Component {
         {outcome && <li>{getValue(outcome, "lastPrice.formatted")}</li>}
         {<li>{getValue(order, "tokensEscrowed.formatted")}</li>}
         {<li>{getValue(order, "sharesEscrowed.formatted")}</li>}
-        {!isMobile && (
-          <li>
-            {pending ? (
-              <button className={Styles.Order__cancel} disabled>
-                PENDING
-              </button>
-            ) : (
-              <button
-                className={Styles.Order__cancel}
-                onClick={e => {
-                  order.cancelOrder(order);
-                }}
-              >
-                Cancel
-              </button>
-            )}
-          </li>
-        )}
+        {!isMobile &&
+          order.cancelOrder && (
+            <li>
+              {pending ? (
+                <button className={Styles.Order__cancel} disabled>
+                  PENDING
+                </button>
+              ) : (
+                <button
+                  className={Styles.Order__cancel}
+                  onClick={e => {
+                    order.cancelOrder(order);
+                  }}
+                >
+                  Cancel
+                </button>
+              )}
+            </li>
+          )}
         {isMobile && <div onClick={this.toggleCancelButton}>{threeDots}</div>}
         {s.showCancelButton && (
           <div className={Styles.Order__cancelContainer}>
