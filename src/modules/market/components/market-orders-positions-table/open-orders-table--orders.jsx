@@ -15,8 +15,9 @@ export default class OpenOrdersOrder extends Component {
   static propTypes = {
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
-    outcomeName: PropTypes.string.isRequired,
     order: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      pending: PropTypes.bool,
       type: PropTypes.string.isRequired,
       orderCancellationStatus: PropTypes.string,
       avgPrice: PropTypes.object,
@@ -25,7 +26,6 @@ export default class OpenOrdersOrder extends Component {
       sharesEscrowed: PropTypes.object,
       cancelOrder: PropTypes.func
     }).isRequired,
-    pending: PropTypes.bool.isRequired,
     outcome: PropTypes.object,
     oddNumber: PropTypes.bool
   };
@@ -53,9 +53,7 @@ export default class OpenOrdersOrder extends Component {
     const {
       isExtendedDisplay,
       isMobile,
-      outcomeName,
       order,
-      pending,
       outcome,
       oddNumber
     } = this.props;
@@ -82,7 +80,7 @@ export default class OpenOrdersOrder extends Component {
           }
         )}
       >
-        <li>{outcomeName || orderPrice}</li>
+        <li>{order.name || orderPrice}</li>
         <li
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL
@@ -100,7 +98,7 @@ export default class OpenOrdersOrder extends Component {
         {!isMobile &&
           order.cancelOrder && (
             <li>
-              {pending ? (
+              {order.pending ? (
                 <button className={Styles.Order__cancel} disabled>
                   PENDING
                 </button>
@@ -119,7 +117,7 @@ export default class OpenOrdersOrder extends Component {
         {isMobile && <div onClick={this.toggleCancelButton}>{threeDots}</div>}
         {s.showCancelButton && (
           <div className={Styles.Order__cancelContainer}>
-            {pending ? (
+            {order.pending ? (
               <button className={Styles.Order__cancel} disabled>
                 PENDING
               </button>
