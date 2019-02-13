@@ -35,6 +35,8 @@ export const clearPendingOrders = () => (dispatch, getState) => {
         ) {
           delete pendingOrders[marketId][hash];
         }
+
+        return pendingOrders[marketId];
       })
     );
   }
