@@ -188,6 +188,8 @@ export default class CreateMarketOutcome extends Component {
         ? value
         : updatedMarket.scalarDenomination;
 
+    console.log(denomination);
+
     if (!BigNumber.isBigNumber(scalarSmallNum) && scalarSmallNum !== "") {
       scalarSmallNum = createBigNumber(scalarSmallNum);
     }
@@ -286,7 +288,7 @@ export default class CreateMarketOutcome extends Component {
     }
 
     switch (true) {
-      case denomination === "":
+      case denomination.trim() === "":
         updatedMarket.validations[currentStep].scalarDenomination =
           "Denomination is required.";
         break;
