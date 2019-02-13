@@ -2,7 +2,10 @@ import React from "react";
 import classNames from "classnames";
 import * as constants from "./constants";
 import Styles from "./labels.styles";
+<<<<<<< HEAD
 import { ClipLoader } from "react-spinners";
+=======
+>>>>>>> new-trading-page-layout
 
 export interface MarketTypeProps {
   marketType: string
