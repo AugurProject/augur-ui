@@ -24,7 +24,7 @@ export interface FavoritesButton extends DefaultButtonProps {
   hideText?: boolean;
 }
 
-export const PrimaryButton = (props: DefaultButtonProps) => 
+export const PrimaryButton = (props: DefaultButtonProps) =>
   <button
     onClick={() => props.action}
     className={Styles.PrimaryButton}
@@ -34,9 +34,9 @@ export const PrimaryButton = (props: DefaultButtonProps) =>
     {props.text}
   </button>;
 
-export const OrderButton = (props: OrderButtonProps) => 
+export const OrderButton = (props: OrderButtonProps) =>
   <button
-    onClick={() => props.action}
+    onClick={(e) => props.action(e)}
     className={props.type === constants.BUY ? Styles.BuyOrderButton : Styles.SellOrderButton}
     disabled={props.disabled}
     title={props.title}
