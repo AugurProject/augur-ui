@@ -188,8 +188,6 @@ export default class CreateMarketOutcome extends Component {
         ? value
         : updatedMarket.scalarDenomination;
 
-    console.log(denomination);
-
     if (!BigNumber.isBigNumber(scalarSmallNum) && scalarSmallNum !== "") {
       scalarSmallNum = createBigNumber(scalarSmallNum);
     }
