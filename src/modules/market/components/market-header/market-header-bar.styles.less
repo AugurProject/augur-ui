@@ -5,38 +5,14 @@
   align-items: center;
   display: flex;
   margin-bottom: 1.5rem;
+
+  > span {
+    margin-right: 1rem;
+  }
 }
 
 .MarketHeaderBar__container__collapsed {
   justify-content: start;
-}
-
-.MarketHeaderBar__type {
-  &:extend(.button--mediumgray all);
-
-  background-color: @color-medium-gray;
-  border-radius: 0.5rem;
-  color: @color-white;
-  cursor: default;
-  margin-left: 1rem;
-  padding: 0.375rem 0.5rem;
-  text-transform: capitalize;
-
-  &:hover {
-    background-color: @color-medium-gray;
-    border-color: @color-medium-gray;
-  }
-}
-
-.MarketHeaderBar__status {
-  color: @color-white;
-  display: flex;
-  flex-direction: column;
-  font-size: @font-size-small;
-
-  > span:first-child {
-    margin-top: 0.3rem;
-  }
 }
 
 .MarketHeaderBar__collapsed {
@@ -59,86 +35,6 @@
   }
 }
 
-.MarketHeaderBar__underline__reporting,
-.MarketHeaderBar__underline__resolved,
-.MarketHeaderBar__underline__open,
-.MarketHeaderBar__underline {
-  border-radius: 100px;
-  margin-bottom: 0.25rem;
-  transform: matrix(1, 0, 0, -1, 0, 0);
-}
-
-.MarketHeaderBar__underline__open {
-  border-bottom: 2px solid @color-open-green;
-}
-
-.MarketHeaderBar__underline__resolved {
-  border-bottom: 2px solid @color-resolved-red;
-}
-
-.MarketHeaderBar__underline__reporting {
-  border-bottom: 2px solid @color-dispute-yellow;
-}
-
-.MarketHeaderBar__watchlist__container {
-  display: flex;
-  flex-grow: 1;
-  justify-content: flex-end;
-  min-width: 177px;
-}
-
-.MarketHeaderBar__watchlist__disabled,
-.MarketHeaderBar__watchlist {
-  box-sizing: border-box;
-  color: @color-white;
-
-  svg {
-    margin: -0.1rem 0.5rem;
-    max-height: 1.5rem;
-    max-width: 1.5rem;
-    vertical-align: top;
-  }
-
-  span {
-    font-size: @font-size-small;
-    padding-right: 0.8rem;
-    vertical-align: middle;
-    white-space: nowrap;
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.3;
-  }
-}
-
-span.MarketHeaderBar__filledIcon {
-  padding-right: 0;
-}
-
-span.MarketHeaderBar__iconHover {
-  display: none;
-  padding: 0;
-}
-
-span.MarketHeaderBar__iconDefault {
-  padding: 0;
-}
-
-span.MarketHeaderBar__hoverContainer {
-  display: inline-block;
-  margin-top: -5px;
-  padding: 0;
-}
-
-.MarketHeaderBar__watchlist:hover .MarketHeaderBar__iconDefault {
-  display: none;
-}
-
-.MarketHeaderBar__watchlist:hover .MarketHeaderBar__iconHover {
-  display: block;
-}
-
 @media @breakpoint-mobile {
   .MarketHeaderBar {
     display: flex;
@@ -149,4 +45,3 @@ span.MarketHeaderBar__hoverContainer {
     padding-bottom: 0;
   }
 }
-

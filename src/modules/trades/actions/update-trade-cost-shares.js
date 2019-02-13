@@ -23,7 +23,8 @@ export function updateTradeCost({
       loginAccount,
       orderBooks,
       outcomesData,
-      accountPositions
+      accountPositions,
+      accountShareBalances
     } = getState();
     const market = marketsData[marketId];
     const outcome = outcomesData[marketId][outcomeId];
@@ -45,6 +46,7 @@ export function updateTradeCost({
       orderBooks,
       outcome,
       accountPositions,
+      accountShareBalances,
       callback
     );
   };
@@ -68,6 +70,7 @@ export function updateTradeShares({
       loginAccount,
       outcomesData,
       accountPositions,
+      accountShareBalances,
       orderBooks
     } = getState();
     const market = marketsData[marketId];
@@ -136,6 +139,7 @@ export function updateTradeShares({
       orderBooks,
       outcome,
       accountPositions,
+      accountShareBalances,
       callback
     );
   };
@@ -150,17 +154,15 @@ function runSimulateTrade(
   orderBooks,
   outcome,
   accountPositions,
+  accountShareBalances,
   callback
 ) {
   let userShareBalance = new Array(market.numOutcomes).fill("0");
   let sharesFilledAvgPrice = "";
+  const userMarketShareBalances = accountShareBalances[marketId];
   const positions = accountPositions[marketId];
   if (positions) {
-    userShareBalance = Object.keys(positions).reduce((arr, outcomeId) => {
-      const position = positions[outcomeId];
-      arr[position.outcome] = position.position;
-      return arr;
-    }, userShareBalance);
+    userShareBalance = userMarketShareBalances;
     sharesFilledAvgPrice = (positions[outcomeId] || {}).averagePrice;
   }
 

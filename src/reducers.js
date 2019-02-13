@@ -42,6 +42,7 @@ import transactionsStatus from "modules/transactions/reducers/transactions-statu
 import universe from "modules/universe/reducers/universe";
 import versions from "modules/app/reducers/versions";
 import pendingOrders from "modules/orders/reducers/pending-orders";
+import accountShareBalances from "modules/positions/reducers/account-share-balances";
 
 export function createReducer() {
   return {
@@ -88,6 +89,7 @@ export function createReducer() {
     transactionsData,
     transactionsStatus,
     universe,
-    versions
+    versions,
+    accountShareBalances
   };
 }

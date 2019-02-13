@@ -292,7 +292,7 @@ export default class MarketHeader extends Component {
               {market.id && (
                 <MarketHeaderBar
                   marketId={market.id}
-                  reportingState={market.reportingState}
+                  marketStatus={market.marketStatus}
                   addToFavorites={this.addToFavorites}
                   isMobile={isMobile}
                   isFavorite={isFavorite}
