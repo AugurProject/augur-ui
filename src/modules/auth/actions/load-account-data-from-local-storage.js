@@ -72,7 +72,6 @@ export const loadAccountDataFromLocalStorage = address => (
         storedAccountData.pendingOrders &&
         Object.keys(storedAccountData.pendingOrders).length
       ) {
-        console.log(storedAccountData.pendingOrders);
         dispatch(loadPendingOrders(storedAccountData.pendingOrders));
       }
       if (

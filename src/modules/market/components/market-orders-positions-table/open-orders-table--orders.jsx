@@ -82,10 +82,7 @@ export default class OpenOrdersOrder extends Component {
           }
         )}
       >
-        <li>
-          {outcomeName || orderPrice}
-          {order.pendingOrder && <span>Pending</span>}
-        </li>
+        <li>{outcomeName || orderPrice}</li>
         <li
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL
@@ -93,6 +90,7 @@ export default class OpenOrdersOrder extends Component {
           style={{ textTransform: "capitalize" }}
         >
           {orderType}
+          {order.pendingOrder && <span>Pending</span>}
         </li>
         <li>{orderShares}</li>
         <li>{orderPrice}</li>

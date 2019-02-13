@@ -11,7 +11,11 @@ import {
   MODAL_CLAIM_TRADING_PROCEEDS
 } from "modules/common-elements/constants";
 import { find } from "lodash";
-import { selectCurrentTimestamp, selectOrphanOrders, selectPendingOrdersState } from "src/select-state";
+import {
+  selectCurrentTimestamp,
+  selectOrphanOrders,
+  selectPendingOrdersState
+} from "src/select-state";
 import { constants } from "services/augurjs";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { createBigNumber } from "utils/create-big-number";

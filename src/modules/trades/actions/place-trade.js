@@ -86,7 +86,10 @@ export const placeTrade = ({
 
       callback(null, tradeInProgress.tradeGroupId);
     },
-    onFailed: callback,
+    onFailed: () => {
+      dispatch(removePendingOrder(tradeInProgress.tradeGroupId, marketId));
+      callback();
+    },
     onSuccess: res => {
       dispatch(removePendingOrder(tradeInProgress.tradeGroupId, marketId));
 

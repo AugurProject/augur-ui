@@ -2,7 +2,7 @@
 
 .Order {
   > li {
-    &:first-child {
+    &:nth-of-type(2) {
       position: relative;
 
       > span {
@@ -12,10 +12,10 @@
         border-radius: 0.5rem;
         color: @color-white;
         cursor: default;
+        left: 0;
         margin-left: 1rem;
         padding: 2px 6px;
         position: absolute;
-        right: 0;
         text-transform: capitalize;
         top: 18%;
       }
@@ -50,14 +50,12 @@ div.Order__cancelContainer {
 
   .Order {
     > li {
-      &:first-child {
-        position: absolute;
-        right: 0;
-
+      &:nth-of-type(2) {
         > span {
-          left: 30px;
-          right: unset;
-          top: 0;
+          bottom: 0.3125rem;
+          left: unset;
+          right: 0;
+          top: unset;
         }
       }
     }

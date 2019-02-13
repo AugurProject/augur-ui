@@ -8,8 +8,7 @@ export default function getOutcomeName(market, outcomeId) {
   const { outcomes, marketType, scalarDenomination } = market;
 
   const outcomeInfo =
-    outcomes &&
-    outcomes.find(outcomeValue => outcomeValue.id === outcomeId.toString());
+    outcomes && outcomes.find(outcomeValue => outcomeValue.id === outcomeId);
 
   let outcomeName = outcomeInfo && outcomeInfo.description;
   if (marketType === YES_NO) {
