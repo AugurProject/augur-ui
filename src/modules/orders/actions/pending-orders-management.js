@@ -37,7 +37,7 @@ export const clearPendingOrders = () => (dispatch, getState) => {
         }
 
         if (!pendingOrders[marketId].length) {
-          delete pendingOrders[marketId]
+          delete pendingOrders[marketId];
         }
 
         return pendingOrders[marketId];
