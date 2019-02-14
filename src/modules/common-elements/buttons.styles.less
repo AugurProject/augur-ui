@@ -103,9 +103,9 @@
 
   &:hover:enabled {
     > svg > path {
-      fill: @color-primary;
+      fill: @color-primary-action;
       fill-opacity: 0.1;
-      stroke: @color-primary;
+      stroke: @color-primary-action;
     }
   }
 }
@@ -114,16 +114,34 @@
   .FavoriteButton;
 
   > svg > path {
-    fill: @color-primary;
+    fill: @color-primary-action;
     fill-opacity: 1;
-    stroke: @color-primary;
+    stroke: @color-primary-action;
   }
 
   &:hover:enabled {
     > svg > path {
-      fill: @color-primary;
+      fill: @color-primary-action;
       fill-opacity: 0.5;
-      stroke: @color-primary;
+      stroke: @color-primary-action;
     }
+  }
+}
+
+.CompactButton {
+  .Button;
+  .number-small;
+
+  border: @border-default;
+  border-color: @color-primary-light;
+  border-radius: @border-radius-full-round;
+  color: @color-alternate-text;
+  height: 1.25rem;
+  line-height: @size-smallest;
+  padding: 3px 0.75rem;
+
+  &:hover:enabled {
+    background: @color-primary-light;
+    color: @color-secondary-button-text;
   }
 }

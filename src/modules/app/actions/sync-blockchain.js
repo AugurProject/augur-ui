@@ -6,7 +6,7 @@ import { loadGasPriceInfo } from "modules/app/actions/load-gas-price-info";
 
 const GET_GAS_BLOCK_LIMIT = 100;
 
-export const syncBlockchain = () => (dispatch, getState) => {
+export const syncBlockchain = cb => (dispatch, getState) => {
   const { gasPriceInfo } = getState();
   const blockNumber = parseInt(augur.rpc.getCurrentBlock().number, 16);
   augur.api.Controller.getTimestamp((err, augurTimestamp) => {
@@ -30,6 +30,8 @@ export const syncBlockchain = () => (dispatch, getState) => {
     if (!gasPriceInfo.blockNumber || BNblockNumber.gte(BNGasBlockNumberLimit)) {
       dispatch(loadGasPriceInfo());
     }
+
+    cb && cb();
   });
 
   augur.augurNode.getSyncData((err, res) => {
