@@ -13,23 +13,30 @@ export enum sizeTypes {
 export interface MovementLabelProps {
   value: number;
   size: sizeTypes;
+  styles?: object;
   showColors?: boolean;
   showIcon?: boolean;
   showBrackets?: boolean;
-  showPercentSign?: boolean;
-  showPositiveSign?: boolean;
+  showPercent?: boolean;
+  showPlusMinus?: boolean;
 }
 
 const MovementLabel = (props: MovementLabelProps) => {
-  // Set Defaults
-  const showColors = props.showColors || false;
-  const showPercentSign = props.showPercentSign || false;
-  const showBrackets = props.showBrackets || false;
-  const showPositiveSign = props.showPositiveSign || false;
-  const showIcon = props.showIcon || false;
+  const showColors = props.showColors || false;          // Red/Green
+  const showPercent = props.showPercent || false;        // 0.00%
+  const showBrackets = props.showBrackets || false;      // (0.00)
+  const showPlusMinus = props.showPlusMinus || false;    // +4.32 / -0.32
+  const showIcon = props.showIcon || false;              // 📈 3.2 / 📉 2.1
 
   return (
-    <div className={Styles.MovementLabel}>
+    <div
+      className={Styles.MovementLabel}
+      style={
+        showIcon
+          ? { ...props.styles, justifyContent: "space-between" }
+          : { ...props.styles, justifyContent: "flex-end" }
+      }
+    >
       {showIcon &&
         props.value !== 0 && (
           <MovementIcon value={props.value} size={props.size} />
@@ -39,9 +46,9 @@ const MovementLabel = (props: MovementLabelProps) => {
           value={props.value}
           size={props.size}
           showColors={showColors}
-          showPercentSign={showPercentSign}
+          showPercent={showPercent}
           showBrackets={showBrackets}
-          showPositiveSign={showPositiveSign}
+          showPlusMinus={showPlusMinus}
         />
       }
     </div>

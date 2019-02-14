@@ -14,8 +14,8 @@ export interface MovementTextProps {
   size: sizeTypes;
   showColors: boolean;
   showBrackets: boolean;
-  showPercentSign: boolean;
-  showPositiveSign: boolean;
+  showPercent: boolean;
+  showPlusMinus: boolean;
 }
 
 const MovementText = (props: MovementTextProps) => {
@@ -34,53 +34,53 @@ const MovementText = (props: MovementTextProps) => {
     });
   };
 
-  // Set styles
   const textColorStyle = getTextColorStyles(props.value);
   const textSizeStyle = getTextSizeStyle(props.size);
 
   // Transform label
-  const addPositiveSign: Function = (value: number): string | void => {
-    if (props.value > 0 && props.showPositiveSign) {
-      return "+".concat(String(value));
-    }
-    return String(value);
-  };
-
-  const addBrackets: Function = (
-    showBrackets: boolean,
-    label: string
-  ): string | void => {
-    if (showBrackets) {
-      return `(${label})`;
+  const removeMinus: Function = (label: number): number => {
+    if (props.value < 0 && !props.showPlusMinus) {
+      return Math.abs(props.value);
     }
     return label;
   };
 
-  const addPercentSign: Function = (
-    showPercentSign: boolean,
-    label: string
-  ): string | void => {
-    if (showPercentSign) {
+  const toString: Function = (label: number): string => {
+    return String(label);
+  };
+
+  const addPlus: Function = (label: string): string => {
+    if (props.value > 0 && props.showPlusMinus) {
+      return "+".concat(label);
+    }
+    return label;
+  };
+
+  const addPercent: Function = (label: string): string => {
+    if (props.showPercent) {
       return `${label}%`;
     }
     return label;
   };
 
-  let formattedString = props.value;
-  formattedString = addPositiveSign(formattedString);
-  formattedString = addPercentSign(props.showPercentSign, formattedString);
-  formattedString = addBrackets(props.showBrackets, formattedString);
+  const addBrackets: Function = (label: string): string => {
+    if (props.showBrackets) {
+      return `(${label})`;
+    }
+    return label;
+  };
 
-  // Render
-  const MovementText = (
+  const formattedString = addBrackets(
+    addPercent(addPlus(toString(removeMinus(props.value))))
+  );
+
+  return (
     <div
       className={`${props.showColors ? textColorStyle : ""} ${textSizeStyle}`}
     >
       {formattedString}
     </div>
   );
-
-  return MovementText;
 };
 
 export default MovementText;

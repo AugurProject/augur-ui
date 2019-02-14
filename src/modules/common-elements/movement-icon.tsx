@@ -16,7 +16,6 @@ export interface MovementIconProps {
 }
 
 const MovementIcon = (props: MovementIconProps) => {
-  // Set styles
   const getIconSizeStyles: Function = (size: sizeTypes): string => {
     return classNames(Styles.MovementLabel_Icon, {
       [Styles.MovementLabel_Icon_small]: size == sizeTypes.SMALL,
@@ -32,14 +31,10 @@ const MovementIcon = (props: MovementIconProps) => {
     });
   };
 
-  const styles = `${getIconSizeStyles(props.size)} ${getIconColorStyles(
-    props.value
-  )}`;
+  const iconSize = getIconSizeStyles(props.size);
+  const iconColor = getIconColorStyles(props.value);
 
-  // Render
-  const MovementIcon = <div className={styles}>{marketIcon}</div>;
-
-  return MovementIcon;
+  return <div className={`${iconSize} ${iconColor}`}>{marketIcon}</div>;
 };
 
 export default MovementIcon;
