@@ -12,10 +12,7 @@ import Styles from "modules/market-charts/components/market-outcome-charts/marke
 import { loadCandleStickData } from "modules/markets/actions/load-candlestick-data";
 
 import { BigNumber } from "bignumber.js";
-import {
-  clampPeriodByRange,
-  defaultRangePeriodDurations
-} from "modules/markets/helpers/range";
+import { defaultRangePeriodDurations } from "modules/markets/helpers/range";
 
 export default class MarketOutcomeCharts extends Component {
   static propTypes = {

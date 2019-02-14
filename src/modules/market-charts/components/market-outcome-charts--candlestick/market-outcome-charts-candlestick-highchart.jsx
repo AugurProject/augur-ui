@@ -188,12 +188,14 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   displayCandleInfoAndPlotViz(evt) {
     const { updateHoveredPeriod } = this.props;
     const { x: timestamp, open, close, high, low } = evt.target;
-    const range = evt.pointWidth * 2;
+    const { closestPointRange } = evt.target.series.xAxis;
+    const range = closestPointRange / 4;
+
     updateHoveredPeriod({
-      open: createBigNumber(open),
-      close: createBigNumber(close),
-      high: createBigNumber(high),
-      low: createBigNumber(low),
+      open: open ? createBigNumber(open) : "",
+      close: close ? createBigNumber(close) : "",
+      high: high ? createBigNumber(high) : "",
+      low: low ? createBigNumber(low) : "",
       volume: createBigNumber(0)
     });
 
@@ -203,6 +205,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       to: timestamp + range,
       className: Styles.MarketOutcomeChartsCandlestickHighchart__plot_band,
       color: "#C4C4C4",
+      thickness: "100%",
       zIndex: -1
     };
 
