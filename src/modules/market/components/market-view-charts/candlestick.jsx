@@ -5,10 +5,6 @@ import { loadCandleStickData } from "src/modules/markets/actions/load-candlestic
 import logError from "src/utils/log-error";
 import { checkPropsChange } from "src/utils/check-props-change";
 import { head } from "lodash";
-import {
-  clampPeriodByRange,
-  defaultRangePeriodDurations
-} from "src/modules/markets/helpers/range";
 import MarketOutcomeCandlestick from "src/modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick";
 import { BigNumber } from "bignumber.js";
 import { PERIODS } from "modules/common-elements/constants";

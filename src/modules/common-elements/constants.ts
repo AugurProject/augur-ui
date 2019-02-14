@@ -95,8 +95,7 @@ export const ERROR_TYPES = {
   },
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
-    subheader:
-      `Please enter a derivative path with the format "${DEFAULT_DERIVATION_PATH}"`
+    subheader: `Please enter a derivative path with the format "${DEFAULT_DERIVATION_PATH}"`
   }
 };
 
@@ -182,7 +181,7 @@ export const MARKET_STATUS_MESSAGES = {
   FORKING: "Forking",
   AWAITING_NO_REPORT_MIGRATION: "Awaiting No Report Migrated",
   AWAITING_FORK_MIGRATION: "Awaiting Fork Migration"
-}
+};
 
 // # Search/Filter Param Names
 export const FILTER_SEARCH_PARAM = "keywords";
@@ -297,7 +296,39 @@ export const RANGES = [
   }
 ];
 
+export const PERIOD_RANGES = {
+  1800: {
+    period: 1800,
+    label: "minute",
+    range: 12 * 3600 * 1000 // 12 hours
+  },
+  3600: {
+    period: 3600,
+    label: "hour",
+    range: 24 * 3600 * 1000 // 1 day
+  },
+  86400: {
+    period: 86400,
+    label: "day",
+    range: 30 * 24 * 3600 * 1000 // month
+  },
+  604800: {
+    period: 604800,
+    label: "week",
+    range: 6 * 30 * 24 * 3600 * 1000 // 6 months
+  },
+  2629800: {
+    period: 2629800,
+    label: "month",
+    range: 12 * 30 * 24 * 3600 * 1000 // 1 year
+  }
+};
+
 export const PERIODS = [
+  {
+    value: 1800,
+    label: "30 Minute"
+  },
   {
     value: 3600,
     label: "Hourly"
@@ -492,9 +523,9 @@ export const COMPLETE_SETS_SOLD = "CompleteSetsSold";
 export const TRANSFER_FUNDS = "transfer_funds";
 export const SENT_CASH = "sent_cash";
 export const SENT_ETHER = "sent_ether";
-export const SMALL = 'small';
-export const NORMAL = 'normal';
-export const LARGE = 'large';
+export const SMALL = "small";
+export const NORMAL = "normal";
+export const LARGE = "large";
 
 // Trade/order labels
 export const BID = "bid";

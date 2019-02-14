@@ -5,6 +5,7 @@ import CustomPropTypes from "utils/custom-prop-types";
 import Highcharts from "highcharts/highstock";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
 import { each, isEqual, min, max } from "lodash";
+import { PERIOD_RANGES } from "modules/common-elements/constants";
 
 const NumberOfPlotLines = 3;
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
@@ -73,6 +74,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             },
             format: "{value:%b %d}"
           },
+          range: 24 * 3600 * 1000, // day
           crosshair: {
             width: 0,
             snap: true,
@@ -83,15 +85,10 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               color: "#ffffff",
               backgroundColor: "#0F0A19",
               borderColor: "#ffffff",
-              format: "{value:%b %d}",
+              format: "{value:%b %d, %H:%M}",
               align: "center",
               y: 0,
-              x: 0,
-              formatter() {
-                return (
-                  "The value for <b>" + this.x + "</b> is <b>" + this.y + "</b>"
-                );
-              }
+              x: 0
             }
           },
           lineWidth: 1,
@@ -166,15 +163,18 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   componentDidMount() {
-    const { priceTimeSeries } = this.props;
-    this.buidOptions(priceTimeSeries, options => {
+    const { priceTimeSeries, selectedPeriod } = this.props;
+    this.buidOptions(priceTimeSeries, selectedPeriod, options => {
       this.chart = Highcharts.stockChart(this.container, options);
     });
   }
 
   componentWillUpdate(nextProps) {
-    if (!isEqual(this.props.priceTimeSeries, nextProps.priceTimeSeries)) {
-      this.buidOptions(nextProps.priceTimeSeries);
+    if (
+      !isEqual(this.props.priceTimeSeries, nextProps.priceTimeSeries) ||
+      !isEqual(this.props.selectedPeriod, nextProps.selectedPeriod)
+    ) {
+      this.buidOptions(nextProps.priceTimeSeries, nextProps.selectedPeriod);
     }
   }
 
@@ -186,37 +186,32 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   displayCandleInfoAndPlotViz(evt) {
-    const { updateHoveredPeriod, priceTimeSeries } = this.props;
-    const { x: timestamp } = evt.target;
-    const { pointRange } = this.chart.axes[0];
-    const pts = priceTimeSeries.find(p => p.period === timestamp);
-    if (pts) {
-      const range = pointRange / 4;
-      updateHoveredPeriod({
-        open: createBigNumber(pts.open),
-        close: createBigNumber(pts.close),
-        high: createBigNumber(pts.high),
-        low: createBigNumber(pts.low),
-        volume: pts && createBigNumber(pts.volume)
-      });
+    const { updateHoveredPeriod } = this.props;
+    const { x: timestamp, open, close, high, low } = evt.target;
+    const range = evt.pointWidth * 2;
+    updateHoveredPeriod({
+      open: createBigNumber(open),
+      close: createBigNumber(close),
+      high: createBigNumber(high),
+      low: createBigNumber(low),
+      volume: createBigNumber(0)
+    });
 
-      const plotBand = {
-        id: "new-plot-band",
-        from: timestamp - range,
-        to: timestamp + range,
-        className: Styles.MarketOutcomeChartsCandlestickHighchart__plot_band,
-        color: "#C4C4C4",
-        zIndex: -1
-      };
+    const plotBand = {
+      id: "new-plot-band",
+      from: timestamp - range,
+      to: timestamp + range,
+      className: Styles.MarketOutcomeChartsCandlestickHighchart__plot_band,
+      color: "#C4C4C4",
+      zIndex: -1
+    };
 
-      this.chart.xAxis[0].addPlotBand(plotBand);
-      // this.updateVolumeBar(true, timestamp);
-    }
+    this.chart.xAxis[0].addPlotBand(plotBand);
+    // this.updateVolumeBar(true, timestamp);
   }
 
   clearCandleInfoAndPlotViz(evt) {
     const { updateHoveredPeriod } = this.props;
-    const { x: timestamp } = evt.target;
 
     updateHoveredPeriod({
       open: "",
@@ -303,9 +298,16 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     return plotLines;
   }
 
-  buidOptions(priceTimeSeries, callback) {
-    const { selectedPeriod } = this.props;
+  buidOptions(priceTimeSeries, selectedPeriod, callback) {
     const { options } = this.state;
+    const groupingUnits = [
+      ["minute", [1]],
+      ["hour", [1]],
+      ["day", [1]],
+      ["week", [1]],
+      ["month", [1]],
+      ["year", [1]]
+    ];
     const ohlc = [];
     const volume = [];
     each(priceTimeSeries, item => {
@@ -314,16 +316,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       volume.push([period, item.volume]);
     });
 
-    const plotLines = this.buildPricePlotLines(
-      min(priceTimeSeries.map(x => x.low)),
-      max(priceTimeSeries.map(x => x.high))
-    );
-
-    // options.yAxis[0].plotLines = plotLines;
-
-    options.yAxis[1].plotLines = MarketOutcomeChartsCandlestickHighchart.buildTimePlotLines(
-      priceTimeSeries.map(x => x.period)
-    );
+    const { range } = PERIOD_RANGES[selectedPeriod];
+    if (Array.isArray(options.xAxis)) {
+      options.xAxis[0].range = range;
+    } else {
+      options.xAxis.range = range;
+    }
 
     const newOptions = Object.assign(options, {
       series: [
@@ -336,14 +334,20 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           lineWidth: "1",
           name: "ohlc",
           data: ohlc,
-          yAxis: 0
+          yAxis: 0,
+          dataGrouping: {
+            units: groupingUnits
+          }
         },
         {
           type: "column",
           name: "volume",
           color: "#665789",
           data: volume,
-          yAxis: 1
+          yAxis: 1,
+          dataGrouping: {
+            units: groupingUnits
+          }
         }
       ]
     });
