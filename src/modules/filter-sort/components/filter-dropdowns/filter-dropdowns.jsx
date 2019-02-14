@@ -19,11 +19,11 @@ import {
   MAX_FEE_40_PERCENT
 } from "modules/common-elements/constants";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
-import Dropdown from "modules/common/components/dropdown/dropdown";
 import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropdowns.styles";
 import parseQuery from "modules/routes/helpers/parse-query";
 import makeQuery from "modules/routes/helpers/make-query";
 import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
+import { RoundedDropdown } from "modules/common-elements/dropdown";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },
@@ -150,19 +150,18 @@ export default class FilterSearch extends Component {
     return (
       <div className={Styles.FilterDropdowns__container}>
         <div className={Styles.FilterDropdowns}>
-          <Dropdown
-            default={defaultFilter}
+          <RoundedDropdown
+            defaultValue={defaultFilter}
             onChange={this.changeFilterDropdown}
             options={filterOptions}
-            alignLeft
           />
-          <Dropdown
-            default={defaultSort}
+          <RoundedDropdown
+            defaultValue={defaultSort}
             onChange={this.changeSortDropdown}
             options={sortOptions}
           />
-          <Dropdown
-            default={defaultMaxFee}
+          <RoundedDropdown
+            defaultValue={defaultMaxFee}
             onChange={this.changeMaxFees}
             options={maxFeesOptions}
           />

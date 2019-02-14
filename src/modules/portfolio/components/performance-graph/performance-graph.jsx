@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 
-import Dropdown from "modules/common/components/dropdown/dropdown";
+import { SquareDropdown } from "modules/common-elements/dropdown";
 import { formatEther } from "utils/format-number";
 import Styles from "modules/portfolio/components/performance-graph/performance-graph.styles";
 
@@ -403,13 +403,13 @@ class PerformanceGraph extends Component {
             Profits/losses
           </div>
           <div className={Styles["PerformanceGraph__SortBar-dropdowns"]}>
-            <Dropdown
-              default={s.graphTypeDefault}
+            <SquareDropdown
+              defaultValue={s.graphTypeDefault}
               options={s.graphTypeOptions}
               onChange={this.changeDropdown}
             />
-            <Dropdown
-              default={s.graphPeriodDefault}
+            <SquareDropdown
+              defaultValue={s.graphPeriodDefault}
               options={s.graphPeriodOptions}
               onChange={this.changeDropdown}
             />
