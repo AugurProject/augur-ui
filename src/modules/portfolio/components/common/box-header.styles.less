@@ -1,0 +1,18 @@
+@import (reference) '~assets/styles/shared';
+
+.BoxHeader__title {
+	&:extend(.caps--large-thin);
+
+	flex-grow: 1;
+}
+
+.BoxHeader__header--top-row {
+	border-bottom: 0.0625rem solid @color-secondary-background;
+	display: flex;
+   	padding: 1.25rem 1.5rem;
+    flex-direction: row;
+}
+
+.BoxHeader__header--bottom-row {
+	padding: 0.75rem 1.5rem;
+}

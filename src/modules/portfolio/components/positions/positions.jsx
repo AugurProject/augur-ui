@@ -7,6 +7,7 @@ import makePath from "modules/routes/helpers/make-path";
 import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import PortfolioStyles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 import { MARKETS } from "modules/routes/constants/views";
+import PortfolioBox from "modules/portfolio/components/common/portfolio-box";
 
 export default class Positions extends Component {
   static propTypes = {
@@ -23,9 +24,39 @@ export default class Positions extends Component {
     isMobile: PropTypes.bool.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      search: '',
+      sortBy: 'creationTime',
+      displayState: 'ALL',
+      markets: props.reportingMarkets
+    };
+
+    this.runSortBy = this.runSortBy.bind(this);
+    this.updateSortBy = this.updateSortBy.bind(this);
+  }
+
   componentWillMount() {
     const { loadAccountTrades } = this.props;
     loadAccountTrades();
+  }
+
+  updateSortBy() {
+    this.setState({sortBy: 'endTime'}, () => {
+      this.runSortBy()
+    });
+  }
+
+  runSortBy() {
+    let { markets } = this.state;
+    console.log(markets)
+    markets = markets.sort((marketA, marketB) =>
+      marketA[this.state.sortBy].timestamp - marketB[this.state.sortBy].timestamp
+    );
+
+    this.setState({markets: markets})
   }
 
   render() {
@@ -41,62 +72,23 @@ export default class Positions extends Component {
       reportingMarkets,
       transactionsStatus
     } = this.props;
+    const { markets, sortBy } = this.state;
     return (
-      <section>
-        <Helmet>
-          <title>Positions</title>
-        </Helmet>
-        {marketsCount !== 0 && (
+      <PortfolioBox 
+        title="Positions" 
+        rows={
           <div>
-            <PositionsMarketsList
-              title="Open"
-              markets={openPositionMarkets}
-              location={location}
-              history={history}
-              transactionsStatus={transactionsStatus}
-              currentTimestamp={currentTimestamp}
-              isMobile={isMobile}
-              paginationName="open"
-              noTopPadding
-            />
-            <PositionsMarketsList
-              title="In Reporting"
-              markets={reportingMarkets}
-              location={location}
-              history={history}
-              transactionsStatus={transactionsStatus}
-              positionsDefault={false}
-              currentTimestamp={currentTimestamp}
-              isMobile={isMobile}
-              paginationName="reporting"
-            />
-            <PositionsMarketsList
-              title="Resolved"
-              markets={closedMarkets}
-              location={location}
-              history={history}
-              transactionsStatus={transactionsStatus}
-              positionsDefault={false}
-              currentTimestamp={currentTimestamp}
-              claimTradingProceeds={claimTradingProceeds}
-              isMobile={isMobile}
-              paginationName="resolved"
-              addNullPadding
-            />
+            {
+              markets.map(market => (
+                <div key={market.id}>{market.description + " " + market.creationTime.formattedShortDate}</div>
+            ))}
           </div>
-        )}
-        {marketsCount === 0 && (
-          <div className={PortfolioStyles.NoMarkets__container}>
-            <span>You don&apos;t have any positions.</span>
-            <Link
-              className={PortfolioStyles.NoMarkets__link}
-              to={makePath(MARKETS)}
-            >
-              <span>Click here to view markets.</span>
-            </Link>
-          </div>
-        )}
-      </section>
+        } 
+        rightContent={
+          <div onClick={this.updateSortBy}>{sortBy}</div>
+        } 
+        bottomBarContent={<div>bottom bar content</div>}
+      />
     );
   }
 }

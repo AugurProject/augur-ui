@@ -16,49 +16,14 @@ import {
 
 import Styles from "modules/portfolio/components/portfolio-header/portfolio-header.styles";
 
-const PortfolioHeader = ({ location, triggerTransactionsExport }) => (
+const PortfolioHeader = () => (
   <section className={Styles.PortfolioHeader}>
     <div className={Styles.PortfolioHeader__header}>
       <h1 className={Styles.PortfolioHeader__title}>
         portfolio
-        <span>: {getTitle(location.pathname)}</span>
       </h1>
-      {location.pathname.indexOf(PORTFOLIO_REPORTS) === -1 && (
-        <button
-          className={Styles.PortfolioHeader__export}
-          onClick={triggerTransactionsExport}
-        >
-          {ExportIcon} Export Data
-        </button>
-      )}
     </div>
-    {location.pathname.indexOf(PORTFOLIO_REPORTS) === -1 && (
-      <PerformanceGraph />
-    )}
   </section>
 );
-
-function getTitle(path) {
-  const view = parsePath(path)[0];
-
-  switch (view) {
-    case MY_MARKETS:
-      return "my markets";
-    case FAVORITES:
-      return "watchlist";
-    case TRANSACTIONS:
-      return "transactions";
-    case PORTFOLIO_REPORTS:
-      return "reporting";
-    case MY_POSITIONS:
-    default:
-      return "positions";
-  }
-}
-
-PortfolioHeader.propTypes = {
-  triggerTransactionsExport: PropTypes.func.isRequired,
-  location: PropTypes.object.isRequired
-};
 
 export default PortfolioHeader;
