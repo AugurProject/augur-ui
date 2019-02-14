@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
-import PortfolioBox from "modules/portfolio/components/common/portfolio-box";
+import FilterBox from "modules/portfolio/components/common/filter-box";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
@@ -66,7 +66,7 @@ export default class Positions extends Component {
     const { filteredMarkets } = this.state;
 
     return (
-      <PortfolioBox
+      <FilterBox
         title="Positions"
         showFilterSearch
         sortByOptions={sortByOptions}

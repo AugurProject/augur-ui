@@ -18,16 +18,21 @@ export interface NameValuePair {
   comp: Function;
 }
 
-export interface MarketsByReportingState {
-  [type: string]: Array<any>;
+export interface Market {
+  marketId: string,
+  description: string
 }
 
-export interface PortfolioBoxProps {
+export interface MarketsByReportingState {
+  [type: string]: Array<Market>;
+}
+
+export interface FilterBoxProps {
   title: string,
   rows?: ReactNode,
   bottomBarContent?: ReactNode
   sortByOptions: Array<NameValuePair>;
-  filteredMarkets: Array<any>;
+  filteredMarkets: Array<Market>;
   markets: MarketsByReportingState;
   updateFilteredMarkets: Function;
   filterComp: Function;
@@ -35,7 +40,7 @@ export interface PortfolioBoxProps {
   bottomTabs: Boolean;
 }
 
-interface PortfolioBoxState {
+interface FilterBoxState {
   search: string,
   sortBy: string,
   selectedTab: string,
@@ -60,8 +65,8 @@ const tabs = [
   }
 ];
 
-export default class PortfolioBox extends React.Component<PortfolioBoxProps, PortfolioBoxState>  {
-  state: PortfolioBoxState = {
+export default class FilterBox extends React.Component<FilterBoxProps, FilterBoxState>  {
+  state: FilterBoxState = {
     search: '',
     selectedTab: tabs[0].key,
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value
@@ -100,7 +105,7 @@ export default class PortfolioBox extends React.Component<PortfolioBoxProps, Por
     this.props.updateFilteredMarkets(marketsFiltered);
   }
 
-  applySearch = (input: string, markets: Array<any>) => {
+  applySearch = (input: string, markets: Array<Market>) => {
     const { filterComp } = this.props;
     let { search, sortBy, selectedTab } = this.state;
 
@@ -110,7 +115,7 @@ export default class PortfolioBox extends React.Component<PortfolioBoxProps, Por
     return markets;
   }
 
-  applySortBy = (value: string, markets: Array<any>) => {
+  applySortBy = (value: string, markets: Array<Market>) => {
     const valueObj = find(this.props.sortByOptions, { value: value });
 
     markets = markets.sort(valueObj.comp);
@@ -145,7 +150,6 @@ export default class PortfolioBox extends React.Component<PortfolioBoxProps, Por
                 onChange={this.onSearchChange}
               />
               <SquareDropdown
-                defaultValue={sortByOptions[0].value}
                 options={sortByOptions}
                 onChange={this.updateSortBy}
               />
