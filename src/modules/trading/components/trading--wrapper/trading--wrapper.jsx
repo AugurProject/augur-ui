@@ -285,7 +285,7 @@ class TradingWrapper extends Component {
                 onClick={toggleMobileView}
                 className={Styles.TradingWrapper__close}
               >
-                {downChevron}
+                {downChevron(2)}
               </span>
             )}
             <ul
