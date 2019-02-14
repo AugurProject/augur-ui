@@ -3,6 +3,7 @@
 .Dropdown__rounded,
 .Dropdown__square,
 .Dropdown {
+  box-sizing: border-box;
   color: @color-white;
   cursor: pointer;
   display: flex;
@@ -23,7 +24,6 @@
   background: @color-dark-grayish-purple;
   border: 2px solid @color-dark-gray;
   border-radius: 1000px;
-  box-sizing: border-box;
   font-size: @size-small;
   padding: 1rem 1.5rem;
 }
@@ -31,7 +31,6 @@
 .Dropdown__square {
   background: @color-light-purple;
   border: 1px solid @color-bright-gray-purple;
-  box-sizing: border-box;
   border-radius: 3px;
   color: @color-white;
   font-size: @size-smallest;
@@ -65,7 +64,7 @@
   }
 
   > div {
-    padding: 0rem 1rem;
+    padding: 0 1rem;
     transition: background-color 0.15s ease;
 
     &:hover,
@@ -75,16 +74,13 @@
 
     > button {
       background-color: inherit;
+      border-top: 1px solid rgba(102, 87, 137, 0.1);
       cursor: pointer;
       font-size: @font-size-medium;
       padding: 0.8rem 0.5rem;
       text-align: left;
       white-space: nowrap;
       width: 100%;
-
-      &:not(first-child) {
-        border-top: 1px solid rgba(102, 87, 137, 0.1);
-      }
     }
   }
 }

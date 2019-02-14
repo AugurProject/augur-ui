@@ -19,15 +19,11 @@ import {
   MAX_FEE_40_PERCENT
 } from "modules/common-elements/constants";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
-import Dropdown from "modules/common/components/dropdown/dropdown";
 import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropdowns.styles";
 import parseQuery from "modules/routes/helpers/parse-query";
 import makeQuery from "modules/routes/helpers/make-query";
 import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
-import {
-  SquareDropdown,
-  RoundedDropdown
-} from "modules/common-elements/dropdown";
+import { RoundedDropdown } from "modules/common-elements/dropdown";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },

@@ -107,7 +107,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
             </option>
           ))}
         </select>
-        {downChevron}
+        {downChevron()}
       </div>
     );
   }
