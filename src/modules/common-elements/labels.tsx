@@ -1,7 +1,8 @@
 import React from "react";
 import classNames from "classnames";
-import * as constants from "./constants";
-import Styles from "./labels.styles";
+import * as constants from "modules/common-elements/constants";
+import Styles from "modules/common-elements/labels.styles";
+import { ClipLoader } from "react-spinners";
 
 export interface MarketTypeProps {
   marketType: string
@@ -52,3 +53,10 @@ export const MarketStatusLabel = (props: MarketStatusProps) => {
   </span>
   );
 };
+
+export const PendingLabel = () => 
+  <span
+    className={Styles.PendingLabel}
+  >
+    Pending <ClipLoader size={8} color="#ffffff" />
+  </span>;

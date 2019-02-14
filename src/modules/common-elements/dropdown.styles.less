@@ -1,26 +1,40 @@
-@import (reference) '~assets/styles/shared';
+@import (reference) "~assets/styles/shared";
 
+.Dropdown__rounded,
+.Dropdown__square,
 .Dropdown {
-  color: inherit;
+  box-sizing: border-box;
+  color: @color-white;
   cursor: pointer;
   display: flex;
-  margin-right: 1em;
   position: relative;
-  width: 100%;
   z-index: 1;
 
   &:last-child {
     margin-right: 0;
   }
+
+  > svg {
+    margin-top: 0.25rem;
+    max-width: 0.5rem;
+  }
 }
 
-.Dropdown__angle-down {
+.Dropdown__rounded {
+  background: @color-dark-grayish-purple;
+  border: 2px solid @color-dark-gray;
+  border-radius: 1000px;
+  font-size: @size-small;
+  padding: 1rem 1.5rem;
+}
+
+.Dropdown__square {
+  background: @color-light-purple;
+  border: 1px solid @color-bright-gray-purple;
+  border-radius: 3px;
   color: @color-white;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: -1;
+  font-size: @size-smallest;
+  padding: 0.6rem 0.9rem;
 }
 
 .Dropdown__label {
@@ -37,7 +51,6 @@
   display: none;
   font-size: 12px;
   line-height: @font-size-normal;
-  padding: 0.5rem 0;
   position: absolute;
   right: 0;
   top: 100%;
@@ -46,18 +59,24 @@
     display: block;
   }
 
-  > button {
-    background-color: inherit;
-    cursor: pointer;
-    padding: 0.25rem 1rem;
-    text-align: left;
+  > div {
+    padding: 0 1rem;
     transition: background-color 0.15s ease;
-    white-space: nowrap;
-    width: 100%;
 
     &:hover,
     &.active {
       background-color: @color-lightergray;
+    }
+
+    > button {
+      background-color: inherit;
+      border-top: 1px solid rgba(102, 87, 137, 0.1);
+      cursor: pointer;
+      font-size: @font-size-medium;
+      padding: 0.8rem 0.5rem;
+      text-align: left;
+      white-space: nowrap;
+      width: 100%;
     }
   }
 }

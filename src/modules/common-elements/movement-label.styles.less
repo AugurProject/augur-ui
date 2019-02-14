@@ -1,0 +1,72 @@
+@import (reference) '~assets/styles/shared';
+
+.MovementLabel {
+  align-items: center;
+  color: @color-movement-neutral;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.MovementLabel_Text {
+  .number-default;
+
+  &_small {
+    .number-smallest;
+  }
+
+  &_normal {
+    .number-small;
+  }
+
+  &_large {
+    .number-medium;
+  }
+
+  &_positive {
+    color: @color-movement-positive;
+  }
+
+  &_negative {
+    color: @color-movement-negative;
+  }
+}
+
+.MovementLabel_Icon {
+  margin: 0 0.5rem 0 0;
+
+  &_small {
+    transform: scale(0.8);
+  }
+
+  &_normal {
+    transform: scale(0.9);
+  }
+
+  &_large {
+    transform: scale(1);
+  }
+
+  &_positive {
+    > svg > path:nth-child(1) {
+      fill: @color-movement-positive;
+    }
+
+    > svg > path:nth-child(2) {
+      stroke: @color-movement-positive;
+    }
+  }
+
+  &_negative {
+    > svg {
+      transform: rotateX(180deg);
+    }
+
+    > svg > path:nth-child(1) {
+      fill: @color-movement-negative;
+    }
+
+    > svg > path:nth-child(2) {
+      stroke: @color-movement-negative;
+    }
+  }
+}
