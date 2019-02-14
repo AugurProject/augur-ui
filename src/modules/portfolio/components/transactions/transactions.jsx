@@ -4,9 +4,8 @@ import { Helmet } from "react-helmet";
 
 import TransactionSingle from "modules/portfolio/components/transaction-single/transaction-single";
 import TransactionMultiple from "modules/portfolio/components/transaction-multiple/transaction-multiple";
-import Dropdown from "modules/common/components/dropdown/dropdown";
 import Paginator from "modules/common/components/paginator/paginator";
-
+import { SquareDropdown } from "modules/common-elements/dropdown";
 import {
   DAY,
   WEEK,
@@ -177,13 +176,13 @@ export default class Transactions extends Component {
             <h2 className={Styles.Transactions__heading}>Transactions</h2>
           </div>
           <div className={Styles["Transaction__data-filter"]}>
-            <Dropdown
-              default={transactionTypeDefault}
+            <SquareDropdown
+              defaultValue={transactionTypeDefault}
               options={transactionTypeOptions}
               onChange={this.changeTransactionTypeDropdown}
             />
-            <Dropdown
-              default={transactionPeriodDefault}
+            <SquareDropdown
+              defaultValue={transactionPeriodDefault}
               options={transactionPeriodOptions}
               onChange={this.changeTransactionDropdown}
             />
