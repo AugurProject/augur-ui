@@ -169,6 +169,12 @@ export const MARKET_OPEN_INTEREST = "openInterest";
 // In Reporting (DESIGNATED_REPORTING, OPEN_REPORTING, CROWDSOURCING_DISPUTE, AWAITING_NEXT_WINDOW)
 // Resolved (AWAITING_FINALIZATION, FINALIZED)
 
+// # Market Groups
+export const ALL_MARKETS = "all";
+export const OPEN_MARKETS = "open";
+export const IN_REPORTING_MARKETS = "inReporting";
+export const RESOLVED_MARKETS = "resolved";
+
 // # Market States
 export const MARKET_OPEN = "open";
 export const MARKET_REPORTING = "reporting";

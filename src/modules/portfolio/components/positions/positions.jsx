@@ -1,13 +1,31 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import makePath from "modules/routes/helpers/make-path";
 
-import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
-import PortfolioStyles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
-import { MARKETS } from "modules/routes/constants/views";
+// import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import PortfolioBox from "modules/portfolio/components/common/portfolio-box";
+
+import { ALL_MARKETS } from "modules/common-elements/constants";
+
+const sortByOptions = [
+  {
+    label: "Sort by Most Recent",
+    value: "creationTime",
+    comp(marketA, marketB) {
+      return marketB.creationTime.timestamp - marketA.creationTime.timestamp;
+    }
+  },
+  {
+    label: "Sort by Expiring Soonest",
+    value: "endTime",
+    comp(marketA, marketB) {
+      return marketB.endTime.timestamp - marketA.endTime.timestamp;
+    }
+  }
+];
+
+function filterComp(input, market) {
+  return market.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+}
 
 export default class Positions extends Component {
   static propTypes = {
@@ -15,9 +33,7 @@ export default class Positions extends Component {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     transactionsStatus: PropTypes.object.isRequired,
-    openPositionMarkets: PropTypes.array.isRequired,
-    reportingMarkets: PropTypes.array.isRequired,
-    closedMarkets: PropTypes.array.isRequired,
+    markets: PropTypes.object.isRequired,
     loadAccountTrades: PropTypes.func.isRequired,
     marketsCount: PropTypes.number.isRequired,
     claimTradingProceeds: PropTypes.func.isRequired,
@@ -27,15 +43,13 @@ export default class Positions extends Component {
   constructor(props) {
     super(props);
 
+    console.log(props.markets);
+
     this.state = {
-      search: '',
-      sortBy: 'creationTime',
-      displayState: 'ALL',
-      markets: props.reportingMarkets
+      filteredMarkets: props.markets[ALL_MARKETS]
     };
 
-    this.runSortBy = this.runSortBy.bind(this);
-    this.updateSortBy = this.updateSortBy.bind(this);
+    this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
   }
 
   componentWillMount() {
@@ -43,51 +57,35 @@ export default class Positions extends Component {
     loadAccountTrades();
   }
 
-  updateSortBy() {
-    this.setState({sortBy: 'endTime'}, () => {
-      this.runSortBy()
-    });
-  }
-
-  runSortBy() {
-    let { markets } = this.state;
-    console.log(markets)
-    markets = markets.sort((marketA, marketB) =>
-      marketA[this.state.sortBy].timestamp - marketB[this.state.sortBy].timestamp
-    );
-
-    this.setState({markets: markets})
+  updateFilteredMarkets(filteredMarkets) {
+    this.setState({ filteredMarkets });
   }
 
   render() {
-    const {
-      claimTradingProceeds,
-      closedMarkets,
-      currentTimestamp,
-      history,
-      isMobile,
-      location,
-      marketsCount,
-      openPositionMarkets,
-      reportingMarkets,
-      transactionsStatus
-    } = this.props;
-    const { markets, sortBy } = this.state;
+    const { markets } = this.props;
+    const { filteredMarkets } = this.state;
+
     return (
-      <PortfolioBox 
-        title="Positions" 
+      <PortfolioBox
+        title="Positions"
+        showFilterSearch
+        sortByOptions={sortByOptions}
+        updateFilteredMarkets={this.updateFilteredMarkets}
+        filteredMarkets={filteredMarkets}
+        markets={markets}
+        filterComp={filterComp}
         rows={
           <div>
-            {
-              markets.map(market => (
-                <div key={market.id}>{market.description + " " + market.creationTime.formattedShortDate}</div>
+            {filteredMarkets.map(market => (
+              <div key={market.id}>
+                {market.description +
+                  " " +
+                  market.creationTime.formattedShortDate}
+              </div>
             ))}
           </div>
-        } 
-        rightContent={
-          <div onClick={this.updateSortBy}>{sortBy}</div>
-        } 
-        bottomBarContent={<div>bottom bar content</div>}
+        }
+        bottomTabs
       />
     );
   }
