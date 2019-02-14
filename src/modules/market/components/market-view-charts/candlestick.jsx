@@ -4,12 +4,14 @@ import * as PropTypes from "prop-types";
 import { loadCandleStickData } from "src/modules/markets/actions/load-candlestick-data";
 import logError from "src/utils/log-error";
 import { checkPropsChange } from "src/utils/check-props-change";
+import { head } from "lodash";
 import {
   clampPeriodByRange,
   defaultRangePeriodDurations
 } from "src/modules/markets/helpers/range";
 import MarketOutcomeCandlestick from "src/modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick";
 import { BigNumber } from "bignumber.js";
+import { PERIODS } from "modules/common-elements/constants";
 
 export class Candlestick extends React.Component {
   static propTypes = {
@@ -27,16 +29,13 @@ export class Candlestick extends React.Component {
 
   constructor(props) {
     super(props);
-    const { range, period } = defaultRangePeriodDurations;
     this.state = {
       priceTimeSeries: [],
-      selectedPeriod: period,
-      selectedRange: range
+      selectedPeriod: head(PERIODS).value
     };
 
     this.getData = this.getData.bind(this);
     this.updateSelectedPeriod = this.updateSelectedPeriod.bind(this);
-    this.updateSelectedRange = this.updateSelectedRange.bind(this);
   }
 
   componentDidMount() {
@@ -84,20 +83,9 @@ export class Candlestick extends React.Component {
     });
   }
 
-  updateSelectedRange(selectedRange) {
-    const selectedPeriod = clampPeriodByRange(
-      selectedRange,
-      this.state.selectedPeriod
-    );
-    this.setState({
-      selectedPeriod,
-      selectedRange
-    });
-  }
-
   render() {
     const { maxPrice, minPrice, currentTimeInSeconds } = this.props;
-    const { priceTimeSeries, selectedPeriod, selectedRange } = this.state;
+    const { priceTimeSeries, selectedPeriod } = this.state;
 
     return (
       <MarketOutcomeCandlestick
@@ -107,9 +95,7 @@ export class Candlestick extends React.Component {
         fixedPrecision={4}
         pricePrecision={4}
         selectedPeriod={selectedPeriod}
-        selectedRange={selectedRange}
         updateSelectedPeriod={this.updateSelectedPeriod}
-        updateSelectedRange={this.updateSelectedRange}
         updateSelectedOrderProperties={() => {}}
         marketMax={maxPrice}
         marketMin={minPrice}

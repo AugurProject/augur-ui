@@ -1,21 +1,19 @@
 import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
-import PeriodSelector from "modules/market-charts/components/market-outcome-charts--candlestick-period-selector/market-outcome-charts--candlestick-period-selector";
 import { timeFormat } from "src/utils/time-format";
 import CustomPropTypes from "utils/custom-prop-types";
 import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
 
 import { map, sortBy } from "lodash";
-
+import { PERIODS } from "modules/common-elements/constants";
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
-
+import { SquareDropdown } from "modules/common-elements/dropdown";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
 import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart";
 import { createBigNumber } from "utils/create-big-number";
-import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
 class MarketOutcomeCandlestick extends React.PureComponent {
   static propTypes = {
@@ -25,9 +23,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     marketMin: CustomPropTypes.bigNumber.isRequired,
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
-    selectedRange: PropTypes.number.isRequired,
     updateSelectedPeriod: PropTypes.func.isRequired,
-    updateSelectedRange: PropTypes.func.isRequired,
     pricePrecision: PropTypes.number.isRequired
   };
 
@@ -43,7 +39,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       marketMin,
       priceTimeSeries,
       selectedPeriod,
-      selectedRange,
       isMobileSmall
     },
     state
@@ -66,7 +61,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       outcomeBounds,
       priceTimeSeries,
       selectedPeriod,
-      selectedRange,
       isMobileSmall
     });
 
@@ -157,8 +151,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       pricePrecision,
       marketMax,
       marketMin,
-      priceTimeSeries,
-      selectedRange
+      priceTimeSeries
     } = this.props;
 
     const {
@@ -243,7 +236,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       chartDim,
       candleDim,
       boundDiff,
-      tickInterval: getTickIntervalForRange(selectedRange),
       yDomain,
       xScale
     });
@@ -270,9 +262,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       isMobile,
       priceTimeSeries,
       selectedPeriod,
-      selectedRange,
       updateSelectedPeriod,
-      updateSelectedRange,
       marketMin,
       marketMax
     } = this.props;
@@ -297,12 +287,9 @@ class MarketOutcomeCandlestick extends React.PureComponent {
                 }
               )}
             >
-              <PeriodSelector
-                priceTimeSeries={priceTimeSeries}
-                updateSelectedPeriod={updateSelectedPeriod}
-                updateSelectedRange={updateSelectedRange}
-                selectedPeriod={selectedPeriod}
-                selectedRange={selectedRange}
+              <SquareDropdown
+                options={PERIODS}
+                onChange={updateSelectedPeriod}
               />
             </div>
             <div
@@ -421,7 +408,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
         </section>
         <MarketOutcomeChartsCandlestickHighchart
           priceTimeSeries={priceTimeSeries}
-          selectedRange={selectedRange}
           selectedPeriod={selectedPeriod}
           pricePrecision={pricePrecision}
           updateHoveredPeriod={this.updateHoveredPeriod}
@@ -440,7 +426,6 @@ function determineDrawParams({
   marketMax,
   marketMin,
   priceTimeSeries,
-  selectedRange,
   isMobileSmall
 }) {
   // Dimensions/Positioning
@@ -456,7 +441,7 @@ function determineDrawParams({
   // Domain
   //  X
   const xDomain = [
-    new Date((currentTimeInSeconds - selectedRange) * 1000),
+    new Date(currentTimeInSeconds * 1000),
     new Date(currentTimeInSeconds * 1000)
   ];
 

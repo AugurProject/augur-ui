@@ -82,7 +82,6 @@ export default class MarketOutcomeCharts extends Component {
     this.updateHoveredPrice = this.updateHoveredPrice.bind(this);
     this.updateHoveredDepth = this.updateHoveredDepth.bind(this);
     this.updateSelectedPeriod = this.updateSelectedPeriod.bind(this);
-    this.updateSelectedRange = this.updateSelectedRange.bind(this);
     this.snapScrollHandler = this.snapScrollHandler.bind(this);
     this.updateChartHeaderHeight = this.updateChartHeaderHeight.bind(this);
     this.determineActiveScrolledChart = this.determineActiveScrolledChart.bind(
@@ -171,17 +170,6 @@ export default class MarketOutcomeCharts extends Component {
   updateSelectedPeriod(selectedPeriod) {
     this.setState({
       selectedPeriod
-    });
-  }
-
-  updateSelectedRange(selectedRange) {
-    const selectedPeriod = clampPeriodByRange(
-      selectedRange,
-      this.state.selectedPeriod
-    );
-    this.setState({
-      selectedPeriod,
-      selectedRange
     });
   }
 
@@ -277,7 +265,6 @@ export default class MarketOutcomeCharts extends Component {
                 marketMax={maxPrice}
                 marketMin={minPrice}
                 updateSelectedPeriod={this.updateSelectedPeriod}
-                updateSelectedRange={this.updateSelectedRange}
                 updateSelectedOrderProperties={updateSelectedOrderProperties}
               />
             </div>

@@ -10,7 +10,6 @@ const NumberOfPlotLines = 3;
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
     priceTimeSeries: PropTypes.array.isRequired,
-    selectedRange: PropTypes.number.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
     updateHoveredPeriod: PropTypes.func.isRequired,
@@ -82,7 +81,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               className:
                 Styles.MarketOutcomeChartsCandlestickHighchart__volume_axis,
               color: "#ffffff",
-              backgroundColor: "#665789",
+              backgroundColor: "#0F0A19",
               borderColor: "#ffffff",
               format: "{value:%b %d}",
               align: "center",
@@ -97,23 +96,26 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           },
           lineWidth: 1,
           minorGridLineWidth: 1,
-          events: {
-            afterSetExtremes: evt => this.buildPlotLinesAfterZoom(evt)
-          },
           plotBands: []
         },
         yAxis: [
           {
-            lineWidth: 0,
-            minorGridLineWidth: 0,
-            lineColor: "transparent",
-            gridLineWidth: 0,
+            gridLineColor: "#666666",
+            className:
+              Styles.MarketOutcomeChartsCandlestickHighchart__plotline_price_lines,
+            lineColor: "#666666",
+            gridLineDashStyle: "dash",
+            gridLineWidth: 1,
             minorTickLength: 0,
             tickLength: 0,
             showFirstLabel: true,
             showLastLabel: true,
             labels: {
-              enabled: false
+              color: "#ffffff",
+              format: "{value:.4f}",
+              align: "right",
+              y: 12,
+              x: 0
             },
             title: {
               text: ""
@@ -124,19 +126,19 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             },
             crosshair: {
               snap: false,
+              dashStyle: "dash",
               className:
-                Styles.MarketOutcomeChartsCandlestickHighchart__plotline_price,
+                Styles.MarketOutcomeChartsCandlestickHighchart__openClose_axis,
               label: {
                 enabled: true,
-                backgroundColor: "#665789",
+                backgroundColor: "#161022",
                 color: "#ffffff",
                 format: "{value:.4f}",
                 align: "right",
                 y: 12,
                 x: 0
               }
-            },
-            plotLines: []
+            }
           },
           {
             min: 0,
@@ -273,12 +275,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
   buildPricePlotLines(min, max) {
     const { pricePrecision, marketMin, marketMax } = this.props;
-    let minValue = createBigNumber(min);
-    let maxValue = createBigNumber(max);
-    if (min === max) {
-      minValue = marketMin;
-      maxValue = marketMax;
-    }
+    const minValue = createBigNumber(min || marketMin);
+    const maxValue = createBigNumber(max || marketMax);
     const range = maxValue.minus(minValue);
     const interval = range.dividedBy(NumberOfPlotLines);
     const plotLines = [];
@@ -321,7 +319,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       max(priceTimeSeries.map(x => x.high))
     );
 
-    options.yAxis[0].plotLines = plotLines;
+    // options.yAxis[0].plotLines = plotLines;
 
     options.yAxis[1].plotLines = MarketOutcomeChartsCandlestickHighchart.buildTimePlotLines(
       priceTimeSeries.map(x => x.period)
@@ -343,7 +341,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         {
           type: "column",
           name: "volume",
-          color: "#161022",
+          color: "#665789",
           data: volume,
           yAxis: 1
         }
