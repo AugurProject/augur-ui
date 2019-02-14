@@ -70,7 +70,6 @@ export class Candlestick extends React.Component {
       },
       (err, data) => {
         if (err) return logError(err);
-
         const priceTimeSeries = data[selectedOutcome] || [];
         this.setState({
           priceTimeSeries

@@ -71,10 +71,29 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           labels: {
             style: {
               color: "#ffffff"
-            }
+            },
+            format: "{value:%b %d}"
           },
           crosshair: {
-            width: 0
+            width: 0,
+            snap: true,
+            label: {
+              enabled: true,
+              className:
+                Styles.MarketOutcomeChartsCandlestickHighchart__volume_axis,
+              color: "#ffffff",
+              backgroundColor: "#665789",
+              borderColor: "#ffffff",
+              format: "{value:%b %d}",
+              align: "center",
+              y: 0,
+              x: 0,
+              formatter() {
+                return (
+                  "The value for <b>" + this.x + "</b> is <b>" + this.y + "</b>"
+                );
+              }
+            }
           },
           lineWidth: 1,
           minorGridLineWidth: 1,
@@ -189,7 +208,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       };
 
       this.chart.xAxis[0].addPlotBand(plotBand);
-      this.updateVolumeBar(true, timestamp);
+      // this.updateVolumeBar(true, timestamp);
     }
   }
 
@@ -206,7 +225,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     });
 
     this.chart.xAxis[0].removePlotBand("new-plot-band");
-    this.updateVolumeBar(false, timestamp);
+    // this.updateVolumeBar(false, timestamp);
   }
 
   updateVolumeBar(isHover, timestamp) {
@@ -225,18 +244,18 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   buildPlotLinesAfterZoom(evt) {
-    const { priceTimeSeries } = this.props;
+    const { priceTimeSeries, marketMin, marketMax } = this.props;
     if (!priceTimeSeries || priceTimeSeries.length === 0) return;
     const { userMin, userMax, dataMax, dataMin } = evt;
 
-    each(this.chart.yAxis[0].plotLinesAndBands, line => {
-      this.chart.yAxis[0].removePlotLine("plot-line");
-    });
-
     const inRangePriceTimeSeries = priceTimeSeries.filter(
       x =>
-        createBigNumber(userMin || dataMin).lt(createBigNumber(x.period)) &&
-        createBigNumber(x.period).lt(createBigNumber(userMax || dataMax))
+        createBigNumber(userMin || dataMin || marketMin).lt(
+          createBigNumber(x.period)
+        ) &&
+        createBigNumber(x.period).lt(
+          createBigNumber(userMax || dataMax || marketMax)
+        )
     );
 
     const plotLines = this.buildPricePlotLines(
@@ -244,11 +263,15 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       max(inRangePriceTimeSeries.map(x => x.high))
     );
 
-    each(plotLines, line => this.chart.yAxis[0].addPlotLine(line));
+    if (plotLines && plotLines.length > 0) {
+      each(this.chart.yAxis[0].plotLinesAndBands, line => {
+        this.chart.yAxis[0].removePlotLine("plot-line");
+      });
+      each(plotLines, line => this.chart.yAxis[0].addPlotLine(line));
+    }
   }
 
   buildPricePlotLines(min, max) {
-    if (!min || !max) return [];
     const { pricePrecision, marketMin, marketMax } = this.props;
     let minValue = createBigNumber(min);
     let maxValue = createBigNumber(max);
@@ -283,6 +306,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   buidOptions(priceTimeSeries, callback) {
+    const { selectedPeriod } = this.props;
     const { options } = this.state;
     const ohlc = [];
     const volume = [];
