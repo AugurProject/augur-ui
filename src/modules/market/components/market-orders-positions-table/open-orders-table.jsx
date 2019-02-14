@@ -59,9 +59,7 @@ const OpenOrdersTable = ({
             {openOrders.map((order, i) => (
               <OpenOrdersOrder
                 key={i}
-                outcomeName={order.name}
                 order={order}
-                pending={order.pending}
                 isExtendedDisplay={false}
                 isMobile={isMobile}
                 oddNumber={openOrders.length % 2 !== 0}

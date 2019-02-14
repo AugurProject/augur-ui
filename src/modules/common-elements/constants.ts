@@ -501,6 +501,9 @@ export const COMPLETE_SETS_SOLD = "CompleteSetsSold";
 export const TRANSFER_FUNDS = "transfer_funds";
 export const SENT_CASH = "sent_cash";
 export const SENT_ETHER = "sent_ether";
+export const SMALL = 'small';
+export const NORMAL = 'normal';
+export const LARGE = 'large';
 
 // Trade/order labels
 export const BID = "bid";

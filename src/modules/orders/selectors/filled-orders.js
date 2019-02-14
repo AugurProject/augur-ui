@@ -1,11 +1,11 @@
 import { createBigNumber } from "utils/create-big-number";
-import { SCALAR, BUY, SELL } from "modules/common-elements/constants";
+import { BUY, SELL } from "modules/common-elements/constants";
 
 function findOrders(
   filledOrders,
   accountId,
   marketType,
-  marketOutcomes,
+  outcomesData,
   openOrders
 ) {
   const orders = filledOrders.reduce(
@@ -27,17 +27,8 @@ function findOrders(
       const priceBN = createBigNumber(price);
       let typeOp = type;
 
-      const outcomeInfo =
-        marketOutcomes &&
-        marketOutcomes.find(
-          outcomeValue => outcomeValue.id === outcome.toString()
-        );
-
-      let outcomeName =
-        outcomeInfo && (outcomeInfo.description || outcomeInfo.name);
-      if (marketType === SCALAR) {
-        outcomeName = null;
-      }
+      const outcomeName =
+        outcomesData[outcome].name || outcomesData[outcome].name;
 
       if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
@@ -86,7 +77,7 @@ export function selectFilledOrders(
   marketTradeHistory,
   accountId,
   marketType,
-  marketOutcomes,
+  outcomesData,
   openOrders
 ) {
   if (!marketTradeHistory || marketTradeHistory.length < 1) {
@@ -101,7 +92,7 @@ export function selectFilledOrders(
     filledOrders,
     accountId,
     marketType,
-    marketOutcomes,
+    outcomesData,
     openOrders
   );
   orders.sort((a, b) => b.timestamp - a.timestamp);

@@ -3,6 +3,7 @@ import { updateScalarMarketShareDenomination } from "modules/markets/actions/upd
 import { updateReports } from "modules/reports/actions/update-reports";
 import { addNotification } from "modules/notifications/actions/notifications";
 import { loadPendingLiquidityOrders } from "modules/orders/actions/liquidity-management";
+import { loadPendingOrders } from "modules/orders/actions/pending-orders-management";
 import { updateGasPriceInfo } from "modules/app/actions/update-gas-price-info";
 import { registerUserDefinedGasPriceFunction } from "modules/app/actions/register-user-defined-gasPrice-function";
 import { loadUniverse } from "modules/app/actions/load-universe";
@@ -66,6 +67,12 @@ export const loadAccountDataFromLocalStorage = address => (
         dispatch(
           loadPendingLiquidityOrders(storedAccountData.pendingLiquidityOrders)
         );
+      }
+      if (
+        storedAccountData.pendingOrders &&
+        Object.keys(storedAccountData.pendingOrders).length
+      ) {
+        dispatch(loadPendingOrders(storedAccountData.pendingOrders));
       }
       if (
         storedAccountData.gasPriceInfo &&
