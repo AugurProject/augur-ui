@@ -70,8 +70,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
-        navigator: { enabled: props.containerHeight > ShowNavigator }, // over 400 px so there is room
+        navigator: { enabled: true },
         xAxis: {
+          ordinal: false,
           labels: {
             style: {
               color: "#ffffff"
@@ -361,10 +362,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
     options.height = containerHeight;
     // figure out why options has dropped properties
-    if (options.navigator) {
-      options.navigator.enabled = containerHeight > ShowNavigator;
-    } else {
-      options.navigator = { enabled: containerHeight > ShowNavigator };
+    if (containerHeight > 0) {
+      if (options.navigator) {
+        options.navigator.enabled = containerHeight > ShowNavigator;
+      } else {
+        options.navigator = { enabled: containerHeight > ShowNavigator };
+      }
     }
 
     const newOptions = Object.assign(options, {
