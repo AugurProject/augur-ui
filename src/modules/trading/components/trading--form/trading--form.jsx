@@ -13,7 +13,7 @@ import { isEqual } from "lodash";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import { darkBgExclamationCircle } from "modules/common/components/icons";
-import TradingOutcomesDropdown from "modules/trading/components/trading-outcomes-dropdown/trading-outcomes-dropdown";
+import { SquareDropdown } from "modules/common-elements/dropdown";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
@@ -429,7 +429,6 @@ class TradingForm extends Component {
       maxPrice,
       minPrice,
       updateState,
-      showSelectOutcome,
       isMobile,
       updateNewOrderProperties,
       orderEscrowdEth
@@ -454,15 +453,14 @@ class TradingForm extends Component {
       <div className={Styles.TradingForm__form__container}>
         {market.marketType === CATEGORICAL && (
           <div className={Styles.TradingForm__outcome__container}>
-            <TradingOutcomesDropdown
-              default={defaultOutcome}
+            <SquareDropdown
+              defaultValue={defaultOutcome}
               onChange={this.changeOutcomeDropdown}
-              showSelectOutcome={showSelectOutcome}
-              isMobile={isMobile}
               options={market.outcomes.map(outcome => ({
                 label: outcome.name,
                 value: outcome.id
               }))}
+              large
             />
           </div>
         )}

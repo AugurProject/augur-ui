@@ -11,7 +11,13 @@ import { constants } from "services/augurjs";
 import { orderBy } from "lodash";
 import { selectMarket } from "modules/markets/selectors/market";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
+import {
+  MODAL_CLAIM_TRADING_PROCEEDS,
+  ALL_MARKETS,
+  MARKET_OPEN,
+  MARKET_REPORTING,
+  MARKET_CLOSED
+} from "modules/common-elements/constants";
 
 const mapStateToProps = state => {
   const positions = getLoginAccountPositions();
@@ -48,13 +54,18 @@ const mapStateToProps = state => {
     ["desc"]
   );
 
+  const marketsObject = {
+    [ALL_MARKETS]: markets,
+    [MARKET_OPEN]: openPositionMarkets,
+    [MARKET_REPORTING]: reportingMarkets,
+    [MARKET_CLOSED]: orderdClosedMarkets
+  };
+
   return {
     currentTimestamp: selectCurrentTimestamp(state),
     marketsCount,
     transactionsStatus: state.transactionsStatus,
-    openPositionMarkets,
-    reportingMarkets,
-    closedMarkets: orderdClosedMarkets,
+    markets: marketsObject,
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
     isMobile: state.appStatus.isMobile

@@ -4,10 +4,27 @@
 @color-secondary-text-disabled: rgba(255, 255, 255, 0.2);
 @color-alternate-text: rgba(119, 119, 119, 1); // #777777
 
+@color-shadow-text: rgba(118, 115, 126, 1); // #76737E
+@color-primary-background: rgba(15, 10, 25, 1); // #0F0A19
+@color-secondary-background: rgba(18, 13, 27, 1); // #120D1B
+@color-theme-primary: rgba(33, 26, 50, 1); // #211A32
+
 @color-primary-action: rgba(9, 207, 225, 1);
+@color-secondary-action: rgba(22, 16, 34, 1); // #161022
+@color-secondary-border: rgba(43, 36, 56, 1); // #2B2438
+
 @color-open: rgba(125, 255, 168, 1); // #7DFFA8
 @color-in-reporting: rgba(241, 231, 0, 1); // #F1E700
 @color-resolved: rgba(241, 43, 0, 1); // #F12B00
+
+@color-highlight: rgba(102, 87, 137, 1); // #665789
+@color-highlight-faded: rgba(102, 87, 137, 0.3);
+@color-highlight-more-faded: rgba(102, 87, 137, 0.2);
+@color-highlight-extra-faded: rgba(102, 87, 137, 0.1);
+
+@color-positive: rgba(0, 241, 196, 1); // #00F1C4
+@color-neutral: rgb(153, 153, 153, 1); // #999999
+@color-negative: rgba(255, 125, 94, 1); // #FF7D5E
 
 @color-primary-light: rgba(68, 59, 89, 1); // #443B59
 
@@ -19,20 +36,17 @@
 @color-buy-order-button-background-hover: rgba(0, 241, 196, 0.6);
 @color-buy-order-button-background-disabled: rgba(0, 241, 196, 0.2);
 
-@color-buy-order-button-border: rgba(0, 241, 196, 1); // #00F1C4
+@color-buy-order-button-border: @color-positive; // #00F1C4
 @color-buy-order-button-border-disabled: rgba(0, 241, 196, 0.1);
 
 @color-sell-order-button-background: rgba(255, 125, 94, 0.4);
 @color-sell-order-button-background-hover: rgba(255, 125, 94, 0.6);
 @color-sell-order-button-background-disabled: rgba(255, 125, 94, 0.2);
 
-@color-sell-order-button-border: rgba(255, 125, 94, 1); // #FF7D5E
+@color-sell-order-button-border: @color-negative; // #FF7D5E
 @color-sell-order-button-border-disabled: rgba(255, 125, 94, 0.1);
 
 @color-primary-button-text: @color-primary-text; // #140E1F
 @color-secondary-button-text: @color-secondary-text; // #FFFFFF
 @color-secondary-button-text-disabled: @color-secondary-text-disabled;
 
-@color-movement-positive: @color-buy-order-button-border; // #00F1C4
-@color-movement-negative: @color-sell-order-button-border;  // #FF7D5E
-@color-movement-neutral: rgb(153, 153, 153, 1); // #999999

@@ -14,7 +14,10 @@ import {
   ETH
 } from "modules/common-elements/constants";
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
-import { SquareDropdown } from "modules/common-elements/dropdown";
+import {
+  SquareDropdown,
+  StaticLabelDropdown
+} from "modules/common-elements/dropdown";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
 import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart";
@@ -396,41 +399,25 @@ class MarketOutcomeCandlestick extends React.PureComponent {
                   )}
                 </span>
               </span>
-              <span
-                className={classNames(
-                  StylesHeader.MarketOutcomeChartsHeader__stat,
-                  Styles.MarketOutcomeChartsHeader__stat
-                )}
-              >
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-                >
-                  v:
-                </span>
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-                >
-                  {hoveredPeriod.volume ? (
-                    hoveredPeriod.volume.toFixed(fixedPrecision).toString()
-                  ) : (
-                    <span>&mdash;</span>
-                  )}
-                </span>
-              </span>
             </div>
             <div
               className={classNames(
-                Styles.MarketOutcomeChartsHeader__selector,
+                Styles.MarketOutcomeChartsHeader__label_container,
                 {
-                  [Styles[
-                    "MarketOutcomeChartsHeader__selector--mobile"
-                  ]]: isMobile
+                  [Styles.MarketOutcomeChartsHeader__label_hover]: !!hoveredPeriod.volume
                 }
               )}
             >
-              <SquareDropdown
+              <StaticLabelDropdown
                 options={VOLUME_ETH_SHARES}
-                onChange={this.updateVolumeType}
+                staticLabel={
+                  hoveredPeriod.volume
+                    ? `V: ${hoveredPeriod.volume
+                        .toFixed(fixedPrecision)
+                        .toString()}`
+                    : "Show Volume in "
+                }
+                onChange={() => {}}
               />
             </div>
           </div>

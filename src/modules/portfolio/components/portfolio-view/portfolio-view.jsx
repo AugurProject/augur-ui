@@ -1,44 +1,22 @@
 import React from "react";
-import { Switch } from "react-router-dom";
-
-import AuthenticatedRoute from "modules/routes/components/authenticated-route/authenticated-route";
 
 import PortfolioHeader from "modules/portfolio/containers/portfolio-header";
 import MyPositions from "modules/portfolio/containers/positions";
-import MyMarkets from "modules/portfolio/containers/my-markets";
-import Favorites from "modules/portfolio/containers/favorites";
-import Transactions from "modules/portfolio/containers/transactions";
-import Reports from "modules/portfolio/containers/reports";
+// import MyMarkets from "modules/portfolio/containers/my-markets";
+// import Favorites from "modules/portfolio/containers/favorites";
+import FilterBox from "modules/portfolio/components/common/filter-box";
 
-import makePath from "modules/routes/helpers/make-path";
-
-import {
-  MY_POSITIONS,
-  MY_MARKETS,
-  FAVORITES,
-  PORTFOLIO_TRANSACTIONS,
-  PORTFOLIO_REPORTS
-} from "modules/routes/constants/views";
+import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 
 const PortfolioView = p => (
-  <section>
+  <section className={Styles.PortfolioView}>
     <PortfolioHeader />
-    <Switch>
-      <AuthenticatedRoute
-        path={makePath(MY_POSITIONS)}
-        component={MyPositions}
-      />
-      <AuthenticatedRoute path={makePath(MY_MARKETS)} component={MyMarkets} />
-      <AuthenticatedRoute path={makePath(FAVORITES)} component={Favorites} />
-      <AuthenticatedRoute
-        path={makePath(PORTFOLIO_TRANSACTIONS)}
-        component={Transactions}
-      />
-      <AuthenticatedRoute
-        path={makePath(PORTFOLIO_REPORTS)}
-        component={Reports}
-      />
-    </Switch>
+    <div className={Styles.PortfolioView__views}>
+      <MyPositions />
+      <FilterBox title="Open Orders" />
+      <FilterBox title="My Created Markets" />
+      <FilterBox title="Filled Orders" />
+    </div>
   </section>
 );
 

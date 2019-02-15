@@ -84,3 +84,80 @@
     margin-left: 0.3125rem;
   }
 }
+
+.MovementLabel {
+  align-items: center;
+  color: @color-neutral;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.MovementLabel_Text {
+  .number-default;
+
+  &_small {
+    .number-smallest;
+  }
+
+  &_normal {
+    .number-small;
+  }
+
+  &_large {
+    .number-medium;
+  }
+
+  &_positive {
+    color: @color-positive;
+  }
+
+  &_negative {
+    color: @color-negative;
+  }
+}
+
+.MovementLabel_Icon {
+  margin: 0 0.5rem 0 0;
+
+  > svg {
+    fill: none;
+    height: @size-tiny;
+    width: @size-small;
+  }
+
+  &_small {
+    transform: scale(0.8);
+  }
+
+  &_normal {
+    transform: scale(0.9);
+  }
+
+  &_large {
+    transform: scale(1);
+  }
+
+  &_positive {
+    > svg > path:nth-child(1) {
+      fill: @color-positive;
+    }
+
+    > svg > path:nth-child(2) {
+      stroke: @color-positive;
+    }
+  }
+
+  &_negative {
+    > svg {
+      transform: rotateX(180deg);
+    }
+
+    > svg > path:nth-child(1) {
+      fill: @color-negative;
+    }
+
+    > svg > path:nth-child(2) {
+      stroke: @color-negative;
+    }
+  }
+}

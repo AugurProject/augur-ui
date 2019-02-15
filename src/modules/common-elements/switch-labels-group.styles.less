@@ -1,0 +1,61 @@
+@import (reference) '~assets/styles/shared';
+
+.SwitchLabelsGroup {
+  display: flex;
+}
+
+.SwitchLabelsGroup__label {
+  .text-smaller;
+
+  color: @color-shadow-text;
+  padding-bottom: 0.75rem;
+
+  &:not(:first-of-type) {
+    margin-left: 1.5rem;
+  }
+
+  > span {
+    font-weight: @weight-medium;
+    margin-left: 0.1875rem;
+  }
+
+  &.active {
+    color: @color-white;
+    position: relative;
+
+    &::after {
+      background-color: @color-white;
+      border-radius: 0.1875rem;
+      bottom: 0;
+      content: "";
+      height: 0.125rem;
+      left: 0;
+      position: absolute;
+      right: 0.125rem;
+    }
+  }
+}
+
+.SwitchLabelsGroup_open {
+  &.active {
+    &::after {
+      background: @color-open;
+    }
+  }
+}
+
+.SwitchLabelsGroup_reporting {
+  &.active {
+    &::after {
+      background: @color-in-reporting;
+    }
+  }
+}
+
+.SwitchLabelsGroup_resolved {
+  &.active {
+    &::after {
+      background: @color-resolved;
+    }
+  }
+}

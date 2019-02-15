@@ -169,6 +169,7 @@ export const MARKET_OPEN_INTEREST = "openInterest";
 // Resolved (AWAITING_FINALIZATION, FINALIZED)
 
 // # Market States
+export const ALL_MARKETS = "all";
 export const MARKET_OPEN = "open";
 export const MARKET_REPORTING = "reporting";
 export const MARKET_CLOSED = "closed";
@@ -538,10 +539,10 @@ export const MATCH_ASK = "match_ask";
 export const VOLUME_ETH_SHARES = [
   {
     value: ETH,
-    label: `Volume in ${ETH}`
+    label: ETH
   },
   {
     value: SHARES,
-    label: `Volume in ${SHARES}`
+    label: SHARES
   }
 ]
