@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import { MarketStatusLabel } from "modules/common-elements/labels";
 import Styles from "modules/common-elements/switch-labels-group.styles";
 
 import {

@@ -1,10 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterBox from "modules/portfolio/components/common/filter-box";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
+
+import Styles from "modules/portfolio/components/positions/positions.styles";
+
+import {
+  MarketStatusLabel } from "modules/common-elements/labels";
 
 const sortByOptions = [
   {
@@ -46,7 +52,8 @@ export default class Positions extends Component {
     console.log(props.markets);
 
     this.state = {
-      filteredMarkets: props.markets[ALL_MARKETS]
+      filteredMarkets: props.markets[ALL_MARKETS],
+      tab: ALL_MARKETS
     };
 
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
@@ -57,13 +64,19 @@ export default class Positions extends Component {
     loadAccountTrades();
   }
 
-  updateFilteredMarkets(filteredMarkets) {
+  updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
+    if (tab) {
+      this.setState({tab: tab})
+    }
   }
 
   render() {
     const { markets } = this.props;
-    const { filteredMarkets } = this.state;
+    const { filteredMarkets, tab } = this.state;
+
+    console.log(tab)
+    console.log(filteredMarkets)
 
     return (
       <FilterBox
@@ -74,18 +87,23 @@ export default class Positions extends Component {
         filteredData={filteredMarkets}
         data={markets}
         filterComp={filterComp}
+        bottomTabs
         rows={
           <div>
             {filteredMarkets.map(market => (
-              <div key={market.id}>
-                {market.description +
-                  " " +
-                  market.creationTime.formattedShortDate}
-              </div>
+              <details className={classNames(Styles.MarketRow, {[Styles.MarketRow__showState]: tab === ALL_MARKETS})}>
+                <summary className={Styles.MarketRow__summary}>
+                  {tab === ALL_MARKETS && <MarketStatusLabel marketStatus={market.marketStatus} alternate mini /> }
+                  <div>
+                    <span>{market.description}</span>
+                    <span>{market.creationTime.formattedShortDate}</span>
+                  </div>
+                </summary>
+                hi
+              </details>
             ))}
           </div>
         }
-        bottomTabs
       />
     );
   }

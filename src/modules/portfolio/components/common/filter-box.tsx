@@ -3,7 +3,7 @@ import React, { Component, ReactNode } from "react";
 import BoxHeader from "modules/portfolio/components/common/box-header";
 import { SquareDropdown } from "modules/common-elements/dropdown";
 import Input from "modules/common/components/input/input";
-import Styles from "modules/portfolio/components/common/portfolio-box.styles";
+import Styles from "modules/portfolio/components/common/filter-box.styles";
 import { find } from "lodash";
 import {
   ALL_MARKETS,
@@ -33,7 +33,7 @@ export interface FilterBoxProps {
   rows?: ReactNode,
   bottomBarContent?: ReactNode
   sortByOptions: Array<NameValuePair>;
-  filteredData: Array<Market>; // can be markets now or extended to be individual orders
+  filteredData: Array<Market>; // can be markets now or extended to be individual orders, need to change this to same structure as data if the numbers are going to be updated as searching happens, or keep a search object count?
   data: MarketsByReportingState;
   updateFilteredData: Function; 
   filterComp: Function;
@@ -108,7 +108,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     let dataFiltered = this.applySearch(this.state.search, data[tab]);
     dataFiltered = this.applySortBy(this.state.sortBy, dataFiltered);
     
-    this.props.updateFilteredData(dataFiltered);
+    this.props.updateFilteredData(dataFiltered, tab);
   }
 
   applySearch = (input: string, data: Array<Market>) => {
@@ -137,7 +137,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       sortByOptions,
       showFilterSearch,
       bottomTabs,
-      data,
+      data
     } = this.props;
 
     const { search, selectedTab } = this.state;
@@ -147,7 +147,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     );
 
     return (
-      <div className={Styles.PortfolioBox}>
+      <div className={Styles.FilterBox}>
         <BoxHeader 
           title={title} 
           rightContent={showFilterSearch &&
@@ -170,7 +170,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
             <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
           } 
          />
-        <div className={Styles.PortfolioBox__content}>
+        <div className={Styles.FilterBox__content}>
           {rows}
         </div>
       </div>
