@@ -16,7 +16,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     updateHoveredPeriod: PropTypes.func.isRequired,
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
-    volumeType: PropTypes.string.isRequired
+    volumeType: PropTypes.string.isRequired,
+    containerHeight: PropTypes.number.isRequired
   };
 
   static defaultProps = {};
@@ -64,7 +65,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           style: {
             color: "#ffffff",
             fontFamily: "'Roboto Mono', monospace"
-          }
+          },
+          height: props.containerHeight
         },
         scrollbar: { enabled: false },
         navigator: { enabled: true },

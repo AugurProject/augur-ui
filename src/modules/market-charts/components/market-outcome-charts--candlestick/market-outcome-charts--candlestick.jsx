@@ -126,8 +126,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
 
   getContainerWidths() {
     return {
-      containerWidth: 200, // this.drawContainer.clientWidth,
-      containerHeight: 100 // this.drawContainer.clientHeight
+      containerWidth: this.drawContainer.clientWidth,
+      containerHeight: this.drawContainer.clientHeight
     };
   }
 
@@ -280,7 +280,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       marketMax
     } = this.props;
 
-    const { hoveredPeriod, volumeType } = this.state;
+    const { hoveredPeriod, volumeType, containerHeight } = this.state;
 
     // const chart = this.drawChart();
 
@@ -435,15 +435,23 @@ class MarketOutcomeCandlestick extends React.PureComponent {
             </div>
           </div>
         </section>
-        <MarketOutcomeChartsCandlestickHighchart
-          priceTimeSeries={priceTimeSeries}
-          selectedPeriod={selectedPeriod}
-          pricePrecision={pricePrecision}
-          updateHoveredPeriod={this.updateHoveredPeriod}
-          marketMin={marketMin}
-          marketMax={marketMax}
-          volumeType={volumeType}
-        />
+        <div
+          ref={drawContainer => {
+            this.drawContainer = drawContainer;
+          }}
+          className={Styles.MarketOutcomeCandlestick__container}
+        >
+          <MarketOutcomeChartsCandlestickHighchart
+            priceTimeSeries={priceTimeSeries}
+            selectedPeriod={selectedPeriod}
+            pricePrecision={pricePrecision}
+            updateHoveredPeriod={this.updateHoveredPeriod}
+            marketMin={marketMin}
+            marketMax={marketMax}
+            volumeType={volumeType}
+            containerHeight={containerHeight}
+          />
+        </div>
       </section>
     );
   }
