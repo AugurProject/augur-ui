@@ -1,6 +1,6 @@
 import React from "react";
 import * as constants from "modules/common-elements/constants";
-import { starIcon } from "modules/common/components/icons";
+import { StarIcon } from "modules/common-elements/icons";
 import Styles from "modules/common-elements/buttons.styles";
 
 export interface DefaultButtonProps {
@@ -51,7 +51,7 @@ export const FavoritesButton = (props: FavoritesButton) =>
     title={props.title}
     style={props.hideText ? { marginRight: "0.5rem" } : undefined}
   >
-    {starIcon} {!props.hideText && `${
+    {StarIcon} {!props.hideText && `${
       props.isFavorite ?
         "Remove from" :
         "Add to"
