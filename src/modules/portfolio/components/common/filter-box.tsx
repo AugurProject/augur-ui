@@ -7,10 +7,11 @@ import Styles from "modules/portfolio/components/common/portfolio-box.styles";
 import { find } from "lodash";
 import {
   ALL_MARKETS,
-  OPEN_MARKETS,
-  IN_REPORTING_MARKETS,
-  RESOLVED_MARKETS
+  MARKET_OPEN,
+  MARKET_REPORTING,
+  MARKET_CLOSED
 } from "modules/common-elements/constants";
+import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
 
 export interface NameValuePair {
   label: string;
@@ -36,8 +37,8 @@ export interface FilterBoxProps {
   markets: MarketsByReportingState;
   updateFilteredMarkets: Function;
   filterComp: Function;
-  showFilterSearch: Boolean;
-  bottomTabs: Boolean;
+  showFilterSearch?: Boolean;
+  bottomTabs?: Boolean;
 }
 
 interface FilterBoxState {
@@ -46,22 +47,27 @@ interface FilterBoxState {
   selectedTab: string,
 }
 
-const tabs = [
+let tabs = [
   {
     key: ALL_MARKETS,
-    label: 'all'
+    label: 'All',
+    num: 0
   },
   {
-    key: OPEN_MARKETS,
-    label: 'open'
+    key: MARKET_OPEN,
+    label: 'Open',
+    num: 0
   },
   {
-    key: IN_REPORTING_MARKETS,
-    label: 'in reporting'
+    key: MARKET_REPORTING,
+    label: 'In Reporting',
+    num: 0
+
   },
   {
-    key: RESOLVED_MARKETS,
-    label: 'resolved'
+    key: MARKET_CLOSED,
+    label: 'Resolved',
+    num: 0
   }
 ];
 
@@ -69,7 +75,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   state: FilterBoxState = {
     search: '',
     selectedTab: tabs[0].key,
-    sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value
+    sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
   };
 
   updateSortBy = (value: string) => {
@@ -130,10 +136,17 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       rows,
       sortByOptions,
       showFilterSearch,
-      bottomTabs
+      bottomTabs,
+      markets
     } = this.props;
 
     const { search, selectedTab } = this.state;
+
+    tabs.forEach(tab => 
+      tab.num = markets && markets[tab.key].length
+    );
+
+    console.log(tabs);
 
     return (
       <div className={Styles.PortfolioBox}>
@@ -155,12 +168,8 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
               />
             </div>
           }  
-          bottomBarContent={ bottomTabs &&
-            <div style={{display: 'flex'}}>
-              {tabs.map(tab => (
-                <div style={{color: (selectedTab === tab.key ? 'red' : 'white')}} onClick={() => {this.selectTab(tab.key)}}>{tab.label}</div>
-              ))}
-            </div>
+          bottomBarContent={bottomTabs &&
+            <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
           } 
          />
         <div className={Styles.PortfolioBox__content}>
