@@ -13,7 +13,8 @@ export interface DropdownProps {
   onChange(value: string): void;
   defaultValue: string | undefined;
   options: Array<NameValuePair>;
-  large?: boolean
+  large?: boolean;
+  staticLabel?: string;
 }
 
 interface DropdownState {
@@ -114,3 +115,51 @@ export const SquareDropdown = (props: DropdownProps) => (
     large={props.large}
   />
 );
+
+export class StaticLabelDropdown extends Dropdown {
+  render() {
+    const { options, large, staticLabel } = this.props;
+    const { selected, showList } = this.state;
+    return (
+      <div
+        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal }
+        ref={dropdown => {
+          this.refDropdown = dropdown;
+        }}
+        onClick={this.toggleList}
+      >
+        <button className={Styles.Dropdown__label}>
+          {staticLabel}&nbsp;<b>{selected.label}</b> { large ? TwoArrows : Chevron }
+        </button>
+        <div
+          className={classNames(Styles.Dropdown__list, {
+            [`${Styles.active}`]: showList
+          })}
+        >
+          {options.map(option => (
+            <button
+              key={option.value}
+              value={option.value}
+              onClick={() => this.dropdownSelect(option)}
+            >
+              {staticLabel}&nbsp;<b>{selected.label}</b>
+            </button>
+          ))}
+        </div>
+        <select
+          onChange={e => {
+            this.dropdownSelect(e.target.options[e.target.selectedIndex]);
+          }}
+          value={selected.value}
+        >
+          {options.map(option => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  }
+}
+

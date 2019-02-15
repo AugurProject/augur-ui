@@ -9,7 +9,6 @@
   display: flex;
   position: relative;
   width: 100%;
-  z-index: 1;
 
   > select {
     display: none;
@@ -37,6 +36,7 @@
     position: absolute;
     right: 0;
     top: 105%;
+    z-index: @mask;
 
     &.active {
       display: block;
