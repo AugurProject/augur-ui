@@ -65,9 +65,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           style: {
             color: "#ffffff",
             fontFamily: "'Roboto Mono', monospace"
-          },
-          height: props.containerHeight
+          }
         },
+        height: props.containerHeight,
         scrollbar: { enabled: false },
         navigator: { enabled: true },
         xAxis: {
