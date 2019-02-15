@@ -74,9 +74,9 @@ class MyMarkets extends Component {
         title="My Created Markets"
         showFilterSearch
         sortByOptions={sortByOptions}
-        updateFilteredMarkets={this.updateFilteredMarkets}
-        filteredMarkets={filteredMarkets}
-        markets={myMarkets}
+        updateFilteredData={this.updateFilteredMarkets}
+        filteredData={filteredMarkets}
+        data={myMarkets}
         filterComp={filterComp}
         rows={
           <div>
