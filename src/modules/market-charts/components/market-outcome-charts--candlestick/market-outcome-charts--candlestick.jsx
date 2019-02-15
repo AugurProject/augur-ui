@@ -422,7 +422,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
                         .toString()}`
                     : "Show Volume in "
                 }
-                onChange={() => {}}
+                onChange={this.updateVolumeType}
               />
             </div>
           </div>
