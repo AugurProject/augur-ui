@@ -13,7 +13,7 @@ import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-b
 
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
-
+import { StaticLabelDropdown } from "modules/common-elements/dropdown";
 import { createBigNumber } from "utils/create-big-number";
 import { getTickIntervalForRange } from "modules/markets/helpers/range";
 
@@ -278,7 +278,10 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     const { hoveredPeriod } = this.state;
 
     const chart = this.drawChart();
-
+    const options = [
+      { label: "ETH", value: "ETH" },
+      { label: "Shares", value: "Shares" }
+    ];
     return (
       <section className={Styles.MarketOutcomeCandlestick}>
         <section>
@@ -393,27 +396,23 @@ class MarketOutcomeCandlestick extends React.PureComponent {
                   )}
                 </span>
               </span>
-              <span
-                className={classNames(
-                  StylesHeader.MarketOutcomeChartsHeader__stat,
-                  Styles.MarketOutcomeChartsHeader__stat
-                )}
-              >
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-                >
-                  v:
-                </span>
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-                >
-                  {hoveredPeriod.volume ? (
-                    hoveredPeriod.volume.toFixed(fixedPrecision).toString()
-                  ) : (
-                    <span>&mdash;</span>
-                  )}
-                </span>
-              </span>
+            </div>
+            <div
+              className={classNames(Styles.MarketOutcomeChartsHeader__label_container, {
+                [Styles.MarketOutcomeChartsHeader__label_hover]: !!hoveredPeriod.volume
+              })}
+            >
+              <StaticLabelDropdown
+                options={options}
+                staticLabel={
+                  hoveredPeriod.volume
+                    ? `V: ${hoveredPeriod.volume
+                        .toFixed(fixedPrecision)
+                        .toString()}`
+                    : "Show Volume in "
+                }
+                onChange={() => {}}
+              />
             </div>
           </div>
         </section>

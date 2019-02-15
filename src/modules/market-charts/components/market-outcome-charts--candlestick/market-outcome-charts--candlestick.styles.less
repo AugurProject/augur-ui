@@ -3,11 +3,25 @@
 .MarketOutcomeChartsHeader__chart-interaction {
   align-items: center;
   display: flex;
-  margin-bottom: 14px;
-  margin-top: 14px;
+  margin: 0.875rem;
+  padding: 0 0.5rem;
 
   div:first-of-type {
     flex: 1;
+  }
+}
+
+.MarketOutcomeChartsHeader__label_hover {
+  > div {
+    background-color: @color-highlight;
+  }
+}
+
+.MarketOutcomeChartsHeader__label_container {
+  margin-right: 4.375rem;
+
+  > div {
+    width: 9.375rem;
   }
 }
 
@@ -30,7 +44,7 @@ span.MarketOutcomeChartsHeader__stat {
 .MarketOutcomeChartsHeader__stat-value,
 .MarketOutcomeChartsHeader__stat-title {
   color: #ffffff;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 10px;
   font-style: normal;
   font-weight: normal;
