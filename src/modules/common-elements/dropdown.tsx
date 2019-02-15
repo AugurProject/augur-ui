@@ -2,7 +2,7 @@ import * as React from "react";
 import { head, find } from "lodash";
 import classNames from "classnames";
 import Styles from "modules/common-elements/dropdown.styles";
-import { downChevron } from "modules/common/components/icons";
+import { Chevron, TwoArrows } from "modules/common-elements/icons";
 
 export interface NameValuePair {
   label: string;
@@ -13,13 +13,12 @@ export interface DropdownProps {
   onChange(value: string): void;
   defaultValue: string | undefined;
   options: Array<NameValuePair>;
-  style: string | undefined;
+  large?: boolean
 }
 
 interface DropdownState {
   selected: NameValuePair;
   showList: boolean;
-  defaultStyle: string;
 }
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
@@ -29,7 +28,6 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
     selected: this.props.defaultValue
       ? find(this.props.options, { value: this.props.defaultValue })
       : head(this.props.options),
-    defaultStyle: this.props.style ? this.props.style : Styles.Dropdown__square,
     showList: false
   };
 
@@ -63,39 +61,35 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   };
 
   render() {
-    const { options } = this.props;
-    const { selected, showList, defaultStyle } = this.state;
+    const { options, large } = this.props;
+    const { selected, showList } = this.state;
     return (
       <div
-        className={defaultStyle}
+        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal }
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
         onClick={this.toggleList}
       >
-        <button className={Styles.Dropdown__label}>{selected.label}</button>
+        <button className={Styles.Dropdown__label}>
+          {selected.label} { large ? TwoArrows : Chevron }
+        </button>
         <div
           className={classNames(Styles.Dropdown__list, {
             [`${Styles.active}`]: showList
           })}
         >
           {options.map(option => (
-            <div>
-              <button
-                className={classNames({
-                  [`${Styles.active}`]: option.value === selected.value
-                })}
-                key={option.value}
-                value={option.value}
-                onClick={() => this.dropdownSelect(option)}
-              >
-                {option.label}
-              </button>
-            </div>
+            <button
+              key={option.value}
+              value={option.value}
+              onClick={() => this.dropdownSelect(option)}
+            >
+              {option.label}
+            </button>
           ))}
         </div>
         <select
-          className={Styles.Dropdown__select}
           onChange={e => {
             this.dropdownSelect(e.target.options[e.target.selectedIndex]);
           }}
@@ -107,7 +101,6 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
             </option>
           ))}
         </select>
-        {downChevron()}
       </div>
     );
   }
@@ -118,15 +111,6 @@ export const SquareDropdown = (props: DropdownProps) => (
     defaultValue={props.defaultValue}
     onChange={props.onChange}
     options={props.options}
-    style={Styles.Dropdown__square}
-  />
-);
-
-export const RoundedDropdown = (props: DropdownProps) => (
-  <Dropdown
-    defaultValue={props.defaultValue}
-    onChange={props.onChange}
-    options={props.options}
-    style={Styles.Dropdown__rounded}
+    large={props.large}
   />
 );

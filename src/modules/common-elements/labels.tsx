@@ -3,7 +3,7 @@ import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
 import Styles from "modules/common-elements/labels.styles";
 import { ClipLoader } from "react-spinners";
-import { marketIcon } from "modules/common/components/icons";
+import { MarketIcon } from "modules/common-elements/icons";
 
 export interface MarketTypeProps {
   marketType: string
@@ -103,7 +103,7 @@ const MovementIcon = (props: MovementIconProps) => {
   const iconSize = getIconSizeStyles(props.size);
   const iconColor = getIconColorStyles(props.value);
 
-  return <div className={`${iconSize} ${iconColor}`}>{marketIcon}</div>;
+  return <div className={`${iconSize} ${iconColor}`}>{MarketIcon}</div>;
 };
 
 export interface MovementTextProps {

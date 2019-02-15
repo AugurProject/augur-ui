@@ -87,7 +87,7 @@
 
 .MovementLabel {
   align-items: center;
-  color: @color-movement-neutral;
+  color: @color-neutral;
   display: flex;
   justify-content: flex-end;
 }
@@ -108,16 +108,22 @@
   }
 
   &_positive {
-    color: @color-movement-positive;
+    color: @color-positive;
   }
 
   &_negative {
-    color: @color-movement-negative;
+    color: @color-negative;
   }
 }
 
 .MovementLabel_Icon {
   margin: 0 0.5rem 0 0;
+
+  > svg {
+    fill: none;
+    height: @size-tiny;
+    width: @size-small;
+  }
 
   &_small {
     transform: scale(0.8);
@@ -133,11 +139,11 @@
 
   &_positive {
     > svg > path:nth-child(1) {
-      fill: @color-movement-positive;
+      fill: @color-positive;
     }
 
     > svg > path:nth-child(2) {
-      stroke: @color-movement-positive;
+      stroke: @color-positive;
     }
   }
 
@@ -147,11 +153,11 @@
     }
 
     > svg > path:nth-child(1) {
-      fill: @color-movement-negative;
+      fill: @color-negative;
     }
 
     > svg > path:nth-child(2) {
-      stroke: @color-movement-negative;
+      stroke: @color-negative;
     }
   }
 }

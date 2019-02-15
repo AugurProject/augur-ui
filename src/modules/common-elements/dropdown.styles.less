@@ -1,111 +1,172 @@
 @import (reference) "~assets/styles/shared";
 
-.Dropdown__rounded,
-.Dropdown__square,
 .Dropdown {
+  background: @color-theme-primary;
+  border: 1px solid @color-highlight;
+  border-radius: @border-radius-default;
   box-sizing: border-box;
-  color: @color-white;
   cursor: pointer;
   display: flex;
   position: relative;
+  width: 100%;
   z-index: 1;
 
-  &:last-child {
-    margin-right: 0;
-  }
-
-  > svg {
-    margin-top: 0.25rem;
-    max-width: 0.5rem;
-  }
-}
-
-.Dropdown__rounded {
-  background: @color-dark-grayish-purple;
-  border: 2px solid @color-dark-gray;
-  border-radius: 1000px;
-  font-size: @size-small;
-  padding: 1rem 1.5rem;
-}
-
-.Dropdown__square {
-  background: @color-light-purple;
-  border: 1px solid @color-bright-gray-purple;
-  border-radius: 3px;
-  color: @color-white;
-  font-size: @size-smallest;
-  padding: 0.6rem 0.9rem;
-}
-
-.Dropdown__label {
-  &:extend(.caps--medium);
-
-  padding-right: 1rem;
-  white-space: nowrap;
-}
-
-.Dropdown__list {
-  background-color: @color-white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  color: @color-darkpurple;
-  display: none;
-  font-size: 12px;
-  line-height: @font-size-normal;
-  position: absolute;
-  right: 0;
-  top: 100%;
-
-  &.active {
-    display: block;
-  }
-
-  > div {
-    padding: 0 1rem;
-    transition: background-color 0.15s ease;
-
-    &:hover,
-    &.active {
-      background-color: @color-lightergray;
-    }
-
-    > button {
-      background-color: inherit;
-      border-top: 1px solid rgba(102, 87, 137, 0.1);
-      cursor: pointer;
-      font-size: @font-size-medium;
-      padding: 0.8rem 0.5rem;
-      text-align: left;
-      white-space: nowrap;
-      width: 100%;
-    }
-  }
-}
-
-.Dropdown__listLeft {
-  right: unset;
-}
-
-.Dropdown__select {
-  color: @color-white;
-  display: none;
-  padding: 0.5rem 1rem 0.5rem 0;
-}
-
-@media @breakpoint-mobile-medium {
-  .Dropdown__label,
-  .Dropdown__list,
-  .Dropdown__list.active {
+  > select {
     display: none;
   }
 
-  .Dropdown__select {
-    display: block;
-    font-size: @font-size-medium;
+  > button {
+    align-items: center;
+    color: @color-secondary-text;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    white-space: nowrap;
+    width: 100%;
+
+    > svg > path {
+      fill: none;
+      stroke: @color-neutral;
+    }
+  }
+
+  > div {
+    background-color: @color-secondary-text;
+    border-radius: @border-radius-default;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 105%;
+
+    &.active {
+      display: block;
+    }
+
+    > button {
+      color: @color-primary-background;
+      position: relative;
+      text-align: left;
+      transition: background-color 0.15s ease;
+      white-space: nowrap;
+      width: 100%;
+
+      &:hover {
+        background-color: @color-highlight-more-faded;
+      }
+
+      &::before {
+        background-color: @color-highlight-extra-faded;
+        bottom: 0;
+        content: "";
+        height: 1px;
+        position: absolute;
+      }
+    }
+  }
+
+  &:hover {
+    background: @color-highlight-faded;
+
+    > button > svg > path {
+      stroke: @color-secondary-text;
+    }
   }
 }
 
-@media @breakpoint-mobile-extra-small {
-  .Dropdown__select {
-    font-size: 0.69rem;
+.Dropdown_Large {
+  .Dropdown;
+
+  height: 3rem;
+  padding: @size-smaller @size-large;
+
+  > .Dropdown__label {
+    .text-normal;
+
+    font-weight: @weight-medium;
+    line-height: @size-medium;
+
+    > svg {
+      flex: 0 0 1.25rem;
+      height: 1.25rem;
+      margin-left: 0.5rem;
+      width: 1.25rem;
+
+      > path {
+        stroke-width: 0.125rem;
+      }
+    }
+  }
+
+  > .Dropdown__list {
+    background-color: @color-secondary-text;
+    border-radius: @border-radius-default;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 105%;
+
+    &.active {
+      display: block;
+    }
+
+    > button {
+      .text-small;
+
+      line-height: @size-normal;
+      padding: @size-smaller @size-large;
+
+      &::before {
+        left: @size-large;
+        right: @size-large;
+      }
+    }
+  }
+}
+
+.Dropdown_Normal {
+  .Dropdown;
+
+  height: 2rem;
+  padding: @size-smallest @size-smaller;
+
+  > .Dropdown__label {
+    .text-smallest;
+
+    line-height: @size-smaller;
+
+    > svg {
+      height: 0.25rem;
+      margin-left: 0.5rem;
+      width: 0.5rem;
+
+      > path {
+        stroke-width: 0.125rem;
+      }
+    }
+  }
+
+  > .Dropdown__list {
+    background-color: @color-secondary-text;
+    border-radius: @border-radius-default;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 105%;
+
+    &.active {
+      display: block;
+    }
+
+    > button {
+      .text-smallest;
+
+      line-height: @size-smaller;
+      padding: 0.375rem @size-smaller;
+
+      &::before {
+        left: @size-smaller;
+        right: @size-smaller;
+      }
+    }
   }
 }
