@@ -398,9 +398,12 @@ class MarketOutcomeCandlestick extends React.PureComponent {
               </span>
             </div>
             <div
-              className={classNames(Styles.MarketOutcomeChartsHeader__label_container, {
-                [Styles.MarketOutcomeChartsHeader__label_hover]: !!hoveredPeriod.volume
-              })}
+              className={classNames(
+                Styles.MarketOutcomeChartsHeader__label_container,
+                {
+                  [Styles.MarketOutcomeChartsHeader__label_hover]: !!hoveredPeriod.volume
+                }
+              )}
             >
               <StaticLabelDropdown
                 options={options}
