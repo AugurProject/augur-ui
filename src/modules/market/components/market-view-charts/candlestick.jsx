@@ -4,10 +4,12 @@ import * as PropTypes from "prop-types";
 import { loadCandleStickData } from "src/modules/markets/actions/load-candlestick-data";
 import logError from "src/utils/log-error";
 import { checkPropsChange } from "src/utils/check-props-change";
-import { head } from "lodash";
 import MarketOutcomeCandlestick from "src/modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick";
 import { BigNumber } from "bignumber.js";
-import { PERIODS } from "modules/common-elements/constants";
+import {
+  DEFAULT_SHORT_PERIODS_VALUE,
+  DEFAULT_PERIODS_VALUE
+} from "modules/common-elements/constants";
 
 export class Candlestick extends React.Component {
   static propTypes = {
@@ -16,18 +18,20 @@ export class Candlestick extends React.Component {
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     selectedOutcome: PropTypes.string.isRequired,
-    lastPrice: PropTypes.string
-  };
-
-  static defaultProps = {
-    lastPrice: null
+    daysPassed: PropTypes.number.isRequired
   };
 
   constructor(props) {
     super(props);
+
+    const defPeriod =
+      props.daysPassed < 1
+        ? DEFAULT_SHORT_PERIODS_VALUE
+        : DEFAULT_PERIODS_VALUE;
+
     this.state = {
       priceTimeSeries: [],
-      selectedPeriod: head(PERIODS).value
+      selectedPeriod: defPeriod
     };
 
     this.getData = this.getData.bind(this);
@@ -43,8 +47,7 @@ export class Candlestick extends React.Component {
       checkPropsChange(prevProps, this.props, [
         "currentTimeInSeconds",
         "selectedOutcome",
-        "marketId",
-        "lastPrice"
+        "marketId"
       ]) ||
       checkPropsChange(prevState, this.state, ["selectedPeriod"])
     ) {

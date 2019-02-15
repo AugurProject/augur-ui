@@ -24,7 +24,7 @@ import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
 import MarketOutcomeSelector from "modules/market/components/market-view/market-outcome-selector";
 import MarketOutcomesChart from "src/modules/market-charts/containers/market-outcomes-chart";
-
+import { getMarketAgeInDays } from "utils/format-date";
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
 import { BigNumber } from "bignumber.js";
@@ -275,15 +275,10 @@ export default class MarketView extends Component {
         outcomeValue => outcomeValue.id === s.selectedOutcome.toString()
       ).description;
 
-    const lastPrice =
-      (s.selectedOutcome &&
-        outcomes.length > 0 &&
-        (
-          outcomes.find(
-            outcomeValue => outcomeValue.id === s.selectedOutcome.toString()
-          ).lastPrice || {}
-        ).value.toString()) ||
-      null;
+    const daysPassed =
+      market &&
+      market.creationTime &&
+      getMarketAgeInDays(market.creationTime.timestamp);
 
     if (isMobile) {
       return (
@@ -343,8 +338,8 @@ export default class MarketView extends Component {
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties
                     }
-                    lastPrice={lastPrice}
                     isMobile={isMobile}
+                    daysPassed={daysPassed}
                   />
                 </div>
                 <ModuleTabs selected={0} fillForMobile>
@@ -471,7 +466,7 @@ export default class MarketView extends Component {
                     updateSelectedOrderProperties={
                       this.updateSelectedOrderProperties
                     }
-                    lastPrice={lastPrice}
+                    daysPassed={daysPassed}
                   />
                 </div>
               </div>

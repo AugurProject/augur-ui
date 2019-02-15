@@ -9,7 +9,6 @@ import ReactFauxDOM from "react-faux-dom";
 import { map, sortBy } from "lodash";
 import {
   PERIODS,
-  DEFAULT_PERIODS_VALUE,
   VOLUME_ETH_SHARES,
   ETH
 } from "modules/common-elements/constants";
@@ -92,7 +91,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       hoveredPrice: null,
       hoveredPeriod: {},
       chart: null,
-      volumeType: ETH
+      volumeType: ETH,
+      defaultCandlePeriod: props.selectedPeriod
     });
 
     this.getContainerWidths = this.getContainerWidths.bind(this);
@@ -283,7 +283,12 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       marketMax
     } = this.props;
 
-    const { hoveredPeriod, volumeType, containerHeight } = this.state;
+    const {
+      hoveredPeriod,
+      volumeType,
+      containerHeight,
+      defaultCandlePeriod
+    } = this.state;
 
     // const chart = this.drawChart();
 
@@ -304,7 +309,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
               )}
             >
               <SquareDropdown
-                defaultValue={DEFAULT_PERIODS_VALUE}
+                defaultValue={defaultCandlePeriod}
                 options={PERIODS}
                 onChange={updateSelectedPeriod}
               />

@@ -298,15 +298,15 @@ export const RANGES = [
 ];
 
 export const PERIOD_RANGES = {
-  1800: {
-    period: 1800,
-    label: "minute",
-    range: 12 * 3600 * 1000 // 12 hours
-  },
   3600: {
     period: 3600,
     label: "hour",
     range: 24 * 3600 * 1000 // 1 day
+  },
+  43200: {
+    period: 43200,
+    label: "12 hour",
+    range: 7 * 24 * 3600 * 1000 // 1 week
   },
   86400: {
     period: 86400,
@@ -317,23 +317,19 @@ export const PERIOD_RANGES = {
     period: 604800,
     label: "week",
     range: 6 * 30 * 24 * 3600 * 1000 // 6 months
-  },
-  2629800: {
-    period: 2629800,
-    label: "month",
-    range: 12 * 30 * 24 * 3600 * 1000 // 1 year
   }
 };
 
-export const DEFAULT_PERIODS_VALUE = 3600;
+export const DEFAULT_PERIODS_VALUE = 86400;
+export const DEFAULT_SHORT_PERIODS_VALUE = 3600;
 export const PERIODS = [
-  {
-    value: 1800,
-    label: "30 Minute"
-  },
   {
     value: 3600,
     label: "Hourly"
+  },
+  {
+    value: 43200,
+    label: "12 Hour"
   },
   {
     value: 86400,
@@ -342,10 +338,6 @@ export const PERIODS = [
   {
     value: 604800,
     label: "Weekly"
-  },
-  {
-    value: 2629800,
-    label: "Monthly"
   }
 ];
 

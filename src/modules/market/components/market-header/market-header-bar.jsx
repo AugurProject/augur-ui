@@ -6,6 +6,7 @@ import {
   MarketStatusLabel,
   MarketTypeLabel
 } from "modules/common-elements/labels";
+import * as constants from "modules/common-elements/constants";
 
 const MarketHeaderBar = ({
   addToFavorites,
@@ -42,7 +43,7 @@ const MarketHeaderBar = ({
 };
 
 MarketHeaderBar.propTypes = {
-  marketStatus: PropTypes.string.isRequired,
+  marketStatus: PropTypes.string,
   isLogged: PropTypes.bool,
   isFavorite: PropTypes.bool,
   addToFavorites: PropTypes.func.isRequired,
@@ -54,7 +55,8 @@ MarketHeaderBar.propTypes = {
 MarketHeaderBar.defaultProps = {
   isLogged: false,
   isFavorite: false,
-  collapsedView: false
+  collapsedView: false,
+  marketStatus: constants.MARKET_OPEN
 };
 
 export default MarketHeaderBar;
