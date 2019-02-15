@@ -33,9 +33,9 @@ export interface FilterBoxProps {
   rows?: ReactNode,
   bottomBarContent?: ReactNode
   sortByOptions: Array<NameValuePair>;
-  filteredMarkets: Array<Market>;
-  markets: MarketsByReportingState;
-  updateFilteredMarkets: Function;
+  filteredData: Array<Market>; // can be markets now or extended to be individual orders
+  data: MarketsByReportingState;
+  updateFilteredData: Function; 
   filterComp: Function;
   showFilterSearch?: Boolean;
   bottomTabs?: Boolean;
@@ -81,52 +81,52 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   updateSortBy = (value: string) => {
     this.setState({sortBy: value});
 
-    let { filteredMarkets } = this.props;
-    filteredMarkets = this.applySortBy(value, filteredMarkets);
+    let { filteredData } = this.props;
+    filteredData = this.applySortBy(value, filteredData);
 
-    this.props.updateFilteredMarkets(filteredMarkets);
+    this.props.updateFilteredData(filteredData);
   }
 
   onSearchChange = (input: string) => {
     this.setState({search: input});
 
-    const { markets } = this.props;
+    const { data } = this.props;
     let { selectedTab, search } = this.state;
     
     if (input === search) return;
 
-    let tabMarkets =  markets[selectedTab];
-    const filteredMarkets = this.applySearch(input, tabMarkets);
+    let tabData =  data[selectedTab];
+    const filteredData = this.applySearch(input, tabData);
 
-    this.props.updateFilteredMarkets(filteredMarkets);
+    this.props.updateFilteredData(filteredData);
   }
 
   selectTab = (tab: string) => {
     this.setState({selectedTab: tab})
 
-    const { markets } = this.props;
-    let marketsFiltered = this.applySearch(this.state.search, markets[tab]);
-    marketsFiltered = this.applySortBy(this.state.sortBy, marketsFiltered);
+    const { data } = this.props;
+    let dataFiltered = this.applySearch(this.state.search, data[tab]);
+    dataFiltered = this.applySortBy(this.state.sortBy, dataFiltered);
     
-    this.props.updateFilteredMarkets(marketsFiltered);
+    this.props.updateFilteredData(dataFiltered);
   }
 
-  applySearch = (input: string, markets: Array<Market>) => {
+  applySearch = (input: string, data: Array<Market>) => {
     const { filterComp } = this.props;
     let { search, sortBy, selectedTab } = this.state;
 
-    markets = markets.filter(filterComp.bind(this, input));
-    markets = this.applySortBy(sortBy, markets);
+    data = data.filter(filterComp.bind(this, input));
+    data = this.applySortBy(sortBy, data);
 
-    return markets;
+    return data;
   }
 
-  applySortBy = (value: string, markets: Array<Market>) => {
+  applySortBy = (value: string, data: Array<Market>) => {
     const valueObj = find(this.props.sortByOptions, { value: value });
 
-    markets = markets.sort(valueObj.comp);
+    data = data.sort(valueObj.comp);
 
-    return markets;
+    return data;
   }
 
   render() {
@@ -137,16 +137,14 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       sortByOptions,
       showFilterSearch,
       bottomTabs,
-      markets
+      data,
     } = this.props;
 
     const { search, selectedTab } = this.state;
 
     tabs.forEach(tab => 
-      tab.num = markets && markets[tab.key].length
+      tab.num = data && data[tab.key].length
     );
-
-    console.log(tabs);
 
     return (
       <div className={Styles.PortfolioBox}>

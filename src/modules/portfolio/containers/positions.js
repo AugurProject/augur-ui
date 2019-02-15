@@ -7,17 +7,11 @@ import getLoginAccountPositions from "modules/positions/selectors/login-account-
 import getOpenOrders from "modules/orders/selectors/open-orders";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
-import { constants } from "services/augurjs";
-import { orderBy } from "lodash";
 import { selectMarket } from "modules/markets/selectors/market";
 import { updateModal } from "modules/modal/actions/update-modal";
-import {
-  MODAL_CLAIM_TRADING_PROCEEDS,
-  ALL_MARKETS,
-  MARKET_OPEN,
-  MARKET_REPORTING,
-  MARKET_CLOSED
-} from "modules/common-elements/constants";
+import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
+
+import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
   const positions = getLoginAccountPositions();
@@ -27,39 +21,11 @@ const mapStateToProps = state => {
   for (let i = 0; i < orphanedOrders.length; i++) {
     orphanedMarkets.push(selectMarket(orphanedOrders[i].marketId));
   }
-  const reportingStates = constants.REPORTING_STATE;
-  const openPositionMarkets = [];
-  const reportingMarkets = [];
-  const closedMarkets = [];
+
   // NOTE: for data wiring, this should probably be just done as calls for getting openPosition Markets, getting Reporting Markets, and getting Closed Markets respectively from the node and just passed the expected keys below
   const markets = getPositionsMarkets(positions, openOrders, orphanedMarkets);
-  // TODO -- getting each section of markets should be it's own call
   const marketsCount = markets.length;
-  markets.forEach(market => {
-    if (
-      market.reportingState === reportingStates.FINALIZED ||
-      market.reportingState === reportingStates.AWAITING_FINALIZATION
-    ) {
-      closedMarkets.push(market);
-    } else if (market.reportingState !== reportingStates.PRE_REPORTING) {
-      reportingMarkets.push(market);
-    } else {
-      openPositionMarkets.push(market);
-    }
-  });
-
-  const orderdClosedMarkets = orderBy(
-    closedMarkets,
-    ["endTime.timestamp"],
-    ["desc"]
-  );
-
-  const marketsObject = {
-    [ALL_MARKETS]: markets,
-    [MARKET_OPEN]: openPositionMarkets,
-    [MARKET_REPORTING]: reportingMarkets,
-    [MARKET_CLOSED]: orderdClosedMarkets
-  };
+  const marketsObject = createMarketsStateObject(markets);
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),

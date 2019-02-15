@@ -70,9 +70,9 @@ export default class Positions extends Component {
         title="Positions"
         showFilterSearch
         sortByOptions={sortByOptions}
-        updateFilteredMarkets={this.updateFilteredMarkets}
-        filteredMarkets={filteredMarkets}
-        markets={markets}
+        updateFilteredData={this.updateFilteredMarkets}
+        filteredData={filteredMarkets}
+        data={markets}
         filterComp={filterComp}
         rows={
           <div>
