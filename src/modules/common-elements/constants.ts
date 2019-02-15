@@ -465,6 +465,7 @@ export const CANCELED = "CANCELED";
 export const OPEN = "OPEN";
 export const PRICE = "price";
 export const SHARE = "share";
+export const SHARES = "Shares";
 export const BUY = "buy";
 export const SELL = "sell";
 export const UP = "up";
@@ -533,3 +534,14 @@ export const BID = "bid";
 export const ASK = "ask";
 export const MATCH_BID = "match_bid";
 export const MATCH_ASK = "match_ask";
+
+export const VOLUME_ETH_SHARES = [
+  {
+    value: ETH,
+    label: `Volume in ${ETH}`
+  },
+  {
+    value: SHARES,
+    label: `Volume in ${SHARES}`
+  }
+]

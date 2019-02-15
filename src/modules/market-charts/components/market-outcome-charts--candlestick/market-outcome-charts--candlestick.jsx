@@ -9,7 +9,9 @@ import ReactFauxDOM from "react-faux-dom";
 import { map, sortBy } from "lodash";
 import {
   PERIODS,
-  DEFAULT_PERIODS_VALUE
+  DEFAULT_PERIODS_VALUE,
+  VOLUME_ETH_SHARES,
+  ETH
 } from "modules/common-elements/constants";
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
 import { SquareDropdown } from "modules/common-elements/dropdown";
@@ -86,7 +88,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       yScale: null,
       hoveredPrice: null,
       hoveredPeriod: {},
-      chart: null
+      chart: null,
+      volumeType: ETH
     });
 
     this.getContainerWidths = this.getContainerWidths.bind(this);
@@ -95,6 +98,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     this.updateHoveredPeriod = this.updateHoveredPeriod.bind(this);
     this.clearCrosshairs = this.clearCrosshairs.bind(this);
     this.drawChart = this.drawChart.bind(this);
+    this.updateVolumeType = this.updateVolumeType.bind(this);
   }
 
   componentDidMount() {
@@ -125,6 +129,12 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       containerWidth: 200, // this.drawContainer.clientWidth,
       containerHeight: 100 // this.drawContainer.clientHeight
     };
+  }
+
+  updateVolumeType(value) {
+    this.setState({
+      volumeType: value
+    });
   }
 
   updateContainerWidths() {
@@ -270,7 +280,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       marketMax
     } = this.props;
 
-    const { hoveredPeriod } = this.state;
+    const { hoveredPeriod, volumeType } = this.state;
 
     // const chart = this.drawChart();
 
@@ -408,6 +418,21 @@ class MarketOutcomeCandlestick extends React.PureComponent {
                 </span>
               </span>
             </div>
+            <div
+              className={classNames(
+                Styles.MarketOutcomeChartsHeader__selector,
+                {
+                  [Styles[
+                    "MarketOutcomeChartsHeader__selector--mobile"
+                  ]]: isMobile
+                }
+              )}
+            >
+              <SquareDropdown
+                options={VOLUME_ETH_SHARES}
+                onChange={this.updateVolumeType}
+              />
+            </div>
           </div>
         </section>
         <MarketOutcomeChartsCandlestickHighchart
@@ -417,6 +442,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
           updateHoveredPeriod={this.updateHoveredPeriod}
           marketMin={marketMin}
           marketMax={marketMax}
+          volumeType={volumeType}
         />
       </section>
     );

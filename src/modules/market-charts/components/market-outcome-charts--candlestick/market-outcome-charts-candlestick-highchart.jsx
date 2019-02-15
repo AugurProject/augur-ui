@@ -5,7 +5,7 @@ import CustomPropTypes from "utils/custom-prop-types";
 import Highcharts from "highcharts/highstock";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
 import { each, isEqual, min, max } from "lodash";
-import { PERIOD_RANGES } from "modules/common-elements/constants";
+import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
 const NumberOfPlotLines = 3;
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
@@ -15,7 +15,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     pricePrecision: PropTypes.number.isRequired,
     updateHoveredPeriod: PropTypes.func.isRequired,
     marketMax: CustomPropTypes.bigNumber.isRequired,
-    marketMin: CustomPropTypes.bigNumber.isRequired
+    marketMin: CustomPropTypes.bigNumber.isRequired,
+    volumeType: PropTypes.string.isRequired
   };
 
   static defaultProps = {};
@@ -148,7 +149,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             plotLines: []
           }
         ],
-        tooltip: { enabled: true },
+        tooltip: { enabled: false },
         rangeSelector: {
           enabled: false
         }
@@ -163,8 +164,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   componentDidMount() {
-    const { priceTimeSeries, selectedPeriod } = this.props;
-    this.buidOptions(priceTimeSeries, selectedPeriod, options => {
+    const { priceTimeSeries, selectedPeriod, volumeType } = this.props;
+    this.buidOptions(priceTimeSeries, selectedPeriod, volumeType, options => {
       this.chart = Highcharts.stockChart(this.container, options);
     });
   }
@@ -172,9 +173,14 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   componentWillUpdate(nextProps) {
     if (
       !isEqual(this.props.priceTimeSeries, nextProps.priceTimeSeries) ||
-      !isEqual(this.props.selectedPeriod, nextProps.selectedPeriod)
+      !isEqual(this.props.selectedPeriod, nextProps.selectedPeriod) ||
+      !isEqual(this.props.volumeType, nextProps.volumeType)
     ) {
-      this.buidOptions(nextProps.priceTimeSeries, nextProps.selectedPeriod);
+      this.buidOptions(
+        nextProps.priceTimeSeries,
+        nextProps.selectedPeriod,
+        nextProps.volumeType
+      );
     }
   }
 
@@ -186,7 +192,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   displayCandleInfoAndPlotViz(evt) {
-    const { updateHoveredPeriod, priceTimeSeries } = this.props;
+    const { updateHoveredPeriod, priceTimeSeries, volumeType } = this.props;
     const { x: timestamp, open, close, high, low } = evt.target;
     const { closestPointRange } = evt.target.series.xAxis;
     const range = closestPointRange / 4;
@@ -197,7 +203,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       close: close ? createBigNumber(close) : "",
       high: high ? createBigNumber(high) : "",
       low: low ? createBigNumber(low) : "",
-      volume: pts ? createBigNumber(pts.volume) : ""
+      volume: pts
+        ? createBigNumber(volumeType === ETH ? pts.volume : pts.shareVolume)
+        : ""
     });
 
     const plotBand = {
@@ -302,7 +310,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     return plotLines;
   }
 
-  buidOptions(priceTimeSeries, selectedPeriod, callback) {
+  buidOptions(priceTimeSeries, selectedPeriod, volumeType, callback) {
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -317,7 +325,10 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     each(priceTimeSeries, item => {
       const { period } = item;
       ohlc.push([period, item.open, item.high, item.low, item.close]);
-      volume.push([period, item.volume]);
+      volume.push([
+        period,
+        volumeType === ETH ? item.volume : item.shareVolume
+      ]);
     });
 
     const { range } = PERIOD_RANGES[selectedPeriod];
