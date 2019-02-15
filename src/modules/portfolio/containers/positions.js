@@ -14,9 +14,9 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import {
   MODAL_CLAIM_TRADING_PROCEEDS,
   ALL_MARKETS,
-  OPEN_MARKETS,
-  IN_REPORTING_MARKETS,
-  RESOLVED_MARKETS
+  MARKET_OPEN,
+  MARKET_REPORTING,
+  MARKET_CLOSED
 } from "modules/common-elements/constants";
 
 const mapStateToProps = state => {
@@ -56,9 +56,9 @@ const mapStateToProps = state => {
 
   const marketsObject = {
     [ALL_MARKETS]: markets,
-    [OPEN_MARKETS]: openPositionMarkets,
-    [IN_REPORTING_MARKETS]: reportingMarkets,
-    [RESOLVED_MARKETS]: orderdClosedMarkets
+    [MARKET_OPEN]: openPositionMarkets,
+    [MARKET_REPORTING]: reportingMarkets,
+    [MARKET_CLOSED]: orderdClosedMarkets
   };
 
   return {
