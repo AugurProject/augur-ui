@@ -142,7 +142,7 @@ export class StaticLabelDropdown extends Dropdown {
               value={option.value}
               onClick={() => this.dropdownSelect(option)}
             >
-              {staticLabel}&nbsp;<b>{selected.label}</b>
+              {staticLabel}&nbsp;<b>{option.label}</b>
             </button>
           ))}
         </div>
