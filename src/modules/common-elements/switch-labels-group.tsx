@@ -27,7 +27,7 @@ export const SwitchLabelsGroup = (props: SwitchLabelsGroupProps) => {
     return (
         <div className={Styles.SwitchLabelsGroup}>
             {props.tabs.map(tab => (
-                <div 
+                <button 
                     className={classNames(Styles.SwitchLabelsGroup__label, {
                         [`${Styles.active}`]: props.selectedTab === tab.key, 
                         [Styles.SwitchLabelsGroup_open]: tab.key === MARKET_OPEN,
@@ -37,7 +37,7 @@ export const SwitchLabelsGroup = (props: SwitchLabelsGroupProps) => {
                     onClick={() => {props.selectTab(tab.key)}}
                 >
                     {tab.label} <span>({tab.num})</span>
-                </div>
+                </button>
             ))}
         </div>
     );
