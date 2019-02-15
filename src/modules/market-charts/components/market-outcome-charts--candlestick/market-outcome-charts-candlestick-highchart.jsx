@@ -8,6 +8,7 @@ import { each, isEqual, min, max } from "lodash";
 import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
 const NumberOfPlotLines = 3;
+const ShowNavigator = 350;
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
     priceTimeSeries: PropTypes.array.isRequired,
@@ -69,7 +70,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
-        navigator: { enabled: true },
+        navigator: { enabled: props.containerHeight > ShowNavigator }, // over 400 px so there is room
         xAxis: {
           labels: {
             style: {
@@ -166,22 +167,35 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   componentDidMount() {
-    const { priceTimeSeries, selectedPeriod, volumeType } = this.props;
-    this.buidOptions(priceTimeSeries, selectedPeriod, volumeType, options => {
-      this.chart = Highcharts.stockChart(this.container, options);
-    });
+    const {
+      priceTimeSeries,
+      selectedPeriod,
+      volumeType,
+      containerHeight
+    } = this.props;
+    this.buidOptions(
+      priceTimeSeries,
+      selectedPeriod,
+      volumeType,
+      containerHeight,
+      options => {
+        this.chart = Highcharts.stockChart(this.container, options);
+      }
+    );
   }
 
   componentWillUpdate(nextProps) {
     if (
       !isEqual(this.props.priceTimeSeries, nextProps.priceTimeSeries) ||
       !isEqual(this.props.selectedPeriod, nextProps.selectedPeriod) ||
-      !isEqual(this.props.volumeType, nextProps.volumeType)
+      !isEqual(this.props.volumeType, nextProps.volumeType) ||
+      !isEqual(this.props.containerHeight, nextProps.containerHeight)
     ) {
       this.buidOptions(
         nextProps.priceTimeSeries,
         nextProps.selectedPeriod,
-        nextProps.volumeType
+        nextProps.volumeType,
+        nextProps.containerHeight
       );
     }
   }
@@ -312,7 +326,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     return plotLines;
   }
 
-  buidOptions(priceTimeSeries, selectedPeriod, volumeType, callback) {
+  buidOptions(
+    priceTimeSeries,
+    selectedPeriod,
+    volumeType,
+    containerHeight,
+    callback
+  ) {
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -338,6 +358,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       options.xAxis[0].range = range;
     } else {
       options.xAxis.range = range;
+    }
+    options.height = containerHeight;
+    // figure out why options has dropped properties
+    if (options.navigator) {
+      options.navigator.enabled = containerHeight > ShowNavigator;
+    } else {
+      options.navigator = { enabled: containerHeight > ShowNavigator };
     }
 
     const newOptions = Object.assign(options, {
