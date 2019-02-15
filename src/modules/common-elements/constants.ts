@@ -324,6 +324,7 @@ export const PERIOD_RANGES = {
   }
 };
 
+export const DEFAULT_PERIODS_VALUE = 3600;
 export const PERIODS = [
   {
     value: 1800,

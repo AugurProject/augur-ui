@@ -7,7 +7,10 @@ import * as d3 from "d3";
 import ReactFauxDOM from "react-faux-dom";
 
 import { map, sortBy } from "lodash";
-import { PERIODS } from "modules/common-elements/constants";
+import {
+  PERIODS,
+  DEFAULT_PERIODS_VALUE
+} from "modules/common-elements/constants";
 import findPeriodSeriesBounds from "modules/markets/helpers/find-period-series-bounds";
 import { SquareDropdown } from "modules/common-elements/dropdown";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
@@ -288,6 +291,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
               )}
             >
               <SquareDropdown
+                defaultValue={DEFAULT_PERIODS_VALUE}
                 options={PERIODS}
                 onChange={updateSelectedPeriod}
               />

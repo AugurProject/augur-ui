@@ -148,7 +148,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             plotLines: []
           }
         ],
-        tooltip: { enabled: false },
+        tooltip: { enabled: true },
         rangeSelector: {
           enabled: false
         }
@@ -186,17 +186,18 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   }
 
   displayCandleInfoAndPlotViz(evt) {
-    const { updateHoveredPeriod } = this.props;
+    const { updateHoveredPeriod, priceTimeSeries } = this.props;
     const { x: timestamp, open, close, high, low } = evt.target;
     const { closestPointRange } = evt.target.series.xAxis;
     const range = closestPointRange / 4;
+    const pts = priceTimeSeries.find(p => p.period === timestamp);
 
     updateHoveredPeriod({
       open: open ? createBigNumber(open) : "",
       close: close ? createBigNumber(close) : "",
       high: high ? createBigNumber(high) : "",
       low: low ? createBigNumber(low) : "",
-      volume: createBigNumber(0)
+      volume: pts ? createBigNumber(pts.volume) : ""
     });
 
     const plotBand = {
