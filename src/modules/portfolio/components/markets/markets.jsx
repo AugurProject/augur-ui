@@ -45,7 +45,7 @@ class MyMarkets extends Component {
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       filteredMarkets: props.myMarkets[ALL_MARKETS]
     };
@@ -66,7 +66,7 @@ class MyMarkets extends Component {
   }
 
   render() {
-     const { myMarkets } = this.props;
+    const { myMarkets } = this.props;
     const { filteredMarkets } = this.state;
 
     return (

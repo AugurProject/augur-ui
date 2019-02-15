@@ -146,8 +146,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       tab.num = markets && markets[tab.key].length
     );
 
-    console.log(tabs);
-
     return (
       <div className={Styles.PortfolioBox}>
         <BoxHeader 

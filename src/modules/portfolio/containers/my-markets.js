@@ -17,50 +17,21 @@ import logError from "utils/log-error";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
 import { loadDisputing } from "modules/reports/actions/load-disputing";
 
-import {
-  ALL_MARKETS,
-  MARKET_OPEN,
-  MARKET_REPORTING,
-  MARKET_CLOSED
-} from "modules/common-elements/constants";
+import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
-
-  const markets = getUserMarkets();
-  const openPositionMarkets = [];
-  const reportingMarkets = [];
-  const closedMarkets = [];
-
-  markets.forEach(market => {
-    if (
-      market.reportingState === reportingStates.FINALIZED ||
-      market.reportingState === reportingStates.AWAITING_FINALIZATION
-    ) {
-      closedMarkets.push(market);
-    } else if (market.reportingState !== reportingStates.PRE_REPORTING) {
-      reportingMarkets.push(market);
-    } else {
-      openPositionMarkets.push(market);
-    }
-  });
-
-  const marketsObject = {
-    [ALL_MARKETS]: markets,
-    [MARKET_OPEN]: openPositionMarkets,
-    [MARKET_REPORTING]: reportingMarkets,
-    [MARKET_CLOSED]: orderdClosedMarkets
-  };
+  const markets = createMarketsStateObject(getUserMarkets());
 
   // getMyMarkets or it's equivalent will need a way of calculating the outstanding returns for a market and attaching it to each market object. Currently I've just added a key/value pair to the market objects im using below.
   return {
     isLogged: state.authStatus.isLogged,
-    myMarkets: marketsObject,
+    myMarkets: markets,
     transactionsLoading: state.appStatus.transactionsLoading,
     isMobile: state.appStatus.isMobile,
     pendingLiquidityOrders: state.pendingLiquidityOrders,
     outcomes: marketDisputeOutcomes() || {}
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   loadMarkets: () =>
