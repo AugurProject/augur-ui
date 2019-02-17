@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { createBigNumber } from "utils/create-big-number";
 import CustomPropTypes from "utils/custom-prop-types";
 import Highcharts from "highcharts/highstock";
+import NoDataToDisplay from "highcharts/modules/no-data-to-display";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
-import { each, isEqual, min, max } from "lodash";
+import { each, isEqual, cloneDeep } from "lodash";
 import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
-const NumberOfPlotLines = 3;
+NoDataToDisplay(Highcharts);
+
 const ShowNavigator = 350;
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
@@ -23,30 +25,15 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
   static defaultProps = {};
 
-  static buildTimePlotLines(periods) {
-    if (periods.length === 0) return [];
-    const plotLines = [];
-    each(periods, period => {
-      plotLines.push({
-        id: "time-plot-line",
-        value: period,
-        width: 1,
-        className:
-          Styles.MarketOutcomeChartsCandlestickHighchart__timestamp_axis,
-        color: "#ffffff",
-        zIndex: -1
-      });
-    });
-
-    return plotLines;
-  }
-
   constructor(props) {
     super(props);
     this.state = {
       options: {
         title: {
           text: ""
+        },
+        lang: {
+          noData: "No Completed Trades"
         },
         plotOptions: {
           series: {
@@ -58,15 +45,11 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             }
           }
         },
+
         chart: {
           type: "candlestick",
           styledMode: false,
-          backgroundColor: "#211a32",
-          zoomType: "x",
-          style: {
-            color: "#ffffff",
-            fontFamily: "'Roboto Mono', monospace"
-          }
+          zoomType: "x"
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
@@ -74,9 +57,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         xAxis: {
           ordinal: false,
           labels: {
-            style: {
-              color: "#ffffff"
-            },
             format: "{value:%b %d}"
           },
           range: 24 * 3600 * 1000, // day
@@ -85,36 +65,22 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             snap: true,
             label: {
               enabled: true,
-              className:
-                Styles.MarketOutcomeChartsCandlestickHighchart__volume_axis,
-              color: "#ffffff",
-              backgroundColor: "#0F0A19",
-              borderColor: "#ffffff",
               format: "{value:%b %d, %H:%M}",
               align: "center",
               y: 0,
               x: 0
             }
           },
-          lineWidth: 1,
-          minorGridLineWidth: 1,
           plotBands: []
         },
         yAxis: [
           {
-            gridLineColor: "#666666",
-            className:
-              Styles.MarketOutcomeChartsCandlestickHighchart__plotline_price_lines,
-            lineColor: "#666666",
-            gridLineDashStyle: "dash",
+            showFirstLabel: false,
             gridLineWidth: 1,
             minorTickLength: 0,
             tickLength: 0,
-            showFirstLabel: true,
-            showLastLabel: true,
             labels: {
-              color: "#ffffff",
-              format: "{value:.4f}",
+              format: "{value:.4f} ETH",
               align: "right",
               y: 12,
               x: 0
@@ -128,14 +94,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             },
             crosshair: {
               snap: false,
-              dashStyle: "dash",
-              className:
-                Styles.MarketOutcomeChartsCandlestickHighchart__openClose_axis,
               label: {
                 enabled: true,
-                backgroundColor: "#161022",
-                color: "#ffffff",
-                format: "{value:.4f}",
+                format: "{value:.4f} ETH",
                 align: "right",
                 y: 12,
                 x: 0
@@ -148,8 +109,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             height: "15%",
             opposite: true,
             gridLineWidth: 0,
-            className:
-              Styles.MarketOutcomeChartsCandlestickHighchart__volume_bar,
+            labels: {
+              enabled: false
+            },
             plotLines: []
           }
         ],
@@ -164,7 +126,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       this
     );
     this.clearCandleInfoAndPlotViz = this.clearCandleInfoAndPlotViz.bind(this);
-    this.buildPlotLinesAfterZoom = this.buildPlotLinesAfterZoom.bind(this);
   }
 
   componentDidMount() {
@@ -228,11 +189,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     const plotBand = {
       id: "new-plot-band",
       from: timestamp - range,
-      to: timestamp + range,
-      className: Styles.MarketOutcomeChartsCandlestickHighchart__plot_band,
-      color: "#C4C4C4",
-      thickness: "100%",
-      zIndex: -1
+      to: timestamp + range
     };
 
     this.chart.xAxis[0].addPlotBand(plotBand);
@@ -269,64 +226,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
   }
 
-  buildPlotLinesAfterZoom(evt) {
-    const { priceTimeSeries, marketMin, marketMax } = this.props;
-    if (!priceTimeSeries || priceTimeSeries.length === 0) return;
-    const { userMin, userMax, dataMax, dataMin } = evt;
-
-    const inRangePriceTimeSeries = priceTimeSeries.filter(
-      x =>
-        createBigNumber(userMin || dataMin || marketMin).lt(
-          createBigNumber(x.period)
-        ) &&
-        createBigNumber(x.period).lt(
-          createBigNumber(userMax || dataMax || marketMax)
-        )
-    );
-
-    const plotLines = this.buildPricePlotLines(
-      min(inRangePriceTimeSeries.map(x => x.low)),
-      max(inRangePriceTimeSeries.map(x => x.high))
-    );
-
-    if (plotLines && plotLines.length > 0) {
-      each(this.chart.yAxis[0].plotLinesAndBands, line => {
-        this.chart.yAxis[0].removePlotLine("plot-line");
-      });
-      each(plotLines, line => this.chart.yAxis[0].addPlotLine(line));
-    }
-  }
-
-  buildPricePlotLines(min, max) {
-    const { pricePrecision, marketMin, marketMax } = this.props;
-    const minValue = createBigNumber(min || marketMin);
-    const maxValue = createBigNumber(max || marketMax);
-    const range = maxValue.minus(minValue);
-    const interval = range.dividedBy(NumberOfPlotLines);
-    const plotLines = [];
-    let startingValue = createBigNumber(minValue);
-    for (let i = 0; i < NumberOfPlotLines; i++) {
-      startingValue = startingValue.plus(interval);
-      plotLines.push({
-        id: "plot-line",
-        value: startingValue.toFixed(pricePrecision).toString(),
-        width: 1,
-        className:
-          Styles.MarketOutcomeChartsCandlestickHighchart__openClose_axis,
-        color: "#ffffff",
-        dashStyle: "dash",
-        label: {
-          color: "#ffffff",
-          text: startingValue.toFixed(pricePrecision).toString(),
-          align: "right",
-          y: 12,
-          x: 0
-        }
-      });
-    }
-    return plotLines;
-  }
-
   buidOptions(
     priceTimeSeries,
     selectedPeriod,
@@ -354,21 +253,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       ]);
     });
 
-    const { range } = PERIOD_RANGES[selectedPeriod];
-    if (Array.isArray(options.xAxis)) {
-      options.xAxis[0].range = range;
-    } else {
-      options.xAxis.range = range;
-    }
     options.height = containerHeight;
     // figure out why options has dropped properties
     if (containerHeight > 0) {
-      if (options.navigator) {
-        options.navigator.enabled = containerHeight > ShowNavigator;
-      } else {
-        options.navigator = { enabled: containerHeight > ShowNavigator };
-      }
+      options.navigator.enabled = containerHeight > ShowNavigator;
     }
+
+    const { range } = PERIOD_RANGES[selectedPeriod];
 
     const newOptions = Object.assign(options, {
       series: [
@@ -384,7 +275,10 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           yAxis: 0,
           dataGrouping: {
             units: groupingUnits
-          }
+          },
+          maxPointWidth: 20,
+          minPointWidth: 10,
+          range
         },
         {
           type: "column",
@@ -394,21 +288,26 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           yAxis: 1,
           dataGrouping: {
             units: groupingUnits
-          }
+          },
+          maxPointWidth: 20,
+          minPointWidth: 10,
+          range
         }
       ]
     });
 
-    this.setState({ options: newOptions });
+    const updatedObjects = cloneDeep(newOptions);
+    this.setState({ options: updatedObjects });
     if (this.chart) {
-      this.chart.update(newOptions);
+      this.chart.update(updatedObjects);
     }
-    if (callback) callback(newOptions);
+    if (callback) callback(updatedObjects);
   }
 
   render() {
     return (
       <div
+        className={Styles.MarketOutcomeChartsCandlestickHighcharts}
         ref={container => {
           this.container = container;
         }}
