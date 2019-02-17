@@ -13,7 +13,6 @@
     color: @color-secondary-text;
     font-family: @roboto-mono;
     font-size: @size-smaller;
-    font-weight: 400;
     stroke: @color-secondary-text;
   }
 
@@ -36,8 +35,12 @@
 
     > text > tspan:last-child {
       font-size: @size-smaller;
-      font-weight: 400;
     }
+  }
+
+  .highcharts-tick,
+  .highcharts-axis-line {
+    stroke: @color-secondary-text-muted;
   }
 
   .highcharts-xaxis-grid {
@@ -89,50 +92,15 @@
       fill: @color-highlight;
     }
   }
+
   .highcharts-root {
     .highcharts-crosshair:nth-of-type(2) {
       stroke-width: 0;
     }
   }
+
+  .eth-label {
+    font-size: @size-tiny;
+  }
 }
 
-.MarketOutcomeChartsCandlestickHighchart {
-  background-color: @color-light-purple;
-}
-
-.MarketOutcomeChartsCandlestickHighchart__volume_axis,
-.MarketOutcomeChartsCandlestickHighchart__openClose_axis {
-  border: 1px solid #ffffff;
-  box-sizing: border-box;
-  color: @color-white;
-  fill: #ffffff;
-  font-family: @roboto-mono;
-  font-size: 12px;
-}
-
-.MarketOutcomeChartsCandlestickHighchart__plotline_price_labels {
-  border: 1px solid #ffffff;
-  box-sizing: border-box;
-  color: @color-white;
-  fill: #ffffff;
-  font-family: @roboto-mono;
-  font-size: 12px;
-}
-
-.MarketOutcomeChartsCandlestickHighchart__volume_axis {
-  background-color: #211a32;
-}
-
-.MarketOutcomeChartsCandlestickHighchart__plot_band {
-  opacity: 0.1;
-}
-
-.MarketOutcomeChartsCandlestickHighchart__volume_bar {
-  border-radius: 2px;
-  color: #665789;
-}
-
-.MarketOutcomeChartsCandlestickHighchart__timestamp_axis {
-  border: 1px solid #ffffff;
-  opacity: 0.1;
-}

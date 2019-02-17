@@ -76,11 +76,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         yAxis: [
           {
             showFirstLabel: false,
+            showLastLabel: false,
             gridLineWidth: 1,
             minorTickLength: 0,
             tickLength: 0,
             labels: {
-              format: "{value:.4f} ETH",
+              format: "{value:.4f} <span class='eth-label'>ETH</span>",
               align: "right",
               y: 12,
               x: 0
@@ -96,7 +97,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               snap: false,
               label: {
                 enabled: true,
-                format: "{value:.4f} ETH",
+                format: "{value:.4f} <span class='eth-label'>ETH</span>",
                 align: "right",
                 y: 12,
                 x: 0
@@ -109,6 +110,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             height: "15%",
             opposite: true,
             gridLineWidth: 0,
+            showFirstLabel: false,
+            showLastLabel: false,
             labels: {
               enabled: false
             },
@@ -259,7 +262,19 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       options.navigator.enabled = containerHeight > ShowNavigator;
     }
 
-    const { range } = PERIOD_RANGES[selectedPeriod];
+    const { range, format, step, crosshair } = PERIOD_RANGES[selectedPeriod];
+    options.xAxis.labels = {
+      ...options.xAxis.labels,
+      format,
+      step
+    };
+
+    if (options.xAxis.length > 0) {
+      options.xAxis[0].crosshair.label = {
+        ...options.xAxis[0].crosshair.label,
+        format: crosshair
+      };
+    }
 
     const newOptions = Object.assign(options, {
       series: [
