@@ -48,8 +48,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
         chart: {
           type: "candlestick",
-          styledMode: false,
-          zoomType: "x"
+          styledMode: false
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
@@ -109,13 +108,10 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             top: "85%",
             height: "15%",
             opposite: true,
-            gridLineWidth: 0,
-            showFirstLabel: false,
-            showLastLabel: false,
+            lineWidth: 0,
             labels: {
               enabled: false
-            },
-            plotLines: []
+            }
           }
         ],
         tooltip: { enabled: false },
@@ -175,8 +171,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   displayCandleInfoAndPlotViz(evt) {
     const { updateHoveredPeriod, priceTimeSeries, volumeType } = this.props;
     const { x: timestamp, open, close, high, low } = evt.target;
-    const { closestPointRange } = evt.target.series.xAxis;
-    const range = closestPointRange / 4;
+    const xRangeTo = this.chart.xAxis[0].toValue(20, true);
+    const xRangeFrom = this.chart.xAxis[0].toValue(0, true);
+    const range = Math.abs((xRangeFrom - xRangeTo) * 0.6);
     const pts = priceTimeSeries.find(p => p.period === timestamp);
 
     updateHoveredPeriod({
