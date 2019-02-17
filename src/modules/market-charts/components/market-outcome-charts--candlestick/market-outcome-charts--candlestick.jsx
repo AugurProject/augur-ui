@@ -86,10 +86,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     });
   }
 
-  clearCrosshairs() {
-    this.updateHoveredPeriod({});
-  }
-
   render() {
     const {
       fixedPrecision,
