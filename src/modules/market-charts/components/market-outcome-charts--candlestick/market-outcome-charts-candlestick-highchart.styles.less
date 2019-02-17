@@ -47,8 +47,9 @@
   .highcharts-yaxis-grid {
     .dashline-long;
 
-    fill: @color-secondary-text-muted;
-    stroke: @color-secondary-text-muted;
+    .highcharts-grid-line {
+      stroke: @color-secondary-text-muted;
+    }
   }
 
   .highcharts-xaxis-category {
@@ -62,15 +63,36 @@
     font-size: @size-smallest;
   }
 
-  .highcharts-yaxis {
-    .highcharts-crosshair {
-      .dashline-long;
-    }
+  .highcharts-crosshair {
+    .dashline-long;
   }
 
   .highcharts-plot-band {
     fill: @color-highlight-masked;
     z-index: -1;
+  }
+
+  .highcharts-point-down {
+    stroke: @color-negative;
+    fill: @color-negative;
+    color: @color-negative;
+  }
+
+  .highcharts-point-up {
+    stroke: @color-positive;
+    fill: none;
+    color: @color-positive;
+  }
+
+  .highcharts-column-series {
+    > rect {
+      fill: @color-highlight;
+    }
+  }
+  .highcharts-root {
+    .highcharts-crosshair:nth-of-type(2) {
+      stroke-width: 0;
+    }
   }
 }
 

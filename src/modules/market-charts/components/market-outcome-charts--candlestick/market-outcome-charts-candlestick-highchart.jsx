@@ -265,11 +265,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       series: [
         {
           type: "candlestick",
-          upLineColor: "#00F1C4",
-          upColor: "transparent",
-          color: "#FF7D5E",
-          lineColor: "#FF7D5E",
-          lineWidth: "1",
           name: "ohlc",
           data: ohlc,
           yAxis: 0,
@@ -283,7 +278,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         {
           type: "column",
           name: "volume",
-          color: "#665789",
           data: volume,
           yAxis: 1,
           dataGrouping: {
