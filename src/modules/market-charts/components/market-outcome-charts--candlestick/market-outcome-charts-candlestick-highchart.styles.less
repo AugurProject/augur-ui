@@ -43,7 +43,9 @@
     stroke: @color-secondary-text-muted;
   }
 
-  .highcharts-xaxis-grid {
+  .highcharts-xaxis-grid,
+  g.highcharts-yaxis-grid path.highcharts-grid-line:nth-child(1),
+  g.highcharts-yaxis path.highcharts-axis-line {
     display: none;
   }
 
@@ -87,12 +89,6 @@
     stroke: @color-positive;
   }
 
-  .highcharts-column-series {
-    > rect {
-      fill: @color-highlight;
-    }
-  }
-
   .highcharts-root {
     .highcharts-crosshair:nth-of-type(2) {
       stroke-width: 0;
@@ -104,3 +100,6 @@
   }
 }
 
+.MarketOutcomeCharts__highcharts_display_none {
+  display: none;
+}

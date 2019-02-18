@@ -48,7 +48,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
         chart: {
           type: "candlestick",
-          styledMode: false
+          styledMode: false,
+          animation: false
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
@@ -75,10 +76,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         yAxis: [
           {
             showFirstLabel: false,
-            showLastLabel: false,
-            gridLineWidth: 1,
-            minorTickLength: 0,
-            tickLength: 0,
+            showLastLabel: true,
             labels: {
               format: "{value:.4f} <span class='eth-label'>ETH</span>",
               align: "right",
@@ -108,7 +106,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             top: "85%",
             height: "15%",
             opposite: true,
-            lineWidth: 0,
+            showFirstLabel: false,
+            className: Styles.MarketOutcomeCharts__highcharts_display_none,
             labels: {
               enabled: false
             }
@@ -193,11 +192,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     };
 
     this.chart.xAxis[0].addPlotBand(plotBand);
-    // this.updateVolumeBar(true, timestamp);
+    this.updateVolumeBar(true, timestamp);
   }
 
   clearCandleInfoAndPlotViz(evt) {
     const { updateHoveredPeriod } = this.props;
+    const { x: timestamp } = evt.target;
 
     updateHoveredPeriod({
       open: "",
@@ -208,7 +208,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     });
 
     this.chart.xAxis[0].removePlotBand("new-plot-band");
-    // this.updateVolumeBar(false, timestamp);
+    this.updateVolumeBar(false, timestamp);
   }
 
   updateVolumeBar(isHover, timestamp) {
@@ -290,6 +290,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         {
           type: "column",
           name: "volume",
+          color: "#161022",
           data: volume,
           yAxis: 1,
           dataGrouping: {
