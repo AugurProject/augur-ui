@@ -1,0 +1,32 @@
+@import (reference) '~assets/styles/shared';
+
+.ToggleRow {
+  background: #1b1528;
+  border-bottom: 2px solid #211a32;
+  display: flex;
+  margin-bottom: 1px;
+  padding: 16px 28px 16px 24px;
+  flex-direction: column;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  > div {
+  	display: flex;
+  	flex-direction: row;
+  	flex: 1;
+  }
+}
+
+.ToggleRow__rowContent {
+	display: flex;
+	flex-grow: 1;
+}
+
+.ToggleRow__arrow {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+	justify-content: flex-end;
+}

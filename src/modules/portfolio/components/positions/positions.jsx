@@ -4,13 +4,11 @@ import classNames from "classnames";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterBox from "modules/portfolio/components/common/filter-box";
+import MarketRow from "modules/portfolio/components/common/market-row";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
 import Styles from "modules/portfolio/components/positions/positions.styles";
-
-import {
-  MarketStatusLabel } from "modules/common-elements/labels";
 
 const sortByOptions = [
   {
@@ -49,8 +47,6 @@ export default class Positions extends Component {
   constructor(props) {
     super(props);
 
-    console.log(props.markets);
-
     this.state = {
       filteredMarkets: props.markets[ALL_MARKETS],
       tab: ALL_MARKETS
@@ -67,7 +63,7 @@ export default class Positions extends Component {
   updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
     if (tab) {
-      this.setState({tab: tab})
+      this.setState({ tab });
     }
   }
 
@@ -75,11 +71,9 @@ export default class Positions extends Component {
     const { markets } = this.props;
     const { filteredMarkets, tab } = this.state;
 
-    console.log(tab)
-    console.log(filteredMarkets)
-
     return (
       <FilterBox
+        key={'Positions'}
         title="Positions"
         showFilterSearch
         sortByOptions={sortByOptions}
@@ -91,16 +85,7 @@ export default class Positions extends Component {
         rows={
           <div>
             {filteredMarkets.map(market => (
-              <details className={classNames(Styles.MarketRow, {[Styles.MarketRow__showState]: tab === ALL_MARKETS})}>
-                <summary className={Styles.MarketRow__summary}>
-                  {tab === ALL_MARKETS && <MarketStatusLabel marketStatus={market.marketStatus} alternate mini /> }
-                  <div>
-                    <span>{market.description}</span>
-                    <span>{market.creationTime.formattedShortDate}</span>
-                  </div>
-                </summary>
-                hi
-              </details>
+              <MarketRow key={"position_"+market.id} market={market} showState={tab === ALL_MARKETS} />
             ))}
           </div>
         }

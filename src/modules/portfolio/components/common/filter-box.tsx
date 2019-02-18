@@ -24,6 +24,12 @@ export interface Market {
   description: string
 }
 
+export interface Tab {
+  key: string,
+  label: string,
+  num: number
+}
+
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
 }
@@ -45,6 +51,7 @@ interface FilterBoxState {
   search: string,
   sortBy: string,
   selectedTab: string,
+  tabs: Array<Tab>,
 }
 
 let tabs = [
@@ -71,12 +78,31 @@ let tabs = [
   }
 ];
 
+// todo: need to do initial filter/search of the same parameters, see when searching for ""
 export default class FilterBox extends React.Component<FilterBoxProps, FilterBoxState>  {
   state: FilterBoxState = {
     search: '',
     selectedTab: tabs[0].key,
+    tabs: tabs,
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
   };
+
+  componentWillReceiveProps(nextProps: FilterBoxProps) {
+    if (nextProps.title === this.props.title && nextProps.data !== this.props.data) {
+      this.calculateTabNums(nextProps.data, this.state.search)
+    }
+  }
+
+  calculateTabNums = (data: MarketsByReportingState, input: string) => {
+   const { filterComp } = this.props;
+
+   for (var i = 0; i < tabs.length; i++) {
+      const length = data[tabs[i].key].filter(filterComp.bind(this, input)).length;
+      tabs[i].num = length
+    }
+
+    this.setState({tabs: tabs});
+  }
 
   updateSortBy = (value: string) => {
     this.setState({sortBy: value});
@@ -92,9 +118,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
 
     const { data } = this.props;
     let { selectedTab, search } = this.state;
-    
-    if (input === search) return;
-
     let tabData =  data[selectedTab];
     const filteredData = this.applySearch(input, tabData);
 
@@ -111,14 +134,16 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     this.props.updateFilteredData(dataFiltered, tab);
   }
 
-  applySearch = (input: string, data: Array<Market>) => {
-    const { filterComp } = this.props;
-    let { search, sortBy, selectedTab } = this.state;
+  applySearch = (input: string, filteredData: Array<Market>) => {
+    const { filterComp, data } = this.props;
+    let { search, sortBy, selectedTab, tabs } = this.state;
 
-    data = data.filter(filterComp.bind(this, input));
-    data = this.applySortBy(sortBy, data);
+    filteredData = filteredData.filter(filterComp.bind(this, input));
+    filteredData = this.applySortBy(sortBy, filteredData);
 
-    return data;
+    this.calculateTabNums(data, input);
+
+    return filteredData;
   }
 
   applySortBy = (value: string, data: Array<Market>) => {
@@ -141,10 +166,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     } = this.props;
 
     const { search, selectedTab } = this.state;
-
-    tabs.forEach(tab => 
-      tab.num = data && data[tab.key].length
-    );
 
     return (
       <div className={Styles.FilterBox}>

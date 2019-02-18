@@ -15,9 +15,11 @@ const ChevronFlip = ({
   big,
   quick,
   stroke,
-  hover
+  hover,
+  onClick,
+  containerClassName
 }) => (
-  <span>
+  <span onClick={onClick} className={containerClassName}>
     {filledInIcon
       ? ChevronFlipFilledIcon(
           classNames(Styles.ChevronFlip, className, {
@@ -47,7 +49,9 @@ ChevronFlip.propTypes = {
   big: PropTypes.bool,
   filledInIcon: PropTypes.bool,
   quick: PropTypes.bool,
-  hover: PropTypes.bool
+  hover: PropTypes.bool,
+  onClick: PropTypes.func,
+  containerClassName: PropTypes.string,
 };
 
 ChevronFlip.defaultProps = {
@@ -57,7 +61,9 @@ ChevronFlip.defaultProps = {
   big: undefined,
   filledInIcon: undefined,
   quick: false,
-  hover: false
+  hover: false,
+  onClick: null,
+  containerClassName: undefined,
 };
 
 export default ChevronFlip;
