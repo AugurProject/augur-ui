@@ -11,9 +11,6 @@ import MarketHeaderBar from "modules/market/containers/market-header-bar";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
-import TimeRange from "modules/market/components/market-header/market-header-time-range";
-import { createBigNumber } from "utils/create-big-number";
-import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
@@ -26,6 +23,7 @@ import {
   SCALAR
 } from "modules/common-elements/constants";
 import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
+import { MarketTimeline } from "modules/common-elements/progress";
 
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
@@ -158,14 +156,7 @@ export default class MarketHeader extends Component {
     } = this.props;
     let { details } = this.props;
     const { headerCollapsed } = this.state;
-
-    const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
     const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
-    const formattedEndTime =
-      (endTimestamp && convertUnixToFormattedDate(endTimestamp)) || {};
-    const hasPassed = createBigNumber(currentTime).gt(
-      createBigNumber(endTimestamp)
-    );
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -310,14 +301,14 @@ export default class MarketHeader extends Component {
                   isMobile={isMobile}
                   isMobileSmall={isMobileSmall}
                 />
-                <div className={Styles.MarketHeader__timeStuff}>
-                  <TimeRange
-                    currentTime={currentTime}
-                    startTime={market.creationTime}
-                    endTimestamp={endTimestamp}
-                    hasPassed={hasPassed}
-                    formattedEndTime={formattedEndTime}
-                    isMobile={isMobile}
+                <div
+                  className={Styles.MarketHeader__timeStuff}
+                  style={{ marginTop: isMobile ? null : "1.5rem" }}
+                >
+                  <MarketTimeline
+                    startTime={market.creationTime || 0}
+                    currentTime={currentTime || 0}
+                    endTime={market.endTime || 0}
                   />
                 </div>
               </div>
