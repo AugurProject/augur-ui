@@ -75,6 +75,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         yAxis: [
           {
+            showEmpty: true,
+            max: props.marketMax.toFixed(props.pricePrecision),
+            min: props.marketMin.toFixed(props.pricePrecision),
             showFirstLabel: false,
             showLastLabel: true,
             labels: {
@@ -106,7 +109,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             top: "85%",
             height: "15%",
             opposite: true,
-            showFirstLabel: false,
             className: Styles.MarketOutcomeCharts__highcharts_display_none,
             labels: {
               enabled: false
