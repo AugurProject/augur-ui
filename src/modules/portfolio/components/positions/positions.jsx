@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterBox from "modules/portfolio/components/common/filter-box";
 import MarketRow from "modules/portfolio/components/common/market-row";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
-
-import Styles from "modules/portfolio/components/positions/positions.styles";
 
 const sortByOptions = [
   {
@@ -73,7 +70,6 @@ export default class Positions extends Component {
 
     return (
       <FilterBox
-        key={'Positions'}
         title="Positions"
         showFilterSearch
         sortByOptions={sortByOptions}
@@ -85,7 +81,11 @@ export default class Positions extends Component {
         rows={
           <div>
             {filteredMarkets.map(market => (
-              <MarketRow key={"position_"+market.id} market={market} showState={tab === ALL_MARKETS} />
+              <MarketRow
+                key={"position_" + market.id}
+                market={market}
+                showState={tab === ALL_MARKETS}
+              />
             ))}
           </div>
         }

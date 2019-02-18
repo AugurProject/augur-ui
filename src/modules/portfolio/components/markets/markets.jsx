@@ -76,7 +76,6 @@ class MyMarkets extends Component {
 
     return (
       <FilterBox
-        key={'Markets'}
         title="My Created Markets"
         showFilterSearch
         sortByOptions={sortByOptions}
@@ -88,7 +87,11 @@ class MyMarkets extends Component {
         rows={
           <div>
             {filteredMarkets.map(market => (
-              <MarketRow key={"myMarket_"+market.id} market={market} showState={tab === ALL_MARKETS} />
+              <MarketRow
+                key={"myMarket_" + market.id}
+                market={market}
+                showState={tab === ALL_MARKETS}
+              />
             ))}
           </div>
         }

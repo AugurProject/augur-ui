@@ -1,32 +1,31 @@
 @import (reference) '~assets/styles/shared';
 
 .ToggleRow {
-  background: #1b1528;
-  border-bottom: 2px solid #211a32;
+  background: @color-grayish-purple;
+  border-bottom: 0.125rem solid @color-theme-primary;
   display: flex;
-  margin-bottom: 1px;
-  padding: 16px 28px 16px 24px;
   flex-direction: column;
+  margin-bottom: 0.0625rem;
 
   &:last-of-type {
     margin-bottom: 0;
   }
 
   > div {
-  	display: flex;
-  	flex-direction: row;
-  	flex: 1;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
   }
 }
 
 .ToggleRow__rowContent {
-	display: flex;
-	flex-grow: 1;
+  display: flex;
+  flex-grow: 1;
 }
 
 .ToggleRow__arrow {
-	display: flex;
-	flex-direction: column;
-	margin-left: 10px;
-	justify-content: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 0.625rem;
 }
