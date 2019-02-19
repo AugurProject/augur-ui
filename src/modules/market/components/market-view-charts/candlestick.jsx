@@ -4,12 +4,12 @@ import * as PropTypes from "prop-types";
 import { loadCandleStickData } from "src/modules/markets/actions/load-candlestick-data";
 import logError from "src/utils/log-error";
 import { checkPropsChange } from "src/utils/check-props-change";
-import {
-  clampPeriodByRange,
-  defaultRangePeriodDurations
-} from "src/modules/markets/helpers/range";
 import MarketOutcomeCandlestick from "src/modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick";
 import { BigNumber } from "bignumber.js";
+import {
+  DEFAULT_SHORT_PERIODS_VALUE,
+  DEFAULT_PERIODS_VALUE
+} from "modules/common-elements/constants";
 
 export class Candlestick extends React.Component {
   static propTypes = {
@@ -17,21 +17,25 @@ export class Candlestick extends React.Component {
     marketId: PropTypes.string.isRequired,
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
-    selectedOutcome: PropTypes.string.isRequired
+    selectedOutcome: PropTypes.string.isRequired,
+    daysPassed: PropTypes.number.isRequired
   };
 
   constructor(props) {
     super(props);
-    const { range, period } = defaultRangePeriodDurations;
+
+    const defPeriod =
+      props.daysPassed < 1
+        ? DEFAULT_SHORT_PERIODS_VALUE
+        : DEFAULT_PERIODS_VALUE;
+
     this.state = {
       priceTimeSeries: [],
-      selectedPeriod: period,
-      selectedRange: range
+      selectedPeriod: defPeriod
     };
 
     this.getData = this.getData.bind(this);
     this.updateSelectedPeriod = this.updateSelectedPeriod.bind(this);
-    this.updateSelectedRange = this.updateSelectedRange.bind(this);
   }
 
   componentDidMount() {
@@ -64,7 +68,6 @@ export class Candlestick extends React.Component {
       },
       (err, data) => {
         if (err) return logError(err);
-
         const priceTimeSeries = data[selectedOutcome] || [];
         this.setState({
           priceTimeSeries
@@ -79,20 +82,10 @@ export class Candlestick extends React.Component {
     });
   }
 
-  updateSelectedRange(selectedRange) {
-    const selectedPeriod = clampPeriodByRange(
-      selectedRange,
-      this.state.selectedPeriod
-    );
-    this.setState({
-      selectedPeriod,
-      selectedRange
-    });
-  }
-
   render() {
     const { maxPrice, minPrice, currentTimeInSeconds } = this.props;
-    const { priceTimeSeries, selectedPeriod, selectedRange } = this.state;
+    const { priceTimeSeries, selectedPeriod } = this.state;
+
     return (
       <MarketOutcomeCandlestick
         priceTimeSeries={priceTimeSeries}
@@ -101,13 +94,10 @@ export class Candlestick extends React.Component {
         fixedPrecision={4}
         pricePrecision={4}
         selectedPeriod={selectedPeriod}
-        selectedRange={selectedRange}
         updateSelectedPeriod={this.updateSelectedPeriod}
-        updateSelectedRange={this.updateSelectedRange}
         updateSelectedOrderProperties={() => {}}
         marketMax={maxPrice}
         marketMin={minPrice}
-        outcomeName="someanem"
         currentTimeInSeconds={currentTimeInSeconds}
       />
     );

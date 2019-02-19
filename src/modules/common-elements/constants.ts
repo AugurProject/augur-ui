@@ -95,8 +95,7 @@ export const ERROR_TYPES = {
   },
   INCORRECT_FORMAT: {
     header: "Incorrect Format",
-    subheader:
-      `Please enter a derivative path with the format "${DEFAULT_DERIVATION_PATH}"`
+    subheader: `Please enter a derivative path with the format "${DEFAULT_DERIVATION_PATH}"`
   }
 };
 
@@ -183,7 +182,7 @@ export const MARKET_STATUS_MESSAGES = {
   FORKING: "Forking",
   AWAITING_NO_REPORT_MIGRATION: "Awaiting No Report Migrated",
   AWAITING_FORK_MIGRATION: "Awaiting Fork Migration"
-}
+};
 
 // # Search/Filter Param Names
 export const FILTER_SEARCH_PARAM = "keywords";
@@ -298,31 +297,55 @@ export const RANGES = [
   }
 ];
 
+export const PERIOD_RANGES = {
+  3600: {
+    period: 3600,
+    format: "{value:%H:%M}",
+    crosshair: "{value:%H:%M}",
+    step: 3,
+    range: 24 * 3600 * 1000 // 1 day
+  },
+  43200: {
+    period: 43200,
+    format: "{value:%H:%M}",
+    crosshair: "{value:%H:%M}",
+    step: 3,
+    range: 7 * 24 * 3600 * 1000 // 1 week
+  },
+  86400: {
+    period: 86400,
+    format: "{value:%b %d}",
+    crosshair: "{value:%b %d}",
+    step: 2,
+    range: 30 * 24 * 3600 * 1000 // month
+  },
+  604800: {
+    period: 604800,
+    format: "{value:%b %d}",
+    crosshair: "{value:%b %d}",
+    step: 2,
+    range: 6 * 30 * 24 * 3600 * 1000 // 6 months
+  }
+};
+
+export const DEFAULT_PERIODS_VALUE = 86400;
+export const DEFAULT_SHORT_PERIODS_VALUE = 3600;
 export const PERIODS = [
   {
-    duration: 30,
-    label: "Every thirty seconds"
-  },
-  {
-    duration: 60,
-    label: "Every minute"
-  },
-  {
-    duration: 3600,
+    value: 3600,
     label: "Hourly"
   },
   {
-    duration: 86400,
-    label: "Daily",
-    isDefault: true
+    value: 43200,
+    label: "12 Hour"
   },
   {
-    duration: 604800,
+    value: 86400,
+    label: "Daily"
+  },
+  {
+    value: 604800,
     label: "Weekly"
-  },
-  {
-    duration: 2629800,
-    label: "Monthly"
   }
 ];
 
@@ -443,6 +466,7 @@ export const CANCELED = "CANCELED";
 export const OPEN = "OPEN";
 export const PRICE = "price";
 export const SHARE = "share";
+export const SHARES = "Shares";
 export const BUY = "buy";
 export const SELL = "sell";
 export const UP = "up";
@@ -502,12 +526,23 @@ export const COMPLETE_SETS_SOLD = "CompleteSetsSold";
 export const TRANSFER_FUNDS = "transfer_funds";
 export const SENT_CASH = "sent_cash";
 export const SENT_ETHER = "sent_ether";
-export const SMALL = 'small';
-export const NORMAL = 'normal';
-export const LARGE = 'large';
+export const SMALL = "small";
+export const NORMAL = "normal";
+export const LARGE = "large";
 
 // Trade/order labels
 export const BID = "bid";
 export const ASK = "ask";
 export const MATCH_BID = "match_bid";
 export const MATCH_ASK = "match_ask";
+
+export const VOLUME_ETH_SHARES = [
+  {
+    value: ETH,
+    label: ETH
+  },
+  {
+    value: SHARES,
+    label: SHARES
+  }
+]

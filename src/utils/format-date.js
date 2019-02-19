@@ -204,6 +204,12 @@ export function getMinutesMinusHoursRemaining(
   return getMinutesRemaining(endUnixTimestamp, startUnixTimestamp) - hours;
 }
 
+export function getMarketAgeInDays(creationTimeTimestamp) {
+  const start = moment(creationTimeTimestamp * 1000).utc();
+  const daysPassed = moment().diff(start, "days");
+  return daysPassed;
+}
+
 export function getSecondsMinusMinutesRemaining(
   endUnixTimestamp,
   startUnixTimestamp
