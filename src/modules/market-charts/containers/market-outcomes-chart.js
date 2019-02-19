@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import MarketOutcomesChart from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart";
+import MarketOutcomesChartHighchart from "modules/market-charts/components/market-outcomes-chart/market-outcome-chart-highchart";
 
 import { selectMarket } from "modules/markets/selectors/market";
 import { selectCurrentTimestamp } from "src/select-state";
@@ -54,4 +54,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(MarketOutcomesChart);
+export default connect(mapStateToProps)(MarketOutcomesChartHighchart);

@@ -49,8 +49,32 @@ export default class MarketOutcomesChartHighchart extends Component {
           styledMode: false,
           animation: false
         },
+        plotOptions: {
+          line: {
+            dataGrouping: {
+              forced: true,
+              units: [["day", [1]]]
+            }
+          }
+        },
         scrollbar: { enabled: false },
         navigator: { enabled: false },
+        xAxis: {
+          ordinal: false,
+          labels: {
+            format: "{value:%b %d}"
+          },
+          crosshair: {
+            snap: true,
+            label: {
+              enabled: true,
+              format: "{value:%b %d}",
+              align: "center",
+              y: 0,
+              x: 0
+            }
+          }
+        },
         yAxis: {
           showEmpty: true,
           max: createBigNumber(props.maxPrice).toFixed(props.pricePrecision),
@@ -71,7 +95,7 @@ export default class MarketOutcomesChartHighchart extends Component {
             enabled: true
           },
           crosshair: {
-            snap: false,
+            snap: true,
             label: {
               enabled: true,
               format: "{value:.4f} <span class='eth-label'>ETH</span>",
@@ -81,7 +105,7 @@ export default class MarketOutcomesChartHighchart extends Component {
             }
           }
         },
-        tooltip: { enabled: true },
+        tooltip: { enabled: false },
         rangeSelector: {
           enabled: false
         }
@@ -130,10 +154,6 @@ export default class MarketOutcomesChartHighchart extends Component {
   buidOptions(outcomes, selectedOutcome, containerHeight, callback) {
     const { options } = this.state;
     options.height = containerHeight;
-    // figure out why options has dropped properties
-    if (containerHeight > 0) {
-      options.navigator.enabled = containerHeight > ShowNavigator;
-    }
 
     const data2 =
       outcomes &&
