@@ -4,7 +4,7 @@ import { createBigNumber } from "utils/create-big-number";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
-import { each, isEqual, cloneDeep } from "lodash";
+import { isEqual, cloneDeep } from "lodash";
 
 NoDataToDisplay(Highcharts);
 

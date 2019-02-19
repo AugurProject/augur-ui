@@ -170,7 +170,7 @@
     "nyc": "13.0.1",
     "onchange": "4.1.0",
     "postcss-loader": "3.0.0",
-    "prettier": "^1.16.4",
+    "prettier": "1.14.3",
     "proxyquire": "1.8.0",
     "puppeteer": "^1.8.0",
     "readline-sync": "^1.4.9",
