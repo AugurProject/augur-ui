@@ -11,40 +11,23 @@ NoDataToDisplay(Highcharts);
 const HIGHLIGHTED_LINE_WIDTH = 2;
 const NORMAL_LINE_WIDTH = 1;
 const NUM_DAYS_TO_USE_DAY_TIMEFRAME = 2;
-const LINE_COLORS = [
-  "#fadca2",
-  "#f3a2fa",
-  "#ffffff",
-  "#fd6266",
-  "#a5a5a5",
-  "#665cdf",
-  "#09cfe1",
-  "#5cdf88"
-];
+
 export default class MarketOutcomesChartHighchart extends Component {
   static propTypes = {
-    creationTime: PropTypes.number.isRequired,
-    currentTimestamp: PropTypes.number.isRequired,
-    estimatedInitialPrice: PropTypes.number.isRequired,
     maxPrice: PropTypes.number.isRequired,
     minPrice: PropTypes.number.isRequired,
-    outcomes: PropTypes.array.isRequired,
-    hasPriceHistory: PropTypes.bool.isRequired,
     bucketedPriceTimeSeries: PropTypes.object.isRequired,
-    isMobileSmall: PropTypes.bool,
-    isYesNo: PropTypes.bool,
     isScalar: PropTypes.bool,
-    scalarDenomination: PropTypes.string.isRequired,
+    scalarDenomination: PropTypes.string,
     selectedOutcome: PropTypes.string.isRequired,
     pricePrecision: PropTypes.number.isRequired,
     daysPassed: PropTypes.number
   };
 
   static defaultProps = {
-    isMobileSmall: false,
-    isYesNo: false,
     isScalar: false,
-    daysPassed: 0
+    daysPassed: 0,
+    scalarDenomination: ""
   };
 
   constructor(props) {
@@ -126,14 +109,15 @@ export default class MarketOutcomesChartHighchart extends Component {
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
     const { bucketedPriceTimeSeries, selectedOutcome } = this.props;
-    const { containerHeight } = this.state;
+    const containerHeight = this.container.clientHeight;
     this.buidOptions(
       bucketedPriceTimeSeries,
       selectedOutcome,
       containerHeight,
       options => {
         this.chart = Highcharts.stockChart(this.container, options);
-      }
+      },
+      () => this.setState({ containerHeight })
     );
   }
 
@@ -197,14 +181,12 @@ export default class MarketOutcomesChartHighchart extends Component {
     options.height = containerHeight;
 
     const useArea = priceTimeSeries && keys(priceTimeSeries).length === 1;
-
     const hasData = priceTimeSeries && keys(priceTimeSeries).length > 0;
 
     const series = [];
     each(keys(priceTimeSeries), id => {
       series.push({
         type: useArea ? "area" : "line",
-        color: LINE_COLORS[id],
         lineWidth:
           selectedOutcome && selectedOutcome === id.toString()
             ? HIGHLIGHTED_LINE_WIDTH

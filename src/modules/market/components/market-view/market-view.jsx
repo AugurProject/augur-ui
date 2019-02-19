@@ -315,6 +315,7 @@ export default class MarketView extends Component {
                     marketId={marketId}
                     selectedOutcome={s.selectedOutcome}
                     pricePrecision={4}
+                    daysPassed={daysPassed}
                   />
                 </div>
               </div>
