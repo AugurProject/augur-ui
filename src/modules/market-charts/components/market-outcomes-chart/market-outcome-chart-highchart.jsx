@@ -8,6 +8,7 @@ import { each, isEqual, cloneDeep } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
+const NUM_DAYS_TO_USE_DAY_TIMEFRAME = 2;
 const LINE_COLORS = [
   "#fadca2",
   "#f3a2fa",
@@ -50,7 +51,8 @@ export default class MarketOutcomesChartHighchart extends Component {
       containerHeight: 0,
       options: {
         title: {
-          text: ""
+          text: "",
+          y: 50
         },
         lang: {
           noData: "No Completed Trades"
@@ -93,8 +95,7 @@ export default class MarketOutcomesChartHighchart extends Component {
           showFirstLabel: true,
           showLastLabel: true,
           labels: {
-            format: "{value:.4f} <span class='eth-label'>ETH</span>",
-            reserveSpace: true
+            format: "{value:.4f} <span class='eth-label'>ETH</span>"
           },
           title: {
             text: ""
@@ -153,15 +154,33 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   onResize = () => {
     this.setState({
-      containerHeight: this.drawContainer.clientHeight
+      containerHeight: this.container.clientHeight
     });
+  };
+
+  getTickInterval = daysPassed => {
+    let interval = 604800;
+    if (daysPassed < 2) interval = 3600;
+    if (daysPassed > 14 && daysPassed < 30) interval = 86400;
+    return interval * 1000; // add milliseconds
   };
 
   buidOptions(outcomes, selectedOutcome, containerHeight, callback) {
     const { options } = this.state;
-    const { daysPassed } = this.props;
-    const timeIncrement = daysPassed > 2 ? "day" : "hour";
+    const { daysPassed, isScalar, scalarDenomination } = this.props;
+    const timeIncrement =
+      daysPassed > NUM_DAYS_TO_USE_DAY_TIMEFRAME ? "day" : "hour";
+
+    const tickInterval = this.getTickInterval(daysPassed);
+    if (tickInterval) {
+      options.xAxis = {
+        ...options.xAxis,
+        tickInterval
+      };
+    }
     options.height = containerHeight;
+
+    const useArea = outcomes && outcomes.length === 1;
 
     const hasData =
       outcomes &&
@@ -172,7 +191,7 @@ export default class MarketOutcomesChartHighchart extends Component {
     const series = [];
     each(outcomes, outcome => {
       series.push({
-        type: "line",
+        type: useArea ? "area" : "line",
         name: outcome.name,
         color: LINE_COLORS[outcome.id],
         lineWidth: selectedOutcome && selectedOutcome === outcome.id ? 3 : 1,
@@ -183,6 +202,9 @@ export default class MarketOutcomesChartHighchart extends Component {
       });
     });
 
+    if (isScalar && hasData) {
+      options.title.text = scalarDenomination;
+    }
     options.plotOptions.line.dataGrouping = {
       ...options.plotOptions.line.dataGrouping,
       forced: true,
