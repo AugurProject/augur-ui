@@ -1,105 +1,102 @@
 @import (reference) "~assets/styles/shared";
 
 .MarketOutcomeChartsCandlestickHighcharts {
-  display: flex;
-}
+  svg {
+    :global {
+      .highcharts-background {
+        fill: @color-theme-primary;
+      }
 
-:global {
-  .highcharts-background {
-    fill: @color-theme-primary;
-  }
+      .highcharts-axis-labels {
+        color: @color-secondary-text;
+        font-family: @roboto-mono;
+        font-size: @size-smaller;
+        stroke: @color-secondary-text;
+      }
 
-  .highcharts-axis-labels {
-    color: @color-secondary-text;
-    font-family: @roboto-mono;
-    font-size: @size-smaller;
-    stroke: @color-secondary-text;
-  }
+      .highcharts-yaxis-labels,
+      .highcharts-label {
+        fill: @color-secondary-text;
+        font-family: @roboto-mono;
+        font-size: @size-smaller;
+        stroke: @color-secondary-text;
+      }
 
-  .highcharts-yaxis-labels,
-  .highcharts-label {
-    fill: @color-secondary-text;
-    font-family: @roboto-mono;
-    font-size: @size-smaller;
-    stroke: @color-secondary-text;
-  }
+      .highcharts-no-data {
+        color: @color-secondary-text;
+        font-size: @size-normal;
+      }
 
-  .highcharts-no-data {
-    color: @color-secondary-text;
-    font-size: @size-normal;
-  }
+      .highcharts-label-box {
+        fill: @color-theme-primary;
+        font-weight: bold;
 
-  .highcharts-label-box {
-    fill: @color-theme-primary;
-    font-weight: bold;
+        > text > tspan:last-child {
+          font-size: @size-smaller;
+        }
+      }
 
-    > text > tspan:last-child {
-      font-size: @size-smaller;
+      .highcharts-tick,
+      .highcharts-axis-line {
+        stroke: @color-secondary-text-muted;
+      }
+
+      .highcharts-xaxis-grid,
+      g.highcharts-yaxis-grid path.highcharts-grid-line:nth-child(1),
+      g.highcharts-yaxis path.highcharts-axis-line {
+        display: none;
+      }
+
+      .highcharts-yaxis-grid {
+        .dashline-long;
+
+        .highcharts-grid-line {
+          stroke: @color-secondary-text-muted;
+        }
+      }
+
+      .highcharts-xaxis-category {
+        display: none;
+      }
+
+      .highcharts-crosshair-label {
+        background-color: @color-theme-primary;
+        border: 1px solid @color-secondary-text;
+        color: @color-secondary-text;
+        font-size: @size-smallest;
+      }
+
+      .highcharts-crosshair {
+        .dashline-long;
+      }
+
+      .highcharts-plot-band {
+        fill: @color-highlight-masked;
+        z-index: -1;
+      }
+
+      .highcharts-point-down {
+        color: @color-negative;
+        fill: @color-negative;
+        stroke: @color-negative;
+      }
+
+      .highcharts-point-up {
+        color: @color-positive;
+        fill: none;
+        stroke: @color-positive;
+      }
+
+      path.highcharts-crosshair-thin:nth-of-type(2) {
+        stroke-width: 0;
+      }
+
+      .eth-label {
+        font-size: @size-tiny;
+      }
     }
-  }
-
-  .highcharts-tick,
-  .highcharts-axis-line {
-    stroke: @color-secondary-text-muted;
-  }
-
-  .highcharts-xaxis-grid,
-  g.highcharts-yaxis-grid path.highcharts-grid-line:nth-child(1),
-  g.highcharts-yaxis path.highcharts-axis-line {
-    display: none;
-  }
-
-  .highcharts-yaxis-grid {
-    .dashline-long;
-
-    .highcharts-grid-line {
-      stroke: @color-secondary-text-muted;
-    }
-  }
-
-  .highcharts-xaxis-category {
-    display: none;
-  }
-
-  .highcharts-crosshair-label {
-    background-color: @color-theme-primary;
-    border: 1px solid @color-secondary-text;
-    color: @color-secondary-text;
-    font-size: @size-smallest;
-  }
-
-  .highcharts-crosshair {
-    .dashline-long;
-  }
-
-  .highcharts-plot-band {
-    fill: @color-highlight-masked;
-    z-index: -1;
-  }
-
-  .highcharts-point-down {
-    color: @color-negative;
-    fill: @color-negative;
-    stroke: @color-negative;
-  }
-
-  .highcharts-point-up {
-    color: @color-positive;
-    fill: none;
-    stroke: @color-positive;
-  }
-
-  .highcharts-root {
-    .highcharts-crosshair:nth-of-type(2) {
-      stroke-width: 0;
-    }
-  }
-
-  .eth-label {
-    font-size: @size-tiny;
   }
 }
-
 .MarketOutcomeCharts__highcharts_display_none {
   display: none;
 }

@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import { createBigNumber } from "utils/create-big-number";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
-import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
+import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
 import { each, isEqual, cloneDeep } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
-const ShowNavigator = 350;
 export default class MarketOutcomesChartHighchart extends Component {
   static propTypes = {
     creationTime: PropTypes.number.isRequired,
@@ -24,13 +23,15 @@ export default class MarketOutcomesChartHighchart extends Component {
     isScalar: PropTypes.bool,
     scalarDenomination: PropTypes.string.isRequired,
     selectedOutcome: PropTypes.string.isRequired,
-    pricePrecision: PropTypes.number.isRequired
+    pricePrecision: PropTypes.number.isRequired,
+    daysPassed: PropTypes.number
   };
 
   static defaultProps = {
     isMobileSmall: false,
     isYesNo: false,
-    isScalar: false
+    isScalar: false,
+    daysPassed: 0
   };
 
   constructor(props) {
@@ -83,7 +84,7 @@ export default class MarketOutcomesChartHighchart extends Component {
           showLastLabel: true,
           labels: {
             format: "{value:.4f} <span class='eth-label'>ETH</span>",
-            align: "left",
+            align: "right",
             y: 0,
             x: 0
           },
@@ -153,6 +154,8 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   buidOptions(outcomes, selectedOutcome, containerHeight, callback) {
     const { options } = this.state;
+    const { daysPassed } = this.props;
+    const timeIncrement = daysPassed > 2 ? "day" : "hour";
     options.height = containerHeight;
 
     const data2 =
@@ -184,6 +187,12 @@ export default class MarketOutcomesChartHighchart extends Component {
       });
     });
 */
+    options.plotOptions.line.dataGrouping = {
+      ...options.plotOptions.line.dataGrouping,
+      forced: true,
+      units: [[timeIncrement, [1]]]
+    };
+
     const newOptions = Object.assign(options, { series });
 
     const updatedObjects = cloneDeep(newOptions);
@@ -197,7 +206,7 @@ export default class MarketOutcomesChartHighchart extends Component {
   render() {
     return (
       <div
-        className={Styles.MarketOutcomeChartsCandlestickHighcharts}
+        className={Styles.MarketOutcomeChartsHighcharts}
         ref={container => {
           this.container = container;
         }}
