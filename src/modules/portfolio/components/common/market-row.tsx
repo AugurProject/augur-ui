@@ -8,7 +8,7 @@ import { MarketStatusLabel } from "modules/common-elements/labels";
 import Styles from "modules/portfolio/components/common/market-row.styles";
 
 // todo: MarketRow__time will end up being a passed in prop
-// info toggle content will be passed in using a render function 
+// info toggle content will be passed in as a child
 // maybe will have a boolean for whether it is extendable because the watchlist one is different
 
 export interface TimeObject {

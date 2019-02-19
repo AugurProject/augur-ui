@@ -39,7 +39,7 @@ export interface FilterBoxProps {
   rows?: ReactNode;
   bottomBarContent?: ReactNode;
   sortByOptions: Array<NameValuePair>;
-  filteredData: Array<Market>; // can be markets now or extended to be individual orders, need to change this to same structure as data if the numbers are going to be updated as searching happens, or keep a search object count?
+  filteredData: Array<Market>; // can be markets now or extended to be individual orders
   data: MarketsByReportingState;
   updateFilteredData: Function; 
   filterComp: Function;
