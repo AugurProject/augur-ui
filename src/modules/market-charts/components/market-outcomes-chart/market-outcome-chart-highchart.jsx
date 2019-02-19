@@ -8,6 +8,16 @@ import { each, isEqual, cloneDeep } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
+const LINE_COLORS = [
+  "#fadca2",
+  "#f3a2fa",
+  "#ffffff",
+  "#fd6266",
+  "#a5a5a5",
+  "#665cdf",
+  "#09cfe1",
+  "#5cdf88"
+];
 export default class MarketOutcomesChartHighchart extends Component {
   static propTypes = {
     creationTime: PropTypes.number.isRequired,
@@ -37,7 +47,7 @@ export default class MarketOutcomesChartHighchart extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      containerHeight: 400,
+      containerHeight: 0,
       options: {
         title: {
           text: ""
@@ -62,6 +72,8 @@ export default class MarketOutcomesChartHighchart extends Component {
         navigator: { enabled: false },
         xAxis: {
           ordinal: false,
+          showFirstLabel: true,
+          showLastLabel: true,
           labels: {
             format: "{value:%b %d}"
           },
@@ -69,10 +81,7 @@ export default class MarketOutcomesChartHighchart extends Component {
             snap: true,
             label: {
               enabled: true,
-              format: "{value:%b %d}",
-              align: "center",
-              y: 0,
-              x: 0
+              format: "{value:%b %d}"
             }
           }
         },
@@ -84,9 +93,7 @@ export default class MarketOutcomesChartHighchart extends Component {
           showLastLabel: true,
           labels: {
             format: "{value:.4f} <span class='eth-label'>ETH</span>",
-            align: "right",
-            y: 0,
-            x: 0
+            reserveSpace: true
           },
           title: {
             text: ""
@@ -99,10 +106,7 @@ export default class MarketOutcomesChartHighchart extends Component {
             snap: true,
             label: {
               enabled: true,
-              format: "{value:.4f} <span class='eth-label'>ETH</span>",
-              align: "left",
-              y: 0,
-              x: 0
+              format: "{value:.4f} <span class='eth-label'>ETH</span>"
             }
           }
         },
@@ -148,7 +152,7 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   onResize = () => {
     this.setState({
-      containerHeight: this.container.containerWidth
+      containerHeight: this.container.clientHeight
     });
   };
 
@@ -158,35 +162,26 @@ export default class MarketOutcomesChartHighchart extends Component {
     const timeIncrement = daysPassed > 2 ? "day" : "hour";
     options.height = containerHeight;
 
-    const data2 =
+    const hasData =
       outcomes &&
       outcomes.length > 0 &&
-      outcomes[0].priceTimeSeries.map(pts => [
-        pts.timestamp,
-        createBigNumber(pts.price).toNumber()
-      ]);
+      outcomes[0].priceTimeSeries &&
+      outcomes[0].priceTimeSeries.length > 0;
 
-    const series = [
-      {
-        type: "line",
-        name: "",
-        data: data2.length > 0 ? data2 : []
-      }
-    ];
-
-    /*
     const series = [];
     each(outcomes, outcome => {
       series.push({
         type: "line",
         name: outcome.name,
+        color: LINE_COLORS[outcome.id],
+        lineWidth: selectedOutcome && selectedOutcome === outcome.id ? 3 : 1,
         data: outcome.priceTimeSeries.map(pts => [
           pts.timestamp,
           createBigNumber(pts.price).toNumber()
         ])
       });
     });
-*/
+
     options.plotOptions.line.dataGrouping = {
       ...options.plotOptions.line.dataGrouping,
       forced: true,
@@ -197,7 +192,7 @@ export default class MarketOutcomesChartHighchart extends Component {
 
     const updatedObjects = cloneDeep(newOptions);
     this.setState({ options: updatedObjects });
-    if (this.chart) {
+    if (this.chart && hasData) {
       this.chart.update(updatedObjects);
     }
     if (callback) callback(updatedObjects);
