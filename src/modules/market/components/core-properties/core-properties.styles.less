@@ -1,111 +1,47 @@
 @import (reference) "~assets/styles/shared";
 @import (reference) "~modules/market/components/market-view/market-view.styles";
 
-.CoreProperties__row {
+.CoreProperties {
   display: flex;
-  flex-direction: row;
-  margin-bottom: 1rem;
-  min-height: 2.5rem;
-}
+  flex: 1 0 20%;
+  flex-flow: row wrap;
+  justify-content: space-between;
 
-.CoreProperties__column {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 24px;
-}
-
-.CoreProperties__property {
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  font-size: @font-size-large;
-  text-transform: none;
-  white-space: nowrap;
-
-  &:not(:last-of-type) {
-    margin-right: 45px;
+  > div {
+    flex: 0 0 50%;
+    margin-top: 1.25rem;
   }
 
-  span:first-of-type {
-    color: @color-light-gray;
-    font-size: @font-size-small;
-    font-weight: 400;
-    margin-bottom: 0.25em;
-    margin-top: 1rem;
+  > div:first-of-type,
+  > div:nth-of-type(2) {
+    margin-top: 0;
+  }
+}
 
-    @media @breakpoint-mobile {
-      margin-top: 24px;
+div.CoreProperties_minMax {
+  align-items: flex-end;
+  display: flex;
+  flex: 0 0 33%;
+  margin-right: auto;
+
+  > svg {
+    display: flex;
+    margin: 0 0.25rem 0.5rem;
+  }
+}
+
+@media @breakpoint-mobile {
+  .CoreProperties {
+    background: @color-theme-primary;
+    padding: 1rem;
+
+    > div:nth-of-type(even) {
+      align-items: flex-end;
     }
   }
 
-  span:nth-of-type(2) {
-    color: @color-white;
-    font-family: 'Roboto Mono', monospace;
-    font-size: @font-size-medium;
-    font-weight: bold;
+  div.CoreProperties_minMax {
+    margin-left: auto;
+    margin-right: 0;
   }
-}
-
-.CoreProperties__coreContainer {
-  display: flex;
-  flex-direction: column;
-  margin-top: 0.5rem;
-  min-width: 300px;
-}
-
-.CoreProperties__property__container {
-  color: @color-lightgray;
-  display: flex;
-  flex-direction: row;
-
-  @media @breakpoint-mobile {
-    background-color: @color-light-purple;
-    padding: 0 1rem;
-  }
-}
-
-.CoreProperties__property-denomination {
-  margin-left: 0.25rem;
-  padding-top: 0.35rem;
-}
-
-.CoreProperties__property-tooltip {
-  margin-bottom: 0;
-  margin-left: 5rem;
-  margin-top: -35px;
-  width: 0.75rem;
-}
-
-.CoreProperties__header__tooltip {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-bottom: 0;
-  margin-right: 0.55rem;
-  width: 0.75rem;
-}
-
-.CoreProperties__property__min__max {
-  color: #a7a2b2;
-  font-size: @font-size-small;
-  margin-bottom: 0.5em;
-}
-
-.CoreProperties__dotted__line {
-  background-image: radial-gradient(white 5%, transparent 15%);
-  background-position: 0 0, 0.5em 0.5em;
-  background-repeat: repeat-x;
-  background-size: 0.4em 0.8em;
-  height: 1.5em;
-  margin: 1rem 0.25rem 0;
-  width: 61px;
-}
-
-.CoreProperties__min__max__dots {
-  align-content: space-between;
-  color: @color-white;
-  display: flex;
-  flex-direction: row;
-  font-size: @font-size-medium;
-  padding-top: 1rem;
 }

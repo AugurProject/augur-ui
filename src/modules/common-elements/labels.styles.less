@@ -1,5 +1,49 @@
 @import (reference) '~assets/styles/shared';
 
+.PropertyLabel {
+  display: flex;
+  flex-flow: column nowrap;
+
+  > span:first-of-type {
+    .text-smaller;
+
+    align-items: center;
+    color: @color-neutral;
+    display: flex;
+    flex-flow: row nowrap;
+    line-height: @size-normal;
+
+    > label {
+      display: inline-block;
+      margin: 0 0 0 0.25rem;
+      width: @size-smaller;
+
+      > svg {
+        fill: none;
+        height: @size-medium;
+        width: @size-medium;
+
+        > circle {
+          fill: @color-tertiary-one;
+          stroke: @color-primary-alternate;
+          stroke-width: 2;
+        }
+
+        > path {
+          fill: @color-secondary-text;
+        }
+      }
+    }
+  }
+
+  > span:last-of-type {
+    .number-large-bold;
+
+    color: @color-secondary-text;
+    line-height: @size-normal;
+  }
+}
+
 .MarketTypeLabel {
   .number-small;
 

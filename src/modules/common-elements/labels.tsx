@@ -3,7 +3,9 @@ import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
 import Styles from "modules/common-elements/labels.styles";
 import { ClipLoader } from "react-spinners";
-import { MarketIcon } from "modules/common-elements/icons";
+import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
+import ReactTooltip from "react-tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
 
 export interface MarketTypeProps {
   marketType: string
@@ -35,6 +37,37 @@ export interface MovementIconProps {
   value: number;
   size: sizeTypes;
 }
+
+export interface PropertyLabelProps {
+  label: string;
+  value: string;
+  hint?: HTMLElement;
+}
+
+export const PropertyLabel = (props: PropertyLabelProps) => 
+  <div className={Styles.PropertyLabel}>
+    <span>{props.label} {props.hint &&
+      <>
+      <label
+        className={TooltipStyles.TooltipHint}
+        data-tip
+        data-for={`tooltip-${props.label.replace(" ", "-")}`}
+      >
+        {InfoIcon}
+      </label>
+      <ReactTooltip
+        id={`tooltip-${props.label.replace(" ", "-")}`}
+        className={TooltipStyles.Tooltip}
+        effect="solid"
+        place="right"
+        type="light"
+      >
+        {props.hint}
+      </ReactTooltip>
+      </>
+    }</span>
+    <span>{props.value}</span>
+  </div>;
 
 export const MarketTypeLabel = (props: MarketTypeProps) => 
   <span
