@@ -87,6 +87,7 @@ export default class MarketOutcomesChartHighchart extends Component {
         },
         yAxis: {
           showEmpty: true,
+          opposite: false,
           max: createBigNumber(props.maxPrice).toFixed(props.pricePrecision),
           min: createBigNumber(props.minPrice).toFixed(props.pricePrecision),
           showFirstLabel: true,
@@ -152,7 +153,7 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   onResize = () => {
     this.setState({
-      containerHeight: this.container.clientHeight
+      containerHeight: this.drawContainer.clientHeight
     });
   };
 
