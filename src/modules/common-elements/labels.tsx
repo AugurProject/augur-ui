@@ -11,7 +11,8 @@ export interface MarketTypeProps {
 
 export interface MarketStatusProps {
   marketStatus: string,
-  mini?: boolean
+  mini?: boolean,
+  alternate?: boolean
 }
 
 export enum sizeTypes {
@@ -44,7 +45,7 @@ export const MarketTypeLabel = (props: MarketTypeProps) =>
   </span>;
 
 export const MarketStatusLabel = (props: MarketStatusProps) => {
-  const { marketStatus, mini } = props;
+  const { marketStatus, mini, alternate } = props;
   let open: boolean = false;
   let resolved: boolean = false;
   let reporting: boolean = false;
@@ -66,6 +67,7 @@ export const MarketStatusLabel = (props: MarketStatusProps) => {
   return (
   <span
     className={classNames(Styles.MarketStatus, {
+      [Styles.MarketStatus_alternate]: alternate,
       [Styles.MarketStatus_mini]: mini,
       [Styles.MarketStatus_open]: open,
       [Styles.MarketStatus_resolved]: resolved,

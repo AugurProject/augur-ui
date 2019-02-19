@@ -1,6 +1,5 @@
 import React from "react";
 import classNames from "classnames";
-import { MarketStatusLabel } from "modules/common-elements/labels";
 import Styles from "modules/common-elements/switch-labels-group.styles";
 
 import {
@@ -25,6 +24,7 @@ export const SwitchLabelsGroup = (props: SwitchLabelsGroupProps) =>
   <div className={Styles.SwitchLabelsGroup}>
     {props.tabs.map(tab => (
       <button
+        key={'tab-' + tab.key}
         className={classNames(Styles.SwitchLabelsGroup__label, {
           [`${Styles.active}`]: props.selectedTab === tab.key,
           [Styles.SwitchLabelsGroup_open]: tab.key === MARKET_OPEN,
