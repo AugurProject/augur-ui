@@ -3,9 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import MarketHeaderBar from "modules/market/containers/market-header-bar";
 import Styles from "modules/market/components/market-header/market-header.styles";
-import TimeRangeStyles from "modules/market/components/market-header/market-header-time-range.styles";
 import { createBigNumber } from "utils/create-big-number";
-import { convertUnixToFormattedDate } from "utils/format-date";
+import { TimeLabel } from "modules/common-elements/progress";
 
 export const MarketHeaderCollapsed = ({
   description,
@@ -16,8 +15,6 @@ export const MarketHeaderCollapsed = ({
   isFavorite
 }) => {
   const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
-  const formattedEndTime =
-    (endTimestamp && convertUnixToFormattedDate(endTimestamp)) || {};
   const hasPassed = createBigNumber(currentTime).gt(
     createBigNumber(endTimestamp)
   );
@@ -32,6 +29,7 @@ export const MarketHeaderCollapsed = ({
         {market.id && (
           <MarketHeaderBar
             marketId={market.id}
+            marketStatus={market.marketStatus}
             category={market.category}
             reportingState={market.reportingState}
             tags={market.tags}
@@ -45,21 +43,10 @@ export const MarketHeaderCollapsed = ({
         )}
       </div>
       <div className={Styles.MarketHeader__timeStuff}>
-        <div>
-          <span className={Styles.MarketHeader__property__header}>
-            {hasPassed ? "Expired" : "Expires"}
-          </span>
-
-          <span
-            className={TimeRangeStyles.MarketHeaderTimeRange__value}
-            style={{ paddingBottom: "1rem" }}
-          >
-            {formattedEndTime.formattedLocalShortDate}
-          </span>
-          <span className={TimeRangeStyles.MarketHeaderTimeRange__utc}>
-            {formattedEndTime.clockTimeLocal}
-          </span>
-        </div>
+        <TimeLabel
+          label={hasPassed ? "Expired" : "Expires"}
+          time={market.endTime}
+        />
       </div>
     </div>
   );

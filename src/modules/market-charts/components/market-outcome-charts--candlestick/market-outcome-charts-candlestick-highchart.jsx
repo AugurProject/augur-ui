@@ -256,7 +256,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     });
 
     options.height = containerHeight;
-    // figure out why options has dropped properties
     if (containerHeight > 0) {
       options.navigator.enabled = containerHeight > ShowNavigator;
     }

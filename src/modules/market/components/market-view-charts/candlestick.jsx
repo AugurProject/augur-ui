@@ -98,7 +98,6 @@ export class Candlestick extends React.Component {
         updateSelectedOrderProperties={() => {}}
         marketMax={maxPrice}
         marketMin={minPrice}
-        outcomeName="somename"
         currentTimeInSeconds={currentTimeInSeconds}
       />
     );
