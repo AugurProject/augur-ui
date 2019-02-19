@@ -4,10 +4,12 @@ import { createBigNumber } from "utils/create-big-number";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
-import { each, isEqual, cloneDeep } from "lodash";
+import { keys, each, isEqual, cloneDeep } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
+const HIGHLIGHTED_LINE_WIDTH = 2;
+const NORMAL_LINE_WIDTH = 1;
 const NUM_DAYS_TO_USE_DAY_TIMEFRAME = 2;
 const LINE_COLORS = [
   "#fadca2",
@@ -123,21 +125,29 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
-    const { outcomes, selectedOutcome } = this.props;
+    const { bucketedPriceTimeSeries, selectedOutcome } = this.props;
     const { containerHeight } = this.state;
-    this.buidOptions(outcomes, selectedOutcome, containerHeight, options => {
-      this.chart = Highcharts.stockChart(this.container, options);
-    });
+    this.buidOptions(
+      bucketedPriceTimeSeries,
+      selectedOutcome,
+      containerHeight,
+      options => {
+        this.chart = Highcharts.stockChart(this.container, options);
+      }
+    );
   }
 
   componentWillUpdate(nextProps, nextState) {
     if (
-      !isEqual(this.props.outcomes, nextProps.outcomes) ||
+      !isEqual(
+        this.props.bucketedPriceTimeSeries,
+        nextProps.bucketedPriceTimeSeries
+      ) ||
       !isEqual(this.props.selectedOutcome, nextProps.selectedOutcome) ||
       !isEqual(this.state.containerHeight, nextState.containerHeight)
     ) {
       this.buidOptions(
-        nextProps.outcomes,
+        nextProps.bucketedPriceTimeSeries,
         nextProps.selectedOutcome,
         nextState.containerHeight
       );
@@ -165,9 +175,15 @@ export default class MarketOutcomesChartHighchart extends Component {
     return interval * 1000; // add milliseconds
   };
 
-  buidOptions(outcomes, selectedOutcome, containerHeight, callback) {
+  buidOptions(
+    bucketedPriceTimeSeries,
+    selectedOutcome,
+    containerHeight,
+    callback
+  ) {
     const { options } = this.state;
     const { daysPassed, isScalar, scalarDenomination } = this.props;
+    const { priceTimeSeries } = bucketedPriceTimeSeries;
     const timeIncrement =
       daysPassed > NUM_DAYS_TO_USE_DAY_TIMEFRAME ? "day" : "hour";
 
@@ -180,22 +196,20 @@ export default class MarketOutcomesChartHighchart extends Component {
     }
     options.height = containerHeight;
 
-    const useArea = outcomes && outcomes.length === 1;
+    const useArea = priceTimeSeries && keys(priceTimeSeries).length === 1;
 
-    const hasData =
-      outcomes &&
-      outcomes.length > 0 &&
-      outcomes[0].priceTimeSeries &&
-      outcomes[0].priceTimeSeries.length > 0;
+    const hasData = priceTimeSeries && keys(priceTimeSeries).length > 0;
 
     const series = [];
-    each(outcomes, outcome => {
+    each(keys(priceTimeSeries), id => {
       series.push({
         type: useArea ? "area" : "line",
-        name: outcome.name,
-        color: LINE_COLORS[outcome.id],
-        lineWidth: selectedOutcome && selectedOutcome === outcome.id ? 3 : 1,
-        data: outcome.priceTimeSeries.map(pts => [
+        color: LINE_COLORS[id],
+        lineWidth:
+          selectedOutcome && selectedOutcome === id.toString()
+            ? HIGHLIGHTED_LINE_WIDTH
+            : NORMAL_LINE_WIDTH,
+        data: priceTimeSeries[id].map(pts => [
           pts.timestamp,
           createBigNumber(pts.price).toNumber()
         ])
