@@ -6,13 +6,20 @@
   align-items: baseline;
   color: @color-neutral;
   display: flex;
-  flex-flow: row wrap;
-  line-height: @size-normal;
+  flex-flow: column nowrap;
+  line-height: @size-small;
 
-  > span {
+  > span:last-of-type {
     .number-large-bold;
 
     color: @color-secondary-text;
+    line-height: @size-normal;
+  }
+
+  &.ProgressLabel__Warning {
+    > span:last-of-type {
+      color: @color-in-reporting;
+    }
   }
 }
 

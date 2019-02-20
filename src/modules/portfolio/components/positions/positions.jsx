@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterBox from "modules/portfolio/components/common/filter-box";
+import MarketRow from "modules/portfolio/components/common/market-row";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
@@ -29,17 +30,23 @@ function filterComp(input, market) {
 
 export default class Positions extends Component {
   static propTypes = {
+    // currentTimestamp: PropTypes.number.isRequired,
+    // location: PropTypes.object.isRequired,
+    // history: PropTypes.object.isRequired,
+    // transactionsStatus: PropTypes.object.isRequired,
     markets: PropTypes.object.isRequired,
     loadAccountTrades: PropTypes.func.isRequired
+    // marketsCount: PropTypes.number.isRequired
+    // claimTradingProceeds: PropTypes.func.isRequired,
+    // isMobile: PropTypes.bool.isRequired
   };
 
   constructor(props) {
     super(props);
 
-    console.log(props.markets);
-
     this.state = {
-      filteredMarkets: props.markets[ALL_MARKETS]
+      filteredMarkets: props.markets[ALL_MARKETS],
+      tab: ALL_MARKETS
     };
 
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
@@ -50,13 +57,16 @@ export default class Positions extends Component {
     loadAccountTrades();
   }
 
-  updateFilteredMarkets(filteredMarkets) {
+  updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
+    if (tab) {
+      this.setState({ tab });
+    }
   }
 
   render() {
     const { markets } = this.props;
-    const { filteredMarkets } = this.state;
+    const { filteredMarkets, tab } = this.state;
 
     return (
       <FilterBox
@@ -67,18 +77,18 @@ export default class Positions extends Component {
         filteredData={filteredMarkets}
         data={markets}
         filterComp={filterComp}
+        bottomTabs
         rows={
           <div>
             {filteredMarkets.map(market => (
-              <div key={market.id}>
-                {market.description +
-                  " " +
-                  market.creationTime.formattedShortDate}
-              </div>
+              <MarketRow
+                key={"position_" + market.id}
+                market={market}
+                showState={tab === ALL_MARKETS}
+              />
             ))}
           </div>
         }
-        bottomTabs
       />
     );
   }

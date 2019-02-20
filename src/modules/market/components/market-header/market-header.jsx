@@ -41,7 +41,6 @@ export default class MarketHeader extends Component {
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
     isMobile: PropTypes.bool,
-    isMobileSmall: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
     history: PropTypes.object.isRequired
@@ -54,8 +53,7 @@ export default class MarketHeader extends Component {
     currentTime: 0,
     isFavorite: false,
     toggleFavorite: () => {},
-    isMobile: false,
-    isMobileSmall: false
+    isMobile: false
   };
 
   constructor(props) {
@@ -149,7 +147,6 @@ export default class MarketHeader extends Component {
       scalarDenomination,
       market,
       currentTime,
-      isMobileSmall,
       isMobile,
       isFavorite,
       history
@@ -296,15 +293,8 @@ export default class MarketHeader extends Component {
                 <MarketHeaderReporting marketId={market.id} />
               </div>
               <div className={Styles.MarketHeader__properties__core}>
-                <CoreProperties
-                  market={market}
-                  isMobile={isMobile}
-                  isMobileSmall={isMobileSmall}
-                />
-                <div
-                  className={Styles.MarketHeader__timeStuff}
-                  style={{ marginTop: isMobile ? null : "1.5rem" }}
-                >
+                {market.id && <CoreProperties market={market} />}
+                <div className={Styles.MarketHeader__timeStuff}>
                   <MarketTimeline
                     startTime={market.creationTime || 0}
                     currentTime={currentTime || 0}

@@ -3,7 +3,9 @@ import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
 import Styles from "modules/common-elements/labels.styles";
 import { ClipLoader } from "react-spinners";
-import { MarketIcon } from "modules/common-elements/icons";
+import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
+import ReactTooltip from "react-tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
 
 export interface MarketTypeProps {
   marketType: string
@@ -11,7 +13,8 @@ export interface MarketTypeProps {
 
 export interface MarketStatusProps {
   marketStatus: string,
-  mini?: boolean
+  mini?: boolean,
+  alternate?: boolean
 }
 
 export enum sizeTypes {
@@ -36,6 +39,37 @@ export interface MovementIconProps {
   size: sizeTypes;
 }
 
+export interface PropertyLabelProps {
+  label: string;
+  value: string;
+  hint?: HTMLElement;
+}
+
+export const PropertyLabel = (props: PropertyLabelProps) => 
+  <div className={Styles.PropertyLabel}>
+    <span>{props.label} {props.hint &&
+      <>
+      <label
+        className={TooltipStyles.TooltipHint}
+        data-tip
+        data-for={`tooltip-${props.label.replace(" ", "-")}`}
+      >
+        {InfoIcon}
+      </label>
+      <ReactTooltip
+        id={`tooltip-${props.label.replace(" ", "-")}`}
+        className={TooltipStyles.Tooltip}
+        effect="solid"
+        place="right"
+        type="light"
+      >
+        {props.hint}
+      </ReactTooltip>
+      </>
+    }</span>
+    <span>{props.value}</span>
+  </div>;
+
 export const MarketTypeLabel = (props: MarketTypeProps) => 
   <span
     className={Styles.MarketTypeLabel}
@@ -44,7 +78,7 @@ export const MarketTypeLabel = (props: MarketTypeProps) =>
   </span>;
 
 export const MarketStatusLabel = (props: MarketStatusProps) => {
-  const { marketStatus, mini } = props;
+  const { marketStatus, mini, alternate } = props;
   let open: boolean = false;
   let resolved: boolean = false;
   let reporting: boolean = false;
@@ -66,6 +100,7 @@ export const MarketStatusLabel = (props: MarketStatusProps) => {
   return (
   <span
     className={classNames(Styles.MarketStatus, {
+      [Styles.MarketStatus_alternate]: alternate,
       [Styles.MarketStatus_mini]: mini,
       [Styles.MarketStatus_open]: open,
       [Styles.MarketStatus_resolved]: resolved,

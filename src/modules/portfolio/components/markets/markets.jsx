@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import FilterBox from "modules/portfolio/components/common/filter-box";
+import MarketRow from "modules/portfolio/components/common/market-row";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
@@ -28,8 +29,18 @@ function filterComp(input, market) {
 
 class MyMarkets extends Component {
   static propTypes = {
+    //   collectMarketCreatorFees: PropTypes.func.isRequired,
+    //   loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
+    //   history: PropTypes.object.isRequired,
+    //   isLogged: PropTypes.bool.isRequired,
+    //   isMobile: PropTypes.bool.isRequired,
     loadMarkets: PropTypes.func.isRequired,
+    //   loadMarketsInfo: PropTypes.func.isRequired,
+    //   location: PropTypes.object.isRequired,
     myMarkets: PropTypes.object.isRequired,
+    //   toggleFavorite: PropTypes.func.isRequired,
+    //   pendingLiquidityOrders: PropTypes.object.isRequired,
+    //   outcomes: PropTypes.object.isRequired,
     loadDisputingMarkets: PropTypes.func.isRequired
   };
 
@@ -37,7 +48,8 @@ class MyMarkets extends Component {
     super(props);
 
     this.state = {
-      filteredMarkets: props.myMarkets[ALL_MARKETS]
+      filteredMarkets: props.myMarkets[ALL_MARKETS],
+      tab: ALL_MARKETS
     };
 
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
@@ -51,13 +63,16 @@ class MyMarkets extends Component {
     loadDisputingMarkets();
   }
 
-  updateFilteredMarkets(filteredMarkets) {
+  updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
+    if (tab) {
+      this.setState({ tab });
+    }
   }
 
   render() {
     const { myMarkets } = this.props;
-    const { filteredMarkets } = this.state;
+    const { filteredMarkets, tab } = this.state;
 
     return (
       <FilterBox
@@ -68,18 +83,18 @@ class MyMarkets extends Component {
         filteredData={filteredMarkets}
         data={myMarkets}
         filterComp={filterComp}
+        bottomTabs
         rows={
           <div>
             {filteredMarkets.map(market => (
-              <div key={market.id}>
-                {market.description +
-                  " " +
-                  market.creationTime.formattedShortDate}
-              </div>
+              <MarketRow
+                key={"myMarket_" + market.id}
+                market={market}
+                showState={tab === ALL_MARKETS}
+              />
             ))}
           </div>
         }
-        bottomTabs
       />
     );
   }

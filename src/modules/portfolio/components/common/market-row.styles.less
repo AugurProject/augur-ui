@@ -1,0 +1,35 @@
+@import (reference) '~assets/styles/shared';
+
+.MarketRow {
+  padding: 1rem 1.75rem 1rem 1.5rem;
+}
+
+.MarketRow__showState {
+  padding: 0.5rem 1.75rem 1.375rem 1.5rem;
+}
+
+.MarketRow__firstRow {
+  margin-bottom: 0.625rem;
+}
+
+.MarketRow__description {
+  .text-smaller-bold;
+
+  color: @color-white;
+  flex: 1;
+  line-height: 1rem;
+}
+
+.MarketRow__time {
+  .text-smaller;
+
+  color: @color-milky-gray;
+  font-family: @roboto-mono;
+  min-width: min-content;
+  text-align: right;
+}
+
+.MarketRow__infoContainer {
+  display: flex;
+  flex: 1;
+}
