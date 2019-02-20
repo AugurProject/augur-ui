@@ -82,9 +82,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showLastLabel: true,
             labels: {
               format: "{value:.4f} <span class='eth-label'>ETH</span>",
-              align: "right",
-              y: 12,
-              x: 0
+              align: "center",
+              reserveSpace: true
             },
             title: {
               text: ""
@@ -97,10 +96,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               snap: false,
               label: {
                 enabled: true,
-                format: "{value:.4f} <span class='eth-label'>ETH</span>",
-                align: "right",
-                y: 12,
-                x: 0
+                format: "{value:.4f} <span class='eth-label'>ETH</span>"
               }
             }
           },

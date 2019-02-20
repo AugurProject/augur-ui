@@ -19,5 +19,5 @@
       ignorePseudoClasses: ["global", "local"]
     }]
   },
-  "ignoreFiles": ["src/assets/styles/_colors.less"]
+  "ignoreFiles": ["src/assets/styles/_colors_redesign.less"]
 }

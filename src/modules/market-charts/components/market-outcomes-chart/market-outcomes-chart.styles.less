@@ -1,185 +1,208 @@
 @import (reference) "~assets/styles/shared";
 
-.MarketOutcomesChart {
-  background: @color-light-purple;
+.MarketOutcomeChartsHighcharts {
   display: flex;
-  flex-grow: 1;
-
-  h3 {
-    .caps--medium();
-
-    color: @color-white;
-    padding: 10px 0 20px;
-  }
-}
-
-.MarketOutcomesChart__chart-header {
-  display: flex;
-  width: 100%;
-}
-
-.MarketOutcomesChart__details {
-  .caps--small();
-
-  color: @color-lightgray;
-  flex: 1;
-
-  * {
-    margin-right: 1em;
-  }
-}
-
-.MarketOutcomesChart__name {
-  color: @color-white;
-}
-
-.MarketOutcomesChart__filter {
-  align-self: flex-end;
-}
-
-.MarketOutcomesChart__chart {
-  align-items: center;
-  cursor: cell;
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
+  flex: 1 100%;
+  flex-direction: column;
   min-height: @charts-min-height;
-  width: 100%;
+  padding-left: 0.5rem;
+  position: relative;
 
-  & > div {
-    height: 100%;
-    width: 100%;
-  }
-}
+  svg {
+    :global {
+      .highcharts-background {
+        fill: @color-theme-primary;
+      }
 
-.MarketOutcomesChart__outcomes-axis {
-  line,
-  path {
-    stroke: @color-lightgray;
-    stroke-width: 1px;
-  }
+      .highcharts-axis-labels {
+        color: @color-secondary-text;
+        font-family: @roboto-mono;
+        font-size: @size-smaller;
+        stroke: @color-secondary-text;
+      }
 
-  text {
-    .number-small;
+      .highcharts-yaxis-labels,
+      .highcharts-label {
+        fill: @color-secondary-text;
+        font-family: @roboto-mono;
+        font-size: @size-smaller;
+        stroke: @color-secondary-text;
+      }
 
-    fill: @color-white;
-    text-anchor: middle;
-  }
-}
+      .highcharts-no-data {
+        color: @color-secondary-text;
+        font-size: @size-normal;
+      }
 
-.MarketOutcomesChart__price_label {
-  &-inner {
-    &:extend(.caps--extra-small all);
+      .highcharts-label-box {
+        fill: @color-theme-primary;
+        font-weight: bold;
 
-    background-color: @color-light-purple;
-    border: 1px solid @color-white;
-    border-radius: 3px;
-    color: @color-white;
-    height: 1.2rem;
-    padding: 0.25rem;
-    transform: translateY(-50%);
-  }
-}
+        > text > tspan:last-child {
+          font-size: @size-smaller;
+        }
+      }
 
-.MarketOutcomesChart__date_label {
-  &-inner {
-    &:extend(.caps--extra-small all);
+      .highcharts-tick,
+      .highcharts-axis-line {
+        stroke: @color-secondary-text-muted;
+      }
 
-    background-color: @color-light-purple;
-    border: 1px solid @color-white;
-    border-radius: 3px;
-    color: @color-white;
-    display: inline-block;
-    height: 1.2rem;
-    padding: 0.25rem;
-    transform: translateX(-50%);
-    white-space: nowrap;
-  }
-}
+      .highcharts-xaxis-grid,
+      g.highcharts-yaxis-grid path.highcharts-grid-line:nth-child(1),
+      g.highcharts-yaxis path.highcharts-axis-line {
+        display: none;
+      }
 
-.MarketOutcomesChart__bounding-line {
-  stroke: @color-gray;
-  stroke-width: 1px;
-}
+      .highcharts-yaxis-grid {
+        .dashline-long;
 
-.MarketOutcomesChart__tick-line {
-  .dashline-long;
+        .highcharts-grid-line {
+          stroke: @color-secondary-text-muted;
+        }
+      }
 
-  stroke: @color-gray;
-}
+      .highcharts-xaxis-category {
+        display: none;
+      }
 
-.MarketOutcomesChart__tick-line--excluded {
-  display: none;
-}
+      .highcharts-crosshair-label {
+        background-color: @color-theme-primary;
+        border: 1px solid @color-secondary-text;
+        color: @color-secondary-text;
+        font-size: @size-smallest;
+      }
 
-.MarketOutcomesChart__tick-value {
-  &:extend(.caps--small all);
+      .highcharts-crosshair {
+        .dashline-long;
+      }
 
-  fill: @color-white;
-}
+      .eth-label {
+        font-size: @size-tiny;
+      }
 
-.MarketOutcomesChart__outcome-line {
-  fill: none;
-}
+      // --- area styling
+      .highcharts-area {
+        opacity: 0.4;
+      }
 
-.MarketOutcomesChart__outcome-line-selected {
-  stroke-width: 2px;
-}
+      .highcharts-area-series.highcharts-color-0 > path.highcharts-graph {
+        stroke: @color-outcome-two;
+      }
 
-.MarketOutcomesChart__outcome-line-unselected {
-  opacity: 0.4;
-  stroke-width: 1px;
-}
+      .highcharts-area-series.highcharts-halo.highcharts-color-0 {
+        fill: @color-outcome-two;
+        stroke: @color-outcome-two;
+      }
 
-.MarketOutcomesChart__crosshair {
-  .dashline-normal;
-}
+      .highcharts-area-series.highcharts-series-hover,
+      .highcharts-area-series.highcharts-color-0.highcharts-tracker > path,
+      .highcharts-area-series > .highcharts-area {
+        fill: @color-outcome-two;
+        stroke: @color-outcome-two;
+      }
 
-.MarketOutcomesChart__scalar_denomination_label {
-  fill: @color-white;
-  .text-small;
-}
+      // --- mulitple line styling
+      .highcharts-line-series.highcharts-color-0 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-0.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-0 {
+        fill: @color-outcome-one;
+        stroke: @color-outcome-one;
+      }
 
-.MarketOutcomesChart__scalar_gradient_stop_top {
-  stop-color: transparent;
-}
+      .highcharts-line-series.highcharts-color-0 > path.highcharts-graph {
+        stroke: @color-outcome-one;
+      }
 
-.MarketOutcomesChart__scalar_gradient_stop_bottom {
-  stop-color: extract(@color-outcome-list, 2);
-}
+      .highcharts-line-series.highcharts-color-1 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-1.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-1 {
+        fill: @color-outcome-two;
+        stroke: @color-outcome-two;
+      }
 
-.MarketOutcomesChart__scalar_gradient_fill {
-  fill: url("#scalarGradient");
-  opacity: 0.25;
-}
+      .highcharts-line-series.highcharts-series-hover.highcharts-color-1,
+      .highcharts-line-series.highcharts-color-1 > path.highcharts-graph {
+        stroke: @color-outcome-two;
+      }
 
-.generate-indexed-color-outcome-classes({ .MarketOutcomesChart__outcome-line--@{newIndex} {
-  stroke: @value;
-} .MarketOutcomesChart__outcome-dot--@{newIndex} {
-  fill: @value;
-  stroke: @value;
-} .MarketOutcomesChart__outcome-dot-outline--@{newIndex} {
-  fill: none;
-  stroke: @value;
-} });
+      .highcharts-line-series.highcharts-color-2 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-2.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-2 {
+        fill: @color-outcome-three;
+        stroke: @color-outcome-three;
+      }
 
-.MarketOutcomesChart__hover-overlay {
-  fill: none;
-  pointer-events: visible;
-}
+      .highcharts-line-series.highcharts-halo.highcharts-color-2,
+      .highcharts-line-series.highcharts-color-2 > path.highcharts-graph {
+        stroke: @color-outcome-three;
+      }
 
-.MarketOutcomesChart__null-message {
-  fill: @color-gray;
-}
+      .highcharts-line-series.highcharts-color-3 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-3.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-3 {
+        fill: @color-outcome-four;
+        stroke: @color-outcome-four;
+      }
 
-:global {
-  #priceTimeSeries_chart {
-    height: 100%;
-    width: 100%;
-  }
+      .highcharts-line-series.highcharts-halo.highcharts-color-3,
+      .highcharts-line-series.highcharts-color-3 > path.highcharts-graph {
+        stroke: @color-outcome-four;
+      }
 
-  #priceTimeSeries_crosshairs {
-    cursor: crosshair;
-    pointer-events: none;
+      .highcharts-line-series.highcharts-color-4 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-4.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-4 {
+        fill: @color-outcome-five;
+        stroke: @color-outcome-five;
+      }
+
+      .highcharts-line-series.highcharts-halo.highcharts-color-4,
+      .highcharts-line-series.highcharts-color-4 > path.highcharts-graph {
+        stroke: @color-outcome-five;
+      }
+
+      .highcharts-line-series.highcharts-color-5 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-5.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-5 {
+        fill: @color-outcome-six;
+        stroke: @color-outcome-six;
+      }
+
+      .highcharts-line-series.highcharts-halo.highcharts-color-5,
+      .highcharts-line-series.highcharts-color-5 > path.highcharts-graph {
+        stroke: @color-outcome-six;
+      }
+
+      .highcharts-line-series.highcharts-color-6 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-6.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-6 {
+        fill: @color-outcome-seven;
+        stroke: @color-outcome-seven;
+      }
+
+      .highcharts-line-series.highcharts-halo.highcharts-color-6,
+      .highcharts-line-series.highcharts-color-6 > path.highcharts-graph {
+        stroke: @color-outcome-seven;
+      }
+
+      .highcharts-line-series.highcharts-color-7 > .highcharts-halo,
+      g.highcharts-line-series.highcharts-color-7.highcharts-tracker > path:nth-child(2),
+      .highcharts-line-series.highcharts-color-7 {
+        fill: @color-outcome-eight;
+        stroke: @color-outcome-eight;
+      }
+
+      .highcharts-line-series.highcharts-halo.highcharts-color-7,
+      .highcharts-line-series.highcharts-color-7 > path.highcharts-graph {
+        stroke: @color-outcome-eight;
+      }
+
+      text.highcharts-title tspan {
+        color: @color-secondary-text;
+        fill: @color-secondary-text;
+        font-size: @size-smallest;
+      }
+    }
   }
 }
