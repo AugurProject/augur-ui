@@ -7,12 +7,12 @@ import MarketRow from "modules/portfolio/components/common/market-row";
 
 const sortByOptions = [
   {
-    label: "View by Market",
+    label: "View by Most Recently Traded Market",
     value: "creationTime",
     comp: null
   },
   {
-    label: "View by Outcome",
+    label: "View by Most Recently Traded Outcome",
     value: "endTime",
     comp: null
   }

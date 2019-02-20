@@ -1,0 +1,33 @@
+@import (reference) '~assets/styles/shared';
+
+.Order {
+  display: grid;
+  flex-direction: row;
+  flex-grow: 1;
+  grid-template-columns: repeat(5, 1fr);
+
+  > li {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    font-size: 0.687rem;
+    overflow: hidden;
+    padding: 0.5rem 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:first-child {
+      .text-smaller-bold;
+
+      color: @color-less-neutral;
+    }
+
+    &:not(:first-child) {
+      justify-content: flex-end;
+    }
+
+    &:last-child {
+      padding-right: 1.75rem;
+    }
+  }
+}

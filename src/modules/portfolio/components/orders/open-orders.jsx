@@ -3,16 +3,20 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/filter-switch-box";
-import MarketRow from "modules/portfolio/components/common/market-row";
+import OrderMarketRow from "modules/portfolio/components/common/order-market-row";
+import OpenOrder from "modules/portfolio/components/common/open-order";
+import DataTableHeader from "modules/portfolio/components/common/data-table-header";
+
+import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
 const sortByOptions = [
   {
-    label: "View by Market",
+    label: "View by Most Recently Traded Market",
     value: "creationTime",
     comp: null
   },
   {
-    label: "View by Outcome",
+    label: "View by Most Recently Traded Outcome",
     value: "endTime",
     comp: null
   }
@@ -78,16 +82,22 @@ export default class OpenOrders extends Component {
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
+        bottomBarContent={<DataTableHeader />}
         rows={
           <div>
             {filteredData.map(
               data =>
                 viewByMarkets ? (
-                  <MarketRow key={"openOrder_" + data.id} market={data} />
+                  <OrderMarketRow
+                    key={"openOrderMarket_" + data.id}
+                    market={data}
+                  />
                 ) : (
-                  <div>
-                    {data.name} {data.buy}
-                  </div>
+                  <OpenOrder
+                    key={"openOrder_" + data.id}
+                    openOrder={data}
+                    toggleClassName={Styles.OpenOrders__orderSingle}
+                  />
                 )
             )}
           </div>

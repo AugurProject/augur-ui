@@ -1,6 +1,4 @@
-import {
-  UPDATE_USER_TRADING_HISTORY
-} from "modules/markets/actions/market-trading-history-management";
+import { UPDATE_USER_TRADING_HISTORY } from "modules/markets/actions/market-trading-history-management";
 
 const DEFAULT_STATE = () => ({});
 

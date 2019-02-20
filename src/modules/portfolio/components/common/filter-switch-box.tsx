@@ -86,7 +86,7 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
         sortByOptions={sortByOptions}
         updateDropdown={this.updateView}
         bottomBarContent={bottomBarContent}
-        rows={rows}
+        rows={rows} 
       />
     )
   }

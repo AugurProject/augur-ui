@@ -1,7 +1,12 @@
 @import (reference) '~assets/styles/shared';
 
 .MarketRow {
+  border-bottom: 0.125rem solid @color-theme-primary;
   padding: 1rem 1.75rem 1rem 1.5rem;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.0625rem;
+  }
 }
 
 .MarketRow__showState {

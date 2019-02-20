@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import memoize from "memoizee";
 
 import { selectCurrentTimestamp } from "src/select-state";
 import FilledOrders from "modules/portfolio/components/orders/filled-orders";
@@ -67,11 +66,6 @@ const mapDispatchToProps = dispatch => ({
   claimTradingProceeds: marketId =>
     dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId }))
 });
-
-const getPositionsMarkets = memoize(
-  openOrders => Array.from(new Set([...openOrders])),
-  { max: 1 }
-);
 
 const FilledOrdersContainer = connect(
   mapStateToProps,
