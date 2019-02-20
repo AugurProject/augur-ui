@@ -9,7 +9,6 @@ import {
 } from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
-import FilterSwitchBox from "modules/portfolio/components/common/filter-switch-box";
 
 export interface NameValuePair {
   label: string;
@@ -111,16 +110,16 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     this.props.updateFilteredData(filteredData);
   }
 
-  // onSearchChange = (input: string) => {
-  //   this.setState({search: input});
+  onSearchChange = (input: string) => {
+    this.setState({search: input});
 
-  //   const { data } = this.props;
-  //   let { selectedTab, search } = this.state;
-  //   let tabData =  data[selectedTab];
-  //   const filteredData = this.applySearch(input, tabData);
+    const { data } = this.props;
+    let { selectedTab, search } = this.state;
+    let tabData =  data[selectedTab];
+    const filteredData = this.applySearch(input, tabData);
 
-  //   this.props.updateFilteredData(filteredData);
-  // }
+    this.props.updateFilteredData(filteredData);
+  }
 
   selectTab = (tab: string) => {
     this.setState({selectedTab: tab})
@@ -132,17 +131,17 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     this.props.updateFilteredData(dataFiltered, tab);
   }
 
-  // applySearch = (input: string, filteredData: Array<Market>) => {
-  //   const { filterComp, data } = this.props;
-  //   let { search, sortBy, selectedTab, tabs } = this.state;
+  applySearch = (input: string, filteredData: Array<Market>) => {
+    const { filterComp, data } = this.props;
+    let { search, sortBy, selectedTab, tabs } = this.state;
 
-  //   filteredData = filteredData.filter(filterComp.bind(this, input));
-  //   filteredData = this.applySortBy(sortBy, filteredData);
+    filteredData = filteredData.filter(filterComp.bind(this, input));
+    filteredData = this.applySortBy(sortBy, filteredData);
 
-  //   this.calculateTabNums(data, input);
+    this.calculateTabNums(data, input);
 
-  //   return filteredData;
-  // }
+    return filteredData;
+  }
 
   applySortBy = (value: string, data: Array<Market>) => {
     const valueObj = find(this.props.sortByOptions, { value: value });
@@ -170,17 +169,15 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
 
     return (
 
-      <FilterSwitchBox
+      <QuadBox
         title={title}
         showFilterSearch={showFilterSearch}
+        onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}
         updateDropdown={this.updateSortBy}
-        updateFilteredData={this.props.updateFilteredData}
-        data={data}
-        filterComp={this.props.filterComp}
-        switchView={this.updateSortBy}
         bottomBarContent={bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>}
         rows={rows}
+        search={search}
       />
     )
   }

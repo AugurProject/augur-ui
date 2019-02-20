@@ -14,7 +14,7 @@ export interface NameValuePair {
 export interface QuadBoxProps {
   title: string,
   showFilterSearch: Boolean,
-  search:string,
+  search: string,
   sortByOptions:  Array<NameValuePair>,
   updateDropdown: Function,
   onSearchChange: Function,

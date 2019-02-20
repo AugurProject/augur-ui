@@ -37,7 +37,7 @@ export default class Positions extends Component {
     super(props);
 
     this.state = {
-      filteredMarkets: props.markets,
+      filteredMarkets: props.markets[ALL_MARKETS],
       tab: ALL_MARKETS
     };
 
