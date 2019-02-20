@@ -151,11 +151,25 @@ export default class MarketOutcomesChartHighchart extends Component {
     });
   };
 
-  getTickInterval = daysPassed => {
-    let interval = 604800;
-    if (daysPassed < 2) interval = 3600;
+  getxAxisProperties = daysPassed => {
+    const hours = "{value:%H:%M}";
+    const days = "{value:%b %d}";
+    let interval = 604800; // weekly
+    if (daysPassed < 2) interval = 10800; // show every 3rd hour
     if (daysPassed > 14 && daysPassed < 30) interval = 86400;
-    return interval * 1000; // add milliseconds
+    return {
+      tickInterval: interval * 1000, // add milliseconds
+      labels: {
+        format: interval === 10800 ? hours : days
+      },
+      crosshair: {
+        snap: true,
+        label: {
+          enabled: true,
+          format: interval === 10800 ? hours : days
+        }
+      }
+    };
   };
 
   buidOptions(
@@ -170,13 +184,9 @@ export default class MarketOutcomesChartHighchart extends Component {
     const timeIncrement =
       daysPassed > NUM_DAYS_TO_USE_DAY_TIMEFRAME ? "day" : "hour";
 
-    const tickInterval = this.getTickInterval(daysPassed);
-    if (tickInterval) {
-      options.xAxis = {
-        ...options.xAxis,
-        tickInterval
-      };
-    }
+    const xAxisProperties = this.getxAxisProperties(daysPassed);
+    options.xAxis = Object.assign(options.xAxis, xAxisProperties);
+
     options.height = containerHeight;
 
     const useArea = priceTimeSeries && keys(priceTimeSeries).length === 1;
