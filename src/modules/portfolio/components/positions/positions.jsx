@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-// import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterBox from "modules/portfolio/components/common/filter-box";
 import MarketRow from "modules/portfolio/components/common/market-row";
 
@@ -30,15 +29,8 @@ function filterComp(input, market) {
 
 export default class Positions extends Component {
   static propTypes = {
-    // currentTimestamp: PropTypes.number.isRequired,
-    // location: PropTypes.object.isRequired,
-    // history: PropTypes.object.isRequired,
-    // transactionsStatus: PropTypes.object.isRequired,
     markets: PropTypes.object.isRequired,
     loadAccountTrades: PropTypes.func.isRequired
-    // marketsCount: PropTypes.number.isRequired
-    // claimTradingProceeds: PropTypes.func.isRequired,
-    // isMobile: PropTypes.bool.isRequired
   };
 
   constructor(props) {

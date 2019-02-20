@@ -2,31 +2,46 @@ import { connect } from "react-redux";
 import memoize from "memoizee";
 
 import { selectCurrentTimestamp } from "src/select-state";
-import Positions from "modules/portfolio/components/positions/positions";
-import getLoginAccountPositions from "modules/positions/selectors/login-account-positions";
+import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
-
-import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
+import getOpenOrders, {
+  sortOpenOrders
+} from "modules/orders/selectors/open-orders";
 
 const mapStateToProps = state => {
-  const positions = getLoginAccountPositions();
+  const openOrders = getOpenOrders();
 
-  // NOTE: for data wiring, this should probably be just done as calls for getting openPosition Markets, getting Reporting Markets, and getting Closed Markets respectively from the node and just passed the expected keys below
-  const markets = getPositionsMarkets(positions);
+  const markets = getPositionsMarkets(openOrders);
   const marketsCount = markets.length;
-  const marketsObject = createMarketsStateObject(markets);
+
+  const individualOrders = [];
+  Object.keys(markets).forEach(id => {
+    const market = markets[id];
+
+    if (market && market.outcomes && market.outcomes.length > 0) {
+      const newMarket = sortOpenOrders(market);
+      const openOrders = newMarket.outcomes.reduce((p, outcome) => {
+        if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
+          outcome.userOpenOrders.forEach(order => p.push(order));
+        }
+        return p;
+      }, []);
+      Array.prototype.push.apply(individualOrders, openOrders);
+    }
+  });
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
     marketsCount,
     transactionsStatus: state.transactionsStatus,
-    markets: marketsObject,
+    markets,
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
-    isMobile: state.appStatus.isMobile
+    isMobile: state.appStatus.isMobile,
+    filledOrders: individualOrders
   };
 };
 
@@ -38,13 +53,13 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const getPositionsMarkets = memoize(
-  positions => Array.from(new Set([...positions.markets])),
+  openOrders => Array.from(new Set([...openOrders])),
   { max: 1 }
 );
 
-const PositionsContainer = connect(
+const FilledOrdersContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Positions);
+)(FilledOrders);
 
-export default PositionsContainer;
+export default FilledOrdersContainer;

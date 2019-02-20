@@ -3,8 +3,8 @@ import React from "react";
 import PortfolioHeader from "modules/portfolio/containers/portfolio-header";
 import MyPositions from "modules/portfolio/containers/positions";
 import MyMarkets from "modules/portfolio/containers/my-markets";
-// import Favorites from "modules/portfolio/containers/favorites";
-import FilterBox from "modules/portfolio/components/common/filter-box";
+import OpenOrders from "modules/portfolio/containers/open-orders";
+import FilledOrders from "modules/portfolio/containers/filled-orders";
 
 import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 
@@ -13,9 +13,9 @@ const PortfolioView = p => (
     <PortfolioHeader />
     <div className={Styles.PortfolioView__views}>
       <MyPositions />
-      <FilterBox title="Open Orders" />
+      <OpenOrders />
       <MyMarkets />
-      <FilterBox title="Filled Orders" />
+      <FilledOrders />
     </div>
   </section>
 );
