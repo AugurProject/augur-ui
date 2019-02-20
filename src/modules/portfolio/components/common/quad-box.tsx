@@ -4,12 +4,7 @@ import BoxHeader from "modules/portfolio/components/common/box-header";
 import { SquareDropdown } from "modules/common-elements/dropdown";
 import Input from "modules/common/components/input/input";
 import Styles from "modules/portfolio/components/common/filter-box.styles";
-
-export interface NameValuePair {
-  label: string;
-  value: string;
-  comp: Function|null;
-}
+import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
 export interface QuadBoxProps {
   title: string,

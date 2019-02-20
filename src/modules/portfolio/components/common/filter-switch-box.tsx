@@ -8,23 +8,7 @@ import {
   MARKET_CLOSED
 } from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quad-box";
-
-export interface NameValuePair {
-  label: string;
-  value: string;
-  comp: null;
-}
-
-export interface Market {
-  marketId: string,
-  description: string
-}
-
-export interface Tab {
-  key: string,
-  label: string,
-  num: number
-}
+import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;

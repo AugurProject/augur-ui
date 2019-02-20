@@ -18,10 +18,10 @@ const sortByOptions = [
   }
 ];
 
-export default class OpenOrders extends Component {
+export default class FilledOrders extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    openOrders: PropTypes.array.isRequired,
+    filledOrders: PropTypes.array.isRequired,
     loadAccountTrades: PropTypes.func.isRequired
   };
 
@@ -59,23 +59,23 @@ export default class OpenOrders extends Component {
   switchView() {
     this.setState({
       filteredData: this.state.viewByMarkets
-        ? this.props.openOrders
+        ? this.props.filledOrders
         : this.props.markets,
       viewByMarkets: !this.state.viewByMarkets
     });
   }
 
   render() {
-    const { markets, openOrders } = this.props;
+    const { markets, filledOrders } = this.props;
     const { filteredData, viewByMarkets } = this.state;
 
     return (
       <FilterSwitchBox
-        title="Open Orders"
+        title="Filled Orders"
         showFilterSearch
         sortByOptions={sortByOptions}
         updateFilteredData={this.updateFilteredData}
-        data={viewByMarkets ? markets : openOrders}
+        data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
         rows={
@@ -83,7 +83,7 @@ export default class OpenOrders extends Component {
             {filteredData.map(
               data =>
                 viewByMarkets ? (
-                  <MarketRow key={"openOrder_" + data.id} market={data} />
+                  <MarketRow key={"filledOrder_" + data.id} market={data} />
                 ) : (
                   <div>
                     {data.name} {data.buy}

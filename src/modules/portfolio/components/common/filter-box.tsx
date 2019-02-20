@@ -9,23 +9,7 @@ import {
 } from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
-
-export interface NameValuePair {
-  label: string;
-  value: string;
-  comp: Function;
-}
-
-export interface Market {
-  marketId: string,
-  description: string
-}
-
-export interface Tab {
-  key: string,
-  label: string,
-  num: number
-}
+import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
@@ -168,7 +152,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
 
 
     return (
-
       <QuadBox
         title={title}
         showFilterSearch={showFilterSearch}

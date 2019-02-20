@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import memoize from "memoizee";
 
 import { selectCurrentTimestamp } from "src/select-state";
-import OpenOrders from "modules/portfolio/components/orders/open-orders";
+import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
@@ -18,8 +18,6 @@ const mapStateToProps = state => {
   const marketsCount = markets.length;
 
   const individualOrders = [];
-
-  // todo: find filled orders
   Object.keys(markets).forEach(id => {
     const market = markets[id];
 
@@ -43,7 +41,7 @@ const mapStateToProps = state => {
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
     isMobile: state.appStatus.isMobile,
-    openOrders: individualOrders
+    filledOrders: individualOrders
   };
 };
 
@@ -59,9 +57,9 @@ const getPositionsMarkets = memoize(
   { max: 1 }
 );
 
-const OpenOrdersContainer = connect(
+const FilledOrdersContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(OpenOrders);
+)(FilledOrders);
 
-export default OpenOrdersContainer;
+export default FilledOrdersContainer;
