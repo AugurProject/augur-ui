@@ -35,6 +35,7 @@
   background: @color-buy-order-button-background;
   border-color: @color-buy-order-button-border;
   color: @color-secondary-button-text;
+  height: @button-height-orders;
   max-height: @button-height-orders;
   padding: @button-padding-orders;
 
@@ -55,6 +56,7 @@
   background: @color-sell-order-button-background;
   border-color: @color-sell-order-button-border;
   color: @color-secondary-button-text;
+  height: @button-height-orders;
   max-height: @button-height-orders;
   padding: @button-padding-orders;
 
@@ -79,9 +81,9 @@
   flex-flow: row nowrap;
 
   > svg {
+    height: 1.5rem;
     margin-right: 0.5rem;
-    max-height: 1.5rem;
-    max-width: 1.5rem;
+    width: 1.5rem;
   }
 
   > svg > path {
@@ -103,9 +105,9 @@
 
   &:hover:enabled {
     > svg > path {
-      fill: @color-primary;
+      fill: @color-primary-action;
       fill-opacity: 0.1;
-      stroke: @color-primary;
+      stroke: @color-primary-action;
     }
   }
 }
@@ -114,16 +116,34 @@
   .FavoriteButton;
 
   > svg > path {
-    fill: @color-primary;
+    fill: @color-primary-action;
     fill-opacity: 1;
-    stroke: @color-primary;
+    stroke: @color-primary-action;
   }
 
   &:hover:enabled {
     > svg > path {
-      fill: @color-primary;
+      fill: @color-primary-action;
       fill-opacity: 0.5;
-      stroke: @color-primary;
+      stroke: @color-primary-action;
     }
+  }
+}
+
+.CompactButton {
+  .Button;
+  .number-small;
+
+  border: @border-default;
+  border-color: @color-primary-light;
+  border-radius: @border-radius-full-round;
+  color: @color-alternate-text;
+  height: 1.25rem;
+  line-height: @size-smallest;
+  padding: 3px 0.75rem;
+
+  &:hover:enabled {
+    background: @color-primary-light;
+    color: @color-secondary-button-text;
   }
 }

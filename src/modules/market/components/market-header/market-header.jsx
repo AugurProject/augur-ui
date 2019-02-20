@@ -11,9 +11,6 @@ import MarketHeaderBar from "modules/market/containers/market-header-bar";
 import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
-import TimeRange from "modules/market/components/market-header/market-header-time-range";
-import { createBigNumber } from "utils/create-big-number";
-import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
@@ -26,6 +23,7 @@ import {
   SCALAR
 } from "modules/common-elements/constants";
 import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
+import { MarketTimeline } from "modules/common-elements/progress";
 
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
@@ -43,7 +41,6 @@ export default class MarketHeader extends Component {
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
     isMobile: PropTypes.bool,
-    isMobileSmall: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
     history: PropTypes.object.isRequired
@@ -56,8 +53,7 @@ export default class MarketHeader extends Component {
     currentTime: 0,
     isFavorite: false,
     toggleFavorite: () => {},
-    isMobile: false,
-    isMobileSmall: false
+    isMobile: false
   };
 
   constructor(props) {
@@ -151,21 +147,13 @@ export default class MarketHeader extends Component {
       scalarDenomination,
       market,
       currentTime,
-      isMobileSmall,
       isMobile,
       isFavorite,
       history
     } = this.props;
     let { details } = this.props;
     const { headerCollapsed } = this.state;
-
-    const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
     const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
-    const formattedEndTime =
-      (endTimestamp && convertUnixToFormattedDate(endTimestamp)) || {};
-    const hasPassed = createBigNumber(currentTime).gt(
-      createBigNumber(endTimestamp)
-    );
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -292,7 +280,7 @@ export default class MarketHeader extends Component {
               {market.id && (
                 <MarketHeaderBar
                   marketId={market.id}
-                  reportingState={market.reportingState}
+                  marketStatus={market.marketStatus}
                   addToFavorites={this.addToFavorites}
                   isMobile={isMobile}
                   isFavorite={isFavorite}
@@ -305,19 +293,12 @@ export default class MarketHeader extends Component {
                 <MarketHeaderReporting marketId={market.id} />
               </div>
               <div className={Styles.MarketHeader__properties__core}>
-                <CoreProperties
-                  market={market}
-                  isMobile={isMobile}
-                  isMobileSmall={isMobileSmall}
-                />
+                {market.id && <CoreProperties market={market} />}
                 <div className={Styles.MarketHeader__timeStuff}>
-                  <TimeRange
-                    currentTime={currentTime}
-                    startTime={market.creationTime}
-                    endTimestamp={endTimestamp}
-                    hasPassed={hasPassed}
-                    formattedEndTime={formattedEndTime}
-                    isMobile={isMobile}
+                  <MarketTimeline
+                    startTime={market.creationTime || 0}
+                    currentTime={currentTime || 0}
+                    endTime={market.endTime || 0}
                   />
                 </div>
               </div>

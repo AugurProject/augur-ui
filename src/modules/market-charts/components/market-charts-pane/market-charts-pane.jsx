@@ -17,12 +17,14 @@ export default class MarketChartsPane extends Component {
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     selectedOutcome: PropTypes.string.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool
+    isMobile: PropTypes.bool,
+    daysPassed: PropTypes.number
   };
 
   static defaultProps = {
     isMobile: false,
-    currentTimestamp: 0
+    currentTimestamp: 0,
+    daysPassed: 0
   };
 
   constructor(props) {
@@ -56,7 +58,8 @@ export default class MarketChartsPane extends Component {
       maxPrice,
       minPrice,
       updateSelectedOrderProperties,
-      isMobile
+      isMobile,
+      daysPassed
     } = this.props;
     const s = this.state;
 
@@ -70,6 +73,7 @@ export default class MarketChartsPane extends Component {
               selectedOutcome={selectedOutcome}
               minPrice={minPrice}
               maxPrice={maxPrice}
+              daysPassed={daysPassed}
             />
           </ModulePane>
           <ModulePane
@@ -99,6 +103,7 @@ export default class MarketChartsPane extends Component {
             marketId={marketId}
             selectedOutcome={selectedOutcome}
             pricePrecision={4}
+            daysPassed={daysPassed}
           />
         </ModulePane>
         <ModulePane label="Candlesticks">
@@ -108,6 +113,7 @@ export default class MarketChartsPane extends Component {
             selectedOutcome={selectedOutcome}
             minPrice={minPrice}
             maxPrice={maxPrice}
+            daysPassed={daysPassed}
           />
         </ModulePane>
         <ModulePane

@@ -1,12 +1,7 @@
 import React from "react";
 import * as constants from "modules/common-elements/constants";
-import { starIcon } from "modules/common/components/icons";
-import Styles from "modules/common-elements/common-elements.styles";
-
-export enum OrderButtonTypes {
-  BUY = constants.BUY,
-  SELL = constants.SELL,
-}
+import { StarIcon } from "modules/common-elements/icons";
+import Styles from "modules/common-elements/buttons.styles";
 
 export interface DefaultButtonProps {
   text: string;
@@ -16,7 +11,7 @@ export interface DefaultButtonProps {
 }
 
 export interface OrderButtonProps extends DefaultButtonProps {
-  type: OrderButtonTypes;
+  type: constants.BUY | constants.SELL;
 }
 
 export interface FavoritesButton extends DefaultButtonProps {
@@ -24,9 +19,9 @@ export interface FavoritesButton extends DefaultButtonProps {
   hideText?: boolean;
 }
 
-export const PrimaryButton = (props: DefaultButtonProps) => 
+export const PrimaryButton = (props: DefaultButtonProps) =>
   <button
-    onClick={props.action}
+    onClick={(e) => props.action(e)}
     className={Styles.PrimaryButton}
     disabled={props.disabled}
     title={props.title || props.text}
@@ -34,9 +29,9 @@ export const PrimaryButton = (props: DefaultButtonProps) =>
     {props.text}
   </button>;
 
-export const OrderButton = (props: OrderButtonProps) => 
+export const OrderButton = (props: OrderButtonProps) =>
   <button
-    onClick={props.action}
+    onClick={(e) => props.action(e)}
     className={props.type === constants.BUY ? Styles.BuyOrderButton : Styles.SellOrderButton}
     disabled={props.disabled}
     title={props.title}
@@ -46,7 +41,7 @@ export const OrderButton = (props: OrderButtonProps) =>
 
 export const FavoritesButton = (props: FavoritesButton) =>
   <button
-    onClick={props.action}
+    onClick={(e) => props.action(e)}
     className={
       props.isFavorite ?
         Styles.FavoriteButton_Favorite :
@@ -54,11 +49,21 @@ export const FavoritesButton = (props: FavoritesButton) =>
     }
     disabled={props.disabled}
     title={props.title}
-    style={props.hideText ? { marginRight: "0.5rem" } : null}
+    style={props.hideText ? { marginRight: "0.5rem" } : undefined}
   >
-    {starIcon} {!props.hideText && `${
+    {StarIcon} {!props.hideText && `${
       props.isFavorite ?
         "Remove from" :
         "Add to"
     } watchlist`}
   </button>;
+
+export const CompactButton = (props: DefaultButtonProps) =>
+<button
+  onClick={(e) => props.action(e)}
+  className={Styles.CompactButton}
+  disabled={props.disabled}
+  title={props.title}
+>
+  {props.text}
+</button>;

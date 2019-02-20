@@ -259,9 +259,8 @@
 .MarketHeader__timeStuff {
   align-items: flex-end;
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  min-height: fit-content;
+  flex: 1;
+  flex-flow: column nowrap;
 }
 
 .MarketHeader__resolution-source--empty_details {
@@ -274,15 +273,17 @@
 
 .MarketHeader__properties__core {
   display: flex;
+  padding: 1.5rem 0 0 0.5rem;
 }
 
 @media @breakpoint-mobile {
   .MarketHeader__properties__core {
     flex-direction: column;
+    padding: 1rem 0 0;
   }
 
   .MarketHeader__description {
-    font-size: 18px;
+    font-size: @size-medium;
   }
 
   .MarketHeader__descContainer {
@@ -314,5 +315,8 @@
 
   .MarketHeader__timeStuff {
     align-items: normal;
+    background-color: @color-theme-primary;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
   }
 }

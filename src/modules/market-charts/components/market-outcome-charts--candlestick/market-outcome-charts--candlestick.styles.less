@@ -3,11 +3,25 @@
 .MarketOutcomeChartsHeader__chart-interaction {
   align-items: center;
   display: flex;
-  margin-bottom: 14px;
-  margin-top: 14px;
+  margin: 0.875rem;
+  padding: 0 0.5rem;
 
   div:first-of-type {
     flex: 1;
+  }
+}
+
+.MarketOutcomeChartsHeader__label_hover {
+  > div {
+    background-color: @color-highlight;
+  }
+}
+
+.MarketOutcomeChartsHeader__label_container {
+  margin-right: 4.375rem;
+
+  > div {
+    width: 9.375rem;
   }
 }
 
@@ -25,12 +39,16 @@
 span.MarketOutcomeChartsHeader__stat {
   margin-right: 16px;
   min-width: 55px;
+
+  &.empty {
+    display: none;
+  }
 }
 
 .MarketOutcomeChartsHeader__stat-value,
 .MarketOutcomeChartsHeader__stat-title {
   color: #ffffff;
-  font-family: 'Roboto Mono', monospace;
+  font-family: "Roboto Mono", monospace;
   font-size: 10px;
   font-style: normal;
   font-weight: normal;
@@ -55,56 +73,6 @@ div.MarketOutcomeChartsHeader__stats {
   position: relative;
 }
 
-.MarketOutcomeCandlestick__price_label {
-  &-inner {
-    &:extend(.caps--extra-small all);
-
-    background-color: @color-light-purple;
-    border: 1px solid @color-white;
-    border-radius: 3px;
-    color: @color-white;
-    height: 1.2rem;
-    padding: 0.25rem;
-    transform: translateY(-50%);
-  }
-}
-
-.MarketOutcomeCandlestick__date_label {
-  &-inner {
-    &:extend(.caps--extra-small all);
-
-    background-color: @color-light-purple;
-    border: 1px solid @color-white;
-    border-radius: 3px;
-    color: @color-white;
-    display: inline-block;
-    height: 1.2rem;
-    padding: 0.25rem;
-    transform: translateX(-50%);
-    white-space: nowrap;
-  }
-}
-
-.MarketOutcomeCandlestick__period-stats {
-  &:extend(.caps--small all);
-
-  display: flex;
-}
-
-.MarketOutcomeCandlestick__period-stat {
-  display: flex;
-}
-
-.MarketOutcomeCandlestick__period-stat-title {
-  color: @color-white;
-  margin-right: 0.3em;
-}
-
-.MarketOutcomeCandlestick__period-stat-value {
-  color: @color-lightgray;
-  width: 5em;
-}
-
 .MarketOutcomeCandlestick__container {
   cursor: cell;
   display: flex;
@@ -114,150 +82,4 @@ div.MarketOutcomeChartsHeader__stats {
     display: flex;
     flex-grow: 1;
   }
-
-  :global {
-    .hovered_candlestick_price_label {
-      .number-small;
-
-      background-color: rgba(33, 26, 50, 0.9);
-      border: 1px solid @color-white;
-      border-radius: 0.1875rem; // 3px
-      color: @color-white;
-      height: 24px;
-      padding: 0.25rem;
-      white-space: nowrap;
-      width: 72px;
-      word-break: keep-all;
-    }
-
-    .bounding-line,
-    .midpoint-line,
-    .tick-line,
-    .tick-line--midpoint {
-      stroke: @color-gray;
-      stroke-width: 2px;
-    }
-
-    .tick-line-volume {
-      opacity: 0.25;
-      stroke: @color-gray;
-      stroke-width: 1px;
-    }
-
-    .overlay {
-      fill: none;
-      pointer-events: visible;
-    }
-
-    .tick-line {
-      .dashline-long;
-
-      stroke: @color-gray;
-
-      &--midpoint {
-        stroke-width: 2px;
-      }
-    }
-
-    .tick-value {
-      .number-medium;
-
-      fill: @color-white;
-    }
-
-    .tick-value-volume {
-      .number-small;
-
-      fill: @color-lightgray;
-      opacity: 0.55;
-    }
-
-    rect {
-      &.candle-mask-rect {
-        filter: url("#dilate-filter");
-      }
-
-      &.up-period {
-        fill: @color-positive;
-        mask: url("#candle-mask");
-      }
-
-      &.down-period {
-        fill: @color-negative2;
-      }
-    }
-
-    line {
-      &.up-period {
-        stroke: @color-positive;
-      }
-
-      &.down-period {
-        stroke: @color-negative2;
-      }
-    }
-
-    .period-volume {
-      fill: @color-dark-grayish-purple;
-
-      &.hovered {
-        fill: @color-bright-gray-purple;
-      }
-    }
-
-    .period-volume-background {
-      border-radius: 2px;
-      fill: @color-light-gray;
-      opacity: 0;
-
-      &.hovered {
-        opacity: 0.1;
-      }
-    }
-
-    .period-hover-target {
-      fill-opacity: 0;
-    }
-
-    line.crosshair {
-      fill: none;
-      stroke: @color-white;
-      stroke-dasharray: 1;
-    }
-
-    .period-hover {
-      fill: none;
-      pointer-events: visible;
-    }
-
-    .candlestick-x-axis {
-      line,
-      path {
-        stroke: @color-lightgray;
-        stroke-width: 1px;
-      }
-
-      text {
-        .number-small;
-
-        fill: @color-white;
-        text-anchor: middle;
-      }
-    }
-  }
-}
-
-.MarketOutcomeCandlestick__null-message {
-  fill: @color-gray;
-}
-
-.MarketOutcomeCandlestick__ticks-container {
-  position: absolute;
-  width: 100%;
-}
-
-.MarketOutcomeCandlestick__chart-container {
-  overflow-x: auto;
-  overflow-y: hidden;
-  position: absolute;
 }

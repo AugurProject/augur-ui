@@ -1,102 +1,95 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
-import makePath from "modules/routes/helpers/make-path";
 
-import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
-import PortfolioStyles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
-import { MARKETS } from "modules/routes/constants/views";
+// import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
+import FilterBox from "modules/portfolio/components/common/filter-box";
+import MarketRow from "modules/portfolio/components/common/market-row";
+
+import { ALL_MARKETS } from "modules/common-elements/constants";
+
+const sortByOptions = [
+  {
+    label: "Sort by Most Recent",
+    value: "creationTime",
+    comp(marketA, marketB) {
+      return marketB.creationTime.timestamp - marketA.creationTime.timestamp;
+    }
+  },
+  {
+    label: "Sort by Expiring Soonest",
+    value: "endTime",
+    comp(marketA, marketB) {
+      return marketB.endTime.timestamp - marketA.endTime.timestamp;
+    }
+  }
+];
+
+function filterComp(input, market) {
+  return market.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+}
 
 export default class Positions extends Component {
   static propTypes = {
-    currentTimestamp: PropTypes.number.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    transactionsStatus: PropTypes.object.isRequired,
-    openPositionMarkets: PropTypes.array.isRequired,
-    reportingMarkets: PropTypes.array.isRequired,
-    closedMarkets: PropTypes.array.isRequired,
-    loadAccountTrades: PropTypes.func.isRequired,
-    marketsCount: PropTypes.number.isRequired,
-    claimTradingProceeds: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool.isRequired
+    // currentTimestamp: PropTypes.number.isRequired,
+    // location: PropTypes.object.isRequired,
+    // history: PropTypes.object.isRequired,
+    // transactionsStatus: PropTypes.object.isRequired,
+    markets: PropTypes.object.isRequired,
+    loadAccountTrades: PropTypes.func.isRequired
+    // marketsCount: PropTypes.number.isRequired
+    // claimTradingProceeds: PropTypes.func.isRequired,
+    // isMobile: PropTypes.bool.isRequired
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filteredMarkets: props.markets[ALL_MARKETS],
+      tab: ALL_MARKETS
+    };
+
+    this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
+  }
 
   componentWillMount() {
     const { loadAccountTrades } = this.props;
     loadAccountTrades();
   }
 
+  updateFilteredMarkets(filteredMarkets, tab) {
+    this.setState({ filteredMarkets });
+    if (tab) {
+      this.setState({ tab });
+    }
+  }
+
   render() {
-    const {
-      claimTradingProceeds,
-      closedMarkets,
-      currentTimestamp,
-      history,
-      isMobile,
-      location,
-      marketsCount,
-      openPositionMarkets,
-      reportingMarkets,
-      transactionsStatus
-    } = this.props;
+    const { markets } = this.props;
+    const { filteredMarkets, tab } = this.state;
+
     return (
-      <section>
-        <Helmet>
-          <title>Positions</title>
-        </Helmet>
-        {marketsCount !== 0 && (
+      <FilterBox
+        title="Positions"
+        showFilterSearch
+        sortByOptions={sortByOptions}
+        updateFilteredData={this.updateFilteredMarkets}
+        filteredData={filteredMarkets}
+        data={markets}
+        filterComp={filterComp}
+        bottomTabs
+        rows={
           <div>
-            <PositionsMarketsList
-              title="Open"
-              markets={openPositionMarkets}
-              location={location}
-              history={history}
-              transactionsStatus={transactionsStatus}
-              currentTimestamp={currentTimestamp}
-              isMobile={isMobile}
-              paginationName="open"
-              noTopPadding
-            />
-            <PositionsMarketsList
-              title="In Reporting"
-              markets={reportingMarkets}
-              location={location}
-              history={history}
-              transactionsStatus={transactionsStatus}
-              positionsDefault={false}
-              currentTimestamp={currentTimestamp}
-              isMobile={isMobile}
-              paginationName="reporting"
-            />
-            <PositionsMarketsList
-              title="Resolved"
-              markets={closedMarkets}
-              location={location}
-              history={history}
-              transactionsStatus={transactionsStatus}
-              positionsDefault={false}
-              currentTimestamp={currentTimestamp}
-              claimTradingProceeds={claimTradingProceeds}
-              isMobile={isMobile}
-              paginationName="resolved"
-              addNullPadding
-            />
+            {filteredMarkets.map(market => (
+              <MarketRow
+                key={"position_" + market.id}
+                market={market}
+                showState={tab === ALL_MARKETS}
+              />
+            ))}
           </div>
-        )}
-        {marketsCount === 0 && (
-          <div className={PortfolioStyles.NoMarkets__container}>
-            <span>You don&apos;t have any positions.</span>
-            <Link
-              className={PortfolioStyles.NoMarkets__link}
-              to={makePath(MARKETS)}
-            >
-              <span>Click here to view markets.</span>
-            </Link>
-          </div>
-        )}
-      </section>
+        }
+      />
     );
   }
 }

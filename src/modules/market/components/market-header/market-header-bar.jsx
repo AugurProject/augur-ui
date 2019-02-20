@@ -1,23 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import determineMarketPhase from "utils/determine-market-phase";
 import Styles from "modules/market/components/market-header/market-header-bar.styles";
-import classNames from "classnames";
 import { FavoritesButton } from "modules/common-elements/buttons";
-import { YES_NO } from "modules/common-elements/constants";
+import {
+  MarketStatusLabel,
+  MarketTypeLabel
+} from "modules/common-elements/labels";
+import * as constants from "modules/common-elements/constants";
 
 const MarketHeaderBar = ({
-  reportingState,
   addToFavorites,
   isLogged,
   isFavorite,
-  isMobile,
   collapsedView,
   description,
-  marketType
+  marketType,
+  marketStatus
 }) => {
-  const phase = determineMarketPhase(reportingState);
-
   if (collapsedView) {
     return (
       <section className={Styles.MarketHeaderBar}>
@@ -28,33 +27,8 @@ const MarketHeaderBar = ({
 
   return (
     <section className={Styles.MarketHeaderBar}>
-      <div className={Styles.MarketHeaderBar__status}>
-        <span
-          className={classNames({
-            [Styles.MarketHeaderBar__collapsed]: collapsedView
-          })}
-        >
-          {phase}
-        </span>
-        <span
-          className={classNames(
-            {
-              [Styles.MarketHeaderBar__underline__open]: phase === "Open"
-            },
-            {
-              [Styles.MarketHeaderBar__underline__resolved]:
-                phase === "Resolved"
-            },
-            {
-              [Styles.MarketHeaderBar__underline__reporting]:
-                phase !== "Resolved" && phase !== "Open"
-            }
-          )}
-        />
-      </div>
-      <div className={Styles.MarketHeaderBar__type}>
-        {marketType === YES_NO ? "Yes/No" : marketType}
-      </div>
+      <MarketStatusLabel marketStatus={marketStatus} />
+      <MarketTypeLabel marketType={marketType} />
       {addToFavorites && (
         <div className={Styles.MarketHeaderBar__watchlist__container}>
           <FavoritesButton
@@ -69,22 +43,20 @@ const MarketHeaderBar = ({
 };
 
 MarketHeaderBar.propTypes = {
-  reportingState: PropTypes.string,
+  marketStatus: PropTypes.string,
   isLogged: PropTypes.bool,
   isFavorite: PropTypes.bool,
   addToFavorites: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool,
   collapsedView: PropTypes.bool,
   description: PropTypes.string.isRequired,
   marketType: PropTypes.string.isRequired
 };
 
 MarketHeaderBar.defaultProps = {
-  reportingState: "",
   isLogged: false,
   isFavorite: false,
-  isMobile: false,
-  collapsedView: false
+  collapsedView: false,
+  marketStatus: constants.MARKET_OPEN
 };
 
 export default MarketHeaderBar;

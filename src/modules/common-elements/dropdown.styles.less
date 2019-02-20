@@ -1,0 +1,176 @@
+@import (reference) "~assets/styles/shared";
+
+.Dropdown {
+  background: @color-theme-primary;
+  border: 1px solid @color-highlight;
+  border-radius: @border-radius-default;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  width: 100%;
+
+  > select {
+    display: none;
+  }
+
+  > button {
+    align-items: center;
+    color: @color-secondary-text;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    white-space: nowrap;
+    width: 100%;
+
+    > b {
+      margin-right: auto;
+    }
+
+    > svg > path {
+      fill: none;
+      stroke: @color-neutral;
+    }
+  }
+
+  > div {
+    background-color: @color-secondary-text;
+    border-radius: @border-radius-default;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 105%;
+    z-index: @mask;
+
+    &.active {
+      display: block;
+    }
+
+    > button {
+      color: @color-primary-background;
+      position: relative;
+      text-align: left;
+      transition: background-color 0.15s ease;
+      white-space: nowrap;
+      width: 100%;
+
+      &:hover {
+        background-color: @color-highlight-more-faded;
+      }
+
+      &::before {
+        background-color: @color-highlight-extra-faded;
+        bottom: 0;
+        content: "";
+        height: 1px;
+        position: absolute;
+      }
+    }
+  }
+
+  &:hover {
+    background: @color-highlight-faded;
+
+    > button > svg > path {
+      stroke: @color-secondary-text;
+    }
+  }
+}
+
+.Dropdown_Large {
+  .Dropdown;
+
+  height: 3rem;
+  padding: @size-smaller @size-large;
+
+  > .Dropdown__label {
+    .text-normal;
+
+    font-weight: @weight-medium;
+    line-height: @size-medium;
+
+    > svg {
+      flex: 0 0 1.25rem;
+      height: 1.25rem;
+      margin-left: 0.5rem;
+      width: 1.25rem;
+
+      > path {
+        stroke-width: 0.125rem;
+      }
+    }
+  }
+
+  > .Dropdown__list {
+    background-color: @color-secondary-text;
+    border-radius: @border-radius-default;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 105%;
+
+    &.active {
+      display: block;
+    }
+
+    > button {
+      .text-small;
+
+      line-height: @size-normal;
+      padding: @size-smaller @size-large;
+
+      &::before {
+        left: @size-large;
+        right: @size-large;
+      }
+    }
+  }
+}
+
+.Dropdown_Normal {
+  .Dropdown;
+
+  height: 2rem;
+  padding: @size-smallest @size-smaller;
+
+  > .Dropdown__label {
+    .text-smallest;
+
+    line-height: @size-smaller;
+
+    > svg {
+      height: 0.25rem;
+      margin-left: 0.5rem;
+      width: 0.5rem;
+
+      > path {
+        stroke-width: 0.125rem;
+      }
+    }
+  }
+
+  > .Dropdown__list {
+    background-color: @color-secondary-text;
+    border-radius: @border-radius-default;
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 105%;
+
+    &.active {
+      display: block;
+    }
+
+    > button {
+      .text-smallest;
+
+      line-height: @size-smaller;
+      padding: 0.375rem @size-smaller;
+
+      &::before {
+        left: @size-smaller;
+        right: @size-smaller;
+      }
+    }
+  }
+}

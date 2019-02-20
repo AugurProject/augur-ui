@@ -173,6 +173,19 @@ export function getMinutesRemaining(endUnixTimestamp, startUnixTimestamp) {
   );
 }
 
+export function getSecondsRemaining(endUnixTimestamp, startUnixTimestamp) {
+  if (!endUnixTimestamp || !startUnixTimestamp) return 0;
+  if (startUnixTimestamp > endUnixTimestamp) return 0;
+  const remainingTicks = endUnixTimestamp - startUnixTimestamp;
+  // use MINUTES_IN_A_HOUR 2 times since there are also 60 seconds in a minute
+  return Math.floor(
+    (remainingTicks / NUMBER_OF_SECONDS_IN_A_DAY) *
+      HOURS_IN_A_DAY *
+      MINUTES_IN_A_HOUR *
+      MINUTES_IN_A_HOUR
+  );
+}
+
 export function getHoursMinusDaysRemaining(
   endUnixTimestamp,
   startUnixTimestamp
@@ -189,4 +202,19 @@ export function getMinutesMinusHoursRemaining(
   const getHours = getHoursRemaining(endUnixTimestamp, startUnixTimestamp);
   const hours = getHours * 60;
   return getMinutesRemaining(endUnixTimestamp, startUnixTimestamp) - hours;
+}
+
+export function getMarketAgeInDays(creationTimeTimestamp) {
+  const start = moment(creationTimeTimestamp * 1000).utc();
+  const daysPassed = moment().diff(start, "days");
+  return daysPassed;
+}
+
+export function getSecondsMinusMinutesRemaining(
+  endUnixTimestamp,
+  startUnixTimestamp
+) {
+  const getMinutes = getMinutesRemaining(endUnixTimestamp, startUnixTimestamp);
+  const minutes = getMinutes * 60;
+  return getSecondsRemaining(endUnixTimestamp, startUnixTimestamp) - minutes;
 }

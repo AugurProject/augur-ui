@@ -1,0 +1,153 @@
+@import (reference) '~assets/styles/shared';
+
+.ProgressLabel {
+  .number-small;
+
+  align-items: baseline;
+  color: @color-neutral;
+  display: flex;
+  flex-flow: column nowrap;
+  line-height: @size-small;
+
+  > span:last-of-type {
+    .number-large-bold;
+
+    color: @color-secondary-text;
+    line-height: @size-normal;
+  }
+
+  &.ProgressLabel__Warning {
+    > span:last-of-type {
+      color: @color-in-reporting;
+    }
+  }
+}
+
+.TimeLabel {
+  color: @color-secondary-text;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 2.875rem;
+  line-height: @size-small;
+
+  > span:first-of-type {
+    .number-medium;
+
+    color: @color-neutral;
+    text-transform: capitalize;
+  }
+
+  > span {
+    .number-large-bold;
+  }
+
+  > span:last-of-type {
+    .number-small;
+
+    line-height: @size-smaller;
+  }
+}
+
+.TimeProgressBar {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  width: 100%;
+
+  > span:first-of-type {
+    background: @color-primary-action;
+    height: var(--percent-done);
+    position: relative;
+    top: 0;
+    width: 1px;
+  }
+
+  > span {
+    background: @color-primary-action;
+    border-radius: @border-radius-default;
+    height: 5px;
+    transform: matrix(-1, 0, 0, 1, 0, 0);
+    width: 5px;
+  }
+
+  > span:last-of-type {
+    background: @color-neutral;
+    height: var(--percent-to-go);
+    position: relative;
+    top: 0;
+    width: 1px;
+  }
+
+  @media @breakpoint-mobile {
+    flex: 1;
+    flex-flow: row nowrap;
+    height: 0.5rem;
+    width: 100%;
+
+    > span:first-of-type {
+      height: 1px;
+      width: var(--percent-done);
+    }
+
+    > span:last-of-type {
+      height: 1px;
+      width: var(--percent-to-go);
+    }
+  }
+}
+
+.MarketTimeline {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 8.3125rem; // 133px
+
+  > span {
+    flex: 0;
+  }
+
+  > div:first-of-type {
+    .number-medium;
+
+    color: @color-neutral;
+    display: none;
+    text-transform: capitalize;
+
+    &::before {
+      content: attr(data-start-label);
+    }
+
+    &::after {
+      content: attr(data-end-label);
+    }
+  }
+
+  > div {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    margin-left: @size-small;
+  }
+
+  @media @breakpoint-mobile {
+    flex-flow: column nowrap;
+    height: 100%;
+    margin: 0;
+    width: 100%;
+
+    > div:first-of-type {
+      display: flex;
+      height: 1rem;
+      margin: 0;
+    }
+
+    > div {
+      flex-flow: row nowrap;
+      margin: 0;
+
+      > span > span:first-of-type {
+        display: none;
+      }
+    }
+  }
+}
