@@ -4,7 +4,7 @@ import { createBigNumber } from "utils/create-big-number";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
-import { keys, each, isEqual, cloneDeep } from "lodash";
+import { filter, keys, each, isEqual, cloneDeep } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
@@ -109,15 +109,14 @@ export default class MarketOutcomesChartHighchart extends Component {
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
     const { bucketedPriceTimeSeries, selectedOutcome } = this.props;
-    const containerHeight = this.container.clientHeight;
+    const { containerHeight } = this.state;
     this.buidOptions(
       bucketedPriceTimeSeries,
       selectedOutcome,
       containerHeight,
       options => {
         this.chart = Highcharts.stockChart(this.container, options);
-      },
-      () => this.setState({ containerHeight })
+      }
     );
   }
 
@@ -181,7 +180,11 @@ export default class MarketOutcomesChartHighchart extends Component {
     options.height = containerHeight;
 
     const useArea = priceTimeSeries && keys(priceTimeSeries).length === 1;
-    const hasData = priceTimeSeries && keys(priceTimeSeries).length > 0;
+    const hasData =
+      priceTimeSeries &&
+      keys(priceTimeSeries) &&
+      filter(keys(priceTimeSeries), key => priceTimeSeries[key].length > 0)
+        .length;
 
     const series = [];
     each(keys(priceTimeSeries), id => {
