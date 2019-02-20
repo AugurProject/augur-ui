@@ -1,9 +1,5 @@
 import React, { Component, ReactNode } from "react";
 
-import BoxHeader from "modules/portfolio/components/common/box-header";
-import { SquareDropdown } from "modules/common-elements/dropdown";
-import Input from "modules/common/components/input/input";
-import Styles from "modules/portfolio/components/common/filter-box.styles";
 import { find } from "lodash";
 import {
   ALL_MARKETS,
@@ -11,24 +7,9 @@ import {
   MARKET_REPORTING,
   MARKET_CLOSED
 } from "modules/common-elements/constants";
+import QuadBox from "modules/portfolio/components/common/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
-
-export interface NameValuePair {
-  label: string;
-  value: string;
-  comp: Function;
-}
-
-export interface Market {
-  marketId: string,
-  description: string
-}
-
-export interface Tab {
-  key: string,
-  label: string,
-  num: number
-}
+import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
@@ -39,7 +20,7 @@ export interface FilterBoxProps {
   rows?: ReactNode;
   bottomBarContent?: ReactNode;
   sortByOptions: Array<NameValuePair>;
-  filteredData: Array<Market>; // can be markets now or extended to be individual orders
+  filteredData: Array<Market>;
   data: MarketsByReportingState;
   updateFilteredData: Function; 
   filterComp: Function;
@@ -78,7 +59,6 @@ let tabs = [
   }
 ];
 
-// todo: need to do initial filter/search of the same parameters, see when searching for ""
 export default class FilterBox extends React.Component<FilterBoxProps, FilterBoxState>  {
   state: FilterBoxState = {
     search: '',
@@ -88,13 +68,14 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   };
 
   componentWillReceiveProps(nextProps: FilterBoxProps) {
-    if (nextProps.title === this.props.title && nextProps.data !== this.props.data) {
-      this.calculateTabNums(nextProps.data, this.state.search)
+    if (nextProps.data !== this.props.data) {        
+      this.calculateTabNums(nextProps.data, this.state.search);
     }
   }
 
   calculateTabNums = (data: MarketsByReportingState, input: string) => {
    const { filterComp } = this.props;
+   const { tabs } = this.state;
 
    for (var i = 0; i < tabs.length; i++) {
       const length = data[tabs[i].key].filter(filterComp.bind(this, input)).length;
@@ -162,39 +143,25 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       sortByOptions,
       showFilterSearch,
       bottomTabs,
-      data
+      data,
+      updateFilteredData,
+      filterComp
     } = this.props;
 
-    const { search, selectedTab } = this.state;
+    const { search, selectedTab, tabs } = this.state;
+
 
     return (
-      <div className={Styles.FilterBox}>
-        <BoxHeader 
-          title={title} 
-          rightContent={showFilterSearch &&
-            <div style={{ display: 'flex', maxHeight: '30px'}}>
-              <Input
-                isSearch
-                isClearable
-                noFocus
-                placeholder={'Search'}
-                value={search}
-                onChange={this.onSearchChange}
-              />
-              <SquareDropdown
-                options={sortByOptions}
-                onChange={this.updateSortBy}
-              />
-            </div>
-          }  
-          bottomBarContent={bottomTabs &&
-            <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
-          } 
-         />
-        <div className={Styles.FilterBox__content}>
-          {rows}
-        </div>
-      </div>
+      <QuadBox
+        title={title}
+        showFilterSearch={showFilterSearch}
+        onSearchChange={this.onSearchChange}
+        sortByOptions={sortByOptions}
+        updateDropdown={this.updateSortBy}
+        bottomBarContent={bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>}
+        rows={rows}
+        search={search}
+      />
     )
   }
 }
