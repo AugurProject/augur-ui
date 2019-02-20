@@ -29,15 +29,8 @@ function filterComp(input, market) {
 
 export default class Positions extends Component {
   static propTypes = {
-    currentTimestamp: PropTypes.number.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    transactionsStatus: PropTypes.object.isRequired,
     markets: PropTypes.object.isRequired,
-    loadAccountTrades: PropTypes.func.isRequired,
-    marketsCount: PropTypes.number.isRequired,
-    claimTradingProceeds: PropTypes.func.isRequired,
-    isMobile: PropTypes.bool.isRequired
+    loadAccountTrades: PropTypes.func.isRequired
   };
 
   constructor(props) {

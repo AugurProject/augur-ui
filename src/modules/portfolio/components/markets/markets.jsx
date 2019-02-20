@@ -28,18 +28,8 @@ function filterComp(input, market) {
 
 class MyMarkets extends Component {
   static propTypes = {
-    collectMarketCreatorFees: PropTypes.func.isRequired,
-    loadMarketsInfoIfNotLoaded: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-    isLogged: PropTypes.bool.isRequired,
-    isMobile: PropTypes.bool.isRequired,
     loadMarkets: PropTypes.func.isRequired,
-    loadMarketsInfo: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
     myMarkets: PropTypes.object.isRequired,
-    toggleFavorite: PropTypes.func.isRequired,
-    pendingLiquidityOrders: PropTypes.object.isRequired,
-    outcomes: PropTypes.object.isRequired,
     loadDisputingMarkets: PropTypes.func.isRequired
   };
 
