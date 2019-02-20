@@ -236,7 +236,7 @@ class Paginator extends Component {
                   search: s.backQuery
                 }}
               >
-                <i>{PaginationArrorw}</i>
+                <button aria-label="Previous page">{PaginationArrorw}</button>
               </Link>
             )}
           </div>
@@ -258,9 +258,12 @@ class Paginator extends Component {
                   search: s.forwardQuery
                 }}
               >
-                <i className={Styles.Paginator__forwardArrorw}>
+                <button
+                  className={Styles.Paginator__forwardArrorw}
+                  aria-label="Next page"
+                >
                   {PaginationArrorw}
-                </i>
+                </button>
               </Link>
             )}
           </div>
