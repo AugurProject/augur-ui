@@ -1,59 +1,54 @@
 // Colors for the V2 Redesign
-@color-primary-text: rgba(20, 14, 31, 1);
-@color-secondary-text: rgba(255, 255, 255, 1); // #FFFFFF
-@color-secondary-text-muted: rgba(255, 255, 255, 0.4); // #FFFFFF
-@color-secondary-text-disabled: rgba(255, 255, 255, 0.2);
-@color-alternate-text: rgba(119, 119, 119, 1); // #777777
-@color-primary-light: rgba(68, 59, 89, 1); // #443B59
-@color-primary-alternate: rgba(43, 36, 56, 1); // #2B2438
-@color-tertiary-one: rgba(26, 22, 39, 1);// #1A1627
+@color-primary-text: #1A1D23;
+@color-secondary-text: #FFFFFF;
+@color-alternate-text: #777777;
+@color-primary-light: #443B59;
+@color-primary-alternate: #2B2438;
+@color-tertiary-one: #1A1627;
 
-@color-shadow-text: rgba(118, 115, 126, 1); // #76737E
-@color-primary-background: rgba(15, 10, 25, 1); // #0F0A19
-@color-secondary-background: rgba(18, 13, 27, 1); // #120D1B
-@color-theme-primary: rgba(33, 26, 50, 1); // #211A32
+@color-shadow-text: #76737E;
+@color-primary-background: #0F0A19;
+@color-secondary-background: #120D1B;
+@color-theme-primary: #211A32;
 
-@color-primary-action: rgba(9, 207, 225, 1); // #09CFE1
-@color-secondary-action: rgba(22, 16, 34, 1); // #161022
-@color-secondary-border: rgba(43, 36, 56, 1); // #2B2438
+@color-primary-action: #09CFE1;
+@color-secondary-action: #161022;
+@color-secondary-border: #2B2438;
 
-@color-open: rgba(125, 255, 168, 1); // #7DFFA8
-@color-in-reporting: rgba(241, 231, 0, 1); // #F1E700
-@color-resolved: rgba(241, 43, 0, 1); // #F12B00
+@color-open: #7DFFA8;
+@color-in-reporting: #F1E700;
+@color-resolved: #F12B00;
 
-@color-highlight: rgba(102, 87, 137, 1); // #665789
-@color-highlight-faded: rgba(102, 87, 137, 0.3);
-@color-highlight-more-faded: rgba(102, 87, 137, 0.2);
-@color-highlight-extra-faded: rgba(102, 87, 137, 0.1);
-@color-highlight-masked: rgba(196, 196, 196, 0.1); // C4C4C4
+@color-highlight: #665789;
+@color-highlight-masked: fade(#C4C4C4, 10%);
 
-@color-positive: rgba(0, 241, 196, 1); // #00F1C4
-@color-neutral: rgb(153, 153, 153, 1); // #999999
-@color-negative: rgba(255, 125, 94, 1); // #FF7D5E
+@color-positive: #00F1C4;
+@color-neutral: #999999;
+@color-negative: #FF7D5E;
 
-@color-less-neutral:rgba(206, 215, 216, 1); // #CED7D8
+@color-less-neutral:#CED7D8;
 
-@color-primary-button-background: @color-primary-action; // #09CFE1
-@color-primary-button-background-hover: rgba(0, 234, 255, 1); // #00EAFF
-@color-primary-button-background-disabled: rgba(9, 207, 225, 0.3); // #09CFE1
+@color-primary-button-background: @color-primary-action;
+@color-primary-button-background-hover: #00EAFF;
+@color-primary-button-background-disabled: fade(#09CFE1, 30%);
 
-@color-buy-order-button-background: rgba(0, 241, 196, 0.4);
-@color-buy-order-button-background-hover: rgba(0, 241, 196, 0.6);
-@color-buy-order-button-background-disabled: rgba(0, 241, 196, 0.2);
+@color-buy-order-button-background: fade(@color-positive, 40%);
+@color-buy-order-button-background-hover: fade(@color-positive, 60%);
+@color-buy-order-button-background-disabled: fade(@color-positive, 20%);
 
-@color-buy-order-button-border: @color-positive; // #00F1C4
-@color-buy-order-button-border-disabled: rgba(0, 241, 196, 0.1);
+@color-buy-order-button-border: @color-positive;
+@color-buy-order-button-border-disabled: fade(@color-positive, 10%);
 
-@color-sell-order-button-background: rgba(255, 125, 94, 0.4);
-@color-sell-order-button-background-hover: rgba(255, 125, 94, 0.6);
-@color-sell-order-button-background-disabled: rgba(255, 125, 94, 0.2);
+@color-sell-order-button-background: fade(@color-negative, 40%);
+@color-sell-order-button-background-hover: fade(@color-negative, 60%);
+@color-sell-order-button-background-disabled: fade(@color-negative, 20%);
 
-@color-sell-order-button-border: @color-negative; // #FF7D5E
-@color-sell-order-button-border-disabled: rgba(255, 125, 94, 0.1);
+@color-sell-order-button-border: @color-negative;
+@color-sell-order-button-border-disabled: fade(@color-negative, 10%);
 
-@color-primary-button-text: @color-primary-text; // #140E1F
-@color-secondary-button-text: @color-secondary-text; // #FFFFFF
-@color-secondary-button-text-disabled: @color-secondary-text-disabled;
+@color-primary-button-text: @color-primary-background;
+@color-secondary-button-text: @color-secondary-text;
+@color-secondary-button-text-disabled: fade(@color-secondary-text, 20%);
 
 //  Chart
 @color-outcome-one: #fadca2;

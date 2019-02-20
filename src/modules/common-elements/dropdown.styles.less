@@ -55,11 +55,11 @@
       width: 100%;
 
       &:hover {
-        background-color: @color-highlight-more-faded;
+        background-color: fade(@color-highlight, 20%);
       }
 
       &::before {
-        background-color: @color-highlight-extra-faded;
+        background-color: fade(@color-highlight, 10%);
         bottom: 0;
         content: "";
         height: 1px;
@@ -69,7 +69,7 @@
   }
 
   &:hover {
-    background: @color-highlight-faded;
+    background: fade(@color-highlight, 30%);
 
     > button > svg > path {
       stroke: @color-secondary-text;
