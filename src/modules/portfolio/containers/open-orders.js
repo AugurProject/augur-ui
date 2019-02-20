@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import memoize from "memoizee";
 
 import { selectCurrentTimestamp, selectOrphanOrders } from "src/select-state";
-import Positions from "modules/portfolio/components/positions/positions";
+import OpenOrders from "modules/portfolio/components/orders/open-orders";
 import getLoginAccountPositions from "modules/positions/selectors/login-account-positions";
 import getOpenOrders from "modules/orders/selectors/open-orders";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
@@ -10,25 +10,41 @@ import { triggerTransactionsExport } from "modules/transactions/actions/trigger-
 import { selectMarket } from "modules/markets/selectors/market";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
+import { sortOpenOrders } from "modules/orders/selectors/open-orders";
 
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
-  const positions = getLoginAccountPositions();
- 
-  // NOTE: for data wiring, this should probably be just done as calls for getting openPosition Markets, getting Reporting Markets, and getting Closed Markets respectively from the node and just passed the expected keys below
-  const markets = getPositionsMarkets(positions);
+  const openOrders = getOpenOrders();
+
+  const markets = getPositionsMarkets(openOrders);
   const marketsCount = markets.length;
-  const marketsObject = createMarketsStateObject(markets);
+
+  const individualOrders = [];
+  for (var id in markets) {
+    const market = markets[id];
+
+    if (market && market.outcomes && market.outcomes.length > 0) {
+      const newMarket = sortOpenOrders(market);
+      const openOrders = newMarket.outcomes.reduce((p, outcome) => {
+        if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
+          outcome.userOpenOrders.forEach(order => p.push(order));
+        }
+        return p;
+      }, []);
+      Array.prototype.push.apply(individualOrders,openOrders); 
+    }
+  }
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
     marketsCount,
     transactionsStatus: state.transactionsStatus,
-    markets: marketsObject,
+    markets: markets,
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
-    isMobile: state.appStatus.isMobile
+    isMobile: state.appStatus.isMobile,
+    openOrders: individualOrders
   };
 };
 
@@ -40,16 +56,16 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const getPositionsMarkets = memoize(
-  (positions) =>
+  (openOrders) =>
     Array.from(
-      new Set([...positions.markets])
+      new Set([...openOrders])
     ),
   { max: 1 }
 );
 
-const PositionsContainer = connect(
+const OpenOrdersContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Positions);
+)(OpenOrders);
 
-export default PositionsContainer;
+export default OpenOrdersContainer;
