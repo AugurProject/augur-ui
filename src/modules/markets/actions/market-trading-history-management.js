@@ -1,5 +1,6 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
+import { loadReportingFinal } from "src/modules/reports/actions/load-reporting-final";
 
 export const UPDATE_MARKET_TRADING_HISTORY = "UPDATE_MARKET_TRADING_HISTORY";
 export const UPDATE_USER_TRADING_HISTORY = "UPDATE_USER_TRADING_HISTORY";
@@ -50,6 +51,7 @@ export const loadUserMarketTradingHistory = (options, callback = logError) => (
   getTradingHistory(allOptions, (err, tradingHistory) => {
     if (err) return callback(err);
     if (tradingHistory == null) return callback(null, []);
+    dispatch(loadReportingFinal());
     dispatch(updateUserTradingHistory(loginAccount.address, tradingHistory));
   });
 };

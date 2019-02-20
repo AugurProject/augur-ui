@@ -7,18 +7,46 @@ import { loadAccountTrades } from "modules/positions/actions/load-account-trades
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
+import { selectMarket } from "modules/markets/selectors/market";
 // delete these files if not needed
 // import getOpenOrders, {
 //  sortOpenOrders
 // } from "modules/orders/selectors/open-orders";
-import { groupBy, keys } from "lodash";
+import { groupBy, keys, differenceBy, pick, map } from "lodash";
 
 const mapStateToProps = state => {
-  const account = state.loginAccount.address;
-  const filledOrders = state.filledOrders[account] || [];
-  const groupedFilledOrders = groupBy("marketId", filledOrders);
-  const markets = keys(groupedFilledOrders);
-  const marketsCount = keys(groupedFilledOrders).length;
+  const { marketReportState, loginAccount, filledOrders } = state;
+  const resolvedMarkets = marketReportState.resolved;
+  const account = loginAccount.address;
+  const userFilledOrders = filledOrders[account] || [];
+  const nonFinalizedMarketFilledOrders = differenceBy(
+    userFilledOrders,
+    resolvedMarkets,
+    "marketId"
+  );
+  const groupedFilledOrders = groupBy(
+    nonFinalizedMarketFilledOrders,
+    "marketId"
+  );
+  const marketIds = keys(groupedFilledOrders);
+  const markets = map(
+    map(marketIds, m =>
+      pick(selectMarket(m), [
+        "description",
+        "id",
+        "creationTime",
+        "reportingState"
+      ])
+    ),
+    item => ({
+      description: item.description,
+      marketId: item.id,
+      creationTime: item.creationTime,
+      marketStatus: item.reportingState
+    })
+  );
+
+  const marketsCount = markets.length;
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
@@ -28,7 +56,7 @@ const mapStateToProps = state => {
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
     isMobile: state.appStatus.isMobile,
-    filledOrders,
+    filledOrders: userFilledOrders,
     groupedFilledOrders
   };
 };
