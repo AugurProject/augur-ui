@@ -7,31 +7,18 @@ import { loadAccountTrades } from "modules/positions/actions/load-account-trades
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
-import getOpenOrders, {
-  sortOpenOrders
-} from "modules/orders/selectors/open-orders";
+// delete these files if not needed
+// import getOpenOrders, {
+//  sortOpenOrders
+// } from "modules/orders/selectors/open-orders";
+import { groupBy, keys } from "lodash";
 
 const mapStateToProps = state => {
-  const openOrders = getOpenOrders();
-
-  const markets = getPositionsMarkets(openOrders);
-  const marketsCount = markets.length;
-
-  const individualOrders = [];
-  Object.keys(markets).forEach(id => {
-    const market = markets[id];
-
-    if (market && market.outcomes && market.outcomes.length > 0) {
-      const newMarket = sortOpenOrders(market);
-      const openOrders = newMarket.outcomes.reduce((p, outcome) => {
-        if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
-          outcome.userOpenOrders.forEach(order => p.push(order));
-        }
-        return p;
-      }, []);
-      Array.prototype.push.apply(individualOrders, openOrders);
-    }
-  });
+  const account = state.loginAccount.address;
+  const filledOrders = state.filledOrders[account] || [];
+  const groupedFilledOrders = groupBy("marketId", filledOrders);
+  const markets = keys(groupedFilledOrders);
+  const marketsCount = keys(groupedFilledOrders).length;
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
@@ -41,7 +28,8 @@ const mapStateToProps = state => {
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
     isMobile: state.appStatus.isMobile,
-    filledOrders: individualOrders
+    filledOrders,
+    groupedFilledOrders
   };
 };
 

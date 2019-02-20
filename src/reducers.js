@@ -42,6 +42,7 @@ import transactionsStatus from "modules/transactions/reducers/transactions-statu
 import universe from "modules/universe/reducers/universe";
 import versions from "modules/app/reducers/versions";
 import pendingOrders from "modules/orders/reducers/pending-orders";
+import filledOrders from "modules/orders/reducers/filled-orders";
 import accountShareBalances from "modules/positions/reducers/account-share-balances";
 
 export function createReducer() {
@@ -81,6 +82,7 @@ export function createReducer() {
     participationTokens,
     pendingLiquidityOrders,
     pendingOrders,
+    filledOrders,
     priceHistory,
     reportingWindowStats,
     reports,
