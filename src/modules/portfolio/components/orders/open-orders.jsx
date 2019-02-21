@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
-import { OpenOrder } from "modules/portfolio/components/common/rows/open-order";
+import OpenOrder from "modules/portfolio/components/common/rows/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
-import { OrderMarketRow } from "modules/portfolio/components/common/rows/order-market-row";
+import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
 
 import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
