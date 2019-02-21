@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
 import { OpenOrder } from "modules/portfolio/components/common/rows/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
+import { OrderMarketRow } from "modules/portfolio/components/common/rows/order-market-row";
 
 import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
@@ -81,11 +82,10 @@ export default class OpenOrders extends Component {
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
-        bottomBarContent={<div />}
+        bottomBarContent={<OpenOrdersHeader />}
         rows={
           <div>
-            {filteredData.map(
-              data =>
+            {filteredData.map(data => (
               <div>
                 {filteredData.map(
                   data =>
@@ -103,13 +103,10 @@ export default class OpenOrders extends Component {
                     )
                 )}
               </div>
-            )}
+            ))}
           </div>
         }
       />
     );
   }
 }
-
-
-

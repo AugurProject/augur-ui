@@ -74,7 +74,6 @@ const mapStateToProps = state => {
     );
     Array.prototype.push.apply(allFilledOrders, formattedFilledOrders);
   });
- 
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
