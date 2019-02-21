@@ -25,8 +25,8 @@ function findOrders(
       }
     ) => {
       const foundOrder = order.find(({ id }) => id === orderId);
-      let amountBN = createBigNumber(amount);
-      let priceBN = createBigNumber(price);
+      const amountBN = createBigNumber(amount);
+      const priceBN = createBigNumber(price);
       let typeOp = type;
 
       const outcomeName =
@@ -37,20 +37,19 @@ function findOrders(
       }
 
       typeOp = type === BUY ? BOUGHT : SOLD;
-      amountBN = formatShares(amountBN);
-      priceBN = formatEther(priceBN);
       const timestampFormatted = convertUnixToFormattedDate(timestamp);
 
       if (foundOrder) {
         foundOrder.trades.push({
           outcome: outcomeName,
-          amount: amountBN,
-          price: priceBN,
+          amount: formatShares(amountBN),
+          price: formatEther(priceBN),
           type: typeOp,
           timestamp: timestampFormatted,
           transactionHash
         });
-        foundOrder.amount = foundOrder.amount.plus(amountBN);
+        // amount has been format-number'ed
+        foundOrder.amount = createBigNumber(foundOrder.amount).plus(amountBN);
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
       } else {
