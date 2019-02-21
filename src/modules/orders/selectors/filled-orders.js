@@ -1,12 +1,8 @@
 import { createBigNumber } from "utils/create-big-number";
-import { BUY, SELL, BOUGHT, SOLD } from "modules/common-elements/constants";
+import { BUY, SELL } from "modules/common-elements/constants";
 import { convertUnixToFormattedDate } from "utils/format-date";
 
-function findOrders(
-  filledOrders,
-  accountId,
-  outcomesData,
-) {
+function findOrders(filledOrders, accountId, outcomesData) {
   const orders = filledOrders.reduce(
     (
       order,
@@ -28,7 +24,8 @@ function findOrders(
       let typeOp = type;
 
       const outcomeName =
-        outcomesData[marketId][outcome].name || outcomesData[marketId][outcome].name;
+        outcomesData[marketId][outcome].name ||
+        outcomesData[marketId][outcome].name;
 
       if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
@@ -79,7 +76,7 @@ function findOrders(
 export function selectFilledOrders(
   marketTradeHistory,
   accountId,
-  outcomesData,
+  outcomesData
 ) {
   if (!marketTradeHistory || marketTradeHistory.length < 1) {
     return [];
@@ -89,11 +86,7 @@ export function selectFilledOrders(
     trade => trade.creator === accountId || trade.filler === accountId
   );
 
-  const orders = findOrders(
-    filledOrders,
-    accountId,
-    outcomesData,
-  );
+  const orders = findOrders(filledOrders, accountId, outcomesData);
   orders.sort((a, b) => b.timestamp - a.timestamp);
   return orders;
 }

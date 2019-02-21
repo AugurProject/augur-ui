@@ -86,9 +86,7 @@ export default class FilledOrdersOrder extends Component {
           </li>
           <li>{orderQuantity}</li>
           <li>{orderPrice}</li>
-          <li>
-            {order.timestamp.formattedShortDate}
-          </li>
+          <li>{order.timestamp.formattedShortDate}</li>
           <li>
             {order.trades.length}
             <ChevronFlip
@@ -127,9 +125,7 @@ export default class FilledOrdersOrder extends Component {
                   >
                     {!isMobile && <li />}
                     <li>{formatShares(trade.amount).formatted}</li>
-                    <li>
-                      {trade.timestamp.formatted}
-                    </li>
+                    <li>{trade.timestamp.formatted}</li>
                     <li>
                       <button
                         className={Styles.FilledOrder__view}

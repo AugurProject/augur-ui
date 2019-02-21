@@ -15,7 +15,13 @@ import { groupBy, keys, differenceBy, pick, map } from "lodash";
 import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 
 const mapStateToProps = state => {
-  const { marketTradingHistory, marketReportState, loginAccount, filledOrders, outcomesData } = state;
+  const {
+    marketTradingHistory,
+    marketReportState,
+    loginAccount,
+    filledOrders,
+    outcomesData
+  } = state;
   const resolvedMarkets = marketReportState.resolved;
   const account = loginAccount.address;
   const userFilledOrders = filledOrders[account] || [];
@@ -42,24 +48,32 @@ const mapStateToProps = state => {
       ])
     ),
     item => {
-      const formattedFilledOrders = selectFilledOrders(groupedFilledOrders[item.id], account, outcomesData)
-      return ({
+      const formattedFilledOrders = selectFilledOrders(
+        groupedFilledOrders[item.id],
+        account,
+        outcomesData
+      );
+      return {
         description: item.description,
         marketId: item.id,
         creationTime: item.creationTime,
         marketStatus: item.reportingState,
         filledOrders: formattedFilledOrders
-      })
+      };
     }
   );
 
   const marketsCount = markets.length;
 
   const allFilledOrders = [];
-  for (var id in marketIds) {
-    const formattedFilledOrders = selectFilledOrders(marketTradingHistory[marketIds[id]], account, outcomesData)
+  marketIds.map(marketId => {
+    const formattedFilledOrders = selectFilledOrders(
+      marketTradingHistory[marketId],
+      account,
+      outcomesData
+    );
     Array.prototype.push.apply(allFilledOrders, formattedFilledOrders);
-  }
+  });
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
@@ -69,7 +83,7 @@ const mapStateToProps = state => {
     transactionsLoading: state.appStatus.transactionsLoading,
     registerBlockNumber: state.loginAccount.registerBlockNumber,
     isMobile: state.appStatus.isMobile,
-    filledOrders: allFilledOrders,
+    filledOrders: allFilledOrders
   };
 };
 

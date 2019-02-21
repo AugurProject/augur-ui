@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
-import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
-import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
-import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
-import MarketRow from "modules/portfolio/components/common/rows/market-row";
+import { OrderMarketRow } from "modules/portfolio/components/common/rows/order-market-row";
+import { FilledOrder } from "modules/portfolio/components/common/rows/filled-order";
+import { FilledOrdersHeader } from "modules/portfolio/components/common/headers/filled-orders-header";
 
 import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
@@ -57,7 +56,8 @@ export default class FilledOrders extends Component {
       return data.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     }
     return (
-      data.outcome && data.outcome.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      data.outcome &&
+      data.outcome.toLowerCase().indexOf(input.toLowerCase()) >= 0
     );
   }
 
@@ -73,7 +73,6 @@ export default class FilledOrders extends Component {
   render() {
     const { markets, filledOrders } = this.props;
     const { filteredData, viewByMarkets } = this.state;
-    
 
     return (
       <FilterSwitchBox
@@ -84,8 +83,7 @@ export default class FilledOrders extends Component {
         data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
-        bottomBarContent={<FilledOrdersHeader />
-        }
+        bottomBarContent={<FilledOrdersHeader />}
         rows={
           <div>
             {filteredData.map(
@@ -97,7 +95,7 @@ export default class FilledOrders extends Component {
                     filledOrders
                   />
                 ) : (
-                   <FilledOrder
+                  <FilledOrder
                     key={"filledOrder_" + data.id}
                     filledOrder={data}
                     toggleClassName={Styles.Orders__orderSingle}
@@ -110,5 +108,3 @@ export default class FilledOrders extends Component {
     );
   }
 }
-
-
