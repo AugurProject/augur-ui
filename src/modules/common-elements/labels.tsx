@@ -6,15 +6,19 @@ import { ClipLoader } from "react-spinners";
 import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
+import {
+  DashlineNormal,
+  DashlineLong
+} from "modules/common/components/dashline/dashline";
 
 export interface MarketTypeProps {
-  marketType: string
+  marketType: string;
 }
 
 export interface MarketStatusProps {
-  marketStatus: string,
-  mini?: boolean,
-  alternate?: boolean
+  marketStatus: string;
+  mini?: boolean;
+  alternate?: boolean;
 }
 
 export enum sizeTypes {
@@ -45,37 +49,59 @@ export interface PropertyLabelProps {
   hint?: HTMLElement;
 }
 
-export const PropertyLabel = (props: PropertyLabelProps) => 
-  <div className={Styles.PropertyLabel}>
-    <span>{props.label} {props.hint &&
-      <>
-      <label
-        className={TooltipStyles.TooltipHint}
-        data-tip
-        data-for={`tooltip-${props.label.replace(" ", "-")}`}
-      >
-        {InfoIcon}
-      </label>
-      <ReactTooltip
-        id={`tooltip-${props.label.replace(" ", "-")}`}
-        className={TooltipStyles.Tooltip}
-        effect="solid"
-        place="right"
-        type="light"
-      >
-        {props.hint}
-      </ReactTooltip>
-      </>
-    }</span>
-    <span>{props.value}</span>
-  </div>;
+export interface LinearPropertyLabelProps {
+  label: string;
+  value: string;
+  size?: sizeTypes;
+}
 
-export const MarketTypeLabel = (props: MarketTypeProps) => 
-  <span
-    className={Styles.MarketTypeLabel}
+export const PropertyLabel = (props: PropertyLabelProps) => (
+  <div className={Styles.PropertyLabel}>
+    <span>
+      {props.label}{" "}
+      {props.hint && (
+        <>
+          <label
+            className={TooltipStyles.TooltipHint}
+            data-tip
+            data-for={`tooltip-${props.label.replace(" ", "-")}`}
+          >
+            {InfoIcon}
+          </label>
+          <ReactTooltip
+            id={`tooltip-${props.label.replace(" ", "-")}`}
+            className={TooltipStyles.Tooltip}
+            effect="solid"
+            place="right"
+            type="light"
+          >
+            {props.hint}
+          </ReactTooltip>
+        </>
+      )}
+    </span>
+    <span>{props.value}</span>
+  </div>
+);
+
+export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
+  <div
+    className={classNames(Styles.LinearPropertyLabel, {
+      [Styles.LinearPropertyLabel_large]: props.size == sizeTypes.LARGE
+    })}
   >
+    <span>{props.label}</span>
+    {props.size === sizeTypes.LARGE && <DashlineLong />}
+    {props.size !== sizeTypes.LARGE && <DashlineNormal />}
+    <span>{props.value}</span>
+  </div>
+);
+
+export const MarketTypeLabel = (props: MarketTypeProps) => (
+  <span className={Styles.MarketTypeLabel}>
     {props.marketType === constants.YES_NO ? "Yes/No" : props.marketType}
-  </span>;
+  </span>
+);
 
 export const MarketStatusLabel = (props: MarketStatusProps) => {
   const { marketStatus, mini, alternate } = props;
@@ -98,42 +124,39 @@ export const MarketStatusLabel = (props: MarketStatusProps) => {
       break;
   }
   return (
-  <span
-    className={classNames(Styles.MarketStatus, {
-      [Styles.MarketStatus_alternate]: alternate,
-      [Styles.MarketStatus_mini]: mini,
-      [Styles.MarketStatus_open]: open,
-      [Styles.MarketStatus_resolved]: resolved,
-      [Styles.MarketStatus_reporting]: reporting
-    })}
-  >
-    {text}
-  </span>
+    <span
+      className={classNames(Styles.MarketStatus, {
+        [Styles.MarketStatus_alternate]: alternate,
+        [Styles.MarketStatus_mini]: mini,
+        [Styles.MarketStatus_open]: open,
+        [Styles.MarketStatus_resolved]: resolved,
+        [Styles.MarketStatus_reporting]: reporting
+      })}
+    >
+      {text}
+    </span>
   );
 };
 
-export const PendingLabel = () => 
-  <span
-    className={Styles.PendingLabel}
-  >
+export const PendingLabel = () => (
+  <span className={Styles.PendingLabel}>
     Pending <ClipLoader size={8} color="#ffffff" />
-  </span>;
+  </span>
+);
 
 const MovementIcon = (props: MovementIconProps) => {
-  const getIconSizeStyles: Function = (size: sizeTypes): string => {
-    return classNames(Styles.MovementLabel_Icon, {
+  const getIconSizeStyles: Function = (size: sizeTypes): string =>
+    classNames(Styles.MovementLabel_Icon, {
       [Styles.MovementLabel_Icon_small]: size == sizeTypes.SMALL,
       [Styles.MovementLabel_Icon_normal]: size == sizeTypes.NORMAL,
       [Styles.MovementLabel_Icon_large]: size == sizeTypes.LARGE
     });
-  };
 
-  const getIconColorStyles: Function = (value: number): string => {
-    return classNames({
+  const getIconColorStyles: Function = (value: number): string =>
+    classNames({
       [Styles.MovementLabel_Icon_positive]: value > 0,
       [Styles.MovementLabel_Icon_negative]: value < 0
     });
-  };
 
   const iconSize = getIconSizeStyles(props.size);
   const iconColor = getIconColorStyles(props.value);
@@ -151,20 +174,18 @@ export interface MovementTextProps {
 }
 
 const MovementText = (props: MovementTextProps) => {
-  const getTextSizeStyle: Function = (size: sizeTypes): string => {
-    return classNames(Styles.MovementLabel_Text, {
+  const getTextSizeStyle: Function = (size: sizeTypes): string =>
+    classNames(Styles.MovementLabel_Text, {
       [Styles.MovementLabel_Text_small]: size == sizeTypes.SMALL,
       [Styles.MovementLabel_Text_normal]: size == sizeTypes.NORMAL,
       [Styles.MovementLabel_Text_large]: size == sizeTypes.LARGE
     });
-  };
-  const getTextColorStyles: Function = (value: number): string => {
-    return classNames({
+  const getTextColorStyles: Function = (value: number): string =>
+    classNames({
       [Styles.MovementLabel_Text_positive]: value > 0,
       [Styles.MovementLabel_Text_negative]: value < 0,
       [Styles.MovementLabel_Text_neutral]: value === 0
     });
-  };
 
   const textColorStyle = getTextColorStyles(props.value);
   const textSizeStyle = getTextSizeStyle(props.size);
@@ -177,9 +198,7 @@ const MovementText = (props: MovementTextProps) => {
     return label;
   };
 
-  const toString: Function = (label: number): string => {
-    return String(label);
-  };
+  const toString: Function = (label: number): string => String(label);
 
   const addPlus: Function = (label: string): string => {
     if (props.value > 0 && props.showPlusMinus) {
@@ -216,11 +235,11 @@ const MovementText = (props: MovementTextProps) => {
 };
 
 export const MovementLabel = (props: MovementLabelProps) => {
-  const showColors = props.showColors || false;          // Red/Green
-  const showPercent = props.showPercent || false;        // 0.00%
-  const showBrackets = props.showBrackets || false;      // (0.00)
-  const showPlusMinus = props.showPlusMinus || false;    // +4.32 / -0.32
-  const showIcon = props.showIcon || false;              // 📈 3.2 / 📉 2.1
+  const showColors = props.showColors || false; // Red/Green
+  const showPercent = props.showPercent || false; // 0.00%
+  const showBrackets = props.showBrackets || false; // (0.00)
+  const showPlusMinus = props.showPlusMinus || false; // +4.32 / -0.32
+  const showIcon = props.showIcon || false; // 📈 3.2 / 📉 2.1
 
   return (
     <div

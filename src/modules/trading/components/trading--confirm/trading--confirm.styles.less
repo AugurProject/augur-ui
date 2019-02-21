@@ -14,16 +14,6 @@
   margin: 0 1rem;
 }
 
-.TradingConfirm__dotted__line {
-  background-size: 0.4em 0.8em;
-  opacity: 0.4;
-}
-
-.TradingConfirmation__button--back {
-  font-size: 14px;
-  font-weight: 500;
-}
-
 .TradingConfirm__details {
   display: flex;
   flex-direction: column;
@@ -35,42 +25,6 @@
     > line {
       stroke: fade(@color-white, 40%);
     }
-  }
-}
-
-.TradingConfirm__position__details {
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-grow: 1;
-  margin-bottom: 0.1875rem;
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-
-  > div {
-    color: @color-light-gray;
-    font-size: @font-size-small;
-    white-space: nowrap;
-  }
-
-  > svg {
-    display: flex;
-    flex-grow: 1;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-
-    > line {
-      stroke: fade(@color-white, 40%);
-    }
-  }
-
-  > span {
-    color: @color-white;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 12px;
-    font-weight: normal;
   }
 }
 
@@ -94,17 +48,6 @@
   position: relative;
 }
 
-.TradingConfirm__property__value {
-  color: @color-white;
-  font-size: @font-size-medium;
-
-  > span {
-    color: @color-white;
-    font-size: @font-size-extra-small;
-    padding-left: 0.25rem;
-  }
-}
-
 .TradingConfirm__agg_position {
   color: @color-white;
   font-size: @font-size-small;
@@ -119,41 +62,6 @@
 
     &.long {
       color: @color-positive;
-    }
-  }
-}
-
-.TradingConfirm__vert__line {
-  border-left: 1px solid @color-dark-light-gray;
-  height: 1.5rem;
-  margin-left: 1rem;
-  margin-top: 0.1875rem;
-  padding-right: 1rem;
-}
-
-.TradingConfirm__header {
-  align-items: center;
-  border-bottom: 1px solid @color-lightgray;
-  display: flex;
-  padding: 1rem 2rem 1rem 0;
-  white-space: nowrap;
-
-  > h2 {
-    &:extend(.caps--large);
-
-    font-weight: 700;
-  }
-
-  > span {
-    width: 100%;
-
-    > button {
-      float: right;
-
-      > svg {
-        height: 1.5rem;
-        width: 1.5rem;
-      }
     }
   }
 }
@@ -292,27 +200,6 @@ span.negative__profit > * {
   .TradingConfirmation__actions {
     min-height: 6.25rem;
     padding: 0;
-  }
-
-  .TradingConfirmation__button--submit {
-    &:extend(.button--bright all);
-
-    background: rgba(0, 241, 196, 0.4);
-    border: 1px solid @color-positive;
-    border-radius: 3px;
-    bottom: 0;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0.25rem;
-    width: 100%;
-
-    &.short {
-      background-color: @color-negative2;
-    }
-
-    &.long {
-      background-color: @color-positive;
-    }
   }
 
   .TradingConfirm__details > li {
