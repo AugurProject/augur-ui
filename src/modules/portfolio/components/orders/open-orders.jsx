@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
-import FilterSwitchBox from "modules/portfolio/components/common/filter-switch-box";
-import OrderMarketRow from "modules/portfolio/components/common/order-market-row";
-import OpenOrder from "modules/portfolio/components/common/open-order";
-import DataTableHeader from "modules/portfolio/components/common/data-table-header";
+import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
+import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
+import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 
 import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
@@ -82,7 +82,9 @@ export default class OpenOrders extends Component {
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
-        bottomBarContent={<DataTableHeader />}
+        bottomBarContent={
+          <OpenOrdersHeader />
+        }
         rows={
           <div>
             {filteredData.map(

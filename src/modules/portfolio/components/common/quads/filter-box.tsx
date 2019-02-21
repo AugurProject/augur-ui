@@ -7,7 +7,7 @@ import {
   MARKET_REPORTING,
   MARKET_CLOSED
 } from "modules/common-elements/constants";
-import QuadBox from "modules/portfolio/components/common/quad-box";
+import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
