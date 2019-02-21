@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import ToggleRow from "modules/portfolio/components/common/toggle-row.tsx";
+import ToggleRow from "modules/portfolio/components/common/rows/toggle-row.tsx";
 import { MarketStatusLabel } from "modules/common-elements/labels";
+
 import { LinearPropertyLabel } from "modules/common-elements/labels";
-import Styles from "modules/portfolio/components/common/market-row.styles";
+import Styles from "modules/portfolio/components/common/rows/market-row.styles";
 
 // todo: MarketRow__time will end up being a passed in prop
 // info toggle content will be passed in as a child

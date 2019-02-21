@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import ToggleRow from "modules/portfolio/components/common/toggle-row";
+import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 
-import Styles from "modules/portfolio/components/common/open-order.styles";
+import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
 export default class OpenOrder extends Component {
   static propTypes = {

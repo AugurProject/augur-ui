@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import OpenOrder from "modules/portfolio/components/common/open-order";
-import FilledOrder from "modules/portfolio/components/common/filled-order";
+import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 
-import Styles from "modules/portfolio/components/common/order-market-row.styles";
+import Styles from "modules/portfolio/components/common/rows/order-market-row.styles";
 
 export default class OrderMarketRow extends Component {
   static propTypes = {
@@ -36,15 +36,15 @@ export default class OrderMarketRow extends Component {
           {orders.map(order => filledOrders ? 
             (
               <FilledOrder
-                key={"filledOrder_" + order.id}
+                key={"sFilledOrder_" + order.id}
                 filledOrder={order}
                 className={Styles.OpenOrders__row}
-                toggleClassName={Styles.Orders__orderSingle}
+                toggleClassName={Styles.OrderMarket__order}
               />
             )
             : 
               (<OpenOrder
-                key={"openOrder_" + order.id}
+                key={"sOpenOrder_" + order.id}
                 openOrder={order}
                 className={Styles.OpenOrders__row}
                 toggleClassName={Styles.OrderMarket__order}
