@@ -60,6 +60,7 @@ const MarketRow = (props: MarketRowProps) => (
     }
     toggleContent={
       <div className={Styles.MarketRow__infoContainer}>
+        <div>
           <LinearPropertyLabel
             label="Volume"
             value={`${props.market.volume.formatted} ETH`}
@@ -68,6 +69,7 @@ const MarketRow = (props: MarketRowProps) => (
             label="Open Interest"
             value={`${props.market.openInterest.formatted} ETH`}
           />
+        </div>
       </div>
     }
   />

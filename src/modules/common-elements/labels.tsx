@@ -6,7 +6,10 @@ import { ClipLoader } from "react-spinners";
 import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
-import { DashlineNormal } from "modules/common/components/dashline/dashline";
+import {
+  DashlineNormal,
+  DashlineLong
+} from "modules/common/components/dashline/dashline";
 
 export interface MarketTypeProps {
   marketType: string;
@@ -88,7 +91,8 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
     })}
   >
     <span>{props.label}</span>
-    <DashlineNormal />
+    {props.size === sizeTypes.LARGE && <DashlineLong />}
+    {props.size !== sizeTypes.LARGE && <DashlineNormal />}
     <span>{props.value}</span>
   </div>
 );
