@@ -16,7 +16,6 @@ import {
   darkBgExclamationCircle,
   closeIcon
 } from "modules/common/components/icons";
-import { DashlineLong } from "modules/common/components/dashline/dashline";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
