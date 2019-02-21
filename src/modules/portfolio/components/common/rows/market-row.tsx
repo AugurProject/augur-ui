@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row.tsx";
 import { MarketStatusLabel } from "modules/common-elements/labels";
-
+import MarketLink from "modules/market/components/market-link/market-link";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import Styles from "modules/portfolio/components/common/rows/market-row.styles";
 
@@ -51,6 +51,9 @@ const MarketRow = (props: MarketRowProps) => (
     }
     rowContent={
       <div className={Styles.MarketRow__rowContainer}>
+          <MarketLink id={props.market.marketId} className="market-link">
+            {props.market.description}
+          </MarketLink>
         <span className={Styles.MarketRow__description}>
           {props.market.description}
         </span>
