@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
-import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
-import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import { OpenOrder } from "modules/portfolio/components/common/rows/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 
 import Styles from "modules/portfolio/components/orders/open-orders.styles";
@@ -82,23 +81,28 @@ export default class OpenOrders extends Component {
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
-        bottomBarContent={<OpenOrdersHeader />}
+        bottomBarContent={<div />}
         rows={
           <div>
             {filteredData.map(
               data =>
-                viewByMarkets ? (
-                  <OrderMarketRow
-                    key={"openOrderMarket_" + data.id}
-                    market={data}
-                  />
-                ) : (
-                  <OpenOrder
-                    key={"openOrder_" + data.id}
-                    openOrder={data}
-                    toggleClassName={Styles.Orders__orderSingle}
-                  />
-                )
+              <div>
+                {filteredData.map(
+                  data =>
+                    viewByMarkets ? (
+                      <OrderMarketRow
+                        key={"openOrderMarket_" + data.id}
+                        market={data}
+                      />
+                    ) : (
+                      <OpenOrder
+                        key={"openOrder_" + data.id}
+                        openOrder={data}
+                        toggleClassName={Styles.Orders__orderSingle}
+                      />
+                    )
+                )}
+              </div>
             )}
           </div>
         }
@@ -106,3 +110,6 @@ export default class OpenOrders extends Component {
     );
   }
 }
+
+
+

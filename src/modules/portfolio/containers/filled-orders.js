@@ -66,14 +66,15 @@ const mapStateToProps = state => {
   const marketsCount = markets.length;
 
   const allFilledOrders = [];
-  for (const id in marketIds) {
+  marketIds.map(marketId => {
     const formattedFilledOrders = selectFilledOrders(
-      marketTradingHistory[marketIds[id]],
+      marketTradingHistory[marketId],
       account,
       outcomesData
     );
     Array.prototype.push.apply(allFilledOrders, formattedFilledOrders);
-  }
+  });
+ 
 
   return {
     currentTimestamp: selectCurrentTimestamp(state),
