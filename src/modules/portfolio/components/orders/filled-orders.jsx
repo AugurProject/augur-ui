@@ -89,11 +89,17 @@ export default class FilledOrders extends Component {
             {filteredData.map(
               data =>
                 viewByMarkets ? (
-                  <MarketRow market={data} />
+                  <OrderMarketRow
+                    key={"filledOrderMarket_" + data.marketId}
+                    market={data}
+                    filledOrders
+                  />
                 ) : (
-                  <div>
-                    {data.name} {data.buy}
-                  </div>
+                  <FilledOrder
+                    key={"filledOrder_" + data.marketId}
+                    filledOrder={data}
+                    toggleClassName={Styles.Orders__orderSingle}
+                  />
                 )
             )}
           </div>

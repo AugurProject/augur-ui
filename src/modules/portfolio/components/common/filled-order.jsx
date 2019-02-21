@@ -20,12 +20,8 @@ export default class FilledOrder extends Component {
         className={toggleClassName}
         rowContent={
           <ul className={classNames(Styles.Order, className)}>
-            <li>{filledOrder.description || filledOrder.name}</li>
+            <li>{filledOrder.outcome}</li>
             <li>{filledOrder.type}</li>
-            <li>{filledOrder.unmatchedShares.formatted}</li>
-            <li>{filledOrder.avgPrice.formatted}</li>
-            <li>{filledOrder.avgPrice.formatted}</li>
-            <li>{filledOrder.avgPrice.formatted}</li>
           </ul>
         }
         toggleContent={<div>info</div>}

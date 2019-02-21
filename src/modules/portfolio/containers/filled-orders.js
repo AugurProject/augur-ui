@@ -12,9 +12,10 @@ import { selectMarket } from "modules/markets/selectors/market";
 //  sortOpenOrders
 // } from "modules/orders/selectors/open-orders";
 import { groupBy, keys, differenceBy, pick, map } from "lodash";
+import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 
 const mapStateToProps = state => {
-  const { marketReportState, loginAccount, filledOrders } = state;
+  const { marketReportState, loginAccount, filledOrders, outcomesData } = state;
   const resolvedMarkets = marketReportState.resolved;
   const account = loginAccount.address;
   const userFilledOrders = filledOrders[account] || [];
@@ -27,6 +28,7 @@ const mapStateToProps = state => {
     nonFinalizedMarketFilledOrders,
     "marketId"
   );
+
   const marketIds = keys(groupedFilledOrders);
   const markets = map(
     map(marketIds, m =>
@@ -34,16 +36,21 @@ const mapStateToProps = state => {
         "description",
         "id",
         "creationTime",
-        "reportingState"
+        "reportingState",
+        "marketType",
+        "outcomesData"
       ])
     ),
-    item => ({
-      description: item.description,
-      marketId: item.id,
-      creationTime: item.creationTime,
-      marketStatus: item.reportingState,
-      filledOrders: groupedFilledOrders[item.id]
-    })
+    item => {
+      const formattedFilledOrders = selectFilledOrders(groupedFilledOrders[item.id], account, outcomesData)
+      return ({
+        description: item.description,
+        marketId: item.id,
+        creationTime: item.creationTime,
+        marketStatus: item.reportingState,
+        filledOrders: formattedFilledOrders
+      })
+    }
   );
 
   const marketsCount = markets.length;
