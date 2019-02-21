@@ -1,4 +1,4 @@
-@import (reference) '~assets/styles/shared';
+@import (reference) "~assets/styles/shared";
 
 .PropertyLabel {
   display: flex;
@@ -41,6 +41,59 @@
 
     color: @color-secondary-text;
     line-height: @size-16;
+  }
+}
+
+.LinearPropertyLabel {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  margin-bottom: 0.1875rem;
+  white-space: nowrap;
+
+  > span:first-of-type {
+    .text-10;
+
+    align-items: center;
+    color: @color-less-neutral;
+    flex-flow: row nowrap;
+    line-height: @size-16;
+
+    > label {
+      margin: 0 0 0 0.25rem;
+      width: @size-10;
+    }
+  }
+
+  > svg {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+
+    > line {
+      stroke: fade(@color-white, 40%);
+    }
+  }
+
+  > span:last-of-type {
+    .mono-11;
+
+    color: @color-secondary-text;
+    line-height: @size-16;
+  }
+}
+
+.LinearPropertyLabel_large {
+  > span:first-of-type {
+    .text-12;
+
+    color: @color-neutral;
+  }
+
+  > span:last-of-type {
+    .text-12;
   }
 }
 
@@ -136,7 +189,7 @@
 
 .MovementLabel {
   align-items: center;
-  color: @color-neutral;
+  color: @color-less-neutral;
   display: flex;
   justify-content: flex-end;
 }
@@ -147,7 +200,7 @@
   }
 
   &_normal {
-    .mono-10;
+    .mono-11;
   }
 
   &_large {
