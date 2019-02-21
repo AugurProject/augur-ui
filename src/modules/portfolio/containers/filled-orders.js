@@ -41,7 +41,8 @@ const mapStateToProps = state => {
       description: item.description,
       marketId: item.id,
       creationTime: item.creationTime,
-      marketStatus: item.reportingState
+      marketStatus: item.reportingState,
+      filledOrders: groupedFilledOrders[item.id]
     })
   );
 
