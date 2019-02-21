@@ -2,7 +2,7 @@
 
 .BlockInfoData {
   align-items: center;
-  color: white;
+  color: @color-secondary-text;
   flex-direction: column;
   justify-content: center;
   max-width: 162px;
@@ -10,7 +10,7 @@
   width: unset !important;
 
   &:hover {
-    background-color: @color-medium-gray;
+    background-color: @color-primary-light;
   }
 }
 
@@ -33,7 +33,7 @@
 }
 
 .BlockInfoData__title {
-  color: @color-light-gray;
+  color: @color-less-neutral;
   font-size: @font-size-extra-small;
   line-height: 2;
 
@@ -43,17 +43,18 @@
 }
 
 .BlockInfoData__selected {
-  background-color: @color-medium-gray;
+  background-color: @color-primary-light;
 }
 
 .BlockInfoData__info {
+  .mono-14-bold;
+
   align-items: flex-end;
   display: flex;
-  font-weight: bold;
 }
 
 .BlockInfoData__connectDropdown {
-  background-color: @color-medium-gray;
+  background-color: @color-primary-light;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.5);

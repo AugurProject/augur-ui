@@ -1,4 +1,4 @@
-@import (reference) '~assets/styles/shared';
+@import (reference) "~assets/styles/shared";
 
 .MarketRow {
   border-bottom: 0.125rem solid @color-theme-primary;
@@ -35,7 +35,16 @@
   text-align: right;
 }
 
+.MarketRow__rowContainer {
+  display: flex;
+  flex: 1;
+}
+
 .MarketRow__infoContainer {
   display: flex;
   flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-width: 10rem;
+  padding: 1rem 0;
 }
