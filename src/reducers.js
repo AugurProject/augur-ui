@@ -31,7 +31,6 @@ import orderCancellation from "modules/orders/reducers/order-cancellation";
 import orphanedOrders from "modules/orders/reducers/orphaned-orders";
 import outcomesData from "modules/markets/reducers/outcomes-data";
 import participationTokens from "modules/reports/reducers/participation-token-data";
-import priceHistory from "modules/markets/reducers/price-history";
 import pendingLiquidityOrders from "modules/orders/reducers/liquidity-orders";
 import reportingWindowStats from "modules/reports/reducers/reporting-window-stats";
 import reports from "modules/reports/reducers/reports";
@@ -42,6 +41,7 @@ import transactionsStatus from "modules/transactions/reducers/transactions-statu
 import universe from "modules/universe/reducers/universe";
 import versions from "modules/app/reducers/versions";
 import pendingOrders from "modules/orders/reducers/pending-orders";
+import filledOrders from "modules/orders/reducers/filled-orders";
 import accountShareBalances from "modules/positions/reducers/account-share-balances";
 
 export function createReducer() {
@@ -81,7 +81,7 @@ export function createReducer() {
     participationTokens,
     pendingLiquidityOrders,
     pendingOrders,
-    priceHistory,
+    filledOrders,
     reportingWindowStats,
     reports,
     scalarMarketsShareDenomination,

@@ -43,7 +43,6 @@ export default class ModalParticipate extends Component {
         this.state.quantity,
         true,
         (err, gasEstimate) => {
-          console.log("trigger review", err, gasEstimate);
           if (!err && !!gasEstimate) this.setState({ gasEstimate, page: 2 });
         }
       );

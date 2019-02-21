@@ -95,7 +95,7 @@ export const selectMarket = marketId => {
     reports,
     outcomesData,
     accountTrades,
-    priceHistory,
+    marketTradingHistory,
     orderBooks,
     universe,
     orderCancellation,
@@ -115,7 +115,7 @@ export const selectMarket = marketId => {
     marketId,
     marketsData[marketId],
     marketLoading[marketId] || null,
-    priceHistory[marketId],
+    marketTradingHistory[marketId],
     isMarketDataOpen(marketsData[marketId]),
     isMarketDataExpired(
       marketsData[marketId],

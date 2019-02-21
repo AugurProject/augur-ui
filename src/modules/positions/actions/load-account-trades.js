@@ -12,6 +12,7 @@ import {
   clearAccountTrades
 } from "modules/positions/actions/update-account-trades-data";
 import logError from "utils/log-error";
+import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 
 export function loadAccountTrades(options, callback = logError) {
   return (dispatch, getState) => {
@@ -22,7 +23,8 @@ export function loadAccountTrades(options, callback = logError) {
         next => dispatch(loadUserTradingHistory(options, next)),
         next => dispatch(loadAccountPositions(options, next)),
         next => dispatch(loadAccountOrders(options, next)),
-        next => dispatch(loadAccountOrphanedOrders(options, next))
+        next => dispatch(loadAccountOrphanedOrders(options, next)),
+        next => dispatch(loadUserMarketTradingHistory(options, next))
       ],
       () => {
         callback(null);

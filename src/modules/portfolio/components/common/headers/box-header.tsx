@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 
-import Styles from "modules/portfolio/components/common/box-header.styles";
+import Styles from "modules/portfolio/components/common/headers/box-header.styles";
 
 export interface BoxHeaderProps {
   title: string,

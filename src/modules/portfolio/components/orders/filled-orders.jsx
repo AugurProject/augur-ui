@@ -2,17 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
-import FilterSwitchBox from "modules/portfolio/components/common/filter-switch-box";
-import MarketRow from "modules/portfolio/components/common/market-row";
+import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
+import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
+import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
+import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
+
+import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
 const sortByOptions = [
   {
-    label: "View by Market",
+    label: "View by Most Recently Traded Market",
     value: "creationTime",
     comp: null
   },
   {
-    label: "View by Outcome",
+    label: "View by Most Recently Traded Outcome",
     value: "endTime",
     comp: null
   }
@@ -52,7 +56,8 @@ export default class FilledOrders extends Component {
       return data.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     }
     return (
-      data.name && data.name.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      data.outcome &&
+      data.outcome.toLowerCase().indexOf(input.toLowerCase()) >= 0
     );
   }
 
@@ -78,16 +83,23 @@ export default class FilledOrders extends Component {
         data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
+        bottomBarContent={<FilledOrdersHeader />}
         rows={
           <div>
             {filteredData.map(
               data =>
                 viewByMarkets ? (
-                  <MarketRow key={"filledOrder_" + data.id} market={data} />
+                  <OrderMarketRow
+                    key={"filledOrderMarket_" + data.marketId}
+                    market={data}
+                    filledOrders
+                  />
                 ) : (
-                  <div>
-                    {data.name} {data.buy}
-                  </div>
+                  <FilledOrder
+                    key={"filledOrder_" + data.id}
+                    filledOrder={data}
+                    toggleClassName={Styles.Orders__orderSingle}
+                  />
                 )
             )}
           </div>

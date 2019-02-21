@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import ToggleRow from "modules/portfolio/components/common/toggle-row.tsx";
+import ToggleRow from "modules/portfolio/components/common/rows/toggle-row.tsx";
 import { MarketStatusLabel } from "modules/common-elements/labels";
+import MarketLink from "modules/market/components/market-link/market-link";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
-import Styles from "modules/portfolio/components/common/market-row.styles";
+import Styles from "modules/portfolio/components/common/rows/market-row.styles";
 
 // todo: MarketRow__time will end up being a passed in prop
 // info toggle content will be passed in as a child
@@ -19,7 +20,7 @@ export interface FormatObject {
 }
 
 export interface Market {
-  marketId: string;
+  id: string;
   description: string;
   marketStatus: string;
   creationTime: TimeObject;
@@ -51,7 +52,9 @@ const MarketRow = (props: MarketRowProps) => (
     rowContent={
       <div className={Styles.MarketRow__rowContainer}>
         <span className={Styles.MarketRow__description}>
-          {props.market.description}
+          <MarketLink id={props.market.id}>
+            {props.market.description}
+          </MarketLink>
         </span>
         <span className={Styles.MarketRow__time}>
           {props.market.creationTime.formattedShortDate}

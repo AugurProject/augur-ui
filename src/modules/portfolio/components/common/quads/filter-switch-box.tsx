@@ -7,7 +7,7 @@ import {
   MARKET_REPORTING,
   MARKET_CLOSED
 } from "modules/common-elements/constants";
-import QuadBox from "modules/portfolio/components/common/quad-box";
+import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
 export interface MarketsByReportingState {
@@ -86,7 +86,7 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
         sortByOptions={sortByOptions}
         updateDropdown={this.updateView}
         bottomBarContent={bottomBarContent}
-        rows={rows}
+        rows={rows} 
       />
     )
   }

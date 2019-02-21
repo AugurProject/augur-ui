@@ -38,7 +38,6 @@ class TradingForm extends Component {
     clearOrderForm: PropTypes.func.isRequired,
     updateTradeTotalCost: PropTypes.func.isRequired,
     updateTradeNumShares: PropTypes.func.isRequired,
-    showSelectOutcome: PropTypes.func.isRequired,
     updateNewOrderProperties: PropTypes.func.isRequired
   };
 
