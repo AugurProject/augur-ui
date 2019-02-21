@@ -81,13 +81,12 @@
   .Dropdown;
 
   height: 3rem;
-  padding: @size-smaller @size-large;
+  padding: @size-12 @size-24;
 
   > .Dropdown__label {
-    .text-normal;
+    .text-16-medium;
 
-    font-weight: @weight-medium;
-    line-height: @size-medium;
+    line-height: @size-18;
 
     > svg {
       flex: 0 0 1.25rem;
@@ -116,12 +115,12 @@
     > button {
       .text-small;
 
-      line-height: @size-normal;
-      padding: @size-smaller @size-large;
+      line-height: @size-16;
+      padding: @size-12 @size-24;
 
       &::before {
-        left: @size-large;
-        right: @size-large;
+        left: @size-24;
+        right: @size-24;
       }
     }
   }
@@ -131,12 +130,12 @@
   .Dropdown;
 
   height: 2rem;
-  padding: @size-smallest @size-smaller;
+  padding: @size-10 @size-12;
 
   > .Dropdown__label {
-    .text-smallest;
+    .text-10;
 
-    line-height: @size-smaller;
+    line-height: @size-12;
 
     > svg {
       height: 0.25rem;
@@ -162,14 +161,14 @@
     }
 
     > button {
-      .text-smallest;
+      .text-10;
 
-      line-height: @size-smaller;
-      padding: 0.375rem @size-smaller;
+      line-height: @size-12;
+      padding: 0.375rem @size-12;
 
       &::before {
-        left: @size-smaller;
-        right: @size-smaller;
+        left: @size-12;
+        right: @size-12;
       }
     }
   }
