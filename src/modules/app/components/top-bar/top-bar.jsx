@@ -7,6 +7,7 @@ import { Notifications } from "modules/common/components/icons";
 import ConnectAccount from "modules/auth/containers/connect-account";
 import GasPriceEdit from "modules/app/containers/gas-price-edit";
 import BlockInfoData from "modules/block-info/containers/block-info-data";
+import { MovementLabel } from "modules/common-elements/labels";
 
 import makePath from "modules/routes/helpers/make-path";
 import { MARKETS } from "modules/routes/constants/views";
@@ -96,7 +97,12 @@ const TopBar = props => (
               <span>{props.stats[1].totalPLMonth.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLMonth.value.formatted}
+              <MovementLabel
+                showColors
+                showIcon
+                value={props.stats[1].totalPLMonth.value.formatted}
+                size="large"
+              />
               <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>
@@ -110,7 +116,12 @@ const TopBar = props => (
               <span>{props.stats[1].totalPLDay.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLDay.value.formatted}
+              <MovementLabel
+                showColors
+                showIcon
+                value={props.stats[1].totalPLDay.value.formatted}
+                size="large"
+              />
               <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>

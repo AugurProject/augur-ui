@@ -2,14 +2,14 @@
 
 .ConnectAccount {
   align-items: center;
-  color: white;
+  color: @color-secondary-text;
   flex-direction: column;
   justify-content: center;
   position: relative;
   z-index: @above-all-content-above;
 
   &:hover {
-    background-color: @color-medium-gray;
+    background-color: @color-primary-light;
   }
 
   @media @breakpoint-mobile-extra-small {
@@ -28,7 +28,7 @@
 }
 
 .ConnectAccount__selected {
-  background-color: @color-medium-gray;
+  background-color: @color-primary-light;
 }
 
 .ConnectAccount__container {
@@ -58,9 +58,9 @@
 }
 
 .ConnectAccount__status {
-  color: @color-light-gray;
-  font-size: @font-size-small;
-  font-weight: normal;
+  .mono-10;
+
+  color: @color-less-neutral;
   margin-bottom: 4px;
 }
 
@@ -78,9 +78,9 @@
 }
 
 .ConnectAccount__title {
+  .text-14-bold;
+
   display: flex;
-  font-size: 14px;
-  font-weight: bold;
 }
 
 .ConnectAccount__arrow {
@@ -101,7 +101,7 @@
 }
 
 .ConnectAccount__connectDropdown {
-  background-color: @color-medium-gray;
+  background-color: @color-primary-light;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   box-shadow: 0 3px 4px -4px rgba(0, 0, 0, 0.5);
