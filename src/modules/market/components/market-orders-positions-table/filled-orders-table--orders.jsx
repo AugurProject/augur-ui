@@ -8,8 +8,6 @@ import classNames from "classnames";
 
 import getValue from "utils/get-value";
 import { SELL } from "modules/common-elements/constants";
-import { formatEther, formatShares } from "utils/format-number";
-import { convertUnixToFormattedDate } from "utils/format-date";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import EtherscanLink from "modules/common/containers/etherscan-link";
 
@@ -55,8 +53,8 @@ export default class FilledOrdersOrder extends Component {
 
     const s = this.state;
 
-    const orderQuantity = formatShares(order.amount).formatted;
-    const orderPrice = formatEther(order.price).formatted;
+    const orderQuantity = getValue(order, "amount").formatted;
+    const orderPrice = getValue(order, "price").formatted;
     const orderType = getValue(order, "type");
 
     return (
@@ -82,12 +80,12 @@ export default class FilledOrdersOrder extends Component {
             })}
             style={{ textTransform: "capitalize" }}
           >
-            {orderType === SELL ? "Sold" : "Bought"}
+            {orderType}
           </li>
           <li>{orderQuantity}</li>
           <li>{orderPrice}</li>
           <li>
-            {convertUnixToFormattedDate(order.timestamp).formattedShortDate}
+            {order.timestamp.formattedShortDate}
           </li>
           <li>
             {order.trades.length}
@@ -126,9 +124,9 @@ export default class FilledOrdersOrder extends Component {
                     )}
                   >
                     {!isMobile && <li />}
-                    <li>{formatShares(trade.amount).formatted}</li>
+                    <li>{trade.amount.formatted}</li>
                     <li>
-                      {convertUnixToFormattedDate(trade.timestamp).formatted}
+                      {trade.timestamp.formatted}
                     </li>
                     <li>
                       <button

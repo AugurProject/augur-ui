@@ -1,5 +1,7 @@
 import { createBigNumber } from "utils/create-big-number";
-import { BUY, SELL } from "modules/common-elements/constants";
+import { BUY, SELL, BOUGHT, SOLD } from "modules/common-elements/constants";
+import { formatEther, formatShares } from "utils/format-number";
+import { convertUnixToFormattedDate } from "utils/format-date";
 
 function findOrders(
   filledOrders,
@@ -23,8 +25,8 @@ function findOrders(
       }
     ) => {
       const foundOrder = order.find(({ id }) => id === orderId);
-      const amountBN = createBigNumber(amount);
-      const priceBN = createBigNumber(price);
+      let amountBN = createBigNumber(amount);
+      let priceBN = createBigNumber(price);
       let typeOp = type;
 
       const outcomeName =
@@ -34,13 +36,18 @@ function findOrders(
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
       }
 
+      typeOp = type === BUY ? BOUGHT : SOLD;
+      amountBN = formatShares(amountBN);
+      price = formatEther(priceBN);
+      const timestampFormatted = convertUnixToFormattedDate(timestamp);
+
       if (foundOrder) {
         foundOrder.trades.push({
           outcome: outcomeName,
           amount: amountBN,
           price: priceBN,
           type: typeOp,
-          timestamp,
+          timestamp: timestampFormatted,
           transactionHash
         });
         foundOrder.amount = foundOrder.amount.plus(amountBN);
@@ -49,7 +56,7 @@ function findOrders(
       } else {
         order.push({
           id: orderId,
-          timestamp,
+          timestamp: timestampFormatted,
           outcome: outcomeName,
           type: typeOp,
           price: priceBN,
@@ -60,7 +67,7 @@ function findOrders(
               amount: amountBN,
               price: priceBN,
               type: typeOp,
-              timestamp,
+              timestamp: timestampFormatted,
               transactionHash
             }
           ]

@@ -96,7 +96,7 @@ export default class OpenOrders extends Component {
                   <OpenOrder
                     key={"openOrder_" + data.id}
                     openOrder={data}
-                    toggleClassName={Styles.OpenOrders__orderSingle}
+                    toggleClassName={Styles.Orders__orderSingle}
                   />
                 )
             )}

@@ -3,7 +3,12 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/filter-switch-box";
+import OrderMarketRow from "modules/portfolio/components/common/order-market-row";
+import FilledOrder from "modules/portfolio/components/common/filled-order";
+import DataTableHeader from "modules/portfolio/components/common/data-table-header";
 import MarketRow from "modules/portfolio/components/common/market-row";
+
+import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
 const sortByOptions = [
   {
@@ -78,12 +83,13 @@ export default class FilledOrders extends Component {
         data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
+        bottomBarContent={<DataTableHeader />}
         rows={
           <div>
             {filteredData.map(
               data =>
                 viewByMarkets ? (
-                  <MarketRow key={"filledOrder_" + data.id} market={data} />
+                  <MarketRow market={data} />
                 ) : (
                   <div>
                     {data.name} {data.buy}
