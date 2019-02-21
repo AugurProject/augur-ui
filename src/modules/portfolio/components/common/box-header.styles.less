@@ -5,18 +5,19 @@
 }
 
 .BoxHeader__title {
-  &:extend(.text--medium-thin);
+  .text-18;
 
   flex-grow: 1;
+  line-height: @size-18;
 }
 
 .BoxHeader__header--top-row {
   border-bottom: 0.0625rem solid @color-secondary-background;
   display: flex;
   flex-direction: row;
-  padding: 1.25rem 1.5rem;
+  padding: 1.25rem @size-24;
 }
 
 .BoxHeader__header--bottom-row {
-  padding: 0.75rem 1.5rem 0;
+  padding: @size-12 @size-24 0;
 }

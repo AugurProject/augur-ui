@@ -1,7 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
 .Button {
-  .text-small-bold;
+  .text-14-bold;
 
   border: @border-default;
   border-radius: @border-radius-default;
@@ -18,7 +18,7 @@
   background: @color-primary-button-background;
   color: @color-primary-button-text;
   max-height: @button-height-default;
-  padding: @size-smaller @size-large;
+  padding: @size-12 @size-24;
 
   &:disabled {
     background: @color-primary-button-background-disabled;
@@ -72,7 +72,7 @@
 }
 
 .FavoriteButton {
-  .text-smaller;
+  .text-12;
 
   align-items: center;
   color: @color-secondary-button-text;
@@ -132,14 +132,14 @@
 
 .CompactButton {
   .Button;
-  .number-small;
+  .number-10;
 
   border: @border-default;
   border-color: @color-primary-light;
   border-radius: @border-radius-full-round;
   color: @color-alternate-text;
   height: 1.25rem;
-  line-height: @size-smallest;
+  line-height: @size-10;
   padding: 3px 0.75rem;
 
   &:hover:enabled {

@@ -11,15 +11,16 @@
 @roboto-mono: 'roboto mono', sans-serif;
 
 // sizes
-@size-tiny: 0.5625rem; // 9px (only used for numbers)
-@size-smallest: 0.625rem; // 10px
-@size-smaller: 0.75rem; // 12px
-@size-small: 0.875rem; // 14px
-@size-normal: 1rem; // 16px
-@size-medium: 1.125rem; // 18px;
-@size-large: 1.5rem; // 24px
-@size-larger: 1.875rem; // 30px
-@size-largest: 2.25rem; // 36px
+@size-9: 0.5625rem; // 9px (only used for numbers)
+@size-10: 0.625rem; // 10px
+@size-11: 0.6875rem;// 11px
+@size-12: 0.75rem; // 12px
+@size-14: 0.875rem; // 14px
+@size-16: 1rem; // 16px
+@size-18: 1.125rem; // 18px
+@size-24: 1.5rem; // 24px
+@size-30: 1.875rem; // 30px
+@size-36: 2.25rem; // 36px
 
 // font-weights
 @weight-light: 300; // 300
@@ -47,140 +48,204 @@
 }
 
 // text sizes
-.text-largest {
+.text-36 {
   .text-default;
 
-  font-size: @size-largest;
-  font-weight: @weight-light;
+  font-size: @size-36;
 }
 
-.text-largest-bold {
-  .text-largest;
+.text-36-bold {
+  .text-36;
 
   font-weight: @weight-bold;
 }
 
-.text-larger {
+.text-30-bold {
   .text-default;
 
-  font-size: @size-larger;
+  font-size: @size-30;
   font-weight: @weight-bold;
 }
 
-.text-large {
+.text-24-bold {
   .text-default;
 
-  font-size: @size-large;
+  font-size: @size-24;
   font-weight: @weight-bold;
 }
 
-.text-medium {
+.text-18 {
   .text-default;
 
-  font-size: @size-medium;
+  font-size: @size-18;
+}
+
+.text-18-bold {
+  .text-default;
+
+  font-size: @size-18;
   font-weight: @weight-bold;
 }
 
-.text-normal {
+.text-16 {
   .text-default;
 
-  font-size: @size-normal;
+  font-size: @size-16;
 }
 
-.text-normal-bold {
-  .text-normal;
+.text-16-medium {
+  .text-16;
 
   font-weight: @weight-medium;
 }
 
-.text-small {
-  .text-default;
+.text-16-bold {
+  .text-16;
 
-  font-size: @size-small;
+  font-weight: @weight-bold;
 }
 
-.text-small-medium {
-  .text-small;
+.text-14 {
+  .text-default;
+
+  font-size: @size-14;
+}
+
+.text-14-medium {
+  .text-14;
 
   font-weight: @weight-medium;
 }
 
-.text-small-bold {
-  .text-small;
+.text-14-bold {
+  .text-14;
 
   font-weight: @weight-bold;
 }
 
-.text-smaller {
-  .text-default;
+.text-14-paragraph {
+  .text-14;
 
-  font-size: @size-smaller;
+  line-height: 110%;
 }
 
-.text-smaller-bold {
-  .text-smaller;
+.text-14-medium-paragraph {
+  .text-14-medium;
+
+  line-height: 110%;
+}
+
+.text-14-bold-paragraph {
+  .text-14-bold;
+
+  line-height: 110%;
+}
+
+.text-12 {
+  .text-default;
+
+  font-size: @size-12;
+}
+
+.text-12-medium {
+  .text-12;
+
+  font-weight: @weight-medium;
+}
+
+.text-12-bold {
+  .text-12;
 
   font-weight: @weight-bold;
 }
 
-.text-pargraph {
-  .text-smaller;
+.text-12-paragraph {
+  .text-12;
 
-  line-height: @line-height-paragraph;
+  line-height: 140%;
 }
 
-.text-smallest {
+.text-12-medium-paragraph {
+  .text-12-medium;
+
+  line-height: 140%;
+}
+
+.text-12-bold-paragraph {
+  .text-12-bold;
+
+  line-height: 140%;
+}
+
+.text-11 {
   .text-default;
 
-  font-size: @size-smallest;
-  line-height: @line-height-small-spacing;
+  font-size: @size-11;
 }
 
-.text--medium-thin {
-  font-size: @size-medium;
-  font-weight: @weight-normal;
-  line-height: @size-medium;
+.text-11-bold {
+  .text-11;
+
+  font-weight: @weight-bold;
+}
+
+.text-10 {
+  .text-default;
+
+  font-size: @size-10;
+}
+
+.text-10-bold {
+  .text-10;
+
+  font-weight: @weight-bold;
+}
+
+.text-10-paragraph {
+  .text-10;
+
+  line-height: 125%;
 }
 
 // number sizes
-.number-large {
+.number-14 {
   .number-default;
 
-  font-size: @size-small;
+  font-size: @size-14;
 }
 
-.number-large-bold {
-  .number-large;
+.number-14-bold {
+  .number-14;
 
   font-weight: @weight-bold;
 }
 
-.number-medium {
+.number-12 {
   .number-default;
 
-  font-size: @size-smaller;
+  font-size: @size-12;
 }
 
-.number-medium-bold {
-  .number-medium;
+.number-12-bold {
+  .number-12;
 
   font-weight: @weight-bold;
 }
 
-.number-small {
+.number-10 {
   .number-default;
 
-  font-size: @size-smallest;
+  font-size: @size-10;
 }
 
-.number-small-bold {
-  .number-small;
+.number-10-bold {
+  .number-10;
 
   font-weight: @weight-bold;
 }
 
-.number-smallest {
+.number-9 {
   .number-default;
 
-  font-size: @size-tiny;
+  font-size: @size-9;
 }

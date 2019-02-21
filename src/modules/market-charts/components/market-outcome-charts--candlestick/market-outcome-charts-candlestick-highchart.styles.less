@@ -8,23 +8,23 @@
       }
 
       .highcharts-axis-labels {
+        .number-12;
+
         color: @color-secondary-text;
-        font-family: @roboto-mono;
-        font-size: @size-smaller;
         stroke: @color-secondary-text;
       }
 
       .highcharts-yaxis-labels,
       .highcharts-label {
+        .number-12;
+
         fill: @color-secondary-text;
-        font-family: @roboto-mono;
-        font-size: @size-smaller;
         stroke: @color-secondary-text;
       }
 
       .highcharts-no-data {
         color: @color-secondary-text;
-        font-size: @size-normal;
+        font-size: @size-16;
       }
 
       .highcharts-label-box {
@@ -32,13 +32,13 @@
         font-weight: bold;
 
         > text > tspan:last-child {
-          font-size: @size-smaller;
+          font-size: @size-12;
         }
       }
 
       .highcharts-tick,
       .highcharts-axis-line {
-        stroke: @color-secondary-text-muted;
+        stroke: fade(@color-secondary-text, 40%);
       }
 
       .highcharts-xaxis-grid,
@@ -51,7 +51,7 @@
         .dashline-long;
 
         .highcharts-grid-line {
-          stroke: @color-secondary-text-muted;
+          stroke: fade(@color-secondary-text, 40%);
         }
       }
 
@@ -63,7 +63,7 @@
         background-color: @color-theme-primary;
         border: 1px solid @color-secondary-text;
         color: @color-secondary-text;
-        font-size: @size-smallest;
+        font-size: @size-10;
       }
 
       .highcharts-crosshair {
@@ -92,7 +92,7 @@
       }
 
       .eth-label {
-        font-size: @size-tiny;
+        font-size: @size-9;
       }
     }
   }
