@@ -15,7 +15,6 @@ export default class FilledOrder extends Component {
 
   render() {
     const { filledOrder, className, toggleClassName } = this.props;
-console.log(filledOrder)
     return (
       <ToggleRow
         className={toggleClassName}

@@ -31,7 +31,6 @@ import orderCancellation from "modules/orders/reducers/order-cancellation";
 import orphanedOrders from "modules/orders/reducers/orphaned-orders";
 import outcomesData from "modules/markets/reducers/outcomes-data";
 import participationTokens from "modules/reports/reducers/participation-token-data";
-import priceHistory from "modules/markets/reducers/price-history";
 import pendingLiquidityOrders from "modules/orders/reducers/liquidity-orders";
 import reportingWindowStats from "modules/reports/reducers/reporting-window-stats";
 import reports from "modules/reports/reducers/reports";
@@ -83,7 +82,6 @@ export function createReducer() {
     pendingLiquidityOrders,
     pendingOrders,
     filledOrders,
-    priceHistory,
     reportingWindowStats,
     reports,
     scalarMarketsShareDenomination,

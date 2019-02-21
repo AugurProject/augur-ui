@@ -5,22 +5,22 @@ import { loadReportingFinal } from "src/modules/reports/actions/load-reporting-f
 export const UPDATE_MARKET_TRADING_HISTORY = "UPDATE_MARKET_TRADING_HISTORY";
 export const UPDATE_USER_TRADING_HISTORY = "UPDATE_USER_TRADING_HISTORY";
 
-export function updateMarketTradingHistory(marketId, tradingHistory) {
+export function updateMarketTradingHistory(marketId, marketTradingHistory) {
   return {
     type: UPDATE_MARKET_TRADING_HISTORY,
     data: {
       marketId,
-      tradingHistory
+      marketTradingHistory
     }
   };
 }
 
-export function updateUserTradingHistory(account, tradingHistory) {
+export function updateUserTradingHistory(account, userFilledOrders) {
   return {
     type: UPDATE_USER_TRADING_HISTORY,
     data: {
       account,
-      tradingHistory
+      userFilledOrders
     }
   };
 }
@@ -53,6 +53,7 @@ export const loadUserMarketTradingHistory = (options, callback = logError) => (
     if (tradingHistory == null) return callback(null, []);
     dispatch(loadReportingFinal());
     dispatch(updateUserTradingHistory(loginAccount.address, tradingHistory));
+    callback(null, tradingHistory);
   });
 };
 

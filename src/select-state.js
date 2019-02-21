@@ -27,7 +27,6 @@ export const selectLoginAccountState = state => state.loginAccount;
 export const selectMarketCreatorFeesState = state => state.marketCreatorFees;
 export const selectMarketLoadingState = state => state.marketLoading;
 export const selectMarketReportState = state => state.marketReportState;
-export const selectMarketTradingHistory = state => state.tradingHistory;
 export const selectMarketsDataState = state => state.marketsData;
 export const selectMarketsFilteredSorted = state => state.marketsFilteredSorted;
 export const selectModal = state => state.modal;
@@ -40,7 +39,8 @@ export const selectOrderCancellationState = state => state.orderCancellation;
 export const selectAllOrders = state => state.allOrders;
 export const selectOutcomesDataState = state => state.outcomesData;
 export const selectParticipationTokens = state => state.participationTokens;
-export const selectPriceHistoryState = state => state.priceHistory;
+export const selectMarketTradingHistoryState = state =>
+  state.marketTradingHistory;
 export const selectReportsState = state => state.reports;
 export const selectScalarMarketsShareDenominationState = state =>
   state.scalarMarketsShareDenomination;

@@ -4,7 +4,6 @@ import {
 } from "modules/markets/actions/load-markets-info";
 import loadBidsAsks from "modules/orders/actions/load-bids-asks";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
-import { loadPriceHistory } from "modules/markets/actions/price-history-management";
 import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import {
   updateMarketLoading,
@@ -49,12 +48,11 @@ export const loadMarketDetails = (
         loadAccountTrades({ marketId }, err => {
           if (err) return loadingError(dispatch, callback, err, marketId);
           dispatch(
-            loadPriceHistory({ marketId }, err => {
+            loadMarketTradingHistory({ marketId }, err => {
               if (err) return loadingError(dispatch, callback, err, marketId);
               dispatch(
                 updateMarketLoading({ [marketId]: MARKET_FULLY_LOADED })
               );
-              dispatch(loadMarketTradingHistory({ marketId }));
               dispatch(loadMarketsDisputeInfo([marketId]));
               callback(null);
             })

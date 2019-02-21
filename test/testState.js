@@ -234,7 +234,7 @@ const testState = {
     numPerPage: 10,
     selectedPageNum: 1
   },
-  priceHistory: {
+  marketTradingHistory: {
     testMarketId: {},
     "0xMARKET1": {
       0: [{ amount: 10 }, { amount: 20 }],

@@ -5,10 +5,10 @@ const DEFAULT_STATE = () => ({});
 export default function(filledOrders = DEFAULT_STATE(), { type, data }) {
   switch (type) {
     case UPDATE_USER_TRADING_HISTORY: {
-      const { tradingHistory, account } = data;
+      const { userFilledOrders, account } = data;
 
       return {
-        [account]: tradingHistory
+        [account]: userFilledOrders
       };
     }
     default:
