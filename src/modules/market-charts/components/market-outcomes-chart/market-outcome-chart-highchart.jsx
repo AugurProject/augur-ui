@@ -47,6 +47,9 @@ export default class MarketOutcomesChartHighchart extends Component {
           styledMode: false,
           animation: false
         },
+        credits: {
+          enabled: false
+        },
         plotOptions: {
           line: {
             dataGrouping: {
