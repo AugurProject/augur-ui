@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 
-import { selectCurrentTimestamp } from "src/select-state";
 import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
@@ -63,9 +62,8 @@ const mapStateToProps = state => {
     }
   );
 
-  const marketsCount = markets.length;
-
-  const allFilledOrders = [];
+  /* eslint-disable */
+  let allFilledOrders = [];
   marketIds.map(marketId => {
     const formattedFilledOrders = selectFilledOrders(
       marketTradingHistory[marketId],
@@ -74,15 +72,10 @@ const mapStateToProps = state => {
     );
     Array.prototype.push.apply(allFilledOrders, formattedFilledOrders);
   });
+  /* eslint-disable */
 
   return {
-    currentTimestamp: selectCurrentTimestamp(state),
-    marketsCount,
-    transactionsStatus: state.transactionsStatus,
     markets,
-    transactionsLoading: state.appStatus.transactionsLoading,
-    registerBlockNumber: state.loginAccount.registerBlockNumber,
-    isMobile: state.appStatus.isMobile,
     filledOrders: allFilledOrders
   };
 };

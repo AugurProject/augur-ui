@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import memoize from "memoizee";
 
-import { selectCurrentTimestamp } from "src/select-state";
 import OpenOrders from "modules/portfolio/components/orders/open-orders";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
@@ -15,7 +14,6 @@ const mapStateToProps = state => {
   const openOrders = getOpenOrders();
 
   const markets = getPositionsMarkets(openOrders);
-  const marketsCount = markets.length;
 
   const individualOrders = [];
 
@@ -36,13 +34,7 @@ const mapStateToProps = state => {
   });
 
   return {
-    currentTimestamp: selectCurrentTimestamp(state),
-    marketsCount,
-    transactionsStatus: state.transactionsStatus,
     markets,
-    transactionsLoading: state.appStatus.transactionsLoading,
-    registerBlockNumber: state.loginAccount.registerBlockNumber,
-    isMobile: state.appStatus.isMobile,
     openOrders: individualOrders
   };
 };

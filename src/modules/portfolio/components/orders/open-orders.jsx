@@ -85,25 +85,21 @@ export default class OpenOrders extends Component {
         bottomBarContent={<OpenOrdersHeader />}
         rows={
           <div>
-            {filteredData.map(data => (
-              <div>
-                {filteredData.map(
-                  data =>
-                    viewByMarkets ? (
-                      <OrderMarketRow
-                        key={"openOrderMarket_" + data.id}
-                        market={data}
-                      />
-                    ) : (
-                      <OpenOrder
-                        key={"openOrder_" + data.id}
-                        openOrder={data}
-                        toggleClassName={Styles.Orders__orderSingle}
-                      />
-                    )
-                )}
-              </div>
-            ))}
+            {filteredData.map(
+              data =>
+                viewByMarkets ? (
+                  <OrderMarketRow
+                    key={"openOrderMarket_" + data.id}
+                    market={data}
+                  />
+                ) : (
+                  <OpenOrder
+                    key={"openOrder_" + data.id}
+                    openOrder={data}
+                    toggleClassName={Styles.Orders__orderSingle}
+                  />
+                )
+            )}
           </div>
         }
       />
