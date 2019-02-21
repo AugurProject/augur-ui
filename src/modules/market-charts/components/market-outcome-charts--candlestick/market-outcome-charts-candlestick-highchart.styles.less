@@ -58,11 +58,15 @@
         display: none;
       }
 
+      .highcharts-crosshair-label.highcharts-crosshair-label >.highcharts-label-box {
+        stroke: @color-secondary-text;
+      }
+
       .highcharts-crosshair-label {
         background-color: @color-theme-primary;
-        border: 1px solid @color-secondary-text;
         color: @color-secondary-text;
         font-size: @size-10;
+        z-index: 2;
       }
 
       .highcharts-crosshair {
