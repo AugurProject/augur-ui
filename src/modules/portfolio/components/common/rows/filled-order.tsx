@@ -18,7 +18,7 @@ export interface FilledOrderProps {
   toggleClassName: string,
 }
 
-export const FilledOrder = (props: FilledOrderProps) => {
+const FilledOrder = (props: FilledOrderProps) => {
   const { filledOrder, className, toggleClassName } = props;
 
   const orderQuantity = formatShares(getValue(filledOrder, "amount"))
@@ -47,3 +47,4 @@ export const FilledOrder = (props: FilledOrderProps) => {
   );
 };
 
+export default FilledOrder;
