@@ -20,7 +20,7 @@ export interface FormatObject {
 }
 
 export interface Market {
-  marketId: string;
+  id: string;
   description: string;
   marketStatus: string;
   creationTime: TimeObject;
@@ -51,11 +51,10 @@ const MarketRow = (props: MarketRowProps) => (
     }
     rowContent={
       <div className={Styles.MarketRow__rowContainer}>
-          <MarketLink id={props.market.marketId} className="market-link">
+        <span className={Styles.MarketRow__description}>
+          <MarketLink id={props.market.id}>
             {props.market.description}
           </MarketLink>
-        <span className={Styles.MarketRow__description}>
-          {props.market.description}
         </span>
         <span className={Styles.MarketRow__time}>
           {props.market.creationTime.formattedShortDate}
