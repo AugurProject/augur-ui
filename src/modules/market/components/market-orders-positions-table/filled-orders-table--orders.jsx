@@ -20,7 +20,7 @@ export default class FilledOrdersOrder extends Component {
     isMobile: PropTypes.bool.isRequired,
     order: PropTypes.shape({
       type: PropTypes.string.isRequired,
-      timestamp: PropTypes.number.isRequired,
+      timestamp: PropTypes.object.isRequired,
       price: PropTypes.object.isRequired,
       outcome: PropTypes.any,
       trades: PropTypes.array.isRequired

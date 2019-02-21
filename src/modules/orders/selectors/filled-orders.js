@@ -38,7 +38,7 @@ function findOrders(
 
       typeOp = type === BUY ? BOUGHT : SOLD;
       amountBN = formatShares(amountBN);
-      price = formatEther(priceBN);
+      priceBN = formatEther(priceBN);
       const timestampFormatted = convertUnixToFormattedDate(timestamp);
 
       if (foundOrder) {
