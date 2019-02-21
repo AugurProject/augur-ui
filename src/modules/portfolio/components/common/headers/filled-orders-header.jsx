@@ -7,13 +7,23 @@ import SharedStyles from "modules/portfolio/components/common/rows/open-order.st
 export default class FilledOrdersHeader extends Component {
   render() {
     return (
-      <ul className={classNames(SharedStyles.Order, Styles.DataTableHeader, Styles.FilledOrdersHeader)}>
+      <ul
+        className={classNames(
+          SharedStyles.Order,
+          Styles.DataTableHeader,
+          Styles.FilledOrdersHeader
+        )}
+      >
         <li>Outcome</li>
         <li>Type</li>
         <li>Quantity</li>
         <li>Price</li>
         <li>Fill Date</li>
-        <li>Number<br/>of Fills</li>
+        <li>
+          Number
+          <br />
+          of Fills
+        </li>
       </ul>
     );
   }

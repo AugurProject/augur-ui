@@ -21,7 +21,8 @@ export default class FilledOrder extends Component {
   render() {
     const { filledOrder, className, toggleClassName } = this.props;
 
-    const orderQuantity = formatShares(getValue(filledOrder, "amount")).formatted;
+    const orderQuantity = formatShares(getValue(filledOrder, "amount"))
+      .formatted;
     const orderPrice = formatEther(getValue(filledOrder, "price")).formatted;
     const orderType = getValue(filledOrder, "type");
     const orderDisplay = orderType !== SELL ? BOUGHT : SOLD;
@@ -30,17 +31,15 @@ export default class FilledOrder extends Component {
       <ToggleRow
         className={toggleClassName}
         rowContent={
-          <ul className={classNames(Styles.Order, Styles.FilledOrder, className)}>
+          <ul
+            className={classNames(Styles.Order, Styles.FilledOrder, className)}
+          >
             <li>{filledOrder.outcome}</li>
-            <li>{filledOrder.type}</li>
+            <li>{orderDisplay}</li>
             <li>{orderQuantity}</li>
             <li>{orderPrice}</li>
-            <li>
-              {filledOrder.timestamp.formattedShortDate}
-            </li>
-            <li>
-              {filledOrder.trades.length}
-            </li>
+            <li>{filledOrder.timestamp.formattedShortDate}</li>
+            <li>{filledOrder.trades.length}</li>
           </ul>
         }
         toggleContent={<div>info</div>}

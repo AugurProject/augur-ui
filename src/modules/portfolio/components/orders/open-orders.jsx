@@ -82,9 +82,7 @@ export default class OpenOrders extends Component {
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
-        bottomBarContent={
-          <OpenOrdersHeader />
-        }
+        bottomBarContent={<OpenOrdersHeader />}
         rows={
           <div>
             {filteredData.map(

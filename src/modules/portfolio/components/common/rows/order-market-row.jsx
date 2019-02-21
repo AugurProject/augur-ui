@@ -9,7 +9,7 @@ import Styles from "modules/portfolio/components/common/rows/order-market-row.st
 export default class OrderMarketRow extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
-    filledOrders: PropTypes.bool,
+    filledOrders: PropTypes.bool
   };
 
   render() {
@@ -18,14 +18,14 @@ export default class OrderMarketRow extends Component {
     let orders = [];
     if (!filledOrders) {
       orders = market.outcomes.reduce((p, outcome) => {
-          if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
-            outcome.userOpenOrders.forEach(order => p.push(order));
-          }
-          return p;
-        }, []);
-     } else {
-       orders = market.filledOrders;
-     }   
+        if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
+          outcome.userOpenOrders.forEach(order => p.push(order));
+        }
+        return p;
+      }, []);
+    } else {
+      orders = market.filledOrders;
+    }
 
     return (
       <div className={Styles.OrderMarket}>
@@ -33,27 +33,26 @@ export default class OrderMarketRow extends Component {
           {market.description}
         </div>
         <div>
-          {orders.map(order => filledOrders ? 
-            (
-              <FilledOrder
-                key={"sFilledOrder_" + order.id}
-                filledOrder={order}
-                className={Styles.OpenOrders__row}
-                toggleClassName={Styles.OrderMarket__order}
-              />
-            )
-            : 
-              (<OpenOrder
-                key={"sOpenOrder_" + order.id}
-                openOrder={order}
-                className={Styles.OpenOrders__row}
-                toggleClassName={Styles.OrderMarket__order}
-              />)
+          {orders.map(
+            order =>
+              filledOrders ? (
+                <FilledOrder
+                  key={"sFilledOrder_" + order.id}
+                  filledOrder={order}
+                  className={Styles.OpenOrders__row}
+                  toggleClassName={Styles.OrderMarket__order}
+                />
+              ) : (
+                <OpenOrder
+                  key={"sOpenOrder_" + order.id}
+                  openOrder={order}
+                  className={Styles.OpenOrders__row}
+                  toggleClassName={Styles.OrderMarket__order}
+                />
+              )
           )}
         </div>
       </div>
     );
   }
 }
-
-
