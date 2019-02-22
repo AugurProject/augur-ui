@@ -16,6 +16,7 @@ import {
   updateAppStatus,
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
+
 const { REPORTING_STATE } = constants;
 
 // NOTE -- We ONLY load the market ids during this step.
