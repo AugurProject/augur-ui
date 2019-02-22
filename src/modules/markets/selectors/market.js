@@ -333,8 +333,6 @@ export function assembleMarket(
             )
         };
 
-        market.userPositions = Object.values(marketAccountPositions || []);
-
         market.outcomes = [];
 
         market.outcomes = Object.keys(marketOutcomesData || {})
