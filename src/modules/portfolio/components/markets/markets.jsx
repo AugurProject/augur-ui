@@ -49,6 +49,12 @@ class MyMarkets extends Component {
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.myMarkets !== this.props.myMarkets) {
+      this.updateFilteredMarkets(nextProps.myMarkets[ALL_MARKETS], ALL_MARKETS);
+    }
+  }
+
   updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
     if (tab) {
