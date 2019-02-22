@@ -498,8 +498,6 @@ export function assembleMarket(
         if (marketAccountTrades || marketAccountPositions) {
           market.myPositionsSummary = generateMarketsPositionsSummary([market]);
           if (market.myPositionsSummary) {
-            market.myPositionOutcomes =
-              market.myPositionsSummary.positionOutcomes;
             delete market.myPositionsSummary.positionOutcomes;
 
             market.myPositionsSummary.numCompleteSets = formatShares(

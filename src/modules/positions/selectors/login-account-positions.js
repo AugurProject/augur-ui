@@ -8,11 +8,9 @@ import { selectAccountPositionsState } from "src/select-state";
 // TODO
 export default function() {
   const markets = selectLoginAccountPositionsMarkets(store.getState());
-  const summary = generateMarketsPositionsSummary(markets);
 
   return {
-    markets,
-    summary
+    markets
   };
 }
 

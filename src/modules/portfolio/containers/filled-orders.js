@@ -4,11 +4,6 @@ import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
-import { selectMarket } from "modules/markets/selectors/market";
-// delete these files if not needed
-// import getOpenOrders, {
-//  sortOpenOrders
-// } from "modules/orders/selectors/open-orders";
 import { groupBy, keys, differenceBy } from "lodash";
 import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 

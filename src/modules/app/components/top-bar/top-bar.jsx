@@ -11,48 +11,7 @@ import { MovementLabel } from "modules/common-elements/labels";
 
 import makePath from "modules/routes/helpers/make-path";
 import { MARKETS } from "modules/routes/constants/views";
-// import ReactTooltip from "react-tooltip";
-
-// import TooltipStyles from "modules/common/less/tooltip.styles";
 import Styles from "modules/app/components/top-bar/top-bar.styles";
-
-// <label
-//             className={classNames(TooltipStyles.TooltipHint)}
-//             data-tip
-//             data-for="tooltip--funds"
-//           >
-//           </label>
-//           <ReactTooltip
-//             id="tooltip--funds"
-//             className={classNames(
-//               TooltipStyles.Tooltip,
-//               Styles.TopBar__tooltip
-//             )}
-//             effect="solid"
-//             place="bottom"
-//             type="light"
-//           >
-//             <h4>Portfolio Value</h4>
-//             <p>
-//               <span id="core-bar-eth-tooltip">
-//                 {props.stats[0].totalBalance.value.formatted}
-//               </span>
-//               <span className={Styles["TopBar__tooltip-denomination"]}>
-//                 {" "}
-//                 ETH
-//               </span>
-//             </p>
-//             <h4>Available Funds</h4>
-//             <p>
-//               <span id="core-bar-rep-tooltip">
-//                 {props.stats[0].totalRealEth.value.formatted}
-//               </span>
-//               <span className={Styles["TopBar__tooltip-denomination"]}>
-//                 {" "}
-//                 ETH
-//               </span>
-//             </p>
-//           </ReactTooltip>
 
 const TopBar = props => (
   <header className={Styles.TopBar}>

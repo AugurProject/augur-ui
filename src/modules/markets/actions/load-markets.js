@@ -17,11 +17,9 @@ import {
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
 import {
-  loadUnclaimedFees,
-  collectMarketCreatorFees
+  loadUnclaimedFees
 } from "modules/markets/actions/market-creator-fees-management";
 import {
-  loadMarketsInfo,
   loadMarketsInfoIfNotLoaded
 } from "modules/markets/actions/load-markets-info";
 
