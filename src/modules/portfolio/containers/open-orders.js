@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import memoize from "memoizee";
 
 import OpenOrders from "modules/portfolio/components/orders/open-orders";
-import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
@@ -40,7 +39,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadAccountTrades: () => dispatch(loadAccountTrades()),
   triggerTransactionsExport: () => dispatch(triggerTransactionsExport()),
   claimTradingProceeds: marketId =>
     dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId }))
