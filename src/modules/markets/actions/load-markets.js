@@ -16,14 +16,6 @@ import {
   updateAppStatus,
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
-import {
-  loadUnclaimedFees,
-  collectMarketCreatorFees
-} from "modules/markets/actions/market-creator-fees-management";
-import {
-  loadMarketsInfo,
-  loadMarketsInfoIfNotLoaded
-} from "modules/markets/actions/load-markets-info";
 
 const { REPORTING_STATE } = constants;
 
@@ -51,34 +43,6 @@ export const loadMarkets = (type, callback = logError) => (
     dispatch(updateMarketsData(marketsData));
     callback(null, marketsArray);
   });
-};
-
-// NOTE -- We ONLY load the market ids during this step.
-export const loadUserMarkets = (callback = logError) => (
-  dispatch,
-  getState
-) => {
-  const { universe, loginAccount } = getState();
-
-  augur.markets.getMarkets(
-    { universe: universe.id, creator: loginAccount.address },
-    (err, marketsArray) => {
-      if (err || !marketsArray) return callback(err);
-
-      dispatch(loadMarketsInfoIfNotLoaded(marketsArray));
-      dispatch(loadUnclaimedFees(marketsArray));
-
-      const marketsData = marketsArray.reduce(
-        (p, id) => ({
-          ...p,
-          [id]: { id, author: loginAccount.address }
-        }),
-        {}
-      );
-      dispatch(updateMarketsData(marketsData));
-      callback(null, marketsArray);
-    }
-  );
 };
 
 export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (

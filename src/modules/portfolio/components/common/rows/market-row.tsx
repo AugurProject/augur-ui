@@ -23,6 +23,7 @@ export interface Market {
   id: string;
   description: string;
   reportingState: string;
+  marketStatus: string;
   creationTime: number;
   endTime: number;
   volume: FormatObject;
@@ -45,7 +46,7 @@ const MarketRow = (props: MarketRowProps) => (
       props.showState && (
         <div className={Styles.MarketRow__firstRow}>
           <MarketStatusLabel
-            marketStatus={props.market.reportingState}
+            marketStatus={props.market.marketStatus}
             alternate
             mini
           />
