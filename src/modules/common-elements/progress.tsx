@@ -25,6 +25,9 @@ export interface ProgressLabelProps {
   endTime: DateFormattedObject | number;
   currentTime: DateFormattedObject | number;
   label?: string;
+  countdownBreakpoint?: number;
+  firstColorBreakpoint?: number;
+  finalColorBreakpoint?: number;
 };
 
 export interface TimeLabelProps {
@@ -38,9 +41,21 @@ export interface TimeProgressBarProps {
   currentTime: DateFormattedObject | number;
 }
 
+// default breakpoints
+const OneWeek = 168*60*60;
+const ThreeDays = 72*60*60;
+const OneDay = 24*60*60;
+
 export const ProgressLabel = (props: ProgressLabelProps) => {
-  const { label, currentTime, endTime } = props;
-  const TwoDays = 48*60*60;
+  const {
+    label,
+    currentTime,
+    endTime,
+    countdownBreakpoint,
+    firstColorBreakpoint,
+    finalColorBreakpoint
+  } = props;
+  
   let formattedEndTime: DateFormattedObject | number = endTime;
   let formattedCurrentTime: DateFormattedObject | number = currentTime;
   if (typeof endTime !== "object") {
@@ -52,10 +67,22 @@ export const ProgressLabel = (props: ProgressLabelProps) => {
   const daysRemaining = format.getDaysRemaining(formattedEndTime.timestamp, formattedCurrentTime.timestamp);
   const hoursRemaining = format.getHoursMinusDaysRemaining(formattedEndTime.timestamp, formattedCurrentTime.timestamp);
   const minutesRemaining = format.getMinutesMinusHoursRemaining(formattedEndTime.timestamp, formattedCurrentTime.timestamp);
-  const isAlmostOver = (formattedEndTime.timestamp - formattedCurrentTime.timestamp) <= TwoDays;
+  const timeLeft = formattedEndTime.timestamp - formattedCurrentTime.timestamp;
+  const countdown = (countdownBreakpoint || OneWeek) >= timeLeft && timeLeft > 0;
+  const firstBreakpoint = firstColorBreakpoint || ThreeDays;
+  const secondBreakpoint = finalColorBreakpoint || OneDay;
+  const breakpointOne = (timeLeft <= firstBreakpoint && timeLeft > secondBreakpoint);
+  const breakpointTwo = (timeLeft <= secondBreakpoint && countdown);
+  
+  const valueString = countdown ? `${daysRemaining}d ${hoursRemaining >= 10 ? hoursRemaining : "0" + hoursRemaining}h ${minutesRemaining >= 10 ? minutesRemaining : "0" + minutesRemaining}m` : formattedEndTime.formattedLocalShortDate;
+  
   return (
-    <span className={classNames(Styles.ProgressLabel,{ [Styles.ProgressLabel__Warning]: isAlmostOver})}>
-      <span>{label}</span><span>{`${daysRemaining}d ${hoursRemaining >= 10 ? hoursRemaining : "0" + hoursRemaining}h ${minutesRemaining >= 10 ? minutesRemaining : "0" + minutesRemaining}m`}</span>
+    <span className={classNames(Styles.ProgressLabel,{
+      [Styles.ProgressLabel__FirstBreakpoint]: breakpointOne,
+      [Styles.ProgressLabel__SecondBreakpoint]: breakpointTwo,
+      [Styles.ProgressLabel__Finished]: timeLeft < 0
+    })}>
+      <span>{label}</span><span>{valueString}</span>
     </span>
   );
 };

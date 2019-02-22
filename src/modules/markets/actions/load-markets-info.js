@@ -27,6 +27,7 @@ export const loadMarketsInfo = (marketIds, callback = logError) => (
     dispatch(updateMarketLoading({ [marketId]: MARKET_INFO_LOADING }))
   );
 
+  console.log("getMarketsInfo", marketIds);
   augur.markets.getMarketsInfo({ marketIds }, (err, marketsDataArray) => {
     if (err) return loadingError(dispatch, callback, err, marketIds);
 
