@@ -26,6 +26,7 @@ export interface FilterBoxProps {
   filterComp: Function;
   showFilterSearch?: Boolean;
   bottomTabs?: Boolean;
+  tabs: Array<Tab>;
 }
 
 interface FilterBoxState {
@@ -35,43 +36,14 @@ interface FilterBoxState {
   tabs: Array<Tab>,
 }
 
-let tabsInfo = [
-  {
-    key: ALL_MARKETS,
-    label: 'All',
-    num: 0
-  },
-  {
-    key: MARKET_OPEN,
-    label: 'Open',
-    num: 0
-  },
-  {
-    key: MARKET_REPORTING,
-    label: 'In Reporting',
-    num: 0
-
-  },
-  {
-    key: MARKET_CLOSED,
-    label: 'Resolved',
-    num: 0
-  }
-];
 
 export default class FilterBox extends React.Component<FilterBoxProps, FilterBoxState>  {
   state: FilterBoxState = {
     search: '',
-    selectedTab: tabsInfo[0].key,
-    tabs: tabsInfo,
+    selectedTab: this.props.tabs[0].key,
+    tabs: this.props.tabs,
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
   };
-
-  componentWillReceiveProps(nextProps: FilterBoxProps) {
-    if (nextProps.data !== this.props.data) {        
-      this.calculateTabNums(nextProps.data, this.state.search);
-    }
-  }
 
   calculateTabNums = (data: MarketsByReportingState, input: string) => {
    const { filterComp } = this.props;

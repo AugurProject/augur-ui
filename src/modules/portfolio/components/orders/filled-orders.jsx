@@ -25,8 +25,7 @@ const sortByOptions = [
 export default class FilledOrders extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    filledOrders: PropTypes.array.isRequired,
-    loadAccountTrades: PropTypes.func.isRequired
+    filledOrders: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -40,11 +39,6 @@ export default class FilledOrders extends Component {
     this.updateFilteredData = this.updateFilteredData.bind(this);
     this.filterComp = this.filterComp.bind(this);
     this.switchView = this.switchView.bind(this);
-  }
-
-  componentWillMount() {
-    const { loadAccountTrades } = this.props;
-    loadAccountTrades();
   }
 
   updateFilteredData(filteredData) {

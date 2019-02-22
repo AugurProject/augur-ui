@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 // import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
-import OpenOrder from "modules/portfolio/components/common/rows/open-order";
-import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
+import { FilledOrder } from "modules/portfolio/components/common/rows/filled-order";
+import { FilledOrdersHeader } from "modules/portfolio/components/common/headers/filled-orders-header";
 
 import Styles from "modules/portfolio/components/orders/open-orders.styles";
 
@@ -22,10 +22,10 @@ const sortByOptions = [
   }
 ];
 
-export default class OpenOrders extends Component {
+export default class FilledOrders extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    openOrders: PropTypes.array.isRequired
+    filledOrders: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -50,46 +50,48 @@ export default class OpenOrders extends Component {
       return data.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     }
     return (
-      data.name && data.name.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      data.outcome &&
+      data.outcome.toLowerCase().indexOf(input.toLowerCase()) >= 0
     );
   }
 
   switchView() {
     this.setState({
       filteredData: this.state.viewByMarkets
-        ? this.props.openOrders
+        ? this.props.filledOrders
         : this.props.markets,
       viewByMarkets: !this.state.viewByMarkets
     });
   }
 
   render() {
-    const { markets, openOrders } = this.props;
+    const { markets, filledOrders } = this.props;
     const { filteredData, viewByMarkets } = this.state;
 
     return (
       <FilterSwitchBox
-        title="Open Orders"
+        title="Filled Orders"
         showFilterSearch
         sortByOptions={sortByOptions}
         updateFilteredData={this.updateFilteredData}
-        data={viewByMarkets ? markets : openOrders}
+        data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
-        bottomBarContent={<OpenOrdersHeader />}
+        bottomBarContent={<FilledOrdersHeader />}
         rows={
           <div>
             {filteredData.map(
               data =>
                 viewByMarkets ? (
                   <OrderMarketRow
-                    key={"openOrderMarket_" + data.id}
+                    key={"filledOrderMarket_" + data.marketId}
                     market={data}
+                    filledOrders
                   />
                 ) : (
-                  <OpenOrder
-                    key={"openOrder_" + data.id}
-                    openOrder={data}
+                  <FilledOrder
+                    key={"filledOrder_" + data.id}
+                    filledOrder={data}
                     toggleClassName={Styles.Orders__orderSingle}
                   />
                 )
