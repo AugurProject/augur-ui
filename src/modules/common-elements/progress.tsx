@@ -63,7 +63,6 @@ const formatTime = (time: DateFormattedObject | number) => {
 
 const reportingStateToLabelTime = (
   reportingState: string, 
-  currentTime: DateFormattedObject, 
   endTime: DateFormattedObject, 
   reportingEndTime: DateFormattedObject
 ) => {
@@ -122,7 +121,6 @@ export const MarketProgress = (props: MarketProgressProps) => {
   const reportingEndTime = formatTime(reportingWindowEndtime);
   const { label, time } = reportingStateToLabelTime(
     reportingState,
-    currTime,
     marketEndTime,
     reportingEndTime
   );
