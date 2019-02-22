@@ -1,24 +1,36 @@
 @import (reference) '~assets/styles/shared';
 
 .ProgressLabel {
-  .mono-10;
+  .text-10;
 
   align-items: baseline;
-  color: @color-neutral;
+  color: @color-tertiary-text;
   display: flex;
   flex-flow: column nowrap;
   line-height: @size-14;
 
   > span:last-of-type {
-    .mono-14-bold;
+    .text-12-bold;
 
     color: @color-secondary-text;
     line-height: @size-16;
   }
 
-  &.ProgressLabel__Warning {
+  &.ProgressLabel__FirstBreakpoint {
     > span:last-of-type {
       color: @color-in-reporting;
+    }
+  }
+
+  &.ProgressLabel__SecondBreakpoint {
+    > span:last-of-type {
+      color: @color-resolved;
+    }
+  }
+
+  &.ProgressLabel__Finished {
+    > span:last-of-type {
+      color: @color-alternate-text;
     }
   }
 }

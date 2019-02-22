@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
+
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
 const sortByOptions = [

@@ -45,7 +45,11 @@ export default class MarketOutcomesChartHighchart extends Component {
         chart: {
           type: "line",
           styledMode: false,
-          animation: false
+          animation: false,
+          marginTop: 12
+        },
+        credits: {
+          enabled: false
         },
         plotOptions: {
           line: {

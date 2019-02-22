@@ -49,7 +49,11 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         chart: {
           type: "candlestick",
           styledMode: false,
-          animation: false
+          animation: false,
+          marginTop: 12
+        },
+        credits: {
+          enabled: false
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
@@ -78,7 +82,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showEmpty: true,
             max: props.marketMax.toFixed(props.pricePrecision),
             min: props.marketMin.toFixed(props.pricePrecision),
-            showFirstLabel: false,
+            showFirstLabel: true,
             showLastLabel: true,
             labels: {
               format: "{value:.4f} <span class='eth-label'>ETH</span>",
