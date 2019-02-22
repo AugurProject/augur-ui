@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
-import {
-  ALL_MARKETS
-} from "modules/common-elements/constants";
-
+import { ALL_MARKETS } from "modules/common-elements/constants";
 
 const sortByOptions = [
   {
@@ -34,7 +31,7 @@ class MyMarkets extends Component {
     loadMarkets: PropTypes.func.isRequired,
     myMarkets: PropTypes.object.isRequired,
     loadDisputingMarkets: PropTypes.func.isRequired,
-    tabsInfo: PropTypes.array.isRequired,
+    tabsInfo: PropTypes.array.isRequired
   };
 
   constructor(props) {

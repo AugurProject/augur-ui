@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import memoize from "memoizee";
 
-import { selectCurrentTimestamp } from "src/select-state";
 import Positions from "modules/portfolio/components/positions/positions";
 import getLoginAccountPositions from "modules/positions/selectors/login-account-positions";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
@@ -17,7 +16,6 @@ const mapStateToProps = state => {
 
   // NOTE: for data wiring, this should probably be just done as calls for getting openPosition Markets, getting Reporting Markets, and getting Closed Markets respectively from the node and just passed the expected keys below
   const markets = getPositionsMarkets(positions);
-  const marketsCount = markets.length;
   const marketsObject = createMarketsStateObject(markets);
 
   return {
