@@ -30,7 +30,6 @@ function filterComp(input, market) {
 export default class Positions extends Component {
   static propTypes = {
     markets: PropTypes.object.isRequired,
-    loadAccountTrades: PropTypes.func.isRequired,
     tabsInfo: PropTypes.array.isRequired
   };
 
@@ -43,11 +42,6 @@ export default class Positions extends Component {
     };
 
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
-  }
-
-  componentWillMount() {
-    const { loadAccountTrades } = this.props;
-    loadAccountTrades();
   }
 
   updateFilteredMarkets(filteredMarkets, tab) {
