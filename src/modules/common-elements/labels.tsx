@@ -52,7 +52,6 @@ export interface PropertyLabelProps {
 export interface LinearPropertyLabelProps {
   label: string;
   value: string;
-  size?: sizeTypes;
 }
 
 export const PropertyLabel = (props: PropertyLabelProps) => (
@@ -86,13 +85,10 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   <div
-    className={classNames(Styles.LinearPropertyLabel, {
-      [Styles.LinearPropertyLabel_large]: props.size == sizeTypes.LARGE
-    })}
+    className={Styles.LinearPropertyLabel}
   >
     <span>{props.label}</span>
-    {props.size === sizeTypes.LARGE && <DashlineLong />}
-    {props.size !== sizeTypes.LARGE && <DashlineNormal />}
+    <DashlineNormal />
     <span>{props.value}</span>
   </div>
 );
