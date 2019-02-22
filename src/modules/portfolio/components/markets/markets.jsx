@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
+import {
+  ALL_MARKETS
+} from "modules/common-elements/constants";
 
-import { ALL_MARKETS } from "modules/common-elements/constants";
 
 const sortByOptions = [
   {
@@ -31,7 +33,8 @@ class MyMarkets extends Component {
   static propTypes = {
     loadMarkets: PropTypes.func.isRequired,
     myMarkets: PropTypes.object.isRequired,
-    loadDisputingMarkets: PropTypes.func.isRequired
+    loadDisputingMarkets: PropTypes.func.isRequired,
+    tabsInfo: PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -61,7 +64,7 @@ class MyMarkets extends Component {
   }
 
   render() {
-    const { myMarkets } = this.props;
+    const { myMarkets, tabsInfo } = this.props;
     const { filteredMarkets, tab } = this.state;
 
     return (
@@ -74,6 +77,7 @@ class MyMarkets extends Component {
         data={myMarkets}
         filterComp={filterComp}
         bottomTabs
+        tabs={tabsInfo}
         rows={
           <div>
             {filteredMarkets.map(market => (

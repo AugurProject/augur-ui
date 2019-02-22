@@ -10,6 +10,7 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
+import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 
 const mapStateToProps = state => {
   const positions = getLoginAccountPositions();
@@ -20,13 +21,9 @@ const mapStateToProps = state => {
   const marketsObject = createMarketsStateObject(markets);
 
   return {
-    currentTimestamp: selectCurrentTimestamp(state),
-    marketsCount,
-    transactionsStatus: state.transactionsStatus,
     markets: marketsObject,
-    transactionsLoading: state.appStatus.transactionsLoading,
-    registerBlockNumber: state.loginAccount.registerBlockNumber,
-    isMobile: state.appStatus.isMobile
+    isMobile: state.appStatus.isMobile,
+    tabsInfo: createTabsInfo(marketsObject)
   };
 };
 

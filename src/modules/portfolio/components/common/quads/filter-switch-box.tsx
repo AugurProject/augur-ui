@@ -35,12 +35,12 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
     search: '',
   };
 
-  componentWillReceiveProps(nextProps: FilterBoxProps) {
-    if (nextProps.data !== this.props.data) {
-      const data = this.applySearch(this.state.search, nextProps.data);
-      this.props.updateFilteredData(data);
-    }
-  }
+  // componentWillReceiveProps(nextProps: FilterBoxProps) {
+  //   if (nextProps.data !== this.props.data) {
+  //     // const data = this.applySearch(this.state.search, nextProps.data);
+  //     // this.props.updateFilteredData(data);
+  //   }
+  // }
 
   onSearchChange = (input: string) => {
     this.setState({search: input});
