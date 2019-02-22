@@ -32,7 +32,7 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
   return (
     <div className={Styles.OrderMarket}>
       <div className={Styles.OrderMarket__description}>
-        <MarketLink id={market.marketId}>
+        <MarketLink id={market.id}>
           {market.description}
         </MarketLink>
       </div>
@@ -60,4 +60,4 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
   );
 };
 
-export default OrderMarketRow; 
+export default OrderMarketRow;
