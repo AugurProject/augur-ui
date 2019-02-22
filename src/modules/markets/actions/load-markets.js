@@ -16,14 +16,8 @@ import {
   updateAppStatus,
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
-import {
-  loadUnclaimedFees,
-  collectMarketCreatorFees
-} from "modules/markets/actions/market-creator-fees-management";
-import {
-  loadMarketsInfo,
-  loadMarketsInfoIfNotLoaded
-} from "modules/markets/actions/load-markets-info";
+import { loadUnclaimedFees } from "modules/markets/actions/market-creator-fees-management";
+import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 
 const { REPORTING_STATE } = constants;
 

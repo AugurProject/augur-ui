@@ -4,7 +4,7 @@ import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
-import { selectMarket } from "modules/markets/selectors/market";
+// import { selectMarket } from "modules/markets/selectors/market";
 // delete these files if not needed
 // import getOpenOrders, {
 //  sortOpenOrders
@@ -35,16 +35,14 @@ const mapStateToProps = state => {
   );
 
   const marketIds = keys(groupedFilledOrders);
-  const markets = marketIds.map(m => marketsData[m]).map(item => {
-    return {
-      ...item,
-      filledOrders: selectFilledOrders(
-        groupedFilledOrders[item.id],
-        account,
-        outcomesData
-      )
-    };
-  });
+  const markets = marketIds.map(m => marketsData[m]).map(item => ({
+    ...item,
+    filledOrders: selectFilledOrders(
+      groupedFilledOrders[item.id],
+      account,
+      outcomesData
+    )
+  }));
 
   /* eslint-disable */
   let allFilledOrders = [];

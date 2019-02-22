@@ -3,17 +3,8 @@ import { withRouter } from "react-router-dom";
 
 import MyMarkets from "modules/portfolio/components/markets/markets";
 import getUserMarkets from "modules/markets/selectors/user-markets";
-import { toggleFavorite } from "modules/markets/actions/update-favorites";
-import {
-  collectMarketCreatorFees
-} from "modules/markets/actions/market-creator-fees-management";
-import {
-  loadMarketsInfo,
-  loadMarketsInfoIfNotLoaded
-} from "modules/markets/actions/load-markets-info";
-import logError from "utils/log-error";
+import { collectMarketCreatorFees } from "modules/markets/actions/market-creator-fees-management";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
-import { loadDisputing } from "modules/reports/actions/load-disputing";
 
 import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
