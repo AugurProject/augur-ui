@@ -30,7 +30,8 @@ function filterComp(input, market) {
 export default class Positions extends Component {
   static propTypes = {
     markets: PropTypes.object.isRequired,
-    loadAccountTrades: PropTypes.func.isRequired
+    loadAccountTrades: PropTypes.func.isRequired,
+    tabsInfo: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -57,7 +58,7 @@ export default class Positions extends Component {
   }
 
   render() {
-    const { markets } = this.props;
+    const { markets, tabsInfo } = this.props;
     const { filteredMarkets, tab } = this.state;
 
     return (
@@ -70,6 +71,7 @@ export default class Positions extends Component {
         data={markets}
         filterComp={filterComp}
         bottomTabs
+        tabs={tabsInfo}
         rows={
           <div>
             {filteredMarkets.map(market => (

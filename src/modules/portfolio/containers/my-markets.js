@@ -17,6 +17,7 @@ import logError from "utils/log-error";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
 import { loadDisputing } from "modules/reports/actions/load-disputing";
 
+import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
@@ -29,7 +30,8 @@ const mapStateToProps = state => {
     transactionsLoading: state.appStatus.transactionsLoading,
     isMobile: state.appStatus.isMobile,
     pendingLiquidityOrders: state.pendingLiquidityOrders,
-    outcomes: marketDisputeOutcomes() || {}
+    outcomes: marketDisputeOutcomes() || {},
+    tabsInfo: createTabsInfo(markets)
   };
 };
 
