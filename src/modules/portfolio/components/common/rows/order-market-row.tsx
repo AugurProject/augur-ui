@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import OpenOrder from "modules/portfolio/components/common/rows/open-order";
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
+import MarketLink from "modules/market/components/market-link/market-link";
+
 import Styles from "modules/portfolio/components/common/rows/order-market-row.styles";
 
 import { NameValuePair, Market, Tab, Outcome, Order} from "modules/portfolio/constants";
@@ -30,7 +32,9 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
   return (
     <div className={Styles.OrderMarket}>
       <div className={Styles.OrderMarket__description}>
-        {market.description}
+        <MarketLink id={market.marketId}>
+          {market.description}
+        </MarketLink>
       </div>
       <div>
         {orders.map(

@@ -1,15 +1,23 @@
 @import (reference) '~assets/styles/shared';
 
 .ToggleRow {
-  background: @color-grayish-purple;
   display: flex;
   flex-direction: column;
+  background-color: @color-grayish-purple;
+  
+  &:hover {
+    background-color: fade(@color-primary-alternate, 40%);
+  }
 
   > div {
     display: flex;
     flex: 1;
     flex-direction: row;
   }
+}
+
+.ToggleRow__active {
+  background-color: fade(@color-primary-alternate, 40%);
 }
 
 .ToggleRow__rowContent {

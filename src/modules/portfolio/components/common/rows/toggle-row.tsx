@@ -12,7 +12,8 @@ export interface ToggleRowProps {
   toggleContent: ReactNode,
   style?: Object,
   topRowContent: ReactNode,
-  className?: string
+  className?: string,
+  expandedClassName?: string,
 }
 
 interface ToggleRowState {
@@ -29,11 +30,21 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
   }
 
   render() {
-    const { rowContent, topRowContent, toggleContent, className } = this.props;
+    const { rowContent, topRowContent, toggleContent, className, expandedClassName } = this.props;
     const { open } = this.state;
 
     return (
-      <div className={classNames(className, Styles.ToggleRow)}>
+      <div 
+        className={
+          classNames(
+            className, 
+            Styles.ToggleRow, {
+              [Styles.ToggleRow__active]: open, 
+              [`${expandedClassName}`]: open
+            }
+          )
+        }
+       >
         {topRowContent}
         <div>
           <div className={Styles.ToggleRow__rowContent}>{rowContent}</div>
