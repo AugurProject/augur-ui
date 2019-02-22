@@ -6,7 +6,6 @@ import ToggleRow from "modules/portfolio/components/common/rows/toggle-row.tsx";
 import { MarketStatusLabel } from "modules/common-elements/labels";
 import MarketLink from "modules/market/components/market-link/market-link";
 import Styles from "modules/portfolio/components/common/rows/market-row.styles";
-import { MarketProgress } from "modules/common-elements/progress";
 // todo: MarketRow__time will end up being a passed in prop
 // info toggle content will be passed in as a child
 // maybe will have a boolean for whether it is extendable because the watchlist one is different
@@ -31,9 +30,8 @@ export interface Market {
 export interface MarketRowProps {
   market: Market;
   showState: boolean;
-  currentAugurTimestamp: number,
-  reportingWindowStatsEndTime: number
   toggleContent: ReactNode;
+  rightContent: ReactNode;
 }
 
 const MarketRow = (props: MarketRowProps) => (
@@ -41,31 +39,29 @@ const MarketRow = (props: MarketRowProps) => (
     <ToggleRow
       expandedClassName={Styles.MarketRow__expanded}
       className={Styles.MarketRow}
-      topRowContent={
-        props.showState && (
-          <div className={Styles.MarketRow__firstRow}>
-            <MarketStatusLabel
-              marketStatus={props.market.reportingState}
-              alternate
-              mini
-            />
-          </div>
-        )
-      }
       rowContent={
-        <div className={Styles.MarketRow__rowContainer}>
-          <span className={Styles.MarketRow__description}>
-            <MarketLink id={props.market.id}>
-              {props.market.description}
-            </MarketLink>
-          </span>
+        <div className={Styles.MarketRow__content}>
+          <div className={Styles.MarketRow__column}>
+            {props.showState && (
+              <div className={Styles.MarketRow__firstRow}>
+                <MarketStatusLabel
+                  marketStatus={props.market.reportingState}
+                  alternate
+                  mini
+                />
+              </div>
+            )}
+            <div className={Styles.MarketRow__rowContainer}>
+              <span className={Styles.MarketRow__description}>
+                <MarketLink id={props.market.id}>
+                  {props.market.description}
+                </MarketLink>
+              </span>
+              
+            </div>
+          </div>
           <span className={Styles.MarketRow__time}>
-            <MarketProgress
-              reportingState={props.market.reportingState}
-              currentTime={props.currentAugurTimestamp}
-              endTime={props.market.endTime}
-              reportingWindowEndtime={props.reportingWindowStatsEndTime}
-            />
+            {props.rightContent || <div>right content</div>}
           </span>
         </div>
       }

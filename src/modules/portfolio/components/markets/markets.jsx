@@ -5,6 +5,7 @@ import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import Styles from "modules/portfolio/components/common/rows/market-row.styles";
+import { MarketProgress } from "modules/common-elements/progress";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
@@ -81,9 +82,15 @@ class MyMarkets extends Component {
               <MarketRow
                 key={"myMarket_" + market.id}
                 market={market}
-                currentAugurTimestamp={currentAugurTimestamp}
-                reportingWindowStatsEndTime={reportingWindowStatsEndTime}
                 showState={tab === ALL_MARKETS}
+                rightContent={
+                    <MarketProgress
+                      reportingState={market.reportingState}
+                      currentTime={currentAugurTimestamp}
+                      endTime={market.endTime}
+                      reportingWindowEndtime={reportingWindowStatsEndTime}
+                    />
+                }
                 toggleContent={
                   <div className={Styles.MarketRow__infoContainer}>
                     <div className={Styles.MarketRow__info}>

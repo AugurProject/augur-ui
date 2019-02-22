@@ -11,6 +11,17 @@
   padding: 1rem 1.75rem 0 1.5rem;
 }
 
+.MarketRow__content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.MarketRow__column {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .MarketRow__expanded {
   border-bottom: 0;
 }
@@ -35,6 +46,9 @@
   font-family: @roboto-mono;
   min-width: min-content;
   text-align: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .MarketRow__rowContainer {
