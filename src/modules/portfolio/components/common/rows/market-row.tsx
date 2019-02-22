@@ -7,7 +7,7 @@ import { MarketStatusLabel } from "modules/common-elements/labels";
 import MarketLink from "modules/market/components/market-link/market-link";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import Styles from "modules/portfolio/components/common/rows/market-row.styles";
-
+import { MarketProgress } from "modules/common-elements/progress";
 // todo: MarketRow__time will end up being a passed in prop
 // info toggle content will be passed in as a child
 // maybe will have a boolean for whether it is extendable because the watchlist one is different
@@ -22,8 +22,9 @@ export interface FormatObject {
 export interface Market {
   id: string;
   description: string;
-  marketStatus: string;
-  creationTime: TimeObject;
+  reportingState: string;
+  creationTime: number;
+  endTime: number;
   volume: FormatObject;
   openInterest: FormatObject;
 }
@@ -31,6 +32,8 @@ export interface Market {
 export interface MarketRowProps {
   market: Market;
   showState: boolean;
+  currentAugurTimestamp: number,
+  reportingWindowStatsEndTime: number
 }
 
 const MarketRow = (props: MarketRowProps) => (
@@ -42,7 +45,7 @@ const MarketRow = (props: MarketRowProps) => (
       props.showState && (
         <div className={Styles.MarketRow__firstRow}>
           <MarketStatusLabel
-            marketStatus={props.market.marketStatus}
+            marketStatus={props.market.reportingState}
             alternate
             mini
           />
@@ -57,7 +60,12 @@ const MarketRow = (props: MarketRowProps) => (
           </MarketLink>
         </span>
         <span className={Styles.MarketRow__time}>
-          {props.market.creationTime.formattedShortDate}
+        <MarketProgress
+            reportingState={props.market.reportingState}
+            currentTime={props.currentAugurTimestamp}
+            endTime={props.market.endTime}
+            reportingWindowEndtime={props.reportingWindowStatsEndTime}
+          />
         </span>
       </div>
     }

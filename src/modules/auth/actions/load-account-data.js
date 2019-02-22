@@ -9,6 +9,7 @@ import { clearOrphanedOrderData } from "modules/orders/actions/orphaned-orders";
 import { windowRef } from "src/utils/window-ref";
 import getValue from "utils/get-value";
 import logError from "utils/log-error";
+import { loadUserMarkets } from "modules/markets/actions/load-markets";
 
 const { ACCOUNT_TYPES } = augur.rpc.constants;
 
@@ -27,6 +28,7 @@ export const loadAccountData = (account, callback = logError) => dispatch => {
   dispatch(updateLoginAccount(account));
   dispatch(clearOrphanedOrderData());
   dispatch(loadAccountHistory());
+  dispatch(loadUserMarkets());
   dispatch(checkAccountAllowance());
   dispatch(updateAssets());
   dispatch(loadReportingWindowBounds());
