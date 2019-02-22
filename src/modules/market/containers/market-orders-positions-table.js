@@ -25,7 +25,6 @@ import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
   let openOrders = [];
-  let positions = [];
 
   let pendingOrders = selectPendingOrdersState(state);
   pendingOrders = pendingOrders[ownProps.marketId] || [];
@@ -38,14 +37,9 @@ const mapStateToProps = (state, ownProps) => {
       }
       return p;
     }, []);
-    positions = market.outcomes.reduce((p, outcome) => {
-      if (outcome.position) {
-        p.push(outcome.position);
-      }
-      return p;
-    }, []);
   }
 
+  const positions = market.userPositions;
   openOrders = openOrders.concat(pendingOrders);
 
   const filteredOrphanOrders = selectOrphanOrders(state).filter(

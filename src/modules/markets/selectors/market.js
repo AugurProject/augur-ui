@@ -333,7 +333,11 @@ export function assembleMarket(
             )
         };
 
-        market.userPositions = Object.values(marketAccountPositions || []);
+        // moving to one collection instead of each outcome having a postion collection
+        // outcome positions will be removed
+        market.userPositions = Object.values(marketAccountPositions || []).map(
+          position => generateOutcomePositionSummary(position)
+        );
 
         market.outcomes = [];
 
