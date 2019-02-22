@@ -41,8 +41,8 @@ const MarketRow = (props: MarketRowProps) => (
       expandedClassName={Styles.MarketRow__expanded}
       className={Styles.MarketRow}
       rowContent={
-        <div className={Styles.MarketRow__content}>
-          <div className={Styles.MarketRow__column}>
+        <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
+          <div className={Styles.MarketRow__row}>
             {props.showState && (
               <div className={Styles.MarketRow__firstRow}>
                 <MarketStatusLabel
@@ -58,10 +58,9 @@ const MarketRow = (props: MarketRowProps) => (
                   {props.market.description}
                 </MarketLink>
               </span>
-              
             </div>
           </div>
-          <span className={Styles.MarketRow__time}>
+          <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
             {props.rightContent || <div>right content</div>}
           </span>
         </div>

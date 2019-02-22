@@ -1,24 +1,28 @@
 @import (reference) "~assets/styles/shared";
 
 .MarketRow__container {
+  border-bottom: 0.125rem solid @color-theme-primary;
+
   &:not(:last-of-type) {
     margin-bottom: 2px;
   }
 }
 
-.MarketRow {
-  border-bottom: 0.125rem solid @color-theme-primary;
-  padding: 1rem 1.75rem 0 1.5rem;
-}
-
 .MarketRow__content {
   display: flex;
   flex-grow: 1;
+  flex-direction: column;
+  padding: 1rem 1.75rem 1rem 1.5rem;
 }
 
-.MarketRow__column {
+.MarketRow__contentShow {
+  padding-top: 0.5rem;
+  padding-bottom: 24px;
+}
+
+.MarketRow__row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-grow: 1;
 }
 
@@ -48,14 +52,16 @@
   text-align: right;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
+}
+
+.MarketRow__timeShow {
+  padding-bottom: 2px;
 }
 
 .MarketRow__rowContainer {
   display: flex;
   flex: 1;
-  padding: 0 0 1rem 0;
-
 }
 
 .MarketRow__infoContainer {
@@ -63,7 +69,8 @@
   flex: 1;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 1rem 28px;
+  padding: 1rem 0;
+  margin: 0 28px;
   align-items: flex-end;
   border-top: 1px solid fade(@color-primary-background, 50%);
 }
