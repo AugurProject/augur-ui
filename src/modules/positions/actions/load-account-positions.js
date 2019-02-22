@@ -9,11 +9,11 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
   dispatch,
   getState
 ) => {
-  const { universe, loginAccount } = getState();
+  const {universe, loginAccount} = getState();
   if (loginAccount.address == null || universe.id == null)
     return callback(null);
   augur.trading.getUserTradingPositions(
-    { ...options, account: loginAccount.address, universe: universe.id },
+    {...options, account: loginAccount.address, universe: universe.id},
     (err, positions) => {
       if (err) return callback(err);
       if (positions == null) return callback(null);
@@ -21,7 +21,12 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
       // remove this guard when augur-node is updated for realzies
       let userPositions = positions;
       if (positions.tradingPositions) {
-        userPositions = positions.tradingPositions;
+        // todo when augur-node returns frozen stuff remove adding dummy data.
+        userPositions = positions.tradingPositions.map(position => ({
+          frozenProfit: 0,
+          frozenFunds: 0,
+          ...position
+        }));
       }
 
       const marketIds = Array.from(
