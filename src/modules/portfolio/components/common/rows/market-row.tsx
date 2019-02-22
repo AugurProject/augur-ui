@@ -40,18 +40,19 @@ const MarketRow = (props: MarketRowProps) => (
     <ToggleRow
       expandedClassName={Styles.MarketRow__expanded}
       className={Styles.MarketRow}
+      arrowClassName={classNames({[Styles.MarketRow__Arrow]: props.showState})}
       rowContent={
         <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
+          {props.showState && (
+            <div className={Styles.MarketRow__firstRow}>
+              <MarketStatusLabel
+                marketStatus={props.market.marketStatus}
+                alternate
+                mini
+              />
+            </div>
+          )}
           <div className={Styles.MarketRow__row}>
-            {props.showState && (
-              <div className={Styles.MarketRow__firstRow}>
-                <MarketStatusLabel
-                  marketStatus={props.market.marketStatus}
-                  alternate
-                  mini
-                />
-              </div>
-            )}
             <div className={Styles.MarketRow__rowContainer}>
               <span className={Styles.MarketRow__description}>
                 <MarketLink id={props.market.id}>
@@ -59,10 +60,10 @@ const MarketRow = (props: MarketRowProps) => (
                 </MarketLink>
               </span>
             </div>
+            <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
+              {props.rightContent || <div>right content</div>}
+            </span>
           </div>
-          <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
-            {props.rightContent || <div>right content</div>}
-          </span>
         </div>
       }
       toggleContent={
