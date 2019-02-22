@@ -21,10 +21,6 @@ function assertPositionMarket(positionMarket) {
       expect(typeof positionMarket.description).toBe("string");
     });
 
-    positionMarket.myPositionOutcomes.forEach(positionOutcome =>
-      assertOutcome(positionOutcome)
-    );
-
     assertPositionMarketSummary(positionMarket.myPositionsSummary);
   });
 }

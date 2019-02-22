@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import memoize from "memoizee";
-
 import Positions from "modules/portfolio/components/positions/positions";
 import getLoginAccountPositions from "modules/positions/selectors/login-account-positions";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";

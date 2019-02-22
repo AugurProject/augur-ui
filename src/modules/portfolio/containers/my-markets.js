@@ -3,19 +3,8 @@ import { withRouter } from "react-router-dom";
 
 import MyMarkets from "modules/portfolio/components/markets/markets";
 import getUserMarkets from "modules/markets/selectors/user-markets";
-import { toggleFavorite } from "modules/markets/actions/update-favorites";
-import { loadUserMarkets } from "modules/markets/actions/load-markets";
-import {
-  loadUnclaimedFees,
-  collectMarketCreatorFees
-} from "modules/markets/actions/market-creator-fees-management";
-import {
-  loadMarketsInfo,
-  loadMarketsInfoIfNotLoaded
-} from "modules/markets/actions/load-markets-info";
-import logError from "utils/log-error";
+import { collectMarketCreatorFees } from "modules/markets/actions/market-creator-fees-management";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
-import { loadDisputing } from "modules/reports/actions/load-disputing";
 
 import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
@@ -31,27 +20,15 @@ const mapStateToProps = state => {
     isMobile: state.appStatus.isMobile,
     pendingLiquidityOrders: state.pendingLiquidityOrders,
     outcomes: marketDisputeOutcomes() || {},
-    tabsInfo: createTabsInfo(markets)
+    tabsInfo: createTabsInfo(markets),
+    currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
+    reportingWindowStatsEndTime: state.reportingWindowStats.endTime
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadMarkets: () =>
-    dispatch(
-      loadUserMarkets((err, marketIds) => {
-        if (err) return logError(err);
-        // if we have marketIds back, let's load the info so that we can properly display myMarkets.
-        dispatch(loadMarketsInfoIfNotLoaded(marketIds));
-        dispatch(loadUnclaimedFees(marketIds));
-      })
-    ),
   collectMarketCreatorFees: (getBalanceOnly, marketId, callback) =>
-    dispatch(collectMarketCreatorFees(getBalanceOnly, marketId, callback)),
-  loadMarketsInfo: marketIds => dispatch(loadMarketsInfo(marketIds)),
-  toggleFavorite: marketId => dispatch(toggleFavorite(marketId)),
-  loadMarketsInfoIfNotLoaded: marketIds =>
-    dispatch(loadMarketsInfoIfNotLoaded(marketIds)),
-  loadDisputingMarkets: () => dispatch(loadDisputing())
+    dispatch(collectMarketCreatorFees(getBalanceOnly, marketId, callback))
 });
 
 const MyMarketsContainer = withRouter(

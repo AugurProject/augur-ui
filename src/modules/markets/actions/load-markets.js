@@ -16,6 +16,12 @@ import {
   updateAppStatus,
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
+import {
+  loadUnclaimedFees
+} from "modules/markets/actions/market-creator-fees-management";
+import {
+  loadMarketsInfoIfNotLoaded
+} from "modules/markets/actions/load-markets-info";
 
 const { REPORTING_STATE } = constants;
 
@@ -56,6 +62,9 @@ export const loadUserMarkets = (callback = logError) => (
     { universe: universe.id, creator: loginAccount.address },
     (err, marketsArray) => {
       if (err || !marketsArray) return callback(err);
+
+      dispatch(loadMarketsInfoIfNotLoaded(marketsArray));
+      dispatch(loadUnclaimedFees(marketsArray));
 
       const marketsData = marketsArray.reduce(
         (p, id) => ({

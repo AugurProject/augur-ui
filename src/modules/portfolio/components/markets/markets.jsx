@@ -31,10 +31,10 @@ function filterComp(input, market) {
 
 class MyMarkets extends Component {
   static propTypes = {
-    loadMarkets: PropTypes.func.isRequired,
     myMarkets: PropTypes.object.isRequired,
-    loadDisputingMarkets: PropTypes.func.isRequired,
-    tabsInfo: PropTypes.array.isRequired
+    tabsInfo: PropTypes.array.isRequired,
+    currentAugurTimestamp: PropTypes.number.isRequired,
+    reportingWindowStatsEndTime: PropTypes.number.isRequired
   };
 
   constructor(props) {
@@ -48,14 +48,6 @@ class MyMarkets extends Component {
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
   }
 
-  componentWillMount() {
-    const { loadMarkets, loadDisputingMarkets } = this.props;
-    // Load all markets incase they haven't been loaded already
-    // Eventually replace this with a 1 to 1 call to augurnode for example what we need.
-    loadMarkets();
-    loadDisputingMarkets();
-  }
-
   updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
     if (tab) {
@@ -64,7 +56,12 @@ class MyMarkets extends Component {
   }
 
   render() {
-    const { myMarkets, tabsInfo } = this.props;
+    const {
+      myMarkets,
+      tabsInfo,
+      currentAugurTimestamp,
+      reportingWindowStatsEndTime
+    } = this.props;
     const { filteredMarkets, tab } = this.state;
 
     return (
@@ -84,6 +81,8 @@ class MyMarkets extends Component {
               <MarketRow
                 key={"myMarket_" + market.id}
                 market={market}
+                currentAugurTimestamp={currentAugurTimestamp}
+                reportingWindowStatsEndTime={reportingWindowStatsEndTime}
                 showState={tab === ALL_MARKETS}
                 toggleContent={
                   <div className={Styles.MarketRow__infoContainer}>

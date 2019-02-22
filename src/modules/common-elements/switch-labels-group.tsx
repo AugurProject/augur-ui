@@ -28,8 +28,8 @@ export const SwitchLabelsGroup = (props: SwitchLabelsGroupProps) =>
         className={classNames(Styles.SwitchLabelsGroup__label, {
           [`${Styles.active}`]: props.selectedTab === tab.key,
           [Styles.SwitchLabelsGroup_open]: tab.key === MARKET_OPEN,
-          [Styles.SwitchLabelsGroup_resolved]: tab.key === MARKET_REPORTING,
-          [Styles.SwitchLabelsGroup_reporting]: tab.key === MARKET_CLOSED
+          [Styles.SwitchLabelsGroup_resolved]: tab.key === MARKET_CLOSED,
+          [Styles.SwitchLabelsGroup_reporting]: tab.key === MARKET_REPORTING
         })}
         onClick={() => {
           props.selectTab(tab.key);

@@ -213,12 +213,10 @@ class MarketTradingConfirm extends Component {
               <LinearPropertyLabel
                 label="Estimated Fee"
                 value={`${orderShareTradingFee.formatted} ETH`}
-                size="large"
               />
               <LinearPropertyLabel
                 label="Profit"
                 value={`${orderShareProfit.formatted} ETH`}
-                size="large"
               />
             </div>
           )}
@@ -269,12 +267,10 @@ class MarketTradingConfirm extends Component {
               <LinearPropertyLabel
                 label="Max Profit"
                 value={`${potentialEthProfit.formatted} ETH`}
-                size="large"
               />
               <LinearPropertyLabel
                 label="Max Loss"
                 value={`${potentialEthLoss.formatted} ETH`}
-                size="large"
               />
             </div>
           )}
