@@ -19,7 +19,8 @@ const mapStateToProps = state => {
     marketReportState,
     loginAccount,
     filledOrders,
-    outcomesData
+    outcomesData,
+    marketsData
   } = state;
   const resolvedMarkets = marketReportState.resolved;
   const account = loginAccount.address;
@@ -37,7 +38,7 @@ const mapStateToProps = state => {
   const marketIds = keys(groupedFilledOrders);
   const markets = map(
     map(marketIds, m =>
-      pick(selectMarket(m), [
+      pick(marketsData[m], [
         "description",
         "id",
         "creationTime",
