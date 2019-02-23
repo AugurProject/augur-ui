@@ -14,6 +14,7 @@ export interface ToggleRowProps {
   className?: string,
   expandedClassName?: string,
   arrowClassName?: string,
+  parentClassName?: string,
 }
 
 interface ToggleRowState {
@@ -37,15 +38,20 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
       <div 
         className={
           classNames(
-            className, 
             Styles.ToggleRow, {
-              [Styles.ToggleRow__active]: open, 
               [`${expandedClassName}`]: open
             }
           )
         }
        >
-        <div onClick={this.toggleRow}>
+        <div className={
+          classNames(
+            className,
+            Styles.ToggleRow__row, {
+              [Styles.ToggleRow__rowActive]: open, 
+            }
+          )
+        } onClick={this.toggleRow}>
           <div className={Styles.ToggleRow__rowContent}>
             {rowContent}
             <span className={classNames(Styles.ToggleRow__arrowContainer, arrowClassName)}>

@@ -5,9 +5,9 @@
   flex-direction: column;
   background-color: @color-grayish-purple;
   
-  &:hover {
-    background-color: fade(@color-primary-alternate, 40%);
-  }
+  // &:hover {
+  //   background-color: fade(@color-primary-alternate, 40%);
+  // }
 
   > div {
     display: flex;
@@ -22,7 +22,7 @@
   padding-right: 28px;
 }
 
-.ToggleRow__active {
+.ToggleRow__rowActive {
   background-color: fade(@color-primary-alternate, 40%);
 }
 
@@ -36,4 +36,10 @@
   flex-direction: column;
   justify-content: flex-start;
   margin-left: 0.625rem;
+}
+
+.ToggleRow__row {
+  &:hover {
+    background-color: fade(@color-primary-alternate, 40%);
+  }
 }

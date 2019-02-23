@@ -89,11 +89,13 @@ export default class FilledOrders extends Component {
                     filledOrders
                   />
                 ) : (
-                  <FilledOrder
-                    key={"filledOrder_" + data.id}
-                    filledOrder={data}
-                    toggleClassName={Styles.Orders__orderSingle}
-                  />
+                  <div className={Styles.Orders}>
+                    <FilledOrder
+                      key={"filledOrder_" + data.id}
+                      filledOrder={data}
+                      toggleClassName={Styles.Orders__orderSingle}
+                    />
+                  </div>
                 )
             )}
           </div>
