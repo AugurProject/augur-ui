@@ -60,7 +60,6 @@ import store from "src/store";
 
 import selectAccountPositions from "modules/orders/selectors/positions-plus-asks";
 import { selectUserOpenOrders } from "modules/orders/selectors/user-open-orders";
-import selectUserOpenOrdersSummary from "modules/orders/selectors/user-open-orders-summary";
 
 import { selectPriceTimeSeries } from "modules/markets/selectors/price-time-series";
 
@@ -339,8 +338,19 @@ export function assembleMarket(
           position => generateOutcomePositionSummary(position)
         );
 
-        market.outcomes = [];
-
+        // same as positions, moving open orders from outcomes to top level array
+        market.userOpenOrders =
+          Object.keys(marketOutcomesData || {})
+            .map(outcomeId =>
+              selectUserOpenOrders(
+                market.id,
+                outcomeId,
+                orderBooks,
+                orderCancellation
+              )
+            )
+            .filter(collection => collection.length !== 0)
+            .flat() || [];
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];
@@ -496,10 +506,6 @@ export function assembleMarket(
           id: indeterminateOutcomeId,
           name: INDETERMINATE_OUTCOME_NAME
         });
-
-        market.userOpenOrdersSummary = selectUserOpenOrdersSummary(
-          market.outcomes
-        );
 
         if (marketAccountTrades || marketAccountPositions) {
           market.myPositionsSummary = generateMarketsPositionsSummary([market]);
