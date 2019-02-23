@@ -98,18 +98,16 @@ class MyMarkets extends Component {
                     />
                 }
                 toggleContent={
-                  <div className={Styles.MarketRow__infoParent}>
-                    <div className={Styles.MarketRow__infoContainer}>
-                      <div className={Styles.MarketRow__info}>
-                        <LinearPropertyLabel
-                          label="Volume"
-                          value={`${market.volume.formatted} ETH`}
-                        />
-                        <LinearPropertyLabel
-                          label="Open Interest"
-                          value={`${market.openInterest.formatted} ETH`}
-                        />
-                      </div>
+                  <div className={Styles.MarketRow__infoContainer}>
+                    <div className={Styles.MarketRow__info}>
+                      <LinearPropertyLabel
+                        label="Volume"
+                        value={`${market.volume.formatted} ETH`}
+                      />
+                      <LinearPropertyLabel
+                        label="Open Interest"
+                        value={`${market.openInterest.formatted} ETH`}
+                      />
                     </div>
                   </div>
                 }
