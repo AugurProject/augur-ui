@@ -51,7 +51,7 @@ class MyMarkets extends Component {
 
   componentWillUpdate(nextProps) {
     if (nextProps.myMarkets !== this.props.myMarkets) {
-      this.updateFilteredMarkets(nextProps.myMarkets[ALL_MARKETS], ALL_MARKETS);
+      this.updateFilteredMarkets(nextProps.myMarkets[this.state.tab], this.state.tab);
     }
   }
 

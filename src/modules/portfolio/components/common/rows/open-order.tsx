@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import { LinearPropertyLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/constants";
 
@@ -11,14 +12,17 @@ export interface OpenOrderProps {
   openOrder: Order,
   className: string,
   toggleClassName: string,
+  parentClassName?: string,
 }
 
-const OpenOrder = (props: OpenOrderProps) => {
-  const { openOrder, className, toggleClassName } = props;
+// todo: do actualy frozen funds
 
+const OpenOrder = (props: OpenOrderProps) => {
+  const { openOrder, className, toggleClassName, parentClassName } = props;
   return (
     <ToggleRow
       className={toggleClassName}
+      parentClassName={parentClassName}
       rowContent={
         <ul className={classNames(Styles.Order, className)}>
           <li>{openOrder.description || openOrder.name}</li>
@@ -28,7 +32,23 @@ const OpenOrder = (props: OpenOrderProps) => {
           <li>cancel</li>
         </ul>
       }
-      toggleContent={<div>info</div>}
+      toggleContent={
+        <div className={Styles.OpenOrder_infoContainer}>
+          <div className={Styles.OpenOrder__info}>
+            <LinearPropertyLabel
+              label="Frozen Funds (ETH)"
+              value={`${openOrder.unmatchedShares.formatted}`}
+            />
+            <LinearPropertyLabel
+              label="Total Cost (Shares)"
+              value={`${openOrder.unmatchedShares.formatted}`}
+            />
+          </div>
+          <div className={Styles.OpenOrder__timestamp}>
+            timestamp
+          </div>
+        </div>
+      }
     />
   );
 };
