@@ -87,13 +87,11 @@ export default class OpenOrders extends Component {
                     market={data}
                   />
                 ) : (
-                  <div className={Styles.Orders}>
-                    <OpenOrder
-                      key={"openOrder_" + data.id}
-                      openOrder={data}
-                      toggleClassName={Styles.Orders__orderSingle}
-                    />
-                  </div>
+                  <OpenOrder
+                    key={"openOrder_" + data.id}
+                    openOrder={data}
+                    isSingle
+                  />
                 )
             )}
           </div>

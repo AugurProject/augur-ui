@@ -38,8 +38,6 @@ export interface MarketRowProps {
 const MarketRow = (props: MarketRowProps) => (
   <div className={Styles.MarketRow__container}>
     <ToggleRow
-      expandedClassName={Styles.MarketRow__expanded}
-      className={Styles.MarketRow}
       arrowClassName={classNames({[Styles.MarketRow__Arrow]: props.showState})}
       rowContent={
         <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>

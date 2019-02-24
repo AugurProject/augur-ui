@@ -10,46 +10,58 @@ import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
 export interface OpenOrderProps {
   openOrder: Order,
-  className: string,
-  toggleClassName: string,
-  parentClassName?: string,
+  isSingle?: Boolean,
 }
 
 // todo: do actualy frozen funds
 
 const OpenOrder = (props: OpenOrderProps) => {
-  const { openOrder, className, toggleClassName, parentClassName } = props;
+  const { openOrder, isSingle } = props;
   return (
-    <ToggleRow
-      className={toggleClassName}
-      parentClassName={parentClassName}
-      rowContent={
-        <ul className={classNames(Styles.Order, className)}>
-          <li>{openOrder.description || openOrder.name}</li>
-          <li>{openOrder.type}</li>
-          <li>{openOrder.unmatchedShares.formatted}</li>
-          <li>{openOrder.avgPrice.formatted}</li>
-          <li>cancel</li>
-        </ul>
-      }
-      toggleContent={
-        <div className={Styles.OpenOrder_infoContainer}>
-          <div className={Styles.OpenOrder__info}>
-            <LinearPropertyLabel
-              label="Frozen Funds (ETH)"
-              value={`${openOrder.unmatchedShares.formatted}`}
-            />
-            <LinearPropertyLabel
-              label="Total Cost (Shares)"
-              value={`${openOrder.unmatchedShares.formatted}`}
-            />
+    <div className={classNames({
+          [Styles.Order__parentSingle]: isSingle,
+        })}>
+      <ToggleRow
+        className={classNames({
+          [Styles.Order__single]: isSingle,
+          [Styles.Order__group]: !isSingle,
+        })}
+        innerClassName={classNames({
+          [Styles.Order__innerSingle]: isSingle,
+          [Styles.Order__innerGroup]: !isSingle,
+        })}
+        rowContent={
+          <ul className={classNames(Styles.Order, {
+          [Styles.Orders__row]: !isSingle,
+        })}>
+            <li>{openOrder.description || openOrder.name}</li>
+            <li>{openOrder.type}</li>
+            <li>{openOrder.unmatchedShares.formatted}</li>
+            <li>{openOrder.avgPrice.formatted}</li>
+            <li>cancel</li>
+          </ul>
+        }
+        toggleContent={
+          <div className={Styles.OpenOrder_infoContainer}>
+            <div className={Styles.OpenOrder_innerInfoContainer}>
+              <div className={Styles.OpenOrder__info}>
+                <LinearPropertyLabel
+                  label="Frozen Funds (ETH)"
+                  value={`${openOrder.unmatchedShares.formatted}`}
+                />
+                <LinearPropertyLabel
+                  label="Total Cost (Shares)"
+                  value={`${openOrder.unmatchedShares.formatted}`}
+                />
+              </div>
+              <div className={Styles.OpenOrder__timestamp}>
+                timestamp
+              </div>
+            </div>
           </div>
-          <div className={Styles.OpenOrder__timestamp}>
-            timestamp
-          </div>
-        </div>
-      }
-    />
+        }
+      />
+    </div>
   );
 };
 

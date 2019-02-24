@@ -14,12 +14,11 @@ import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
 export interface FilledOrderProps {
   filledOrder: FilledOrderInterface,
-  className: string,
-  toggleClassName: string,
+  isSingle?: Boolean,
 }
 
 const FilledOrder = (props: FilledOrderProps) => {
-  const { filledOrder, className, toggleClassName } = props;
+  const { filledOrder, isSingle } = props;
 
   const orderQuantity = formatShares(getValue(filledOrder, "amount"))
     .formatted;
@@ -28,22 +27,35 @@ const FilledOrder = (props: FilledOrderProps) => {
   const orderDisplay = orderType !== SELL ? BOUGHT : SOLD;
 
   return (
-    <ToggleRow
-        className={toggleClassName}
-        rowContent={
-          <ul
-            className={classNames(Styles.Order, Styles.FilledOrder, className)}
-          >
-            <li>{filledOrder.outcome}</li>
-            <li>{orderDisplay}</li>
-            <li>{orderQuantity}</li>
-            <li>{orderPrice}</li>
-            <li>{filledOrder.timestamp.formattedShortDate}</li>
-            <li>{filledOrder.trades.length}</li>
-          </ul>
-        }
-        toggleContent={<div>info</div>}
-      />
+    <div className={classNames({
+          [Styles.Order__parentSingle]: isSingle,
+        })}>
+      <ToggleRow
+          className={classNames({
+            [Styles.Order__single]: isSingle,
+            [Styles.Order__group]: !isSingle,
+          })}
+          innerClassName={classNames({
+            [Styles.Order__innerSingle]: isSingle,
+            [Styles.Order__innerGroup]: !isSingle,
+          })}
+          rowContent={
+            <ul
+              className={classNames(Styles.Order, Styles.FilledOrder, {
+                [Styles.Orders__row]: !isSingle,
+              })}
+            >
+              <li>{filledOrder.outcome}</li>
+              <li>{orderDisplay}</li>
+              <li>{orderQuantity}</li>
+              <li>{orderPrice}</li>
+              <li>{filledOrder.timestamp.formattedShortDate}</li>
+              <li>{filledOrder.trades.length}</li>
+            </ul>
+          }
+          toggleContent={<div>info</div>}
+        />
+    </div>
   );
 };
 

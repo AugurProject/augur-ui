@@ -12,9 +12,8 @@ export interface ToggleRowProps {
   toggleContent: ReactNode,
   style?: Object,
   className?: string,
-  expandedClassName?: string,
   arrowClassName?: string,
-  parentClassName?: string,
+  innerClassName?: string,
 }
 
 interface ToggleRowState {
@@ -31,17 +30,13 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
   }
 
   render() {
-    const { rowContent, toggleContent, className, expandedClassName, arrowClassName } = this.props;
+    const { rowContent, toggleContent, className, arrowClassName, innerClassName } = this.props;
     const { open } = this.state;
 
     return (
       <div 
         className={
-          classNames(
-            Styles.ToggleRow, {
-              [`${expandedClassName}`]: open
-            }
-          )
+            Styles.ToggleRow
         }
        >
         <div className={
@@ -52,16 +47,18 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
             }
           )
         } onClick={this.toggleRow}>
-          <div className={Styles.ToggleRow__rowContent}>
-            {rowContent}
-            <span className={classNames(Styles.ToggleRow__arrowContainer, arrowClassName)}>
-              <ChevronFlip
-                containerClassName={Styles.ToggleRow__arrow}
-                pointDown={!open}
-                stroke="#fff"
-                quick
-              />
-             </span>
+          <div className={classNames(Styles.ToggleRow__rowContainer, innerClassName)}>
+            <div className={Styles.ToggleRow__rowContent}>
+              {rowContent}
+              <span className={classNames(Styles.ToggleRow__arrowContainer, arrowClassName)}>
+                <ChevronFlip
+                  containerClassName={Styles.ToggleRow__arrow}
+                  pointDown={!open}
+                  stroke="#fff"
+                  quick
+                />
+               </span>
+            </div>
           </div>
         </div>
         {open && 

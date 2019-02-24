@@ -43,15 +43,11 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
               <FilledOrder
                 key={"sFilledOrder_" + order.id}
                 filledOrder={order}
-                className={Styles.OpenOrders__row}
-                toggleClassName={Styles.OrderMarket__order}
               />
             ) : (
               <OpenOrder
                 key={"sOpenOrder_" + order.id}
                 openOrder={order}
-                className={Styles.OpenOrders__row}
-                toggleClassName={Styles.OrderMarket__order}
               />
             )
         )}

@@ -39,7 +39,14 @@
   display: flex;
   flex: 1;
   flex-direction: row;
+  background: fade(@color-primary-alternate, 10%);
+  border-bottom: 2px solid @color-theme-primary;
+}
+
+.OpenOrder_innerInfoContainer {
   padding: 8px 26px 8px 32px;
+  display: flex;
+  flex: 1;
 }
 
 .OpenOrder__info {
@@ -58,5 +65,29 @@
   flex: 1;
   justify-content: flex-end;
   align-items: flex-end;
+}
 
+.Order__group {
+  padding: 0 28px 0 32px;
+}
+
+.Order__innerGroup {
+  padding: 0.5rem 0 0.5rem 0;
+  border-top: 0.0625rem solid @color-primary-background;
+}
+
+.Order__parentSingle {
+  &:not(:first-of-type) {
+    border-top: 0.0625rem solid @color-primary-background;
+  } 
+}
+
+.Order__single {
+  padding: 0.5rem 1.75rem 0.5rem 1.5rem;
+}
+
+ul.Orders__row {
+  > li {
+    padding-left: 0.5rem;
+  }
 }
