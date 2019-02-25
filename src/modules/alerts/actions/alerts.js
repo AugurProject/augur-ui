@@ -1,21 +1,21 @@
 import store from "src/store";
 import { augur } from "services/augurjs";
 import * as constants from "modules/common-elements/constants";
-import setNotificationText from "modules/notifications/actions/set-notification-text";
+import setAlertText from "modules/alerts/actions/set-alert-text";
 import { createBigNumber } from "utils/create-big-number";
 import makePath from "modules/routes/helpers/make-path";
 import { TRANSACTIONS } from "modules/routes/constants/views";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
-import { updateNotification as updateNotificationAction } from "modules/notifications/actions/notifications";
+import { updateAlert as updateAlertAction } from "modules/alerts/actions/alerts";
 
-export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
-export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
-export const UPDATE_NOTIFICATION = "UPDATE_NOTIFICATION";
-export const CLEAR_NOTIFICATIONS = "CLEAR_NOTIFICATIONS";
+export const ADD_ALERT = "ADD_ALERT";
+export const REMOVE_ALERT = "REMOVE_ALERT";
+export const UPDATE_ALERT = "UPDATE_ALERT";
+export const CLEAR_ALERTS = "CLEAR_ALERTS";
 
-function packageNotificationInfo(notificationId, timestamp, transaction) {
+function packageAlertInfo(alertId, timestamp, transaction) {
   return {
-    id: notificationId,
+    id: alertId,
     timestamp,
     status: "Confirmed",
     linkPath: makePath(TRANSACTIONS),
@@ -33,24 +33,24 @@ function packageNotificationInfo(notificationId, timestamp, transaction) {
 
 export function handleFilledOnly(tradeInProgress = null) {
   return (dispatch, getState) => {
-    const { notifications, transactionsData } = store.getState();
-    for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].status.toLowerCase() === constants.PENDING) {
-        const tradeGroupId = notifications[i].params._tradeGroupId;
+    const { alerts, transactionsData } = store.getState();
+    for (let i = 0; i < alerts.length; i++) {
+      if (alerts[i].status.toLowerCase() === constants.PENDING) {
+        const tradeGroupId = alerts[i].params._tradeGroupId;
         if (
           tradeInProgress &&
           tradeInProgress.tradeGroupId === tradeGroupId &&
-          notifications[i].params.type.toUpperCase() ===
+          alerts[i].params.type.toUpperCase() ===
             constants.PUBLICFILLBESTORDERWITHLIMIT &&
-          notifications[i].description === ""
+          alerts[i].description === ""
         ) {
           const difference = createBigNumber(tradeInProgress.numShares).minus(
             tradeInProgress.sharesFilled
           );
-          // handle fill only orders notifications updates.
+          // handle fill only orders alerts updates.
           dispatch(
-            updateNotificationAction(notifications[i].id, {
-              id: notifications[i].id,
+            updateAlertAction(alerts[i].id, {
+              id: alerts[i].id,
               status: "Confirmed",
               timestamp:
                 selectCurrentTimestampInSeconds(getState()) || Date.now(),
@@ -58,7 +58,7 @@ export function handleFilledOnly(tradeInProgress = null) {
               log: {
                 noFill: true,
                 orderType:
-                  notifications[i].params._direction === "0x1"
+                  alerts[i].params._direction === "0x1"
                     ? constants.BUY
                     : constants.SELL,
                 difference: difference.toFixed()
@@ -74,14 +74,14 @@ export function handleFilledOnly(tradeInProgress = null) {
                 tradeGroupId &&
               transactionsData[key].status.toLowerCase() ===
                 constants.SUCCESS &&
-              notifications[i].params.type.toUpperCase() ===
+              alerts[i].params.type.toUpperCase() ===
                 constants.PUBLICFILLBESTORDERWITHLIMIT &&
-              notifications[i].description === ""
+              alerts[i].description === ""
             ) {
-              // handle fill only orders notifications updates.
+              // handle fill only orders alerts updates.
               dispatch(
-                updateNotificationAction(notifications[i].id, {
-                  id: notifications[i].id,
+                updateAlertAction(alerts[i].id, {
+                  id: alerts[i].id,
                   status: "Confirmed",
                   timestamp:
                     selectCurrentTimestampInSeconds(getState()) ||
@@ -90,7 +90,7 @@ export function handleFilledOnly(tradeInProgress = null) {
                   log: {
                     noFill: true,
                     orderType:
-                      notifications[i].params._direction === "0x1"
+                      alerts[i].params._direction === "0x1"
                         ? constants.BUY
                         : constants.SELL
                   }
@@ -106,13 +106,13 @@ export function handleFilledOnly(tradeInProgress = null) {
   };
 }
 
-export function loadNotifications() {
+export function loadAlerts() {
   return (dispatch, getState) => {
-    const { notifications, transactionsData } = store.getState();
-    for (let i = 0; i < notifications.length; i++) {
-      if (notifications[i].status.toLowerCase() === constants.PENDING) {
-        const regex = new RegExp(notifications[i].id, "g");
-        const tradeGroupId = notifications[i].params._tradeGroupId;
+    const { alerts, transactionsData } = store.getState();
+    for (let i = 0; i < alerts.length; i++) {
+      if (alerts[i].status.toLowerCase() === constants.PENDING) {
+        const regex = new RegExp(alerts[i].id, "g");
+        const tradeGroupId = alerts[i].params._tradeGroupId;
         Object.keys(transactionsData).some(key => {
           if (
             transactionsData[key].transactions &&
@@ -120,14 +120,14 @@ export function loadNotifications() {
             transactionsData[key].transactions[0].tradeGroupId ===
               tradeGroupId &&
             transactionsData[key].status.toLowerCase() === constants.SUCCESS &&
-            notifications[i].params.type.toUpperCase() ===
+            alerts[i].params.type.toUpperCase() ===
               constants.PUBLICFILLBESTORDERWITHLIMIT &&
-            notifications[i].description === ""
+            alerts[i].description === ""
           ) {
-            // handle fill only orders notifications updates.
+            // handle fill only orders alerts updates.
             dispatch(
-              updateNotificationAction(notifications[i].id, {
-                id: notifications[i].id,
+              updateAlertAction(alerts[i].id, {
+                id: alerts[i].id,
                 status: "Confirmed",
                 timestamp:
                   selectCurrentTimestampInSeconds(getState()) ||
@@ -136,7 +136,7 @@ export function loadNotifications() {
                 log: {
                   noFill: true,
                   orderType:
-                    notifications[i].params._direction === "0x1"
+                    alerts[i].params._direction === "0x1"
                       ? constants.BUY
                       : constants.SELL
                 }
@@ -152,10 +152,10 @@ export function loadNotifications() {
               transactionsData[key].transactions &&
               transactionsData[key].transactions[0];
             dispatch(
-              updateNotification(
-                notifications[i].id,
-                packageNotificationInfo(
-                  notifications[i].id,
+              updateAlert(
+                alerts[i].id,
+                packageAlertInfo(
+                  alerts[i].id,
                   transactionsData[key].timestamp.timestamp,
                   transaction
                 )
@@ -163,21 +163,20 @@ export function loadNotifications() {
             );
             return true;
           } else if (
-            notifications[i].params.type.toUpperCase() ===
-              constants.CANCELORDER &&
+            alerts[i].params.type.toUpperCase() === constants.CANCELORDER &&
             transactionsData[key].status.toLowerCase() === constants.SUCCESS
           ) {
             const groupedTransactions = transactionsData[key].transactions;
             groupedTransactions.forEach(transaction => {
               if (
                 transaction.meta &&
-                transaction.meta.canceledTransactionHash === notifications[i].id
+                transaction.meta.canceledTransactionHash === alerts[i].id
               ) {
                 dispatch(
-                  updateNotification(
-                    notifications[i].id,
-                    packageNotificationInfo(
-                      notifications[i].id,
+                  updateAlert(
+                    alerts[i].id,
+                    packageAlertInfo(
+                      alerts[i].id,
                       transaction.creationTime,
                       transaction
                     )
@@ -193,13 +192,13 @@ export function loadNotifications() {
             groupedTransactions.forEach(transaction => {
               if (
                 transaction.meta &&
-                transaction.meta.txhash === notifications[i].id
+                transaction.meta.txhash === alerts[i].id
               ) {
                 dispatch(
-                  updateNotification(
-                    notifications[i].id,
-                    packageNotificationInfo(
-                      notifications[i].id,
+                  updateAlert(
+                    alerts[i].id,
+                    packageAlertInfo(
+                      alerts[i].id,
                       transaction.creationTime,
                       transaction
                     )
@@ -216,111 +215,103 @@ export function loadNotifications() {
   };
 }
 
-export function addCriticalNotification(notification) {
-  return addNotification({
+export function addCriticalAlert(alert) {
+  return addAlert({
     level: constants.CRITICAL,
-    ...notification
+    ...alert
   });
 }
 
-export function addNotification(notification) {
+export function addAlert(alert) {
   return (dispatch, getState) => {
-    if (notification != null) {
+    if (alert != null) {
       const { universe } = store.getState();
-      const callback = notification => {
-        const fullNotification = {
-          type: ADD_NOTIFICATION,
+      const callback = alert => {
+        const fullAlert = {
+          type: ADD_ALERT,
           data: {
-            notification: {
+            alert: {
               seen: false,
               level: constants.INFO,
               networkId: augur.rpc.getNetworkID(),
               universe: universe.id,
-              ...notification
+              ...alert
             }
           }
         };
-        return fullNotification;
+        return fullAlert;
       };
-      return dispatch(setNotificationText(notification, callback));
+      return dispatch(setAlertText(alert, callback));
     }
   };
 }
 
-export function removeNotification(id) {
+export function removeAlert(id) {
   return {
-    type: REMOVE_NOTIFICATION,
+    type: REMOVE_ALERT,
     data: { id }
   };
 }
 
-export function updateNotification(id, notification) {
+export function updateAlert(id, alert) {
   return (dispatch, getState) => {
-    const callback = notification => {
-      const fullNotification = {
-        type: UPDATE_NOTIFICATION,
+    const callback = alert => {
+      const fullAlert = {
+        type: UPDATE_ALERT,
         data: {
           id,
-          notification
+          alert
         }
       };
-      return fullNotification;
+      return fullAlert;
     };
 
-    // Set notification.params if it is not already set.
-    // (This occurs the first time the notification is updated.)
-    if (notification && !notification.params) {
-      const { notifications } = store.getState();
-      for (
-        let index = Object.keys(notifications).length - 1;
-        index >= 0;
-        index--
-      ) {
-        if (notifications[index].id === notification.id) {
-          notification.params = notifications[index].params;
-          notification.to = notifications[index].to;
-          if (notification.log && notification.log.amount) {
-            notification.amount = createBigNumber(
-              notifications[index].amount || 0
-            )
-              .plus(createBigNumber(notification.log.amount))
+    // Set alert.params if it is not already set.
+    // (This occurs the first time the alert is updated.)
+    if (alert && !alert.params) {
+      const { alerts } = store.getState();
+      for (let index = Object.keys(alerts).length - 1; index >= 0; index--) {
+        if (alerts[index].id === alert.id) {
+          alert.params = alerts[index].params;
+          alert.to = alerts[index].to;
+          if (alert.log && alert.log.amount) {
+            alert.amount = createBigNumber(alerts[index].amount || 0)
+              .plus(createBigNumber(alert.log.amount))
               .toFixed();
           }
           if (
-            notification.log &&
-            notifications[index].log &&
-            notification.log.eventName !== notifications[index].log.eventName &&
-            notifications[index].log.orderId &&
-            notification.log.orderId !== notifications[index].log.orderId &&
-            notification.log.eventName === "OrderCreated"
+            alert.log &&
+            alerts[index].log &&
+            alert.log.eventName !== alerts[index].log.eventName &&
+            alerts[index].log.orderId &&
+            alert.log.orderId !== alerts[index].log.orderId &&
+            alert.log.eventName === "OrderCreated"
           ) {
             return dispatch(
-              addNotification({
-                id: `${notification.log.transactionHash}-${
-                  notification.log.orderId
-                }`,
-                timestamp: notification.timestamp,
-                blockNumber: notification.log.blockNumber,
-                log: notification.log,
+              addAlert({
+                id: `${alert.log.transactionHash}-${alert.log.orderId}`,
+                timestamp: alert.timestamp,
+                blockNumber: alert.log.blockNumber,
+                log: alert.log,
                 status: "Confirmed",
                 linkPath: makePath(TRANSACTIONS),
-                params: notification.params
+                params: alert.params
               })
             );
           }
         }
       }
     }
-    return dispatch(setNotificationText(notification, callback));
+    return dispatch(setAlertText(alert, callback));
   };
 }
-// We clear by 'notification level'.
+// We clear by 'alert level'.
 // This will not surface in the UI just yet.
-export function clearNotifications(notificationLevel = constants.INFO) {
+export function clearAlerts(alertLevel = constants.INFO) {
   return {
-    type: CLEAR_NOTIFICATIONS,
+    type: CLEAR_ALERTS,
     data: {
-      level: notificationLevel
+      level: alertLevel
     }
   };
 }

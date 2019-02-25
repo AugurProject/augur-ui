@@ -47,7 +47,7 @@
   justify-content: flex-end;
 }
 
-div.TopBar__notifications {
+div.TopBar__alerts {
   color: @color-secondary-text;
   cursor: pointer;
   display: flex;
@@ -63,7 +63,7 @@ div.TopBar__notifications {
   }
 }
 
-div.TopBar__notificationsDisabled {
+div.TopBar__alertsDisabled {
   cursor: default;
 
   &:hover {
@@ -75,11 +75,11 @@ div.TopBar__notificationsDisabled {
   }
 }
 
-.TopBar__notificationsDark {
+.TopBar__alertsDark {
   background-color: @color-primary-light;
 }
 
-.TopBar__notifications-container {
+.TopBar__alerts-container {
   display: flex;
   padding-left: 1.5rem;
 
@@ -88,7 +88,7 @@ div.TopBar__notificationsDisabled {
   }
 }
 
-.TopBar__notification-icon {
+.TopBar__alert-icon {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -179,7 +179,7 @@ div.TopBar__tooltip {
 }
 
 @media @breakpoint-mobile {
-  .TopBar__notifications {
+  .TopBar__alerts {
     display: none;
   }
 }

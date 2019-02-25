@@ -1,58 +1,20 @@
 @import (reference) '~assets/styles/shared';
 
 .AccountHeader {
-  color: white;
+  color: @color-secondary-text;
+  margin: 3rem 2.5rem 1.5rem;
+}
+
+.AccountHeader__header {
+  align-items: flex-end;
   display: flex;
-  flex-flow: row wrap;
-  margin: 10rem 4.625rem 1.75rem;
-
-  > h4 {
-    .text-24-bold;
-
-    color: @color-light-gray;
-    flex: 0 0 100%;
-  }
+  justify-content: space-between;
 }
 
-.AccountHeader__Currency {
-  font-weight: 200;
-  letter-spacing: 0.004em;
+.AccountHeader__title {
+  .text-30-bold;
 
-  &:not(:first-child) {
-    margin-left: 0.4em;
-  }
-
-  &:first-of-type {
-    margin-left: 0;
-  }
-}
-
-.AccountHeader__Currency-label {
-  font-size: 0.33em;
-  font-weight: 500;
-  letter-spacing: 0.001em;
-  text-transform: uppercase;
-}
-
-@media @breakpoint-mobile {
-  .AccountHeader {
-    display: block;
-    margin: 4rem 2.25rem 3.2rem;
-
-    > h4 {
-      .text-16;
-    }
-  }
-
-  .AccountHeader__Currency:not(:first-child) {
-    margin-left: 0;
-    margin-top: 0.2em;
-  }
-}
-
-@media @breakpoint-mobile-medium {
-  .AccountHeader {
-    margin-bottom: 2.2rem;
-    margin-top: 3rem;
-  }
+  color: @color-secondary-text;
+  margin-bottom: 0;
+  text-transform: capitalize;
 }

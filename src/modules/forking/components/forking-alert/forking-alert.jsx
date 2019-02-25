@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import ForkingContent from "modules/forking/components/forking-content/forking-content";
 
-import Styles from "modules/forking/components/forking-notification/forking-notification.styles";
+import Styles from "modules/forking/components/forking-alert/forking-alert.styles";
 
-class ForkingNotification extends Component {
+class ForkingAlert extends Component {
   constructor(props) {
     super(props);
 
@@ -48,33 +48,33 @@ class ForkingNotification extends Component {
     const forkWindowActive = Number(forkEndTime) > currentTime;
 
     return (
-      <section className={Styles.ForkingNotification__Container}>
-        <header className={Styles.ForkingNotification} style={{ marginLeft }}>
+      <section className={Styles.ForkingAlert__Container}>
+        <header className={Styles.ForkingAlert} style={{ marginLeft }}>
           <section>
             <img
-              className={Styles.ForkingNotification__AlertIcon}
+              className={Styles.ForkingAlert__AlertIcon}
               alt="Alert"
               src="../../assets/images/alert-icon.svg"
             />
             {forkWindowActive && (
-              <div className={Styles.ForkingNotification__message}>
+              <div className={Styles.ForkingAlert__message}>
                 A Fork has been initiated. This universe is now locked.
               </div>
             )}
             {!forkWindowActive && (
-              <div className={Styles.ForkingNotification__message}>
+              <div className={Styles.ForkingAlert__message}>
                 A Fork has occurred. This universe is now locked.
               </div>
             )}
-            <div className={Styles.ForkingNotification__addition_details}>
+            <div className={Styles.ForkingAlert__addition_details}>
               <button
-                className={Styles.ForkingNotification__addition_details_button}
+                className={Styles.ForkingAlert__addition_details_button}
                 onClick={this.expand}
               >
                 Additional details
                 <i
                   className={classNames(
-                    Styles.ForkingNotification__arrow,
+                    Styles.ForkingAlert__arrow,
                     "fa",
                     this.state.isExpanded ? "fa-angle-up" : "fa-angle-down"
                   )}
@@ -101,7 +101,7 @@ class ForkingNotification extends Component {
   }
 }
 
-ForkingNotification.propTypes = {
+ForkingAlert.propTypes = {
   location: PropTypes.object.isRequired,
   universe: PropTypes.object.isRequired,
   currentTime: PropTypes.number.isRequired,
@@ -110,8 +110,8 @@ ForkingNotification.propTypes = {
   finalizeMarket: PropTypes.func.isRequired
 };
 
-ForkingNotification.defaultProps = {
+ForkingAlert.defaultProps = {
   marginLeft: 0
 };
 
-export default ForkingNotification;
+export default ForkingAlert;

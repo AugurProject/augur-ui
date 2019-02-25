@@ -43,6 +43,15 @@ export interface MovementIconProps {
   size: sizeTypes;
 }
 
+export interface MovementTextProps {
+  value: number;
+  size: sizeTypes;
+  showColors: boolean;
+  showBrackets: boolean;
+  showPercent: boolean;
+  showPlusMinus: boolean;
+}
+
 export interface PropertyLabelProps {
   label: string;
   value: string;
@@ -52,6 +61,10 @@ export interface PropertyLabelProps {
 export interface LinearPropertyLabelProps {
   label: string;
   value: string;
+}
+
+export interface PillLabelProps {
+  label: string;
 }
 
 export const PropertyLabel = (props: PropertyLabelProps) => (
@@ -140,7 +153,7 @@ export const PendingLabel = () => (
   </span>
 );
 
-const MovementIcon = (props: MovementIconProps) => {
+export const MovementIcon = (props: MovementIconProps) => {
   const getIconSizeStyles: Function = (size: sizeTypes): string =>
     classNames(Styles.MovementLabel_Icon, {
       [Styles.MovementLabel_Icon_small]: size == sizeTypes.SMALL,
@@ -160,16 +173,7 @@ const MovementIcon = (props: MovementIconProps) => {
   return <div className={`${iconSize} ${iconColor}`}>{MarketIcon}</div>;
 };
 
-export interface MovementTextProps {
-  value: number;
-  size: sizeTypes;
-  showColors: boolean;
-  showBrackets: boolean;
-  showPercent: boolean;
-  showPlusMinus: boolean;
-}
-
-const MovementText = (props: MovementTextProps) => {
+export const MovementText = (props: MovementTextProps) => {
   const getTextSizeStyle: Function = (size: sizeTypes): string =>
     classNames(Styles.MovementLabel_Text, {
       [Styles.MovementLabel_Text_small]: size == sizeTypes.SMALL,
@@ -263,3 +267,7 @@ export const MovementLabel = (props: MovementLabelProps) => {
     </div>
   );
 };
+
+export const PillLabel = (props: PillLabelProps) => (
+  <span className={Styles.PillLabel}>{props.label}</span>
+);

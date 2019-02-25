@@ -34,7 +34,7 @@ const localStorageMiddleware = store => next => action => {
     favorites,
     reports,
     accountName,
-    notifications,
+    alerts,
     pendingOrders,
     env,
     connection
@@ -65,7 +65,7 @@ const localStorageMiddleware = store => next => action => {
         favorites: processedFavorites,
         reports,
         accountName,
-        notifications,
+        alerts,
         pendingOrders,
         gasPriceInfo: {
           userDefinedGasPrice: state.gasPriceInfo.userDefinedGasPrice
