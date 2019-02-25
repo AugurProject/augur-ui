@@ -7,9 +7,8 @@ import NotificationBox from "modules/account/components/notifications/notificati
 
 import Styles from "modules/account/components/account-view/account-view.styles";
 
-
 const AccountView = () => {
-  let notifications = []; // TODO;
+  const notifications = []; // TODO;
 
   return (
     <section className={Styles.AccountView}>

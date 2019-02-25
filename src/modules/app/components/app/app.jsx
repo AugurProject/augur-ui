@@ -291,9 +291,9 @@ export default class AppView extends Component {
 
     // Don't show mainMenu/subMenu for Account Summary
     if (newType === AccountInnerNav) {
-      return this.toggleMenuTween(SUB_MENU, false, () => {
-        return this.toggleMenuTween(MAIN_MENU, false);
-      });
+      return this.toggleMenuTween(SUB_MENU, false, () =>
+        this.toggleMenuTween(MAIN_MENU, false)
+      );
     }
 
     if ((newType === AccountInnerNav && !isLogged) || oldType === newType) {
