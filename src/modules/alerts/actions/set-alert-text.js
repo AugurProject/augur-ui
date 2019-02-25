@@ -98,10 +98,7 @@ export default function setAlertText(alert, callback) {
       throw new Error("Callback function is not set");
     }
 
-    if (
-      !alert.params ||
-      (alert.title && alert.description)
-    ) {
+    if (!alert.params || (alert.title && alert.description)) {
       return dispatch(callback(alert));
     }
 
@@ -188,9 +185,9 @@ export default function setAlertText(alert, callback) {
                 marketInfo,
                 alert.log.outcome
               );
-              alert.description = `Create ${
-                alert.log.orderType
-              } order for ${formatShares(alert.log.amount).formatted} ${
+              alert.description = `Create ${alert.log.orderType} order for ${
+                formatShares(alert.log.amount).formatted
+              } ${
                 formatShares(alert.log.amount).denomination
               } of "${outcomeDescription}" at ${
                 formatEther(alert.log.price).formatted
@@ -338,8 +335,7 @@ export default function setAlertText(alert, callback) {
             loadMarketsInfoIfNotLoaded([alert.log.market], () => {
               const marketDescription = selectMarket(alert.log.market)
                 .description;
-              alert.description =
-                'Finalize market "' + marketDescription + '"';
+              alert.description = 'Finalize market "' + marketDescription + '"';
               return dispatch(callback(alert));
             })
           );
@@ -391,12 +387,10 @@ export default function setAlertText(alert, callback) {
         }
         break;
       case UPDATEPARENTTOTALTHEORETICALSUPPLY:
-        alert.title =
-          "Update theoretical REP supply for parent universe";
+        alert.title = "Update theoretical REP supply for parent universe";
         break;
       case UPDATESIBLINGMIGRATIONTOTAL:
-        alert.title =
-          "Update theoretical REP supply for sibling universe";
+        alert.title = "Update theoretical REP supply for sibling universe";
         break;
 
       // Trade
@@ -415,15 +409,13 @@ export default function setAlertText(alert, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([alert.params._market], () => {
               const marketInfo = selectMarket(alert.params._market);
-              const orderType =
-                alert.params._direction === "0x0" ? BUY : SELL;
+              const orderType = alert.params._direction === "0x0" ? BUY : SELL;
               const outcomeDescription = getOutcome(
                 marketInfo,
                 alert.log.outcome
               );
               alert.description = `Place ${orderType} order for ${
-                formatShares(alert.amount || alert.log.amount)
-                  .formatted
+                formatShares(alert.amount || alert.log.amount).formatted
               } ${formatShares(
                 alert.log.amount
               ).denomination.toLowerCase()} of "${outcomeDescription}" at ${
@@ -456,9 +448,7 @@ export default function setAlertText(alert, callback) {
       case CREATEYESNOMARKET:
         alert.title = "Create new market";
         if (!alert.description) {
-          alert.description = `Create market "${
-            alert.params._description
-          }"`;
+          alert.description = `Create market "${alert.params._description}"`;
         }
         break;
       case CREATECHILDUNIVERSE:
@@ -486,8 +476,7 @@ export default function setAlertText(alert, callback) {
         alert.title = "Get reporting fee divisor";
         break;
       case GETORCACHEVALIDITYBOND:
-        alert.title =
-          "Get validity bond size required for market creation";
+        alert.title = "Get validity bond size required for market creation";
         break;
       case GETORCREATECURRENTFEEWINDOW:
         alert.title = "Get/create current fee window address";

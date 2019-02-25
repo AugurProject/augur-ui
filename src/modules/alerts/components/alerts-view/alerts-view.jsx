@@ -24,10 +24,7 @@ export default class AlertsView extends Component {
   componentWillUpdate(nextProps) {
     if (!this.props.alertsVisible && nextProps.alertsVisible) {
       toggleHeight(this.alertsContainer, false);
-    } else if (
-      this.props.alertsVisible &&
-      !nextProps.alertsVisible
-    ) {
+    } else if (this.props.alertsVisible && !nextProps.alertsVisible) {
       toggleHeight(this.alertsContainer, true);
 
       const { updateAlert, alerts } = this.props;
@@ -38,12 +35,7 @@ export default class AlertsView extends Component {
   }
 
   render() {
-    const {
-      removeAlert,
-      toggleAlerts,
-      clearAlerts,
-      alerts
-    } = this.props;
+    const { removeAlert, toggleAlerts, clearAlerts, alerts } = this.props;
 
     return (
       <div
@@ -59,9 +51,7 @@ export default class AlertsView extends Component {
         <section
           id="alerts_view"
           className={classNames(Styles.AlertsView, {
-            [Styles.AlertsView__dark]: !(
-              alerts && alerts.length
-            )
+            [Styles.AlertsView__dark]: !(alerts && alerts.length)
           })}
         >
           <button

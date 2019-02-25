@@ -42,8 +42,7 @@ export default function(alerts = DEFAULT_STATE, { data, type }) {
       const isDuplicate =
         alerts.findIndex(
           alert =>
-            alert.id === data.alert.id &&
-            alert.title === data.alert.title
+            alert.id === data.alert.id && alert.title === data.alert.title
         ) !== -1;
 
       if (isDuplicate) return alerts;
@@ -51,24 +50,16 @@ export default function(alerts = DEFAULT_STATE, { data, type }) {
       return [...alerts, data.alert];
     }
     case REMOVE_NOTIFICATION:
-      return alerts.filter(
-        (alert, i) => alert.id !== data.id
-      );
+      return alerts.filter((alert, i) => alert.id !== data.id);
     case UPDATE_NOTIFICATION:
       return alerts.map((alert, i) => {
         if (alert.id !== data.id) {
           return alert;
         }
         // don't except false unless status has changed
-        if (
-          data.alert.status &&
-          alert.status !== data.alert.status
-        ) {
+        if (data.alert.status && alert.status !== data.alert.status) {
           data.alert.seen = data.alert.seen || false;
-        } else if (
-          alert.status === data.alert.status &&
-          !data.alert.seen
-        ) {
+        } else if (alert.status === data.alert.status && !data.alert.seen) {
           data.alert.seen = alert.seen;
         }
 

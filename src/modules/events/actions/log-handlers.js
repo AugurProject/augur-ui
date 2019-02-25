@@ -1,8 +1,5 @@
 import BigNumber from "bignumber.js";
-import {
-  addAlert,
-  updateAlert
-} from "modules/alerts/actions/alerts";
+import { addAlert, updateAlert } from "modules/alerts/actions/alerts";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import loadBidsAsks from "modules/orders/actions/load-bids-asks";
 import { loadReportingWindowBounds } from "modules/reports/actions/load-reporting-window-bounds";

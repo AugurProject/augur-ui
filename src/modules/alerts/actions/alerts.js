@@ -163,8 +163,7 @@ export function loadAlerts() {
             );
             return true;
           } else if (
-            alerts[i].params.type.toUpperCase() ===
-              constants.CANCELORDER &&
+            alerts[i].params.type.toUpperCase() === constants.CANCELORDER &&
             transactionsData[key].status.toLowerCase() === constants.SUCCESS
           ) {
             const groupedTransactions = transactionsData[key].transactions;
@@ -271,18 +270,12 @@ export function updateAlert(id, alert) {
     // (This occurs the first time the alert is updated.)
     if (alert && !alert.params) {
       const { alerts } = store.getState();
-      for (
-        let index = Object.keys(alerts).length - 1;
-        index >= 0;
-        index--
-      ) {
+      for (let index = Object.keys(alerts).length - 1; index >= 0; index--) {
         if (alerts[index].id === alert.id) {
           alert.params = alerts[index].params;
           alert.to = alerts[index].to;
           if (alert.log && alert.log.amount) {
-            alert.amount = createBigNumber(
-              alerts[index].amount || 0
-            )
+            alert.amount = createBigNumber(alerts[index].amount || 0)
               .plus(createBigNumber(alert.log.amount))
               .toFixed();
           }
@@ -296,9 +289,7 @@ export function updateAlert(id, alert) {
           ) {
             return dispatch(
               addAlert({
-                id: `${alert.log.transactionHash}-${
-                  alert.log.orderId
-                }`,
+                id: `${alert.log.transactionHash}-${alert.log.orderId}`,
                 timestamp: alert.timestamp,
                 blockNumber: alert.log.blockNumber,
                 log: alert.log,

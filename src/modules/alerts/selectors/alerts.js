@@ -11,12 +11,8 @@ import getValue from "utils/get-value";
 export const selectAlertsByLevel = level => state =>
   selectAlertsState(state).filter(it => it.level === level);
 
-export const selectCriticalAlerts = selectAlertsByLevel(
-  alertLevels.CRITICAL
-);
-export const selectInfoAlerts = selectAlertsByLevel(
-  alertLevels.INFO
-);
+export const selectCriticalAlerts = selectAlertsByLevel(alertLevels.CRITICAL);
+export const selectInfoAlerts = selectAlertsByLevel(alertLevels.INFO);
 
 export const selectInfoAlertsAndSeenCount = createSelector(
   selectInfoAlerts,

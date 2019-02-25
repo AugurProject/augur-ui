@@ -1,9 +1,6 @@
 import speedomatic from "speedomatic";
 import { augur } from "services/augurjs";
-import {
-  updateAlert,
-  addAlert
-} from "modules/alerts/actions/alerts";
+import { updateAlert, addAlert } from "modules/alerts/actions/alerts";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { ETH, REP } from "modules/common-elements/constants";
 

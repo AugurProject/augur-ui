@@ -85,11 +85,9 @@ describe("modules/auth/actions/transfer-funds.js", () => {
         type: "updateAssets"
       }));
 
-      jest
-        .spyOn(alertsModule, "addAlert")
-        .mockImplementation(() => ({
-          type: "addAlert"
-        }));
+      jest.spyOn(alertsModule, "addAlert").mockImplementation(() => ({
+        type: "addAlert"
+      }));
 
       const updateAlertSpy = jest
         .spyOn(alertsModule, "updateAlert")

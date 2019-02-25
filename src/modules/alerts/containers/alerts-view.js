@@ -16,8 +16,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  updateAlert: (id, alert) =>
-    dispatch(updateAlert(id, alert)),
+  updateAlert: (id, alert) => dispatch(updateAlert(id, alert)),
   removeAlert: id => dispatch(removeAlert(id)),
   clearAlerts: () => dispatch(clearAlerts())
 });

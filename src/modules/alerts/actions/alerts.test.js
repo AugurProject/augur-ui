@@ -12,9 +12,7 @@ describe("modules/alerts/actions/alerts", () => {
 
   describe("addAlert", () => {
     test("returned nothing when the alerts param is null/undefined", () => {
-      expect(
-        store.dispatch(updateAlerts.addAlert())
-      ).toBeUndefined();
+      expect(store.dispatch(updateAlerts.addAlert())).toBeUndefined();
     });
 
     test("returned the expected object when a alert is passed in", () => {
@@ -34,8 +32,7 @@ describe("modules/alerts/actions/alerts", () => {
     });
 
     test("alert level defaulted to the 'INFO' constant", () => {
-      const actual = store.dispatch(updateAlerts.addAlert({}))
-        .data.alert.level;
+      const actual = store.dispatch(updateAlerts.addAlert({})).data.alert.level;
 
       expect(actual).toBe(alertLevels.INFO);
     });
@@ -96,16 +93,14 @@ describe("modules/alerts/actions/alerts", () => {
 
     describe("alertLevel", () => {
       test("returned the 'INFO' constant", () => {
-        const actual = store.dispatch(updateAlerts.clearAlerts())
-          .data.level;
+        const actual = store.dispatch(updateAlerts.clearAlerts()).data.level;
 
         expect(actual).toBe(alertLevels.INFO);
       });
 
       test("passed alertLevel", () => {
-        const actual = updateAlerts.clearAlerts(
-          alertLevels.CRITICAL
-        ).data.level;
+        const actual = updateAlerts.clearAlerts(alertLevels.CRITICAL).data
+          .level;
 
         expect(actual).toBe(alertLevels.CRITICAL);
       });

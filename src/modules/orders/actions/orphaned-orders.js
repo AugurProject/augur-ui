@@ -1,9 +1,6 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
-import {
-  addAlert,
-  updateAlert
-} from "modules/alerts/actions/alerts";
+import { addAlert, updateAlert } from "modules/alerts/actions/alerts";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 
 export const ADD_ORPHANED_ORDER = "ADD_ORPHANED_ORDER";
