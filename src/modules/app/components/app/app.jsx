@@ -521,10 +521,6 @@ export default class AppView extends Component {
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-<<<<<<< HEAD
-=======
-        <AlertBarContainer />
->>>>>>> 1cb8f98a71ae9247b0d41361d5b84b9cee1d807f
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
