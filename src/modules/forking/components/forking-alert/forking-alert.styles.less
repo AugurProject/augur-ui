@@ -1,12 +1,12 @@
 @import (reference) '~assets/styles/shared';
 
-.ForkingNotification__Container {
+.ForkingAlert__Container {
   position: absolute;
   right: 0;
   width: 100%;
 }
 
-.ForkingNotification {
+.ForkingAlert {
   background: @color-pink;
   height: 100%;
   padding-left: 13.6rem;
@@ -16,7 +16,7 @@
   }
 }
 
-.ForkingNotification__message {
+.ForkingAlert__message {
   color: white;
   font-size: 0.875rem;
   line-height: 2.65rem;
@@ -24,14 +24,14 @@
   text-transform: uppercase;
 }
 
-.ForkingNotification__AlertIcon {
+.ForkingAlert__AlertIcon {
   height: 1.125rem;
   margin-bottom: auto;
   margin-top: auto;
   width: 1.125rem;
 }
 
-.ForkingNotification__addition_details {
+.ForkingAlert__addition_details {
   color: white;
   display: flex;
   flex: 1;
@@ -40,27 +40,27 @@
   text-transform: uppercase;
 }
 
-.ForkingNotification__addition_details_button {
+.ForkingAlert__addition_details_button {
   margin-bottom: auto;
   margin-right: 6em;
   margin-top: auto;
   text-transform: uppercase;
 }
 
-.ForkingNotification__arrow {
+.ForkingAlert__arrow {
   margin-left: 1em;
 }
 
 @media @breakpoint-mobile {
-  .ForkingNotification {
+  .ForkingAlert {
     padding: 2rem 1.5em 0.5em;
   }
 
-  .ForkingNotification__SubContainer {
+  .ForkingAlert__SubContainer {
     padding-left: 0;
   }
 
-  .ForkingNotification__message {
+  .ForkingAlert__message {
     color: white;
     font-size: 0.7rem;
     line-height: 1em;
@@ -69,7 +69,7 @@
     text-transform: uppercase;
   }
 
-  .ForkingNotification__addition_details_button {
+  .ForkingAlert__addition_details_button {
     margin-bottom: auto;
     margin-right: 0.5em;
     margin-top: auto;
@@ -78,7 +78,7 @@
 }
 
 @media @breakpoint-mobile-small {
-  .ForkingNotification__message {
+  .ForkingAlert__message {
     margin: 0 0.5em;
     padding: 0.05em;
   }

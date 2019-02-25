@@ -2,7 +2,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import MyMarkets from "modules/portfolio/components/markets/markets";
-import getUserMarkets from "modules/markets/selectors/user-markets";
+
+import { selectAuthorOwnedMarkets } from "modules/markets/selectors/user-markets";
 import { collectMarketCreatorFees } from "modules/markets/actions/market-creator-fees-management";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
 
@@ -10,7 +11,7 @@ import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
-  const markets = createMarketsStateObject(getUserMarkets());
+  const markets = createMarketsStateObject(selectAuthorOwnedMarkets(state));
 
   // getMyMarkets or it's equivalent will need a way of calculating the outstanding returns for a market and attaching it to each market object. Currently I've just added a key/value pair to the market objects im using below.
   return {
