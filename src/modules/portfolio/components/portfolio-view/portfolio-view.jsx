@@ -10,7 +10,6 @@ import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.s
 
 const PortfolioView = p => (
   <section className={Styles.PortfolioView}>
-    <PortfolioHeader />
     <div className={Styles.PortfolioView__views}>
       <MyPositions />
       <OpenOrders />
