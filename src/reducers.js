@@ -25,7 +25,7 @@ import marketsData from "modules/markets/reducers/markets-data";
 import marketsWithAccountReport from "modules/reports/reducers/markets-with-account-report";
 import modal from "modules/modal/reducers/modal";
 import newMarket from "modules/markets/reducers/new-market";
-import notifications from "modules/notifications/reducers/notifications";
+import alerts from "modules/alerts/reducers/alerts";
 import orderBooks from "modules/orders/reducers/order-books";
 import orderCancellation from "modules/orders/reducers/order-cancellation";
 import orphanedOrders from "modules/orders/reducers/orphaned-orders";
@@ -73,7 +73,7 @@ export function createReducer() {
     marketsWithAccountReport,
     modal,
     newMarket,
-    notifications,
+    alerts,
     orderBooks,
     orderCancellation,
     orphanedOrders,

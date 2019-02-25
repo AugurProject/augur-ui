@@ -30,16 +30,14 @@ const mapStateToProps = state => {
   );
 
   const marketIds = keys(groupedFilledOrders);
-  const markets = marketIds.map(m => marketsData[m]).map(item => {
-    return {
-      ...item,
-      filledOrders: selectFilledOrders(
-        groupedFilledOrders[item.id],
-        account,
-        outcomesData
-      )
-    };
-  });
+  const markets = marketIds.map(m => marketsData[m]).map(item => ({
+    ...item,
+    filledOrders: selectFilledOrders(
+      groupedFilledOrders[item.id],
+      account,
+      outcomesData
+    )
+  }));
 
   /* eslint-disable */
   let allFilledOrders = [];

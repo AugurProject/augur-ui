@@ -31,7 +31,7 @@ export const selectMarketsDataState = state => state.marketsData;
 export const selectMarketsFilteredSorted = state => state.marketsFilteredSorted;
 export const selectModal = state => state.modal;
 export const selectNewMarketState = state => state.newMarket;
-export const selectNotificationsState = state => state.notifications;
+export const selectAlertsState = state => state.alerts;
 export const selectPendingOrdersState = state => state.pendingOrders;
 export const selectOrphanOrders = state => state.orphanedOrders;
 export const selectOrderBooksState = state => state.orderBooks;

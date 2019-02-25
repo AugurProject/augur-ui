@@ -1,6 +1,5 @@
 import React from "react";
 
-import PortfolioHeader from "modules/portfolio/containers/portfolio-header";
 import MyPositions from "modules/portfolio/containers/positions";
 import MyMarkets from "modules/portfolio/containers/my-markets";
 import OpenOrders from "modules/portfolio/containers/open-orders";

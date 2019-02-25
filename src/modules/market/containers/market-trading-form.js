@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
 import { createBigNumber } from "src/utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import { handleFilledOnly } from "modules/notifications/actions/notifications";
+import { handleFilledOnly } from "modules/alerts/actions/alerts";
 import {
   updateTradeCost,
   updateTradeShares

@@ -21,6 +21,7 @@ export interface Market {
   id: string;
   description: string;
   reportingState: string;
+  marketStatus: string;
   creationTime: number;
   endTime: number;
   volume: FormatObject;
@@ -62,6 +63,7 @@ const MarketRow = (props: MarketRowProps) => (
               {props.rightContent || <div>right content</div>}
             </span>
           </div>
+
         </div>
       }
       toggleContent={

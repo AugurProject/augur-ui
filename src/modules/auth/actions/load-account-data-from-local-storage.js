@@ -1,7 +1,7 @@
 import { updateFavorites } from "modules/markets/actions/update-favorites";
 import { updateScalarMarketShareDenomination } from "modules/markets/actions/update-scalar-market-share-denomination";
 import { updateReports } from "modules/reports/actions/update-reports";
-import { addNotification } from "modules/notifications/actions/notifications";
+import { addAlert } from "modules/alerts/actions/alerts";
 import { loadPendingLiquidityOrders } from "modules/orders/actions/liquidity-management";
 import { loadPendingOrders } from "modules/orders/actions/pending-orders-management";
 import { updateGasPriceInfo } from "modules/app/actions/update-gas-price-info";
@@ -39,8 +39,8 @@ export const loadAccountDataFromLocalStorage = address => (
       ) {
         dispatch(updateFavorites(favorites[augurNodeNetworkId][universe.id]));
       }
-      if (storedAccountData.notifications) {
-        storedAccountData.notifications.map(n => dispatch(addNotification(n)));
+      if (storedAccountData.alerts) {
+        storedAccountData.alerts.map(n => dispatch(addAlert(n)));
       }
       if (storedAccountData.scalarMarketsShareDenomination) {
         Object.keys(storedAccountData.scalarMarketsShareDenomination).forEach(

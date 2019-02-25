@@ -1,6 +1,6 @@
 @import (reference) '~assets/styles/shared';
 
-.Notification {
+.Alert {
   background-color: @color-medium-gray;
   display: flex;
   flex-direction: row;
@@ -15,28 +15,28 @@
   }
 }
 
-.Notification__seen {
+.Alert__seen {
   background-color: @color-grayish-purple;
 }
 
-.Notification__row {
+.Alert__row {
   display: flex;
 }
 
-.Notification__column {
+.Alert__column {
   display: flex;
   flex-direction: column;
 }
 
-.Notification__closeButton {
+.Alert__closeButton {
   display: block;
 }
 
-.Notification__closeButtonHidden {
+.Alert__closeButtonHidden {
   display: none;
 }
 
-.Notification__title {
+.Alert__title {
   color: @color-white;
   flex: 0 1 auto;
   font-size: @font-size-medium;
@@ -50,11 +50,11 @@
   width: 17.188rem;
 }
 
-.Notification__title::first-letter {
+.Alert__title::first-letter {
   text-transform: capitalize;
 }
 
-.Notification__status {
+.Alert__status {
   color: @color-white;
   font-size: @font-size-extra-small;
   font-weight: 500;
@@ -63,14 +63,14 @@
   text-transform: uppercase;
 }
 
-.Notification__etherLink {
+.Alert__etherLink {
   color: @color-white;
   font-size: @font-size-extra-small;
   font-weight: 500;
   text-decoration: underline;
 }
 
-.Notification__dot {
+.Alert__dot {
   flex: 0 1rem;
   height: 1rem;
   left: 0.5rem;
@@ -80,7 +80,7 @@
   width: 1rem;
 }
 
-.Notification__dot-seen {
+.Alert__dot-seen {
   flex: 0 0 0;
   height: 0;
   margin: 0;
@@ -88,13 +88,13 @@
   width: 0;
 }
 
-.Notification__close {
+.Alert__close {
   align-self: baseline;
   margin-left: auto;
   width: 12px;
 }
 
-.Notification__description {
+.Alert__description {
   flex: 1 0 100%;
   font-size: @font-size-small;
   height: 0.875rem;
@@ -106,14 +106,14 @@
   width: 17.188rem;
 }
 
-.Notification__time {
+.Alert__time {
   color: @color-white;
   font-size: @font-size-extra-small;
   margin-right: 0.25rem;
 }
 
 @media @breakpoint-mobile {
-  .Notification__description {
+  .Alert__description {
     flex: 1 0 100%;
     font-size: @font-size-small;
     overflow: hidden;
