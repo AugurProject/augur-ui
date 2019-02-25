@@ -2,28 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import makePath from "modules/routes/helpers/make-path";
-import Styles from "modules/notifications/components/notification-bar/notification-bar.styles";
+import Styles from "modules/alerts/components/alert-bar/alert-bar.styles";
 import { CloseWithCircle } from "src/modules/common/components/icons";
 import { Link } from "react-router-dom";
 import { MY_POSITIONS } from "modules/routes/constants/views";
 
 const numberToWords = require("number-to-words");
 
-export const NotificationBar = ({
+export const AlertBar = ({
   dismissFn,
-  notifications,
+  alerts,
   market,
   marketsNumber,
   isMobileSmall
 }) =>
-  notifications.map(notification => (
-    <div key={notification.orderId} className={Styles.notificationBar}>
-      <div className={Styles.notificationBar__row}>
-        <div className={Styles.notificationBar_textContainer}>
-          <span className={Styles.notificationBar_text}>
+  alerts.map(alert => (
+    <div key={alert.orderId} className={Styles.alertBar}>
+      <div className={Styles.alertBar__row}>
+        <div className={Styles.alertBar_textContainer}>
+          <span className={Styles.alertBar_text}>
             {!market
               ? `You have ${numberToWords.toWords(
-                  notifications.length
+                  alerts.length
                 )} orphaned orders across ${numberToWords.toWords(
                   marketsNumber
                 )} ${
@@ -33,7 +33,7 @@ export const NotificationBar = ({
                   market.description
                 }". Please go to your portfolio to cancel this order.`}
           </span>
-          <span className={Styles.notificationBar_learnMore}>
+          <span className={Styles.alertBar_learnMore}>
             <a
               href="http://docs.augur.net/#orphaned-order"
               target="_blank"
@@ -44,23 +44,23 @@ export const NotificationBar = ({
           </span>
         </div>
         {!isMobileSmall && (
-          <div className={Styles.notificationBar_container}>
+          <div className={Styles.alertBar_container}>
             <Link
               to={makePath(MY_POSITIONS)}
-              className={Styles.notificationBar_button}
+              className={Styles.alertBar_button}
             >
               View Portfolio
             </Link>
           </div>
         )}
-        <div className={Styles.notificationBar_container}>
+        <div className={Styles.alertBar_container}>
           <button
-            className={Styles.notificationBar_dismiss}
-            onClick={() => dismissFn(notification)}
+            className={Styles.alertBar_dismiss}
+            onClick={() => dismissFn(alert)}
           >
-            <div className={Styles.notificationBar_dismissIcon}>
+            <div className={Styles.alertBar_dismissIcon}>
               {CloseWithCircle(
-                Styles.notificationBar_dismissIconImg,
+                Styles.alertBar_dismissIconImg,
                 "#412468",
                 "#FFF"
               )}
@@ -69,11 +69,11 @@ export const NotificationBar = ({
         </div>
       </div>
       {isMobileSmall && (
-        <div className={Styles.notificationBar__row}>
-          <div className={Styles.notificationBar_containerView}>
+        <div className={Styles.alertBar__row}>
+          <div className={Styles.alertBar_containerView}>
             <Link
               to={makePath(MY_POSITIONS)}
-              className={Styles.notificationBar_button}
+              className={Styles.alertBar_button}
             >
               View Portfolio
             </Link>
@@ -83,15 +83,15 @@ export const NotificationBar = ({
     </div>
   ));
 
-NotificationBar.propTypes = {
+AlertBar.propTypes = {
   dismissFn: PropTypes.func.isRequired,
-  notifications: PropTypes.arrayOf(PropTypes.object),
+  alerts: PropTypes.arrayOf(PropTypes.object),
   market: PropTypes.object,
   marketsNumber: PropTypes.number.isRequired,
   isMobileSmall: PropTypes.bool.isRequired
 };
 
-NotificationBar.defaultProps = {
+AlertBar.defaultProps = {
   market: null,
-  notifications: []
+  alerts: []
 };

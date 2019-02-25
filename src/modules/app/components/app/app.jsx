@@ -14,14 +14,14 @@ import { isEqual } from "lodash";
 
 import Modal from "modules/modal/containers/modal-view";
 import TopBar from "modules/app/components/top-bar/top-bar";
-import ForkingNotification from "modules/forking/components/forking-notification/forking-notification";
+import ForkingAlert from "modules/forking/components/forking-alert/forking-alert";
 import PortfolioInnerNav from "modules/app/components/inner-nav/portfolio-inner-nav";
 import AccountInnerNav from "modules/app/components/inner-nav/account-inner-nav";
 import ReportingInnerNav from "modules/app/components/inner-nav/reporting-inner-nav";
 import SideNav from "modules/app/components/side-nav/side-nav";
 import Logo from "modules/app/components/logo/logo";
 import Routes from "modules/routes/components/routes/routes";
-import NotificationsContainer from "modules/notifications/containers/notifications-view";
+import AlertsContainer from "modules/alerts/containers/alerts-view";
 
 import MobileNavHamburgerIcon from "modules/common/components/mobile-nav-hamburger-icon";
 import MobileNavCloseIcon from "modules/common/components/mobile-nav-close-icon";
@@ -64,7 +64,7 @@ import {
 
 import Styles from "modules/app/components/app/app.styles";
 import MarketsInnerNavContainer from "modules/app/containers/markets-inner-nav";
-import { NotificationBarContainer } from "modules/notifications/containers/notification-bar";
+import { AlertBarContainer } from "modules/alerts/containers/alert-bar";
 
 export const mobileMenuStates = {
   CLOSED: 0,
@@ -136,7 +136,7 @@ export default class AppView extends Component {
       mobileMenuState: mobileMenuStates.CLOSED,
       currentBasePath: MARKETS,
       currentInnerNavType: null,
-      isNotificationsVisible: false
+      isAlertsVisible: false
     };
 
     this.sideNavMenuData = [
@@ -198,7 +198,7 @@ export default class AppView extends Component {
     this.handleWindowResize = debounce(this.handleWindowResize.bind(this));
     this.innerNavMenuMobileClick = this.innerNavMenuMobileClick.bind(this);
     this.checkIsMobile = this.checkIsMobile.bind(this);
-    this.toggleNotifications = this.toggleNotifications.bind(this);
+    this.toggleAlerts = this.toggleAlerts.bind(this);
     this.mainSectionClickHandler = this.mainSectionClickHandler.bind(this);
   }
 
@@ -358,10 +358,10 @@ export default class AppView extends Component {
     updateIsMobileSmall(isMobileSmall);
   }
 
-  toggleNotifications() {
+  toggleAlerts() {
     if (this.props.isLogged) {
       this.setState({
-        isNotificationsVisible: !this.state.isNotificationsVisible
+        isAlertsVisible: !this.state.isAlertsVisible
       });
     }
   }
@@ -437,8 +437,8 @@ export default class AppView extends Component {
       updateState = true;
     }
 
-    if (this.state.isNotificationsVisible) {
-      stateUpdate.isNotificationsVisible = false;
+    if (this.state.isAlertsVisible) {
+      stateUpdate.isAlertsVisible = false;
       updateState = true;
     }
 
@@ -491,7 +491,7 @@ export default class AppView extends Component {
     const s = this.state;
 
     const { mainMenu, subMenu } = this.state;
-    const unseenCount = getValue(this.props, "notifications.unseenCount");
+    const unseenCount = getValue(this.props, "alerts.unseenCount");
     const currentPath = parsePath(location.pathname)[0];
 
     const InnerNav = this.state.currentInnerNavType;
@@ -520,7 +520,7 @@ export default class AppView extends Component {
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-        <NotificationBarContainer />
+        <AlertBarContainer />
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
@@ -563,21 +563,21 @@ export default class AppView extends Component {
                 isLogged={isLogged}
                 stats={coreStats}
                 unseenCount={unseenCount}
-                toggleNotifications={this.toggleNotifications}
+                toggleAlerts={this.toggleAlerts}
                 isLoading={isLoading}
-                notificationsVisible={isLogged && s.isNotificationsVisible}
+                alertsVisible={isLogged && s.isAlertsVisible}
               />
             </section>
-            <NotificationsContainer
-              notificationsVisible={isLogged && s.isNotificationsVisible}
-              toggleNotifications={() => this.toggleNotifications()}
+            <AlertsContainer
+              alertsVisible={isLogged && s.isAlertsVisible}
+              toggleAlerts={() => this.toggleAlerts()}
             />
             {universe.forkEndTime &&
               universe.forkEndTime !== "0" &&
               blockchain &&
               blockchain.currentAugurTimestamp && (
                 <section className={Styles.TopBar}>
-                  <ForkingNotification
+                  <ForkingAlert
                     location={location}
                     universe={universe}
                     currentTime={blockchain.currentAugurTimestamp}

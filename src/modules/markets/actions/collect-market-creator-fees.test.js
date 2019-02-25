@@ -127,10 +127,10 @@ describe("modules/markets/actions/market-creator-fees-management.js", () => {
           }
         },
         {
-          type: "UPDATE_NOTIFICATION",
+          type: "UPDATE_ALERT",
           data: {
             id: "hashValue",
-            notification: {
+            alert: {
               id: "hashValue",
               status: "Confirmed",
               timestamp: 1521665

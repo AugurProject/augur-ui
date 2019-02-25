@@ -1,6 +1,6 @@
 @import (reference) '~assets/styles/shared';
 
-.NotificationsView {
+.AlertsView {
   background-color: @color-light-purple;
   border: 1px solid @color-dark-gray;
   border-top: 0;
@@ -15,22 +15,22 @@
   z-index: @mask-above;
 }
 
-.NotificationsView__dark {
+.AlertsView__dark {
   background-color: @color-darkpurple;
 }
 
-.NotificationsView__parent {
+.AlertsView__parent {
   position: absolute;
   right: 0;
   top: @top-bar-height;
 }
 
-.NotificationsView__box {
+.AlertsView__box {
   overflow-y: auto;
   width: 100%;
 }
 
-.Notification__close {
+.Alert__close {
   cursor: pointer;
   display: none;
   height: @font-size-normal;
@@ -51,7 +51,7 @@
   width: 100%;
 }
 
-.NotificationsView__dismissContainer {
+.AlertsView__dismissContainer {
   align-items: flex-end;
   background-color: @color-light-purple;
   display: flex;
@@ -61,13 +61,13 @@
   padding: 7px 16px;
 }
 
-.NotificationsView__dismissContainerBorder {
+.AlertsView__dismissContainerBorder {
   display: flex;
   flex-grow: 1;
   justify-content: flex-end;
 }
 
-.NotificationsView__dismissButton {
+.AlertsView__dismissButton {
   border-bottom: dotted 0.5px @color-lightergray;
   color: @color-lightergray;
   cursor: pointer;
@@ -85,7 +85,7 @@
 }
 
 @media @breakpoint-mobile {
-  .NotificationsView {
+  .AlertsView {
     bottom: 0;
     display: flex;
     flex-flow: column nowrap;
@@ -100,13 +100,13 @@
     z-index: @mask-above;
   }
 
-  .NotificationsView__parent {
+  .AlertsView__parent {
     bottom: 0;
     left: 0;
     top: 0;
   }
 
-  .NotificationsView::after {
+  .AlertsView::after {
     border: none;
     bottom: 0;
     content: "";
@@ -114,13 +114,13 @@
     right: 0;
   }
 
-  .NotificationsView__box {
+  .AlertsView__box {
     margin-top: 2.5rem;
     max-height: unset;
     overflow-y: auto;
   }
 
-  .Notification__close {
+  .Alert__close {
     display: block;
   }
 

@@ -1147,7 +1147,7 @@ export const ChevronFlipFilledIcon = (className = "", fillColor = "#FFF") => (
   </svg>
 );
 
-export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
+export const Alerts = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
   <svg width="34" height="24" viewBox="0 0 34 24">
     <defs />
     <g
@@ -1157,7 +1157,7 @@ export const Notifications = (unseenCount, rxWidth, stroke = "#FFFFFF") => (
       fill="none"
       fillRule="evenodd"
     >
-      <g id="Icon/Notification">
+      <g id="Icon/Alert">
         <g
           id="Page-1"
           transform="translate(4.000000, 1.000000)"
