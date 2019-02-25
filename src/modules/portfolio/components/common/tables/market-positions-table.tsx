@@ -11,7 +11,7 @@ export interface MarketPositionsTableProps {
   market: Market;
 }
 
-const FilledOrdersTable = (props: MarketPositionsTableProps) => {
+const MarketPositionsTable = (props: MarketPositionsTableProps) => {
   const { market } = props;
   
   return (
@@ -27,3 +27,5 @@ const FilledOrdersTable = (props: MarketPositionsTableProps) => {
     </div>
   );
 }
+
+export default MarketPositionsTable;
