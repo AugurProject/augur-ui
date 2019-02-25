@@ -147,3 +147,32 @@
     color: @color-secondary-button-text;
   }
 }
+
+.CancelTextButton {
+  .mono-10;
+
+  align-items: center;
+  color: @color-neutral;
+  display: flex;
+  flex-flow: row nowrap;
+  line-height: @size-10;
+
+  > svg {
+    fill: none;
+    height: 0.5rem;
+    margin-right: 0.25rem;
+    width: 0.5rem;
+
+    > path {
+      stroke: @color-neutral;
+    }
+  }
+
+  &:hover {
+    color: @color-secondary-button-text;
+
+    > svg > path {
+      stroke: @color-secondary-button-text;
+    }
+  }
+}

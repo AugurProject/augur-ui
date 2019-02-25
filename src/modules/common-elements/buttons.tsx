@@ -1,6 +1,6 @@
 import React from "react";
 import * as constants from "modules/common-elements/constants";
-import { StarIcon } from "modules/common-elements/icons";
+import { StarIcon, XIcon } from "modules/common-elements/icons";
 import Styles from "modules/common-elements/buttons.styles";
 
 export interface DefaultButtonProps {
@@ -67,3 +67,13 @@ export const CompactButton = (props: DefaultButtonProps) =>
 >
   {props.text}
 </button>;
+
+export const CancelTextButton = (props: DefaultButtonProps) =>
+  <button
+    onClick={(e) => props.action(e)}
+    className={Styles.CancelTextButton}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {XIcon}{props.text}
+  </button>;

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export const Chevron = <svg
+export const Chevron = (<svg
 viewBox="0 0 20 12"
 >
 <path
@@ -8,7 +8,7 @@ viewBox="0 0 20 12"
   clipRule="evenodd"
   d="M1.35355 0.146447C1.15829 -0.0488155 0.841709 -0.0488155 0.646447 0.146447C0.451184 0.341709 0.451184 0.658291 0.646447 0.853553L8.64562 8.85272C8.64589 8.853 8.64617 8.85328 8.64645 8.85355C8.84171 9.04882 9.15829 9.04882 9.35355 8.85355C9.35375 8.85336 9.35394 8.85316 9.35414 8.85297L17.3536 0.853553C17.5488 0.658291 17.5488 0.341709 17.3536 0.146447C17.1583 -0.0488155 16.8417 -0.0488155 16.6464 0.146447L9 7.79289L1.35355 0.146447Z"
 />
-</svg>;
+</svg>);
 
 export const MarketIcon = (
   <svg
@@ -33,7 +33,7 @@ export const StarIcon = (
   </svg>
 );
 
-export const TwoArrows =
+export const TwoArrows = (
   <svg viewBox="20 20 20 15">
     <path
       d="M34 31L30 35L26 31"
@@ -48,16 +48,16 @@ export const TwoArrows =
       strokeLinejoin="round"
     />
   </svg>
-;
+);
 
-export const InfoIcon =
+export const InfoIcon = (
   <svg viewBox="0 0 18 18">
     <circle cx="9" cy="9" r="8"/>
     <path
       d="M6.5 6.30273H9.74023V11.7051H11.8086V12.6426H6.5V11.7051H8.65625V7.24609H6.5V6.30273ZM8.51562 4.63867C8.51562 4.45898 8.56836 4.30859 8.67383 4.1875C8.7832 4.0625 8.94727 4 9.16602 4C9.38086 4 9.54297 4.0625 9.65234 4.1875C9.76172 4.30859 9.81641 4.45898 9.81641 4.63867C9.81641 4.81445 9.76172 4.96094 9.65234 5.07812C9.54297 5.19531 9.38086 5.25391 9.16602 5.25391C8.94727 5.25391 8.7832 5.19531 8.67383 5.07812C8.56836 4.96094 8.51562 4.81445 8.51562 4.63867Z"
     />
   </svg>
-;
+);
 
 export const SearchIcon = (
   <svg viewBox="0 0 12 12">
@@ -69,10 +69,19 @@ export const SearchIcon = (
   </svg>
 );
 
-export const ImmediateImportance =
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const XIcon = (
+  <svg
+    viewBox="0 0 10 10"
+  >
+    <path d="M1 1L9 9" strokeLinecap="round" />
+    <path d="M9 1L1 9" strokeLinecap="round" />
+  </svg>
+);
+
+export const ImmediateImportance = (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
     <circle opacity="0.5" cx="8" cy="8" r="7.5" stroke="#FD6266"/>
     <rect x="7.55566" y="3.55566" width="1.15556" height="6.22222" fill="#FD6266" />
     <path d="M7.57252 10.8974C7.44279 11.0463 7.37793 11.2313 7.37793 11.4523C7.37793 11.6685 7.44279 11.8487 7.57252 11.9929C7.70706 12.137 7.90886 12.2091 8.17793 12.2091C8.44219 12.2091 8.64159 12.137 8.77613 11.9929C8.91066 11.8487 8.97793 11.6685 8.97793 11.4523C8.97793 11.2313 8.91066 11.0463 8.77613 10.8974C8.64159 10.7436 8.44219 10.6667 8.17793 10.6667C7.90886 10.6667 7.70706 10.7436 7.57252 10.8974Z" fill="#FD6266"/>
   </svg>
-;
+);
