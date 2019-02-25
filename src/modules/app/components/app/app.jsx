@@ -176,8 +176,6 @@ export default class AppView extends Component {
         title: "Account",
         iconName: "nav-account-icon",
         icon: NavAccountIcon,
-        mobileClick: () =>
-          this.setState({ mobileMenuState: mobileMenuStates.FIRSTMENU_OPEN }),
         route: ACCOUNT_DEPOSIT,
         requireLogin: true
       },
@@ -291,6 +289,13 @@ export default class AppView extends Component {
       : this.state.currentInnerNavType;
     const newType = navTypes[nextBasePath];
 
+    // Don't show mainMenu/subMenu for Account Summary
+    if (newType === AccountInnerNav) {
+      return this.toggleMenuTween(SUB_MENU, false, () => {
+        return this.toggleMenuTween(MAIN_MENU, false);
+      });
+    }
+
     if ((newType === AccountInnerNav && !isLogged) || oldType === newType) {
       return;
     }
@@ -318,9 +323,6 @@ export default class AppView extends Component {
         case MY_MARKETS:
         case MY_POSITIONS:
         case FAVORITES:
-        case ACCOUNT_DEPOSIT:
-        case ACCOUNT_WITHDRAW:
-        case ACCOUNT_REP_FAUCET:
         case REPORTING_DISPUTE_MARKETS:
         case REPORTING_REPORT_MARKETS:
         case REPORTING_RESOLVED_MARKETS:
