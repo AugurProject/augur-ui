@@ -7,8 +7,6 @@ import OrderMarketRow from "modules/portfolio/components/common/rows/order-marke
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
 
-import Styles from "modules/portfolio/components/orders/open-orders.styles";
-
 const sortByOptions = [
   {
     label: "View by Most Recently Traded Market",

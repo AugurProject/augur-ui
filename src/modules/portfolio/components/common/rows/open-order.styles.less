@@ -31,20 +31,19 @@
   }
 }
 
-
 .Order__group {
-  padding: 0 28px 0 32px;
+  padding: 0 1.75rem 0 1.5rem;
 }
 
 .Order__innerGroup {
-  padding: 0.5rem 0 0.5rem 0;
   border-top: 0.0625rem solid @color-primary-background;
+  padding: 0.5rem 0;
 }
 
 .Order__parentSingle {
   &:not(:first-of-type) {
     border-top: 0.0625rem solid @color-primary-background;
-  } 
+  }
 }
 
 .Order__single {
@@ -57,23 +56,22 @@ ul.Orders__row {
   }
 }
 
-
 .FilledOrder {
   grid-template-columns: repeat(6, 1fr);
 }
 
 .OpenOrder_infoContainer {
+  background: fade(@color-primary-alternate, 10%);
+  border-bottom: 2px solid @color-theme-primary;
   display: flex;
   flex: 1;
   flex-direction: row;
-  background: fade(@color-primary-alternate, 10%);
-  border-bottom: 2px solid @color-theme-primary;
 }
 
 .OpenOrder_innerInfoContainer {
-  padding: 8px 26px 8px 32px;
   display: flex;
   flex: 1;
+  padding: 0.5rem 1.625rem 0.5rem 2rem;
 }
 
 .OpenOrder__info {
@@ -81,17 +79,14 @@ ul.Orders__row {
 }
 
 .OpenOrder__timestamp {
-  font-family: @roboto-mono;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
-  font-size: 11px;
-  text-align: right;
-  color: #777777;
+  align-items: flex-end;
+  color: @color-alternate-text;
   display: flex;
   flex: 1;
+  font-family: @roboto-mono;
+  font-size: @size-11;
   justify-content: flex-end;
-  align-items: flex-end;
+  text-align: right;
 }
 
 .Position {
@@ -99,19 +94,19 @@ ul.Orders__row {
 }
 
 .Position_infoContainer {
+  background: fade(@color-primary-alternate, 10%);
   display: flex;
   flex: 1;
   flex-direction: row;
   justify-content: flex-end;
-  background: fade(@color-primary-alternate, 10%);
-  padding: 8px 78px 8px 0px;
+  padding: 0.5rem 4.875rem 0.5rem 0;
 }
 
 .Position__info {
-  max-width: 12rem;
   display: flex;
   flex: 1;
   flex-direction: column;
+  max-width: 12rem;
 }
 
 .Position__border {
@@ -119,13 +114,13 @@ ul.Orders__row {
 }
 
 .Position__innerSingle {
-  padding: 0.5rem 0 0.5rem 0;
+  padding: 0.5rem 0;
 }
 
 .Position__single {
-  padding: 0 1.5rem 0 1.5rem;
+  padding: 0 1.5rem;
 }
 
-.Position__arrow{
+.Position__arrow {
   padding-right: 0;
 }

@@ -1,0 +1,70 @@
+@import (reference) '~assets/styles/shared';
+
+.FilledOrdersTable {
+  background-color: @color-tertiary-background;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+}
+
+.FilledOrdersTable__inner {
+  background-color: fade(@color-primary-alternate, 10%);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.FilledOrdersTable__header {
+  color: @color-white;
+  display: grid;
+  font-size: @size-11;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: flex-end;
+  padding: 0.375rem 2rem;
+
+  > li {
+    max-width: unset !important;
+    text-align: right;
+
+    &:first-child {
+      text-align: right;
+    }
+
+    &:last-of-type {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      max-width: 16.25rem;
+    }
+  }
+}
+
+.FilledOrdersTable__trade {
+  border-top: 0.0625rem solid fade(@color-primary-background, 50%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: flex-end;
+  margin: 0 1.5rem;
+
+  > li {
+    align-items: center;
+    display: flex;
+    font-size: @size-11;
+    justify-content: flex-end;
+    padding: 0.5rem 0;
+    text-align: right;
+
+    &:last-of-type {
+      padding-right: 0.5rem;
+    }
+
+    &:nth-of-type(2) {
+      font-family: @roboto-mono;
+      text-align: right;
+    }
+  }
+}

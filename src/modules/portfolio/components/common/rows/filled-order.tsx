@@ -9,6 +9,7 @@ import { formatEther, formatShares } from "utils/format-number";
 
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { FilledOrderInterface } from "modules/portfolio/constants";
+import FilledOrdersTable from "modules/portfolio/components/common/tables/filled-orders-table";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
@@ -38,6 +39,7 @@ const FilledOrder = (props: FilledOrderProps) => {
           innerClassName={classNames({
             [Styles.Order__innerGroup]: !isSingle,
           })}
+          arrowClassName={Styles.Position__arrow}
           rowContent={
             <ul
               className={classNames(Styles.Order, Styles.FilledOrder, {
@@ -52,7 +54,9 @@ const FilledOrder = (props: FilledOrderProps) => {
               <li>{filledOrder.trades.length}</li>
             </ul>
           }
-          toggleContent={<div>info</div>}
+          toggleContent={
+            <FilledOrdersTable filledOrder={filledOrder} />
+          }
         />
     </div>
   );

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 
-import MarketPositionsTable from "modules/portfolio/components/common/market-positions-table";
+import MarketPositionsTable from "modules/portfolio/components/common/tables/market-positions-table";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 

@@ -1,7 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
 ul.DataTableHeader {
-  padding: 0.75rem 58px 0.75rem 0; // 66
+  padding: 0.75rem 2rem 0.75rem 0;
 
   > li {
     .text-12;
@@ -10,8 +10,8 @@ ul.DataTableHeader {
     padding: 0;
 
     &:first-child {
-      padding-left: 0;
       font-weight: normal;
+      padding-left: 0;
     }
   }
 }
@@ -31,17 +31,17 @@ ul.FilledOrdersHeader {
 
 ul.PositionHeader {
   background: fade(@color-primary-alternate, 40%);
-  padding-left: 24px;
-  padding-right: 50px;
-  
+  padding-left: 1.5rem;
+  padding-right: 3.125rem;
+
   > li {
-    color: #999999;
-    font-size: 11px;
+    color: @color-white;
+    font-size: @size-11;
 
     &:not(:first-child) {
+      color: @color-white;
+      font-size: @size-11;
       text-align: right;
-      color: #999999;
-      font-size: 11px;
     }
   }
 }

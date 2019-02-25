@@ -1,7 +1,7 @@
 import memoize from "memoizee";
 import { createBigNumber } from "utils/create-big-number";
 
-import { ZERO, LONG, SHORT } from "modules/common-elements/constants";
+import { LONG, SHORT } from "modules/common-elements/constants";
 
 import { formatEther, formatShares, formatNumber } from "utils/format-number";
 
