@@ -50,11 +50,7 @@ export const TwoArrows = (
   </svg>
 );
 
-<<<<<<< HEAD
 export const InfoIcon = (
-=======
-export const InfoIcon =
->>>>>>> new-trading-page-layout
   <svg viewBox="0 0 18 18">
     <circle cx="9" cy="9" r="8"/>
     <path
