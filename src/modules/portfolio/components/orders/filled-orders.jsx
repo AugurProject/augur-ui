@@ -84,7 +84,7 @@ export default class FilledOrders extends Component {
               data =>
                 viewByMarkets ? (
                   <OrderMarketRow
-                    key={"filledOrderMarket_" + data.marketId}
+                    key={"filledOrderMarket_" + data.id}
                     market={data}
                     filledOrders
                   />

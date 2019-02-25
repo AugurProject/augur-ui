@@ -36,7 +36,6 @@ const FilledOrder = (props: FilledOrderProps) => {
             [Styles.Order__group]: !isSingle,
           })}
           innerClassName={classNames({
-            [Styles.Order__innerSingle]: isSingle,
             [Styles.Order__innerGroup]: !isSingle,
           })}
           rowContent={

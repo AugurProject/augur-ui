@@ -15,7 +15,6 @@ import { isEqual } from "lodash";
 import Modal from "modules/modal/containers/modal-view";
 import TopBar from "modules/app/components/top-bar/top-bar";
 import ForkingAlert from "modules/forking/components/forking-alert/forking-alert";
-import PortfolioInnerNav from "modules/app/components/inner-nav/portfolio-inner-nav";
 import AccountInnerNav from "modules/app/components/inner-nav/account-inner-nav";
 import ReportingInnerNav from "modules/app/components/inner-nav/reporting-inner-nav";
 import SideNav from "modules/app/components/side-nav/side-nav";
@@ -77,11 +76,6 @@ const MAIN_MENU = "mainMenu";
 
 const navTypes = {
   [MARKETS]: MarketsInnerNavContainer,
-  [MY_MARKETS]: PortfolioInnerNav,
-  [MY_POSITIONS]: PortfolioInnerNav,
-  [FAVORITES]: PortfolioInnerNav,
-  [PORTFOLIO_TRANSACTIONS]: PortfolioInnerNav,
-  [PORTFOLIO_REPORTS]: PortfolioInnerNav,
   [ACCOUNT_DEPOSIT]: AccountInnerNav,
   [ACCOUNT_WITHDRAW]: AccountInnerNav,
   [ACCOUNT_REP_FAUCET]: AccountInnerNav,

@@ -11,6 +11,7 @@ ul.DataTableHeader {
 
     &:first-child {
       padding-left: 0;
+      font-weight: normal;
     }
   }
 }
@@ -24,6 +25,23 @@ ul.FilledOrdersHeader {
     &:last-child {
       padding-right: 0.625rem;
       text-align: right;
+    }
+  }
+}
+
+ul.PositionHeader {
+  background: fade(@color-primary-alternate, 40%);
+  padding-left: 24px;
+  padding-right: 50px;
+  
+  > li {
+    color: #999999;
+    font-size: 11px;
+
+    &:not(:first-child) {
+      text-align: right;
+      color: #999999;
+      font-size: 11px;
     }
   }
 }
