@@ -32,7 +32,6 @@ function assertOutcome(outcome) {
     outcome.lastPrice,
     "positionsMarkets.positionOutcomes[outcome].lastPrice"
   );
-  assertPosition(outcome.position);
 }
 
 function assertPosition(position) {

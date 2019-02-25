@@ -19,12 +19,7 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
 
   let orders = [];
   if (!filledOrders) {
-    orders = market.outcomes.reduce((p: Array<Order>, outcome: Outcome) => {
-      if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
-        outcome.userOpenOrders.forEach((order: Order) => p.push(order));
-      }
-      return p;
-    }, []);
+    orders = market.userOpenOrders;
   } else {
     orders = market.filledOrders;
   }

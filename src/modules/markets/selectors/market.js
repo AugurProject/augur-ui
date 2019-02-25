@@ -71,10 +71,7 @@ import {
 } from "modules/orders/helpers/select-order-book";
 import getOrderBookSeries from "modules/orders/selectors/order-book-series";
 
-import {
-  generateOutcomePositionSummary,
-  generateMarketsPositionsSummary
-} from "modules/positions/selectors/positions-summary";
+import { generateOutcomePositionSummary } from "modules/positions/selectors/positions-summary";
 
 import { selectReportableOutcomes } from "modules/reports/selectors/reportable-outcomes";
 
@@ -438,16 +435,6 @@ export function assembleMarket(
             outcome.orderBookSeries = getOrderBookSeries(orderBook);
             outcome.topBid = selectTopBid(orderBook, false);
             outcome.topAsk = selectTopAsk(orderBook, false);
-            outcome.position = generateOutcomePositionSummary(
-              (marketAccountPositions || {})[outcomeId]
-            );
-            if (outcome.position) outcome.position.name = outcome.name;
-            if (market.isScalar) {
-              outcome.name = market.scalarDenomination;
-            }
-            if (outcome.position && market.isScalar) {
-              outcome.position.name = market.scalarDenomination;
-            }
 
             outcome.userOpenOrders = selectUserOpenOrders(
               marketId,
@@ -519,10 +506,9 @@ export function assembleMarket(
         });
 
         if (marketAccountTrades || marketAccountPositions) {
-          market.myPositionsSummary = generateMarketsPositionsSummary([market]);
-          if (market.myPositionsSummary) {
-            delete market.myPositionsSummary.positionOutcomes;
-
+          market.myPositionsSummary = {};
+          // leave complete sets here, until we finish new notifications
+          if (numCompleteSets) {
             market.myPositionsSummary.numCompleteSets = formatShares(
               numCompleteSets
             );

@@ -39,68 +39,6 @@ export const generateOutcomePositionSummary = memoize(
   }
 );
 
-export const generateMarketsPositionsSummary = memoize(
-  markets => {
-    if (!markets || !markets.length) {
-      return null;
-    }
-    let position = ZERO;
-    let totalRealizedNet = ZERO;
-    let totalUnrealizedNet = ZERO;
-    let netPosition = ZERO;
-    let totalNet = ZERO;
-    let purchasePrice = ZERO;
-    const positionOutcomes = [];
-    markets.forEach(market => {
-      market.outcomes.forEach(outcome => {
-        if (
-          !outcome ||
-          !outcome.position ||
-          !outcome.position.numPositions ||
-          !outcome.position.numPositions.value
-        ) {
-          return;
-        }
-        netPosition = netPosition.plus(
-          createBigNumber(outcome.position.netPosition.value, 10)
-        );
-        position = position.plus(
-          createBigNumber(outcome.position.position.value, 10)
-        );
-        purchasePrice = purchasePrice.plus(
-          createBigNumber(outcome.position.purchasePrice.value, 10)
-        );
-        totalRealizedNet = totalRealizedNet.plus(
-          createBigNumber(outcome.position.realizedNet.value, 10)
-        );
-        totalUnrealizedNet = totalUnrealizedNet.plus(
-          createBigNumber(outcome.position.unrealizedNet.value, 10)
-        );
-        totalNet = totalNet.plus(
-          createBigNumber(outcome.position.totalNet.value, 10)
-        );
-        positionOutcomes.push(outcome);
-      });
-    });
-    const positionsSummary = generatePositionsSummary(
-      positionOutcomes.length,
-      netPosition,
-      position,
-      purchasePrice,
-      totalRealizedNet,
-      totalUnrealizedNet,
-      totalNet
-    );
-    return {
-      ...positionsSummary,
-      positionOutcomes
-    };
-  },
-  {
-    max: 50
-  }
-);
-
 const generatePositionsSummary = memoize(
   (
     numPositions,
