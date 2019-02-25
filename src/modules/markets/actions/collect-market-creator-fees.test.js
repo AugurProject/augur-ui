@@ -127,7 +127,7 @@ describe("modules/markets/actions/market-creator-fees-management.js", () => {
           }
         },
         {
-          type: "UPDATE_NOTIFICATION",
+          type: "UPDATE_ALERT",
           data: {
             id: "hashValue",
             alert: {

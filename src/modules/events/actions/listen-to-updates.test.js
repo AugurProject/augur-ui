@@ -12,7 +12,7 @@ jest.mock("services/augurjs");
 jest.mock("src/select-state");
 jest.mock("modules/alerts/actions/alerts", () => ({
   updateAlert: () => ({
-    type: "UPDATE_NOTIFICATION"
+    type: "UPDATE_ALERT"
   })
 }));
 
@@ -308,7 +308,7 @@ describe("events/actions/listen-to-updates", () => {
         { type: "LOAD_MARKETS_INFO", marketIds: ["MARKET_ADDRESS"] },
         { type: "UPDATE_UNCLAIMED_DATA", marketIds: ["MARKET_ADDRESS"] },
         { type: "LOAD_REPORTING" },
-        { type: "UPDATE_NOTIFICATION" },
+        { type: "UPDATE_ALERT" },
         { type: "UPDATE_ASSETS" },
         {
           type: "UPDATE_LOGGED_TRANSACTIONS",

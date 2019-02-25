@@ -1,10 +1,10 @@
 import * as alertLevels from "modules/common-elements/constants";
 
 import {
-  ADD_NOTIFICATION,
-  REMOVE_NOTIFICATION,
-  UPDATE_NOTIFICATION,
-  CLEAR_NOTIFICATIONS
+  ADD_ALERT,
+  REMOVE_ALERT,
+  UPDATE_ALERT,
+  CLEAR_ALERTS
 } from "modules/alerts/actions/alerts";
 
 import alerts from "modules/alerts/reducers/alerts";
@@ -14,9 +14,9 @@ describe("modules/alerts/reducers/alerts", () => {
     expect(alerts(undefined, {})).toHaveLength(0);
   });
 
-  test("returned the expected array for type ADD_NOTIFICATION", () => {
+  test("returned the expected array for type ADD_ALERT", () => {
     const actual = alerts([], {
-      type: ADD_NOTIFICATION,
+      type: ADD_ALERT,
       data: {
         alert: {
           id: "0xTEST"
@@ -31,7 +31,7 @@ describe("modules/alerts/reducers/alerts", () => {
     ]);
   });
 
-  test("returned non dup array for type ADD_NOTIFICATION", () => {
+  test("returned non dup array for type ADD_ALERT", () => {
     expect(
       alerts(
         [
@@ -40,7 +40,7 @@ describe("modules/alerts/reducers/alerts", () => {
           }
         ],
         {
-          type: ADD_NOTIFICATION,
+          type: ADD_ALERT,
           data: {
             alert: {
               id: "0xTEST"
@@ -55,7 +55,7 @@ describe("modules/alerts/reducers/alerts", () => {
     ]);
   });
 
-  test("returned the expected array for type REMOVE_NOTIFICATION", () => {
+  test("returned the expected array for type REMOVE_ALERT", () => {
     expect(
       alerts(
         [
@@ -64,14 +64,14 @@ describe("modules/alerts/reducers/alerts", () => {
           }
         ],
         {
-          type: REMOVE_NOTIFICATION,
+          type: REMOVE_ALERT,
           data: { id: "0xTEST" }
         }
       )
     ).toHaveLength(0);
   });
 
-  test("returned the expected array for type UPDATE_NOTIFICATION", () => {
+  test("returned the expected array for type UPDATE_ALERT", () => {
     expect(
       alerts(
         [
@@ -85,7 +85,7 @@ describe("modules/alerts/reducers/alerts", () => {
           }
         ],
         {
-          type: UPDATE_NOTIFICATION,
+          type: UPDATE_ALERT,
           data: {
             id: "0xTest1",
             alert: {
@@ -107,7 +107,7 @@ describe("modules/alerts/reducers/alerts", () => {
     ]);
   });
 
-  describe("CLEAR_NOTIFICATIONS action", () => {
+  describe("CLEAR_ALERTS action", () => {
     test("removed items with the passed alert level.", () => {
       expect(
         alerts(
@@ -122,7 +122,7 @@ describe("modules/alerts/reducers/alerts", () => {
             }
           ],
           {
-            type: CLEAR_NOTIFICATIONS,
+            type: CLEAR_ALERTS,
             data: {
               level: alertLevels.INFO
             }

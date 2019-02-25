@@ -1,8 +1,8 @@
 import {
-  ADD_NOTIFICATION,
-  REMOVE_NOTIFICATION,
-  UPDATE_NOTIFICATION,
-  CLEAR_NOTIFICATIONS
+  ADD_ALERT,
+  REMOVE_ALERT,
+  UPDATE_ALERT,
+  CLEAR_ALERTS
 } from "modules/alerts/actions/alerts";
 import { RESET_STATE } from "modules/app/actions/reset-state";
 import { CLEAR_LOGIN_ACCOUNT } from "modules/auth/actions/update-login-account";
@@ -38,7 +38,7 @@ const DEFAULT_STATE = [];
  */
 export default function(alerts = DEFAULT_STATE, { data, type }) {
   switch (type) {
-    case ADD_NOTIFICATION: {
+    case ADD_ALERT: {
       const isDuplicate =
         alerts.findIndex(
           alert =>
@@ -49,9 +49,9 @@ export default function(alerts = DEFAULT_STATE, { data, type }) {
 
       return [...alerts, data.alert];
     }
-    case REMOVE_NOTIFICATION:
+    case REMOVE_ALERT:
       return alerts.filter((alert, i) => alert.id !== data.id);
-    case UPDATE_NOTIFICATION:
+    case UPDATE_ALERT:
       return alerts.map((alert, i) => {
         if (alert.id !== data.id) {
           return alert;
@@ -69,7 +69,7 @@ export default function(alerts = DEFAULT_STATE, { data, type }) {
         };
       });
 
-    case CLEAR_NOTIFICATIONS:
+    case CLEAR_ALERTS:
       return alerts.filter(it => it.level !== data.level);
 
     case RESET_STATE:

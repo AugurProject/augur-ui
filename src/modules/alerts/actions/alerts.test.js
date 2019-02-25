@@ -19,7 +19,7 @@ describe("modules/alerts/actions/alerts", () => {
       const actual = store.dispatch(updateAlerts.addAlert({}));
 
       expect(actual).toEqual({
-        type: updateAlerts.ADD_NOTIFICATION,
+        type: updateAlerts.ADD_ALERT,
         data: {
           alert: {
             level: alertLevels.INFO,
@@ -53,7 +53,7 @@ describe("modules/alerts/actions/alerts", () => {
       const actual = store.dispatch(updateAlerts.removeAlert(1));
 
       expect(actual).toEqual({
-        type: updateAlerts.REMOVE_NOTIFICATION,
+        type: updateAlerts.REMOVE_ALERT,
         data: { id: 1 }
       });
     });
@@ -68,7 +68,7 @@ describe("modules/alerts/actions/alerts", () => {
       );
 
       expect(actual).toEqual({
-        type: updateAlerts.UPDATE_NOTIFICATION,
+        type: updateAlerts.UPDATE_ALERT,
         data: {
           id: 1,
           alert: {
@@ -84,7 +84,7 @@ describe("modules/alerts/actions/alerts", () => {
       const actual = store.dispatch(updateAlerts.clearAlerts());
 
       expect(actual).toEqual({
-        type: updateAlerts.CLEAR_NOTIFICATIONS,
+        type: updateAlerts.CLEAR_ALERTS,
         data: {
           level: alertLevels.INFO
         }

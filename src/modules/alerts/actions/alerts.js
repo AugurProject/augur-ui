@@ -8,10 +8,10 @@ import { TRANSACTIONS } from "modules/routes/constants/views";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { updateAlert as updateAlertAction } from "modules/alerts/actions/alerts";
 
-export const ADD_NOTIFICATION = "ADD_NOTIFICATION";
-export const REMOVE_NOTIFICATION = "REMOVE_NOTIFICATION";
-export const UPDATE_NOTIFICATION = "UPDATE_NOTIFICATION";
-export const CLEAR_NOTIFICATIONS = "CLEAR_NOTIFICATIONS";
+export const ADD_ALERT = "ADD_ALERT";
+export const REMOVE_ALERT = "REMOVE_ALERT";
+export const UPDATE_ALERT = "UPDATE_ALERT";
+export const CLEAR_ALERTS = "CLEAR_ALERTS";
 
 function packageAlertInfo(alertId, timestamp, transaction) {
   return {
@@ -228,7 +228,7 @@ export function addAlert(alert) {
       const { universe } = store.getState();
       const callback = alert => {
         const fullAlert = {
-          type: ADD_NOTIFICATION,
+          type: ADD_ALERT,
           data: {
             alert: {
               seen: false,
@@ -248,7 +248,7 @@ export function addAlert(alert) {
 
 export function removeAlert(id) {
   return {
-    type: REMOVE_NOTIFICATION,
+    type: REMOVE_ALERT,
     data: { id }
   };
 }
@@ -257,7 +257,7 @@ export function updateAlert(id, alert) {
   return (dispatch, getState) => {
     const callback = alert => {
       const fullAlert = {
-        type: UPDATE_NOTIFICATION,
+        type: UPDATE_ALERT,
         data: {
           id,
           alert
@@ -309,7 +309,7 @@ export function updateAlert(id, alert) {
 // This will not surface in the UI just yet.
 export function clearAlerts(alertLevel = constants.INFO) {
   return {
-    type: CLEAR_NOTIFICATIONS,
+    type: CLEAR_ALERTS,
     data: {
       level: alertLevel
     }
