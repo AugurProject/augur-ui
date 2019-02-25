@@ -1,5 +1,4 @@
 import { createSelector } from "reselect";
-import { generateMarketsPositionsSummary } from "modules/positions/selectors/positions-summary";
 
 import store from "src/store";
 import { selectMarkets } from "modules/markets/selectors/markets-all";

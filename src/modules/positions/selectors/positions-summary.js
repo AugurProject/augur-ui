@@ -17,7 +17,8 @@ export const generateOutcomePositionSummary = memoize(
       unrealized,
       averagePrice,
       marketId,
-      outcome: outcomeId
+      outcome: outcomeId,
+      frozenFunds
     } = adjustedPosition;
     return {
       marketId,
@@ -28,7 +29,8 @@ export const generateOutcomePositionSummary = memoize(
         position,
         averagePrice,
         realized,
-        unrealized
+        unrealized,
+        frozenFunds
       )
     };
   },
@@ -99,7 +101,7 @@ export const generateMarketsPositionsSummary = memoize(
   }
 );
 
-export const generatePositionsSummary = memoize(
+const generatePositionsSummary = memoize(
   (
     numPositions,
     netPosition,
@@ -107,7 +109,8 @@ export const generatePositionsSummary = memoize(
     meanTradePrice,
     realizedNet,
     unrealizedNet,
-    totalNet
+    totalNet,
+    frozenFunds
   ) => ({
     numPositions: formatNumber(numPositions, {
       decimals: 0,
@@ -122,7 +125,11 @@ export const generatePositionsSummary = memoize(
     purchasePrice: formatEther(meanTradePrice),
     realizedNet: formatEther(realizedNet),
     unrealizedNet: formatEther(unrealizedNet),
-    totalNet: formatEther(totalNet)
+    totalNet: formatEther(totalNet),
+    totalReturns: formatEther(
+      createBigNumber(unrealizedNet).plus(createBigNumber(realizedNet))
+    ),
+    totalCost: formatEther(frozenFunds)
   }),
   {
     max: 20

@@ -48,7 +48,8 @@ import {
   INDETERMINATE_OUTCOME_NAME,
   MARKET_OPEN,
   MARKET_REPORTING,
-  MARKET_CLOSED
+  MARKET_CLOSED,
+  YES_NO_YES_OUTCOME_NAME
 } from "modules/common-elements/constants";
 
 import { constants } from "services/constants";
@@ -335,7 +336,17 @@ export function assembleMarket(
         // moving to one collection instead of each outcome having a postion collection
         // outcome positions will be removed
         market.userPositions = Object.values(marketAccountPositions || []).map(
-          position => generateOutcomePositionSummary(position)
+          position => {
+            const positionSummary = generateOutcomePositionSummary(position);
+            const outcome = market.outcomes[position.outcome];
+            let outcomeName = market.isYesNo
+              ? YES_NO_YES_OUTCOME_NAME
+              : outcome.description;
+            if (market.isScalar) {
+              outcomeName = market.scalarDenomination;
+            }
+            return { ...positionSummary, outcomeName };
+          }
         );
 
         // same as positions, moving open orders from outcomes to top level array

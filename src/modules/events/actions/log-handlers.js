@@ -31,6 +31,7 @@ import { updateAssets } from "modules/auth/actions/update-assets";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { appendCategoryIfNew } from "modules/categories/actions/append-category";
 import { removePendingOrder } from "modules/orders/actions/pending-orders-management";
+import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 
 const handleAlertUpdate = (log, dispatch, getState) => {
   dispatch(
@@ -141,7 +142,7 @@ export const handleOrderCreatedLog = log => (dispatch, getState) => {
     dispatch(updateOrder(log, true));
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
-    dispatch(loadAccountTrades({ marketId: log.marketId }));
+    dispatch(loadAccountOrders({ marketId: log.marketId }));
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
@@ -154,7 +155,7 @@ export const handleOrderCanceledLog = log => (dispatch, getState) => {
     handleAlertUpdate(log, dispatch, getState);
     dispatch(updateAssets());
     dispatch(updateOrder(log, false));
-    dispatch(loadAccountTrades({ marketId: log.marketId }));
+    dispatch(loadAccountOrders({ marketId: log.marketId }));
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };

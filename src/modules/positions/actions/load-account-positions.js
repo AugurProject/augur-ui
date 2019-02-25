@@ -23,7 +23,6 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
       if (positions.tradingPositions) {
         // todo when augur-node returns frozen stuff remove adding dummy data.
         userPositions = positions.tradingPositions.map(position => ({
-          frozenProfit: 0,
           frozenFunds: 0,
           ...position
         }));
