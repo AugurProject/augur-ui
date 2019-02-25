@@ -1,9 +1,9 @@
 import speedomatic from "speedomatic";
 import { augur } from "services/augurjs";
 import {
-  updateNotification,
-  addNotification
-} from "modules/notifications/actions/notifications";
+  updateAlert,
+  addAlert
+} from "modules/alerts/actions/alerts";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { ETH, REP } from "modules/common-elements/constants";
 
@@ -20,10 +20,10 @@ export function transferFunds(amount, currency, toAddress) {
           etherToSend: amount,
           from: fromAddress,
           onSent: tx => {
-            // Trigger the notification addition/updates in the callback functions
+            // Trigger the alert addition/updates in the callback functions
             // because Augur Node does not emit an event for transferrring ETH.
             dispatch(
-              addNotification({
+              addAlert({
                 id: tx.hash,
                 status: "Pending",
                 params: {
@@ -37,7 +37,7 @@ export function transferFunds(amount, currency, toAddress) {
           },
           onSuccess: tx => {
             dispatch(
-              updateNotification(tx.hash, {
+              updateAlert(tx.hash, {
                 id: tx.hash,
                 status: "Confirmed",
                 timestamp: selectCurrentTimestampInSeconds(getState())
@@ -46,7 +46,7 @@ export function transferFunds(amount, currency, toAddress) {
           },
           onFailed: tx => {
             dispatch(
-              updateNotification(tx.hash, {
+              updateAlert(tx.hash, {
                 status: "Failed",
                 timestamp: selectCurrentTimestampInSeconds(getState())
               })
@@ -60,11 +60,11 @@ export function transferFunds(amount, currency, toAddress) {
           reputationToSend: amount,
           _to: to,
           onSent: tx => {
-            // Trigger the notification addition/updates in the callback functions
+            // Trigger the alert addition/updates in the callback functions
             // because we only want to display this TokensTransferred event,
             // and not ones from other contracts.
             dispatch(
-              addNotification({
+              addAlert({
                 id: tx.hash,
                 status: "Pending",
                 params: {
@@ -81,7 +81,7 @@ export function transferFunds(amount, currency, toAddress) {
           },
           onSuccess: tx => {
             dispatch(
-              updateNotification(tx.hash, {
+              updateAlert(tx.hash, {
                 id: tx.hash,
                 status: "Confirmed",
                 timestamp: selectCurrentTimestampInSeconds(getState())
@@ -90,7 +90,7 @@ export function transferFunds(amount, currency, toAddress) {
           },
           onFailed: tx => {
             dispatch(
-              updateNotification(tx.hash, {
+              updateAlert(tx.hash, {
                 id: tx.hash,
                 status: "Failed",
                 timestamp: selectCurrentTimestampInSeconds(getState())

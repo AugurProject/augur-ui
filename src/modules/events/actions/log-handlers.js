@@ -1,8 +1,8 @@
 import BigNumber from "bignumber.js";
 import {
-  addNotification,
-  updateNotification
-} from "modules/notifications/actions/notifications";
+  addAlert,
+  updateAlert
+} from "modules/alerts/actions/alerts";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import loadBidsAsks from "modules/orders/actions/load-bids-asks";
 import { loadReportingWindowBounds } from "modules/reports/actions/load-reporting-window-bounds";
@@ -35,16 +35,16 @@ import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { appendCategoryIfNew } from "modules/categories/actions/append-category";
 import { removePendingOrder } from "modules/orders/actions/pending-orders-management";
 
-const handleNotificationUpdate = (log, dispatch, getState) => {
+const handleAlertUpdate = (log, dispatch, getState) => {
   dispatch(
-    updateNotification(log.transactionHash, {
+    updateAlert(log.transactionHash, {
       id: log.transactionHash,
       timestamp: selectCurrentTimestampInSeconds(getState()),
       blockNumber: log.blockNumber,
       log,
       status: "Confirmed",
       linkPath: makePath(TRANSACTIONS),
-      seen: false // Manually set to false to ensure notification
+      seen: false // Manually set to false to ensure alert
     })
   );
 };
@@ -87,7 +87,7 @@ export const handleMarketCreatedLog = log => (dispatch, getState) => {
     // dispatch(loadCategories()); don't reload categories because when market created log comes in, this event will cause the categories to load and re-sort which causes the category list to change. If markets are being traded (OI an change) then multiple markets are getting created there is potential for the user's category list to appear erratic as the list resorts over and over. In future, we might check if the new market's category is new, and append that category to end of categories without user seeing a jittery re-render.
   }
   if (isStoredTransaction) {
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
     dispatch(updateAssets());
 
     // My Market? start kicking off liquidity orders
@@ -113,7 +113,7 @@ export const handleTokensTransferredLog = log => (dispatch, getState) => {
     dispatch(updateAssets());
     dispatch(loadFundingHistory());
     dispatch(loadReportingWindowBounds());
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
   }
 };
 
@@ -131,7 +131,7 @@ export const handleTokensBurnedLog = log => (dispatch, getState) => {
   const { address } = getState().loginAccount;
   const isStoredTransaction = log.target === address;
   if (isStoredTransaction) {
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
   }
 };
 
@@ -143,7 +143,7 @@ export const handleOrderCreatedLog = log => (dispatch, getState) => {
     dispatch(updateAssets());
     dispatch(updateOrder(log, true));
     handlePendingOrder(log, dispatch, getState);
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
     dispatch(loadAccountTrades({ marketId: log.marketId }));
   }
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
@@ -154,7 +154,7 @@ export const handleOrderCanceledLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.sender === getState().loginAccount.address;
   if (isStoredTransaction) {
     if (!log.removed) dispatch(removeCanceledOrder(log.orderId));
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
     dispatch(updateAssets());
     dispatch(updateOrder(log, false));
     dispatch(loadAccountTrades({ marketId: log.marketId }));
@@ -178,7 +178,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     dispatch(updateOrder(log, false));
 
     handlePendingOrder(log, dispatch, getState);
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
   }
   // always reload account positions on trade so we get up to date PL data.
   dispatch(loadAccountTrades({ marketId: log.marketId }));
@@ -204,7 +204,7 @@ export const handleInitialReportSubmittedLog = log => (dispatch, getState) => {
   dispatch(loadReporting([log.market]));
   const isStoredTransaction = log.reporter === getState().loginAccount.address;
   if (isStoredTransaction) {
-    handleNotificationUpdate(log, dispatch, getState);
+    handleAlertUpdate(log, dispatch, getState);
     dispatch(updateAssets());
     dispatch(loadDisputing());
     dispatch(updateLoggedTransactions(log));
@@ -237,20 +237,20 @@ export const handleMarketFinalizedLog = log => (dispatch, getState) =>
         dispatch(updateLoggedTransactions(log));
       }
       if (!log.removed) {
-        const { notifications } = getState();
+        const { alerts } = getState();
         const doesntExist =
-          !notifications.filter(
-            notification =>
-              notification.id === log.transactionHash &&
-              notification.params.type === "finalize"
+          !alerts.filter(
+            alert =>
+              alert.id === log.transactionHash &&
+              alert.params.type === "finalize"
           ).length > 0;
 
         if (doesntExist && isOwnMarket) {
-          // Trigger the notification addition here because calling other
+          // Trigger the alert addition here because calling other
           // API functions, such as `InitialReporter.redeem` can indirectly
           // cause a MarketFinalized event to be logged.
           dispatch(
-            addNotification({
+            addAlert({
               id: `${log.transactionHash}_finalize`,
               timestamp: log.timestamp,
               blockNumber: log.blockNumber,
@@ -263,7 +263,7 @@ export const handleMarketFinalizedLog = log => (dispatch, getState) =>
             })
           );
         } else if (!doesntExist) {
-          handleNotificationUpdate(log, dispatch, getState);
+          handleAlertUpdate(log, dispatch, getState);
         }
       }
     })
@@ -331,7 +331,7 @@ export const handleApprovalLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.owner === address;
   if (isStoredTransaction) {
     dispatch(
-      updateNotification(log.transactionHash, {
+      updateAlert(log.transactionHash, {
         id: log.transactionHash,
         status: "Confirmed",
         timestamp: selectCurrentTimestampInSeconds(getState())

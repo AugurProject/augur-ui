@@ -1,32 +1,32 @@
 import {
-  selectNotificationsByLevel,
-  selectInfoNotificationsAndSeenCount
-} from "modules/notifications/selectors/notifications";
-import * as notificationLevels from "src/modules/common-elements/constants";
+  selectAlertsByLevel,
+  selectInfoAlertsAndSeenCount
+} from "modules/alerts/selectors/alerts";
+import * as alertLevels from "src/modules/common-elements/constants";
 
-describe("modules/notifications/selectors/notifications", () => {
+describe("modules/alerts/selectors/alerts", () => {
   let state;
 
-  describe("selectInfoNotificationsAndSeenCount", () => {
+  describe("selectInfoAlertsAndSeenCount", () => {
     beforeEach(() => {
       state = {
-        notifications: [
+        alerts: [
           {
             seen: false,
             id: "0xTEST0",
-            level: notificationLevels.INFO,
+            level: alertLevels.INFO,
             timestamp: 1
           },
           {
             seen: true,
             id: "0xTEST1",
-            level: notificationLevels.INFO,
+            level: alertLevels.INFO,
             timestamp: 3
           },
           {
             seen: false,
             id: "0xTEST2",
-            level: notificationLevels.INFO,
+            level: alertLevels.INFO,
             timestamp: 2
           }
         ]
@@ -34,27 +34,27 @@ describe("modules/notifications/selectors/notifications", () => {
     });
 
     test("returned the expected object", () => {
-      expect(selectInfoNotificationsAndSeenCount(state)).toEqual({
+      expect(selectInfoAlertsAndSeenCount(state)).toEqual({
         unseenCount: 2,
-        notifications: [
+        alerts: [
           {
             seen: true,
             id: "0xTEST1",
-            level: notificationLevels.INFO,
+            level: alertLevels.INFO,
             timestamp: 3,
             index: 1
           },
           {
             seen: false,
             id: "0xTEST2",
-            level: notificationLevels.INFO,
+            level: alertLevels.INFO,
             timestamp: 2,
             index: 2
           },
           {
             seen: false,
             id: "0xTEST0",
-            level: notificationLevels.INFO,
+            level: alertLevels.INFO,
             timestamp: 1,
             index: 0
           }
@@ -63,28 +63,28 @@ describe("modules/notifications/selectors/notifications", () => {
     });
   });
 
-  describe("selectNotificationsByLevel", () => {
+  describe("selectAlertsByLevel", () => {
     beforeEach(() => {
       state = {
-        notifications: [
+        alerts: [
           {
             id: "0xTEST0",
-            level: notificationLevels.INFO
+            level: alertLevels.INFO
           },
           {
             id: "0xTEST1",
-            level: notificationLevels.INFO
+            level: alertLevels.INFO
           },
           {
             id: "0xTEST2",
-            level: notificationLevels.CRITICAL
+            level: alertLevels.CRITICAL
           }
         ]
       };
     });
 
-    test("returned notifications with a matching level", () => {
-      const actual = selectNotificationsByLevel(notificationLevels.INFO)(state);
+    test("returned alerts with a matching level", () => {
+      const actual = selectAlertsByLevel(alertLevels.INFO)(state);
       expect(actual).toHaveLength(2);
     });
   });

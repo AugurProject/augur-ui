@@ -4,7 +4,7 @@ import { transferFunds } from "modules/auth/actions/transfer-funds";
 import { ETH, REP } from "modules/common-elements/constants";
 import { augur } from "services/augurjs";
 import * as updateAssetsModule from "modules/auth/actions/update-assets";
-import * as notificationsModule from "modules/notifications/actions/notifications";
+import * as alertsModule from "modules/alerts/actions/alerts";
 
 describe("modules/auth/actions/transfer-funds.js", () => {
   const mockStore = configureMockStore([thunk]);
@@ -71,7 +71,7 @@ describe("modules/auth/actions/transfer-funds.js", () => {
   };
 
   const t4 = {
-    description: `should dispatch the 'updateAssets' and 'addNotification' method from the 'onSuccess' callback of 'sendEther`,
+    description: `should dispatch the 'updateAssets' and 'addAlert' method from the 'onSuccess' callback of 'sendEther`,
     state: {
       loginAccount: {
         address: "0xtest"
@@ -86,22 +86,22 @@ describe("modules/auth/actions/transfer-funds.js", () => {
       }));
 
       jest
-        .spyOn(notificationsModule, "addNotification")
+        .spyOn(alertsModule, "addAlert")
         .mockImplementation(() => ({
-          type: "addNotification"
+          type: "addAlert"
         }));
 
-      const updateNotificationSpy = jest
-        .spyOn(notificationsModule, "updateNotification")
+      const updateAlertSpy = jest
+        .spyOn(alertsModule, "updateAlert")
         .mockImplementation(() => ({
-          type: "updateNotification"
+          type: "updateAlert"
         }));
 
       jest.spyOn(augur.assets, "sendEther").mockImplementation(options => {
         options.onSuccess({ hash: "0xtest" });
       });
       store.dispatch(transferFunds(10, ETH, "0xtest2"));
-      expect(updateNotificationSpy).toHaveBeenCalledTimes(1);
+      expect(updateAlertSpy).toHaveBeenCalledTimes(1);
       done();
     }
   };

@@ -10,8 +10,8 @@ import configureMockStore from "redux-mock-store";
 
 jest.mock("services/augurjs");
 jest.mock("src/select-state");
-jest.mock("modules/notifications/actions/notifications", () => ({
-  updateNotification: () => ({
+jest.mock("modules/alerts/actions/alerts", () => ({
+  updateAlert: () => ({
     type: "UPDATE_NOTIFICATION"
   })
 }));

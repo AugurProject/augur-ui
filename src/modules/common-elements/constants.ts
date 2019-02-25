@@ -375,7 +375,7 @@ export const MODAL_CLAIM_TRADING_PROCEEDS = "MODAL_CLAIM_TRADING_PROCEEDS";
 export const MODAL_TRADING_OVERLAY = "MODAL_TRADING_OVERLAY";
 export const DISCLAIMER_SEEN = "disclaimerSeen";
 
-// # Notifications (soon to be alerts)
+// # Alerts (soon to be alerts)
 export const CRITICAL = "CRITICAL";
 export const INFO = "INFO";
 export const CREATEGENESISUNIVERSE = "CREATEGENESISUNIVERSE";

@@ -5,21 +5,21 @@ import moment from "moment";
 import classNames from "classnames";
 
 import { Close } from "modules/common/components/icons";
-import Styles from "modules/notifications/components/notification/notification.styles";
+import Styles from "modules/alerts/components/alert/alert.styles";
 import EtherscanLink from "modules/common/containers/etherscan-link";
 
-export default class Notification extends Component {
+export default class Alert extends Component {
   static propTypes = {
     description: PropTypes.string,
     id: PropTypes.string.isRequired,
     linkPath: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onClick: PropTypes.func,
-    removeNotification: PropTypes.func.isRequired,
+    removeAlert: PropTypes.func.isRequired,
     seen: PropTypes.bool.isRequired,
     timestamp: PropTypes.number,
     title: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    toggleNotifications: PropTypes.func.isRequired
+    toggleAlerts: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -35,68 +35,68 @@ export default class Notification extends Component {
       description,
       linkPath,
       onClick,
-      removeNotification,
+      removeAlert,
       seen,
       timestamp,
       title,
-      toggleNotifications,
+      toggleAlerts,
       status
     } = this.props;
     return (
       <article
-        ref={notification => {
-          this.notification = notification;
+        ref={alert => {
+          this.alert = alert;
         }}
-        className={classNames(Styles.Notification, {
-          [Styles.Notification__seen]: seen
+        className={classNames(Styles.Alert, {
+          [Styles.Alert__seen]: seen
         })}
       >
-        <div className={Styles.Notification__column} style={{ flex: "1" }}>
+        <div className={Styles.Alert__column} style={{ flex: "1" }}>
           <Link
-            className={Styles.Notification__link}
+            className={Styles.Alert__link}
             to={linkPath || ""}
             onClick={e => {
               e.stopPropagation();
               if (!linkPath) e.preventDefault();
-              if (linkPath && onClick) toggleNotifications();
+              if (linkPath && onClick) toggleAlerts();
             }}
           >
-            <div className={Styles.Notification__row}>
-              <div className={Styles.Notification__status}>{status}</div>
+            <div className={Styles.Alert__row}>
+              <div className={Styles.Alert__status}>{status}</div>
             </div>
-            <div className={Styles.Notification__row}>
-              <span className={Styles.Notification__title}>{title}</span>
+            <div className={Styles.Alert__row}>
+              <span className={Styles.Alert__title}>{title}</span>
             </div>
             {description &&
               description !== "" && (
-                <div className={Styles.Notification__row}>
-                  <span className={Styles.Notification__description}>
+                <div className={Styles.Alert__row}>
+                  <span className={Styles.Alert__description}>
                     {description}
                   </span>
                 </div>
               )}
           </Link>
-          <div className={Styles.Notification__row}>
-            <span className={Styles.Notification__etherLink}>
+          <div className={Styles.Alert__row}>
+            <span className={Styles.Alert__etherLink}>
               <EtherscanLink txhash={id} label="etherscan tx" />
             </span>
-            <span className={Styles.Notification__time}>
+            <span className={Styles.Alert__time}>
               &nbsp;— {moment.unix(timestamp).fromNow()}
             </span>
           </div>
         </div>
         <div
-          className={Styles.Notification__column}
+          className={Styles.Alert__column}
           style={{ justifyContent: "center" }}
         >
-          <div className={Styles.Notification__row}>
+          <div className={Styles.Alert__row}>
             <button
-              className={Styles.Notification__close}
+              className={Styles.Alert__close}
               onClick={e => {
-                removeNotification();
+                removeAlert();
               }}
             >
-              <div className={Styles.Notification__closeButton}>{Close}</div>
+              <div className={Styles.Alert__closeButton}>{Close}</div>
             </button>
           </div>
         </div>

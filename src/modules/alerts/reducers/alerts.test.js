@@ -1,24 +1,24 @@
-import * as notificationLevels from "modules/common-elements/constants";
+import * as alertLevels from "modules/common-elements/constants";
 
 import {
   ADD_NOTIFICATION,
   REMOVE_NOTIFICATION,
   UPDATE_NOTIFICATION,
   CLEAR_NOTIFICATIONS
-} from "modules/notifications/actions/notifications";
+} from "modules/alerts/actions/alerts";
 
-import notifications from "modules/notifications/reducers/notifications";
+import alerts from "modules/alerts/reducers/alerts";
 
-describe("modules/notifications/reducers/notifications", () => {
+describe("modules/alerts/reducers/alerts", () => {
   test("returned the default state", () => {
-    expect(notifications(undefined, {})).toHaveLength(0);
+    expect(alerts(undefined, {})).toHaveLength(0);
   });
 
   test("returned the expected array for type ADD_NOTIFICATION", () => {
-    const actual = notifications([], {
+    const actual = alerts([], {
       type: ADD_NOTIFICATION,
       data: {
-        notification: {
+        alert: {
           id: "0xTEST"
         }
       }
@@ -33,7 +33,7 @@ describe("modules/notifications/reducers/notifications", () => {
 
   test("returned non dup array for type ADD_NOTIFICATION", () => {
     expect(
-      notifications(
+      alerts(
         [
           {
             id: "0xTEST"
@@ -42,7 +42,7 @@ describe("modules/notifications/reducers/notifications", () => {
         {
           type: ADD_NOTIFICATION,
           data: {
-            notification: {
+            alert: {
               id: "0xTEST"
             }
           }
@@ -57,7 +57,7 @@ describe("modules/notifications/reducers/notifications", () => {
 
   test("returned the expected array for type REMOVE_NOTIFICATION", () => {
     expect(
-      notifications(
+      alerts(
         [
           {
             id: "0xTEST"
@@ -73,7 +73,7 @@ describe("modules/notifications/reducers/notifications", () => {
 
   test("returned the expected array for type UPDATE_NOTIFICATION", () => {
     expect(
-      notifications(
+      alerts(
         [
           {
             id: "0xTEST0"
@@ -88,7 +88,7 @@ describe("modules/notifications/reducers/notifications", () => {
           type: UPDATE_NOTIFICATION,
           data: {
             id: "0xTest1",
-            notification: {
+            alert: {
               seen: false,
               title: "new object"
             }
@@ -108,30 +108,30 @@ describe("modules/notifications/reducers/notifications", () => {
   });
 
   describe("CLEAR_NOTIFICATIONS action", () => {
-    test("removed items with the passed notification level.", () => {
+    test("removed items with the passed alert level.", () => {
       expect(
-        notifications(
+        alerts(
           [
             {
               id: "0xTEST0",
-              level: notificationLevels.INFO
+              level: alertLevels.INFO
             },
             {
               id: "0xTEST1",
-              level: notificationLevels.CRITICAL
+              level: alertLevels.CRITICAL
             }
           ],
           {
             type: CLEAR_NOTIFICATIONS,
             data: {
-              level: notificationLevels.INFO
+              level: alertLevels.INFO
             }
           }
         )
       ).toEqual([
         {
           id: "0xTEST1",
-          level: notificationLevels.CRITICAL
+          level: alertLevels.CRITICAL
         }
       ]);
     });
