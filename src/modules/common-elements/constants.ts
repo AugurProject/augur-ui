@@ -548,3 +548,6 @@ export const VOLUME_ETH_SHARES = [
     label: SHARES
   }
 ]
+
+// Account Summary - Notifications
+export const NEW = "New";

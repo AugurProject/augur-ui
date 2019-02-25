@@ -1,14 +1,25 @@
+@import (reference) '~assets/styles/shared';
+
 .AccountView {
   display: flex;
   flex-direction: column;
-  height: 100%;
+}
 
-  > div:first-child {
-    flex-grow: 1;
-    margin-bottom: 0.875rem;
+.AccountView__container {
+  display: grid;
+  grid-gap: 0.75rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 55vh);
+  margin: 0 2.5rem 2.5rem;
+
+  > div {
+    max-height: 100%;
   }
+}
 
-  > div:last-child {
-    flex-grow: 0;
+@media @breakpoint-mobile {
+  .AccountView__container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
   }
 }

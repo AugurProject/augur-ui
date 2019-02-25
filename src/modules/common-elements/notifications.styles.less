@@ -1,0 +1,82 @@
+@import (reference) '~assets/styles/shared';
+
+.NotificationCard {
+  align-items: center;
+  background: @color-tertiary-background;
+  border: 1px solid fade(@color-highlight, 50%);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 4px;
+  padding: 16px 24px 13px 12px;
+}
+
+.NotificationCard__content {
+  margin: 0 1rem 0 0;
+}
+
+.NotificationCard__content__titleBar {
+  align-items: center;
+  display: flex;
+  margin: 0 0 4px;
+}
+
+.NotificationCard__content__Importance {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin: 0 8px 0 0;
+}
+
+.NotificationCard__content__title {
+  .text-12-bold;
+
+  color: @color-tertiary-text;
+  margin: 0 9px 0 0;
+}
+
+.NotificationCard__content__title__new {
+  color: @color-secondary-text;
+}
+
+.NotificationCard__content__message {
+  .text-11;
+
+  color: fade(@color-tertiary-text, 50%);
+
+  .NotificationCard__countdown__title {
+    color: fade(@color-tertiary-text, 50%);
+  }
+}
+
+.NotificationCard__content__message__new {
+  color: @color-secondary-text;
+
+  .NotificationCard__countdown__title {
+    color: @color-secondary-text;
+  }
+}
+
+.NotificationCard button {
+  min-height: 32px;
+}
+
+.NotificationCard__countdown {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 0 0;
+}
+
+.NotificationCard__countdown__title {
+  .text-10;
+}
+
+.NotificationCard__countdown__timer {
+  .text-12-bold;
+
+  color: @color-in-reporting;
+}
+
+.NotificationCard__MarketName {
+  font-weight: @weight-bold;
+}
