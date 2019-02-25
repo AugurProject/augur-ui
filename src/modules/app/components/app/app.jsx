@@ -64,7 +64,6 @@ import {
 
 import Styles from "modules/app/components/app/app.styles";
 import MarketsInnerNavContainer from "modules/app/containers/markets-inner-nav";
-import { NotificationBarContainer } from "modules/notifications/containers/notification-bar";
 
 export const mobileMenuStates = {
   CLOSED: 0,
@@ -520,7 +519,6 @@ export default class AppView extends Component {
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-        <NotificationBarContainer />
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
