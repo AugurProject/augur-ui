@@ -174,10 +174,10 @@ class MarketTradingConfirm extends Component {
     }
 
     const notProfitable =
-    (orderShareProfit && createBigNumber(orderShareProfit.value).lte(0)) ||
-    (totalCost.value > 0 &&
-      potentialEthProfit &&
-      potentialEthProfit.value <= 0);
+      (orderShareProfit && createBigNumber(orderShareProfit.value).lte(0)) ||
+      (totalCost.value > 0 &&
+        potentialEthProfit &&
+        potentialEthProfit.value <= 0);
 
     return (
       <section className={Styles.TradingConfirm}>
