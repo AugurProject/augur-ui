@@ -15,12 +15,11 @@ export default class MarketPositionsListPosition extends Component {
   static propTypes = {
     outcomeName: PropTypes.string.isRequired,
     position: PropTypes.shape({
-      netPosition: PropTypes.object,
-      qtyShares: PropTypes.object,
+      quantity: PropTypes.object,
       purchasePrice: PropTypes.object,
       unrealizedNet: PropTypes.object,
       realizedNet: PropTypes.object,
-      totalNet: PropTypes.object
+      totalValue: PropTypes.object
     }).isRequired,
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool,
@@ -59,10 +58,6 @@ export default class MarketPositionsListPosition extends Component {
       oddNumber
     } = this.props;
 
-    const netPositionShares = getValue(position, "netPosition.formatted");
-    const positionShares = getValue(position, "position.formatted");
-    // const netPosition = getValue(position, "netPosition.value");
-
     const type = getValue(position, "type");
 
     return (
@@ -92,7 +87,7 @@ export default class MarketPositionsListPosition extends Component {
         >
           {type}
         </li>
-        <li>{type !== LONG ? Math.abs(netPositionShares) : positionShares}</li>
+        <li>{getValue(position, "quantity.formatted")}</li>
         <li>{getValue(position, "purchasePrice.formatted")}</li>
         {!isMobile &&
           isExtendedDisplay && (

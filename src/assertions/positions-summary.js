@@ -5,10 +5,6 @@ export default function(positionsSummary) {
   expect(typeof positionsSummary).toBe("object");
 
   assertFormattedNumber(
-    positionsSummary.numPositions,
-    "positionsSummary.numPositions"
-  );
-  assertFormattedNumber(
     positionsSummary.purchasePrice,
     "positionsSummary.purchasePrice"
   );
@@ -24,5 +20,4 @@ export default function(positionsSummary) {
     positionsSummary.unrealizedNet,
     "positionsSummary.unrealizedNet"
   );
-  assertFormattedNumber(positionsSummary.totalNet, "positionsSummary.totalNet");
 }
