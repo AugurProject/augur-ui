@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { SquareDropdown } from "modules/common-elements/dropdown";
-import Input from "modules/common/components/input/input";
+import { SearchBar } from "modules/common-elements/search";
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
@@ -14,7 +14,8 @@ export interface QuadBoxProps {
   updateDropdown: Function,
   onSearchChange: Function,
   rows?: ReactNode,
-  bottomBarContent: ReactNode
+  bottomBarContent: ReactNode,
+  label?: string,
 }
 
 const QuadBox = (props: QuadBoxProps) => (
@@ -22,15 +23,8 @@ const QuadBox = (props: QuadBoxProps) => (
     <BoxHeader 
       title={props.title} 
       rightContent={props.showFilterSearch &&
-        <div style={{ display: 'flex', maxHeight: '30px'}}>
-          <Input
-            isSearch
-            isClearable
-            noFocus
-            placeholder={'Search'}
-            value={props.search}
-            onChange={props.onSearchChange}
-          />
+        <div className={Styles.FilterBox__right}>
+          <SearchBar onChange={props.onSearchChange} label={props.label}/>
           <SquareDropdown
             options={props.sortByOptions}
             onChange={props.updateDropdown}

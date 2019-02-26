@@ -85,6 +85,7 @@ class MyMarkets extends Component {
         filterComp={filterComp}
         bottomTabs
         tabs={tabsInfo}
+        label="My Created Markets"
         rows={
           <div>
             {filteredMarkets.map(market => (
