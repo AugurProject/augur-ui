@@ -347,17 +347,17 @@ export function assembleMarket(
         );
 
         // same as positions, moving open orders from outcomes to top level array
-        market.userOpenOrders =
+       market.userOpenOrders =
           Object.keys(marketOutcomesData || {})
-            .map(outcomeId =>
-              selectUserOpenOrders(
+            .map(outcomeId => ({
+              ...selectUserOpenOrders(
                 market.id,
-                market.description,
                 outcomeId,
                 orderBooks,
                 orderCancellation
-              )
-            )
+              ),
+              marketDescription: market.description
+            }))
             .filter(collection => collection.length !== 0)
             .flat() || [];
         market.outcomes = Object.keys(marketOutcomesData || {})

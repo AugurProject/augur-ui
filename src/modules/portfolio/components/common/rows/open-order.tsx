@@ -21,6 +21,8 @@ export interface OpenOrderProps {
 const OpenOrder = (props: OpenOrderProps) => {
   const { openOrder, isSingle } = props;
 
+  console.log(openOrder)
+
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
