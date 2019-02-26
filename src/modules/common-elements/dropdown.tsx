@@ -40,6 +40,14 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
     window.removeEventListener("click", this.handleWindowOnClick);
   }
 
+  componentWillUpdate(nextProps: DropdownProps) {
+    if (nextProps.defaultValue !== this.props.defaultValue) {
+      this.dropdownSelect(
+        find(this.props.options, { value: nextProps.defaultValue })
+      );
+    }
+  }
+
   dropdownSelect = (selected: NameValuePair) => {
     const { onChange } = this.props;
     if (selected !== this.state.selected) {
@@ -66,14 +74,14 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
     const { selected, showList } = this.state;
     return (
       <div
-        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal }
+        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
         onClick={this.toggleList}
       >
         <button className={Styles.Dropdown__label}>
-          {selected.label} { large ? TwoArrows : Chevron }
+          {selected.label} {large ? TwoArrows : Chevron}
         </button>
         <div
           className={classNames(Styles.Dropdown__list, {
@@ -122,14 +130,16 @@ export class StaticLabelDropdown extends Dropdown {
     const { selected, showList } = this.state;
     return (
       <div
-        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal }
+        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
         onClick={this.toggleList}
       >
         <button className={Styles.Dropdown__label}>
-          {staticLabel}&nbsp;<b>{selected.label}</b> { large ? TwoArrows : Chevron }
+          {staticLabel}
+          &nbsp;
+          <b>{selected.label}</b> {large ? TwoArrows : Chevron}
         </button>
         <div
           className={classNames(Styles.Dropdown__list, {
@@ -142,7 +152,9 @@ export class StaticLabelDropdown extends Dropdown {
               value={option.value}
               onClick={() => this.dropdownSelect(option)}
             >
-              {staticLabel}&nbsp;<b>{option.label}</b>
+              {staticLabel}
+              &nbsp;
+              <b>{option.label}</b>
             </button>
           ))}
         </div>
@@ -162,4 +174,3 @@ export class StaticLabelDropdown extends Dropdown {
     );
   }
 }
-
