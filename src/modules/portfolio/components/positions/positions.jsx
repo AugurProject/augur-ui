@@ -68,6 +68,7 @@ export default class Positions extends Component {
         filterComp={filterComp}
         bottomTabs
         tabs={tabsInfo}
+        label="Positions"
         rows={
           <div>
             {filteredMarkets.map(market => (

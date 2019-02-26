@@ -27,6 +27,7 @@ export interface FilterBoxProps {
   showFilterSearch?: Boolean;
   bottomTabs?: Boolean;
   tabs: Array<Tab>;
+  label: string;
 }
 
 interface FilterBoxState {
@@ -117,7 +118,9 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       bottomTabs,
       data,
       updateFilteredData,
-      filterComp
+      filterComp,
+      filteredData,
+      label
     } = this.props;
 
     const { search, selectedTab, tabs } = this.state;
@@ -130,6 +133,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}
         updateDropdown={this.updateSortBy}
+        label={filteredData.length + " " + label}
         bottomBarContent={bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>}
         rows={rows}
         search={search}

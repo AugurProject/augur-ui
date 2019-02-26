@@ -75,6 +75,7 @@ export default class OpenOrders extends Component {
         filterComp={this.filterComp}
         switchView={this.switchView}
         bottomBarContent={<OpenOrdersHeader />}
+        label="Open Orders"
         rows={
           <div>
             {filteredData.map(
