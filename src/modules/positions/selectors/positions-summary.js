@@ -3,10 +3,10 @@ import { createBigNumber } from "utils/create-big-number";
 
 import { LONG, SHORT } from "modules/common-elements/constants";
 
-import { formatEther, formatShares, formatNumber } from "utils/format-number";
+import { formatEther, formatShares } from "utils/format-number";
 
 export const generateOutcomePositionSummary = memoize(
-  adjustedPosition => {
+  (adjustedPosition, maxPrice, outcome) => {
     if (!adjustedPosition) {
       return null;
     }
@@ -18,58 +18,43 @@ export const generateOutcomePositionSummary = memoize(
       averagePrice,
       marketId,
       outcome: outcomeId,
-      frozenFunds
+      total
     } = adjustedPosition;
+
+    const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
+    let quantity = position;
+    let totalCost = createBigNumber(position)
+      .times(createBigNumber(averagePrice))
+      .abs()
+      .toString();
+    let totalValue = createBigNumber(position).times(outcome.price);
+    if (type === SHORT) {
+      quantity = createBigNumber(netPosition).abs();
+      totalCost = createBigNumber(maxPrice)
+        .minus(averagePrice)
+        .times(createBigNumber(netPosition))
+        .abs();
+
+      totalValue = createBigNumber(maxPrice)
+        .minus(outcome.price)
+        .times(netPosition)
+        .abs();
+    }
     return {
       marketId,
       outcomeId,
-      ...generatePositionsSummary(
-        1,
-        netPosition,
-        position,
-        averagePrice,
-        realized,
-        unrealized,
-        frozenFunds
-      )
+      type,
+      quantity: formatShares(quantity),
+      purchasePrice: formatEther(averagePrice),
+      realizedNet: formatEther(realized),
+      unrealizedNet: formatEther(unrealized),
+      totalCost: formatEther(totalCost),
+      totalValue: formatEther(totalValue),
+      lastPrice: formatEther(outcome.price),
+      totalReturns: formatEther(total)
     };
   },
   {
     max: 50
-  }
-);
-
-const generatePositionsSummary = memoize(
-  (
-    numPositions,
-    netPosition,
-    position,
-    meanTradePrice,
-    realizedNet,
-    unrealizedNet,
-    totalNet,
-    frozenFunds
-  ) => ({
-    numPositions: formatNumber(numPositions, {
-      decimals: 0,
-      decimalsRounded: 0,
-      denomination: "Positions",
-      positiveSign: false,
-      zeroStyled: false
-    }),
-    type: createBigNumber(netPosition).gt("0") ? LONG : SHORT,
-    netPosition: formatShares(netPosition),
-    position: formatShares(position),
-    purchasePrice: formatEther(meanTradePrice),
-    realizedNet: formatEther(realizedNet),
-    unrealizedNet: formatEther(unrealizedNet),
-    totalNet: formatEther(totalNet),
-    totalReturns: formatEther(
-      createBigNumber(unrealizedNet).plus(createBigNumber(realizedNet))
-    ),
-    totalCost: formatEther(frozenFunds)
-  }),
-  {
-    max: 20
   }
 );
