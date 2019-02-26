@@ -108,18 +108,11 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     return (
       <section className={Styles.MarketOutcomeCandlestick}>
         <section>
-          <div
-            className={Styles["MarketOutcomeChartsHeader__chart-interaction"]}
-          >
+          <div className={Styles.MarketOutcomeChartsHeader__chart__interaction}>
             <div
-              className={classNames(
-                Styles.MarketOutcomeChartsHeader__selector,
-                {
-                  [Styles[
-                    "MarketOutcomeChartsHeader__selector--mobile"
-                  ]]: isMobile
-                }
-              )}
+              className={classNames({
+                [Styles.MarketOutcomeChartsHeader__selector__mobile]: isMobile
+              })}
             >
               <SquareDropdown
                 defaultValue={defaultCandlePeriod}
