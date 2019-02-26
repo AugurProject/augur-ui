@@ -4,20 +4,20 @@
   border-bottom: 0.125rem solid @color-theme-primary;
 
   &:not(:last-of-type) {
-    margin-bottom: 2px;
+    margin-bottom: 0.125rem;
   }
 }
 
 .MarketRow__content {
   display: flex;
-  flex-grow: 1;
   flex-direction: column;
+  flex-grow: 1;
   padding: 1rem 1.75rem 1rem 1.5rem;
 }
 
 .MarketRow__contentShow {
+  padding-bottom: 1.5rem;
   padding-top: 0.5rem;
-  padding-bottom: 24px;
 }
 
 .MarketRow__row {
@@ -27,38 +27,38 @@
 }
 
 .MarketRow__Arrow {
-  padding-top: 10px;
+  padding-top: 0.625rem;
 }
 
 .MarketRow__firstRow {
-  padding: 0 0 10px 0;
+  padding: 0 0 0.625rem;
 }
 
 .MarketRow__description {
   .text-12-bold;
 
+  align-items: center;
   color: @color-white;
+  display: flex;
   flex: 1;
   line-height: 1rem;
   margin-right: 1rem;
-  align-items: center;
-  display: flex;
 }
 
 .MarketRow__time {
   .text-12;
 
+  align-items: center;
   color: @color-milky-gray;
+  display: flex;
   font-family: @roboto-mono;
+  justify-content: center;
   min-width: min-content;
   text-align: right;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .MarketRow__timeShow {
-  padding-bottom: 2px;
+  padding-bottom: 0.125rem;
 }
 
 .MarketRow__rowContainer {
@@ -73,14 +73,14 @@
 }
 
 .MarketRow__infoContainer {
+  align-items: flex-end;
+  border-top: 0.0625rem solid fade(@color-primary-background, 50%);
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: flex-end;
+  margin: 0 1.75rem;
   padding: 1rem 0;
-  margin: 0 28px;
-  align-items: flex-end;
-  border-top: 1px solid fade(@color-primary-background, 50%);
 }
 
 .MarketRow__info {

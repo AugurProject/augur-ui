@@ -27,9 +27,9 @@ const OpenOrder = (props: OpenOrderProps) => {
           [Styles.Order__group]: !isSingle,
         })}
         innerClassName={classNames({
-          [Styles.Order__innerSingle]: isSingle,
           [Styles.Order__innerGroup]: !isSingle,
         })}
+        arrowClassName={Styles.Position__arrow}
         rowContent={
           <ul className={classNames(Styles.Order, {
           [Styles.Orders__row]: !isSingle,

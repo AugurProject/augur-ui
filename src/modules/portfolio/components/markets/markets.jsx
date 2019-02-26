@@ -51,7 +51,10 @@ class MyMarkets extends Component {
 
   componentWillUpdate(nextProps) {
     if (nextProps.myMarkets !== this.props.myMarkets) {
-      this.updateFilteredMarkets(nextProps.myMarkets[this.state.tab], this.state.tab);
+      this.updateFilteredMarkets(
+        nextProps.myMarkets[this.state.tab],
+        this.state.tab
+      );
     }
   }
 
@@ -90,12 +93,12 @@ class MyMarkets extends Component {
                 market={market}
                 showState={tab === ALL_MARKETS}
                 rightContent={
-                    <MarketProgress
-                      reportingState={market.reportingState}
-                      currentTime={currentAugurTimestamp}
-                      endTime={market.endTime}
-                      reportingWindowEndtime={reportingWindowStatsEndTime}
-                    />
+                  <MarketProgress
+                    reportingState={market.reportingState}
+                    currentTime={currentAugurTimestamp}
+                    endTime={market.endTime}
+                    reportingWindowEndtime={reportingWindowStatsEndTime}
+                  />
                 }
                 toggleContent={
                   <div className={Styles.MarketRow__infoParent}>

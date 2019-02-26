@@ -5,9 +5,6 @@ import PropTypes from "prop-types";
 import getValue from "utils/get-value";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-list--orphaned-order/market-positions-list--orphaned-order";
-import MarketPositionsListPosition from "modules/market/components/market-positions-list--position/market-positions-list--position";
-import MarketPositionsListOrder from "modules/market/components/market-positions-list--order/market-positions-list--order";
-import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import MarketLink from "modules/market/components/market-link/market-link";
 import {
   AWAITING_SIGNATURE,
