@@ -10,6 +10,7 @@
     align-items: center;
     display: flex;
     flex-grow: 1;
+    font-family: @roboto-mono;
     font-size: 0.687rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -19,6 +20,12 @@
       .text-12-bold;
 
       color: @color-less-neutral;
+      font-family: @roboto;
+      font-weight: 500;
+    }
+
+    &:nth-of-type(2) {
+      font-family: @roboto;
     }
 
     &:not(:first-child) {
@@ -29,6 +36,16 @@
       padding-right: 1.75rem;
     }
   }
+}
+
+.Order__type {
+  color: @color-positive;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.Order__typeSell {
+  color: @color-negative2;
 }
 
 .Order__group {
@@ -53,6 +70,15 @@
 ul.Orders__row {
   > li {
     padding-left: 0.5rem;
+  }
+}
+
+.Position,
+.FilledOrder {
+  > li {
+    &:first-child {
+      font-weight: bold;
+    }
   }
 }
 

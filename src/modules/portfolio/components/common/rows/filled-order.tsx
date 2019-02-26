@@ -47,7 +47,9 @@ const FilledOrder = (props: FilledOrderProps) => {
               })}
             >
               <li>{filledOrder.outcome}</li>
-              <li>{orderDisplay}</li>
+              <li className={classNames(Styles.Order__type, {
+                [Styles.Order__typeSell]: orderType === SELL
+              })}>{orderDisplay}</li>
               <li>{orderQuantity}</li>
               <li>{orderPrice}</li>
               <li>{filledOrder.timestamp.formattedShortDate}</li>
