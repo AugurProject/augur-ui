@@ -104,10 +104,11 @@
     background-color: @color-secondary-text;
     border-radius: @border-radius-default;
     display: none;
+    left: 0;
     position: absolute;
     right: 0;
     top: 105%;
-
+    
     &.active {
       display: block;
     }
@@ -130,6 +131,7 @@
   .Dropdown;
 
   height: 2rem;
+  max-width: fit-content;
   padding: @size-10 @size-12;
 
   > .Dropdown__label {
