@@ -101,6 +101,22 @@ ul.Orders__row {
 }
 
 .OpenOrder__info {
+  > span {
+    color: @color-white;
+    display: flex;
+    flex-direction: column;
+    font-size: @size-11;
+    font-weight: bold;
+    margin-bottom: 0.625rem;
+
+    > span:first-of-type {
+      color: @color-neutral;
+    }
+  }
+}
+
+.OpenOrder__labels {
+  margin-bottom: 0;
   max-width: 12rem;
 }
 

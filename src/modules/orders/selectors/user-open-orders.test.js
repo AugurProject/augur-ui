@@ -191,7 +191,12 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
       }
     };
 
-    const userOpenOrders = selectUserOpenOrders("MARKET_ID", "1", orderBooks);
+    const userOpenOrders = selectUserOpenOrders(
+      "MARKET_ID",
+      "market description",
+      "1",
+      orderBooks
+    );
     expect(userOpenOrders).toHaveLength(6);
 
     const results = [
@@ -203,6 +208,7 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
         originalShares: formatNone(),
         unmatchedShares: formatShares("10"),
         marketId: "MARKET_ID",
+        marketDescription: "market description",
         outcomeId: "1",
         cancelOrder: () => {}
       },
@@ -214,6 +220,7 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
         originalShares: formatNone(),
         unmatchedShares: formatShares("7"),
         marketId: "MARKET_ID",
+        marketDescription: "market description",
         outcomeId: "1",
         cancelOrder: () => {}
       },
@@ -225,6 +232,7 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
         originalShares: formatNone(),
         unmatchedShares: formatShares("10"),
         marketId: "MARKET_ID",
+        marketDescription: "market description",
         outcomeId: "1",
         cancelOrder: () => {}
       },
@@ -236,6 +244,7 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
         originalShares: formatNone(),
         unmatchedShares: formatShares("6"),
         marketId: "MARKET_ID",
+        marketDescription: "market description",
         outcomeId: "1",
         cancelOrder: () => {}
       },
@@ -247,6 +256,7 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
         originalShares: formatNone(),
         unmatchedShares: formatShares("2"),
         marketId: "MARKET_ID",
+        marketDescription: "market description",
         outcomeId: "1",
         cancelOrder: () => {}
       },
@@ -258,6 +268,7 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
         originalShares: formatNone(),
         unmatchedShares: formatShares("1"),
         marketId: "MARKET_ID",
+        marketDescription: "market description",
         outcomeId: "1",
         cancelOrder: () => {}
       }

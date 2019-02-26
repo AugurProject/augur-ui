@@ -7,6 +7,7 @@ import { isOrderOfUser } from "modules/orders/helpers/is-order-of-user";
 
 import { BUY, SELL } from "modules/common-elements/constants";
 
+import { convertUnixToFormattedDate } from "utils/format-date";
 import { formatNone, formatEther, formatShares } from "utils/format-number";
 import { cancelOrder } from "modules/orders/actions/cancel-order";
 /**
@@ -22,6 +23,7 @@ import { cancelOrder } from "modules/orders/actions/cancel-order";
  */
 export function selectUserOpenOrders(
   marketId,
+  markeDescription,
   outcomeId,
   marketOrderBook,
   orderCancellation
@@ -31,6 +33,7 @@ export function selectUserOpenOrders(
 
   return userOpenOrders(
     marketId,
+    markeDescription,
     outcomeId,
     loginAccount,
     marketOrderBook,
@@ -48,7 +51,14 @@ export function selectUserOpenOrders(
  * @return {Array}
  */
 const userOpenOrders = memoize(
-  (marketId, outcomeId, loginAccount, marketOrderBook, orderCancellation) => {
+  (
+    marketId,
+    markeDescription,
+    outcomeId,
+    loginAccount,
+    marketOrderBook,
+    orderCancellation
+  ) => {
     const orderData = marketOrderBook[outcomeId];
 
     const userBids =
@@ -56,6 +66,7 @@ const userOpenOrders = memoize(
         ? []
         : getUserOpenOrders(
             marketId,
+            markeDescription,
             marketOrderBook[outcomeId],
             BUY,
             outcomeId,
@@ -67,6 +78,7 @@ const userOpenOrders = memoize(
         ? []
         : getUserOpenOrders(
             marketId,
+            markeDescription,
             marketOrderBook[outcomeId],
             SELL,
             outcomeId,
@@ -98,6 +110,7 @@ const userOpenOrders = memoize(
  */
 function getUserOpenOrders(
   marketId,
+  markeDescription,
   orders,
   orderType,
   outcomeId,
@@ -105,6 +118,7 @@ function getUserOpenOrders(
   orderCancellation = {}
 ) {
   const typeOrders = orders[orderType];
+
   return Object.keys(typeOrders)
     .map(orderId => typeOrders[orderId])
     .filter(
@@ -119,8 +133,9 @@ function getUserOpenOrders(
       id: order.orderId,
       type: orderType,
       marketId,
+      markeDescription,
       outcomeId,
-      creationTime: order.creationTime,
+      creationTime: convertUnixToFormattedDate(order.creationTime),
       pending: !!orderCancellation[order.orderId],
       orderCancellationStatus: orderCancellation[order.orderId],
       originalShares: formatNone(),

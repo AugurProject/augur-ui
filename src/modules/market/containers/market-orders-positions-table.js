@@ -55,7 +55,8 @@ const mapStateToProps = (state, ownProps) => {
   const filledOrders = selectFilledOrders(
     state.marketTradingHistory[ownProps.marketId],
     state.loginAccount.address,
-    state.outcomesData
+    state.outcomesData,
+    state.marketsData
   );
 
   return {

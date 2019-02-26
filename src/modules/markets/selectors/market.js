@@ -352,6 +352,7 @@ export function assembleMarket(
             .map(outcomeId =>
               selectUserOpenOrders(
                 market.id,
+                market.description,
                 outcomeId,
                 orderBooks,
                 orderCancellation
@@ -438,6 +439,7 @@ export function assembleMarket(
 
             outcome.userOpenOrders = selectUserOpenOrders(
               marketId,
+              marketData.description,
               outcomeId,
               orderBooks,
               orderCancellation
