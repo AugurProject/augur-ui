@@ -29,6 +29,16 @@ export const PrimaryButton = (props: DefaultButtonProps) =>
     {props.text}
   </button>;
 
+export const SecondaryButton = (props: DefaultButtonProps) =>
+  <button
+    onClick={(e) => props.action(e)}
+    className={Styles.SecondaryButton}
+    disabled={props.disabled}
+    title={props.title || props.text}
+  >
+    {props.text}
+  </button>;
+
 export const OrderButton = (props: OrderButtonProps) =>
   <button
     onClick={(e) => props.action(e)}

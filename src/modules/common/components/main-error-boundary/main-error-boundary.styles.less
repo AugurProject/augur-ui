@@ -10,8 +10,10 @@
 }
 
 .MainErrorBoundary__container {
-  background-color: white;
+  // background-color: white;
+  background: @color-tertiary-background;
   border-radius: 0.32rem;
+  color: @color-secondary-text;
   display: flex;
   flex-flow: column;
   justify-content: center;
@@ -22,7 +24,8 @@
 }
 
 .MainErrorBoundary__header {
-  font-size: @font-size-somewhat-large;
+  .text-24-bold;
+
   line-height: 1.75rem;
   margin: 0;
   margin-bottom: 1.5rem;
@@ -37,10 +40,16 @@
 }
 
 .MainErrorBoundary__buttons {
-  border-top: 1px solid #d8d8d8;
+  // border-top: 1px solid #d8d8d8;
+  align-items: center;
   display: flex;
-  flex-flow: row;
+  flex-flow: row nowrap;
+  justify-content: space-between;
   padding: 1.5rem 0 0;
+
+  > button {
+    margin: auto;
+  }
 }
 
 .MainErrorBoundary__refresh {

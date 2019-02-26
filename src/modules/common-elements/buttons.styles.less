@@ -29,6 +29,24 @@
   }
 }
 
+.SecondaryButton {
+  .Button;
+
+  background: @color-secondary-button-background;
+  color: @color-secondary-text;
+  max-height: @button-height-default;
+  padding: @size-12 @size-24;
+
+  &:disabled {
+    background: @color-secondary-button-background-disabled;
+  }
+
+  &:hover:enabled {
+    background: @color-secondary-button-background-hover;
+    
+  }
+}
+
 .BuyOrderButton {
   .Button;
 

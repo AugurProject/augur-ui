@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import makePath from "modules/routes/helpers/make-path";
 import { DEFAULT_VIEW } from "modules/routes/constants/views";
+import { SecondaryButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/common/components/main-error-boundary/main-error-boundary.styles";
 
@@ -41,14 +42,10 @@ export default class MainErrorBoundary extends Component {
               home.
             </p>
             <div className={Styles.MainErrorBoundary__buttons}>
-              <button
-                className={Styles.MainErrorBoundary__refresh}
-                onClick={e => {
-                  window.location.reload();
-                }}
-              >
-                Refresh Page
-              </button>
+              <SecondaryButton
+                text="Refresh Page"
+                action={() => window.location.reload()}
+              />
               <Link
                 className={Styles.MainErrorBoundary__return}
                 to={{
