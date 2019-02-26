@@ -162,7 +162,7 @@ function runSimulateTrade(
   const userMarketShareBalances = accountShareBalances[marketId];
   const positions = accountPositions[marketId];
   if (positions) {
-    userShareBalance = userMarketShareBalances;
+    userShareBalance = userMarketShareBalances || [];
     sharesFilledAvgPrice = (positions[outcomeId] || {}).averagePrice;
   }
 

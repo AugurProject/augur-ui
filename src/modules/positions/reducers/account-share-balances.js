@@ -7,6 +7,7 @@ export default function(accountShareBalances = DEFAULT_STATE, { type, data }) {
   switch (type) {
     case LOAD_USER_SHARE_BALANCES: {
       return {
+        ...accountShareBalances,
         ...data
       };
     }
