@@ -21,7 +21,6 @@ export interface Market {
   id: string;
   description: string;
   reportingState: string;
-  marketStatus: string;
   creationTime: number;
   endTime: number;
   volume: FormatObject;
