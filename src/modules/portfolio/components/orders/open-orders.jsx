@@ -7,8 +7,6 @@ import OpenOrder from "modules/portfolio/components/common/rows/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
 
-import Styles from "modules/portfolio/components/orders/open-orders.styles";
-
 const sortByOptions = [
   {
     label: "View by Most Recently Traded Market",
@@ -90,7 +88,7 @@ export default class OpenOrders extends Component {
                   <OpenOrder
                     key={"openOrder_" + data.id}
                     openOrder={data}
-                    toggleClassName={Styles.Orders__orderSingle}
+                    isSingle
                   />
                 )
             )}

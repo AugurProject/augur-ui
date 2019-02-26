@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
+import { LinearPropertyLabel } from "modules/common-elements/labels";
+import Styles from "modules/portfolio/components/common/rows/market-row.styles";
+import { MarketProgress } from "modules/common-elements/progress";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
@@ -46,6 +49,15 @@ class MyMarkets extends Component {
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.myMarkets !== this.props.myMarkets) {
+      this.updateFilteredMarkets(
+        nextProps.myMarkets[this.state.tab],
+        this.state.tab
+      );
+    }
+  }
+
   updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
     if (tab) {
@@ -80,8 +92,30 @@ class MyMarkets extends Component {
                 key={"myMarket_" + market.id}
                 market={market}
                 showState={tab === ALL_MARKETS}
-                currentAugurTimestamp={currentAugurTimestamp}
-                reportingWindowStatsEndTime={reportingWindowStatsEndTime}
+                rightContent={
+                  <MarketProgress
+                    reportingState={market.reportingState}
+                    currentTime={currentAugurTimestamp}
+                    endTime={market.endTime}
+                    reportingWindowEndtime={reportingWindowStatsEndTime}
+                  />
+                }
+                toggleContent={
+                  <div className={Styles.MarketRow__infoParent}>
+                    <div className={Styles.MarketRow__infoContainer}>
+                      <div className={Styles.MarketRow__info}>
+                        <LinearPropertyLabel
+                          label="Volume"
+                          value={`${market.volume.formatted} ETH`}
+                        />
+                        <LinearPropertyLabel
+                          label="Open Interest"
+                          value={`${market.openInterest.formatted} ETH`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                }
               />
             ))}
           </div>

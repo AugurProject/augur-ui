@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 
+import MarketPositionsTable from "modules/portfolio/components/common/tables/market-positions-table";
+
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
 const sortByOptions = [
@@ -73,6 +75,7 @@ export default class Positions extends Component {
                 key={"position_" + market.id}
                 market={market}
                 showState={tab === ALL_MARKETS}
+                toggleContent={<MarketPositionsTable market={market} />}
               />
             ))}
           </div>

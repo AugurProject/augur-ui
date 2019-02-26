@@ -118,7 +118,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "2",
             owner: "0x7c0d52faab596c08f484e3478aebc6205f3f5d8c",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           },
           order14: {
             orderId: "order14",
@@ -126,7 +127,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "1",
             owner: "0x7c0d52faab596c08f484e3478aebc6205f3f5d8c",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           },
           order12: {
             orderId: "order12",
@@ -134,7 +136,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "4",
             owner: "some other address",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           },
           order11: {
             orderId: "order11",
@@ -142,7 +145,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "6",
             owner: "0x7c0d52faab596c08f484e3478aebc6205f3f5d8c",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           }
         },
         sell: {
@@ -152,7 +156,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "7",
             owner: "0x7c0d52faab596c08f484e3478aebc6205f3f5d8c",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           },
           order1: {
             orderId: "order1",
@@ -160,7 +165,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "10",
             owner: "0x7c0d52faab596c08f484e3478aebc6205f3f5d8c",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           },
           order3: {
             orderId: "order3",
@@ -168,7 +174,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "10",
             owner: "0x7c0d52faab596c08f484e3478aebc6205f3f5d8c",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           },
           order4: {
             orderId: "order11",
@@ -177,7 +184,8 @@ describe(`modules/orders/selectors/user-open-orders.js`, () => {
             amount: "11",
             owner: "different owner",
             orderState: "OPEN",
-            outcome: "1"
+            outcome: "1",
+            creationTime: { timestamp: 1 }
           }
         }
       }

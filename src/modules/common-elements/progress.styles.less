@@ -8,12 +8,15 @@
   display: flex;
   flex-flow: column nowrap;
   line-height: @size-14;
+  white-space: nowrap;
 
   > span:last-of-type {
     .text-12-bold;
 
     color: @color-secondary-text;
     line-height: @size-16;
+    text-align: right;
+    width: 100%;
   }
 
   &.ProgressLabel__FirstBreakpoint {

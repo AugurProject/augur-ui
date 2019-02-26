@@ -21,7 +21,11 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
       // remove this guard when augur-node is updated for realzies
       let userPositions = positions;
       if (positions.tradingPositions) {
-        userPositions = positions.tradingPositions;
+        // todo when augur-node returns frozen stuff remove adding dummy data.
+        userPositions = positions.tradingPositions.map(position => ({
+          frozenFunds: 0,
+          ...position
+        }));
       }
 
       const marketIds = Array.from(

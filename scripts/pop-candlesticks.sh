@@ -43,8 +43,10 @@ do
     ETHEREUM_PRIVATE_KEY=48c5da6dff330a9829d843ea90c2629e8134635a294c7e62ad4466eb2ae03712 npx flash fill-market-orders -m $MARKET_ID -o $OUTCOME -t $TRANS_TWO_TYPE;
 
     npx flash push-timestamp -s -c 600;
+    sleep 15
   done
 
   echo "Push time";
   npx flash push-timestamp -s -c 3600;
+  sleep 15
 done

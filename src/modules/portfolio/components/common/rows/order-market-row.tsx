@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import OpenOrder from "modules/portfolio/components/common/rows/open-order";
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
+import MarketLink from "modules/market/components/market-link/market-link";
+
 import Styles from "modules/portfolio/components/common/rows/order-market-row.styles";
 
 import { NameValuePair, Market, Tab, Outcome, Order} from "modules/portfolio/constants";
@@ -17,12 +19,7 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
 
   let orders = [];
   if (!filledOrders) {
-    orders = market.outcomes.reduce((p: Array<Order>, outcome: Outcome) => {
-      if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
-        outcome.userOpenOrders.forEach((order: Order) => p.push(order));
-      }
-      return p;
-    }, []);
+    orders = market.userOpenOrders;
   } else {
     orders = market.filledOrders;
   }
@@ -30,7 +27,9 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
   return (
     <div className={Styles.OrderMarket}>
       <div className={Styles.OrderMarket__description}>
-        {market.description}
+        <MarketLink id={market.id}>
+          {market.description}
+        </MarketLink>
       </div>
       <div>
         {orders.map(
@@ -39,15 +38,11 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
               <FilledOrder
                 key={"sFilledOrder_" + order.id}
                 filledOrder={order}
-                className={Styles.OpenOrders__row}
-                toggleClassName={Styles.OrderMarket__order}
               />
             ) : (
               <OpenOrder
                 key={"sOpenOrder_" + order.id}
                 openOrder={order}
-                className={Styles.OpenOrders__row}
-                toggleClassName={Styles.OrderMarket__order}
               />
             )
         )}
@@ -56,4 +51,4 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
   );
 };
 
-export default OrderMarketRow; 
+export default OrderMarketRow;

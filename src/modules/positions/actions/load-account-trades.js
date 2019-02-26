@@ -2,17 +2,13 @@ import { parallel } from "async";
 import { augur } from "services/augurjs";
 import { addTradeTransactions } from "modules/transactions/actions/add-transactions";
 import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
-import {
-  loadAccountOrders,
-  loadAccountOrphanedOrders
-} from "modules/orders/actions/load-account-orders";
+import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 import {
   updateAccountTradeData,
   clearAccountTrades
 } from "modules/positions/actions/update-account-trades-data";
 import logError from "utils/log-error";
-import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 
 export function loadAccountTrades(options, callback = logError) {
   return (dispatch, getState) => {
@@ -22,9 +18,7 @@ export function loadAccountTrades(options, callback = logError) {
       [
         next => dispatch(loadUserTradingHistory(options, next)),
         next => dispatch(loadAccountPositions(options, next)),
-        next => dispatch(loadAccountOrders(options, next)),
-        next => dispatch(loadAccountOrphanedOrders(options, next)),
-        next => dispatch(loadUserMarketTradingHistory(options, next))
+        next => dispatch(loadAccountOrders(options, next))
       ],
       () => {
         callback(null);

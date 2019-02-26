@@ -5,32 +5,15 @@ import OpenOrders from "modules/portfolio/components/orders/open-orders";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
-import getOpenOrders, {
-  sortOpenOrders
-} from "modules/orders/selectors/open-orders";
+import getOpenOrders from "modules/orders/selectors/open-orders";
 
 const mapStateToProps = state => {
   const openOrders = getOpenOrders();
-
   const markets = getPositionsMarkets(openOrders);
-
-  const individualOrders = [];
-
-  // todo: find filled orders
-  Object.keys(markets).forEach(id => {
-    const market = markets[id];
-
-    if (market && market.outcomes && market.outcomes.length > 0) {
-      const newMarket = sortOpenOrders(market);
-      const openOrders = newMarket.outcomes.reduce((p, outcome) => {
-        if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
-          outcome.userOpenOrders.forEach(order => p.push(order));
-        }
-        return p;
-      }, []);
-      Array.prototype.push.apply(individualOrders, openOrders);
-    }
-  });
+  const individualOrders = markets.reduce(
+    (p, market) => [...p, ...market.userOpenOrders],
+    []
+  );
 
   return {
     markets,
