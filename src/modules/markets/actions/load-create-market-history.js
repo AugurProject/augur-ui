@@ -2,6 +2,7 @@ import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { addMarketCreationTransactions } from "modules/transactions/actions/add-transactions";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
+import { loadUnclaimedFees } from "modules/markets/actions/market-creator-fees-management";
 
 export function loadCreateMarketHistory(options = {}, callback = logError) {
   return (dispatch, getState) => {
@@ -16,8 +17,10 @@ export function loadCreateMarketHistory(options = {}, callback = logError) {
           marketsCreatedByUser == null ||
           (Array.isArray(marketsCreatedByUser) &&
             marketsCreatedByUser.length === 0)
-        )
+        ) {
           return callback(null);
+        }
+        dispatch(loadUnclaimedFees(marketsCreatedByUser));
         dispatch(
           loadMarketsInfoIfNotLoaded(marketsCreatedByUser, err => {
             if (err) return callback(err);

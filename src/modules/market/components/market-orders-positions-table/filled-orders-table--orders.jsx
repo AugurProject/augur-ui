@@ -7,11 +7,10 @@ import React, { Component } from "react";
 import classNames from "classnames";
 
 import getValue from "utils/get-value";
-import { SELL } from "modules/common-elements/constants";
-import { formatEther, formatShares } from "utils/format-number";
-import { convertUnixToFormattedDate } from "utils/format-date";
+import { SELL, BOUGHT, SOLD } from "modules/common-elements/constants";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import EtherscanLink from "modules/common/containers/etherscan-link";
+import { formatEther, formatShares } from "utils/format-number";
 
 import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import Styles from "modules/market/components/market-orders-positions-table/filled-orders-table--orders.styles";
@@ -22,7 +21,7 @@ export default class FilledOrdersOrder extends Component {
     isMobile: PropTypes.bool.isRequired,
     order: PropTypes.shape({
       type: PropTypes.string.isRequired,
-      timestamp: PropTypes.number.isRequired,
+      timestamp: PropTypes.object.isRequired,
       price: PropTypes.object.isRequired,
       outcome: PropTypes.any,
       trades: PropTypes.array.isRequired
@@ -55,9 +54,10 @@ export default class FilledOrdersOrder extends Component {
 
     const s = this.state;
 
-    const orderQuantity = formatShares(order.amount).formatted;
-    const orderPrice = formatEther(order.price).formatted;
+    const orderQuantity = formatShares(getValue(order, "amount")).formatted;
+    const orderPrice = formatEther(getValue(order, "price")).formatted;
     const orderType = getValue(order, "type");
+    const orderDisplay = orderType !== SELL ? BOUGHT : SOLD;
 
     return (
       <div
@@ -82,13 +82,11 @@ export default class FilledOrdersOrder extends Component {
             })}
             style={{ textTransform: "capitalize" }}
           >
-            {orderType === SELL ? "Sold" : "Bought"}
+            {orderDisplay}
           </li>
           <li>{orderQuantity}</li>
           <li>{orderPrice}</li>
-          <li>
-            {convertUnixToFormattedDate(order.timestamp).formattedShortDate}
-          </li>
+          <li>{order.timestamp.formattedShortDate}</li>
           <li>
             {order.trades.length}
             <ChevronFlip
@@ -127,9 +125,7 @@ export default class FilledOrdersOrder extends Component {
                   >
                     {!isMobile && <li />}
                     <li>{formatShares(trade.amount).formatted}</li>
-                    <li>
-                      {convertUnixToFormattedDate(trade.timestamp).formatted}
-                    </li>
+                    <li>{trade.timestamp.formatted}</li>
                     <li>
                       <button
                         className={Styles.FilledOrder__view}

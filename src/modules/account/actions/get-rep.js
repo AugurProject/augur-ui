@@ -1,5 +1,5 @@
 import { augur } from "services/augurjs";
-import { updateNotification } from "modules/notifications/actions/notifications";
+import { updateAlert } from "modules/alerts/actions/alerts";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { UNIVERSE_ID } from "modules/common-elements/constants";
@@ -21,10 +21,10 @@ export default function(callback = logError) {
           meta: loginAccount.meta,
           onSent: noop,
           onSuccess: res => {
-            // Trigger the notification updates in the callback functions
+            // Trigger the alert updates in the callback functions
             // because Augur Node does not emit an event for TokensMinted.
             dispatch(
-              updateNotification(res.hash, {
+              updateAlert(res.hash, {
                 id: res.hash,
                 status: "Confirmed",
                 timestamp: selectCurrentTimestampInSeconds(getState())
@@ -35,7 +35,7 @@ export default function(callback = logError) {
           },
           onFailed: res => {
             dispatch(
-              updateNotification(res.hash, {
+              updateAlert(res.hash, {
                 id: res.hash,
                 status: "Failed",
                 timestamp: selectCurrentTimestampInSeconds(getState())

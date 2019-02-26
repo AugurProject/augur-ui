@@ -1,0 +1,46 @@
+@import (reference) '~assets/styles/shared';
+
+.ToggleRow {
+  background-color: @color-grayish-purple;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+
+  > div {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.ToggleRow__arrowContainer {
+  align-items: center;
+  display: flex;
+  padding-right: 1.75rem;
+}
+
+.ToggleRow__rowActive {
+  background-color: fade(@color-primary-alternate, 40%);
+}
+
+.ToggleRow__rowContent {
+  display: flex;
+  flex-grow: 1;
+}
+
+.ToggleRow__arrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 0.625rem;
+}
+
+.ToggleRow__row {
+  &:hover {
+    background-color: fade(@color-primary-alternate, 40%);
+  }
+}
+
+.ToggleRow__rowContainer {
+  display: flex;
+  flex: 1;
+}

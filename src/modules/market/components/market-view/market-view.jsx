@@ -7,7 +7,6 @@ import classNames from "classnames";
 
 import { FindReact } from "utils/find-react";
 import MarketHeader from "modules/market/containers/market-header";
-// import MarketOutcomesAndPositions from "modules/market/containers/market-outcomes-and-positions";
 import MarketOrdersPositionsTable from "modules/market/containers/market-orders-positions-table";
 import MarketOutcomesList from "modules/market/containers/market-outcomes-list";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";

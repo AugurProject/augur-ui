@@ -1,13 +1,8 @@
 import { createBigNumber } from "utils/create-big-number";
 import { BUY, SELL } from "modules/common-elements/constants";
+import { convertUnixToFormattedDate } from "utils/format-date";
 
-function findOrders(
-  filledOrders,
-  accountId,
-  marketType,
-  outcomesData,
-  openOrders
-) {
+function findOrders(filledOrders, accountId, outcomesData) {
   const orders = filledOrders.reduce(
     (
       order,
@@ -19,7 +14,8 @@ function findOrders(
         price,
         type,
         timestamp,
-        transactionHash
+        transactionHash,
+        marketId
       }
     ) => {
       const foundOrder = order.find(({ id }) => id === orderId);
@@ -28,11 +24,14 @@ function findOrders(
       let typeOp = type;
 
       const outcomeName =
-        outcomesData[outcome].name || outcomesData[outcome].name;
+        outcomesData[marketId][outcome].name ||
+        outcomesData[marketId][outcome].name;
 
       if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
       }
+
+      const timestampFormatted = convertUnixToFormattedDate(timestamp);
 
       if (foundOrder) {
         foundOrder.trades.push({
@@ -40,16 +39,17 @@ function findOrders(
           amount: amountBN,
           price: priceBN,
           type: typeOp,
-          timestamp,
+          timestamp: timestampFormatted,
           transactionHash
         });
-        foundOrder.amount = foundOrder.amount.plus(amountBN);
+        // amount has been format-number'ed
+        foundOrder.amount = createBigNumber(foundOrder.amount).plus(amountBN);
         foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
       } else {
         order.push({
           id: orderId,
-          timestamp,
+          timestamp: timestampFormatted,
           outcome: outcomeName,
           type: typeOp,
           price: priceBN,
@@ -60,7 +60,7 @@ function findOrders(
               amount: amountBN,
               price: priceBN,
               type: typeOp,
-              timestamp,
+              timestamp: timestampFormatted,
               transactionHash
             }
           ]
@@ -76,9 +76,7 @@ function findOrders(
 export function selectFilledOrders(
   marketTradeHistory,
   accountId,
-  marketType,
-  outcomesData,
-  openOrders
+  outcomesData
 ) {
   if (!marketTradeHistory || marketTradeHistory.length < 1) {
     return [];
@@ -88,13 +86,7 @@ export function selectFilledOrders(
     trade => trade.creator === accountId || trade.filler === accountId
   );
 
-  const orders = findOrders(
-    filledOrders,
-    accountId,
-    marketType,
-    outcomesData,
-    openOrders
-  );
+  const orders = findOrders(filledOrders, accountId, outcomesData);
   orders.sort((a, b) => b.timestamp - a.timestamp);
   return orders;
 }

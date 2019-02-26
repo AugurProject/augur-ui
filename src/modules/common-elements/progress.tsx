@@ -2,6 +2,8 @@ import * as React from "react";
 import Styles from "modules/common-elements/progress.styles";
 import * as format from "utils/format-date";
 import classNames from "classnames";
+import { constants } from "services/augurjs";
+import * as localConstants from "modules/common-elements/constants";
 
 export interface DateFormattedObject {
   value: Date;
@@ -21,10 +23,13 @@ export interface DateFormattedObject {
   formattedSimpleData: string;
 };
 
-export interface ProgressLabelProps {
-  endTime: DateFormattedObject | number;
-  currentTime: DateFormattedObject | number;
-  label?: string;
+export interface CountdownProgressProps {
+  time: DateFormattedObject | null;
+  currentTime?: DateFormattedObject;
+  label: string;
+  countdownBreakpoint?: number;
+  firstColorBreakpoint?: number;
+  finalColorBreakpoint?: number;
 };
 
 export interface TimeLabelProps {
@@ -38,24 +43,125 @@ export interface TimeProgressBarProps {
   currentTime: DateFormattedObject | number;
 }
 
-export const ProgressLabel = (props: ProgressLabelProps) => {
-  const { label, currentTime, endTime } = props;
-  const TwoDays = 48*60*60;
-  let formattedEndTime: DateFormattedObject | number = endTime;
-  let formattedCurrentTime: DateFormattedObject | number = currentTime;
-  if (typeof endTime !== "object") {
-    formattedEndTime = format.convertUnixToFormattedDate(endTime);
+export interface MarketProgressProps {
+  reportingState: string;
+  currentTime: DateFormattedObject | number;
+  endTime: DateFormattedObject | number;
+  reportingWindowEndtime: DateFormattedObject | number;
+};
+// default breakpoints
+const OneWeek = 168*60*60;
+const ThreeDays = 72*60*60;
+const OneDay = 24*60*60;
+
+const formatTime = (time: DateFormattedObject | number) => {
+  if (typeof time !== "object") {
+    return format.convertUnixToFormattedDate(time);
   }
-  if (typeof currentTime !== "object") {
-    formattedCurrentTime = format.convertUnixToFormattedDate(currentTime);
+  return time;
+}
+
+const reportingStateToLabelTime = (
+  reportingState: string, 
+  endTime: DateFormattedObject, 
+  reportingEndTime: DateFormattedObject
+) => {
+  const { REPORTING_STATE } = constants;
+  let label: string = "";
+  let time: DateFormattedObject | null = null;
+  switch (reportingState) {
+    case REPORTING_STATE.PRE_REPORTING:
+      label = "Reporting Begins";
+      time = endTime;
+      break;
+    case REPORTING_STATE.DESIGNATED_REPORTING:
+      label = "Designated Reporting";
+      time = formatTime(endTime.timestamp + ThreeDays);
+      break;
+    case REPORTING_STATE.OPEN_REPORTING:
+      label = "Open Reporting";
+      break;
+    case REPORTING_STATE.CROWDSOURCING_DISPUTE:
+      label = "Disputing Ends";
+      time = reportingEndTime;
+      break;
+    case REPORTING_STATE.AWAITING_NEXT_WINDOW:
+      label = "Next Dispute";
+      time = reportingEndTime;
+      break;
+    case REPORTING_STATE.FORKING:
+      label = "Forking";
+      time = endTime;
+      break;
+    case REPORTING_STATE.AWAITING_NO_REPORT_MIGRATION:
+      label = "Awaiting No Report Migration";
+      break;
+    case REPORTING_STATE.AWAITING_FORK_MIGRATION:
+      label = "Awaiting Fork Migration";
+      break;
+    case REPORTING_STATE.AWAITING_FINALIZATION:
+    case REPORTING_STATE.FINALIZED:
+    default:
+      label = "Expired";
+      break;
   }
-  const daysRemaining = format.getDaysRemaining(formattedEndTime.timestamp, formattedCurrentTime.timestamp);
-  const hoursRemaining = format.getHoursMinusDaysRemaining(formattedEndTime.timestamp, formattedCurrentTime.timestamp);
-  const minutesRemaining = format.getMinutesMinusHoursRemaining(formattedEndTime.timestamp, formattedCurrentTime.timestamp);
-  const isAlmostOver = (formattedEndTime.timestamp - formattedCurrentTime.timestamp) <= TwoDays;
+
+  return { label, time }; 
+}
+
+export const MarketProgress = (props: MarketProgressProps) => {
+  const {
+    reportingState,
+    currentTime,
+    endTime,
+    reportingWindowEndtime
+  } = props;
+  const currTime = formatTime(currentTime);
+  const marketEndTime = formatTime(endTime);
+  const reportingEndTime = formatTime(reportingWindowEndtime);
+  const { label, time } = reportingStateToLabelTime(
+    reportingState,
+    marketEndTime,
+    reportingEndTime
+  );
+
   return (
-    <span className={classNames(Styles.ProgressLabel,{ [Styles.ProgressLabel__Warning]: isAlmostOver})}>
-      <span>{label}</span><span>{`${daysRemaining}d ${hoursRemaining >= 10 ? hoursRemaining : "0" + hoursRemaining}h ${minutesRemaining >= 10 ? minutesRemaining : "0" + minutesRemaining}m`}</span>
+    <CountdownProgress label={label} time={time} currentTime={currTime} />
+  );
+}
+
+export const CountdownProgress = (props: CountdownProgressProps) => {
+  const {
+    label,
+    time,
+    currentTime,
+    countdownBreakpoint,
+    firstColorBreakpoint,
+    finalColorBreakpoint
+  } = props;
+  let valueString: string = "";
+  let timeLeft: number = 1;
+  let countdown: boolean = false;
+  const firstBreakpoint = firstColorBreakpoint || ThreeDays;
+  const secondBreakpoint = finalColorBreakpoint || OneDay;
+  if (time !== null && currentTime) {
+    const daysRemaining = format.getDaysRemaining(time.timestamp, currentTime.timestamp);
+    const hoursRemaining = format.getHoursMinusDaysRemaining(time.timestamp, currentTime.timestamp);
+    const minutesRemaining = format.getMinutesMinusHoursRemaining(time.timestamp, currentTime.timestamp);
+    timeLeft = time.timestamp - currentTime.timestamp;
+    countdown = (countdownBreakpoint || OneWeek) >= timeLeft && timeLeft > 0;
+    valueString = countdown ? `${daysRemaining}d ${hoursRemaining >= 10 ? hoursRemaining : "0" + hoursRemaining}h ${minutesRemaining >= 10 ? minutesRemaining : "0" + minutesRemaining}m` : time.formattedLocalShortDate;
+  }
+  const breakpointOne = (timeLeft <= firstBreakpoint && timeLeft > secondBreakpoint && countdown);
+  const breakpointTwo = (timeLeft <= secondBreakpoint && countdown);
+    
+  return (
+    <span className={classNames(Styles.ProgressLabel,{
+      [Styles.ProgressLabel__FirstBreakpoint]: breakpointOne,
+      [Styles.ProgressLabel__SecondBreakpoint]: breakpointTwo,
+      [Styles.ProgressLabel__Finished]: timeLeft < 0
+    })}>
+      <span>{label}</span><span>{valueString}</span>
     </span>
   );
 };

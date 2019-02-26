@@ -1,6 +1,5 @@
 import React from "react";
 
-import PortfolioHeader from "modules/portfolio/containers/portfolio-header";
 import MyPositions from "modules/portfolio/containers/positions";
 import MyMarkets from "modules/portfolio/containers/my-markets";
 import OpenOrders from "modules/portfolio/containers/open-orders";
@@ -10,7 +9,6 @@ import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.s
 
 const PortfolioView = p => (
   <section className={Styles.PortfolioView}>
-    <PortfolioHeader />
     <div className={Styles.PortfolioView__views}>
       <MyPositions />
       <OpenOrders />

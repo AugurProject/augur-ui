@@ -262,19 +262,6 @@ export default function(market) {
       expect(typeof indeterminateItem.name).toBe("string");
     });
 
-    test("market.userOpenOrdersSummary", () => {
-      expect(market.userOpenOrdersSummary).toBeDefined();
-      expect(typeof market.userOpenOrdersSummary).toBe("object");
-    });
-
-    test("market.userOpenOrdersSummary.openOrdersCount", () => {
-      expect(market.userOpenOrdersSummary.openOrdersCount).toBeDefined();
-      assertFormattedNumber(
-        market.userOpenOrdersSummary.openOrdersCount,
-        "market.userOpenOrdersSummary.openOrdersCount"
-      );
-    });
-
     const { myPositionsSummary } = market;
     test("market.myPositionsSummary", () => {
       expect(myPositionsSummary).toBeDefined();

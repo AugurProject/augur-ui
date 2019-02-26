@@ -1,0 +1,19 @@
+@import (reference) '~assets/styles/shared';
+
+.OrderMarket {
+  background: @color-tertiary-background;
+  border-bottom: 0.125rem solid @color-theme-primary;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.0625rem;
+  }
+}
+
+.OrderMarket__description {
+  .text-12-bold;
+
+  color: @color-secondary-text;
+  margin-bottom: 1rem;
+  padding: 1rem 24px 0;
+}
+

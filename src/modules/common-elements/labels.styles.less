@@ -1,27 +1,27 @@
-@import (reference) '~assets/styles/shared';
+@import (reference) "~assets/styles/shared";
 
 .PropertyLabel {
   display: flex;
   flex-flow: column nowrap;
 
   > span:first-of-type {
-    .text-smaller;
+    .text-12;
 
     align-items: center;
     color: @color-neutral;
     display: flex;
     flex-flow: row nowrap;
-    line-height: @size-normal;
+    line-height: @size-16;
 
     > label {
       display: inline-block;
       margin: 0 0 0 0.25rem;
-      width: @size-smaller;
+      width: @size-12;
 
       > svg {
         fill: none;
-        height: @size-medium;
-        width: @size-medium;
+        height: @size-18;
+        width: @size-18;
 
         > circle {
           fill: @color-tertiary-one;
@@ -37,29 +37,73 @@
   }
 
   > span:last-of-type {
-    .number-large-bold;
+    .mono-14-bold;
 
     color: @color-secondary-text;
-    line-height: @size-normal;
+    line-height: @size-16;
+  }
+}
+
+.LinearPropertyLabel {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  white-space: nowrap;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.375rem;
+  }
+
+  > span:first-of-type {
+    .text-10;
+
+    align-items: center;
+    color: @color-less-neutral;
+    flex-flow: row nowrap;
+    line-height: @size-16;
+
+    > label {
+      margin: 0 0 0 0.25rem;
+      width: @size-10;
+    }
+  }
+
+  > svg {
+    display: flex;
+    flex-grow: 1;
+    margin: 0.5rem 0 0 0.5rem;
+
+    > line {
+      stroke: fade(@color-white, 40%);
+    }
+  }
+
+  > span:last-of-type {
+    .mono-11;
+
+    color: @color-secondary-text;
+    line-height: @size-16;
+    padding-left: 0.5rem;
   }
 }
 
 .MarketTypeLabel {
-  .number-small;
+  .mono-10;
 
   background: @color-primary-light;
   border-radius: @border-radius-rounded;
   color: @color-secondary-text;
-  height: @size-large;
+  height: @size-24;
   padding: 0.3125rem 0.5rem;
   text-transform: capitalize;
 }
 
 .MarketStatus {
-  .text-smaller-bold;
+  .text-12-bold;
 
   color: @color-secondary-text;
-  line-height: @size-small;
+  line-height: @size-14;
   padding-bottom: 0.375rem;
   position: relative;
 
@@ -75,9 +119,9 @@
 }
 
 .MarketStatus_mini {
-  .number-smallest;
+  .mono-9;
 
-  line-height: @size-smaller;
+  line-height: @size-12;
   padding-bottom: 0.125rem; // 2px
   position: relative;
 
@@ -116,7 +160,7 @@
 }
 
 .PendingLabel {
-  .number-small;
+  .mono-10;
 
   align-items: center;
   background: @color-primary-light;
@@ -124,8 +168,8 @@
   color: @color-secondary-text;
   display: flex;
   flex-flow: row nowrap;
-  height: 1rem;
-  line-height: @size-smallest;
+  height: @size-16;
+  line-height: @size-10;
   padding: 1px 0.375rem;
 
   > div {
@@ -136,24 +180,22 @@
 
 .MovementLabel {
   align-items: center;
-  color: @color-neutral;
+  color: @color-less-neutral;
   display: flex;
   justify-content: flex-end;
 }
 
 .MovementLabel_Text {
-  .number-default;
-
   &_small {
-    .number-smallest;
+    .mono-9;
   }
 
   &_normal {
-    .number-small;
+    .mono-11;
   }
 
   &_large {
-    .number-medium;
+    .mono-12;
   }
 
   &_positive {
@@ -170,8 +212,8 @@
 
   > svg {
     fill: none;
-    height: @size-tiny;
-    width: @size-small;
+    height: @size-9;
+    width: @size-14;
   }
 
   &_small {
@@ -209,4 +251,15 @@
       stroke: @color-negative;
     }
   }
+}
+
+.PillLabel {
+  .mono-10;
+
+  align-items: center;
+  background: @color-highlight;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  padding: 0 0.375rem;
 }

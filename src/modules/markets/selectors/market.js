@@ -48,7 +48,8 @@ import {
   INDETERMINATE_OUTCOME_NAME,
   MARKET_OPEN,
   MARKET_REPORTING,
-  MARKET_CLOSED
+  MARKET_CLOSED,
+  YES_NO_YES_OUTCOME_NAME
 } from "modules/common-elements/constants";
 
 import { constants } from "services/constants";
@@ -60,7 +61,6 @@ import store from "src/store";
 
 import selectAccountPositions from "modules/orders/selectors/positions-plus-asks";
 import { selectUserOpenOrders } from "modules/orders/selectors/user-open-orders";
-import selectUserOpenOrdersSummary from "modules/orders/selectors/user-open-orders-summary";
 
 import { selectPriceTimeSeries } from "modules/markets/selectors/price-time-series";
 
@@ -71,10 +71,7 @@ import {
 } from "modules/orders/helpers/select-order-book";
 import getOrderBookSeries from "modules/orders/selectors/order-book-series";
 
-import {
-  generateOutcomePositionSummary,
-  generateMarketsPositionsSummary
-} from "modules/positions/selectors/positions-summary";
+import { generateOutcomePositionSummary } from "modules/positions/selectors/positions-summary";
 
 import { selectReportableOutcomes } from "modules/reports/selectors/reportable-outcomes";
 
@@ -95,7 +92,7 @@ export const selectMarket = marketId => {
     reports,
     outcomesData,
     accountTrades,
-    priceHistory,
+    marketTradingHistory,
     orderBooks,
     universe,
     orderCancellation,
@@ -115,7 +112,7 @@ export const selectMarket = marketId => {
     marketId,
     marketsData[marketId],
     marketLoading[marketId] || null,
-    priceHistory[marketId],
+    marketTradingHistory[marketId],
     isMarketDataOpen(marketsData[marketId]),
     isMarketDataExpired(
       marketsData[marketId],
@@ -333,8 +330,35 @@ export function assembleMarket(
             )
         };
 
-        market.outcomes = [];
+        // moving to one collection instead of each outcome having a postion collection
+        // outcome positions will be removed
+        market.userPositions = Object.values(marketAccountPositions || []).map(
+          position => {
+            const positionSummary = generateOutcomePositionSummary(position);
+            const outcome = market.outcomes[position.outcome];
+            let outcomeName = market.isYesNo
+              ? YES_NO_YES_OUTCOME_NAME
+              : outcome.description;
+            if (market.isScalar) {
+              outcomeName = market.scalarDenomination;
+            }
+            return { ...positionSummary, outcomeName };
+          }
+        );
 
+        // same as positions, moving open orders from outcomes to top level array
+        market.userOpenOrders =
+          Object.keys(marketOutcomesData || {})
+            .map(outcomeId =>
+              selectUserOpenOrders(
+                market.id,
+                outcomeId,
+                orderBooks,
+                orderCancellation
+              )
+            )
+            .filter(collection => collection.length !== 0)
+            .flat() || [];
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];
@@ -411,16 +435,6 @@ export function assembleMarket(
             outcome.orderBookSeries = getOrderBookSeries(orderBook);
             outcome.topBid = selectTopBid(orderBook, false);
             outcome.topAsk = selectTopAsk(orderBook, false);
-            outcome.position = generateOutcomePositionSummary(
-              (marketAccountPositions || {})[outcomeId]
-            );
-            if (outcome.position) outcome.position.name = outcome.name;
-            if (market.isScalar) {
-              outcome.name = market.scalarDenomination;
-            }
-            if (outcome.position && market.isScalar) {
-              outcome.position.name = market.scalarDenomination;
-            }
 
             outcome.userOpenOrders = selectUserOpenOrders(
               marketId,
@@ -491,17 +505,10 @@ export function assembleMarket(
           name: INDETERMINATE_OUTCOME_NAME
         });
 
-        market.userOpenOrdersSummary = selectUserOpenOrdersSummary(
-          market.outcomes
-        );
-
         if (marketAccountTrades || marketAccountPositions) {
-          market.myPositionsSummary = generateMarketsPositionsSummary([market]);
-          if (market.myPositionsSummary) {
-            market.myPositionOutcomes =
-              market.myPositionsSummary.positionOutcomes;
-            delete market.myPositionsSummary.positionOutcomes;
-
+          market.myPositionsSummary = {};
+          // leave complete sets here, until we finish new notifications
+          if (numCompleteSets) {
             market.myPositionsSummary.numCompleteSets = formatShares(
               numCompleteSets
             );

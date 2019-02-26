@@ -3,55 +3,15 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 
-import { Notifications } from "modules/common/components/icons";
+import { Alerts } from "modules/common/components/icons";
 import ConnectAccount from "modules/auth/containers/connect-account";
 import GasPriceEdit from "modules/app/containers/gas-price-edit";
 import BlockInfoData from "modules/block-info/containers/block-info-data";
+import { MovementLabel } from "modules/common-elements/labels";
 
 import makePath from "modules/routes/helpers/make-path";
 import { MARKETS } from "modules/routes/constants/views";
-// import ReactTooltip from "react-tooltip";
-
-// import TooltipStyles from "modules/common/less/tooltip.styles";
 import Styles from "modules/app/components/top-bar/top-bar.styles";
-
-// <label
-//             className={classNames(TooltipStyles.TooltipHint)}
-//             data-tip
-//             data-for="tooltip--funds"
-//           >
-//           </label>
-//           <ReactTooltip
-//             id="tooltip--funds"
-//             className={classNames(
-//               TooltipStyles.Tooltip,
-//               Styles.TopBar__tooltip
-//             )}
-//             effect="solid"
-//             place="bottom"
-//             type="light"
-//           >
-//             <h4>Portfolio Value</h4>
-//             <p>
-//               <span id="core-bar-eth-tooltip">
-//                 {props.stats[0].totalBalance.value.formatted}
-//               </span>
-//               <span className={Styles["TopBar__tooltip-denomination"]}>
-//                 {" "}
-//                 ETH
-//               </span>
-//             </p>
-//             <h4>Available Funds</h4>
-//             <p>
-//               <span id="core-bar-rep-tooltip">
-//                 {props.stats[0].totalRealEth.value.formatted}
-//               </span>
-//               <span className={Styles["TopBar__tooltip-denomination"]}>
-//                 {" "}
-//                 ETH
-//               </span>
-//             </p>
-//           </ReactTooltip>
 
 const TopBar = props => (
   <header className={Styles.TopBar}>
@@ -96,7 +56,12 @@ const TopBar = props => (
               <span>{props.stats[1].totalPLMonth.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLMonth.value.formatted}
+              <MovementLabel
+                showColors
+                showIcon
+                value={props.stats[1].totalPLMonth.value.formatted}
+                size="large"
+              />
               <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>
@@ -110,7 +75,12 @@ const TopBar = props => (
               <span>{props.stats[1].totalPLDay.label}</span>
             </div>
             <span className={Styles["TopBar__stat-value"]}>
-              {props.stats[1].totalPLDay.value.formatted}
+              <MovementLabel
+                showColors
+                showIcon
+                value={props.stats[1].totalPLDay.value.formatted}
+                size="large"
+              />
               <span className={Styles["TopBar__stat-unit"]}>ETH</span>
             </span>
           </div>
@@ -127,25 +97,25 @@ const TopBar = props => (
       })}
     />
     <div
-      className={classNames(Styles.TopBar__notifications, {
-        [Styles.TopBar__notificationsDark]: props.notificationsVisible,
-        [Styles.TopBar__notificationsDisabled]: !props.isLogged
+      className={classNames(Styles.TopBar__alerts, {
+        [Styles.TopBar__alertsDark]: props.alertsVisible,
+        [Styles.TopBar__alertsDisabled]: !props.isLogged
       })}
       onClick={e => {
-        props.toggleNotifications();
+        props.toggleAlerts();
       }}
       role="button"
       tabIndex="-1"
     >
-      <div className={Styles["TopBar__notifications-container"]}>
-        <div className={Styles["TopBar__notification-icon"]}>
+      <div className={Styles["TopBar__alerts-container"]}>
+        <div className={Styles["TopBar__alert-icon"]}>
           {props.unseenCount > 99
-            ? Notifications(
+            ? Alerts(
                 "99+",
                 "7.4591451",
                 props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
               )
-            : Notifications(
+            : Alerts(
                 props.unseenCount,
                 "6.4591451",
                 props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
@@ -163,8 +133,8 @@ TopBar.propTypes = {
   isLogged: PropTypes.bool.isRequired,
   stats: PropTypes.array.isRequired,
   unseenCount: PropTypes.number.isRequired,
-  toggleNotifications: PropTypes.func.isRequired,
-  notificationsVisible: PropTypes.bool.isRequired,
+  toggleAlerts: PropTypes.func.isRequired,
+  alertsVisible: PropTypes.bool.isRequired,
   isMobileSmall: PropTypes.bool.isRequired
 };
 

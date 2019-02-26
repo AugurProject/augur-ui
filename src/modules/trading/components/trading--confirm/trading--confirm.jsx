@@ -16,11 +16,11 @@ import {
   darkBgExclamationCircle,
   closeIcon
 } from "modules/common/components/icons";
-import { DashlineLong } from "modules/common/components/dashline/dashline";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
 import { formatGasCostToEther } from "utils/format-number";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { isEqual } from "lodash";
+import { LinearPropertyLabel } from "modules/common-elements/labels";
 
 class MarketTradingConfirm extends Component {
   static propTypes = {
@@ -210,22 +210,14 @@ class MarketTradingConfirm extends Component {
                 <span> {shareCost.value} </span>
                 Shares @ <span> {limitPrice}</span>
               </div>
-              <div className={Styles.TradingConfirm__position__details}>
-                <div>Estimated Fee</div>
-                <DashlineLong />
-                <span className={Styles.TradingConfirm__property__value}>
-                  {orderShareTradingFee && orderShareTradingFee.formatted}
-                  <span>ETH</span>
-                </span>
-              </div>
-              <div className={Styles.TradingConfirm__position__details}>
-                <div>Profit</div>
-                <DashlineLong />
-                <span className={Styles.TradingConfirm__property__value}>
-                  {orderShareProfit && orderShareProfit.formatted}
-                  <span>ETH</span>
-                </span>
-              </div>
+              <LinearPropertyLabel
+                label="Estimated Fee"
+                value={`${orderShareTradingFee.formatted} ETH`}
+              />
+              <LinearPropertyLabel
+                label="Profit"
+                value={`${orderShareProfit.formatted} ETH`}
+              />
             </div>
           )}
         {totalCost &&
@@ -272,22 +264,14 @@ class MarketTradingConfirm extends Component {
                 <span> {newOrderAmount} </span>
                 Shares @ <span> {limitPrice}</span>
               </div>
-              <div className={Styles.TradingConfirm__position__details}>
-                <div>Max Profit</div>
-                <DashlineLong />
-                <span className={Styles.TradingConfirm__property__value}>
-                  {potentialEthProfit && potentialEthProfit.formatted}
-                  <span>ETH</span>
-                </span>
-              </div>
-              <div className={Styles.TradingConfirm__position__details}>
-                <div>Max Loss</div>
-                <DashlineLong />
-                <span className={Styles.TradingConfirm__property__value}>
-                  {potentialEthLoss && potentialEthLoss.formatted}
-                  <span>ETH</span>
-                </span>
-              </div>
+              <LinearPropertyLabel
+                label="Max Profit"
+                value={`${potentialEthProfit.formatted} ETH`}
+              />
+              <LinearPropertyLabel
+                label="Max Loss"
+                value={`${potentialEthLoss.formatted} ETH`}
+              />
             </div>
           )}
         {errorMessage && (

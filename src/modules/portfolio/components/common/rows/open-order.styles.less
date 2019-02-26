@@ -1,0 +1,126 @@
+@import (reference) '~assets/styles/shared';
+
+.Order {
+  display: grid;
+  flex-direction: row;
+  flex-grow: 1;
+  grid-template-columns: repeat(5, 1fr);
+
+  > li {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    font-size: 0.687rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:first-child {
+      .text-12-bold;
+
+      color: @color-less-neutral;
+    }
+
+    &:not(:first-child) {
+      justify-content: flex-end;
+    }
+
+    &:last-child {
+      padding-right: 1.75rem;
+    }
+  }
+}
+
+.Order__group {
+  padding: 0 1.75rem 0 1.5rem;
+}
+
+.Order__innerGroup {
+  border-top: 0.0625rem solid @color-primary-background;
+  padding: 0.5rem 0;
+}
+
+.Order__parentSingle {
+  &:not(:first-of-type) {
+    border-top: 0.0625rem solid @color-primary-background;
+  }
+}
+
+.Order__single {
+  padding: 0.5rem 1.75rem 0.5rem 1.5rem;
+}
+
+ul.Orders__row {
+  > li {
+    padding-left: 0.5rem;
+  }
+}
+
+.FilledOrder {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.OpenOrder_infoContainer {
+  background: fade(@color-primary-alternate, 10%);
+  border-bottom: 2px solid @color-theme-primary;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.OpenOrder_innerInfoContainer {
+  display: flex;
+  flex: 1;
+  padding: 0.5rem 1.625rem 0.5rem 2rem;
+}
+
+.OpenOrder__info {
+  max-width: 12rem;
+}
+
+.OpenOrder__timestamp {
+  align-items: flex-end;
+  color: @color-alternate-text;
+  display: flex;
+  flex: 1;
+  font-family: @roboto-mono;
+  font-size: @size-11;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.Position {
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.Position_infoContainer {
+  background: fade(@color-primary-alternate, 10%);
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0.5rem 4.875rem 0.5rem 0;
+}
+
+.Position__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  max-width: 12rem;
+}
+
+.Position__border {
+  border-top: 0.0625rem solid @color-primary-background;
+}
+
+.Position__innerSingle {
+  padding: 0.5rem 0;
+}
+
+.Position__single {
+  padding: 0 1.5rem;
+}
+
+.Position__arrow {
+  padding-right: 0;
+}

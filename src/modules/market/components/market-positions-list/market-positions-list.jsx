@@ -132,7 +132,7 @@ export default class MarketPositionsList extends Component {
                   positions.map((position, i) => (
                     <MarketPositionsListPosition
                       key={i}
-                      outcomeName={position.name}
+                      outcomeName={position.outcomeName}
                       position={position}
                       openOrders={openOrders.filter(
                         order =>

@@ -12,6 +12,17 @@ export const loadAccountOrders = (options = {}, callback = logError) => (
   dispatch,
   getState
 ) => {
+  dispatch(
+    loadUserAccountOrders(options, () => {
+      dispatch(loadAccountOrphanedOrders(options, callback));
+    })
+  );
+};
+
+const loadUserAccountOrders = (options = {}, callback = logError) => (
+  dispatch,
+  getState
+) => {
   const { universe, loginAccount } = getState();
   if (!options.orderState)
     options.orderState = augur.constants.ORDER_STATE.OPEN;
@@ -56,10 +67,10 @@ export const loadAccountOrders = (options = {}, callback = logError) => (
   );
 };
 
-export const loadAccountOrphanedOrders = (
-  options = {},
-  callback = logError
-) => (dispatch, getState) => {
+const loadAccountOrphanedOrders = (options = {}, callback = logError) => (
+  dispatch,
+  getState
+) => {
   const { universe, loginAccount } = getState();
 
   augur.trading.getOrders(

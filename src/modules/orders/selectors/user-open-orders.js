@@ -74,7 +74,10 @@ const userOpenOrders = memoize(
             orderCancellation
           );
 
-    return userAsks.concat(userBids);
+    const orders = userAsks.concat(userBids);
+    return orders.sort(
+      (a, b) => a.creationTime.timestamp - b.creationTime.timestamp
+    );
   },
   { max: 10 }
 );
@@ -117,6 +120,7 @@ function getUserOpenOrders(
       type: orderType,
       marketId,
       outcomeId,
+      creationTime: order.creationTime,
       pending: !!orderCancellation[order.orderId],
       orderCancellationStatus: orderCancellation[order.orderId],
       originalShares: formatNone(),

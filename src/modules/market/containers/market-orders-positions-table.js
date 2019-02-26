@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 
 import MarketOrdersPositionsTable from "modules/market/components/market-orders-positions-table/market-orders-positions-table";
 import { selectMarket } from "modules/markets/selectors/market";
-import { sortOpenOrders } from "modules/orders/selectors/open-orders";
 import { sellCompleteSets } from "modules/positions/actions/sell-complete-sets";
 import { cancelOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import {
@@ -24,29 +23,11 @@ import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";
 
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
-  let openOrders = [];
-  let positions = [];
+  let openOrders = market.userOpenOrders || [];
 
-  let pendingOrders = selectPendingOrdersState(state);
-  pendingOrders = pendingOrders[ownProps.marketId] || [];
-
-  if (market && market.outcomes && market.outcomes.length > 0) {
-    const newMarket = sortOpenOrders(market);
-    openOrders = newMarket.outcomes.reduce((p, outcome) => {
-      if (outcome.userOpenOrders && outcome.userOpenOrders.length > 0) {
-        outcome.userOpenOrders.forEach(order => p.push(order));
-      }
-      return p;
-    }, []);
-    positions = market.outcomes.reduce((p, outcome) => {
-      if (outcome.position) {
-        p.push(outcome.position);
-      }
-      return p;
-    }, []);
-  }
-
-  openOrders = openOrders.concat(pendingOrders);
+  const pendingOrders = selectPendingOrdersState(state);
+  const positions = market.userPositions || [];
+  openOrders = openOrders.concat(pendingOrders[ownProps.marketId] || []);
 
   const filteredOrphanOrders = selectOrphanOrders(state).filter(
     order => order.marketId === ownProps.marketId
@@ -74,9 +55,7 @@ const mapStateToProps = (state, ownProps) => {
   const filledOrders = selectFilledOrders(
     state.marketTradingHistory[ownProps.marketId],
     state.loginAccount.address,
-    market.marketType,
-    state.outcomesData[ownProps.marketId],
-    openOrders
+    state.outcomesData
   );
 
   return {

@@ -18,7 +18,7 @@ import {
   COMPLETE_SETS_SOLD
 } from "modules/common-elements/constants";
 import { clearTransactions } from "modules/transactions/actions/update-transactions-data";
-import { loadNotifications } from "modules/notifications/actions/notifications";
+import { loadAlerts } from "modules/alerts/actions/alerts";
 import { augur } from "services/augurjs";
 
 export const loadAccountHistory = (beginTime, endTime, type) => (
@@ -33,7 +33,7 @@ export const loadAccountHistory = (beginTime, endTime, type) => (
 
   loadTransactions(dispatch, getState, options, () => {
     dispatch(updateAppStatus(TRANSACTIONS_LOADING, false));
-    dispatch(loadNotifications());
+    dispatch(loadAlerts());
   });
 };
 

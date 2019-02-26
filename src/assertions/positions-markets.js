@@ -21,31 +21,8 @@ function assertPositionMarket(positionMarket) {
       expect(typeof positionMarket.description).toBe("string");
     });
 
-    positionMarket.myPositionOutcomes.forEach(positionOutcome =>
-      assertOutcome(positionOutcome)
-    );
-
     assertPositionMarketSummary(positionMarket.myPositionsSummary);
   });
-}
-
-function assertOutcome(outcome) {
-  expect(typeof outcome.id).toBe("number");
-  expect(typeof outcome.name).toBe("string");
-  assertFormattedNumber(
-    outcome.lastPrice,
-    "positionsMarkets.positionOutcomes[outcome].lastPrice"
-  );
-  assertPosition(outcome.position);
-}
-
-function assertPosition(position) {
-  assertFormattedNumber(position.numPositions, "position.numPositions");
-  assertFormattedNumber(position.qtyShares, "position.qtyShares");
-  assertFormattedNumber(position.purchasePrice, "position.purchasePrice");
-  assertFormattedNumber(position.unrealizedNet, "position.unrealizedNet");
-  assertFormattedNumber(position.realizedNet, "position.realizedNet");
-  assertFormattedNumber(position.totalNet, "position.totalNet");
 }
 
 function assertPositionMarketSummary(summary) {
