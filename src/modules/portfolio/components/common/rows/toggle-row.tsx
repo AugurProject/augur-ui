@@ -53,9 +53,10 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
               <span className={classNames(Styles.ToggleRow__arrowContainer, arrowClassName)}>
                 <ChevronFlip
                   containerClassName={Styles.ToggleRow__arrow}
-                  pointDown={!open}
+                  pointDown={open}
                   stroke="#fff"
                   quick
+                  filledInIcon
                 />
                </span>
             </div>

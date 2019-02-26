@@ -5,6 +5,8 @@ import classNames from "classnames";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/constants";
+import { CancelTextButton } from "modules/common-elements/buttons";
+import { SELL } from "modules/common-elements/constants";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
@@ -35,10 +37,12 @@ const OpenOrder = (props: OpenOrderProps) => {
           [Styles.Orders__row]: !isSingle,
         })}>
             <li>{openOrder.description || openOrder.name}</li>
-            <li>{openOrder.type}</li>
+            <li className={classNames(Styles.Order__type, {
+              [Styles.Order__typeSell]: openOrder.type === SELL
+            })}>{openOrder.type}</li>
             <li>{openOrder.unmatchedShares.formatted}</li>
             <li>{openOrder.avgPrice.formatted}</li>
-            <li>cancel</li>
+            <li><CancelTextButton text='Cancel' /></li>
           </ul>
         }
         toggleContent={

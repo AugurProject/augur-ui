@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import { LONG } from "modules/common-elements/constants";
+
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/constants";
@@ -24,7 +26,9 @@ const PositionRow = (props: PositionRowProps) => {
       rowContent={
         <ul className={classNames(Styles.Order, Styles.Position)}>
           <li>{position.outcomeName}</li>
-          <li>{position.type}</li>
+          <li className={classNames(Styles.Order__type, {
+            [Styles.Order__typeSell]: position.type === LONG
+          })}>{position.type}</li>
           <li>{position.purchasePrice.formatted}</li>
           <li>{position.purchasePrice.formatted}</li>
           <li>{position.purchasePrice.formatted}</li>

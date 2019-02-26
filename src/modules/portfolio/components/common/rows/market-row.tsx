@@ -39,7 +39,7 @@ export interface MarketRowProps {
 const MarketRow = (props: MarketRowProps) => (
   <div className={Styles.MarketRow__container}>
     <ToggleRow
-      arrowClassName={classNames({[Styles.MarketRow__Arrow]: props.showState})}
+      arrowClassName={classNames(Styles.MarketRow__Arrow, {[Styles.MarketRow__ArrowS]: props.showState})}
       rowContent={
         <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
           {props.showState && (
