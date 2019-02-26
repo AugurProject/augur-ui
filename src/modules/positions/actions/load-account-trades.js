@@ -2,9 +2,7 @@ import { parallel } from "async";
 import { augur } from "services/augurjs";
 import { addTradeTransactions } from "modules/transactions/actions/add-transactions";
 import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
-import {
-  loadAccountOrders
-} from "modules/orders/actions/load-account-orders";
+import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 import {
   updateAccountTradeData,

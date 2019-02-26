@@ -174,7 +174,6 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
       )
     );
     dispatch(updateOrder(log, false));
-
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
   }
