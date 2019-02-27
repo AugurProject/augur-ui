@@ -12,7 +12,6 @@ export const generateOutcomePositionSummary = memoize(
     }
     const {
       netPosition,
-      position,
       realized,
       unrealized,
       averagePrice,
@@ -22,8 +21,6 @@ export const generateOutcomePositionSummary = memoize(
     } = adjustedPosition;
 
     const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
-    console.log("position from augur-node", position);
-    console.log("netPosition from augur-node", netPosition);
     const quantity = createBigNumber(netPosition).abs();
     let totalCost = createBigNumber(quantity)
       .times(createBigNumber(averagePrice))

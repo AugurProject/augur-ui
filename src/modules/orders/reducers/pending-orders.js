@@ -11,7 +11,7 @@ export default function(pendingOrders = DEFAULT_STATE(), { type, data }) {
     case ADD_PENDING_ORDER: {
       const { pendingOrder, marketId } = data;
       const orders = pendingOrders[marketId] || [];
-      orders.push(pendingOrder);
+      if (pendingOrder) orders.push(pendingOrder);
 
       return {
         ...pendingOrders,
