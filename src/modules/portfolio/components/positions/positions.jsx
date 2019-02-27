@@ -3,10 +3,13 @@ import PropTypes from "prop-types";
 
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
-
-import MarketPositionsTable from "modules/portfolio/components/common/tables/market-positions-table";
+import { CompactButton } from "modules/common-elements/buttons";
+import { MovementLabel } from "modules/common-elements/labels";
+import { MarketPositionsTable } from "modules/portfolio/components/common/tables/market-positions-table";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
+
+import Styles from "modules/portfolio/components/common/rows/market-row.styles";
 
 const sortByOptions = [
   {
@@ -40,10 +43,12 @@ export default class Positions extends Component {
 
     this.state = {
       filteredMarkets: props.markets[ALL_MARKETS],
-      tab: ALL_MARKETS
+      tab: ALL_MARKETS,
+      showCurrentValue: true
     };
 
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
+    this.updateRightContentValue = this.updateRightContentValue.bind(this);
   }
 
   updateFilteredMarkets(filteredMarkets, tab) {
@@ -53,9 +58,13 @@ export default class Positions extends Component {
     }
   }
 
+  updateRightContentValue() {
+    this.setState({ showCurrentValue: !this.state.showCurrentValue });
+  }
+
   render() {
     const { markets, tabsInfo } = this.props;
-    const { filteredMarkets, tab } = this.state;
+    const { filteredMarkets, tab, showCurrentValue } = this.state;
 
     return (
       <FilterBox
@@ -69,6 +78,12 @@ export default class Positions extends Component {
         bottomTabs
         tabs={tabsInfo}
         label="Positions"
+        bottomRightContent={
+          <CompactButton
+            text={showCurrentValue ? "Current Value (ETH)" : "Total Returns"}
+            action={this.updateRightContentValue}
+          />
+        }
         rows={
           <div>
             {filteredMarkets.map(market => (
@@ -77,7 +92,27 @@ export default class Positions extends Component {
                 market={market}
                 showState={tab === ALL_MARKETS}
                 toggleContent={<MarketPositionsTable market={market} />}
-                rightContent={market.myPositionsSummary.currentValue.formatted}
+                rightContent={
+                  showCurrentValue ? (
+                    market.myPositionsSummary.currentValue.formatted
+                  ) : (
+                    <div className={Styles.MarketRow__column}>
+                      <span>
+                        {market.myPositionsSummary.totalReturns.formatted}
+                      </span>
+                      <MovementLabel
+                        showPercent
+                        showPlusMinus
+                        showColors
+                        size="small"
+                        value={
+                          market.myPositionsSummary.totalReturnsPercent
+                            .formatted
+                        }
+                      />
+                    </div>
+                  )
+                }
               />
             ))}
           </div>

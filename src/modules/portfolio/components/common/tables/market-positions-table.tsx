@@ -11,21 +11,37 @@ export interface MarketPositionsTableProps {
   market: Market;
 }
 
-const MarketPositionsTable = (props: MarketPositionsTableProps) => {
-  const { market } = props;
-  
-  return (
-    <div className={Styles.MarketPositionsTable}>
-      <PositionsHeader />
-      {market.userPositions.map((position: Position, index: number) => (
-        <PositionRow
-          key={"positionRow_" + position.marketId + position.outcomeId}
-          isFirst={index === 0}
-          position={position}
-        />
-      ))}
-    </div>
-  );
+export interface MarketPositionsTableState {
+  showPercent: boolean;
 }
 
-export default MarketPositionsTable;
+export class MarketPositionsTable extends React.Component<MarketPositionsTableProps, MarketPositionsTableState> {
+
+  state: MarketPositionsTableState = {
+    showPercent: true
+  };
+
+  updateShowPercent = () => {
+    this.setState({showPercent: !this.state.showPercent});
+  }
+
+  render() {
+   
+    const { market } = this.props;
+    const { showPercent } = this.state;
+  
+    return (
+      <div className={Styles.MarketPositionsTable}>
+        <PositionsHeader showPercent={showPercent} updateShowPercent={this.updateShowPercent} />
+        {market.userPositions.map((position: Position, index: number) => (
+          <PositionRow
+            key={"positionRow_" + position.marketId + position.outcomeId}
+            isFirst={index === 0}
+            position={position}
+            showPercent={showPercent}
+          />
+        ))}
+      </div>
+    );
+  }
+}

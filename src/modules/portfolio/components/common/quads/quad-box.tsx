@@ -3,8 +3,9 @@ import React, { ReactNode } from "react";
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { SquareDropdown } from "modules/common-elements/dropdown";
 import { SearchBar } from "modules/common-elements/search";
-import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
+
+import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
 export interface QuadBoxProps {
   title: string,

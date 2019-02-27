@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 
+import { CompactButton } from "modules/common-elements/buttons";
+// import { EthIcon, PercentIcon } from "modules/common/components/icons";
+
 import Styles from "modules/portfolio/components/common/headers/data-table-header.styles";
 import SharedStyles from "modules/portfolio/components/common/rows/open-order.styles";
 
-interface PositionsHeaderProps { 
+interface PositionsHeaderProps {
+  showPercent: Boolean; 
+  updateShowPercent: Function;
 }
 
 const PositionsHeader = (props: PositionsHeaderProps) => (
@@ -32,10 +37,17 @@ const PositionsHeader = (props: PositionsHeaderProps) => (
       Price
     </li>
     <li>
-      Total
-      <br />
-      Returns
+      <span>
+        Total
+        <br />
+        Returns
+      </span>
+      <CompactButton
+        text={props.showPercent ? "eth" : "%"}
+        action={props.updateShowPercent}
+      />
     </li>
+
   </ul>
 );
 
