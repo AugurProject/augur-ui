@@ -7,16 +7,18 @@ import { LONG } from "modules/common-elements/constants";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/constants";
+import { MovementLabel } from "modules/common-elements/labels";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
 export interface PositionRowProps {
   position: Order,
-  isFirst: Boolean
+  isFirst: Boolean,
+  showPercent: Boolean; 
 }
 
 const PositionRow = (props: PositionRowProps) => {
-  const { position, isFirst } = props;
+  const { position, isFirst, showPercent } = props;
 
   return (
     <ToggleRow
@@ -34,7 +36,19 @@ const PositionRow = (props: PositionRowProps) => {
           <li>{position.totalCost.formatted}</li>
           <li>{position.totalValue.formatted}</li>
           <li>{position.lastPrice.formatted}</li>
-          <li>{position.totalReturns.formatted}</li>
+          <li>
+            {showPercent ? 
+              <MovementLabel 
+                showPercent 
+                showBrackets
+                showPlusMinus 
+                showColors 
+                size={"medium"}
+                value={position.totalReturnsPercent.formatted}
+              />
+              : position.totalReturns.formatted
+            }
+           </li>
         </ul>
       }
       toggleContent={

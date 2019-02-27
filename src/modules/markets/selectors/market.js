@@ -508,6 +508,39 @@ export function assembleMarket(
                 createBigNumber(0)
               )
             );
+
+            market.userPositions = market.userPositions.map(position => {
+              const totalCost = createBigNumber(position.totalCost.value);
+              const currentValue = createBigNumber(
+                market.myPositionsSummary.currentValue.value
+              );
+              const totalReturnsPercent = currentValue
+                .minus(totalCost)
+                .dividedBy(totalCost)
+                .times(100);
+              return {
+                ...position,
+                totalReturnsPercent: formatPercent(
+                  position.totalCost.value === 0 ? ZERO : totalReturnsPercent
+                )
+              };
+            });
+
+            market.myPositionsSummary.totalReturns = formatEther(
+              market.userPositions.reduce(
+                (p, position) =>
+                  createBigNumber(position.totalReturns.value).plus(p),
+                createBigNumber(0)
+              )
+            );
+
+            market.myPositionsSummary.totalReturnsPercent = formatPercent(
+              market.userPositions.reduce(
+                (p, position) =>
+                  createBigNumber(position.totalReturnsPercent.value).plus(p),
+                createBigNumber(0)
+              )
+            );
           }
         }
 

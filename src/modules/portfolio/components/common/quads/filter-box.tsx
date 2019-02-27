@@ -11,6 +11,8 @@ import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 
+import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
+
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
 }
@@ -28,6 +30,7 @@ export interface FilterBoxProps {
   bottomTabs?: Boolean;
   tabs: Array<Tab>;
   label: string;
+  bottomRightContent?: ReactNode;
 }
 
 interface FilterBoxState {
@@ -45,6 +48,13 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     tabs: this.props.tabs,
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
   };
+
+  // componentWillUpdate(nextProps, nextState) {
+  //   if (nextProps.filteredData.length !== this.props.filteredData.length) {
+  //     const filteredData = this.applySearch(this.state.search, nextProps.filteredData);
+  //     this.props.updateFilteredData(filteredData);
+  //   }
+  // }
 
   calculateTabNums = (data: MarketsByReportingState, input: string) => {
    const { filterComp } = this.props;
@@ -120,7 +130,8 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       updateFilteredData,
       filterComp,
       filteredData,
-      label
+      label,
+      bottomRightContent
     } = this.props;
 
     const { search, selectedTab, tabs } = this.state;
@@ -134,7 +145,12 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         sortByOptions={sortByOptions}
         updateDropdown={this.updateSortBy}
         label={filteredData.length + " " + label}
-        bottomBarContent={bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>}
+        bottomBarContent={bottomTabs && 
+          <div className={Styles.FilterBox__bottomRow}>
+            <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
+            {bottomRightContent && bottomRightContent}
+          </div>
+        }
         rows={rows}
         search={search}
       />
