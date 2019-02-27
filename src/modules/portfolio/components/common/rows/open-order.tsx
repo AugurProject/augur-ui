@@ -43,7 +43,11 @@ const OpenOrder = (props: OpenOrderProps) => {
             })}>{openOrder.type}</li>
             <li>{openOrder.unmatchedShares.formatted}</li>
             <li>{openOrder.avgPrice.formatted}</li>
-            <li><CancelTextButton text='Cancel' /></li>
+            <li>
+              <CancelTextButton disabled={openOrder.pending} onClick={e => {
+                openOrder.cancelOrder(openOrder);
+              }} text='Cancel' />
+            </li>
           </ul>
         }
         toggleContent={
