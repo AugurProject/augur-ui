@@ -11,12 +11,14 @@ export interface Notifications {
   isImportant: boolean;
   isNew: boolean;
   title: string;
+  marketId: string;
   buttonLabel: string;
   buttonAction: Function;
-  marketName?: string;
+  marketName: string;
   round?: number;
   amount?: number;
-  countDown: Date;
+  countDown?: Date;
+  type: string;
   Template: React.StatelessComponent<any>;
 }
 
