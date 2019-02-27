@@ -4,7 +4,7 @@ import { createBigNumber } from "utils/create-big-number";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
-import { filter, keys, each, isEqual } from "lodash";
+import { isEqual } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
@@ -163,14 +163,14 @@ export default class MarketOutcomesChartHighchart extends Component {
     });
   };
 
-  getxAxisProperties = daysPassed => {
+  getxAxisProperties = (daysPassed, useTickInterval) => {
     const hours = "{value:%H:%M}";
     const days = "{value:%b %d}";
     let interval = 604800; // weekly
     if (daysPassed < 2) interval = 10800; // show every 3rd hour
     if (daysPassed > 14 && daysPassed < 30) interval = 86400;
     return {
-      tickInterval: interval * 1000, // add milliseconds
+      tickInterval: useTickInterval ? interval * 1000 : 0, // add milliseconds
       labels: {
         format: interval === 10800 ? hours : days
       },
@@ -188,10 +188,19 @@ export default class MarketOutcomesChartHighchart extends Component {
     const { options } = this.state;
     const { isScalar, scalarDenomination } = this.props;
     const { priceTimeSeries } = bucketedPriceTimeSeries;
+
+    const highestLength = Object.keys(priceTimeSeries).reduce(
+      (p, id) =>
+        priceTimeSeries[id].length > p ? priceTimeSeries[id].length : p,
+      0
+    );
     const timeIncrement =
       daysPassed > NUM_DAYS_TO_USE_DAY_TIMEFRAME ? "day" : "hour";
 
-    const xAxisProperties = this.getxAxisProperties(daysPassed);
+    const xAxisProperties = this.getxAxisProperties(
+      daysPassed,
+      highestLength > 1 // don't use tickInterval if there is only 1 data point
+    );
     if (Array.isArray(options.xAxis)) {
       options.xAxis = Object.assign(options.xAxis[0], xAxisProperties);
     } else {
@@ -204,15 +213,17 @@ export default class MarketOutcomesChartHighchart extends Component {
       width: this.container.clientWidth - 10
     };
 
-    const useArea = priceTimeSeries && keys(priceTimeSeries).length === 1;
+    const useArea =
+      priceTimeSeries && Object.keys(priceTimeSeries).length === 1;
     const hasData =
       priceTimeSeries &&
-      keys(priceTimeSeries) &&
-      filter(keys(priceTimeSeries), key => priceTimeSeries[key].length > 0)
-        .length;
+      Object.keys(priceTimeSeries) &&
+      Object.keys(priceTimeSeries).filter(
+        key => priceTimeSeries[key].length > 0
+      ).length;
 
     const series = [];
-    each(keys(priceTimeSeries), id => {
+    Object.keys(priceTimeSeries).forEach(id => {
       series.push({
         type: useArea ? "area" : "line",
         lineWidth:
