@@ -32,18 +32,19 @@
 .SecondaryButton {
   .Button;
 
-  background: @color-secondary-button-background;
-  color: @color-secondary-text;
+  background: transparent;
+  border: 1px solid @color-primary-light;
+  color: @color-neutral;
   max-height: @button-height-default;
   padding: @size-12 @size-24;
 
   &:disabled {
-    background: @color-secondary-button-background-disabled;
+    background: @color-alternate-text;
   }
 
   &:hover:enabled {
-    background: @color-secondary-button-background-hover;
-    
+    background: @color-primary-light;
+    color: @color-secondary-text;
   }
 }
 

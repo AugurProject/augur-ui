@@ -10,9 +10,9 @@
 }
 
 .MainErrorBoundary__container {
-  // background-color: white;
   background: @color-tertiary-background;
-  border-radius: 0.32rem;
+  border: 1px solid @color-primary-light;
+  border-radius: @border-radius-default;
   color: @color-secondary-text;
   display: flex;
   flex-flow: column;
@@ -40,13 +40,14 @@
 }
 
 .MainErrorBoundary__buttons {
-  // border-top: 1px solid #d8d8d8;
   align-items: center;
+  border-top: 1px solid @color-primary-background;
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   padding: 1.5rem 0 0;
 
+  > a,
   > button {
     margin: auto;
   }

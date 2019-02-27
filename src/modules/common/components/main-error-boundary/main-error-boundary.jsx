@@ -6,6 +6,7 @@ import { DEFAULT_VIEW } from "modules/routes/constants/views";
 import { SecondaryButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/common/components/main-error-boundary/main-error-boundary.styles";
+import ButtonStyles from "modules/common-elements/buttons.styles";
 
 export default class MainErrorBoundary extends Component {
   static propTypes = {
@@ -47,7 +48,7 @@ export default class MainErrorBoundary extends Component {
                 action={() => window.location.reload()}
               />
               <Link
-                className={Styles.MainErrorBoundary__return}
+                className={ButtonStyles.PrimaryButton}
                 to={{
                   pathname: makePath(DEFAULT_VIEW)
                 }}
