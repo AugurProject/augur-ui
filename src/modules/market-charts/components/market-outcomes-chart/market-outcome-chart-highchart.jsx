@@ -177,8 +177,7 @@ export default class MarketOutcomesChartHighchart extends Component {
       crosshair: {
         snap: true,
         label: {
-          enabled: true,
-          format: interval === 10800 ? hours : days
+          enabled: true
         }
       }
     };
