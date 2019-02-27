@@ -209,7 +209,7 @@ export default class MarketPortfolioCard extends Component {
               <div className={Styles.MarketCard__stat}>
                 <span className={Styles.MarketCard__statlabel}>Total P/L</span>
                 <span className={Styles.MarketCard__statvalue}>
-                  {getValue(myPositionsSummary, "totalNet.formatted") || "0"}
+                  {getValue(myPositionsSummary, "totalValue.formatted") || "0"}
                 </span>
                 <span className={Styles.MarketCard__statunit}>ETH</span>
               </div>
