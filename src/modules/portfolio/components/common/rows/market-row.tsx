@@ -5,10 +5,8 @@ import classNames from "classnames";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row.tsx";
 import { MarketStatusLabel } from "modules/common-elements/labels";
 import MarketLink from "modules/market/components/market-link/market-link";
+
 import Styles from "modules/portfolio/components/common/rows/market-row.styles";
-// todo: MarketRow__time will end up being a passed in prop
-// info toggle content will be passed in as a child
-// maybe will have a boolean for whether it is extendable because the watchlist one is different
 
 export interface TimeObject {
   formattedShortDate: string;

@@ -35,14 +35,15 @@ const mapStateToProps = state => {
     filledOrders: selectFilledOrders(
       groupedFilledOrders[item.id],
       account,
-      outcomesData
+      outcomesData,
+      marketsData
     )
   }));
 
   /* eslint-disable */
   let allFilledOrders = [];
   marketIds.map(marketId => {
-    const formattedFilledOrders = selectFilledOrders(marketTradingHistory[marketId], account, outcomesData);
+    const formattedFilledOrders = selectFilledOrders(marketTradingHistory[marketId], account, outcomesData, marketsData);
     Array.prototype.push.apply(allFilledOrders, formattedFilledOrders);
   });
   /* eslint-disable */

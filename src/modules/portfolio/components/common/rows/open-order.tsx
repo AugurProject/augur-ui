@@ -7,6 +7,7 @@ import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/constants";
 import { CancelTextButton } from "modules/common-elements/buttons";
 import { SELL } from "modules/common-elements/constants";
+import MarketLink from "modules/market/components/market-link/market-link";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
@@ -19,6 +20,7 @@ export interface OpenOrderProps {
 
 const OpenOrder = (props: OpenOrderProps) => {
   const { openOrder, isSingle } = props;
+
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
@@ -49,17 +51,27 @@ const OpenOrder = (props: OpenOrderProps) => {
           <div className={Styles.OpenOrder_infoContainer}>
             <div className={Styles.OpenOrder_innerInfoContainer}>
               <div className={Styles.OpenOrder__info}>
-                <LinearPropertyLabel
-                  label="Frozen Funds (ETH)"
-                  value={`${openOrder.unmatchedShares.formatted}`}
-                />
-                <LinearPropertyLabel
-                  label="Total Cost (Shares)"
-                  value={`${openOrder.unmatchedShares.formatted}`}
-                />
+                {isSingle && 
+                  <span>
+                    <span>Market:</span>
+                    <MarketLink id={openOrder.marketId}>
+                      {openOrder.markeDescription}
+                    </MarketLink>
+                  </span>
+                }
+                <div className={Styles.OpenOrder__labels}>
+                  <LinearPropertyLabel
+                    label="Frozen Funds (ETH)"
+                    value={`${openOrder.unmatchedShares.formatted}`}
+                  />
+                  <LinearPropertyLabel
+                    label="Total Cost (Shares)"
+                    value={`${openOrder.unmatchedShares.formatted}`}
+                  />
+                </div>
               </div>
               <div className={Styles.OpenOrder__timestamp}>
-                timestamp
+                {openOrder.creationTime.formattedShort}
               </div>
             </div>
           </div>

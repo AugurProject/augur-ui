@@ -4,10 +4,22 @@
   background-color: @color-tertiary-background;
   color: white;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-grow: 1;
   position: relative;
   width: 100%;
+
+  > span {
+    color: @color-white;
+    font-size: @size-11;
+    font-weight: 500;
+    padding: 0.875rem 1.5rem;
+
+    > a > span {
+      color: @color-neutral;
+      font-weight: 400;
+    }
+  }
 }
 
 .FilledOrdersTable__inner {

@@ -330,8 +330,6 @@ export function assembleMarket(
             )
         };
 
-        // moving to one collection instead of each outcome having a postion collection
-        // outcome positions will be removed
         market.userPositions = Object.values(marketAccountPositions || []).map(
           position => {
             const outcome = market.outcomes[position.outcome];
@@ -350,7 +348,6 @@ export function assembleMarket(
           }
         );
 
-        // same as positions, moving open orders from outcomes to top level array
         market.userOpenOrders =
           Object.keys(marketOutcomesData || {})
             .map(outcomeId =>
@@ -358,11 +355,13 @@ export function assembleMarket(
                 market.id,
                 outcomeId,
                 orderBooks,
-                orderCancellation
+                orderCancellation,
+                market.desciption
               )
             )
             .filter(collection => collection.length !== 0)
             .flat() || [];
+
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
             const outcomeData = marketOutcomesData[outcomeId];

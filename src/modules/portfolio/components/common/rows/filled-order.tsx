@@ -57,7 +57,7 @@ const FilledOrder = (props: FilledOrderProps) => {
             </ul>
           }
           toggleContent={
-            <FilledOrdersTable filledOrder={filledOrder} />
+            <FilledOrdersTable filledOrder={filledOrder} showMarketInfo={isSingle} />
           }
         />
     </div>
