@@ -338,13 +338,10 @@ export function assembleMarket(
               market.maxPrice,
               outcome
             );
-            let outcomeName = market.isYesNo
-              ? YES_NO_YES_OUTCOME_NAME
-              : outcome.description;
-            if (market.isScalar) {
-              outcomeName = market.scalarDenomination;
-            }
-            return { ...positionSummary, outcomeName };
+            return {
+              ...positionSummary,
+              outcomeName: getOutcomeName(market, outcome)
+            };
           }
         );
 
@@ -356,7 +353,8 @@ export function assembleMarket(
                 outcomeId,
                 orderBooks,
                 orderCancellation,
-                market.desciption
+                market.desciption,
+                getOutcomeName(market, marketOutcomesData[outcomeId])
               )
             )
             .filter(collection => collection.length !== 0)
@@ -572,4 +570,14 @@ export const selectScalarMinimum = market => {
   if (market && market.type === SCALAR)
     scalarMinimum.minPrice = market.minPrice;
   return scalarMinimum;
+};
+
+const getOutcomeName = (market, outcome) => {
+  let outcomeName = market.isYesNo
+    ? YES_NO_YES_OUTCOME_NAME
+    : outcome.description;
+  if (market.isScalar) {
+    outcomeName = market.scalarDenomination;
+  }
+  return outcomeName;
 };

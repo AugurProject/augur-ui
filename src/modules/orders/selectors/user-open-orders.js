@@ -16,7 +16,8 @@ export function selectUserOpenOrders(
   outcomeId,
   marketOrderBook,
   orderCancellation,
-  desciption
+  desciption,
+  name
 ) {
   const { loginAccount } = store.getState();
   if (!loginAccount.address || marketOrderBook == null) return [];
@@ -27,7 +28,8 @@ export function selectUserOpenOrders(
     loginAccount,
     marketOrderBook,
     orderCancellation,
-    desciption
+    desciption,
+    name
   );
 }
 
@@ -38,7 +40,8 @@ const userOpenOrders = memoize(
     loginAccount,
     marketOrderBook,
     orderCancellation,
-    description
+    description,
+    name
   ) => {
     const orderData = marketOrderBook[outcomeId];
 
@@ -52,7 +55,8 @@ const userOpenOrders = memoize(
             outcomeId,
             loginAccount.address,
             orderCancellation,
-            description
+            description,
+            name
           );
     const userAsks =
       orderData == null || orderData.sell == null
@@ -64,7 +68,8 @@ const userOpenOrders = memoize(
             outcomeId,
             loginAccount.address,
             orderCancellation,
-            description
+            description,
+            name
           );
 
     const orders = userAsks.concat(userBids);
@@ -82,7 +87,8 @@ function getUserOpenOrders(
   outcomeId,
   userId,
   orderCancellation = {},
-  desciption = ""
+  desciption = "",
+  name = ""
 ) {
   const typeOrders = orders[orderType];
 
@@ -111,6 +117,7 @@ function getUserOpenOrders(
       tokensEscrowed: formatEther(order.tokensEscrowed),
       sharesEscrowed: formatShares(order.sharesEscrowed),
       desciption,
+      name,
       cancelOrder: ({ id, marketId, outcomeId, type }) => {
         store.dispatch(
           cancelOrder({
