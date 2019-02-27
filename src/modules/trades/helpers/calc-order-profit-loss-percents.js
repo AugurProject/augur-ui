@@ -129,10 +129,12 @@ export const calcOrderShareProfitLoss = (
   const marketRange = max.minus(min).abs();
 
   const displayLimit = createBigNumber(limitPrice, 10);
-  const userAveragePrice = createBigNumber(sharesFilledAvgPrice, 10);
-  const totalUserShareCost = userAveragePrice.times(
-    createBigNumber(shareCost).times(marketRange)
-  );
+  const userAveragePrice =
+    sharesFilledAvgPrice && createBigNumber(sharesFilledAvgPrice, 10);
+  const totalUserShareCost =
+    (sharesFilledAvgPrice &&
+      userAveragePrice.times(createBigNumber(shareCost).times(marketRange))) ||
+    0;
 
   const sharePriceLong = displayLimit.minus(min).dividedBy(marketRange);
   const sharePriceShort = max.minus(displayLimit).dividedBy(marketRange);

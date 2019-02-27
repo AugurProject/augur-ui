@@ -1,14 +1,11 @@
 @import (reference) "~assets/styles/shared";
 
-.MarketOutcomeChartsHeader__chart-interaction {
+.MarketOutcomeChartsHeader__chart__interaction {
   align-items: center;
   display: flex;
+  justify-content: space-around;
   margin: 0.875rem;
   padding: 0 0.5rem;
-
-  div:first-of-type {
-    flex: 1;
-  }
 }
 
 .MarketOutcomeChartsHeader__label_hover {
@@ -18,19 +15,12 @@
 }
 
 .MarketOutcomeChartsHeader__label_container {
-  margin-right: 4.375rem;
-
   > div {
     width: 9.375rem;
   }
 }
 
-.MarketOutcomeChartsHeader__selector {
-  margin-left: 8px;
-  margin-right: 72px;
-}
-
-.MarketOutcomeChartsHeader__selector--mobile {
+.MarketOutcomeChartsHeader__selector__mobile {
   display: flex;
   flex-basis: 100%;
   justify-content: flex-end;
@@ -60,7 +50,7 @@ span.MarketOutcomeChartsHeader__stat {
 }
 
 div.MarketOutcomeChartsHeader__stats {
-  justify-content: normal;
+  justify-content: center;
 }
 
 .MarketOutcomeCandlestick {

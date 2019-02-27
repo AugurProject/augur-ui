@@ -14,12 +14,11 @@ export default class MarketPositionsListPosition extends Component {
   static propTypes = {
     outcomeName: PropTypes.string.isRequired,
     position: PropTypes.shape({
-      netPosition: PropTypes.object,
-      position: PropTypes.object,
+      quantity: PropTypes.object,
       purchasePrice: PropTypes.object,
       unrealizedNet: PropTypes.object,
       realizedNet: PropTypes.object,
-      totalNet: PropTypes.object
+      totalValue: PropTypes.object
     }).isRequired,
     isExtendedDisplay: PropTypes.bool.isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -36,7 +35,7 @@ export default class MarketPositionsListPosition extends Component {
 
   static calcAvgDiff(position, order) {
     const positionAvg = getValue(position, "avgPrice.formattedValue") || 0;
-    const positionShares = getValue(position, "position.formattedValue") || 0;
+    const positionShares = getValue(position, "quantity.formattedValue") || 0;
 
     const orderPrice = getValue(order, "purchasePrice.formattedValue") || 0;
     const orderShares = getValue(order, "qtyShares.formattedValue") || 0;
@@ -60,8 +59,7 @@ export default class MarketPositionsListPosition extends Component {
       updateSelectedOrderProperties
     } = this.props;
 
-    const netPositionShares = getValue(position, "netPosition.formatted");
-    const positionShares = getValue(position, "position.formatted");
+    const quantity = getValue(position, "quantity.formatted");
 
     return (
       <button
@@ -75,7 +73,7 @@ export default class MarketPositionsListPosition extends Component {
           e.preventDefault();
           updateSelectedOrderProperties &&
             updateSelectedOrderProperties({
-              orderQuantity: createBigNumber(position.netPosition.fullPrecision)
+              orderQuantity: createBigNumber(position.quantity.fullPrecision)
                 .abs()
                 .toString(),
               selectedNav: position.type === LONG ? SELL : BUY
@@ -96,8 +94,8 @@ export default class MarketPositionsListPosition extends Component {
         >
           <li>{outcomeName}</li>
           {hasOrders && <li />}
-          <li>{netPositionShares}</li>
-          <li>{positionShares}</li>
+          <li>{quantity}</li>
+          <li>{quantity}</li>
           <li>{getValue(position, "purchasePrice.formatted")}</li>
           {!isMobile &&
             isExtendedDisplay && (
@@ -114,7 +112,7 @@ export default class MarketPositionsListPosition extends Component {
           )}
           {!isMobile && <li>{getValue(position, "realizedNet.formatted")} </li>}
           {isExtendedDisplay && (
-            <li>{getValue(position, "totalNet.formatted")}</li>
+            <li>{getValue(position, "totalValue.formatted")}</li>
           )}
         </ul>
       </button>

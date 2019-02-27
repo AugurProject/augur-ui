@@ -334,8 +334,12 @@ export function assembleMarket(
         // outcome positions will be removed
         market.userPositions = Object.values(marketAccountPositions || []).map(
           position => {
-            const positionSummary = generateOutcomePositionSummary(position);
             const outcome = market.outcomes[position.outcome];
+            const positionSummary = generateOutcomePositionSummary(
+              position,
+              market.maxPrice,
+              outcome
+            );
             let outcomeName = market.isYesNo
               ? YES_NO_YES_OUTCOME_NAME
               : outcome.description;
@@ -436,20 +440,6 @@ export function assembleMarket(
             outcome.topBid = selectTopBid(orderBook, false);
             outcome.topAsk = selectTopAsk(orderBook, false);
 
-            outcome.userOpenOrders = selectUserOpenOrders(
-              marketId,
-              outcomeId,
-              orderBooks,
-              orderCancellation
-            );
-            if (outcome.userOpenOrders)
-              outcome.userOpenOrders.forEach(item => {
-                item.name = outcome.name;
-                if (market.isScalar) {
-                  item.name = market.scalarDenomination;
-                }
-              });
-
             outcome.priceTimeSeries = selectPriceTimeSeries(
               outcome,
               marketPriceHistory
@@ -511,6 +501,15 @@ export function assembleMarket(
           if (numCompleteSets) {
             market.myPositionsSummary.numCompleteSets = formatShares(
               numCompleteSets
+            );
+          }
+          if (market.userPositions.length > 0) {
+            market.myPositionsSummary.currentValue = formatEther(
+              market.userPositions.reduce(
+                (p, position) =>
+                  createBigNumber(position.totalValue.value).plus(p),
+                createBigNumber(0)
+              )
             );
           }
         }
