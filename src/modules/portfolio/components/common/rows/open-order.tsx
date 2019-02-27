@@ -54,11 +54,11 @@ const OpenOrder = (props: OpenOrderProps) => {
           <div className={Styles.OpenOrder_infoContainer}>
             <div className={Styles.OpenOrder_innerInfoContainer}>
               <div className={Styles.OpenOrder__info}>
-                {isSingle && 
+                {isSingle &&
                   <span>
                     <span>Market:</span>
                     <MarketLink id={openOrder.marketId}>
-                      {openOrder.description}
+                      {openOrder.marketDescription}
                     </MarketLink>
                   </span>
                 }
