@@ -54,7 +54,7 @@ const OpenOrder = (props: OpenOrderProps) => {
                   <span>
                     <span>Market:</span>
                     <MarketLink id={openOrder.marketId}>
-                      {openOrder.desciption}
+                      {openOrder.description}
                     </MarketLink>
                   </span>
                 }

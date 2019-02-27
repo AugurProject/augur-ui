@@ -16,7 +16,7 @@ export function selectUserOpenOrders(
   outcomeId,
   marketOrderBook,
   orderCancellation,
-  desciption,
+  description,
   name
 ) {
   const { loginAccount } = store.getState();
@@ -28,7 +28,7 @@ export function selectUserOpenOrders(
     loginAccount,
     marketOrderBook,
     orderCancellation,
-    desciption,
+    description,
     name
   );
 }
@@ -87,7 +87,7 @@ function getUserOpenOrders(
   outcomeId,
   userId,
   orderCancellation = {},
-  desciption = "",
+  description = "",
   name = ""
 ) {
   const typeOrders = orders[orderType];
@@ -116,7 +116,7 @@ function getUserOpenOrders(
       unmatchedShares: formatShares(order.amount),
       tokensEscrowed: formatEther(order.tokensEscrowed),
       sharesEscrowed: formatShares(order.sharesEscrowed),
-      desciption,
+      description,
       name,
       cancelOrder: ({ id, marketId, outcomeId, type }) => {
         store.dispatch(
