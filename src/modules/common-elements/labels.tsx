@@ -2,8 +2,8 @@ import React from "react";
 import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
 import Styles from "modules/common-elements/labels.styles";
-import {ClipLoader} from "react-spinners";
-import {MarketIcon, InfoIcon} from "modules/common-elements/icons";
+import { ClipLoader } from "react-spinners";
+import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
@@ -61,6 +61,7 @@ export interface PropertyLabelProps {
 export interface LinearPropertyLabelProps {
   label: string;
   value: string;
+  accentValue?: boolean;
 }
 
 export interface PillLabelProps {
@@ -97,12 +98,18 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 );
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
-  <div
-    className={Styles.LinearPropertyLabel}
-  >
+  <div className={Styles.LinearPropertyLabel}>
     <span>{props.label}</span>
     <DashlineNormal />
-    <span>{props.value}</span>
+    <span
+      className={
+        (classNames({
+          [Styles.isAccented]: props.accentValue
+        }))
+      }
+    >
+      {props.value}
+    </span>
   </div>
 );
 
@@ -113,7 +120,7 @@ export const MarketTypeLabel = (props: MarketTypeProps) => (
 );
 
 export const MarketStatusLabel = (props: MarketStatusProps) => {
-  const {marketStatus, mini, alternate} = props;
+  const { marketStatus, mini, alternate } = props;
   let open: boolean = false;
   let resolved: boolean = false;
   let reporting: boolean = false;
@@ -246,8 +253,8 @@ export const MovementLabel = (props: MovementLabelProps) => {
       className={Styles.MovementLabel}
       style={
         showIcon
-          ? {...props.styles, justifyContent: "space-between"}
-          : {...props.styles, justifyContent: "flex-end"}
+          ? { ...props.styles, justifyContent: "space-between" }
+          : { ...props.styles, justifyContent: "flex-end" }
       }
     >
       {showIcon &&

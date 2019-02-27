@@ -57,6 +57,11 @@ export default class MarketOutcomesChartHighchart extends Component {
               forced: true,
               units: [["day", [1]]]
             }
+          },
+          series: {
+            marker: {
+              enabled: true
+            }
           }
         },
         scrollbar: { enabled: false },

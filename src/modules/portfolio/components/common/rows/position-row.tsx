@@ -29,12 +29,12 @@ const PositionRow = (props: PositionRowProps) => {
           <li className={classNames(Styles.Order__type, {
             [Styles.Order__typeSell]: position.type === LONG
           })}>{position.type}</li>
+          <li>{position.quantity.formatted}</li>
           <li>{position.purchasePrice.formatted}</li>
-          <li>{position.purchasePrice.formatted}</li>
-          <li>{position.purchasePrice.formatted}</li>
-          <li>{position.purchasePrice.formatted}</li>
-          <li>{position.purchasePrice.formatted}</li>
-          <li>{position.totalNet.formatted}</li>
+          <li>{position.totalCost.formatted}</li>
+          <li>{position.totalValue.formatted}</li>
+          <li>{position.lastPrice.formatted}</li>
+          <li>{position.totalReturns.formatted}</li>
         </ul>
       }
       toggleContent={

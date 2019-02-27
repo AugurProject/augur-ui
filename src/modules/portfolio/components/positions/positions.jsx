@@ -77,6 +77,7 @@ export default class Positions extends Component {
                 market={market}
                 showState={tab === ALL_MARKETS}
                 toggleContent={<MarketPositionsTable market={market} />}
+                rightContent={market.myPositionsSummary.currentValue.formatted}
               />
             ))}
           </div>

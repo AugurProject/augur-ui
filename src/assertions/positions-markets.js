@@ -31,5 +31,5 @@ function assertPositionMarketSummary(summary) {
     "myPositionsSummary.unrealizedNet"
   );
   assertFormattedNumber(summary.realizedNet, "myPositionsSummary.realizedNet");
-  assertFormattedNumber(summary.totalNet, "myPositionsSummary.totalNet");
+  assertFormattedNumber(summary.totalValue, "myPositionsSummary.totalValue");
 }

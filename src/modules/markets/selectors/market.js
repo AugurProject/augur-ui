@@ -334,8 +334,12 @@ export function assembleMarket(
         // outcome positions will be removed
         market.userPositions = Object.values(marketAccountPositions || []).map(
           position => {
-            const positionSummary = generateOutcomePositionSummary(position);
             const outcome = market.outcomes[position.outcome];
+            const positionSummary = generateOutcomePositionSummary(
+              position,
+              market.maxPrice,
+              outcome
+            );
             let outcomeName = market.isYesNo
               ? YES_NO_YES_OUTCOME_NAME
               : outcome.description;
@@ -513,6 +517,15 @@ export function assembleMarket(
           if (numCompleteSets) {
             market.myPositionsSummary.numCompleteSets = formatShares(
               numCompleteSets
+            );
+          }
+          if (market.userPositions.length > 0) {
+            market.myPositionsSummary.currentValue = formatEther(
+              market.userPositions.reduce(
+                (p, position) =>
+                  createBigNumber(position.totalValue.value).plus(p),
+                createBigNumber(0)
+              )
             );
           }
         }
