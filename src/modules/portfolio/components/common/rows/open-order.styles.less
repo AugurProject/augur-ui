@@ -12,16 +12,18 @@
     flex-grow: 1;
     font-family: @roboto-mono;
     font-size: 0.687rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 
     &:first-child {
       .text-12-bold;
 
       color: @color-less-neutral;
+      display: block;
       font-family: @roboto;
       font-weight: 500;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &:nth-of-type(2) {
