@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { LinearPropertyLabel } from "modules/common-elements/labels";
+import { LinearPropertyLabel, PendingLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/constants";
 import { CancelTextButton } from "modules/common-elements/buttons";
@@ -20,6 +20,9 @@ export interface OpenOrderProps {
 
 const OpenOrder = (props: OpenOrderProps) => {
   const { openOrder, isSingle } = props;
+  if (openOrder.pending || openOrder.pendingOrder || openOrder.orderCancellationStatus) {
+    console.log(openOrder)
+  }
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
@@ -40,10 +43,18 @@ const OpenOrder = (props: OpenOrderProps) => {
             <li>{openOrder.description || openOrder.name}</li>
             <li className={classNames(Styles.Order__type, {
               [Styles.Order__typeSell]: openOrder.type === SELL
-            })}>{openOrder.type}</li>
+            })}>
+              {openOrder.type}
+              {openOrder.pending && <span><PendingLabel /></span>}
+            </li>
             <li>{openOrder.unmatchedShares.formatted}</li>
             <li>{openOrder.avgPrice.formatted}</li>
-            <li><CancelTextButton text='Cancel' /></li>
+            <li>
+              <CancelTextButton disabled={openOrder.pending} action={e => {
+                e.stopPropagation();
+                openOrder.cancelOrder(openOrder);
+              }} text='Cancel' />
+            </li>
           </ul>
         }
         toggleContent={

@@ -5,7 +5,10 @@ export interface NameValuePair {
 }
 
 export interface Order {
-	id: number
+	id: number,
+  pending?: Boolean,
+  pendingOredr?: Boolean,
+  orderCancellationStatus?: string,
 }
 
 export interface FilledOrderInterface {
