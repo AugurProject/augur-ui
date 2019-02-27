@@ -27,7 +27,7 @@ const PositionRow = (props: PositionRowProps) => {
         <ul className={classNames(Styles.Order, Styles.Position)}>
           <li>{position.outcomeName}</li>
           <li className={classNames(Styles.Order__type, {
-            [Styles.Order__typeSell]: position.type === LONG
+            [Styles.Order__typeSell]: position.type !== LONG
           })}>{position.type}</li>
           <li>{position.quantity.formatted}</li>
           <li>{position.purchasePrice.formatted}</li>
