@@ -1,27 +1,27 @@
 @import (reference) '~assets/styles/shared';
 
 .PortfolioView {
-  height: 100%;
-}
-
-.PortfolioView__views {
   display: flex;
   flex: 1;
-  flex-flow: row wrap;
-  height: 100%;
   margin: 1.25rem;
+  margin-bottom: 0;
 
   > div {
     display: flex;
-    //flex-basis: calc(50% - 2.5rem);
+    flex: 1;
     flex-direction: column;
     margin: 1.25rem;
-    max-height: 500px;
-    min-height: 100px;
 
     > div {
       display: flex;
       flex-direction: column;
+      margin-bottom: 2.5rem;
+      max-height: 37.5rem;
+      min-height: 6.25rem;
+
+      &:last-of-type {
+        margin-bottom: 1.25rem;
+      }
     }
   }
 }
