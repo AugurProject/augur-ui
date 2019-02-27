@@ -1,10 +1,13 @@
 import React from "react";
 
+import MarketLink from "modules/market/components/market-link/market-link";
+
 import Styles from "modules/common-elements/notifications.styles";
 
 export interface TemplateProps {
   countDown?: Date; // TODO
   marketName: string;
+  marketId: string;
   message: string;
   amount?: number;
   round?: number;
@@ -17,7 +20,11 @@ export const Template = (props: TemplateProps) => {
   if (parts.length > 1) {
     body = (
       <span>
-        {parts[0]} {wrapMarketName(props.marketName)} {parts[1]}
+        {parts[0]}
+        <MarketLink id={props.marketId}>
+          {wrapMarketName(props.marketName)}
+        </MarketLink>
+        {parts[1]}
       </span>
     );
   } else {
@@ -48,6 +55,7 @@ export const OpenOrdersResolvedMarketsTemplate = (props: TemplateProps) => (
       props.marketName
     } Please review and cancel these orders to release your ETH.`}
     marketName={props.marketName}
+    marketId={props.marketId}
   />
 );
 

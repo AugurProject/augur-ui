@@ -36,6 +36,7 @@ const NotificationBox = (props: NotificationBoxProps) => {
     const {
       Template,
       marketName,
+      marketId,
       round,
       amount,
       countDown,
@@ -46,7 +47,7 @@ const NotificationBox = (props: NotificationBoxProps) => {
       buttonAction
     } = notification;
 
-    const templateProps = { marketName, amount, round, countDown };
+    const templateProps = { marketName, marketId, amount, round, countDown };
     const notificationCardProps = {
       isImportant,
       isNew,
