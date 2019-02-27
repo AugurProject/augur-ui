@@ -353,7 +353,7 @@ export function assembleMarket(
                 outcomeId,
                 orderBooks,
                 orderCancellation,
-                market.desciption,
+                market.description,
                 getOutcomeName(market, marketOutcomesData[outcomeId])
               )
             )

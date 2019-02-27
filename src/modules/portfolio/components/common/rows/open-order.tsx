@@ -20,7 +20,6 @@ export interface OpenOrderProps {
 
 const OpenOrder = (props: OpenOrderProps) => {
   const { openOrder, isSingle } = props;
-
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
@@ -55,7 +54,7 @@ const OpenOrder = (props: OpenOrderProps) => {
                   <span>
                     <span>Market:</span>
                     <MarketLink id={openOrder.marketId}>
-                      {openOrder.markeDescription}
+                      {openOrder.desciption}
                     </MarketLink>
                   </span>
                 }
