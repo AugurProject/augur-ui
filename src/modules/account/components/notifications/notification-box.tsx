@@ -11,12 +11,14 @@ export interface Notifications {
   isImportant: boolean;
   isNew: boolean;
   title: string;
+  marketId: string;
   buttonLabel: string;
   buttonAction: Function;
-  marketName?: string;
+  marketName: string;
   round?: number;
   amount?: number;
-  countDown: Date;
+  countDown?: Date;
+  type: string;
   Template: React.StatelessComponent<any>;
 }
 
@@ -34,6 +36,7 @@ const NotificationBox = (props: NotificationBoxProps) => {
     const {
       Template,
       marketName,
+      marketId,
       round,
       amount,
       countDown,
@@ -44,7 +47,7 @@ const NotificationBox = (props: NotificationBoxProps) => {
       buttonAction
     } = notification;
 
-    const templateProps = { marketName, amount, round, countDown };
+    const templateProps = { marketName, marketId, amount, round, countDown };
     const notificationCardProps = {
       isImportant,
       isNew,

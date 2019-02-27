@@ -547,7 +547,9 @@ export const VOLUME_ETH_SHARES = [
     value: SHARES,
     label: SHARES
   }
-]
+];
 
 // Account Summary - Notifications
 export const NEW = "New";
+export const RESOLVED_MARKETS_OPEN_ORDERS_TITLE =
+  "Open Orders in Resolved Market";
