@@ -440,20 +440,6 @@ export function assembleMarket(
             outcome.topBid = selectTopBid(orderBook, false);
             outcome.topAsk = selectTopAsk(orderBook, false);
 
-            outcome.userOpenOrders = selectUserOpenOrders(
-              marketId,
-              outcomeId,
-              orderBooks,
-              orderCancellation
-            );
-            if (outcome.userOpenOrders)
-              outcome.userOpenOrders.forEach(item => {
-                item.name = outcome.name;
-                if (market.isScalar) {
-                  item.name = market.scalarDenomination;
-                }
-              });
-
             outcome.priceTimeSeries = selectPriceTimeSeries(
               outcome,
               marketPriceHistory
