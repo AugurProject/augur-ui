@@ -4,7 +4,7 @@ import { createBigNumber } from "utils/create-big-number";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
 import Styles from "modules/market-charts/components/market-outcomes-chart/market-outcomes-chart.styles";
-import { filter, keys, each, isEqual, cloneDeep } from "lodash";
+import { filter, keys, each, isEqual } from "lodash";
 
 NoDataToDisplay(Highcharts);
 
@@ -34,6 +34,7 @@ export default class MarketOutcomesChartHighchart extends Component {
     super(props);
     this.state = {
       containerHeight: 0,
+      containerWidth: 0,
       options: {
         title: {
           text: "",
@@ -117,31 +118,32 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.onResize);
-    const { bucketedPriceTimeSeries, selectedOutcome } = this.props;
+    const { bucketedPriceTimeSeries, selectedOutcome, daysPassed } = this.props;
     const { containerHeight } = this.state;
     this.buidOptions(
+      daysPassed,
       bucketedPriceTimeSeries,
       selectedOutcome,
-      containerHeight,
-      options => {
-        this.chart = Highcharts.stockChart(this.container, options);
-      }
+      containerHeight
     );
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps) {
     if (
       !isEqual(
         this.props.bucketedPriceTimeSeries,
         nextProps.bucketedPriceTimeSeries
       ) ||
+      !isEqual(this.props.daysPassed, nextProps.daysPassed) ||
       !isEqual(this.props.selectedOutcome, nextProps.selectedOutcome) ||
-      !isEqual(this.state.containerHeight, nextState.containerHeight)
+      !isEqual(this.state.containerHeight, this.container.clientHeight) ||
+      !isEqual(this.state.containerWidth, this.container.clientWidth)
     ) {
+      this.onResize();
       this.buidOptions(
+        nextProps.daysPassed,
         nextProps.bucketedPriceTimeSeries,
-        nextProps.selectedOutcome,
-        nextState.containerHeight
+        nextProps.selectedOutcome
       );
     }
   }
@@ -156,7 +158,8 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   onResize = () => {
     this.setState({
-      containerHeight: this.container.clientHeight
+      containerHeight: this.container.clientHeight,
+      containerWidth: this.container.clientWidth
     });
   };
 
@@ -181,22 +184,25 @@ export default class MarketOutcomesChartHighchart extends Component {
     };
   };
 
-  buidOptions(
-    bucketedPriceTimeSeries,
-    selectedOutcome,
-    containerHeight,
-    callback
-  ) {
+  buidOptions(daysPassed, bucketedPriceTimeSeries, selectedOutcome) {
     const { options } = this.state;
-    const { daysPassed, isScalar, scalarDenomination } = this.props;
+    const { isScalar, scalarDenomination } = this.props;
     const { priceTimeSeries } = bucketedPriceTimeSeries;
     const timeIncrement =
       daysPassed > NUM_DAYS_TO_USE_DAY_TIMEFRAME ? "day" : "hour";
 
     const xAxisProperties = this.getxAxisProperties(daysPassed);
-    options.xAxis = Object.assign(options.xAxis, xAxisProperties);
+    if (Array.isArray(options.xAxis)) {
+      options.xAxis = Object.assign(options.xAxis[0], xAxisProperties);
+    } else {
+      options.xAxis = Object.assign(options.xAxis, xAxisProperties);
+    }
 
-    options.height = containerHeight;
+    options.chart = {
+      ...options.chart,
+      height: this.container.clientHeight - 10, // need margin as to not perma grow container
+      width: this.container.clientWidth - 10
+    };
 
     const useArea = priceTimeSeries && keys(priceTimeSeries).length === 1;
     const hasData =
@@ -231,12 +237,20 @@ export default class MarketOutcomesChartHighchart extends Component {
 
     const newOptions = Object.assign(options, { series });
 
-    const updatedObjects = cloneDeep(newOptions);
-    this.setState({ options: updatedObjects });
-    if (this.chart && hasData) {
-      this.chart.update(updatedObjects);
+    this.setState({ options: newOptions });
+
+    // initial load
+    if (!this.chart) {
+      this.chart = Highcharts.stockChart(this.container, newOptions);
+      return;
     }
-    if (callback) callback(updatedObjects);
+
+    // rebuild chart when we get chart data, afterwards just update
+    if (this.chart && hasData && this.chart.xAxis[0].series.length === 0) {
+      this.chart = Highcharts.stockChart(this.container, newOptions);
+    } else if (this.chart && hasData) {
+      this.chart.update(newOptions);
+    }
   }
 
   render() {
