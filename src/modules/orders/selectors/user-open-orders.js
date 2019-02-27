@@ -16,7 +16,7 @@ export function selectUserOpenOrders(
   outcomeId,
   marketOrderBook,
   orderCancellation,
-  description,
+  marketDescription,
   name
 ) {
   const { loginAccount } = store.getState();
@@ -28,7 +28,7 @@ export function selectUserOpenOrders(
     loginAccount,
     marketOrderBook,
     orderCancellation,
-    description,
+    marketDescription,
     name
   );
 }
@@ -40,7 +40,7 @@ const userOpenOrders = memoize(
     loginAccount,
     marketOrderBook,
     orderCancellation,
-    description,
+    marketDescription,
     name
   ) => {
     const orderData = marketOrderBook[outcomeId];
@@ -55,7 +55,7 @@ const userOpenOrders = memoize(
             outcomeId,
             loginAccount.address,
             orderCancellation,
-            description,
+            marketDescription,
             name
           );
     const userAsks =
@@ -68,7 +68,7 @@ const userOpenOrders = memoize(
             outcomeId,
             loginAccount.address,
             orderCancellation,
-            description,
+            marketDescription,
             name
           );
 
@@ -87,7 +87,7 @@ function getUserOpenOrders(
   outcomeId,
   userId,
   orderCancellation = {},
-  description = "",
+  marketDescription = "",
   name = ""
 ) {
   const typeOrders = orders[orderType];
@@ -116,7 +116,7 @@ function getUserOpenOrders(
       unmatchedShares: formatShares(order.amount),
       tokensEscrowed: formatEther(order.tokensEscrowed),
       sharesEscrowed: formatShares(order.sharesEscrowed),
-      description,
+      marketDescription,
       name,
       cancelOrder: ({ id, marketId, outcomeId, type }) => {
         store.dispatch(
