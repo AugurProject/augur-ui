@@ -23,7 +23,7 @@ export const generateOutcomePositionSummary = memoize(
 
     const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
     const quantity = createBigNumber(netPosition).abs();
-    let totalCost = createBigNumber(position)
+    let totalCost = createBigNumber(quantity)
       .times(createBigNumber(averagePrice))
       .abs()
       .toString();
