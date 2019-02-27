@@ -26,6 +26,24 @@
   display: flex;
   justify-content: center;
   margin: 0 8px 0 0;
+
+  > svg {
+    height: 16px;
+    width: 16px;
+
+    > circle {
+      opacity: 0.5;
+      stroke: @color-outcome-four;
+    }
+
+    > rect {
+      fill: @color-outcome-four;
+    }
+
+    > path {
+      fill: @color-outcome-four;
+    }
+  }
 }
 
 .NotificationCard__content__title {
