@@ -9,10 +9,12 @@ import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.s
 
 const PortfolioView = p => (
   <section className={Styles.PortfolioView}>
-    <div className={Styles.PortfolioView__views}>
+    <div>
       <MyPositions />
-      <OpenOrders />
       <MyMarkets />
+    </div>
+    <div>
+      <OpenOrders />
       <FilledOrders />
     </div>
   </section>

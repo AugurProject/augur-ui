@@ -268,14 +268,6 @@ export default function(market) {
       expect(typeof myPositionsSummary).toBe("object");
     });
 
-    test("market.myPositionsSummary.numPositions", () => {
-      expect(myPositionsSummary.numPositions).toBeDefined();
-      assertFormattedNumber(
-        myPositionsSummary.numPositions,
-        "myPositionsSummary.numPositions"
-      );
-    });
-
     test("market.myPositionsSummary.qtyShares", () => {
       expect(myPositionsSummary.qtyShares).toBeDefined();
       assertFormattedNumber(
@@ -308,11 +300,11 @@ export default function(market) {
       );
     });
 
-    test("market.myPositionsSummary.totalNet", () => {
-      expect(myPositionsSummary.totalNet).toBeDefined();
+    test("market.myPositionsSummary.totalValue", () => {
+      expect(myPositionsSummary.totalValue).toBeDefined();
       assertFormattedNumber(
-        myPositionsSummary.totalNet,
-        "myPositionsSummary.totalNet"
+        myPositionsSummary.totalValue,
+        "myPositionsSummary.totalValue"
       );
     });
 

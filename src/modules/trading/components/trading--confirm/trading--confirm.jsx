@@ -74,7 +74,7 @@ class MarketTradingConfirm extends Component {
     const { trade, numOutcomes, gasPrice, availableFunds } =
       props || this.props;
 
-    const { potentialEthProfit, totalCost, orderShareProfit } = trade;
+    const { totalCost } = trade;
 
     let errorMessage = null;
     const gasValues = {
@@ -110,19 +110,6 @@ class MarketTradingConfirm extends Component {
       errorMessage = {
         header: "Insufficient Funds",
         message: "You do not have enough funds to place this order"
-      };
-    }
-
-    const negativeShareProfit =
-      orderShareProfit && createBigNumber(orderShareProfit.value).lte(0);
-    const negativeProfit =
-      totalCost.value > 0 &&
-      potentialEthProfit &&
-      potentialEthProfit.value <= 0;
-    if (negativeProfit || negativeShareProfit) {
-      errorMessage = {
-        header: "Not Profitable",
-        message: `This trade will likely be unprofitable.`
       };
     }
 
@@ -186,6 +173,12 @@ class MarketTradingConfirm extends Component {
         .toFixed(4);
     }
 
+    const notProfitable =
+      (orderShareProfit && createBigNumber(orderShareProfit.value).lte(0)) ||
+      (totalCost.value > 0 &&
+        potentialEthProfit &&
+        potentialEthProfit.value <= 0);
+
     return (
       <section className={Styles.TradingConfirm}>
         {((shareCost && shareCost.value !== 0) ||
@@ -217,6 +210,7 @@ class MarketTradingConfirm extends Component {
               <LinearPropertyLabel
                 label="Profit"
                 value={`${orderShareProfit.formatted} ETH`}
+                accentValue={notProfitable}
               />
             </div>
           )}
