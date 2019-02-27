@@ -194,11 +194,11 @@ class MarketTradingConfirm extends Component {
               <div className={Styles.TradingConfirm__agg_position}>
                 <span
                   className={classNames({
-                    [Styles.long]: side !== BUY,
-                    [Styles.short]: side !== SELL
+                    [Styles.long]: side === BUY,
+                    [Styles.short]: side === SELL
                   })}
                 >
-                  {side !== BUY ? "Long" : "Short"}
+                  {side !== BUY ? "Selling Out" : "Buying Back"}
                 </span>
                 <span> {shareCost.value} </span>
                 Shares @ <span> {limitPrice}</span>
@@ -253,7 +253,7 @@ class MarketTradingConfirm extends Component {
                     [Styles.short]: side === SELL
                   })}
                 >
-                  {side === BUY ? "Long" : "Short"}
+                  {side === BUY ? "Buying" : "Selling"}
                 </span>
                 <span> {newOrderAmount} </span>
                 Shares @ <span> {limitPrice}</span>
