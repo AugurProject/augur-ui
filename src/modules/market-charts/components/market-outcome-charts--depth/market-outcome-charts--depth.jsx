@@ -378,7 +378,9 @@ export function nearestCompletelyFillingOrder(
       const scaledPrice = createBigNumber(items[i][1]).minus(marketMin);
       const long = createBigNumber(items[i][2]).times(scaledPrice);
       const tradeCost =
-        type === ASKS ? long : marketRange.times(items[i][2]).minus(long);
+        type === ASKS
+          ? long
+          : marketRange.times(items[i][2].toString()).minus(long.toString());
       cost = cost.plus(tradeCost);
     }
     items[closestIndex].push(cost);
