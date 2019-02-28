@@ -33,6 +33,7 @@ function filterComp(input, market) {
 class MyMarkets extends Component {
   static propTypes = {
     myMarkets: PropTypes.object.isRequired,
+    marketsObj: PropTypes.object.isRequired,
     tabsInfo: PropTypes.array.isRequired,
     currentAugurTimestamp: PropTypes.number.isRequired,
     reportingWindowStatsEndTime: PropTypes.number.isRequired
@@ -49,15 +50,6 @@ class MyMarkets extends Component {
     this.updateFilteredMarkets = this.updateFilteredMarkets.bind(this);
   }
 
-  componentWillUpdate(nextProps) {
-    if (nextProps.myMarkets !== this.props.myMarkets) {
-      this.updateFilteredMarkets(
-        nextProps.myMarkets[this.state.tab],
-        this.state.tab
-      );
-    }
-  }
-
   updateFilteredMarkets(filteredMarkets, tab) {
     this.setState({ filteredMarkets });
     if (tab) {
@@ -70,7 +62,8 @@ class MyMarkets extends Component {
       myMarkets,
       tabsInfo,
       currentAugurTimestamp,
-      reportingWindowStatsEndTime
+      reportingWindowStatsEndTime,
+      marketsObj
     } = this.props;
     const { filteredMarkets, tab } = this.state;
 
@@ -91,13 +84,13 @@ class MyMarkets extends Component {
             {filteredMarkets.map(market => (
               <MarketRow
                 key={"myMarket_" + market.id}
-                market={market}
+                market={marketsObj[market.id]}
                 showState={tab === ALL_MARKETS}
                 rightContent={
                   <MarketProgress
-                    reportingState={market.reportingState}
+                    reportingState={marketsObj[market.id].reportingState}
                     currentTime={currentAugurTimestamp}
-                    endTime={market.endTime}
+                    endTime={marketsObj[market.id].endTime}
                     reportingWindowEndtime={reportingWindowStatsEndTime}
                   />
                 }
@@ -107,11 +100,15 @@ class MyMarkets extends Component {
                       <div className={Styles.MarketRow__info}>
                         <LinearPropertyLabel
                           label="Volume"
-                          value={`${market.volume.formatted} ETH`}
+                          value={`${
+                            marketsObj[market.id].volume.formatted
+                          } ETH`}
                         />
                         <LinearPropertyLabel
                           label="Open Interest"
-                          value={`${market.openInterest.formatted} ETH`}
+                          value={`${
+                            marketsObj[market.id].openInterest.formatted
+                          } ETH`}
                         />
                       </div>
                     </div>

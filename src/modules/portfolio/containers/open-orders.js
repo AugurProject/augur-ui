@@ -15,8 +15,20 @@ const mapStateToProps = state => {
     []
   );
 
+  const marketsObj = {};
+  for (var i = 0; i < markets.length; i++) {
+    marketsObj[markets[i].id] = markets[i];
+  }
+
+  const ordersObj = {};
+  for (var i = 0; i < individualOrders.length; i++) {
+    ordersObj[individualOrders[i].id] = individualOrders[i];
+  }
+
   return {
     markets,
+    marketsObj,
+    ordersObj,
     openOrders: individualOrders
   };
 };

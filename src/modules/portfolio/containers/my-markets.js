@@ -12,7 +12,13 @@ import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
-  const markets = createMarketsStateObject(selectAuthorOwnedMarkets(state));
+  const createdMarkets = selectAuthorOwnedMarkets(state);
+  const markets = createMarketsStateObject(createdMarkets);
+
+  const marketsObj = {};
+  for (let i = 0; i < createdMarkets.length; i++) {
+    marketsObj[createdMarkets[i].id] = createdMarkets[i];
+  }
 
   // getMyMarkets or it's equivalent will need a way of calculating the outstanding returns for a market and attaching it to each market object. Currently I've just added a key/value pair to the market objects im using below.
   return {
@@ -24,7 +30,8 @@ const mapStateToProps = state => {
     outcomes: marketDisputeOutcomes() || {},
     tabsInfo: createTabsInfo(markets),
     currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
-    reportingWindowStatsEndTime: state.reportingWindowStats.endTime
+    reportingWindowStatsEndTime: state.reportingWindowStats.endTime,
+    marketsObj
   };
 };
 

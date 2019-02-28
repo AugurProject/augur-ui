@@ -23,7 +23,9 @@ const sortByOptions = [
 export default class OpenOrders extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    openOrders: PropTypes.array.isRequired
+    openOrders: PropTypes.array.isRequired,
+    marketsObj: PropTypes.object.isRequired,
+    ordersObj: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -62,7 +64,7 @@ export default class OpenOrders extends Component {
   }
 
   render() {
-    const { markets, openOrders } = this.props;
+    const { markets, openOrders, marketsObj } = this.props;
     const { filteredData, viewByMarkets } = this.state;
 
     return (
@@ -83,12 +85,12 @@ export default class OpenOrders extends Component {
                 viewByMarkets ? (
                   <OrderMarketRow
                     key={"openOrderMarket_" + data.id}
-                    market={data}
+                    market={marketsObj[data.id]}
                   />
                 ) : (
                   <OpenOrder
                     key={"openOrder_" + data.id}
-                    openOrder={data}
+                    openOrder={ordersObj[data.id]}
                     isSingle
                   />
                 )
