@@ -1,9 +1,9 @@
 import memoize from "memoizee";
 import { createBigNumber } from "utils/create-big-number";
 
-import { LONG, SHORT } from "modules/common-elements/constants";
+import { LONG, SHORT, ZERO } from "modules/common-elements/constants";
 
-import { formatEther, formatShares } from "utils/format-number";
+import { formatEther, formatShares, formatPercent } from "utils/format-number";
 
 export const generateOutcomePositionSummary = memoize(
   (adjustedPosition, maxPrice, outcome) => {
@@ -20,12 +20,13 @@ export const generateOutcomePositionSummary = memoize(
       total
     } = adjustedPosition;
 
+    const totalReturns = total || 0;
     const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
     const quantity = createBigNumber(netPosition).abs();
     let totalCost = createBigNumber(quantity)
       .times(createBigNumber(averagePrice))
-      .abs()
-      .toString();
+      .abs();
+
     let totalValue = createBigNumber(quantity).times(outcome.price);
     if (type === SHORT) {
       totalCost = createBigNumber(maxPrice)
@@ -38,6 +39,13 @@ export const generateOutcomePositionSummary = memoize(
         .times(quantity)
         .abs();
     }
+    const totalReturnsPercent =
+      totalReturns === 0
+        ? ZERO
+        : createBigNumber(total)
+            .dividedBy(averagePrice)
+            .times(100);
+
     return {
       marketId,
       outcomeId,
@@ -49,7 +57,8 @@ export const generateOutcomePositionSummary = memoize(
       totalCost: formatEther(totalCost),
       totalValue: formatEther(totalValue),
       lastPrice: formatEther(outcome.price),
-      totalReturns: formatEther(total)
+      totalReturns: formatEther(total),
+      totalReturnsPercent: formatPercent(totalReturnsPercent)
     };
   },
   {
