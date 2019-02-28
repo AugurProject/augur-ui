@@ -1,6 +1,8 @@
 import React from "react";
 import * as constants from "modules/common-elements/constants";
-import { StarIcon, XIcon } from "modules/common-elements/icons";
+import { StarIcon, XIcon, EthIcon, PercentIcon } from "modules/common-elements/icons";
+import classNames from "classnames";
+
 import Styles from "modules/common-elements/buttons.styles";
 
 export interface DefaultButtonProps {
@@ -8,6 +10,13 @@ export interface DefaultButtonProps {
   action: Function;
   disabled?: boolean;
   title?: string;
+}
+
+export interface EthPercentProps {
+  action: Function;
+  disabled?: boolean;
+  title?: string;
+  showEth: boolean;
 }
 
 export interface OrderButtonProps extends DefaultButtonProps {
@@ -76,6 +85,16 @@ export const CompactButton = (props: DefaultButtonProps) =>
   title={props.title}
 >
   {props.text}
+</button>;
+
+export const EthPercentButton = (props: EthPercentProps) =>
+<button
+  onClick={(e) => props.action(e)}
+  className={classNames(Styles.CompactButton, Styles.EthPercentButton)}
+  disabled={props.disabled}
+  title={props.title}
+>
+  {!props.showEth ? EthIcon : PercentIcon }
 </button>;
 
 export const CancelTextButton = (props: DefaultButtonProps) =>

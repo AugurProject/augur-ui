@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-// import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
 import OpenOrder from "modules/portfolio/components/common/rows/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+
+import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
@@ -77,22 +79,30 @@ export default class OpenOrders extends Component {
         bottomBarContent={<OpenOrdersHeader />}
         label="Open Orders"
         rows={
-          <div>
-            {filteredData.map(
-              data =>
-                viewByMarkets ? (
-                  <OrderMarketRow
-                    key={"openOrderMarket_" + data.id}
-                    market={data}
-                  />
-                ) : (
-                  <OpenOrder
-                    key={"openOrder_" + data.id}
-                    openOrder={data}
-                    isSingle
-                  />
-                )
+          <div className={Styles.Quad__container}>
+            {filteredData.length === 0 && (
+              <EmptyDisplay
+                title={
+                  viewByMarkets ? "No available markets" : "No available orders"
+                }
+              />
             )}
+            {filteredData.length > 0 &&
+              filteredData.map(
+                data =>
+                  viewByMarkets ? (
+                    <OrderMarketRow
+                      key={"openOrderMarket_" + data.id}
+                      market={data}
+                    />
+                  ) : (
+                    <OpenOrder
+                      key={"openOrder_" + data.id}
+                      openOrder={data}
+                      isSingle
+                    />
+                  )
+              )}
           </div>
         }
       />

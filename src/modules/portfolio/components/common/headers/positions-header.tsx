@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 
-import { CompactButton } from "modules/common-elements/buttons";
-// import { EthIcon, PercentIcon } from "modules/common/components/icons";
+import { EthPercentButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/portfolio/components/common/headers/data-table-header.styles";
 import SharedStyles from "modules/portfolio/components/common/rows/open-order.styles";
@@ -42,8 +41,9 @@ const PositionsHeader = (props: PositionsHeaderProps) => (
         <br />
         Returns
       </span>
-      <CompactButton
-        text={props.showPercent ? "eth" : "%"}
+      <EthPercentButton
+        showEth={props.showPercent}
+        title='eth/percent'
         action={props.updateShowPercent}
       />
     </li>
