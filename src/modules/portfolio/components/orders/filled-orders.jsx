@@ -80,7 +80,7 @@ export default class FilledOrders extends Component {
         bottomBarContent={<FilledOrdersHeader />}
         label="Filled Orders"
         rows={
-          <div className={Styles.Quads__container}>
+          <div className={Styles.Quad__container}>
             {filteredData.length === 0 && (
               <EmptyDisplay
                 title={
