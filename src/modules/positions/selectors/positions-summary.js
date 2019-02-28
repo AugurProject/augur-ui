@@ -20,6 +20,7 @@ export const generateOutcomePositionSummary = memoize(
       total
     } = adjustedPosition;
 
+    // need augur-node to provide realized gains as a percentage.
     const totalReturns = total || 0;
     const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
     const quantity = createBigNumber(netPosition).abs();
@@ -40,10 +41,11 @@ export const generateOutcomePositionSummary = memoize(
         .abs();
     }
     const totalReturnsPercent =
-      totalReturns === 0
+      createBigNumber(unrealized).isEqualTo(ZERO) || totalCost.isEqualTo(ZERO)
         ? ZERO
-        : createBigNumber(total)
-            .dividedBy(averagePrice)
+        : createBigNumber(unrealized)
+            .minus(totalCost)
+            .dividedBy(totalCost)
             .times(100);
 
     return {
@@ -57,7 +59,7 @@ export const generateOutcomePositionSummary = memoize(
       totalCost: formatEther(totalCost),
       totalValue: formatEther(totalValue),
       lastPrice: formatEther(outcome.price),
-      totalReturns: formatEther(total),
+      totalReturns: formatEther(totalReturns),
       totalReturnsPercent: formatPercent(totalReturnsPercent)
     };
   },
