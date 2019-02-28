@@ -36,31 +36,28 @@ export interface MarketRowProps {
 const MarketRow = (props: MarketRowProps) => (
   <div className={Styles.MarketRow__container}>
     <ToggleRow
-      arrowClassName={classNames(Styles.MarketRow__Arrow, {[Styles.MarketRow__ArrowS]: props.showState})}
+      arrowClassName={Styles.MarketRow__Arrow}
       rowContent={
-        <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
-          {props.showState && (
-            <div className={Styles.MarketRow__firstRow}>
-              <MarketStatusLabel
-                marketStatus={props.market.marketStatus}
-                alternate
-                mini
-              />
-            </div>
-          )}
-          <div className={Styles.MarketRow__row}>
-            <div className={Styles.MarketRow__rowContainer}>
-              <span className={Styles.MarketRow__description}>
-                <MarketLink id={props.market.id}>
-                  {props.market.description}
-                </MarketLink>
-              </span>
-            </div>
-            <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
-              {props.rightContent || <div>right content</div>}
-            </span>
+        <div className={Styles.MarketRow__contentContainer}>
+          <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
+            {props.showState && (
+              <div className={Styles.MarketRow__firstRow}>
+                <MarketStatusLabel
+                  marketStatus={props.market.marketStatus}
+                  alternate
+                  mini
+                />
+              </div>
+            )}
+            <span className={Styles.MarketRow__description}>
+              <MarketLink id={props.market.id}>
+                {props.market.description}
+              </MarketLink>
+            </span> 
           </div>
-
+          <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
+            {props.rightContent || <div>right content</div>}
+          </span>
         </div>
       }
       toggleContent={
