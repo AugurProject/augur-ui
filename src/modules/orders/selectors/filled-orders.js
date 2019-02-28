@@ -23,8 +23,7 @@ function findOrders(filledOrders, accountId, outcomesData, marketsData) {
       const priceBN = createBigNumber(price);
       let typeOp = type;
 
-      const outcomeName =
-        outcomesData[outcome].name || outcomesData[outcome].name;
+      const outcomeName = outcomesData[outcome].name;
 
       if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
