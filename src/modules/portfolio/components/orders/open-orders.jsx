@@ -64,7 +64,7 @@ export default class OpenOrders extends Component {
   }
 
   render() {
-    const { markets, openOrders, marketsObj } = this.props;
+    const { markets, openOrders, marketsObj, ordersObj } = this.props;
     const { filteredData, viewByMarkets } = this.state;
 
     return (
