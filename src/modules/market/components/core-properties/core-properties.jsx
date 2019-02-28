@@ -44,7 +44,13 @@ const CoreProperties = ({ market }) => (
       />
     )}
     {getValue(market, "marketType") === SCALAR && (
-      <div className={Styles.CoreProperties_minMax}>
+      <div
+        className={
+          market.minPrice.toString().length === 1
+            ? Styles.CoreProperties_minMax__long
+            : Styles.CoreProperties_minMax
+        }
+      >
         <PropertyLabel label="Min" value={`${market.minPrice}`} />
         <DashlineLong />
         <PropertyLabel label="Max" value={`${market.maxPrice}`} />

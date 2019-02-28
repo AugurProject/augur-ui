@@ -30,6 +30,18 @@ div.CoreProperties_minMax {
   }
 }
 
+div.CoreProperties_minMax__long {
+  align-items: flex-end;
+  display: flex;
+  flex: 0 0 33%;
+  margin-right: auto;
+
+  > svg {
+    display: flex;
+    margin: 0 0.25rem 0.5rem -0.45rem;
+  }
+}
+
 @media @breakpoint-mobile {
   .CoreProperties {
     background: @color-theme-primary;
@@ -41,6 +53,11 @@ div.CoreProperties_minMax {
   }
 
   div.CoreProperties_minMax {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  div.CoreProperties_minMax__long {
     margin-left: auto;
     margin-right: 0;
   }
