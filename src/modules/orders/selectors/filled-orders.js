@@ -24,15 +24,15 @@ function findOrders(filledOrders, accountId, outcomesData, marketsData) {
       let typeOp = type;
 
       const outcomeName =
-        outcomesData[marketId][outcome].name ||
-        outcomesData[marketId][outcome].name;
+        outcomesData[outcome].name ||
+        outcomesData[outcome].name;
 
       if (accountId === creator && !foundOrder) {
         typeOp = type === BUY ? SELL : BUY; // marketTradingHistory is from filler perspective
       }
 
       const timestampFormatted = convertUnixToFormattedDate(timestamp);
-      const marketDescription = marketsData[marketId].description;
+      const marketDescription = marketsData.description;
 
       if (foundOrder) {
         foundOrder.trades.push({

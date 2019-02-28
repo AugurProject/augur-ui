@@ -50,7 +50,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   };
 
   componentWillUpdate(nextProps, nextState) {
-    if (nextProps.data[nextState.selectedTab].length !== this.props.data[nextState.selectedTab].length) {
+    if (nextProps.data[nextState.selectedTab] !== this.props.data[nextState.selectedTab]) {
       const filteredData = this.applySearch(nextState.search, nextProps.data[nextState.selectedTab]);
       this.props.updateFilteredData(filteredData);
     }

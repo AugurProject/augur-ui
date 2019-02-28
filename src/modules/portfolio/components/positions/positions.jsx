@@ -14,10 +14,24 @@ import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
-    label: "Sort by Most Recent",
-    value: "creationTime",
+    label: "Sort by Most Recently Traded",
+    value: "recentlyTraded",
     comp(marketA, marketB) {
-      return marketB.creationTime.timestamp - marketA.creationTime.timestamp;
+      return marketB.recentlyTraded.timestamp - marketA.recentlyTraded.timestamp;
+    }
+  },
+  {
+    label: "Sort by Current Value",
+    value: "currentValue",
+    comp(marketA, marketB) {
+      return marketB.myPositionsSummary.currentValue.formatted- marketA.myPositionsSummary.currentValue.formatted;
+    }
+  },
+  {
+    label: "Sort by Total Returns",
+    value: "totalReturns",
+    comp(marketA, marketB) {
+      return marketB.myPositionsSummary.totalReturns.formatted- marketA.myPositionsSummary.totalReturns.formatted;
     }
   },
   {
@@ -26,7 +40,8 @@ const sortByOptions = [
     comp(marketA, marketB) {
       return marketB.endTime.timestamp - marketA.endTime.timestamp;
     }
-  }
+  },
+  
 ];
 
 function filterComp(input, market) {
@@ -36,7 +51,8 @@ function filterComp(input, market) {
 export default class Positions extends Component {
   static propTypes = {
     markets: PropTypes.object.isRequired,
-    tabsInfo: PropTypes.array.isRequired
+    tabsInfo: PropTypes.array.isRequired,
+    marketsObj: PropTypes.object.isRequired,
   };
 
   constructor(props) {
@@ -64,8 +80,9 @@ export default class Positions extends Component {
   }
 
   render() {
-    const { markets, tabsInfo } = this.props;
+    const { markets, tabsInfo, marketsObj } = this.props;
     const { filteredMarkets, tab, showCurrentValue } = this.state;
+   // console.log(markets);
 
     return (
       <FilterBox
@@ -94,16 +111,16 @@ export default class Positions extends Component {
               filteredMarkets.map(market => (
                 <MarketRow
                   key={"position_" + market.id}
-                  market={market}
+                  market={marketsObj[market.id]}
                   showState={tab === ALL_MARKETS}
-                  toggleContent={<MarketPositionsTable market={market} />}
+                  toggleContent={<MarketPositionsTable market={marketsObj[market.id]} />}
                   rightContent={
                     showCurrentValue ? (
-                      market.myPositionsSummary.currentValue.formatted
+                      marketsObj[market.id].myPositionsSummary.currentValue.formatted
                     ) : (
                       <div className={Styles.Quad__column}>
                         <span>
-                          {market.myPositionsSummary.totalReturns.formatted}
+                          {marketsObj[market.id].myPositionsSummary.totalReturns.formatted}
                         </span>
                         <MovementLabel
                           showPercent
@@ -111,7 +128,7 @@ export default class Positions extends Component {
                           showColors
                           size="small"
                           value={
-                            market.myPositionsSummary.totalReturnsPercent
+                            marketsObj[market.id].myPositionsSummary.totalReturnsPercent
                               .formatted
                           }
                         />

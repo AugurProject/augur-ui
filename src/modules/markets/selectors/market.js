@@ -76,6 +76,7 @@ import { generateOutcomePositionSummary } from "modules/positions/selectors/posi
 import { selectReportableOutcomes } from "modules/reports/selectors/reportable-outcomes";
 
 import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
+import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 
 export default function() {
   return selectSelectedMarket(store.getState());
@@ -426,6 +427,9 @@ export function assembleMarket(
                 }
               );
             }
+
+            market.filledOrders = selectFilledOrders(marketPriceHistory, loginAccount.address, marketOutcomesData, market)
+            market.recentlyTraded = convertUnixToFormattedDate(market.filledOrders[0] ? market.filledOrders[0].timestamp.timestamp : 0); // the first one is the most recent
 
             const orderBook = selectAggregateOrderBook(
               outcome.id,

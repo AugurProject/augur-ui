@@ -13,10 +13,17 @@ import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
-    label: "Sort by Most Recent",
+    label: "Sort by Most Recently Traded",
+    value: "recentlyTraded",
+    comp(marketA, marketB) {
+      return marketB.recentlyTraded.timestamp - marketA.recentlyTraded.timestamp;
+    }
+  },
+  {
+    label: "Sort by Creation Time",
     value: "creationTime",
     comp(marketA, marketB) {
-      return marketB.creationTime.timestamp - marketA.creationTime.timestamp;
+      return marketB.endTime.timestamp - marketA.endTime.timestamp;
     }
   },
   {
