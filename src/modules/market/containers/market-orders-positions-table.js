@@ -18,7 +18,6 @@ import {
 import { constants } from "services/augurjs";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { createBigNumber } from "utils/create-big-number";
-import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";
 
 const mapStateToProps = (state, ownProps) => {
@@ -52,12 +51,7 @@ const mapStateToProps = (state, ownProps) => {
     canClaim = timeHasPassed.toNumber() > 0;
   }
 
-  const filledOrders = selectFilledOrders(
-    state.marketTradingHistory[ownProps.marketId],
-    state.loginAccount.address,
-    state.outcomesData[ownProps.marketId],
-    state.marketsData[ownProps.marketId]
-  );
+  const { filledOrders } = market;
 
   return {
     hasClaimableReturns: market.outstandingReturns && canClaim,

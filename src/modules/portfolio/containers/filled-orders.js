@@ -5,17 +5,10 @@ import { triggerTransactionsExport } from "modules/transactions/actions/trigger-
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 import { groupBy, keys, differenceBy } from "lodash";
-import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
+import { selectMarket } from "modules/markets/selectors/market";
 
 const mapStateToProps = state => {
-  const {
-    marketTradingHistory,
-    marketReportState,
-    loginAccount,
-    filledOrders,
-    outcomesData,
-    marketsData
-  } = state;
+  const { marketReportState, loginAccount, filledOrders, marketsData } = state;
   const resolvedMarkets = marketReportState.resolved;
   const account = loginAccount.address;
   const userFilledOrders = filledOrders[account] || [];
@@ -30,24 +23,22 @@ const mapStateToProps = state => {
   );
 
   const marketIds = keys(groupedFilledOrders);
-  const markets = marketIds.map(m => marketsData[m]).map(item => ({
-    ...item,
-    filledOrders: selectFilledOrders(
-      groupedFilledOrders[item.id],
-      account,
-      outcomesData[item.id],
-      marketsData[item.id]
-    )
-  }));
+  const markets = marketIds.map(m => marketsData[m]).map(item => {
+    const marketInfo = selectMarket(item.id);
+    return {
+      ...item,
+      recentlyTraded: marketInfo.recentlyTraded,
+      filledOrders: selectMarket(item.id).filledOrders
+    };
+  });
 
   /* eslint-disable */
   let allFilledOrders = [];
   marketIds.map(marketId => {
-    const formattedFilledOrders = selectFilledOrders(marketTradingHistory[marketId], account, outcomesData[marketId], marketsData[marketId]);
+    const formattedFilledOrders = selectMarket(marketId).filledOrders;
     Array.prototype.push.apply(allFilledOrders, formattedFilledOrders);
   });
   /* eslint-disable */
-
 
   const marketsObj = markets.reduce((obj, market) => {
     obj[market.id] = market;

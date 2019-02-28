@@ -80,7 +80,7 @@ export default class FilledOrders extends Component {
         filterComp={this.filterComp}
         switchView={this.switchView}
         bottomBarContent={<FilledOrdersHeader />}
-        label="Filled Orders"
+        label={viewByMarkets ? "Markets" : "Filled Orders"}
         rows={
           <div className={Styles.Quad__container}>
             {filteredData.length === 0 && (

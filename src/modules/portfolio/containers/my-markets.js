@@ -15,9 +15,7 @@ import { createMarketsStateObject } from "modules/portfolio/helpers/create-marke
 const mapStateToProps = state => {
   const createdMarkets = selectAuthorOwnedMarkets(state);
 
-  const marketsPick = createdMarkets.map((
-    market
-  ) =>
+  const marketsPick = createdMarkets.map(market =>
     pick(market, [
       "id",
       "description",
