@@ -509,23 +509,6 @@ export function assembleMarket(
               )
             );
 
-            market.userPositions = market.userPositions.map(position => {
-              const totalCost = createBigNumber(position.totalCost.value);
-              const currentValue = createBigNumber(
-                market.myPositionsSummary.currentValue.value
-              );
-              const totalReturnsPercent = currentValue
-                .minus(totalCost)
-                .dividedBy(totalCost)
-                .times(100);
-              return {
-                ...position,
-                totalReturnsPercent: formatPercent(
-                  position.totalCost.value === 0 ? ZERO : totalReturnsPercent
-                )
-              };
-            });
-
             market.myPositionsSummary.totalReturns = formatEther(
               market.userPositions.reduce(
                 (p, position) =>
