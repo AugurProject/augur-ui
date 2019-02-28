@@ -6,10 +6,11 @@ import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import { CompactButton } from "modules/common-elements/buttons";
 import { MovementLabel } from "modules/common-elements/labels";
 import { MarketPositionsTable } from "modules/portfolio/components/common/tables/market-positions-table";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
 
-import Styles from "modules/portfolio/components/common/rows/market-row.styles";
+import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
@@ -85,36 +86,40 @@ export default class Positions extends Component {
           />
         }
         rows={
-          <div>
-            {filteredMarkets.map(market => (
-              <MarketRow
-                key={"position_" + market.id}
-                market={market}
-                showState={tab === ALL_MARKETS}
-                toggleContent={<MarketPositionsTable market={market} />}
-                rightContent={
-                  showCurrentValue ? (
-                    market.myPositionsSummary.currentValue.formatted
-                  ) : (
-                    <div className={Styles.MarketRow__column}>
-                      <span>
-                        {market.myPositionsSummary.totalReturns.formatted}
-                      </span>
-                      <MovementLabel
-                        showPercent
-                        showPlusMinus
-                        showColors
-                        size="small"
-                        value={
-                          market.myPositionsSummary.totalReturnsPercent
-                            .formatted
-                        }
-                      />
-                    </div>
-                  )
-                }
-              />
-            ))}
+          <div className={Styles.Quad__container}>
+            {filteredMarkets.length === 0 && (
+              <EmptyDisplay title="No available markets" />
+            )}
+            {filteredMarkets.length > 0 &&
+              filteredMarkets.map(market => (
+                <MarketRow
+                  key={"position_" + market.id}
+                  market={market}
+                  showState={tab === ALL_MARKETS}
+                  toggleContent={<MarketPositionsTable market={market} />}
+                  rightContent={
+                    showCurrentValue ? (
+                      market.myPositionsSummary.currentValue.formatted
+                    ) : (
+                      <div className={Styles.Quad__column}>
+                        <span>
+                          {market.myPositionsSummary.totalReturns.formatted}
+                        </span>
+                        <MovementLabel
+                          showPercent
+                          showPlusMinus
+                          showColors
+                          size="small"
+                          value={
+                            market.myPositionsSummary.totalReturnsPercent
+                              .formatted
+                          }
+                        />
+                      </div>
+                    )
+                  }
+                />
+              ))}
           </div>
         }
       />

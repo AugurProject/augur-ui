@@ -4,10 +4,12 @@ import PropTypes from "prop-types";
 import FilterBox from "modules/portfolio/components/common/quads/filter-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
-import Styles from "modules/portfolio/components/common/rows/market-row.styles";
 import { MarketProgress } from "modules/common-elements/progress";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 
 import { ALL_MARKETS } from "modules/common-elements/constants";
+
+import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
@@ -80,42 +82,42 @@ class MyMarkets extends Component {
         tabs={tabsInfo}
         label="My Created Markets"
         rows={
-          <div>
-            {filteredMarkets.map(market => (
-              <MarketRow
-                key={"myMarket_" + market.id}
-                market={marketsObj[market.id]}
-                showState={tab === ALL_MARKETS}
-                rightContent={
-                  <MarketProgress
-                    reportingState={marketsObj[market.id].reportingState}
-                    currentTime={currentAugurTimestamp}
-                    endTime={marketsObj[market.id].endTime}
-                    reportingWindowEndtime={reportingWindowStatsEndTime}
-                  />
-                }
-                toggleContent={
-                  <div className={Styles.MarketRow__infoParent}>
-                    <div className={Styles.MarketRow__infoContainer}>
-                      <div className={Styles.MarketRow__info}>
-                        <LinearPropertyLabel
-                          label="Volume"
-                          value={`${
-                            marketsObj[market.id].volume.formatted
-                          } ETH`}
-                        />
-                        <LinearPropertyLabel
-                          label="Open Interest"
-                          value={`${
-                            marketsObj[market.id].openInterest.formatted
-                          } ETH`}
-                        />
+          <div className={Styles.Quad__container}>
+            {filteredMarkets.length === 0 && (
+              <EmptyDisplay title="No available markets" />
+            )}
+            {filteredMarkets.length > 0 &&
+              filteredMarkets.map(market => (
+                <MarketRow
+                  key={"myMarket_" + market.id}
+                  market={marketsObj[market.id]}
+                  showState={tab === ALL_MARKETS}
+                  rightContent={
+                    <MarketProgress
+                      reportingState={marketsObj[market.id].reportingState}
+                      currentTime={currentAugurTimestamp}
+                      endTime={marketsObj[market.id].endTime}
+                      reportingWindowEndtime={reportingWindowStatsEndTime}
+                    />
+                  }
+                  toggleContent={
+                    <div className={Styles.Quad__infoParent}>
+                      <div className={Styles.Quad__infoContainer}>
+                        <div className={Styles.Quad__info}>
+                          <LinearPropertyLabel
+                            label="Volume"
+                            value={`${marketsObj[market.id].volume.formatted} ETH`}
+                          />
+                          <LinearPropertyLabel
+                            label="Open Interest"
+                            value={`${marketsObj[market.id].openInterest.formatted} ETH`}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                }
-              />
-            ))}
+                  }
+                />
+              ))}
           </div>
         }
       />

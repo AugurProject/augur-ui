@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-// import PositionsMarketsList from "modules/portfolio/components/positions-markets-list/positions-markets-list";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+
+import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
@@ -78,23 +80,31 @@ export default class FilledOrders extends Component {
         bottomBarContent={<FilledOrdersHeader />}
         label="Filled Orders"
         rows={
-          <div>
-            {filteredData.map(
-              data =>
-                viewByMarkets ? (
-                  <OrderMarketRow
-                    key={"filledOrderMarket_" + data.id}
-                    market={data}
-                    filledOrders
-                  />
-                ) : (
-                  <FilledOrder
-                    key={"filledOrder_" + data.id}
-                    filledOrder={data}
-                    isSingle
-                  />
-                )
+          <div className={Styles.Quad__container}>
+            {filteredData.length === 0 && (
+              <EmptyDisplay
+                title={
+                  viewByMarkets ? "No available markets" : "No available orders"
+                }
+              />
             )}
+            {filteredData.length > 0 &&
+              filteredData.map(
+                data =>
+                  viewByMarkets ? (
+                    <OrderMarketRow
+                      key={"filledOrderMarket_" + data.id}
+                      market={data}
+                      filledOrders
+                    />
+                  ) : (
+                    <FilledOrder
+                      key={"filledOrder_" + data.id}
+                      filledOrder={data}
+                      isSingle
+                    />
+                  )
+              )}
           </div>
         }
       />
