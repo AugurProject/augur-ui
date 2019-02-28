@@ -48,10 +48,21 @@ const mapStateToProps = state => {
   });
   /* eslint-disable */
 
-  //console.log(markets)
+
+  const marketsObj = markets.reduce((obj, market) => {
+    obj[market.id] = market;
+    return obj;
+  }, {});
+
+  const ordersObj = allFilledOrders.reduce((obj, order) => {
+    obj[order.id] = order;
+    return obj;
+  }, {});
 
   return {
     markets,
+    marketsObj,
+    ordersObj,
     filledOrders: allFilledOrders
   };
 };

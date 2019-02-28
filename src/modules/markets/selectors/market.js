@@ -428,8 +428,17 @@ export function assembleMarket(
               );
             }
 
-            market.filledOrders = selectFilledOrders(marketPriceHistory, loginAccount.address, marketOutcomesData, market)
-            market.recentlyTraded = convertUnixToFormattedDate(market.filledOrders[0] ? market.filledOrders[0].timestamp.timestamp : 0); // the first one is the most recent
+            market.filledOrders = selectFilledOrders(
+              marketPriceHistory,
+              loginAccount.address,
+              marketOutcomesData,
+              market
+            );
+            market.recentlyTraded = convertUnixToFormattedDate(
+              market.filledOrders[0]
+                ? market.filledOrders[0].timestamp.timestamp
+                : 0
+            ); // the first one is the most recent
 
             const orderBook = selectAggregateOrderBook(
               outcome.id,

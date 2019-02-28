@@ -16,7 +16,9 @@ const sortByOptions = [
     label: "Sort by Most Recently Traded",
     value: "recentlyTraded",
     comp(marketA, marketB) {
-      return marketB.recentlyTraded.timestamp - marketA.recentlyTraded.timestamp;
+      return (
+        marketB.recentlyTraded.timestamp - marketA.recentlyTraded.timestamp
+      );
     }
   },
   {
@@ -30,7 +32,7 @@ const sortByOptions = [
     label: "Sort by Expiring Soonest",
     value: "endTime",
     comp(marketA, marketB) {
-      return marketB.endTime.timestamp - marketA.endTime.timestamp;
+      return marketA.endTime.timestamp - marketB.endTime.timestamp;
     }
   }
 ];
@@ -113,11 +115,15 @@ class MyMarkets extends Component {
                         <div className={Styles.Quad__info}>
                           <LinearPropertyLabel
                             label="Volume"
-                            value={`${marketsObj[market.id].volume.formatted} ETH`}
+                            value={`${
+                              marketsObj[market.id].volume.formatted
+                            } ETH`}
                           />
                           <LinearPropertyLabel
                             label="Open Interest"
-                            value={`${marketsObj[market.id].openInterest.formatted} ETH`}
+                            value={`${
+                              marketsObj[market.id].openInterest.formatted
+                            } ETH`}
                           />
                         </div>
                       </div>

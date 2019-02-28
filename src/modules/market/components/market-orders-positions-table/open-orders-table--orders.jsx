@@ -63,9 +63,8 @@ export default class OpenOrdersOrder extends Component {
     const orderPrice = getValue(order, "avgPrice.formatted");
     const orderShares = getValue(order, "unmatchedShares.formatted");
     const orderType = getValue(order, "type");
-    const orderName = getValue(order, "name");
-    const orderPending = getValue(order, "pending");
-    const orderPending2 = getValue(order, "orderPending");
+
+    if (!order) return null;
 
     return (
       <ul
@@ -83,7 +82,7 @@ export default class OpenOrdersOrder extends Component {
           }
         )}
       >
-        <li>{orderName || orderPrice}</li>
+        <li>{order.name || orderPrice}</li>
         <li
           className={classNames(SharedStyles.Order__type, {
             [SharedStyles.Order__typeSell]: orderType === SELL
@@ -91,7 +90,7 @@ export default class OpenOrdersOrder extends Component {
           style={{ textTransform: "capitalize" }}
         >
           {orderType}
-          {orderPending2 && <span>Pending</span>}
+          {order.pendingOrder && <span>Pending</span>}
         </li>
         <li>{orderShares}</li>
         <li>{orderPrice}</li>
@@ -101,7 +100,7 @@ export default class OpenOrdersOrder extends Component {
         {!isMobile &&
           order.cancelOrder && (
             <li>
-              {orderPending ? (
+              {order.pending ? (
                 <button className={Styles.Order__cancel} disabled>
                   PENDING
                 </button>
@@ -120,7 +119,7 @@ export default class OpenOrdersOrder extends Component {
         {isMobile && <div onClick={this.toggleCancelButton}>{threeDots}</div>}
         {s.showCancelButton && (
           <div className={Styles.Order__cancelContainer}>
-            {orderPending ? (
+            {order.pending ? (
               <button className={Styles.Order__cancel} disabled>
                 PENDING
               </button>

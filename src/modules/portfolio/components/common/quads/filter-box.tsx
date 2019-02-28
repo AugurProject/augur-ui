@@ -49,9 +49,9 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
   };
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextProps.data[nextState.selectedTab] !== this.props.data[nextState.selectedTab]) {
-      const filteredData = this.applySearch(nextState.search, nextProps.data[nextState.selectedTab]);
+  componentWillUpdate(nextProps) {
+    if (nextProps.data[this.state.selectedTab] !== this.props.data[this.state.selectedTab]) {
+      const filteredData = this.applySearch(this.state.search, nextProps.data[this.state.selectedTab]);
       this.props.updateFilteredData(filteredData);
     }
   }

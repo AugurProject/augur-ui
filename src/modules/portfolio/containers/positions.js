@@ -16,23 +16,30 @@ const mapStateToProps = state => {
   // NOTE: for data wiring, this should probably be just done as calls for getting openPosition Markets, getting Reporting Markets, and getting Closed Markets respectively from the node and just passed the expected keys below
   const markets = getPositionsMarkets(positions);
 
-  const marketsObj = {};
-  for (let i = 0; i < markets.length; i++) {
-    marketsObj[markets[i].id] = markets[i];
-  }
+  const marketsObj = markets.reduce((obj, market) => {
+    obj[market.id] = market;
+    return obj;
+  }, {});
 
-  const marketsPick = markets.map(market => {
-    return pick(market, ['id', 'description', 'reportingState','myPositionsSummary', 'currentValue', 'recentlyTraded', 'endTime'])
-  });
+  const marketsPick = markets.map((
+    market // when these things change then component will re-render/re-sort
+  ) =>
+    pick(market, [
+      "id",
+      "description",
+      "reportingState",
+      "myPositionsSummary",
+      "recentlyTraded",
+      "endTime"
+    ])
+  );
 
-  const marketsObject = createMarketsStateObject(marketsPick);
-
-  console.log(marketsObject);
+  const marketsByState = createMarketsStateObject(marketsPick);
 
   return {
-    markets: marketsObject,
+    markets: marketsByState,
     isMobile: state.appStatus.isMobile,
-    tabsInfo: createTabsInfo(marketsObject),
+    tabsInfo: createTabsInfo(marketsByState),
     marketsObj
   };
 };
