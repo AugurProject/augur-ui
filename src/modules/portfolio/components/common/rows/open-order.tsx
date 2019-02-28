@@ -63,7 +63,6 @@ const OpenOrder = (props: OpenOrderProps) => {
               <div className={Styles.OpenOrder__info}>
                 {isSingle &&
                   <span>
-                    <span>Market:</span>
                     <MarketLink id={openOrder.marketId}>
                       {openOrder.marketDescription}
                     </MarketLink>
