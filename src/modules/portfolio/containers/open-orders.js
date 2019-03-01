@@ -19,7 +19,22 @@ const mapStateToProps = state => {
     []
   );
 
-  individualOrders = individualOrders.concat(pendingOrders || []);
+  Object.keys(pendingOrders).map(marketId => {
+    individualOrders = (pendingOrders[marketId] || []).concat(individualOrders)
+  });
+
+  let foundMatch = false;
+  markets.map(marketId => {
+    if (pendingOrders[marketId]) { // need case where no other open orders
+      markets[marketId].userOpenOrders = markets[marketId].userOpenOrders.concat(pendingOrders[marketId] || [])
+      foundMatch = true;
+    }
+  });
+
+  if (foundMatch)
+  
+
+ console.log(markets)
 
   const marketsObj = markets.reduce((obj, market) => {
     obj[market.id] = market;
