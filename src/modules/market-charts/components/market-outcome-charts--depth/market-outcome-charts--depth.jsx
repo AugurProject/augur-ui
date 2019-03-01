@@ -929,6 +929,7 @@ function attachHoverClickHandlers(options) {
       const tooltip = d3
         .select("#hovered_tooltip_container")
         .style("display", "flex")
+        .style("height", testHeight)
         .style("width", testWidth);
       tooltip
         .attr("x", xScale(nearestFillingOrder[1]) + offset.hoverToolTipX)
