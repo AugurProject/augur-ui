@@ -8,6 +8,7 @@ import { Order } from "modules/portfolio/constants";
 import { CancelTextButton } from "modules/common-elements/buttons";
 import { SELL } from "modules/common-elements/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
+import getValue from "utils/get-value";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
@@ -18,7 +19,15 @@ export interface OpenOrderProps {
 
 const OpenOrder = (props: OpenOrderProps) => {
   const { openOrder, isSingle } = props;
-  
+
+  if (!openOrder) {
+    return null;
+  }
+
+  const tokensEscrowed = getValue(openOrder, "tokensEscrowed.formatted");
+  const sharesEscrowed = getValue(openOrder, "sharesEscrowed.formatted");
+  const creationTime = getValue(openOrder, "creationTime.formattedShort");
+
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
@@ -41,15 +50,17 @@ const OpenOrder = (props: OpenOrderProps) => {
               [Styles.Order__typeSell]: openOrder.type === SELL
             })}>
               {openOrder.type}
-              {openOrder.pending && <span><PendingLabel /></span>}
+              {(openOrder.pending || openOrder.pendingOrder) && <span><PendingLabel /></span>}
             </li>
-            <li>{openOrder.unmatchedShares.formatted}</li>
-            <li>{openOrder.avgPrice.formatted}</li>
+            <li>{openOrder.unmatchedShares && openOrder.unmatchedShares.formatted}</li>
+            <li>{openOrder.avgPrice && openOrder.avgPrice.formatted}</li>
             <li>
-              <CancelTextButton disabled={openOrder.pending} action={e => {
-                e.stopPropagation();
-                openOrder.cancelOrder(openOrder);
-              }} text='Cancel' />
+              {openOrder.cancelOrder && 
+                <CancelTextButton disabled={openOrder.pending} action={e => {
+                  e.stopPropagation();
+                  openOrder.cancelOrder(openOrder);
+                }} text='Cancel' />
+              }
             </li>
           </ul>
         }
@@ -67,16 +78,16 @@ const OpenOrder = (props: OpenOrderProps) => {
                 <div className={Styles.OpenOrder__labels}>
                   <LinearPropertyLabel
                     label="Total Cost (ETH)"
-                    value={`${openOrder.tokensEscrowed.formatted}`}
+                    value={`${tokensEscrowed}`}
                   />
                   <LinearPropertyLabel
                     label="Total Cost (Shares)"
-                    value={`${openOrder.sharesEscrowed.formatted}`}
+                    value={`${sharesEscrowed}`}
                   />
                 </div>
               </div>
               <div className={Styles.OpenOrder__timestamp}>
-                {openOrder.creationTime.formattedShort}
+                {creationTime}
               </div>
             </div>
           </div>

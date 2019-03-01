@@ -6,14 +6,20 @@ import { triggerTransactionsExport } from "modules/transactions/actions/trigger-
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 import getOpenOrders from "modules/orders/selectors/open-orders";
+import { selectPendingOrdersState } from "src/select-state";
 
 const mapStateToProps = state => {
   const openOrders = getOpenOrders();
   const markets = getPositionsMarkets(openOrders);
-  const individualOrders = markets.reduce(
+
+  const pendingOrders = selectPendingOrdersState(state);
+
+  let individualOrders = markets.reduce(
     (p, market) => [...p, ...market.userOpenOrders],
     []
   );
+
+  individualOrders = individualOrders.concat(pendingOrders || []);
 
   const marketsObj = markets.reduce((obj, market) => {
     obj[market.id] = market;
