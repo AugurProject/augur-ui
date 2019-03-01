@@ -1,7 +1,7 @@
 import * as React from "react";
 import { head, find } from "lodash";
 import classNames from "classnames";
-import Styles from "modules/common-elements/dropdown.styles";
+import Styles from "modules/common-elements/selection.styles";
 import { Chevron, TwoArrows } from "modules/common-elements/icons";
 
 export interface NameValuePair {

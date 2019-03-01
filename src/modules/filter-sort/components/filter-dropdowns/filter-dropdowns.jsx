@@ -23,7 +23,7 @@ import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropd
 import parseQuery from "modules/routes/helpers/parse-query";
 import makeQuery from "modules/routes/helpers/make-query";
 import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
-import { SquareDropdown } from "modules/common-elements/dropdown";
+import { SquareDropdown } from "modules/common-elements/selection";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },

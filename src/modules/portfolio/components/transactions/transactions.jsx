@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 import TransactionSingle from "modules/portfolio/components/transaction-single/transaction-single";
 import TransactionMultiple from "modules/portfolio/components/transaction-multiple/transaction-multiple";
 import Paginator from "modules/common/components/paginator/paginator";
-import { SquareDropdown } from "modules/common-elements/dropdown";
+import { SquareDropdown } from "modules/common-elements/selection";
 import {
   DAY,
   WEEK,

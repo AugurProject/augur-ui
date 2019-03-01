@@ -10,7 +10,7 @@ import {
 import {
   SquareDropdown,
   StaticLabelDropdown
-} from "modules/common-elements/dropdown";
+} from "modules/common-elements/selection";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
 import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
 import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart";

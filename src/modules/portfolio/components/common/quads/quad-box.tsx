@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
-import { SquareDropdown } from "modules/common-elements/dropdown";
+import { SquareDropdown } from "modules/common-elements/selection";
 import { SearchBar } from "modules/common-elements/search";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 

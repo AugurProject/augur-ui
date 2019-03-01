@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import * as d3 from "d3";
 
-import { SquareDropdown } from "modules/common-elements/dropdown";
+import { SquareDropdown } from "modules/common-elements/selection";
 import { formatEther } from "utils/format-number";
 import Styles from "modules/portfolio/components/performance-graph/performance-graph.styles";
 

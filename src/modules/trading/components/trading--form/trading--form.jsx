@@ -13,7 +13,7 @@ import { isEqual } from "lodash";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import { darkBgExclamationCircle } from "modules/common/components/icons";
-import { SquareDropdown } from "modules/common-elements/dropdown";
+import { SquareDropdown } from "modules/common-elements/selection";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
