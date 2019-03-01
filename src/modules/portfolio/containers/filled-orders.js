@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 
+import * as constants from "src/modules/common-elements/constants";
 import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
@@ -23,14 +24,24 @@ const mapStateToProps = state => {
   );
 
   const marketIds = keys(groupedFilledOrders);
-  const markets = marketIds.map(m => marketsData[m]).map(item => {
+  let markets = marketIds.map(m => marketsData[m]).map(item => {
     const marketInfo = selectMarket(item.id);
+
     return {
       ...item,
+      marketStatus: marketInfo.marketStatus,
       recentlyTraded: marketInfo.recentlyTraded,
       filledOrders: selectMarket(item.id).filledOrders
     };
+  }).filter(market => {
+    return market.marketStatus !== constants.MARKET_CLOSED
   });
+;
+
+
+  // markets = markets.filter(market => {
+  //   return market.marketStatus !== constants.MARKET_CLOSED
+  // });
 
   /* eslint-disable */
   let allFilledOrders = [];

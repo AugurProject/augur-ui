@@ -6,10 +6,14 @@ import { triggerTransactionsExport } from "modules/transactions/actions/trigger-
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 import getOpenOrders from "modules/orders/selectors/open-orders";
+import * as constants from "src/modules/common-elements/constants";
 
 const mapStateToProps = state => {
   const openOrders = getOpenOrders();
-  const markets = getPositionsMarkets(openOrders);
+  const markets = getPositionsMarkets(openOrders).filter(market => {
+    return market.marketStatus !== constants.MARKET_CLOSED
+  });
+
   const individualOrders = markets.reduce(
     (p, market) => [...p, ...market.userOpenOrders],
     []
