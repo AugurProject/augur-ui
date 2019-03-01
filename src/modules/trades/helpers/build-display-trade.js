@@ -24,7 +24,6 @@ export const buildDisplayTrade = trade => {
       side
     )
   ) {
-    console.log("user closing out ");
     // using totalCost at "1", so trading confirm form shows new position
     return { ...trade, shareCost: "0", totalCost: "1" };
   }
@@ -36,21 +35,12 @@ export const buildDisplayTrade = trade => {
     .reduce((p, i) => createBigNumber(p).plus(createBigNumber(i)), ZERO)
     .isEqualTo(ZERO);
 
+  // if summation is zero then synthetics and onChain mirrored and no special logic is needed
+  // if synthetics and onChain are the same no special logic is needed
   if (summationToZero || equalArrays) return trade;
-
-  const bnNumShares = createBigNumber(numShares);
-  const netPosition = createBigNumber(userNetPositions[outcomeIndex]);
-
   if (side === BUY) return trade;
-  // here is where we subtract values
-  const newShareCost = bnNumShares.gte(netPosition)
-    ? netPosition
-    : bnNumShares.minus(netPosition);
 
-  return {
-    ...trade,
-    shareCost: newShareCost.toString()
-  };
+  return { ...trade, shareCost: "0", totalCost: "1" };
 };
 
 const sum = (arr1, arr2) => {
@@ -74,7 +64,8 @@ const areEqual = (arr1, arr2) => {
 };
 
 /**
-Detect that user is closing out position by buying last outcomes. Meaning they already own all other outcomes
+Detect that user is closing out position by buying last outcomes.
+Meaning they already own all other outcomes
  */
 const buyingAllOutcomes = (
   userShareBalance,
