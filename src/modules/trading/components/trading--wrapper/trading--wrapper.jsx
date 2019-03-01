@@ -380,7 +380,7 @@ class TradingWrapper extends Component {
               marketType={getValue(this.props, "market.marketType")}
               maxPrice={getValue(this.props, "market.maxPrice")}
               minPrice={getValue(this.props, "market.minPrice")}
-              trade={s.trade}
+              trade={s.trade.displayTrade}
               isMobile={isMobile}
               gasPrice={gasPrice}
               availableFunds={availableFunds}
