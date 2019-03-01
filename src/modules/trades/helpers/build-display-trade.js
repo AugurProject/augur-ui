@@ -1,6 +1,5 @@
 import { createBigNumber } from "utils/create-big-number";
-import { ZERO } from "modules/common-elements/constants";
-import { BUY } from "modules/common-elements/constants";
+import { ZERO, BUY } from "modules/common-elements/constants";
 
 export const buildDisplayTrade = trade => {
   const {
