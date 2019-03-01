@@ -6,8 +6,6 @@ import {
   calcOrderShareProfitLoss,
   calculateTotalOrderValue
 } from "modules/trades/helpers/calc-order-profit-loss-percents";
-import { augur } from "services/augurjs";
-import { calculateMaxPossibleShares } from "modules/markets/helpers/calculate-max-possible-shares";
 import * as constants from "modules/common-elements/constants";
 import { selectAggregateOrderBook } from "modules/orders/helpers/select-order-book";
 import store from "src/store";
@@ -21,7 +19,6 @@ import store from "src/store";
  */
 export const generateTrade = memoize(
   (market, outcome, outcomeTradeInProgress, orderBooks) => {
-    const { loginAccount } = store.getState();
     const { settlementFee } = market;
     const side =
       (outcomeTradeInProgress && outcomeTradeInProgress.side) || constants.BUY;
@@ -88,35 +85,10 @@ export const generateTrade = memoize(
       marketType
     );
 
-    let maxNumShares;
-    if (limitPrice != null) {
-      const orders = augur.trading.filterAndSortByPrice({
-        singleOutcomeOrderBookSide: (orderBooks[outcome.id] || {})[
-          side === constants.BUY ? constants.SELL : constants.BUY
-        ],
-        orderType: side,
-        price: limitPrice,
-        userAddress: loginAccount.address
-      });
-      maxNumShares = formatShares(
-        calculateMaxPossibleShares(
-          loginAccount,
-          orders,
-          market.makerFee,
-          market.settlementFee,
-          market.cumulativeScale,
-          market.marketType === "scalar" ? market.minPrice : null
-        )
-      );
-    } else {
-      maxNumShares = formatShares(0);
-    }
-
     return {
       side,
       numShares,
       limitPrice,
-      maxNumShares,
       sharesFilled,
       totalOrderValue: totalOrderValue ? formatEther(totalOrderValue) : null,
       orderShareProfit: orderShareProfitLoss
