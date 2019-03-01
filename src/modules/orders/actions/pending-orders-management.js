@@ -26,24 +26,17 @@ export const clearPendingOrders = () => (dispatch, getState) => {
   const { blockchain, pendingOrders } = getState();
 
   if (blockchain.currentBlockNumber) {
-    Object.keys(pendingOrders).map(marketId => 
-      pendingOrders[marketId].map((pendingOrder, hash) => {
-        if (
-          pendingOrder &&
-          pendingOrder.blockNumber + blockComparison <
-            blockchain.currentBlockNumber
-        ) {
-          delete pendingOrders[marketId][hash];
-        }
+    Object.keys(pendingOrders).forEach(marketId => {
+      pendingOrders[marketId] = pendingOrders[marketId].filter(
+        order =>
+          order &&
+          order.blockNumber + blockComparison > blockchain.currentBlockNumber
+      );
 
-        if (!pendingOrder) {
-          delete pendingOrders[marketId];
-          return;
-        }
-
-        return pendingOrders[marketId];
-      })
-    );
+      if (!pendingOrders[marketId].length) {
+        delete pendingOrders[marketId];
+      }
+    });
   }
 
   dispatch(loadPendingOrders(pendingOrders));
