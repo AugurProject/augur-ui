@@ -11,6 +11,7 @@ import { ALL_MARKETS } from "modules/common-elements/constants";
 
 import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
+// todo: need backup sorts if they have never traded or things are equal
 const sortByOptions = [
   {
     label: "Sort by Most Recently Traded",
@@ -25,7 +26,7 @@ const sortByOptions = [
     label: "Sort by Creation Time",
     value: "creationTime",
     comp(marketA, marketB) {
-      return marketB.endTime.timestamp - marketA.endTime.timestamp;
+      return marketB.creationTime.timestamp - marketA.creationTime.timestamp;
     }
   },
   {

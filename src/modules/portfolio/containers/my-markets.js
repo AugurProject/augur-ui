@@ -21,6 +21,7 @@ const mapStateToProps = state => {
       "description",
       "reportingState",
       "recentlyTraded",
+      "creationTime",
       "endTime"
     ])
   );
