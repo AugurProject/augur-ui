@@ -1,28 +1,47 @@
 import { createBigNumber } from "utils/create-big-number";
 import { ZERO } from "modules/common-elements/constants";
+import { BUY } from "modules/common-elements/constants";
 
 export const buildDisplayTrade = trade => {
-  const { userNetPositions, userShareBalance, outcomeId, numShares } = trade;
+  const {
+    userNetPositions,
+    userShareBalance,
+    outcomeId,
+    numShares,
+    side,
+    shareBalances
+  } = trade;
+
+  const outcomeIndex = parseInt(outcomeId, 10);
+  const equalArrays = areEqual(userShareBalance, userNetPositions);
+
+  if (
+    buyingAllOutcomes(
+      userShareBalance,
+      outcomeIndex,
+      numShares,
+      shareBalances,
+      side
+    )
+  ) {
+    console.log("user closing out ");
+    // using totalCost at "1", so trading confirm form shows new position
+    return { ...trade, shareCost: "0", totalCost: "1" };
+  }
 
   const mirror = sum(userShareBalance, userNetPositions);
   if (!Array.isArray(mirror)) return trade;
 
-  const summation = mirror.reduce((p, i) =>
-    createBigNumber(p).plus(createBigNumber(i))
-  );
+  const summationToZero = mirror
+    .reduce((p, i) => createBigNumber(p).plus(createBigNumber(i)), ZERO)
+    .isEqualTo(ZERO);
 
-  const equalArrays = areEqual(userShareBalance, userNetPositions);
-  if (summation.isEqualTo(ZERO) || equalArrays) return trade;
+  if (summationToZero || equalArrays) return trade;
 
   const bnNumShares = createBigNumber(numShares);
-  const netPosition = createBigNumber(
-    userNetPositions[parseInt(outcomeId, 10)]
-  );
-  console.log(
-    "use netPosition for outcomeId",
-    userNetPositions[parseInt(outcomeId, 10)],
-    outcomeId
-  );
+  const netPosition = createBigNumber(userNetPositions[outcomeIndex]);
+
+  if (side === BUY) return trade;
   // here is where we subtract values
   const newShareCost = bnNumShares.gte(netPosition)
     ? netPosition
@@ -52,4 +71,31 @@ const areEqual = (arr1, arr2) => {
     }
   });
   return result;
+};
+
+/**
+Detect that user is closing out position by buying last outcomes. Meaning they already own all other outcomes
+ */
+const buyingAllOutcomes = (
+  userShareBalance,
+  outcomeIndex,
+  numShares,
+  shareBalances,
+  side
+) => {
+  if (side !== BUY) return false;
+  // check if user is selling shares when buying all outcomes
+  const modUserShareBalance = [...userShareBalance];
+  // add resulting buy shares for comparison of resulting shareBalance
+  modUserShareBalance[outcomeIndex] = numShares;
+
+  const minValue = Math.min(...modUserShareBalance);
+  if (createBigNumber(minValue).isEqualTo(ZERO)) return false;
+  // see if min value is deducted from all other outcome than current outcome buy is on
+  const resulting = modUserShareBalance.map(value =>
+    createBigNumber(value)
+      .minus(minValue)
+      .toString()
+  );
+  return areEqual(resulting, shareBalances);
 };
