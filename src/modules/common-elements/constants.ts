@@ -553,3 +553,7 @@ export const VOLUME_ETH_SHARES = [
 export const NEW = "New";
 export const RESOLVED_MARKETS_OPEN_ORDERS_TITLE =
   "Open Orders in Resolved Market";
+export const REPORTING_ENDS_SOON =
+  "Reporting Ends Soon";
+export const FINALIZE_MARKET =
+  "Finalize Market";

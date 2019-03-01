@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { NotificationCard } from "modules/common-elements/notifications";
@@ -7,47 +7,33 @@ import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/notifications/notification-box.styles";
 
-export interface Notifications {
-  isImportant: boolean;
-  isNew: boolean;
-  title: string;
-  marketId: string;
-  buttonLabel: string;
-  buttonAction: Function;
-  marketName: string;
-  round?: number;
-  amount?: number;
-  countDown?: Date;
-  type: string;
-  Template: React.StatelessComponent<any>;
-}
+import { Notifications } from "modules/account/constants";
+
+
 
 export interface NotificationBoxProps {
   notifications: Array<Notifications>;
+  currentTime: number;
+  reportingWindowEndtime: number;
 }
 
 const NotificationBox = (props: NotificationBoxProps) => {
-  const { notifications } = props;
+  const { currentTime, reportingWindowEndtime, notifications } = props;
   const notificationCount = notifications.length;
-  const newNotificationCount = notifications.filter((item: any) => item.isNew)
-    .length;
+  const newNotificationCount = notifications.filter((item: any) => item.isNew).length;
 
   const rows = notifications.map((notification: Notifications, idx: number) => {
     const {
-      Template,
-      marketName,
-      marketId,
-      round,
-      amount,
-      countDown,
       isImportant,
       isNew,
       title,
       buttonLabel,
-      buttonAction
+      buttonAction,
+      Template,
+      market
     } = notification;
 
-    const templateProps = { marketName, marketId, amount, round, countDown };
+    const templateProps = { market, currentTime, reportingWindowEndtime };
     const notificationCardProps = {
       isImportant,
       isNew,
