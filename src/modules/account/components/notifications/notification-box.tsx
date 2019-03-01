@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { NotificationCard } from "modules/common-elements/notifications";
