@@ -6,6 +6,8 @@ import { triggerTransactionsExport } from "modules/transactions/actions/trigger-
 import { updateModal } from "modules/modal/actions/update-modal";
 import getOpenOrders from "modules/orders/selectors/open-orders";
 import * as constants from "src/modules/common-elements/constants";
+import { selectPendingOrdersState } from "src/select-state";
+import { selectMarket } from "modules/markets/selectors/market";
 
 const mapStateToProps = state => {
   const openOrders = getOpenOrders();
@@ -14,7 +16,7 @@ const mapStateToProps = state => {
   );
   const pendingOrders = selectPendingOrdersState(state);
 
-  const individualOrders = markets.reduce(
+  let individualOrders = markets.reduce(
     (p, market) => [...p, ...market.userOpenOrders],
     []
   );
