@@ -14,6 +14,17 @@ export const buildDisplayTrade = trade => {
 
   const outcomeIndex = parseInt(outcomeId, 10);
   const equalArrays = areEqual(userShareBalance, userNetPositions);
+  const bnExistingShares = createBigNumber(userNetPositions[outcomeIndex]);
+  const bnNumShares = createBigNumber(numShares);
+  const addOutcomeShares =
+    side === BUY
+      ? bnNumShares.plus(bnExistingShares)
+      : bnNumShares.minus(bnExistingShares);
+  const useShares = addOutcomeShares.lt(bnNumShares);
+  const cost = Math.min(
+    bnNumShares.toNumber(),
+    bnExistingShares.abs().toNumber()
+  );
 
   if (
     buyingAllOutcomes(
@@ -24,8 +35,11 @@ export const buildDisplayTrade = trade => {
       side
     )
   ) {
-    // using totalCost at "1", so trading confirm form shows new position
-    return { ...trade, shareCost: "0", totalCost: "1" };
+    return {
+      ...trade,
+      shareCost: useShares ? cost : ZERO,
+      totalCost: addOutcomeShares.toString()
+    };
   }
 
   const mirror = sum(userShareBalance, userNetPositions);
@@ -38,9 +52,12 @@ export const buildDisplayTrade = trade => {
   // if summation is zero then synthetics and onChain mirrored and no special logic is needed
   // if synthetics and onChain are the same no special logic is needed
   if (summationToZero || equalArrays) return trade;
-  if (side === BUY) return trade;
 
-  return { ...trade, shareCost: "0", totalCost: "1" };
+  return {
+    ...trade,
+    shareCost: useShares ? cost : ZERO,
+    totalCost: addOutcomeShares.toString()
+  };
 };
 
 const sum = (arr1, arr2) => {
