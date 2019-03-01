@@ -7,6 +7,7 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 import getOpenOrders from "modules/orders/selectors/open-orders";
 import { selectPendingOrdersState } from "src/select-state";
+import { selectMarket } from "modules/markets/selectors/market";
 
 const mapStateToProps = state => {
   const openOrders = getOpenOrders();
@@ -19,22 +20,28 @@ const mapStateToProps = state => {
     []
   );
 
-  Object.keys(pendingOrders).map(marketId => {
-    individualOrders = (pendingOrders[marketId] || []).concat(individualOrders)
+  Object.keys(pendingOrders).forEach(marketId => {
+    individualOrders = (pendingOrders[marketId] || []).concat(individualOrders);
   });
 
-  let foundMatch = false;
-  markets.map(marketId => {
-    if (pendingOrders[marketId]) { // need case where no other open orders
-      markets[marketId].userOpenOrders = markets[marketId].userOpenOrders.concat(pendingOrders[marketId] || [])
-      foundMatch = true;
+  Object.keys(pendingOrders).forEach(marketId => {
+    const findIndex = markets.findIndex(market => market.id === marketId);
+    if (findIndex >= 0) {
+      // market is already in the open orders list
+      markets[findIndex] = {
+        ...markets[findIndex],
+        userOpenOrders: markets[findIndex].userOpenOrders.concat(
+          pendingOrders[marketId] || []
+        )
+      };
+    } else {
+      const market = selectMarket(marketId);
+      markets.push({
+        ...market,
+        userOpenOrders: pendingOrders[marketId]
+      });
     }
   });
-
-  if (foundMatch)
-  
-
- console.log(markets)
 
   const marketsObj = markets.reduce((obj, market) => {
     obj[market.id] = market;

@@ -24,7 +24,6 @@ const mapStateToProps = state => {
 
   const marketIds = keys(groupedFilledOrders);
   const markets = marketIds.map(m => marketsData[m]).map(item => {
-    if (!item) return;
     const marketInfo = selectMarket(item.id);
     return {
       ...item,
