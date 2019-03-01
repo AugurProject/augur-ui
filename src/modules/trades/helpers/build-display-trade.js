@@ -18,7 +18,11 @@ export const buildDisplayTrade = trade => {
   const netPosition = createBigNumber(
     userNetPositions[parseInt(outcomeId, 10)]
   );
-  console.log("arrays are not equal");
+  console.log(
+    "use netPosition for outcomeId",
+    userNetPositions[parseInt(outcomeId, 10)],
+    outcomeId
+  );
   // here is where we subtract values
   const newShareCost = bnNumShares.gte(netPosition)
     ? netPosition
@@ -26,7 +30,7 @@ export const buildDisplayTrade = trade => {
 
   return {
     ...trade,
-    shareCost: newShareCost
+    shareCost: newShareCost.toString()
   };
 };
 
