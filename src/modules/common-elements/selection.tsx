@@ -22,6 +22,21 @@ interface DropdownState {
   showList: boolean;
 }
 
+interface SelectionOption {
+  label: string;
+  id: number;
+}
+
+interface PillSelectionProps {
+  options: Array<SelectionOption>;
+  onChange(value: number): void;
+  defaultSelection: number;
+}
+
+interface PillSelectionState {
+  selected: number;
+}
+
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
   refDropdown: any = null;
 
@@ -171,6 +186,50 @@ export class StaticLabelDropdown extends Dropdown {
           ))}
         </select>
       </div>
+    );
+  }
+}
+
+export class PillSelection extends React.Component<
+  PillSelectionProps,
+  PillSelectionState
+> {
+  state: PillSelectionState = {
+    selected: this.props.defaultSelection || 0
+  };
+
+  buttonSelect = (option: SelectionOption) => {
+    const { onChange } = this.props;
+    if (option.id !== this.state.selected) {
+      this.setState({
+        selected: option.id
+      });
+      onChange(option.id);
+    }
+  };
+
+  renderButton = (option: SelectionOption): React.ReactNode => (
+    <li
+      className={classNames({
+        [Styles.Selected]: this.state.selected === option.id
+      })}
+      key={option.label}
+    >
+      <button onClick={() => this.buttonSelect(option)}>
+        {option.label}
+      </button>
+    </li>
+  );
+
+  render() {
+    const { options } = this.props;
+    return (
+      <ul className={Styles.PillSelection}>
+        {options.map(
+          (option: SelectionOption): React.ReactNode =>
+            this.renderButton(option)
+        )}
+      </ul>
     );
   }
 }
