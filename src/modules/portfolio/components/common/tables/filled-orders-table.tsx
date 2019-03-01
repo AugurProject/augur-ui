@@ -19,36 +19,36 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
   const { filledOrder, showMarketInfo } = props;
   return (
     <div className={Styles.FilledOrdersTable}>
+      <div className={Styles.FilledOrdersTable__inner}>
         {showMarketInfo &&
           <MarketLink id={filledOrder.marketId}>
             <span>Market:</span> {filledOrder.marketDescription}
           </MarketLink>
         }
-        <div className={Styles.FilledOrdersTable__inner}>
-          <ul className={Styles.FilledOrdersTable__header}>
+        <ul className={Styles.FilledOrdersTable__header}>
+          <li />
+          <li>Filled</li>
+          <li>Time Stamp</li>
+          <li>Transaction Details</li>
+        </ul>
+        {filledOrder.trades.map((trade: FilledOrder, i: number) => (
+          <ul key={i} className={Styles.FilledOrdersTable__trade}>
             <li />
-            <li>Filled</li>
-            <li>Time Stamp</li>
-            <li>Transaction Details</li>
+            <li>{formatShares(trade.amount).formatted}</li>
+            <li>{trade.timestamp.formattedShortDate}</li>
+            <li>
+              <button className={Styles.FilledOrder__view}>
+                <EtherscanLink
+                  showNonLink
+                  txhash={trade.transactionHash}
+                  label="View"
+                />
+              </button>
+            </li>
           </ul>
-          {filledOrder.trades.map((trade: FilledOrder, i: number) => (
-            <ul key={i} className={Styles.FilledOrdersTable__trade}>
-              <li />
-              <li>{formatShares(trade.amount).formatted}</li>
-              <li>{trade.timestamp.formattedShortDate}</li>
-              <li>
-                <button className={Styles.FilledOrder__view}>
-                  <EtherscanLink
-                    showNonLink
-                    txhash={trade.transactionHash}
-                    label="View"
-                  />
-                </button>
-              </li>
-            </ul>
-          ))}
-        </div>
+        ))}
       </div>
+    </div>
   );
 }
 

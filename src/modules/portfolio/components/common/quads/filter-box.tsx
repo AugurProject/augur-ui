@@ -49,12 +49,12 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
   };
 
-  // componentWillUpdate(nextProps, nextState) {
-  //   if (nextProps.filteredData.length !== this.props.filteredData.length) {
-  //     const filteredData = this.applySearch(this.state.search, nextProps.filteredData);
-  //     this.props.updateFilteredData(filteredData);
-  //   }
-  // }
+  componentWillUpdate(nextProps) {
+    if (nextProps.data[this.state.selectedTab] !== this.props.data[this.state.selectedTab]) {
+      const filteredData = this.applySearch(this.state.search, nextProps.data[this.state.selectedTab]);
+      this.props.updateFilteredData(filteredData);
+    }
+  }
 
   calculateTabNums = (data: MarketsByReportingState, input: string) => {
    const { filterComp } = this.props;

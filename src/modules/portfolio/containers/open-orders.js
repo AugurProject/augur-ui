@@ -15,8 +15,20 @@ const mapStateToProps = state => {
     []
   );
 
+  const marketsObj = markets.reduce((obj, market) => {
+    obj[market.id] = market;
+    return obj;
+  }, {});
+
+  const ordersObj = individualOrders.reduce((obj, order) => {
+    obj[order.id] = order;
+    return obj;
+  }, {});
+
   return {
     markets,
+    marketsObj,
+    ordersObj,
     openOrders: individualOrders
   };
 };

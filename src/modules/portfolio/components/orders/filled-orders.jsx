@@ -25,7 +25,9 @@ const sortByOptions = [
 export default class FilledOrders extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    filledOrders: PropTypes.array.isRequired
+    filledOrders: PropTypes.array.isRequired,
+    marketsObj: PropTypes.object.isRequired,
+    ordersObj: PropTypes.object.isRequired
   };
 
   constructor(props) {
@@ -65,7 +67,7 @@ export default class FilledOrders extends Component {
   }
 
   render() {
-    const { markets, filledOrders } = this.props;
+    const { markets, filledOrders, ordersObj, marketsObj } = this.props;
     const { filteredData, viewByMarkets } = this.state;
 
     return (
@@ -78,7 +80,7 @@ export default class FilledOrders extends Component {
         filterComp={this.filterComp}
         switchView={this.switchView}
         bottomBarContent={<FilledOrdersHeader />}
-        label="Filled Orders"
+        label={viewByMarkets ? "Markets" : "Filled Orders"}
         rows={
           <div className={Styles.Quad__container}>
             {filteredData.length === 0 && (
@@ -94,13 +96,13 @@ export default class FilledOrders extends Component {
                   viewByMarkets ? (
                     <OrderMarketRow
                       key={"filledOrderMarket_" + data.id}
-                      market={data}
+                      market={marketsObj[data.id]}
                       filledOrders
                     />
                   ) : (
                     <FilledOrder
                       key={"filledOrder_" + data.id}
-                      filledOrder={data}
+                      filledOrder={ordersObj[data.id]}
                       isSingle
                     />
                   )

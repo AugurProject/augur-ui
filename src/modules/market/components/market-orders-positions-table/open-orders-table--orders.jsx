@@ -64,6 +64,8 @@ export default class OpenOrdersOrder extends Component {
     const orderShares = getValue(order, "unmatchedShares.formatted");
     const orderType = getValue(order, "type");
 
+    if (!order) return null;
+
     return (
       <ul
         ref={order => {

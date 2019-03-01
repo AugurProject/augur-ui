@@ -16,13 +16,9 @@ export interface OpenOrderProps {
   isSingle?: Boolean,
 }
 
-// todo: do actualy frozen funds
-
 const OpenOrder = (props: OpenOrderProps) => {
   const { openOrder, isSingle } = props;
-  if (openOrder.pending || openOrder.pendingOrder || openOrder.orderCancellationStatus) {
-    console.log(openOrder)
-  }
+  
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
@@ -70,12 +66,12 @@ const OpenOrder = (props: OpenOrderProps) => {
                 }
                 <div className={Styles.OpenOrder__labels}>
                   <LinearPropertyLabel
-                    label="Frozen Funds (ETH)"
-                    value={`${openOrder.unmatchedShares.formatted}`}
+                    label="Total Cost (ETH)"
+                    value={`${openOrder.tokensEscrowed.formatted}`}
                   />
                   <LinearPropertyLabel
                     label="Total Cost (Shares)"
-                    value={`${openOrder.unmatchedShares.formatted}`}
+                    value={`${openOrder.sharesEscrowed.formatted}`}
                   />
                 </div>
               </div>
