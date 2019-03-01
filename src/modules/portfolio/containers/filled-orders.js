@@ -4,7 +4,6 @@ import * as constants from "src/modules/common-elements/constants";
 import FilledOrders from "modules/portfolio/components/orders/filled-orders";
 import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
 import { groupBy, keys, differenceBy } from "lodash";
 import { selectMarket } from "modules/markets/selectors/market";
 
@@ -24,24 +23,19 @@ const mapStateToProps = state => {
   );
 
   const marketIds = keys(groupedFilledOrders);
-  let markets = marketIds.map(m => marketsData[m]).map(item => {
-    const marketInfo = selectMarket(item.id);
+  const markets = marketIds
+    .map(m => marketsData[m])
+    .map(item => {
+      const marketInfo = selectMarket(item.id);
 
-    return {
-      ...item,
-      marketStatus: marketInfo.marketStatus,
-      recentlyTraded: marketInfo.recentlyTraded,
-      filledOrders: selectMarket(item.id).filledOrders
-    };
-  }).filter(market => {
-    return market.marketStatus !== constants.MARKET_CLOSED
-  });
-;
-
-
-  // markets = markets.filter(market => {
-  //   return market.marketStatus !== constants.MARKET_CLOSED
-  // });
+      return {
+        ...item,
+        marketStatus: marketInfo.marketStatus,
+        recentlyTraded: marketInfo.recentlyTraded,
+        filledOrders: selectMarket(item.id).filledOrders
+      };
+    })
+    .filter(market => market.marketStatus !== constants.MARKET_CLOSED);
 
   /* eslint-disable */
   let allFilledOrders = [];
@@ -71,7 +65,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   triggerTransactionsExport: () => dispatch(triggerTransactionsExport()),
-  claimTradingProceeds: marketId => dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId }))
+  claimTradingProceeds: marketId => dispatch(updateModal({ type: constants.MODAL_CLAIM_TRADING_PROCEEDS, marketId }))
 });
 
 const FilledOrdersContainer = connect(
