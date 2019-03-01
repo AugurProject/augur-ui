@@ -29,7 +29,10 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
 
       const marketIds = Array.from(
         new Set([
-          ...userPositions.reduce((p, position) => [...p, position.marketId], [])
+          ...userPositions.reduce(
+            (p, position) => [...p, position.marketId],
+            []
+          )
         ])
       );
       if (marketIds.length === 0) return callback(null);
