@@ -199,13 +199,11 @@ function runSimulateTrade(
   const displayTrade = generateTrade(
     market,
     outcome,
-    buildDisplayTrade(
-      {
-        ...tradeInfo,
-        outcomeId
-      },
-      orderBooks
-    )
+    buildDisplayTrade({
+      ...tradeInfo,
+      outcomeId
+    }),
+    orderBooks
   );
 
   if (callback) callback(null, { ...order, ...simulatedTrade, displayTrade });

@@ -149,11 +149,6 @@ export default function(market) {
           expect(typeof trade.numShares).toBe("number");
         });
 
-        test(`market.outcomes[${i}].trade.maxNumShares`, () => {
-          expect(trade.maxNumShares).toBeDefined();
-          expect(typeof trade.maxNumShares).toBe("number");
-        });
-
         test(`market.outcomes[${i}].trade.limitPrice`, () => {
           expect(trade.limitPrice).toBeDefined();
           expect(typeof trade.limitPrice).toBe("number");

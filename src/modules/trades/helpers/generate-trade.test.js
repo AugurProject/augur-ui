@@ -26,16 +26,6 @@ describe("modules/trades/helpers/generate-trade.js", () => {
     expect(trade).toEqual({
       limitPrice: "0.50",
       numShares: 5000,
-      maxNumShares: {
-        denomination: " Shares",
-        formatted: "0",
-        formattedValue: 0,
-        full: "0 Shares",
-        minimized: "0",
-        rounded: "0",
-        roundedValue: 0,
-        value: 0
-      },
       orderShareProfit: null,
       orderShareTradingFee: null,
       potentialEthProfit: formatEther("7500"),
