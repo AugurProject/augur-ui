@@ -26,7 +26,7 @@ export const clearPendingOrders = () => (dispatch, getState) => {
   const { blockchain, pendingOrders } = getState();
 
   if (blockchain.currentBlockNumber) {
-    Object.keys(pendingOrders).map(marketId =>
+    Object.keys(pendingOrders).map(marketId => 
       pendingOrders[marketId].map((pendingOrder, hash) => {
         if (
           pendingOrder &&
@@ -36,8 +36,9 @@ export const clearPendingOrders = () => (dispatch, getState) => {
           delete pendingOrders[marketId][hash];
         }
 
-        if (!pendingOrders[marketId].length) {
+        if (!pendingOrder) {
           delete pendingOrders[marketId];
+          return;
         }
 
         return pendingOrders[marketId];
