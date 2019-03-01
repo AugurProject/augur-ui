@@ -1,9 +1,7 @@
 import { createBigNumber } from "utils/create-big-number";
 import { ZERO } from "modules/common-elements/constants";
-import { formatEther } from "utils/format-number";
 
 export const buildDisplayTrade = trade => {
-  console.log("trade values");
   const { userNetPositions, userShareBalance, outcomeId, numShares } = trade;
 
   const mirror = sum(userShareBalance, userNetPositions);
@@ -28,9 +26,7 @@ export const buildDisplayTrade = trade => {
 
   return {
     ...trade,
-    shareCost: formatEther(newShareCost.abs().toFixed(), {
-      blankZero: false
-    })
+    shareCost: newShareCost
   };
 };
 

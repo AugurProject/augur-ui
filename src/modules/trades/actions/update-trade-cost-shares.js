@@ -3,6 +3,7 @@ import { augur } from "services/augurjs";
 import { BUY } from "modules/common-elements/constants";
 import logError from "utils/log-error";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
+import { buildDisplayTrade } from "modules/trades/helpers/build-display-trade";
 
 // Updates user's trade. Only defined (i.e. !== null) parameters are updated
 export function updateTradeCost({
@@ -184,17 +185,28 @@ function runSimulateTrade(
   if (isNaN(newTradeDetails.feePercent)) newTradeDetails.feePercent = "0";
   simulatedTrade.tradeGroupId = augur.trading.generateTradeGroupId();
 
-  const order = generateTrade(
+  const tradeInfo = {
+    ...newTradeDetails,
+    ...simulatedTrade,
+    sharesFilledAvgPrice,
+    userNetPositions,
+    userShareBalance
+  };
+
+  const order = generateTrade(market, outcome, tradeInfo, orderBooks);
+
+  // build display values for order form confirmation
+  const displayTrade = generateTrade(
     market,
-    { ...outcome, id: outcomeId },
-    {
-      ...newTradeDetails,
-      ...simulatedTrade,
-      sharesFilledAvgPrice,
-      userNetPositions,
-      userShareBalance
-    },
-    orderBooks
+    outcome,
+    buildDisplayTrade(
+      {
+        ...tradeInfo,
+        outcomeId
+      },
+      orderBooks
+    )
   );
-  if (callback) callback(null, { ...order, ...simulatedTrade });
+
+  if (callback) callback(null, { ...order, ...simulatedTrade, displayTrade });
 }
