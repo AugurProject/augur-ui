@@ -142,10 +142,15 @@ function runSimulateTrade(
   callback
 ) {
   let userShareBalance = new Array(market.numOutcomes).fill("0");
+  let userNetPositions = new Array(market.numOutcomes).fill("0");
   let sharesFilledAvgPrice = "";
   const userMarketShareBalances = accountShareBalances[marketId];
   const positions = accountPositions[marketId];
   if (positions) {
+    userNetPositions = Object.keys(positions).reduce((r, outcomeId) => {
+      r[outcomeId] = positions[outcomeId].netPosition;
+      return r;
+    }, userNetPositions);
     userShareBalance = userMarketShareBalances || [];
     sharesFilledAvgPrice = (positions[outcomeId] || {}).averagePrice;
   }
@@ -181,8 +186,14 @@ function runSimulateTrade(
 
   const order = generateTrade(
     market,
-    outcome,
-    { ...newTradeDetails, ...simulatedTrade, sharesFilledAvgPrice },
+    { ...outcome, id: outcomeId },
+    {
+      ...newTradeDetails,
+      ...simulatedTrade,
+      sharesFilledAvgPrice,
+      userNetPositions,
+      userShareBalance
+    },
     orderBooks
   );
   if (callback) callback(null, { ...order, ...simulatedTrade });

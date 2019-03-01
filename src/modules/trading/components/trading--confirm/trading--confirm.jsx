@@ -27,13 +27,12 @@ class MarketTradingConfirm extends Component {
     trade: PropTypes.shape({
       numShares: PropTypes.string,
       limitPrice: PropTypes.string,
-      tradingFees: PropTypes.object,
       potentialEthProfit: PropTypes.object,
-      potentialProfitPercent: PropTypes.object,
       potentialEthLoss: PropTypes.object,
-      potentialLossPercent: PropTypes.object,
       totalCost: PropTypes.object,
-      shareCost: PropTypes.object
+      shareCost: PropTypes.object,
+      orderShareProfit: PropTypes.object,
+      orderShareTradingFee: PropTypes.object
     }).isRequired,
     gasPrice: PropTypes.number.isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,

@@ -10,6 +10,7 @@ import { augur } from "services/augurjs";
 import { calculateMaxPossibleShares } from "modules/markets/helpers/calculate-max-possible-shares";
 import * as constants from "modules/common-elements/constants";
 import { selectAggregateOrderBook } from "modules/orders/helpers/select-order-book";
+import { buildDisplayTrade } from "modules/trades/helpers/build-display-trade";
 import store from "src/store";
 
 /**
@@ -112,6 +113,23 @@ export const generateTrade = memoize(
       maxNumShares = formatShares(0);
     }
 
+    // build display values for order form confirmation
+    const displayTrade = buildDisplayTrade({
+      side,
+      numShares,
+      limitPrice,
+      potentialEthProfit: preOrderProfitLoss.potentialEthProfit,
+      potentialEthLoss: preOrderProfitLoss.potentialEthLoss,
+      totalCost,
+      shareCost,
+      orderShareProfit: orderShareProfitLoss.potentialEthProfit,
+      orderShareTradingFee: orderShareProfitLoss.tradingFees,
+      userNetPositions: outcomeTradeInProgress.userNetPositions,
+      afterShareBalance: outcomeTradeInProgress.shareBalances,
+      userShareBalance: outcomeTradeInProgress.userShareBalance,
+      outcomeId: outcome.id
+    });
+
     return {
       side,
       numShares,
@@ -119,17 +137,25 @@ export const generateTrade = memoize(
       maxNumShares,
       sharesFilled,
       totalOrderValue: totalOrderValue ? formatEther(totalOrderValue) : null,
-      orderShareProfit: orderShareProfitLoss
-        ? formatEther(orderShareProfitLoss.potentialEthProfit)
-        : null,
-      orderShareTradingFee: orderShareProfitLoss
-        ? formatEther(orderShareProfitLoss.tradingFees)
-        : null,
+
       potentialEthProfit: preOrderProfitLoss
         ? formatEther(preOrderProfitLoss.potentialEthProfit)
         : null,
       potentialEthLoss: preOrderProfitLoss
         ? formatEther(preOrderProfitLoss.potentialEthLoss)
+        : null,
+      totalCost: formatEther(totalCost.abs().toFixed(), {
+        blankZero: false
+      }),
+      // These are actually shares, but they can be formatted like ETH
+      shareCost: formatEther(shareCost.abs().toFixed(), {
+        blankZero: false
+      }),
+      orderShareProfit: orderShareProfitLoss
+        ? formatEther(orderShareProfitLoss.potentialEthProfit)
+        : null,
+      orderShareTradingFee: orderShareProfitLoss
+        ? formatEther(orderShareProfitLoss.tradingFees)
         : null,
       potentialLossPercent: preOrderProfitLoss
         ? formatPercent(preOrderProfitLoss.potentialLossPercent)
@@ -143,16 +169,14 @@ export const generateTrade = memoize(
         : null,
       totalFee: formatEther(totalFee, { blankZero: true }),
       totalFeePercent: formatEther(feePercent, { blankZero: true }),
-      totalCost: formatEther(totalCost.abs().toFixed(), { blankZero: false }),
-      shareCost: formatEther(shareCost.abs().toFixed(), { blankZero: false }), // These are actually shares, but they can be formatted like ETH
-
       tradeTypeOptions: [
         { label: constants.BUY, value: constants.BUY },
         { label: constants.SELL, value: constants.SELL }
       ],
 
       totalSharesUpToOrder: (orderIndex, side) =>
-        totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks)
+        totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks),
+      displayTrade
     };
   },
   { max: 5 }
