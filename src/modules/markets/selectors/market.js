@@ -432,7 +432,8 @@ export function assembleMarket(
               marketPriceHistory,
               loginAccount.address,
               marketOutcomesData,
-              market
+              market,
+              market.userOpenOrders
             );
             market.recentlyTraded = convertUnixToFormattedDate(
               market.filledOrders[0]

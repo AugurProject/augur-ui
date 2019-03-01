@@ -27,6 +27,9 @@ const FilledOrder = (props: FilledOrderProps) => {
   const orderType = getValue(filledOrder, "type");
   const orderDisplay = orderType !== SELL ? BOUGHT : SOLD;
 
+  const originalQuantity = formatShares(getValue(filledOrder, "originalQuantity"))
+    .formatted;
+
   return (
     <div className={classNames({
           [Styles.Order__parentSingle]: isSingle,
@@ -50,6 +53,7 @@ const FilledOrder = (props: FilledOrderProps) => {
               <li className={classNames(Styles.Order__type, {
                 [Styles.Order__typeSell]: orderType === SELL
               })}>{orderDisplay}</li>
+              <li>{originalQuantity}</li>
               <li>{orderQuantity}</li>
               <li>{orderPrice}</li>
               <li>{filledOrder.timestamp.formattedShortDate}</li>

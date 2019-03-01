@@ -18,6 +18,11 @@ const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
     <li>Outcome</li>
     <li>Type</li>
     <li>Quantity</li>
+    <li>
+      Quantity 
+      <br />
+      Filled
+    </li>
     <li>Price</li>
     <li>Fill Date</li>
     <li>
