@@ -175,3 +175,64 @@
     }
   }
 }
+
+.PillSelection {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  height: @size-24;
+
+  > li {
+    background: transparent;
+    border: 1px solid @color-primary-light;
+    border-right: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+    justify-content: center;
+
+    &.Selected {
+      background: @color-primary-alternate-two;
+      border-color: @color-primary-alternate-two;
+
+      & + li {
+        border-left: 0;
+        padding-left: 1px;
+      }
+
+      &:last-of-type {
+        border-bottom-right-radius: @border-radius-rounded;
+        border-right: 1px solid @color-primary-alternate-two;
+        border-top-right-radius: @border-radius-rounded;
+      }
+
+      > button {
+        .mono-10-bold;
+
+        color: @color-secondary-text;
+        line-height: @size-14;
+      }
+    }
+
+    &:first-of-type {
+      border-bottom-left-radius: @border-radius-rounded;
+      border-top-left-radius: @border-radius-rounded;
+    }
+
+    &:last-of-type {
+      border-bottom-right-radius: @border-radius-rounded;
+      border-right: 1px solid @color-primary-light;
+      border-top-right-radius: @border-radius-rounded;
+    }
+
+    > button {
+      .mono-10;
+
+      background: transparent;
+      color: @color-alternate-text;
+      line-height: @size-14;
+      padding: 0.3125rem 0.5rem;
+    }
+  }
+}

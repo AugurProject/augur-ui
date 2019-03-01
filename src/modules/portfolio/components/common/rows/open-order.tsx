@@ -66,7 +66,9 @@ const OpenOrder = (props: OpenOrderProps) => {
         }
         toggleContent={
           <div className={Styles.OpenOrder_infoContainer}>
-            <div className={Styles.OpenOrder_innerInfoContainer}>
+            <div className={classNames(Styles.OpenOrder_innerInfoContainer, {
+              [Styles.OpenOrder_innerInfoContainerSingle]: isSingle
+            })}>
               <div className={Styles.OpenOrder__info}>
                 {isSingle &&
                   <span>
