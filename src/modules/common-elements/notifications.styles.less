@@ -61,18 +61,10 @@
   .text-11;
 
   color: fade(@color-tertiary-text, 50%);
-
-  .NotificationCard__countdown__title {
-    color: fade(@color-tertiary-text, 50%);
-  }
 }
 
 .NotificationCard__content__message__new {
   color: @color-secondary-text;
-
-  .NotificationCard__countdown__title {
-    color: @color-secondary-text;
-  }
 }
 
 .NotificationCard button {
@@ -80,19 +72,17 @@
 }
 
 .NotificationCard__countdown {
-  display: flex;
-  flex-direction: column;
   margin: 12px 0 0;
+
+  > span {
+    > span {
+      width: max-content !important;
+    }
+  }
 }
 
 .NotificationCard__countdown__title {
   .text-10;
-}
-
-.NotificationCard__countdown__timer {
-  .text-12-bold;
-
-  color: @color-in-reporting;
 }
 
 .NotificationCard__MarketName {

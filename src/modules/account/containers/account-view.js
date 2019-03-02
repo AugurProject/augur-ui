@@ -1,14 +1,23 @@
 import { connect } from "react-redux";
 import AccountView from "modules/account/components/account-view/account-view";
-import { selectResolvedMarketsOpenOrders } from "modules/notifications/selectors/notification-state";
+import {
+  selectResolvedMarketsOpenOrders,
+  selectReportOnMarkets,
+  selectFinalizeMarkets
+} from "modules/notifications/selectors/notification-state";
 import { updateNotifications } from "modules/notifications/actions/update-notifications";
 
 const mapStateToProps = state => {
   const resolvedMarketsOpenOrders = selectResolvedMarketsOpenOrders(state);
-
+  const reportOnMarkets = selectReportOnMarkets(state);
+  const finalizedMarkets = selectFinalizeMarkets(state);
   return {
     notifications: state.notifications,
-    resolvedMarketsOpenOrders
+    resolvedMarketsOpenOrders,
+    reportOnMarkets,
+    finalizedMarkets,
+    currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
+    reportingWindowStatsEndTime: state.reportingWindowStats.endTime
   };
 };
 

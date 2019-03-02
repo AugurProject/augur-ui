@@ -1,70 +1,50 @@
-import React, { Component } from "react";
+import React from "react";
 import { isEqual } from "lodash";
 
 import AccountHeader from "modules/account/containers/account-header";
 import TermsAndConditions from "modules/app/containers/terms-and-conditions";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import NotificationBox from "modules/account/components/notifications/notification-box";
-import { OpenOrdersResolvedMarketsTemplate } from "modules/account/components/notifications/notifications-templates";
-import { Notifications } from "modules/account/components/notifications/notification-box";
+import {
+  FinalizeTemplate,
+  OpenOrdersResolvedMarketsTemplate,
+  ReportEndingSoonTemplate,
+} from "modules/account/components/notifications/notifications-templates";
 
+import { Market, Notifications } from "modules/account/constants";
 import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/account-view/account-view.styles";
 
 
-
-export interface ResolvedMarketsOpenOrdersData {
-  marketId: string;
-  marketName: string;
-}
-
 export interface AccountViewProps {
-  resolvedMarketsOpenOrders: Array<ResolvedMarketsOpenOrdersData>;
+  resolvedMarketsOpenOrders: Array<Market>;
+  reportOnMarkets: Array<Market>;
+  finalizedMarkets: Array<Market>;
   updateNotifications: Function;
   notifications: Array<Notifications>;
+  currentAugurTimestamp: number;
+  reportingWindowStatsEndTime: number;
 }
 
-class AccountView extends  React.Component<AccountViewProps> {
+class AccountView extends React.Component<AccountViewProps> {
   componentDidMount() {
-    this.props.updateNotifications(
-      this.generateCards(this.props.resolvedMarketsOpenOrders)
-    );
+    this.updateState(this.props);
   }
 
   componentWillReceiveProps(nextProps: AccountViewProps) {
-    if (
-      !isEqual(
-        nextProps.resolvedMarketsOpenOrders,
-        this.props.resolvedMarketsOpenOrders
-      )
-    ) {
-      this.props.updateNotifications(
-        this.generateCards(nextProps.resolvedMarketsOpenOrders)
-      );
+    if (!isEqual(nextProps.resolvedMarketsOpenOrders, this.props.resolvedMarketsOpenOrders) ||
+        !isEqual(nextProps.reportOnMarkets, this.props.reportOnMarkets) ||
+        !isEqual(nextProps.finalizedMarkets, this.props.finalizedMarkets)) {
+          this.updateState(nextProps);
     }
   }
 
-
-  generateCards(resolvedMarketsOpenOrders: Array<object>) {
-    if (!resolvedMarketsOpenOrders) {
-      return [];
-    }
-
-    return resolvedMarketsOpenOrders.map((market) => {
-      const { marketId, marketName }: any = market;
-      return {
-        isImportant: false,
-        isNew: true,
-        marketName,
-        marketId,
-        title: constants.RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
-        buttonLabel: constants.TYPE_VIEW,
-        type: 'OpenOrdersResolvedMarketsTemplate',
-        buttonAction: () => null, // TODO Modals
-        Template: OpenOrdersResolvedMarketsTemplate
-      };
-    });
+  updateState(props: AccountViewProps) {
+    this.props.updateNotifications(
+      this.generateCards(this.props.resolvedMarketsOpenOrders, 'resolvedMarketsOpenOrders')
+      .concat(this.generateCards(this.props.reportOnMarkets, 'reportOnMarkets'))
+      .concat(this.generateCards(this.props.finalizedMarkets, 'finalizedMarkets')));
   }
 
   render() {
@@ -73,7 +53,11 @@ class AccountView extends  React.Component<AccountViewProps> {
       <section className={Styles.AccountView}>
         <AccountHeader />
         <div className={Styles.AccountView__container}>
-          <NotificationBox notifications={notifications} />
+          <NotificationBox
+            currentTime={this.props.currentAugurTimestamp}
+            notifications={notifications}
+            reportingWindowEndtime={this.props.reportingWindowStatsEndTime}
+          />
           <QuadBox title="Your Overview" />
           <QuadBox title="Watchlist" />
           <QuadBox title="Open Markets" />
@@ -84,6 +68,48 @@ class AccountView extends  React.Component<AccountViewProps> {
       </section>
     );
   }
+
+  generateCards(markets: Array<Market>, type: string) {
+    let defaults = {};
+
+    if (type === 'resolvedMarketsOpenOrders') {
+      defaults = {
+        isImportant: false,
+        isNew: false,
+        title: constants.RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
+        buttonLabel: constants.TYPE_VIEW,
+        buttonAction: () => null,
+        Template: OpenOrdersResolvedMarketsTemplate
+      }
+    }
+    else if (type === 'reportOnMarkets') {
+      defaults = {
+        isImportant: true,
+        isNew: false,
+        title: constants.REPORTING_ENDS_SOON,
+        buttonLabel: constants.TYPE_VIEW,
+        buttonAction: () => null,
+        Template: ReportEndingSoonTemplate
+      }
+    }
+    else if (type === 'finalizedMarkets') {
+      defaults = {
+        isImportant: true,
+        isNew: false,
+        title: constants.FINALIZE_MARKET,
+        buttonLabel: constants.TYPE_VIEW,
+        buttonAction: () => null,
+        Template: FinalizeTemplate
+      }
+    }
+
+    return markets.map((market: Market) => {
+      return {
+        market,
+        ...defaults
+      };
+    });
+  };
 }
 
 export default AccountView;
