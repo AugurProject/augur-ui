@@ -14,7 +14,7 @@ const MarketOutcomes = ({
   max,
   min,
   type,
-  scalarDenomination = ""
+  scalarDenomination = "N/A"
 }) => {
   const calculatePosition = () => {
     const lastPrice =
@@ -111,7 +111,7 @@ MarketOutcomes.propTypes = {
 };
 
 MarketOutcomes.defaultProps = {
-  scalarDenomination: ""
+  scalarDenomination: "N/A"
 };
 
 export default MarketOutcomes;

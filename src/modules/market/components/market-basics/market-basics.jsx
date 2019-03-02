@@ -117,7 +117,7 @@ const MarketBasics = ({
             min={p.minPrice}
             max={p.maxPrice}
             type={marketType}
-            scalarDenomination={p.isMobile ? "" : p.scalarDenomination}
+            scalarDenomination={p.isMobile ? "" : p.scalarDenomination || "N/A"}
           />
         )}
 

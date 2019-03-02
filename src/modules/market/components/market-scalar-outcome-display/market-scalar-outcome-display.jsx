@@ -13,7 +13,7 @@ const MarketScalarOutcomeDisplay = ({
   outcomes,
   max,
   min,
-  scalarDenomination = ""
+  scalarDenomination = "N/A"
 }) => {
   const calculatePosition = () => {
     const lastPrice =
@@ -120,7 +120,7 @@ MarketScalarOutcomeDisplay.propTypes = {
 };
 
 MarketScalarOutcomeDisplay.defaultProps = {
-  scalarDenomination: ""
+  scalarDenomination: "N/A"
 };
 
 export default MarketScalarOutcomeDisplay;
