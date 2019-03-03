@@ -1,12 +1,27 @@
 import React from "react";
 import * as constants from "modules/common-elements/constants";
-import { StarIcon, XIcon, EthIcon, PercentIcon } from "modules/common-elements/icons";
+import {
+  StarIcon,
+  XIcon,
+  EthIcon,
+  PercentIcon,
+  WithdrawIcon,
+  DepositIcon,
+  DoubleArrowIcon,
+  RepLogoIcon
+} from "modules/common-elements/icons";
 import classNames from "classnames";
 
 import Styles from "modules/common-elements/buttons.styles";
 
 export interface DefaultButtonProps {
   text: string;
+  action: Function;
+  disabled?: boolean;
+  title?: string;
+}
+
+export interface CurrencyActionButtonProps {
   action: Function;
   disabled?: boolean;
   title?: string;
@@ -105,4 +120,44 @@ export const CancelTextButton = (props: DefaultButtonProps) =>
     title={props.title}
   >
     {XIcon}{props.text}
+  </button>;
+
+export const DepositButton = (props: CurrencyActionButtonProps) =>
+  <button
+    onClick={(e) => props.action(e)}
+    className={Styles.CurrenyActionButton}
+    disabled={props.disabled}
+    title={props.title || "Deposit"}
+  >
+    {DepositIcon}Deposit
+  </button>;
+
+export const WithdrawButton = (props: CurrencyActionButtonProps) =>
+  <button
+    onClick={(e) => props.action(e)}
+    className={Styles.CurrenyActionButton}
+    disabled={props.disabled}
+    title={props.title || "Withdraw"}
+  >
+    {WithdrawIcon}Withdraw
+  </button>;
+
+export const ViewTransactionsButton = (props: CurrencyActionButtonProps) =>
+  <button
+    onClick={(e) => props.action(e)}
+    className={Styles.ViewTransactionsButton}
+    disabled={props.disabled}
+    title={props.title || "View Transactions"}
+  >
+    {DoubleArrowIcon}View Transactions
+  </button>;
+
+export const REPFaucetButton = (props: CurrencyActionButtonProps) =>
+  <button
+    onClick={(e) => props.action(e)}
+    className={Styles.REPFaucetButton}
+    disabled={props.disabled}
+    title={props.title || "REP Faucet"}
+  >
+    {RepLogoIcon}<span>REP Faucet</span>
   </button>;

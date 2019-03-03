@@ -201,9 +201,135 @@
   justify-content: center;
   padding: 0.1875rem;
 
+  > svg {
+    fill: none;
+    height: 0.5rem;
+    width: 0.5rem;
+
+    > path {
+      fill: @color-neutral;
+    }
+  }
+
   &:hover {
     > svg > path {
       fill: @color-secondary-button-text;
+    }
+  }
+}
+
+.CurrenyActionButton {
+  .Button;
+
+  align-content: center;
+  background: @color-theme-primary;
+  border: 1px solid @color-primary-alternate-two;
+  color: @color-secondary-button-text;
+  display: flex;
+  flex-flow: row nowrap;
+  max-height: @button-height-default;
+  padding: @size-12 @size-24;
+
+  > svg {
+    fill: none;
+    height: @size-14;
+    margin-right: 0.5rem;
+    width: @size-10;
+
+    > path {
+      stroke: @color-secondary-button-text;
+    }
+
+    > rect {
+      fill: @color-secondary-button-text;
+    }
+  }
+
+  &:disabled {
+    background: @color-neutral;
+    border-color: @color-neutral;
+    color: @color-primary-text;
+
+    > svg {
+      > path {
+        stroke: @color-primary-text;
+      }
+
+      > rect {
+        fill: @color-primary-text;
+      }
+    }
+  }
+
+  &:hover:enabled {
+    background: @color-primary-alternate-two;
+  }
+}
+
+.ViewTransactionsButton {
+  .CurrenyActionButton;
+
+  > svg {
+    height: @size-14;
+    width: @size-14;
+
+    > path {
+      &:nth-child(even) {
+        fill: @color-secondary-button-text;
+        stroke: none;
+      }
+
+      &:nth-child(odd) {
+        fill: none;
+        stroke: @color-secondary-button-text;
+      }
+    }
+  }
+
+  &:disabled {
+    > svg {
+      > path {
+        &:nth-child(even) {
+          fill: @color-primary-text;
+        }
+
+        &:nth-child(odd) {
+          stroke: @color-primary-text;
+        }
+      }
+    }
+  }
+}
+
+.REPFaucetButton {
+  .ViewTransactionsButton;
+
+  height: 100%;
+  padding: 0 @size-24;
+
+  > span {
+    padding: @size-12 0 @size-12 @size-8;
+  }
+
+  > svg {
+    height: @size-22;
+    margin: auto;
+    width: @size-20;
+
+    > path {
+      &:nth-child(odd) {
+        fill: @color-secondary-button-text;
+        stroke: none;
+      }
+    }
+  }
+
+  &:disabled {
+    > svg > path {
+      &:nth-child(odd) {
+        fill: @color-primary-text;
+        stroke: none;
+      }
     }
   }
 }
