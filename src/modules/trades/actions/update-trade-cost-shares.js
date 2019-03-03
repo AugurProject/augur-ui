@@ -1,6 +1,6 @@
 import { createBigNumber } from "utils/create-big-number";
 import { augur } from "services/augurjs";
-import { BUY } from "modules/common-elements/constants";
+import { BUY, ZERO } from "modules/common-elements/constants";
 import logError from "utils/log-error";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 import { buildDisplayTrade } from "modules/trades/helpers/build-display-trade";
@@ -145,6 +145,7 @@ function runSimulateTrade(
   let userShareBalance = new Array(market.numOutcomes).fill("0");
   let userNetPositions = new Array(market.numOutcomes).fill("0");
   let sharesFilledAvgPrice = "";
+  let reversal = null;
   const userMarketShareBalances = accountShareBalances[marketId];
   const positions = accountPositions[marketId];
   if (positions) {
@@ -154,6 +155,23 @@ function runSimulateTrade(
     }, userNetPositions);
     userShareBalance = userMarketShareBalances || [];
     sharesFilledAvgPrice = (positions[outcomeId] || {}).averagePrice;
+    const outcomeIndex = parseInt(outcomeId, 10);
+    const outcomeNetPosition = createBigNumber(userNetPositions[outcomeIndex]);
+    const isReversal =
+      newTradeDetails.side === BUY
+        ? outcomeNetPosition.lt(ZERO)
+        : outcomeNetPosition.gt(ZERO);
+    if (isReversal) {
+      const { netPosition: quantity, averagePrice: price } = positions[
+        outcomeIndex
+      ];
+      reversal = {
+        quantity: createBigNumber(quantity)
+          .abs()
+          .toString(),
+        price
+      };
+    }
   }
 
   const simulatedTrade = augur.trading.simulateTrade({
@@ -190,7 +208,8 @@ function runSimulateTrade(
     ...simulatedTrade,
     sharesFilledAvgPrice,
     userNetPositions,
-    userShareBalance
+    userShareBalance,
+    reversal
   };
 
   const order = generateTrade(market, outcome, tradeInfo, orderBooks);

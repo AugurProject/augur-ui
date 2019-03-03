@@ -58,7 +58,8 @@ export const generateTrade = memoize(
           marketType,
           shareCost,
           sharesFilledAvgPrice,
-          settlementFee
+          settlementFee,
+          outcomeTradeInProgress.reversal
         )
       : null;
 

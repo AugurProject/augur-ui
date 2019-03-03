@@ -108,7 +108,8 @@ export const calcOrderShareProfitLoss = (
   type,
   shareCost,
   sharesFilledAvgPrice,
-  settlementFee
+  settlementFee,
+  reversal
 ) => {
   if (!minPrice || !maxPrice || !shareCost || !side || !type || !limitPrice) {
     return null;
@@ -159,8 +160,22 @@ export const calcOrderShareProfitLoss = (
       .minus(winningSettlementCost);
   }
 
-  const potentialEthProfit =
+  let potentialEthProfit =
     side === BUY ? shortETHpotentialProfit : longETHpotentialProfit;
+
+  if (reversal) {
+    const quantity = createBigNumber(Math.min(shareCost, reversal.quantity));
+    if (side === BUY) {
+      const normalizedPrice = max.minus(reversal.price).dividedBy(marketRange);
+      potentialEthProfit = shortETH
+        .minus(createBigNumber(normalizedPrice).times(quantity))
+        .minus(winningSettlementCost);
+    } else {
+      potentialEthProfit = longETH
+        .minus(createBigNumber(reversal.price).times(quantity))
+        .minus(winningSettlementCost);
+    }
+  }
 
   return {
     potentialEthProfit,
