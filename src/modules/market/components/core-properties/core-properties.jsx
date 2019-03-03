@@ -40,7 +40,7 @@ const CoreProperties = ({ market }) => (
     {getValue(market, "marketType") === SCALAR && (
       <PropertyLabel
         label="Denominated In"
-        value={`${market.scalarDenomination}`}
+        value={`${market.scalarDenomination || "N/A"}`}
       />
     )}
     {getValue(market, "marketType") === SCALAR && (

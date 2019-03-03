@@ -605,9 +605,9 @@ export const selectScalarMinimum = market => {
 const getOutcomeName = (market, outcome) => {
   let outcomeName = market.isYesNo
     ? YES_NO_YES_OUTCOME_NAME
-    : outcome.description;
+    : outcome.description || "N/A";
   if (market.isScalar) {
-    outcomeName = market.scalarDenomination;
+    outcomeName = market.scalarDenomination || "N/A";
   }
   return outcomeName;
 };
