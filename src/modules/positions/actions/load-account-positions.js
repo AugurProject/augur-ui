@@ -47,7 +47,9 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
             );
             marketPositionData[marketId] = {
               tradingPositionsPerMarket:
-                positions.tradingPositionsPerMarket[marketId] || {},
+                (positions.tradingPositionsPerMarket &&
+                  positions.tradingPositionsPerMarket[marketId]) ||
+                {},
               tradingPositions: {}
             };
             outcomeIds.forEach(outcomeId => {
