@@ -41,6 +41,7 @@ export interface OrderButtonProps extends DefaultButtonProps {
 export interface FavoritesButton extends DefaultButtonProps {
   isFavorite: boolean;
   hideText?: boolean;
+  isSmall?: boolean;
 }
 
 export const PrimaryButton = (props: DefaultButtonProps) =>
@@ -76,11 +77,7 @@ export const OrderButton = (props: OrderButtonProps) =>
 export const FavoritesButton = (props: FavoritesButton) =>
   <button
     onClick={(e) => props.action(e)}
-    className={
-      props.isFavorite ?
-        Styles.FavoriteButton_Favorite :
-        Styles.FavoriteButton
-    }
+    className={classNames(Styles.FavoriteButton, {[Styles.FavoriteButton_Favorite]: props.isFavorite, [Styles.FavoriteButton__small]: props.isSmall })}
     disabled={props.disabled}
     title={props.title}
     style={props.hideText ? { marginRight: "0.5rem" } : undefined}

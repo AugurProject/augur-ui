@@ -6,7 +6,12 @@ export const updateFavorites = favorites => ({
   data: { favorites }
 });
 
-export const toggleFavorite = marketId => ({
+const toggleFavoriteAction = (marketId, timestamp) => ({
   type: TOGGLE_FAVORITE,
-  data: { marketId }
+  data: { marketId, timestamp }
 });
+
+export const toggleFavorite = marketId => (dispatch, getState) => {
+  const { blockchain } = getState();
+  dispatch(toggleFavoriteAction(marketId, blockchain.currentAugurTimestamp));
+};
