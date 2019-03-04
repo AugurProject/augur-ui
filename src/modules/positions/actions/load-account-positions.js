@@ -16,21 +16,12 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
     { ...options, account: loginAccount.address, universe: universe.id },
     (err, positions) => {
       if (err) return callback(err);
-      if (positions == null) return callback(null);
-      // process frozen funds if on new augur-node branch,
-      // remove this guard when augur-node is updated for realzies
-      let userPositions = positions;
-      if (positions.tradingPositions) {
-        // todo when augur-node returns frozen stuff remove adding dummy data.
-        userPositions = positions.tradingPositions.map(position => ({
-          frozenFunds: 0,
-          ...position
-        }));
+      if (positions == null || positions.tradingPositions == null) {
+        return callback(null);
       }
-
       const marketIds = Array.from(
         new Set([
-          ...userPositions.reduce(
+          ...positions.tradingPositions.reduce(
             (p, position) => [...p, position.marketId],
             []
           )
@@ -43,10 +34,9 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
           if (err) return callback(err);
           marketIds.forEach(marketId => {
             const marketPositionData = {};
-            const marketPositions = userPositions.filter(
+            const marketPositions = positions.tradingPositions.filter(
               position => position.marketId === marketId
             );
-            marketPositionData[marketId] = {};
             const outcomeIds = Array.from(
               new Set([
                 ...marketPositions.reduce(
@@ -55,8 +45,15 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
                 )
               ])
             );
+            marketPositionData[marketId] = {
+              tradingPositionsPerMarket:
+                positions.tradingPositionsPerMarket[marketId] || {},
+              tradingPositions: {}
+            };
             outcomeIds.forEach(outcomeId => {
-              marketPositionData[marketId][outcomeId] = userPositions.filter(
+              marketPositionData[marketId].tradingPositions[
+                outcomeId
+              ] = positions.tradingPositions.filter(
                 position =>
                   position.marketId === marketId &&
                   position.outcome === outcomeId
@@ -65,7 +62,7 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
             dispatch(updateAccountPositionsData(marketPositionData, marketId));
           });
           dispatch(updateTopBarPL());
-          callback(null, userPositions);
+          callback(null, positions);
         })
       );
     }

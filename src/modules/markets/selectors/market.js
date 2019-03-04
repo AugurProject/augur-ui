@@ -71,7 +71,7 @@ import {
 } from "modules/orders/helpers/select-order-book";
 import getOrderBookSeries from "modules/orders/selectors/order-book-series";
 
-import { generateOutcomePositionSummary } from "modules/positions/selectors/positions-summary";
+import { positionSummary } from "modules/positions/selectors/positions-summary";
 
 import { selectReportableOutcomes } from "modules/reports/selectors/reportable-outcomes";
 
@@ -124,7 +124,7 @@ export const selectMarket = marketId => {
     outcomesData[marketId],
 
     selectMarketReport(marketId, reports[universe.id || UNIVERSE_ID]),
-    (accountPositions || {})[marketId],
+    (accountPositions || {})[marketId] || {},
     (accountTrades || {})[marketId],
 
     // the reason we pass in the date parts broken up like this, is because date objects are never equal, thereby always triggering re-assembly, and never hitting the memoization cache
@@ -331,20 +331,15 @@ export function assembleMarket(
             )
         };
 
-        market.userPositions = Object.values(marketAccountPositions || []).map(
-          position => {
-            const outcome = market.outcomes[position.outcome];
-            const positionSummary = generateOutcomePositionSummary(
-              position,
-              market.maxPrice,
-              outcome
-            );
-            return {
-              ...positionSummary,
-              outcomeName: getOutcomeName(market, outcome)
-            };
-          }
-        );
+        market.userPositions = Object.values(
+          marketAccountPositions.tradingPositions || []
+        ).map(position => {
+          const outcome = market.outcomes[position.outcome];
+          return {
+            ...positionSummary(position, outcome),
+            outcomeName: getOutcomeName(market, outcome)
+          };
+        });
 
         market.userOpenOrders =
           Object.keys(marketOutcomesData || {})
@@ -462,25 +457,15 @@ export function assembleMarket(
 
         let numCompleteSets = createBigNumber(0);
         const marketAccountPositionsKeys = Object.keys(
-          marketAccountPositions || {}
+          marketAccountPositions.tradingPositions || {}
         );
         if (marketAccountPositionsKeys.length === market.numOutcomes) {
-          numCompleteSets = marketAccountPositionsKeys.reduce(
-            (num, outcomePositionId) => {
-              const outcomePosition = marketAccountPositions[outcomePositionId];
-              const position = createBigNumber(outcomePosition.position);
-              if (position.eq(0)) {
-                return createBigNumber(0);
-              }
-              if (position.lt(num)) {
-                return position;
-              }
-              return num;
-            },
-            createBigNumber(
-              marketAccountPositions[marketAccountPositionsKeys[0]].position
-            )
-          );
+          const positions = marketAccountPositions.tradingPositions;
+          const shareBalance = Object.keys(positions).reduce((r, outcomeId) => {
+            r[outcomeId] = positions[outcomeId].position;
+            return r;
+          }, new Array(market.numOutcomes).fill(0));
+          numCompleteSets = Math.min.apply(null, shareBalance).toString();
         }
 
         market.tags = (market.tags || []).filter(tag => !!tag);
@@ -506,8 +491,14 @@ export function assembleMarket(
           name: INDETERMINATE_OUTCOME_NAME
         });
 
-        if (marketAccountTrades || marketAccountPositions) {
+        if (
+          marketAccountTrades ||
+          (marketAccountPositions &&
+            marketAccountPositions.tradingPositionsPerMarket)
+        ) {
           market.myPositionsSummary = {};
+          const marketPositions =
+            marketAccountPositions.tradingPositionsPerMarket;
           // leave complete sets here, until we finish new notifications
           if (numCompleteSets) {
             market.myPositionsSummary.numCompleteSets = formatShares(
@@ -516,27 +507,15 @@ export function assembleMarket(
           }
           if (market.userPositions.length > 0) {
             market.myPositionsSummary.currentValue = formatEther(
-              market.userPositions.reduce(
-                (p, position) =>
-                  createBigNumber(position.totalValue.value).plus(p),
-                createBigNumber(0)
-              )
+              marketPositions.currentValue || ZERO
             );
 
             market.myPositionsSummary.totalReturns = formatEther(
-              market.userPositions.reduce(
-                (p, position) =>
-                  createBigNumber(position.totalReturns.value).plus(p),
-                createBigNumber(0)
-              )
+              marketPositions.total || ZERO
             );
 
-            market.myPositionsSummary.totalReturnsPercent = formatPercent(
-              market.userPositions.reduce(
-                (p, position) =>
-                  createBigNumber(position.totalReturnsPercent.value).plus(p),
-                createBigNumber(0)
-              )
+            market.myPositionsSummary.totalPercent = formatPercent(
+              marketPositions.totalPercent || ZERO
             );
           }
         }

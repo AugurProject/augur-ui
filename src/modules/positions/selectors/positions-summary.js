@@ -5,49 +5,29 @@ import { LONG, SHORT, ZERO } from "modules/common-elements/constants";
 
 import { formatEther, formatShares, formatPercent } from "utils/format-number";
 
-export const generateOutcomePositionSummary = memoize(
-  (adjustedPosition, maxPrice, outcome) => {
+export const positionSummary = memoize(
+  (adjustedPosition, outcome) => {
     if (!adjustedPosition) {
       return null;
     }
     const {
       netPosition,
       realized,
+      realizedPercent,
       unrealized,
+      unrealizedPercent,
       averagePrice,
       marketId,
       outcome: outcomeId,
-      total
+      total,
+      totalPercent,
+      currentValue,
+      frozenFunds
     } = adjustedPosition;
 
     // need augur-node to provide realized gains as a percentage.
-    const totalReturns = total || 0;
     const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
     const quantity = createBigNumber(netPosition).abs();
-    let totalCost = createBigNumber(quantity)
-      .times(createBigNumber(averagePrice))
-      .abs();
-
-    let totalValue = createBigNumber(quantity).times(outcome.price);
-    if (type === SHORT) {
-      totalCost = createBigNumber(maxPrice)
-        .minus(averagePrice)
-        .times(createBigNumber(quantity))
-        .abs();
-
-      totalValue = createBigNumber(maxPrice)
-        .minus(outcome.price)
-        .times(quantity)
-        .abs();
-    }
-    const totalReturnsPercent =
-      createBigNumber(unrealized).isEqualTo(ZERO) || totalCost.isEqualTo(ZERO)
-        ? ZERO
-        : createBigNumber(unrealized)
-            .minus(totalCost)
-            .dividedBy(totalCost)
-            .times(100);
-
     return {
       marketId,
       outcomeId,
@@ -56,11 +36,13 @@ export const generateOutcomePositionSummary = memoize(
       purchasePrice: formatEther(averagePrice),
       realizedNet: formatEther(realized),
       unrealizedNet: formatEther(unrealized),
-      totalCost: formatEther(totalCost),
-      totalValue: formatEther(totalValue),
+      realizedPercent: formatPercent(realizedPercent || ZERO),
+      unrealizedPercent: formatPercent(unrealizedPercent || ZERO),
+      totalCost: formatEther(frozenFunds),
+      totalValue: formatEther(currentValue),
       lastPrice: formatEther(outcome.price),
-      totalReturns: formatEther(totalReturns),
-      totalReturnsPercent: formatPercent(totalReturnsPercent)
+      totalReturns: formatEther(total || ZERO),
+      totalPercent: formatPercent(totalPercent || ZERO)
     };
   },
   {

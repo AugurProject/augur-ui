@@ -147,7 +147,7 @@ function runSimulateTrade(
   let sharesFilledAvgPrice = "";
   let reversal = null;
   const userMarketShareBalances = accountShareBalances[marketId];
-  const positions = accountPositions[marketId];
+  const positions = (accountPositions[marketId] || {}).tradingPositions;
   if (positions) {
     userNetPositions = Object.keys(positions).reduce((r, outcomeId) => {
       r[outcomeId] = positions[outcomeId].netPosition;

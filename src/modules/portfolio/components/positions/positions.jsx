@@ -142,7 +142,7 @@ export default class Positions extends Component {
                           size="small"
                           value={
                             marketsObj[market.id].myPositionsSummary
-                              .totalReturnsPercent.formatted
+                              .totalPercent.formatted
                           }
                         />
                       </div>

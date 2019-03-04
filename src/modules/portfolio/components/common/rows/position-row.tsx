@@ -14,7 +14,7 @@ import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 export interface PositionRowProps {
   position: Order,
   isFirst: Boolean,
-  showPercent: Boolean; 
+  showPercent: Boolean;
 }
 
 const PositionRow = (props: PositionRowProps) => {
@@ -37,14 +37,14 @@ const PositionRow = (props: PositionRowProps) => {
           <li>{position.totalValue.formatted}</li>
           <li>{position.lastPrice.formatted}</li>
           <li>
-            {showPercent ? 
-              <MovementLabel 
-                showPercent 
+            {showPercent ?
+              <MovementLabel
+                showPercent
                 showBrackets
-                showPlusMinus 
-                showColors 
+                showPlusMinus
+                showColors
                 size={"medium"}
-                value={position.totalReturnsPercent.formatted}
+                value={position.totalPercent.formatted}
               />
               : position.totalReturns.formatted
             }
