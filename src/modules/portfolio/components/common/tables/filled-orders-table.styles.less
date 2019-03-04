@@ -80,3 +80,25 @@
     }
   }
 }
+
+.FilledOrder__view {
+  display: flex;
+
+  > svg {
+    margin-right: 0.25rem;
+  }
+
+  > span > a {
+    color: @color-neutral;
+  }
+
+  &:hover {
+    > svg > path {
+      fill: @color-white;
+    }
+
+    > span > a {
+      color: @color-white;
+    }
+  }
+}
