@@ -7,6 +7,7 @@ import EtherscanLink from "modules/common/containers/etherscan-link";
 import { formatShares } from "utils/format-number";
 import { FilledOrder } from "modules/portfolio/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
+import { ViewIcon } from "modules/common-elements/icons";
 
 import Styles from "modules/portfolio/components/common/tables/filled-orders-table.styles";
 
@@ -38,6 +39,7 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
             <li>{trade.timestamp.formattedShortDate}</li>
             <li>
               <button className={Styles.FilledOrder__view}>
+                { ViewIcon }
                 <EtherscanLink
                   showNonLink
                   txhash={trade.transactionHash}
