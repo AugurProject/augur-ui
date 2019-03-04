@@ -94,7 +94,7 @@ const buyingAllOutcomes = (
   // check if user is selling shares when buying all outcomes
   const modUserShareBalance = [...userShareBalance];
   // add resulting buy shares for comparison of resulting shareBalance
-  modUserShareBalance[outcomeIndex] = numShares;
+  modUserShareBalance[outcomeIndex] = Math.min(numShares, 1);
 
   const minValue = Math.min(...modUserShareBalance);
   if (createBigNumber(minValue).isEqualTo(ZERO)) return false;
