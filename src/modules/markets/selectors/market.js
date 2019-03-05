@@ -362,7 +362,7 @@ export function assembleMarket(
 
         // add pending orders
         if (pendingOrders && pendingOrders.length > 0) {
-          market.userOpenOrders = market.userOpenOrders.concat(pendingOrders);
+          market.userOpenOrders = pendingOrders.concat(market.userOpenOrders);
         }
 
         market.outcomes = Object.keys(marketOutcomesData || {})
