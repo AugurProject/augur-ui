@@ -30,7 +30,6 @@ const mergeProps = (sP, dP, oP) => {
     ...sP,
     dataObj: marketsObj,
     data: marketsByState,
-    tabs: createTabsInfo(marketsByState)
   };
 };
 

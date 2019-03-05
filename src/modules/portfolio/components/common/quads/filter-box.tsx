@@ -1,17 +1,13 @@
 import React, { Component, ReactNode } from "react";
 
 import { find } from "lodash";
-import {
-  ALL_MARKETS,
-  MARKET_OPEN,
-  MARKET_REPORTING,
-  MARKET_CLOSED
-} from "modules/common-elements/constants";
+import { ALL_MARKETS } from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
@@ -33,7 +29,6 @@ export interface FilterBoxProps {
   filterComp: Function;
   showFilterSearch?: Boolean;
   bottomTabs?: Boolean;
-  tabs: Array<Tab>;
   label: string;
   bottomRightContent?: ReactNode;
   renderRightContent?: Function;
@@ -52,10 +47,10 @@ interface FilterBoxState {
 export default class FilterBox extends React.Component<FilterBoxProps, FilterBoxState>  {
   state: FilterBoxState = {
     search: '',
-    selectedTab: this.props.tabs[0].key,
-    tabs: this.props.tabs,
+    selectedTab: ALL_MARKETS,
+    tabs: createTabsInfo(this.props.data),
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
-    filteredData: this.props.data[this.props.tabs[0].key],
+    filteredData: this.props.data[ALL_MARKETS],
   };
 
   componentWillUpdate(nextProps) {
