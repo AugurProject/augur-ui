@@ -8,7 +8,7 @@ import {
   ReportEndingSoonTemplate,
 } from "modules/account/components/notifications/notifications-templates";
 
-import { Market, Notifications as INotifications  } from "modules/account/constants";
+import { Market, Notifications as INotifications  } from "modules/account/types";
 import * as constants from "modules/common-elements/constants";
 
 export interface NotificationsProps {
