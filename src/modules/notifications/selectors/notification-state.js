@@ -11,7 +11,8 @@ export const selectResolvedMarketsOpenOrders = createSelector(
     if (markets.length > 0) {
       return markets
         .filter(market => market.marketStatus === MARKET_CLOSED)
-        .filter(market => market.userOpenOrders.length > 0);
+        .filter(market => market.userOpenOrders.length > 0)
+        .map(getRequiredMarketData);
     }
     return [];
   }
@@ -29,7 +30,8 @@ export const selectReportOnMarkets = createSelector(
             market.reportingState ===
             constants.REPORTING_STATE.DESIGNATED_REPORTING
         )
-        .filter(market => market.designatedReporter === address);
+        .filter(market => market.designatedReporter === address)
+        .map(getRequiredMarketData);
     }
     return [];
   }
@@ -47,10 +49,18 @@ export const selectFinalizeMarkets = createSelector(
             market.reportingState ===
             constants.REPORTING_STATE.AWAITING_FINALIZATION
         )
-        .filter(
-          market => market.userPositions.length > 0 || address === market.author
-        );
+        .map(getRequiredMarketData);
     }
     return [];
   }
 );
+
+const getRequiredMarketData = market => ({
+  id: market.id,
+  description: market.description,
+  endTime: market.endTime,
+  reportingState: market.reportingState,
+  marketStatus: market.marketStatus,
+  disputeInfo: market.disputeInfo ? market.disputeInfo : {},
+  myPositionsSummary: market.myPositionsSummary ? market.myPositionsSummary : {}
+});

@@ -1,22 +1,29 @@
 import React from "react";
 
-import MyPositions from "modules/portfolio/containers/positions";
-import MyMarkets from "modules/portfolio/containers/my-markets";
-import OpenOrders from "modules/portfolio/containers/open-orders";
-import FilledOrders from "modules/portfolio/containers/filled-orders";
+import PortfolioPage from "modules/portfolio/components/portfolio-view/portfolio-page";
+import { Switch } from "react-router-dom";
+import Reports from "modules/portfolio/containers/reports";
+import AuthenticatedRoute from "modules/routes/components/authenticated-route/authenticated-route";
 
-import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
+import makePath from "modules/routes/helpers/make-path";
+
+import {
+  MY_POSITIONS,
+  PORTFOLIO_REPORTS
+} from "modules/routes/constants/views";
 
 const PortfolioView = p => (
-  <section className={Styles.PortfolioView}>
-    <div>
-      <MyPositions />
-      <MyMarkets />
-    </div>
-    <div>
-      <OpenOrders />
-      <FilledOrders />
-    </div>
+  <section>
+    <Switch>
+      <AuthenticatedRoute
+        path={makePath(MY_POSITIONS)}
+        component={PortfolioPage}
+      />
+      <AuthenticatedRoute
+        path={makePath(PORTFOLIO_REPORTS)}
+        component={Reports}
+      />
+    </Switch>
   </section>
 );
 

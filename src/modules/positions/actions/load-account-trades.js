@@ -4,6 +4,7 @@ import { addTradeTransactions } from "modules/transactions/actions/add-transacti
 import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
 import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
+import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import {
   updateAccountTradeData,
   clearAccountTrades
@@ -60,6 +61,7 @@ export function loadUserTradingHistory(options = {}, callback = logError) {
                   trades[trade.outcome] = [...trades[trade.outcome], trade];
                 });
               dispatch(updateAccountTradeData(trades, marketId));
+              dispatch(loadMarketTradingHistory({ marketId }));
             });
             dispatch(addTradeTransactions(userTradingHistory));
             callback(null, userTradingHistory);

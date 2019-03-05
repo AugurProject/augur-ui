@@ -21,6 +21,7 @@ import SideNav from "modules/app/components/side-nav/side-nav";
 import Logo from "modules/app/components/logo/logo";
 import Routes from "modules/routes/components/routes/routes";
 import AlertsContainer from "modules/alerts/containers/alerts-view";
+import PortfolioInnerNav from "modules/app/components/inner-nav/portfolio-inner-nav";
 
 import MobileNavHamburgerIcon from "modules/common/components/mobile-nav-hamburger-icon";
 import MobileNavCloseIcon from "modules/common/components/mobile-nav-close-icon";
@@ -49,6 +50,7 @@ import {
   MY_POSITIONS,
   FAVORITES,
   CREATE_MARKET,
+  PORTFOLIO_REPORTS,
   REPORTING_DISPUTE_MARKETS,
   REPORTING_REPORT_MARKETS,
   REPORTING_RESOLVED_MARKETS,
@@ -74,6 +76,8 @@ const MAIN_MENU = "mainMenu";
 
 const navTypes = {
   [MARKETS]: MarketsInnerNavContainer,
+  [MY_POSITIONS]: PortfolioInnerNav,
+  [PORTFOLIO_REPORTS]: PortfolioInnerNav,
   [ACCOUNT_DEPOSIT]: AccountInnerNav,
   [ACCOUNT_WITHDRAW]: AccountInnerNav,
   [ACCOUNT_REP_FAUCET]: AccountInnerNav,

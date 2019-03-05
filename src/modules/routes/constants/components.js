@@ -13,7 +13,7 @@ export const Markets = asyncComponent({
 export const Account = asyncComponent({
   moduleName: "Account",
   loader: () =>
-    import(/* webpackChunkName: 'account' */ "modules/account/containers/account-view").then(
+    import(/* webpackChunkName: 'account' */ "modules/account/components/account-view/account-view").then(
       module => module.default
     )
 });

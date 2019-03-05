@@ -1,4 +1,4 @@
-import { updateFavorites } from "modules/markets/actions/update-favorites";
+import { loadFavoritesMarkets } from "modules/markets/actions/update-favorites";
 import { updateScalarMarketShareDenomination } from "modules/markets/actions/update-scalar-market-share-denomination";
 import { updateReports } from "modules/reports/actions/update-reports";
 import { addAlert } from "modules/alerts/actions/alerts";
@@ -37,7 +37,9 @@ export const loadAccountDataFromLocalStorage = address => (
         favorites[augurNodeNetworkId] &&
         favorites[augurNodeNetworkId][universe.id]
       ) {
-        dispatch(updateFavorites(favorites[augurNodeNetworkId][universe.id]));
+        dispatch(
+          loadFavoritesMarkets(favorites[augurNodeNetworkId][universe.id])
+        );
       }
       if (storedAccountData.alerts) {
         storedAccountData.alerts.map(n => dispatch(addAlert(n)));

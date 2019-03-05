@@ -1,16 +1,18 @@
 import { connect } from "react-redux";
-import AccountView from "modules/account/components/account-view/account-view";
+import Notifications from "modules/account/components/notifications/notifications";
 import {
   selectResolvedMarketsOpenOrders,
   selectReportOnMarkets,
-  selectFinalizeMarkets
+  selectFinalizeMarkets,
 } from "modules/notifications/selectors/notification-state";
 import { updateNotifications } from "modules/notifications/actions/update-notifications";
 
-const mapStateToProps = state => {
+// TODO create state Interface
+const mapStateToProps = (state: any) => {
   const resolvedMarketsOpenOrders = selectResolvedMarketsOpenOrders(state);
   const reportOnMarkets = selectReportOnMarkets(state);
   const finalizedMarkets = selectFinalizeMarkets(state);
+
   return {
     notifications: state.notifications,
     resolvedMarketsOpenOrders,
@@ -21,14 +23,14 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  updateNotifications: notifications =>
+const mapDispatchToProps = (dispatch: Function) => ({
+  updateNotifications: (notifications: any) =>
     dispatch(updateNotifications(notifications))
 });
 
-const AccountViewContainer = connect(
+const NotificationsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(AccountView);
+)(Notifications);
 
-export default AccountViewContainer;
+export default NotificationsContainer;
