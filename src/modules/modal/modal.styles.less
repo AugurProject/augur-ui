@@ -1,0 +1,134 @@
+@import (reference) "~assets/styles/shared";
+
+.ModalContainer {
+  background: @color-tertiary-background;
+  border: 1px solid fade(@color-highlight, 50%);
+  border-radius: @border-radius-default;
+  max-width: 35rem;
+  padding: @size-24;
+  position: relative;
+  width: 100%;
+
+  > h1 {
+    .text-12;
+
+    color: @color-secondary-text;
+    font-weight: @weight-medium;
+    line-height: @size-16;
+    margin-bottom: @size-16;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  > button:first-of-type {
+    position: absolute;
+    right: @size-24;
+    top: @size-24;
+
+    > svg {
+      height: @size-12;
+      width: @size-12;
+
+      > path {
+        stroke: @color-secondary-text;
+      }
+    }
+  }
+
+  > div:last-of-type {
+    display: flex;
+    flex-flow: row-reverse nowrap;
+    margin-top: @size-16;
+
+    > button {
+      margin-left: @size-16;
+    }
+  }
+}
+
+.CondensedModalContainer {
+  .ModalContainer;
+
+  max-width: 20rem;
+}
+
+.MessageModal {
+  .ModalContainer;
+
+  > p {
+    .text-12-paragraph;
+
+    color: @color-secondary-text;
+    margin: 0 0 @size-8 0;
+  }
+}
+
+.GasModal {
+  .CondensedModalContainer;
+
+  > h2 {
+    .text-12;
+
+    color: @color-secondary-text;
+    margin-top: @size-16;
+  }
+
+  > p {
+    .mono-10;
+
+    color: @color-secondary-text;
+    margin: 0 0 @size-16;
+  }
+}
+
+.AlertMessage {
+  .text-12;
+
+  color: @color-outcome-four;
+  margin: 0 0 @size-8;
+}
+
+.SelectableModalTable {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: stretch;
+
+  > button {
+    border: 1px solid @color-primary-background;
+    border-top: 0;
+    color: @color-secondary-text;
+    display: flex;
+    flex: 1;
+    flex-flow: row nowrap;
+    width: 100%;
+
+    > span {
+      .mono-10;
+
+      border-right: 1px solid @color-primary-background;
+      flex: 1;
+      padding: @size-4 @size-8;
+      text-align: left;
+      white-space: nowrap;
+
+      &:last-of-type {
+        border-right: 0;
+      }
+    }
+
+    &:hover {
+      color: @color-neutral;
+      cursor: pointer;
+    }
+
+    &:first-of-type {
+      border-top: 1px solid @color-primary-background;
+
+      &:hover {
+        color: @color-secondary-text;
+        cursor: auto;
+      }
+    }
+  }
+}
