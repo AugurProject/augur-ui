@@ -167,8 +167,8 @@ export default class MarketOutcomesChartHighchart extends Component {
     const hours = "{value:%H:%M}";
     const days = "{value:%b %d}";
     let interval = 604800; // weekly
-    if (daysPassed < 2) interval = 10800; // show every 3rd hour
-    if (daysPassed > 14 && daysPassed < 30) interval = 86400;
+    if (daysPassed <= 3) interval = 10800; // show every 3rd hour
+    if (daysPassed > 3 && daysPassed < 30) interval = 86400;
     return {
       tickInterval: useTickInterval ? interval * 1000 : 0, // add milliseconds
       labels: {
