@@ -11,7 +11,7 @@ import makePath from "modules/routes/helpers/make-path";
 import noop from "utils/noop";
 import { createBigNumber } from "utils/create-big-number";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { TRANSACTIONS } from "modules/routes/constants/views";
+import { MY_POSITIONS } from "modules/routes/constants/views";
 import { buildCreateMarket } from "modules/markets/helpers/build-create-market";
 import { sortOrders } from "modules/orders/helpers/liquidity";
 import { addMarketLiquidityOrders } from "modules/orders/actions/liquidity-management";
@@ -42,7 +42,7 @@ export function submitNewMarket(newMarket, history, callback = noop) {
                 ...res
               })
             );
-            history.push(makePath(TRANSACTIONS));
+            history.push(makePath(MY_POSITIONS));
             dispatch(clearNewMarket());
             if (hasOrders) {
               dispatch(
