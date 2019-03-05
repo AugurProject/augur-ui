@@ -1,6 +1,5 @@
 import { augur } from "services/augurjs";
 import { isMarketLoaded } from "modules/markets/helpers/is-market-loaded";
-import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import {
   updateMarketsData,
   updateMarketsDisputeInfo
