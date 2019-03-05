@@ -1,0 +1,53 @@
+@import (reference) '~assets/styles/shared';
+
+.TransactionsBox {
+  background: @color-theme-primary;
+  color: @color-secondary-text;
+}
+
+.TransactionsBoxContent {
+  align-items: center;
+  background: @color-secondary-background;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding: @size-24;
+
+  > button:first-of-type {
+    margin-left: auto;
+    margin-right: @size-8;
+    width: 8.125rem;
+  }
+
+  > button:nth-of-type(2) {
+    margin-right: auto;
+    width: 8.125rem;
+  }
+
+  > p {
+    .mono-11;
+
+    color: @color-shadow-text;
+    flex: 1 100%;
+    margin: @size-24 auto @size-12;
+    text-align: center;
+  }
+
+  > button:last-of-type {
+    flex: 0 0 16.75rem;
+    margin: auto;
+  }
+
+  > div {
+    border-top: 1px solid @color-primary-background;
+    display: flex;
+    flex: 1 100%;
+    margin-top: @size-24;
+    padding-top: @size-24;
+
+    > button {
+      flex: 0 0 16.75rem;
+      margin: auto;
+    }
+  }
+}

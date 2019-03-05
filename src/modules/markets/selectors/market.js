@@ -99,6 +99,7 @@ export const selectMarket = marketId => {
     orderCancellation,
     smallestPositions,
     loginAccount,
+    accountShareBalances,
     pendingOrders,
     ...state
   } = store.getState();
@@ -139,6 +140,7 @@ export const selectMarket = marketId => {
     orderCancellation,
     (smallestPositions || {})[marketId],
     loginAccount,
+    (accountShareBalances || {})[marketId] || [],
     (pendingOrders || {})[marketId],
     store.dispatch
   );
@@ -166,6 +168,7 @@ export function assembleMarket(
   orderCancellation,
   smallestPosition,
   loginAccount,
+  accountShareBalances,
   pendingOrders,
   dispatch
 ) {
@@ -191,6 +194,7 @@ export function assembleMarket(
         orderCancellation,
         smallestPosition,
         loginAccount,
+        accountShareBalances,
         pendingOrders,
         dispatch
       ) => {
@@ -464,18 +468,8 @@ export function assembleMarket(
           })
           .sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
 
-        let numCompleteSets = createBigNumber(0);
-        const marketAccountPositionsKeys = Object.keys(
-          marketAccountPositions.tradingPositions || {}
-        );
-        if (marketAccountPositionsKeys.length === market.numOutcomes) {
-          const positions = marketAccountPositions.tradingPositions;
-          const shareBalance = Object.keys(positions).reduce((r, outcomeId) => {
-            r[outcomeId] = positions[outcomeId].position;
-            return r;
-          }, new Array(market.numOutcomes).fill(0));
-          numCompleteSets = Math.min.apply(null, shareBalance).toString();
-        }
+        const numCompleteSets =
+          Math.min.apply(null, accountShareBalances).toString() || "0";
 
         market.tags = (market.tags || []).filter(tag => !!tag);
 

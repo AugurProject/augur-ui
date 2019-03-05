@@ -234,6 +234,7 @@
   color: @color-secondary-button-text;
   display: flex;
   flex-flow: row nowrap;
+  justify-content: center;
   max-height: @button-height-default;
   padding: @size-12 @size-24;
 
@@ -315,12 +316,12 @@
   padding: 0 @size-24;
 
   > span {
-    padding: @size-12 0 @size-12 @size-8;
+    padding: @size-12 0;
   }
 
   > svg {
     height: @size-22;
-    margin: auto;
+    margin: auto @size-8 auto;
     width: @size-20;
 
     > path {
