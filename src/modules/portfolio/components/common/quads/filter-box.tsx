@@ -10,6 +10,8 @@ import {
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { SwitchLabelsGroup } from "modules/common-elements/switch-labels-group";
 import { NameValuePair, Market, Tab} from "modules/portfolio/constants";
+import MarketRow from "modules/portfolio/components/common/rows/market-row";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
@@ -17,6 +19,9 @@ export interface MarketsByReportingState {
   [type: string]: Array<Market>;
 }
 
+export interface MarketsByReportingState {
+  [type: string]: Market;
+}
 export interface FilterBoxProps {
   title: string;
   rows?: ReactNode;
@@ -31,6 +36,10 @@ export interface FilterBoxProps {
   tabs: Array<Tab>;
   label: string;
   bottomRightContent?: ReactNode;
+  renderRightContent?: Function;
+  dataObj: MarketsObj;
+  noToggle?: Boolean;
+  renderToggleContent?: Function;
 }
 
 interface FilterBoxState {
@@ -40,19 +49,19 @@ interface FilterBoxState {
   tabs: Array<Tab>,
 }
 
-
 export default class FilterBox extends React.Component<FilterBoxProps, FilterBoxState>  {
   state: FilterBoxState = {
     search: '',
     selectedTab: this.props.tabs[0].key,
     tabs: this.props.tabs,
     sortBy: this.props.sortByOptions && this.props.sortByOptions[0].value,
+    filteredData: this.props.data[this.props.tabs[0].key],
   };
 
   componentWillUpdate(nextProps) {
     if (nextProps.data[this.state.selectedTab] !== this.props.data[this.state.selectedTab]) {
       const filteredData = this.applySearch(this.state.search, nextProps.data[this.state.selectedTab]);
-      this.props.updateFilteredData(filteredData);
+      this.setState({filteredData: filteredData});
     }
   }
 
@@ -71,10 +80,10 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   updateSortBy = (value: string) => {
     this.setState({sortBy: value});
 
-    let { filteredData } = this.props;
+    let { filteredData } = this.state;
     filteredData = this.applySortBy(value, filteredData);
 
-    this.props.updateFilteredData(filteredData);
+    this.setState({filteredData: filteredData});
   }
 
   onSearchChange = (input: string) => {
@@ -85,7 +94,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     let tabData =  data[selectedTab];
     const filteredData = this.applySearch(input, tabData);
 
-    this.props.updateFilteredData(filteredData);
+    this.setState({filteredData: filteredData});
   }
 
   selectTab = (tab: string) => {
@@ -95,7 +104,8 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     let dataFiltered = this.applySearch(this.state.search, data[tab]);
     dataFiltered = this.applySortBy(this.state.sortBy, dataFiltered);
     
-    this.props.updateFilteredData(dataFiltered, tab);
+    this.setState({filteredData: dataFiltered, tab: tab});
+
   }
 
   applySearch = (input: string, filteredData: Array<Market>) => {
@@ -129,12 +139,15 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       data,
       updateFilteredData,
       filterComp,
-      filteredData,
       label,
-      bottomRightContent
+      bottomRightContent,
+      noToggle,
+      renderRightContent,
+      dataObj,
+      renderToggleContent
     } = this.props;
 
-    const { search, selectedTab, tabs } = this.state;
+    const { filteredData, search, selectedTab, tabs } = this.state;
 
 
     return (
@@ -151,7 +164,27 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
             {bottomRightContent && bottomRightContent}
           </div>
         }
-        rows={rows}
+        rows={
+          <div className={Styles.Quad__container}>
+            {filteredData.length === 0 && (
+              <EmptyDisplay title="No available markets" />
+            )}
+            {filteredData.length > 0 &&
+              filteredData.map(
+                market =>
+                  dataObj[market.id] ? (
+                    <MarketRow
+                      key={"position_" + market.id}
+                      market={dataObj[market.id]}
+                      showState={selectedTab === ALL_MARKETS}
+                      noToggle={noToggle}
+                      toggleContent={renderToggleContent && renderToggleContent(dataObj[market.id])}
+                      rightContent={renderRightContent && renderRightContent(dataObj[market.id])}
+                    />
+                  ) : null
+              )}
+          </div>
+        }
         search={search}
       />
     )
