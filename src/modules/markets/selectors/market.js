@@ -100,6 +100,7 @@ export const selectMarket = marketId => {
     smallestPositions,
     loginAccount,
     accountShareBalances,
+    pendingOrders,
     ...state
   } = store.getState();
 
@@ -140,6 +141,7 @@ export const selectMarket = marketId => {
     (smallestPositions || {})[marketId],
     loginAccount,
     (accountShareBalances || {})[marketId] || [],
+    (pendingOrders || {})[marketId],
     store.dispatch
   );
 };
@@ -167,6 +169,7 @@ export function assembleMarket(
   smallestPosition,
   loginAccount,
   accountShareBalances,
+  pendingOrders,
   dispatch
 ) {
   if (!assembledMarketsCache[marketId]) {
@@ -192,6 +195,7 @@ export function assembleMarket(
         smallestPosition,
         loginAccount,
         accountShareBalances,
+        pendingOrders,
         dispatch
       ) => {
         const market = {
@@ -359,6 +363,11 @@ export function assembleMarket(
             )
             .filter(collection => collection.length !== 0)
             .flat() || [];
+
+        // add pending orders
+        if (pendingOrders && pendingOrders.length > 0) {
+          market.userOpenOrders = pendingOrders.concat(market.userOpenOrders);
+        }
 
         market.outcomes = Object.keys(marketOutcomesData || {})
           .map(outcomeId => {
