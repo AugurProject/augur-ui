@@ -172,7 +172,10 @@ export default class MarketOutcomesChartHighchart extends Component {
     return {
       tickInterval: useTickInterval ? interval * 1000 : 0, // add milliseconds
       labels: {
-        format: interval === 10800 ? hours : days
+        format: interval === 10800 ? hours : days,
+        style: {
+          color: "#ffffff" // remove this when adding custom css and turning on styleMode
+        }
       },
       crosshair: {
         snap: true,
