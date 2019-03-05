@@ -24,7 +24,7 @@ export const TransactionsBox = (props: TransactionsBoxProps) =>
       <WithdrawButton action={console.log} />
       <p>View and download your transactions history here</p>
       <ViewTransactionsButton action={console.log} />
-      {props.isMainnet && (
+      {!props.isMainnet && (
         <div><REPFaucetButton action={props.repFaucet} /></div>
       )}
     </div>
