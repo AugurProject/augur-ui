@@ -10,11 +10,7 @@ import {
   MODAL_CLAIM_TRADING_PROCEEDS
 } from "modules/common-elements/constants";
 import { find } from "lodash";
-import {
-  selectCurrentTimestamp,
-  selectOrphanOrders,
-  selectPendingOrdersState
-} from "src/select-state";
+import { selectCurrentTimestamp, selectOrphanOrders } from "src/select-state";
 import { constants } from "services/augurjs";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { createBigNumber } from "utils/create-big-number";
@@ -22,11 +18,9 @@ import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";
 
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
-  let openOrders = market.userOpenOrders || [];
+  const openOrders = market.userOpenOrders || [];
 
-  const pendingOrders = selectPendingOrdersState(state);
   const positions = market.userPositions || [];
-  openOrders = openOrders.concat(pendingOrders[ownProps.marketId] || []);
 
   const filteredOrphanOrders = selectOrphanOrders(state).filter(
     order => order.marketId === ownProps.marketId
