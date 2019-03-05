@@ -6,7 +6,7 @@ import Styles from "modules/account/components/transactions/transactions-box.sty
 import { number } from "prop-types";
 
 interface TransactionsBoxProps {
-  augurNodeNetworkId: string;
+  isMainnet: boolean;
   eth: number | string;
   rep: number | string;
   gasPrice: string;
@@ -16,20 +16,16 @@ interface TransactionsBoxProps {
   closeModal: Function;
 }
 
-export const TransactionsBox = (props: TransactionsBoxProps) => {
-  const showRepFaucet = parseInt(props.augurNodeNetworkId, 10) !== 1;
-  return (
-    <div className={Styles.TransactionsBox}>
-      <BoxHeader title="Transactions" />
-      <div className={Styles.TransactionsBoxContent}>
-        <DepositButton  action={console.log} />
-        <WithdrawButton action={console.log} />
-        <p>View and download your transactions history here</p>
-        <ViewTransactionsButton action={console.log} />
-        {showRepFaucet && (
-          <div><REPFaucetButton action={props.repFaucet} /></div>
-        )}
-      </div>
+export const TransactionsBox = (props: TransactionsBoxProps) =>
+  <div className={Styles.TransactionsBox}>
+    <BoxHeader title="Transactions" />
+    <div className={Styles.TransactionsBoxContent}>
+      <DepositButton  action={console.log} />
+      <WithdrawButton action={console.log} />
+      <p>View and download your transactions history here</p>
+      <ViewTransactionsButton action={console.log} />
+      {props.isMainnet && (
+        <div><REPFaucetButton action={props.repFaucet} /></div>
+      )}
     </div>
-  );
-};
+  </div>;

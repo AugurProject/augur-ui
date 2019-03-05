@@ -7,12 +7,13 @@ import { transferFunds } from "modules/auth/actions/transfer-funds";
 import { selectLoginAccount } from "modules/auth/selectors/login-account";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { TransactionsBox } from "modules/account/components/transactions/transactions-box";
+import { NETWORK_IDS } from "modules/common-elements/constants";
 // made state an ANY for now.
 const mapStateToProps = (state: any) => {
   const loginAccount = selectLoginAccount(state);
   
   return {
-    augurNodeNetworkId: state.connection.augurNodeNetworkId,
+    isMainnet: state.connection.augurNodeNetworkId === NETWORK_IDS.Mainnet,
     eth: loginAccount.eth,
     rep: loginAccount.rep,
     gasPrice: getGasPrice(state)
