@@ -72,9 +72,6 @@ export const loadMarketsInfoIfNotLoaded = (marketIds, callback = logError) => (
 
   if (marketIdsToLoad.length === 0) return callback(null);
   dispatch(loadMarketsInfo(marketIdsToLoad, callback));
-  marketIdsToLoad.forEach(marketId =>
-    dispatch(loadMarketTradingHistory({ marketId }))
-  );
 };
 
 export const loadMarketsDisputeInfo = (marketIds, callback = logError) => (
