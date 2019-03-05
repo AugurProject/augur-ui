@@ -37,7 +37,7 @@ function filterComp(input, market) {
 
 export default class Favorites extends Component {
   static propTypes = {
-    markets: PropTypes.object.isRequired,
+    markets: PropTypes.array.isRequired,
     currentAugurTimestamp: PropTypes.number.isRequired,
     reportingWindowStatsEndTime: PropTypes.number.isRequired,
     toggleFavorite: PropTypes.func.isRequired
@@ -82,7 +82,7 @@ export default class Favorites extends Component {
         title="Watchlist"
         showFilterSearch
         sortByOptions={sortByOptions}
-        data={markets}
+        markets={markets}
         filterComp={filterComp}
         bottomTabs
         label="Watched Markets"

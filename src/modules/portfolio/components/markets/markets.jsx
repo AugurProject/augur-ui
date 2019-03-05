@@ -59,7 +59,7 @@ function renderToggleContent(market) {
 
 class MyMarkets extends Component {
   static propTypes = {
-    myMarkets: PropTypes.object.isRequired,
+    myMarkets: PropTypes.array.isRequired,
     currentAugurTimestamp: PropTypes.number.isRequired,
     reportingWindowStatsEndTime: PropTypes.number.isRequired
   };
@@ -91,7 +91,7 @@ class MyMarkets extends Component {
         title="My Created Markets"
         showFilterSearch
         sortByOptions={sortByOptions}
-        data={myMarkets}
+        markets={myMarkets}
         filterComp={filterComp}
         bottomTabs
         label="My Created Markets"

@@ -57,7 +57,7 @@ function renderToggleContent(market) {
 
 export default class Positions extends Component {
   static propTypes = {
-    markets: PropTypes.object.isRequired
+    markets: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -103,7 +103,7 @@ export default class Positions extends Component {
         title="Positions"
         showFilterSearch
         sortByOptions={sortByOptions}
-        data={markets}
+        markets={markets}
         filterComp={filterComp}
         bottomTabs
         label="Positions"
