@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import { LinearPropertyLabel, PendingLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
-import { Order } from "modules/portfolio/constants";
+import { Order } from "modules/portfolio/types";
 import { CancelTextButton } from "modules/common-elements/buttons";
 import { SELL } from "modules/common-elements/constants";
 import MarketLink from "modules/market/components/market-link/market-link";

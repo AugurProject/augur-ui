@@ -5,13 +5,14 @@ import AccountHeader from "modules/account/containers/account-header";
 import TermsAndConditions from "modules/app/containers/terms-and-conditions";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import NotificationBox from "modules/account/components/notifications/notification-box";
+import TransactionsBoxContainer from "modules/account/containers/transactions-box";
 import {
   FinalizeTemplate,
   OpenOrdersResolvedMarketsTemplate,
   ReportEndingSoonTemplate,
 } from "modules/account/components/notifications/notifications-templates";
 
-import { Market, Notifications } from "modules/account/constants";
+import { Market, Notifications } from "modules/account/types";
 import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/account-view/account-view.styles";
@@ -62,7 +63,8 @@ class AccountView extends React.Component<AccountViewProps> {
           <QuadBox title="Watchlist" />
           <QuadBox title="Open Markets" />
           <QuadBox title="Augur Status" />
-          <QuadBox title="Transactions" />
+          <TransactionsBoxContainer />
+          />
         </div>
         <TermsAndConditions />
       </section>

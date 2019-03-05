@@ -8,7 +8,7 @@ import { SELL, BOUGHT, SOLD } from "modules/common-elements/constants";
 import { formatEther, formatShares } from "utils/format-number";
 
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
-import { FilledOrderInterface } from "modules/portfolio/constants";
+import { FilledOrderInterface } from "modules/portfolio/types";
 import FilledOrdersTable from "modules/portfolio/components/common/tables/filled-orders-table";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
