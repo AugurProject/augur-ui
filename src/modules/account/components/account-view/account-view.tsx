@@ -11,6 +11,8 @@ import {
   OpenOrdersResolvedMarketsTemplate,
   ReportEndingSoonTemplate,
 } from "modules/account/components/notifications/notifications-templates";
+import Favorites from "modules/portfolio/containers/favorites";
+import OpenMarkets from "modules/account/containers/open-markets";
 
 import { Market, Notifications } from "modules/account/types";
 import * as constants from "modules/common-elements/constants";
@@ -60,8 +62,8 @@ class AccountView extends React.Component<AccountViewProps> {
             reportingWindowEndtime={this.props.reportingWindowStatsEndTime}
           />
           <QuadBox title="Your Overview" />
-          <QuadBox title="Watchlist" />
-          <QuadBox title="Open Markets" />
+          <Favorites />
+          <OpenMarkets />
           <QuadBox title="Augur Status" />
           <TransactionsBoxContainer />
           />

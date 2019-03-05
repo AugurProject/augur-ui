@@ -31,40 +31,48 @@ export interface MarketRowProps {
   showState: boolean;
   toggleContent: ReactNode;
   rightContent: ReactNode;
+  noToggle?: boolean;
 }
 
-const MarketRow = (props: MarketRowProps) => (
-  <div className={Styles.MarketRow__container}>
-    <ToggleRow
-      arrowClassName={Styles.MarketRow__Arrow}
-      rowContent={
-        <div className={Styles.MarketRow__contentContainer}>
-          <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
-            {props.showState && (
-              <div className={Styles.MarketRow__firstRow}>
-                <MarketStatusLabel
-                  marketStatus={props.market.marketStatus}
-                  alternate
-                  mini
-                />
-              </div>
-            )}
-            <span className={Styles.MarketRow__description}>
-              <MarketLink id={props.market.id}>
-                {props.market.description}
-              </MarketLink>
-            </span> 
+const MarketRow = (props: MarketRowProps) => {
+  const content = (
+    <div className={classNames(Styles.MarketRow__contentContainer, {[Styles.MarketRow__noToggle]: props.noToggle})}>
+      <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
+        {props.showState && (
+          <div className={Styles.MarketRow__firstRow}>
+            <MarketStatusLabel
+              marketStatus={props.market.marketStatus}
+              alternate
+              mini
+            />
           </div>
-          <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
-            {props.rightContent || <div>right content</div>}
-          </span>
-        </div>
+        )}
+        <span className={Styles.MarketRow__description}>
+          <MarketLink id={props.market.id}>
+            {props.market.description}
+          </MarketLink>
+        </span> 
+      </div>
+      <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
+        {props.rightContent}
+      </span>
+    </div>
+  );
+
+  return (
+    <div className={Styles.MarketRow__container}>
+      {props.noToggle ? 
+        content
+        : <ToggleRow
+          arrowClassName={Styles.MarketRow__Arrow}
+          rowContent={content}
+          toggleContent={
+            props.toggleContent || <div>info</div>
+          }
+        />
       }
-      toggleContent={
-        props.toggleContent || <div>info</div>
-      }
-    />
-  </div>
-);
+    </div>
+  )
+};
 
 export default MarketRow;
