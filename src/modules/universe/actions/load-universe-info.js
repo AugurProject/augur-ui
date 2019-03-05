@@ -335,7 +335,7 @@ function updateUniverseIfForkingDataChanged(
   universeData
 ) {
   if (
-    oldUniverseData.id !== universeData.id ||
+    (universeData.id && oldUniverseData.id !== universeData.id) ||
     oldUniverseData.isForking !== universeData.isForking ||
     oldUniverseData.forkingMarket !== universeData.forkingMarket ||
     oldUniverseData.forkEndTime !== universeData.forkEndTime ||
