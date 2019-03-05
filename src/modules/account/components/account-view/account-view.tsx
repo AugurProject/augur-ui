@@ -11,6 +11,7 @@ import {
   ReportEndingSoonTemplate,
 } from "modules/account/components/notifications/notifications-templates";
 import Favorites from "modules/portfolio/containers/favorites";
+import OpenMarkets from "modules/account/containers/open-markets";
 
 import { Market, Notifications } from "modules/account/constants";
 import * as constants from "modules/common-elements/constants";
@@ -61,7 +62,7 @@ class AccountView extends React.Component<AccountViewProps> {
           />
           <QuadBox title="Your Overview" />
           <Favorites />
-          <QuadBox title="Open Markets" />
+          <OpenMarkets />
           <QuadBox title="Augur Status" />
           <QuadBox title="Transactions" />
         </div>

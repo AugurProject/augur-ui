@@ -25,6 +25,7 @@ export interface FilterBoxProps {
   showFilterSearch?: Boolean;
   switchView: Function;
   label: string;
+  noSwitch?: Boolean;
 }
 
 interface FilterBoxState {
@@ -74,7 +75,8 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
       sortByOptions,
       showFilterSearch,
       data,
-      label
+      label,
+      noSwitch
     } = this.props;
 
     const { search } = this.state;
@@ -86,7 +88,7 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
         search={search}
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}
-        updateDropdown={this.updateView}
+        updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
         rows={rows} 
         label={data.length + " " + label}

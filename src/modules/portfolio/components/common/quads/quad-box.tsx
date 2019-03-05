@@ -26,10 +26,10 @@ const QuadBox = (props: QuadBoxProps) => (
       rightContent={props.showFilterSearch &&
         <div className={Styles.FilterBox__right}>
           <SearchBar onChange={props.onSearchChange} label={props.label}/>
-          <SquareDropdown
+          {props.sortByOptions && <SquareDropdown
             options={props.sortByOptions}
             onChange={props.updateDropdown}
-          />
+          />}
         </div>
       }  
       bottomBarContent={props.bottomBarContent} 
