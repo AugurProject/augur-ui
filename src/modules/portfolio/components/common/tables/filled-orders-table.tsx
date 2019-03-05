@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import EtherscanLink from "modules/common/containers/etherscan-link";
 import { formatShares } from "utils/format-number";
-import { FilledOrder } from "modules/portfolio/constants";
+import { FilledOrder } from "modules/portfolio/types";
 import MarketLink from "modules/market/components/market-link/market-link";
 import { ViewIcon } from "modules/common-elements/icons";
 

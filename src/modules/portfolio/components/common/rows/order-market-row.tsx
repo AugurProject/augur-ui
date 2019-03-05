@@ -7,7 +7,7 @@ import MarketLink from "modules/market/components/market-link/market-link";
 
 import Styles from "modules/portfolio/components/common/rows/order-market-row.styles";
 
-import { NameValuePair, Market, Tab, Outcome, Order} from "modules/portfolio/constants";
+import { NameValuePair, Market, Tab, Outcome, Order} from "modules/portfolio/types";
 
 export interface OrderMarketRowProps {
   market: Market,

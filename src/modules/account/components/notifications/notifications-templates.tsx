@@ -2,7 +2,7 @@ import React from "react";
 
 import MarketLink from "modules/market/components/market-link/market-link";
 import { MarketProgress } from "modules/common-elements/progress";
-import { Market } from "modules/account/constants";
+import { Market } from "modules/account/types";
 
 import Styles from "modules/common-elements/notifications.styles";
 

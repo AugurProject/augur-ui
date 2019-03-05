@@ -7,9 +7,7 @@ import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/notifications/notification-box.styles";
 
-import { Notifications } from "modules/account/constants";
-
-
+import { Notifications } from "modules/account/types";
 
 export interface NotificationBoxProps {
   notifications: Array<Notifications>;

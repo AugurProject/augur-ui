@@ -6,7 +6,7 @@ import { LONG } from "modules/common-elements/constants";
 
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
-import { Order } from "modules/portfolio/constants";
+import { Order } from "modules/portfolio/types";
 import { MovementLabel } from "modules/common-elements/labels";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
