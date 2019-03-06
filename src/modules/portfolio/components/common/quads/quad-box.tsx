@@ -23,36 +23,18 @@ export interface QuadBoxProps {
 
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
-    {props.isMobile ? 
-      <BoxHeaderMobile
-        title={props.title}
-        isMobile={props.isMobile} 
-        rightContent={props.showFilterSearch &&
-          <div className={Styles.FilterBox__right}>
-            <SearchBar onChange={props.onSearchChange} label={props.label}/>
-            {props.sortByOptions && <SquareDropdown
-              options={props.sortByOptions}
-              onChange={props.updateDropdown}
-            />}
-          </div>
-        }  
-        bottomBarContent={props.bottomBarContent} 
-      /> :
-      <BoxHeader 
-        title={props.title}
-        isMobile={props.isMobile} 
-        rightContent={props.showFilterSearch &&
-          <div className={Styles.FilterBox__right}>
-            <SearchBar onChange={props.onSearchChange} label={props.label}/>
-            {props.sortByOptions && <SquareDropdown
-              options={props.sortByOptions}
-              onChange={props.updateDropdown}
-            />}
-          </div>
-        }  
-        bottomBarContent={props.bottomBarContent} 
-       />
-     }
+    <BoxHeader 
+      title={props.title}
+      isMobile={props.isMobile}
+      rightContent={props.sortByOptions && <SquareDropdown
+            options={props.sortByOptions}
+            onChange={props.updateDropdown}
+          />}
+      mostRightContent={props.showFilterSearch &&
+        <SearchBar onChange={props.onSearchChange} label={props.label}/>
+      }  
+      bottomBarContent={props.bottomBarContent} 
+     />
     <div className={Styles.FilterBox__content}>
       {props.rows}
     </div>
