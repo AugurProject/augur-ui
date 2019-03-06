@@ -76,7 +76,8 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
       showFilterSearch,
       data,
       label,
-      noSwitch
+      noSwitch,
+      isMobile
     } = this.props;
 
     const { search } = this.state;
@@ -91,6 +92,7 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
         updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
         rows={rows} 
+        isMobile={isMobile}
         label={data.length + " " + label}
       />
     )

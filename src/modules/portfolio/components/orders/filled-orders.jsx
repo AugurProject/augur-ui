@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
+import FilterSwitchBox from "modules/portfolio/containers/filter-switch-box";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
