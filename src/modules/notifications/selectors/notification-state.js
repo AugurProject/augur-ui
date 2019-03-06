@@ -49,6 +49,51 @@ export const selectFinalizeMarkets = createSelector(
             market.reportingState ===
             constants.REPORTING_STATE.AWAITING_FINALIZATION
         )
+        .filter(
+          market => market.userPositions.length > 0 || address === market.author
+        )
+        .map(getRequiredMarketData);
+    }
+    return [];
+  }
+);
+
+// Get all the users markets where the user has COMPLETE SETS of SHARES
+export const selectCompleteSetPositions = createSelector(
+  selectMarkets,
+  markets => {
+    if (markets.length > 0) {
+      return markets
+        .filter(market => {
+          const numCompleteSets =
+            (market.myPositionsSummary &&
+              market.myPositionsSummary.numCompleteSets) ||
+            undefined;
+          return numCompleteSets && numCompleteSets.value > 0;
+        })
+        .map(getRequiredMarketData);
+    }
+    return [];
+  }
+);
+
+// Get all markets in dispute, for market creators and user with positions in disputed markets
+export const selectMarketsInDispute = createSelector(
+  selectMarkets,
+  selectLoginAccountAddress,
+  (markets, address) => {
+    if (markets.length > 0) {
+      return markets
+        .filter(
+          market =>
+            market.reportingState ===
+            constants.REPORTING_STATE.CROWDSOURCING_DISPUTE
+        )
+        .filter(
+          market =>
+            market.userPositions.length > 0 ||
+            market.designatedReporter === address
+        )
         .map(getRequiredMarketData);
     }
     return [];
