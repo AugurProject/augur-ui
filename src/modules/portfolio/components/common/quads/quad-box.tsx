@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 
+import BoxHeaderMobile from "modules/portfolio/components/common/headers/box-header--mobile";
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { SquareDropdown } from "modules/common-elements/selection";
 import { SearchBar } from "modules/common-elements/search";
@@ -17,23 +18,41 @@ export interface QuadBoxProps {
   rows?: ReactNode,
   bottomBarContent: ReactNode,
   label?: string,
+  isMobile?: Boolean,
 }
 
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
-    <BoxHeader 
-      title={props.title} 
-      rightContent={props.showFilterSearch &&
-        <div className={Styles.FilterBox__right}>
-          <SearchBar onChange={props.onSearchChange} label={props.label}/>
-          {props.sortByOptions && <SquareDropdown
-            options={props.sortByOptions}
-            onChange={props.updateDropdown}
-          />}
-        </div>
-      }  
-      bottomBarContent={props.bottomBarContent} 
-     />
+    {props.isMobile ? 
+      <BoxHeaderMobile
+        title={props.title}
+        isMobile={props.isMobile} 
+        rightContent={props.showFilterSearch &&
+          <div className={Styles.FilterBox__right}>
+            <SearchBar onChange={props.onSearchChange} label={props.label}/>
+            {props.sortByOptions && <SquareDropdown
+              options={props.sortByOptions}
+              onChange={props.updateDropdown}
+            />}
+          </div>
+        }  
+        bottomBarContent={props.bottomBarContent} 
+      /> :
+      <BoxHeader 
+        title={props.title}
+        isMobile={props.isMobile} 
+        rightContent={props.showFilterSearch &&
+          <div className={Styles.FilterBox__right}>
+            <SearchBar onChange={props.onSearchChange} label={props.label}/>
+            {props.sortByOptions && <SquareDropdown
+              options={props.sortByOptions}
+              onChange={props.updateDropdown}
+            />}
+          </div>
+        }  
+        bottomBarContent={props.bottomBarContent} 
+       />
+     }
     <div className={Styles.FilterBox__content}>
       {props.rows}
     </div>

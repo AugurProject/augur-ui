@@ -17,6 +17,11 @@
   flex: 1;
   min-height: 11.5rem;
   overflow-y: auto;
+
+  @media @breakpoint-mobile {
+    min-height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
+  }
 }
 
 .FilterBox__right {
