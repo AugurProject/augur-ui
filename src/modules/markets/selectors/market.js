@@ -339,6 +339,12 @@ export function assembleMarket(
             )
         };
 
+        const numCompleteSets =
+          (accountShareBalances &&
+            accountShareBalances.length > 0 &&
+            Math.min.apply(null, accountShareBalances).toString()) ||
+          "0";
+
         market.userPositions = Object.values(
           marketAccountPositions.tradingPositions || []
         ).map(position => {
@@ -348,6 +354,16 @@ export function assembleMarket(
             outcomeName: getOutcomeName(market, outcome)
           };
         });
+
+        if (createBigNumber(numCompleteSets).gt(ZERO)) {
+          // need to remove all 0 positions
+          market.userPositions = market.userPositions.filter(
+            pos =>
+              !createBigNumber(pos.quantity.value).isEqualTo(ZERO) ||
+              !createBigNumber(pos.unrealizedNet.value).isEqualTo(ZERO) ||
+              !createBigNumber(pos.realizedNet.value).isEqualTo(ZERO)
+          );
+        }
 
         market.userOpenOrders =
           Object.keys(marketOutcomesData || {})
@@ -467,9 +483,6 @@ export function assembleMarket(
             return outcome;
           })
           .sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
-
-        const numCompleteSets =
-          Math.min.apply(null, accountShareBalances).toString() || "0";
 
         market.tags = (market.tags || []).filter(tag => !!tag);
 

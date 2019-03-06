@@ -19,14 +19,14 @@ export const buildDisplayTrade = trade => {
     side === BUY
       ? bnNumShares.plus(bnExistingShares)
       : bnNumShares.minus(bnExistingShares);
-  const useShares = addOutcomeShares.lt(bnNumShares);
+  const useShares = addOutcomeShares.lte(bnNumShares);
   const cost = Math.min(
     bnNumShares.toNumber(),
     bnExistingShares.abs().toNumber()
   );
 
   if (
-    buyingAllOutcomes(
+    !buyingAllOutcomes(
       userShareBalance,
       outcomeIndex,
       numShares,
@@ -34,28 +34,22 @@ export const buildDisplayTrade = trade => {
       side
     )
   ) {
-    return {
-      ...trade,
-      shareCost: useShares ? cost : ZERO,
-      totalCost: addOutcomeShares.toString()
-    };
+    const mirror = sum(userShareBalance, userNetPositions);
+    if (!Array.isArray(mirror)) return trade;
+
+    const summationToZero = mirror
+      .reduce((p, i) => createBigNumber(p).plus(createBigNumber(i)), ZERO)
+      .isEqualTo(ZERO);
+
+    // if summation is zero then synthetics and onChain mirrored and no special logic is needed
+    // if synthetics and onChain are the same no special logic is needed
+    if (summationToZero || equalArrays) return trade;
   }
-
-  const mirror = sum(userShareBalance, userNetPositions);
-  if (!Array.isArray(mirror)) return trade;
-
-  const summationToZero = mirror
-    .reduce((p, i) => createBigNumber(p).plus(createBigNumber(i)), ZERO)
-    .isEqualTo(ZERO);
-
-  // if summation is zero then synthetics and onChain mirrored and no special logic is needed
-  // if synthetics and onChain are the same no special logic is needed
-  if (summationToZero || equalArrays) return trade;
 
   return {
     ...trade,
     shareCost: useShares ? cost : ZERO,
-    totalCost: addOutcomeShares.toString()
+    totalCost: addOutcomeShares.lte(ZERO) ? ZERO : addOutcomeShares.toString()
   };
 };
 

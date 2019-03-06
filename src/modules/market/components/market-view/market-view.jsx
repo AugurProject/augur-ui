@@ -277,7 +277,7 @@ export default class MarketView extends Component {
     const daysPassed =
       market &&
       market.creationTime &&
-      getMarketAgeInDays(market.creationTime.timestamp);
+      getMarketAgeInDays(market.creationTime.timestamp, currentTimestamp);
 
     if (isMobile) {
       return (

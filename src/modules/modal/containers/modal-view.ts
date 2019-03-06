@@ -4,11 +4,11 @@ import ModalView from "modules/modal/components/modal-view";
 
 import { closeModal } from "modules/modal/actions/close-modal";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   modal: state.modal
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal())
 });
 

@@ -151,6 +151,13 @@ class TradingForm extends Component {
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push("Quantity must be greater than 0");
     }
+    if (value && value.lt(0.0000000001) && !value.eq(0)) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.QUANTITY].push(
+        "Quantity must be greater than 0.0000000001"
+      );
+    }
     return { isOrderValid: passedTest, errors, errorCount };
   }
 
