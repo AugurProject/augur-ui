@@ -373,6 +373,7 @@ export const MODAL_REVIEW = "MODAL_REVIEW";
 export const MODAL_GAS_PRICE = "MODAL_GAS_PRICE";
 export const MODAL_CLAIM_TRADING_PROCEEDS = "MODAL_CLAIM_TRADING_PROCEEDS";
 export const MODAL_TRADING_OVERLAY = "MODAL_TRADING_OVERLAY";
+export const MODAL_SELL_COMPLETE_SETS = "MODAL_SELL_COMPLETE_SETS";
 export const DISCLAIMER_SEEN = "disclaimerSeen";
 
 // # Alerts (soon to be alerts)

@@ -8,6 +8,7 @@ import { AWAITING_SIGNATURE, PENDING } from "modules/common-elements/constants";
 
 import SharedStyles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 import Styles from "modules/market/components/market-positions-table/market-positions-table.styles";
+import { CompactButton } from "modules/common-elements/buttons";
 
 export default class MarketPositionsList extends Component {
   static propTypes = {
@@ -61,27 +62,11 @@ export default class MarketPositionsList extends Component {
           <div className={SharedStyles.MarketOpenOrdersList__table}>
             <ul className={SharedStyles["MarketOpenOrdersList__table-header"]}>
               {!isMobile && <li>Outcome</li>}
-              <li>
-                <span>Type</span>
-              </li>
-              <li>
-                <span>Quantity</span>
-              </li>
-              <li>
-                <span>Average Price</span>
-              </li>
-              <li>
-                <span>
-                  Unrealized <span />
-                  P/L
-                </span>
-              </li>
-              <li>
-                <span>
-                  Realized <span />
-                  P/L
-                </span>
-              </li>
+              <li>Type</li>
+              <li>Quantity</li>
+              <li>Average Price</li>
+              <li>Unrealized P/L</li>
+              <li>Realized P/L</li>
             </ul>
             {positions.length === 0 && (
               <div className={SharedStyles.MarketOpenOrdersList__empty} />
@@ -113,14 +98,13 @@ export default class MarketPositionsList extends Component {
                 <span>{`You currently have ${
                   numCompleteSets.full
                 } of all outcomes.`}</span>
-                <button
-                  onClick={e => {
+                <CompactButton
+                  disabled={!!pendingCompleteSetsInfo}
+                  text={completeSetButtonText}
+                  action={e => {
                     sellCompleteSets(marketId, numCompleteSets, () => {});
                   }}
-                  disabled={!!pendingCompleteSetsInfo}
-                >
-                  {completeSetButtonText}
-                </button>
+                />
               </div>
             )}
         </div>
