@@ -6,17 +6,17 @@ import { MessageModal } from "modules/modal/message-modal";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { approveAccount } from "modules/auth/actions/approve-account";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
   modal: state.modal
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
-  approveAccount: (onSent, onSuccess) =>
+  approveAccount: (onSent: Function, onSuccess: Function) =>
     dispatch(approveAccount(onSent, onSuccess))
 });
 
-const mergeProps = (sP, dP, oP) => {
+const mergeProps = (sP: any, dP: any, oP: any) => {
   return {
     title: "Approve Augur",
     description: [

@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 
 import MarketOrdersPositionsTable from "modules/market/components/market-orders-positions-table/market-orders-positions-table";
 import { selectMarket } from "modules/markets/selectors/market";
-import { sellCompleteSets } from "modules/positions/actions/sell-complete-sets";
 import { cancelOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import {
   CATEGORICAL,
@@ -19,8 +18,6 @@ import { cancelAllOpenOrders } from "modules/orders/actions/cancel-order";
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
   const openOrders = market.userOpenOrders || [];
-
-  const positions = market.userPositions || [];
 
   const filteredOrphanOrders = selectOrphanOrders(state).filter(
     order => order.marketId === ownProps.marketId
@@ -50,14 +47,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     hasClaimableReturns: market.outstandingReturns && canClaim,
     winningOutcome: market.consensus && market.consensus.winningOutcome,
-    numCompleteSets:
-      (market.myPositionsSummary &&
-        market.myPositionsSummary.numCompleteSets) ||
-      undefined,
-    transactionsStatus: state.transactionsStatus,
     isMobile: state.appStatus.isMobile,
     outcomes: market.outcomes || [],
-    positions,
     openOrders,
     orphanedOrders: filteredOrphanOrders,
     market,
@@ -66,8 +57,6 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  sellCompleteSets: (marketId, numCompleteSets, cb) =>
-    dispatch(sellCompleteSets(marketId, numCompleteSets, cb)),
   cancelOrphanedOrder: (order, cb) => dispatch(cancelOrphanedOrder(order, cb)),
   claimTradingProceeds: (marketId, cb) =>
     dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb })),

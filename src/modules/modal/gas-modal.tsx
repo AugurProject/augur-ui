@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ModalTitle, ModalButtonsRow, ModalSelectableTable, ModalAlertMessage} from "modules/modal/common";
+import { ModalTitle, ModalButtonsRow, ModalSelectableTable, ModalAlertMessage } from "modules/modal/common";
 
 import Styles from "modules/modal/modal.styles";
 
