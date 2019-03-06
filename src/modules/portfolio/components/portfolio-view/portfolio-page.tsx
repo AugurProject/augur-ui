@@ -24,7 +24,7 @@ const PortfolioPage = (props: PortfolioPageProps) => {
         </ModulePane>
         <ModulePane label="Orders">
           <div>
-            <ModuleTabs selected={0} fillWidth noBorder>
+            <ModuleTabs selected={0} fillWidth noBorder darkBackground>
               <ModulePane label="Open Orders">
                 <OpenOrders />
               </ModulePane> 

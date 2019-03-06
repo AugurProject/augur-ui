@@ -15,6 +15,7 @@ export interface DropdownProps {
   options: Array<NameValuePair>;
   large?: boolean;
   staticLabel?: string;
+  stretchOut?: boolean;
 }
 
 interface DropdownState {
@@ -85,11 +86,11 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   };
 
   render() {
-    const { options, large } = this.props;
+    const { options, large, stretchOut } = this.props;
     const { selected, showList } = this.state;
     return (
       <div
-        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal}
+        className={classNames({[Styles.Dropdown_Large]: large, [Styles.Dropdown_Normal]: !large, [Styles.Dropdown__stretchOut]: stretchOut})}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
@@ -136,6 +137,7 @@ export const SquareDropdown = (props: DropdownProps) => (
     onChange={props.onChange}
     options={props.options}
     large={props.large}
+    stretchOut={props.stretchOut}
   />
 );
 
