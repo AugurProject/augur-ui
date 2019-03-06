@@ -17,7 +17,7 @@ export default class PorfolioInnerNav extends BaseInnerNav {
         }
       },
       {
-        label: "Reporting",
+        label: "My Reporting",
         visible: true,
         isSelected: currentBasePath === PORTFOLIO_REPORTS,
         link: {
