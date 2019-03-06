@@ -166,13 +166,14 @@ export default class MarketOutcomesChartHighchart extends Component {
   getxAxisProperties = (daysPassed, useTickInterval) => {
     const hours = "{value:%H:%M}";
     const days = "{value:%b %d}";
-    let interval = 604800; // weekly
-    if (daysPassed <= 7) interval = 10800; // show every 3rd hour
-    if (daysPassed > 7 && daysPassed < 30) interval = 86400;
+    const mmSecondsInHour = createBigNumber(3600 * 1000);
+    const mmSecondsInDay = createBigNumber(24).times(mmSecondsInHour);
+
+    const interval = daysPassed <= 7 ? mmSecondsInHour : mmSecondsInDay;
     return {
-      tickInterval: useTickInterval ? interval * 1000 : 0, // add milliseconds
+      tickInterval: useTickInterval ? interval.toNumber() : 0,
       labels: {
-        format: interval === 10800 ? hours : days,
+        format: interval.isEqualTo(mmSecondsInHour) ? hours : days,
         style: {
           color: "#ffffff" // remove this when adding custom css and turning on styleMode
         }
