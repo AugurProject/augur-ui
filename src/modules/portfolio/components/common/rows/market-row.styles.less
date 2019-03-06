@@ -6,6 +6,15 @@
   &:not(:last-of-type) {
     margin-bottom: 0.125rem;
   }
+
+  @media @breakpoint-mobile {
+    border: 1px solid #2b2438;
+    border-radius: 3px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 4px;
+    }
+  }
 }
 
 .MarketRow__noToggle {

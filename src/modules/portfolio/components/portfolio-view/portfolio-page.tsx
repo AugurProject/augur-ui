@@ -18,12 +18,21 @@ export interface PortfolioPageProps {
 const PortfolioPage = (props: PortfolioPageProps) => {
   if (props.isMobile) {
     return (
-      <ModuleTabs selected={0} fillWidth>
+      <ModuleTabs selected={0} fillWidth noBorder>
         <ModulePane label="Positions">
           <MyPositions />
         </ModulePane>
         <ModulePane label="Orders">
-          <OpenOrders />
+          <div>
+            <ModuleTabs selected={0} fillWidth noBorder>
+              <ModulePane label="Open Orders">
+                <OpenOrders />
+              </ModulePane> 
+              <ModulePane label="Filled Orders">
+                <FilledOrders />
+              </ModulePane>
+            </ModuleTabs>
+          </div>
         </ModulePane>
         <ModulePane label="My Created Markets">
           <MyMarkets />

@@ -9,6 +9,11 @@
   max-height: 50%;
   min-height: 50%;
   padding-bottom: 1.5rem;
+
+  @media @breakpoint-mobile {
+    background: unset;
+    border: 0;
+  }
 }
 
 .FilterBox__content {
@@ -19,8 +24,9 @@
   overflow-y: auto;
 
   @media @breakpoint-mobile {
-    min-height: calc(100vh - 150px);
     max-height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
+    padding: 0.25rem 0.5rem;
   }
 }
 

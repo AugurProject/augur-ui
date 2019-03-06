@@ -11,6 +11,7 @@ export default class ModuleTabs extends Component {
     children: PropTypes.arrayOf(ModulePane).isRequired,
     fillWidth: PropTypes.bool,
     fillForMobile: PropTypes.bool,
+    noBorder: PropTypes.bool,
     id: PropTypes.string
   };
 
@@ -59,7 +60,9 @@ export default class ModuleTabs extends Component {
             <span
               className={classNames({
                 [Styles.ModuleTabs__activeSpanFill]:
-                  this.state.selected === index && this.props.fillWidth
+                  this.state.selected === index && this.props.fillWidth,
+                [Styles.ModuleTabs__activeNoBorder]:
+                  this.state.selected === index && this.props.noBorder
               })}
             >
               {child.props.label}
@@ -73,7 +76,8 @@ export default class ModuleTabs extends Component {
         className={classNames(Styles.ModuleTabs__tab, {
           [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
           [Styles.ModuleTabs__tabFillWidth]:
-            this.props.fillWidth || this.props.fillForMobile
+            this.props.fillWidth || this.props.fillForMobile,
+          [Styles.ModuleTabs__noBorder]: this.props.noBorder
         })}
       >
         {this.props.children.map(labels.bind(this))}
