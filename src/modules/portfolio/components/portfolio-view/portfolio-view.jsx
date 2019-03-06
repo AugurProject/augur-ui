@@ -1,6 +1,6 @@
 import React from "react";
 
-import PortfolioPage from "modules/portfolio/components/portfolio-view/portfolio-page";
+import PortfolioPage from "modules/portfolio/containers/portfolio-page";
 import { Switch } from "react-router-dom";
 import Reports from "modules/portfolio/containers/reports";
 import AuthenticatedRoute from "modules/routes/components/authenticated-route/authenticated-route";

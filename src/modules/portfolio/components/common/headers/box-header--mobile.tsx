@@ -1,21 +1,17 @@
 import React, { ReactNode } from "react";
 
-import Styles from "modules/portfolio/components/common/headers/box-header.styles";
+import Styles from "modules/portfolio/components/common/headers/box-header--mobile.styles";
 
-export interface BoxHeaderProps {
-  title: string,
+export interface BoxHeaderMobileProps {
   rightContent?: ReactNode,
   rows?: ReactNode,
   bottomBarContent?: ReactNode,
   isMobile?: Boolean,
 }
 
-const BoxHeader = (props: BoxHeaderProps) => (
+const BoxHeaderMobile = (props: BoxHeaderMobileProps) => (
   <div className={Styles.BoxHeader__header}>
     <div className={Styles['BoxHeader__header--top-row']}>
-      <div className={Styles['BoxHeader__title']}>
-        {props.title}
-      </div>
       {props.rightContent} 
     </div>
     {props.bottomBarContent && 
@@ -26,4 +22,4 @@ const BoxHeader = (props: BoxHeaderProps) => (
   </div>
 );
 
-export default BoxHeader;
+export default BoxHeaderMobile;
