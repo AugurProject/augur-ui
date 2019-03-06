@@ -14,10 +14,6 @@ interface MessageModalProps {
 export const MessageModal = (props: MessageModalProps) =>
   <div className={Styles.MessageModal}>
     <ModalTitle title={props.title} closeAction={props.closeAction} />
-    {props.description.length > 0 &&
-      <ModalDescription description={props.description} />
-    }
-    {props.buttons.length > 0 &&
-      <ModalButtonsRow buttons={props.buttons} />
-    }
+    <ModalDescription description={props.description} />
+    <ModalButtonsRow buttons={props.buttons} />
   </div>;

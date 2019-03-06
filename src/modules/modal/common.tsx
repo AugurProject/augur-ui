@@ -1,6 +1,7 @@
 import React from "react";
 import { XIcon } from "modules/common-elements/icons";
 import { DefaultButtonProps, PrimaryButton, SecondaryButton } from "modules/common-elements/buttons";
+import { LinearPropertyLabel, LinearPropertyLabelProps } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
 
 interface ModalTitleProps {
@@ -10,16 +11,24 @@ interface ModalTitleProps {
 
 interface ModalDescriptionProps {
   description: Array<string>;
-}
+};
 
 interface ModalButtonsRowProps {
   buttons: Array<DefaultButtonProps>;
-}
+};
 
 interface ModalAlertMessageProps {
   preText: string;
   boldText?: string;
   postText?: string;
+};
+
+interface ModalBreakdownProps {
+  rows: Array<Array<LinearPropertyLabelProps>>;
+};
+
+interface ModalMarketTitleProps {
+  title: string;
 };
 
 interface SelectableTableRow {
@@ -60,6 +69,8 @@ export const ModalAlertMessage = (props: ModalAlertMessageProps) =>
     {props.preText}{props.boldText && <b>&nbsp;{props.boldText}&nbsp;</b>}{props.postText}
   </div>);
 
+export const ModalMarketTitle = (props: ModalMarketTitleProps) => <h2>{props.title}</h2>;
+
 export const ModalSelectableTable = (props: ModalSelectableTableProps) => 
   (<div className={Styles.SelectableModalTable}>
     {props.tableData.map((row: SelectableTableRow) => (
@@ -68,3 +79,8 @@ export const ModalSelectableTable = (props: ModalSelectableTableProps) =>
       </button>
     ))}
   </div>);
+
+export const ModalBreakdown = (props: ModalBreakdownProps) =>
+  <div>
+    {props.rows.map((row: LinearPropertyLabelProps) => <LinearPropertyLabel {...row} key={row.label} />)}
+  </div>;
