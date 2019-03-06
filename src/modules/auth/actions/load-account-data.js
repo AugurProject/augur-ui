@@ -11,6 +11,7 @@ import getValue from "utils/get-value";
 import logError from "utils/log-error";
 import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import { loadDesignatedReporterMarkets } from "modules/reports/actions/load-designated-reporter-markets";
+import { loadDisputing } from "modules/reports/actions/load-disputing";
 
 const { ACCOUNT_TYPES } = augur.rpc.constants;
 
@@ -34,4 +35,5 @@ export const loadAccountData = (account, callback = logError) => dispatch => {
   dispatch(loadReportingWindowBounds());
   dispatch(loadUserMarketTradingHistory());
   dispatch(loadDesignatedReporterMarkets());
+  dispatch(loadDisputing());
 };

@@ -6,6 +6,8 @@ import {
   FinalizeTemplate,
   OpenOrdersResolvedMarketsTemplate,
   ReportEndingSoonTemplate,
+  DisputeTemplate,
+  SellCompleteSetTemplate
 } from "modules/account/components/notifications/notifications-templates";
 
 import { Market, Notifications as INotifications  } from "modules/account/types";
@@ -15,6 +17,8 @@ export interface NotificationsProps {
   resolvedMarketsOpenOrders: Array<Market>;
   reportOnMarkets: Array<Market>;
   finalizedMarkets: Array<Market>;
+  marketsInDispute: Array<Market>;
+  completeSetPositions: Array<Market>;
   updateNotifications: Function;
   notifications: Array<INotifications>;
   currentAugurTimestamp: number;
@@ -29,6 +33,8 @@ class Notifications extends React.Component<NotificationsProps> {
   componentWillReceiveProps(nextProps: NotificationsProps) {
     if (!isEqual(nextProps.resolvedMarketsOpenOrders, this.props.resolvedMarketsOpenOrders) ||
         !isEqual(nextProps.reportOnMarkets, this.props.reportOnMarkets) ||
+        !isEqual(nextProps.marketsInDispute, this.props.marketsInDispute) ||
+        !isEqual(nextProps.completeSetPositions, this.props.completeSetPositions) ||
         !isEqual(nextProps.finalizedMarkets, this.props.finalizedMarkets)) {
           this.updateState(nextProps);
     }
@@ -36,9 +42,11 @@ class Notifications extends React.Component<NotificationsProps> {
 
   updateState(props: NotificationsProps) {
     this.props.updateNotifications(
-      this.generateCards(this.props.resolvedMarketsOpenOrders, 'resolvedMarketsOpenOrders')
-      .concat(this.generateCards(this.props.reportOnMarkets, 'reportOnMarkets'))
-      .concat(this.generateCards(this.props.finalizedMarkets, 'finalizedMarkets')));
+      this.generateCards(props.resolvedMarketsOpenOrders, 'resolvedMarketsOpenOrders')
+      .concat(this.generateCards(props.reportOnMarkets, 'reportOnMarkets'))
+      .concat(this.generateCards(props.finalizedMarkets, 'finalizedMarkets'))
+      .concat(this.generateCards(props.marketsInDispute, 'marketsInDispute'))
+      .concat(this.generateCards(props.completeSetPositions, 'sellCompleteSet')));
   }
 
   render() {
@@ -85,6 +93,26 @@ class Notifications extends React.Component<NotificationsProps> {
         Template: FinalizeTemplate
       }
     }
+    else if (type === 'marketsInDispute') {
+      defaults = {
+        isImportant: false,
+        isNew: false,
+        title: constants.TYPE_DISPUTE,
+        buttonLabel: constants.TYPE_DISPUTE,
+        buttonAction: () => null,
+        Template: DisputeTemplate
+      }
+    }
+    else if (type === 'sellCompleteSet') {
+      defaults = {
+        isImportant: false,
+        isNew: false,
+        title: constants.SELL_COMPLETE_SETS,
+        buttonLabel: constants.TYPE_VIEW,
+        buttonAction: () => null,
+        Template: SellCompleteSetTemplate
+      }
+    }
 
     return markets.map((market: Market) => {
       return {
@@ -96,3 +124,4 @@ class Notifications extends React.Component<NotificationsProps> {
 }
 
 export default Notifications;
+

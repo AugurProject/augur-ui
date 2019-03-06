@@ -557,3 +557,5 @@ export const REPORTING_ENDS_SOON =
   "Reporting Ends Soon";
 export const FINALIZE_MARKET =
   "Finalize Market";
+export const SELL_COMPLETE_SETS =
+  "Sell Complete Sets";
