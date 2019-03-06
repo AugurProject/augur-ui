@@ -27,10 +27,13 @@ const QuadBox = (props: QuadBoxProps) => (
     <BoxHeader 
       title={props.title}
       isMobile={props.isMobile}
-      mostRightContent={props.sortByOptions && <SquareDropdown
-            options={props.sortByOptions}
-            onChange={props.updateDropdown}
-          />}
+      mostRightContent={props.sortByOptions && 
+        <SquareDropdown
+          options={props.sortByOptions}
+          onChange={props.updateDropdown}
+          stretchOut={props.isMobile}
+        />
+       }
       rightContent={props.showFilterSearch &&
         <SearchBar onChange={props.onSearchChange} label={props.label}/>
       }  
