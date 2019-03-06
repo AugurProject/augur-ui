@@ -553,9 +553,23 @@ export const VOLUME_ETH_SHARES = [
 export const NEW = "New";
 export const RESOLVED_MARKETS_OPEN_ORDERS_TITLE =
   "Open Orders in Resolved Market";
-export const REPORTING_ENDS_SOON =
+export const REPORTING_ENDS_SOON_TITLE =
   "Reporting Ends Soon";
-export const FINALIZE_MARKET =
+export const FINALIZE_MARKET_TITLE =
   "Finalize Market";
-export const SELL_COMPLETE_SETS =
+export const SELL_COMPLETE_SETS_TITLE =
   "Sell Complete Sets";
+
+export const OPEN_ORDERS_RESOLVED_MARKET = "resolvedMarketsOpenOrders";
+export const REPORT_ON_MARKET = "reportOnMarkets";
+export const FINALIZE_MARKET = "finalizedMarkets";
+export const MARKET_IN_DISPUTE = "marketsInDispute";
+export const SELL_COMPLETE_SET = "sellCompleteSet";
+
+export const NOTIFICATION_TYPES = {
+  [OPEN_ORDERS_RESOLVED_MARKET]: OPEN_ORDERS_RESOLVED_MARKET,
+  [REPORT_ON_MARKET]: REPORT_ON_MARKET,
+  [FINALIZE_MARKET]: FINALIZE_MARKET,
+  [MARKET_IN_DISPUTE]: MARKET_IN_DISPUTE,
+  [SELL_COMPLETE_SET]: SELL_COMPLETE_SET
+};
