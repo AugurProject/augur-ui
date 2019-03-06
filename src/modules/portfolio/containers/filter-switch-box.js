@@ -7,11 +7,8 @@ const mapStateToProps = state => ({
   isMobile: state.appStatus.isMobile
 });
 
-
 const FilterSwitchBoxContainer = withRouter(
-  connect(
-    mapStateToProps,
-  )(FilterSwitchBox)
+  connect(mapStateToProps)(FilterSwitchBox)
 );
 
 export default FilterSwitchBoxContainer;
