@@ -87,8 +87,6 @@ export default class MarketOutcomeDepth extends Component {
     const {
       hoveredPrice,
       marketDepth,
-      marketMax,
-      marketMin,
       orderBookKeys,
       sharedChartMargins,
       updateHoveredPrice,
@@ -104,8 +102,6 @@ export default class MarketOutcomeDepth extends Component {
         updateSelectedOrderProperties,
         nextProps.updateSelectedOrderProperties
       ) ||
-      marketMin !== nextProps.marketMin ||
-      marketMax !== nextProps.marketMax ||
       isMobile !== nextProps.isMobile
     ) {
       this.drawDepth({
@@ -128,9 +124,7 @@ export default class MarketOutcomeDepth extends Component {
       !isEqual(this.state.yScale, nextState.yScale) ||
       !isEqual(this.state.xScale, nextState.xScale) ||
       !isEqual(this.state.containerHeight, nextState.containerHeight) ||
-      !isEqual(this.state.containerWidth, nextState.containerWidth) ||
-      marketMin !== nextProps.marketMin ||
-      marketMax !== nextProps.marketMax
+      !isEqual(this.state.containerWidth, nextState.containerWidth)
     ) {
       this.drawCrosshairs({
         hoveredPrice: nextProps.hoveredPrice,
