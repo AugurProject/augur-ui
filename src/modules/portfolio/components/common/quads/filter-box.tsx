@@ -156,11 +156,9 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         sortByOptions={sortByOptions}
         updateDropdown={this.updateSortBy}
         label={filteredData.length + " " + label}
-        bottomBarContent={bottomTabs && 
-          <div className={Styles.FilterBox__bottomRow}>
-            <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
-            {bottomRightContent && bottomRightContent}
-          </div>
+        bottomRightBarContent={bottomRightContent && bottomRightContent}
+        bottomBarContent={
+          bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
         }
         rows={
           <div className={Styles.Quad__container}>

@@ -19,6 +19,7 @@ export interface QuadBoxProps {
   bottomBarContent: ReactNode,
   label?: string,
   isMobile?: Boolean,
+  bottomRightBarContent?: ReactNode,
 }
 
 const QuadBox = (props: QuadBoxProps) => (
@@ -26,13 +27,14 @@ const QuadBox = (props: QuadBoxProps) => (
     <BoxHeader 
       title={props.title}
       isMobile={props.isMobile}
-      rightContent={props.sortByOptions && <SquareDropdown
+      mostRightContent={props.sortByOptions && <SquareDropdown
             options={props.sortByOptions}
             onChange={props.updateDropdown}
           />}
-      mostRightContent={props.showFilterSearch &&
+      rightContent={props.showFilterSearch &&
         <SearchBar onChange={props.onSearchChange} label={props.label}/>
       }  
+      bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent} 
      />
     <div className={Styles.FilterBox__content}>
