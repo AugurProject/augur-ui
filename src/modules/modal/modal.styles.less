@@ -20,6 +20,22 @@
     text-transform: uppercase;
   }
 
+  > h2 {
+    .text-16;
+
+    color: @color-secondary-text;
+    font-weight: @weight-medium;
+    margin: @size-8 0 @size-24;
+  }
+
+  > h3 {
+    .text-12-bold;
+
+    color: @color-secondary-text;
+    line-height: @size-16;
+    margin: 0 0 @size-14;
+  }
+
   > button:first-of-type {
     position: absolute;
     right: @size-24;
@@ -78,18 +94,6 @@
 
     color: @color-secondary-text;
     margin: 0 0 @size-16;
-  }
-}
-
-.SimpleBreakdownModal {
-  .ModalContainer;
-
-  > h2 {
-    .text-16;
-
-    color: @color-secondary-text;
-    font-weight: @weight-medium;
-    margin: @size-8 0 @size-24;
   }
 }
 

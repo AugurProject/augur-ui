@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-// import ModalConfirm from "modules/modal/message-modal";
 import { MessageModal } from "modules/modal/message-modal";
 
 import { closeModal } from "modules/modal/actions/close-modal";

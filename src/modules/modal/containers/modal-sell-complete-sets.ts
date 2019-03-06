@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { SimpleBreakdownModal } from "modules/modal/simple-breakdown-modal";
+import { MessageModal } from "modules/modal/message-modal";
 import { selectMarket } from "modules/markets/selectors/market";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { sellCompleteSets } from "modules/positions/actions/sell-complete-sets";
@@ -36,7 +36,11 @@ const mapDispatchToProps = (dispatch: Function) => ({
 
 const mergeProps = (sP: any, dP: any, oP: any) => ({
   title: "Sell Complete Sets",
-  modal: sP.modal,
+  alertMessage: {
+    preText: "You currently have", 
+    boldText: sP.modal.numCompleteSets.full,
+    postText: "of all outcomes in the market:"
+  },
   breakdown: [
     {
       label: "Settlement Fees",
@@ -65,5 +69,5 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(SimpleBreakdownModal)
+  )(MessageModal)
 );

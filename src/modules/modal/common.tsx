@@ -23,6 +23,10 @@ interface ModalAlertMessageProps {
   postText?: string;
 };
 
+interface ModalCallToActionProps {
+  callToAction: string;
+};
+
 interface ModalBreakdownProps {
   rows: Array<Array<LinearPropertyLabelProps>>;
 };
@@ -70,6 +74,8 @@ export const ModalAlertMessage = (props: ModalAlertMessageProps) =>
   </div>);
 
 export const ModalMarketTitle = (props: ModalMarketTitleProps) => <h2>{props.title}</h2>;
+
+export const ModalCallToAction = (props: ModalCallToActionProps) => <h3>{props.callToAction}</h3>;
 
 export const ModalSelectableTable = (props: ModalSelectableTableProps) => 
   (<div className={Styles.SelectableModalTable}>
