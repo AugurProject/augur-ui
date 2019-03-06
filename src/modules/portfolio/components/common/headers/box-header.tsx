@@ -16,7 +16,10 @@ const BoxHeader = (props: BoxHeaderProps) => (
       <div className={Styles['BoxHeader__title']}>
         {props.title}
       </div>
-      {props.rightContent} 
+      <div className={Styles['BoxHeader__right']}>
+        {props.rightContent} 
+        {props.mostRightContent}
+      </div>
     </div>
     {props.bottomBarContent && 
       <div className={Styles['BoxHeader__header--bottom-row']}>
