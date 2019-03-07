@@ -67,16 +67,6 @@ export default function(market) {
       assertFormattedNumber(market.volume, "market.volume");
     });
 
-    test("market.isOpen", () => {
-      expect(market.isOpen).toBeDefined();
-      expect(typeof market.isOpen).toBe("boolean");
-    });
-
-    test("market.isPendingReport", () => {
-      expect(market.isPendingReport).toBeDefined();
-      expect(typeof market.isPendingReport).toBe("boolean");
-    });
-
     const { tags } = market;
     test("market.tags", () => {
       expect(tags).toBeDefined();
@@ -301,17 +291,6 @@ export default function(market) {
         myPositionsSummary.totalValue,
         "myPositionsSummary.totalValue"
       );
-    });
-
-    const { report } = market;
-    test("market.report", () => {
-      expect(report).toBeDefined();
-      expect(typeof report).toBe("object");
-    });
-
-    test("market.report.onSubmitReport", () => {
-      expect(report.onSubmitReport).toBeDefined();
-      expect(typeof report.onSubmitReport).toBe("function");
     });
 
     const { onSubmitPlaceTrade } = market;

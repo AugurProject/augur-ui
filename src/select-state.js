@@ -45,8 +45,6 @@ export const selectReportsState = state => state.reports;
 export const selectScalarMarketsShareDenominationState = state =>
   state.scalarMarketsShareDenomination;
 export const selectSelectedMarketIDState = state => state.selectedMarketId;
-export const selectSelectedMarketsHeaderState = state =>
-  state.selectedMarketsHeader;
 export const selectSelectedMarketsSubsetState = state =>
   state.selectedMarketsSubset;
 export const selectSmallestPositionsState = state => state.smallestPositions;

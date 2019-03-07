@@ -12,10 +12,10 @@ The "trick" is to maximize memoization cache hits as much as possible, and not h
 run any more than it has to.
 
 To achieve that, we pass in the minimum number of the shallowest arguments possible.
-For example, instead of passing in the entire `favorites` collection and letting the
+For example, instead of passing in the entire `outcomesData` collection and letting the
 function find the one it needs for the market, we instead find the specific favorite
-for that market in advance, and only pass in a boolean: `!!favorites[marketId]`
-That way the market only gets re-assembled when that specific favorite changes.
+for that market in advance, and only pass in: `outcomesData[marketId]`
+That way the market only gets re-assembled when that specific market outcomes changes.
 
 This is true for all selectors, but especially important for this one.
 */
@@ -29,20 +29,12 @@ import {
   formatNumber
 } from "utils/format-number";
 import { convertUnixToFormattedDate } from "utils/format-date";
-import {
-  selectCurrentTimestamp,
-  selectCurrentTimestampInSeconds
-} from "src/select-state";
-import {
-  isMarketDataOpen,
-  isMarketDataExpired
-} from "utils/is-market-data-open";
+import { selectCurrentTimestamp } from "src/select-state";
 import {
   YES_NO,
   CATEGORICAL,
   SCALAR,
   ZERO,
-  UNIVERSE_ID,
   YES_NO_INDETERMINATE_OUTCOME_ID,
   CATEGORICAL_SCALAR_INDETERMINATE_OUTCOME_ID,
   INDETERMINATE_OUTCOME_NAME,
@@ -55,7 +47,6 @@ import {
 import { constants } from "services/constants";
 
 import { placeTrade } from "modules/trades/actions/place-trade";
-import { submitReport } from "modules/reports/actions/submit-report";
 
 import store from "src/store";
 
@@ -78,30 +69,18 @@ import { selectReportableOutcomes } from "modules/reports/selectors/reportable-o
 import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
 import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 
-export default function() {
-  return selectSelectedMarket(store.getState());
-}
-
-export const selectSelectedMarket = state =>
-  selectMarket(state.selectedMarketId);
-
 export const selectMarket = marketId => {
   const {
     marketsData,
     marketLoading,
-    favorites,
-    reports,
     outcomesData,
     accountTrades,
     marketTradingHistory,
     orderBooks,
-    universe,
     orderCancellation,
-    smallestPositions,
     loginAccount,
     accountShareBalances,
-    pendingOrders,
-    ...state
+    pendingOrders
   } = store.getState();
 
   const accountPositions = selectAccountPositions();
@@ -109,37 +88,18 @@ export const selectMarket = marketId => {
   if (!marketId || !marketsData || !marketsData[marketId]) {
     return {};
   }
-  const endTime = convertUnixToFormattedDate(marketsData[marketId].endTime);
 
   return assembleMarket(
     marketId,
     marketsData[marketId],
     marketLoading[marketId] || null,
     marketTradingHistory[marketId],
-    isMarketDataOpen(marketsData[marketId]),
-    isMarketDataExpired(
-      marketsData[marketId],
-      selectCurrentTimestampInSeconds(state)
-    ),
-
-    !!favorites[marketId],
     outcomesData[marketId],
-
-    selectMarketReport(marketId, reports[universe.id || UNIVERSE_ID]),
     (accountPositions || {})[marketId] || {},
     (accountTrades || {})[marketId],
-
-    // the reason we pass in the date parts broken up like this, is because date objects are never equal, thereby always triggering re-assembly, and never hitting the memoization cache
-    endTime.value.getFullYear(),
-    endTime.value.getMonth(),
-    endTime.value.getDate(),
-
-    universe && universe.currentReportingWindowAddress,
-
     orderBooks[marketId],
     orderCancellation,
-    (smallestPositions || {})[marketId],
-    loginAccount,
+    loginAccount.address,
     (accountShareBalances || {})[marketId] || [],
     (pendingOrders || {})[marketId],
     store.dispatch
@@ -148,26 +108,17 @@ export const selectMarket = marketId => {
 
 const assembledMarketsCache = {};
 
-export function assembleMarket(
+function assembleMarket(
   marketId,
   marketData,
   marketLoading,
   marketPriceHistory,
-  isOpen,
-  isExpired,
-  isFavorite,
   marketOutcomesData,
-  marketReport,
   marketAccountPositions,
   marketAccountTrades,
-  endTimeYear,
-  endTimeMonth,
-  endTimeDay,
-  currentReportingWindowAddress,
   orderBooks,
   orderCancellation,
-  smallestPosition,
-  loginAccount,
+  accountAddress,
   accountShareBalances,
   pendingOrders,
   dispatch
@@ -179,21 +130,12 @@ export function assembleMarket(
         marketData,
         marketLoading,
         marketPriceHistory,
-        isOpen,
-        isExpired,
-        isFavorite,
         marketOutcomesData,
-        marketReport,
         marketAccountPositions,
         marketAccountTrades,
-        endTimeYear,
-        endTimeMonth,
-        endTimeDay,
-        currentReportingWindowAddress,
         orderBooks,
         orderCancellation,
-        smallestPosition,
-        loginAccount,
+        accountAddress,
         accountShareBalances,
         pendingOrders,
         dispatch
@@ -203,6 +145,8 @@ export function assembleMarket(
           description: marketData.description || "",
           id: marketId
         };
+
+        console.log("market selector triggered", marketId);
 
         if (typeof market.minPrice !== "undefined")
           market.minPrice = createBigNumber(market.minPrice);
@@ -241,10 +185,6 @@ export function assembleMarket(
         market.creationTime = convertUnixToFormattedDate(
           marketData.creationTime
         );
-
-        market.isOpen = isOpen;
-        // market.isExpired = isExpired;
-        market.isFavorite = isFavorite;
 
         switch (market.reportingState) {
           case constants.REPORTING_STATE.PRE_REPORTING:
@@ -294,14 +234,6 @@ export function assembleMarket(
           ? market.resolutionSource
           : undefined;
 
-        market.isRequiredToReportByAccount = !!marketReport;
-        market.isPendingReport =
-          market.isRequiredToReportByAccount && !marketReport.reportedOutcomeId; // account is required to report on this market
-        market.isReported =
-          market.isRequiredToReportByAccount &&
-          !!marketReport.reportedOutcomeId; // the user has reported on this market
-        market.isReportTabVisible = market.isRequiredToReportByAccount;
-
         market.onSubmitPlaceTrade = (
           trade,
           outcomeId,
@@ -319,25 +251,6 @@ export function assembleMarket(
               onComplete
             })
           );
-
-        market.report = {
-          ...marketReport,
-          onSubmitReport: (
-            reportedOutcomeId,
-            amountToStake,
-            isIndeterminate,
-            history
-          ) =>
-            dispatch(
-              submitReport({
-                market,
-                reportedOutcomeId,
-                amountToStake,
-                isIndeterminate,
-                history
-              })
-            )
-        };
 
         const numCompleteSets =
           (accountShareBalances &&
@@ -454,7 +367,7 @@ export function assembleMarket(
 
             market.filledOrders = selectFilledOrders(
               marketPriceHistory,
-              loginAccount.address,
+              accountAddress,
               marketOutcomesData,
               market,
               market.userOpenOrders

@@ -14,7 +14,6 @@ import store from "src/store";
   favorites: {},
   pendingReports: {},
   selectedMarketId: null,
-  selectedMarketsHeader: null,
   tags: '',
   selectedFilters: { isOpen: true },
   selectedSort: { prop: 'volume', isDesc: true },
