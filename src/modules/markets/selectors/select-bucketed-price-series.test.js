@@ -17,7 +17,8 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       priceTimeSeries: [
         {
           price: 0.1,
-          timestamp: 1533312111000
+          timestamp: 1533312111000,
+          logIndex: 0
         }
       ]
     },
@@ -26,7 +27,8 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       priceTimeSeries: [
         {
           price: 0.1,
-          timestamp: 1533312111000
+          timestamp: 1533312111000,
+          logIndex: 0
         }
       ]
     }
@@ -38,27 +40,33 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       priceTimeSeries: [
         {
           price: 0.1,
-          timestamp: 1533312111000
+          timestamp: 1533312111000,
+          logIndex: 0
         },
         {
           price: 0.2,
-          timestamp: 1533315711000
+          timestamp: 1533315711000,
+          logIndex: 0
         },
         {
           price: 0.3,
-          timestamp: 1533319310000
+          timestamp: 1533319310000,
+          logIndex: 0
         },
         {
           price: 0.6,
-          timestamp: 1533319310002
+          timestamp: 1533319310002,
+          logIndex: 0
         },
         {
           price: 0.5,
-          timestamp: 1533319310003
+          timestamp: 1533319310003,
+          logIndex: 0
         },
         {
           price: 0.4,
-          timestamp: 1533319310004
+          timestamp: 1533319310004,
+          logIndex: 0
         }
       ]
     },
@@ -67,27 +75,33 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       priceTimeSeries: [
         {
           price: 0.1,
-          timestamp: 1533312111000
+          timestamp: 1533312111000,
+          logIndex: 0
         },
         {
           price: 0.2,
-          timestamp: 1533315711000
+          timestamp: 1533315711000,
+          logIndex: 0
         },
         {
           price: 0.3,
-          timestamp: 1533319310000
+          timestamp: 1533319310000,
+          logIndex: 0
         },
         {
           price: 0.6,
-          timestamp: 1533319310002
+          timestamp: 1533319310002,
+          logIndex: 0
         },
         {
           price: 0.5,
-          timestamp: 1533319310003
+          timestamp: 1533319310003,
+          logIndex: 0
         },
         {
           price: 0.4,
-          timestamp: 1533319310004
+          timestamp: 1533319310004,
+          logIndex: 0
         }
       ]
     }
@@ -122,13 +136,15 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
         0: [
           {
             price: 0.1,
-            timestamp: 1533312111000
+            timestamp: 1533312111000,
+            logIndex: 0
           }
         ],
         1: [
           {
             price: 0.1,
-            timestamp: 1533312111000
+            timestamp: 1533312111000,
+            logIndex: 0
           }
         ]
       }
@@ -149,22 +165,26 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       priceTimeSeries: {
         0: [
           {
-            price: 0.2,
-            timestamp: 1533315711000
+            price: 0.1,
+            timestamp: 1533312111000,
+            logIndex: 0
           },
           {
-            price: 0.4,
-            timestamp: 1533319310004
+            price: 0.3,
+            timestamp: 1533319310000,
+            logIndex: 0
           }
         ],
         2: [
           {
-            price: 0.2,
-            timestamp: 1533315711000
+            price: 0.1,
+            timestamp: 1533312111000,
+            logIndex: 0
           },
           {
-            price: 0.4,
-            timestamp: 1533319310004
+            price: 0.3,
+            timestamp: 1533319310000,
+            logIndex: 0
           }
         ]
       }
