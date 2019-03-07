@@ -196,3 +196,52 @@ ul.Orders__row {
   margin-left: 0.75rem;
   padding-right: 0;
 }
+
+@media @breakpoint-mobile {
+  .Order { 
+    grid-template-columns: repeat(4, 1fr);
+
+    > li {
+      &:first-child {
+        grid-column-start: 1;
+        grid-column-end: 5;
+        margin-bottom: 6px;
+      }
+
+      &:nth-of-type(2) {
+        justify-content: flex-start;
+        text-align: left;
+      }
+    }
+  }
+
+  .FilledOrder {
+    grid-template-columns: repeat(5, 1fr);
+    position: relative;
+
+    > li {
+      &:first-child {
+         grid-column-start: 1;
+        grid-column-end: 7;
+      }
+
+      &:nth-of-type(6) {
+        position: absolute;
+        right: 0;
+        font-size: 9px;
+        color: #76737E;
+      }
+    }
+  }
+
+  .Position {
+    grid-template-columns: repeat(7, 1fr);
+    
+     > li {
+      &:first-child {
+         grid-column-start: 1;
+        grid-column-end: 8;
+      }
+    }
+  }
+}

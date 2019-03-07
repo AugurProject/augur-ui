@@ -10,7 +10,6 @@ interface FilledOrdersHeaderProps {
 const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
  <ul
     className={classNames(
-      SharedStyles.Order,
       Styles.DataTableHeader,
       Styles.FilledOrdersHeader
     )}
