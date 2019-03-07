@@ -13,7 +13,6 @@ export default class ModuleTabs extends Component {
     fillForMobile: PropTypes.bool,
     noBorder: PropTypes.bool,
     id: PropTypes.string,
-    darkBackground: PropTypes.bool
   };
 
   static defaultProps = {
@@ -64,9 +63,7 @@ export default class ModuleTabs extends Component {
                 [Styles.ModuleTabs__activeSpanFill]:
                   this.state.selected === index && this.props.fillWidth,
                 [Styles.ModuleTabs__activeNoBorder]:
-                  this.state.selected === index && this.props.noBorder,
-                [Styles.ModuleTabs__activeDarkBackground]:
-                  this.state.selected === index && this.props.darkBackground
+                  this.state.selected === index && this.props.noBorder
               })}
             >
               {child.props.label}
@@ -81,8 +78,7 @@ export default class ModuleTabs extends Component {
           [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
           [Styles.ModuleTabs__tabFillWidth]:
             this.props.fillWidth || this.props.fillForMobile,
-          [Styles.ModuleTabs__noBorder]: this.props.noBorder,
-          [Styles.ModuleTabs__darkBackground]: this.props.darkBackground
+          [Styles.ModuleTabs__noBorder]: this.props.noBorder
         })}
       >
         {this.props.children.map(labels.bind(this))}

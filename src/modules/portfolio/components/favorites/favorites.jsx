@@ -84,7 +84,6 @@ export default class Favorites extends Component {
         sortByOptions={sortByOptions}
         markets={markets}
         filterComp={filterComp}
-        bottomTabs
         label="Watched Markets"
         renderRightContent={this.renderRightContent}
         noToggle

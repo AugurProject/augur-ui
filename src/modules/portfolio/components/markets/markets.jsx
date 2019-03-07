@@ -93,7 +93,6 @@ class MyMarkets extends Component {
         sortByOptions={sortByOptions}
         markets={myMarkets}
         filterComp={filterComp}
-        bottomTabs
         label="My Created Markets"
         renderRightContent={this.renderRightContent}
         renderToggleContent={renderToggleContent}

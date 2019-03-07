@@ -105,7 +105,6 @@ export default class Positions extends Component {
         sortByOptions={sortByOptions}
         markets={markets}
         filterComp={filterComp}
-        bottomTabs
         label="Positions"
         bottomRightContent={
           <CompactButton

@@ -22,17 +22,11 @@ const PortfolioPage = (props: PortfolioPageProps) => {
         <ModulePane label="Positions">
           <MyPositions />
         </ModulePane>
-        <ModulePane label="Orders">
-          <div>
-            <ModuleTabs selected={0} fillWidth noBorder darkBackground>
-              <ModulePane label="Open Orders">
-                <OpenOrders />
-              </ModulePane> 
-              <ModulePane label="Filled Orders">
-                <FilledOrders />
-              </ModulePane>
-            </ModuleTabs>
-          </div>
+        <ModulePane label="Open Orders">
+          <OpenOrders />
+        </ModulePane>
+        <ModulePane label="Filled Orders">
+          <FilledOrders />
         </ModulePane>
         <ModulePane label="My Created Markets">
           <MyMarkets />

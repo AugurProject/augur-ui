@@ -14,7 +14,6 @@ interface PositionsHeaderProps {
 const PositionsHeader = (props: PositionsHeaderProps) => (
  <ul
     className={classNames(
-      SharedStyles.Order,
       Styles.DataTableHeader,
       SharedStyles.Position,
       Styles.PositionHeader

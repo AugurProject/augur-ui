@@ -28,7 +28,6 @@ export interface FilterBoxProps {
   updateFilteredData: Function; 
   filterComp: Function;
   showFilterSearch?: Boolean;
-  bottomTabs?: Boolean;
   label: string;
   bottomRightContent?: ReactNode;
   renderRightContent?: Function;
@@ -131,7 +130,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       rows,
       sortByOptions,
       showFilterSearch,
-      bottomTabs,
       data,
       updateFilteredData,
       filterComp,
@@ -158,7 +156,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         label={filteredData.length + " " + label}
         bottomRightBarContent={bottomRightContent && bottomRightContent}
         bottomBarContent={
-          bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
+          <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
         }
         rows={
           <div className={Styles.Quad__container}>
