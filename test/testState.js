@@ -256,7 +256,6 @@ const testState = {
     }
   },
   selectedMarketId: "testMarketId",
-  selectedMarketsHeader: "testMarketHeader",
   selectedFilterSort: {
     type: "open",
     sort: "volume",
