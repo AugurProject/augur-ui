@@ -127,6 +127,8 @@ export function selectFilledOrders(
     marketsData,
     openOrders
   );
-  orders.sort((a, b) => b.timestamp - a.timestamp);
+  orders
+    .sort((a, b) => b.logIndex - a.logIndex)
+    .sort((a, b) => b.timestamp - a.timestamp);
   return orders;
 }
