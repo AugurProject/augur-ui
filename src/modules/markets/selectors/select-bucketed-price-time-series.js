@@ -1,5 +1,5 @@
 import { createBigNumber } from "utils/create-big-number";
-import { sortBy, last, each, pullAll } from "lodash";
+import { orderBy, last, each, pullAll } from "lodash";
 import { ZERO } from "modules/common-elements/constants";
 
 export const selectBucketedPriceTimeSeries = (
@@ -45,7 +45,11 @@ export const selectBucketedPriceTimeSeries = (
 function splitTradesByTimeBucket(priceTimeSeries, timeBuckets) {
   if (!priceTimeSeries || priceTimeSeries.length === 0) return [];
   if (!timeBuckets || timeBuckets.length === 0) return [];
-  let timeSeries = sortBy(priceTimeSeries, "timestamp").slice();
+  let timeSeries = orderBy(
+    priceTimeSeries,
+    ["timestamp", "logIndex"],
+    ["desc", "desc"]
+  ).slice();
 
   const series = [];
   for (let i = 0; i < timeBuckets.length - 1; i++) {
@@ -77,6 +81,6 @@ function getTradeInTimeRange(timeSeries, startTime, endTime) {
 
   return {
     trimmedTimeSeries: pullAll(timeSeries, bucket),
-    trades: sortBy(bucket, "timestamp")
+    trades: orderBy(bucket, ["timestamp", "logIndex"], ["desc", "desc"])
   };
 }
