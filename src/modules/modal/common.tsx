@@ -1,7 +1,9 @@
 import React from "react";
+import classNames from "classnames";
+
 import { XIcon } from "modules/common-elements/icons";
-import { DefaultButtonProps, PrimaryButton, SecondaryButton } from "modules/common-elements/buttons";
-import { LinearPropertyLabel, LinearPropertyLabelProps } from "modules/common-elements/labels";
+import { DefaultButtonProps, PrimaryButton, SecondaryButton, CompactButton } from "modules/common-elements/buttons";
+import { LinearPropertyLabel, LinearPropertyLabelProps, PropertyLabel, PropertyLabelProps } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
 
 interface ModalTitleProps {
@@ -29,6 +31,7 @@ interface ModalCallToActionProps {
 
 interface ModalBreakdownProps {
   rows: Array<Array<LinearPropertyLabelProps>>;
+  short?: boolean;
 };
 
 interface ModalMarketTitleProps {
@@ -43,6 +46,19 @@ interface SelectableTableRow {
 interface ModalSelectableTableProps {
   tableData: Array<SelectableTableRow>;
 };
+
+interface MarketActionRow {
+  title: string;
+  text: string;
+  label: string;
+  value: string;
+  action: Function;
+};
+
+interface ModalMarketActionRowsProps {
+  rows: Array<MarketActionRow>;
+};
+
 
 export const ModalTitle = (props: ModalTitleProps) => 
   <>
@@ -87,6 +103,17 @@ export const ModalSelectableTable = (props: ModalSelectableTableProps) =>
   </div>);
 
 export const ModalBreakdown = (props: ModalBreakdownProps) =>
-  <div>
+  <div className={classNames({[Styles.ShortBreakdown]: props.short})}>
     {props.rows.map((row: LinearPropertyLabelProps) => <LinearPropertyLabel {...row} key={row.label} />)}
   </div>;
+
+export const ModalMarketActionRows = (props: ModalMarketActionRowsProps) => 
+  props.rows.map((row: MarketActionRow) => (
+    <section key={row.title} className={Styles.ModalMarketActionRow}>
+      <section>
+        <ModalMarketTitle title={row.title} />
+        <PropertyLabel label={row.label} value={row.value} />
+      </section>
+      <CompactButton text={row.text} action={row.action} />
+    </section>
+  ));
