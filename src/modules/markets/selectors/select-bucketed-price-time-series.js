@@ -48,7 +48,7 @@ function splitTradesByTimeBucket(priceTimeSeries, timeBuckets) {
   let timeSeries = orderBy(
     priceTimeSeries,
     ["timestamp", "logIndex"],
-    ["desc", "desc"]
+    ["asc", "asc"]
   ).slice();
 
   const series = [];
@@ -81,6 +81,6 @@ function getTradeInTimeRange(timeSeries, startTime, endTime) {
 
   return {
     trimmedTimeSeries: pullAll(timeSeries, bucket),
-    trades: orderBy(bucket, ["timestamp", "logIndex"], ["desc", "desc"])
+    trades: orderBy(bucket, ["timestamp", "logIndex"], ["asc", "asc"])
   };
 }
