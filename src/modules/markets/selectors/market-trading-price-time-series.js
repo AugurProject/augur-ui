@@ -5,8 +5,8 @@ import { orderBy } from "lodash";
 export const marketTradingPriceTimeSeries = (marketPriceHistory, outcome) => {
   const sortedPriceHistory = orderBy(
     marketPriceHistory,
-    ["timestamp"],
-    ["desc"]
+    ["timestamp", "logIndex"],
+    ["desc", "desc"]
   );
   const datedPriceHistory = sortedPriceHistory.reduce((p, item, i) => {
     if (item.outcome.toString() !== outcome) return p;
