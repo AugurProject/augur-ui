@@ -146,8 +146,8 @@ export const UnsignedOrdersTemplate = (props: TemplateProps) => {
 
 export const ClaimReportingFeesTemplate = (props: any) => {
   const { claimReportingFees } = props;
-  const unclaimedREP = claimReportingFees.unclaimedRep.formatted;
-  const unclaimedETH = claimReportingFees.unclaimedEth.formatted;
+  const unclaimedREP = claimReportingFees.unclaimedRep.formattedValue;
+  const unclaimedETH = claimReportingFees.unclaimedEth.formattedValue;
 
   return (
     <Template
