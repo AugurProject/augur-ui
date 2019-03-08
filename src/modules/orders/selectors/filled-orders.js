@@ -67,7 +67,9 @@ function findOrders(
         );
         // amount has been format-number'ed
         foundOrder.amount = createBigNumber(foundOrder.amount).plus(amountBN);
-        foundOrder.trades.sort((a, b) => b.timestamp - a.timestamp);
+        foundOrder.trades
+          .sort((a, b) => b.timestamp - a.timestamp)
+          .sort((a, b) => b.logIndex - a.logIndex);
         foundOrder.timestamp = foundOrder.trades[0].timestamp;
 
         if (accountId !== creator) {
