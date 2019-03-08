@@ -130,7 +130,7 @@ export function selectFilledOrders(
     openOrders
   );
   orders
-    .sort((a, b) => b.logIndex - a.logIndex)
-    .sort((a, b) => b.timestamp - a.timestamp);
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .sort((a, b) => b.logIndex - a.logIndex);
   return orders;
 }
