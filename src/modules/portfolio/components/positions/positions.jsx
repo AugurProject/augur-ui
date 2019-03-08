@@ -116,7 +116,7 @@ export default class Positions extends Component {
           />
         }
         renderRightContent={this.renderRightContent}
-        ToggleContent={this.renderToggleContent}
+        renderToggleContent={this.renderToggleContent}
         pickVariables={[
           "id",
           "description",
