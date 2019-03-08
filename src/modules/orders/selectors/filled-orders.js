@@ -21,7 +21,8 @@ function findOrders(
         type,
         timestamp,
         transactionHash,
-        marketId
+        marketId,
+        logIndex
       }
     ) => {
       const foundOrder = order.find(({ id }) => id === orderId);
@@ -59,7 +60,8 @@ function findOrders(
           timestamp: timestampFormatted,
           transactionHash,
           marketId,
-          marketDescription
+          marketDescription,
+          logIndex
         });
 
         foundOrder.originalQuantity = foundOrder.originalQuantity.plus(
@@ -86,6 +88,7 @@ function findOrders(
           marketId,
           marketDescription,
           originalQuantity,
+          logIndex,
           trades: [
             {
               outcome: outcomeName,
@@ -95,12 +98,15 @@ function findOrders(
               timestamp: timestampFormatted,
               transactionHash,
               marketId,
-              marketDescription
+              marketDescription,
+              logIndex
             }
           ]
         });
       }
-      return order;
+      return order
+        .sort((a, b) => b.timestamp.timestamp - a.timestamp.timestamp)
+        .sort((a, b) => b.logIndex - a.logIndex);
     },
     []
   );

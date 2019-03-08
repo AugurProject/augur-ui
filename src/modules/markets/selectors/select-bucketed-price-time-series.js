@@ -1,5 +1,5 @@
 import { createBigNumber } from "utils/create-big-number";
-import { orderBy, last, each, pullAll } from "lodash";
+import { head, each, pullAll } from "lodash";
 import { ZERO } from "modules/common-elements/constants";
 import { roundTimestampToPastDayMidnight } from "utils/format-date";
 
@@ -46,18 +46,17 @@ export const selectBucketedPriceTimeSeries = (
 function splitTradesByTimeBucket(priceTimeSeries, timeBuckets) {
   if (!priceTimeSeries || priceTimeSeries.length === 0) return [];
   if (!timeBuckets || timeBuckets.length === 0) return [];
-  let timeSeries = orderBy(
-    priceTimeSeries,
-    ["timestamp", "logIndex"],
-    ["asc", "desc"]
-  ).slice();
+  let timeSeries = priceTimeSeries
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .sort((a, b) => b.logIndex - a.logIndex)
+    .slice();
 
   const series = [];
   for (let i = 0; i < timeBuckets.length - 1; i++) {
     const start = timeBuckets[i];
     const end = timeBuckets[i + 1];
     const result = getTradeInTimeRange(timeSeries, start, end);
-    if (result.trades.length > 0) series.push(last(result.trades));
+    if (result.trades.length > 0) series.push(head(result.trades));
     timeSeries = result.trimmedTimeSeries;
   }
   return series;
@@ -82,6 +81,8 @@ function getTradeInTimeRange(timeSeries, startTime, endTime) {
 
   return {
     trimmedTimeSeries: pullAll(timeSeries, bucket),
-    trades: orderBy(bucket, ["timestamp", "logIndex"], ["asc", "desc"])
+    trades: bucket
+      .sort((a, b) => b.timestamp - a.timestamp)
+      .sort((a, b) => b.logIndex - a.logIndex)
   };
 }
