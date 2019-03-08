@@ -22,7 +22,6 @@ export default class MarketHeaderReporting extends Component {
     isDesignatedReporter: PropTypes.bool,
     finalizeMarket: PropTypes.func.isRequired,
     claimTradingProceeds: PropTypes.func.isRequired,
-    getWinningBalances: PropTypes.func.isRequired,
     tentativeWinner: PropTypes.object,
     isLogged: PropTypes.bool,
     location: PropTypes.object.isRequired
@@ -39,22 +38,6 @@ export default class MarketHeaderReporting extends Component {
     this.state = {
       disableFinalize: false
     };
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    if (this.props.isLogged && this.props.market.id !== nextProps.market.id) {
-      this.checkWinnings(nextProps.market, nextProps.isLogged);
-    }
-  }
-
-  checkWinnings(market, isLogged) {
-    const { getWinningBalances } = this.props;
-    if (
-      isLogged &&
-      market.reportingState === constants.REPORTING_STATE.FINALIZED
-    ) {
-      getWinningBalances(market.id);
-    }
   }
 
   render() {

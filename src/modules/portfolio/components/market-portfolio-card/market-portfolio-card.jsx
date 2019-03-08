@@ -28,7 +28,6 @@ export default class MarketPortfolioCard extends Component {
     market: PropTypes.object.isRequired,
     positionsDefault: PropTypes.bool,
     finalizeMarket: PropTypes.func.isRequired,
-    getWinningBalances: PropTypes.func.isRequired,
     orphanedOrders: PropTypes.array.isRequired,
     transactionsStatus: PropTypes.object.isRequired,
     cancelOrphanedOrder: PropTypes.func.isRequired,
@@ -53,11 +52,6 @@ export default class MarketPortfolioCard extends Component {
       claimClicked: false,
       disableFinalize: false
     };
-  }
-
-  componentWillMount() {
-    const { market, getWinningBalances } = this.props;
-    getWinningBalances([market.id]);
   }
 
   toggleTable(tableKey) {

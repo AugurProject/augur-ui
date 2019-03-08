@@ -7,7 +7,6 @@ import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispu
 import { selectCurrentTimestamp } from "src/select-state";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { MODAL_CLAIM_TRADING_PROCEEDS } from "modules/common-elements/constants";
-import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 
 const mapStateToProps = (state, ownProps) => {
   const market = selectMarket(ownProps.marketId);
@@ -27,8 +26,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => ({
   finalizeMarket: (marketId, cb) => dispatch(sendFinalizeMarket(marketId, cb)),
   claimTradingProceeds: (marketId, cb) =>
-    dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb })),
-  getWinningBalances: marketId => dispatch(getWinningBalance([marketId]))
+    dispatch(updateModal({ type: MODAL_CLAIM_TRADING_PROCEEDS, marketId, cb }))
 });
 
 const MarketHeaderReportingContainer = withRouter(

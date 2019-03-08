@@ -219,12 +219,6 @@ describe("modules/events/actions/log-handlers.js", () => {
           data: {
             marketId: "0xdeadbeef"
           }
-        },
-        {
-          type: ACTIONS.GET_WINNING_BALANCE,
-          data: {
-            marketIds: ["0xdeadbeef"]
-          }
         }
       ]);
     });

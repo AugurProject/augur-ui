@@ -6,7 +6,6 @@ import { each, orderBy } from "lodash";
 import PortfolioReports from "modules/portfolio/components/portfolio-reports/portfolio-reports";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { getReportingFees } from "modules/reports/actions/get-reporting-fees";
-import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { selectMarket } from "modules/markets/selectors/market";
 import { sendFinalizeMarket } from "modules/markets/actions/finalize-market";
 import marketDisputeOutcomes from "modules/reports/selectors/select-market-dispute-outcomes";
@@ -91,7 +90,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   finalizeMarket: marketId => dispatch(sendFinalizeMarket(marketId)),
   getReportingFees: callback => dispatch(getReportingFees(callback)),
-  getWinningBalances: marketIds => dispatch(getWinningBalance(marketIds)),
   updateModal: modal => dispatch(updateModal(modal)),
   loadMarkets: () => dispatch(loadReportingHistory()),
   loadMarketsInfoIfNotLoaded: marketIds =>

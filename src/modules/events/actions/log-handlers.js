@@ -189,7 +189,6 @@ export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
     dispatch(loadAccountTrades({ marketId: log.market }));
-    dispatch(getWinningBalance([log.market]));
   }
   if (isCurrentMarket(log.market)) dispatch(loadBidsAsks(log.market));
 };
