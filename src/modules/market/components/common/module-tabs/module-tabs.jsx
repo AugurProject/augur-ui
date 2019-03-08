@@ -12,7 +12,7 @@ export default class ModuleTabs extends Component {
     fillWidth: PropTypes.bool,
     fillForMobile: PropTypes.bool,
     noBorder: PropTypes.bool,
-    id: PropTypes.string,
+    id: PropTypes.string
   };
 
   static defaultProps = {
