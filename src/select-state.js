@@ -18,6 +18,7 @@ export const selectFavoritesState = state => state.favorites;
 export const selectGasPriceInfo = state => state.gasPriceInfo;
 export const selectHasLoadedMarketsState = state =>
   state.appStatus.hasLoadedMarkets;
+export const selectReportingWindowStats = state => state.reportingWindowStats;
 export const selectInitialReporters = state => state.initialReporters;
 export const selectIsLogged = state => state.authStatus.isLogged;
 export const selectIsMobile = state => state.appStatus.isMobile;

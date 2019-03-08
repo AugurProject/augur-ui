@@ -9,18 +9,26 @@ import Styles from "modules/common-elements/notifications.styles";
 
 export interface TemplateProps {
   message: string;
-  market: Market;
+  market: Market | null;
   currentTime: number;
-  reportingWindowEndtime: number | null;
+  reportingWindowEndtime?: number | null;
 }
 
-export const Template = (props: TemplateProps) => {
-  const { description, endTime, reportingState, marketStatus, id } = props.market;
+export interface TemplateBodyProps {
+  market: Market | null;
+  message: string;
+}
+
+const TemplateBody = (props: TemplateBodyProps) => {
+  if (!props.market) {
+    return <span>{props.message}</span>;
+  }
+
+  const { description, id } = props.market;
   const parts: Array<string> = props.message.split(description);
 
-  let body;
   if (parts.length > 1) {
-    body = (
+    return (
       <span>
         {parts[0]}
         <MarketLink id={id}>
@@ -29,14 +37,21 @@ export const Template = (props: TemplateProps) => {
         {parts[1]}
       </span>
     );
-  } else {
-    body = <span>{props.message}</span>;
   }
 
+  return <span>{props.message}</span>;
+}
+
+export const Template = (props: TemplateProps) => {
+  if (!props.market) {
+    return <TemplateBody market={props.market} message={props.message} />;
+  }
+
+  const { marketStatus, endTime, reportingState } = props.market;
   return (
     <React.Fragment>
-      {body}
-      {marketStatus === "reporting" && props.reportingWindowEndtime && (
+      <TemplateBody market={props.market} message={props.message} />
+      {marketStatus === "reporting" && props.reportingWindowEndtime &&
         <div className={Styles.NotificationCard__countdown}>
           <MarketProgress
             reportingState={reportingState}
@@ -44,8 +59,8 @@ export const Template = (props: TemplateProps) => {
             endTime={endTime}
             reportingWindowEndtime={props.reportingWindowEndtime}
           />
-        </div>
-      )}
+      </div>
+      }
     </React.Fragment>
   );
 };
@@ -58,7 +73,7 @@ export const OpenOrdersResolvedMarketsTemplate = (props: TemplateProps) => {
       message={`You have open orders in this resolved market: ${ description } Please review and cancel these orders to release your ETH.`}
       market={props.market}
       currentTime={props.currentTime}
-      reportingWindowEndtime={props.reportingWindowEndtime}
+      reportingWindowEndtime={null}
     />
   );
 }
@@ -71,7 +86,7 @@ export const FinalizeTemplate = (props: TemplateProps) => {
       message={`The following market is resolved and ready to be finalized: ${ description } Please finalize this market.`}
       market={props.market}
       currentTime={props.currentTime}
-      reportingWindowEndtime={props.reportingWindowEndtime}
+      reportingWindowEndtime={null}
     />
   );
 }
@@ -110,6 +125,34 @@ export const SellCompleteSetTemplate = (props: TemplateProps) => {
     <Template
       message={`You currently have ${ numCompleteSets.full } of all outcomes for market: ${ description }. Please sell these complete sets.`}
       market={props.market}
+      currentTime={props.currentTime}
+      reportingWindowEndtime={null}
+    />
+  );
+}
+
+export const UnsignedOrdersTemplate = (props: TemplateProps) => {
+  const  { description } = props.market;
+
+  return (
+    <Template
+      message={`You have unsigned orders pending for the following market’s initial liquidity: ${ description } Please submit or cancel these orders.`}
+      market={props.market}
+      currentTime={props.currentTime}
+      reportingWindowEndtime={null}
+    />
+  );
+}
+
+export const ClaimReportingFeesTemplate = (props: any) => {
+  const { claimReportingFees } = props;
+  const unclaimedREP = claimReportingFees.unclaimedRep.formatted;
+  const unclaimedETH = claimReportingFees.unclaimedEth.formatted;
+
+  return (
+    <Template
+      message={`You have ${unclaimedREP || 0} REP available to claim back from your Reporting Stake and ${unclaimedETH || 0} ETH of available Reporting Fees to collect from markets that have resolved. Please collect your Stake and Fees`}
+      market={null}
       currentTime={props.currentTime}
       reportingWindowEndtime={null}
     />

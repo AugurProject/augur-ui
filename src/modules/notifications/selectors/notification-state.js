@@ -1,8 +1,25 @@
 import { createSelector } from "reselect";
 import { selectMarkets } from "src/modules/markets/selectors/markets-all";
-import { selectLoginAccountAddress } from "src/select-state";
-import { MARKET_CLOSED } from "src/modules/common-elements/constants";
+import {
+  selectLoginAccountAddress,
+  selectReportingWindowStats
+} from "src/select-state";
+
 import { constants } from "services/constants";
+import {
+  NOTIFICATION_TYPES,
+  TYPE_DISPUTE,
+  TYPE_VIEW,
+  RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
+  REPORTING_ENDS_SOON_TITLE,
+  FINALIZE_MARKET_TITLE,
+  SELL_COMPLETE_SETS_TITLE,
+  CLAIM_REPORTING_FEES_TITLE,
+  UNSIGNED_ORDERS_TITLE,
+  MARKET_CLOSED
+} from "modules/common-elements/constants";
+
+const localStorageRef = typeof window !== "undefined" && window.localStorage;
 
 // Get all the users CLOSED markets with OPEN ORDERS
 export const selectResolvedMarketsOpenOrders = createSelector(
@@ -100,6 +117,113 @@ export const selectMarketsInDispute = createSelector(
   }
 );
 
+// Get reportingFees for signed in user
+export const selectUsersReportingFees = createSelector(
+  selectReportingWindowStats,
+  reportingWindowStats => {
+    if (reportingWindowStats && reportingWindowStats.reportingFees) {
+      const { unclaimedEth, unclaimedRep } = reportingWindowStats.reportingFees;
+      if (
+        (unclaimedEth && unclaimedEth.value > 0) ||
+        (unclaimedRep && unclaimedRep.value > 0)
+      ) {
+        return reportingWindowStats.reportingFees;
+      }
+    }
+    return {};
+  }
+);
+
+// Get all unsigned orders from localStorage
+export const selectUnsignedOrders = createSelector(
+  selectMarkets,
+  selectLoginAccountAddress,
+  (markets, userAddress) => {
+    if (localStorageRef && userAddress) {
+      const getUserState = JSON.parse(localStorageRef.getItem(userAddress));
+
+      if (getUserState.pendingLiquidityOrders) {
+        return Object.keys(getUserState.pendingLiquidityOrders)
+          .map(id => markets.find(market => market.id === id))
+          .filter(notification => notification)
+          .map(getRequiredMarketData);
+      }
+    }
+    return [];
+  }
+);
+
+export const selectNotifications = createSelector(
+  selectReportOnMarkets,
+  selectResolvedMarketsOpenOrders,
+  selectFinalizeMarkets,
+  selectCompleteSetPositions,
+  selectMarketsInDispute,
+  selectUsersReportingFees,
+  selectUnsignedOrders,
+  (
+    reportOnMarkets,
+    resolvedMarketsOpenOrder,
+    finalizeMarkets,
+    completeSetPositions,
+    marketsInDispute,
+    claimReportingFees,
+    unsignedOrders
+  ) => {
+    const reportOnMarketsNotifications = generateCards(
+      reportOnMarkets,
+      NOTIFICATION_TYPES.reportOnMarkets
+    );
+    const resolvedMarketsOpenOrderNotifications = generateCards(
+      resolvedMarketsOpenOrder,
+      NOTIFICATION_TYPES.resolvedMarketsOpenOrders
+    );
+    const finalizeMarketsNotifications = generateCards(
+      finalizeMarkets,
+      NOTIFICATION_TYPES.finalizeMarkets
+    );
+    const completeSetPositionsNotifications = generateCards(
+      completeSetPositions,
+      NOTIFICATION_TYPES.completeSetPositions
+    );
+    const marketsInDisputeNotifications = generateCards(
+      marketsInDispute,
+      NOTIFICATION_TYPES.marketsInDispute
+    );
+    const unsignedOrdersNotifications = generateCards(
+      unsignedOrders,
+      NOTIFICATION_TYPES.unsignedOrders
+    );
+
+    const notifications = [
+      ...reportOnMarketsNotifications,
+      ...resolvedMarketsOpenOrderNotifications,
+      ...finalizeMarketsNotifications,
+      ...completeSetPositionsNotifications,
+      ...marketsInDisputeNotifications,
+      ...unsignedOrdersNotifications
+    ];
+
+    if (
+      claimReportingFees &&
+      (claimReportingFees.unclaimedEth && claimReportingFees.unclaimedRep)
+    ) {
+      return notifications.concat({
+        type: NOTIFICATION_TYPES.claimReportingFees,
+        isImportant: false,
+        isNew: false,
+        title: CLAIM_REPORTING_FEES_TITLE,
+        buttonLabel: TYPE_VIEW,
+        market: null,
+        claimReportingFees
+      });
+    }
+
+    return notifications;
+  }
+);
+
+// Return only market data we require for notifications
 const getRequiredMarketData = market => ({
   id: market.id,
   description: market.description,
@@ -109,3 +233,63 @@ const getRequiredMarketData = market => ({
   disputeInfo: market.disputeInfo ? market.disputeInfo : {},
   myPositionsSummary: market.myPositionsSummary ? market.myPositionsSummary : {}
 });
+
+// Build notification objects and include market data
+const generateCards = (markets, type) => {
+  let defaults = {};
+
+  if (type === NOTIFICATION_TYPES.resolvedMarketsOpenOrders) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: false,
+      title: RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  } else if (type === NOTIFICATION_TYPES.reportOnMarkets) {
+    defaults = {
+      type,
+      isImportant: true,
+      isNew: false,
+      title: REPORTING_ENDS_SOON_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  } else if (type === NOTIFICATION_TYPES.finalizeMarkets) {
+    defaults = {
+      type,
+      isImportant: true,
+      isNew: false,
+      title: FINALIZE_MARKET_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  } else if (type === NOTIFICATION_TYPES.marketsInDispute) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: false,
+      title: TYPE_DISPUTE,
+      buttonLabel: TYPE_DISPUTE
+    };
+  } else if (type === NOTIFICATION_TYPES.completeSetPositions) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: false,
+      title: SELL_COMPLETE_SETS_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  } else if (type === NOTIFICATION_TYPES.unsignedOrders) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: false,
+      title: UNSIGNED_ORDERS_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  }
+
+  return markets.map(market => ({
+    market,
+    ...defaults
+  }));
+};

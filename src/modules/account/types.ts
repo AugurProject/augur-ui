@@ -12,11 +12,13 @@ export interface Market {
 }
 
 export interface Notifications {
+  type: string;
   isImportant: boolean;
   isNew: boolean;
   title: string;
   buttonLabel: string;
   buttonAction: Function;
   Template: React.StatelessComponent<any>;
-  market: Market
+  market: Market | null;
+  claimReportingFees?: object;
 }
