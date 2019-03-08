@@ -9,11 +9,7 @@ import store from "src/store";
 
 import { augur } from "services/augurjs";
 
-import { updateModal } from "modules/modal/actions/update-modal";
-import { MODAL_CLAIM_PROCEEDS } from "modules/common-elements/constants";
-
 window.augur = augur;
-window.t = () => store.dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS }));
 console.log(`
   *******************************************
               DEBUGGING INFO

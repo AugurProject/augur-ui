@@ -123,37 +123,41 @@
 }
 
 .ModalMarketActionRow {
+  align-items: center;
+  border-top: 1px solid @color-primary-background;
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
   padding: @size-16 0 @size-20;
-  border-top: 1px solid @color-primary-background;
 
   > section {
-    flex: 1 100%;
-    display: flex;
-    flex-flow: row nowrap;
     align-content: center;
+    display: flex;
+    flex: 1 100%;
+    flex-flow: row nowrap;
     justify-content: stretch;
-    width: 100%;
     margin-bottom: @size-16;
+    width: 100%;
 
     > div {
-      flex: 0 auto;
       align-items: center;
+      flex: 0 0 auto;
       flex-flow: row nowrap;
 
       > span:last-of-type {
         margin-left: @size-8;
       }
     }
-  
+
     > h2 {
+      .text-16;
+
+      color: @color-secondary-text;
       flex: 1 auto;
-      color: @color-secondary-text
+      font-weight: @weight-medium;
+      line-height: @size-20;
     }
   }
-  
+
   > button {
     margin-left: auto;
   }
