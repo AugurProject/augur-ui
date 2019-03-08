@@ -40,10 +40,6 @@
     &:not(:first-child) {
       justify-content: flex-end;
     }
-
-    &:last-child {
-      padding-right: 1rem;
-    }
   }
 }
 
@@ -74,12 +70,6 @@
 
 .Order__single {
   padding: 0.5rem 1.75rem 0.5rem 1.5rem;
-}
-
-ul.Orders__row {
-  > li {
-    padding-left: 0.5rem;
-  }
 }
 
 .Position,
@@ -145,7 +135,6 @@ ul.Orders__row {
 
   > li {
     &:last-child {
-      padding-right: 0;
       position: relative;
 
       > button {
@@ -165,7 +154,7 @@ ul.Orders__row {
   flex: 1;
   flex-direction: row;
   justify-content: flex-end;
-  padding: 0.5rem 4.875rem 0.5rem 0;
+  padding: 0.5rem 4rem 0.5rem 0;
 }
 
 .Position__info {
@@ -193,18 +182,17 @@ ul.Orders__row {
 }
 
 .Order__arrow {
-  margin-left: 0.75rem;
+  margin-left: 1.5rem;
   padding-right: 0;
 }
 
 @media @breakpoint-mobile {
-  .Order { 
+  .Order {
     grid-template-columns: repeat(4, 1fr);
 
     > li {
       &:first-child {
-        grid-column-start: 1;
-        grid-column-end: 5;
+        grid-column: 1 / span 6;
         margin-bottom: 6px;
       }
 
@@ -215,33 +203,62 @@ ul.Orders__row {
     }
   }
 
+  .Order__single {
+    padding-left: 1rem;
+    padding-right: 1.25rem;
+  }
+
+  .Order__group {
+    padding-right: 1.25rem;
+  }
+
   .FilledOrder {
     grid-template-columns: repeat(5, 1fr);
     position: relative;
 
     > li {
       &:first-child {
-         grid-column-start: 1;
-        grid-column-end: 7;
+        grid-column: 1 / span 8;
       }
 
       &:nth-of-type(6) {
+        .mono-9;
+
+        color: @color-shadow-text;
         position: absolute;
         right: 0;
-        font-size: 9px;
-        color: #76737E;
       }
     }
   }
 
   .Position {
-    grid-template-columns: repeat(7, 1fr);
-    
-     > li {
+    grid-template-columns: repeat(6, 1fr);
+
+    > li {
       &:first-child {
-         grid-column-start: 1;
-        grid-column-end: 8;
+        grid-column: 1 / span 8;
+      }
+
+      &:last-child {
+        display: none;
       }
     }
+  }
+
+  .Position__innerSingle {
+    padding: 0.75rem 0;
+  }
+
+  .Position__single {
+    background: fade(@color-primary-alternate, 40%);
+    padding: 0 1rem;
+  }
+
+  .Position_infoContainer {
+    padding: 0 0 0.75rem;
+  }
+
+  .Position__info {
+    max-width: unset;
   }
 }

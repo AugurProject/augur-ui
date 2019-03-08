@@ -64,6 +64,13 @@ export interface LinearPropertyLabelProps {
   accentValue?: boolean;
 }
 
+export interface LinearPropertyLabelPercentProps {
+  label: string;
+  value: string;
+  accentValue?: boolean;
+  numberValue: number;
+}
+
 export interface PillLabelProps {
   label: string;
 }
@@ -278,3 +285,28 @@ export const MovementLabel = (props: MovementLabelProps) => {
 export const PillLabel = (props: PillLabelProps) => (
   <span className={Styles.PillLabel}>{props.label}</span>
 );
+
+export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProps) => (
+  <div className={Styles.LinearPropertyLabelPercent}>
+    <span>{props.label}</span>
+    <DashlineNormal />
+    <span
+      className={
+        (classNames({
+          [Styles.isAccented]: props.accentValue
+        }))
+      }
+    >
+      {props.value} 
+      <MovementLabel
+        showPercent
+        showBrackets
+        showPlusMinus
+        showColors
+        size={"medium"}
+        value={props.numberValue}
+      />
+    </span>
+  </div>
+);
+

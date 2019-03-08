@@ -51,13 +51,10 @@ function filterComp(input, market) {
   return market.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 }
 
-function renderToggleContent(market) {
-  return <MarketPositionsTable market={market} />;
-}
-
 export default class Positions extends Component {
   static propTypes = {
-    markets: PropTypes.array.isRequired
+    markets: PropTypes.array.isRequired,
+    isMobile: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -69,10 +66,17 @@ export default class Positions extends Component {
 
     this.updateRightContentValue = this.updateRightContentValue.bind(this);
     this.renderRightContent = this.renderRightContent.bind(this);
+    this.renderToggleContent = this.renderToggleContent.bind(this);
   }
 
   updateRightContentValue() {
     this.setState({ showCurrentValue: !this.state.showCurrentValue });
+  }
+
+  renderToggleContent(market) {
+    return (
+      <MarketPositionsTable market={market} isMobile={this.props.isMobile} />
+    );
   }
 
   renderRightContent(market) {
@@ -113,7 +117,7 @@ export default class Positions extends Component {
           />
         }
         renderRightContent={this.renderRightContent}
-        renderToggleContent={renderToggleContent}
+        renderToggleContent={this.renderToggleContent}
         pickVariables={[
           "id",
           "description",
