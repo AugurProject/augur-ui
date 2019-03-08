@@ -343,7 +343,9 @@ const assembleMarket = memoize(
           marketOutcomesData,
           market,
           market.userOpenOrders
-        );
+        )
+          .sort((a, b) => b.logIndex - a.logIndex)
+          .sort((a, b) => b.timestamp.timestamp - a.timestamp.timestamp);
         market.recentlyTraded = convertUnixToFormattedDate(
           market.filledOrders[0]
             ? market.filledOrders[0].timestamp.timestamp

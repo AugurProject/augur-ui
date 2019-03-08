@@ -47,8 +47,8 @@ function splitTradesByTimeBucket(priceTimeSeries, timeBuckets) {
   if (!priceTimeSeries || priceTimeSeries.length === 0) return [];
   if (!timeBuckets || timeBuckets.length === 0) return [];
   let timeSeries = priceTimeSeries
-    .sort((a, b) => b.timestamp - a.timestamp)
     .sort((a, b) => b.logIndex - a.logIndex)
+    .sort((a, b) => b.timestamp - a.timestamp)
     .slice();
 
   const series = [];
@@ -82,7 +82,7 @@ function getTradeInTimeRange(timeSeries, startTime, endTime) {
   return {
     trimmedTimeSeries: pullAll(timeSeries, bucket),
     trades: bucket
-      .sort((a, b) => b.timestamp - a.timestamp)
       .sort((a, b) => b.logIndex - a.logIndex)
+      .sort((a, b) => b.timestamp - a.timestamp)
   };
 }
