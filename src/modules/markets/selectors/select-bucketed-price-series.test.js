@@ -116,13 +116,12 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       market1Outcomes
     );
     const expected = {
-      priceTimeSeries: { 0: [], 1: [] },
-      timeBuckets: [1533312112000, 1533312312000]
+      priceTimeSeries: { 0: [], 1: [] }
     };
     expect(actual).toEqual(expected);
   });
 
-  test(`bucketed trades in categorical market`, () => {
+  test(`bucketed trades in categorical market simple`, () => {
     const creationTimestamp = 1533312111000;
     const currentTimestamp = 1533322111000;
     const actual = selectBucketedPriceTimeSeries(
@@ -131,7 +130,6 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       market2Outcomes
     );
     const expected = {
-      timeBuckets: [1533312111000, 1533315711000, 1533319311000, 1533322111000],
       priceTimeSeries: {
         0: [
           {
@@ -152,7 +150,7 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
     expect(actual).toEqual(expected);
   });
 
-  test(`bucketed trades in categorical market`, () => {
+  test(`bucketed trades in categorical market blah blah blah`, () => {
     const creationTimestamp = 1533312111000;
     const currentTimestamp = 1533322111000;
     const actual = selectBucketedPriceTimeSeries(
@@ -161,30 +159,39 @@ describe(`modules/markets/selectors/select-market-outcome-trading-indicator.js`,
       market3Outcomes
     );
     const expected = {
-      timeBuckets: [1533312111000, 1533315711000, 1533319311000, 1533322111000],
       priceTimeSeries: {
-        0: [
+        "0": [
           {
-            price: 0.2,
-            timestamp: 1533315711000,
-            logIndex: 0
+            logIndex: 0,
+            price: 0.1,
+            timestamp: 1533312111000
           },
           {
+            logIndex: 0,
+            price: 0.2,
+            timestamp: 1533315711000
+          },
+          {
+            logIndex: 0,
             price: 0.4,
-            timestamp: 1533319310004,
-            logIndex: 0
+            timestamp: 1533319310004
           }
         ],
-        2: [
+        "2": [
           {
-            price: 0.2,
-            timestamp: 1533315711000,
-            logIndex: 0
+            logIndex: 0,
+            price: 0.1,
+            timestamp: 1533312111000
           },
           {
+            logIndex: 0,
+            price: 0.2,
+            timestamp: 1533315711000
+          },
+          {
+            logIndex: 0,
             price: 0.4,
-            timestamp: 1533319310004,
-            logIndex: 0
+            timestamp: 1533319310004
           }
         ]
       }

@@ -14,7 +14,7 @@ export const selectBucketedPriceTimeSeries = (
 
   const bnCurrentTimestamp = createBigNumber(currentTimestamp);
   const startTime = roundTimestampToPastDayMidnight(creationTime);
-  const bnCreationTimestamp = createBigNumber(startTime);
+  const bnCreationTimestamp = createBigNumber(startTime * 1000);
   const overWeekDuration = bnCurrentTimestamp
     .minus(bnCreationTimestamp)
     .gt(mmSecondsInWeek);
@@ -39,7 +39,6 @@ export const selectBucketedPriceTimeSeries = (
   }, {});
 
   return {
-    timeBuckets,
     priceTimeSeries
   };
 };
