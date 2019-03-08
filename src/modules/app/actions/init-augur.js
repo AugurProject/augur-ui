@@ -268,6 +268,9 @@ export function initAugur(
     );
 
     env["use-websocket-for-augur-node"] = !isGoogleBot();
+    if (!env["use-websocket-for-augur-node"]) {
+      env["ethereum-node"].ws = "";
+    }
 
     const action = updateUseWebsocketToConnectAugurNode(
       env["use-websocket-for-augur-node"]
