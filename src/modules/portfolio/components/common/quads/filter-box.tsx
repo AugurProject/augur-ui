@@ -21,17 +21,13 @@ export interface MarketsByReportingState {
 }
 export interface FilterBoxProps {
   title: string;
-  rows?: ReactNode;
-  bottomBarContent?: ReactNode;
   sortByOptions: Array<NameValuePair>;
   filteredData: Array<Market>;
   data: MarketsByReportingState;
-  updateFilteredData: Function; 
   filterComp: Function;
-  showFilterSearch?: Boolean;
   label: string;
   bottomRightContent?: ReactNode;
-  renderRightContent?: Function;
+  rightContent?: Function;
   dataObj: MarketsObj;
   noToggle?: Boolean;
   renderToggleContent?: Function;
@@ -127,12 +123,8 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   render() {
     const {
       title,
-      bottomBarContent,
-      rows,
       sortByOptions,
-      showFilterSearch,
       data,
-      updateFilteredData,
       filterComp,
       label,
       bottomRightContent,
@@ -150,7 +142,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       <QuadBox
         title={title}
         isMobile={isMobile}
-        showFilterSearch={showFilterSearch}
+        showFilterSearch={true}
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}
         updateDropdown={this.updateSortBy}
