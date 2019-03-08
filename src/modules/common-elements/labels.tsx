@@ -10,6 +10,7 @@ import {
   DashlineNormal,
   DashlineLong
 } from "modules/common/components/dashline/dashline";
+import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
 export interface MarketTypeProps {
   marketType: string;
@@ -73,6 +74,10 @@ export interface LinearPropertyLabelPercentProps {
 
 export interface PillLabelProps {
   label: string;
+}
+
+export interface LinearPropertyLabelViewTransactionProps {
+  transactionHash: string;
 }
 
 export const PropertyLabel = (props: PropertyLabelProps) => (
@@ -301,5 +306,15 @@ export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProp
         value={props.numberValue}
       />
     </span>
+);
+
+export const LinearPropertyViewTransaction = (props: LinearPropertyLabelViewTransactionProps) => (
+    <div className={classNames(Styles.LinearPropertyLabel, Styles.LinearPropertyViewTransaction)}>
+      <LinearPropertyLabel
+        label={"Transaction Details"}
+        value={""}
+      />
+      <ViewTransactionDetailsButton transactionHash={props.transactionHash}/>
+    </div>
 );
 

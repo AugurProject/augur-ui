@@ -86,6 +86,10 @@ const OpenOrder = (props: OpenOrderProps) => {
                     label="Total Cost (Shares)"
                     value={sharesEscrowed || 0}
                   />
+                  <LinearPropertyLabel
+                    label="Date"
+                    value={creationTime}
+                  />
                 </div>
               </div>
               <div className={Styles.OpenOrder__timestamp}>

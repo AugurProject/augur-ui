@@ -117,6 +117,10 @@
 .OpenOrder__labels {
   margin-bottom: 0;
   max-width: 12rem;
+
+  > div:nth-of-type(3) {
+    display: none;
+  }
 }
 
 .OpenOrder__timestamp {
@@ -260,5 +264,35 @@
 
   .Position__info {
     max-width: unset;
+  }
+
+  .OpenOrder__labels {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    max-width: unset;
+
+    > div:nth-of-type(3) {
+      display: flex;
+    }
+  }
+
+  .OpenOrder__timestamp {
+    display: none;
+  }
+
+  .OpenOrder_innerInfoContainer {
+    background-color: fade(@color-primary-alternate, 40%);
+    padding: 0.5rem 1rem 0.5rem 1.5rem;
+  }
+
+  .OpenOrder_innerInfoContainerSingle {
+    padding-left: 1rem;
+  }
+
+  .OpenOrder__info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
   }
 }

@@ -8,9 +8,11 @@ import {
   WithdrawIcon,
   DepositIcon,
   DoubleArrowIcon,
-  RepLogoIcon
+  RepLogoIcon,
+  ViewIcon
 } from "modules/common-elements/icons";
 import classNames from "classnames";
+import EtherscanLink from "modules/common/containers/etherscan-link";
 
 import Styles from "modules/common-elements/buttons.styles";
 
@@ -42,6 +44,10 @@ export interface FavoritesButton extends DefaultButtonProps {
   isFavorite: boolean;
   hideText?: boolean;
   isSmall?: boolean;
+}
+
+export interface ViewTransactionDetailsButtonProps {
+  transactionHash: string;
 }
 
 export const PrimaryButton = (props: DefaultButtonProps) =>
@@ -158,3 +164,13 @@ export const REPFaucetButton = (props: CurrencyActionButtonProps) =>
   >
     {RepLogoIcon}<span>REP Faucet</span>
   </button>;
+
+export const ViewTransactionDetailsButton = (props: ViewTransactionDetailsButtonProps) => 
+  <div className={Styles.ViewTransactionDetailsButton}>
+    { ViewIcon }
+    <EtherscanLink
+      showNonLink
+      txhash={props.transactionHash}
+      label="View"
+    />
+  </div>;

@@ -341,3 +341,26 @@
     }
   }
 }
+
+.ViewTransactionDetailsButton {
+  display: flex;
+  font-size: @size-11;
+
+  > svg {
+    margin-right: 0.25rem;
+  }
+
+  > span > a {
+    color: @color-neutral;
+  }
+
+  &:hover {
+    > svg > path {
+      fill: @color-white;
+    }
+
+    > span > a {
+      color: @color-white;
+    }
+  }
+}
