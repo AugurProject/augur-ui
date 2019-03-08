@@ -1,6 +1,7 @@
 import { createBigNumber } from "utils/create-big-number";
 import { orderBy, last, each, pullAll } from "lodash";
 import { ZERO } from "modules/common-elements/constants";
+import { roundTimestampToPastDayMidnight } from "utils/format-date";
 
 export const selectBucketedPriceTimeSeries = (
   creationTime,
@@ -12,7 +13,8 @@ export const selectBucketedPriceTimeSeries = (
   const mmSecondsInWeek = createBigNumber(7).times(mmSecondsInDay);
 
   const bnCurrentTimestamp = createBigNumber(currentTimestamp);
-  const bnCreationTimestamp = createBigNumber(creationTime);
+  const startTime = roundTimestampToPastDayMidnight(creationTime);
+  const bnCreationTimestamp = createBigNumber(startTime);
   const overWeekDuration = bnCurrentTimestamp
     .minus(bnCreationTimestamp)
     .gt(mmSecondsInWeek);
@@ -48,7 +50,7 @@ function splitTradesByTimeBucket(priceTimeSeries, timeBuckets) {
   let timeSeries = orderBy(
     priceTimeSeries,
     ["timestamp", "logIndex"],
-    ["asc", "asc"]
+    ["asc", "desc"]
   ).slice();
 
   const series = [];
@@ -81,6 +83,6 @@ function getTradeInTimeRange(timeSeries, startTime, endTime) {
 
   return {
     trimmedTimeSeries: pullAll(timeSeries, bucket),
-    trades: orderBy(bucket, ["timestamp", "logIndex"], ["asc", "asc"])
+    trades: orderBy(bucket, ["timestamp", "logIndex"], ["asc", "desc"])
   };
 }
