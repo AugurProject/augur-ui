@@ -20,7 +20,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     marketMax: CustomPropTypes.bigNumber.isRequired,
     marketMin: CustomPropTypes.bigNumber.isRequired,
     volumeType: PropTypes.string.isRequired,
-    containerHeight: PropTypes.number.isRequired
+    containerHeight: PropTypes.number.isRequired,
+    currentTimeInSeconds: PropTypes.number.isRequired
   };
 
   static defaultProps = {};
@@ -235,6 +236,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     containerHeight,
     callback
   ) {
+    const { currentTimeInSeconds } = this.props;
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -254,6 +256,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         volumeType === ETH ? item.volume : item.shareVolume
       ]);
     });
+
+    // add buffer so candlesticks aren't stuck to beginning of chart
+    volume.push([currentTimeInSeconds * 1000, 0]);
 
     options.height = containerHeight;
     if (containerHeight > 0) {

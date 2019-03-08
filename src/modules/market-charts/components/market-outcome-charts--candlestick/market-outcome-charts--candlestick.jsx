@@ -24,7 +24,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     updateSelectedPeriod: PropTypes.func.isRequired,
-    pricePrecision: PropTypes.number.isRequired
+    pricePrecision: PropTypes.number.isRequired,
+    currentTimeInSeconds: PropTypes.number.isRequired
   };
 
   static defaultProps = {
@@ -95,7 +96,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       selectedPeriod,
       updateSelectedPeriod,
       marketMin,
-      marketMax
+      marketMax,
+      currentTimeInSeconds
     } = this.props;
 
     const {
@@ -260,6 +262,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
             marketMax={marketMax}
             volumeType={volumeType}
             containerHeight={containerHeight}
+            currentTimeInSeconds={currentTimeInSeconds}
           />
         </div>
       </section>
