@@ -218,3 +218,10 @@ export function getSecondsMinusMinutesRemaining(
   const minutes = getMinutes * 60;
   return getSecondsRemaining(endUnixTimestamp, startUnixTimestamp) - minutes;
 }
+
+export function roundTimestampToPastDayMidnight(unixTimestamp) {
+  const actual = moment(unixTimestamp)
+    .utc()
+    .startOf("day");
+  return actual.unix();
+}

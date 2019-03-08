@@ -168,8 +168,10 @@ export default class MarketOutcomesChartHighchart extends Component {
     const days = "{value:%b %d}";
     const mmSecondsInHour = createBigNumber(3600 * 1000);
     const mmSecondsInDay = createBigNumber(24).times(mmSecondsInHour);
+    const mmSecondsInWeek = createBigNumber(7).times(mmSecondsInDay);
+    let interval = daysPassed <= 7 ? mmSecondsInHour : mmSecondsInDay;
+    interval = daysPassed >= 60 ? mmSecondsInWeek : interval;
 
-    const interval = daysPassed <= 7 ? mmSecondsInHour : mmSecondsInDay;
     return {
       tickInterval: useTickInterval ? interval.toNumber() : 0,
       labels: {

@@ -16,6 +16,14 @@
   height: 100%;
 }
 
+.Quads__multiRightContent {
+  display: flex;
+
+  > span {
+    margin-right: 1.25rem;
+  }
+}
+
 .Quad__infoParent {
   background-color: fade(@color-primary-alternate, 40%);
   display: flex;
@@ -41,10 +49,12 @@
   max-width: 12rem;
 }
 
-.Quads__multiRightContent {
-  display: flex;
+@media @breakpoint-mobile {
+  .Quad__info {
+    max-width: unset;
+  }
 
-  > span {
-    margin-right: 1.25rem;
+  .Quad__infoContainer {
+    margin: 0 1rem;
   }
 }

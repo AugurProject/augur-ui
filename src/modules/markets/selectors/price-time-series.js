@@ -15,6 +15,7 @@ export const selectPriceTimeSeries = (outcome, marketPriceHistory) => {
     .map(priceTimePoint => ({
       price: priceTimePoint.price,
       amount: priceTimePoint.amount,
-      timestamp: priceTimePoint.timestamp * 1000
+      timestamp: priceTimePoint.timestamp * 1000,
+      logIndex: priceTimePoint.logIndex
     }));
 };

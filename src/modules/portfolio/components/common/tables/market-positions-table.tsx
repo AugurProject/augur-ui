@@ -9,6 +9,7 @@ import Styles from "modules/portfolio/components/common/tables/market-positions-
 
 export interface MarketPositionsTableProps {
   market: Market;
+  isMobile: Boolean;
 }
 
 export interface MarketPositionsTableState {
@@ -27,7 +28,7 @@ export class MarketPositionsTable extends React.Component<MarketPositionsTablePr
 
   render() {
    
-    const { market } = this.props;
+    const { market, isMobile } = this.props;
     const { showPercent } = this.state;
   
     return (
@@ -39,6 +40,7 @@ export class MarketPositionsTable extends React.Component<MarketPositionsTablePr
             isFirst={index === 0}
             position={position}
             showPercent={showPercent}
+            isMobile={isMobile}
           />
         ))}
       </div>
