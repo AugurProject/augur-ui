@@ -8,6 +8,7 @@ import { NameValuePair, Market, Tab} from "modules/portfolio/types";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
+import { isEqual } from "lodash";
 
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
@@ -28,7 +29,6 @@ export interface FilterBoxProps {
   updateFilteredData: Function; 
   filterComp: Function;
   showFilterSearch?: Boolean;
-  bottomTabs?: Boolean;
   label: string;
   bottomRightContent?: ReactNode;
   renderRightContent?: Function;
@@ -55,8 +55,8 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
   };
 
   componentWillUpdate(nextProps) {
-    if (nextProps.data[this.state.selectedTab] !== this.props.data[this.state.selectedTab]) {
-      const filteredData = this.applySearch(this.state.search, nextProps.data[this.state.selectedTab]);
+    if (!isEqual(nextProps.data[this.state.selectedTab], this.props.data[this.state.selectedTab])) {
+      const filteredData = this.applySearch(nextProps.data, this.state.search, nextProps.data[this.state.selectedTab]);
       this.setState({filteredData: filteredData});
     }
   }
@@ -88,7 +88,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     const { data } = this.props;
     let { selectedTab, search } = this.state;
     let tabData =  data[selectedTab];
-    const filteredData = this.applySearch(input, tabData);
+    const filteredData = this.applySearch(data, input, tabData);
 
     this.setState({filteredData: filteredData});
   }
@@ -97,15 +97,15 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     this.setState({selectedTab: tab})
 
     const { data } = this.props;
-    let dataFiltered = this.applySearch(this.state.search, data[tab]);
+    let dataFiltered = this.applySearch(data, this.state.search, data[tab]);
     dataFiltered = this.applySortBy(this.state.sortBy, dataFiltered);
     
     this.setState({filteredData: dataFiltered, tab: tab});
 
   }
 
-  applySearch = (input: string, filteredData: Array<Market>) => {
-    const { filterComp, data } = this.props;
+  applySearch = (data: MarketsByReportingState, input: string, filteredData: Array<Market>) => {
+    const { filterComp } = this.props;
     let { search, sortBy, selectedTab, tabs } = this.state;
 
     filteredData = filteredData.filter(filterComp.bind(this, input));
@@ -131,7 +131,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       rows,
       sortByOptions,
       showFilterSearch,
-      bottomTabs,
       data,
       updateFilteredData,
       filterComp,
@@ -158,10 +157,10 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         label={filteredData.length + " " + label}
         bottomRightBarContent={bottomRightContent && bottomRightContent}
         bottomBarContent={
-          bottomTabs && <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
+          <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
         }
         rows={
-          <div className={Styles.Quad__container}>
+          <div className={Styles.FilterBox__container}>
             {filteredData.length === 0 && (
               <EmptyDisplay title="No available markets" />
             )}

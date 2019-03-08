@@ -56,7 +56,7 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 5;
 
   > li {
     > button {
@@ -76,14 +76,14 @@
 .ModuleTabs__noBorder {
   background-color: unset;
   border: 0;
-}
+  overflow-x: auto;
+  padding: 0 0.5rem;
 
-.ModuleTabs__darkBackground {
-  background-color: #211a32;
-}
-
-span.ModuleTabs__activeDarkBackground {
-  border-bottom: 1px solid white;
+  > li {
+    > button {
+      padding: 0.875rem 0.5rem;
+    }
+  }
 }
 
 .ModuleTabs__activeNoBorder {

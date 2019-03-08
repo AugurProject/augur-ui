@@ -8,7 +8,7 @@ interface OpenOrdersHeaderProps {
 }
 
 const OpenOrdersHeader = (props: OpenOrdersHeaderProps) => (
-  <ul className={classNames(SharedStyles.Order, Styles.DataTableHeader)}>
+  <ul className={classNames(Styles.DataTableHeader)}>
     <li>Outcome</li>
     <li>Type</li>
     <li>Quantity</li>
