@@ -287,26 +287,19 @@ export const PillLabel = (props: PillLabelProps) => (
 );
 
 export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProps) => (
-  <div className={Styles.LinearPropertyLabelPercent}>
-    <span>{props.label}</span>
-    <DashlineNormal />
-    <span
-      className={
-        (classNames({
-          [Styles.isAccented]: props.accentValue
-        }))
-      }
-    >
-      {props.value} 
+    <span className={Styles.LinearPropertyLabelPercent}>
+      <LinearPropertyLabel
+        label={props.label}
+        value={props.value}
+      />
       <MovementLabel
         showPercent
         showBrackets
         showPlusMinus
         showColors
-        size={"medium"}
+        size={sizeTypes.NORMAL}
         value={props.numberValue}
       />
     </span>
-  </div>
 );
 
