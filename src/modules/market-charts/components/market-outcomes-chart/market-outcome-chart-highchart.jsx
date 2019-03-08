@@ -157,10 +157,22 @@ export default class MarketOutcomesChartHighchart extends Component {
   }
 
   onResize = () => {
-    this.setState({
-      containerHeight: this.container.clientHeight,
-      containerWidth: this.container.clientWidth
-    });
+    if (
+      this.container.clientHeight !== this.state.containerHeight ||
+      this.container.clientWidth !== this.state.containerWidth
+    ) {
+      this.setState({
+        containerHeight: this.container.clientHeight,
+        containerWidth: this.container.clientWidth
+      });
+
+      const {
+        bucketedPriceTimeSeries,
+        selectedOutcome,
+        daysPassed
+      } = this.props;
+      this.buidOptions(daysPassed, bucketedPriceTimeSeries, selectedOutcome);
+    }
   };
 
   getxAxisProperties = (daysPassed, useTickInterval) => {
@@ -256,7 +268,7 @@ export default class MarketOutcomesChartHighchart extends Component {
     this.setState({ options: newOptions });
 
     // initial load
-    if (!this.chart) {
+    if (!this.chart || !hasData) {
       this.chart = Highcharts.stockChart(this.container, newOptions);
       return;
     }
