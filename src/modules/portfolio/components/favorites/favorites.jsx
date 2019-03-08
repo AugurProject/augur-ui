@@ -80,7 +80,6 @@ export default class Favorites extends Component {
     return (
       <FilterBox
         title="Watchlist"
-        showFilterSearch
         sortByOptions={sortByOptions}
         markets={markets}
         filterComp={filterComp}

@@ -105,7 +105,6 @@ export default class Positions extends Component {
     return (
       <FilterBox
         title="Positions"
-        showFilterSearch
         sortByOptions={sortByOptions}
         markets={markets}
         filterComp={filterComp}
@@ -117,7 +116,7 @@ export default class Positions extends Component {
           />
         }
         renderRightContent={this.renderRightContent}
-        renderToggleContent={this.renderToggleContent}
+        ToggleContent={this.renderToggleContent}
         pickVariables={[
           "id",
           "description",

@@ -89,7 +89,6 @@ class MyMarkets extends Component {
     return (
       <FilterBox
         title="My Created Markets"
-        showFilterSearch
         sortByOptions={sortByOptions}
         markets={myMarkets}
         filterComp={filterComp}
