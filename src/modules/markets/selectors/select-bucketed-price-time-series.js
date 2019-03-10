@@ -56,7 +56,8 @@ function splitTradesByTimeBucket(priceTimeSeries, timeBuckets) {
     const start = timeBuckets[i];
     const end = timeBuckets[i + 1];
     const result = getTradeInTimeRange(timeSeries, start, end);
-    if (result.trades.length > 0) series.push(head(result.trades));
+    if (result.trades.length > 0)
+      series.push({ ...head(result.trades), timestamp: start });
     timeSeries = result.trimmedTimeSeries;
   }
   return series;
