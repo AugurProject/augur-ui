@@ -23,7 +23,6 @@ import {
   loadMarketsDisputeInfo
 } from "src/modules/markets/actions/load-markets-info";
 import { loadUnclaimedFees } from "modules/markets/actions/market-creator-fees-management";
-import { loadFundingHistory } from "modules/account/actions/load-funding-history";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { startOrderSending } from "modules/orders/actions/liquidity-management";
 import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
@@ -109,7 +108,6 @@ export const handleTokensTransferredLog = log => (dispatch, getState) => {
   const isStoredTransaction = log.from === address || log.to === address;
   if (isStoredTransaction) {
     dispatch(updateAssets());
-    dispatch(loadFundingHistory());
     dispatch(loadReportingWindowBounds());
     handleAlertUpdate(log, dispatch, getState);
   }

@@ -13,10 +13,6 @@ export default function(links) {
       assertLink(links.marketsLink, "marketsLink");
     });
 
-    test("transactionsLink", () => {
-      assertLink(links.transactionsLink, "transactionsLink");
-    });
-
     test("marketLink", () => {
       assertLink(links.marketLink, "marketLink");
     });

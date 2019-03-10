@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 
 import * as constants from "src/modules/common-elements/constants";
 import FilledOrders from "modules/portfolio/components/orders/filled-orders";
-import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { groupBy, keys, differenceBy } from "lodash";
 import { selectMarket } from "modules/markets/selectors/market";
@@ -64,7 +63,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  triggerTransactionsExport: () => dispatch(triggerTransactionsExport()),
   claimTradingProceeds: marketId => dispatch(updateModal({ type: constants.MODAL_CLAIM_TRADING_PROCEEDS, marketId }))
 });
 

@@ -1,6 +1,5 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
-import { addCompleteSetsSoldLogs } from "modules/transactions/actions/add-transactions";
 
 export function loadAccountCompleteSets(options = {}, callback = logError) {
   return (dispatch, getState) => {
@@ -13,7 +12,6 @@ export function loadAccountCompleteSets(options = {}, callback = logError) {
       { account: address, universe: id, ...options },
       (err, completeSetsLogs) => {
         if (err) callback(err);
-        dispatch(addCompleteSetsSoldLogs(completeSetsLogs));
         callback(null, completeSetsLogs);
       }
     );

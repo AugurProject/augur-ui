@@ -1,7 +1,6 @@
 import { parallel } from "async";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { loadCreateMarketHistory } from "modules/markets/actions/load-create-market-history";
-import { loadFundingHistory } from "modules/account/actions/load-funding-history";
 import { loadReportingHistory } from "modules/reports/actions/load-reporting-history";
 import { loadAccountCompleteSets } from "modules/positions/actions/load-account-complete-sets";
 import {
@@ -70,20 +69,6 @@ function loadTransactions(dispatch, getState, options, cb) {
         }
         dispatch(
           loadAccountCompleteSets(allOptions, err => {
-            if (err) next(err);
-            next(null);
-          })
-        );
-      },
-      next => {
-        if (
-          allOptions.transactionType !== ALL &&
-          allOptions.transactionType !== TRANSFER
-        ) {
-          return next(null);
-        }
-        dispatch(
-          loadFundingHistory(options, err => {
             if (err) next(err);
             next(null);
           })

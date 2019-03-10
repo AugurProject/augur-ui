@@ -3,7 +3,6 @@ import {
   loadMarketsInfoIfNotLoaded,
   loadMarketsDisputeInfo
 } from "modules/markets/actions/load-markets-info";
-import { addReportingTransactions } from "modules/transactions/actions/add-transactions";
 import { addMarketsReport } from "modules/reports/actions/update-reports";
 import logError from "utils/log-error";
 
@@ -28,7 +27,6 @@ export const loadReportingHistory = (options = {}, callback = logError) => (
           if (err) return callback(err);
 
           dispatch(loadMarketsDisputeInfo(marketIds));
-          dispatch(addReportingTransactions(reportingHistory));
           dispatch(addMarketsReport(universe.id, marketIds));
           // TODO update user's reporting history
           callback(null, reportingHistory);

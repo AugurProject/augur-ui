@@ -4,7 +4,6 @@ import { forEach } from "lodash";
 import { ungroupBy } from "utils/ungroupBy";
 import { addOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import { updateOrderBook } from "modules/orders/actions/update-order-book";
-import { addOpenOrderTransactions } from "modules/transactions/actions/add-transactions";
 import { OPEN } from "modules/common-elements/constants";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 
@@ -36,7 +35,6 @@ const loadUserAccountOrders = (options = {}, callback = logError) => (
       dispatch(
         loadMarketsInfoIfNotLoaded(marketIds, err => {
           if (err) return callback(err);
-          dispatch(addOpenOrderTransactions(orders));
           forEach(marketIds, marketId => {
             forEach(orders[marketId], (outcomeOrder, outcome) => {
               forEach(outcomeOrder, (orderBook, orderTypeLabel) => {

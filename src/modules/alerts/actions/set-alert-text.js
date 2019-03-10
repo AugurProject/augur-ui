@@ -5,7 +5,7 @@ import { augur } from "services/augurjs";
 import { isEmpty } from "lodash/fp";
 import { selectMarket } from "modules/markets/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
-import { getOutcome } from "modules/transactions/actions/add-transactions";
+import { getOutcome } from "utils/get-outcome";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
 import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
 import { createBigNumber } from "utils/create-big-number";

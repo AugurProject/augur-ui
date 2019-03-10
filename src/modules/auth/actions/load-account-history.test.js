@@ -2,13 +2,11 @@ import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import { loadAccountHistory } from "modules/auth/actions/load-account-history";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
-import { loadFundingHistory } from "modules/account/actions/load-funding-history";
 import { loadCreateMarketHistory } from "modules/markets/actions/load-create-market-history";
 import { loadReportingHistory } from "modules/reports/actions/load-reporting-history";
 import { loadAccountCompleteSets } from "modules/positions/actions/load-account-complete-sets";
 
 jest.mock("modules/positions/actions/load-account-trades");
-jest.mock("modules/account/actions/load-funding-history");
 jest.mock("modules/markets/actions/load-create-market-history");
 jest.mock("modules/reports/actions/load-reporting-history");
 jest.mock("modules/positions/actions/load-account-complete-sets");
@@ -18,7 +16,6 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
   let store;
   const ACTIONS = {
     LOAD_ACCOUNT_TRADES: "LOAD_ACCOUNT_TRADES",
-    LOAD_FUNDING_HISTORY: "LOAD_FUNDING_HISTORY",
     LOAD_CREATE_MARKET_HISTORY: "LOAD_CREATE_MARKET_HISTORY",
     LOAD_REPORTING_HISTORY: "LOAD_REPORTING_HISTORY",
     UPDATE_APP_STATUS: "UPDATE_APP_STATUS",
@@ -30,10 +27,6 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
   beforeEach(() => {
     loadAccountTrades.mockImplementation(() => ({
       type: ACTIONS.LOAD_ACCOUNT_TRADES
-    }));
-
-    loadFundingHistory.mockImplementation(() => ({
-      type: ACTIONS.LOAD_FUNDING_HISTORY
     }));
 
     loadCreateMarketHistory.mockImplementation(() => ({
@@ -73,9 +66,6 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
       },
       {
         type: ACTIONS.LOAD_COMPLETE_SETS
-      },
-      {
-        type: ACTIONS.LOAD_FUNDING_HISTORY
       },
       {
         type: ACTIONS.LOAD_CREATE_MARKET_HISTORY
