@@ -42,7 +42,7 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
   });
 
   test("get actions for running through", () => {
-    store.dispatch(loadAccountHistory(123456, 234567));
+    store.dispatch(loadAccountHistory());
     const actual = store.getActions();
     const expected = [
       {
