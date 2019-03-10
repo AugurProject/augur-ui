@@ -97,11 +97,70 @@
   }
 }
 
+.ProceedsModal {
+  .ModalContainer;
+
+  > section:first-of-type {
+    margin-top: @size-16;
+  }
+
+  > section:last-of-type {
+    border-bottom: 1px solid @color-primary-background;
+    margin-bottom: @size-24;
+  }
+}
+
 .AlertMessage {
   .text-12;
 
   color: @color-outcome-four;
   margin: 0 0 @size-8;
+}
+
+.ShortBreakdown {
+  margin-left: auto;
+  max-width: 15rem;
+}
+
+.ModalMarketActionRow {
+  align-items: center;
+  border-top: 1px solid @color-primary-background;
+  display: flex;
+  flex-flow: column nowrap;
+  padding: @size-16 0 @size-20;
+
+  > section {
+    align-content: center;
+    display: flex;
+    flex: 1 100%;
+    flex-flow: row nowrap;
+    justify-content: stretch;
+    margin-bottom: @size-16;
+    width: 100%;
+
+    > div {
+      align-items: center;
+      flex: 0 0 auto;
+      flex-flow: row nowrap;
+
+      > span:last-of-type {
+        margin-left: @size-8;
+      }
+    }
+
+    > h2 {
+      .text-16;
+
+      color: @color-secondary-text;
+      flex: 1 auto;
+      font-weight: @weight-medium;
+      line-height: @size-20;
+    }
+  }
+
+  > button {
+    margin-left: auto;
+  }
 }
 
 .SelectableModalTable {

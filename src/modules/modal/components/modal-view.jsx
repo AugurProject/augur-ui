@@ -19,6 +19,7 @@ import ModalNetworkConnect from "modules/modal/containers/modal-network-connect"
 import ModalDisclaimer from "modules/modal/containers/modal-disclaimer";
 import ModalGasPrice from "modules/modal/containers/modal-gas-price";
 import ModalClaimTradingProceeds from "modules/modal/containers/modal-claim-trading-proceeds";
+import ModalClaimProceeds from "modules/modal/containers/modal-claim-proceeds";
 import ModalTradingOverlay from "modules/modal/components/modal-trading-overlay";
 
 import * as TYPES from "modules/common-elements/constants";
@@ -52,6 +53,9 @@ export default class ModalView extends Component {
         >
           {modal.type === TYPES.MODAL_SELL_COMPLETE_SETS && (
             <ModalSellCompleteSets {...this.props} />
+          )}
+          {modal.type === TYPES.MODAL_CLAIM_PROCEEDS && (
+            <ModalClaimProceeds {...this.props} />
           )}
           {modal.type === TYPES.MODAL_CLAIM_TRADING_PROCEEDS && (
             <ModalClaimTradingProceeds {...this.props} />
