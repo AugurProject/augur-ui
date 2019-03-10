@@ -27,6 +27,7 @@ export default class ReportingReport extends Component {
     isMarketLoaded: PropTypes.bool.isRequired,
     isOpenReporting: PropTypes.bool.isRequired,
     isDesignatedReporter: PropTypes.bool.isRequired,
+    isDRMarketCreator: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     market: PropTypes.object.isRequired,
@@ -98,16 +99,25 @@ export default class ReportingReport extends Component {
   }
 
   calculateMarketCreationCosts() {
-    const { isOpenReporting, universe } = this.props;
+    const { isOpenReporting, universe, market, isDRMarketCreator } = this.props;
     // TODO: might have short-cut, designatedReportStake is on market from augur-node
     augur.createMarket.getMarketCreationCostBreakdown(
       { universe },
       (err, marketCreationCostBreakdown) => {
         if (err) return console.error(err);
 
-        const repAmount = formatEtherEstimate(
-          marketCreationCostBreakdown.designatedReportNoShowReputationBond
-        );
+        const { designatedReportStake } = market;
+        const {
+          designatedReportNoShowReputationBond
+        } = marketCreationCostBreakdown;
+
+        const neededStake = isDRMarketCreator
+          ? createBigNumber(designatedReportNoShowReputationBond).minus(
+              designatedReportStake
+            )
+          : designatedReportNoShowReputationBond;
+
+        const repAmount = formatEtherEstimate(neededStake);
 
         this.setState({
           stake: isOpenReporting ? "0" : repAmount.formatted

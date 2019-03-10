@@ -61,12 +61,14 @@ const mergeProps = (sP, dP, oP) => {
   const isOpenReporting =
     market.reportingState === constants.REPORTING_STATE.OPEN_REPORTING;
   const isDesignatedReporter = market.designatedReporter === sP.userAddress;
+  const isDRMarketCreator = market.author === market.designatedReporter;
   return {
     ...oP,
     ...sP,
     marketId,
     isOpenReporting,
     isDesignatedReporter,
+    isDRMarketCreator,
     isLogged: sP.isLogged,
     isConnected: sP.isConnected && getValue(sP, "universe.id") != null,
     isMarketLoaded: sP.marketsData[marketId] != null,
