@@ -40,8 +40,7 @@ import {
   INDETERMINATE_OUTCOME_NAME,
   MARKET_OPEN,
   MARKET_REPORTING,
-  MARKET_CLOSED,
-  YES_NO_YES_OUTCOME_NAME
+  MARKET_CLOSED
 } from "modules/common-elements/constants";
 
 import { constants } from "services/constants";

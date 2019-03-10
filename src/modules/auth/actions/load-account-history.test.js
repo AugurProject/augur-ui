@@ -4,12 +4,10 @@ import { loadAccountHistory } from "modules/auth/actions/load-account-history";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { loadCreateMarketHistory } from "modules/markets/actions/load-create-market-history";
 import { loadReportingHistory } from "modules/reports/actions/load-reporting-history";
-import { loadAccountCompleteSets } from "modules/positions/actions/load-account-complete-sets";
 
 jest.mock("modules/positions/actions/load-account-trades");
 jest.mock("modules/markets/actions/load-create-market-history");
 jest.mock("modules/reports/actions/load-reporting-history");
-jest.mock("modules/positions/actions/load-account-complete-sets");
 
 describe(`modules/auth/actions/load-account-history.js`, () => {
   const mockStore = configureMockStore([thunk]);
@@ -19,8 +17,7 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
     LOAD_CREATE_MARKET_HISTORY: "LOAD_CREATE_MARKET_HISTORY",
     LOAD_REPORTING_HISTORY: "LOAD_REPORTING_HISTORY",
     UPDATE_APP_STATUS: "UPDATE_APP_STATUS",
-    CLEAR_TRANSACTION_DATA: "CLEAR_TRANSACTION_DATA",
-    LOAD_COMPLETE_SETS: "LOAD_COMPLETE_SETS"
+    CLEAR_TRANSACTION_DATA: "CLEAR_TRANSACTION_DATA"
   };
   const TRANSACTIONS_LOADING = "transactionsLoading";
 
@@ -35,9 +32,6 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
 
     loadReportingHistory.mockImplementation(() => ({
       type: ACTIONS.LOAD_REPORTING_HISTORY
-    }));
-    loadAccountCompleteSets.mockImplementation(() => ({
-      type: ACTIONS.LOAD_COMPLETE_SETS
     }));
 
     store = mockStore({
@@ -63,9 +57,6 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
       },
       {
         type: ACTIONS.LOAD_ACCOUNT_TRADES
-      },
-      {
-        type: ACTIONS.LOAD_COMPLETE_SETS
       },
       {
         type: ACTIONS.LOAD_CREATE_MARKET_HISTORY

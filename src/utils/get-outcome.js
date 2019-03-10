@@ -1,4 +1,8 @@
-import { YES_NO, CATEGORICAL, YES_NO_YES_OUTCOME_NAME } from "modules/common-elements/constants";
+import {
+  YES_NO,
+  CATEGORICAL,
+  YES_NO_YES_OUTCOME_NAME
+} from "modules/common-elements/constants";
 
 export function getOutcome(
   market,
