@@ -12,8 +12,8 @@ import {
   StaticLabelDropdown
 } from "modules/common-elements/selection";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
-import StylesHeader from "modules/market-charts/components/market-outcome-charts--header/market-outcome-charts--header.styles";
 import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart";
+import { CandlestickOchl } from "modules/market-charts/components/market-outcome-charts--candlestick/candlestick-ochl";
 
 class MarketOutcomeCandlestick extends React.PureComponent {
   static propTypes = {
@@ -109,144 +109,43 @@ class MarketOutcomeCandlestick extends React.PureComponent {
 
     return (
       <section className={Styles.MarketOutcomeCandlestick}>
-        <section>
-          <div className={Styles.MarketOutcomeChartsHeader__chart__interaction}>
-            <div
-              className={classNames({
-                [Styles.MarketOutcomeChartsHeader__selector__mobile]: isMobile
-              })}
-            >
-              <SquareDropdown
-                defaultValue={defaultCandlePeriod}
-                options={PERIODS}
-                onChange={updateSelectedPeriod}
-              />
-            </div>
-            <div
-              className={classNames(
-                StylesHeader.MarketOutcomeChartsHeader__stats,
-                Styles.MarketOutcomeChartsHeader__stats
-              )}
-            >
-              <span
-                className={classNames(
-                  StylesHeader.MarketOutcomeChartsHeader__stat,
-                  Styles.MarketOutcomeChartsHeader__stat,
-                  {
-                    [Styles.empty]: !hoveredPeriod.open
-                  }
-                )}
-              >
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-                >
-                  o:
-                </span>
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-                >
-                  {hoveredPeriod.open ? (
-                    hoveredPeriod.open.toFixed(pricePrecision).toString()
-                  ) : (
-                    <span />
-                  )}
-                </span>
-              </span>
-              <span
-                className={classNames(
-                  StylesHeader.MarketOutcomeChartsHeader__stat,
-                  Styles.MarketOutcomeChartsHeader__stat,
-                  {
-                    [Styles.empty]: !hoveredPeriod.open
-                  }
-                )}
-              >
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-                >
-                  c:
-                </span>
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-                >
-                  {hoveredPeriod.close ? (
-                    hoveredPeriod.close.toFixed(pricePrecision).toString()
-                  ) : (
-                    <span />
-                  )}
-                </span>
-              </span>
-              <span
-                className={classNames(
-                  StylesHeader.MarketOutcomeChartsHeader__stat,
-                  Styles.MarketOutcomeChartsHeader__stat,
-                  {
-                    [Styles.empty]: !hoveredPeriod.open
-                  }
-                )}
-              >
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-                >
-                  h:
-                </span>
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-                >
-                  {hoveredPeriod.high ? (
-                    hoveredPeriod.high.toFixed(pricePrecision).toString()
-                  ) : (
-                    <span />
-                  )}
-                </span>
-              </span>
-              <span
-                className={classNames(
-                  StylesHeader.MarketOutcomeChartsHeader__stat,
-                  Styles.MarketOutcomeChartsHeader__stat,
-                  {
-                    [Styles.empty]: !hoveredPeriod.open
-                  }
-                )}
-              >
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-title`]}
-                >
-                  l:
-                </span>
-                <span
-                  className={Styles[`MarketOutcomeChartsHeader__stat-value`]}
-                >
-                  {hoveredPeriod.low ? (
-                    hoveredPeriod.low.toFixed(pricePrecision).toString()
-                  ) : (
-                    <span />
-                  )}
-                </span>
-              </span>
-            </div>
-            <div
-              className={classNames(
-                Styles.MarketOutcomeChartsHeader__label_container,
-                {
-                  [Styles.MarketOutcomeChartsHeader__label_hover]: !!hoveredPeriod.volume
-                }
-              )}
-            >
-              <StaticLabelDropdown
-                options={VOLUME_ETH_SHARES}
-                staticLabel={
-                  hoveredPeriod.volume
-                    ? `V: ${hoveredPeriod.volume
-                        .toFixed(fixedPrecision)
-                        .toString()}`
-                    : "Show Volume in "
-                }
-                onChange={this.updateVolumeType}
-              />
-            </div>
+        <div className={Styles.MarketOutcomeChartsHeader__chart__interaction}>
+          <div
+            className={classNames({
+              [Styles.MarketOutcomeChartsHeader__selector__mobile]: isMobile
+            })}
+          >
+            <SquareDropdown
+              defaultValue={defaultCandlePeriod}
+              options={PERIODS}
+              onChange={updateSelectedPeriod}
+            />
           </div>
-        </section>
+          <CandlestickOchl
+            hoveredPeriod={hoveredPeriod}
+            pricePrecision={pricePrecision}
+          />
+          <div
+            className={classNames(
+              Styles.MarketOutcomeChartsHeader__label_container,
+              {
+                [Styles.MarketOutcomeChartsHeader__label_hover]: !!hoveredPeriod.volume
+              }
+            )}
+          >
+            <StaticLabelDropdown
+              options={VOLUME_ETH_SHARES}
+              staticLabel={
+                hoveredPeriod.volume
+                  ? `V: ${hoveredPeriod.volume
+                      .toFixed(fixedPrecision)
+                      .toString()}`
+                  : "Show Volume in "
+              }
+              onChange={this.updateVolumeType}
+            />
+          </div>
+        </div>
         <div
           ref={drawContainer => {
             this.drawContainer = drawContainer;
