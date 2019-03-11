@@ -2,7 +2,8 @@ import { createSelector } from "reselect";
 import { selectMarkets } from "src/modules/markets/selectors/markets-all";
 import {
   selectLoginAccountAddress,
-  selectReportingWindowStats
+  selectReportingWindowStats,
+  selectPendingLiquidityOrders
 } from "src/select-state";
 
 import { constants } from "services/constants";
@@ -18,8 +19,6 @@ import {
   UNSIGNED_ORDERS_TITLE,
   MARKET_CLOSED
 } from "modules/common-elements/constants";
-
-const localStorageRef = typeof window !== "undefined" && window.localStorage;
 
 // Get all the users CLOSED markets with OPEN ORDERS
 export const selectResolvedMarketsOpenOrders = createSelector(
@@ -136,18 +135,14 @@ export const selectUsersReportingFees = createSelector(
 
 // Get all unsigned orders from localStorage
 export const selectUnsignedOrders = createSelector(
+  selectPendingLiquidityOrders,
   selectMarkets,
-  selectLoginAccountAddress,
-  (markets, userAddress) => {
-    if (localStorageRef && userAddress) {
-      const getUserState = JSON.parse(localStorageRef.getItem(userAddress));
-
-      if (getUserState.pendingLiquidityOrders) {
-        return Object.keys(getUserState.pendingLiquidityOrders)
-          .map(id => markets.find(market => market.id === id))
-          .filter(notification => notification)
-          .map(getRequiredMarketData);
-      }
+  (pendingLiquidityOrders, markets) => {
+    if (pendingLiquidityOrders) {
+      return Object.keys(pendingLiquidityOrders)
+        .map(id => markets.find(market => market.id === id))
+        .filter(notification => notification)
+        .map(getRequiredMarketData);
     }
     return [];
   }
