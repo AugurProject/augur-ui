@@ -94,6 +94,16 @@
         stroke-width: 0;
       }
 
+      @media @breakpoint-mobile {
+        path.highcharts-crosshair-thin:nth-of-type(1) {
+          stroke-width: 0;
+        }
+
+        path.highcharts-crosshair-thin:nth-of-type(2) {
+          stroke-width: 1;
+        }
+      }
+
       .eth-label {
         font-size: @size-9;
       }
