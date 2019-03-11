@@ -52,7 +52,7 @@ export const loadUniverse = (universeId, history, callback = logError) => (
         })
       );
       dispatch(
-        syncUniverse(err => {
+        syncUniverse(null, err => {
           if (err) return callback(err);
           dispatch(listenToUpdates(history));
           callback(null);
