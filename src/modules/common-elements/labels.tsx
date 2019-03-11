@@ -10,6 +10,7 @@ import {
   DashlineNormal,
   DashlineLong
 } from "modules/common/components/dashline/dashline";
+import { SELL, BOUGHT, SOLD, CLOSED, SHORT } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
 export interface MarketTypeProps {
@@ -74,6 +75,11 @@ export interface LinearPropertyLabelPercentProps {
 
 export interface PillLabelProps {
   label: string;
+}
+
+export interface PositionTypeLabel {
+  type: string;
+  pastTense: boolean;
 }
 
 export interface LinearPropertyLabelViewTransactionProps {
@@ -290,6 +296,20 @@ export const MovementLabel = (props: MovementLabelProps) => {
 export const PillLabel = (props: PillLabelProps) => (
   <span className={Styles.PillLabel}>{props.label}</span>
 );
+
+export const PositionTypeLabel = (props: PositionTypeLabelProps) => {
+  let type = props.type; 
+  if (props.pastTense) type = props.type !== SELL ? BOUGHT : SOLD;
+
+  return (
+    <span className={classNames(Styles.PositionTypeLabel__type, {
+          [Styles.PositionTypeLabel__typeSell]: props.type === SHORT || props.type === SELL,
+          [Styles.PositionTypeLabel__typeClosed]: props.type === CLOSED,
+        })}>
+       {type}
+    </span>
+  );
+}
 
 export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProps) => (
     <span className={Styles.LinearPropertyLabelPercent}>
