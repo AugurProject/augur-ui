@@ -6,6 +6,11 @@
   justify-content: space-around;
   margin: 0.875rem;
   padding: 0 0.5rem;
+
+  @media @breakpoint-mobile {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .MarketOutcomeChartsHeader__label_hover {
