@@ -2,7 +2,6 @@ import {
   invalidateMarketCreation,
   clearNewMarket
 } from "modules/markets/actions/update-new-market";
-import { addNewMarketCreationTransactions } from "modules/transactions/actions/add-transactions";
 import {
   MODAL_ACCOUNT_APPROVAL,
   ZERO
@@ -36,12 +35,6 @@ export function submitNewMarket(newMarket, history, callback = noop) {
           ...formattedNewMarket,
           meta: loginAccount.meta,
           onSent: res => {
-            dispatch(
-              addNewMarketCreationTransactions({
-                ...formattedNewMarket,
-                ...res
-              })
-            );
             history.push(makePath(MY_POSITIONS));
             dispatch(clearNewMarket());
             if (hasOrders) {

@@ -1,5 +1,4 @@
 import { loadAccountHistory } from "modules/auth/actions/load-account-history";
-import { selectTransactions } from "modules/transactions/selectors/transactions";
 
 export const triggerTransactionsExport = () => (dispatch, getState) => {
   const { appStatus } = getState();
@@ -7,7 +6,7 @@ export const triggerTransactionsExport = () => (dispatch, getState) => {
 
   if (!transactionsLoading) {
     // trigger download
-    const transactions = selectTransactions(getState());
+    const transactions = null; // selectTransactions(getState());
     const transactionsDataString =
       "data:text/json;charset=utf-8," +
       encodeURIComponent(JSON.stringify(transactions));

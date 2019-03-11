@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 
 import OpenOrders from "modules/portfolio/components/orders/open-orders";
-import { triggerTransactionsExport } from "modules/transactions/actions/trigger-transactions-export";
 import { updateModal } from "modules/modal/actions/update-modal";
 import getOpenOrders from "modules/orders/selectors/open-orders";
 import * as constants from "src/modules/common-elements/constants";
@@ -36,7 +35,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  triggerTransactionsExport: () => dispatch(triggerTransactionsExport()),
   claimTradingProceeds: marketId =>
     dispatch(
       updateModal({ type: constants.MODAL_CLAIM_TRADING_PROCEEDS, marketId })

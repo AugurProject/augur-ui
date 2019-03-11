@@ -49,7 +49,6 @@ export const selectSelectedMarketIDState = state => state.selectedMarketId;
 export const selectSelectedMarketsSubsetState = state =>
   state.selectedMarketsSubset;
 export const selectSmallestPositionsState = state => state.smallestPositions;
-export const selectTransactionsDataState = state => state.transactionsData;
 export const selectUniverseState = state => state.universe;
 export const selectUrlState = state => state.url;
 export const selectPendingLiquidityOrders = state =>

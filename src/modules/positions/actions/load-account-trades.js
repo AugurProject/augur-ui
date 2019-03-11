@@ -1,6 +1,5 @@
 import { parallel } from "async";
 import { augur } from "services/augurjs";
-import { addTradeTransactions } from "modules/transactions/actions/add-transactions";
 import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
 import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
@@ -63,7 +62,6 @@ export function loadUserTradingHistory(options = {}, callback = logError) {
               dispatch(updateAccountTradeData(trades, marketId));
               dispatch(loadMarketTradingHistory({ marketId }));
             });
-            dispatch(addTradeTransactions(userTradingHistory));
             callback(null, userTradingHistory);
           })
         );

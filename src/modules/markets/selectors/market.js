@@ -40,12 +40,11 @@ import {
   INDETERMINATE_OUTCOME_NAME,
   MARKET_OPEN,
   MARKET_REPORTING,
-  MARKET_CLOSED,
-  YES_NO_YES_OUTCOME_NAME
+  MARKET_CLOSED
 } from "modules/common-elements/constants";
 
 import { constants } from "services/constants";
-
+import { getOutcomeName } from "utils/get-outcome";
 import { placeTrade } from "modules/trades/actions/place-trade";
 
 import store from "src/store";
@@ -472,14 +471,4 @@ export const selectScalarMinimum = market => {
   if (market && market.type === SCALAR)
     scalarMinimum.minPrice = market.minPrice;
   return scalarMinimum;
-};
-
-const getOutcomeName = (market, outcome) => {
-  let outcomeName = market.isYesNo
-    ? YES_NO_YES_OUTCOME_NAME
-    : outcome.description || "N/A";
-  if (market.isScalar) {
-    outcomeName = market.scalarDenomination || "N/A";
-  }
-  return outcomeName;
 };
