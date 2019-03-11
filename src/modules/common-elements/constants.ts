@@ -562,17 +562,25 @@ export const FINALIZE_MARKET_TITLE =
   "Finalize Market";
 export const SELL_COMPLETE_SETS_TITLE =
   "Sell Complete Sets";
+export const UNSIGNED_ORDERS_TITLE =
+  "Unsigned Orders";
+export const CLAIM_REPORTING_FEES_TITLE =
+  "Claim Available Stake and Reporting Fees";
 
 export const OPEN_ORDERS_RESOLVED_MARKET = "resolvedMarketsOpenOrders";
 export const REPORT_ON_MARKET = "reportOnMarkets";
-export const FINALIZE_MARKET = "finalizedMarkets";
+export const FINALIZE_MARKET = "finalizeMarkets";
 export const MARKET_IN_DISPUTE = "marketsInDispute";
-export const SELL_COMPLETE_SET = "sellCompleteSet";
+export const SELL_COMPLETE_SET = "completeSetPositions";
+export const CLAIM_REPORTING_FEES = "claimReportingFees";
+export const UNSIGNED_ORDERS = "unsignedOrders";
 
 export const NOTIFICATION_TYPES = {
   [OPEN_ORDERS_RESOLVED_MARKET]: OPEN_ORDERS_RESOLVED_MARKET,
   [REPORT_ON_MARKET]: REPORT_ON_MARKET,
   [FINALIZE_MARKET]: FINALIZE_MARKET,
   [MARKET_IN_DISPUTE]: MARKET_IN_DISPUTE,
-  [SELL_COMPLETE_SET]: SELL_COMPLETE_SET
+  [SELL_COMPLETE_SET]: SELL_COMPLETE_SET,
+  [CLAIM_REPORTING_FEES]: CLAIM_REPORTING_FEES,
+  [UNSIGNED_ORDERS]: UNSIGNED_ORDERS
 };

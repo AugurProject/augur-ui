@@ -1,31 +1,15 @@
 import { connect } from "react-redux";
 import Notifications from "modules/account/components/notifications/notifications";
-import {
-  selectResolvedMarketsOpenOrders,
-  selectReportOnMarkets,
-  selectFinalizeMarkets,
-  selectMarketsInDispute,
-  selectCompleteSetPositions,
-} from "modules/notifications/selectors/notification-state";
-
+import { selectNotifications } from "modules/notifications/selectors/notification-state";
 import { updateNotifications } from "modules/notifications/actions/update-notifications";
+import { getReportingFees } from "modules/reports/actions/get-reporting-fees";
 
 // TODO create state Interface
 const mapStateToProps = (state: any) => {
-  const resolvedMarketsOpenOrders = selectResolvedMarketsOpenOrders(state);
-  const reportOnMarkets = selectReportOnMarkets(state);
-  const finalizedMarkets = selectFinalizeMarkets(state);
-  const marketsInDispute = selectMarketsInDispute(state);
-  const completeSetPositions = selectCompleteSetPositions(state);
+  const notifications = selectNotifications(state);
 
   return {
-    notifications: state.notifications,
-    resolvedMarketsOpenOrders,
-    reportOnMarkets,
-    finalizedMarkets,
-    completeSetPositions,
-    marketsInDispute,
-    reportingFees: state.reportingWindowStats.reportingFees,
+    notifications,
     currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
     reportingWindowStatsEndTime: state.reportingWindowStats.endTime
   };
@@ -33,6 +17,7 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: Function) => ({
   updateNotifications: (notifications: any) => dispatch(updateNotifications(notifications)),
+  getReportingFees: () => dispatch(getReportingFees())
 });
 
 const NotificationsContainer = connect(
