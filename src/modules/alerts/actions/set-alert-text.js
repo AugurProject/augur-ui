@@ -5,7 +5,7 @@ import { augur } from "services/augurjs";
 import { isEmpty } from "lodash/fp";
 import { selectMarket } from "modules/markets/selectors/market";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
-import { getOutcome } from "utils/get-outcome";
+import { getOutcomeName } from "utils/get-outcome";
 import { formatEther, formatRep, formatShares } from "utils/format-number";
 import calculatePayoutNumeratorsValue from "utils/calculate-payout-numerators-value";
 import { createBigNumber } from "utils/create-big-number";
@@ -115,7 +115,7 @@ export default function setAlertText(alert, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([alert.log.marketId], () => {
               const marketInfo = selectMarket(alert.log.marketId);
-              const outcomeDescription = getOutcome(
+              const outcomeDescription = getOutcomeName(
                 marketInfo,
                 alert.log.outcome
               );
@@ -135,7 +135,7 @@ export default function setAlertText(alert, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([alert.log.marketId], () => {
               const marketInfo = selectMarket(alert.log.marketId);
-              const outcomeDescription = getOutcome(
+              const outcomeDescription = getOutcomeName(
                 marketInfo,
                 alert.log.outcome
               );
@@ -181,7 +181,7 @@ export default function setAlertText(alert, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([alert.params._market], () => {
               const marketInfo = selectMarket(alert.params._market);
-              const outcomeDescription = getOutcome(
+              const outcomeDescription = getOutcomeName(
                 marketInfo,
                 alert.log.outcome
               );
@@ -225,7 +225,7 @@ export default function setAlertText(alert, callback) {
           dispatch(
             loadMarketsInfoIfNotLoaded([alert.params._market], () => {
               const marketInfo = selectMarket(alert.params._market);
-              const outcomeDescription = getOutcome(
+              const outcomeDescription = getOutcomeName(
                 marketInfo,
                 marketInfo.outcomes.find(
                   outcome =>
@@ -287,7 +287,7 @@ export default function setAlertText(alert, callback) {
               const outcomeDescription =
                 outcome === null
                   ? "Market Is Invalid"
-                  : getOutcome(marketInfo, outcome, false);
+                  : getOutcomeName(marketInfo, outcome, false);
               alert.description = `Place ${
                 formatRep(
                   createBigNumber(alert.params._amount).dividedBy(
@@ -317,7 +317,7 @@ export default function setAlertText(alert, callback) {
               const outcomeDescription =
                 outcome === null
                   ? "Market Is Invalid"
-                  : getOutcome(marketInfo, outcome, false);
+                  : getOutcomeName(marketInfo, outcome, false);
               alert.description = `Report "${outcomeDescription}" on "${
                 marketInfo.description
               }"`;
@@ -373,7 +373,11 @@ export default function setAlertText(alert, callback) {
                 alert.params._payoutNumerators,
                 alert.params._invalid
               );
-              const outcomeDescription = getOutcome(marketInfo, outcome, false);
+              const outcomeDescription = getOutcomeName(
+                marketInfo,
+                outcome,
+                false
+              );
               alert.description = `Migrate ${
                 formatRep(
                   createBigNumber(alert.log.value).dividedBy(
@@ -410,7 +414,7 @@ export default function setAlertText(alert, callback) {
             loadMarketsInfoIfNotLoaded([alert.params._market], () => {
               const marketInfo = selectMarket(alert.params._market);
               const orderType = alert.params._direction === "0x0" ? BUY : SELL;
-              const outcomeDescription = getOutcome(
+              const outcomeDescription = getOutcomeName(
                 marketInfo,
                 alert.log.outcome
               );
