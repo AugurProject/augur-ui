@@ -414,10 +414,12 @@ export default function setAlertText(alert, callback) {
             loadMarketsInfoIfNotLoaded([alert.params._market], () => {
               const marketInfo = selectMarket(alert.params._market);
               const orderType = alert.params._direction === "0x0" ? BUY : SELL;
-              const outcomeDescription = getOutcomeName(
-                marketInfo,
-                alert.log.outcome
-              );
+              const outcome =
+                alert.log.outcome !== undefined &&
+                marketInfo.outcomes.find(
+                  o => o.id === alert.log.outcome.toString()
+                );
+              const outcomeDescription = getOutcomeName(marketInfo, outcome);
               alert.description = `Place ${orderType} order for ${
                 formatShares(alert.amount || alert.log.amount).formatted
               } ${formatShares(
