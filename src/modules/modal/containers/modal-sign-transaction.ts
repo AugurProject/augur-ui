@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import ModalSignTransaction from "modules/modal/components/modal-sign-transaction";
+import { MessageModal } from "modules/modal/message-modal";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { MODAL_LEDGER, MODAL_TREZOR } from "modules/common-elements/constants";
 
@@ -27,12 +27,12 @@ const mergeProps = (sP, dP, oP) => {
     buttons: sP.modal.error
       ? [
           {
-            label: "close",
-            action: dP.closeModal
+            text: "Close",
+            action: () => dP.closeModal()
           }
         ]
       : [],
-    closeModal: dP.closeModal
+    closeAction: () => dP.closeModal()
   };
 };
 
@@ -41,5 +41,5 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(ModalSignTransaction)
+  )(MessageModal)
 );

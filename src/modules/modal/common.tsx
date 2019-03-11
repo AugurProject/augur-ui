@@ -63,7 +63,9 @@ interface ModalMarketActionRowsProps {
 export const ModalTitle = (props: ModalTitleProps) => 
   <>
     <h1>{props.title}</h1>
-    <button onClick={() => props.closeAction()}>{XIcon}</button>
+    {props.closeAction &&
+      <button onClick={() => props.closeAction()}>{XIcon}</button>
+    }
   </>;
 
 export const ModalDescription = (props: ModalDescriptionProps) => {
