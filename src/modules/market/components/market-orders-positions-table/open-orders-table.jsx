@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
-import OpenOrdersOrder from "modules/market/components/market-orders-positions-table/open-orders-table--orders";
+import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
 
@@ -18,26 +19,7 @@ const OpenOrdersTable = ({
 }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
-      <ul
-        className={classNames(
-          Styles["MarketOpenOrdersList__table-header"],
-          Styles["MarketOpenOrdersList__order-header"]
-        )}
-      >
-        {!isMobile && <li>Outcome</li>}
-        <li>Type</li>
-        <li>
-          <span>Quantity</span>
-        </li>
-        <li>Price</li>
-        <li>Total Cost (ETH)</li>
-        <li>Total Cost (Shares)</li>
-        {!isMobile && (
-          <li>
-            <span>Action</span>
-          </li>
-        )}
-      </ul>
+      <OpenOrdersHeader extendedView />
       {openOrders.length === 0 &&
         orphanedOrders.length === 0 && (
           <div className={Styles.MarketOpenOrdersList__empty} />
@@ -57,12 +39,10 @@ const OpenOrdersTable = ({
         {(openOrders.length > 0 || orphanedOrders.length > 0) && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {openOrders.map((order, i) => (
-              <OpenOrdersOrder
-                key={i}
-                order={order}
-                isExtendedDisplay={false}
-                isMobile={isMobile}
-                oddNumber={openOrders.length % 2 !== 0}
+              <OpenOrder
+                key={"openOrder_" + i}
+                openOrder={order}
+                extendedView
               />
             ))}
           </div>

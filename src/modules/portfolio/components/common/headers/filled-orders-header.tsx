@@ -5,18 +5,22 @@ import Styles from "modules/portfolio/components/common/headers/data-table-heade
 import SharedStyles from "modules/portfolio/components/common/rows/open-order.styles";
 
 interface FilledOrdersHeaderProps { 
+  extendedView?: boolean;
 }
 
 const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
  <ul
     className={classNames(
       Styles.DataTableHeader,
-      Styles.FilledOrdersHeader
-    )}
+      Styles.FilledOrdersHeader,
+      {
+        [Styles.DataTableHeader__extended]: props.extendedView,
+        [Styles.FilledOrdersHeader__extended]: props.extendedView
+      })}
   >
     <li>Outcome</li>
     <li>Type</li>
-    <li>Quantity</li>
+    {!props.extendedView && <li>Quantity</li>}
     <li>
       Quantity 
       <br />

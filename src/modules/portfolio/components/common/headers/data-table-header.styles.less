@@ -1,6 +1,6 @@
 @import (reference) '~assets/styles/shared';
 
-ul.DataTableHeader {
+.DataTableHeader {
   display: grid;
   flex-direction: row;
   flex-grow: 1;
@@ -32,13 +32,24 @@ ul.DataTableHeader {
   }
 }
 
-ul.FilledOrdersHeader {
+.DataTableHeader__extended {
+  grid-template-columns: repeat(7, 1fr);
+  background: @color-theme-primary;
+  padding-left: 1.5rem;
+  padding-right: 1.75rem;
+}
+
+.FilledOrdersHeader__extended {
+  grid-template-columns: repeat(5, 1fr) 3rem;
+}
+
+.FilledOrdersHeader {
   grid-template-columns: repeat(6, 1fr) 3rem;
   padding-bottom: 0.375rem;
   padding-top: 0.375rem;
 }
 
-ul.PositionHeader {
+.PositionHeader {
   background: fade(@color-primary-alternate, 40%);
   grid-template-columns: repeat(8, 1fr);
   padding-left: 1.5rem;
@@ -56,7 +67,7 @@ ul.PositionHeader {
 }
 
 @media @breakpoint-mobile {
-  ul.DataTableHeader {
+  .DataTableHeader {
     grid-template-columns: repeat(4, 1fr);
     padding-left: 1rem;
     padding-right: 3.2rem;
@@ -72,7 +83,7 @@ ul.PositionHeader {
     }
   }
 
-  ul.FilledOrdersHeader {
+  .FilledOrdersHeader {
     grid-template-columns: repeat(5, 1fr);
 
     > li {
@@ -82,7 +93,7 @@ ul.PositionHeader {
     }
   }
 
-  ul.PositionHeader {
+  .PositionHeader {
     grid-template-columns: repeat(6, 1fr);
     padding: 0.5rem 1.5rem 0.5rem 1rem;
 

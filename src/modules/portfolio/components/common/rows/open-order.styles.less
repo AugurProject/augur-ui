@@ -30,6 +30,11 @@
     &:nth-of-type(2) {
       font-family: @roboto;
       position: relative;
+
+      > span:nth-of-type(2) {
+        left: 0;
+        position: absolute;
+      }
     }
 
     &:not(:first-child) {
@@ -45,6 +50,14 @@
 .Order__innerGroup {
   border-top: 0.0625rem solid @color-primary-background;
   padding: 0.5rem 0;
+}
+
+.Order__innerGroupExtended {
+  border: 0;
+}
+
+.Order__extended {
+  border-bottom: 0.0625rem solid @color-primary-background;
 }
 
 .Order__parentSingle {
@@ -175,6 +188,18 @@
   padding-right: 0;
 }
 
+.Order__border {  
+  border-bottom: 0.0625rem solid @color-primary-background;
+}
+
+.Order__extendedView {
+  grid-template-columns: repeat(7, 1fr);  
+}
+
+.FilledOrder__extendedView {
+  grid-template-columns: repeat(6, 1fr);  
+}
+
 @media @breakpoint-mobile {
   .Order {
     grid-template-columns: repeat(4, 1fr);
@@ -189,9 +214,8 @@
         justify-content: flex-start;
         text-align: left;
 
-        > span {
-          left: 0;
-          position: absolute;
+        > span:nth-of-type(2)  {
+          left: 100%;
         }
       }
     }
