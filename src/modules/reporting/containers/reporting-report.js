@@ -13,6 +13,7 @@ import getValue from "utils/get-value";
 import { submitInitialReport } from "modules/reports/actions/submit-initial-report";
 import { constants } from "services/augurjs";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
+import { getUniverseInitialReporterStake } from "modules/universe/actions/load-universe-info";
 
 const mapStateToProps = state => ({
   isLogged: state.authStatus.isLogged,
@@ -47,7 +48,9 @@ const mapDispatchToProps = dispatch => ({
         returnPath,
         callback
       })
-    )
+    ),
+  getUniverseInitialReporterStake: (universe, cb) =>
+    dispatch(getUniverseInitialReporterStake(universe, cb))
 });
 
 const mergeProps = (sP, dP, oP) => {
@@ -90,7 +93,9 @@ const mergeProps = (sP, dP, oP) => {
         history,
         returnPath,
         callback
-      })
+      }),
+    getUniverseInitialReporterStake: (universe, cb) =>
+      dP.getUniverseInitialReporterStake(universe, cb)
   };
 };
 

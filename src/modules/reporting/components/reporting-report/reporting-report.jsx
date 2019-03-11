@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import { Helmet } from "react-helmet";
-import { augur } from "services/augurjs";
 import { createBigNumber } from "utils/create-big-number";
 
 import {
   formatEtherEstimate,
   formatGasCostToEther,
-  formatRep
+  formatRep,
+  formatAttoEth
 } from "utils/format-number";
 import MarketPreview from "modules/market/containers/market-preview";
 import NullStateMessage from "modules/common/components/null-state-message/null-state-message";
@@ -35,7 +35,8 @@ export default class ReportingReport extends Component {
     submitInitialReport: PropTypes.func.isRequired,
     universe: PropTypes.string.isRequired,
     availableRep: PropTypes.string.isRequired,
-    gasPrice: PropTypes.number.isRequired
+    gasPrice: PropTypes.number.isRequired,
+    getUniverseInitialReporterStake: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -99,31 +100,30 @@ export default class ReportingReport extends Component {
   }
 
   calculateMarketCreationCosts() {
-    const { isOpenReporting, universe, market, isDRMarketCreator } = this.props;
-    // TODO: might have short-cut, designatedReportStake is on market from augur-node
-    augur.createMarket.getMarketCreationCostBreakdown(
-      { universe },
-      (err, marketCreationCostBreakdown) => {
-        if (err) return console.error(err);
+    const {
+      isOpenReporting,
+      universe,
+      market,
+      isDRMarketCreator,
+      getUniverseInitialReporterStake
+    } = this.props;
+    getUniverseInitialReporterStake(universe, (err, initialReporterStake) => {
+      if (err) return console.error(err);
 
-        const { designatedReportStake } = market;
-        const {
-          designatedReportNoShowReputationBond
-        } = marketCreationCostBreakdown;
+      const { designatedReportStake } = market;
+      const initialStake = formatAttoEth(initialReporterStake);
+      const neededStake = isDRMarketCreator
+        ? createBigNumber(initialStake.fullPrecision).minus(
+            designatedReportStake
+          )
+        : initialStake.fullPrecision;
 
-        const neededStake = isDRMarketCreator
-          ? createBigNumber(designatedReportNoShowReputationBond).minus(
-              designatedReportStake
-            )
-          : designatedReportNoShowReputationBond;
+      const repAmount = formatEtherEstimate(neededStake);
 
-        const repAmount = formatEtherEstimate(neededStake);
-
-        this.setState({
-          stake: isOpenReporting ? "0" : repAmount.formatted
-        });
-      }
-    );
+      this.setState({
+        stake: isOpenReporting ? "0" : repAmount.formatted
+      });
+    });
   }
 
   calculateGasEstimates(gasPrice) {
