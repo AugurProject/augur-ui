@@ -36,7 +36,7 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
           <ul key={i} className={Styles.FilledOrdersTable__trade}>
             <li />
             <li>{formatShares(trade.amount).formatted}</li>
-            <li>{trade.timestamp.formattedShortDate}</li>
+            <li>{trade.timestamp.formattedShort}</li>
             <li>
               <ViewTransactionDetailsButton transactionHash={trade.transactionHash}/>
             </li>
@@ -57,7 +57,7 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
             />
             <LinearPropertyLabel
               label="Timestamp"
-              value={trade.timestamp.formattedShortDate}
+              value={trade.timestamp.formattedShort}
             />
             <LinearPropertyViewTransaction
               transactionHash={trade.transactionHash}
