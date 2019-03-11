@@ -6,6 +6,7 @@ import getValue from "utils/get-value";
 
 import { SELL, BOUGHT, SOLD } from "modules/common-elements/constants";
 import { formatEther, formatShares } from "utils/format-number";
+import { PositionTypeLabel } from "modules/common-elements/labels";
 
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { FilledOrderInterface } from "modules/portfolio/types";
@@ -25,7 +26,6 @@ const FilledOrder = (props: FilledOrderProps) => {
     .formatted;
   const orderPrice = formatEther(getValue(filledOrder, "price")).formatted;
   const orderType = getValue(filledOrder, "type");
-  const orderDisplay = orderType !== SELL ? BOUGHT : SOLD;
 
   const originalQuantity = formatShares(getValue(filledOrder, "originalQuantity"))
     .formatted;
@@ -50,9 +50,7 @@ const FilledOrder = (props: FilledOrderProps) => {
               })}
             >
               <li>{filledOrder.outcome}</li>
-              <li className={classNames(Styles.Order__type, {
-                [Styles.Order__typeSell]: orderType === SELL
-              })}>{orderDisplay}</li>
+              <li><PositionTypeLabel type={orderType} pastTense /></li>
               <li>{originalQuantity}</li>
               <li>{orderQuantity}</li>
               <li>{orderPrice}</li>

@@ -30,27 +30,12 @@
     &:nth-of-type(2) {
       font-family: @roboto;
       position: relative;
-
-      > span {
-        left: 0;
-        position: absolute;
-      }
     }
 
     &:not(:first-child) {
       justify-content: flex-end;
     }
   }
-}
-
-.Order__type {
-  color: @color-positive;
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-.Order__typeSell {
-  color: @color-negative2;
 }
 
 .Order__group {
@@ -82,7 +67,7 @@
 }
 
 .FilledOrder {
-  grid-template-columns: repeat(6, 1fr) 2.5rem;
+  grid-template-columns: repeat(6, 1fr) 3rem;
 }
 
 .OpenOrder_infoContainer {
@@ -203,6 +188,11 @@
       &:nth-of-type(2) {
         justify-content: flex-start;
         text-align: left;
+
+        > span {
+          left: 0;
+          position: absolute;
+        }
       }
     }
   }

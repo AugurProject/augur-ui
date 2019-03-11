@@ -4,7 +4,7 @@ import classNames from "classnames";
 
 import { LONG } from "modules/common-elements/constants";
 
-import { LinearPropertyLabelPercent } from "modules/common-elements/labels";
+import { LinearPropertyLabelPercent, PositionTypeLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
 import { MovementLabel } from "modules/common-elements/labels";
@@ -46,9 +46,7 @@ const PositionRow = (props: PositionRowProps) => {
   const rowContent = (
     <ul className={classNames(Styles.Order, Styles.Position)}>
       <li>{position.outcomeName}</li>
-      <li className={classNames(Styles.Order__type, {
-        [Styles.Order__typeSell]: position.type !== LONG
-      })}>{position.type}</li>
+      <li><PositionTypeLabel type={position.type} /></li>
       <li>{position.quantity.formatted}</li>
       <li>{position.purchasePrice.formatted}</li>
       <li>{position.totalCost.formatted}</li>

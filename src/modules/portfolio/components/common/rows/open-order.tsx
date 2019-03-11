@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { LinearPropertyLabel, PendingLabel } from "modules/common-elements/labels";
+import { LinearPropertyLabel, PendingLabel, PositionTypeLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
 import { CancelTextButton } from "modules/common-elements/buttons";
@@ -46,10 +46,8 @@ const OpenOrder = (props: OpenOrderProps) => {
           [Styles.Orders__row]: !isSingle,
         })}>
             <li>{openOrder.description || openOrder.name}</li>
-            <li className={classNames(Styles.Order__type, {
-              [Styles.Order__typeSell]: openOrder.type === SELL
-            })}>
-              {openOrder.type}
+            <li>
+              <PositionTypeLabel type={openOrder.type} />
               {(openOrder.pending || openOrder.pendingOrder) && <span><PendingLabel /></span>}
             </li>
             <li>{openOrder.unmatchedShares && openOrder.unmatchedShares.formatted}</li>
