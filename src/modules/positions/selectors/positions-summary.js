@@ -1,8 +1,7 @@
 import memoize from "memoizee";
 import { createBigNumber } from "utils/create-big-number";
 
-import { LONG, SHORT, ZERO } from "modules/common-elements/constants";
-
+import { LONG, SHORT, ZERO, CLOSED } from "modules/common-elements/constants";
 import { formatEther, formatShares, formatPercent } from "utils/format-number";
 
 export const positionSummary = memoize(
@@ -22,12 +21,18 @@ export const positionSummary = memoize(
       total,
       totalPercent,
       currentValue,
-      frozenFunds
+      totalCost
     } = adjustedPosition;
 
-    // need augur-node to provide realized gains as a percentage.
-    const type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
     const quantity = createBigNumber(netPosition).abs();
+    let type = createBigNumber(netPosition).gte("0") ? LONG : SHORT;
+    if (
+      createBigNumber(quantity).isEqualTo(ZERO) &&
+      createBigNumber(averagePrice).isEqualTo(ZERO)
+    ) {
+      type = CLOSED;
+    }
+
     return {
       marketId,
       outcomeId,
@@ -38,7 +43,7 @@ export const positionSummary = memoize(
       unrealizedNet: formatEther(unrealized),
       realizedPercent: formatPercent(realizedPercent || ZERO),
       unrealizedPercent: formatPercent(unrealizedPercent || ZERO),
-      totalCost: formatEther(frozenFunds),
+      totalCost: formatEther(totalCost),
       totalValue: formatEther(currentValue),
       lastPrice: formatEther(outcome.price),
       totalReturns: formatEther(total || ZERO),

@@ -487,6 +487,7 @@ export const MIN_QUANTITY = createBigNumber("0.00000001");
 // # Positions
 export const LONG = "long";
 export const SHORT = "short";
+export const CLOSED = "closed";
 export const NO_POSITION = "—";
 
 // # Transaction Constants
