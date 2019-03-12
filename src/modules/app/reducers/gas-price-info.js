@@ -2,10 +2,9 @@ import { UPDATE_GAS_INFO } from "modules/app/actions/update-gas-price-info";
 import { RESET_STATE } from "modules/app/actions/reset-state";
 import { formatGasCost } from "utils/format-number";
 import { createBigNumber } from "utils/create-big-number";
-import { augur } from "services/augurjs";
 
 const GWEI_CONVERSION = 1000000000;
-const gasPrice = augur.rpc.getGasPrice();
+const gasPrice = 20000000000; // default value
 const inGwei = createBigNumber(gasPrice).dividedBy(
   createBigNumber(GWEI_CONVERSION)
 );
