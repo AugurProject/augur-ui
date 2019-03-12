@@ -1,0 +1,30 @@
+@import (reference) '~assets/styles/shared';
+
+.BlockStatus {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: @size-18 0 0;
+  text-align: center;
+  width: 100%;
+
+  > div {
+    flex: 1;
+
+    > div:first-of-type {
+      .mono-10;
+
+      color: @color-shadow-text;
+      text-align: center;
+    }
+
+    > div:nth-of-type(2) {
+      .text-14;
+
+      color: @color-secondary-text;
+      margin: @size-4 0 0;
+      text-align: center;
+    }
+  }
+}
