@@ -47,7 +47,7 @@ const MarketOrdersPositionsTable = ({
         />
       </ModulePane>
       <ModulePane label="Positions">
-        <PositionsTable marketId={marketId} />
+        <PositionsTable marketId={marketId} extendedView />
       </ModulePane>
     </ModuleTabs>
   </section>

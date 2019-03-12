@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { selectMarket } from "modules/markets/selectors/market";
-import MarketPositionsList from "modules/market/components/market-positions-table/market-positions-table";
+import { MarketPositionsTable } from "modules/portfolio/components/common/tables/market-positions-table";
 import { updateModal } from "modules/modal/actions/update-modal";
 import {
   MODAL_SELL_COMPLETE_SETS
@@ -10,7 +10,7 @@ import {
 
 
 const mapStateToProps = (state: any, ownProps: any) => {
-  const market = selectMarket(ownProps.marketId);
+  const market = ownProps.market || selectMarket(ownProps.marketId);
   const positions = market.userPositions || [];
 
   return {
@@ -38,7 +38,7 @@ const PositionsTable = withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(MarketPositionsList)
+  )(MarketPositionsTable)
 );
 
 export default PositionsTable;

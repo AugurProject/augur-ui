@@ -2,7 +2,6 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
 import OpenOrder from "modules/portfolio/components/common/rows/open-order";

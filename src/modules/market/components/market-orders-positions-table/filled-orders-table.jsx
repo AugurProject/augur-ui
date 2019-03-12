@@ -2,7 +2,6 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
@@ -20,11 +19,7 @@ const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
         {filledOrders.length > 0 && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {filledOrders.map((order, i) => (
-              <FilledOrder
-                key={i}
-                filledOrder={order}
-                extendedView
-              />
+              <FilledOrder key={i} filledOrder={order} extendedView />
             ))}
           </div>
         )}

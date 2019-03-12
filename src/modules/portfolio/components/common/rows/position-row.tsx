@@ -16,10 +16,11 @@ export interface PositionRowProps {
   isFirst: Boolean,
   showPercent: Boolean;
   isMobile: Boolean;
+  extendedView?: Boolean;
 }
 
 const PositionRow = (props: PositionRowProps) => {
-  const { position, isFirst, showPercent, isMobile } = props;
+  const { position, isFirst, showPercent, isMobile, extendedView } = props;
 
   const expandedContent = (
     <div className={Styles.Position_infoContainer}>
@@ -44,15 +45,15 @@ const PositionRow = (props: PositionRowProps) => {
   );
 
   const rowContent = (
-    <ul className={classNames(Styles.Order, Styles.Position)}>
+    <ul className={classNames(Styles.Order, Styles.Position, {[Styles.Position__extended]: extendedView})}>
       <li>{position.outcomeName}</li>
       <li><PositionTypeLabel type={position.type} /></li>
       <li>{position.quantity.formatted}</li>
       <li>{position.purchasePrice.formatted}</li>
-      <li>{position.totalCost.formatted}</li>
-      <li>{position.totalValue.formatted}</li>
-      <li>{position.lastPrice.formatted}</li>
-      <li>
+      {!extendedView && <li>{position.totalCost.formatted}</li>}
+      {!extendedView && <li>{position.totalValue.formatted}</li>}
+      {!extendedView && <li>{position.lastPrice.formatted}</li>}
+      {!extendedView && <li>
         {showPercent ?
           <MovementLabel
             showPercent
@@ -64,9 +65,19 @@ const PositionRow = (props: PositionRowProps) => {
           />
           : position.totalReturns.formatted
         }
-       </li>
+       </li>}
+      {extendedView && <li>{position.unrealizedNet.formatted}</li>}
+      {extendedView && <li>{position.realizedNet.formatted}</li>}
     </ul>
   );
+
+  if (extendedView) {
+    return (
+      <div className={classNames(Styles.Order__single, Styles.Order__border)}>
+        {rowContent}
+      </div>
+    )
+  }
 
   if (isMobile) {
     return (

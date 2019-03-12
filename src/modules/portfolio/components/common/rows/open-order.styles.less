@@ -70,6 +70,19 @@
   padding: 0.5rem 1.75rem 0.5rem 1.5rem;
 }
 
+.Order__arrow {
+  margin-left: 1.5rem;
+  padding-right: 0;
+}
+
+.Order__border {
+  border-bottom: 0.0625rem solid @color-primary-background;
+}
+
+.Order__extendedView {
+  grid-template-columns: repeat(7, 1fr);
+}
+
 .Position,
 .FilledOrder {
   > li {
@@ -81,6 +94,10 @@
 
 .FilledOrder {
   grid-template-columns: repeat(6, 1fr) 3rem;
+}
+
+.FilledOrder__extendedView {
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .OpenOrder_infoContainer {
@@ -183,21 +200,8 @@
   padding-right: 0;
 }
 
-.Order__arrow {
-  margin-left: 1.5rem;
-  padding-right: 0;
-}
-
-.Order__border {  
-  border-bottom: 0.0625rem solid @color-primary-background;
-}
-
-.Order__extendedView {
-  grid-template-columns: repeat(7, 1fr);  
-}
-
-.FilledOrder__extendedView {
-  grid-template-columns: repeat(6, 1fr);  
+.Position__extended {
+  grid-template-columns: repeat(6, 1fr);
 }
 
 @media @breakpoint-mobile {
@@ -214,7 +218,7 @@
         justify-content: flex-start;
         text-align: left;
 
-        > span:nth-of-type(2)  {
+        > span:nth-of-type(2) {
           left: 100%;
         }
       }
