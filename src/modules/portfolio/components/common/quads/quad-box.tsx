@@ -20,6 +20,7 @@ export interface QuadBoxProps {
   label?: string,
   isMobile?: Boolean,
   bottomRightBarContent?: ReactNode,
+  rightContent?: ReactNode,
 }
 
 const QuadBox = (props: QuadBoxProps) => (
@@ -34,8 +35,8 @@ const QuadBox = (props: QuadBoxProps) => (
           stretchOut={props.isMobile}
         />
        }
-      rightContent={props.showFilterSearch &&
-        <SearchBar onChange={props.onSearchChange} label={props.label}/>
+      rightContent={(props.showFilterSearch &&
+        <SearchBar onChange={props.onSearchChange} label={props.label}/>) || props.rightContent
       }  
       bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent} 

@@ -554,7 +554,7 @@ export const VOLUME_ETH_SHARES = [
 ];
 
 
-// Account Summary - Your Ovewview
+// Account Summary - Your Overview
 export const YOUR_OVERVIEW_TITLE = "Your Overview";
 
 // Account Summary - Augur Status
