@@ -4,11 +4,9 @@ import Styles from "modules/market/components/market-header/market-header-bar.st
 import { FavoritesButton } from "modules/common-elements/buttons";
 import {
   MarketStatusLabel,
-  MarketTypeLabel,
-  ValueLabel
+  MarketTypeLabel
 } from "modules/common-elements/labels";
 import * as constants from "modules/common-elements/constants";
-import { formatEther } from "utils/format-number";
 
 const MarketHeaderBar = ({
   addToFavorites,
@@ -26,14 +24,11 @@ const MarketHeaderBar = ({
       </section>
     );
   }
-  // console.log(formatEther("12391028391283.00000003339230"));
+
   return (
     <section className={Styles.MarketHeaderBar}>
       <MarketStatusLabel marketStatus={marketStatus} />
       <MarketTypeLabel marketType={marketType} />
-      <ValueLabel value={formatEther("0.00000003339230")} showDenomination />
-      <ValueLabel value={formatEther("0.0030")} showDenomination />
-      <ValueLabel value={formatEther("253234.0030")} showDenomination />
       {addToFavorites && (
         <div className={Styles.MarketHeaderBar__watchlist__container}>
           <FavoritesButton

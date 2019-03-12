@@ -4,13 +4,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import ValueDenomination from "modules/common/components/value-denomination/value-denomination";
 import { RightChevron } from "modules/common/components/icons";
 
 import getValue from "utils/get-value";
 import MarketOutcomeTradingIndicator from "modules/market/containers/market-outcome-trading-indicator";
 import Styles from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome.styles";
 import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
+import { ValueLabel } from "modules/common-elements/labels";
 
 const Outcome = ({
   outcome,
@@ -21,13 +21,13 @@ const Outcome = ({
 }) => {
   const outcomeName = getValue(outcome, "name");
 
-  const topBidShares = getValue(outcome, "topBid.shares.formatted");
-  const topAskShares = getValue(outcome, "topAsk.shares.formatted");
+  const topBidShares = getValue(outcome, "topBid.shares");
+  const topAskShares = getValue(outcome, "topAsk.shares");
 
-  const topBidPrice = getValue(outcome, "topBid.price.formatted");
-  const topAskPrice = getValue(outcome, "topAsk.price.formatted");
+  const topBidPrice = getValue(outcome, "topBid.price");
+  const topAskPrice = getValue(outcome, "topAsk.price");
 
-  const lastPrice = getValue(outcome, "lastPrice.formatted");
+  const lastPrice = getValue(outcome, "lastPrice");
   const lastPricePercent = getValue(outcome, "lastPricePercent.full");
 
   return (
@@ -54,19 +54,19 @@ const Outcome = ({
         </div>
       </li>
       <li>
-        <ValueDenomination formatted={topBidShares} />
+        <ValueLabel value={topBidShares} />
       </li>
       <li>
-        <ValueDenomination formatted={topBidPrice} />
+        <ValueLabel value={topBidPrice} />
       </li>
       <li>
-        <ValueDenomination formatted={topAskPrice} />
+        <ValueLabel value={topAskPrice} />
       </li>
       <li>
-        <ValueDenomination formatted={topAskShares} />
+        <ValueLabel value={topAskShares} />
       </li>
       <li style={{ position: "relative" }}>
-        <ValueDenomination formatted={lastPrice} />
+        <ValueLabel value={lastPrice} />
         <MarketOutcomeTradingIndicator
           outcome={outcome}
           location="tradingPage"

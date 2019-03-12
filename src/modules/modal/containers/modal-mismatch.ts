@@ -28,7 +28,8 @@ const mergeProps = (sP, dP, oP) => {
 
   return {
     title: "Network Mismatch",
-    description
+    description,
+    buttons: []
   };
 };
 

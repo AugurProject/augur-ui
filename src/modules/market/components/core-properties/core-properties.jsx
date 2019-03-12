@@ -30,7 +30,7 @@ const CoreProperties = ({ market }) => (
           <h4>Trading Settlement Fee</h4>
           <p>
             The trading settlement fee is a combination of the Market Creator
-            Fee (<b>{getValue(market, "marketCreatorFeeRatePercent.full")}</b>
+            Fee (<b>{getValue(market, "marketCreatorFeeRatePercent.full")}</b>)
             and the Reporting Fee (
             <b>{getValue(market, "reportingFeeRatePercent.full")}</b>)
           </p>

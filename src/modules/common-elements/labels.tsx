@@ -104,6 +104,7 @@ export interface ValueLabelProps {
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
+  if (props.value === null) return (<span />);
   const { fullPrecision, rounded, denomination, value } = props.value;
   const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
   const isGreaterThan1k = value > 1000;
@@ -111,6 +112,7 @@ export const ValueLabel = (props: ValueLabelProps) => {
   const postfix = (longLength || isGreaterThan1k) ? "..." : "";
   const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
   const denominationLabel = props.showDenomination ? `${denomination}` : "";
+
   return (
     <span className={Styles.ValueLabel}>
       <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
@@ -123,7 +125,7 @@ export const ValueLabel = (props: ValueLabelProps) => {
         place="top"
         type="light"
       >
-        {`${fullPrecision} ${denomination}`}
+        {`${fullPrecision} ${denominationLabel}`}
       </ReactTooltip>
     </span>
   );
