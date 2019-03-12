@@ -91,21 +91,21 @@ export default class FilledOrders extends Component {
               />
             )}
             {filteredData.map(
-                data =>
-                  viewByMarkets && marketsObj[data.id] ? (
-                    <OrderMarketRow
-                      key={"filledOrderMarket_" + data.id}
-                      market={marketsObj[data.id]}
-                      filledOrders
-                    />
-                  ) : (
-                    ordersObj[data.id] ? <FilledOrder
-                      key={"filledOrder_" + data.id}
-                      filledOrder={ordersObj[data.id]}
-                      isSingle
-                    /> : null
-                  )
-              )}
+              data =>
+                viewByMarkets && marketsObj[data.id] ? (
+                  <OrderMarketRow
+                    key={"filledOrderMarket_" + data.id}
+                    market={marketsObj[data.id]}
+                    filledOrders
+                  />
+                ) : ordersObj[data.id] ? (
+                  <FilledOrder
+                    key={"filledOrder_" + data.id}
+                    filledOrder={ordersObj[data.id]}
+                    isSingle
+                  />
+                ) : null
+            )}
           </div>
         }
       />
