@@ -553,6 +553,24 @@ export const VOLUME_ETH_SHARES = [
   }
 ];
 
+
+// Account Summary - Your Ovewview
+export const YOUR_OVERVIEW_TITLE = "Your Overview";
+
+// Account Summary - Augur Status
+export const AUGUR_STATUS_TITLE = "Augur Status";
+export const SYNCING_TITLE = "Syncing market Data";
+export const SYNCED = "Synced";
+export const SYNCING = "Syncing";
+export const MANY_BLOCKS_BEHIND = "(many blocks behind)";
+export const SYNC_MESSAGE_SYNCED = "Market Data is up to date.";
+export const SYNC_MESSAGE_SYNCING = "Market data such as price and orderbooks may be out of date.";
+export const SYNC_MESSAGE_BLOCKSBEHIND = "Market data such as price and orderbooks may be considerably out of date.";
+export const SYNC_BENIND = "Blocks behind";
+export const SYNC_PROCESSED = "Blocks Processed";
+export const LEARN_MORE_ABOUT_SYNCING = "Learn more about syncing";
+
+
 // Account Summary - Notifications
 export const NEW = "New";
 export const RESOLVED_MARKETS_OPEN_ORDERS_TITLE =
