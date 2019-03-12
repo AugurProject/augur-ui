@@ -1,1 +1,0 @@
-                        outcomeName={position.outcomeName}
