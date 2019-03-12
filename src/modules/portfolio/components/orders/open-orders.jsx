@@ -92,9 +92,7 @@ export default class OpenOrders extends Component {
                   }
                 />
               ))}
-            {filteredData.length > 0 &&
-              markets.length > 0 &&
-              filteredData.map(
+            {filteredData.map(
                 data =>
                   viewByMarkets && marketsObj[data.id] ? (
                     <OrderMarketRow
