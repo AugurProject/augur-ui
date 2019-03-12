@@ -12,8 +12,7 @@ const mapStateToProps = state => {
   const markets = getPositionsMarkets(positions);
 
   return {
-    markets,
-    isMobile: state.appStatus.isMobile
+    markets
   };
 };
 

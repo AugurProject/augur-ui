@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import FilterBox from "modules/portfolio/containers/filter-box";
 import { CompactButton } from "modules/common-elements/buttons";
 import { MovementLabel } from "modules/common-elements/labels";
-import { MarketPositionsTable } from "modules/portfolio/components/common/tables/market-positions-table";
+import PositionsTable from "modules/market/containers/positions-table";
 
 import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
@@ -51,10 +51,13 @@ function filterComp(input, market) {
   return market.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 }
 
+function renderToggleContent(market) {
+  return <PositionsTable market={market} />;
+}
+
 export default class Positions extends Component {
   static propTypes = {
-    markets: PropTypes.array.isRequired,
-    isMobile: PropTypes.bool.isRequired
+    markets: PropTypes.array.isRequired
   };
 
   constructor(props) {
@@ -66,17 +69,10 @@ export default class Positions extends Component {
 
     this.updateRightContentValue = this.updateRightContentValue.bind(this);
     this.renderRightContent = this.renderRightContent.bind(this);
-    this.renderToggleContent = this.renderToggleContent.bind(this);
   }
 
   updateRightContentValue() {
     this.setState({ showCurrentValue: !this.state.showCurrentValue });
-  }
-
-  renderToggleContent(market) {
-    return (
-      <MarketPositionsTable market={market} isMobile={this.props.isMobile} />
-    );
   }
 
   renderRightContent(market) {
@@ -116,7 +112,7 @@ export default class Positions extends Component {
           />
         }
         renderRightContent={this.renderRightContent}
-        renderToggleContent={this.renderToggleContent}
+        renderToggleContent={renderToggleContent}
         pickVariables={[
           "id",
           "description",
