@@ -1,18 +1,16 @@
-
-/* stylelint-disable declaration-no-important  */
 @import (reference) '~assets/styles/shared';
 
 .Tooltip {
-  background-color: @color-dark-gray !important;
-  border: 1px solid #443b59 !important;
-  border-radius: 3px !important;
+  background-color: @color-primary-alternate;
+  border: 1px solid #443b59;
+  border-radius: @border-radius-default;
   box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.5);
-  color: @color-white !important;
-  font-size: @font-size-small !important;
+  color: @color-secondary-text;
+  font-size: @font-size-small;
   line-height: 0.9375rem;
   max-width: 13.7rem;
-  padding: 1rem 1.5rem !important;
-  pointer-events: auto !important;
+  padding: 1rem 1.5rem;
+  pointer-events: auto;
   text-transform: none;
   white-space: initial;
   z-index: @mask-above;
@@ -31,8 +29,8 @@
   }
 
   &:hover {
-    opacity: 1 !important;
-    visibility: visible !important;
+    opacity: 1;
+    visibility: visible;
   }
 }
 
@@ -46,7 +44,7 @@
 :global {
   .__react_component_tooltip {
     &.show {
-      opacity: 1 !important;
+      opacity: 1;
     }
 
     &.place-top {
@@ -54,29 +52,29 @@
       margin-bottom: -14px;
 
       &::after {
-        border-top-color: @color-dark-gray !important;
-        bottom: -10px !important;
+        border-top-color: @color-dark-gray;
+        bottom: -10px;
       }
 
       &.type-light::after {
         border-left-width: 10px;
         border-right-width: 10px;
-        border-top-width: 10px !important;
+        border-top-width: 10px;
       }
 
       &::before {
         border: 11px solid transparent;
-        border-left: 11px solid transparent !important;
-        border-right: 11px solid transparent !important;
-        border-top-color: #443b59 !important;
-        bottom: -22px !important;
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
+        border-top-color: #443b59;
+        bottom: -22px;
         content: '';
         display: block;
         height: 0;
-        left: 50.5% !important;
+        left: 50.5%;
         margin-left: -10px;
         position: absolute;
-        top: unset !important;
+        top: unset;
         width: 0;
       }
     }
@@ -86,29 +84,29 @@
       margin-top: -14px;
 
       &::after {
-        border-bottom-color: @color-dark-gray !important;
-        top: -10px !important;
+        border-bottom-color: @color-dark-gray;
+        top: -10px;
       }
 
       &.type-light::after {
-        border-bottom-width: 10px !important;
+        border-bottom-width: 10px;
         border-left-width: 10px;
         border-right-width: 10px;
       }
 
       &::before {
         border: 11px solid transparent;
-        border-bottom-color: #443b59 !important;
-        border-left: 11px solid transparent !important;
-        border-right: 11px solid transparent !important;
+        border-bottom-color: #443b59;
+        border-left: 11px solid transparent;
+        border-right: 11px solid transparent;
         bottom: 100%;
         content: '';
         display: block;
         height: 0;
-        left: 50.5% !important;
+        left: 50.5%;
         margin-left: -10px;
         position: absolute;
-        top: unset !important;
+        top: unset;
         width: 0;
       }
     }
@@ -118,29 +116,29 @@
       margin-top: -5px;
 
       &::after {
-        border-left-color: @color-dark-gray !important;
-        right: -10px !important;
+        border-left-color: @color-dark-gray;
+        right: -10px;
       }
 
       &.type-light::after {
         border-bottom-width: 10px;
-        border-left-width: 10px !important;
+        border-left-width: 10px;
         border-top-width: 10px;
       }
 
       &::before {
         border: 11px solid transparent;
-        border-bottom: 11px solid transparent !important;
-        border-left-color: #443b59 !important;
-        border-top: 11px solid transparent !important;
-        bottom: unset !important;
+        border-bottom: 11px solid transparent;
+        border-left-color: #443b59;
+        border-top: 11px solid transparent;
+        bottom: unset;
         content: '';
         display: block;
         height: 0;
-        left: unset !important;
+        left: unset;
         position: absolute;
-        right: -22px !important;
-        top: 50% !important;
+        right: -22px;
+        top: 50%;
         width: 0;
       }
     }
@@ -150,29 +148,29 @@
       margin-top: -5px;
 
       &::after {
-        border-right-color: @color-dark-gray !important;
-        left: -10px !important;
+        border-right-color: @color-dark-gray;
+        left: -10px;
       }
 
       &.type-light::after {
         border-bottom-width: 10px;
-        border-right-width: 10px !important;
+        border-right-width: 10px;
         border-top-width: 10px;
       }
 
       &::before {
         border: 11px solid transparent;
-        border-bottom: 11px solid transparent !important;
-        border-right-color: #443b59 !important;
-        border-top: 11px solid transparent !important;
-        bottom: unset !important;
+        border-bottom: 11px solid transparent;
+        border-right-color: #443b59;
+        border-top: 11px solid transparent;
+        bottom: unset;
         content: '';
         display: block;
         height: 0;
-        left: -22px !important;
+        left: -22px;
         position: absolute;
-        right: unset !important;
-        top: 50% !important;
+        right: unset;
+        top: 50%;
         width: 0;
       }
     }
