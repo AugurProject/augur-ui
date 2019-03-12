@@ -1,12 +1,18 @@
 import { UPDATE_GAS_INFO } from "modules/app/actions/update-gas-price-info";
 import { RESET_STATE } from "modules/app/actions/reset-state";
 import { formatGasCost } from "utils/format-number";
+import { createBigNumber } from "utils/create-big-number";
+import { augur } from "services/augurjs";
 
 const GWEI_CONVERSION = 1000000000;
+const gasPrice = augur.rpc.getGasPrice();
+const inGwei = createBigNumber(gasPrice).dividedBy(
+  createBigNumber(GWEI_CONVERSION)
+);
 const DEFAULT_STATE = {
-  average: formatGasCost(GWEI_CONVERSION).value,
-  fast: formatGasCost(GWEI_CONVERSION).value,
-  safeLow: formatGasCost(GWEI_CONVERSION).value
+  average: formatGasCost(inGwei).value,
+  fast: formatGasCost(inGwei).value,
+  safeLow: formatGasCost(inGwei).value
 };
 
 export default function(gasPriceInfo = DEFAULT_STATE, { type, data }) {
