@@ -16,7 +16,7 @@ const MarketOutcomeChartsHeaderOrders = ({
   hide
 }) => (
   <section className={Styles.MarketOutcomeChartsHeader__orders}>
-    {isMobile || (
+    {!isMobile && (
       <button
         className={classNames(
           StylesHeader.MarketOutcomesList__heading,
