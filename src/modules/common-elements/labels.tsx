@@ -7,9 +7,9 @@ import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
-  DashlineNormal,
-  DashlineLong
+  DashlineNormal
 } from "modules/common/components/dashline/dashline";
+import { createBigNumber } from "utils/create-big-number";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
 export interface MarketTypeProps {
@@ -79,6 +79,49 @@ export interface PillLabelProps {
 export interface LinearPropertyLabelViewTransactionProps {
   transactionHash: string;
 }
+
+export interface FormattedValue {
+  value: number;
+  formattedValue: number;
+  formatted: string;
+  roundedValue: number;
+  rounded: string;
+  minimized: string;
+  denomination: string;
+  full: string;
+  fullPrecision: string;
+}
+
+export interface ValueLabelProps {
+  value: FormattedValue;
+  showDenomination: boolean;
+}
+
+export const ValueLabel = (props: ValueLabelProps) => {
+  const { fullPrecision, rounded, denomination, value } = props.value;
+  const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
+  const isGreaterThan1k = value > 1000;
+  const longLength = fullPrecision.length > rounded.length;
+  const postfix = (longLength || isGreaterThan1k) ? "..." : "";
+  const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
+  const denominationLabel = props.showDenomination ? `${denomination}` : "";
+  return (
+    <span className={Styles.ValueLabel}>
+      <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
+        {`${frontFacingLabel}${postfix}${denominationLabel}`}
+      </label>
+      <ReactTooltip
+        id={`valueLabel-${fullPrecision}-${denomination}`}
+        className={TooltipStyles.Tooltip}
+        effect="float"
+        place="top"
+        type="light"
+      >
+        {`${fullPrecision} ${denomination}`}
+      </ReactTooltip>
+    </span>
+  );
+};
 
 export const PropertyLabel = (props: PropertyLabelProps) => (
   <div className={Styles.PropertyLabel}>
