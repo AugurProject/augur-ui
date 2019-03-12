@@ -600,7 +600,6 @@ export default class AppView extends Component {
                   openSubMenu={this.openSubMenu}
                 />
               )}
-              {!InnerNav && <div className="no-nav-placehold" />}
               <section
                 className={Styles.Main__content}
                 style={{
