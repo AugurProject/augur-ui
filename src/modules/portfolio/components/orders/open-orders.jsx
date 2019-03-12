@@ -96,17 +96,17 @@ export default class OpenOrders extends Component {
               markets.length > 0 &&
               filteredData.map(
                 data =>
-                  viewByMarkets ? (
+                  viewByMarkets && marketsObj[data.id] ? (
                     <OrderMarketRow
                       key={"openOrderMarket_" + data.id}
                       market={marketsObj[data.id]}
                     />
                   ) : (
-                    <OpenOrder
+                    ordersObj[data.id] ? <OpenOrder
                       key={"openOrder_" + data.id}
                       openOrder={ordersObj[data.id]}
                       isSingle
-                    />
+                    /> : null
                   )
               )}
           </div>
