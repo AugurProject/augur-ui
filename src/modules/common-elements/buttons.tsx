@@ -40,7 +40,7 @@ export interface OrderButtonProps extends DefaultButtonProps {
   type: constants.BUY | constants.SELL;
 }
 
-export interface FavoritesButton extends DefaultButtonProps {
+export interface FavoritesButtonProps extends DefaultButtonProps {
   isFavorite: boolean;
   hideText?: boolean;
   isSmall?: boolean;
@@ -80,7 +80,7 @@ export const OrderButton = (props: OrderButtonProps) =>
     {props.type === constants.BUY ? "Place Buy Order" : "Place Sell Order"}
   </button>;
 
-export const FavoritesButton = (props: FavoritesButton) =>
+export const FavoritesButton = (props: FavoritesButtonProps) =>
   <button
     onClick={(e) => props.action(e)}
     className={classNames(Styles.FavoriteButton, {[Styles.FavoriteButton_Favorite]: props.isFavorite, [Styles.FavoriteButton__small]: props.isSmall })}
@@ -165,7 +165,7 @@ export const REPFaucetButton = (props: CurrencyActionButtonProps) =>
     {RepLogoIcon}<span>REP Faucet</span>
   </button>;
 
-export const ViewTransactionDetailsButton = (props: ViewTransactionDetailsButtonProps) => 
+export const ViewTransactionDetailsButton = (props: ViewTransactionDetailsButtonProps) =>
   <div className={Styles.ViewTransactionDetailsButton}>
     { ViewIcon }
     <EtherscanLink

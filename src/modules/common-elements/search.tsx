@@ -14,9 +14,6 @@ export interface SearchBarState {
 }
 
 export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  refContainer: any = null;
-  refSearch: any = null;
-
   state: SearchBarState = {
     isFocused: false
   };
@@ -28,6 +25,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   componentWillUnmount() {
     window.removeEventListener("click", this.handleWindowOnClick);
   }
+
+  refContainer: any = null;
+  refSearch: any = null;
 
   handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
     if (this.refContainer && !this.refContainer.contains(event.target)) {

@@ -45,7 +45,7 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
               [Styles.ToggleRow__rowActive]: open,
             }
           )
-        } onClick={this.toggleRow}>
+        } onClick={this.toggleRow} role="button" tabIndex={0}>
           <div className={classNames(Styles.ToggleRow__rowContainer, innerClassName)}>
             <div className={Styles.ToggleRow__rowContent}>
               {rowContent}

@@ -1,3 +1,5 @@
+/* eslint react/no-array-index-key: 0 */
+
 import React from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";

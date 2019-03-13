@@ -24,15 +24,9 @@ export interface BlockInfoDataState {
   dropdownOpen: boolean;
 }
 
-interface Window {
-  addEventListener: Function;
-  removeEventListener: Function;
-}
-
-declare var window: Window;
+declare var window: any;
 
 class BlockInfoData extends Component<BlockInfoDataProps, BlockInfoDataState> {
-  [x: string]: any;
   constructor(props: BlockInfoDataProps) {
     super(props);
 
@@ -93,6 +87,7 @@ class BlockInfoData extends Component<BlockInfoDataProps, BlockInfoDataState> {
         <div
           className={Styles.BlockInfoData__container}
           role="button"
+          tabIndex={0}
           onClick={() => this.toggleDropdown()}
         >
           <div className={Styles.BlockInfoData__title}>Blocks Behind</div>

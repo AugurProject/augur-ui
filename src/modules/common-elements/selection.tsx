@@ -39,8 +39,6 @@ interface PillSelectionState {
 }
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
-  refDropdown: any = null;
-
   state: DropdownState = {
     selected: this.props.defaultValue
       ? find(this.props.options, { value: this.props.defaultValue })
@@ -52,10 +50,6 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
     window.addEventListener("click", this.handleWindowOnClick);
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("click", this.handleWindowOnClick);
-  }
-
   componentWillUpdate(nextProps: DropdownProps) {
     if (nextProps.defaultValue !== this.props.defaultValue) {
       this.dropdownSelect(
@@ -63,6 +57,12 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
       );
     }
   }
+
+  componentWillUnmount() {
+    window.removeEventListener("click", this.handleWindowOnClick);
+  }
+
+  refDropdown: any = null;
 
   dropdownSelect = (selected: NameValuePair) => {
     const { onChange } = this.props;
@@ -94,6 +94,8 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
+        role="button"
+        tabIndex={0}
         onClick={this.toggleList}
       >
         <button className={Styles.Dropdown__label}>
@@ -151,6 +153,8 @@ export class StaticLabelDropdown extends Dropdown {
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
+        role="button"
+        tabIndex={0}
         onClick={this.toggleList}
       >
         <button className={Styles.Dropdown__label}>
