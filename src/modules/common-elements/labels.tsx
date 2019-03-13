@@ -13,6 +13,12 @@ import { createBigNumber } from "utils/create-big-number";
 import { SELL, BOUGHT, SOLD, CLOSED, SHORT } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
+enum SizeTypes {
+  SMALL = constants.SMALL,
+  NORMAL = constants.NORMAL,
+  LARGE = constants.LARGE
+}
+
 export interface MarketTypeProps {
   marketType: string;
 }
@@ -23,15 +29,9 @@ export interface MarketStatusProps {
   alternate?: boolean;
 }
 
-export enum sizeTypes {
-  SMALL = constants.SMALL,
-  NORMAL = constants.NORMAL,
-  LARGE = constants.LARGE
-}
-
 export interface MovementLabelProps {
   value: number;
-  size: sizeTypes;
+  size: SizeTypes;
   styles?: object;
   showColors?: boolean;
   showIcon?: boolean;
@@ -42,12 +42,12 @@ export interface MovementLabelProps {
 
 export interface MovementIconProps {
   value: number;
-  size: sizeTypes;
+  size: SizeTypes;
 }
 
 export interface MovementTextProps {
   value: number;
-  size: sizeTypes;
+  size: SizeTypes;
   showColors: boolean;
   showBrackets: boolean;
   showPercent: boolean;
