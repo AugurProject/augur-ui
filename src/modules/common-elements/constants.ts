@@ -603,3 +603,20 @@ export const NOTIFICATION_TYPES = {
   [CLAIM_REPORTING_FEES]: CLAIM_REPORTING_FEES,
   [UNSIGNED_ORDERS]: UNSIGNED_ORDERS
 };
+
+// Account View - Timeframe selection options 
+// # Timeframe readable names
+export const TIMEFRAMES = {
+  HOUR: "24 hr",
+  DAY: "1 Week",
+  WEEK: "1 Month",
+  ALL: "All Time",
+};
+
+export const TIMEFRAME_OPTIONS = [
+  {label: TIMEFRAMES.HOUR, id: 0}, 
+  {label: TIMEFRAMES.DAY, id: 1}, 
+  {label: TIMEFRAMES.WEEK, id: 2}, 
+  {label: TIMEFRAMES.ALL, id: 3}
+];
+

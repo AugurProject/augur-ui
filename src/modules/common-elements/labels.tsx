@@ -64,6 +64,7 @@ export interface LinearPropertyLabelProps {
   label: string;
   value: string;
   accentValue?: boolean;
+  large?: boolean;
 }
 
 export interface LinearPropertyLabelPercentProps {
@@ -116,7 +117,7 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 );
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
-  <div className={Styles.LinearPropertyLabel}>
+  <div className={classNames(Styles.LinearPropertyLabel, {[Styles.large]: props.large})}>
     <span>{props.label}</span>
     <DashlineNormal />
     <span
