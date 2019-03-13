@@ -9,7 +9,9 @@ import { formatEther } from "utils/format-number";
 
 const mapStateToProps = (state: any) => {
   const market = selectMarket(state.modal.marketId);
-  const numCompleteSets = createBigNumber(state.modal.numCompleteSets.formatted);
+  const numCompleteSets = createBigNumber(
+    state.modal.numCompleteSets.formatted
+  );
   const min = market.minPrice;
   const max = market.maxPrice;
   const settlementFeePercent = createBigNumber(market.settlementFee);
@@ -25,7 +27,7 @@ const mapStateToProps = (state: any) => {
       netETH: formatEther(netETH)
     },
     marketTitle: market.description
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch: Function) => ({
@@ -37,7 +39,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
 const mergeProps = (sP: any, dP: any, oP: any) => ({
   title: "Sell Complete Sets",
   alertMessage: {
-    preText: "You currently have", 
+    preText: "You currently have",
     boldText: sP.modal.numCompleteSets.full,
     postText: "of all outcomes in the market:"
   },
@@ -57,7 +59,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => ({
     {
       text: "Sell Complete Sets",
       action: () => {
-        dP.sellCompleteSets(oP.modal.marketId, oP.modal.numCompleteSets, oP.modal.cb);
+        dP.sellCompleteSets(
+          oP.modal.marketId,
+          oP.modal.numCompleteSets,
+          oP.modal.cb
+        );
         dP.closeModal();
       }
     }

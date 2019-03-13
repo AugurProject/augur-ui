@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface DisputeInfo {
   disputeRound: number;
 }
@@ -18,7 +20,7 @@ export interface Notifications {
   title: string;
   buttonLabel: string;
   buttonAction: Function;
-  Template: React.StatelessComponent<any>;
+  Template: ReactNode;
   market: Market | null;
-  claimReportingFees?: object;
+  claimReportingFees?: Object;
 }

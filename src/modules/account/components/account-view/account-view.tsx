@@ -9,7 +9,6 @@ import Favorites from "modules/portfolio/containers/favorites";
 import OpenMarkets from "modules/account/containers/open-markets";
 import AccountOverview from "modules/account/containers/account-overview";
 
-
 import Styles from "modules/account/components/account-view/account-view.styles";
 
 const AccountView = () => (

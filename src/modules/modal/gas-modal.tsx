@@ -1,6 +1,11 @@
 import React from "react";
 
-import { ModalTitle, ModalButtonsRow, ModalSelectableTable, ModalAlertMessage } from "modules/modal/common";
+import {
+  ModalTitle,
+  ModalButtonsRow,
+  ModalSelectableTable,
+  ModalAlertMessage
+} from "modules/modal/common";
 
 import Styles from "modules/modal/modal.styles";
 
@@ -12,7 +17,7 @@ interface GasModalProps {
   fast: number;
   blockNumber: number;
   userDefinedGasPrice?: number;
-};
+}
 
 interface GasModalState {
   amount: number;
@@ -22,7 +27,9 @@ interface GasModalState {
 export class GasModal extends React.Component<GasModalProps, GasModalState> {
   state: GasModalState = {
     amount: this.props.userDefinedGasPrice || this.props.average,
-    showLowAlert: (this.props.userDefinedGasPrice || this.props.average) < this.props.safeLow
+    showLowAlert:
+      (this.props.userDefinedGasPrice || this.props.average) <
+      this.props.safeLow
   };
 
   updateAmount(amount: number) {
@@ -36,11 +43,13 @@ export class GasModal extends React.Component<GasModalProps, GasModalState> {
     const { amount, showLowAlert } = this.state;
     const disabled = !amount || amount <= 0;
 
-    const buttons = [{
-      text: "Save",
-      action: () => saveAction(amount),
-      disabled
-    }];
+    const buttons = [
+      {
+        text: "Save",
+        action: () => saveAction(amount),
+        disabled
+      }
+    ];
     const tableData = [
       {
         columns: ["Speed", "Gas Price (gwei)"],
@@ -48,15 +57,18 @@ export class GasModal extends React.Component<GasModalProps, GasModalState> {
       },
       {
         columns: ["Slow (<30m)", safeLow],
-        action: () => { console.log("slow clicked"); this.updateAmount(safeLow);},
+        action: () => {
+          console.log("slow clicked");
+          this.updateAmount(safeLow);
+        }
       },
       {
         columns: ["Standard (<5m)", average],
-        action: () => this.updateAmount(average),
+        action: () => this.updateAmount(average)
       },
       {
         columns: ["Fast (<2m)", fast],
-        action: () => this.updateAmount(fast),
+        action: () => this.updateAmount(fast)
       }
     ];
 
@@ -64,9 +76,7 @@ export class GasModal extends React.Component<GasModalProps, GasModalState> {
       <div className={Styles.GasModal}>
         <ModalTitle title="Gas Price (gwei)" closeAction={closeAction} />
         {showLowAlert && (
-          <ModalAlertMessage
-            preText="Transactions are unlikely to be processed at your current gas price."
-          />
+          <ModalAlertMessage preText="Transactions are unlikely to be processed at your current gas price." />
         )}
         <input
           id="price"

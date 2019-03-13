@@ -1,3 +1,5 @@
+/* eslint react/no-array-index-key: 0 */
+
 import React from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
@@ -18,7 +20,8 @@ export interface NotificationBoxProps {
 const NotificationBox = (props: NotificationBoxProps) => {
   const { currentTime, reportingWindowEndtime, notifications } = props;
   const notificationCount = notifications.length;
-  const newNotificationCount = notifications.filter((item: any) => item.isNew).length;
+  const newNotificationCount = notifications.filter((item: any) => item.isNew)
+    .length;
 
   const rows = notifications.map((notification: Notifications, idx: number) => {
     const {
@@ -32,7 +35,12 @@ const NotificationBox = (props: NotificationBoxProps) => {
       claimReportingFees
     } = notification;
 
-    const templateProps = { claimReportingFees, market, currentTime, reportingWindowEndtime };
+    const templateProps = {
+      claimReportingFees,
+      market,
+      currentTime,
+      reportingWindowEndtime
+    };
     const notificationCardProps = {
       isImportant,
       isNew,

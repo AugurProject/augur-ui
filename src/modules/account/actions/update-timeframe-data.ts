@@ -11,7 +11,7 @@ const timeframeData = {
     successfulDisputes: 9,
     numberOfTrades: 50,
     marketsCreated: 3,
-    redeemedPositions: 5,
+    redeemedPositions: 5
   },
   [constants.TIMEFRAMES.WEEK]: {
     positions: 5,
@@ -19,7 +19,7 @@ const timeframeData = {
     successfulDisputes: 19,
     numberOfTrades: 67,
     marketsCreated: 3,
-    redeemedPositions: 6,
+    redeemedPositions: 6
   },
   [constants.TIMEFRAMES.MONTH]: {
     positions: 24,
@@ -27,7 +27,7 @@ const timeframeData = {
     successfulDisputes: 20,
     numberOfTrades: 100,
     marketsCreated: 9,
-    redeemedPositions: 10,
+    redeemedPositions: 10
   },
   [constants.TIMEFRAMES.ALL]: {
     positions: 100,
@@ -35,8 +35,8 @@ const timeframeData = {
     successfulDisputes: 90,
     numberOfTrades: 372,
     marketsCreated: 39,
-    redeemedPositions: 51,
-  },
+    redeemedPositions: 51
+  }
 };
 
 export const updateTimeframeData = (options = {}, callback = logError) => (
@@ -46,11 +46,11 @@ export const updateTimeframeData = (options = {}, callback = logError) => (
   const { universe, loginAccount } = getState();
   if (loginAccount.address == null || universe.id == null)
     return callback(null);
- 
-   // todo: add augur-node call here
+
+  // todo: add augur-node call here
   dispatch(
     updateLoginAccount({
-      timeframeData: timeframeData,
+      timeframeData
     })
   );
 };
