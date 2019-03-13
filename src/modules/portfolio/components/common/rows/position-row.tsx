@@ -1,10 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 
-import { LinearPropertyLabelPercent, PositionTypeLabel } from "modules/common-elements/labels";
+import { LinearPropertyLabelPercent, PositionTypeLabel, MovementLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
-import { MovementLabel } from "modules/common-elements/labels";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
