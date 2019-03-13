@@ -151,7 +151,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         bottomBarContent={
           <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
         }
-        rows={
+        content={
           <div className={Styles.FilterBox__container}>
             {filteredData.length === 0 && (
               <EmptyDisplay title="No available markets" />

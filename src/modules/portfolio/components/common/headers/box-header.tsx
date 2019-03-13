@@ -33,7 +33,7 @@ const BoxHeader = (props: BoxHeaderProps) => {
     );
   }
   return (
-    <div className={Styles.BoxHeader__header}>
+    <div>
       <div className={Styles["BoxHeader__header--top-row"]}>
         <div className={Styles.BoxHeader__title}>{props.title}</div>
         <div className={Styles.BoxHeader__right}>

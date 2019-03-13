@@ -14,7 +14,7 @@ export interface QuadBoxProps {
   sortByOptions: Array<NameValuePair>;
   updateDropdown: Function;
   onSearchChange: Function;
-  rows?: ReactNode;
+  content?: ReactNode;
   bottomBarContent: ReactNode;
   label?: string;
   isMobile?: Boolean;
@@ -45,7 +45,7 @@ const QuadBox = (props: QuadBoxProps) => (
       bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent}
     />
-    <div className={Styles.FilterBox__content}>{props.rows}</div>
+    <div className={Styles.FilterBox__content}>{props.content}</div>
   </div>
 );
 

@@ -38,7 +38,7 @@ export default class AccountOverview extends React.Component<
             onChange={this.updateTimeSelection}
           />
         }
-        rows={
+        content={
           <div className={Styles.AccountOverview}>
             <AccountOverviewStats timeframe={selected} />
           </div>

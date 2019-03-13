@@ -83,7 +83,7 @@ export default class FilterSwitchBox extends React.Component<
         sortByOptions={sortByOptions}
         updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
-        rows={rows}
+        content={rows}
         isMobile={isMobile}
         label={data.length + " " + label}
       />

@@ -1,6 +1,6 @@
 import React from "react";
 
-import BoxHeader from "modules/portfolio/components/common/headers/box-header";
+import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import {
   DepositButton,
   WithdrawButton,
@@ -21,18 +21,20 @@ interface TransactionsBoxProps {
 }
 
 export const TransactionsBox = (props: TransactionsBoxProps) => (
-  <div className={Styles.TransactionsBox}>
-    <BoxHeader title="Transactions" />
-    <div className={Styles.TransactionsBoxContent}>
-      <DepositButton action={console.log} />
-      <WithdrawButton action={console.log} />
-      <p>View and download your transactions history here</p>
-      <ViewTransactionsButton action={console.log} />
-      {!props.isMainnet && (
-        <div>
-          <REPFaucetButton action={props.repFaucet} />
-        </div>
-      )}
-    </div>
-  </div>
+  <QuadBox
+    title="Transactions"
+    content={
+      <div className={Styles.TransactionsBoxContent}>
+        <DepositButton action={console.log} />
+        <WithdrawButton action={console.log} />
+        <p>View and download your transactions history here</p>
+        <ViewTransactionsButton action={console.log} />
+        {!props.isMainnet && (
+          <div>
+            <REPFaucetButton action={props.repFaucet} />
+          </div>
+        )}
+      </div>
+    }
+  />
 );
