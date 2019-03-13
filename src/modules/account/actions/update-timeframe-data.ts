@@ -5,7 +5,7 @@ import logError from "utils/log-error";
 import * as constants from "modules/common-elements/constants";
 
 const timeframeData = {
-  [constants.TIMEFRAMES.HOUR]: {
+  [constants.TIMEFRAMES.DAY]: {
     positions: 2,
     marketsTraded: 5,
     successfulDisputes: 9,
@@ -13,7 +13,7 @@ const timeframeData = {
     marketsCreated: 3,
     redeemedPositions: 5,
   },
-  [constants.TIMEFRAMES.DAY]: {
+  [constants.TIMEFRAMES.WEEK]: {
     positions: 5,
     marketsTraded: 10,
     successfulDisputes: 19,
@@ -21,7 +21,7 @@ const timeframeData = {
     marketsCreated: 3,
     redeemedPositions: 6,
   },
-  [constants.TIMEFRAMES.WEEK]: {
+  [constants.TIMEFRAMES.MONTH]: {
     positions: 24,
     marketsTraded: 31,
     successfulDisputes: 20,

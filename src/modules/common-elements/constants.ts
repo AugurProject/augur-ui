@@ -607,16 +607,16 @@ export const NOTIFICATION_TYPES = {
 // Account View - Timeframe selection options 
 // # Timeframe readable names
 export const TIMEFRAMES = {
-  HOUR: "24 hr",
-  DAY: "1 Week",
-  WEEK: "1 Month",
+  DAY: "24 hr",
+  WEEK: "1 Week",
+  MONTH: "1 Month",
   ALL: "All Time",
 };
 
 export const TIMEFRAME_OPTIONS = [
-  {label: TIMEFRAMES.HOUR, id: 0}, 
-  {label: TIMEFRAMES.DAY, id: 1}, 
-  {label: TIMEFRAMES.WEEK, id: 2}, 
+  {label: TIMEFRAMES.DAY, id: 0}, 
+  {label: TIMEFRAMES.WEEK, id: 1}, 
+  {label: TIMEFRAMES.MONTH, id: 2}, 
   {label: TIMEFRAMES.ALL, id: 3}
 ];
 
