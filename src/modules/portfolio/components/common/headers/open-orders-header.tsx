@@ -4,11 +4,15 @@ import classNames from "classnames";
 import Styles from "modules/portfolio/components/common/headers/data-table-header.styles";
 
 interface OpenOrdersHeaderProps {
-	extendedView?: boolean;
+  extendedView?: boolean;
 }
 
 const OpenOrdersHeader = (props: OpenOrdersHeaderProps) => (
-  <ul className={classNames(Styles.DataTableHeader, {[Styles.DataTableHeader__extended]: props.extendedView})}>
+  <ul
+    className={classNames(Styles.DataTableHeader, {
+      [Styles.DataTableHeader__extended]: props.extendedView
+    })}
+  >
     <li>Outcome</li>
     <li>Type</li>
     <li>Quantity</li>
@@ -17,6 +21,6 @@ const OpenOrdersHeader = (props: OpenOrdersHeaderProps) => (
     {props.extendedView && <li>Total Cost (Shares)</li>}
     <li />
   </ul>
-)
+);
 
 export default OpenOrdersHeader;

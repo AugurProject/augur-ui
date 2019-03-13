@@ -8,14 +8,11 @@ interface FilledOrdersHeaderProps {
 }
 
 const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
- <ul
-    className={classNames(
-      Styles.DataTableHeader,
-      Styles.FilledOrdersHeader,
-      {
-        [Styles.DataTableHeader__extended]: props.extendedView,
-        [Styles.FilledOrdersHeader__extended]: props.extendedView
-      })}
+  <ul
+    className={classNames(Styles.DataTableHeader, Styles.FilledOrdersHeader, {
+      [Styles.DataTableHeader__extended]: props.extendedView,
+      [Styles.FilledOrdersHeader__extended]: props.extendedView
+    })}
   >
     <li>Outcome</li>
     <li>Type</li>
@@ -28,10 +25,11 @@ const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
     <li>Price</li>
     <li>Fill Date</li>
     <li>
-      No. of<br/>Fills
+      No. of
+      <br />
+      Fills
     </li>
   </ul>
 );
 
 export default FilledOrdersHeader;
-

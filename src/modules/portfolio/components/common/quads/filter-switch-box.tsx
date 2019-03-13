@@ -22,12 +22,15 @@ export interface FilterBoxProps {
 }
 
 interface FilterBoxState {
-  search: string,
+  search: string;
 }
 
-export default class FilterSwitchBox extends React.Component<FilterBoxProps, FilterBoxState>  {
+export default class FilterSwitchBox extends React.Component<
+  FilterBoxProps,
+  FilterBoxState
+> {
   state: FilterBoxState = {
-    search: '',
+    search: ""
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -38,23 +41,23 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
   }
 
   onSearchChange = (input: string) => {
-    this.setState({search: input});
+    this.setState({ search: input });
 
     const { data } = this.props;
     const filteredData = this.applySearch(input, data);
 
     this.props.updateFilteredData(filteredData);
-  }
+  };
 
   applySearch = (input: string, filteredData: Array<Market>) => {
     const { filterComp } = this.props;
 
     return filteredData.filter(filterComp.bind(this, input));
-  }
+  };
 
   updateView = () => {
     this.props.switchView();
-  }
+  };
 
   render() {
     const {
@@ -84,6 +87,6 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
         isMobile={isMobile}
         label={data.length + " " + label}
       />
-    )
+    );
   }
 }

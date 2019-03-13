@@ -10,16 +10,15 @@ export interface AccountOverviewStatsProps {
 
 const AccountOverviewStats = (props: AccountOverviewStatsProps) => (
   <div className={Styles.AccountOverviewStats}>
-    {props.properties.map(property =>
+    {props.properties.map(property => (
       <LinearPropertyLabel
         large
         key={property.key}
         label={property.label}
         value={property.value}
       />
-    )}
+    ))}
   </div>
 );
 
 export default AccountOverviewStats;
-

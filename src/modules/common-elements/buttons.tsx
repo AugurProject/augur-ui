@@ -50,127 +50,147 @@ export interface ViewTransactionDetailsButtonProps {
   transactionHash: string;
 }
 
-export const PrimaryButton = (props: DefaultButtonProps) =>
+export const PrimaryButton = (props: DefaultButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
     className={Styles.PrimaryButton}
     disabled={props.disabled}
     title={props.title || props.text}
   >
     {props.text}
-  </button>;
+  </button>
+);
 
-export const SecondaryButton = (props: DefaultButtonProps) =>
+export const SecondaryButton = (props: DefaultButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
     className={Styles.SecondaryButton}
     disabled={props.disabled}
     title={props.title || props.text}
   >
     {props.text}
-  </button>;
+  </button>
+);
 
-export const OrderButton = (props: OrderButtonProps) =>
+export const OrderButton = (props: OrderButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
-    className={props.type === constants.BUY ? Styles.BuyOrderButton : Styles.SellOrderButton}
+    onClick={e => props.action(e)}
+    className={
+      props.type === constants.BUY
+        ? Styles.BuyOrderButton
+        : Styles.SellOrderButton
+    }
     disabled={props.disabled}
     title={props.title}
   >
     {props.type === constants.BUY ? "Place Buy Order" : "Place Sell Order"}
-  </button>;
+  </button>
+);
 
-export const FavoritesButton = (props: FavoritesButtonProps) =>
+export const FavoritesButton = (props: FavoritesButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
-    className={classNames(Styles.FavoriteButton, {[Styles.FavoriteButton_Favorite]: props.isFavorite, [Styles.FavoriteButton__small]: props.isSmall })}
+    onClick={e => props.action(e)}
+    className={classNames(Styles.FavoriteButton, {
+      [Styles.FavoriteButton_Favorite]: props.isFavorite,
+      [Styles.FavoriteButton__small]: props.isSmall
+    })}
     disabled={props.disabled}
     title={props.title}
     style={props.hideText ? { marginRight: "0.5rem" } : undefined}
   >
-    {StarIcon} {!props.hideText && `${
-      props.isFavorite ?
-        "Remove from" :
-        "Add to"
-    } watchlist`}
-  </button>;
+    {StarIcon}{" "}
+    {!props.hideText &&
+      `${props.isFavorite ? "Remove from" : "Add to"} watchlist`}
+  </button>
+);
 
-export const CompactButton = (props: DefaultButtonProps) =>
-<button
-  onClick={(e) => props.action(e)}
-  className={Styles.CompactButton}
-  disabled={props.disabled}
-  title={props.title}
->
-  {props.text}
-</button>;
-
-export const EthPercentButton = (props: EthPercentProps) =>
-<button
-  onClick={(e) => props.action(e)}
-  className={classNames(Styles.CompactButton, Styles.EthPercentButton)}
-  disabled={props.disabled}
-  title={props.title}
->
-  {!props.showEth ? EthIcon : PercentIcon }
-</button>;
-
-export const CancelTextButton = (props: DefaultButtonProps) =>
+export const CompactButton = (props: DefaultButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
+    className={Styles.CompactButton}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {props.text}
+  </button>
+);
+
+export const EthPercentButton = (props: EthPercentProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={classNames(Styles.CompactButton, Styles.EthPercentButton)}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {!props.showEth ? EthIcon : PercentIcon}
+  </button>
+);
+
+export const CancelTextButton = (props: DefaultButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
     className={Styles.CancelTextButton}
     disabled={props.disabled}
     title={props.title}
   >
-    {XIcon}{props.text}
-  </button>;
+    {XIcon}
+    {props.text}
+  </button>
+);
 
-export const DepositButton = (props: CurrencyActionButtonProps) =>
+export const DepositButton = (props: CurrencyActionButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
     className={Styles.CurrenyActionButton}
     disabled={props.disabled}
     title={props.title || "Deposit"}
   >
-    {DepositIcon}Deposit
-  </button>;
+    {DepositIcon}
+    Deposit
+  </button>
+);
 
-export const WithdrawButton = (props: CurrencyActionButtonProps) =>
+export const WithdrawButton = (props: CurrencyActionButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
     className={Styles.CurrenyActionButton}
     disabled={props.disabled}
     title={props.title || "Withdraw"}
   >
-    {WithdrawIcon}Withdraw
-  </button>;
+    {WithdrawIcon}
+    Withdraw
+  </button>
+);
 
-export const ViewTransactionsButton = (props: CurrencyActionButtonProps) =>
+export const ViewTransactionsButton = (props: CurrencyActionButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
     className={Styles.ViewTransactionsButton}
     disabled={props.disabled}
     title={props.title || "View Transactions"}
   >
-    {DoubleArrowIcon}View Transactions
-  </button>;
+    {DoubleArrowIcon}
+    View Transactions
+  </button>
+);
 
-export const REPFaucetButton = (props: CurrencyActionButtonProps) =>
+export const REPFaucetButton = (props: CurrencyActionButtonProps) => (
   <button
-    onClick={(e) => props.action(e)}
+    onClick={e => props.action(e)}
     className={Styles.REPFaucetButton}
     disabled={props.disabled}
     title={props.title || "REP Faucet"}
   >
-    {RepLogoIcon}<span>REP Faucet</span>
-  </button>;
+    {RepLogoIcon}
+    <span>REP Faucet</span>
+  </button>
+);
 
-export const ViewTransactionDetailsButton = (props: ViewTransactionDetailsButtonProps) =>
+export const ViewTransactionDetailsButton = (
+  props: ViewTransactionDetailsButtonProps
+) => (
   <div className={Styles.ViewTransactionDetailsButton}>
-    { ViewIcon }
-    <EtherscanLink
-      showNonLink
-      txhash={props.transactionHash}
-      label="View"
-    />
-  </div>;
+    {ViewIcon}
+    <EtherscanLink showNonLink txhash={props.transactionHash} label="View" />
+  </div>
+);

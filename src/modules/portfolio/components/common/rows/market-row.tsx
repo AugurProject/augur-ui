@@ -35,8 +35,16 @@ export interface MarketRowProps {
 
 const MarketRow = (props: MarketRowProps) => {
   const content = (
-    <div className={classNames(Styles.MarketRow__contentContainer, {[Styles.MarketRow__noToggle]: props.noToggle})}>
-      <div className={classNames(Styles.MarketRow__content, {[Styles.MarketRow__contentShow]: props.showState})}>
+    <div
+      className={classNames(Styles.MarketRow__contentContainer, {
+        [Styles.MarketRow__noToggle]: props.noToggle
+      })}
+    >
+      <div
+        className={classNames(Styles.MarketRow__content, {
+          [Styles.MarketRow__contentShow]: props.showState
+        })}
+      >
         {props.showState && (
           <div className={Styles.MarketRow__firstRow}>
             <MarketStatusLabel
@@ -52,7 +60,11 @@ const MarketRow = (props: MarketRowProps) => {
           </MarketLink>
         </span>
       </div>
-      <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
+      <span
+        className={classNames(Styles.MarketRow__time, {
+          [Styles.MarketRow__timeShow]: props.showState
+        })}
+      >
         {props.rightContent}
       </span>
     </div>
@@ -60,18 +72,17 @@ const MarketRow = (props: MarketRowProps) => {
 
   return (
     <div className={Styles.MarketRow__container}>
-      {props.noToggle ?
+      {props.noToggle ? (
         content
-        : <ToggleRow
+      ) : (
+        <ToggleRow
           arrowClassName={Styles.MarketRow__Arrow}
           rowContent={content}
-          toggleContent={
-            props.toggleContent || <div>info</div>
-          }
+          toggleContent={props.toggleContent || <div>info</div>}
         />
-      }
+      )}
     </div>
-  )
+  );
 };
 
 export default MarketRow;

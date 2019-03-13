@@ -5,7 +5,10 @@ import React from "react";
 import { formatShares } from "utils/format-number";
 import { FilledOrder } from "modules/portfolio/types";
 import MarketLink from "modules/market/components/market-link/market-link";
-import { LinearPropertyLabel, LinearPropertyViewTransaction } from "modules/common-elements/labels";
+import {
+  LinearPropertyLabel,
+  LinearPropertyViewTransaction
+} from "modules/common-elements/labels";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/portfolio/components/common/tables/filled-orders-table.styles";
@@ -20,11 +23,11 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
   return (
     <div className={Styles.FilledOrdersTable}>
       <div className={Styles.FilledOrdersTable__inner}>
-        {showMarketInfo &&
+        {showMarketInfo && (
           <MarketLink id={filledOrder.marketId}>
             <span>Market:</span> {filledOrder.marketDescription}
           </MarketLink>
-        }
+        )}
         <ul className={Styles.FilledOrdersTable__header}>
           <li />
           <li>Filled</li>
@@ -37,17 +40,19 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
             <li>{formatShares(trade.amount).formatted}</li>
             <li>{trade.timestamp.formattedShort}</li>
             <li>
-              <ViewTransactionDetailsButton transactionHash={trade.transactionHash}/>
+              <ViewTransactionDetailsButton
+                transactionHash={trade.transactionHash}
+              />
             </li>
           </ul>
         ))}
       </div>
       <div className={Styles.FilledOrdersTable__innerMobile}>
-        {showMarketInfo &&
+        {showMarketInfo && (
           <MarketLink id={filledOrder.marketId}>
             <span>Market:</span> {filledOrder.marketDescription}
           </MarketLink>
-        }
+        )}
         {filledOrder.trades.map((trade: FilledOrder, i: number) => (
           <div key={i}>
             <LinearPropertyLabel
@@ -66,6 +71,6 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
       </div>
     </div>
   );
-}
+};
 
 export default FilledOrdersTable;

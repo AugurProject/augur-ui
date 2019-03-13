@@ -44,7 +44,7 @@ const PortfolioPage = (props: PortfolioPageProps) => {
         <FilledOrders />
       </div>
     </section>
-  )
+  );
 };
 
 export default PortfolioPage;

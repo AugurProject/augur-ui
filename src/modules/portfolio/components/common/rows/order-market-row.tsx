@@ -6,11 +6,11 @@ import MarketLink from "modules/market/components/market-link/market-link";
 
 import Styles from "modules/portfolio/components/common/rows/order-market-row.styles";
 
-import { Market, Order} from "modules/portfolio/types";
+import { Market, Order } from "modules/portfolio/types";
 
 export interface OrderMarketRowProps {
-  market: Market,
-  filledOrders: Boolean
+  market: Market;
+  filledOrders: Boolean;
 }
 
 const OrderMarketRow = (props: OrderMarketRowProps) => {
@@ -26,9 +26,7 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
   return (
     <div className={Styles.OrderMarket}>
       <div className={Styles.OrderMarket__description}>
-        <MarketLink id={market.id}>
-          {market.description}
-        </MarketLink>
+        <MarketLink id={market.id}>{market.description}</MarketLink>
       </div>
       <div>
         {orders.map(
@@ -39,10 +37,7 @@ const OrderMarketRow = (props: OrderMarketRowProps) => {
                 filledOrder={order}
               />
             ) : (
-              <OpenOrder
-                key={"sOpenOrder_" + order.id}
-                openOrder={order}
-              />
+              <OpenOrder key={"sOpenOrder_" + order.id} openOrder={order} />
             )
         )}
       </div>

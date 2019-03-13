@@ -90,7 +90,11 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
     const { selected, showList } = this.state;
     return (
       <div
-        className={classNames({[Styles.Dropdown_Large]: large, [Styles.Dropdown_Normal]: !large, [Styles.Dropdown__stretchOut]: stretchOut})}
+        className={classNames({
+          [Styles.Dropdown_Large]: large,
+          [Styles.Dropdown_Normal]: !large,
+          [Styles.Dropdown__stretchOut]: stretchOut
+        })}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
@@ -221,9 +225,7 @@ export class PillSelection extends React.Component<
       })}
       key={option.label}
     >
-      <button onClick={() => this.buttonSelect(option)}>
-        {option.label}
-      </button>
+      <button onClick={() => this.buttonSelect(option)}>{option.label}</button>
     </li>
   );
 
