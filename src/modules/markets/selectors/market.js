@@ -416,6 +416,10 @@ const assembleMarket = memoize(
         market.myPositionsSummary.totalPercent = formatPercent(
           marketPositions.totalPercent || ZERO
         );
+
+        market.myPositionsSummary.valueChange = formatPercent(
+          marketPositions.totalValue || ZERO
+        );
       }
     }
 

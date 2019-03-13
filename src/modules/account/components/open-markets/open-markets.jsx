@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+import { MovementLabel } from "modules/common-elements/labels";
 
 import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
@@ -36,6 +37,8 @@ export default class OpenMarkets extends Component {
 
     const { filteredMarkets } = this.state;
 
+    console.log(marketsObj);
+
     return (
       <FilterSwitchBox
         title="Open Markets"
@@ -57,8 +60,32 @@ export default class OpenMarkets extends Component {
                   key={"position_" + market.id}
                   market={marketsObj[market.id]}
                   showState={false}
-                  noToggle
-                  rightContent={<div />}
+                  rightContent={
+                    <MovementLabel
+                      showColors
+                      showIcon
+                      value={
+                        marketsObj[market.id].myPositionsSummary.valueChange
+                          .formatted
+                      }
+                      size="medium"
+                    />
+                  }
+                  toggleContent={
+                    <div className={Styles.ExpandedContent}>
+                      {marketsObj[market.id].userPositions.map(position => (
+                        <div key={position.outcomeId}>
+                          <span>{position.outcomeName}</span>
+                          <MovementLabel
+                            showColors
+                            showIcon
+                            value={position.valueChange.formatted}
+                            size="small"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  }
                 />
               ))}
           </div>
