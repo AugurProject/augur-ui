@@ -37,8 +37,6 @@ export default class OpenMarkets extends Component {
 
     const { filteredMarkets } = this.state;
 
-    console.log(marketsObj);
-
     return (
       <FilterSwitchBox
         title="Open Markets"
