@@ -8,11 +8,11 @@ import { ASKS, BIDS, BUY, SELL } from "modules/common-elements/constants";
 
 import Styles from "modules/market-charts/components/market-outcome--orders/market-outcome--orders.styles";
 import { isEmpty, isEqual } from "lodash";
-import { ValueLabel } from "modules/common-elements/labels";
 
 export default class MarketOutcomeChartsOrders extends Component {
   static propTypes = {
     orderBook: PropTypes.object.isRequired,
+    fixedPrecision: PropTypes.number.isRequired,
     pricePrecision: PropTypes.number.isRequired,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -54,6 +54,7 @@ export default class MarketOutcomeChartsOrders extends Component {
 
   render() {
     const {
+      fixedPrecision,
       pricePrecision,
       orderBook,
       updateSelectedOrderProperties,
@@ -149,16 +150,22 @@ export default class MarketOutcomeChartsOrders extends Component {
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
                   style={{ justifyContent: "flex-start" }}
                 >
-                  <ValueLabel value={order.shares} />
+                  <span>
+                    {order.shares.value.toFixed(fixedPrecision).toString()}
+                  </span>
                 </div>
                 <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
                   style={{ justifyContent: "center" }}
                 >
-                  <ValueLabel value={order.price} />
+                  <span>{order.price.value.toFixed(pricePrecision)}</span>
                 </div>
                 <div className={Styles.MarketOutcomeOrderBook__RowItem_ask}>
-                  {order.mySize ? <ValueLabel value={order.mySize} /> : "—"}
+                  <span>
+                    {order.mySize
+                      ? order.mySize.value.toFixed(fixedPrecision).toString()
+                      : "—"}
+                  </span>
                 </div>
               </button>
             ))}
@@ -240,16 +247,22 @@ export default class MarketOutcomeChartsOrders extends Component {
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
                   style={{ justifyContent: "flex-start" }}
                 >
-                  <ValueLabel value={order.shares} />
+                  <span>
+                    {order.shares.value.toFixed(fixedPrecision).toString()}
+                  </span>
                 </div>
                 <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
                   style={{ justifyContent: "center" }}
                 >
-                  <ValueLabel value={order.price} />
+                  <span>{order.price.value.toFixed(pricePrecision)}</span>
                 </div>
                 <div className={Styles.MarketOutcomeOrderBook__RowItem_bid}>
-                  {order.mySize ? <ValueLabel value={order.mySize} /> : "—"}
+                  <span>
+                    {order.mySize
+                      ? order.mySize.value.toFixed(fixedPrecision).toString()
+                      : "—"}
+                  </span>
                 </div>
               </button>
             ))}

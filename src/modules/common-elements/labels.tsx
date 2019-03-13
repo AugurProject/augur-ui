@@ -115,18 +115,22 @@ export const ValueLabel = (props: ValueLabelProps) => {
 
   return (
     <span className={Styles.ValueLabel}>
-      <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
-        {`${frontFacingLabel}${postfix}${denominationLabel}`}
-      </label>
-      <ReactTooltip
-        id={`valueLabel-${fullPrecision}-${denomination}`}
-        className={TooltipStyles.Tooltip}
-        effect="float"
-        place="top"
-        type="light"
-      >
-        {`${fullPrecision} ${denominationLabel}`}
-      </ReactTooltip>
+      {postfix.length > 0 &&
+      <>
+        <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
+          {`${frontFacingLabel}${postfix}${denominationLabel}`}
+        </label>
+        <ReactTooltip
+          id={`valueLabel-${fullPrecision}-${denomination}`}
+          className={TooltipStyles.Tooltip}
+          effect="float"
+          place="top"
+          type="light"
+        >
+          {`${fullPrecision} ${denominationLabel}`}
+        </ReactTooltip>
+      </>}
+      {postfix.length === 0 && <label>{`${frontFacingLabel}${postfix}${denominationLabel}`}</label>}
     </span>
   );
 };
