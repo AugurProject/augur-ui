@@ -9,7 +9,6 @@ import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
   DashlineNormal
 } from "modules/common/components/dashline/dashline";
-import { createBigNumber } from "utils/create-big-number";
 import { SELL, BOUGHT, SOLD, CLOSED, SHORT } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
@@ -78,7 +77,7 @@ export interface PillLabelProps {
   label: string;
 }
 
-export interface PositionTypeLabel {
+export interface PositionTypeLabelProps {
   type: string;
   pastTense: boolean;
 }
@@ -225,11 +224,11 @@ export const PendingLabel = () => (
 );
 
 export const MovementIcon = (props: MovementIconProps) => {
-  const getIconSizeStyles: Function = (size: sizeTypes): string =>
+  const getIconSizeStyles: Function = (size: SizeTypes): string =>
     classNames(Styles.MovementLabel_Icon, {
-      [Styles.MovementLabel_Icon_small]: size == sizeTypes.SMALL,
-      [Styles.MovementLabel_Icon_normal]: size == sizeTypes.NORMAL,
-      [Styles.MovementLabel_Icon_large]: size == sizeTypes.LARGE
+      [Styles.MovementLabel_Icon_small]: size == SizeTypes.SMALL,
+      [Styles.MovementLabel_Icon_normal]: size == SizeTypes.NORMAL,
+      [Styles.MovementLabel_Icon_large]: size == SizeTypes.LARGE
     });
 
   const getIconColorStyles: Function = (value: number): string =>
@@ -245,11 +244,11 @@ export const MovementIcon = (props: MovementIconProps) => {
 };
 
 export const MovementText = (props: MovementTextProps) => {
-  const getTextSizeStyle: Function = (size: sizeTypes): string =>
+  const getTextSizeStyle: Function = (size: SizeTypes): string =>
     classNames(Styles.MovementLabel_Text, {
-      [Styles.MovementLabel_Text_small]: size == sizeTypes.SMALL,
-      [Styles.MovementLabel_Text_normal]: size == sizeTypes.NORMAL,
-      [Styles.MovementLabel_Text_large]: size == sizeTypes.LARGE
+      [Styles.MovementLabel_Text_small]: size == SizeTypes.SMALL,
+      [Styles.MovementLabel_Text_normal]: size == SizeTypes.NORMAL,
+      [Styles.MovementLabel_Text_large]: size == SizeTypes.LARGE
     });
   const getTextColorStyles: Function = (value: number): string =>
     classNames({
@@ -368,7 +367,7 @@ export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProp
         showBrackets
         showPlusMinus
         showColors
-        size={sizeTypes.NORMAL}
+        size={SizeTypes.NORMAL}
         value={props.numberValue}
       />
     </span>

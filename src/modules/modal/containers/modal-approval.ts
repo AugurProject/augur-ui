@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { MessageModal } from "modules/modal/message-modal";
+import { Message } from "modules/modal/message";
 
 import { closeModal } from "modules/modal/actions/close-modal";
 import { approveAccount } from "modules/auth/actions/approve-account";
@@ -41,5 +41,5 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(MessageModal)
+  )(Message)
 );

@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { MessageModal } from "modules/modal/message-modal";
+import { Message } from "modules/modal/message";
 import { selectMarket } from "modules/markets/selectors/market";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { sendFinalizeMarket } from "modules/markets/actions/finalize-market";
@@ -44,5 +44,5 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(MessageModal)
+  )(Message)
 );
