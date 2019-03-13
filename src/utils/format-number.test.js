@@ -394,7 +394,8 @@ describe("utils/format-number.js", () => {
           rounded: "-",
           minimized: "-",
           denomination: "",
-          full: "-"
+          full: "-",
+          fullPrecision: "0"
         };
 
         expect(formatNumber.formatNone()).toEqual(out);

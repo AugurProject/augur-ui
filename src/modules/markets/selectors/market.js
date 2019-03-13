@@ -448,7 +448,6 @@ const assembleMarket = memoize(
     } else {
       market.consensus = null;
     }
-
     return market;
   },
   { max: 1 }

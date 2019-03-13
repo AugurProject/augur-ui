@@ -4,7 +4,7 @@ import classNames from "classnames";
 import getValue from "utils/get-value";
 
 import { formatEther, formatShares } from "utils/format-number";
-import { PositionTypeLabel } from "modules/common-elements/labels";
+import { PositionTypeLabel, ValueLabel } from "modules/common-elements/labels";
 
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { FilledOrderInterface } from "modules/portfolio/types";
@@ -21,13 +21,13 @@ export interface FilledOrderProps {
 const FilledOrder = (props: FilledOrderProps) => {
   const { filledOrder, isSingle, extendedView } = props;
 
-  const orderQuantity = formatShares(getValue(filledOrder, "amount")).formatted;
-  const orderPrice = formatEther(getValue(filledOrder, "price")).formatted;
+  const orderQuantity = formatShares(getValue(filledOrder, "amount"));
+  const orderPrice = formatEther(getValue(filledOrder, "price"));
   const orderType = getValue(filledOrder, "type");
 
   const originalQuantity = formatShares(
     getValue(filledOrder, "originalQuantity")
-  ).formatted;
+  );
 
   return (
     <div
@@ -57,9 +57,17 @@ const FilledOrder = (props: FilledOrderProps) => {
             <li>
               <PositionTypeLabel type={orderType} pastTense />
             </li>
-            {!extendedView && <li>{originalQuantity}</li>}
-            <li>{orderQuantity}</li>
-            <li>{orderPrice}</li>
+            {!extendedView && (
+              <li>
+                <ValueLabel value={originalQuantity} />
+              </li>
+            )}
+            <li>
+              <ValueLabel value={orderQuantity} />
+            </li>
+            <li>
+              <ValueLabel value={orderPrice} />
+            </li>
             <li>{filledOrder.timestamp.formattedShortDate}</li>
             <li>{filledOrder.trades.length}</li>
           </ul>

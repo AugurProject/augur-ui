@@ -104,12 +104,12 @@ export interface ValueLabelProps {
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
-  if (props.value === null) return (<span />);
+  if (!props.value || props.value === null) return (<span />);
   const { fullPrecision, rounded, denomination, value } = props.value;
   const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
   const isGreaterThan1k = value > 1000;
   const longLength = fullPrecision.length > rounded.length;
-  const postfix = (longLength || isGreaterThan1k) ? "..." : "";
+  const postfix = (longLength || isGreaterThan1k) ? String.fromCodePoint(0x2026) : "";
   const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
   const denominationLabel = props.showDenomination ? `${denomination}` : "";
 

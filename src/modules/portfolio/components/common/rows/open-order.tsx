@@ -4,7 +4,8 @@ import classNames from "classnames";
 import {
   LinearPropertyLabel,
   PendingLabel,
-  PositionTypeLabel
+  PositionTypeLabel,
+  ValueLabel
 } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
@@ -27,8 +28,8 @@ const OpenOrder = (props: OpenOrderProps) => {
     return null;
   }
 
-  const tokensEscrowed = getValue(openOrder, "tokensEscrowed.formatted");
-  const sharesEscrowed = getValue(openOrder, "sharesEscrowed.formatted");
+  const tokensEscrowed = getValue(openOrder, "tokensEscrowed");
+  const sharesEscrowed = getValue(openOrder, "sharesEscrowed");
   const creationTime = getValue(openOrder, "creationTime.formattedShort");
 
   const rowContent = (
@@ -48,11 +49,21 @@ const OpenOrder = (props: OpenOrderProps) => {
         )}
       </li>
       <li>
-        {openOrder.unmatchedShares && openOrder.unmatchedShares.formatted}
+        {openOrder.unmatchedShares && (
+          <ValueLabel value={openOrder.unmatchedShares} />
+        )}
       </li>
-      <li>{openOrder.avgPrice && openOrder.avgPrice.formatted}</li>
-      {extendedView && <li>{tokensEscrowed}</li>}
-      {extendedView && <li>{sharesEscrowed}</li>}
+      <li>{openOrder.avgPrice && <ValueLabel value={openOrder.avgPrice} />}</li>
+      {extendedView && (
+        <li>
+          <ValueLabel value={tokensEscrowed} />
+        </li>
+      )}
+      {extendedView && (
+        <li>
+          <ValueLabel value={sharesEscrowed} />
+        </li>
+      )}
       <li>
         {openOrder.cancelOrder && (
           <CancelTextButton

@@ -4,7 +4,8 @@ import classNames from "classnames";
 import {
   LinearPropertyLabelPercent,
   PositionTypeLabel,
-  MovementLabel
+  MovementLabel,
+  ValueLabel
 } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
@@ -56,11 +57,27 @@ const PositionRow = (props: PositionRowProps) => {
       <li>
         <PositionTypeLabel type={position.type} />
       </li>
-      <li>{position.quantity.formatted}</li>
-      <li>{position.purchasePrice.formatted}</li>
-      {!extendedView && <li>{position.totalCost.formatted}</li>}
-      {!extendedView && <li>{position.totalValue.formatted}</li>}
-      {!extendedView && <li>{position.lastPrice.formatted}</li>}
+      <li>
+        <ValueLabel value={position.quantity} />
+      </li>
+      <li>
+        <ValueLabel value={position.purchasePrice} />
+      </li>
+      {!extendedView && (
+        <li>
+          <ValueLabel value={position.totalCost} />
+        </li>
+      )}
+      {!extendedView && (
+        <li>
+          <ValueLabel value={position.totalValue} />
+        </li>
+      )}
+      {!extendedView && (
+        <li>
+          <ValueLabel value={position.lastPrice} />
+        </li>
+      )}
       {!extendedView && (
         <li>
           {showPercent ? (

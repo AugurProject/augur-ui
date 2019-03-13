@@ -52,7 +52,7 @@ function filterComp(input, market) {
 }
 
 function renderToggleContent(market) {
-  return <PositionsTable market={market} />;
+  return <PositionsTable marketId={market.id} />;
 }
 
 export default class Positions extends Component {
