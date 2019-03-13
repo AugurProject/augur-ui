@@ -553,18 +553,32 @@ export const VOLUME_ETH_SHARES = [
   }
 ];
 
+// Account Summary - Your Overview
+export const YOUR_OVERVIEW_TITLE = "Your Overview";
+
+// Account Summary - Augur Status
+export const AUGUR_STATUS_TITLE = "Augur Status";
+export const SYNCING_TITLE = "Syncing market Data";
+export const SYNCED = "Synced";
+export const SYNCING = "Syncing";
+export const MANY_BLOCKS_BEHIND = "(many blocks behind)";
+export const SYNC_MESSAGE_SYNCED = "Market Data is up to date.";
+export const SYNC_MESSAGE_SYNCING =
+  "Market data such as price and orderbooks may be out of date.";
+export const SYNC_MESSAGE_BLOCKSBEHIND =
+  "Market data such as price and orderbooks may be considerably out of date.";
+export const SYNC_BENIND = "Blocks behind";
+export const SYNC_PROCESSED = "Blocks Processed";
+export const LEARN_MORE_ABOUT_SYNCING = "Learn more about syncing";
+
 // Account Summary - Notifications
 export const NEW = "New";
 export const RESOLVED_MARKETS_OPEN_ORDERS_TITLE =
   "Open Orders in Resolved Market";
-export const REPORTING_ENDS_SOON_TITLE =
-  "Reporting Ends Soon";
-export const FINALIZE_MARKET_TITLE =
-  "Finalize Market";
-export const SELL_COMPLETE_SETS_TITLE =
-  "Sell Complete Sets";
-export const UNSIGNED_ORDERS_TITLE =
-  "Unsigned Orders";
+export const REPORTING_ENDS_SOON_TITLE = "Reporting Ends Soon";
+export const FINALIZE_MARKET_TITLE = "Finalize Market";
+export const SELL_COMPLETE_SETS_TITLE = "Sell Complete Sets";
+export const UNSIGNED_ORDERS_TITLE = "Unsigned Orders";
 export const CLAIM_REPORTING_FEES_TITLE =
   "Claim Available Stake and Reporting Fees";
 
@@ -585,3 +599,19 @@ export const NOTIFICATION_TYPES = {
   [CLAIM_REPORTING_FEES]: CLAIM_REPORTING_FEES,
   [UNSIGNED_ORDERS]: UNSIGNED_ORDERS
 };
+
+// Account View - Timeframe selection options
+// # Timeframe readable names
+export const TIMEFRAMES = {
+  DAY: "24 hr",
+  WEEK: "1 Week",
+  MONTH: "1 Month",
+  ALL: "All Time"
+};
+
+export const TIMEFRAME_OPTIONS = [
+  { label: TIMEFRAMES.DAY, id: 0 },
+  { label: TIMEFRAMES.WEEK, id: 1 },
+  { label: TIMEFRAMES.MONTH, id: 2 },
+  { label: TIMEFRAMES.ALL, id: 3 }
+];

@@ -1,38 +1,40 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component, SyntheticEvent } from "react";
 import classNames from "classnames";
 
 import toggleHeight from "utils/toggle-height/toggle-height";
-import { createBigNumber } from "utils/create-big-number";
-import { formatNumber, formatPercent } from "utils/format-number";
-import { ZERO } from "modules/common-elements/constants";
+import { formatNumber } from "utils/format-number";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 
 import Styles from "modules/block-info/components/block-info-data/block-info-data.styles";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
-export default class BlockInfoData extends Component {
-  static propTypes = {
-    highestBlock: PropTypes.number,
-    lastProcessedBlock: PropTypes.number,
-    isLogged: PropTypes.bool.isRequired
-  };
+export interface SyncInfo {
+  blocksBehind: number;
+  highestBlockBn: number;
+  lastProcessedBlockBn: number;
+  percent: number;
+}
 
-  static defaultProps = {
-    highestBlock: 0,
-    lastProcessedBlock: 0
-  };
+export interface BlockInfoDataProps {
+  syncInfo: SyncInfo;
+  isLogged: boolean;
+}
 
-  constructor(props) {
+export interface BlockInfoDataState {
+  dropdownOpen: boolean;
+}
+
+declare var window: any;
+
+class BlockInfoData extends Component<BlockInfoDataProps, BlockInfoDataState> {
+  constructor(props: BlockInfoDataProps) {
     super(props);
 
     this.state = {
       dropdownOpen: false
     };
 
-    this.setDropdownOpen = this.setDropdownOpen.bind(this);
     this.handleWindowOnClick = this.handleWindowOnClick.bind(this);
-    this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
   componentDidMount() {
@@ -43,21 +45,13 @@ export default class BlockInfoData extends Component {
     window.removeEventListener("click", this.handleWindowOnClick);
   }
 
-  setDropdownOpen(value) {
-    this.setState({ dropdownOpen: value }, () => {
-      toggleHeight(this.blockInfoDropdown, true);
-    });
-  }
-
-  toggleDropdown(cb) {
+  toggleDropdown() {
     toggleHeight(this.blockInfoDropdown, this.state.dropdownOpen, 0, () => {
       this.setState({ dropdownOpen: !this.state.dropdownOpen });
-
-      if (cb && typeof cb === "function") cb();
     });
   }
 
-  handleWindowOnClick(event) {
+  handleWindowOnClick(event: SyntheticEvent) {
     if (
       this.state.dropdownOpen &&
       this.blockInfoData &&
@@ -68,28 +62,18 @@ export default class BlockInfoData extends Component {
   }
 
   render() {
-    const { highestBlock, lastProcessedBlock, isLogged } = this.props;
-    const s = this.state;
-    const highestBlockBn = createBigNumber(highestBlock);
-    const lastProcessedBlockBn = createBigNumber(lastProcessedBlock);
+    const { syncInfo, isLogged } = this.props;
 
-    const diff = highestBlockBn.minus(lastProcessedBlockBn);
-    let blocksBehind = formatNumber(diff.toString()).rounded;
-
-    blocksBehind = blocksBehind === "-" ? 0 : blocksBehind;
-
-    const fullPercent = formatPercent(
-      lastProcessedBlockBn
-        .dividedBy(highestBlockBn)
-        .times(createBigNumber(100))
-        .toString(),
-      { decimals: 2, decimalsRounded: 2 }
-    );
-    let percent = fullPercent.formattedValue;
-
-    if (percent === 100 && diff.gt(ZERO)) {
-      percent = "99.99";
+    if (!syncInfo) {
+      return null;
     }
+    const s = this.state;
+    const {
+      blocksBehind,
+      highestBlockBn,
+      lastProcessedBlockBn,
+      percent
+    } = syncInfo;
 
     return (
       <div
@@ -103,8 +87,8 @@ export default class BlockInfoData extends Component {
         <div
           className={Styles.BlockInfoData__container}
           role="button"
-          tabIndex="-1"
-          onClick={this.toggleDropdown}
+          tabIndex={0}
+          onClick={() => this.toggleDropdown()}
         >
           <div className={Styles.BlockInfoData__title}>Blocks Behind</div>
           <div className={Styles.BlockInfoData__info}>
@@ -153,3 +137,5 @@ export default class BlockInfoData extends Component {
     );
   }
 }
+
+export default BlockInfoData;

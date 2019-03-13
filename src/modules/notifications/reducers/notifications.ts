@@ -17,11 +17,11 @@ export interface Action {
 export default (notifications = DEFAULT_STATE, action: Action) => {
   switch (action.type) {
     case UPDATE_NOTIFICATIONS:
-      return action.data.notifications
+      return action.data.notifications;
     case RESET_STATE:
     case CLEAR_LOGIN_ACCOUNT:
       return DEFAULT_STATE;
     default:
       return notifications;
   }
-}
+};

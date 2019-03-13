@@ -15,7 +15,7 @@
     }
   });
 
-  background-color: @color-grayish-purple;
+  background-color: @color-tertiary-background;
   cursor: pointer;
   position: relative;
   transition: background-color 0.15s ease;
@@ -23,10 +23,6 @@
   &.active::before {
     left: 1px;
     width: 3px;
-  }
-
-  &:nth-child(even) {
-    background-color: @color-dark-grayish-purple;
   }
 
   &:first-child > li {

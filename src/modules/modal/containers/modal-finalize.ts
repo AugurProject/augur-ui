@@ -17,27 +17,27 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
-  finalizeMarket: (marketId: string) => dispatch(sendFinalizeMarket(marketId)),
+  finalizeMarket: (marketId: string) => dispatch(sendFinalizeMarket(marketId))
 });
 
-const mergeProps = (sP: any, dP: any, oP: any) => {
-  return {
-    title: "Finalize Market",
-    alertMessage: { preText: "The following market is resolved and ready to be finalized:" },
-    marketTitle: sP.marketDescription,
-    callToAction: "Please finalize this market so proceeds can be claimed.",
-    closeAction: () => dP.closeModal(),
-    buttons: [
-      {
-        text: "Finalize",
-        action: () => {
-          dP.finalizeMarket(sP.modal.marketId);
-          dP.closeModal();
-        }
+const mergeProps = (sP: any, dP: any, oP: any) => ({
+  title: "Finalize Market",
+  alertMessage: {
+    preText: "The following market is resolved and ready to be finalized:"
+  },
+  marketTitle: sP.marketDescription,
+  callToAction: "Please finalize this market so proceeds can be claimed.",
+  closeAction: () => dP.closeModal(),
+  buttons: [
+    {
+      text: "Finalize",
+      action: () => {
+        dP.finalizeMarket(sP.modal.marketId);
+        dP.closeModal();
       }
-    ]
-  };
-};
+    }
+  ]
+});
 
 export default withRouter(
   connect(

@@ -1,24 +1,27 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import classNames from "classnames";
 
-import { LinearPropertyLabel, PendingLabel, PositionTypeLabel } from "modules/common-elements/labels";
+import {
+  LinearPropertyLabel,
+  PendingLabel,
+  PositionTypeLabel
+} from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
 import { CancelTextButton } from "modules/common-elements/buttons";
-import { SELL } from "modules/common-elements/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
 export interface OpenOrderProps {
-  openOrder: Order,
-  isSingle?: Boolean,
+  openOrder: Order;
+  isSingle?: Boolean;
+  extendedView?: Boolean;
 }
 
 const OpenOrder = (props: OpenOrderProps) => {
-  const { openOrder, isSingle } = props;
+  const { openOrder, isSingle, extendedView } = props;
 
   if (!openOrder) {
     return null;
@@ -28,53 +31,82 @@ const OpenOrder = (props: OpenOrderProps) => {
   const sharesEscrowed = getValue(openOrder, "sharesEscrowed.formatted");
   const creationTime = getValue(openOrder, "creationTime.formattedShort");
 
+  const rowContent = (
+    <ul
+      className={classNames(Styles.Order, {
+        [Styles.Order__row]: !isSingle || extendedView,
+        [Styles.Order__extendedView]: extendedView
+      })}
+    >
+      <li>{openOrder.description || openOrder.name}</li>
+      <li>
+        <PositionTypeLabel type={openOrder.type} />
+        {(openOrder.pending || openOrder.pendingOrder) && (
+          <span>
+            <PendingLabel />
+          </span>
+        )}
+      </li>
+      <li>
+        {openOrder.unmatchedShares && openOrder.unmatchedShares.formatted}
+      </li>
+      <li>{openOrder.avgPrice && openOrder.avgPrice.formatted}</li>
+      {extendedView && <li>{tokensEscrowed}</li>}
+      {extendedView && <li>{sharesEscrowed}</li>}
+      <li>
+        {openOrder.cancelOrder && (
+          <CancelTextButton
+            disabled={openOrder.pending}
+            action={e => {
+              e.stopPropagation();
+              openOrder.cancelOrder(openOrder);
+            }}
+            text="Cancel"
+          />
+        )}
+      </li>
+    </ul>
+  );
+
+  if (extendedView) {
+    return (
+      <div className={classNames(Styles.Order__single, Styles.Order__border)}>
+        {rowContent}
+      </div>
+    );
+  }
+
   return (
-    <div className={classNames({
-          [Styles.Order__parentSingle]: isSingle,
-        })}>
+    <div
+      className={classNames({
+        [Styles.Order__parentSingle]: isSingle
+      })}
+    >
       <ToggleRow
         className={classNames({
           [Styles.Order__single]: isSingle,
-          [Styles.Order__group]: !isSingle,
+          [Styles.Order__group]: !isSingle
         })}
         innerClassName={classNames({
-          [Styles.Order__innerGroup]: !isSingle,
+          [Styles.Order__innerGroup]: !isSingle
         })}
         arrowClassName={Styles.Order__arrow}
-        rowContent={
-          <ul className={classNames(Styles.Order, {
-          [Styles.Orders__row]: !isSingle,
-        })}>
-            <li>{openOrder.description || openOrder.name}</li>
-            <li>
-              <PositionTypeLabel type={openOrder.type} />
-              {(openOrder.pending || openOrder.pendingOrder) && <span><PendingLabel /></span>}
-            </li>
-            <li>{openOrder.unmatchedShares && openOrder.unmatchedShares.formatted}</li>
-            <li>{openOrder.avgPrice && openOrder.avgPrice.formatted}</li>
-            <li>
-              {openOrder.cancelOrder && 
-                <CancelTextButton disabled={openOrder.pending} action={e => {
-                  e.stopPropagation();
-                  openOrder.cancelOrder(openOrder);
-                }} text='Cancel' />
-              }
-            </li>
-          </ul>
-        }
+        rowContent={rowContent}
         toggleContent={
           <div className={Styles.OpenOrder_infoContainer}>
-            <div className={classNames(Styles.OpenOrder_innerInfoContainer, {
-              [Styles.OpenOrder_innerInfoContainerSingle]: isSingle
-            })}>
+            <div
+              className={classNames(Styles.OpenOrder_innerInfoContainer, {
+                [Styles.OpenOrder_innerInfoContainerSingle]: isSingle
+              })}
+            >
               <div className={Styles.OpenOrder__info}>
-                {isSingle &&
+                {isSingle && (
                   <span>
                     <MarketLink id={openOrder.marketId}>
                       {openOrder.marketDescription}
                     </MarketLink>
                   </span>
-                }
+                )}
                 <div className={Styles.OpenOrder__labels}>
                   <LinearPropertyLabel
                     label="Total Cost (ETH)"
@@ -84,15 +116,10 @@ const OpenOrder = (props: OpenOrderProps) => {
                     label="Total Cost (Shares)"
                     value={sharesEscrowed || 0}
                   />
-                  <LinearPropertyLabel
-                    label="Date"
-                    value={creationTime}
-                  />
+                  <LinearPropertyLabel label="Date" value={creationTime} />
                 </div>
               </div>
-              <div className={Styles.OpenOrder__timestamp}>
-                {creationTime}
-              </div>
+              <div className={Styles.OpenOrder__timestamp}>{creationTime}</div>
             </div>
           </div>
         }
@@ -102,4 +129,3 @@ const OpenOrder = (props: OpenOrderProps) => {
 };
 
 export default OpenOrder;
-

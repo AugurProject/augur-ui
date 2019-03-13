@@ -16,7 +16,8 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  updateNotifications: (notifications: any) => dispatch(updateNotifications(notifications)),
+  updateNotifications: (notifications: any) =>
+    dispatch(updateNotifications(notifications)),
   getReportingFees: () => dispatch(getReportingFees())
 });
 

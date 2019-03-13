@@ -2,16 +2,15 @@ import { connect } from "react-redux";
 import getRep from "modules/account/actions/get-rep";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { closeModal } from "modules/modal/actions/close-modal";
-import { MODAL_REVIEW } from "modules/common-elements/constants";
 import { transferFunds } from "modules/auth/actions/transfer-funds";
 import { selectLoginAccount } from "modules/auth/selectors/login-account";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { TransactionsBox } from "modules/account/components/transactions/transactions-box";
-import { NETWORK_IDS } from "modules/common-elements/constants";
+import { NETWORK_IDS, MODAL_REVIEW } from "modules/common-elements/constants";
 // made state an ANY for now.
 const mapStateToProps = (state: any) => {
   const loginAccount = selectLoginAccount(state);
-  
+
   return {
     isMainnet: state.connection.augurNodeNetworkId === NETWORK_IDS.Mainnet,
     eth: loginAccount.eth,
@@ -26,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(closeModal());
     dispatch(transferFunds(amount, asset, to));
   },
-  withdrawReviewModal: (modal: object) =>
+  withdrawReviewModal: (modal: Object) =>
     dispatch(
       updateModal({
         type: MODAL_REVIEW,

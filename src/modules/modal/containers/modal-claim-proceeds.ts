@@ -10,7 +10,7 @@ import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { formatGasCostToEther, formatEther } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { ProceedsModal } from "modules/modal/proceeds-modal";
-import { constants} from "services/augurjs";
+import { constants } from "services/augurjs";
 import { ModalMarketActionRowsProps } from "modules/modal/common";
 
 const mapStateToProps = (state: any) => ({
@@ -27,18 +27,26 @@ const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
   claimTradingProceeds: (marketId: string, callback: Function) =>
     dispatch(claimTradingProceeds(marketId, callback)),
-  claimMultipleTradingProceeds: (marketIds: Array<string>, callback: Function) => dispatch(claimMultipleTradingProceeds(marketIds, callback))
+  claimMultipleTradingProceeds: (
+    marketIds: Array<string>,
+    callback: Function
+  ) => dispatch(claimMultipleTradingProceeds(marketIds, callback))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
   const marketIdsToTest = Object.keys(sP.accountShareBalances);
   const markets: Array<ModalMarketActionRowsProps> = [];
   const marketIds: Array<string> = [];
-  let totalProceeds: BigNumber = createBigNumber(0);
+  let totalProceeds: any = createBigNumber(0); // BigNumber @type required
   marketIdsToTest.forEach(marketId => {
     const market = selectMarket(marketId);
-    if (market && market.reportingState === constants.REPORTING_STATE.FINALIZED) {
-      const winningOutcomeShares = formatEther(sP.accountShareBalances[marketId][market.consensus.winningOutcome]);
+    if (
+      market &&
+      market.reportingState === constants.REPORTING_STATE.FINALIZED
+    ) {
+      const winningOutcomeShares = formatEther(
+        sP.accountShareBalances[marketId][market.consensus.winningOutcome]
+      );
       if (winningOutcomeShares.value > 0) {
         markets.push({
           title: market.description,
@@ -51,14 +59,16 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         totalProceeds = totalProceeds.plus(winningOutcomeShares.formatted);
       }
     }
-  })
-  const totalGas = formatEther(createBigNumber(sP.gasCost).times(markets.length));
+  });
+  const totalGas = formatEther(
+    createBigNumber(sP.gasCost).times(markets.length)
+  );
   const multiMarket = markets.length > 1;
   totalProceeds = formatEther(totalProceeds);
   return {
     title: "Claim Proceeds",
     alertMessage: {
-      preText: "You currently have a total of", 
+      preText: "You currently have a total of",
       boldText: totalProceeds.full,
       postText: `to be claimed in the following market${multiMarket && "s"}:`
     },

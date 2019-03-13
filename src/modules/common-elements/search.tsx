@@ -7,16 +7,13 @@ export interface SearchBarProps {
   label?: string;
   onChange: (value: string) => void;
   placeholder?: string;
-};
+}
 
 export interface SearchBarState {
   isFocused: boolean;
 }
 
 export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  refContainer: any = null;
-  refSearch: any = null;
-
   state: SearchBarState = {
     isFocused: false
   };
@@ -28,6 +25,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   componentWillUnmount() {
     window.removeEventListener("click", this.handleWindowOnClick);
   }
+
+  refContainer: any = null;
+  refSearch: any = null;
 
   handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
     if (this.refContainer && !this.refContainer.contains(event.target)) {
@@ -43,23 +43,23 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     const placeholderText = placeholder || "Search";
     return (
       <div
-        className={classNames(Styles.SearchBar,{
+        className={classNames(Styles.SearchBar, {
           [Styles.isFocused]: this.state.isFocused
         })}
         ref={container => {
           this.refContainer = container;
         }}
       >
-      <span>{`(${label && label.length ? label : placeholderText})`}</span>
-      {SearchIcon}
-      <input
-        ref={search => {
-          this.refSearch = search;
-        }}
-        type="search"
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholderText}
-      />
+        <span>{`(${label && label.length ? label : placeholderText})`}</span>
+        {SearchIcon}
+        <input
+          ref={search => {
+            this.refSearch = search;
+          }}
+          type="search"
+          onChange={e => onChange(e.target.value)}
+          placeholder={placeholderText}
+        />
       </div>
     );
   }

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-switch-box";
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
-import { MarketPositionsTable } from "modules/portfolio/components/common/tables/market-positions-table";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 
 import Styles from "modules/portfolio/components/common/quads/quad.styles";
@@ -59,12 +58,7 @@ export default class OpenMarkets extends Component {
                   market={marketsObj[market.id]}
                   showState={false}
                   noToggle
-                  toggleContent={
-                    <MarketPositionsTable market={marketsObj[market.id]} />
-                  }
-                  rightContent={
-                    <div className={Styles.Quads__multiRightContent} />
-                  }
+                  rightContent={<div />}
                 />
               ))}
           </div>
