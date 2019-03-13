@@ -3,7 +3,6 @@ import React from "react";
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { DepositButton, WithdrawButton, ViewTransactionsButton, REPFaucetButton } from "modules/common-elements/buttons";
 import Styles from "modules/account/components/transactions/transactions-box.styles";
-import { number } from "prop-types";
 
 interface TransactionsBoxProps {
   isMainnet: boolean;

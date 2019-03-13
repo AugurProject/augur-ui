@@ -1,14 +1,7 @@
-import React, { Component, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
-import { find } from "lodash";
-import {
-  ALL_MARKETS,
-  MARKET_OPEN,
-  MARKET_REPORTING,
-  MARKET_CLOSED
-} from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
-import { NameValuePair, Market, Tab} from "modules/portfolio/types";
+import { NameValuePair, Market } from "modules/portfolio/types";
 
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
@@ -20,7 +13,7 @@ export interface FilterBoxProps {
   bottomBarContent?: ReactNode;
   sortByOptions: Array<NameValuePair>;
   data: Array<Market>;
-  updateFilteredData: Function; 
+  updateFilteredData: Function;
   filterComp: Function;
   showFilterSearch?: Boolean;
   switchView: Function;
@@ -48,7 +41,6 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
     this.setState({search: input});
 
     const { data } = this.props;
-    const { search } = this.state;
     const filteredData = this.applySearch(input, data);
 
     this.props.updateFilteredData(filteredData);
@@ -56,7 +48,6 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
 
   applySearch = (input: string, filteredData: Array<Market>) => {
     const { filterComp } = this.props;
-    let { search } = this.state;
 
     filteredData = filteredData.filter(filterComp.bind(this, input));
 
@@ -91,7 +82,7 @@ export default class FilterSwitchBox extends React.Component<FilterBoxProps, Fil
         sortByOptions={sortByOptions}
         updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
-        rows={rows} 
+        rows={rows}
         isMobile={isMobile}
         label={data.length + " " + label}
       />

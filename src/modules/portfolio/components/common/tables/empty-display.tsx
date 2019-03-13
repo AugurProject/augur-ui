@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 
 import Styles from "modules/portfolio/components/common/tables/empty-display.styles";
 

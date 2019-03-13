@@ -1,10 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import classNames from "classnames";
 
 import getValue from "utils/get-value";
 
-import { SELL, BOUGHT, SOLD } from "modules/common-elements/constants";
 import { formatEther, formatShares } from "utils/format-number";
 import { PositionTypeLabel } from "modules/common-elements/labels";
 

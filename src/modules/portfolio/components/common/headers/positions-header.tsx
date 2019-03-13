@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import classNames from "classnames";
 
 import { EthPercentButton } from "modules/common-elements/buttons";
@@ -7,7 +7,7 @@ import Styles from "modules/portfolio/components/common/headers/data-table-heade
 import SharedStyles from "modules/portfolio/components/common/rows/open-order.styles";
 
 interface PositionsHeaderProps {
-  showPercent: Boolean; 
+  showPercent: Boolean;
   updateShowPercent: Function;
   extendedView?: Boolean;
 }
@@ -17,7 +17,7 @@ const PositionsHeader = (props: PositionsHeaderProps) => (
     className={classNames(
       Styles.DataTableHeader,
       Styles.PositionHeader,
-      { 
+      {
         [SharedStyles.Position]: !props.extendedView,
         [Styles.DataTableHeader__extended]: props.extendedView,
         [Styles.PositionHeader__extended]: props.extendedView

@@ -1,6 +1,5 @@
 import React from "react";
 
-import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import * as constants from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { PillSelection } from "modules/common-elements/selection";
@@ -29,8 +28,8 @@ export default class AccountOverview extends React.Component<AccountOverviewProp
     const { selected } = this.state;
 
     return (
-      <QuadBox 
-        title={constants.YOUR_OVERVIEW_TITLE} 
+      <QuadBox
+        title={constants.YOUR_OVERVIEW_TITLE}
         rightContent={<PillSelection options={constants.TIMEFRAME_OPTIONS} defaultSelection={constants.TIMEFRAME_OPTIONS[0].id} onChange={this.updateTimeSelection}/>}
         rows={
           <div className={Styles.AccountOverview}>

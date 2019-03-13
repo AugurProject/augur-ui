@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import { XIcon } from "modules/common-elements/icons";
 import { DefaultButtonProps, PrimaryButton, SecondaryButton, CompactButton } from "modules/common-elements/buttons";
-import { LinearPropertyLabel, LinearPropertyLabelProps, PropertyLabel, PropertyLabelProps } from "modules/common-elements/labels";
+import { LinearPropertyLabel, LinearPropertyLabelProps, PropertyLabel } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
 
 interface ModalTitleProps {
@@ -60,7 +60,7 @@ interface ModalMarketActionRowsProps {
 };
 
 
-export const ModalTitle = (props: ModalTitleProps) => 
+export const ModalTitle = (props: ModalTitleProps) =>
   <>
     <h1>{props.title}</h1>
     {props.closeAction &&
@@ -95,7 +95,7 @@ export const ModalMarketTitle = (props: ModalMarketTitleProps) => <h2>{props.tit
 
 export const ModalCallToAction = (props: ModalCallToActionProps) => <h3>{props.callToAction}</h3>;
 
-export const ModalSelectableTable = (props: ModalSelectableTableProps) => 
+export const ModalSelectableTable = (props: ModalSelectableTableProps) =>
   (<div className={Styles.SelectableModalTable}>
     {props.tableData.map((row: SelectableTableRow) => (
       <button key={`row_${row.columns[0]}`} onClick={() => row.action()}>
@@ -109,7 +109,7 @@ export const ModalBreakdown = (props: ModalBreakdownProps) =>
     {props.rows.map((row: LinearPropertyLabelProps) => <LinearPropertyLabel {...row} key={row.label} />)}
   </div>;
 
-export const ModalMarketActionRows = (props: ModalMarketActionRowsProps) => 
+export const ModalMarketActionRows = (props: ModalMarketActionRowsProps) =>
   props.rows.map((row: MarketActionRow) => (
     <section key={row.title} className={Styles.ModalMarketActionRow}>
       <section>

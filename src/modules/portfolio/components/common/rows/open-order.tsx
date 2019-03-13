@@ -1,12 +1,10 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import classNames from "classnames";
 
 import { LinearPropertyLabel, PendingLabel, PositionTypeLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
 import { CancelTextButton } from "modules/common-elements/buttons";
-import { SELL } from "modules/common-elements/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
 
@@ -44,7 +42,7 @@ const OpenOrder = (props: OpenOrderProps) => {
       {extendedView && <li>{tokensEscrowed}</li>}
       {extendedView && <li>{sharesEscrowed}</li>}
       <li>
-        {openOrder.cancelOrder && 
+        {openOrder.cancelOrder &&
           <CancelTextButton disabled={openOrder.pending} action={e => {
             e.stopPropagation();
             openOrder.cancelOrder(openOrder);

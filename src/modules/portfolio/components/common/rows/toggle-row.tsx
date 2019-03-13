@@ -1,5 +1,4 @@
-import React, { Component, ReactNode } from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 import classNames from "classnames";
 
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
@@ -34,7 +33,7 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
     const { open } = this.state;
 
     return (
-      <div 
+      <div
         className={
             Styles.ToggleRow
         }
@@ -43,7 +42,7 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
           classNames(
             className,
             Styles.ToggleRow__row, {
-              [Styles.ToggleRow__rowActive]: open, 
+              [Styles.ToggleRow__rowActive]: open,
             }
           )
         } onClick={this.toggleRow}>
@@ -62,7 +61,7 @@ export default class ToggleRow extends React.Component<ToggleRowProps, ToggleRow
             </div>
           </div>
         </div>
-        {open && 
+        {open &&
           <div>
             {toggleContent}
           </div>

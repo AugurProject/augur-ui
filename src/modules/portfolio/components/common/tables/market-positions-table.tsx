@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 
 import PositionsHeader from "modules/portfolio/components/common/headers/positions-header";
 import PositionRow from "modules/portfolio/components/common/rows/position-row";
-import { Market, Position } from "modules/portfolio/types";
+import { Position } from "modules/portfolio/types";
 import classNames from "classnames";
 import CompleteSets from "modules/market/components/complete-sets/complete-sets";
 
@@ -34,7 +33,7 @@ export class MarketPositionsTable extends React.Component<MarketPositionsTablePr
   }
 
   render() {
-   
+
     const {
       positions,
       numCompleteSets,

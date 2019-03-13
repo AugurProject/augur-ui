@@ -3,7 +3,6 @@ import Styles from "modules/common-elements/progress.styles";
 import * as format from "utils/format-date";
 import classNames from "classnames";
 import { constants } from "services/augurjs";
-import * as localConstants from "modules/common-elements/constants";
 
 export interface DateFormattedObject {
   value: Date;
@@ -62,8 +61,8 @@ const formatTime = (time: DateFormattedObject | number) => {
 }
 
 const reportingStateToLabelTime = (
-  reportingState: string, 
-  endTime: DateFormattedObject, 
+  reportingState: string,
+  endTime: DateFormattedObject,
   reportingEndTime: DateFormattedObject
 ) => {
   const { REPORTING_STATE } = constants;
@@ -106,7 +105,7 @@ const reportingStateToLabelTime = (
       break;
   }
 
-  return { label, time }; 
+  return { label, time };
 }
 
 export const MarketProgress = (props: MarketProgressProps) => {
@@ -154,7 +153,7 @@ export const CountdownProgress = (props: CountdownProgressProps) => {
   }
   const breakpointOne = (timeLeft <= firstBreakpoint && timeLeft > secondBreakpoint && countdown);
   const breakpointTwo = (timeLeft <= secondBreakpoint && countdown);
-    
+
   return (
     <span className={classNames(Styles.ProgressLabel,{
       [Styles.ProgressLabel__FirstBreakpoint]: breakpointOne,
@@ -225,7 +224,7 @@ export const MarketTimeline =  (props: TimeProgressBarProps) => {
   const currentTimestamp = formattedCurrentTime.timestamp;
   const endTimestamp = formattedEndTime.timestamp;
   const hasPassed = currentTimestamp > endTimestamp;
-  const endLabel = hasPassed ? "Expired" : "Expires"; 
+  const endLabel = hasPassed ? "Expired" : "Expires";
   return (
     <div className={Styles.MarketTimeline}>
       <div data-start-label="Created" data-end-label={endLabel} />
@@ -237,4 +236,3 @@ export const MarketTimeline =  (props: TimeProgressBarProps) => {
     </div>
   );
 };
-  

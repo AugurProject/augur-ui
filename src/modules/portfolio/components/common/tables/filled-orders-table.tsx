@@ -1,7 +1,6 @@
 /* eslint react/no-array-index-key: 0 */
 
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 
 import { formatShares } from "utils/format-number";
 import { FilledOrder } from "modules/portfolio/types";

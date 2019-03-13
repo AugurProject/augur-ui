@@ -1,5 +1,4 @@
-import React, { Component, ReactNode } from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 import classNames from "classnames";
 
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row.tsx";
@@ -51,7 +50,7 @@ const MarketRow = (props: MarketRowProps) => {
           <MarketLink id={props.market.id}>
             {props.market.description}
           </MarketLink>
-        </span> 
+        </span>
       </div>
       <span className={classNames(Styles.MarketRow__time, {[Styles.MarketRow__timeShow]: props.showState})}>
         {props.rightContent}
@@ -61,7 +60,7 @@ const MarketRow = (props: MarketRowProps) => {
 
   return (
     <div className={Styles.MarketRow__container}>
-      {props.noToggle ? 
+      {props.noToggle ?
         content
         : <ToggleRow
           arrowClassName={Styles.MarketRow__Arrow}

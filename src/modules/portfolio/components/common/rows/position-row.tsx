@@ -1,8 +1,5 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import classNames from "classnames";
-
-import { LONG } from "modules/common-elements/constants";
 
 import { LinearPropertyLabelPercent, PositionTypeLabel } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";

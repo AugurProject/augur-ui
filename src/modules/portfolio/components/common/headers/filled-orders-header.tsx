@@ -1,10 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import classNames from "classnames";
 
 import Styles from "modules/portfolio/components/common/headers/data-table-header.styles";
-import SharedStyles from "modules/portfolio/components/common/rows/open-order.styles";
 
-interface FilledOrdersHeaderProps { 
+interface FilledOrdersHeaderProps {
   extendedView?: boolean;
 }
 
@@ -22,7 +21,7 @@ const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
     <li>Type</li>
     {!props.extendedView && <li>Quantity</li>}
     <li>
-      Quantity 
+      Quantity
       <br />
       Filled
     </li>

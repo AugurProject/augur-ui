@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { AWAITING_SIGNATURE, PENDING } from "modules/common-elements/constants";
 import { CompactButton } from "modules/common-elements/buttons";
 import Styles from "modules/market/components/complete-sets/complete-sets.styles";
