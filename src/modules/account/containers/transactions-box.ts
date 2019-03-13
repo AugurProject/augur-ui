@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(closeModal());
     dispatch(transferFunds(amount, asset, to));
   },
-  withdrawReviewModal: (modal: object) =>
+  withdrawReviewModal: (modal: Object) =>
     dispatch(
       updateModal({
         type: MODAL_REVIEW,

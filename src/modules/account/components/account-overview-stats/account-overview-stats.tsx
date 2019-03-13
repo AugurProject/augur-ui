@@ -4,8 +4,8 @@ import { LinearPropertyLabel } from "modules/common-elements/labels";
 
 import Styles from "modules/account/components/account-overview-stats/account-overview-stats.styles";
 
-export interface AccountOverviewProps {
-  properties: Array<KeyValuePair>;
+export interface AccountOverviewStatsProps {
+  properties: Array<any>;
 }
 
 const AccountOverviewStats = (props: AccountOverviewStatsProps) => (

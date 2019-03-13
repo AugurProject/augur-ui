@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import classNames from "classnames";
 
 import { Syncing as SyncingIcon, ImmediateImportance } from "modules/common-elements/icons";
@@ -7,7 +7,7 @@ import * as constants from "modules/common-elements/constants";
 import Styles from "modules/account/components/augur-status/sync-status.styles";
 
 export interface dataProps {
-  status: JSX.Element;
+  status: ReactNode;
   message: string;
 }
 

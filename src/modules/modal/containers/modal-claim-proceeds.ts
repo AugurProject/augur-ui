@@ -34,7 +34,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   const marketIdsToTest = Object.keys(sP.accountShareBalances);
   const markets: Array<ModalMarketActionRowsProps> = [];
   const marketIds: Array<string> = [];
-  let totalProceeds: BigNumber = createBigNumber(0);
+  let totalProceeds: any = createBigNumber(0); // BigNumber @type required
   marketIdsToTest.forEach(marketId => {
     const market = selectMarket(marketId);
     if (market && market.reportingState === constants.REPORTING_STATE.FINALIZED) {
@@ -58,7 +58,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   return {
     title: "Claim Proceeds",
     alertMessage: {
-      preText: "You currently have a total of", 
+      preText: "You currently have a total of",
       boldText: totalProceeds.full,
       postText: `to be claimed in the following market${multiMarket && "s"}:`
     },
