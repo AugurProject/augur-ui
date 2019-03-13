@@ -17,6 +17,7 @@ import {
   SELL_COMPLETE_SETS_TITLE,
   CLAIM_REPORTING_FEES_TITLE,
   UNSIGNED_ORDERS_TITLE,
+  PROCEEDS_TO_CLAIM_TITLE,
   MARKET_CLOSED
 } from "modules/common-elements/constants";
 
@@ -116,6 +117,19 @@ export const selectMarketsInDispute = createSelector(
   }
 );
 
+// Get all unsigned orders
+export const selectProceedsToClaim = createSelector(selectMarkets, markets => {
+  if (markets.length > 0) {
+    return markets
+      .filter(
+        market => market.reportingState === constants.REPORTING_STATE.FINALIZED
+      )
+      .filter(market => market.outstandingReturns)
+      .map(getRequiredMarketData);
+  }
+  return [];
+});
+
 // Get reportingFees for signed in user
 export const selectUsersReportingFees = createSelector(
   selectReportingWindowStats,
@@ -156,6 +170,7 @@ export const selectNotifications = createSelector(
   selectMarketsInDispute,
   selectUsersReportingFees,
   selectUnsignedOrders,
+  selectProceedsToClaim,
   (
     reportOnMarkets,
     resolvedMarketsOpenOrder,
@@ -163,7 +178,8 @@ export const selectNotifications = createSelector(
     completeSetPositions,
     marketsInDispute,
     claimReportingFees,
-    unsignedOrders
+    unsignedOrders,
+    proceedsToClaim
   ) => {
     const reportOnMarketsNotifications = generateCards(
       reportOnMarkets,
@@ -190,13 +206,19 @@ export const selectNotifications = createSelector(
       NOTIFICATION_TYPES.unsignedOrders
     );
 
+    const proceedsToClaimNotifications = generateCards(
+      proceedsToClaim,
+      NOTIFICATION_TYPES.proceedsToClaim
+    );
+
     const notifications = [
       ...reportOnMarketsNotifications,
       ...resolvedMarketsOpenOrderNotifications,
       ...finalizeMarketsNotifications,
       ...completeSetPositionsNotifications,
       ...marketsInDisputeNotifications,
-      ...unsignedOrdersNotifications
+      ...unsignedOrdersNotifications,
+      ...proceedsToClaimNotifications
     ];
 
     if (
@@ -225,8 +247,9 @@ const getRequiredMarketData = market => ({
   endTime: market.endTime,
   reportingState: market.reportingState,
   marketStatus: market.marketStatus,
-  disputeInfo: market.disputeInfo ? market.disputeInfo : {},
-  myPositionsSummary: market.myPositionsSummary ? market.myPositionsSummary : {}
+  disputeInfo: market.disputeInfo || {},
+  myPositionsSummary: market.myPositionsSummary || {},
+  outstandingReturns: market.outstandingReturns || null
 });
 
 // Build notification objects and include market data
@@ -279,6 +302,14 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: false,
       title: UNSIGNED_ORDERS_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  } else if (type === NOTIFICATION_TYPES.proceedsToClaim) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: false,
+      title: PROCEEDS_TO_CLAIM_TITLE,
       buttonLabel: TYPE_VIEW
     };
   }

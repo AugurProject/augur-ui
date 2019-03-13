@@ -4,13 +4,22 @@ export interface DisputeInfo {
   disputeRound: number;
 }
 
+export interface MyPositionsSummary {
+  currentValue: object;
+  numCompleteSets: object;
+  totalPercent: object;
+  totalReturns: object;
+}
+
 export interface Market {
   id: string;
   description: string;
   reportingState: string;
   endTime: number;
   marketStatus: string;
-  disputeInfo?: DisputeInfo;
+  disputeInfo: DisputeInfo | null;
+  myPositionsSummary: MyPositionsSummary | null;
+  outstandingReturns: string | null;
 }
 
 export interface Notifications {

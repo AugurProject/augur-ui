@@ -14,11 +14,17 @@
   display: grid;
   grid-gap: 0.75rem;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 55vh);
+  grid-template-rows: repeat(2, 65vh);
   margin: 0 2.5rem 2.5rem;
 
   > div {
     max-height: 100%;
+  }
+
+  > div:nth-of-type(2) {
+    > div:nth-of-type(2) {
+      background: @color-secondary-action;
+    }
   }
 }
 
