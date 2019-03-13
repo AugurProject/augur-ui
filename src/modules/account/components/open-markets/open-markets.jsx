@@ -44,7 +44,7 @@ export default class OpenMarkets extends Component {
         updateFilteredData={this.updateFilteredMarkets}
         data={markets}
         filterComp={filterComp}
-        bottomBarContent={<div />}
+        bottomBarContent={<div className={Styles.BottomBar}>24hr Change</div>}
         label="Open Markets"
         noSwitch
         rows={
