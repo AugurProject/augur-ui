@@ -75,6 +75,11 @@
       stroke: @color-secondary-text;
     }
   }
+
+  &:active,
+  &:hover {
+    outline: none;
+  }
 }
 
 div.Dropdown__stretchOut {
@@ -141,6 +146,11 @@ div.Dropdown__stretchOut {
   height: 2rem;
   max-width: fit-content;
   padding: @size-10 @size-12;
+
+  &:active,
+  &:hover {
+    outline: none;
+  }
 
   > .Dropdown__label {
     .text-10;
