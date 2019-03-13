@@ -4,6 +4,12 @@ export interface NameValuePair {
   comp: Function|null;
 }
 
+export interface KeyValuePair {
+  key: string,
+  label: string,
+  value: number
+}
+
 export interface Order {
 	id: number,
   pending?: Boolean,
