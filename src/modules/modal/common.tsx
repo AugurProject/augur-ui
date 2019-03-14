@@ -1,7 +1,9 @@
 import React from "react";
 import classNames from "classnames";
 
-import { XIcon } from "modules/common-elements/icons";
+import QRCode from "qrcode.react";
+import Clipboard from "clipboard";
+import { XIcon, CopyIcon } from "modules/common-elements/icons";
 import {
   DefaultButtonProps,
   PrimaryButton,
@@ -66,6 +68,13 @@ interface ActionRow {
 
 interface ActionRowsProps {
   rows: Array<ActionRow>;
+}
+
+interface ReadableAddressProps {
+  address: string;
+  copyable?: boolean;
+  showQR?: boolean;
+  title?: string;
 }
 
 export const Title = (props: TitleProps) => (
@@ -141,3 +150,24 @@ export const ActionRows = (props: ActionRowsProps) =>
       <CompactButton text={row.text} action={row.action} />
     </section>
   ));
+
+export const ReadableAddress = (props: ReadableAddressProps) => {
+  const clipboard = new Clipboard("#copy_address"); // eslint-disable-line
+  return (
+    <div className={Styles.ReadableAddress}>
+      {props.title && <h4>{props.title}</h4>}
+      {props.showQR && (
+        <QRCode
+          value={props.address}
+          style={{ width: "120px", height: "120px" }}
+        />
+      )}
+      <span>{props.address}</span>
+      {props.copyable && (
+        <button id="copy_address" data-clipboard-text={props.address}>
+          {CopyIcon} copy
+        </button>
+      )}
+    </div>
+  );
+};

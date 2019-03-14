@@ -15,6 +15,7 @@ interface TransactionsBoxProps {
   rep: number | string;
   gasPrice: string;
   repFaucet: Function;
+  deposit: Function;
   transferFunds: Function;
   withdrawReviewModal: Function;
   closeModal: Function;
@@ -25,7 +26,7 @@ export const TransactionsBox = (props: TransactionsBoxProps) => (
     title="Transactions"
     content={
       <div className={Styles.TransactionsBoxContent}>
-        <DepositButton action={console.log} />
+        <DepositButton action={props.deposit} />
         <WithdrawButton action={console.log} />
         <p>View and download your transactions history here</p>
         <ViewTransactionsButton action={console.log} />
