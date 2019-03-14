@@ -24,6 +24,7 @@ export interface NotificationsProps {
   reportingWindowStatsEndTime: number;
   sellCompleteSetsModal: Function;
   finalizeMarketModal: Function;
+  claimTradingProceeds: Function;
 }
 
 const {
@@ -95,7 +96,8 @@ class Notifications extends React.Component<NotificationsProps> {
         };
       } else if (notificaction.type === proceedsToClaim) {
         options = {
-          buttonAction: () => null,
+          buttonAction: () =>
+            this.props.claimTradingProceeds(notificaction.markets),
           Template: ProceedsToClaimTemplate
         };
       }
