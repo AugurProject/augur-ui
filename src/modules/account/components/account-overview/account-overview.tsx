@@ -4,7 +4,7 @@ import * as constants from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { PillSelection } from "modules/common-elements/selection";
 import AccountOverviewStats from "modules/account/containers/account-overview-stats";
-
+import AccountOverviewChart from "modules/account/containers/account-overview-chart";
 import Styles from "modules/account/components/account-overview/account-overview.styles";
 
 export interface AccountOverviewProps {}
@@ -49,6 +49,7 @@ export default class AccountOverview extends React.Component<
         content={
           <div className={Styles.AccountOverview}>
             <AccountOverviewStats timeframe={selected} />
+            <AccountOverviewChart timeframe={selected} />
           </div>
         }
       />

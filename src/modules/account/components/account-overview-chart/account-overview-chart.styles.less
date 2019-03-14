@@ -1,0 +1,104 @@
+@import (reference) "~assets/styles/shared";
+
+.AccountOverviewChart {
+  display: flex;
+  flex: 1 100%;
+  flex-direction: column;
+  justify-content: center;
+
+  > span {
+    color: @color-shadow-text;
+  }
+}
+
+.AccountOverviewChart_chart {
+  padding-left: 0.5rem;
+  position: relative;
+
+  svg {
+    :global {
+      .highcharts-background {
+        fill: @color-theme-primary;
+      }
+
+      g.highcharts-axis-labels > text > tspan {
+        .mono-9;
+
+        color: @color-neutral;
+        fill: @color-neutral;
+      }
+
+      .highcharts-yaxis-labels,
+      .highcharts-label {
+        .mono-9;
+
+        fill: @color-neutral;
+      }
+
+      .highcharts-no-data {
+        font-size: @size-16;
+      }
+
+      .highcharts-label-box {
+        fill: @color-theme-primary;
+        font-weight: bold;
+
+        > text > tspan:last-child {
+          font-size: @size-12;
+        }
+      }
+
+      .highcharts-tick,
+      .highcharts-axis-line {
+        stroke: fade(@color-secondary-text, 40%);
+      }
+
+      .highcharts-xaxis-grid,
+      g.highcharts-yaxis-grid path.highcharts-grid-line:nth-child(1),
+      g.highcharts-yaxis path.highcharts-axis-line {
+        display: none;
+      }
+
+      .highcharts-yaxis-grid {
+        .dashline-long;
+
+        .highcharts-grid-line {
+          stroke: fade(@color-secondary-text, 40%);
+        }
+      }
+
+      .highcharts-xaxis-category {
+        display: none;
+      }
+
+      .highcharts-crosshair-label.highcharts-crosshair-label > .highcharts-label-box {
+        stroke: @color-secondary-text;
+      }
+
+      .eth-label {
+        font-size: @size-9;
+      }
+
+      // --- area styling
+      .highcharts-area {
+        opacity: 0.4;
+      }
+
+      .highcharts-area-series.highcharts-color-0 > path.highcharts-graph {
+        stroke: @color-primary-action;
+      }
+
+      .highcharts-area-series.highcharts-halo.highcharts-color-0 {
+        fill: @color-primary-action;
+        stroke: @color-primary-action;
+      }
+
+      .highcharts-area-series.highcharts-series-hover,
+      .highcharts-area-series.highcharts-color-0.highcharts-tracker > path,
+      .highcharts-area-series > .highcharts-area {
+        fill: @color-primary-action;
+        stroke: @color-primary-action;
+      }
+    }
+  }
+}

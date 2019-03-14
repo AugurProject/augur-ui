@@ -557,7 +557,7 @@ export const VOLUME_ETH_SHARES = [
 
 // Account Summary - Your Overview
 export const YOUR_OVERVIEW_TITLE = "Your Overview";
-
+export const PROFIT_LOSS_CHART_TITLE = "Profit and Loss (ETH)";
 // Account Summary - Augur Status
 export const AUGUR_STATUS_TITLE = "Augur Status";
 export const SYNCING_TITLE = "Syncing market Data";
@@ -615,8 +615,8 @@ export const TIMEFRAMES = {
 };
 
 export const TIMEFRAME_OPTIONS = [
-  { label: TIMEFRAMES.DAY, id: 0 },
-  { label: TIMEFRAMES.WEEK, id: 1 },
-  { label: TIMEFRAMES.MONTH, id: 2 },
-  { label: TIMEFRAMES.ALL, id: 3 }
+  { label: TIMEFRAMES.DAY, periodInterval: 86400, id: 0 },
+  { label: TIMEFRAMES.WEEK, periodInterval: 604800, id: 1 },
+  { label: TIMEFRAMES.MONTH, periodInterval: 2592000, id: 2 },
+  { label: TIMEFRAMES.ALL, periodInterval: 0, id: 3 }
 ];
