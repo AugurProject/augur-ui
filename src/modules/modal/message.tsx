@@ -11,7 +11,9 @@ import {
   MarketTitle,
   CallToAction,
   LinearPropertyLabelProps,
-  Breakdown
+  Breakdown,
+  ReadableAddress,
+  ReadableAddressProps
 } from "modules/modal/common";
 import Styles from "modules/modal/modal.styles";
 
@@ -24,6 +26,7 @@ interface MessageProps {
   callToAction?: string;
   description?: DescriptionProps;
   breakdown?: Array<LinearPropertyLabelProps>;
+  readableAddress?: ReadableAddressProps;
 }
 
 export const Message = (props: MessageProps) => (
@@ -34,6 +37,7 @@ export const Message = (props: MessageProps) => (
     {props.callToAction && <CallToAction callToAction={props.callToAction} />}
     {props.description && <Description description={props.description} />}
     {props.breakdown && <Breakdown rows={props.breakdown} />}
+    {props.readableAddress && <ReadableAddress {...props.readableAddress} />}
     <ButtonsRow buttons={props.buttons} />
   </div>
 );

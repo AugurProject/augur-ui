@@ -349,7 +349,18 @@
   font-size: @size-11;
 
   > svg {
-    margin-right: 0.25rem;
+    fill: none;
+    height: @size-10;
+    margin-right: @size-4;
+    width: @size-10;
+
+    > path:nth-child(odd) {
+      fill: @color-neutral;
+    }
+
+    > path:nth-child(even) {
+      stroke: @color-neutral;
+    }
   }
 
   > span > a {
@@ -357,12 +368,18 @@
   }
 
   &:hover {
-    > svg > path {
-      fill: @color-white;
+    > svg {
+      > path:nth-child(odd) {
+        fill: @color-secondary-text;
+      }
+
+      > path:nth-child(even) {
+        stroke: @color-secondary-text;
+      }
     }
 
     > span > a {
-      color: @color-white;
+      color: @color-secondary-text;
     }
   }
 }
