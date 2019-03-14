@@ -117,7 +117,7 @@ export const selectMarketsInDispute = createSelector(
   }
 );
 
-// Get all unsigned orders
+// Get all markets where the user has outstanding returns
 export const selectProceedsToClaim = createSelector(selectMarkets, markets => {
   if (markets.length > 0) {
     return markets
@@ -206,26 +206,20 @@ export const selectNotifications = createSelector(
       NOTIFICATION_TYPES.unsignedOrders
     );
 
-    const proceedsToClaimNotifications = generateCards(
-      proceedsToClaim,
-      NOTIFICATION_TYPES.proceedsToClaim
-    );
-
-    const notifications = [
+    let notifications = [
       ...reportOnMarketsNotifications,
       ...resolvedMarketsOpenOrderNotifications,
       ...finalizeMarketsNotifications,
       ...completeSetPositionsNotifications,
       ...marketsInDisputeNotifications,
-      ...unsignedOrdersNotifications,
-      ...proceedsToClaimNotifications
+      ...unsignedOrdersNotifications
     ];
 
     if (
       claimReportingFees &&
       (claimReportingFees.unclaimedEth && claimReportingFees.unclaimedRep)
     ) {
-      return notifications.concat({
+      notifications = notifications.concat({
         type: NOTIFICATION_TYPES.claimReportingFees,
         isImportant: false,
         isNew: false,
@@ -234,6 +228,29 @@ export const selectNotifications = createSelector(
         market: null,
         claimReportingFees
       });
+    }
+
+    if (proceedsToClaim && proceedsToClaim.length > 0) {
+      let totalEth = 0;
+
+      const marketIds = proceedsToClaim.map(market => market.id);
+
+      proceedsToClaim.forEach(market => {
+        totalEth += Number(market.outstandingReturns || 0);
+      });
+
+      if (totalEth && marketIds.length > 0) {
+        notifications = notifications.concat({
+          type: NOTIFICATION_TYPES.proceedsToClaim,
+          isImportant: false,
+          isNew: false,
+          title: PROCEEDS_TO_CLAIM_TITLE,
+          buttonLabel: TYPE_VIEW,
+          market: null,
+          marketes: marketIds,
+          totalProceeds: totalEth
+        });
+      }
     }
 
     return notifications;
@@ -302,14 +319,6 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: false,
       title: UNSIGNED_ORDERS_TITLE,
-      buttonLabel: TYPE_VIEW
-    };
-  } else if (type === NOTIFICATION_TYPES.proceedsToClaim) {
-    defaults = {
-      type,
-      isImportant: false,
-      isNew: false,
-      title: PROCEEDS_TO_CLAIM_TITLE,
       buttonLabel: TYPE_VIEW
     };
   }

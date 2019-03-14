@@ -164,11 +164,11 @@ export const ClaimReportingFeesTemplate = (props: any) => {
 };
 
 export const ProceedsToClaimTemplate = (props: any) => {
-  const { outstandingReturns, description } = props.market;
+  const { totalProceeds } = props;
   return (
     <Template
-      message={`You currently have ${outstandingReturns} ETH available to be claimed. for the market: ${description}. Please review and claim your winnings.`}
-      market={props.market}
+      message={`You currently have ${totalProceeds} ETH available to be claimed. Please review and claim your winnings.`}
+      market={null}
       currentTime={props.currentTime}
       reportingWindowEndtime={null}
     />
