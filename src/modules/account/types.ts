@@ -5,10 +5,10 @@ export interface DisputeInfo {
 }
 
 export interface MyPositionsSummary {
-  currentValue: object;
-  numCompleteSets: object;
-  totalPercent: object;
-  totalReturns: object;
+  currentValue: Object;
+  numCompleteSets: Object;
+  totalPercent: Object;
+  totalReturns: Object;
 }
 
 export interface Market {

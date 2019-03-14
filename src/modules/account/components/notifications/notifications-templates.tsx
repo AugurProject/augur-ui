@@ -167,7 +167,7 @@ export const ProceedsToClaimTemplate = (props: any) => {
   const { outstandingReturns, description } = props.market;
   return (
     <Template
-      message={`You currently have ${outstandingReturns} ETH available to be claimed for market: ${description}. Please review and claim your winnings.`}
+      message={`You currently have ${outstandingReturns} ETH available to be claimed. for the market: ${description}. Please review and claim your winnings.`}
       market={props.market}
       currentTime={props.currentTime}
       reportingWindowEndtime={null}
