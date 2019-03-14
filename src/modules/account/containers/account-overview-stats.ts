@@ -1,7 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import AccountOverviewStats from "modules/account/components/account-overview-stats/account-overview-stats";
 import getValue from "utils/get-value";
 import OverviewStats from "modules/account/components/overview-stats/overview-stats";
 
