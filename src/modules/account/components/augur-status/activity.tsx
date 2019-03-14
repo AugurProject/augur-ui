@@ -6,7 +6,9 @@ import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/augur-status/activity.styles";
 
-export interface ActivityProps {}
+export interface ActivityProps {
+  updatePlatformTimeframeData: Function;
+}
 
 interface ActivityState {
   selected: number;
@@ -20,8 +22,15 @@ export default class Activity extends React.Component<
     selected: constants.TIMEFRAME_OPTIONS[0].id
   };
 
+  componentDidMount() {
+    this.props.updatePlatformTimeframeData({
+      endTime: constants.TIMEFRAME_OPTIONS[0].id
+    });
+  }
+
   updateTimeSelection = id => {
     this.setState({ selected: id });
+    this.props.updatePlatformTimeframeData({ endTime: id });
   };
 
   render() {
