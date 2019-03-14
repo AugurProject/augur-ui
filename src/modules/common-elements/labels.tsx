@@ -6,10 +6,11 @@ import { ClipLoader } from "react-spinners";
 import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
+import { createBigNumber } from "utils/create-big-number";
 import {
   DashlineNormal
 } from "modules/common/components/dashline/dashline";
-import { SELL, BOUGHT, SOLD, CLOSED, SHORT } from "modules/common-elements/constants";
+import { SELL, BOUGHT, SOLD, CLOSED, SHORT, ZERO } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
 enum SizeTypes {
@@ -105,10 +106,11 @@ export interface ValueLabelProps {
 
 export const ValueLabel = (props: ValueLabelProps) => {
   if (!props.value || props.value === null) return (<span />);
-  const { fullPrecision, rounded, denomination, value } = props.value;
+  const { fullPrecision, rounded, denomination } = props.value;
   const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
-  const isGreaterThan1k = value > 1000;
-  const isLessThan1k = value < 0.0001 && value !== 0;
+  const testValue = createBigNumber(fullPrecision);
+  const isGreaterThan1k = testValue.gt("1000");
+  const isLessThan1k = testValue.lt("0.0001") && !testValue.eq(ZERO);
   const postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
   const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
   const denominationLabel = props.showDenomination ? `${denomination}` : "";
