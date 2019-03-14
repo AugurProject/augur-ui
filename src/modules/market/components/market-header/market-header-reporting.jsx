@@ -13,7 +13,7 @@ import {
   TYPE_DISPUTE,
   TYPE_REPORT
 } from "modules/common-elements/constants";
-import { createBigNumber } from "utils/create-big-number";
+import canClaimProceeds from "utils/can-claim-proceeds";
 
 export default class MarketHeaderReporting extends Component {
   static propTypes = {
@@ -60,16 +60,12 @@ export default class MarketHeaderReporting extends Component {
     } = market;
 
     let CatWinnerColorIndex = null;
-    let canClaim = false;
-    if (finalizationTime && outstandingReturns) {
-      const endTimestamp = createBigNumber(finalizationTime).plus(
-        createBigNumber(constants.CONTRACT_INTERVAL.CLAIM_PROCEEDS_WAIT_TIME)
-      );
-      const timeHasPassed = createBigNumber(currentTimestamp).minus(
-        endTimestamp
-      );
-      canClaim = timeHasPassed.toNumber() > 0;
-    }
+    const canClaim = canClaimProceeds(
+      finalizationTime,
+      outstandingReturns,
+      currentTimestamp
+    );
+
     if (market.marketType === CATEGORICAL) {
       if (tentativeWinner && tentativeWinner.id) {
         CatWinnerColorIndex = (parseInt(tentativeWinner.id, 10) + 1).toString();

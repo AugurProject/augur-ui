@@ -3,9 +3,12 @@ import { selectMarkets } from "src/modules/markets/selectors/markets-all";
 import {
   selectLoginAccountAddress,
   selectReportingWindowStats,
-  selectPendingLiquidityOrders
+  selectPendingLiquidityOrders,
+  selectCurrentTimestamp
 } from "src/select-state";
 
+import { createBigNumber } from "utils/create-big-number";
+import canClaimProceeds from "utils/can-claim-proceeds";
 import { constants } from "services/constants";
 import {
   NOTIFICATION_TYPES,
@@ -118,17 +121,29 @@ export const selectMarketsInDispute = createSelector(
 );
 
 // Get all markets where the user has outstanding returns
-export const selectProceedsToClaim = createSelector(selectMarkets, markets => {
-  if (markets.length > 0) {
-    return markets
-      .filter(
-        market => market.reportingState === constants.REPORTING_STATE.FINALIZED
-      )
-      .filter(market => market.outstandingReturns)
-      .map(getRequiredMarketData);
+export const selectProceedsToClaim = createSelector(
+  selectMarkets,
+  selectCurrentTimestamp,
+  (markets, currentTimestamp) => {
+    if (markets.length > 0 && currentTimestamp) {
+      return markets
+        .filter(
+          market =>
+            market.reportingState === constants.REPORTING_STATE.FINALIZED
+        )
+        .filter(market => market.outstandingReturns)
+        .filter(market =>
+          canClaimProceeds(
+            market.finalizationTime,
+            market.outstandingReturns,
+            currentTimestamp
+          )
+        )
+        .map(getRequiredMarketData);
+    }
+    return [];
   }
-  return [];
-});
+);
 
 // Get reportingFees for signed in user
 export const selectUsersReportingFees = createSelector(
@@ -231,15 +246,16 @@ export const selectNotifications = createSelector(
     }
 
     if (proceedsToClaim && proceedsToClaim.length > 0) {
-      let totalEth = 0;
+      let totalEth = createBigNumber(0);
 
       const marketIds = proceedsToClaim.map(market => market.id);
-
       proceedsToClaim.forEach(market => {
-        totalEth += Number(market.outstandingReturns || 0);
+        totalEth = totalEth.plus(
+          createBigNumber(Number(market.outstandingReturns || 0))
+        );
       });
 
-      if (totalEth && marketIds.length > 0) {
+      if (totalEth.toNumber() > 0 && marketIds.length > 0) {
         notifications = notifications.concat({
           type: NOTIFICATION_TYPES.proceedsToClaim,
           isImportant: false,
@@ -248,7 +264,7 @@ export const selectNotifications = createSelector(
           buttonLabel: TYPE_VIEW,
           market: null,
           marketes: marketIds,
-          totalProceeds: totalEth
+          totalProceeds: totalEth.toNumber()
         });
       }
     }
