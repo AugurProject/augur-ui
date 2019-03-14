@@ -12,14 +12,12 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
   getState
 ) => {
   const { universe, loginAccount } = getState();
-  if (loginAccount.address == null || universe.id == null) {
+  if (loginAccount.address == null || universe.id == null)
     return callback(null);
-  }
   augur.trading.getUserTradingPositions(
     { ...options, account: loginAccount.address, universe: universe.id },
     (err, positions) => {
       if (err) return callback(err);
-
       if (positions == null || positions.tradingPositions == null) {
         return callback(null);
       }
