@@ -49,6 +49,36 @@
   max-width: 12rem;
 }
 
+.ExpandedContent {
+  flex: 1;
+
+  > div {
+    align-items: center;
+    background: @color-secondary-action;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    padding: 0.5rem 3.375rem 0.5rem 2rem;
+
+    > span {
+      .text-11;
+
+      color: @color-tertiary-text;
+      flex: 1;
+    }
+  }
+}
+
+.BottomBar {
+  .text-10;
+
+  color: @color-tertiary-text;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  padding-right: 1.75rem;
+}
+
 @media @breakpoint-mobile {
   .Quad__info {
     max-width: unset;

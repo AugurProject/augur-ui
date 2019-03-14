@@ -47,7 +47,8 @@ export const positionSummary = memoize(
       totalValue: formatEther(currentValue),
       lastPrice: formatEther(outcome.price),
       totalReturns: formatEther(total || ZERO),
-      totalPercent: formatPercent(totalPercent || ZERO)
+      totalPercent: formatPercent(totalPercent || ZERO),
+      valueChange: formatPercent(ZERO)
     };
   },
   {
