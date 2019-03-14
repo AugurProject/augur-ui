@@ -21,6 +21,28 @@ export interface OverviewFundsProps {
 const OverviewFunds = (props: OverviewFundsProps) => {
   const { totalFrozenFunds, repBalance, repStaked } = props;
 
+  const tradingBalanceFrozenFunds = [
+    {
+      title: AVAILABLE_TRADING_BALANCE,
+      value: "000.0000" // TODO Available trading balance
+    },
+    {
+      title: TOTAL_FROZEN_FUNDS,
+      value: totalFrozenFunds
+    }
+  ];
+
+  const repBalanceStaked = [
+    {
+      title: REP_BALANCE,
+      value: repBalance
+    },
+    {
+      title: REP_STAKED,
+      value: repStaked
+    }
+  ];
+
   return (
     <div className={Styles.OverviewFundsContent}>
       <div>{TOTAL_ACCOUNT_VALUE_IN_ETH}</div>
@@ -37,56 +59,49 @@ const OverviewFunds = (props: OverviewFundsProps) => {
         {EthIcon}
       </div>
 
-      <BalanceFrozenFunds totalFrozenFunds={totalFrozenFunds} />
-
-      <RepBalanceStaked repStaked={repStaked} repBalance={repBalance} />
+      <FundDataRow
+        className={Styles.BalanceFrozenFunds}
+        columns={tradingBalanceFrozenFunds}
+        showRepLogo={false}
+        showEthLogo
+      />
+      <FundDataRow
+        className={Styles.RepBalanceStaked}
+        columns={repBalanceStaked}
+        showRepLogo
+        showEthLogo={false}
+      />
     </div>
   );
 };
 
-export interface BalanceFrozenFundsProps {
-  totalFrozenFunds: string;
+export interface FundDataRowProps {
+  className: string;
+  columns: Array<any>;
+  showRepLogo: boolean;
+  showEthLogo: boolean;
 }
 
-const BalanceFrozenFunds = (props: BalanceFrozenFundsProps) => (
-  <div className={Styles.BalanceFrozenFunds}>
+const FundDataRow = (props: FundDataRowProps) => {
+  const { columns, showRepLogo, showEthLogo } = props;
+
+  const rows = columns.map((value: any) => (
     <div>
-      <div>{AVAILABLE_TRADING_BALANCE}</div>
+      <div>{value.title}</div>
       <div>
-        000.0000 {/* TODO Available trading balance */}
-        {EthIcon}
+        {value.value}
+        {showEthLogo ? EthIcon : null}
       </div>
     </div>
+  ));
 
-    <div>
-      <div>{TOTAL_FROZEN_FUNDS}</div>
-      <div>
-        {props.totalFrozenFunds}
-        {EthIcon}
-      </div>
+  return (
+    <div className={props.className}>
+      {rows[0]}
+      {showRepLogo ? <div>{RepLogoIcon}</div> : null}
+      {rows[1]}
     </div>
-  </div>
-);
-
-export interface RepBalanceStakedProps {
-  repStaked: number;
-  repBalance: string;
-}
-
-const RepBalanceStaked = (props: RepBalanceStakedProps) => (
-  <div className={Styles.RepBalanceStaked}>
-    <div>
-      <div>{REP_BALANCE}</div>
-      <div>{props.repBalance}</div>
-    </div>
-
-    <div>{RepLogoIcon}</div>
-
-    <div>
-      <div>{REP_STAKED}</div>
-      <div>{props.repStaked}</div>
-    </div>
-  </div>
-);
+  );
+};
 
 export default OverviewFunds;
