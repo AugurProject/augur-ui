@@ -3,6 +3,7 @@ import React from "react";
 import * as constants from "modules/common-elements/constants";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { PillSelection } from "modules/common-elements/selection";
+import AccountOverviewFunds from "modules/account/containers/account-overview-funds";
 import AccountOverviewStats from "modules/account/containers/account-overview-stats";
 
 import Styles from "modules/account/components/account-overview/account-overview.styles";
@@ -48,6 +49,7 @@ export default class AccountOverview extends React.Component<
         }
         content={
           <div className={Styles.AccountOverview}>
+            <AccountOverviewFunds />
             <AccountOverviewStats timeframe={selected} />
           </div>
         }
