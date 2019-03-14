@@ -6,7 +6,8 @@ import { getReportingFees } from "modules/reports/actions/get-reporting-fees";
 import { updateModal } from "modules/modal/actions/update-modal";
 import {
   MODAL_FINALIZE_MARKET,
-  MODAL_SELL_COMPLETE_SETS
+  MODAL_SELL_COMPLETE_SETS,
+  MODAL_CLAIM_PROCEEDS
 } from "modules/common-elements/constants";
 
 // TODO create state Interface
@@ -29,7 +30,9 @@ const mapDispatchToProps = (dispatch: Function) => ({
   sellCompleteSetsModal: (marketId: any, numCompleteSets: any) =>
     dispatch(
       updateModal({ type: MODAL_SELL_COMPLETE_SETS, marketId, numCompleteSets })
-    )
+    ),
+  claimTradingProceeds: () =>
+    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS }))
 });
 
 const NotificationsContainer = connect(
