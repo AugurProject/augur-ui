@@ -2,7 +2,7 @@ import React from "react";
 
 import BlockStatus from "modules/account/components/augur-status/block-status";
 import SyncStatus from "modules/account/components/augur-status/sync-status";
-import Activity from "modules/account/components/augur-status/activity";
+import Activity from "modules/account/containers/activity";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import * as constants from "modules/common-elements/constants";
 

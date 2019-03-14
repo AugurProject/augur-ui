@@ -1,9 +1,7 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { find } from "lodash";
 
-import * as constants from "modules/common-elements/constants";
-
+import getValue from "utils/get-value";
 import OverviewStats from "modules/account/components/overview-stats/overview-stats";
 
 const mapStateToProps = state => ({
@@ -13,39 +11,36 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({});
 
 const mergeProps = (sP, dP, oP) => {
-  const timeframe = find(constants.TIMEFRAME_OPTIONS, { id: oP.timeframe })
-    .label;
-
   const properties = [
     {
       key: 0,
       label: "Active Users",
-      value: sP.timeframeData[timeframe].activeUsers
+      value: getValue(sP.timeframeData, "activeUsers")
     },
     {
       key: 1,
       label: "Open Interest",
-      value: sP.timeframeData[timeframe].openInterest
+      value: getValue(sP.timeframeData, "openInterest")
     },
     {
       key: 2,
       label: "Volume",
-      value: sP.timeframeData[timeframe].volume
+      value: getValue(sP.timeframeData, "volume")
     },
     {
       key: 3,
       label: "Trades",
-      value: sP.timeframeData[timeframe].numberOfTrades
+      value: getValue(sP.timeframeData, "numberOfTrades")
     },
     {
       key: 4,
       label: "Markets Created",
-      value: sP.timeframeData[timeframe].marketsCreated
+      value: getValue(sP.timeframeData, "marketsCreated")
     },
     {
       key: 5,
       label: "Money at Stake",
-      value: sP.timeframeData[timeframe].moneyStaked
+      value: getValue(sP.timeframeData, "moneyAtStake")
     }
   ];
 

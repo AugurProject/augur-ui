@@ -10,7 +10,7 @@ import loadCategories from "modules/categories/actions/load-categories";
 import { loadMarketsToReportOn } from "modules/reports/actions/load-markets-to-report-on";
 import logError from "utils/log-error";
 import { clearPendingOrders } from "modules/orders/actions/pending-orders-management";
-import { updateUniverseTimeframeData } from "modules/account/actions/update-universe-timeframe-data";
+import { updatePlatformTimeframeData } from "modules/account/actions/update-platform-timeframe-data";
 
 export const loadUniverse = (universeId, history, callback = logError) => (
   dispatch,
@@ -47,7 +47,7 @@ export const loadUniverse = (universeId, history, callback = logError) => (
       if (err) return callback(err);
       dispatch(updateUniverse({ ...staticUniverseData, id: universeId }));
       dispatch(updateUniverse(getReportingCycle()));
-      dispatch(updateUniverseTimeframeData());
+      dispatch(updatePlatformTimeframeData());
       dispatch(
         syncBlockchain(() => {
           dispatch(clearPendingOrders());
