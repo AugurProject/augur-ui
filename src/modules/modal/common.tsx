@@ -15,35 +15,35 @@ import {
 } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
 
-interface ModalTitleProps {
+interface TitleProps {
   title: string;
   closeAction: Function;
 }
 
-interface ModalDescriptionProps {
+interface DescriptionProps {
   description: Array<string>;
 }
 
-interface ModalButtonsRowProps {
+interface ButtonsRowProps {
   buttons: Array<DefaultButtonProps>;
 }
 
-interface ModalAlertMessageProps {
+interface AlertMessageProps {
   preText: string;
   boldText?: string;
   postText?: string;
 }
 
-interface ModalCallToActionProps {
+interface CallToActionProps {
   callToAction: string;
 }
 
-interface ModalBreakdownProps {
+interface BreakdownProps {
   rows: Array<Array<LinearPropertyLabelProps>>;
   short?: boolean;
 }
 
-interface ModalMarketTitleProps {
+interface MarketTitleProps {
   title: string;
 }
 
@@ -52,11 +52,11 @@ interface SelectableTableRow {
   action: Function;
 }
 
-interface ModalSelectableTableProps {
+interface SelectableTableProps {
   tableData: Array<SelectableTableRow>;
 }
 
-interface MarketActionRow {
+interface ActionRow {
   title: string;
   text: string;
   label: string;
@@ -64,11 +64,11 @@ interface MarketActionRow {
   action: Function;
 }
 
-interface ModalMarketActionRowsProps {
-  rows: Array<MarketActionRow>;
+interface ActionRowsProps {
+  rows: Array<ActionRow>;
 }
 
-export const ModalTitle = (props: ModalTitleProps) => (
+export const Title = (props: TitleProps) => (
   <>
     <h1>{props.title}</h1>
     {props.closeAction && (
@@ -77,12 +77,12 @@ export const ModalTitle = (props: ModalTitleProps) => (
   </>
 );
 
-export const ModalDescription = (props: ModalDescriptionProps) =>
+export const Description = (props: DescriptionProps) =>
   props.description.map((descriptionText: string) => (
     <p key={descriptionText.slice(20).replace(" ", "-")}>{descriptionText}</p>
   ));
 
-export const ModalButtonsRow = (props: ModalButtonsRowProps) => (
+export const ButtonsRow = (props: ButtonsRowProps) => (
   <div>
     {props.buttons.map((Button: DefaultButtonProps, index: number) => {
       if (index === 0) return <PrimaryButton key={Button.text} {...Button} />;
@@ -91,7 +91,7 @@ export const ModalButtonsRow = (props: ModalButtonsRowProps) => (
   </div>
 );
 
-export const ModalAlertMessage = (props: ModalAlertMessageProps) => (
+export const AlertMessage = (props: AlertMessageProps) => (
   <div className={Styles.AlertMessage}>
     {props.preText}
     {props.boldText && (
@@ -105,16 +105,14 @@ export const ModalAlertMessage = (props: ModalAlertMessageProps) => (
   </div>
 );
 
-export const ModalMarketTitle = (props: ModalMarketTitleProps) => (
-  <h2>{props.title}</h2>
-);
+export const MarketTitle = (props: MarketTitleProps) => <h2>{props.title}</h2>;
 
-export const ModalCallToAction = (props: ModalCallToActionProps) => (
+export const CallToAction = (props: CallToActionProps) => (
   <h3>{props.callToAction}</h3>
 );
 
-export const ModalSelectableTable = (props: ModalSelectableTableProps) => (
-  <div className={Styles.SelectableModalTable}>
+export const SelectableTable = (props: SelectableTableProps) => (
+  <div className={Styles.SelectableTable}>
     {props.tableData.map((row: SelectableTableRow) => (
       <button key={`row_${row.columns[0]}`} onClick={() => row.action()}>
         {row.columns.map((columnText: string | number) => (
@@ -125,7 +123,7 @@ export const ModalSelectableTable = (props: ModalSelectableTableProps) => (
   </div>
 );
 
-export const ModalBreakdown = (props: ModalBreakdownProps) => (
+export const Breakdown = (props: BreakdownProps) => (
   <div className={classNames({ [Styles.ShortBreakdown]: props.short })}>
     {props.rows.map((row: LinearPropertyLabelProps) => (
       <LinearPropertyLabel {...row} key={row.label} />
@@ -133,11 +131,11 @@ export const ModalBreakdown = (props: ModalBreakdownProps) => (
   </div>
 );
 
-export const ModalMarketActionRows = (props: ModalMarketActionRowsProps) =>
-  props.rows.map((row: MarketActionRow) => (
-    <section key={row.title} className={Styles.ModalMarketActionRow}>
+export const ActionRows = (props: ActionRowsProps) =>
+  props.rows.map((row: ActionRow) => (
+    <section key={row.title} className={Styles.ActionRow}>
       <section>
-        <ModalMarketTitle title={row.title} />
+        <MarketTitle title={row.title} />
         <PropertyLabel label={row.label} value={row.value} />
       </section>
       <CompactButton text={row.text} action={row.action} />

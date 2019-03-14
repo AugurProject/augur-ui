@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { GasModal } from "modules/modal/gas-modal";
+import { Gas } from "modules/modal/gas";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { updateGasPriceInfo } from "modules/app/actions/update-gas-price-info";
 import { registerUserDefinedGasPriceFunction } from "modules/app/actions/register-user-defined-gasPrice-function";
@@ -24,5 +24,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(GasModal)
+  )(Gas)
 );

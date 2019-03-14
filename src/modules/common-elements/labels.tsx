@@ -7,11 +7,16 @@ import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import {
-  DashlineNormal,
-  DashlineLong
+  DashlineNormal
 } from "modules/common/components/dashline/dashline";
 import { SELL, BOUGHT, SOLD, CLOSED, SHORT } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
+
+enum SizeTypes {
+  SMALL = constants.SMALL,
+  NORMAL = constants.NORMAL,
+  LARGE = constants.LARGE
+}
 
 export interface MarketTypeProps {
   marketType: string;
@@ -23,15 +28,9 @@ export interface MarketStatusProps {
   alternate?: boolean;
 }
 
-export enum sizeTypes {
-  SMALL = constants.SMALL,
-  NORMAL = constants.NORMAL,
-  LARGE = constants.LARGE
-}
-
 export interface MovementLabelProps {
   value: number;
-  size: sizeTypes;
+  size: SizeTypes;
   styles?: object;
   showColors?: boolean;
   showIcon?: boolean;
@@ -42,12 +41,12 @@ export interface MovementLabelProps {
 
 export interface MovementIconProps {
   value: number;
-  size: sizeTypes;
+  size: SizeTypes;
 }
 
 export interface MovementTextProps {
   value: number;
-  size: sizeTypes;
+  size: SizeTypes;
   showColors: boolean;
   showBrackets: boolean;
   showPercent: boolean;
@@ -78,7 +77,7 @@ export interface PillLabelProps {
   label: string;
 }
 
-export interface PositionTypeLabel {
+export interface PositionTypeLabelProps {
   type: string;
   pastTense: boolean;
 }
@@ -86,6 +85,52 @@ export interface PositionTypeLabel {
 export interface LinearPropertyLabelViewTransactionProps {
   transactionHash: string;
 }
+
+export interface FormattedValue {
+  value: number;
+  formattedValue: number;
+  formatted: string;
+  roundedValue: number;
+  rounded: string;
+  minimized: string;
+  denomination: string;
+  full: string;
+  fullPrecision: string;
+}
+
+export interface ValueLabelProps {
+  value: FormattedValue;
+  showDenomination: boolean;
+}
+
+export const ValueLabel = (props: ValueLabelProps) => {
+  if (!props.value || props.value === null) return (<span />);
+  const { fullPrecision, rounded, denomination, value } = props.value;
+  const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
+  const isGreaterThan1k = value > 1000;
+  const isLessThan1k = value < 0.0001 && value !== 0;
+  const postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
+  const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
+  const denominationLabel = props.showDenomination ? `${denomination}` : "";
+
+  return (
+    <span className={Styles.ValueLabel}>
+      <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
+        {`${frontFacingLabel}${postfix}${denominationLabel}`}
+      </label>
+      <ReactTooltip
+        id={`valueLabel-${fullPrecision}-${denomination}`}
+        className={TooltipStyles.Tooltip}
+        effect="float"
+        place="top"
+        type="light"
+        disable={postfix.length === 0}
+      >
+        {`${fullPrecision} ${denominationLabel}`}
+      </ReactTooltip>
+    </span>
+  );
+};
 
 export const PropertyLabel = (props: PropertyLabelProps) => (
   <div className={Styles.PropertyLabel}>
@@ -180,11 +225,11 @@ export const PendingLabel = () => (
 );
 
 export const MovementIcon = (props: MovementIconProps) => {
-  const getIconSizeStyles: Function = (size: sizeTypes): string =>
+  const getIconSizeStyles: Function = (size: SizeTypes): string =>
     classNames(Styles.MovementLabel_Icon, {
-      [Styles.MovementLabel_Icon_small]: size == sizeTypes.SMALL,
-      [Styles.MovementLabel_Icon_normal]: size == sizeTypes.NORMAL,
-      [Styles.MovementLabel_Icon_large]: size == sizeTypes.LARGE
+      [Styles.MovementLabel_Icon_small]: size == SizeTypes.SMALL,
+      [Styles.MovementLabel_Icon_normal]: size == SizeTypes.NORMAL,
+      [Styles.MovementLabel_Icon_large]: size == SizeTypes.LARGE
     });
 
   const getIconColorStyles: Function = (value: number): string =>
@@ -200,11 +245,11 @@ export const MovementIcon = (props: MovementIconProps) => {
 };
 
 export const MovementText = (props: MovementTextProps) => {
-  const getTextSizeStyle: Function = (size: sizeTypes): string =>
+  const getTextSizeStyle: Function = (size: SizeTypes): string =>
     classNames(Styles.MovementLabel_Text, {
-      [Styles.MovementLabel_Text_small]: size == sizeTypes.SMALL,
-      [Styles.MovementLabel_Text_normal]: size == sizeTypes.NORMAL,
-      [Styles.MovementLabel_Text_large]: size == sizeTypes.LARGE
+      [Styles.MovementLabel_Text_small]: size == SizeTypes.SMALL,
+      [Styles.MovementLabel_Text_normal]: size == SizeTypes.NORMAL,
+      [Styles.MovementLabel_Text_large]: size == SizeTypes.LARGE
     });
   const getTextColorStyles: Function = (value: number): string =>
     classNames({
@@ -323,7 +368,7 @@ export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProp
         showBrackets
         showPlusMinus
         showColors
-        size={sizeTypes.NORMAL}
+        size={SizeTypes.NORMAL}
         value={props.numberValue}
       />
     </span>

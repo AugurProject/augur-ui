@@ -1,15 +1,15 @@
 import React from "react";
 
 import {
-  ModalTitle,
-  ModalButtonsRow,
-  ModalSelectableTable,
-  ModalAlertMessage
+  Title,
+  ButtonsRow,
+  SelectableTable,
+  AlertMessage
 } from "modules/modal/common";
 
 import Styles from "modules/modal/modal.styles";
 
-interface GasModalProps {
+interface GasProps {
   saveAction: Function;
   closeAction: Function;
   safeLow: number;
@@ -19,13 +19,13 @@ interface GasModalProps {
   userDefinedGasPrice?: number;
 }
 
-interface GasModalState {
+interface GasState {
   amount: number;
   showLowAlert: boolean;
 }
 
-export class GasModal extends React.Component<GasModalProps, GasModalState> {
-  state: GasModalState = {
+export class Gas extends React.Component<GasProps, GasState> {
+  state: GasState = {
     amount: this.props.userDefinedGasPrice || this.props.average,
     showLowAlert:
       (this.props.userDefinedGasPrice || this.props.average) <
@@ -58,7 +58,6 @@ export class GasModal extends React.Component<GasModalProps, GasModalState> {
       {
         columns: ["Slow (<30m)", safeLow],
         action: () => {
-          console.log("slow clicked");
           this.updateAmount(safeLow);
         }
       },
@@ -73,10 +72,10 @@ export class GasModal extends React.Component<GasModalProps, GasModalState> {
     ];
 
     return (
-      <div className={Styles.GasModal}>
-        <ModalTitle title="Gas Price (gwei)" closeAction={closeAction} />
+      <div className={Styles.Gas}>
+        <Title title="Gas Price (gwei)" closeAction={closeAction} />
         {showLowAlert && (
-          <ModalAlertMessage preText="Transactions are unlikely to be processed at your current gas price." />
+          <AlertMessage preText="Transactions are unlikely to be processed at your current gas price." />
         )}
         <input
           id="price"
@@ -90,8 +89,8 @@ export class GasModal extends React.Component<GasModalProps, GasModalState> {
         />
         <h2>Recommended Gas Price</h2>
         <p>(based on current network conditions)</p>
-        <ModalSelectableTable tableData={tableData} />
-        <ModalButtonsRow buttons={buttons} />
+        <SelectableTable tableData={tableData} />
+        <ButtonsRow buttons={buttons} />
       </div>
     );
   }

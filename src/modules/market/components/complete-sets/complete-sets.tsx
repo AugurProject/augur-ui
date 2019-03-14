@@ -7,6 +7,7 @@ export interface EmptyDisplayProps {
   numCompleteSets: any;
   transactionsStatus: any;
   sellCompleteSets: Function;
+  marketId: string;
 }
 
 const CompleteSets = (props: EmptyDisplayProps) => {
@@ -33,7 +34,7 @@ const CompleteSets = (props: EmptyDisplayProps) => {
       completeSetButtonText = "Sell Complete Sets";
       break;
   }
-  if (numCompleteSets || numCompleteSets.value <= 0) return null;
+  if (!numCompleteSets || numCompleteSets.value <= 0) return null;
 
   return (
     <div className={Styles.CompleteSets}>

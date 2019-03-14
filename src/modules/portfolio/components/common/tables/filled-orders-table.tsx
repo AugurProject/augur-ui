@@ -7,7 +7,8 @@ import { FilledOrder } from "modules/portfolio/types";
 import MarketLink from "modules/market/components/market-link/market-link";
 import {
   LinearPropertyLabel,
-  LinearPropertyViewTransaction
+  LinearPropertyViewTransaction,
+  ValueLabel
 } from "modules/common-elements/labels";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 
@@ -37,7 +38,9 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
         {filledOrder.trades.map((trade: FilledOrder, i: number) => (
           <ul key={i} className={Styles.FilledOrdersTable__trade}>
             <li />
-            <li>{formatShares(trade.amount).formatted}</li>
+            <li>
+              <ValueLabel value={formatShares(trade.amount)} />
+            </li>
             <li>{trade.timestamp.formattedShort}</li>
             <li>
               <ViewTransactionDetailsButton

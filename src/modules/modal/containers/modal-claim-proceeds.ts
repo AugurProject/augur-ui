@@ -9,9 +9,9 @@ import { createBigNumber } from "utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { formatGasCostToEther, formatEther } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
-import { ProceedsModal } from "modules/modal/proceeds-modal";
+import { Proceeds } from "modules/modal/proceeds";
 import { constants } from "services/augurjs";
-import { ModalMarketActionRowsProps } from "modules/modal/common";
+import { ActionRowsProps } from "modules/modal/common";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
   const marketIdsToTest = Object.keys(sP.accountShareBalances);
-  const markets: Array<ModalMarketActionRowsProps> = [];
+  const markets: Array<ActionRowsProps> = [];
   const marketIds: Array<string> = [];
   let totalProceeds: any = createBigNumber(0); // BigNumber @type required
   marketIdsToTest.forEach(marketId => {
@@ -104,5 +104,5 @@ export default withRouter(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(ProceedsModal)
+  )(Proceeds)
 );

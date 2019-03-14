@@ -167,7 +167,8 @@ export function formatNone() {
     rounded: "-",
     minimized: "-",
     denomination: "",
-    full: "-"
+    full: "-",
+    fullPrecision: "0"
   };
 }
 
@@ -180,7 +181,8 @@ export function formatBlank() {
     rounded: "",
     minimized: "",
     denomination: "",
-    full: ""
+    full: "",
+    fullPrecision: "0"
   };
 }
 
@@ -290,6 +292,7 @@ export function formatNumber(
     o.roundedValue = 0;
     o.rounded = "0";
     o.minimized = "0";
+    o.fullPrecision = "0";
   } else {
     const useSignificantFiguresThreshold = TEN.exponentiatedBy(
       new BigNumber(decimals, 10)
@@ -348,7 +351,6 @@ export function formatNumber(
     } else {
       o.formatted = addCommas(o.formattedValue);
     }
-
     o.fullPrecision = value.toFixed();
     o.roundedValue = value
       .times(decimalsRoundedValue)
