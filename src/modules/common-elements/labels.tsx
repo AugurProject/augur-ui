@@ -108,29 +108,26 @@ export const ValueLabel = (props: ValueLabelProps) => {
   const { fullPrecision, rounded, denomination, value } = props.value;
   const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
   const isGreaterThan1k = value > 1000;
-  const longLength = fullPrecision.length > rounded.length;
-  const postfix = (longLength || isGreaterThan1k) ? String.fromCodePoint(0x2026) : "";
+  const isLessThan1k = value < 0.0001 && value !== 0;
+  const postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
   const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
   const denominationLabel = props.showDenomination ? `${denomination}` : "";
 
   return (
     <span className={Styles.ValueLabel}>
-      {postfix.length > 0 &&
-      <>
-        <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
-          {`${frontFacingLabel}${postfix}${denominationLabel}`}
-        </label>
-        <ReactTooltip
-          id={`valueLabel-${fullPrecision}-${denomination}`}
-          className={TooltipStyles.Tooltip}
-          effect="float"
-          place="top"
-          type="light"
-        >
-          {`${fullPrecision} ${denominationLabel}`}
-        </ReactTooltip>
-      </>}
-      {postfix.length === 0 && <label>{`${frontFacingLabel}${postfix}${denominationLabel}`}</label>}
+      <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
+        {`${frontFacingLabel}${postfix}${denominationLabel}`}
+      </label>
+      <ReactTooltip
+        id={`valueLabel-${fullPrecision}-${denomination}`}
+        className={TooltipStyles.Tooltip}
+        effect="float"
+        place="top"
+        type="light"
+        disable={postfix.length === 0}
+      >
+        {`${fullPrecision} ${denominationLabel}`}
+      </ReactTooltip>
     </span>
   );
 };
