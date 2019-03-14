@@ -7,7 +7,7 @@ import * as constants from "modules/common-elements/constants";
 import OverviewStats from "modules/account/components/overview-stats/overview-stats";
 
 const mapStateToProps = state => ({
-  timeframeData: state.loginAccount.timeframeData
+  timeframeData: state.universe.timeframeData
 });
 
 const mapDispatchToProps = dispatch => ({});
@@ -19,33 +19,33 @@ const mergeProps = (sP, dP, oP) => {
   const properties = [
     {
       key: 0,
-      label: "Positions",
-      value: sP.timeframeData[timeframe].positions
+      label: "Active Users",
+      value: sP.timeframeData[timeframe].activeUsers
     },
     {
       key: 1,
-      label: "Number of Trades",
-      value: sP.timeframeData[timeframe].numberOfTrades
+      label: "Open Interest",
+      value: sP.timeframeData[timeframe].openInterest
     },
     {
       key: 2,
-      label: "Markets Traded",
-      value: sP.timeframeData[timeframe].marketsTraded
+      label: "Volume",
+      value: sP.timeframeData[timeframe].volume
     },
     {
       key: 3,
+      label: "Trades",
+      value: sP.timeframeData[timeframe].numberOfTrades
+    },
+    {
+      key: 4,
       label: "Markets Created",
       value: sP.timeframeData[timeframe].marketsCreated
     },
     {
-      key: 4,
-      label: "Successful Disputes",
-      value: sP.timeframeData[timeframe].successfulDisputes
-    },
-    {
       key: 5,
-      label: "Redeemed Positions",
-      value: sP.timeframeData[timeframe].redeemedPositions
+      label: "Money at Stake",
+      value: sP.timeframeData[timeframe].moneyStaked
     }
   ];
 
@@ -57,7 +57,7 @@ const mergeProps = (sP, dP, oP) => {
   };
 };
 
-const AccountOverviewStatsContainer = withRouter(
+const PlatformtOverviewStatsContainer = withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
@@ -65,4 +65,4 @@ const AccountOverviewStatsContainer = withRouter(
   )(OverviewStats)
 );
 
-export default AccountOverviewStatsContainer;
+export default PlatformtOverviewStatsContainer;
