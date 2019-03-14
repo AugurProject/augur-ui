@@ -10,7 +10,8 @@ import {
   DisputeTemplate,
   SellCompleteSetTemplate,
   ClaimReportingFeesTemplate,
-  UnsignedOrdersTemplate
+  UnsignedOrdersTemplate,
+  ProceedsToClaimTemplate
 } from "modules/account/components/notifications/notifications-templates";
 
 import * as constants from "modules/common-elements/constants";
@@ -21,7 +22,20 @@ export interface NotificationsProps {
   getReportingFees: Function;
   currentAugurTimestamp: number;
   reportingWindowStatsEndTime: number;
+  sellCompleteSetsModal: Function;
+  finalizeMarketModal: Function;
 }
+
+const {
+  resolvedMarketsOpenOrders,
+  reportOnMarkets,
+  finalizeMarkets,
+  marketsInDispute,
+  completeSetPositions,
+  unsignedOrders,
+  claimReportingFees,
+  proceedsToClaim
+} = constants.NOTIFICATION_TYPES;
 
 class Notifications extends React.Component<NotificationsProps> {
   componentDidMount() {
@@ -39,55 +53,50 @@ class Notifications extends React.Component<NotificationsProps> {
   render() {
     const notifications = this.props.notifications.map(notificaction => {
       let options = {};
-      if (
-        notificaction.type ===
-        constants.NOTIFICATION_TYPES.resolvedMarketsOpenOrders
-      ) {
+      if (notificaction.type === resolvedMarketsOpenOrders) {
         options = {
           buttonAction: () => null,
           Template: OpenOrdersResolvedMarketsTemplate
         };
-      } else if (
-        notificaction.type === constants.NOTIFICATION_TYPES.reportOnMarkets
-      ) {
+      } else if (notificaction.type === reportOnMarkets) {
         options = {
           buttonAction: () => null,
           Template: ReportEndingSoonTemplate
         };
-      } else if (
-        notificaction.type === constants.NOTIFICATION_TYPES.finalizeMarkets
-      ) {
+      } else if (notificaction.type === finalizeMarkets) {
         options = {
-          buttonAction: () => null,
+          buttonAction: () =>
+            this.props.finalizeMarketModal(notificaction.market.id),
           Template: FinalizeTemplate
         };
-      } else if (
-        notificaction.type === constants.NOTIFICATION_TYPES.marketsInDispute
-      ) {
+      } else if (notificaction.type === marketsInDispute) {
         options = {
           buttonAction: () => null,
           Template: DisputeTemplate
         };
-      } else if (
-        notificaction.type === constants.NOTIFICATION_TYPES.completeSetPositions
-      ) {
+      } else if (notificaction.type === completeSetPositions) {
         options = {
-          buttonAction: () => null,
+          buttonAction: () =>
+            this.props.sellCompleteSetsModal(
+              notificaction.market.id,
+              notificaction.market.myPositionsSummary.numCompleteSets
+            ),
           Template: SellCompleteSetTemplate
         };
-      } else if (
-        notificaction.type === constants.NOTIFICATION_TYPES.unsignedOrders
-      ) {
+      } else if (notificaction.type === unsignedOrders) {
         options = {
           buttonAction: () => null,
           Template: UnsignedOrdersTemplate
         };
-      } else if (
-        notificaction.type === constants.NOTIFICATION_TYPES.claimReportingFees
-      ) {
+      } else if (notificaction.type === claimReportingFees) {
         options = {
           buttonAction: () => null,
           Template: ClaimReportingFeesTemplate
+        };
+      } else if (notificaction.type === proceedsToClaim) {
+        options = {
+          buttonAction: () => null,
+          Template: ProceedsToClaimTemplate
         };
       }
 

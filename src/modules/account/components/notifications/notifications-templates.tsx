@@ -163,6 +163,18 @@ export const ClaimReportingFeesTemplate = (props: any) => {
   );
 };
 
+export const ProceedsToClaimTemplate = (props: any) => {
+  const { totalProceeds } = props;
+  return (
+    <Template
+      message={`You currently have ${totalProceeds} ETH available to be claimed. Please review and claim your winnings.`}
+      market={null}
+      currentTime={props.currentTime}
+      reportingWindowEndtime={null}
+    />
+  );
+};
+
 // Helper
 const wrapMarketName = (marketName: string) => (
   <span className={Styles.NotificationCard__MarketName}>

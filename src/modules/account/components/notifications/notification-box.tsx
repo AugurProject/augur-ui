@@ -32,11 +32,15 @@ const NotificationBox = (props: NotificationBoxProps) => {
       buttonAction,
       Template,
       market,
-      claimReportingFees
+      markets,
+      claimReportingFees,
+      totalProceeds
     } = notification;
 
     const templateProps = {
       claimReportingFees,
+      totalProceeds,
+      markets,
       market,
       currentTime,
       reportingWindowEndtime
