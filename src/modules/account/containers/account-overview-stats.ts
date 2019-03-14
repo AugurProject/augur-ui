@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import AccountOverviewStats from "modules/account/components/account-overview-stats/account-overview-stats";
 import getValue from "utils/get-value";
+import OverviewStats from "modules/account/components/overview-stats/overview-stats";
 
 const mapStateToProps = state => ({
   timeframeData: state.loginAccount.timeframeData
@@ -57,7 +58,7 @@ const AccountOverviewStatsContainer = withRouter(
     mapStateToProps,
     mapDispatchToProps,
     mergeProps
-  )(AccountOverviewStats)
+  )(OverviewStats)
 );
 
 export default AccountOverviewStatsContainer;

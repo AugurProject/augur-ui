@@ -2,8 +2,9 @@ import React from "react";
 
 import BlockStatus from "modules/account/components/augur-status/block-status";
 import SyncStatus from "modules/account/components/augur-status/sync-status";
-import * as constants from "modules/common-elements/constants";
+import Activity from "modules/account/components/augur-status/activity";
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
+import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/augur-status/augur-status.styles";
 
@@ -48,7 +49,7 @@ const AugurStatus = (props: AugurStatusProps) => {
           >
             {constants.LEARN_MORE_ABOUT_SYNCING}
           </a>
-          {/* <Activity /> */}
+          <Activity />
         </div>
       }
     />
