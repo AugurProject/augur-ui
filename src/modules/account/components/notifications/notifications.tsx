@@ -96,8 +96,7 @@ class Notifications extends React.Component<NotificationsProps> {
         };
       } else if (notificaction.type === proceedsToClaim) {
         options = {
-          buttonAction: () =>
-            this.props.claimTradingProceeds(notificaction.markets),
+          buttonAction: () => this.props.claimTradingProceeds(),
           Template: ProceedsToClaimTemplate
         };
       }

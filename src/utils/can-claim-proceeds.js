@@ -12,10 +12,7 @@ export default function canClaimProceeds(
     const endTimestamp = createBigNumber(finalizationTime).plus(
       createBigNumber(constants.CONTRACT_INTERVAL.CLAIM_PROCEEDS_WAIT_TIME)
     );
-    const currentTimestampInSeconds = currentTimestamp / 1000;
-    const timeHasPassed = createBigNumber(currentTimestampInSeconds).minus(
-      endTimestamp
-    );
+    const timeHasPassed = createBigNumber(currentTimestamp).minus(endTimestamp);
     canClaim = timeHasPassed.toNumber() > 0;
   }
   return canClaim;

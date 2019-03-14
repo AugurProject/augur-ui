@@ -31,8 +31,8 @@ const mapDispatchToProps = (dispatch: Function) => ({
     dispatch(
       updateModal({ type: MODAL_SELL_COMPLETE_SETS, marketId, numCompleteSets })
     ),
-  claimTradingProceeds: (marketIds: any) =>
-    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS, marketId: marketIds }))
+  claimTradingProceeds: () =>
+    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS }))
 });
 
 const NotificationsContainer = connect(

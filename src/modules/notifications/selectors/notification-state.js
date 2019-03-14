@@ -4,7 +4,7 @@ import {
   selectLoginAccountAddress,
   selectReportingWindowStats,
   selectPendingLiquidityOrders,
-  selectCurrentTimestamp
+  selectCurrentTimestampInSeconds
 } from "src/select-state";
 
 import { createBigNumber } from "utils/create-big-number";
@@ -123,7 +123,7 @@ export const selectMarketsInDispute = createSelector(
 // Get all markets where the user has outstanding returns
 export const selectProceedsToClaim = createSelector(
   selectMarkets,
-  selectCurrentTimestamp,
+  selectCurrentTimestampInSeconds,
   (markets, currentTimestamp) => {
     if (markets.length > 0 && currentTimestamp) {
       return markets
