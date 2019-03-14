@@ -11,6 +11,7 @@ export interface AccountOverviewProps {}
 
 interface AccountOverviewState {
   selected: number;
+  updateTimeSelection: Function;
 }
 
 export default class AccountOverview extends React.Component<
@@ -21,8 +22,15 @@ export default class AccountOverview extends React.Component<
     selected: constants.TIMEFRAME_OPTIONS[0].id
   };
 
+  componentDidMount() {
+    this.props.updateTimeframeData({
+      endTime: constants.TIMEFRAME_OPTIONS[0].id
+    });
+  }
+
   updateTimeSelection = id => {
     this.setState({ selected: id });
+    this.props.updateTimeframeData({ endTime: id });
   };
 
   render() {
