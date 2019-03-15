@@ -32,14 +32,14 @@ const MarketOrdersPositionsTable = ({
           isMobile={isMobile}
           market={market}
         />
-        {openOrders.length > 0 && (
-          <div className={Styles.MarketOrders__cancelAll}>
+        <div className={Styles.MarketOrders__footer}>
+          {openOrders.length > 0 && (
             <CancelTextButton
               action={() => cancelAllOpenOrders(openOrders)}
               text="Cancel All Open Orders"
             />
-          </div>
-        )}
+          )}
+        </div>
       </ModulePane>
       <ModulePane label="My Fills">
         <FilledOrdersTable

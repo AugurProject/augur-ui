@@ -85,6 +85,7 @@ export class MarketPositionsTable extends React.Component<
             sellCompleteSets={sellCompleteSets}
           />
         )}
+        {extendedView && <div className={SharedStyles.MarketOrders__footer} />}
       </div>
     );
   }
