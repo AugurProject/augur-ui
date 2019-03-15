@@ -114,16 +114,20 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision) {
   const { fullPrecision, rounded, denomination, formatted } = value;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
-  const isGreaterThan1k = testValue.gt("10000");
+  const isGreaterThan1k = testValue.gt("1000");
   const isLessThan1k = testValue.lt("0.0001") && !testValue.eq(ZERO);
-  const postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
-  let frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded;
+  let postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
+  const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded;
   const denominationLabel = showDenomination ? `${denomination}` : "";
 
   const round = formatNumber(fullPrecision, {decimalsRounded: 8, decimals: 8})
   let display = round.formattedValue;
   if ((round.roundedValue + '').indexOf('e') > -1 && fixedPrecision) {
     display = round.rounded;
+  }
+
+  if (fixedPrecision && display.toString().length === frontFacingLabel.length) {
+    postfix = "";
   }
 
   return {
