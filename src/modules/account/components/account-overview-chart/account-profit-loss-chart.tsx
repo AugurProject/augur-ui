@@ -5,6 +5,7 @@ import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
 import { UserTimeRangeData } from "modules/account/components/account-overview-chart/account-overview-chart";
 import { isEqual } from "lodash";
+import { ZERO } from "src/modules/common-elements/constants";
 
 const HIGHLIGHTED_LINE_WIDTH = 2;
 const NUM_YAXIS_PLOT_LINES = 2;
@@ -110,27 +111,38 @@ export default class AccountProfitLossChart extends Component<
 
   calculateTickInterval = (data: UserTimeRangeData) => {
     const values = data.map(d => d[1]);
-    const min = values.reduce(
-      (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
-      0
+    const bnMin = createBigNumber(
+      values.reduce(
+        (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
+        0
+      )
     );
-    const max = values.reduce(
-      (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
-      0
+    const bnMax = createBigNumber(
+      values.reduce(
+        (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
+        0
+      )
     );
+    const allzero = bnMin.eq(ZERO) && bnMax.eq(ZERO);
 
-    return createBigNumber(max)
-      .minus(createBigNumber(min))
-      .dividedBy(NUM_YAXIS_PLOT_LINES)
-      .abs()
-      .toNumber();
+    return {
+      tickInterval: allzero
+        ? 0.5
+        : bnMax
+            .minus(bnMin)
+            .dividedBy(NUM_YAXIS_PLOT_LINES)
+            .abs()
+            .toNumber(),
+      max: bnMax.eq(ZERO) ? 1 : bnMax.plus(bnMax.times(1.1)).toNumber(),
+      min: bnMin.eq(ZERO) ? -1 : bnMin.minus(bnMin.times(0.1).abs()).toNumber()
+    };
   };
 
   buidOptions(data: UserTimeRangeData) {
     const { options } = this.state;
     const { width } = this.props;
 
-    const tickInterval = this.calculateTickInterval(data);
+    const intervalInfo = this.calculateTickInterval(data);
     const tickPositions = [data[0][0], data[data.length - 1][0]];
 
     options.chart = {
@@ -153,12 +165,12 @@ export default class AccountProfitLossChart extends Component<
     if (Array.isArray(options.yAxis)) {
       options.yAxis[0] = {
         ...options.yAxis[0],
-        tickInterval
+        ...intervalInfo
       };
     } else {
       options.yAxis = {
         ...options.yAxis,
-        tickInterval
+        ...intervalInfo
       };
     }
 
