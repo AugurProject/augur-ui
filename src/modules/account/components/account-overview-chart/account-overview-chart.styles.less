@@ -4,46 +4,45 @@
   align-items: center;
   background-color: @color-theme-primary;
   display: flex;
+  flex: 0 0 100%;
   flex-direction: column;
   padding: 1rem;
 
-    > div {
+  > div {
+    > div:first-of-type {
+      .text-12;
+    }
 
-      > div:first-of-type {
-        .text-12;
-      }
+    > div:nth-of-type(2) {
+      .text-11;
 
-      > div:nth-of-type(2) {
-        .text-11;
-
-        > div {
-          max-width: 2rem;
-        }
-      }
-
-      > div:nth-of-type(3) {
-        .text-18-bold;
-
-        > svg {
-          fill: none;
-          height: 0.75rem;
-          width: 0.75rem;
-
-          > path {
-            fill: @color-secondary-text;
-          }
-        }
-      }
-
-      > div:last-of-type {
-        width: 100%;
-      }
-
-      > span {
-        color: @color-shadow-text;
+      > div {
+        max-width: 2rem;
       }
     }
 
+    > div:nth-of-type(3) {
+      .text-18-bold;
+
+      > svg {
+        fill: none;
+        height: 0.75rem;
+        width: 0.75rem;
+
+        > path {
+          fill: @color-secondary-text;
+        }
+      }
+    }
+
+    > div:last-of-type {
+
+    }
+
+    > span {
+      color: @color-shadow-text;
+    }
+  }
 }
 
 .AccountOverviewChart_chart {

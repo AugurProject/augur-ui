@@ -18,16 +18,13 @@ interface ChartProps {
 }
 
 interface ChartState {
-  options: object;
+  options: any;
 }
 
 export default class AccountProfitLossChart extends Component<
   ChartProps,
   ChartState
 > {
-  container: HTMLDivElement | null = null;
-  chart: object | null = null;
-
   state: ChartState = {
     options: {
       title: {
@@ -109,13 +106,26 @@ export default class AccountProfitLossChart extends Component<
     }
   }
 
+  container: HTMLDivElement | null = null;
+  chart: Object | null = null;
+
   calculateTickInterval = (data: UserTimeRangeData) => {
     const values = data.map(d => d[1]);
-    const min = values.reduce((a, b) => createBigNumber(a).lte(createBigNumber(b)) ? a : b, 0);
-    const max = values.reduce((a, b) => createBigNumber(a).gte(createBigNumber(b)) ? a : b, 0);
+    const min = values.reduce(
+      (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
+      0
+    );
+    const max = values.reduce(
+      (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
+      0
+    );
 
-    return createBigNumber(max).minus(createBigNumber(min)).dividedBy(NUM_YAXIS_PLOT_LINES).abs().toNumber();
-  }
+    return createBigNumber(max)
+      .minus(createBigNumber(min))
+      .dividedBy(NUM_YAXIS_PLOT_LINES)
+      .abs()
+      .toNumber();
+  };
 
   buidOptions(data: UserTimeRangeData) {
     const { options } = this.state;
@@ -124,13 +134,13 @@ export default class AccountProfitLossChart extends Component<
 
     options.xAxis = {
       ...options.xAxis,
-      tickPositions: [data[0][0], data[data.length-1][0]]
-    }
+      tickPositions: [data[0][0], data[data.length - 1][0]]
+    };
 
     options.yAxis = {
       ...options.yAxis,
       tickInterval
-    }
+    };
 
     const series = [
       {

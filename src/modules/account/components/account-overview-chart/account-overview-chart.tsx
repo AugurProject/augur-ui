@@ -27,7 +27,6 @@ export interface UserTimeRangeData {
 }
 
 interface AccountOverviewChartState {
-  timeRangeDataConfig: TimeFrameOption;
   profitLossData: Array<Array<number>>;
   profitLossChange: string | null;
   profitLossValue: string | null;
@@ -38,7 +37,6 @@ export default class AccountOverviewChart extends React.Component<
   AccountOverviewChartState
 > {
   state: AccountOverviewChartState = {
-    timeRangeDataConfig: constants.TIMEFRAME_OPTIONS[this.props.timeframe],
     profitLossData: [],
     profitLossChange: null,
     profitLossValue: null
