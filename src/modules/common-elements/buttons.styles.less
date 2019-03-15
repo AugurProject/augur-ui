@@ -235,20 +235,17 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  line-height: @size-16;
   max-height: @button-height-default;
   padding: @size-12 @size-24;
 
   > svg {
     fill: none;
-    height: @size-14;
+    height: @size-16;
     margin-right: 0.5rem;
-    width: @size-10;
+    width: @size-16;
 
     > path {
-      stroke: @color-secondary-button-text;
-    }
-
-    > rect {
       fill: @color-secondary-button-text;
     }
   }
@@ -278,8 +275,8 @@
   .CurrenyActionButton;
 
   > svg {
-    height: @size-14;
-    width: @size-14;
+    height: @size-16;
+    width: @size-16;
 
     > path {
       &:nth-child(even) {

@@ -75,32 +75,30 @@ export default class AccountOverviewChart extends React.Component<
       (err: string, data: Array<UserTimeRangeData>) => {
         if (err) return console.log("Error:", err);
         let profitLossData: Array<Array<number>> = [];
-        const profitLossValue = data.reduce(
-          (p, v) => p.plus(createBigNumber(v.realized)),
-          constants.ZERO
-        );
-        const profitLossChange = data.reduce(
-          (p, v) => p.plus(createBigNumber(v.realizedPercent || 0)),
-          constants.ZERO
-        );
+        const lastData =
+          data.length > 0
+            ? data[data.length - 1]
+            : { realized: 0, realizedPercent: 0 };
+
         const chartValues = data.map(d => [
           d.timestamp * 1000,
-          createBigNumber(d.realized).toNumber()
+          createBigNumber(d.realized).toNumber(4)
         ]);
+
         profitLossData = profitLossData.concat(chartValues);
         profitLossData.push([
           currentAugurTimestamp * 1000,
-          createBigNumber(data[data.length - 1].realized).toNumber()
+          createBigNumber(data[data.length - 1].realized).toNumber(4)
         ]);
-        // todo: get percentage and value
-        const profitLossChangeHasValue = !createBigNumber(profitLossChange).eq(
-          constants.ZERO
-        );
+
         this.setState({
           profitLossData,
-          profitLossChange: formatEther(profitLossChange).formatted,
-          profitLossChangeHasValue,
-          profitLossValue: formatEther(profitLossValue).formatted
+          profitLossChange: formatEther(lastData.realizedPercent || 0)
+            .formatted,
+          profitLossChangeHasValue: !createBigNumber(
+            lastData.realizedPercent || 0
+          ).eq(constants.ZERO),
+          profitLossValue: formatEther(lastData.realized).formatted
         });
       }
     );

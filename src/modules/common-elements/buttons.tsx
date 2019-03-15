@@ -5,8 +5,8 @@ import {
   XIcon,
   EthIcon,
   PercentIcon,
-  WithdrawIcon,
-  DepositIcon,
+  QRCodeIcon,
+  PaperAirplaneIcon,
   DoubleArrowIcon,
   RepLogoIcon,
   ViewIcon
@@ -145,8 +145,8 @@ export const DepositButton = (props: CurrencyActionButtonProps) => (
     disabled={props.disabled}
     title={props.title || "Deposit"}
   >
-    {DepositIcon}
-    Deposit
+    {QRCodeIcon}
+    Receive
   </button>
 );
 
@@ -157,8 +157,8 @@ export const WithdrawButton = (props: CurrencyActionButtonProps) => (
     disabled={props.disabled}
     title={props.title || "Withdraw"}
   >
-    {WithdrawIcon}
-    Withdraw
+    {PaperAirplaneIcon}
+    Send
   </button>
 );
 

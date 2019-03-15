@@ -34,14 +34,15 @@ export default class AccountProfitLossChart extends Component<
         text: ""
       },
       chart: {
-        type: "area",
+        type: "line",
         height: 100
       },
       credits: {
         enabled: false
       },
       plotOptions: {
-        area: {
+        line: {
+          color: "#09CFE1",
           dataGrouping: {
             units: [["hour", [1]], ["day", [1]]]
           },
@@ -111,28 +112,29 @@ export default class AccountProfitLossChart extends Component<
 
   calculateTickInterval = (data: UserTimeRangeData) => {
     const values = data.map(d => d[1]);
-    const bnMin = createBigNumber(
+    let bnMin = createBigNumber(
       values.reduce(
         (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
         0
       )
     );
-    const bnMax = createBigNumber(
+    let bnMax = createBigNumber(
       values.reduce(
         (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
         0
       )
     );
-    const allzero = bnMin.eq(ZERO) && bnMax.eq(ZERO);
+
+    if (bnMax.eq(ZERO) && bnMin.lt(ZERO)) bnMax = createBigNumber(bnMin.abs());
+    if (bnMin.eq(ZERO) && bnMax.gt(ZERO))
+      bnMin = createBigNumber(bnMax.time(-1));
 
     return {
-      tickInterval: allzero
-        ? 0.5
-        : bnMax
-            .minus(bnMin)
-            .dividedBy(NUM_YAXIS_PLOT_LINES)
-            .abs()
-            .toNumber(),
+      tickInterval: bnMax
+        .minus(bnMin)
+        .dividedBy(NUM_YAXIS_PLOT_LINES)
+        .abs()
+        .toNumber(),
       max: bnMax.eq(ZERO) ? 1 : bnMax.plus(bnMax.times(1.1)).toNumber(),
       min: bnMin.eq(ZERO) ? -1 : bnMin.minus(bnMin.times(0.1).abs()).toNumber()
     };
@@ -176,7 +178,7 @@ export default class AccountProfitLossChart extends Component<
 
     const series = [
       {
-        type: "area",
+        type: "line",
         lineWidth: HIGHLIGHTED_LINE_WIDTH,
         data
       }

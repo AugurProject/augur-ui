@@ -26,12 +26,14 @@ export const TransactionsBox = (props: TransactionsBoxProps) => (
     title="Transactions"
     content={
       <div className={Styles.TransactionsBoxContent}>
+        <p>Your transactions history</p>
+        <ViewTransactionsButton action={console.log} />
+        <p>Your wallet</p>
         <DepositButton action={props.deposit} />
         <WithdrawButton action={console.log} />
-        <p>View and download your transactions history here</p>
-        <ViewTransactionsButton action={console.log} />
         {!props.isMainnet && (
           <div>
+            <p>REP for test net</p>
             <REPFaucetButton action={props.repFaucet} />
           </div>
         )}
