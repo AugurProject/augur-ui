@@ -30,6 +30,7 @@ interface AccountOverviewChartState {
   profitLossData: Array<Array<number>>;
   profitLossChange: string | null;
   profitLossValue: string | null;
+  profitLossChangeHasValue: boolean;
 }
 
 export default class AccountOverviewChart extends React.Component<
@@ -39,7 +40,8 @@ export default class AccountOverviewChart extends React.Component<
   state: AccountOverviewChartState = {
     profitLossData: [],
     profitLossChange: null,
-    profitLossValue: null
+    profitLossValue: null,
+    profitLossChangeHasValue: false
   };
 
   componentDidMount = () => {
@@ -83,9 +85,14 @@ export default class AccountOverviewChart extends React.Component<
           createBigNumber(data[data.length - 1].total).toNumber()
         ]);
         // todo: get percentage and value
+        const profitLossChange = "0.0000";
+        const profitLossChangeHasValue = !createBigNumber(profitLossChange).eq(
+          constants.ZERO
+        );
         this.setState({
           profitLossData,
-          profitLossChange: "10.000",
+          profitLossChange,
+          profitLossChangeHasValue,
           profitLossValue: formatEther("0.0000").formatted
         });
       }
@@ -95,7 +102,12 @@ export default class AccountOverviewChart extends React.Component<
   container: Object | null = null;
 
   render() {
-    const { profitLossData, profitLossChange, profitLossValue } = this.state;
+    const {
+      profitLossData,
+      profitLossChange,
+      profitLossValue,
+      profitLossChangeHasValue
+    } = this.state;
     let content = null;
 
     if (profitLossData.length === 0) {
@@ -112,7 +124,8 @@ export default class AccountOverviewChart extends React.Component<
           <div>
             <MovementLabel
               showColors
-              showIcon
+              showIcon={profitLossChangeHasValue}
+              showPlusMinus
               value={profitLossChange}
               size="medium"
             />
