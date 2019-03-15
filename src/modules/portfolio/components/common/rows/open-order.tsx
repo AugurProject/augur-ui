@@ -50,18 +50,34 @@ const OpenOrder = (props: OpenOrderProps) => {
       </li>
       <li>
         {openOrder.unmatchedShares && (
-          <ValueLabel value={openOrder.unmatchedShares} />
+          <ValueLabel
+            keyId={"openOrder-unmatchedShares-" + openOrder.id}
+            value={openOrder.unmatchedShares}
+          />
         )}
       </li>
-      <li>{openOrder.avgPrice && <ValueLabel value={openOrder.avgPrice} />}</li>
+      <li>
+        {openOrder.avgPrice && (
+          <ValueLabel
+            keyId={"openOrder-price-" + openOrder.id}
+            value={openOrder.avgPrice}
+          />
+        )}
+      </li>
       {extendedView && (
         <li>
-          <ValueLabel value={tokensEscrowed} />
+          <ValueLabel
+            keyId={"openOrder-tokens-" + openOrder.id}
+            value={tokensEscrowed}
+          />
         </li>
       )}
       {extendedView && (
         <li>
-          <ValueLabel value={sharesEscrowed} />
+          <ValueLabel
+            keyId={"openOrder-shares-" + openOrder.id}
+            value={sharesEscrowed}
+          />
         </li>
       )}
       <li>

@@ -4,8 +4,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import { formatShares } from "utils/format-number";
 import { SELL } from "modules/common-elements/constants";
+import { HoverValueLabel } from "modules/common-elements/labels";
 import MarketOutcomeHeaderOrders from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders";
+
 import Styles from "modules/market/components/market-trade-history/market-trade-history.styles";
 
 export default class MarketTradeHistory extends Component {
@@ -79,7 +82,11 @@ export default class MarketTradeHistory extends Component {
                           }
                         )}
                       />
-                      <li>{priceTime.amount}</li>
+                      <li>
+                        <HoverValueLabel
+                          value={formatShares(priceTime.amount)}
+                        />
+                      </li>
                       <li
                         className={classNames({
                           [`${Styles.MarketTradeHistory__buy}`]:
@@ -88,7 +95,7 @@ export default class MarketTradeHistory extends Component {
                             priceTime.type === SELL
                         })}
                       >
-                        {priceTime.price}
+                        {priceTime.price.toFixed(4)}
                         <span
                           className={classNames({
                             [Styles.MarketTradeHistory__trade__indicatorUp]:

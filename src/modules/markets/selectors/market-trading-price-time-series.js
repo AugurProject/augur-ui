@@ -13,9 +13,10 @@ export const marketTradingPriceTimeSeries = (marketPriceHistory, outcome) => {
     const dateBreakDown = convertUnixToFormattedDate(item.timestamp);
     const date = dateBreakDown.formattedShortDate;
     const time = dateBreakDown.formattedShortTime;
+    // todo: need to undo this rounding here
     const trade = {
-      amount: createBigNumber(item.amount).toFixed(4),
-      price: createBigNumber(item.price).toFixed(4),
+      amount: createBigNumber(item.amount),
+      price: createBigNumber(item.price),
       type: item.type,
       date,
       time,
