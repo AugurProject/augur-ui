@@ -15,7 +15,6 @@
 
   > div:nth-of-type(2) {
     .text-11;
-
   }
 
   > div:nth-of-type(3) {
@@ -46,6 +45,7 @@
         fill: @color-theme-primary;
       }
 
+      g.highcharts-axis-labels > text,
       g.highcharts-axis-labels > text > tspan {
         .mono-9;
 
@@ -126,4 +126,11 @@
       }
     }
   }
+}
+
+.AccountOverviewChart_chart_labels {
+  .mono-9;
+
+  color: @color-neutral;
+  fill: @color-neutral;
 }

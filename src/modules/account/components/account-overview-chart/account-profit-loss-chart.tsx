@@ -44,7 +44,6 @@ export default class AccountProfitLossChart extends Component<
       plotOptions: {
         area: {
           dataGrouping: {
-            forced: true,
             units: [["hour", [1]], ["day", [1]]]
           },
           marker: false
@@ -57,6 +56,7 @@ export default class AccountProfitLossChart extends Component<
         showLastLabel: true,
         endOnTick: true,
         labels: {
+          style: Styles.AccountOverviewChart_chart_labels,
           format: "{value:%b %d}",
           formatter() {
             if (this.isLast) return "Today";

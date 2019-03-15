@@ -59,8 +59,6 @@ export default class AccountOverviewChart extends React.Component<
     }
   };
 
-  container : Object | null = null;
-
   getChartData = (timeRangeDataConfig: TimeFrameOption) => {
     const { universe, currentAugurTimestamp } = this.props;
     const startTime =
@@ -87,12 +85,14 @@ export default class AccountOverviewChart extends React.Component<
         // todo: get percentage and value
         this.setState({
           profitLossData,
-          profitLossChange: "33.33",
-          profitLossValue: formatEther("10000.123456789").formatted
+          profitLossChange: "10.000",
+          profitLossValue: formatEther("0.0000").formatted
         });
       }
     );
   };
+
+  container: Object | null = null;
 
   render() {
     const { profitLossData, profitLossChange, profitLossValue } = this.state;
@@ -121,7 +121,10 @@ export default class AccountOverviewChart extends React.Component<
             {profitLossValue}
             {EthIcon}
           </div>
-          <AccountProfitLossChart data={profitLossData} width={this.container.clientWidth}/>
+          <AccountProfitLossChart
+            data={profitLossData}
+            width={this.container.clientWidth}
+          />
         </React.Fragment>
       );
     }
