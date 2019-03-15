@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 
-import * as constants from "modules/common-elements/constants";
 import Highcharts from "highcharts/highstock";
 import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
