@@ -1,18 +1,54 @@
 @import (reference) "~assets/styles/shared";
 
 .AccountOverviewChart {
+  align-items: center;
+  background-color: @color-theme-primary;
   display: flex;
   flex: 1 100%;
   flex-direction: column;
-  justify-content: center;
+  padding: 1rem;
 
-  > span {
-    color: @color-shadow-text;
-  }
+    > div {
+      width: 100%;
+
+      > div:first-of-type {
+        .text-12;
+      }
+
+      > div:nth-of-type(2) {
+        .text-11;
+
+        > div {
+          max-width: 2rem;
+        }
+      }
+
+      > div:nth-of-type(3) {
+        .text-18-bold;
+
+        > svg {
+          fill: none;
+          height: 0.75rem;
+          width: 0.75rem;
+
+          > path {
+            fill: @color-secondary-text;
+          }
+        }
+      }
+
+      > div:not(:last-of-type) {
+        width: 100%;
+      }
+
+      > span {
+        color: @color-shadow-text;
+      }
+    }
+
 }
 
 .AccountOverviewChart_chart {
-  padding-left: 0.5rem;
   position: relative;
 
   svg {

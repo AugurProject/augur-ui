@@ -5,7 +5,8 @@ import { createBigNumber } from "utils/create-big-number";
 import { EthIcon } from "modules/common-elements/icons";
 import AccountProfitLossChart from "modules/account/components/account-overview-chart/account-profit-loss-chart";
 import { MovementLabel } from "modules/common-elements/labels";
-import Styles from "modules/account/components/account-overview/account-overview.styles";
+import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
+import { formatEther } from "utils/format-number";
 
 export interface AccountOverviewChartProps {
   universe: string;
@@ -28,7 +29,7 @@ export interface UserTimeRangeData {
 interface AccountOverviewChartState {
   timeRangeDataConfig: TimeFrameOption;
   profitLossData: Array<Array<number>>;
-  profitLossPercentage: string | null;
+  profitLossChange: string | null;
   profitLossValue: string | null;
 }
 
@@ -39,7 +40,7 @@ export default class AccountOverviewChart extends React.Component<
   state: AccountOverviewChartState = {
     timeRangeDataConfig: constants.TIMEFRAME_OPTIONS[this.props.timeframe],
     profitLossData: [],
-    profitLossPercentage: null,
+    profitLossChange: null,
     profitLossValue: null
   };
 
@@ -86,43 +87,44 @@ export default class AccountOverviewChart extends React.Component<
         // todo: get percentage and value
         this.setState({
           profitLossData,
-          profitLossPercentage: "33.33",
-          profitLossValue: "10"
+          profitLossChange: "33.33",
+          profitLossValue: formatEther("10000.123456789").formatted
         });
       }
     );
   };
 
   render() {
-    const {
-      profitLossData,
-      profitLossPercentage,
-      profitLossValue
-    } = this.state;
-    return (
-      <div className={Styles.AccountOverviewChart}>
-        <div>{constants.PROFIT_LOSS_CHART_TITLE}</div>
-        {profitLossData.length === 0 && (
+    const { profitLossData, profitLossChange, profitLossValue } = this.state;
+    let content = null;
+
+    if (profitLossData.length === 0) {
+      content = (
+        <div>
+          <div>{constants.PROFIT_LOSS_CHART_TITLE}</div>
           <span>No Trading Activity to date</span>
-        )}
-        {profitLossData.length > 0 && (
+        </div>
+      );
+    } else {
+      content = (
+        <div>
+          <div>{constants.PROFIT_LOSS_CHART_TITLE}</div>
           <div>
-            <div>
-              <MovementLabel
-                showColors
-                showIcon
-                value={profitLossPercentage}
-                size="medium"
-              />
-              <div>
-                {profitLossValue}
-                {EthIcon}
-              </div>
-            </div>
-            <AccountProfitLossChart data={profitLossData} />
+            <MovementLabel
+              showColors
+              showIcon
+              value={profitLossChange}
+              size="medium"
+            />
           </div>
-        )}
-      </div>
-    );
+          <div>
+            {profitLossValue}
+            {EthIcon}
+          </div>
+          <AccountProfitLossChart data={profitLossData} />
+        </div>
+      );
+    }
+    return <div className={Styles.AccountOverviewChart}>{content}</div>;
   }
 }
