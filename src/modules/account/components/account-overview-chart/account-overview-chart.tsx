@@ -7,7 +7,6 @@ import AccountProfitLossChart from "modules/account/components/account-overview-
 import { MovementLabel } from "modules/common-elements/labels";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
 import { formatEther } from "utils/format-number";
-import { ZERO } from "src/modules/common-elements/constants";
 
 export interface AccountOverviewChartProps {
   universe: string;
@@ -24,8 +23,8 @@ interface TimeFrameOption {
 
 export interface UserTimeRangeData {
   timestamp: number;
-  total: number;
-  totalPercent: number;
+  realized: number;
+  realizedPercent: number;
 }
 
 interface AccountOverviewChartState {
@@ -62,7 +61,7 @@ export default class AccountOverviewChart extends React.Component<
 
   getChartData = (timeRangeDataConfig: TimeFrameOption) => {
     const { universe, currentAugurTimestamp } = this.props;
-    let endTime = currentAugurTimestamp;
+    const endTime = currentAugurTimestamp;
     let startTime = currentAugurTimestamp - timeRangeDataConfig.periodInterval;
     if (timeRangeDataConfig.periodInterval === 0) {
       startTime = 0;
@@ -77,21 +76,21 @@ export default class AccountOverviewChart extends React.Component<
         if (err) return console.log("Error:", err);
         let profitLossData: Array<Array<number>> = [];
         const profitLossValue = data.reduce(
-          (p, v) => p.plus(createBigNumber(v.total)),
-          ZERO
+          (p, v) => p.plus(createBigNumber(v.realized)),
+          constants.ZERO
         );
         const profitLossChange = data.reduce(
-          (p, v) => p.plus(createBigNumber(v.totalPercent || 0)),
-          ZERO
+          (p, v) => p.plus(createBigNumber(v.realizedPercent || 0)),
+          constants.ZERO
         );
         const chartValues = data.map(d => [
           d.timestamp * 1000,
-          createBigNumber(d.total).toNumber()
+          createBigNumber(d.realized).toNumber()
         ]);
         profitLossData = profitLossData.concat(chartValues);
         profitLossData.push([
           currentAugurTimestamp * 1000,
-          createBigNumber(data[data.length - 1].total).toNumber()
+          createBigNumber(data[data.length - 1].realized).toNumber()
         ]);
         // todo: get percentage and value
         const profitLossChangeHasValue = !createBigNumber(profitLossChange).eq(
