@@ -7,6 +7,7 @@ import AccountProfitLossChart from "modules/account/components/account-overview-
 import { MovementLabel } from "modules/common-elements/labels";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
 import { formatEther } from "utils/format-number";
+import { ZERO } from "src/modules/common-elements/constants";
 
 export interface AccountOverviewChartProps {
   universe: string;
@@ -24,6 +25,7 @@ interface TimeFrameOption {
 export interface UserTimeRangeData {
   timestamp: number;
   total: number;
+  totalPercent: number;
 }
 
 interface AccountOverviewChartState {
@@ -45,27 +47,26 @@ export default class AccountOverviewChart extends React.Component<
   };
 
   componentDidMount = () => {
-    if (this.props.timeframe !== undefined) {
-      // not sure why this prop is undefined
+    const timeRangeDataConfig =
+      constants.TIMEFRAME_OPTIONS[this.props.timeframe];
+    this.getChartData(timeRangeDataConfig);
+  };
+
+  componentDidUpdate = (nextProps: AccountOverviewChartProps) => {
+    if (nextProps.timeframe !== this.props.timeframe) {
       const timeRangeDataConfig =
         constants.TIMEFRAME_OPTIONS[this.props.timeframe];
       this.getChartData(timeRangeDataConfig);
     }
   };
 
-  componentDidUpdate = (nextProps: AccountOverviewChartProps) => {
-    if (nextProps.timeframe !== this.props.timeframe) {
-      const timeRangeDataConfig =
-        constants.TIMEFRAME_OPTIONS[nextProps.timeframe];
-      this.getChartData(timeRangeDataConfig);
-    }
-  };
-
   getChartData = (timeRangeDataConfig: TimeFrameOption) => {
     const { universe, currentAugurTimestamp } = this.props;
-    const startTime =
-      currentAugurTimestamp - timeRangeDataConfig.periodInterval;
-    const endTime = currentAugurTimestamp;
+    let endTime = currentAugurTimestamp;
+    let startTime = currentAugurTimestamp - timeRangeDataConfig.periodInterval;
+    if (timeRangeDataConfig.periodInterval === 0) {
+      startTime = 0;
+    }
     this.props.getProfitLoss(
       universe,
       startTime,
@@ -75,25 +76,32 @@ export default class AccountOverviewChart extends React.Component<
       (err: string, data: Array<UserTimeRangeData>) => {
         if (err) return console.log("Error:", err);
         let profitLossData: Array<Array<number>> = [];
+        const profitLossValue = data.reduce(
+          (p, v) => p.plus(createBigNumber(v.total)),
+          ZERO
+        );
+        const profitLossChange = data.reduce(
+          (p, v) => p.plus(createBigNumber(v.totalPercent || 0)),
+          ZERO
+        );
         const chartValues = data.map(d => [
           d.timestamp * 1000,
           createBigNumber(d.total).toNumber()
         ]);
         profitLossData = profitLossData.concat(chartValues);
         profitLossData.push([
-          endTime * 1000,
+          currentAugurTimestamp * 1000,
           createBigNumber(data[data.length - 1].total).toNumber()
         ]);
         // todo: get percentage and value
-        const profitLossChange = "0.0000";
         const profitLossChangeHasValue = !createBigNumber(profitLossChange).eq(
           constants.ZERO
         );
         this.setState({
           profitLossData,
-          profitLossChange,
+          profitLossChange: formatEther(profitLossChange).formatted,
           profitLossChangeHasValue,
-          profitLossValue: formatEther("0.0000").formatted
+          profitLossValue: formatEther(profitLossValue).formatted
         });
       }
     );
