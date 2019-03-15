@@ -9,12 +9,17 @@
   padding: @size-24;
 
   > button:first-of-type {
+    flex: 0 0 auto;
+    margin: auto;
+  }
+
+  > button:nth-of-type(2) {
     margin-left: auto;
     margin-right: @size-8;
     width: 8.125rem;
   }
 
-  > button:nth-of-type(2) {
+  > button:nth-of-type(3) {
     margin-right: auto;
     width: 8.125rem;
   }
@@ -26,19 +31,24 @@
     flex: 1 100%;
     margin: @size-24 auto @size-12;
     text-align: center;
-  }
-
-  > button:last-of-type {
-    flex: 0 0 16.75rem;
-    margin: auto;
+    text-transform: uppercase;
   }
 
   > div {
-    border-top: 2px solid @color-primary-background;
     display: flex;
     flex: 1 100%;
+    flex-flow: column nowrap;
     margin-top: @size-24;
-    padding-top: @size-24;
+
+    > p {
+      .mono-11;
+
+      color: @color-shadow-text;
+      flex: 1 100%;
+      margin: @size-24 auto @size-12;
+      text-align: center;
+      text-transform: uppercase;
+    }
 
     > button {
       flex: 0 0 16.75rem;

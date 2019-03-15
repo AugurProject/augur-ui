@@ -1,9 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 import classNames from "classnames";
 
 import QRCode from "qrcode.react";
 import Clipboard from "clipboard";
-import { XIcon, CopyIcon } from "modules/common-elements/icons";
+import ReactTooltip from "react-tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
+import {
+  XIcon,
+  CopyIcon,
+  CheckCircleIcon
+} from "modules/common-elements/icons";
 import {
   DefaultButtonProps,
   PrimaryButton,
@@ -75,6 +81,15 @@ interface ReadableAddressProps {
   copyable?: boolean;
   showQR?: boolean;
   title?: string;
+}
+
+interface AccountAddressDisplayProps {
+  address: string;
+  copyable?: boolean;
+}
+
+interface AccountAddressDisplayState {
+  isCopied: boolean;
 }
 
 export const Title = (props: TitleProps) => (
@@ -151,23 +166,76 @@ export const ActionRows = (props: ActionRowsProps) =>
     </section>
   ));
 
-export const ReadableAddress = (props: ReadableAddressProps) => {
-  const clipboard = new Clipboard("#copy_address"); // eslint-disable-line
-  return (
-    <div className={Styles.ReadableAddress}>
-      {props.title && <h4>{props.title}</h4>}
-      {props.showQR && (
-        <QRCode
-          value={props.address}
-          style={{ width: "120px", height: "120px" }}
-        />
-      )}
-      <span>{props.address}</span>
-      {props.copyable && (
-        <button id="copy_address" data-clipboard-text={props.address}>
-          {CopyIcon} copy
-        </button>
-      )}
-    </div>
-  );
-};
+export const ReadableAddress = (props: ReadableAddressProps) => (
+  <div className={Styles.ReadableAddress}>
+    {props.title && <h4>{props.title}</h4>}
+    {props.showQR && (
+      <QRCode
+        value={props.address}
+        style={{ width: "120px", height: "120px" }}
+      />
+    )}
+    <AccountAddressDisplay address={props.address} copyable={props.copyable} />
+  </div>
+);
+
+export class AccountAddressDisplay extends Component<
+  AccountAddressDisplayProps,
+  AccountAddressDisplayState
+> {
+  state: AccountAddressDisplayState = {
+    isCopied: false
+  };
+
+  componentWrapper: any = null;
+  clipboard: any = new Clipboard("#copy_address");
+
+  copyClicked = () => {
+    this.setState({ isCopied: true }, () => {
+      setTimeout(() => {
+        if (this.componentWrapper) this.setState({ isCopied: false });
+      }, 1000);
+    });
+  };
+
+  render() {
+    const { isCopied } = this.state;
+    const { address, copyable } = this.props;
+    return (
+      <span
+        ref={container => {
+          this.componentWrapper = container;
+        }}
+        className={Styles.AccountAddressDisplay}
+      >
+        {address}
+        {copyable && (
+          <>
+            <button
+              id="copy_address"
+              data-clipboard-text={address}
+              onClick={this.copyClicked}
+              data-tip
+              data-for="AccountAddressDisplay_copy_tooltip"
+            >
+              {isCopied ? CheckCircleIcon : CopyIcon}
+            </button>
+            {isCopied && (
+              <ReactTooltip
+                id="AccountAddressDisplay_copy_tooltip"
+                className={TooltipStyles.Tooltip}
+                effect="solid"
+                place="top"
+                type="light"
+                event="mouseover"
+                eventOff="mouseleave"
+              >
+                Copied
+              </ReactTooltip>
+            )}
+          </>
+        )}
+      </span>
+    );
+  }
+}

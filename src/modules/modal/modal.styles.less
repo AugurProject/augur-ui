@@ -139,31 +139,56 @@
     margin-bottom: @size-14;
     text-transform: uppercase;
   }
+}
 
-  > span {
+.AccountAddressDisplay {
+  .mono-12;
+
+  align-items: center;
+  border: 1px solid @color-primary-alternate;
+  border-radius: @border-radius-default;
+  color: @color-secondary-text;
+  display: flex;
+  flex-flow: row nowrap;
+  height: 2.5rem;
+  line-height: @size-16;
+  margin: @size-18 0;
+  padding-left: @size-12;
+
+  @media @breakpoint-mobile {
     .mono-10;
 
-    border: 1px solid fade(@color-highlight, 50%);
-    color: @color-secondary-text;
-    line-height: @size-12;
-    margin: @size-18 0;
-    padding: @size-12;
+    height: 2.25rem;
+    line-height: @size-14;
+    padding-left: @size-8;
   }
 
   > button {
-    .mono-10;
-
     align-items: center;
+    background: @color-primary-alternate;
     color: @color-neutral;
     display: flex;
+    height: 100%;
     line-height: @size-14;
+    margin-left: @size-8;
+    padding: @size-12 @size-16;
     text-transform: uppercase;
+
+    @media @breakpoint-mobile {
+      line-height: @size-10;
+      margin-left: @size-4;
+      padding: @size-12 @size-14;
+    }
 
     > svg {
       fill: none;
-      height: @size-10;
-      margin-right: @size-4;
-      width: @size-8;
+      height: @size-14;
+      width: @size-12;
+
+      @media @breakpoint-mobile {
+        height: @size-10;
+        width: @size-8;
+      }
 
       > path {
         fill: @color-neutral;
