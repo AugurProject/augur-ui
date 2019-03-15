@@ -110,32 +110,29 @@ interface HoverValueLabelState {
   hover: boolean;
 }
 
-export function formatExpandedValue(value, showDenomination, fixedPrecision) {
-  const { fullPrecision, rounded, denomination, formatted } = value;
+export function formatExpandedValue(value, showDenomination, fixedPrecision, max = "1000", min = "0.0001") {
+  const { fullPrecision, rounded, denomination, formattedValue, minimized } = value;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
-  const isGreaterThan1k = testValue.gt("1000");
-  const isLessThan1k = testValue.lt("0.0001") && !testValue.eq(ZERO);
-  let postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
-  const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded;
+  const isGreaterThan = testValue.gt(max);
+  const isLessThan = testValue.lt(min) && !testValue.eq(ZERO);
+  let postfix = (isGreaterThan || isLessThan) ? String.fromCodePoint(0x2026) : "";
+  let frontFacingLabel = isGreaterThan ? fullWithoutDecimals : rounded;
   const denominationLabel = showDenomination ? `${denomination}` : "";
-
-  const round = formatNumber(fullPrecision, {decimalsRounded: 8, decimals: 8})
-  let display = round.formattedValue;
-  if ((round.roundedValue + '').indexOf('e') > -1 && fixedPrecision) {
-    display = round.rounded;
-  }
-
-  if (fixedPrecision && display.toString().length === frontFacingLabel.length) {
+  
+  if (fullPrecision.length === frontFacingLabel.length) {
     postfix = "";
   }
 
+  if (testValue.gt("1000") && fixedPrecision) {
+    frontFacingLabel = formattedValue.toFixed(4);
+  }
+
   return {
-    fullPrecision: fixedPrecision ? display : fullPrecision,
+    fullPrecision: fullPrecision,
     postfix,
     frontFacingLabel,
-    denominationLabel,
-    isGreaterThan1k
+    denominationLabel
   }
 }
 
@@ -180,15 +177,11 @@ export class HoverValueLabel extends React.Component<
   render() {
     if (!this.props.value || this.props.value === null) return (<span />);
  
-    const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination, true);
-
+    const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination, true, "99999");
     const {
       fullPrecision,
       postfix,
       frontFacingLabel,
-      denominationLabel,
-          isGreaterThan1k
-
     } = expandedValues;
 
     const frontFacingLabelSplit = frontFacingLabel.toString().split('.');
