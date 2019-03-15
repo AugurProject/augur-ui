@@ -12,6 +12,29 @@
   }
 }
 
+.HoverValueLabel {
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+
+  > span {
+    display: grid;
+    grid-template-columns: minmax(10px, 35px) 1fr;
+    flex: 1;
+
+    > span:first-of-type {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    > span:last-of-type {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+}
+
 .PropertyLabel {
   display: flex;
   flex-flow: column nowrap;

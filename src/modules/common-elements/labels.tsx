@@ -102,26 +102,54 @@ export interface FormattedValue {
 export interface ValueLabelProps {
   value: FormattedValue;
   showDenomination: boolean;
+  keyId: string;
 }
 
-export const ValueLabel = (props: ValueLabelProps) => {
-  if (!props.value || props.value === null) return (<span />);
-  const { fullPrecision, rounded, denomination } = props.value;
+interface HoverValueLabelState {
+  hover: boolean;
+}
+
+export function formatExpandedValue(value, showDenomination) {
+  const { fullPrecision, rounded, denomination } = value;
   const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan1k = testValue.gt("1000");
   const isLessThan1k = testValue.lt("0.0001") && !testValue.eq(ZERO);
   const postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
-  const frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded
-  const denominationLabel = props.showDenomination ? `${denomination}` : "";
+  let frontFacingLabel = fullWithoutDecimals
+  if (isGreaterThan1k) {
+    console.log(value)
+    frontFacingLabel = rounded;
+  }
+  const denominationLabel = showDenomination ? `${denomination}` : "";
+
+  return {
+    fullPrecision,
+    postfix,
+    frontFacingLabel,
+    denominationLabel
+  }
+}
+
+export const ValueLabel = (props: ValueLabelProps) => {
+  if (!props.value || props.value === null) return (<span />);
+ 
+  const expandedValues = formatExpandedValue(props.value, props.showDenomination);
+
+  const {
+    fullPrecision,
+    postfix,
+    frontFacingLabel,
+    denominationLabel
+  } = expandedValues;
 
   return (
     <span className={Styles.ValueLabel}>
-      <label data-tip data-for={`valueLabel-${fullPrecision}-${denomination}`}>
+      <label data-tip data-for={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`}>
         {`${frontFacingLabel}${postfix}${denominationLabel}`}
       </label>
       <ReactTooltip
-        id={`valueLabel-${fullPrecision}-${denomination}`}
+        id={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`}
         className={TooltipStyles.Tooltip}
         effect="float"
         place="top"
@@ -133,6 +161,56 @@ export const ValueLabel = (props: ValueLabelProps) => {
     </span>
   );
 };
+
+export class HoverValueLabel extends React.Component<
+  ValueLabelProps,
+  HoverValueLabelState
+> {
+  state: HoverValueLabelState = {
+    hover: false
+  };
+  render() {
+    if (!this.props.value || this.props.value === null) return (<span />);
+ 
+    const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination);
+
+    const {
+      fullPrecision,
+      postfix,
+      frontFacingLabel,
+      denominationLabel
+    } = expandedValues;
+
+    const frontFacingLabelSplit = frontFacingLabel.toString().split('.');
+    const firstHalf = frontFacingLabelSplit[0];
+    const secondHalf = frontFacingLabelSplit[1];
+
+    const fullPrecisionSplit = fullPrecision.toString().split('.');
+    const firstHalfFull = fullPrecisionSplit[0];
+    const secondHalfFull = fullPrecisionSplit[1];
+
+    return (
+      <span 
+        className={Styles.HoverValueLabel}
+        onMouseEnter={() => {
+          this.setState({
+            hover: true
+          });
+        }}
+        onMouseLeave={() => {
+          this.setState({
+            hover: false
+          });
+        }}
+      >
+      {this.state.hover && postfix.length !== 0 ? 
+        <span><span>{firstHalfFull}.</span><span>{secondHalfFull}</span></span> : 
+        <span><span>{firstHalf}.</span><span>{secondHalf}{postfix}</span></span>
+      }
+      </span>
+    );
+  }
+}
 
 export const PropertyLabel = (props: PropertyLabelProps) => (
   <div className={Styles.PropertyLabel}>

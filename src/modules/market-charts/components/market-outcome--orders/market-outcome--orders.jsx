@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import MarketOutcomeHeaderOrders from "modules/market-charts/components/market-outcome--header-orders/market-outcome--header-orders";
-
+import { HoverValueLabel } from "modules/common-elements/labels";
 import { ASKS, BIDS, BUY, SELL } from "modules/common-elements/constants";
 
 import Styles from "modules/market-charts/components/market-outcome--orders/market-outcome--orders.styles";
@@ -118,14 +118,12 @@ export default class MarketOutcomeChartsOrders extends Component {
                   }
                 )}
                 onMouseEnter={() => {
-                  // updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: ASKS
                   });
                 }}
                 onMouseLeave={() => {
-                  // updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
@@ -150,9 +148,7 @@ export default class MarketOutcomeChartsOrders extends Component {
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
                   style={{ justifyContent: "flex-start" }}
                 >
-                  <span>
-                    {order.shares.value.toFixed(fixedPrecision).toString()}
-                  </span>
+                  <HoverValueLabel value={order.shares} />
                 </div>
                 <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_ask}
@@ -218,14 +214,12 @@ export default class MarketOutcomeChartsOrders extends Component {
                   [Styles.MarketOutcomeOrderBook__row__trading]: onMobileTradingPage
                 })}
                 onMouseEnter={() => {
-                  // updateHoveredPrice(order.price.value);
                   this.setState({
                     hoveredOrderIndex: i,
                     hoveredSide: BIDS
                   });
                 }}
                 onMouseLeave={() => {
-                  // updateHoveredPrice(null);
                   this.setState({
                     hoveredOrderIndex: null,
                     hoveredSide: null
@@ -247,9 +241,7 @@ export default class MarketOutcomeChartsOrders extends Component {
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
                   style={{ justifyContent: "flex-start" }}
                 >
-                  <span>
-                    {order.shares.value.toFixed(fixedPrecision).toString()}
-                  </span>
+                  <HoverValueLabel value={order.shares} />
                 </div>
                 <div
                   className={Styles.MarketOutcomeOrderBook__RowItem_bid}
