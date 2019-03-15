@@ -557,6 +557,11 @@ export const VOLUME_ETH_SHARES = [
 
 // Account Summary - Your Overview
 export const YOUR_OVERVIEW_TITLE = "Your Overview";
+export const AVAILABLE_TRADING_BALANCE = "Available Trading Balance";
+export const TOTAL_FROZEN_FUNDS = "Total Frozen Funds";
+export const REP_BALANCE = "REP Balance";
+export const REP_STAKED = "REP Staked";
+export const TOTAL_ACCOUNT_VALUE_IN_ETH = "Total Account Value (ETH)";
 
 // Account Summary - Augur Status
 export const AUGUR_STATUS_TITLE = "Augur Status";
