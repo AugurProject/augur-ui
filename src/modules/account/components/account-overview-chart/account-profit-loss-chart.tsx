@@ -15,6 +15,7 @@ interface PlotData {
 
 interface ChartProps {
   data: Array<PlotData>;
+  width: number;
 }
 
 interface ChartState {
@@ -129,8 +130,14 @@ export default class AccountProfitLossChart extends Component<
 
   buidOptions(data: UserTimeRangeData) {
     const { options } = this.state;
+    const { width } = this.props;
 
     const tickInterval = this.calculateTickInterval(data);
+
+    options.chart = {
+      ...options.chart,
+      width
+    };
 
     options.xAxis = {
       ...options.xAxis,

@@ -59,6 +59,8 @@ export default class AccountOverviewChart extends React.Component<
     }
   };
 
+  container : Object | null = null;
+
   getChartData = (timeRangeDataConfig: TimeFrameOption) => {
     const { universe, currentAugurTimestamp } = this.props;
     const startTime =
@@ -105,7 +107,7 @@ export default class AccountOverviewChart extends React.Component<
       );
     } else {
       content = (
-        <div>
+        <React.Fragment>
           <div>{constants.PROFIT_LOSS_CHART_TITLE}</div>
           <div>
             <MovementLabel
@@ -119,10 +121,19 @@ export default class AccountOverviewChart extends React.Component<
             {profitLossValue}
             {EthIcon}
           </div>
-          <AccountProfitLossChart data={profitLossData} />
-        </div>
+          <AccountProfitLossChart data={profitLossData} width={this.container.clientWidth}/>
+        </React.Fragment>
       );
     }
-    return <div className={Styles.AccountOverviewChart}>{content}</div>;
+    return (
+      <div
+        className={Styles.AccountOverviewChart}
+        ref={container => {
+          this.container = container;
+        }}
+      >
+        {content}
+      </div>
+    );
   }
 }
