@@ -112,8 +112,7 @@ interface HoverValueLabelState {
 
 export function formatExpandedValue(value, showDenomination, fixedPrecision) {
   const { fullPrecision, rounded, denomination, formatted } = value;
-  const fullWithoutDecimals = fullPrecision.split(".")[0]
-  //.substring(0, fullPrecision.indexOf("."));
+  const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan1k = testValue.gt("10000");
   const isLessThan1k = testValue.lt("0.0001") && !testValue.eq(ZERO);

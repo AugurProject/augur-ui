@@ -82,7 +82,11 @@ export default class MarketTradeHistory extends Component {
                           }
                         )}
                       />
-                      <li><HoverValueLabel value={formatShares(priceTime.amount)} /></li>
+                      <li>
+                        <HoverValueLabel
+                          value={formatShares(priceTime.amount)}
+                        />
+                      </li>
                       <li
                         className={classNames({
                           [`${Styles.MarketTradeHistory__buy}`]:
