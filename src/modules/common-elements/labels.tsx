@@ -12,6 +12,7 @@ import {
 } from "modules/common/components/dashline/dashline";
 import { SELL, BOUGHT, SOLD, CLOSED, SHORT, ZERO } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
+import { formatNumber } from "utils/format-number";
 
 enum SizeTypes {
   SMALL = constants.SMALL,
@@ -109,25 +110,29 @@ interface HoverValueLabelState {
   hover: boolean;
 }
 
-export function formatExpandedValue(value, showDenomination) {
-  const { fullPrecision, rounded, denomination } = value;
-  const fullWithoutDecimals = fullPrecision.substring(0, fullPrecision.indexOf("."));
+export function formatExpandedValue(value, showDenomination, fixedPrecision) {
+  const { fullPrecision, rounded, denomination, formatted } = value;
+  const fullWithoutDecimals = fullPrecision.split(".")[0]
+  //.substring(0, fullPrecision.indexOf("."));
   const testValue = createBigNumber(fullPrecision);
-  const isGreaterThan1k = testValue.gt("1000");
+  const isGreaterThan1k = testValue.gt("10000");
   const isLessThan1k = testValue.lt("0.0001") && !testValue.eq(ZERO);
   const postfix = (isGreaterThan1k || isLessThan1k) ? String.fromCodePoint(0x2026) : "";
-  let frontFacingLabel = fullWithoutDecimals
-  if (isGreaterThan1k) {
-    console.log(value)
-    frontFacingLabel = rounded;
-  }
+  let frontFacingLabel = isGreaterThan1k ? fullWithoutDecimals : rounded;
   const denominationLabel = showDenomination ? `${denomination}` : "";
 
+  const round = formatNumber(fullPrecision, {decimalsRounded: 8, decimals: 8})
+  let display = round.formattedValue;
+  if ((round.roundedValue + '').indexOf('e') > -1 && fixedPrecision) {
+    display = round.rounded;
+  }
+
   return {
-    fullPrecision,
+    fullPrecision: fixedPrecision ? display : fullPrecision,
     postfix,
     frontFacingLabel,
-    denominationLabel
+    denominationLabel,
+    isGreaterThan1k
   }
 }
 
@@ -172,13 +177,15 @@ export class HoverValueLabel extends React.Component<
   render() {
     if (!this.props.value || this.props.value === null) return (<span />);
  
-    const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination);
+    const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination, true);
 
     const {
       fullPrecision,
       postfix,
       frontFacingLabel,
-      denominationLabel
+      denominationLabel,
+          isGreaterThan1k
+
     } = expandedValues;
 
     const frontFacingLabelSplit = frontFacingLabel.toString().split('.');
@@ -204,8 +211,8 @@ export class HoverValueLabel extends React.Component<
         }}
       >
       {this.state.hover && postfix.length !== 0 ? 
-        <span><span>{firstHalfFull}.</span><span>{secondHalfFull}</span></span> : 
-        <span><span>{firstHalf}.</span><span>{secondHalf}{postfix}</span></span>
+        <span><span>{firstHalfFull}{secondHalfFull && "."}</span><span>{secondHalfFull}</span></span> : 
+        <span><span>{firstHalf}{secondHalf && "."}</span><span>{secondHalf}{postfix}</span></span>
       }
       </span>
     );
