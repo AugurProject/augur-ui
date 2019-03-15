@@ -15,12 +15,18 @@ const AccountView = () => (
   <section className={Styles.AccountView}>
     <AccountHeader />
     <div className={Styles.AccountView__container}>
-      <Notifications />
-      <AccountOverview />
-      <Favorites />
-      <OpenMarkets />
-      <AugurStatus />
-      <TransactionsBoxContainer />
+      <div>
+        <Notifications />
+        <OpenMarkets />
+      </div>
+      <div>
+        <AccountOverview />
+        <AugurStatus />
+      </div>
+      <div>
+        <Favorites />
+        <TransactionsBoxContainer />
+      </div>
     </div>
     <TermsAndConditions />
   </section>

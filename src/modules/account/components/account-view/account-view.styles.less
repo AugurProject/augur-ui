@@ -11,19 +11,44 @@
 }
 
 .AccountView__container {
-  display: grid;
-  grid-gap: 0.75rem;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 65vh);
-  margin: 0 2.5rem 2.5rem;
-
+  display: flex;
+  flex: 1;
+  margin: 24px 40px 40px;
+ 
   > div {
-    max-height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 8px;
+
+    > div {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-bottom: 12px;
+      max-height: unset;
+
+      &:last-of-type {
+        margin-bottom: 1.25rem;
+      }
+    }
   }
 
   > div:nth-of-type(2) {
-    > div:nth-of-type(2) {
-      background: @color-secondary-action;
+    margin-bottom: 70px; 
+    
+    > div:last-of-type {
+      flex: 0;
+      min-height: 42%;
+    }
+  }
+
+  > div:last-of-type {
+    margin-bottom: 150px; 
+    
+    > div:last-of-type {
+      flex: 0;
+      min-height: 33.25%;
     }
   }
 }
