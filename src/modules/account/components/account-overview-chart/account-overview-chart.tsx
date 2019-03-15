@@ -112,10 +112,10 @@ export default class AccountOverviewChart extends React.Component<
 
     if (profitLossData.length === 0) {
       content = (
-        <div>
+        <React.Fragment>
           <div>{constants.PROFIT_LOSS_CHART_TITLE}</div>
           <span>No Trading Activity to date</span>
-        </div>
+        </React.Fragment>
       );
     } else {
       content = (

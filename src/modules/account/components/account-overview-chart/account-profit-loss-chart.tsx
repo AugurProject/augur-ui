@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+
+import * as constants from "modules/common-elements/constants";
 import Highcharts from "highcharts/highstock";
 import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
@@ -33,9 +35,6 @@ export default class AccountProfitLossChart extends Component<
       },
       chart: {
         type: "area",
-        styledMode: false,
-        animation: false,
-        marginTop: 12,
         height: 100
       },
       credits: {
@@ -133,21 +132,36 @@ export default class AccountProfitLossChart extends Component<
     const { width } = this.props;
 
     const tickInterval = this.calculateTickInterval(data);
+    const tickPositions = [data[0][0], data[data.length - 1][0]];
 
     options.chart = {
       ...options.chart,
-      width
+      width: width - 10
     };
 
-    options.xAxis = {
-      ...options.xAxis,
-      tickPositions: [data[0][0], data[data.length - 1][0]]
-    };
+    if (Array.isArray(options.xAxis)) {
+      options.xAxis[0] = {
+        ...options.xAxis[0],
+        tickPositions
+      };
+    } else {
+      options.xAxis = {
+        ...options.xAxis,
+        tickPositions
+      };
+    }
 
-    options.yAxis = {
-      ...options.yAxis,
-      tickInterval
-    };
+    if (Array.isArray(options.yAxis)) {
+      options.yAxis[0] = {
+        ...options.yAxis[0],
+        tickInterval
+      };
+    } else {
+      options.yAxis = {
+        ...options.yAxis,
+        tickInterval
+      };
+    }
 
     const series = [
       {
