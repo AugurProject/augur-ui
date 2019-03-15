@@ -79,24 +79,25 @@ export default class AccountOverviewChart extends React.Component<
           data.length > 0
             ? data[data.length - 1]
             : { realized: 0, realizedPercent: 0 };
+
         const chartValues = data.map(d => [
           d.timestamp * 1000,
           createBigNumber(d.realized).toNumber(4)
         ]);
+
         profitLossData = profitLossData.concat(chartValues);
         profitLossData.push([
           currentAugurTimestamp * 1000,
           createBigNumber(data[data.length - 1].realized).toNumber(4)
         ]);
-        // todo: get percentage and value
-        const profitLossChangeHasValue = !createBigNumber(
-          lastData.realizedPercent || 0
-        ).eq(constants.ZERO);
+
         this.setState({
           profitLossData,
           profitLossChange: formatEther(lastData.realizedPercent || 0)
             .formatted,
-          profitLossChangeHasValue,
+          profitLossChangeHasValue: !createBigNumber(
+            lastData.realizedPercent || 0
+          ).eq(constants.ZERO),
           profitLossValue: formatEther(lastData.realized).formatted
         });
       }
