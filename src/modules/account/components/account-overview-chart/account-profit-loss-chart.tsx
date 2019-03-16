@@ -127,7 +127,7 @@ export default class AccountProfitLossChart extends Component<
 
     if (bnMax.eq(ZERO) && bnMin.lt(ZERO)) bnMax = createBigNumber(bnMin.abs());
     if (bnMin.eq(ZERO) && bnMax.gt(ZERO))
-      bnMin = createBigNumber(bnMax.time(-1));
+      bnMin = createBigNumber(bnMax.times(-1));
 
     return {
       tickInterval: bnMax
