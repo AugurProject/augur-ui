@@ -16,7 +16,7 @@ const mapStateToProps = (state: any) => {
         denomination: " REP"
       }).formattedValue || 0,
     repBalance: loginAccount.rep.formatted || "0",
-    totalFrozenFunds
+    totalFrozenFunds: totalFrozenFunds || "0"
   };
 };
 
