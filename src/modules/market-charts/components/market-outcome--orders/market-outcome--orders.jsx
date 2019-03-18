@@ -20,13 +20,15 @@ export default class MarketOutcomeChartsOrders extends Component {
     orderBookKeys: PropTypes.object.isRequired,
     onMobileTradingPage: PropTypes.bool,
     toggle: PropTypes.func,
-    extend: PropTypes.bool.isRequired,
-    hide: PropTypes.bool.isRequired
+    extend: PropTypes.bool,
+    hide: PropTypes.bool
   };
 
   static defaultProps = {
     onMobileTradingPage: false,
-    toggle: () => {}
+    toggle: () => {},
+    extend: false,
+    hide: false,
   };
 
   constructor(props) {
