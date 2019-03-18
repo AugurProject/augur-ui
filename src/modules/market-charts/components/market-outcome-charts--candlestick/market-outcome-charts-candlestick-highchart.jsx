@@ -46,12 +46,11 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             }
           }
         },
-
         chart: {
           type: "candlestick",
           styledMode: false,
           animation: false,
-          marginTop: 12
+          marginTop: 20
         },
         credits: {
           enabled: false
