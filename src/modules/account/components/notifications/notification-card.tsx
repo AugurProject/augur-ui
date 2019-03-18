@@ -5,7 +5,6 @@ import * as constants from "modules/common-elements/constants";
 import { ImmediateImportance } from "modules/common-elements/icons";
 import { PillLabel } from "modules/common-elements/labels";
 import { CompactButton } from "modules/common-elements/buttons";
-import { NOTIFICATION_TYPES } from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/notifications/notification-card.styles";
 
@@ -18,6 +17,8 @@ export interface NotificationProps {
   buttonAction: Function;
   children: React.StatelessComponent;
 }
+
+const { NOTIFICATION_TYPES } = constants;
 
 export const NotificationCard = (props: NotificationProps) => (
   <div className={Styles.NotificationCard}>

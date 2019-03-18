@@ -3,9 +3,9 @@ import React from "react";
 import MarketLink from "modules/market/components/market-link/market-link";
 import {
   CountdownProgress,
-  MarketProgress
+  MarketProgress,
+  formatTime
 } from "modules/common-elements/progress";
-import { formatTime } from "modules/common-elements/progress";
 import { MARKET_STATUS_MESSAGES } from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/notifications/notification-card.styles";
@@ -39,14 +39,14 @@ export interface TemplateProps {
   totalProceeds: number;
   markets: Array<string> | null;
   market: Market;
-  currentTime: Date,
+  currentTime: Date;
   reportingWindowStatsEndTime: number;
 }
 
 export interface TemplateProps2 {
   message: string;
   market: Market;
-  currentTime: Date,
+  currentTime: Date;
   reportingWindowStatsEndTime: number | null;
 }
 
@@ -166,7 +166,6 @@ export const SellCompleteSetTemplate = (props: TemplateProps) => {
   }
 
   const { numCompleteSets } = myPositionsSummary;
-
 
   return (
     <Template

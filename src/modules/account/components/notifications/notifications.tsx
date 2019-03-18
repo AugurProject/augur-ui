@@ -1,3 +1,5 @@
+/* eslint react/no-array-index-key: 0 */
+
 import React, { ReactNode } from "react";
 import { isEqual } from "lodash";
 
@@ -6,6 +8,7 @@ import EmptyDisplay from "modules/portfolio/components/common/tables/empty-displ
 import { NotificationCard } from "modules/account/components/notifications/notification-card";
 import { PillLabel } from "modules/common-elements/labels";
 import {
+  Market,
   FinalizeTemplate,
   OpenOrdersResolvedMarketsTemplate,
   ReportEndingSoonTemplate,
@@ -16,7 +19,6 @@ import {
   ProceedsToClaimTemplate,
   ProceedsToClaimOnHoldTemplate
 } from "modules/account/components/notifications/notifications-templates";
-import { Market } from "modules/account/components/notifications/notifications-templates";
 
 import * as constants from "modules/common-elements/constants";
 
@@ -60,100 +62,6 @@ class Notifications extends React.Component<NotificationsProps> {
       this.props.updateNotifications(nextProps.notifications);
       this.props.getReportingFees();
     }
-  }
-
-  render() {
-    const { currentAugurTimestamp, reportingWindowStatsEndTime } = this.props;
-    const notifications = this.props.notifications.map(notificaction =>
-      this.getButtonAction(notificaction)
-    );
-    const notificationCount = notifications.length;
-    const newNotificationCount = notifications.filter((item) => item.isNew)
-      .length;
-
-    const rows = notifications.map((notification, idx) => {
-        const {
-          isImportant,
-          isNew,
-          title,
-          buttonLabel,
-          buttonAction,
-          market,
-          markets,
-          claimReportingFees,
-          totalProceeds,
-          type
-        } = notification;
-
-        const templateProps = {
-          claimReportingFees,
-          totalProceeds,
-          markets,
-          market,
-          currentTime: currentAugurTimestamp,
-          reportingWindowStatsEndTime
-        };
-
-        const notificationCardProps = {
-          type,
-          isImportant,
-          isNew,
-          title,
-          buttonLabel,
-          buttonAction
-        };
-
-        return (
-          <NotificationCard key={idx} {...notificationCardProps}>
-            {type === NOTIFICATION_TYPES.resolvedMarketsOpenOrders ? (
-              <OpenOrdersResolvedMarketsTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.reportOnMarkets ? (
-              <ReportEndingSoonTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.finalizeMarkets ? (
-              <FinalizeTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.marketsInDispute ? (
-              <DisputeTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.completeSetPositions ? (
-              <SellCompleteSetTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.unsignedOrders ? (
-              <UnsignedOrdersTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.claimReportingFees ? (
-              <ClaimReportingFeesTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? (
-              <ProceedsToClaimOnHoldTemplate {...templateProps} />
-            ) : null}
-            {type === NOTIFICATION_TYPES.proceedsToClaim ? (
-              <ProceedsToClaimTemplate {...templateProps} />
-            ) : null}
-          </NotificationCard>
-        );
-      }
-    );
-
-    const labelContent = (
-      <div className={Styles.NotificationBox__header}>
-        <span>{`(${notificationCount} Notifications)`}</span>
-        {newNotificationCount > 0 && (
-          <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
-        )}
-      </div>
-    );
-
-    return (
-      <div className={Styles.NotificationBox}>
-        <BoxHeader title="Notifications" rightContent={labelContent} />
-        <div className={Styles.NotificationBox__content}>
-          {notificationCount === 0 ? <EmptyDisplay title="No notifications" />: rows }
-        </div>
-      </div>
-    );
   }
 
   getButtonAction(notificaction: INotifications) {
@@ -200,12 +108,113 @@ class Notifications extends React.Component<NotificationsProps> {
       case NOTIFICATION_TYPES.proceedsToClaimOnHold:
         buttonAction = () => null;
         break;
+
+      default:
+        buttonAction = () => null;
+        break;
     }
 
     return {
       ...notificaction,
       buttonAction
     };
+  }
+
+  render() {
+    const { currentAugurTimestamp, reportingWindowStatsEndTime } = this.props;
+    const notifications = this.props.notifications.map(notificaction =>
+      this.getButtonAction(notificaction)
+    );
+    const notificationCount = notifications.length;
+    const newNotificationCount = notifications.filter(item => item.isNew)
+      .length;
+
+    const rows = notifications.map((notification, idx) => {
+      const {
+        isImportant,
+        isNew,
+        title,
+        buttonLabel,
+        buttonAction,
+        market,
+        markets,
+        claimReportingFees,
+        totalProceeds,
+        type
+      } = notification;
+
+      const templateProps = {
+        claimReportingFees,
+        totalProceeds,
+        markets,
+        market,
+        currentTime: currentAugurTimestamp,
+        reportingWindowStatsEndTime
+      };
+
+      const notificationCardProps = {
+        type,
+        isImportant,
+        isNew,
+        title,
+        buttonLabel,
+        buttonAction
+      };
+
+      return (
+        <NotificationCard key={idx} {...notificationCardProps}>
+          {type === NOTIFICATION_TYPES.resolvedMarketsOpenOrders ? (
+            <OpenOrdersResolvedMarketsTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.reportOnMarkets ? (
+            <ReportEndingSoonTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.finalizeMarkets ? (
+            <FinalizeTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.marketsInDispute ? (
+            <DisputeTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.completeSetPositions ? (
+            <SellCompleteSetTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.unsignedOrders ? (
+            <UnsignedOrdersTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.claimReportingFees ? (
+            <ClaimReportingFeesTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? (
+            <ProceedsToClaimOnHoldTemplate {...templateProps} />
+          ) : null}
+          {type === NOTIFICATION_TYPES.proceedsToClaim ? (
+            <ProceedsToClaimTemplate {...templateProps} />
+          ) : null}
+        </NotificationCard>
+      );
+    });
+
+    const labelContent = (
+      <div className={Styles.NotificationBox__header}>
+        <span>{`(${notificationCount} Notifications)`}</span>
+        {newNotificationCount > 0 && (
+          <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
+        )}
+      </div>
+    );
+
+    return (
+      <div className={Styles.NotificationBox}>
+        <BoxHeader title="Notifications" rightContent={labelContent} />
+        <div className={Styles.NotificationBox__content}>
+          {notificationCount === 0 ? (
+            <EmptyDisplay title="No notifications" />
+          ) : (
+            rows
+          )}
+        </div>
+      </div>
+    );
   }
 }
 
