@@ -137,11 +137,11 @@ const OpenOrder = (props: OpenOrderProps) => {
                 <div className={Styles.OpenOrder__labels}>
                   <LinearPropertyLabel
                     label="Total Cost (ETH)"
-                    value={tokensEscrowed && tokensEscrowed.formatted || 0}
+                    value={(tokensEscrowed && tokensEscrowed.formatted) || 0}
                   />
                   <LinearPropertyLabel
                     label="Total Cost (Shares)"
-                    value={sharesEscrowed && sharesEscrowed.formatted || 0}
+                    value={(sharesEscrowed && sharesEscrowed.formatted) || 0}
                   />
                   <LinearPropertyLabel label="Date" value={creationTime} />
                 </div>
