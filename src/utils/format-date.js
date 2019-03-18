@@ -101,7 +101,7 @@ export function formatDate(d) {
 }
 
 function addLeadingZero(value) {
-  return (value < 10 ? '0' + value : value)
+  return value < 10 ? "0" + value : value;
 }
 
 function ampm(time) {
