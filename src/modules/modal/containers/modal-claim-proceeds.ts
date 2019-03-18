@@ -47,9 +47,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       market &&
       market.reportingState === constants.REPORTING_STATE.FINALIZED
     ) {
-      const winningOutcomeShares = formatEther(
-        sP.accountShareBalances[marketId][market.consensus.winningOutcome]
-      );
+      const winningOutcomeShares = formatEther(market.outstandingReturns);
 
       if (
         canClaimProceeds(
@@ -74,14 +72,14 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   const totalGas = formatEther(
     createBigNumber(sP.gasCost).times(markets.length)
   );
-  const multiMarket = markets.length > 1;
+  const multiMarket = markets.length > 1 ? "s" : "";
   totalProceeds = formatEther(totalProceeds);
   return {
     title: "Claim Proceeds",
     alertMessage: {
       preText: "You currently have a total of",
       boldText: totalProceeds.full,
-      postText: `to be claimed in the following market${multiMarket && "s"}:`
+      postText: `to be claimed in the following market${multiMarket}:`
     },
     rows: markets,
     breakdown: [
