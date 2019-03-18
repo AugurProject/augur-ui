@@ -5,7 +5,9 @@ import claimTradingProceeds, {
   CLAIM_SHARES_GAS_COST,
   claimMultipleTradingProceeds
 } from "modules/positions/actions/claim-trading-proceeds";
+import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "utils/create-big-number";
+import canClaimProceeds from "utils/can-claim-proceeds";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { formatGasCostToEther, formatEther } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
@@ -20,7 +22,8 @@ const mapStateToProps = (state: any) => ({
     { decimalsRounded: 4 },
     getGasPrice(state)
   ),
-  accountShareBalances: state.accountShareBalances
+  accountShareBalances: state.accountShareBalances,
+  currentTimestamp: selectCurrentTimestampInSeconds(state)
 });
 
 const mapDispatchToProps = (dispatch: Function) => ({
@@ -44,10 +47,16 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       market &&
       market.reportingState === constants.REPORTING_STATE.FINALIZED
     ) {
-      const winningOutcomeShares = formatEther(
-        sP.accountShareBalances[marketId][market.consensus.winningOutcome]
-      );
-      if (winningOutcomeShares.value > 0) {
+      const winningOutcomeShares = formatEther(market.outstandingReturns);
+
+      if (
+        canClaimProceeds(
+          market.finalizationTime,
+          market.outstandingReturns,
+          sP.currentTimestamp
+        ) &&
+        winningOutcomeShares.value > 0
+      ) {
         markets.push({
           title: market.description,
           label: "Proceeds",
@@ -63,14 +72,14 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   const totalGas = formatEther(
     createBigNumber(sP.gasCost).times(markets.length)
   );
-  const multiMarket = markets.length > 1;
+  const multiMarket = markets.length > 1 ? "s" : "";
   totalProceeds = formatEther(totalProceeds);
   return {
     title: "Claim Proceeds",
     alertMessage: {
       preText: "You currently have a total of",
       boldText: totalProceeds.full,
-      postText: `to be claimed in the following market${multiMarket && "s"}:`
+      postText: `to be claimed in the following market${multiMarket}:`
     },
     rows: markets,
     breakdown: [

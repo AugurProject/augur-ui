@@ -181,7 +181,8 @@ export const MARKET_STATUS_MESSAGES = {
   RESOLVED: "Resolved",
   FORKING: "Forking",
   AWAITING_NO_REPORT_MIGRATION: "Awaiting No Report Migrated",
-  AWAITING_FORK_MIGRATION: "Awaiting Fork Migration"
+  AWAITING_FORK_MIGRATION: "Awaiting Fork Migration",
+  WAITING_PERIOD_ENDS: "Waiting period ends"
 };
 
 // # Search/Filter Param Names
@@ -599,6 +600,7 @@ export const SELL_COMPLETE_SET = "completeSetPositions";
 export const CLAIM_REPORTING_FEES = "claimReportingFees";
 export const UNSIGNED_ORDERS = "unsignedOrders";
 export const PROCEEDS_TO_CLAIM = "proceedsToClaim";
+export const PROCEEDS_TO_CLAIM_ON_HOLD = "proceedsToClaimOnHold";
 
 export const NOTIFICATION_TYPES = {
   [OPEN_ORDERS_RESOLVED_MARKET]: OPEN_ORDERS_RESOLVED_MARKET,
@@ -608,7 +610,8 @@ export const NOTIFICATION_TYPES = {
   [SELL_COMPLETE_SET]: SELL_COMPLETE_SET,
   [CLAIM_REPORTING_FEES]: CLAIM_REPORTING_FEES,
   [UNSIGNED_ORDERS]: UNSIGNED_ORDERS,
-  [PROCEEDS_TO_CLAIM]: PROCEEDS_TO_CLAIM
+  [PROCEEDS_TO_CLAIM]: PROCEEDS_TO_CLAIM,
+  [PROCEEDS_TO_CLAIM_ON_HOLD]: PROCEEDS_TO_CLAIM_ON_HOLD
 };
 
 // Account View - Timeframe selection options

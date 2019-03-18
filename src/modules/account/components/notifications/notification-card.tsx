@@ -6,9 +6,10 @@ import { ImmediateImportance } from "modules/common-elements/icons";
 import { PillLabel } from "modules/common-elements/labels";
 import { CompactButton } from "modules/common-elements/buttons";
 
-import Styles from "modules/common-elements/notifications.styles";
+import Styles from "modules/account/components/notifications/notification-card.styles";
 
 export interface NotificationProps {
+  type: string;
   isImportant: boolean;
   isNew: boolean;
   title: string;
@@ -16,6 +17,8 @@ export interface NotificationProps {
   buttonAction: Function;
   children: React.StatelessComponent;
 }
+
+const { NOTIFICATION_TYPES } = constants;
 
 export const NotificationCard = (props: NotificationProps) => (
   <div className={Styles.NotificationCard}>
@@ -47,6 +50,7 @@ export const NotificationCard = (props: NotificationProps) => (
     <CompactButton
       text={props.buttonLabel}
       action={() => props.buttonAction()}
+      disabled={props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold}
     />
   </div>
 );
