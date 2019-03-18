@@ -28,7 +28,7 @@ export default class MarketOutcomeChartsOrders extends Component {
     onMobileTradingPage: false,
     toggle: () => {},
     extend: false,
-    hide: false,
+    hide: false
   };
 
   constructor(props) {
