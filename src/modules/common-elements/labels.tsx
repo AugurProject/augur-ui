@@ -13,7 +13,6 @@ import {
 import { SELL, BOUGHT, SOLD, CLOSED, SHORT, ZERO } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 import { formatNumber } from "utils/format-number";
-import addCommas from "utils/add-commas-to-number";
 
 enum SizeTypes {
   SMALL = constants.SMALL,
