@@ -63,9 +63,10 @@ export interface PropertyLabelProps {
 
 export interface LinearPropertyLabelProps {
   label: string;
-  value: string;
+  value: string | FormattedValue;
   accentValue?: boolean;
   large?: boolean;
+  useValueLabel?: boolean;
 }
 
 export interface LinearPropertyLabelPercentProps {
@@ -111,7 +112,7 @@ interface HoverValueLabelState {
 }
 
 export function formatExpandedValue(value, showDenomination, fixedPrecision, max = "1000", min = "0.0001") {
-  const { fullPrecision, rounded, denomination, formattedValue, minimized } = value;
+  const { fullPrecision, rounded, denomination, formattedValue } = value;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan = testValue.gt(max);
@@ -248,15 +249,17 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   <div className={classNames(Styles.LinearPropertyLabel, {[Styles.large]: props.large})}>
     <span>{props.label}</span>
     <DashlineNormal />
-    <span
-      className={
-        (classNames({
-          [Styles.isAccented]: props.accentValue
-        }))
-      }
-    >
-      {props.value}
-    </span>
+    {props.useValueLabel ? <ValueLabel value={props.value} /> : 
+      <span
+        className={
+          (classNames({
+            [Styles.isAccented]: props.accentValue
+          }))
+        }
+      >
+        {props.value}
+      </span>
+    }
   </div>
 );
 

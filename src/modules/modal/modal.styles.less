@@ -82,6 +82,81 @@
   }
 }
 
+.Form {
+  .Message;
+
+  > p {
+    border-bottom: 1px solid @color-primary-background;
+    padding-bottom: @size-24;
+    margin-bottom: @size-16;
+  }
+
+  > div:nth-of-type(2) {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    border-top: 1px solid @color-primary-background;
+    margin-top: @size-16;
+    padding-top: @size-20;
+    
+    > div {
+      margin-bottom: 1rem;
+
+      > label {
+        .mono-10;
+  
+        color: @color-shadow-text;
+        margin-bottom: @size-8;
+      }
+
+      > button {
+        .mono-12;
+    
+        color: @color-secondary-text;
+      }
+
+      > input {
+        .text-10;
+  
+        background: @color-secondary-action;
+        border: 1px solid @color-primary-alternate;
+        border-radius: @border-radius-default;
+        line-height: 1rem;
+        height: 2rem;
+        color: @color-secondary-text;
+  
+        &::placeholder {
+          color: @color-shadow-text;
+        }
+      }
+    } 
+
+    > div:first-of-type {
+      flex: 0 0 47%;
+    }
+
+    > div:nth-of-type(2) {
+      flex: 0 0 47%;
+      display: flex;
+      flex-flow: row wrap;
+
+      > label {
+        flex: 0 0 80%;
+      }
+
+      > button {
+        flex: 0;
+        margin-left: auto;
+      }
+    }
+
+    > div:last-of-type {
+      flex: 1;
+      margin-bottom: @size-24;
+    }
+  }
+}
+
 .Gas {
   .CondensedContainer;
 
@@ -120,8 +195,27 @@
   margin: 0 0 @size-8;
 }
 
+.Breakdown {
+  > h4 {
+    .mono-10;
+    
+    color: @color-secondary-text;
+    margin-bottom: @size-10;
+    text-transform: uppercase;
+  }
+}
+
 .ShortBreakdown {
+  .Breakdown;
+
   margin-left: auto;
+  max-width: 15rem;
+}
+
+.ReverseBreakdown {
+  .Breakdown;
+
+  margin-right: auto;
   max-width: 15rem;
 }
 

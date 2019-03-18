@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom";
 import { Message } from "modules/modal/message";
 
 import { closeModal } from "modules/modal/actions/close-modal";
-import getRep from "modules/account/actions/get-rep";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -11,8 +10,7 @@ const mapStateToProps = (state: any) => ({
 });
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  closeModal: () => dispatch(closeModal()),
-  getRep: () => dispatch(getRep())
+  closeModal: () => dispatch(closeModal())
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => ({

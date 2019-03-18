@@ -48,7 +48,9 @@ interface CallToActionProps {
 
 interface BreakdownProps {
   rows: Array<Array<LinearPropertyLabelProps>>;
+  title?: string;
   short?: boolean;
+  reverse?: boolean;
 }
 
 interface MarketTitleProps {
@@ -148,7 +150,8 @@ export const SelectableTable = (props: SelectableTableProps) => (
 );
 
 export const Breakdown = (props: BreakdownProps) => (
-  <div className={classNames({ [Styles.ShortBreakdown]: props.short })}>
+  <div className={classNames({ [Styles.ShortBreakdown]: props.short, [Styles.ReverseBreakdown]: props.reverse })}>
+    {props.title && <h4>{props.title}</h4>}
     {props.rows.map((row: LinearPropertyLabelProps) => (
       <LinearPropertyLabel {...row} key={row.label} />
     ))}
@@ -194,7 +197,7 @@ export class AccountAddressDisplay extends Component<
     this.setState({ isCopied: true }, () => {
       setTimeout(() => {
         if (this.componentWrapper) this.setState({ isCopied: false });
-      }, 1000);
+      }, 3000);
     });
   };
 
