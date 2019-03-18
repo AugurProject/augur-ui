@@ -14,10 +14,7 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
     <span
       className={classNames(
         StylesHeader.MarketOutcomeChartsHeader__stat,
-        Styles.MarketOutcomeChartsHeader__stat,
-        {
-          [Styles.empty]: !hoveredPeriod.open
-        }
+        Styles.MarketOutcomeChartsHeader__stat
       )}
     >
       <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
@@ -27,17 +24,14 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         {hoveredPeriod.open ? (
           hoveredPeriod.open.toFixed(pricePrecision).toString()
         ) : (
-          <span />
+          <span>-</span>
         )}
       </span>
     </span>
     <span
       className={classNames(
         StylesHeader.MarketOutcomeChartsHeader__stat,
-        Styles.MarketOutcomeChartsHeader__stat,
-        {
-          [Styles.empty]: !hoveredPeriod.open
-        }
+        Styles.MarketOutcomeChartsHeader__stat
       )}
     >
       <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
@@ -47,17 +41,14 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         {hoveredPeriod.close ? (
           hoveredPeriod.close.toFixed(pricePrecision).toString()
         ) : (
-          <span />
+          <span>-</span>
         )}
       </span>
     </span>
     <span
       className={classNames(
         StylesHeader.MarketOutcomeChartsHeader__stat,
-        Styles.MarketOutcomeChartsHeader__stat,
-        {
-          [Styles.empty]: !hoveredPeriod.open
-        }
+        Styles.MarketOutcomeChartsHeader__stat
       )}
     >
       <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
@@ -67,17 +58,14 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         {hoveredPeriod.high ? (
           hoveredPeriod.high.toFixed(pricePrecision).toString()
         ) : (
-          <span />
+          <span>-</span>
         )}
       </span>
     </span>
     <span
       className={classNames(
         StylesHeader.MarketOutcomeChartsHeader__stat,
-        Styles.MarketOutcomeChartsHeader__stat,
-        {
-          [Styles.empty]: !hoveredPeriod.open
-        }
+        Styles.MarketOutcomeChartsHeader__stat
       )}
     >
       <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
@@ -87,7 +75,7 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         {hoveredPeriod.low ? (
           hoveredPeriod.low.toFixed(pricePrecision).toString()
         ) : (
-          <span />
+          <span>-</span>
         )}
       </span>
     </span>
