@@ -5,10 +5,12 @@ import * as constants from "modules/common-elements/constants";
 import { ImmediateImportance } from "modules/common-elements/icons";
 import { PillLabel } from "modules/common-elements/labels";
 import { CompactButton } from "modules/common-elements/buttons";
+import { NOTIFICATION_TYPES } from "modules/common-elements/constants";
 
-import Styles from "modules/common-elements/notifications.styles";
+import Styles from "modules/account/components/notifications/notification-card.styles";
 
 export interface NotificationProps {
+  type: string;
   isImportant: boolean;
   isNew: boolean;
   title: string;
@@ -47,6 +49,7 @@ export const NotificationCard = (props: NotificationProps) => (
     <CompactButton
       text={props.buttonLabel}
       action={() => props.buttonAction()}
+      disabled={props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold}
     />
   </div>
 );

@@ -1,8 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { isEqual } from "lodash";
 
-import NotificationBox from "modules/account/components/notifications/notification-box";
-import { Notifications as INotifications } from "modules/account/types";
+import BoxHeader from "modules/portfolio/components/common/headers/box-header";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+import { NotificationCard } from "modules/account/components/notifications/notification-card";
+import { PillLabel } from "modules/common-elements/labels";
 import {
   FinalizeTemplate,
   OpenOrdersResolvedMarketsTemplate,
@@ -11,10 +13,28 @@ import {
   SellCompleteSetTemplate,
   ClaimReportingFeesTemplate,
   UnsignedOrdersTemplate,
-  ProceedsToClaimTemplate
+  ProceedsToClaimTemplate,
+  ProceedsToClaimOnHoldTemplate
 } from "modules/account/components/notifications/notifications-templates";
+import { Market } from "modules/account/components/notifications/notifications-templates";
 
 import * as constants from "modules/common-elements/constants";
+
+import Styles from "modules/account/components/notifications/notifications.styles";
+
+export interface INotifications {
+  type: string;
+  isImportant: boolean;
+  isNew: boolean;
+  title: string;
+  buttonLabel: string;
+  buttonAction: Function;
+  Template: ReactNode;
+  market: Market | null;
+  markets: Array<string>;
+  claimReportingFees?: Object;
+  totalProceeds?: number;
+}
 
 export interface NotificationsProps {
   notifications: Array<INotifications>;
@@ -27,16 +47,7 @@ export interface NotificationsProps {
   claimTradingProceeds: Function;
 }
 
-const {
-  resolvedMarketsOpenOrders,
-  reportOnMarkets,
-  finalizeMarkets,
-  marketsInDispute,
-  completeSetPositions,
-  unsignedOrders,
-  claimReportingFees,
-  proceedsToClaim
-} = constants.NOTIFICATION_TYPES;
+const { NOTIFICATION_TYPES } = constants;
 
 class Notifications extends React.Component<NotificationsProps> {
   componentDidMount() {
@@ -52,68 +63,149 @@ class Notifications extends React.Component<NotificationsProps> {
   }
 
   render() {
-    const notifications = this.props.notifications.map(notificaction => {
-      let options = {};
-      if (notificaction.type === resolvedMarketsOpenOrders) {
-        options = {
-          buttonAction: () => null,
-          Template: OpenOrdersResolvedMarketsTemplate
-        };
-      } else if (notificaction.type === reportOnMarkets) {
-        options = {
-          buttonAction: () => null,
-          Template: ReportEndingSoonTemplate
-        };
-      } else if (notificaction.type === finalizeMarkets) {
-        options = {
-          buttonAction: () =>
-            this.props.finalizeMarketModal(notificaction.market.id),
-          Template: FinalizeTemplate
-        };
-      } else if (notificaction.type === marketsInDispute) {
-        options = {
-          buttonAction: () => null,
-          Template: DisputeTemplate
-        };
-      } else if (notificaction.type === completeSetPositions) {
-        options = {
-          buttonAction: () =>
-            this.props.sellCompleteSetsModal(
-              notificaction.market.id,
-              notificaction.market.myPositionsSummary.numCompleteSets
-            ),
-          Template: SellCompleteSetTemplate
-        };
-      } else if (notificaction.type === unsignedOrders) {
-        options = {
-          buttonAction: () => null,
-          Template: UnsignedOrdersTemplate
-        };
-      } else if (notificaction.type === claimReportingFees) {
-        options = {
-          buttonAction: () => null,
-          Template: ClaimReportingFeesTemplate
-        };
-      } else if (notificaction.type === proceedsToClaim) {
-        options = {
-          buttonAction: () => this.props.claimTradingProceeds(),
-          Template: ProceedsToClaimTemplate
-        };
-      }
+    const { currentAugurTimestamp, reportingWindowStatsEndTime } = this.props;
+    const notifications = this.props.notifications.map(notificaction =>
+      this.getButtonAction(notificaction)
+    );
+    const notificationCount = notifications.length;
+    const newNotificationCount = notifications.filter((item) => item.isNew)
+      .length;
 
-      return {
-        ...notificaction,
-        ...options
-      };
-    });
+    const rows = notifications.map((notification, idx) => {
+        const {
+          isImportant,
+          isNew,
+          title,
+          buttonLabel,
+          buttonAction,
+          market,
+          markets,
+          claimReportingFees,
+          totalProceeds,
+          type
+        } = notification;
+
+        const templateProps = {
+          claimReportingFees,
+          totalProceeds,
+          markets,
+          market,
+          currentTime: currentAugurTimestamp,
+          reportingWindowStatsEndTime
+        };
+
+        const notificationCardProps = {
+          type,
+          isImportant,
+          isNew,
+          title,
+          buttonLabel,
+          buttonAction
+        };
+
+        return (
+          <NotificationCard key={idx} {...notificationCardProps}>
+            {type === NOTIFICATION_TYPES.resolvedMarketsOpenOrders ? (
+              <OpenOrdersResolvedMarketsTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.reportOnMarkets ? (
+              <ReportEndingSoonTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.finalizeMarkets ? (
+              <FinalizeTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.marketsInDispute ? (
+              <DisputeTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.completeSetPositions ? (
+              <SellCompleteSetTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.unsignedOrders ? (
+              <UnsignedOrdersTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.claimReportingFees ? (
+              <ClaimReportingFeesTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? (
+              <ProceedsToClaimOnHoldTemplate {...templateProps} />
+            ) : null}
+            {type === NOTIFICATION_TYPES.proceedsToClaim ? (
+              <ProceedsToClaimTemplate {...templateProps} />
+            ) : null}
+          </NotificationCard>
+        );
+      }
+    );
+
+    const labelContent = (
+      <div className={Styles.NotificationBox__header}>
+        <span>{`(${notificationCount} Notifications)`}</span>
+        {newNotificationCount > 0 && (
+          <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
+        )}
+      </div>
+    );
 
     return (
-      <NotificationBox
-        notifications={notifications}
-        currentTime={this.props.currentAugurTimestamp}
-        reportingWindowEndtime={this.props.reportingWindowStatsEndTime}
-      />
+      <div className={Styles.NotificationBox}>
+        <BoxHeader title="Notifications" rightContent={labelContent} />
+        <div className={Styles.NotificationBox__content}>
+          {notificationCount === 0 ? <EmptyDisplay title="No notifications" />: rows }
+        </div>
+      </div>
     );
+  }
+
+  getButtonAction(notificaction: INotifications) {
+    let buttonAction;
+
+    switch (notificaction.type) {
+      case NOTIFICATION_TYPES.resolvedMarketsOpenOrders:
+        buttonAction = () => null;
+        break;
+
+      case NOTIFICATION_TYPES.reportOnMarkets:
+        buttonAction = () => null;
+        break;
+
+      case NOTIFICATION_TYPES.finalizeMarkets:
+        buttonAction = () =>
+          this.props.finalizeMarketModal(notificaction.market.id);
+        break;
+
+      case NOTIFICATION_TYPES.marketsInDispute:
+        buttonAction = () => null;
+        break;
+
+      case NOTIFICATION_TYPES.completeSetPositions:
+        buttonAction = () =>
+          this.props.sellCompleteSetsModal(
+            notificaction.market.id,
+            notificaction.market.myPositionsSummary.numCompleteSets
+          );
+        break;
+
+      case NOTIFICATION_TYPES.unsignedOrders:
+        buttonAction = () => null;
+        break;
+
+      case NOTIFICATION_TYPES.claimReportingFees:
+        buttonAction = () => null;
+        break;
+
+      case NOTIFICATION_TYPES.proceedsToClaim:
+        buttonAction = () => this.props.claimTradingProceeds();
+        break;
+
+      case NOTIFICATION_TYPES.proceedsToClaimOnHold:
+        buttonAction = () => null;
+        break;
+    }
+
+    return {
+      ...notificaction,
+      buttonAction
+    };
   }
 }
 

@@ -53,7 +53,7 @@ const OneWeek = 168 * 60 * 60;
 const ThreeDays = 72 * 60 * 60;
 const OneDay = 24 * 60 * 60;
 
-const formatTime = (time: DateFormattedObject | number) => {
+export const formatTime = (time: DateFormattedObject | number) => {
   if (typeof time !== "object") {
     return format.convertUnixToFormattedDate(time);
   }

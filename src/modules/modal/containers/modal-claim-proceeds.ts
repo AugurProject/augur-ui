@@ -5,7 +5,9 @@ import claimTradingProceeds, {
   CLAIM_SHARES_GAS_COST,
   claimMultipleTradingProceeds
 } from "modules/positions/actions/claim-trading-proceeds";
+import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "utils/create-big-number";
+import canClaimProceeds from "utils/can-claim-proceeds";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { formatGasCostToEther, formatEther } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
@@ -20,7 +22,8 @@ const mapStateToProps = (state: any) => ({
     { decimalsRounded: 4 },
     getGasPrice(state)
   ),
-  accountShareBalances: state.accountShareBalances
+  accountShareBalances: state.accountShareBalances,
+  currentTimestamp: selectCurrentTimestampInSeconds(state)
 });
 
 const mapDispatchToProps = (dispatch: Function) => ({
@@ -47,7 +50,15 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       const winningOutcomeShares = formatEther(
         sP.accountShareBalances[marketId][market.consensus.winningOutcome]
       );
-      if (winningOutcomeShares.value > 0) {
+
+      if (
+        canClaimProceeds(
+          market.finalizationTime,
+          market.outstandingReturns,
+          sP.currentTimestamp
+        ) &&
+        winningOutcomeShares.value > 0
+      ) {
         markets.push({
           title: market.description,
           label: "Proceeds",
