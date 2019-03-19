@@ -93,7 +93,8 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         className={classNames({
           [Styles.Dropdown_Large]: large,
           [Styles.Dropdown_Normal]: !large,
-          [Styles.Dropdown__stretchOut]: stretchOut
+          [Styles.Dropdown__stretchOut]: stretchOut,
+          [Styles.Dropdown__isOpen]: showList
         })}
         ref={dropdown => {
           this.refDropdown = dropdown;

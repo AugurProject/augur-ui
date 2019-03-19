@@ -57,7 +57,7 @@
       &:hover {
         background-color: fade(@color-highlight, 20%);
       }
-
+ź
       &::before {
         background-color: fade(@color-highlight, 10%);
         bottom: 0;
@@ -68,17 +68,22 @@
     }
   }
 
+  &:active,
   &:hover {
     background: fade(@color-highlight, 30%);
+    outline: none;
 
     > button > svg > path {
       stroke: @color-secondary-text;
     }
   }
+}
 
-  &:active,
-  &:hover {
-    outline: none;
+div.Dropdown__isOpen {
+  background: fade(@color-highlight, 30%);
+
+  > button > svg > path {
+    stroke: @color-secondary-text;
   }
 }
 
