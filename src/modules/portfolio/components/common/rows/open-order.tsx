@@ -121,7 +121,9 @@ const OpenOrder = (props: OpenOrderProps) => {
         rowContent={rowContent}
         toggleContent={
           <div className={Styles.OpenOrder_infoContainer}>
-            <div className={Styles.OpenOrder__info}>
+            <div className={classNames(Styles.OpenOrder__info, {
+                [Styles.OpenOrder__infoSingle]: isSingle
+              })}>
               {isSingle && (
                 <span>
                   <MarketLink id={openOrder.marketId}>
