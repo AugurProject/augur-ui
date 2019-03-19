@@ -82,16 +82,14 @@ export default class OpenOrders extends Component {
         label={viewByMarkets ? "Markets" : "Open Orders"}
         rows={
           <div className={Styles.Quad__container}>
-            {filteredData.length === 0 ||
-              (markets.length === 0 && (
-                <EmptyDisplay
-                  title={
                     viewByMarkets
-                      ? "No available markets"
-                      : "No available orders"
-                  }
-                />
-              ))}
+            {filteredData.length === 0 && (
+              <EmptyDisplay
+                title={
+                  viewByMarkets ? "No available markets" : "No available orders"
+                }
+              />
+            )}
             {filteredData.map(data => {
               const marketView = marketsObj[data.id] && viewByMarkets;
               const orderView = ordersObj[data.id];
