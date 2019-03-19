@@ -121,19 +121,15 @@ const OpenOrder = (props: OpenOrderProps) => {
         rowContent={rowContent}
         toggleContent={
           <div className={Styles.OpenOrder_infoContainer}>
-            <div
-              className={classNames(Styles.OpenOrder_innerInfoContainer, {
-                [Styles.OpenOrder_innerInfoContainerSingle]: isSingle
-              })}
-            >
-              <div className={Styles.OpenOrder__info}>
-                {isSingle && (
-                  <span>
-                    <MarketLink id={openOrder.marketId}>
-                      {openOrder.marketDescription}
-                    </MarketLink>
-                  </span>
-                )}
+            <div className={Styles.OpenOrder__info}>
+              {isSingle && (
+                <span>
+                  <MarketLink id={openOrder.marketId}>
+                    {openOrder.marketDescription}
+                  </MarketLink>
+                </span>
+              )}
+              <div>
                 <div className={Styles.OpenOrder__labels}>
                   <LinearPropertyLabel
                     label="Total Cost (ETH)"
@@ -145,8 +141,10 @@ const OpenOrder = (props: OpenOrderProps) => {
                   />
                   <LinearPropertyLabel label="Date" value={creationTime} />
                 </div>
+                <div className={Styles.OpenOrder__timestamp}>
+                  {creationTime}
+                </div>
               </div>
-              <div className={Styles.OpenOrder__timestamp}>{creationTime}</div>
             </div>
           </div>
         }
