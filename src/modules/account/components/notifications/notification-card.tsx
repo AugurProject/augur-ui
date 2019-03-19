@@ -47,10 +47,11 @@ export const NotificationCard = (props: NotificationProps) => (
       </div>
     </div>
 
-    <CompactButton
-      text={props.buttonLabel}
-      action={() => props.buttonAction()}
-      disabled={props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold}
-    />
+    {props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? null : (
+      <CompactButton
+        text={props.buttonLabel}
+        action={() => props.buttonAction()}
+      />
+    )}
   </div>
 );
