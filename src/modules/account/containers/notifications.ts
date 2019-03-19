@@ -25,14 +25,19 @@ const mapDispatchToProps = (dispatch: Function) => ({
   updateNotifications: (notifications: any) =>
     dispatch(updateNotifications(notifications)),
   getReportingFees: () => dispatch(getReportingFees()),
-  finalizeMarketModal: (marketId: any) =>
-    dispatch(updateModal({ type: MODAL_FINALIZE_MARKET, marketId })),
-  sellCompleteSetsModal: (marketId: any, numCompleteSets: any) =>
+  finalizeMarketModal: (marketId: any, cb: Function) =>
+    dispatch(updateModal({ type: MODAL_FINALIZE_MARKET, marketId, cb })),
+  sellCompleteSetsModal: (marketId: any, numCompleteSets: any, cb: Function) =>
     dispatch(
-      updateModal({ type: MODAL_SELL_COMPLETE_SETS, marketId, numCompleteSets })
+      updateModal({
+        type: MODAL_SELL_COMPLETE_SETS,
+        marketId,
+        numCompleteSets,
+        cb
+      })
     ),
-  claimTradingProceeds: () =>
-    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS }))
+  claimTradingProceeds: (cb: Function) =>
+    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS, cb }))
 });
 
 const NotificationsContainer = connect(

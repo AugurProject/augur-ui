@@ -57,7 +57,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => ({
   closeAction: () => {
     dP.closeModal();
     if (sP.modal.cb) {
-      sP.modal.cb()
+      sP.modal.cb();
     }
   },
   buttons: [

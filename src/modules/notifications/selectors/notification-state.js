@@ -120,6 +120,7 @@ export const selectMarketsInDispute = createSelector(
   }
 );
 
+// Get all markets where the user has outstanding returns
 export const selectAllProceedsToClaim = createSelector(
   selectMarkets,
   markets => {
@@ -135,7 +136,7 @@ export const selectAllProceedsToClaim = createSelector(
   }
 );
 
-// Get all markets where the user has outstanding returns
+// Get all markets where the user has outstanding returns and doesn't have to wait CLAIM_PROCEEDS_WAIT_TIME
 export const selectProceedsToClaim = createSelector(
   selectAllProceedsToClaim,
   selectCurrentTimestampInSeconds,
@@ -295,7 +296,8 @@ export const selectNotifications = createSelector(
         title: CLAIM_REPORTING_FEES_TITLE,
         buttonLabel: TYPE_VIEW,
         market: null,
-        claimReportingFees
+        claimReportingFees,
+        id: NOTIFICATION_TYPES.claimReportingFees
       });
     }
 
@@ -318,7 +320,8 @@ export const selectNotifications = createSelector(
           buttonLabel: TYPE_VIEW,
           market: null,
           marketes: marketIds,
-          totalProceeds: totalEth.toNumber()
+          totalProceeds: totalEth.toNumber(),
+          id: NOTIFICATION_TYPES.proceedsToClaim
         });
       }
     }
@@ -404,6 +407,7 @@ const generateCards = (markets, type) => {
 
   return markets.map(market => ({
     market,
-    ...defaults
+    ...defaults,
+    id: `${type}-${market.id}`
   }));
 };

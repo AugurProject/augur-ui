@@ -9,16 +9,23 @@ import { CompactButton } from "modules/common-elements/buttons";
 import Styles from "modules/account/components/notifications/notification-card.styles";
 
 export interface NotificationProps {
+  id: string;
   type: string;
   isImportant: boolean;
   isNew: boolean;
   title: string;
   buttonLabel: string;
   buttonAction: Function;
+  disabledNotifications: { [name: string]: boolean };
   children: React.StatelessComponent;
 }
 
 const { NOTIFICATION_TYPES } = constants;
+
+const isDisabled = (props: NotificationProps) => {
+  const { disabledNotifications, id } = props;
+  return disabledNotifications[id] && disabledNotifications[id] === true;
+};
 
 export const NotificationCard = (props: NotificationProps) => (
   <div className={Styles.NotificationCard}>
@@ -47,10 +54,12 @@ export const NotificationCard = (props: NotificationProps) => (
       </div>
     </div>
 
-    <CompactButton
-      text={props.buttonLabel}
-      action={() => props.buttonAction()}
-      disabled={props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold}
-    />
+    {props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? null : (
+      <CompactButton
+        text={props.buttonLabel}
+        action={() => props.buttonAction()}
+        disabled={isDisabled(props)}
+      />
+    )}
   </div>
 );

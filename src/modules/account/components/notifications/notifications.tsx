@@ -25,6 +25,7 @@ import * as constants from "modules/common-elements/constants";
 import Styles from "modules/account/components/notifications/notifications.styles";
 
 export interface INotifications {
+  id: string;
   type: string;
   isImportant: boolean;
   isNew: boolean;
@@ -52,6 +53,10 @@ export interface NotificationsProps {
 const { NOTIFICATION_TYPES } = constants;
 
 class Notifications extends React.Component<NotificationsProps> {
+  state = {
+    disabledNotifications: {}
+  };
+
   componentDidMount() {
     this.props.updateNotifications(this.props.notifications);
     this.props.getReportingFees();
@@ -64,10 +69,10 @@ class Notifications extends React.Component<NotificationsProps> {
     }
   }
 
-  getButtonAction(notificaction: INotifications) {
+  getButtonAction(notification: INotifications) {
     let buttonAction;
 
-    switch (notificaction.type) {
+    switch (notification.type) {
       case NOTIFICATION_TYPES.resolvedMarketsOpenOrders:
         buttonAction = () => null;
         break;
@@ -77,8 +82,12 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.finalizeMarkets:
-        buttonAction = () =>
-          this.props.finalizeMarketModal(notificaction.market.id);
+        buttonAction = () => {
+          this.disableNotification(notification.id, true);
+          this.props.finalizeMarketModal(notification.market.id,
+            () => this.disableNotification(notification.id, false)
+          );
+        };
         break;
 
       case NOTIFICATION_TYPES.marketsInDispute:
@@ -86,11 +95,14 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.completeSetPositions:
-        buttonAction = () =>
+        buttonAction = () => {
+          this.disableNotification(notification.id, true);
           this.props.sellCompleteSetsModal(
-            notificaction.market.id,
-            notificaction.market.myPositionsSummary.numCompleteSets
+            notification.market.id,
+            notification.market.myPositionsSummary.numCompleteSets,
+            () => this.disableNotification(notification.id, false)
           );
+        };
         break;
 
       case NOTIFICATION_TYPES.unsignedOrders:
@@ -102,7 +114,12 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.proceedsToClaim:
-        buttonAction = () => this.props.claimTradingProceeds();
+        buttonAction = () => {
+          this.disableNotification(notification.id, true);
+          this.props.claimTradingProceeds(() =>
+            this.disableNotification(notification.id, false)
+          );
+        };
         break;
 
       case NOTIFICATION_TYPES.proceedsToClaimOnHold:
@@ -115,15 +132,24 @@ class Notifications extends React.Component<NotificationsProps> {
     }
 
     return {
-      ...notificaction,
+      ...notification,
       buttonAction
     };
   }
 
+  disableNotification(id: string, disabled: boolean) {
+    this.setState({
+      disabledNotifications: {
+        ...this.state.disabledNotifications,
+        [id]: disabled
+      }
+    });
+  }
+
   render() {
     const { currentAugurTimestamp, reportingWindowStatsEndTime } = this.props;
-    const notifications = this.props.notifications.map(notificaction =>
-      this.getButtonAction(notificaction)
+    const notifications = this.props.notifications.map(notification =>
+      this.getButtonAction(notification)
     );
     const notificationCount = notifications.length;
     const newNotificationCount = notifications.filter(item => item.isNew)
@@ -131,6 +157,7 @@ class Notifications extends React.Component<NotificationsProps> {
 
     const rows = notifications.map((notification, idx) => {
       const {
+        id,
         isImportant,
         isNew,
         title,
@@ -153,12 +180,14 @@ class Notifications extends React.Component<NotificationsProps> {
       };
 
       const notificationCardProps = {
+        id,
         type,
         isImportant,
         isNew,
         title,
         buttonLabel,
-        buttonAction
+        buttonAction,
+        disabledNotifications: this.state.disabledNotifications
       };
 
       return (
