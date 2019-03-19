@@ -63,7 +63,7 @@ export function formatDate(d) {
     } ${date.getUTCDate()}, ${date.getUTCFullYear()} ${utcTimeTwelve.join(
       ":"
     )} ${utcAMPM}`, // UTC time
-    formattedShortDate: `${addLeadingZero(date.getUTCDate())}${
+    formattedShortDate: `${("0" + date.getUTCDate()).slice(-2)}${
       shortMonths[date.getUTCMonth()]
     } ${date.getUTCFullYear()}`,
     formattedShortTime: `${utcTimeWithSeconds.join(":")}`,
@@ -98,10 +98,6 @@ export function formatDate(d) {
       months[date.getMonth()]
     } ${date.getDate()}, ${date.getFullYear()}`
   };
-}
-
-function addLeadingZero(value) {
-  return value < 10 ? "0" + value : value;
 }
 
 function ampm(time) {
