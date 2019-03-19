@@ -82,7 +82,6 @@ export default class OpenOrders extends Component {
         label={viewByMarkets ? "Markets" : "Open Orders"}
         rows={
           <div className={Styles.Quad__container}>
-                    viewByMarkets
             {filteredData.length === 0 && (
               <EmptyDisplay
                 title={
