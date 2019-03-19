@@ -9,7 +9,7 @@
 
   @media @breakpoint-mobile {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -23,6 +23,12 @@
   > div {
     width: 9.375rem;
   }
+
+  @media @breakpoint-mobile {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+  }
 }
 
 .MarketOutcomeChartsHeader__selector__mobile {
@@ -34,6 +40,10 @@
 span.MarketOutcomeChartsHeader__stat {
   margin-right: 16px;
   min-width: 55px;
+
+  @media @breakpoint-mobile {
+    min-width: unset;
+  }
 }
 
 .MarketOutcomeChartsHeader__stat-value,
@@ -54,7 +64,9 @@ div.MarketOutcomeChartsHeader__stats {
   justify-content: center;
 
   @media @breakpoint-mobile {
-    justify-content: flex-start;
+    justify-content: space-between;
+    margin-top: 1rem;
+    width: 100%;
   }
 }
 
