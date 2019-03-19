@@ -110,7 +110,10 @@ interface HoverValueLabelState {
   hover: boolean;
 }
 
-export function formatExpandedValue(value, showDenomination, fixedPrecision, max = "1000", min = "0.0001") {
+const maxHoverDecimals = 8;
+const minHoverDecimals = 4;
+
+export function formatExpandedValue(value, showDenomination, fixedPrecision = false, max = "1000", min = "0.0001") {
   const { fullPrecision, rounded, denomination, formattedValue, minimized } = value;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
@@ -120,16 +123,25 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision, max
   let frontFacingLabel = isGreaterThan ? fullWithoutDecimals : rounded;
   const denominationLabel = showDenomination ? `${denomination}` : "";
   
-  if (fullPrecision.length === frontFacingLabel.length) {
+  let fullValue = fullPrecision;
+  if (fixedPrecision) {
+    const decimals = fullValue.toString().split(".")[1];
+    if (decimals && decimals.length > maxHoverDecimals) {
+      const round = formatNumber(fullPrecision, {decimals: maxHoverDecimals, decimalsRounded: maxHoverDecimals});
+      fullValue = round.formatted;
+    }
+
+    if (testValue.gte("1000") && fixedPrecision) {
+      frontFacingLabel = formattedValue.toFixed(minHoverDecimals);
+    }
+  }
+
+  if (fullValue.length === frontFacingLabel.length) {
     postfix = "";
   }
 
-  if (testValue.gt("1000") && fixedPrecision) {
-    frontFacingLabel = formattedValue.toFixed(4);
-  }
-
   return {
-    fullPrecision: fullPrecision,
+    fullPrecision: fullValue,
     postfix,
     frontFacingLabel,
     denominationLabel

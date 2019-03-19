@@ -3,30 +3,25 @@
 .AccountView {
   display: flex;
   flex-direction: column;
-
-  > div > div {
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-  }
+  min-height: 100vh;
 }
 
 .AccountView__container {
   display: flex;
   flex: 1;
-  margin: 24px 40px 40px;
+  margin: 1.5rem 2.5rem 2.5rem;
 
   > div {
     display: flex;
     flex: 1;
     flex-direction: column;
-    margin: 8px;
+    margin: 0.5rem;
 
     > div {
       display: flex;
       flex: 1;
       flex-direction: column;
-      margin-bottom: 12px;
+      margin-bottom: 0.75rem;
       max-height: unset;
 
       &:last-of-type {
@@ -35,18 +30,27 @@
     }
   }
 
-  > div:nth-of-type(2) {
-    margin-bottom: 70px;
-
-    > div:last-of-type {
-      flex: 0;
-      min-height: fit-content;
+  > div:first-of-type {
+    > div {
+      max-height: 50vh;
     }
   }
 
-  > div:last-of-type {
-    margin-bottom: 150px;
+  > div:nth-of-type(2) {
+    height: fit-content;
+    margin-bottom: 4.375rem;
+  }
 
+  > div:last-of-type {
+    margin-bottom: 9.375rem;
+
+    > div:first-of-type {
+      max-height: 70vh;
+    }
+  }
+
+  > div:nth-of-type(2),
+  > div:last-of-type {
     > div:last-of-type {
       flex: 0;
       min-height: fit-content;
