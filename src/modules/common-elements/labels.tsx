@@ -67,6 +67,7 @@ export interface LinearPropertyLabelProps {
   accentValue?: boolean;
   large?: boolean;
   useValueLabel?: boolean;
+  showDenomination?: boolean;
 }
 
 export interface LinearPropertyLabelPercentProps {
@@ -120,7 +121,7 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision, max
   let postfix = (isGreaterThan || isLessThan) ? String.fromCodePoint(0x2026) : "";
   let frontFacingLabel = isGreaterThan ? fullWithoutDecimals : rounded;
   const denominationLabel = showDenomination ? `${denomination}` : "";
-  
+
   if (fullPrecision.length === frontFacingLabel.length) {
     postfix = "";
   }
@@ -249,7 +250,7 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   <div className={classNames(Styles.LinearPropertyLabel, {[Styles.large]: props.large})}>
     <span>{props.label}</span>
     <DashlineNormal />
-    {props.useValueLabel ? <ValueLabel value={props.value} /> : 
+    {props.useValueLabel ? <ValueLabel value={props.value} showDenomination={props.showDenomination} /> : 
       <span
         className={
           (classNames({
@@ -257,7 +258,7 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
           }))
         }
       >
-        {props.value}
+        {props.value && props.value.formatted ? `${props.value.formatted} ${props.showDenomination ? props.value.denomination : ""}`: props.value}
       </span>
     }
   </div>

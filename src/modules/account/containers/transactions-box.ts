@@ -24,7 +24,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: Function) => ({
   repFaucet: () => dispatch(updateModal({ type: MODAL_REP_FAUCET })),
   deposit: () => dispatch(updateModal({ type: MODAL_DEPOSIT })),
-  withdraw: () => dispatch(updateModal({ type: MODAL_WITHDRAW })),
+  withdraw: () => dispatch(updateModal({ type: MODAL_WITHDRAW }))
 });
 
 const TransactionsBoxContainer = connect(

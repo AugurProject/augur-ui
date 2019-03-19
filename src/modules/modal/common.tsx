@@ -150,7 +150,12 @@ export const SelectableTable = (props: SelectableTableProps) => (
 );
 
 export const Breakdown = (props: BreakdownProps) => (
-  <div className={classNames({ [Styles.ShortBreakdown]: props.short, [Styles.ReverseBreakdown]: props.reverse })}>
+  <div
+    className={classNames({
+      [Styles.ShortBreakdown]: props.short,
+      [Styles.ReverseBreakdown]: props.reverse
+    })}
+  >
     {props.title && <h4>{props.title}</h4>}
     {props.rows.map((row: LinearPropertyLabelProps) => (
       <LinearPropertyLabel {...row} key={row.label} />
