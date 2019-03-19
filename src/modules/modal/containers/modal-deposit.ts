@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
 const mergeProps = (sP: any, dP: any, oP: any) => ({
   title: "Receive Funds",
   description: [
-    "To trade, send Ethereum (ETH) or Reputation (REP) to the wallet you use to connect to Augur."
+    "Send Ethereum (ETH) or Reputation (REP) to the wallet you have connected to trade on Augur."
   ],
   closeAction: () => dP.closeModal(),
   readableAddress: {
