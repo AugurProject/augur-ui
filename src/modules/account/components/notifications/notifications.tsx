@@ -84,8 +84,8 @@ class Notifications extends React.Component<NotificationsProps> {
       case NOTIFICATION_TYPES.finalizeMarkets:
         buttonAction = () => {
           this.disableNotification(notification.id, true);
-          this.props.finalizeMarketModal(notification.market.id,
-            () => this.disableNotification(notification.id, false)
+          this.props.finalizeMarketModal(notification.market.id, () =>
+            this.disableNotification(notification.id, false)
           );
         };
         break;
