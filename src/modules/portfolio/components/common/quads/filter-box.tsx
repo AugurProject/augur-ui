@@ -169,7 +169,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
                       rightContent={renderRightContent && renderRightContent(dataObj[market.id])}
                     />
                   ) : null
-              )}
+             )}
           </div>
         }
         search={search}
