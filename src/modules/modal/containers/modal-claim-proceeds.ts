@@ -92,15 +92,21 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         value: totalProceeds.full
       }
     ],
-    closeAction: () => dP.closeModal(),
+    closeAction: () => {
+      dP.closeModal();
+      if (sP.modal.cb) {
+        sP.modal.cb();
+      }
+    },
     buttons: [
       {
         text: `${multiMarket ? "Claim All Proceeds" : "Claim Proceeds"}`,
         action: () => {
+          dP.closeModal();
           if (multiMarket) {
-            dP.claimMultipleTradingProceeds(marketIds, dP.closeModal());
+            dP.claimMultipleTradingProceeds(marketIds, sP.modal.cb);
           } else {
-            dP.claimTradingProceeds(marketIds[0], dP.closeModal());
+            dP.claimTradingProceeds(marketIds[0], sP.modal.cb);
           }
         }
       }

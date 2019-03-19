@@ -54,7 +54,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => ({
     }
   ],
   marketTitle: sP.marketTitle,
-  closeAction: () => dP.closeModal(),
+  closeAction: () => {
+    dP.closeModal();
+    if (sP.modal.cb) {
+      sP.modal.cb();
+    }
+  },
   buttons: [
     {
       text: "Sell Complete Sets",

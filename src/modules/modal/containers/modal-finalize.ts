@@ -17,7 +17,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
-  finalizeMarket: (marketId: string) => dispatch(sendFinalizeMarket(marketId))
+  finalizeMarket: (marketId: string, cb: Function) =>
+    dispatch(sendFinalizeMarket(marketId, cb))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => ({
@@ -27,12 +28,17 @@ const mergeProps = (sP: any, dP: any, oP: any) => ({
   },
   marketTitle: sP.marketDescription,
   callToAction: "Please finalize this market so proceeds can be claimed.",
-  closeAction: () => dP.closeModal(),
+  closeAction: () => {
+    dP.closeModal();
+    if (sP.modal.cb) {
+      sP.modal.cb();
+    }
+  },
   buttons: [
     {
       text: "Finalize",
       action: () => {
-        dP.finalizeMarket(sP.modal.marketId);
+        dP.finalizeMarket(sP.modal.marketId, sP.modal.cb);
         dP.closeModal();
       }
     }
