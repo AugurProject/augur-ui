@@ -120,18 +120,28 @@ export const selectMarketsInDispute = createSelector(
   }
 );
 
-// Get all markets where the user has outstanding returns
-export const selectProceedsToClaim = createSelector(
+export const selectAllProceedsToClaim = createSelector(
   selectMarkets,
-  selectCurrentTimestampInSeconds,
-  (markets, currentTimestamp) => {
-    if (markets.length > 0 && currentTimestamp) {
+  markets => {
+    if (markets && markets.length > 0) {
       return markets
         .filter(
           market =>
             market.reportingState === constants.REPORTING_STATE.FINALIZED
         )
-        .filter(market => market.outstandingReturns)
+        .filter(market => market.outstandingReturns);
+    }
+    return [];
+  }
+);
+
+// Get all markets where the user has outstanding returns
+export const selectProceedsToClaim = createSelector(
+  selectAllProceedsToClaim,
+  selectCurrentTimestampInSeconds,
+  (markets, currentTimestamp) => {
+    if (markets.length > 0 && currentTimestamp) {
+      return markets
         .filter(market =>
           canClaimProceeds(
             market.finalizationTime,
@@ -140,6 +150,43 @@ export const selectProceedsToClaim = createSelector(
           )
         )
         .map(getRequiredMarketData);
+    }
+    return [];
+  }
+);
+
+// Get all markets where the user has outstanding returns but needs to wait CLAIM_PROCEEDS_WAIT_TIME
+export const selectProceedsToClaimOnHold = createSelector(
+  selectAllProceedsToClaim,
+  selectCurrentTimestampInSeconds,
+  (markets, currentTimestamp) => {
+    if (markets.length > 0 && currentTimestamp) {
+      return markets
+        .filter(
+          market =>
+            !canClaimProceeds(
+              market.finalizationTime,
+              market.outstandingReturns,
+              currentTimestamp
+            )
+        )
+        .map(getRequiredMarketData)
+        .map(market => {
+          const finalizationTimeWithHold = createBigNumber(
+            market.finalizationTime
+          )
+            .plus(
+              createBigNumber(
+                constants.CONTRACT_INTERVAL.CLAIM_PROCEEDS_WAIT_TIME
+              )
+            )
+            .toNumber();
+
+          return {
+            ...market,
+            finalizationTimeWithHold
+          };
+        });
     }
     return [];
   }
@@ -186,6 +233,7 @@ export const selectNotifications = createSelector(
   selectUsersReportingFees,
   selectUnsignedOrders,
   selectProceedsToClaim,
+  selectProceedsToClaimOnHold,
   (
     reportOnMarkets,
     resolvedMarketsOpenOrder,
@@ -194,7 +242,8 @@ export const selectNotifications = createSelector(
     marketsInDispute,
     claimReportingFees,
     unsignedOrders,
-    proceedsToClaim
+    proceedsToClaim,
+    proceedsToClaimOnHold
   ) => {
     const reportOnMarketsNotifications = generateCards(
       reportOnMarkets,
@@ -220,6 +269,10 @@ export const selectNotifications = createSelector(
       unsignedOrders,
       NOTIFICATION_TYPES.unsignedOrders
     );
+    const proceedsToClaimOnHoldNotifications = generateCards(
+      proceedsToClaimOnHold,
+      NOTIFICATION_TYPES.proceedsToClaimOnHold
+    );
 
     let notifications = [
       ...reportOnMarketsNotifications,
@@ -227,7 +280,8 @@ export const selectNotifications = createSelector(
       ...finalizeMarketsNotifications,
       ...completeSetPositionsNotifications,
       ...marketsInDisputeNotifications,
-      ...unsignedOrdersNotifications
+      ...unsignedOrdersNotifications,
+      ...proceedsToClaimOnHoldNotifications
     ];
 
     if (
@@ -282,7 +336,8 @@ const getRequiredMarketData = market => ({
   marketStatus: market.marketStatus,
   disputeInfo: market.disputeInfo || {},
   myPositionsSummary: market.myPositionsSummary || {},
-  outstandingReturns: market.outstandingReturns || null
+  outstandingReturns: market.outstandingReturns || null,
+  finalizationTime: market.finalizationTime
 });
 
 // Build notification objects and include market data
@@ -335,6 +390,14 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: false,
       title: UNSIGNED_ORDERS_TITLE,
+      buttonLabel: TYPE_VIEW
+    };
+  } else if (type === NOTIFICATION_TYPES.proceedsToClaimOnHold) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: false,
+      title: PROCEEDS_TO_CLAIM_TITLE,
       buttonLabel: TYPE_VIEW
     };
   }

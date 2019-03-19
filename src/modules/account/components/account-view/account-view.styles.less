@@ -1,13 +1,9 @@
-@import (reference) '~assets/styles/shared';
+@import (reference) "~assets/styles/shared";
 
 .AccountView {
   display: flex;
   flex-direction: column;
-
-  > div > div {
-    display: flex;
-    flex-direction: column;
-  }
+  min-height: 100vh;
 }
 
 .AccountView__container {
@@ -34,18 +30,27 @@
     }
   }
 
-  > div:nth-of-type(2) {
-    margin-bottom: 70px;
-
-    > div:last-of-type {
-      flex: 0;
-      min-height: fit-content;
+  > div:first-of-type {
+    > div {
+      max-height: 50vh;
     }
   }
 
-  > div:last-of-type {
-    margin-bottom: 150px;
+  > div:nth-of-type(2) {
+    height: fit-content;
+    margin-bottom: 4.375rem;
+  }
 
+  > div:last-of-type {
+    margin-bottom: 9.375rem;
+
+    > div:first-of-type {
+      max-height: 70vh;
+    }
+  }
+
+  > div:nth-of-type(2),
+  > div:last-of-type {
     > div:last-of-type {
       flex: 0;
       min-height: fit-content;

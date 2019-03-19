@@ -4,14 +4,23 @@ import logError from "utils/log-error";
 import { map, mapValues } from "lodash/fp";
 
 const mutatePeriod = map(
-  ({ max, min, start, end, startTimestamp, volume, tokenVolume }) => ({
+  ({
+    max,
+    min,
+    start,
+    end,
+    startTimestamp,
+    volume,
+    tokenVolume,
+    shareVolume
+  }) => ({
     period: startTimestamp * 1000,
     open: parseFloat(start),
     high: parseFloat(max),
     low: parseFloat(min),
     close: parseFloat(end),
     volume: parseFloat(volume),
-    shareVolume: parseFloat(tokenVolume)
+    shareVolume: parseFloat(shareVolume || tokenVolume)
   })
 );
 

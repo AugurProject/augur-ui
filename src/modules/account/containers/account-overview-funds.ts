@@ -1,13 +1,19 @@
 import { connect } from "react-redux";
 
 import OverviewFunds from "modules/account/components/overview-funds/overview-funds";
-import { formatAttoRep } from "utils/format-number";
-import { selectLoginAccount } from "modules/auth/selectors/login-account";
-import { selectLoginAccountState } from "select-state";
+import { formatEther, formatAttoRep } from "utils/format-number";
+import {
+  selectLoginAccount,
+  selectAccountFunds
+} from "modules/auth/selectors/login-account";
 
 const mapStateToProps = (state: any) => {
   const loginAccount = selectLoginAccount(state);
-  const { totalFrozenFunds } = selectLoginAccountState(state) || "0";
+  const {
+    totalAvailableTradingBalance,
+    totalFrozenFunds,
+    totalAccountValue
+  } = selectAccountFunds(state);
 
   return {
     repStaked:
@@ -16,7 +22,10 @@ const mapStateToProps = (state: any) => {
         denomination: " REP"
       }).formattedValue || 0,
     repBalance: loginAccount.rep.formatted || "0",
-    totalFrozenFunds
+    totalFrozenFunds: formatEther(totalFrozenFunds).formatted,
+    totalAvailableTradingBalance: formatEther(totalAvailableTradingBalance)
+      .formatted,
+    totalAccountValue: formatEther(totalAccountValue).formatted
   };
 };
 

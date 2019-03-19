@@ -53,6 +53,9 @@ export default class MarketOutcomesChartHighchart extends Component {
           enabled: false
         },
         plotOptions: {
+          area: {
+            threshold: null
+          },
           line: {
             dataGrouping: {
               forced: true,

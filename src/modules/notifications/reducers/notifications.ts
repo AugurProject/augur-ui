@@ -1,12 +1,12 @@
 import { UPDATE_NOTIFICATIONS } from "modules/notifications/actions/update-notifications";
 import { CLEAR_LOGIN_ACCOUNT } from "modules/auth/actions/update-login-account";
 import { RESET_STATE } from "modules/app/actions/reset-state";
-import { Notifications } from "modules/account/components/notifications/notification-box";
+import { INotifications } from "modules/account/components/notifications/notifications";
 
 const DEFAULT_STATE: Array<null> = [];
 
 export interface Data {
-  notifications: Array<Notifications>;
+  notifications: Array<INotifications>;
 }
 
 export interface Action {

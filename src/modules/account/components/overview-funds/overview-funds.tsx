@@ -16,15 +16,23 @@ export interface OverviewFundsProps {
   repStaked: number;
   repBalance: string;
   totalFrozenFunds: string;
+  totalAvailableTradingBalance: string;
+  totalAccountValue: string;
 }
 
 const OverviewFunds = (props: OverviewFundsProps) => {
-  const { totalFrozenFunds, repBalance, repStaked } = props;
+  const {
+    totalFrozenFunds,
+    totalAvailableTradingBalance,
+    totalAccountValue,
+    repBalance,
+    repStaked
+  } = props;
 
   const tradingBalanceFrozenFunds = [
     {
       title: AVAILABLE_TRADING_BALANCE,
-      value: "000.0000" // TODO Available trading balance
+      value: totalAvailableTradingBalance
     },
     {
       title: TOTAL_FROZEN_FUNDS,
@@ -55,7 +63,7 @@ const OverviewFunds = (props: OverviewFundsProps) => {
         value={0} // TODO Account P/L (time range)
       />
       <div>
-        000.0000 {/* TODO Total Account Value (ETH) */}
+        {totalAccountValue}
         {EthIcon}
       </div>
 
