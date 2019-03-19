@@ -155,23 +155,44 @@
     }
 
     > input {
-      .text-10;
+      .text-14;
 
       background: @color-secondary-action;
       border: 1px solid @color-primary-alternate;
       border-radius: @border-radius-default;
       color: @color-secondary-text;
-      height: 2rem;
+      height: @size-40;
       line-height: 1rem;
 
       &::placeholder {
         color: @color-shadow-text;
       }
     }
+
+    > input[type="number"]::-webkit-outer-spin-button,
+    > input[type="number"]::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+
+    > input[type="number"] {
+      appearance: textfield;
+    }
   }
 
   > div:first-of-type {
     flex: 0 0 47%;
+
+    > div {
+      height: @size-40;
+
+      > button,
+      > div > button {
+        .text-14;
+
+        line-height: 1rem;
+      }
+    }
   }
 
   > div:nth-of-type(2) {

@@ -71,7 +71,11 @@ export class WithdrawForm extends Component<
   ];
 
   dropdownChange = (value: string) => {
+    const { amount } = this.state;
     this.setState({ currency: value });
+    if (amount.length) {
+      this.amountChange({ target: { value: amount } });
+    }
   };
 
   handleMax = () => {
@@ -91,11 +95,14 @@ export class WithdrawForm extends Component<
     const newAmount = createBigNumber(sanitizeArg(e.target.value));
     const { errors: updatedErrors, currency } = this.state;
     updatedErrors.amount = "";
+    const availableEth = createBigNumber(loginAccount.eth);
     let amountMinusGas = createBigNumber(0);
     if (currency === ETH) {
-      amountMinusGas = newAmount.minus(GasCosts.eth.fullPrecision);
+      amountMinusGas = availableEth
+        .minus(newAmount)
+        .minus(GasCosts.eth.fullPrecision);
     } else {
-      amountMinusGas.minus(GasCosts.rep.fullPrecision);
+      amountMinusGas = availableEth.minus(GasCosts.rep.fullPrecision);
     }
     // validation...
     if (newAmount === "") {
@@ -109,7 +116,7 @@ export class WithdrawForm extends Component<
         updatedErrors.amount = `Quantity isn't finite.`;
       }
 
-      if (newAmount.gt(loginAccount.eth)) {
+      if (newAmount.gt(loginAccount[currency.toLowerCase()])) {
         updatedErrors.amount = `Quantity is greater than available funds.`;
       }
 
@@ -117,7 +124,7 @@ export class WithdrawForm extends Component<
         updatedErrors.amount = `Quantity must be greater than zero.`;
       }
 
-      if (amountMinusGas.lt(ZERO)) {
+      if (amountMinusGas.lte(ZERO)) {
         updatedErrors.amount = `Not enough ETH available to pay gas cost.`;
       }
     }
@@ -254,10 +261,11 @@ export class WithdrawForm extends Component<
                   errors.amount.length && <span>{errors.amount}</span>}
               </div>
               <div>
-                <label htmlFor="address">Recipient Address</label>
+                <label htmlFor="recipient">Recipient Address</label>
                 <input
                   type="text"
-                  id="address"
+                  id="recipient"
+                  autoComplete="off"
                   value={address}
                   placeholder="0x..."
                   onChange={this.addressChange}
