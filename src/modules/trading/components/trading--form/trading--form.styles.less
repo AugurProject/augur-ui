@@ -185,6 +185,11 @@
 
   &.error {
     border: 0.0625rem solid fade(@color-error-text, 50%);
+
+    &:focus-within,
+    &:focus {
+      border: 0.0625rem solid fade(@color-error-text, 50%);
+    }
   }
 
   > span {
@@ -221,6 +226,11 @@
     > span {
       background: @color-bright-gray-purple;
       border-left: 0;
+
+      &.error {
+        background: @color-error-message-bright-fade;
+        opacity: 0.5;
+      }
     }
 
     > input {
