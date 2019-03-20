@@ -5,15 +5,7 @@ import {
   updateMarketsDisputeInfo
 } from "modules/markets/actions/update-markets-data";
 import { getDisputeInfo } from "modules/reports/actions/get-dispute-info";
-import {
-  updateMarketLoading,
-  removeMarketLoading
-} from "modules/markets/actions/update-market-loading";
 import logError from "utils/log-error";
-import {
-  MARKET_INFO_LOADING,
-  MARKET_INFO_LOADED
-} from "modules/common-elements/constants";
 
 export const loadMarketsInfo = (marketIds, callback = logError) => (
   dispatch,
@@ -22,9 +14,6 @@ export const loadMarketsInfo = (marketIds, callback = logError) => (
   if (!marketIds || marketIds.length === 0) {
     return callback(null, []);
   }
-  marketIds.map(marketId =>
-    dispatch(updateMarketLoading({ [marketId]: MARKET_INFO_LOADING }))
-  );
 
   augur.markets.getMarketsInfo({ marketIds }, (err, marketsDataArray) => {
     if (err) return loadingError(dispatch, callback, err, marketIds);
@@ -52,9 +41,6 @@ export const loadMarketsInfo = (marketIds, callback = logError) => (
     if (!Object.keys(marketsData).length)
       return loadingError(dispatch, callback, null, marketIds);
 
-    Object.keys(marketsData).forEach(marketId =>
-      dispatch(updateMarketLoading({ [marketId]: MARKET_INFO_LOADED }))
-    );
     dispatch(updateMarketsData(marketsData));
     callback(null, marketsData);
   });
@@ -95,6 +81,5 @@ export const loadMarketsDisputeInfo = (marketIds, callback = logError) => (
 };
 
 function loadingError(dispatch, callback, error, marketIds) {
-  (marketIds || []).map(marketId => dispatch(removeMarketLoading(marketId)));
   callback(error);
 }

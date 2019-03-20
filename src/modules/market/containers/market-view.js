@@ -30,7 +30,6 @@ const mapStateToProps = (state, ownProps) => {
     isConnected: connection.isConnected && universe.id != null,
     marketType: market.marketType,
     description: market.description || "",
-    loadingState: market.loadingState || null,
     isLogged: authStatus.isLogged,
     market,
     minPrice: market.minPrice || createBigNumber(0),

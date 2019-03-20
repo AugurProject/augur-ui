@@ -40,7 +40,6 @@ export default class MarketView extends Component {
     description: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
-    loadingState: PropTypes.any,
     isMobile: PropTypes.bool,
     outcomes: PropTypes.array,
     isLogged: PropTypes.bool,
@@ -49,7 +48,6 @@ export default class MarketView extends Component {
 
   static defaultProps = {
     marketType: undefined,
-    loadingState: null,
     isMobile: false,
     outcomes: [],
     isLogged: false,
@@ -98,8 +96,8 @@ export default class MarketView extends Component {
   }
 
   componentWillMount() {
-    const { isConnected, loadFullMarket, loadingState, marketId } = this.props;
-    if (isConnected && loadingState === null && !!marketId) {
+    const { isConnected, loadFullMarket, marketId } = this.props;
+    if (isConnected && !!marketId) {
       loadFullMarket(marketId);
     }
   }
@@ -109,12 +107,10 @@ export default class MarketView extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    const { isConnected, loadingState, marketId } = this.props;
+    const { isConnected, marketId } = this.props;
     if (
-      (isConnected !== nextProps.isConnected ||
-        loadingState !== nextProps.loadingState) &&
+      isConnected !== nextProps.isConnected &&
       (nextProps.isConnected &&
-        nextProps.loadingState === null &&
         !!nextProps.marketId &&
         (nextProps.marketId !== marketId || nextProps.marketType === undefined))
     ) {

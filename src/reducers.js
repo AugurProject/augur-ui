@@ -18,7 +18,6 @@ import initialReporters from "modules/reports/reducers/initial-reporters-data";
 import isFirstOrderBookChunkLoaded from "modules/orders/reducers/is-first-order-book-chunk-loaded";
 import loginAccount from "modules/auth/reducers/login-account";
 import marketCreatorFees from "modules/markets/reducers/market-creator-fees";
-import marketLoading from "modules/markets/reducers/market-loading";
 import marketTradingHistory from "modules/markets/reducers/market-trading-history";
 import marketReportState from "modules/reports/reducers/market-report-state";
 import marketsData from "modules/markets/reducers/markets-data";
@@ -68,7 +67,6 @@ export function createReducer() {
     isFirstOrderBookChunkLoaded,
     loginAccount,
     marketCreatorFees,
-    marketLoading,
     marketReportState,
     marketTradingHistory,
     marketsData,

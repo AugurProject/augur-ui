@@ -5,23 +5,13 @@ import {
 import loadBidsAsks from "modules/orders/actions/load-bids-asks";
 import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
-import {
-  updateMarketLoading,
-  removeMarketLoading
-} from "modules/markets/actions/update-market-loading";
 import logError from "utils/log-error";
-
-import {
-  MARKET_FULLY_LOADING,
-  MARKET_FULLY_LOADED
-} from "modules/common-elements/constants";
 
 export const loadFullMarket = (marketId, callback = logError) => (
   dispatch,
   getState
 ) => {
   const { marketsData } = getState();
-  dispatch(updateMarketLoading({ [marketId]: MARKET_FULLY_LOADING }));
 
   // if the basic data is already loaded, just load the details
   if (marketsData[marketId]) return dispatch(loadMarketDetails(marketId));
@@ -50,9 +40,6 @@ export const loadMarketDetails = (
           dispatch(
             loadMarketTradingHistory({ marketId }, err => {
               if (err) return loadingError(dispatch, callback, err, marketId);
-              dispatch(
-                updateMarketLoading({ [marketId]: MARKET_FULLY_LOADED })
-              );
               dispatch(loadMarketsDisputeInfo([marketId]));
               callback(null);
             })
@@ -64,6 +51,5 @@ export const loadMarketDetails = (
 };
 
 function loadingError(dispatch, callback, error, marketId) {
-  dispatch(removeMarketLoading(marketId));
   callback(error);
 }

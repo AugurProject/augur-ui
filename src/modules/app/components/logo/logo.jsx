@@ -11,6 +11,11 @@ const Logo = ({ isLoading }) => (
 );
 
 Logo.propTypes = {
-  isLoading: PropTypes.bool.isRequired
+  isLoading: PropTypes.bool
 };
+
+Logo.defaultProps = {
+  isLoading: false
+};
+
 export default Logo;
