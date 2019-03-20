@@ -156,20 +156,19 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
             {filteredData.length === 0 && (
               <EmptyDisplay title="No available markets" />
             )}
-            {filteredData.length > 0 &&
-              filteredData.map(
-                market =>
-                  dataObj[market.id] ? (
-                    <MarketRow
-                      key={"position_" + market.id}
-                      market={dataObj[market.id]}
-                      showState={selectedTab === ALL_MARKETS}
-                      noToggle={noToggle}
-                      toggleContent={renderToggleContent && renderToggleContent(dataObj[market.id])}
-                      rightContent={renderRightContent && renderRightContent(dataObj[market.id])}
-                    />
-                  ) : null
-             )}
+            {filteredData.length > 0 && filteredData.map(
+                  market =>
+                    dataObj[market.id] ? (
+                      <MarketRow
+                        key={"position_" + market.id}
+                        market={dataObj[market.id]}
+                        showState={selectedTab === ALL_MARKETS}
+                        noToggle={noToggle}
+                        toggleContent={renderToggleContent && renderToggleContent(dataObj[market.id])}
+                        rightContent={renderRightContent && renderRightContent(dataObj[market.id])}
+                      />
+                    ) : null
+               )}
           </div>
         }
         search={search}

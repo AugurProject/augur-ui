@@ -2,6 +2,9 @@ import React, { ReactNode } from "react";
 
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { NameValuePair, Market } from "modules/portfolio/types";
+import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+
+import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
@@ -9,16 +12,15 @@ export interface MarketsByReportingState {
 
 export interface FilterBoxProps {
   title: string;
-  rows?: ReactNode;
   bottomBarContent?: ReactNode;
   sortByOptions: Array<NameValuePair>;
   data: Array<Market>;
-  updateFilteredData: Function;
   filterComp: Function;
   showFilterSearch?: Boolean;
   switchView: Function;
   label: string;
   noSwitch?: Boolean;
+  renderRows: Function;
 }
 
 interface FilterBoxState {
@@ -30,13 +32,14 @@ export default class FilterSwitchBox extends React.Component<
   FilterBoxState
 > {
   state: FilterBoxState = {
-    search: ""
+    search: "",
+    filteredData: this.props.data
   };
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.data.length !== this.props.data.length) {
       const filteredData = this.applySearch(nextState.search, nextProps.data);
-      this.props.updateFilteredData(filteredData);
+      this.updateFilteredData(filteredData);
     }
   }
 
@@ -46,7 +49,7 @@ export default class FilterSwitchBox extends React.Component<
     const { data } = this.props;
     const filteredData = this.applySearch(input, data);
 
-    this.props.updateFilteredData(filteredData);
+    this.updateFilteredData(filteredData);
   };
 
   applySearch = (input: string, filteredData: Array<Market>) => {
@@ -59,20 +62,24 @@ export default class FilterSwitchBox extends React.Component<
     this.props.switchView();
   };
 
+  updateFilteredData = filteredData => {
+    this.setState({ filteredData });
+  };
+
   render() {
     const {
       title,
       bottomBarContent,
-      rows,
       sortByOptions,
       showFilterSearch,
       data,
       label,
       noSwitch,
-      isMobile
+      isMobile,
+      renderRows
     } = this.props;
 
-    const { search } = this.state;
+    const { search, filteredData } = this.state;
 
     return (
       <QuadBox
@@ -83,7 +90,15 @@ export default class FilterSwitchBox extends React.Component<
         sortByOptions={sortByOptions}
         updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
-        content={rows}
+        content={
+          <div className={Styles.FilterBox__container}>
+            {filteredData.length === 0 && (
+              <EmptyDisplay title="No available data" />
+            )}
+            {filteredData.length > 0 &&
+              filteredData.map(data => renderRows(data))}
+          </div>
+        }
         isMobile={isMobile}
         label={data.length + " " + label}
       />
