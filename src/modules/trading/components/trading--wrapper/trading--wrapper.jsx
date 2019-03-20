@@ -204,7 +204,7 @@ class TradingWrapper extends Component {
             this.updateState({
               ...this.state,
               ...order,
-              orderEthEstimate: newOrder.totalOrderValue.formattedValue.toString(),
+              orderEthEstimate: newOrder.totalOrderValue.fullPrecision.toString(),
               orderEscrowdEth: newOrder.potentialEthLoss.formatted,
               trade: newOrder
             });

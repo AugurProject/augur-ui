@@ -197,7 +197,7 @@ class TradingForm extends Component {
     if (quantity && estEth && !price) {
       errorCount += 1;
       errors[this.INPUT_TYPES.PRICE].push(
-        "Price is needed with either quantity or total order value"
+        "Price is needed with Quantity or Total Value"
       );
     }
     if (
