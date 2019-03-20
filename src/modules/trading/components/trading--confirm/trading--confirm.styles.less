@@ -152,7 +152,7 @@
   right: 1rem;
 
   &.error {
-    background: rgba(82, 18, 29, 0.9);
+    background: @color-error-message-fade;
     border: 1px solid @color-error-text;
   }
 
@@ -191,9 +191,11 @@
       opacity: 1;
       stroke: @color-negative;
     }
+
     > rect {
       fill: @color-negative;
     }
+
     > path {
       fill: @color-negative;
     }
@@ -205,13 +207,15 @@
     margin-right: 0.25rem;
 
     > circle {
+      fill: @color-error-message-fade;
       opacity: 1;
       stroke: @color-error-text;
-      fill: rgba(82, 18, 29, 0.9);
     }
+
     > rect {
       fill: @color-neutral;
     }
+
     > path {
       fill: @color-neutral;
     }
