@@ -6,8 +6,6 @@ import OrderMarketRow from "modules/portfolio/components/common/rows/order-marke
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
 
-import Styles from "modules/portfolio/components/common/quads/quad.styles";
-
 const sortByOptions = [
   {
     label: "View by Most Recently Traded Market",
@@ -33,17 +31,12 @@ export default class FilledOrders extends Component {
     super(props);
 
     this.state = {
-      filteredData: props.markets,
       viewByMarkets: true
     };
 
     this.filterComp = this.filterComp.bind(this);
     this.switchView = this.switchView.bind(this);
     this.renderRows = this.renderRows.bind(this);
-  }
-
-  updateFilteredData(filteredData) {
-    this.setState({ filteredData });
   }
 
   filterComp(input, data) {
@@ -63,10 +56,11 @@ export default class FilledOrders extends Component {
   }
 
   renderRows(data) {
-    const { markets, filledOrders, ordersObj, marketsObj } = this.props;
+    const { ordersObj, marketsObj } = this.props;
     const { viewByMarkets } = this.state;
     const marketView = marketsObj[data.id] && viewByMarkets;
     const orderView = ordersObj[data.id];
+
     if (!marketView && !orderView) return null;
     return marketView ? (
       <OrderMarketRow
