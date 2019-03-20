@@ -78,7 +78,7 @@ export default class FilledOrders extends Component {
   }
 
   render() {
-    const { markets, filledOrders, ordersObj, marketsObj } = this.props;
+    const { markets, filledOrders } = this.props;
     const { viewByMarkets } = this.state;
 
     return (

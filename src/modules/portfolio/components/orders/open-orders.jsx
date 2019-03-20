@@ -5,9 +5,6 @@ import FilterSwitchBox from "modules/portfolio/containers/filter-switch-box";
 import OpenOrder from "modules/portfolio/components/common/rows/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
-import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
-
-import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
 const sortByOptions = [
   {
@@ -53,16 +50,13 @@ export default class OpenOrders extends Component {
 
   switchView() {
     this.setState({
-      filteredData: this.state.viewByMarkets
-        ? this.props.openOrders
-        : this.props.markets,
       viewByMarkets: !this.state.viewByMarkets
     });
   }
 
   renderRows(data) {
-    const { markets, openOrders, marketsObj, ordersObj } = this.props;
-    const { filteredData, viewByMarkets } = this.state;
+    const { marketsObj, ordersObj } = this.props;
+    const { viewByMarkets } = this.state;
 
     const marketView = marketsObj[data.id] && viewByMarkets;
     const orderView = ordersObj[data.id];
@@ -82,7 +76,7 @@ export default class OpenOrders extends Component {
   }
 
   render() {
-    const { markets, openOrders, marketsObj, ordersObj } = this.props;
+    const { markets, openOrders } = this.props;
     const { viewByMarkets } = this.state;
 
     return (

@@ -24,6 +24,8 @@ export default class OpenMarkets extends Component {
   }
 
   renderRows(market) {
+    const { marketsObj } = this.props;
+
     return (
       <MarketRow
         key={"position_" + market.id}
@@ -59,7 +61,7 @@ export default class OpenMarkets extends Component {
   }
 
   render() {
-    const { markets, marketsObj } = this.props;
+    const { markets } = this.props;
 
     return (
       <FilterSwitchBox

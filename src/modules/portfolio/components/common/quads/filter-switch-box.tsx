@@ -2,8 +2,9 @@ import React, { ReactNode } from "react";
 
 import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { NameValuePair, Market } from "modules/portfolio/types";
-import Styles from "modules/portfolio/components/common/quads/quad.styles";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+
+import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
@@ -38,7 +39,7 @@ export default class FilterSwitchBox extends React.Component<
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.data.length !== this.props.data.length) {
       const filteredData = this.applySearch(nextState.search, nextProps.data);
-      this.setState({ filteredData });
+      this.updateFilteredData(filteredData);
     }
   }
 
@@ -48,7 +49,7 @@ export default class FilterSwitchBox extends React.Component<
     const { data } = this.props;
     const filteredData = this.applySearch(input, data);
 
-    this.setState({ filteredData });
+    this.updateFilteredData(filteredData);
   };
 
   applySearch = (input: string, filteredData: Array<Market>) => {
@@ -59,6 +60,10 @@ export default class FilterSwitchBox extends React.Component<
 
   updateView = () => {
     this.props.switchView();
+  };
+
+  updateFilteredData = filteredData => {
+    this.setState({ filteredData });
   };
 
   render() {
