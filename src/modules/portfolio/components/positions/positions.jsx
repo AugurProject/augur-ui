@@ -100,6 +100,7 @@ export default class Positions extends Component {
 
     return (
       <FilterBox
+        sortByStyles={{ minWidth: "10.8125rem" }}
         title="Positions"
         sortByOptions={sortByOptions}
         markets={markets}

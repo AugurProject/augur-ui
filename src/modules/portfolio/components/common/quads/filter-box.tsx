@@ -33,6 +33,7 @@ export interface FilterBoxProps {
   renderToggleContent?: Function;
   isMobile?: Boolean;
   filterLabel: String;
+  sortByStyles?: Object;
 }
 
 interface FilterBoxState {
@@ -101,7 +102,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     const { data } = this.props;
     let dataFiltered = this.applySearch(data, this.state.search, data[tab]);
     dataFiltered = this.applySortBy(this.state.sortBy, dataFiltered);
-    
+
     this.setState({filteredData: dataFiltered, tab: tab});
 
   }
@@ -139,7 +140,8 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       dataObj,
       renderToggleContent,
       isMobile,
-      filterLabel
+      filterLabel,
+      sortByStyles
     } = this.props;
 
     const { filteredData, search, selectedTab, tabs } = this.state;
@@ -153,6 +155,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         showFilterSearch={true}
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}
+        sortByStyles={sortByStyles}
         updateDropdown={this.updateSortBy}
         label={filteredData.length + " " + label}
         bottomRightBarContent={bottomRightContent && bottomRightContent}
