@@ -16,7 +16,7 @@ export interface DropdownProps {
   large?: boolean;
   staticLabel?: string;
   stretchOut?: boolean;
-  sortByStyles: object;
+  sortByStyles?: Object;
 }
 
 interface DropdownState {

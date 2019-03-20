@@ -111,7 +111,7 @@ class MyMarkets extends Component {
       <FilterBox
         title="My Created Markets"
         sortByOptions={sortByOptions}
-        sortByStyles={{ minWidth: '173px'}}
+        sortByStyles={{ minWidth: "173px" }}
         markets={myMarkets}
         filterComp={filterComp}
         label="My Created Markets"

@@ -119,7 +119,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
               defaultValue={defaultCandlePeriod}
               options={PERIODS}
               onChange={updateSelectedPeriod}
-              sortByStyles={{minWidth: '78px'}}
+              sortByStyles={{ minWidth: "78px" }}
             />
           </div>
           <CandlestickOchl
@@ -136,7 +136,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
           >
             <StaticLabelDropdown
               options={VOLUME_ETH_SHARES}
-              sortByStyles={{minWidth: '150px'}}
+              sortByStyles={{ minWidth: "150px" }}
               staticLabel={
                 hoveredPeriod.volume
                   ? `V: ${hoveredPeriod.volume

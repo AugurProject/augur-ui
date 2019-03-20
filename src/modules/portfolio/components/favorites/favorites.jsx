@@ -81,7 +81,7 @@ export default class Favorites extends Component {
       <FilterBox
         title="Watchlist"
         sortByOptions={sortByOptions}
-        sortByStyles={{ minWidth: '170px'}}
+        sortByStyles={{ minWidth: "170px" }}
         markets={markets}
         filterComp={filterComp}
         label="Watched Markets"

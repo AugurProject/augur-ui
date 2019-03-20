@@ -20,7 +20,7 @@ export interface QuadBoxProps {
   isMobile?: Boolean;
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
-  sortByStyles?: object;
+  sortByStyles?: Object;
 }
 
 const QuadBox = (props: QuadBoxProps) => (
