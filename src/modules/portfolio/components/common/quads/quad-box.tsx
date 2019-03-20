@@ -20,6 +20,7 @@ export interface QuadBoxProps {
   isMobile?: Boolean;
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
+  sortByStyles?: object;
 }
 
 const QuadBox = (props: QuadBoxProps) => (
@@ -33,6 +34,7 @@ const QuadBox = (props: QuadBoxProps) => (
             options={props.sortByOptions}
             onChange={props.updateDropdown}
             stretchOut={props.isMobile}
+            sortByStyles={props.sortByStyles}
           />
         )
       }

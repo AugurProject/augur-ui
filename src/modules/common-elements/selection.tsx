@@ -16,6 +16,7 @@ export interface DropdownProps {
   large?: boolean;
   staticLabel?: string;
   stretchOut?: boolean;
+  sortByStyles: object;
 }
 
 interface DropdownState {
@@ -86,10 +87,11 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   };
 
   render() {
-    const { options, large, stretchOut } = this.props;
+    const { sortByStyles, options, large, stretchOut } = this.props;
     const { selected, showList } = this.state;
     return (
       <div
+        style={sortByStyles}
         className={classNames({
           [Styles.Dropdown_Large]: large,
           [Styles.Dropdown_Normal]: !large,
@@ -145,15 +147,17 @@ export const SquareDropdown = (props: DropdownProps) => (
     options={props.options}
     large={props.large}
     stretchOut={props.stretchOut}
+    sortByStyles={props.sortByStyles}
   />
 );
 
 export class StaticLabelDropdown extends Dropdown {
   render() {
-    const { options, large, staticLabel } = this.props;
+    const { sortByStyles, options, large, staticLabel } = this.props;
     const { selected, showList } = this.state;
     return (
       <div
+        style={sortByStyles}
         className={classNames({
           [Styles.Dropdown_Large]: large,
           [Styles.Dropdown_Normal]: !large,

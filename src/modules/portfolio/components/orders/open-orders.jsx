@@ -85,6 +85,7 @@ export default class OpenOrders extends Component {
         showFilterSearch
         filterLabel="open orders"
         sortByOptions={sortByOptions}
+        sortByStyles={{ minWidth: '219px'}}
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
