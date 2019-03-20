@@ -49,11 +49,11 @@ const Outcome = ({
             {outcomeName || (scalarDenomination && scalarDenomination)}{" "}
           </span>
         </div>
-        { scalarDenomination ? null :
+        {scalarDenomination ? null : (
           <div>
             <span className={Styles.Outcome__percent}>{lastPricePercent}</span>
           </div>
-        }
+        )}
       </li>
       <li>
         <ValueLabel value={topBidShares} />
