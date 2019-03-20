@@ -7,15 +7,14 @@ import {
   Title,
   ButtonsRow,
   Breakdown,
-  Description,
-  ReadableAddress
+  Description
 } from "modules/modal/common";
 import { ETH, REP, ZERO } from "modules/common-elements/constants";
 import { formatEther, formatRep } from "utils/format-number";
 import isAddress from "modules/auth/helpers/is-address";
 import Styles from "modules/modal/modal.styles";
 import { createBigNumber } from "utils/create-big-number";
-
+// 0xB82f241A91d3CD37a75e07eF0b4B01b1322De041
 interface WithdrawFormProps {
   closeAction: Function;
   transferFunds: Function;
@@ -30,7 +29,6 @@ interface WithdrawFormProps {
 }
 
 interface WithdrawFormState {
-  step: number;
   address: string;
   currency: string;
   amount: string;
@@ -49,7 +47,6 @@ export class WithdrawForm extends Component<
   WithdrawFormState
 > {
   state: WithdrawFormState = {
-    step: 0,
     address: "",
     currency: ETH,
     amount: "",
@@ -148,7 +145,7 @@ export class WithdrawForm extends Component<
 
   render() {
     const { GasCosts, transferFunds, loginAccount, closeAction } = this.props;
-    const { step, amount, currency, address, errors } = this.state;
+    const { amount, currency, address, errors } = this.state;
     const { amount: errAmount, address: errAddress } = errors;
     const isValid =
       errAmount === "" && errAddress === "" && amount.length && address.length;
@@ -162,123 +159,90 @@ export class WithdrawForm extends Component<
             createBigNumber(amount || 0).plus(GasCosts.eth.fullPrecision)
           )
         : formattedAmount;
-    const buttons =
-      step === 0
-        ? [
-            {
-              text: "review",
-              action: () => this.setState({ step: 1 }),
-              disabled: !isValid
-            },
-            {
-              text: "cancel",
-              action: closeAction
-            }
-          ]
-        : [
-            {
-              text: "send",
-              action: () =>
-                transferFunds(formattedAmount.fullPrecision, currency, address)
-            },
-            {
-              text: "back",
-              action: () => this.setState({ step: 0 })
-            }
-          ];
-    const ModalTitle = step === 0 ? "Send Funds" : "Review";
-    const breakdown =
-      step === 0
-        ? [
-            {
-              label: "Ethereum (ETH)",
-              value: formatEther(loginAccount.eth),
-              useValueLabel: true
-            },
-            {
-              label: "Reputation (REP)",
-              value: formatRep(loginAccount.rep),
-              useValueLabel: true
-            }
-          ]
-        : [
-            {
-              label: "Send",
-              value: formattedAmount,
-              useValueLabel: true,
-              showDenomination: true
-            },
-            {
-              label: "GAS Cost",
-              value: gasCost,
-              useValueLabel: true,
-              showDenomination: true
-            },
-            {
-              label: "Total",
-              value: formattedTotal,
-              useValueLabel: true,
-              showDenomination: true
-            }
-          ];
+    const buttons = [
+      {
+        text: "send",
+        action: () =>
+          transferFunds(formattedAmount.fullPrecision, currency, address),
+        disabled: !isValid
+      },
+      {
+        text: "cancel",
+        action: closeAction
+      }
+    ];
+    const breakdown = [
+      {
+        label: "Send",
+        value: formattedAmount,
+        useValueLabel: true,
+        showDenomination: true
+      },
+      {
+        label: "GAS Cost",
+        value: gasCost,
+        useValueLabel: true,
+        showDenomination: true
+      },
+      {
+        label: "Total",
+        value: formattedTotal,
+        useValueLabel: true,
+        showDenomination: true,
+        highlight: true
+      }
+    ];
     return (
       <div className={Styles.WithdrawForm}>
-        <Title title={ModalTitle} closeAction={closeAction} />
-        {step === 1 && (
-          <>
-            <Breakdown rows={breakdown} reverse />
-            <ReadableAddress address={address} title="RECIPIENT ADDRESS" />
-          </>
-        )}
-        {step === 0 && (
-          <>
-            <Description
-              description={["Send funds from your connected wallet"]}
+        <Title title="Send Funds" closeAction={closeAction} />
+        <Description description={["Send funds from your connected wallet"]} />
+        <div className={Styles.GroupedForm}>
+          <div>
+            <label htmlFor="recipient">Recipient Address</label>
+            <input
+              type="text"
+              id="recipient"
+              autoComplete="off"
+              value={address}
+              placeholder="0x..."
+              onChange={this.addressChange}
             />
-            <Breakdown rows={breakdown} reverse title="Available Funds" />
-            <div className={Styles.GroupedForm}>
-              <div>
-                <label htmlFor="currency">Currency</label>
-                <SquareDropdown
-                  id="currency"
-                  options={this.options}
-                  defaultValue={currency}
-                  onChange={this.dropdownChange}
-                  stretchOut
-                />
-              </div>
-              <div>
-                <label htmlFor="amount">Amount</label>
-                <button onClick={this.handleMax}>MAX</button>
-                <input
-                  type="number"
-                  id="amount"
-                  placeholder="0.00"
-                  value={amount}
-                  onChange={this.amountChange}
-                />
-                {errors.amount &&
-                  errors.amount.length && <span>{errors.amount}</span>}
-              </div>
-              <div>
-                <label htmlFor="recipient">Recipient Address</label>
-                <input
-                  type="text"
-                  id="recipient"
-                  autoComplete="off"
-                  value={address}
-                  placeholder="0x..."
-                  onChange={this.addressChange}
-                />
-                {errors.address.length && (
-                  <span>
-                    {ImmediateImportance} {errors.address}
-                  </span>
-                )}
-              </div>
-            </div>
-          </>
-        )}
+            {errors.address.length && (
+              <span>
+                {ImmediateImportance} {errors.address}
+              </span>
+            )}
+          </div>
+          <div>
+            <label htmlFor="currency">Currency</label>
+            <SquareDropdown
+              id="currency"
+              options={this.options}
+              defaultValue={currency}
+              onChange={this.dropdownChange}
+              stretchOut
+            />
+            <span>Available: {loginAccount[currency.toLowerCase()]}</span>
+          </div>
+          <div>
+            <label htmlFor="amount">Amount</label>
+            <button onClick={this.handleMax}>MAX</button>
+            <input
+              type="number"
+              id="amount"
+              placeholder="0.00"
+              value={amount}
+              onChange={this.amountChange}
+            />
+            {errors.amount &&
+              errors.amount.length && (
+                <span>
+                  {ImmediateImportance} {errors.amount}
+                </span>
+              )}
+          </div>
+        </div>
+        <Breakdown rows={breakdown} />
         <ButtonsRow buttons={buttons} />
       </div>
     );

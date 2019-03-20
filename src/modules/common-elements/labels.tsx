@@ -65,6 +65,7 @@ export interface LinearPropertyLabelProps {
   label: string;
   value: string | FormattedValue;
   accentValue?: boolean;
+  highlight?: boolean;
   large?: boolean;
   useValueLabel?: boolean;
   showDenomination?: boolean;
@@ -259,7 +260,10 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 );
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
-  <div className={classNames(Styles.LinearPropertyLabel, {[Styles.large]: props.large})}>
+  <div className={classNames(Styles.LinearPropertyLabel, {
+    [Styles.Large]: props.large,
+    [Styles.Highlight]: props.highlight
+    })}>
     <span>{props.label}</span>
     <DashlineNormal />
     {props.useValueLabel ? <ValueLabel value={props.value} showDenomination={props.showDenomination} /> : 

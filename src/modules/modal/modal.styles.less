@@ -90,27 +90,15 @@
     margin-bottom: @size-16;
     padding-bottom: @size-24;
   }
-
-  > div.ReadableAddress {
-    align-items: flex-start;
-    border-top: 1px solid @color-primary-background;
-    margin-bottom: @size-16;
-    padding-top: @size-24;
-
-    > span {
-      margin: 0;
-      padding: 0 @size-8;
-    }
-  }
 }
 
 .GroupedForm {
-  border-top: 1px solid @color-primary-background;
+  border-bottom: 1px solid @color-primary-background;
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column nowrap;
   justify-content: space-between;
-  margin-top: @size-16;
-  padding-top: @size-20;
+  margin-bottom: @size-16;
+  padding-bottom: @size-20;
 
   > div {
     margin-bottom: 1rem;
@@ -180,8 +168,9 @@
     }
   }
 
-  > div:first-of-type {
-    flex: 0 0 47%;
+  > div:nth-of-type(2) {
+    display: flex;
+    flex-flow: column wrap;
 
     > div {
       height: @size-40;
@@ -193,11 +182,18 @@
         line-height: 1rem;
       }
     }
+
+    > span {
+      .mono-10;
+
+      color: @color-shadow-text;
+      margin-left: auto;
+      text-transform: uppercase;
+    }
   }
 
-  > div:nth-of-type(2) {
+  > div:last-of-type {
     display: flex;
-    flex: 0 0 47%;
     flex-flow: row wrap;
 
     > label {
@@ -210,9 +206,8 @@
     }
   }
 
-  > div:last-of-type {
+  > div:first-of-type {
     flex: 1;
-    margin-bottom: @size-24;
   }
 }
 

@@ -126,7 +126,7 @@
     }
   }
 
-  &.large {
+  &.Large {
     > span:first-of-type {
       .mono-10;
 
@@ -135,6 +135,21 @@
 
     > span:last-of-type {
       .mono-14-bold;
+
+      color: @color-secondary-text;
+    }
+  }
+
+  &.Highlight {
+    > span:first-of-type {
+      .mono-10;
+
+      color: @color-secondary-text;
+    }
+
+    > span:last-of-type,
+    > span:last-of-type > label {
+      .mono-12-bold;
 
       color: @color-secondary-text;
     }
