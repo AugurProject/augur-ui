@@ -106,7 +106,7 @@ export default class FilterSwitchBox extends React.Component<
           </div>
         }
         isMobile={isMobile}
-        label={data.length + " " + label}
+        label={filteredData.length + " " + label}
       />
     );
   }
