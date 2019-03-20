@@ -83,6 +83,7 @@ export default class OpenOrders extends Component {
       <FilterSwitchBox
         title="Open Orders"
         showFilterSearch
+        filterLabel="open orders"
         sortByOptions={sortByOptions}
         data={viewByMarkets ? markets : openOrders}
         filterComp={this.filterComp}

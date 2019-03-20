@@ -21,6 +21,7 @@ export interface FilterBoxProps {
   label: string;
   noSwitch?: Boolean;
   renderRows: Function;
+  filterLabel: String;
 }
 
 interface FilterBoxState {
@@ -76,7 +77,8 @@ export default class FilterSwitchBox extends React.Component<
       label,
       noSwitch,
       isMobile,
-      renderRows
+      renderRows,
+      filterLabel
     } = this.props;
 
     const { search, filteredData } = this.state;
@@ -93,7 +95,11 @@ export default class FilterSwitchBox extends React.Component<
         content={
           <div className={Styles.FilterBox__container}>
             {filteredData.length === 0 && (
-              <EmptyDisplay title="No available data" />
+              <EmptyDisplay
+                selectedTab=""
+                filterLabel={filterLabel}
+                search={search}
+              />
             )}
             {filteredData.length > 0 &&
               filteredData.map(data => renderRows(data))}

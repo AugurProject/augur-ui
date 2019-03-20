@@ -84,6 +84,7 @@ export default class FilledOrders extends Component {
     return (
       <FilterSwitchBox
         title="Filled Orders"
+        filterLabel="filled orders"
         showFilterSearch
         sortByOptions={sortByOptions}
         data={viewByMarkets ? markets : filledOrders}
