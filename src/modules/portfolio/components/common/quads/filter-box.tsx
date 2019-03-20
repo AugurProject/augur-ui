@@ -50,6 +50,11 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     filteredData: this.props.data[ALL_MARKETS],
   };
 
+  componentDidMount() {
+    const filteredData = this.applySearch(this.props.data, this.state.search, this.props.data[this.state.selectedTab]);
+    this.setState({filteredData: filteredData});
+  }
+
   componentWillUpdate(nextProps) {
     if (!isEqual(nextProps.data[this.state.selectedTab], this.props.data[this.state.selectedTab])) {
       const filteredData = this.applySearch(nextProps.data, this.state.search, nextProps.data[this.state.selectedTab]);
