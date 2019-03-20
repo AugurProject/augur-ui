@@ -154,19 +154,19 @@ export default class FilterSearch extends Component {
             defaultValue={defaultFilter}
             onChange={this.changeFilterDropdown}
             options={filterOptions}
-            sortByStyles={{ minWidth: "96px" }}
+            sortByStyles={{ minWidth: "6rem" }}
           />
           <SquareDropdown
             defaultValue={defaultSort}
             onChange={this.changeSortDropdown}
             options={sortOptions}
-            sortByStyles={{ minWidth: "114px" }}
+            sortByStyles={{ minWidth: "7.125rem" }}
           />
           <SquareDropdown
             defaultValue={defaultMaxFee}
             onChange={this.changeMaxFees}
             options={maxFeesOptions}
-            sortByStyles={{ minWidth: "93px" }}
+            sortByStyles={{ minWidth: "5.8125rem" }}
           />
         </div>
         <div className={Styles.FilterDropdowns__hasOrders}>

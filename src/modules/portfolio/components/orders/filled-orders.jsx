@@ -87,7 +87,7 @@ export default class FilledOrders extends Component {
         filterLabel="filled orders"
         showFilterSearch
         sortByOptions={sortByOptions}
-        sortByStyles={{ minWidth: "219px" }}
+        sortByStyles={{ minWidth: "13.6875rem" }}
         data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
