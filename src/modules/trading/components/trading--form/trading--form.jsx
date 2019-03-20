@@ -618,7 +618,7 @@ class TradingForm extends Component {
               </span>
             </div>
             <label className={Styles.smallLabel}>
-              {darkBgExclamationCircle()}
+              {darkBgExclamationCircle}
               {` Max cost of ${orderEscrowdEth} ETH will be escrowed`}
             </label>
           </li>
@@ -652,7 +652,7 @@ class TradingForm extends Component {
           <div className={Styles.TradingForm__error_message_container}>
             {errors.map(error => (
               <div key={error} className={Styles.TradingForm__error_message}>
-                {darkBgExclamationCircle("#FF2727", "0.5")} <span>{error}</span>
+                {darkBgExclamationCircle} <span>{error}</span>
               </div>
             ))}
           </div>

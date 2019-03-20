@@ -40,6 +40,20 @@
         color: @color-white;
         font-size: @font-size-extra-small;
         padding-top: 0.5rem;
+
+        > svg {
+          > circle {
+            opacity: 1;
+          }
+
+          > rect {
+            fill: @color-secondary-text;
+          }
+
+          > path {
+            fill: @color-secondary-text;
+          }
+        }
       }
 
       &:last-child {
@@ -63,31 +77,48 @@
 }
 
 .TradingForm__error_message_container {
-  background: rgba(255, 39, 39, 0.2);
-  border: 1px solid rgba(255, 39, 39, 0.2);
+  background: @color-error-message-bright-fade;
+  border: 1px solid @color-error-text;
   border-radius: 3px;
   box-sizing: border-box;
   display: block;
   font-size: @font-size-small;
   line-height: @font-size-medium;
   margin: 1rem;
-  padding: 0.5rem;
+  padding: 0.75rem;
 }
 
 .TradingForm__error_message {
-  color: @color-error-text;
+  .text-12-bold;
+
+  color: @color-secondary-text;
   margin-bottom: 0.25rem;
+  white-space: nowrap;
 
   &:last-of-type {
     margin-bottom: 0;
   }
 
-  svg {
+  > svg {
     margin: 0 0.2rem;
-    min-height: 1.75em;
-    min-width: 1.75em;
-    vertical-align: middle;
+    min-height: 1rem;
+    min-width: 1rem;
+    vertical-align: text-bottom;
     width: 1.75em;
+
+    > circle {
+      fill: @color-error-message-fade;
+      opacity: 0.5;
+      stroke: @color-error-text;
+    }
+
+    > rect {
+      fill: @color-error-text;
+    }
+
+    > path {
+      fill: @color-error-text;
+    }
   }
 
   span {
@@ -136,24 +167,29 @@
   border: 1px solid @color-dark-gray;
   display: flex;
   flex-direction: row;
-  font-family: 'Roboto Mono', monospace;
+  font-family: @roboto-mono;
 
   > input[type="number"] {
     background-color: @color-dark-grayish-purple;
     border-width: 0;
     color: @color-white;
-    font-family: 'Roboto Mono', monospace;
+    font-family: @roboto-mono;
     font-size: @font-size-medium;
 
     &::placeholder {
-      color: rgba(255, 255, 255, 0.2);
-      font-family: 'Roboto Mono', monospace;
+      color: fade(@color-secondary-text, 50%);
+      font-family: @roboto-mono;
       font-size: @font-size-medium;
     }
   }
 
   &.error {
-    border: 0.0625rem solid rgba(255, 39, 39, 0.5) !important;
+    border: 0.0625rem solid fade(@color-error-text, 50%);
+
+    &:focus-within,
+    &:focus {
+      border: 0.0625rem solid fade(@color-error-text, 50%);
+    }
   }
 
   > span {
@@ -173,7 +209,7 @@
     }
 
     &.error {
-      background: rgba(255, 39, 39, 0.2) !important;
+      background: @color-error-message-bright-fade;
       border-left: 0;
       opacity: 0.5;
     }
@@ -190,6 +226,11 @@
     > span {
       background: @color-bright-gray-purple;
       border-left: 0;
+
+      &.error {
+        background: @color-error-message-bright-fade;
+        opacity: 0.5;
+      }
     }
 
     > input {
