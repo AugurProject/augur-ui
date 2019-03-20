@@ -86,6 +86,7 @@ export default class Favorites extends Component {
         label="Watched Markets"
         renderRightContent={this.renderRightContent}
         noToggle
+        filterLabel="markets"
         pickVariables={[
           "id",
           "favoriteAddedData",

@@ -116,6 +116,7 @@ class MyMarkets extends Component {
         label="My Created Markets"
         renderRightContent={this.renderRightContent}
         renderToggleContent={renderToggleContent}
+        filterLabel="markets"
         pickVariables={[
           "id",
           "description",

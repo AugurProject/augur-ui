@@ -32,6 +32,7 @@ export interface FilterBoxProps {
   noToggle?: Boolean;
   renderToggleContent?: Function;
   isMobile?: Boolean;
+  filterLabel: String;
 }
 
 interface FilterBoxState {
@@ -137,11 +138,13 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       renderRightContent,
       dataObj,
       renderToggleContent,
-      isMobile
+      isMobile,
+      filterLabel
     } = this.props;
 
     const { filteredData, search, selectedTab, tabs } = this.state;
 
+    const selectedLabel = find(tabs, { key: selectedTab }).label.toLowerCase();
 
     return (
       <QuadBox
@@ -159,7 +162,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         content={
           <div className={Styles.FilterBox__container}>
             {filteredData.length === 0 && (
-              <EmptyDisplay title="No available markets" />
+              <EmptyDisplay selectedTab={selectedTab !== ALL_MARKETS ? selectedLabel + " " : ""} filterLabel={filterLabel} search={search} />
             )}
             {filteredData.length > 0 && filteredData.map(
                   market =>

@@ -104,7 +104,7 @@ export default class Positions extends Component {
         sortByOptions={sortByOptions}
         markets={markets}
         filterComp={filterComp}
-        label="Positions"
+        label="Markets"
         bottomRightContent={
           <CompactButton
             text={showCurrentValue ? "Current Value (ETH)" : "Total Returns"}
@@ -113,6 +113,7 @@ export default class Positions extends Component {
         }
         renderRightContent={this.renderRightContent}
         renderToggleContent={renderToggleContent}
+        filterLabel="positions"
         pickVariables={[
           "id",
           "description",

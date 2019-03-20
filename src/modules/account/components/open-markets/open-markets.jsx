@@ -65,6 +65,7 @@ export default class OpenMarkets extends Component {
 
     return (
       <FilterSwitchBox
+        filterLabel="markets"
         title="Open Markets"
         showFilterSearch
         data={markets}
