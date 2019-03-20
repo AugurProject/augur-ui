@@ -154,7 +154,11 @@ export class StaticLabelDropdown extends Dropdown {
     const { selected, showList } = this.state;
     return (
       <div
-        className={large ? Styles.Dropdown_Large : Styles.Dropdown_Normal}
+        className={classNames({
+          [Styles.Dropdown_Large]: large,
+          [Styles.Dropdown_Normal]: !large,
+          [Styles.Dropdown__isOpen]: showList
+        })}
         ref={dropdown => {
           this.refDropdown = dropdown;
         }}
