@@ -78,7 +78,6 @@ export default class FilterSwitchBox extends React.Component<
       bottomBarContent,
       sortByOptions,
       showFilterSearch,
-      data,
       label,
       noSwitch,
       isMobile,
