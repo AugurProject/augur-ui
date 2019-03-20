@@ -138,7 +138,7 @@
 
 .TradingConfirm__error_message_container {
   background: fade(@color-darker-teal, 90%);
-  border: 1px solid @color-bright-teal;
+  border: 1px solid @color-negative;
   border-radius: 3px;
   bottom: 0;
   box-sizing: border-box;
@@ -151,18 +151,15 @@
   position: absolute;
   right: 1rem;
 
+  &.error {
+    background: rgba(82, 18, 29, 0.9);
+    border: 1px solid @color-error-text;
+  }
+
   div:first-child {
-    color: @color-bright-teal;
+    color: @color-secondary-text;
     font-weight: 500;
     padding-bottom: 0.25rem;
-
-    svg {
-      margin-right: 0.2rem;
-      min-height: 1.75em;
-      min-width: 1.75em;
-      vertical-align: middle;
-      width: 1.75em;
-    }
 
     > button {
       float: right;
@@ -174,8 +171,50 @@
     }
   }
 
+  > svg {
+    min-height: 1.75em;
+    min-width: 1.75em;
+    vertical-align: middle;
+    width: 1.75em;
+  }
+
   div:last-child {
     color: @color-white;
+  }
+}
+
+.TradingConfirm__message__warning {
+  > svg {
+    margin-right: 0.25rem;
+
+    > circle {
+      opacity: 1;
+      stroke: @color-negative;
+    }
+    > rect {
+      fill: @color-negative;
+    }
+    > path {
+      fill: @color-negative;
+    }
+  }
+}
+
+.TradingConfirm__message__error {
+  > svg {
+    margin-right: 0.25rem;
+
+    > circle {
+      opacity: 1;
+      stroke: @color-error-text;
+      fill: rgba(82, 18, 29, 0.9);
+    }
+    > rect {
+      fill: @color-neutral;
+    }
+    > path {
+      fill: @color-neutral;
+    }
   }
 }
 

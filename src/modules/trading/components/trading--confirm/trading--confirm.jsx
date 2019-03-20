@@ -22,6 +22,8 @@ import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { isEqual } from "lodash";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 
+const WARNING = "WARNING";
+const ERROR = "ERROR";
 class MarketTradingConfirm extends Component {
   static propTypes = {
     trade: PropTypes.shape({
@@ -50,10 +52,10 @@ class MarketTradingConfirm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errorMessage: this.constructErrorMessage(props)
+      messages: this.constructMessages(props)
     };
 
-    this.constructErrorMessage = this.constructErrorMessage.bind(this);
+    this.constructMessages = this.constructMessages.bind(this);
     this.clearErrorMessage = this.clearErrorMessage.bind(this);
   }
 
@@ -64,18 +66,18 @@ class MarketTradingConfirm extends Component {
       !isEqual(this.props.availableFunds, nextProps.availableFunds)
     ) {
       this.setState({
-        errorMessage: this.constructErrorMessage(nextProps)
+        messages: this.constructMessages(nextProps)
       });
     }
   }
 
-  constructErrorMessage(props) {
+  constructMessages(props) {
     const { trade, numOutcomes, gasPrice, availableFunds } =
       props || this.props;
 
     const { totalCost } = trade;
 
-    let errorMessage = null;
+    let messages = null;
     const gasValues = {
       fillGasLimit: augur.constants.WORST_CASE_FILL[numOutcomes],
       placeOrderNoSharesGasLimit:
@@ -94,8 +96,9 @@ class MarketTradingConfirm extends Component {
       tradeTotalCost.gt(ZERO) &&
       createBigNumber(gasCost).gt(createBigNumber(tradeTotalCost))
     ) {
-      errorMessage = {
+      messages = {
         header: "Gas Higher than Order",
+        type: WARNING,
         message: `Est. gas cost ${gasCost} ETH, higher than order cost`
       };
     }
@@ -106,17 +109,18 @@ class MarketTradingConfirm extends Component {
         createBigNumber(availableFunds, 10)
       )
     ) {
-      errorMessage = {
+      messages = {
         header: "Insufficient Funds",
+        type: ERROR,
         message: "You do not have enough funds to place this order"
       };
     }
 
-    return errorMessage;
+    return messages;
   }
 
   clearErrorMessage() {
-    this.setState({ errorMessage: null });
+    this.setState({ messages: null });
   }
 
   render() {
@@ -141,7 +145,7 @@ class MarketTradingConfirm extends Component {
       orderShareTradingFee
     } = trade;
 
-    const { errorMessage } = this.state;
+    const { messages } = this.state;
 
     const outcomeName =
       marketType === YES_NO ? "this event" : selectedOutcome.name;
@@ -267,14 +271,27 @@ class MarketTradingConfirm extends Component {
               />
             </div>
           )}
-        {errorMessage && (
-          <div className={Styles.TradingConfirm__error_message_container}>
-            <div>
-              {darkBgExclamationCircle("#09CFE1")}{" "}
-              <span>{errorMessage.header}</span>
+        {messages && (
+          <div
+            className={classNames(
+              Styles.TradingConfirm__error_message_container,
+              {
+                [Styles.error]: messages.type === ERROR
+              }
+            )}
+          >
+            <div
+              className={classNames({
+                [Styles.TradingConfirm__message__warning]:
+                  messages.type === WARNING,
+                [Styles.TradingConfirm__message__error]: messages.type === ERROR
+              })}
+            >
+              {darkBgExclamationCircle}
+              <span>{messages.header}</span>
               <button onClick={this.clearErrorMessage}>{closeIcon}</button>
             </div>
-            <div>{errorMessage.message}</div>
+            <div>{messages.message}</div>
           </div>
         )}
       </section>
