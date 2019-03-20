@@ -5,7 +5,6 @@ import FilterSwitchBox from "modules/portfolio/containers/filter-switch-box";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import FilledOrdersHeader from "modules/portfolio/components/common/headers/filled-orders-header";
-import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 
 import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
@@ -38,9 +37,9 @@ export default class FilledOrders extends Component {
       viewByMarkets: true
     };
 
-    this.updateFilteredData = this.updateFilteredData.bind(this);
     this.filterComp = this.filterComp.bind(this);
     this.switchView = this.switchView.bind(this);
+    this.renderRows = this.renderRows.bind(this);
   }
 
   updateFilteredData(filteredData) {
@@ -59,57 +58,46 @@ export default class FilledOrders extends Component {
 
   switchView() {
     this.setState({
-      filteredData: this.state.viewByMarkets
-        ? this.props.filledOrders
-        : this.props.markets,
       viewByMarkets: !this.state.viewByMarkets
     });
   }
 
+  renderRows(data) {
+    const { markets, filledOrders, ordersObj, marketsObj } = this.props;
+    const { viewByMarkets } = this.state;
+    const marketView = marketsObj[data.id] && viewByMarkets;
+    const orderView = ordersObj[data.id];
+    if (!marketView && !orderView) return null;
+    return marketView ? (
+      <OrderMarketRow
+        key={"filledOrderMarket_" + data.id}
+        market={marketsObj[data.id]}
+        filledOrders
+      />
+    ) : (
+      <FilledOrder
+        key={"filledOrder_" + data.id}
+        filledOrder={ordersObj[data.id]}
+        isSingle
+      />
+    );
+  }
+
   render() {
     const { markets, filledOrders, ordersObj, marketsObj } = this.props;
-    const { filteredData, viewByMarkets } = this.state;
+    const { viewByMarkets } = this.state;
 
     return (
       <FilterSwitchBox
         title="Filled Orders"
         showFilterSearch
         sortByOptions={sortByOptions}
-        updateFilteredData={this.updateFilteredData}
         data={viewByMarkets ? markets : filledOrders}
         filterComp={this.filterComp}
         switchView={this.switchView}
         bottomBarContent={<FilledOrdersHeader />}
         label={viewByMarkets ? "Markets" : "Filled Orders"}
-        rows={
-          <div className={Styles.Quad__container}>
-            {filteredData.length === 0 && (
-              <EmptyDisplay
-                title={
-                  viewByMarkets ? "No available markets" : "No available orders"
-                }
-              />
-            )}
-            {filteredData.map(data => {
-              const marketView = marketsObj[data.id] && viewByMarkets;
-              const orderView = ordersObj[data.id];
-              if (!marketView && !orderView) return null;
-              return marketView ? (
-                <OrderMarketRow
-                  key={"filledOrderMarket_" + data.id}
-                  market={marketsObj[data.id]}
-                  filledOrders
-                />
-              ) : (
-                <FilledOrder
-                  key={"filledOrder_" + data.id}
-                  filledOrder={ordersObj[data.id]}
-                  isSingle
-                />
-              );
-            })}
-          </div>
-        }
+        renderRows={this.renderRows}
       />
     );
   }
