@@ -1,7 +1,6 @@
 @import (reference) "~assets/styles/shared";
 
 .Dropdown {
-  background: @color-theme-primary;
   border: 1px solid @color-highlight;
   border-radius: @border-radius-default;
   box-sizing: border-box;
@@ -16,6 +15,8 @@
 
   > button {
     align-items: center;
+    background: @color-theme-primary;
+    border-radius: @border-radius-default;
     color: @color-secondary-text;
     display: flex;
     flex-flow: row nowrap;
@@ -31,6 +32,15 @@
       fill: none;
       stroke: @color-neutral;
     }
+
+    &:hover {
+      background: fade(@color-highlight, 30%);
+      outline: none;
+
+      > svg > path {
+        stroke: @color-secondary-text;
+      }
+    }  
   }
 
   > div {
@@ -71,44 +81,18 @@
   &:focus {
     outline: none;
   }
-
-  &:active,
-  &:hover {
-    background: fade(@color-highlight, 30%);
-    outline: none;
-
-    > button > svg > path {
-      stroke: @color-secondary-text;
-    }
-  }
-}
-
-div.Dropdown__isOpen {
-  background: fade(@color-highlight, 30%);
-
-  > button > svg > path {
-    stroke: @color-secondary-text;
-  }
-}
-
-div.Dropdown__stretchOut {
-  max-width: unset;
-
-  > div {
-    left: 0;
-  }
 }
 
 .Dropdown_Large {
   .Dropdown;
 
   height: 3rem;
-  padding: @size-12 @size-24;
 
   > .Dropdown__label {
     .text-16-medium;
 
     line-height: @size-18;
+    padding: @size-12 @size-24;
 
     > svg {
       flex: 0 0 1.25rem;
@@ -155,7 +139,6 @@ div.Dropdown__stretchOut {
 
   height: 2rem;
   max-width: fit-content;
-  padding: @size-10 @size-12;
 
   &:active,
   &:hover {
@@ -166,6 +149,7 @@ div.Dropdown__stretchOut {
     .text-10;
 
     line-height: @size-12;
+    padding: @size-10 @size-12;
 
     > svg {
       height: 0.25rem;
@@ -203,6 +187,25 @@ div.Dropdown__stretchOut {
       }
     }
   }
+}
+
+.Dropdown__stretchOut {
+  max-width: unset;
+
+  > div {
+    left: 0;
+  }
+}
+
+.Dropdown__isOpen {
+  > button {
+    background: fade(@color-highlight, 30%);
+
+    > svg > path {
+      stroke: @color-secondary-text;
+    }
+  }
+  
 }
 
 .PillSelection {
