@@ -34,7 +34,11 @@ class MyMarkets extends Component {
   static propTypes = {
     myMarkets: PropTypes.array.isRequired,
     currentAugurTimestamp: PropTypes.number.isRequired,
-    reportingWindowStatsEndTime: PropTypes.number.isRequired
+    reportingWindowStatsEndTime: PropTypes.number
+  };
+
+   static defaultProps = {
+    reportingWindowStatsEndTime: 0,
   };
 
   constructor(props) {
