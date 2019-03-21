@@ -30,14 +30,12 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
           </MarketLink>
         )}
         <ul className={Styles.FilledOrdersTable__header}>
-          <li />
           <li>Filled</li>
           <li>Time Stamp</li>
           <li>Transaction Details</li>
         </ul>
         {filledOrder.trades.map((trade: FilledOrder, i: number) => (
           <ul key={i} className={Styles.FilledOrdersTable__trade}>
-            <li />
             <li>
               <ValueLabel value={formatShares(trade.amount)} />
             </li>
