@@ -90,7 +90,7 @@ const buyingAllOutcomes = (
   // add resulting buy shares for comparison of resulting shareBalance
   modUserShareBalance[outcomeIndex] = Math.min(numShares, 1);
 
-  const minValue = Math.min(...modUserShareBalance);
+  const minValue = Math.min(...modUserShareBalance).toString();
   if (createBigNumber(minValue).isEqualTo(ZERO)) return false;
   // see if min value is deducted from all other outcome than current outcome buy is on
   const resulting = modUserShareBalance.map(value =>
