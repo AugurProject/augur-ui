@@ -25,9 +25,7 @@ export default class AccountOverview extends React.Component<
   };
 
   componentDidMount() {
-    this.updateTimeSelection(
-      constants.TIMEFRAME_OPTIONS[0].id
-    );
+    this.updateTimeSelection(constants.TIMEFRAME_OPTIONS[0].id);
   }
 
   updateTimeSelection = id => {
