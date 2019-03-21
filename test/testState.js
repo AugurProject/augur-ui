@@ -7,7 +7,6 @@ import { formatDate } from "utils/format-date";
 import { BUY } from "modules/common-elements/constants";
 
 const testState = {
-  marketLoading: [],
   activeView: "markets",
   accountTrades: {
     testMarketId: {

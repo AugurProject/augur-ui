@@ -107,7 +107,6 @@ export default class AppView extends Component {
     updateModal: PropTypes.func.isRequired,
     updateIsAnimating: PropTypes.func.isRequired,
     finalizeMarket: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
     augurNode: PropTypes.string,
     ethereumNodeHttp: PropTypes.string,
     ethereumNodeWs: PropTypes.string,
@@ -481,7 +480,6 @@ export default class AppView extends Component {
       markets,
       modal,
       universe,
-      isLoading,
       finalizeMarket,
       isMobileSmall
     } = this.props;
@@ -531,7 +529,7 @@ export default class AppView extends Component {
           >
             <div className={Styles.Logo}>
               <Link to={makePath(DEFAULT_VIEW)}>
-                <Logo isLoading={isLoading} />
+                <Logo />
               </Link>
             </div>
             {this.renderMobileMenuButton(unseenCount)}
@@ -560,7 +558,6 @@ export default class AppView extends Component {
                 stats={coreStats}
                 unseenCount={unseenCount}
                 toggleAlerts={this.toggleAlerts}
-                isLoading={isLoading}
                 alertsVisible={isLogged && s.isAlertsVisible}
               />
             </section>

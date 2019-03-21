@@ -26,7 +26,6 @@ export const loadAccountData = (account, callback = logError) => dispatch => {
   ) {
     windowRef.localStorage.setItem("loggedInAccount", account.address);
   }
-
   dispatch(loadAccountDataFromLocalStorage(account.address));
   dispatch(updateLoginAccount(account));
   dispatch(clearOrphanedOrderData());

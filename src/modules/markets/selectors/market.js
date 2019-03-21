@@ -71,7 +71,6 @@ import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 export const selectMarket = marketId => {
   const {
     marketsData,
-    marketLoading,
     outcomesData,
     accountTrades,
     marketTradingHistory,
@@ -91,7 +90,6 @@ export const selectMarket = marketId => {
   return assembleMarket(
     marketId,
     marketsData[marketId],
-    marketLoading[marketId] || null,
     marketTradingHistory[marketId],
     outcomesData[marketId],
     (accountPositions || {})[marketId] || {},
@@ -109,7 +107,6 @@ const assembleMarket = memoize(
   (
     marketId,
     marketData,
-    marketLoading,
     marketPriceHistory,
     marketOutcomesData,
     marketAccountPositions,
@@ -155,9 +152,6 @@ const assembleMarket = memoize(
       default:
         break;
     }
-
-    market.loadingState =
-      marketLoading !== null ? marketLoading.state : marketLoading;
 
     market.endTime = convertUnixToFormattedDate(marketData.endTime);
     market.endTimeLabel = market.endTime < now ? "expired" : "expires";

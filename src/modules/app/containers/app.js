@@ -16,7 +16,6 @@ import {
 import getAllMarkets from "modules/markets/selectors/markets-all";
 import { initAugur } from "modules/app/actions/init-augur";
 import { updateModal } from "modules/modal/actions/update-modal";
-import { isLoading } from "modules/markets/selectors/is-loading";
 import {
   selectBlockchainState,
   selectCategoriesState,
@@ -41,7 +40,6 @@ const mapStateToProps = state => ({
   categories: selectCategoriesState(state),
   connection: selectConnectionState(state),
   coreStats: selectCoreStats(state),
-  isLoading: isLoading(state.marketLoading),
   env: selectEnvState(state),
   isLogged: selectIsLogged(state),
   isMobile: selectIsMobile(state),
