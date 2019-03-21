@@ -169,7 +169,7 @@ export const ValueLabel = (props: ValueLabelProps) => {
 
   return (
     <span className={Styles.ValueLabel}>
-      <label data-tip data-for={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`}>
+      <label data-tip data-for={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`} data-iscapture="true">
         {`${frontFacingLabel}${postfix}${denominationLabel}`}
       </label>
       <ReactTooltip
@@ -179,7 +179,7 @@ export const ValueLabel = (props: ValueLabelProps) => {
         place="top"
         type="light"
         data-event="mouseover"
-        data-event-off="mouseleave scroll"
+        data-event-off="blur scroll"
         disable={postfix.length === 0}
       >
         {`${fullPrecision} ${denominationLabel}`}
@@ -457,9 +457,9 @@ export const PositionTypeLabel = (props: PositionTypeLabelProps) => {
   if (props.pastTense) type = props.type !== SELL ? BOUGHT : SOLD;
 
   return (
-    <span className={classNames(Styles.PositionTypeLabel__type, {
-          [Styles.PositionTypeLabel__typeSell]: props.type === SHORT || props.type === SELL,
-          [Styles.PositionTypeLabel__typeClosed]: props.type === CLOSED,
+    <span className={classNames(Styles.PositionTypeLabel, {
+          [Styles.Sell]: props.type === SHORT || props.type === SELL,
+          [Styles.Closed]: props.type === CLOSED,
         })}>
        {type}
     </span>

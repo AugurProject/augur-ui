@@ -182,7 +182,7 @@ div.LinearPropertyViewTransaction {
   border-radius: @border-radius-rounded;
   color: @color-secondary-text;
   height: @size-24;
-  padding: 0.3125rem 0.5rem;
+  padding: 0.3125rem @size-8;
   text-transform: capitalize;
 }
 
@@ -351,16 +351,16 @@ div.LinearPropertyViewTransaction {
   padding: 0 0.375rem;
 }
 
-.PositionTypeLabel__type {
+.PositionTypeLabel {
   color: @color-positive;
   font-weight: bold;
-  text-transform: capitalize;
-}
+  text-transform: uppercase;
 
-.PositionTypeLabel__typeSell {
-  color: @color-negative2;
-}
+  &.Sell {
+    color: @color-negative2;
+  }
 
-.PositionTypeLabel__typeClosed {
-  color: unset;
+  &.Closed {
+    color: unset;
+  }
 }
