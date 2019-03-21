@@ -37,8 +37,8 @@ class MyMarkets extends Component {
     reportingWindowStatsEndTime: PropTypes.number
   };
 
-   static defaultProps = {
-    reportingWindowStatsEndTime: 0,
+  static defaultProps = {
+    reportingWindowStatsEndTime: 0
   };
 
   constructor(props) {
