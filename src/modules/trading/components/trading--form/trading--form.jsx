@@ -254,11 +254,12 @@ class TradingForm extends Component {
 
     if (changedProperty !== this.INPUT_TYPES.EST_ETH) {
       const {
-        isOrderValid: quantityValid,
+        isOrderValid: bob,
         errors: quantityErrors,
         errorCount: quantityErrorCount
       } = this.testQuantity(quantity, errors, isOrderValid, nextProps);
 
+      quantityValid = bob;
       errorCount += quantityErrorCount;
       errors = { ...errors, ...quantityErrors };
     }
@@ -379,14 +380,18 @@ class TradingForm extends Component {
                 order[this.INPUT_TYPES.QUANTITY] &&
                 order[this.INPUT_TYPES.PRICE] &&
                 order[this.INPUT_TYPES.QUANTITY] !== "0" &&
-                this.state.lastInputModified !== this.INPUT_TYPES.EST_ETH
+                ((this.state.lastInputModified === this.INPUT_TYPES.QUANTITY &&
+                  property === this.INPUT_TYPES.PRICE) ||
+                  property === this.INPUT_TYPES.QUANTITY)
               ) {
                 updateTradeTotalCost(order);
               } else if (
                 order[this.INPUT_TYPES.EST_ETH] &&
                 order[this.INPUT_TYPES.PRICE] &&
                 order[this.INPUT_TYPES.EST_ETH] !== "0" &&
-                this.state.lastInputModified !== this.INPUT_TYPES.QUANTITY
+                ((this.state.lastInputModified === this.INPUT_TYPES.EST_ETH &&
+                  property === this.INPUT_TYPES.PRICE) ||
+                  property === this.INPUT_TYPES.EST_ETH)
               ) {
                 updateTradeNumShares(order);
               }
