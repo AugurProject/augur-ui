@@ -14,7 +14,7 @@ import { formatEther, formatRep } from "utils/format-number";
 import isAddress from "modules/auth/helpers/is-address";
 import Styles from "modules/modal/modal.styles";
 import { createBigNumber } from "utils/create-big-number";
-// 0xB82f241A91d3CD37a75e07eF0b4B01b1322De041
+
 interface WithdrawFormProps {
   closeAction: Function;
   transferFunds: Function;
@@ -79,11 +79,13 @@ export class WithdrawForm extends Component<
     const { loginAccount, GasCosts } = this.props;
     const { currency } = this.state;
     const fullAmount = createBigNumber(loginAccount[currency.toLowerCase()]);
-    this.setState({
-      amount:
-        currency === ETH
-          ? fullAmount.minus(GasCosts.eth.fullPrecision).toFixed()
-          : fullAmount.toFixed()
+    this.amountChange({
+      target: {
+        value:
+          currency === ETH
+            ? fullAmount.minus(GasCosts.eth.fullPrecision).toFixed()
+            : fullAmount.toFixed()
+      }
     });
   };
 
