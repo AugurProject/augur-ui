@@ -13,6 +13,7 @@ export interface AccountOverviewProps {}
 interface AccountOverviewState {
   selected: number;
   updateTimeSelection: Function;
+  currentAugurTimestamp: number;
 }
 
 export default class AccountOverview extends React.Component<
@@ -24,14 +25,17 @@ export default class AccountOverview extends React.Component<
   };
 
   componentDidMount() {
-    this.props.updateTimeframeData({
-      endTime: constants.TIMEFRAME_OPTIONS[0].id
-    });
+    this.updateTimeSelection(
+      constants.TIMEFRAME_OPTIONS[0].id
+    );
   }
 
   updateTimeSelection = id => {
     this.setState({ selected: id });
-    this.props.updateTimeframeData({ endTime: id });
+    const period = constants.TIMEFRAME_OPTIONS[id].periodInterval;
+    const startTime =
+      period === 0 ? 0 : this.props.currentAugurTimestamp - period;
+    this.props.updateTimeframeData({ startTime });
   };
 
   render() {
