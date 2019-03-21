@@ -151,11 +151,11 @@ class TradingForm extends Component {
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push("Quantity must be greater than 0");
     }
-    if (value && value.lt(0.0000000001) && !value.eq(0)) {
+    if (value && value.lt(0.000000001) && !value.eq(0)) {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push(
-        "Quantity must be greater than 0.0000000001"
+        "Quantity must be greater than 0.000000001"
       );
     }
     return { isOrderValid: passedTest, errors, errorCount };
@@ -250,14 +250,18 @@ class TradingForm extends Component {
     errorCount += priceErrorCount;
     errors = { ...errors, ...priceErrors };
 
-    const {
-      isOrderValid: quantityValid,
-      errors: quantityErrors,
-      errorCount: quantityErrorCount
-    } = this.testQuantity(quantity, errors, isOrderValid, nextProps);
+    let quantityValid = null;
 
-    errorCount += quantityErrorCount;
-    errors = { ...errors, ...quantityErrors };
+    if (changedProperty !== this.INPUT_TYPES.EST_ETH) {
+      const {
+        isOrderValid: quantityValid,
+        errors: quantityErrors,
+        errorCount: quantityErrorCount
+      } = this.testQuantity(quantity, errors, isOrderValid, nextProps);
+
+      errorCount += quantityErrorCount;
+      errors = { ...errors, ...quantityErrors };
+    }
 
     const {
       isOrderValid: totalValid,
@@ -358,15 +362,14 @@ class TradingForm extends Component {
 
         // update the local state of this form then make call to calculate total or shares
         this.setState(
-          currentState => ({
+          {
             ...updatedState,
             errors: {
-              ...currentState.errors,
               ...validationResults.errors
             },
             errorCount: validationResults.errorCount,
             isOrderValid: validationResults.isOrderValid
-          }),
+          },
           () => {
             if (
               validationResults.errorCount === 0 &&
