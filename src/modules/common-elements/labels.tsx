@@ -143,6 +143,10 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision = fa
     postfix = "";
   }
 
+  if (postfix.length && !isGreaterThan) {
+    frontFacingLabel = frontFacingLabel.slice(0, -1);
+  }
+
   return {
     fullPrecision: fullValue,
     postfix,
@@ -171,9 +175,11 @@ export const ValueLabel = (props: ValueLabelProps) => {
       <ReactTooltip
         id={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`}
         className={TooltipStyles.Tooltip}
-        effect="float"
+        effect="solid"
         place="top"
         type="light"
+        data-event="mouseover"
+        data-event-off="mouseleave scroll"
         disable={postfix.length === 0}
       >
         {`${fullPrecision} ${denominationLabel}`}
