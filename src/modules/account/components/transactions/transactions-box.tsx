@@ -16,9 +16,7 @@ interface TransactionsBoxProps {
   gasPrice: string;
   repFaucet: Function;
   deposit: Function;
-  transferFunds: Function;
-  withdrawReviewModal: Function;
-  closeModal: Function;
+  withdraw: Function;
 }
 
 export const TransactionsBox = (props: TransactionsBoxProps) => (
@@ -30,7 +28,7 @@ export const TransactionsBox = (props: TransactionsBoxProps) => (
         <ViewTransactionsButton action={console.log} />
         <p>Your wallet</p>
         <DepositButton action={props.deposit} />
-        <WithdrawButton action={console.log} />
+        <WithdrawButton action={props.withdraw} />
         {!props.isMainnet && (
           <div>
             <p>REP for test net</p>

@@ -82,6 +82,136 @@
   }
 }
 
+.WithdrawForm {
+  .Message;
+
+  > p {
+    border-bottom: 1px solid @color-primary-background;
+    margin-bottom: @size-16;
+    padding-bottom: @size-24;
+  }
+}
+
+.GroupedForm {
+  border-bottom: 1px solid @color-primary-background;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  margin-bottom: @size-16;
+
+  > div {
+    height: 6.25rem;
+
+    > span {
+      .text-10;
+
+      align-content: center;
+      color: @color-error-text;
+      display: flex;
+      flex-flow: row nowrap;
+      margin-top: @size-8;
+
+      > svg {
+        fill: none;
+        height: @size-12;
+        margin-right: @size-8;
+        width: @size-12;
+
+        > circle {
+          stroke: @color-error-text;
+        }
+
+        > rect,
+        > path {
+          fill: @color-error-text;
+        }
+      }
+    }
+
+    > label {
+      .mono-10;
+
+      color: @color-shadow-text;
+      margin-bottom: @size-8;
+    }
+
+    > button {
+      .mono-12;
+
+      color: @color-secondary-text;
+    }
+
+    > input {
+      .text-14;
+
+      background: @color-secondary-action;
+      border: 1px solid @color-primary-alternate;
+      border-radius: @border-radius-default;
+      color: @color-secondary-text;
+      height: @size-40;
+      line-height: 1rem;
+
+      &::placeholder {
+        color: @color-shadow-text;
+      }
+    }
+
+    > input[type="number"]::-webkit-outer-spin-button,
+    > input[type="number"]::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+
+    > input[type="number"] {
+      appearance: textfield;
+    }
+  }
+
+  > div:nth-of-type(2) {
+    display: flex;
+    flex-flow: column wrap;
+
+    > div {
+      height: @size-40;
+
+      > button,
+      > div > button {
+        .text-14;
+
+        line-height: 1rem;
+      }
+    }
+
+    > span {
+      .mono-10;
+
+      color: @color-shadow-text;
+      margin-left: auto;
+      text-transform: uppercase;
+    }
+  }
+
+  > div:last-of-type {
+    align-content: start;
+    align-items: flex-start;
+    display: flex;
+    flex-flow: row wrap;
+
+    > label {
+      height: 1rem;
+    }
+
+    > button {
+      height: 1rem;
+      margin-left: auto;
+    }
+  }
+
+  > div:first-of-type {
+    flex: 1;
+  }
+}
+
 .Gas {
   .CondensedContainer;
 
@@ -120,8 +250,27 @@
   margin: 0 0 @size-8;
 }
 
+.Breakdown {
+  > h4 {
+    .mono-10;
+
+    color: @color-secondary-text;
+    margin-bottom: @size-10;
+    text-transform: uppercase;
+  }
+}
+
 .ShortBreakdown {
+  .Breakdown;
+
   margin-left: auto;
+  max-width: 15rem;
+}
+
+.ReverseBreakdown {
+  .Breakdown;
+
+  margin-right: auto;
   max-width: 15rem;
 }
 

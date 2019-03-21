@@ -63,9 +63,12 @@ export interface PropertyLabelProps {
 
 export interface LinearPropertyLabelProps {
   label: string;
-  value: string;
+  value: string | FormattedValue;
   accentValue?: boolean;
+  highlight?: boolean;
   large?: boolean;
+  useValueLabel?: boolean;
+  showDenomination?: boolean;
 }
 
 export interface LinearPropertyLabelPercentProps {
@@ -257,18 +260,23 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 );
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
-  <div className={classNames(Styles.LinearPropertyLabel, {[Styles.large]: props.large})}>
+  <div className={classNames(Styles.LinearPropertyLabel, {
+    [Styles.Large]: props.large,
+    [Styles.Highlight]: props.highlight
+    })}>
     <span>{props.label}</span>
     <DashlineNormal />
-    <span
-      className={
-        (classNames({
-          [Styles.isAccented]: props.accentValue
-        }))
-      }
-    >
-      {props.value}
-    </span>
+    {props.useValueLabel ? <ValueLabel value={props.value} showDenomination={props.showDenomination} /> : 
+      <span
+        className={
+          (classNames({
+            [Styles.isAccented]: props.accentValue
+          }))
+        }
+      >
+        {props.value && props.value.formatted ? `${props.value.formatted} ${props.showDenomination ? props.value.denomination : ""}`: props.value}
+      </span>
+    }
   </div>
 );
 

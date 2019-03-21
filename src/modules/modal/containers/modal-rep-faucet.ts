@@ -16,13 +16,11 @@ const mapDispatchToProps = (dispatch: Function) => ({
 
 const mergeProps = (sP: any, dP: any, oP: any) => ({
   title: "REP Faucet",
-  description: [
-    "If you are using a wallet connected to a test net, you can send REP to your wallet."
-  ],
+  description: ["Get test net REP, it will be sent to your connected wallet."],
   closeAction: () => dP.closeModal(),
   buttons: [
     {
-      text: "Send REP",
+      text: "Get REP",
       action: () => {
         dP.getRep();
         dP.closeModal();
