@@ -9,11 +9,12 @@ export interface EmptyDisplayProps {
 }
 
 const EmptyDisplay = (props: EmptyDisplayProps) => {
-  let emptyTitle =
-    "You don't have any " + props.selectedTab + props.filterLabel.toLowerCase();
+  let emptyTitle = `You don't have any ${
+    props.selectedTab
+  } ${props.filterLabel.toLowerCase()}`;
 
-  if (props.search !== "") {
-    emptyTitle = 'No results found for "' + props.search + '"';
+  if (props.search !== "" && props.search !== undefined) {
+    emptyTitle = `No results found for '${props.search}'`;
   }
 
   return <div className={Styles.EmptyDisplay}>{emptyTitle}</div>;
