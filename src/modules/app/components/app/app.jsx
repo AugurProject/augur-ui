@@ -518,7 +518,8 @@ export default class AppView extends Component {
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
-            [Styles[`App--blur`]]: Object.keys(modal).length !== 0
+            [Styles[`App--blur`]]: Object.keys(modal).length !== 0,
+            [Styles.windowsScrollBars]: navigator.platform.indexOf("Win") > -1 // Windows Machine, restyle scrollbars
           })}
         >
           <section className={Styles.App__loadingIndicator} />
