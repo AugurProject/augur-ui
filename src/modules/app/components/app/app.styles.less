@@ -158,3 +158,19 @@ svg.SideBar__mobile-bars-unseen {
   margin-left: 3.15rem;
   z-index: @mask-above;
 }
+
+.windowsScrollBars {
+  ::-webkit-scrollbar {
+    width: 0.375rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: @color-alternate-text;
+    border-radius: @border-radius-full-round;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: @color-secondary-text;
+    border-radius: @border-radius-full-round;
+  }
+}
