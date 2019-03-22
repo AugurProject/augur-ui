@@ -91,33 +91,39 @@ export const generateTrade = memoize(
       numShares,
       limitPrice,
       sharesFilled,
-      totalOrderValue: totalOrderValue ? formatEther(totalOrderValue) : null,
+      totalOrderValue: totalOrderValue
+        ? formatEtherValue(totalOrderValue)
+        : null,
       orderShareProfit: orderShareProfitLoss
-        ? formatEther(orderShareProfitLoss.potentialEthProfit)
+        ? formatEtherValue(orderShareProfitLoss.potentialEthProfit)
         : null,
       orderShareTradingFee: orderShareProfitLoss
-        ? formatEther(orderShareProfitLoss.tradingFees)
+        ? formatEtherValue(orderShareProfitLoss.tradingFees)
         : null,
       potentialEthProfit: preOrderProfitLoss
-        ? formatEther(preOrderProfitLoss.potentialEthProfit)
+        ? formatEtherValue(preOrderProfitLoss.potentialEthProfit)
         : null,
       potentialEthLoss: preOrderProfitLoss
-        ? formatEther(preOrderProfitLoss.potentialEthLoss)
+        ? formatEtherValue(preOrderProfitLoss.potentialEthLoss)
         : null,
       potentialLossPercent: preOrderProfitLoss
-        ? formatPercent(preOrderProfitLoss.potentialLossPercent)
+        ? formatEtherValue(preOrderProfitLoss.potentialLossPercent)
         : null,
       potentialProfitPercent: preOrderProfitLoss
-        ? formatPercent(preOrderProfitLoss.potentialProfitPercent)
+        ? formatEtherValue(preOrderProfitLoss.potentialProfitPercent)
         : null,
 
       tradingFees: preOrderProfitLoss
-        ? formatEther(preOrderProfitLoss.tradingFees)
+        ? formatEtherValue(preOrderProfitLoss.tradingFees)
         : null,
-      totalFee: formatEther(totalFee, { blankZero: true }),
-      totalFeePercent: formatEther(feePercent, { blankZero: true }),
-      totalCost: formatEther(totalCost.abs().toFixed(), { blankZero: false }),
-      shareCost: formatEther(shareCost.abs().toFixed(), { blankZero: false }), // These are actually shares, but they can be formatted like ETH
+      totalFee: formatEtherValue(totalFee, { blankZero: true }),
+      totalFeePercent: formatEtherValue(feePercent, { blankZero: true }),
+      totalCost: formatEtherValue(totalCost.abs().toFixed(), {
+        blankZero: false
+      }),
+      shareCost: formatEtherValue(shareCost.abs().toFixed(), {
+        blankZero: false
+      }), // These are actually shares, but they can be formatted like ETH
 
       tradeTypeOptions: [
         { label: constants.BUY, value: constants.BUY },
@@ -130,6 +136,15 @@ export const generateTrade = memoize(
   },
   { max: 5 }
 );
+
+const formatEtherValue = (value, options = {}) =>
+  formatEther(
+    value,
+    Object.assign(
+      { decimalsRounded: constants.UPPER_FIXED_PRECISION_BOUND },
+      options
+    )
+  );
 
 const totalSharesUpToOrder = memoize(
   (outcomeId, side, orderIndex, orderBooks) => {

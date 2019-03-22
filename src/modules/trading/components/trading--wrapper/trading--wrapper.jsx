@@ -218,7 +218,7 @@ class TradingWrapper extends Component {
               {
                 decimalsRounded: UPPER_FIXED_PRECISION_BOUND
               }
-            ).minimizedValue;
+            ).rounded;
 
             this.updateState({
               ...this.state,
@@ -258,7 +258,8 @@ class TradingWrapper extends Component {
               {
                 decimalsRounded: UPPER_FIXED_PRECISION_BOUND
               }
-            ).minimizedValue;
+            ).rounded;
+
             this.updateState(
               {
                 ...this.state,
