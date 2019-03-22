@@ -25,7 +25,8 @@ The formatted number object that is returned looks something like this:
     formatted: the value in string form with possibly additional formatting, like comma separator, used for display
 
     o.roundedValue: the value in numerical form, with extra rounding, can be used in calculations
-    o.rounded: the value in string form, with extra rounding and possibly additional formatting, like comma separator, used for display
+    o.rounded: the value in string form, with extra rounding
+    o.roundedFormatted: the value in string form, with formatting, like comma separator, used for display
 
     o.minimized: the value in string form, with trailing 0 decimals omitted, for example if the `formatted` value is 1.00, this minimized value would be 1
   }
@@ -165,6 +166,7 @@ export function formatNone() {
     formatted: "-",
     roundedValue: 0,
     rounded: "-",
+    roundedFormatted: "-",
     minimized: "-",
     denomination: "",
     full: "-",
@@ -179,6 +181,7 @@ export function formatBlank() {
     formatted: "",
     roundedValue: 0,
     rounded: "",
+    roundedFormatted: "",
     minimized: "",
     denomination: "",
     full: "",
@@ -191,7 +194,7 @@ export function formatGasCostToEther(num, opts, gasPrice) {
   const estimatedGasCost = createBigNumber(gas).times(
     createBigNumber(gasPrice)
   );
-  return formatGasCost(estimatedGasCost, opts).rounded;
+  return formatGasCost(estimatedGasCost, opts).roundedFormatted;
 }
 
 export function formatAttoRep(num, opts) {
@@ -291,6 +294,7 @@ export function formatNumber(
     o.formatted = "0";
     o.roundedValue = 0;
     o.rounded = "0";
+    o.roundedFormatted = "0";
     o.minimized = "0";
     o.fullPrecision = "0";
   } else {
@@ -356,10 +360,11 @@ export function formatNumber(
       .times(decimalsRoundedValue)
       .integerValue(roundingMode)
       .dividedBy(decimalsRoundedValue);
-    o.rounded = bigUnitPostfix
+    o.roundedFormatted = bigUnitPostfix
       ? addBigUnitPostfix(value, o.roundedValue.toFixed(decimalsRounded))
       : addCommas(o.roundedValue.toFixed(decimalsRounded));
     o.minimized = addCommas(encodeNumberAsBase10String(o.formattedValue));
+    o.rounded = encodeNumberAsBase10String(o.roundedValue);
     o.formattedValue = encodeNumberAsJSNumber(o.formattedValue);
     o.roundedValue = o.roundedValue.toNumber();
   }

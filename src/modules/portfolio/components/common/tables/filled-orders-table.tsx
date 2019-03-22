@@ -32,7 +32,7 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
         <ul className={Styles.FilledOrdersTable__header}>
           <li>Filled</li>
           <li>Time Stamp</li>
-          <li>Transaction Details</li>
+          <li>TX Details</li>
         </ul>
         {filledOrder.trades.map((trade: FilledOrder, i: number) => (
           <ul key={i} className={Styles.FilledOrdersTable__trade}>

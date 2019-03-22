@@ -217,19 +217,22 @@ export default class CreateMarketReview extends Component {
               <ul className={Styles.CreateMarketReview__list}>
                 <li>
                   <span>Validity Bond</span>
-                  <span>{s.validityBond && s.validityBond.rounded} ETH</span>
+                  <span>
+                    {s.validityBond && s.validityBond.roundedFormatted} ETH
+                  </span>
                 </li>
                 <li>
                   <span>No-Show Bond</span>
                   <span>
                     {s.designatedReportNoShowReputationBond &&
-                      s.designatedReportNoShowReputationBond.rounded}{" "}
+                      s.designatedReportNoShowReputationBond
+                        .roundedFormatted}{" "}
                     REP
                   </span>
                 </li>
                 <li>
                   <span>Est. Gas</span>
-                  <span>{s.gasCost && s.gasCost.rounded} ETH</span>
+                  <span>{s.gasCost && s.gasCost.roundedFormatted} ETH</span>
                 </li>
               </ul>
             </div>
@@ -240,11 +243,15 @@ export default class CreateMarketReview extends Component {
               <ul className={Styles.CreateMarketReview__list}>
                 <li>
                   <span>Ether</span>
-                  <span>{s.formattedInitialLiquidityEth.rounded} ETH</span>
+                  <span>
+                    {s.formattedInitialLiquidityEth.roundedFormatted} ETH
+                  </span>
                 </li>
                 <li>
                   <span>Est. Gas</span>
-                  <span>{s.formattedInitialLiquidityGas.rounded} ETH</span>
+                  <span>
+                    {s.formattedInitialLiquidityGas.roundedFormatted} ETH
+                  </span>
                 </li>
               </ul>
             </div>
