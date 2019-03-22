@@ -8,15 +8,15 @@
   padding: 0.75rem 2.8rem 0.75rem 0;
 
   > li {
-    .text-12;
+    .text-10;
 
     align-items: center;
-    color: @color-secondary-text;
+    color: @color-shadow-text;
     display: flex;
     flex-grow: 1;
     font-family: @roboto;
-    font-size: 0.687rem;
     padding: 0;
+    text-transform: uppercase;
     white-space: nowrap;
 
     &:first-child {
@@ -47,16 +47,6 @@
   grid-template-columns: repeat(8, 1fr);
   padding-left: 1.5rem;
   padding-right: 4rem;
-
-  > li {
-    color: @color-neutral !important;
-    font-size: @size-11 !important;
-
-    &:not(:first-child) {
-      color: @color-neutral;
-      font-size: @size-11;
-    }
-  }
 }
 
 .DataTableHeader__extended {

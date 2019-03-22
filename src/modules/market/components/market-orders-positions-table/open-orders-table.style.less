@@ -11,17 +11,16 @@ div.MarketOpenOrdersList__table {
 }
 
 .MarketOpenOrdersList__table-header {
-  &:extend(.caps--small);
+  .text-10;
 
   background-color: @color-light-purple;
-  color: @color-light-gray;
+  color: @color-shadow-text;
   display: grid;
   flex-direction: row;
   flex-grow: 1;
-  font-size: 12px;
   grid-template-columns: repeat(6, 1fr);
   max-height: 40px;
-  text-transform: none !important;
+  text-transform: uppercase;
   transition: background-color 0.15s ease;
 
   &:first-child > li {

@@ -63,11 +63,11 @@ export function formatDate(d) {
     } ${date.getUTCDate()}, ${date.getUTCFullYear()} ${utcTimeTwelve.join(
       ":"
     )} ${utcAMPM}`, // UTC time
-    formattedShortDate: `${("0" + date.getUTCDate()).slice(-2)}${
-      shortMonths[date.getUTCMonth()]
-    } ${date.getUTCFullYear()}`,
+    formattedShortDate: `${("0" + date.getUTCDate()).slice(-2)}${shortMonths[
+      date.getUTCMonth()
+    ].toUpperCase()} ${date.getUTCFullYear()}`,
     formattedShortTime: `${utcTimeWithSeconds.join(":")}`,
-    formattedShort: `${shortMonths[date.getUTCMonth()]}${(
+    formattedShort: `${shortMonths[date.getUTCMonth()].toUpperCase()}${(
       "0" + date.getUTCDate()
     ).slice(-2)} ${date.getUTCFullYear()} ${utcTimeWithSeconds.join(":")}`,
     formattedLocal: `${
