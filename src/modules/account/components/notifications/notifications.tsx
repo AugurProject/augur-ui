@@ -4,7 +4,6 @@ import React, { ReactNode } from "react";
 import { isEqual } from "lodash";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
-import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 import { NotificationCard } from "modules/account/components/notifications/notification-card";
 import { PillLabel } from "modules/common-elements/labels";
 import {
@@ -237,7 +236,9 @@ class Notifications extends React.Component<NotificationsProps> {
         <BoxHeader title="Notifications" rightContent={labelContent} />
         <div className={Styles.NotificationBox__content}>
           {notificationCount === 0 ? (
-            <EmptyDisplay title="No notifications" />
+            <div className={Styles.NotificationBox__EmptyDisplay}>
+              {"No notifications"}
+            </div>
           ) : (
             rows
           )}
