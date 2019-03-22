@@ -29,16 +29,39 @@ import * as TYPES from "modules/common-elements/constants";
 
 import Styles from "modules/modal/components/common/common.styles";
 
+const ESCAPE_KEYCODE = 27;
+
 export default class ModalView extends Component {
   static propTypes = {
     modal: PropTypes.object.isRequired,
     closeModal: PropTypes.func.isRequired
   };
 
+  constructor(props) {
+    super(props);
+
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+  }
+
   componentDidMount() {
     window.onpopstate = () => {
       this.props.closeModal();
     };
+
+    window.addEventListener("keydown", this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyDown);
+  }
+
+  handleKeyDown(e) {
+    if (e.keyCode === ESCAPE_KEYCODE) {
+      if (this.props.modal && this.props.modal.cb) {
+        this.props.modal.cb();
+      }
+      this.props.closeModal();
+    }
   }
 
   render() {
