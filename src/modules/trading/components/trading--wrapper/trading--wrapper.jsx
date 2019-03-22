@@ -9,9 +9,15 @@ import { downChevron } from "modules/common/components/icons";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
-import { SCALAR, BUY, SELL } from "modules/common-elements/constants";
+import {
+  SCALAR,
+  BUY,
+  SELL,
+  UPPER_FIXED_PRECISION_BOUND
+} from "modules/common-elements/constants";
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 import { OrderButton } from "modules/common-elements/buttons";
+import { formatShares } from "utils/format-number";
 
 class TradingWrapper extends Component {
   static propTypes = {
@@ -75,6 +81,7 @@ class TradingWrapper extends Component {
     this.updateTradeNumShares = this.updateTradeNumShares.bind(this);
     this.updateOrderProperty = this.updateOrderProperty.bind(this);
     this.updateNewOrderProperties = this.updateNewOrderProperties.bind(this);
+    this.clearOrderConfirmation = this.clearOrderConfirmation.bind(this);
   }
 
   componentWillMount() {
@@ -112,6 +119,11 @@ class TradingWrapper extends Component {
 
   updateState(stateValues, cb) {
     this.setState(currentState => ({ ...currentState, ...stateValues }), cb);
+  }
+
+  clearOrderConfirmation() {
+    const trade = TradingWrapper.getDefaultTrade(this.props);
+    this.setState({ trade });
   }
 
   clearOrderForm(wholeForm = true) {
@@ -201,10 +213,17 @@ class TradingWrapper extends Component {
               });
             }
 
+            const newOrderEthEstimate = formatShares(
+              createBigNumber(newOrder.totalOrderValue.fullPrecision),
+              {
+                decimalsRounded: UPPER_FIXED_PRECISION_BOUND
+              }
+            ).minimizedValue;
+
             this.updateState({
               ...this.state,
               ...order,
-              orderEthEstimate: newOrder.totalOrderValue.fullPrecision.toString(),
+              orderEthEstimate: newOrderEthEstimate,
               orderEscrowdEth: newOrder.potentialEthLoss.formatted,
               trade: newOrder
             });
@@ -234,7 +253,12 @@ class TradingWrapper extends Component {
           (err, newOrder) => {
             if (err) return console.log(err); // what to do with error here
 
-            const numShares = createBigNumber(newOrder.numShares).toFixed(9);
+            const numShares = formatShares(
+              createBigNumber(newOrder.numShares),
+              {
+                decimalsRounded: UPPER_FIXED_PRECISION_BOUND
+              }
+            ).minimizedValue;
             this.updateState(
               {
                 ...this.state,
@@ -370,6 +394,7 @@ class TradingWrapper extends Component {
                 updateTradeNumShares={this.updateTradeNumShares}
                 showSelectOutcome={showSelectOutcome}
                 updateNewOrderProperties={this.updateNewOrderProperties}
+                clearOrderConfirmation={this.clearOrderConfirmation}
               />
             )}
         </div>
