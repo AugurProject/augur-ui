@@ -17,7 +17,9 @@ import { SquareDropdown } from "modules/common-elements/selection";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
+import getPrecision from "utils/get-number-precision";
 
+const MAX_PRECISION = 8;
 class TradingForm extends Component {
   static propTypes = {
     isMobile: PropTypes.bool.isRequired,
@@ -144,6 +146,7 @@ class TradingForm extends Component {
   testQuantity(value, errors, isOrderValid) {
     let errorCount = 0;
     let passedTest = !!isOrderValid;
+    const precision = getPrecision(value, 0);
     if (!BigNumber.isBigNumber(value))
       return { isOrderValid: false, errors, errorCount };
     if (value && value.lte(0)) {
@@ -156,6 +159,13 @@ class TradingForm extends Component {
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push(
         "Quantity must be greater than 0.000000001"
+      );
+    }
+    if (value && precision > MAX_PRECISION) {
+      errorCount += 1;
+      passedTest = false;
+      errors[this.INPUT_TYPES.QUANTITY].push(
+        "Quantity precision must be 8 decimals or less"
       );
     }
     return { isOrderValid: passedTest, errors, errorCount };
