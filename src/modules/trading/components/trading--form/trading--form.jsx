@@ -7,7 +7,8 @@ import {
   YES_NO,
   CATEGORICAL,
   SCALAR,
-  MIN_QUANTITY
+  MIN_QUANTITY,
+  UPPER_FIXED_PRECISION_BOUND
 } from "modules/common-elements/constants";
 import { isEqual } from "lodash";
 import FormStyles from "modules/common/less/form";
@@ -18,8 +19,8 @@ import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
 import getPrecision from "utils/get-number-precision";
+import { formatShares } from "utils/format-number";
 
-const MAX_PRECISION = 8;
 class TradingForm extends Component {
   static propTypes = {
     isMobile: PropTypes.bool.isRequired,
@@ -40,7 +41,8 @@ class TradingForm extends Component {
     clearOrderForm: PropTypes.func.isRequired,
     updateTradeTotalCost: PropTypes.func.isRequired,
     updateTradeNumShares: PropTypes.func.isRequired,
-    updateNewOrderProperties: PropTypes.func.isRequired
+    updateNewOrderProperties: PropTypes.func.isRequired,
+    clearOrderConfirmation: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -101,6 +103,7 @@ class TradingForm extends Component {
   }
 
   updateTestProperty(property, nextProps) {
+    const { clearOrderConfirmation } = this.props;
     if (!isEqual(nextProps[property], this.state[property])) {
       this.setState(
         {
@@ -116,6 +119,9 @@ class TradingForm extends Component {
             null,
             nextProps
           );
+          if (errorCount > 0) {
+            clearOrderConfirmation();
+          }
           this.setState({
             ...newOrderInfo,
             errors,
@@ -161,11 +167,11 @@ class TradingForm extends Component {
         "Quantity must be greater than 0.000000001"
       );
     }
-    if (value && precision > MAX_PRECISION) {
+    if (value && precision > UPPER_FIXED_PRECISION_BOUND) {
       errorCount += 1;
       passedTest = false;
       errors[this.INPUT_TYPES.QUANTITY].push(
-        "Quantity precision must be 8 decimals or less"
+        `Quantity precision must be ${UPPER_FIXED_PRECISION_BOUND} decimals or less`
       );
     }
     return { isOrderValid: passedTest, errors, errorCount };
@@ -406,6 +412,18 @@ class TradingForm extends Component {
                 updateTradeNumShares(order);
               }
             }
+            if (
+              property === this.INPUT_TYPES.PRICE &&
+              validationResults.errors[this.INPUT_TYPES.PRICE].length === 0
+            ) {
+              if (this.state.lastInputModified === this.INPUT_TYPES.QUANTITY) {
+                updateTradeTotalCost(order);
+              } else if (
+                this.state.lastInputModified === this.INPUT_TYPES.EST_ETH
+              ) {
+                updateTradeNumShares(order);
+              }
+            }
             if (property !== this.INPUT_TYPES.PRICE) {
               this.setState({
                 lastInputModified: property
@@ -538,9 +556,7 @@ class TradingForm extends Component {
                     ? MIN_QUANTITY.toFixed()
                     : 1
                 }
-                placeholder={`${
-                  marketType === SCALAR ? tickSize : MIN_QUANTITY.toFixed()
-                }`}
+                placeholder="0.00"
                 value={quantityValue}
                 onChange={e =>
                   this.validateForm(this.INPUT_TYPES.QUANTITY, e.target.value)
@@ -575,7 +591,7 @@ class TradingForm extends Component {
                 step={tickSize}
                 max={max}
                 min={min}
-                placeholder={`${marketType === SCALAR ? tickSize : "0.0001"}`}
+                placeholder="0.00"
                 value={
                   BigNumber.isBigNumber(s[this.INPUT_TYPES.PRICE])
                     ? s[this.INPUT_TYPES.PRICE].toNumber()
@@ -617,7 +633,7 @@ class TradingForm extends Component {
                 type="number"
                 step={MIN_QUANTITY.toFixed()}
                 min={MIN_QUANTITY.toFixed()}
-                placeholder="0.0000"
+                placeholder="0.00"
                 value={
                   BigNumber.isBigNumber(s[this.INPUT_TYPES.EST_ETH])
                     ? s[this.INPUT_TYPES.EST_ETH].toNumber()

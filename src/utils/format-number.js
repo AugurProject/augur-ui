@@ -360,6 +360,7 @@ export function formatNumber(
       ? addBigUnitPostfix(value, o.roundedValue.toFixed(decimalsRounded))
       : addCommas(o.roundedValue.toFixed(decimalsRounded));
     o.minimized = addCommas(encodeNumberAsBase10String(o.formattedValue));
+    o.minimizedValue = encodeNumberAsBase10String(o.roundedValue);
     o.formattedValue = encodeNumberAsJSNumber(o.formattedValue);
     o.roundedValue = o.roundedValue.toNumber();
   }

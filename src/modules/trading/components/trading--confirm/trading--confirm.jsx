@@ -13,7 +13,8 @@ import {
   BUYING_BACK,
   SELLING_OUT,
   WARNING,
-  ERROR
+  ERROR,
+  UPPER_FIXED_PRECISION_BOUND
 } from "modules/common-elements/constants";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
@@ -90,11 +91,11 @@ class MarketTradingConfirm extends Component {
         augur.constants.PLACE_ORDER_WITH_SHARES[numOutcomes]
     };
     const gas =
-      trade.shareCost.formattedValue > 0
+      trade.shareCost.fullPrecision > 0
         ? gasValues.placeOrderWithSharesGasLimit
         : gasValues.fillGasLimit;
     const gasCost = formatGasCostToEther(gas, { decimalsRounded: 4 }, gasPrice);
-    const tradeTotalCost = createBigNumber(totalCost.formattedValue, 10);
+    const tradeTotalCost = createBigNumber(totalCost.fullPrecision, 10);
 
     if (
       tradeTotalCost.gt(ZERO) &&
@@ -109,7 +110,7 @@ class MarketTradingConfirm extends Component {
 
     if (
       totalCost &&
-      createBigNumber(totalCost.formattedValue, 10).gte(
+      createBigNumber(totalCost.fullPrecision, 10).gte(
         createBigNumber(availableFunds, 10)
       )
     ) {
@@ -173,11 +174,14 @@ class MarketTradingConfirm extends Component {
     than ${limitPrice} ${scalarDenomination}`;
     }
 
-    let newOrderAmount = formatShares("0");
+    let newOrderAmount = formatShares("0").rounded;
     if (numShares && totalCost.fullPrecision && shareCost.fullPrecision) {
       newOrderAmount = formatShares(
-        createBigNumber(numShares).minus(shareCost.fullPrecision)
-      );
+        createBigNumber(numShares).minus(shareCost.fullPrecision),
+        {
+          decimalsRounded: UPPER_FIXED_PRECISION_BOUND
+        }
+      ).minimized;
     }
 
     const notProfitable =
@@ -212,11 +216,11 @@ class MarketTradingConfirm extends Component {
               </div>
               <LinearPropertyLabel
                 label="Estimated Fee"
-                value={`${orderShareTradingFee.formatted} ETH`}
+                value={`${orderShareTradingFee.minimized} ETH`}
               />
               <LinearPropertyLabel
                 label="Profit"
-                value={`${orderShareProfit.formatted} ETH`}
+                value={`${orderShareProfit.minimized} ETH`}
                 accentValue={notProfitable}
               />
             </div>
@@ -262,16 +266,16 @@ class MarketTradingConfirm extends Component {
                 >
                   {side === BUY ? BUYING : SELLING}
                 </span>
-                <span> {newOrderAmount.fullPrecision} </span>
+                <span> {newOrderAmount} </span>
                 Shares @ <span> {limitPrice}</span>
               </div>
               <LinearPropertyLabel
                 label="Max Profit"
-                value={`${potentialEthProfit.formatted} ETH`}
+                value={`${potentialEthProfit.minimized} ETH`}
               />
               <LinearPropertyLabel
                 label="Max Loss"
-                value={`${potentialEthLoss.formatted} ETH`}
+                value={`${potentialEthLoss.minimized} ETH`}
               />
             </div>
           )}
