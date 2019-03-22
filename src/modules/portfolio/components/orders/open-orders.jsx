@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import FilterSwitchBox from "modules/portfolio/containers/filter-switch-box";
-import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import OpenOrder from "modules/portfolio/containers/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 import OrderMarketRow from "modules/portfolio/components/common/rows/order-market-row";
 

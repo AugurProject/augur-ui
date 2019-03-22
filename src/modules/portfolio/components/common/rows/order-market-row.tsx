@@ -1,6 +1,6 @@
 import React from "react";
 
-import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import OpenOrder from "modules/portfolio/containers/open-order";
 import FilledOrder from "modules/portfolio/components/common/rows/filled-order";
 import MarketLink from "modules/market/components/market-link/market-link";
 

@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import MarketPositionsListOrphanedOrder from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order";
-import OpenOrder from "modules/portfolio/components/common/rows/open-order";
+import OpenOrder from "modules/portfolio/containers/open-order";
 import OpenOrdersHeader from "modules/portfolio/components/common/headers/open-orders-header";
 
 import Styles from "modules/market/components/market-orders-positions-table/open-orders-table.style";
@@ -41,7 +41,8 @@ const OpenOrdersTable = ({
               <OpenOrder
                 key={"openOrder_" + i}
                 openOrder={order}
-                extendedView
+                extendedView={!isMobile}
+                isSingle={isMobile}
               />
             ))}
           </div>

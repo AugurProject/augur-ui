@@ -19,10 +19,11 @@ export interface OpenOrderProps {
   openOrder: Order;
   isSingle?: Boolean;
   extendedView?: Boolean;
+  isMobile?: Boolean;
 }
 
 const OpenOrder = (props: OpenOrderProps) => {
-  const { openOrder, isSingle, extendedView } = props;
+  const { openOrder, isSingle, isMobile, extendedView } = props;
 
   if (!openOrder) {
     return null;
@@ -81,16 +82,17 @@ const OpenOrder = (props: OpenOrderProps) => {
         </li>
       )}
       <li>
-        {openOrder.cancelOrder && (
-          <CancelTextButton
-            disabled={openOrder.pending}
-            action={e => {
-              e.stopPropagation();
-              openOrder.cancelOrder(openOrder);
-            }}
-            text="Cancel"
-          />
-        )}
+        {!isMobile &&
+          openOrder.cancelOrder && (
+            <CancelTextButton
+              disabled={openOrder.pending}
+              action={e => {
+                e.stopPropagation();
+                openOrder.cancelOrder(openOrder);
+              }}
+              text="Cancel"
+            />
+          )}
       </li>
     </ul>
   );
@@ -148,6 +150,17 @@ const OpenOrder = (props: OpenOrderProps) => {
                 <div className={Styles.OpenOrder__timestamp}>
                   {creationTime}
                 </div>
+                {isMobile &&
+                  openOrder.cancelOrder && (
+                    <CancelTextButton
+                      disabled={openOrder.pending}
+                      action={e => {
+                        e.stopPropagation();
+                        openOrder.cancelOrder(openOrder);
+                      }}
+                      text="Cancel"
+                    />
+                  )}
               </div>
             </div>
           </div>
