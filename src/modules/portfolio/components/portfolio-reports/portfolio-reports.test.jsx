@@ -22,7 +22,7 @@ describe("portfolio-reports", () => {
           formattedValue: 0,
           formatted: "-",
           roundedValue: 0,
-          rounded: "-",
+          roundedFormatted: "-",
           minimized: "-",
           denomination: "",
           full: "-"
@@ -32,7 +32,7 @@ describe("portfolio-reports", () => {
           formattedValue: 0,
           formatted: "-",
           roundedValue: 0,
-          rounded: "-",
+          roundedFormatted: "-",
           minimized: "-",
           denomination: "",
           full: "-"

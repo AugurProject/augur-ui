@@ -181,7 +181,7 @@ class MarketTradingConfirm extends Component {
         {
           decimalsRounded: UPPER_FIXED_PRECISION_BOUND
         }
-      ).minimized;
+      ).rounded;
     }
 
     const notProfitable =
@@ -216,11 +216,11 @@ class MarketTradingConfirm extends Component {
               </div>
               <LinearPropertyLabel
                 label="Estimated Fee"
-                value={`${orderShareTradingFee.minimized} ETH`}
+                value={`${orderShareTradingFee.rounded} ETH`}
               />
               <LinearPropertyLabel
                 label="Profit"
-                value={`${orderShareProfit.minimized} ETH`}
+                value={`${orderShareProfit.rounded} ETH`}
                 accentValue={notProfitable}
               />
             </div>
@@ -271,11 +271,11 @@ class MarketTradingConfirm extends Component {
               </div>
               <LinearPropertyLabel
                 label="Max Profit"
-                value={`${potentialEthProfit.minimized} ETH`}
+                value={`${potentialEthProfit.rounded} ETH`}
               />
               <LinearPropertyLabel
                 label="Max Loss"
-                value={`${potentialEthLoss.minimized} ETH`}
+                value={`${potentialEthLoss.rounded} ETH`}
               />
             </div>
           )}

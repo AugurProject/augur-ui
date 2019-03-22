@@ -96,7 +96,7 @@ export interface FormattedValue {
   formattedValue: number;
   formatted: string;
   roundedValue: number;
-  rounded: string;
+  roundedFormatted: string;
   minimized: string;
   denomination: string;
   full: string;
@@ -117,15 +117,15 @@ const maxHoverDecimals = 8;
 const minHoverDecimals = 4;
 
 export function formatExpandedValue(value, showDenomination, fixedPrecision = false, max = "1000", min = "0.0001") {
-  const { fullPrecision, rounded, denomination, formattedValue, minimized } = value;
+  const { fullPrecision, roundedFormatted, denomination, formattedValue, minimized } = value;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan = testValue.abs().gt(max);
   const isLessThan = testValue.abs().lt(min) && !testValue.eq(ZERO);
   let postfix = (isGreaterThan || isLessThan) ? String.fromCodePoint(0x2026) : "";
-  let frontFacingLabel = isGreaterThan ? fullWithoutDecimals : rounded;
+  let frontFacingLabel = isGreaterThan ? fullWithoutDecimals : roundedFormatted;
   const denominationLabel = showDenomination ? `${denomination}` : "";
-  
+
   let fullValue = fullPrecision;
   if (fixedPrecision) {
     const decimals = fullValue.toString().split(".")[1];
@@ -157,7 +157,7 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision = fa
 
 export const ValueLabel = (props: ValueLabelProps) => {
   if (!props.value || props.value === null) return (<span />);
- 
+
   const expandedValues = formatExpandedValue(props.value, props.showDenomination);
 
   const {
@@ -197,7 +197,7 @@ export class HoverValueLabel extends React.Component<
   };
   render() {
     if (!this.props.value || this.props.value === null) return (<span />);
- 
+
     const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination, true, "99999");
     const {
       fullPrecision,
@@ -214,7 +214,7 @@ export class HoverValueLabel extends React.Component<
     const secondHalfFull = fullPrecisionSplit[1];
 
     return (
-      <span 
+      <span
         className={Styles.HoverValueLabel}
         onMouseEnter={() => {
           this.setState({
@@ -227,8 +227,8 @@ export class HoverValueLabel extends React.Component<
           });
         }}
       >
-      {this.state.hover && postfix.length !== 0 ? 
-        <span><span>{firstHalfFull}{secondHalfFull && "."}</span><span>{secondHalfFull}</span></span> : 
+      {this.state.hover && postfix.length !== 0 ?
+        <span><span>{firstHalfFull}{secondHalfFull && "."}</span><span>{secondHalfFull}</span></span> :
         <span><span>{firstHalf}{secondHalf && "."}</span><span>{secondHalf}{postfix}</span></span>
       }
       </span>
@@ -272,7 +272,7 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
     })}>
     <span>{props.label}</span>
     <DashlineNormal />
-    {props.useValueLabel ? <ValueLabel value={props.value} showDenomination={props.showDenomination} /> : 
+    {props.useValueLabel ? <ValueLabel value={props.value} showDenomination={props.showDenomination} /> :
       <span
         className={
           (classNames({
@@ -453,7 +453,7 @@ export const PillLabel = (props: PillLabelProps) => (
 );
 
 export const PositionTypeLabel = (props: PositionTypeLabelProps) => {
-  let type = props.type; 
+  let type = props.type;
   if (props.pastTense) type = props.type !== SELL ? BOUGHT : SOLD;
 
   return (
