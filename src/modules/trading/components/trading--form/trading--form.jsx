@@ -19,7 +19,6 @@ import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
 import getPrecision from "utils/get-number-precision";
-import { formatShares } from "utils/format-number";
 
 class TradingForm extends Component {
   static propTypes = {
