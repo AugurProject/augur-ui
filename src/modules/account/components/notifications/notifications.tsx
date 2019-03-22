@@ -237,7 +237,7 @@ class Notifications extends React.Component<NotificationsProps> {
         <BoxHeader title="Notifications" rightContent={labelContent} />
         <div className={Styles.NotificationBox__content}>
           {notificationCount === 0 ? (
-            <EmptyDisplay title="No notifications" />
+            <EmptyDisplay selectedTab="" filterLabel="notifications" />
           ) : (
             rows
           )}
