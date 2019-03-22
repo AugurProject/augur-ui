@@ -7,7 +7,13 @@ import {
   YES_NO,
   BUY,
   SELL,
-  ZERO
+  ZERO,
+  BUYING,
+  SELLING,
+  BUYING_BACK,
+  SELLING_OUT,
+  WARNING,
+  ERROR
 } from "modules/common-elements/constants";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
@@ -17,13 +23,11 @@ import {
   closeIcon
 } from "modules/common/components/icons";
 import Styles from "modules/trading/components/trading--confirm/trading--confirm.styles";
-import { formatGasCostToEther } from "utils/format-number";
+import { formatGasCostToEther, formatShares } from "utils/format-number";
 import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { isEqual } from "lodash";
 import { LinearPropertyLabel } from "modules/common-elements/labels";
 
-const WARNING = "WARNING";
-const ERROR = "ERROR";
 class MarketTradingConfirm extends Component {
   static propTypes = {
     trade: PropTypes.shape({
@@ -169,11 +173,11 @@ class MarketTradingConfirm extends Component {
     than ${limitPrice} ${scalarDenomination}`;
     }
 
-    let newOrderAmount = "0";
+    let newOrderAmount = formatShares("0");
     if (numShares && totalCost.fullPrecision && shareCost.fullPrecision) {
-      newOrderAmount = createBigNumber(numShares)
-        .minus(shareCost.fullPrecision)
-        .toFixed(4);
+      newOrderAmount = formatShares(
+        createBigNumber(numShares).minus(shareCost.fullPrecision)
+      );
     }
 
     const notProfitable =
@@ -201,9 +205,9 @@ class MarketTradingConfirm extends Component {
                     [Styles.short]: side === SELL
                   })}
                 >
-                  {side !== BUY ? "Selling Out" : "Buying Back"}
+                  {side !== BUY ? SELLING_OUT : BUYING_BACK}
                 </span>
-                <span> {shareCost.value} </span>
+                <span> {shareCost.fullPrecision} </span>
                 Shares @ <span> {limitPrice}</span>
               </div>
               <LinearPropertyLabel
@@ -256,9 +260,9 @@ class MarketTradingConfirm extends Component {
                     [Styles.short]: side === SELL
                   })}
                 >
-                  {side === BUY ? "Buying" : "Selling"}
+                  {side === BUY ? BUYING : SELLING}
                 </span>
-                <span> {newOrderAmount} </span>
+                <span> {newOrderAmount.fullPrecision} </span>
                 Shares @ <span> {limitPrice}</span>
               </div>
               <LinearPropertyLabel
