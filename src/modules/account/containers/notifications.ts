@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import Notifications from "modules/account/components/notifications/notifications";
 import { selectNotifications } from "modules/notifications/selectors/notification-state";
 import { updateNotifications } from "modules/notifications/actions/update-notifications";
@@ -7,7 +8,8 @@ import { updateModal } from "modules/modal/actions/update-modal";
 import {
   MODAL_FINALIZE_MARKET,
   MODAL_SELL_COMPLETE_SETS,
-  MODAL_CLAIM_PROCEEDS
+  MODAL_CLAIM_PROCEEDS,
+  MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS
 } from "modules/common-elements/constants";
 
 // TODO create state Interface
@@ -37,12 +39,22 @@ const mapDispatchToProps = (dispatch: Function) => ({
       })
     ),
   claimTradingProceeds: (cb: Function) =>
-    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS, cb }))
+    dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS, cb })),
+  claimReportingFees: (reportingFees: any, cb: Function) =>
+    dispatch(
+      updateModal({
+        type: MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS,
+        modalCallback: cb,
+        ...reportingFees
+      })
+    )
 });
 
-const NotificationsContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Notifications);
+const NotificationsContainer = withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Notifications)
+);
 
 export default NotificationsContainer;

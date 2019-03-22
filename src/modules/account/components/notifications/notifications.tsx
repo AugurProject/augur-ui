@@ -2,11 +2,20 @@
 
 import React, { ReactNode } from "react";
 import { isEqual } from "lodash";
+import { RouteComponentProps } from "react-router-dom";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
+import makePath from "modules/routes/helpers/make-path";
+import makeQuery from "modules/routes/helpers/make-query";
+
 import { NotificationCard } from "modules/account/components/notifications/notification-card";
 import { PillLabel } from "modules/common-elements/labels";
+import { REPORT, DISPUTE } from "modules/routes/constants/views";
+import {
+  MARKET_ID_PARAM_NAME,
+  RETURN_PARAM_NAME
+} from "modules/routes/constants/param-names";
 import {
   Market,
   FinalizeTemplate,
@@ -39,7 +48,7 @@ export interface INotifications {
   totalProceeds?: number;
 }
 
-export interface NotificationsProps {
+export interface NotificationsProps extends RouteComponentProps {
   notifications: Array<INotifications>;
   updateNotifications: Function;
   getReportingFees: Function;
@@ -48,6 +57,7 @@ export interface NotificationsProps {
   sellCompleteSetsModal: Function;
   finalizeMarketModal: Function;
   claimTradingProceeds: Function;
+  claimReportingFees: Function;
 }
 
 const { NOTIFICATION_TYPES } = constants;
@@ -71,6 +81,7 @@ class Notifications extends React.Component<NotificationsProps> {
 
   getButtonAction(notification: INotifications) {
     let buttonAction;
+    const { location, history } = this.props;
 
     switch (notification.type) {
       case NOTIFICATION_TYPES.resolvedMarketsOpenOrders:
@@ -78,7 +89,16 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.reportOnMarkets:
-        buttonAction = () => null;
+        buttonAction = () => {
+          const queryLink = {
+            [MARKET_ID_PARAM_NAME]: notification.market.id,
+            [RETURN_PARAM_NAME]: location.hash
+          };
+          history.push({
+            pathname: makePath(REPORT),
+            search: makeQuery(queryLink)
+          });
+        };
         break;
 
       case NOTIFICATION_TYPES.finalizeMarkets:
@@ -91,7 +111,16 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.marketsInDispute:
-        buttonAction = () => null;
+        buttonAction = () => {
+          const queryLink = {
+            [MARKET_ID_PARAM_NAME]: notification.market.id,
+            [RETURN_PARAM_NAME]: location.hash
+          };
+          history.push({
+            pathname: makePath(DISPUTE),
+            search: makeQuery(queryLink)
+          });
+        };
         break;
 
       case NOTIFICATION_TYPES.completeSetPositions:
@@ -110,7 +139,12 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.claimReportingFees:
-        buttonAction = () => null;
+        buttonAction = () => {
+          this.props.claimReportingFees(
+            notification.claimReportingFees,
+            () => null
+          );
+        };
         break;
 
       case NOTIFICATION_TYPES.proceedsToClaim:
@@ -120,10 +154,6 @@ class Notifications extends React.Component<NotificationsProps> {
             this.disableNotification(notification.id, false)
           );
         };
-        break;
-
-      case NOTIFICATION_TYPES.proceedsToClaimOnHold:
-        buttonAction = () => null;
         break;
 
       default:
