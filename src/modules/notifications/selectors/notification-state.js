@@ -4,7 +4,8 @@ import {
   selectLoginAccountAddress,
   selectReportingWindowStats,
   selectPendingLiquidityOrders,
-  selectCurrentTimestampInSeconds
+  selectCurrentTimestampInSeconds,
+  selectReadNotificationState
 } from "src/select-state";
 
 import { createBigNumber } from "utils/create-big-number";
@@ -225,6 +226,7 @@ export const selectUnsignedOrders = createSelector(
   }
 );
 
+// Returns all notifications currently relevant to the user.
 export const selectNotifications = createSelector(
   selectReportOnMarkets,
   selectResolvedMarketsOpenOrders,
@@ -235,6 +237,7 @@ export const selectNotifications = createSelector(
   selectUnsignedOrders,
   selectProceedsToClaim,
   selectProceedsToClaimOnHold,
+  selectReadNotificationState,
   (
     reportOnMarkets,
     resolvedMarketsOpenOrder,
@@ -244,8 +247,10 @@ export const selectNotifications = createSelector(
     claimReportingFees,
     unsignedOrders,
     proceedsToClaim,
-    proceedsToClaimOnHold
+    proceedsToClaimOnHold,
+    readNotifications
   ) => {
+    // Generate non-unquie notifications
     const reportOnMarketsNotifications = generateCards(
       reportOnMarkets,
       NOTIFICATION_TYPES.reportOnMarkets
@@ -275,6 +280,7 @@ export const selectNotifications = createSelector(
       NOTIFICATION_TYPES.proceedsToClaimOnHold
     );
 
+    // Add non unquie notifications
     let notifications = [
       ...reportOnMarketsNotifications,
       ...resolvedMarketsOpenOrderNotifications,
@@ -285,6 +291,7 @@ export const selectNotifications = createSelector(
       ...proceedsToClaimOnHoldNotifications
     ];
 
+    // Add unquie notifications
     if (
       claimReportingFees &&
       (claimReportingFees.unclaimedEth && claimReportingFees.unclaimedRep)
@@ -292,7 +299,7 @@ export const selectNotifications = createSelector(
       notifications = notifications.concat({
         type: NOTIFICATION_TYPES.claimReportingFees,
         isImportant: false,
-        isNew: false,
+        isNew: true,
         title: CLAIM_REPORTING_FEES_TITLE,
         buttonLabel: TYPE_VIEW,
         market: null,
@@ -315,7 +322,7 @@ export const selectNotifications = createSelector(
         notifications = notifications.concat({
           type: NOTIFICATION_TYPES.proceedsToClaim,
           isImportant: false,
-          isNew: false,
+          isNew: true,
           title: PROCEEDS_TO_CLAIM_TITLE,
           buttonLabel: TYPE_VIEW,
           market: null,
@@ -326,6 +333,19 @@ export const selectNotifications = createSelector(
       }
     }
 
+    // Update isNew status based on data stored on local state
+    const storedNotifications = readNotifications || null;
+    if (storedNotifications && storedNotifications.length) {
+      notifications = notifications.map(notification => {
+        const storedNotification = storedNotifications.find(
+          storedNotification => storedNotification.id === notification.id
+        );
+        if (storedNotification) {
+          notification.isNew = storedNotification.isNew;
+        }
+        return notification;
+      });
+    }
     return notifications;
   }
 );
@@ -351,7 +371,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: false,
-      isNew: false,
+      isNew: true,
       title: RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
       buttonLabel: TYPE_VIEW
     };
@@ -359,7 +379,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: true,
-      isNew: false,
+      isNew: true,
       title: REPORTING_ENDS_SOON_TITLE,
       buttonLabel: TYPE_VIEW
     };
@@ -367,7 +387,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: true,
-      isNew: false,
+      isNew: true,
       title: FINALIZE_MARKET_TITLE,
       buttonLabel: TYPE_VIEW
     };
@@ -375,7 +395,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: false,
-      isNew: false,
+      isNew: true,
       title: TYPE_DISPUTE,
       buttonLabel: TYPE_DISPUTE
     };
@@ -383,7 +403,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: false,
-      isNew: false,
+      isNew: true,
       title: SELL_COMPLETE_SETS_TITLE,
       buttonLabel: TYPE_VIEW
     };
@@ -391,7 +411,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: false,
-      isNew: false,
+      isNew: true,
       title: UNSIGNED_ORDERS_TITLE,
       buttonLabel: TYPE_VIEW
     };
@@ -399,7 +419,7 @@ const generateCards = (markets, type) => {
     defaults = {
       type,
       isImportant: false,
-      isNew: false,
+      isNew: true,
       title: PROCEEDS_TO_CLAIM_TITLE,
       buttonLabel: TYPE_VIEW
     };

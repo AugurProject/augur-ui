@@ -1,8 +1,6 @@
-/* eslint react/no-array-index-key: 0 */
-
 import React, { ReactNode } from "react";
-import { isEqual } from "lodash";
 import { RouteComponentProps } from "react-router-dom";
+import { orderBy } from "lodash";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
@@ -50,7 +48,7 @@ export interface INotifications {
 
 export interface NotificationsProps extends RouteComponentProps {
   notifications: Array<INotifications>;
-  updateNotifications: Function;
+  updateReadNotifications: Function;
   getReportingFees: Function;
   currentAugurTimestamp: number;
   reportingWindowStatsEndTime: number;
@@ -60,24 +58,19 @@ export interface NotificationsProps extends RouteComponentProps {
   claimReportingFees: Function;
 }
 
+export interface NotificationsState {
+  disabledNotifications: any;
+}
+
 const { NOTIFICATION_TYPES } = constants;
 
-class Notifications extends React.Component<NotificationsProps> {
-  state = {
+class Notifications extends React.Component<
+  NotificationsProps,
+  NotificationsState
+> {
+  state: NotificationsState = {
     disabledNotifications: {}
   };
-
-  componentDidMount() {
-    this.props.updateNotifications(this.props.notifications);
-    this.props.getReportingFees();
-  }
-
-  componentWillReceiveProps(nextProps: NotificationsProps) {
-    if (!isEqual(this.props.notifications, nextProps.notifications)) {
-      this.props.updateNotifications(nextProps.notifications);
-      this.props.getReportingFees();
-    }
-  }
 
   getButtonAction(notification: INotifications) {
     let buttonAction;
@@ -85,11 +78,14 @@ class Notifications extends React.Component<NotificationsProps> {
 
     switch (notification.type) {
       case NOTIFICATION_TYPES.resolvedMarketsOpenOrders:
-        buttonAction = () => null;
+        buttonAction = () => {
+          this.markAsRead(notification);
+        };
         break;
 
       case NOTIFICATION_TYPES.reportOnMarkets:
         buttonAction = () => {
+          this.markAsRead(notification);
           const queryLink = {
             [MARKET_ID_PARAM_NAME]: notification.market.id,
             [RETURN_PARAM_NAME]: location.hash
@@ -103,6 +99,7 @@ class Notifications extends React.Component<NotificationsProps> {
 
       case NOTIFICATION_TYPES.finalizeMarkets:
         buttonAction = () => {
+          this.markAsRead(notification);
           this.disableNotification(notification.id, true);
           this.props.finalizeMarketModal(notification.market.id, () =>
             this.disableNotification(notification.id, false)
@@ -112,6 +109,7 @@ class Notifications extends React.Component<NotificationsProps> {
 
       case NOTIFICATION_TYPES.marketsInDispute:
         buttonAction = () => {
+          this.markAsRead(notification);
           const queryLink = {
             [MARKET_ID_PARAM_NAME]: notification.market.id,
             [RETURN_PARAM_NAME]: location.hash
@@ -125,6 +123,7 @@ class Notifications extends React.Component<NotificationsProps> {
 
       case NOTIFICATION_TYPES.completeSetPositions:
         buttonAction = () => {
+          this.markAsRead(notification);
           this.disableNotification(notification.id, true);
           this.props.sellCompleteSetsModal(
             notification.market.id,
@@ -135,20 +134,24 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       case NOTIFICATION_TYPES.unsignedOrders:
-        buttonAction = () => null;
+        buttonAction = () => {
+          this.markAsRead(notification);
+        };
         break;
 
       case NOTIFICATION_TYPES.claimReportingFees:
         buttonAction = () => {
-          this.props.claimReportingFees(
-            notification.claimReportingFees,
-            () => null
+          this.markAsRead(notification);
+          this.disableNotification(notification.id, true);
+          this.props.claimReportingFees(notification.claimReportingFees, () =>
+            this.disableNotification(notification.id, false)
           );
         };
         break;
 
       case NOTIFICATION_TYPES.proceedsToClaim:
         buttonAction = () => {
+          this.markAsRead(notification);
           this.disableNotification(notification.id, true);
           this.props.claimTradingProceeds(() =>
             this.disableNotification(notification.id, false)
@@ -157,7 +160,9 @@ class Notifications extends React.Component<NotificationsProps> {
         break;
 
       default:
-        buttonAction = () => null;
+        buttonAction = () => {
+          this.markAsRead(notification);
+        };
         break;
     }
 
@@ -176,6 +181,20 @@ class Notifications extends React.Component<NotificationsProps> {
     });
   }
 
+  markAsRead({ id }: INotifications) {
+    const newState = this.props.notifications.map(
+      (notification: INotifications | null) => {
+        if (notification && notification.id === id) {
+          notification.isNew = false;
+        }
+
+        return notification;
+      }
+    );
+
+    this.props.updateReadNotifications(newState);
+  }
+
   render() {
     const { currentAugurTimestamp, reportingWindowStatsEndTime } = this.props;
     const notifications = this.props.notifications.map(notification =>
@@ -185,7 +204,7 @@ class Notifications extends React.Component<NotificationsProps> {
     const newNotificationCount = notifications.filter(item => item.isNew)
       .length;
 
-    const rows = notifications.map((notification, idx) => {
+    const rows = orderBy(notifications, "isNew", ["desc"]).map(notification => {
       const {
         id,
         isImportant,
@@ -216,12 +235,19 @@ class Notifications extends React.Component<NotificationsProps> {
         isNew,
         title,
         buttonLabel,
-        buttonAction,
-        disabledNotifications: this.state.disabledNotifications
+        buttonAction
       };
 
+      const isDisabled: boolean =
+        this.state.disabledNotifications[id] &&
+        this.state.disabledNotifications[id] === true;
+
       return (
-        <NotificationCard key={idx} {...notificationCardProps}>
+        <NotificationCard
+          key={id}
+          {...notificationCardProps}
+          isDisabled={isDisabled}
+        >
           {type === NOTIFICATION_TYPES.resolvedMarketsOpenOrders ? (
             <OpenOrdersResolvedMarketsTemplate {...templateProps} />
           ) : null}

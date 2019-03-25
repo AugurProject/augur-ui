@@ -1,4 +1,4 @@
-import { UPDATE_NOTIFICATIONS } from "modules/notifications/actions/update-notifications";
+import { UPDATE_READ_NOTIFICATIONS } from "modules/notifications/actions/update-notifications";
 import { CLEAR_LOGIN_ACCOUNT } from "modules/auth/actions/update-login-account";
 import { RESET_STATE } from "modules/app/actions/reset-state";
 import { INotifications } from "modules/account/components/notifications/notifications";
@@ -16,8 +16,9 @@ export interface Action {
 
 export default (notifications = DEFAULT_STATE, action: Action) => {
   switch (action.type) {
-    case UPDATE_NOTIFICATIONS:
+    case UPDATE_READ_NOTIFICATIONS:
       return action.data.notifications;
+
     case RESET_STATE:
     case CLEAR_LOGIN_ACCOUNT:
       return DEFAULT_STATE;

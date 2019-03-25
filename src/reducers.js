@@ -42,7 +42,7 @@ import versions from "modules/app/reducers/versions";
 import pendingOrders from "modules/orders/reducers/pending-orders";
 import filledOrders from "modules/orders/reducers/filled-orders";
 import accountShareBalances from "modules/positions/reducers/account-share-balances";
-import notifications from "modules/notifications/reducers/notifications";
+import readNotifications from "modules/notifications/reducers/read-notifications";
 
 export function createReducer() {
   return {
@@ -73,7 +73,7 @@ export function createReducer() {
     marketsWithAccountReport,
     modal,
     newMarket,
-    notifications,
+    readNotifications,
     orderBooks,
     orderCancellation,
     orphanedOrders,
