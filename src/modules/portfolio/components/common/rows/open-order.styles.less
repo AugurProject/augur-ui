@@ -110,7 +110,6 @@
 
 .OpenOrder_infoContainer {
   background: fade(@color-primary-alternate, 10%);
-  border-bottom: 2px solid @color-theme-primary;
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -218,7 +217,8 @@ div.OpenOrder__labels {
 
 @media @breakpoint-mobile {
   .Order {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    position: relative;
 
     > li {
       &:first-child {
@@ -228,18 +228,29 @@ div.OpenOrder__labels {
 
       &:nth-of-type(2) {
         justify-content: flex-start;
+        position: static;
         text-align: left;
 
         > span:nth-of-type(2) {
-          left: 100%;
+          left: unset;
+          right: 0;
+          top: 0;
         }
       }
     }
   }
 
   .Order__single {
+    border: 1px solid @color-primary-alternate;
+    border-radius: 3px;
     padding-left: 1rem;
     padding-right: 1.25rem;
+  }
+
+  .Order__parentSingle {
+    border-radius: 3px;
+    border-top: 0;
+    margin-top: 2px;
   }
 
   .Order__group {
@@ -285,6 +296,7 @@ div.OpenOrder__labels {
 
   .Position__single {
     background: fade(@color-primary-alternate, 40%);
+    border: 0;
     padding: 0 1rem;
   }
 
@@ -318,9 +330,21 @@ div.OpenOrder__labels {
   .OpenOrder__info {
     background-color: fade(@color-primary-alternate, 40%);
     padding: 0.5rem 1rem 0.5rem 1.5rem;
+
+    > div {
+      flex-direction: column;
+
+      > button {
+        justify-content: flex-end;
+        margin-top: 1.125rem;
+      }
+    }
   }
 
   .OpenOrder__infoSingle {
+    border: 1px solid @color-primary-alternate;
+    border-radius: 3px;
+    border-top: 0;
     padding-left: 1rem;
   }
 }
