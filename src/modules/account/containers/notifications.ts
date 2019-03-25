@@ -2,9 +2,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Notifications from "modules/account/components/notifications/notifications";
 import { selectNotifications } from "modules/notifications/selectors/notification-state";
-import { updateNotifications } from "modules/notifications/actions/update-notifications";
-import { getReportingFees } from "modules/reports/actions/get-reporting-fees";
+import { updateReadNotifications } from "modules/notifications/actions/update-notifications";
 import { updateModal } from "modules/modal/actions/update-modal";
+
 import {
   MODAL_FINALIZE_MARKET,
   MODAL_SELL_COMPLETE_SETS,
@@ -24,20 +24,10 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  updateNotifications: (notifications: any) =>
-    dispatch(updateNotifications(notifications)),
-  getReportingFees: () => dispatch(getReportingFees()),
+  updateReadNotifications: (notifications: any) =>
+    dispatch(updateReadNotifications(notifications)),
   finalizeMarketModal: (marketId: any, cb: Function) =>
     dispatch(updateModal({ type: MODAL_FINALIZE_MARKET, marketId, cb })),
-  sellCompleteSetsModal: (marketId: any, numCompleteSets: any, cb: Function) =>
-    dispatch(
-      updateModal({
-        type: MODAL_SELL_COMPLETE_SETS,
-        marketId,
-        numCompleteSets,
-        cb
-      })
-    ),
   claimTradingProceeds: (cb: Function) =>
     dispatch(updateModal({ type: MODAL_CLAIM_PROCEEDS, cb })),
   claimReportingFees: (reportingFees: any, cb: Function) =>
@@ -46,6 +36,15 @@ const mapDispatchToProps = (dispatch: Function) => ({
         type: MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS,
         modalCallback: cb,
         ...reportingFees
+      })
+    ),
+  sellCompleteSetsModal: (marketId: any, numCompleteSets: any, cb: Function) =>
+    dispatch(
+      updateModal({
+        type: MODAL_SELL_COMPLETE_SETS,
+        marketId,
+        numCompleteSets,
+        cb
       })
     )
 });
