@@ -130,9 +130,13 @@ const OpenOrder = (props: OpenOrderProps) => {
             >
               {isSingle && (
                 <span>
-                  <MarketLink id={openOrder.marketId}>
-                    {openOrder.marketDescription}
-                  </MarketLink>
+                  {openOrder.marketId ? (
+                    <MarketLink id={openOrder.marketId}>
+                      {openOrder.marketDescription}
+                    </MarketLink>
+                  ) : (
+                    openOrder.marketDescription
+                  )}
                 </span>
               )}
               <div>
