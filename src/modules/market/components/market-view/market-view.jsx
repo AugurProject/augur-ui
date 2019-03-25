@@ -286,7 +286,7 @@ export default class MarketView extends Component {
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
           </Helmet>
-          <ModuleTabs selected={0} fillWidth id="mobileView">
+          <ModuleTabs selected={0} fillWidth noBorder id="mobileView">
             <ModulePane label="Market Info">
               <div className={Styles["MarketView__paneContainer--mobile"]}>
                 <MarketHeader

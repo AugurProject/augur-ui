@@ -21,38 +21,36 @@ const MarketOrdersPositionsTable = ({
   filledOrders,
   cancelAllOpenOrders
 }) => (
-  <section>
-    <ModuleTabs selected={0} fillForMobile={isMobile}>
-      <ModulePane label="Open Orders">
-        <OpenOrdersTable
-          openOrders={openOrders}
-          orphanedOrders={orphanedOrders}
-          cancelOrphanedOrder={cancelOrphanedOrder}
-          marketId={marketId}
-          isMobile={isMobile}
-          market={market}
-        />
-        <div className={Styles.MarketOrders__footer}>
-          {openOrders.length > 0 && (
-            <CancelTextButton
-              action={() => cancelAllOpenOrders(openOrders)}
-              text="Cancel All Open Orders"
-            />
-          )}
-        </div>
-      </ModulePane>
-      <ModulePane label="My Fills">
-        <FilledOrdersTable
-          filledOrders={filledOrders}
-          scalarDenomination={market.scalarDenomination}
-          isMobile={isMobile}
-        />
-      </ModulePane>
-      <ModulePane label="Positions">
-        <PositionsTable marketId={marketId} extendedView />
-      </ModulePane>
-    </ModuleTabs>
-  </section>
+  <ModuleTabs selected={0} fillForMobile={isMobile} borderBetween>
+    <ModulePane label="Open Orders">
+      <OpenOrdersTable
+        openOrders={openOrders}
+        orphanedOrders={orphanedOrders}
+        cancelOrphanedOrder={cancelOrphanedOrder}
+        marketId={marketId}
+        isMobile={isMobile}
+        market={market}
+      />
+      <div className={Styles.MarketOrders__footer}>
+        {openOrders.length > 0 && (
+          <CancelTextButton
+            action={() => cancelAllOpenOrders(openOrders)}
+            text="Cancel All"
+          />
+        )}
+      </div>
+    </ModulePane>
+    <ModulePane label="My Fills">
+      <FilledOrdersTable
+        filledOrders={filledOrders}
+        scalarDenomination={market.scalarDenomination}
+        isMobile={isMobile}
+      />
+    </ModulePane>
+    <ModulePane label="Positions">
+      <PositionsTable marketId={marketId} extendedView />
+    </ModulePane>
+  </ModuleTabs>
 );
 
 MarketOrdersPositionsTable.propTypes = {
