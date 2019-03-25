@@ -3,6 +3,7 @@ import { updateScalarMarketShareDenomination } from "modules/markets/actions/upd
 import { updateReports } from "modules/reports/actions/update-reports";
 import { addAlert } from "modules/alerts/actions/alerts";
 import { loadPendingLiquidityOrders } from "modules/orders/actions/liquidity-management";
+import { updateReadNotifications } from "modules/notifications/actions/update-notifications";
 import { loadPendingOrders } from "modules/orders/actions/pending-orders-management";
 import { updateGasPriceInfo } from "modules/app/actions/update-gas-price-info";
 import { registerUserDefinedGasPriceFunction } from "modules/app/actions/register-user-defined-gasPrice-function";
@@ -22,6 +23,10 @@ export const loadAccountDataFromLocalStorage = address => (
     if (storedAccountData) {
       const { selectedUniverse } = storedAccountData;
       const { favorites } = storedAccountData;
+      const { readNotifications } = storedAccountData;
+      if (readNotifications) {
+        dispatch(updateReadNotifications(readNotifications));
+      }
       if (selectedUniverse && selectedUniverse[augurNodeNetworkId]) {
         const selectedUniverseId = selectedUniverse[augurNodeNetworkId];
         if (universe.id !== selectedUniverseId) {

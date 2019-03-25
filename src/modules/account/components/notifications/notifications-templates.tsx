@@ -171,7 +171,7 @@ export const SellCompleteSetTemplate = (props: TemplateProps) => {
     <Template
       message={`You currently have ${
         numCompleteSets.full
-      } of all outcomes for market: ${description}. Please sell these complete sets.`}
+      } of all outcomes in the market: ${description}. Please sell these complete sets.`}
       market={props.market}
       currentTime={props.currentTime}
       reportingWindowStatsEndTime={null}

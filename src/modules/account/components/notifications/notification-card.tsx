@@ -16,16 +16,11 @@ export interface NotificationProps {
   title: string;
   buttonLabel: string;
   buttonAction: Function;
-  disabledNotifications: { [name: string]: boolean };
+  isDisabled: boolean;
   children: React.StatelessComponent;
 }
 
 const { NOTIFICATION_TYPES } = constants;
-
-const isDisabled = (props: NotificationProps) => {
-  const { disabledNotifications, id } = props;
-  return disabledNotifications[id] && disabledNotifications[id] === true;
-};
 
 export const NotificationCard = (props: NotificationProps) => (
   <div className={Styles.NotificationCard}>
@@ -58,7 +53,7 @@ export const NotificationCard = (props: NotificationProps) => (
       <CompactButton
         text={props.buttonLabel}
         action={() => props.buttonAction()}
-        disabled={isDisabled(props)}
+        disabled={props.isDisabled}
       />
     )}
   </div>
