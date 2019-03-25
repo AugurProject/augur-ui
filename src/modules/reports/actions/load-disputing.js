@@ -5,6 +5,7 @@ import {
   updateCrowdDisputeMarkets
 } from "modules/reports/actions/update-markets-in-reporting-state";
 import async from "async";
+import { loadMarketsDisputeInfo } from "modules/markets/actions/load-markets-info"
 
 export const loadDisputing = (callback = logError) => (dispatch, getState) => {
   const { universe } = getState();
@@ -24,7 +25,7 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
           },
           (err, result) => {
             if (err) return next(err);
-
+            dispatch(loadMarketsDisputeInfo(result));
             dispatch(updateCrowdDisputeMarkets(result));
             next(null);
           }
