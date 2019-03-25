@@ -142,7 +142,10 @@ class Notifications extends React.Component<
       case NOTIFICATION_TYPES.claimReportingFees:
         buttonAction = () => {
           this.markAsRead(notification);
-          this.props.claimReportingFees(notification.claimReportingFees, () => null);
+          this.props.claimReportingFees(
+            notification.claimReportingFees,
+            () => null
+          );
         };
         break;
 
