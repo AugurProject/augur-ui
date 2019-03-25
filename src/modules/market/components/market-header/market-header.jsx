@@ -195,12 +195,14 @@ export default class MarketHeader extends Component {
         )}
       >
         <div className={Styles.MarketHeader__topContainer}>
-          <button
-            className={Styles[`MarketHeader__back-button`]}
-            onClick={() => history.goBack()}
-          >
-            {BackArrow}
-          </button>
+          {!isMobile && (
+            <button
+              className={Styles[`MarketHeader__back-button`]}
+              onClick={() => history.goBack()}
+            >
+              {BackArrow}
+            </button>
+          )}
           <CategoryTagTrail
             categories={categoriesWithClick}
             tags={tagsWithClick}

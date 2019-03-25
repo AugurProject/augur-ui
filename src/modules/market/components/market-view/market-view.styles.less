@@ -6,6 +6,18 @@
   flex-grow: 1;
 }
 
+.MarketView__container {
+  display: flex;
+}
+
+.MarketView__button {
+  > svg {
+    height: 0.5rem;
+    margin-left: 1rem;
+    width: 0.25rem;
+  }
+}
+
 .MarketView__overlay {
   background-color: @color-light-purple;
   bottom: 0;
@@ -217,5 +229,9 @@
 
   .MarketView {
     height: 100%;
+  }
+
+  .MarketView__container {
+    //overflow: hidden;
   }
 }

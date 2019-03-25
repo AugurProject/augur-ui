@@ -202,3 +202,16 @@ export const Syncing = (
     />
   </svg>
 );
+
+export const LeftChevron = (
+  <svg viewBox="0 0 6 10" fill="none">
+    <path
+      d="M5 9L1 5L5 1"
+      stroke="white"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
