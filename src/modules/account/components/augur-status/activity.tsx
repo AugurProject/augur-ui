@@ -8,6 +8,7 @@ import Styles from "modules/account/components/augur-status/activity.styles";
 
 export interface ActivityProps {
   updatePlatformTimeframeData: Function;
+  currentAugurTimestamp: number;
 }
 
 interface ActivityState {
@@ -23,14 +24,15 @@ export default class Activity extends React.Component<
   };
 
   componentDidMount() {
-    this.props.updatePlatformTimeframeData({
-      endTime: constants.TIMEFRAME_OPTIONS[0].id
-    });
+    this.updateTimeSelection(constants.TIMEFRAME_OPTIONS[0].id);
   }
 
-  updateTimeSelection = id => {
+  updateTimeSelection = (id: number) => {
     this.setState({ selected: id });
-    this.props.updatePlatformTimeframeData({ endTime: id });
+    const period = constants.TIMEFRAME_OPTIONS[id].periodInterval;
+    const startTime =
+      period === 0 ? 0 : this.props.currentAugurTimestamp - period;
+    this.props.updatePlatformTimeframeData(startTime);
   };
 
   render() {
