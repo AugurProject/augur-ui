@@ -12,7 +12,8 @@ export default class ModuleTabs extends Component {
     fillWidth: PropTypes.bool,
     fillForMobile: PropTypes.bool,
     noBorder: PropTypes.bool,
-    id: PropTypes.string
+    id: PropTypes.string,
+    borderBetween: PropTypes.bool
   };
 
   static defaultProps = {
@@ -20,7 +21,8 @@ export default class ModuleTabs extends Component {
     fillWidth: false,
     fillForMobile: false,
     id: "id",
-    noBorder: false
+    noBorder: false,
+    borderBetween: false
   };
 
   constructor(props) {
@@ -63,7 +65,9 @@ export default class ModuleTabs extends Component {
                 [Styles.ModuleTabs__activeSpanFill]:
                   this.state.selected === index && this.props.fillWidth,
                 [Styles.ModuleTabs__activeNoBorder]:
-                  this.state.selected === index && this.props.noBorder
+                  this.state.selected === index && this.props.noBorder,
+                [Styles.ModuleTabs__activeBorderBetween]:
+                  this.state.selected === index && this.props.borderBetween
               })}
             >
               {child.props.label}
@@ -78,7 +82,8 @@ export default class ModuleTabs extends Component {
           [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
           [Styles.ModuleTabs__tabFillWidth]:
             this.props.fillWidth || this.props.fillForMobile,
-          [Styles.ModuleTabs__noBorder]: this.props.noBorder
+          [Styles.ModuleTabs__noBorder]: this.props.noBorder,
+          [Styles.ModuleTabs__borderBetween]: this.props.borderBetween
         })}
       >
         {this.props.children.map(labels.bind(this))}
