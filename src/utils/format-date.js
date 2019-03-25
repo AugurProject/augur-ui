@@ -63,9 +63,9 @@ export function formatDate(d) {
     } ${date.getUTCDate()}, ${date.getUTCFullYear()} ${utcTimeTwelve.join(
       ":"
     )} ${utcAMPM}`, // UTC time
-    formattedShortDate: `${("0" + date.getUTCDate()).slice(-2)}${shortMonths[
-      date.getUTCMonth()
-    ]} ${date.getUTCFullYear()}`,
+    formattedShortDate: `${("0" + date.getUTCDate()).slice(-2)}${
+      shortMonths[date.getUTCMonth()]
+    } ${date.getUTCFullYear()}`,
     formattedShortTime: `${utcTimeWithSeconds.join(":")}`,
     formattedShort: `${shortMonths[date.getUTCMonth()]}${(
       "0" + date.getUTCDate()

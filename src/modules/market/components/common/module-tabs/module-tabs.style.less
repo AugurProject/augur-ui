@@ -3,6 +3,7 @@
 .ModuleTabs__tab {
   border-bottom: 1px solid @color-very-dark-purple;
   display: flex;
+  flex: 1;
 
   > li {
     color: rgba(255, 255, 255, 0.4);
@@ -19,6 +20,10 @@
   }
 }
 
+.ModuleTabs__headers {
+  display: flex;
+}
+
 .ModuleTabs__activeTab {
   background-color: @color-light-purple;
   color: white !important;
@@ -31,10 +36,19 @@
   height: 100%;
 }
 
+.ModuleTabs__scrollOver {
+  grid-template-rows: 3rem auto;
+  display: grid;
+}
+
 .ModuleTabs__content {
   display: flex;
   flex: 1;
   flex-flow: column nowrap;
+
+  @media @breakpoint-mobile {
+    overflow-y: auto;
+  }
 }
 
 .ModuleTabs__tabFillWidth {
