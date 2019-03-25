@@ -65,7 +65,7 @@ export default class MarketChartsPane extends Component {
 
     if (isMobile) {
       return (
-        <ModuleTabs selected={0} fillForMobile BorderBetween>
+        <ModuleTabs selected={0} fillForMobile>
           <ModulePane label="Candlesticks">
             <Candlestick
               currentTimeInSeconds={currentTimestamp}
