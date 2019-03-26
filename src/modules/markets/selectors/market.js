@@ -73,8 +73,7 @@ import {
   selectOrderCancellationState,
   selectPendingOrdersState,
   selectLoginAccountState,
-  selectAccountShareBalance,
-  selectCurrentTimestamp
+  selectAccountShareBalance
 } from "src/select-state";
 
 export const selectMarket = marketId => {
@@ -180,8 +179,6 @@ const assembleMarket = (
   if (typeof market.maxPrice !== "undefined")
     market.maxPrice = createBigNumber(market.maxPrice);
 
-  const now = new Date(selectCurrentTimestamp(store.getState()));
-
   switch (market.marketType) {
     case YES_NO:
       market.isYesNo = true;
@@ -205,7 +202,6 @@ const assembleMarket = (
   }
 
   market.endTime = convertUnixToFormattedDate(marketData.endTime);
-  market.endTimeLabel = market.endTime < now ? "expired" : "expires";
   market.creationTime = convertUnixToFormattedDate(marketData.creationTime);
 
   switch (market.reportingState) {
