@@ -62,7 +62,12 @@ MarketHeaderBar.propTypes = {
   addToFavorites: PropTypes.func.isRequired,
   collapsedView: PropTypes.bool,
   description: PropTypes.string.isRequired,
-  marketType: PropTypes.string.isRequired
+  marketType: PropTypes.string.isRequired,
+  reportingState: PropTypes.string.isRequired,
+  disputeInfo: PropTypes.object.isRequired,
+  endTime: PropTypes.object.isRequired,
+  currentAugurTimestamp: PropTypes.number.isRequired,
+  reportingWindowStatsEndTime: PropTypes.number.isRequired
 };
 
 MarketHeaderBar.defaultProps = {

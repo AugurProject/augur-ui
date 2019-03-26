@@ -221,6 +221,30 @@ div.LinearPropertyViewTransaction {
     position: absolute;
     right: 0;
   }
+
+  .InReporting_reportingDetails {
+    &::before {
+      background-color: @color-tertiary-text;
+      border-radius: 50%;
+      content: '';
+      display: inline-block;
+      height: 0.125rem;
+      margin: 0 0.25rem 0.0625rem;
+      width: 0.125rem;
+    }
+  }
+
+  .InReporting_reportingDetails__countdown {
+    > span {
+      span:first-of-type {
+        font-size: 0.5625rem;
+      }
+
+      span:last-of-type {
+        font-size: 0.5625rem;
+      }
+    }
+  }
 }
 
 .MarketStatus_alternate {
@@ -250,16 +274,16 @@ div.LinearPropertyViewTransaction {
     content: '';
     display: inline-block;
     height: 0.1875rem;
-    margin: 0 0.25rem 0.0625rem 0.25rem;
+    margin: 0 0.25rem 0.0625rem;
     width: 0.1875rem;
   }
 }
-
 
 .InReporting_reportingDetails__countdown {
   > span {
     span:first-of-type {
       .mono-10;
+
       color: @color-shadow-text;
       line-height: normal;
       text-align: center;
@@ -268,35 +292,9 @@ div.LinearPropertyViewTransaction {
 
     span:last-of-type {
       .mono-10;
+
       color: @color-secondary-text;
       line-height: normal;
-    }
-  }
-}
-
-
-.MarketStatus_mini {
-  .InReporting_reportingDetails {
-    &::before {
-      content: '';
-      border-radius: 50%;
-      background-color: @color-tertiary-text;
-      display: inline-block;
-      height: 0.125rem;
-      margin: 0 0.25rem 0.0625rem 0.25rem;
-      width: 0.125rem;
-    }
-  }
-
-  .InReporting_reportingDetails__countdown {
-    > span {
-      span:first-of-type {
-        font-size: 0.5625rem;
-      }
-
-      span:last-of-type {
-        font-size: 0.5625rem;
-      }
     }
   }
 }
