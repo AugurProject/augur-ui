@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import ForkingContent from "modules/forking/components/forking-content/forking-content";
 import { ChevronDown, ChevronUp } from "modules/common/components/icons";
 import Styles from "modules/forking/components/forking-alert/forking-alert.styles";

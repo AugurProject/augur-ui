@@ -12,9 +12,6 @@ import {
   MARKET_CLOSED
 } from "modules/common-elements/constants";
 import { updateMarketsData } from "modules/markets/actions/update-markets-data";
-import {
-  updateAppStatus
-} from "modules/app/actions/update-app-status";
 
 const { REPORTING_STATE } = constants;
 
