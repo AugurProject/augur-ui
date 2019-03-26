@@ -8,7 +8,7 @@ import {
   updateTradeCost,
   updateTradeShares
 } from "modules/trades/actions/update-trade-cost-shares";
-
+import { placeTrade } from "modules/trades/actions/place-trade";
 import {
   updateAuthStatus,
   IS_CONNECTION_TRAY_OPEN
@@ -33,7 +33,25 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   updateTradeCost: (marketId, outcomeId, order, callback) =>
     dispatch(updateTradeCost({ marketId, outcomeId, ...order, callback })),
   updateTradeShares: (marketId, outcomeId, order, callback) =>
-    dispatch(updateTradeShares({ marketId, outcomeId, ...order, callback }))
+    dispatch(updateTradeShares({ marketId, outcomeId, ...order, callback })),
+  onSubmitPlaceTrade: (
+    marketId,
+    outcomeId,
+    tradeInProgress,
+    doNotCreateOrders,
+    callback,
+    onComplete
+  ) =>
+    dispatch(
+      placeTrade({
+        marketId,
+        outcomeId,
+        tradeInProgress,
+        doNotCreateOrders,
+        callback,
+        onComplete
+      })
+    )
 });
 
 const mergeProps = (sP, dP, oP) => ({

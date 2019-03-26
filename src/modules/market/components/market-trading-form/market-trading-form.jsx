@@ -30,7 +30,8 @@ class MarketTradingForm extends Component {
     updateTradeCost: PropTypes.func.isRequired,
     updateTradeShares: PropTypes.func.isRequired,
     showSelectOutcome: PropTypes.func.isRequired,
-    toggleConnectionTray: PropTypes.func.isRequired
+    toggleConnectionTray: PropTypes.func.isRequired,
+    onSubmitPlaceTrade: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -91,7 +92,8 @@ class MarketTradingForm extends Component {
       updateTradeCost,
       updateTradeShares,
       showSelectOutcome,
-      toggleConnectionTray
+      toggleConnectionTray,
+      onSubmitPlaceTrade
     } = this.props;
     const s = this.state;
 
@@ -134,6 +136,7 @@ class MarketTradingForm extends Component {
           updateTradeCost={updateTradeCost}
           updateTradeShares={updateTradeShares}
           showSelectOutcome={showSelectOutcome}
+          onSubmitPlaceTrade={onSubmitPlaceTrade}
         />
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>
