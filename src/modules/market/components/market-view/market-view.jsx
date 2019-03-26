@@ -27,6 +27,7 @@ import { getMarketAgeInDays } from "utils/format-date";
 import Styles from "modules/market/components/market-view/market-view.styles";
 import { precisionClampFunction } from "modules/markets/helpers/clamp-fixed-precision";
 import { BigNumber } from "bignumber.js";
+import { LeftChevron } from "modules/common-elements/icons";
 
 export default class MarketView extends Component {
   static propTypes = {
@@ -43,7 +44,8 @@ export default class MarketView extends Component {
     isMobile: PropTypes.bool,
     outcomes: PropTypes.array,
     isLogged: PropTypes.bool,
-    updateModal: PropTypes.func.isRequired
+    updateModal: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -259,7 +261,8 @@ export default class MarketView extends Component {
       isMobile,
       outcomes,
       market,
-      marketType
+      marketType,
+      history
     } = this.props;
     const s = this.state;
 
@@ -286,7 +289,21 @@ export default class MarketView extends Component {
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
           </Helmet>
-          <ModuleTabs selected={0} fillWidth id="mobileView">
+          <ModuleTabs
+            selected={0}
+            fillWidth
+            noBorder
+            id="mobileView"
+            scrollOver
+            leftButton={
+              <button
+                className={Styles.MarketView__button}
+                onClick={() => history.goBack()}
+              >
+                {LeftChevron}
+              </button>
+            }
+          >
             <ModulePane label="Market Info">
               <div className={Styles["MarketView__paneContainer--mobile"]}>
                 <MarketHeader

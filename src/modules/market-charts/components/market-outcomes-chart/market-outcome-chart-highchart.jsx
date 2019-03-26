@@ -120,7 +120,6 @@ export default class MarketOutcomesChartHighchart extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.onResize);
     const { bucketedPriceTimeSeries, selectedOutcome, daysPassed } = this.props;
     const { containerHeight } = this.state;
     this.buidOptions(
@@ -152,7 +151,6 @@ export default class MarketOutcomesChartHighchart extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.onResize);
     if (this.chart) {
       this.chart.destroy();
       this.chart = null;

@@ -48,20 +48,12 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     this.updateVolumeType = this.updateVolumeType.bind(this);
   }
 
-  componentDidMount() {
-    window.addEventListener("resize", this.updateContainerWidths);
-  }
-
   componentWillReceiveProps(nextProps) {
     const containerWidths = this.getContainerWidths();
 
     this.setState({
       ...containerWidths
     });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateContainerWidths);
   }
 
   getContainerWidths() {

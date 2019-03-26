@@ -3,9 +3,9 @@
 .DataTableHeader {
   display: grid;
   flex-direction: row;
-  flex-grow: 1;
   grid-template-columns: repeat(5, 1fr);
   padding: 0.75rem 2.8rem 0.75rem 0;
+  width: 100%;
 
   > li {
     .mono-10;
@@ -72,9 +72,9 @@
 
 @media @breakpoint-mobile {
   .DataTableHeader {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     padding-left: 1rem;
-    padding-right: 3.2rem;
+    padding-right: 3.8rem;
 
     > li {
       &:first-child {
@@ -83,6 +83,15 @@
 
       &:nth-of-type(2) {
         justify-content: flex-start;
+      }
+    }
+  }
+
+  .DataTableHeader__extended {
+    > li {
+      &:nth-of-type(5),
+      &:nth-of-type(6) {
+        display: none;
       }
     }
   }

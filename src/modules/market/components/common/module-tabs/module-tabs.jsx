@@ -12,7 +12,10 @@ export default class ModuleTabs extends Component {
     fillWidth: PropTypes.bool,
     fillForMobile: PropTypes.bool,
     noBorder: PropTypes.bool,
-    id: PropTypes.string
+    id: PropTypes.string,
+    borderBetween: PropTypes.bool,
+    leftButton: PropTypes.element,
+    scrollOver: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -20,7 +23,10 @@ export default class ModuleTabs extends Component {
     fillWidth: false,
     fillForMobile: false,
     id: "id",
-    noBorder: false
+    noBorder: false,
+    borderBetween: false,
+    leftButton: null,
+    scrollOver: false,
   };
 
   constructor(props) {
@@ -63,7 +69,9 @@ export default class ModuleTabs extends Component {
                 [Styles.ModuleTabs__activeSpanFill]:
                   this.state.selected === index && this.props.fillWidth,
                 [Styles.ModuleTabs__activeNoBorder]:
-                  this.state.selected === index && this.props.noBorder
+                  this.state.selected === index && this.props.noBorder,
+                [Styles.ModuleTabs__activeBorderBetween]:
+                  this.state.selected === index && this.props.borderBetween
               })}
             >
               {child.props.label}
@@ -72,17 +80,22 @@ export default class ModuleTabs extends Component {
         </li>
       );
     }
+
     return (
-      <ul
-        className={classNames(Styles.ModuleTabs__tab, {
-          [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
-          [Styles.ModuleTabs__tabFillWidth]:
-            this.props.fillWidth || this.props.fillForMobile,
-          [Styles.ModuleTabs__noBorder]: this.props.noBorder
-        })}
-      >
-        {this.props.children.map(labels.bind(this))}
-      </ul>
+      <div className={Styles.ModuleTabs__headers}>
+        {this.props.leftButton}
+        <ul
+          className={classNames(Styles.ModuleTabs__tab, {
+            [Styles.ModuleTabs__tabFill]: this.props.fillWidth,
+            [Styles.ModuleTabs__tabFillWidth]:
+              this.props.fillWidth || this.props.fillForMobile,
+            [Styles.ModuleTabs__noBorder]: this.props.noBorder,
+            [Styles.ModuleTabs__borderBetween]: this.props.borderBetween
+          })}
+        >
+          {this.props.children.map(labels.bind(this))}
+        </ul>
+      </div>
     );
   }
 
@@ -96,7 +109,7 @@ export default class ModuleTabs extends Component {
 
   render() {
     return (
-      <div className={Styles.ModuleTabs} id={"tabs_" + this.props.id}>
+      <div className={classNames(Styles.ModuleTabs, {[Styles.ModuleTabs__scrollOver]: this.props.scrollOver})} id={"tabs_" + this.props.id}>
         {this.renderTabs()}
         {this.renderContent()}
       </div>

@@ -113,6 +113,20 @@ div.MarketOpenOrdersList__table {
 }
 
 @media @breakpoint-mobile {
+  .MarketOrders__footer {
+    background: @color-tertiary-background;
+    margin-top: 0.125rem;
+  }
+
+  .MarketOpenOrdersList__scrollContainer {
+    max-height: calc(100vh - 300px);
+    min-height: unset;
+  }
+
+  .MarketOpenOrdersList__table {
+    height: 100%;
+  }
+
   .MarketOpenOrdersList__table-header {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

@@ -6,14 +6,15 @@ export const updatePlatformTimeframeData = (
   options = {},
   callback = logError
 ) => (dispatch, getState) => {
-  const { universe } = getState();
+  const { universe, blockchain } = getState();
   if (universe.id == null) return callback(null);
 
   augur.augurNode.submitRequest(
     "getPlatformActivityStats",
     {
       universe: universe.id,
-      endTime: options.endTime || null
+      startTime: options.startTime || null,
+      endTime: blockchain.currentAugurTimestamp || null
     },
     (err, timeframeData) => {
       if (err) return callback(err);

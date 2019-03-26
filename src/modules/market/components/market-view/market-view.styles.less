@@ -6,6 +6,14 @@
   flex-grow: 1;
 }
 
+.MarketView__button {
+  > svg {
+    height: 0.5rem;
+    margin-left: 1rem;
+    width: 0.25rem;
+  }
+}
+
 .MarketView__overlay {
   background-color: @color-light-purple;
   bottom: 0;
@@ -21,6 +29,7 @@
 }
 
 .MarketView__paneContainer--mobile {
+  flex: 1;
   margin-bottom: 70px;
   padding: 15px;
 }
@@ -212,5 +221,9 @@
   .MarketView__history {
     background: @color-grayish-purple;
     max-height: unset;
+  }
+
+  .MarketView {
+    height: 100%;
   }
 }
