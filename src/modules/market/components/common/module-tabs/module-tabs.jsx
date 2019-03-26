@@ -15,7 +15,7 @@ export default class ModuleTabs extends Component {
     id: PropTypes.string,
     borderBetween: PropTypes.bool,
     leftButton: PropTypes.element,
-    scrollOver: PropTypes.bool,
+    scrollOver: PropTypes.bool
   };
 
   static defaultProps = {
@@ -26,7 +26,7 @@ export default class ModuleTabs extends Component {
     noBorder: false,
     borderBetween: false,
     leftButton: null,
-    scrollOver: false,
+    scrollOver: false
   };
 
   constructor(props) {
@@ -109,7 +109,12 @@ export default class ModuleTabs extends Component {
 
   render() {
     return (
-      <div className={classNames(Styles.ModuleTabs, {[Styles.ModuleTabs__scrollOver]: this.props.scrollOver})} id={"tabs_" + this.props.id}>
+      <div
+        className={classNames(Styles.ModuleTabs, {
+          [Styles.ModuleTabs__scrollOver]: this.props.scrollOver
+        })}
+        id={"tabs_" + this.props.id}
+      >
         {this.renderTabs()}
         {this.renderContent()}
       </div>
