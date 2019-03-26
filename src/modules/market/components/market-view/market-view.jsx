@@ -289,126 +289,124 @@ export default class MarketView extends Component {
           <Helmet>
             <title>{parseMarketTitle(description)}</title>
           </Helmet>
-          <div className={Styles.MarketView__container}>
-            <ModuleTabs
-              selected={0}
-              fillWidth
-              noBorder
-              id="mobileView"
-              scrollOver
-              leftButton={
-                <button
-                  className={Styles.MarketView__button}
-                  onClick={() => history.goBack()}
-                >
-                  {LeftChevron}
-                </button>
-              }
-            >
-              <ModulePane label="Market Info">
-                <div className={Styles["MarketView__paneContainer--mobile"]}>
-                  <MarketHeader
+          <ModuleTabs
+            selected={0}
+            fillWidth
+            noBorder
+            id="mobileView"
+            scrollOver
+            leftButton={
+              <button
+                className={Styles.MarketView__button}
+                onClick={() => history.goBack()}
+              >
+                {LeftChevron}
+              </button>
+            }
+          >
+            <ModulePane label="Market Info">
+              <div className={Styles["MarketView__paneContainer--mobile"]}>
+                <MarketHeader
+                  marketId={marketId}
+                  selectedOutcome={s.selectedOutcome}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                  clearSelectedOutcome={this.clearSelectedOutcome}
+                  location={location}
+                  isMobile={isMobile}
+                />
+                <MarketOutcomesList
+                  marketId={marketId}
+                  outcomes={outcomes}
+                  selectedOutcome={s.selectedOutcome}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                  isMobile={isMobile}
+                />
+                <div className={Styles.MarketView__priceHistoryChart}>
+                  <p>Price History</p>
+                  <MarketOutcomesChart
                     marketId={marketId}
                     selectedOutcome={s.selectedOutcome}
-                    updateSelectedOutcome={this.updateSelectedOutcome}
-                    clearSelectedOutcome={this.clearSelectedOutcome}
-                    location={location}
-                    isMobile={isMobile}
+                    pricePrecision={4}
+                    daysPassed={daysPassed}
                   />
-                  <MarketOutcomesList
+                </div>
+              </div>
+            </ModulePane>
+            <ModulePane label="Trade">
+              <div className={Styles["MarketView__paneContainer--mobile"]}>
+                {marketType === CATEGORICAL && (
+                  <MarketOutcomeSelector
+                    outcome={s.selectedOutcome}
+                    outcomeName={selectedOutcomeName}
+                    selectOutcome={this.showSelectOutcome}
+                  />
+                )}
+                <div style={{ marginBottom: "1rem" }}>
+                  <MarketChartsPane
                     marketId={marketId}
-                    outcomes={outcomes}
                     selectedOutcome={s.selectedOutcome}
-                    updateSelectedOutcome={this.updateSelectedOutcome}
+                    currentTimestamp={currentTimestamp}
+                    maxPrice={maxPrice}
+                    minPrice={minPrice}
+                    updateSelectedOrderProperties={
+                      this.updateSelectedOrderProperties
+                    }
                     isMobile={isMobile}
+                    daysPassed={daysPassed}
                   />
-                  <div className={Styles.MarketView__priceHistoryChart}>
-                    <p>Price History</p>
-                    <MarketOutcomesChart
-                      marketId={marketId}
-                      selectedOutcome={s.selectedOutcome}
-                      pricePrecision={4}
-                      daysPassed={daysPassed}
-                    />
-                  </div>
                 </div>
-              </ModulePane>
-              <ModulePane label="Trade">
-                <div className={Styles["MarketView__paneContainer--mobile"]}>
-                  {marketType === CATEGORICAL && (
-                    <MarketOutcomeSelector
-                      outcome={s.selectedOutcome}
-                      outcomeName={selectedOutcomeName}
-                      selectOutcome={this.showSelectOutcome}
-                    />
-                  )}
-                  <div style={{ marginBottom: "1rem" }}>
-                    <MarketChartsPane
-                      marketId={marketId}
-                      selectedOutcome={s.selectedOutcome}
-                      currentTimestamp={currentTimestamp}
-                      maxPrice={maxPrice}
-                      minPrice={minPrice}
-                      updateSelectedOrderProperties={
-                        this.updateSelectedOrderProperties
-                      }
-                      isMobile={isMobile}
-                      daysPassed={daysPassed}
-                    />
-                  </div>
-                  <ModuleTabs selected={0} fillForMobile>
-                    <ModulePane label="Order Book">
-                      <div className={Styles.MarketView__orders}>
-                        <MarketOutcomeOrders
-                          isMobile={isMobile}
-                          sharedChartMargins={this.sharedChartMargins}
-                          fixedPrecision={4}
-                          pricePrecision={4}
-                          hoveredPrice={null}
-                          updateHoveredPrice={null}
-                          updatePrecision={null}
-                          updateSelectedOrderProperties={
-                            this.updateSelectedOrderProperties
-                          }
-                          marketId={marketId}
-                          selectedOutcome={s.selectedOutcome}
-                          toggle={this.toggleOrderBook}
-                          extend={s.extendOrderBook}
-                          hide={s.extendTradeHistory}
-                        />
+                <ModuleTabs selected={0} fillForMobile>
+                  <ModulePane label="Order Book">
+                    <div className={Styles.MarketView__orders}>
+                      <MarketOutcomeOrders
+                        isMobile={isMobile}
+                        sharedChartMargins={this.sharedChartMargins}
+                        fixedPrecision={4}
+                        pricePrecision={4}
+                        hoveredPrice={null}
+                        updateHoveredPrice={null}
+                        updatePrecision={null}
+                        updateSelectedOrderProperties={
+                          this.updateSelectedOrderProperties
+                        }
+                        marketId={marketId}
+                        selectedOutcome={s.selectedOutcome}
+                        toggle={this.toggleOrderBook}
+                        extend={s.extendOrderBook}
+                        hide={s.extendTradeHistory}
+                      />
+                    </div>
+                  </ModulePane>
+                  <ModulePane label="Trade History">
+                    <div className={Styles.MarketView__history}>
+                      <div className={Styles.MarketView__component__history}>
+                        {marketId && (
+                          <MarketTradeHistory
+                            marketId={marketId}
+                            outcome={s.selectedOutcome}
+                            isMobile={isMobile}
+                            toggle={this.toggleTradeHistory}
+                            extend={s.extendTradeHistory}
+                            hide={s.extendOrderBook}
+                          />
+                        )}
                       </div>
-                    </ModulePane>
-                    <ModulePane label="Trade History">
-                      <div className={Styles.MarketView__history}>
-                        <div className={Styles.MarketView__component__history}>
-                          {marketId && (
-                            <MarketTradeHistory
-                              marketId={marketId}
-                              outcome={s.selectedOutcome}
-                              isMobile={isMobile}
-                              toggle={this.toggleTradeHistory}
-                              extend={s.extendTradeHistory}
-                              hide={s.extendOrderBook}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    </ModulePane>
-                  </ModuleTabs>
-                </div>
-              </ModulePane>
-              <ModulePane label="Orders">
-                <div
-                  className={classNames(
-                    Styles["MarketView__paneContainer--mobile"],
-                    Styles.MarketView__orderPositionsTable
-                  )}
-                >
-                  <MarketOrdersPositionsTable marketId={marketId} />
-                </div>
-              </ModulePane>
-            </ModuleTabs>
-          </div>
+                    </div>
+                  </ModulePane>
+                </ModuleTabs>
+              </div>
+            </ModulePane>
+            <ModulePane label="Orders">
+              <div
+                className={classNames(
+                  Styles["MarketView__paneContainer--mobile"],
+                  Styles.MarketView__orderPositionsTable
+                )}
+              >
+                <MarketOrdersPositionsTable marketId={marketId} />
+              </div>
+            </ModulePane>
+          </ModuleTabs>
           <div className={Styles["MarketView__buySellButton--button"]}>
             <div>
               <button onClick={this.toggleTradingForm}>Buy / Sell</button>
