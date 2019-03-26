@@ -20,10 +20,7 @@ export default class Input extends Component {
     isMultiline: PropTypes.bool,
     isClearable: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
-    updateValue: PropTypes.func,
     onBlur: PropTypes.func,
-    incrementAmount: PropTypes.number,
-    comparisonValue: PropTypes.string,
     isSearch: PropTypes.bool,
     placeholder: PropTypes.string,
     maxButton: PropTypes.bool,
@@ -47,12 +44,9 @@ export default class Input extends Component {
     noFocus: false,
     isLoading: false,
     lightBorder: false,
-    updateValue: null,
     onBlur: null,
     onMaxButtonClick: null,
     onFocus: null,
-    incrementAmount: null,
-    comparisonValue: null,
     placeholder: null,
     darkMaxBtn: false
   };
