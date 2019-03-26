@@ -164,8 +164,6 @@ const assembleMarket = (
   pendingOrders
 ) => {
   const marketId = marketData.id;
-
-  console.log("trigger market selector", marketId);
   const market = {
     ...marketData,
     description: marketData.description || "",
