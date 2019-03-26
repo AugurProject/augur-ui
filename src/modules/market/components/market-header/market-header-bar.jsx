@@ -33,7 +33,6 @@ const MarketHeaderBar = ({
   return (
     <section className={Styles.MarketHeaderBar}>
       <InReportingLabel
-        // mini={true}
         marketStatus={marketStatus}
         reportingState={reportingState}
         disputeInfo={disputeInfo}
@@ -64,17 +63,20 @@ MarketHeaderBar.propTypes = {
   description: PropTypes.string.isRequired,
   marketType: PropTypes.string.isRequired,
   reportingState: PropTypes.string.isRequired,
-  disputeInfo: PropTypes.object.isRequired,
+  disputeInfo: PropTypes.object,
   endTime: PropTypes.object.isRequired,
-  currentAugurTimestamp: PropTypes.number.isRequired,
-  reportingWindowStatsEndTime: PropTypes.number.isRequired
+  currentAugurTimestamp: PropTypes.number,
+  reportingWindowStatsEndTime: PropTypes.number
 };
 
 MarketHeaderBar.defaultProps = {
   isLogged: false,
   isFavorite: false,
   collapsedView: false,
-  marketStatus: constants.MARKET_OPEN
+  marketStatus: constants.MARKET_OPEN,
+  disputeInfo: {},
+  currentAugurTimestamp: null,
+  reportingWindowStatsEndTime: null
 };
 
 export default MarketHeaderBar;

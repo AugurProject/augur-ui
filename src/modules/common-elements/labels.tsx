@@ -355,21 +355,25 @@ export const InReportingLabel = (props: InReportingLabelProps) => {
 
   let reportingCountdown: boolean = false;
   let reportingExtraText: string | null;
-  let text: string = constants.MARKET_STATUS_MESSAGES.IN_REPORTING;
+  let text: string = constants.IN_REPORTING;
+  let customLabel: string | null = null;
 
   if (reportingState === REPORTING_STATE.DESIGNATED_REPORTING)  {
-    reportingExtraText = "Waiting on reporter"
+    reportingExtraText = constants.WAITING_ON_REPORTER;
+    reportingCountdown = true;
+    customLabel = constants.REPORTING_ENDS;
   }
   else if (reportingState === REPORTING_STATE.OPEN_REPORTING)  {
-    reportingExtraText = "Open reporting"
+    reportingExtraText = constants.OPEN_REPORTING;
   }
   else if (reportingState === REPORTING_STATE.AWAITING_NEXT_WINDOW)  {
-    reportingExtraText = "Awaiting next dispute"
+    reportingExtraText = constants.AWAITING_NEXT_DISPUTE;
     reportingCountdown = true;
   }
   else if (reportingState === REPORTING_STATE.CROWDSOURCING_DISPUTE)  {
-    reportingExtraText = disputeInfo && disputeInfo.disputeRound ? `Dispute round ${disputeInfo.disputeRound}` : 'Dispute round';
+    reportingExtraText = disputeInfo && disputeInfo.disputeRound ? `${constants.DISPUTE_ROUND} ${disputeInfo.disputeRound}` : constants.DISPUTE_ROUND;
     reportingCountdown = true;
+    customLabel = constants.DISPUTE_ENDS;
   }
   else {
     reportingExtraText = null;
@@ -394,6 +398,7 @@ export const InReportingLabel = (props: InReportingLabelProps) => {
               reportingState={reportingState}
               endTime={endTime}
               reportingWindowEndtime={reportingWindowStatsEndTime}
+              customLabel={customLabel}
             />
           </span>
         </span>

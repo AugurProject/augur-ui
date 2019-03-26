@@ -47,6 +47,7 @@ export interface MarketProgressProps {
   currentTime: DateFormattedObject | number;
   endTime: DateFormattedObject | number;
   reportingWindowEndtime: DateFormattedObject | number;
+  customLabel?: string;
 }
 // default breakpoints
 const OneWeek = 168 * 60 * 60;
@@ -113,7 +114,8 @@ export const MarketProgress = (props: MarketProgressProps) => {
     reportingState,
     currentTime,
     endTime,
-    reportingWindowEndtime
+    reportingWindowEndtime,
+    customLabel
   } = props;
   const currTime = formatTime(currentTime);
   const marketEndTime = formatTime(endTime);
@@ -124,7 +126,18 @@ export const MarketProgress = (props: MarketProgressProps) => {
     reportingEndTime
   );
 
-  return <CountdownProgress label={label} time={time} currentTime={currTime} />;
+  // Don't flash countdown component if we don't have reporting / augur timestamp data on state yet
+  if (!reportingWindowEndtime || !currentTime) {
+    return null;
+  }
+
+  return (
+    <CountdownProgress
+      label={customLabel || label}
+      time={time}
+      currentTime={currTime}
+    />
+  );
 };
 
 export const CountdownProgress = (props: CountdownProgressProps) => {
