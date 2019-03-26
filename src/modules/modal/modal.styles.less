@@ -57,7 +57,7 @@
   > div:last-of-type {
     display: flex;
     flex-flow: row-reverse nowrap;
-    margin-top: 1rem;
+    margin-top: auto;
 
     > button {
       margin-left: @size-16;
@@ -74,11 +74,158 @@
 .Message {
   .Container;
 
+  max-width: 53rem;
+
   > p {
     .text-12-paragraph;
 
     color: @color-secondary-text;
     margin: 0 0 @size-8 0;
+  }
+}
+
+.bid {
+  color: @color-positive;
+}
+
+.ask {
+  color: @color-negative;
+}
+
+.Orders {
+  .Message;
+
+  background: @color-secondary-action;
+
+  > div:first-of-type {
+    align-items: center;
+    background: @color-theme-primary;
+    border-top: 1px solid @color-primary-background;
+    display: flex;
+    flex-flow: row nowrap;
+    height: @size-40;
+    justify-content: space-between;
+    padding: @size-12 @size-24;
+
+    > span {
+      .mono-10;
+
+      color: @color-shadow-text;
+      flex: 0 0 5.5rem;
+      text-transform: uppercase;
+    }
+
+    > span:first-of-type {
+      flex: 0 1 15.5rem;
+    }
+
+    > span:last-of-type {
+      flex: 1 0 6.5rem;
+    }
+
+    @media @breakpoint-mobile {
+      border-bottom: 1px solid @color-primary-background;
+      height: @size-32;
+      margin: 0 -@size-16 @size-4;
+      padding: @size-10 @size-16;
+
+      > span {
+        .mono-9;
+
+        flex: 0 0 3.75rem;
+      }
+
+      > span:first-of-type,
+      > span:last-of-type {
+        display: none;
+      }
+    }
+  }
+
+  > section {
+    border-bottom: 1px solid @color-primary-background;
+    color: @color-secondary-text;
+    margin-bottom: @size-24;
+    max-height: 450px;
+    overflow-y: auto;
+
+    > div {
+      align-items: center;
+      background: @color-tertiary-background;
+      border-top: 1px solid @color-primary-background;
+      color: @color-tertiary-text;
+      display: flex;
+      flex-flow: row nowrap;
+      height: @size-32;
+      justify-content: space-between;
+      padding: @size-8 @size-24;
+
+      > span:first-of-type {
+        .mono-12-bold;
+
+        flex: 0 1 15.5rem;
+        text-transform: capitalize;
+      }
+
+      > span:nth-of-type(2) {
+        .mono-12-bold;
+
+        text-transform: uppercase;
+      }
+
+      > span {
+        .mono-12;
+
+        flex: 0 0 5.5rem;
+      }
+
+      > div {
+        align-items: center;
+        display: flex;
+        flex: 1 0 6.5rem;
+
+        > button:first-of-type {
+          margin-left: auto;
+          margin-right: 1rem;
+        }
+      }
+    }
+
+    @media @breakpoint-mobile {
+      margin: 0 -@size-16 @size-24;
+
+      > div {
+        flex-flow: row wrap;
+        height: 7.25rem;
+        padding: @size-12 @size-16;
+
+        > span:first-of-type {
+          .mono-11;
+
+          flex: 1 100%;
+          margin-bottom: @size-8;
+        }
+
+        > span {
+          .mono-10;
+
+          flex: 0 1 auto;
+        }
+
+        > span:nth-of-type(2) {
+          .mono-11-bold;
+        }
+
+        > div {
+          flex: 1 100%;
+          margin: @size-24 0;
+        }
+      }
+    }
+  }
+
+  > div:last-of-type {
+    margin-top: 1rem;
   }
 }
 
@@ -89,6 +236,10 @@
     border-bottom: 1px solid @color-primary-background;
     margin-bottom: @size-16;
     padding-bottom: @size-24;
+  }
+
+  > div:last-of-type {
+    margin-top: 1rem;
   }
 }
 
@@ -265,6 +416,11 @@
 
   margin-left: auto;
   max-width: 15rem;
+
+  @media @breakpoint-mobile {
+    margin-left: 0;
+    max-width: 100%;
+  }
 }
 
 .ReverseBreakdown {

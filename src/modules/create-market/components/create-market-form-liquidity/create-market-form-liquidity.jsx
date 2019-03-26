@@ -14,6 +14,7 @@ import CreateMarketFormLiquidityCharts from "modules/market-charts/containers/cr
 import {
   CATEGORICAL,
   SCALAR,
+  YES_NO,
   BID,
   ASK,
   ONE,
@@ -171,9 +172,21 @@ export default class CreateMarketLiquidity extends Component {
   }
 
   handleAddOrder() {
-    const { addOrderToNewMarket, updateInitialLiquidityCosts } = this.props;
+    const {
+      addOrderToNewMarket,
+      updateInitialLiquidityCosts,
+      newMarket
+    } = this.props;
     if (this.state.isOrderValid) {
+      const { type, scalarDenomination } = newMarket;
+      let outcomeName = this.state.selectedOutcome;
+      if (type === YES_NO) {
+        outcomeName = "Yes";
+      } else if (type === SCALAR) {
+        outcomeName = scalarDenomination;
+      }
       addOrderToNewMarket({
+        outcomeName,
         outcome: this.state.selectedOutcome,
         type: this.state.selectedNav,
         price: this.state.orderPrice,
