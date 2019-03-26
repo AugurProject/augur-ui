@@ -23,10 +23,7 @@ export default class Input extends Component {
     onChange: PropTypes.func.isRequired,
     updateValue: PropTypes.func,
     onBlur: PropTypes.func,
-    isIncrementable: PropTypes.bool,
     incrementAmount: PropTypes.number,
-    canToggleVisibility: PropTypes.bool,
-    shouldMatchValue: PropTypes.bool,
     comparisonValue: PropTypes.string,
     isSearch: PropTypes.bool,
     placeholder: PropTypes.string,
@@ -46,9 +43,6 @@ export default class Input extends Component {
     max: null,
     isMultiline: false,
     isClearable: false,
-    isIncrementable: false,
-    canToggleVisibility: false,
-    shouldMatchValue: false,
     isSearch: false,
     maxButton: false,
     noFocus: false,
@@ -98,7 +92,6 @@ export default class Input extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (
-      nextProps.canToggleVisibility &&
       !nextState.value &&
       nextState.isHiddenContentVisible
     ) {
@@ -159,11 +152,8 @@ export default class Input extends Component {
   render() {
     const {
       isClearable,
-      isIncrementable,
       incrementAmount,
       updateValue,
-      canToggleVisibility,
-      shouldMatchValue,
       comparisonValue,
       isSearch,
       min,
@@ -185,10 +175,8 @@ export default class Input extends Component {
     return (
       <div
         className={classNames(
-          isIncrementable ? Styles.Input__Incremental : Styles.Input,
           className,
           {
-            "can-toggle-visibility": canToggleVisibility,
             [Styles.focusBorder]: focused && !noFocus && !lightBorder,
             [`${Styles.noFocus}`]: noFocus,
             [`${Styles.lightBorder}`]: lightBorder,
@@ -251,22 +239,6 @@ export default class Input extends Component {
             </button>
           )}
 
-        {canToggleVisibility &&
-          value && (
-            <button
-              type="button"
-              className="button--text-only"
-              onClick={this.handleToggleVisibility}
-              tabIndex="-1"
-            >
-              {isHiddenContentVisible ? (
-                <i className="fa fa-eye-slash" />
-              ) : (
-                <i className="fa fa-eye" />
-              )}
-            </button>
-          )}
-
         {maxButton && (
           <button
             type="button"
@@ -277,82 +249,6 @@ export default class Input extends Component {
           >
             max
           </button>
-        )}
-
-        {shouldMatchValue &&
-          value && (
-            <div className="input-value-comparison">
-              {value === comparisonValue ? (
-                <i className="fa fa-check-circle input-does-match" />
-              ) : (
-                <i className="fa fa-times-circle input-does-not-match" />
-              )}
-            </div>
-          )}
-
-        {isIncrementable && (
-          <div className={Styles.value__incrementers}>
-            <button
-              type="button"
-              tabIndex="-1"
-              className={classNames(Styles["increment-value"], "unstyled")}
-              onClick={e => {
-                e.currentTarget.blur();
-
-                if ((!isNaN(parseFloat(value)) && isFinite(value)) || !value) {
-                  const bnMax = sanitizeBound(max);
-                  const bnMin = sanitizeBound(min);
-
-                  let newValue = createBigNumber(value || 0);
-
-                  if (bnMax !== null && newValue.greaterThan(bnMax)) {
-                    newValue = bnMax;
-                  } else if (bnMin !== null && newValue.lessThan(bnMin)) {
-                    newValue = bnMin.plus(createBigNumber(incrementAmount));
-                  } else {
-                    newValue = newValue.plus(createBigNumber(incrementAmount));
-                    if (bnMax !== null && newValue.greaterThan(bnMax)) {
-                      newValue = bnMax;
-                    }
-                  }
-
-                  updateValue(newValue);
-                }
-              }}
-            >
-              <i className="fa fa-angle-up" />
-            </button>
-            <button
-              type="button"
-              tabIndex="-1"
-              className="decrement-value unstyled"
-              onClick={e => {
-                e.currentTarget.blur();
-
-                if ((!isNaN(parseFloat(value)) && isFinite(value)) || !value) {
-                  const bnMax = sanitizeBound(max);
-                  const bnMin = sanitizeBound(min);
-
-                  let newValue = createBigNumber(value || 0);
-
-                  if (bnMax !== null && newValue.greaterThan(bnMax)) {
-                    newValue = bnMax.minus(createBigNumber(incrementAmount));
-                  } else if (bnMin !== null && newValue.lessThan(bnMin)) {
-                    newValue = bnMin;
-                  } else {
-                    newValue = newValue.minus(createBigNumber(incrementAmount));
-                    if (bnMin !== null && newValue.lessThan(bnMin)) {
-                      newValue = bnMin;
-                    }
-                  }
-
-                  updateValue(newValue);
-                }
-              }}
-            >
-              <i className="fa fa-angle-down" />
-            </button>
-          </div>
         )}
       </div>
     );
