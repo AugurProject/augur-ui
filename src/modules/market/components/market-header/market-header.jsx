@@ -289,6 +289,9 @@ export default class MarketHeader extends Component {
                   collapsedView={headerCollapsed}
                   marketType={marketType}
                   description={description}
+                  reportingState={market.reportingState}
+                  disputeInfo={market.disputeInfo}
+                  endTime={market.endTime}
                 />
               )}
               <div className={Styles.MarketHeader__properties__reporting}>

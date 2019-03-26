@@ -1,9 +1,11 @@
 import React from "react";
 import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
+import { constants as  serviceConstants } from "services/constants";
 import Styles from "modules/common-elements/labels.styles";
 import { ClipLoader } from "react-spinners";
 import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
+import { MarketProgress } from "modules/common-elements/progress";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { createBigNumber } from "utils/create-big-number";
@@ -13,6 +15,8 @@ import {
 import { SELL, BOUGHT, SOLD, CLOSED, SHORT, ZERO } from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 import { formatNumber } from "utils/format-number";
+
+const { REPORTING_STATE } = serviceConstants;
 
 enum SizeTypes {
   SMALL = constants.SMALL,
@@ -28,6 +32,14 @@ export interface MarketStatusProps {
   marketStatus: string;
   mini?: boolean;
   alternate?: boolean;
+}
+
+export interface InReportingLabelProps extends MarketStatusProps {
+  reportingState: string,
+  disputeInfo: any,
+  endTime: object,
+  reportingWindowStatsEndTime: number,
+  currentAugurTimestamp: number;
 }
 
 export interface MovementLabelProps {
@@ -324,6 +336,69 @@ export const MarketStatusLabel = (props: MarketStatusProps) => {
     >
       {text}
     </span>
+  );
+};
+
+export const InReportingLabel = (props: InReportingLabelProps) => {
+  const { mini, alternate, reportingState, disputeInfo, endTime, reportingWindowStatsEndTime, currentAugurTimestamp } = props;
+
+  const reportingStates = [
+    REPORTING_STATE.DESIGNATED_REPORTING,
+    REPORTING_STATE.OPEN_REPORTING,
+    REPORTING_STATE.AWAITING_NEXT_WINDOW,
+    REPORTING_STATE.CROWDSOURCING_DISPUTE
+  ];
+
+  if (!reportingStates.includes(reportingState)) {
+    return <MarketStatusLabel {...props} />
+  }
+
+  let reportingCountdown: boolean = false;
+  let reportingExtraText: string | null;
+  let text: string = constants.MARKET_STATUS_MESSAGES.IN_REPORTING;
+
+  if (reportingState === REPORTING_STATE.DESIGNATED_REPORTING)  {
+    reportingExtraText = "Waiting on reporter"
+  }
+  else if (reportingState === REPORTING_STATE.OPEN_REPORTING)  {
+    reportingExtraText = "Open reporting"
+  }
+  else if (reportingState === REPORTING_STATE.AWAITING_NEXT_WINDOW)  {
+    reportingExtraText = "Awaiting next dispute"
+    reportingCountdown = true;
+  }
+  else if (reportingState === REPORTING_STATE.CROWDSOURCING_DISPUTE)  {
+    reportingExtraText = disputeInfo && disputeInfo.disputeRound ? `Dispute round ${disputeInfo.disputeRound}` : 'Dispute round';
+    reportingCountdown = true;
+  }
+  else {
+    reportingExtraText = null;
+  }
+
+  return (
+    <>
+      <span
+        className={classNames(Styles.MarketStatus, Styles.MarketStatus_reporting, {
+          [Styles.MarketStatus_alternate]: alternate,
+          [Styles.MarketStatus_mini]: mini,
+        })}
+      >
+        {text}
+        { reportingExtraText && <span className={Styles.InReporting_reportingDetails}>{reportingExtraText}</span>}
+      </span>
+      { reportingCountdown &&
+        <span className={classNames({ [Styles.MarketStatus_mini]: mini })}>
+          <span className={Styles.InReporting_reportingDetails__countdown}>
+            <MarketProgress
+              currentTime={currentAugurTimestamp}
+              reportingState={reportingState}
+              endTime={endTime}
+              reportingWindowEndtime={reportingWindowStatsEndTime}
+            />
+          </span>
+        </span>
+      }
+    </>
   );
 };
 
