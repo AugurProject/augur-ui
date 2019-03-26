@@ -80,7 +80,12 @@ import {
 export const selectMarket = marketId => {
   const marketsData = selectMarketsDataState(store.getState());
 
-  if (!marketId || !marketsData || !marketsData[marketId]) {
+  if (
+    !marketId ||
+    !marketsData ||
+    !marketsData[marketId] ||
+    !marketsData[marketId].id
+  ) {
     return {};
   }
 

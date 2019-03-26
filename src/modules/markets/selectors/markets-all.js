@@ -1,19 +1,6 @@
 import { createSelector } from "reselect";
 import store from "src/store";
-import {
-  selectMarketsDataState,
-  selectFavoritesState,
-  selectReportsState,
-  selectOutcomesDataState,
-  selectAccountTradesState,
-  selectUniverseState,
-  selectMarketTradingHistoryState,
-  selectOrderBooksState,
-  selectOrderCancellationState,
-  selectSmallestPositionsState,
-  selectLoginAccountState
-} from "src/select-state";
-import selectAccountPositions from "modules/orders/selectors/positions-plus-asks";
+import { selectMarketsDataState } from "src/select-state";
 
 import { selectMarket } from "modules/markets/selectors/market";
 
@@ -23,32 +10,7 @@ export default function() {
 
 export const selectMarkets = createSelector(
   selectMarketsDataState,
-  selectFavoritesState,
-  selectReportsState,
-  selectOutcomesDataState,
-  selectAccountPositions,
-  selectAccountTradesState,
-  selectUniverseState,
-  selectMarketTradingHistoryState,
-  selectOrderBooksState,
-  selectOrderCancellationState,
-  selectSmallestPositionsState,
-  selectLoginAccountState,
-  (
-    marketsData,
-    favorites,
-    reports,
-    outcomesData,
-    accountPositions,
-    accountTrades,
-    universe,
-    selectedFilterSort,
-    marketTradingHistory,
-    orderBooks,
-    orderCancellation,
-    smallestPositions,
-    loginAccount
-  ) => {
+  marketsData => {
     if (!marketsData) return [];
     return Object.keys(marketsData).map(marketId => {
       if (!marketId || !marketsData[marketId]) return {};
