@@ -7,7 +7,11 @@ import { Alerts } from "modules/common/components/icons";
 import ConnectAccount from "modules/auth/containers/connect-account";
 import GasPriceEdit from "modules/app/containers/gas-price-edit";
 import BlockInfoData from "modules/block-info/containers/block-info-data";
-import { MovementLabel } from "modules/common-elements/labels";
+import {
+  MovementLabel,
+  LinearPropertyLabel,
+  LinearPropertyLabelMovement
+} from "modules/common-elements/labels";
 
 import makePath from "modules/routes/helpers/make-path";
 import { MARKETS } from "modules/routes/constants/views";
@@ -23,18 +27,23 @@ const TopBar = props => (
             Styles["TopBar__regular-stats"]
           )}
         >
-          <div className={Styles.TopBar__stat}>
-            <span className={Styles["TopBar__stat-label"]}>ETH</span>
-            <span className={Styles["TopBar__stat-value"]} id="core-bar-eth">
-              {props.stats[0].totalRealEth.value.formatted}
-            </span>
-          </div>
-          <div className={Styles.TopBar__stat}>
-            <span className={Styles["TopBar__stat-label"]}>REP</span>
-            <span className={Styles["TopBar__stat-value"]} id="core-bar-rep">
-              {props.stats[0].totalRep.value.formatted}
-            </span>
-          </div>
+          <LinearPropertyLabel
+            label={props.stats[0].availableFunds.label}
+            value={props.stats[0].availableFunds.value}
+          />
+          <LinearPropertyLabel
+            label={props.stats[0].frozenFunds.label}
+            value={props.stats[0].frozenFunds.value}
+          />
+          <LinearPropertyLabel
+            label={props.stats[0].totalFunds.label}
+            value={props.stats[0].totalFunds.value}
+          />
+          <LinearPropertyLabelMovement
+            showColors
+            label={props.stats[1].realizedPL.label}
+            numberValue={props.stats[1].realizedPL.value}
+          />
         </div>
         <div
           className={classNames(
@@ -46,43 +55,13 @@ const TopBar = props => (
             }
           )}
         >
-          <div
-            className={classNames(
-              Styles.TopBar__stat,
-              Styles["TopBar__performance-stat"]
-            )}
-          >
-            <div className={Styles["TopBar__stat-label"]}>
-              <span>{props.stats[1].totalPLMonth.label}</span>
-            </div>
-            <span className={Styles["TopBar__stat-value"]}>
-              <MovementLabel
-                showColors
-                showIcon
-                value={props.stats[1].totalPLMonth.value.formatted}
-                size="large"
-              />
-              <span className={Styles["TopBar__stat-unit"]}>ETH</span>
-            </span>
-          </div>
-          <div
-            className={classNames(
-              Styles.TopBar__stat,
-              Styles["TopBar__performance-stat"]
-            )}
-          >
-            <div className={Styles["TopBar__stat-label"]}>
-              <span>{props.stats[1].totalPLDay.label}</span>
-            </div>
-            <span className={Styles["TopBar__stat-value"]}>
-              <MovementLabel
-                showColors
-                showIcon
-                value={props.stats[1].totalPLDay.value.formatted}
-                size="large"
-              />
-              <span className={Styles["TopBar__stat-unit"]}>ETH</span>
-            </span>
+          <div>
+            <span>{props.stats[1].realizedPL.label}</span>
+            <MovementLabel
+              showColors
+              value={props.stats[1].realizedPL.value}
+              size="normal"
+            />
           </div>
         </div>
       </div>

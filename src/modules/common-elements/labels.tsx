@@ -78,6 +78,19 @@ export interface LinearPropertyLabelPercentProps {
   numberValue: number;
 }
 
+
+export interface LinearPropertyLabelPercentMovementProps {
+  label: string;
+  value: string;
+  accentValue?: boolean;
+  numberValue: number;
+  showColors?: boolean;
+  showIcon?: boolean;
+  showBrackets?: boolean;
+  showPercent?: boolean;
+  showPlusMinus?: boolean;
+}
+
 export interface PillLabelProps {
   label: string;
 }
@@ -466,17 +479,18 @@ export const PositionTypeLabel = (props: PositionTypeLabelProps) => {
   );
 }
 
-export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProps) => (
+export const LinearPropertyLabelMovement = (props: LinearPropertyLabelPercentMovementProps) => (
     <span className={Styles.LinearPropertyLabelPercent}>
       <LinearPropertyLabel
         label={props.label}
         value={props.value}
       />
       <MovementLabel
-        showPercent
-        showBrackets
-        showPlusMinus
-        showColors
+        showIcon={props.showIcon}
+        showPercent={props.showPercent}
+        showBrackets={props.showBrackets}
+        showPlusMinus={props.showPlusMinus}
+        showColors={props.showColors}
         size={SizeTypes.NORMAL}
         value={props.numberValue}
       />
