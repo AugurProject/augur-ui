@@ -236,6 +236,8 @@ export default class AppView extends Component {
   }
 
   componentDidMount() {
+    window.addEventListener("resize", this.handleWindowResize);
+
     this.checkIsMobile();
   }
 
