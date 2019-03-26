@@ -469,22 +469,3 @@ const assembleMarket = (
   }
   return market;
 };
-
-export const selectMarketReport = (marketId, universeReports) => {
-  if (marketId && universeReports) {
-    const universeReportsMarketIds = Object.keys(universeReports);
-    const numUniverseReports = universeReportsMarketIds.length;
-    for (let i = 0; i < numUniverseReports; ++i) {
-      if (universeReports[universeReportsMarketIds[i]].marketId === marketId) {
-        return universeReports[universeReportsMarketIds[i]];
-      }
-    }
-  }
-};
-
-export const selectScalarMinimum = market => {
-  const scalarMinimum = {};
-  if (market && market.type === SCALAR)
-    scalarMinimum.minPrice = market.minPrice;
-  return scalarMinimum;
-};
