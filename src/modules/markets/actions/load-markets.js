@@ -13,8 +13,7 @@ import {
 } from "modules/common-elements/constants";
 import { updateMarketsData } from "modules/markets/actions/update-markets-data";
 import {
-  updateAppStatus,
-  HAS_LOADED_MARKETS
+  updateAppStatus
 } from "modules/app/actions/update-app-status";
 
 const { REPORTING_STATE } = constants;
@@ -39,7 +38,6 @@ export const loadMarkets = (type, callback = logError) => (
       {}
     );
 
-    dispatch(updateAppStatus(HAS_LOADED_MARKETS, true));
     dispatch(updateMarketsData(marketsData));
     callback(null, marketsArray);
   });
@@ -89,8 +87,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
       break;
     }
   }
-
-  dispatch(updateAppStatus(HAS_LOADED_MARKETS, false));
 
   const params = {
     universe: universe.id,
@@ -160,9 +156,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
       }
     });
 
-    setTimeout(() => {
-      dispatch(updateAppStatus(HAS_LOADED_MARKETS, true));
-    }, 2000);
     return cb(null, finalizedMarketList);
   });
 };

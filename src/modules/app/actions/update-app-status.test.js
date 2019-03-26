@@ -2,7 +2,6 @@ import {
   IS_ANIMATING,
   IS_MOBILE,
   IS_MOBILE_SMALL,
-  HAS_LOADED_MARKETS,
   TRANSACTIONS_LOADING,
   UPDATE_APP_STATUS,
   updateAppStatus
@@ -48,21 +47,6 @@ describe("modules/app/actions/update-app-status.js", () => {
         type: UPDATE_APP_STATUS,
         data: {
           statusKey: IS_MOBILE_SMALL,
-          value: true
-        }
-      });
-    }
-  };
-
-  const t4 = {
-    description: "Returns the expected object for updating hasLoadedMarkets",
-    statusKey: HAS_LOADED_MARKETS,
-    value: true,
-    assertions: action => {
-      expect(action).toEqual({
-        type: UPDATE_APP_STATUS,
-        data: {
-          statusKey: HAS_LOADED_MARKETS,
           value: true
         }
       });
