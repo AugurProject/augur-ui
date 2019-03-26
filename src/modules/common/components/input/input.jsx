@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { PulseLoader } from "react-spinners";
 
 import { IconSearch, CloseDark } from "modules/common/components/icons";
@@ -91,10 +90,7 @@ export default class Input extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (
-      !nextState.value &&
-      nextState.isHiddenContentVisible
-    ) {
+    if (!nextState.value && nextState.isHiddenContentVisible) {
       this.updateIsHiddenContentVisible(false);
     }
 
@@ -152,12 +148,7 @@ export default class Input extends Component {
   render() {
     const {
       isClearable,
-      incrementAmount,
-      updateValue,
-      comparisonValue,
       isSearch,
-      min,
-      max,
       maxButton,
       onMaxButtonClick,
       noFocus,
@@ -174,15 +165,12 @@ export default class Input extends Component {
 
     return (
       <div
-        className={classNames(
-          className,
-          {
-            [Styles.focusBorder]: focused && !noFocus && !lightBorder,
-            [`${Styles.noFocus}`]: noFocus,
-            [`${Styles.lightBorder}`]: lightBorder,
-            [Styles.setWidth]: darkMaxBtn
-          }
-        )}
+        className={classNames(className, {
+          [Styles.focusBorder]: focused && !noFocus && !lightBorder,
+          [`${Styles.noFocus}`]: noFocus,
+          [`${Styles.lightBorder}`]: lightBorder,
+          [Styles.setWidth]: darkMaxBtn
+        })}
         ref={inputHandler => {
           this.inputHandler = inputHandler;
         }}
@@ -253,14 +241,4 @@ export default class Input extends Component {
       </div>
     );
   }
-}
-
-function sanitizeBound(value) {
-  if (value == null) {
-    return null;
-  } else if (!BigNumber.isBigNumber(value)) {
-    return createBigNumber(value);
-  }
-
-  return value;
 }

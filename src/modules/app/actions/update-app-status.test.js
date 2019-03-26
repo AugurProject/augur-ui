@@ -53,7 +53,7 @@ describe("modules/app/actions/update-app-status.js", () => {
     }
   };
 
-  const t5 = {
+  const t4 = {
     description: "Returns the expected object for updating transactionsLoading",
     statusKey: TRANSACTIONS_LOADING,
     value: true,
@@ -68,7 +68,7 @@ describe("modules/app/actions/update-app-status.js", () => {
     }
   };
 
-  describe.each([t1, t2, t3, t4, t5])("Update app status tests", t => {
+  describe.each([t1, t2, t3, t4])("Update app status tests", t => {
     test(t.description, () => {
       t.assertions(updateAppStatus(t.statusKey, t.value));
     });
