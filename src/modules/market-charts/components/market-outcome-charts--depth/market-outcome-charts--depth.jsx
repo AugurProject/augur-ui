@@ -79,8 +79,6 @@ export default class MarketOutcomeDepth extends Component {
       isMobile,
       hasOrders
     });
-
-    window.addEventListener("resize", this.drawDepthOnResize);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -138,10 +136,6 @@ export default class MarketOutcomeDepth extends Component {
         containerWidth: nextState.containerWidth
       });
     }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.drawDepthOnResize);
   }
 
   drawDepth(options) {
