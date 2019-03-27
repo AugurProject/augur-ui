@@ -28,7 +28,7 @@ export const MarketHeaderMessage = ({ dismiss }) => (
         </span>
         <ReactTooltip
           id="tooltip--message"
-          className={TooltipStyles.Tooltip}
+          className={classNames(TooltipStyles.Tooltip, TooltipStyles.WideTooltip)}
           effect="solid"
           place="top"
           type="light"
