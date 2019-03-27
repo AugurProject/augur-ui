@@ -28,12 +28,18 @@ export const MarketHeaderMessage = ({ dismiss }) => (
         </span>
         <ReactTooltip
           id="tooltip--message"
-          className={classNames(TooltipStyles.Tooltip, TooltipStyles.WideTooltip)}
+          className={classNames(
+            TooltipStyles.Tooltip,
+            TooltipStyles.WideTooltip
+          )}
           effect="solid"
           place="top"
           type="light"
         >
-          <div style={{ color: "#372e4b" }} className={Styles.MarketHeaderMessage__tooltip}>
+          <div
+            style={{ color: "#372e4b" }}
+            className={Styles.MarketHeaderMessage__tooltip}
+          >
             {
               <div>
                 <p>
