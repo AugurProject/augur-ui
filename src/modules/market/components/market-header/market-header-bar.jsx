@@ -41,24 +41,27 @@ const MarketHeaderBar = ({
         currentAugurTimestamp={currentAugurTimestamp}
         reportingWindowStatsEndTime={reportingWindowStatsEndTime}
       />
-      {!isMobile && <MarketTypeLabel marketType={marketType} /> }
+      {!isMobile && <MarketTypeLabel marketType={marketType} />}
 
-      {isMobile && <FavoritesButton
-        action={() => addToFavorites()}
-        isFavorite={isFavorite}
-        disabled={!isLogged}
-        hideText
-      />}
-
-      {!isMobile && addToFavorites && (
-        <div className={Styles.MarketHeaderBar__watchlist__container}>
-          <FavoritesButton
-            action={() => addToFavorites()}
-            isFavorite={isFavorite}
-            disabled={!isLogged}
-          />
-        </div>
+      {isMobile && (
+        <FavoritesButton
+          action={() => addToFavorites()}
+          isFavorite={isFavorite}
+          disabled={!isLogged}
+          hideText
+        />
       )}
+
+      {!isMobile &&
+        addToFavorites && (
+          <div className={Styles.MarketHeaderBar__watchlist__container}>
+            <FavoritesButton
+              action={() => addToFavorites()}
+              isFavorite={isFavorite}
+              disabled={!isLogged}
+            />
+          </div>
+        )}
     </section>
   );
 };
@@ -66,6 +69,7 @@ const MarketHeaderBar = ({
 MarketHeaderBar.propTypes = {
   marketStatus: PropTypes.string,
   isLogged: PropTypes.bool,
+  isMobile: PropTypes.bool,
   isFavorite: PropTypes.bool,
   addToFavorites: PropTypes.func.isRequired,
   collapsedView: PropTypes.bool,
@@ -80,6 +84,7 @@ MarketHeaderBar.propTypes = {
 
 MarketHeaderBar.defaultProps = {
   isLogged: false,
+  isMobile: false,
   isFavorite: false,
   collapsedView: false,
   marketStatus: constants.MARKET_OPEN,

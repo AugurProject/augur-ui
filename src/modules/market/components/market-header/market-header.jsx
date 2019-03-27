@@ -12,9 +12,7 @@ import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
-import {
-  MarketTypeLabel
-} from "modules/common-elements/labels";
+import { MarketTypeLabel } from "modules/common-elements/labels";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
 import makeQuery from "modules/routes/helpers/make-query";
@@ -208,7 +206,7 @@ export default class MarketHeader extends Component {
               {BackArrow}
             </button>
           )}
-          {isMobile && <MarketTypeLabel marketType={marketType} /> }
+          {isMobile && <MarketTypeLabel marketType={marketType} />}
           <CategoryTagTrail
             categories={categoriesWithClick}
             tags={tagsWithClick}
@@ -276,7 +274,7 @@ export default class MarketHeader extends Component {
                           ? ChevronDown({ stroke: "#FFFFFF" })
                           : ChevronUp()}
                         <span>
-                          {!this.state.showReadMore ? "More..." : "Less"}
+                          {!this.state.showReadMore ? "More" : "Less"}
                         </span>
                       </button>
                     )}

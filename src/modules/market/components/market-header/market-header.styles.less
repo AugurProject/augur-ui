@@ -149,13 +149,13 @@
 }
 
 .MarketHeader__readMoreButton {
+  .mono-14;
+
   color: @color-white;
   cursor: pointer;
-  font-size: @font-size-small;
   font-weight: 700;
   padding-bottom: 1rem;
   padding-top: 0.3rem;
-  text-transform: none;
 
   svg {
     height: 1em;
@@ -163,6 +163,7 @@
 
     polyline {
       stroke: @color-white;
+      stroke-width: 3;
     }
   }
 }
@@ -292,6 +293,14 @@
   .MarketHeader__properties__core {
     flex-direction: column;
     padding: 1rem 0 0;
+  }
+
+  .MarketHeader__readMoreButton {
+    display: flex;
+
+    > span {
+      text-transform: uppercase;
+    }
   }
 
   .MarketHeader__description {
