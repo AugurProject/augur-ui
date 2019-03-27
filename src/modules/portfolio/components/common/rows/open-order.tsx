@@ -32,8 +32,6 @@ const OpenOrder = (props: OpenOrderProps) => {
   const tokensEscrowed = getValue(openOrder, "tokensEscrowed");
   const sharesEscrowed = getValue(openOrder, "sharesEscrowed");
   const creationTime = getValue(openOrder, "creationTime.formattedShort");
-  console.log(openOrder.pending)
-  console.log(openOrder.pendingOrder)
 
   const rowContent = (
     <ul
@@ -153,7 +151,11 @@ const OpenOrder = (props: OpenOrderProps) => {
                     highlightFirst
                     value={(sharesEscrowed && sharesEscrowed.formatted) || 0}
                   />
-                  <LinearPropertyLabel highlightFirst label="Date" value={creationTime} />
+                  <LinearPropertyLabel
+                    highlightFirst
+                    label="Date"
+                    value={creationTime}
+                  />
                 </div>
                 <div className={Styles.OpenOrder__timestamp}>
                   {creationTime}
