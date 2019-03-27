@@ -37,12 +37,14 @@ export default class OrphanedOrder extends Component {
   render() {
     const { order, isMobile } = this.props;
     order.pending = this.state.disableCancel;
+    order.cancelOrder = this.cancelOrder;
 
     return (
       <div
         ref={order => {
           this.order = order;
         }}
+        className={Styles.OrphanedOrder}
       >
         <OpenOrder
           openOrder={order}
