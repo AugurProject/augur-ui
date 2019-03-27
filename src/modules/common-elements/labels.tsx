@@ -78,7 +78,8 @@ export interface LinearPropertyLabelProps {
   value: string | FormattedValue;
   accentValue?: boolean;
   highlight?: boolean;
-  large?: boolean;
+  highglightAlternate?: boolean;
+  highlightAlternateBolded?: boolean;
   useValueLabel?: boolean;
   showDenomination?: boolean;
 }
@@ -88,6 +89,19 @@ export interface LinearPropertyLabelPercentProps {
   value: string;
   accentValue?: boolean;
   numberValue: number;
+}
+
+
+export interface LinearPropertyLabelPercentMovementProps {
+  label: string;
+  value: string;
+  accentValue?: boolean;
+  numberValue: number;
+  showColors?: boolean;
+  showIcon?: boolean;
+  showBrackets?: boolean;
+  showPercent?: boolean;
+  showPlusMinus?: boolean;
 }
 
 export interface PillLabelProps {
@@ -279,8 +293,9 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   <div className={classNames(Styles.LinearPropertyLabel, {
-    [Styles.Large]: props.large,
-    [Styles.Highlight]: props.highlight
+    [Styles.HighlightAlternate]: props.highlightAlternate || props.highlightAlternateBolded,
+    [Styles.Highlight]: props.highlight,
+    [Styles.HighlightAlternateBolded]: props.highlightAlternateBolded
     })}>
     <span>{props.label}</span>
     <DashlineNormal />
@@ -546,17 +561,19 @@ export const PositionTypeLabel = (props: PositionTypeLabelProps) => {
   );
 }
 
-export const LinearPropertyLabelPercent = (props: LinearPropertyLabelPercentProps) => (
+export const LinearPropertyLabelMovement = (props: LinearPropertyLabelPercentMovementProps) => (
     <span className={Styles.LinearPropertyLabelPercent}>
       <LinearPropertyLabel
         label={props.label}
         value={props.value}
+        highlightAlternate
       />
       <MovementLabel
-        showPercent
-        showBrackets
-        showPlusMinus
-        showColors
+        showIcon={props.showIcon}
+        showPercent={props.showPercent}
+        showBrackets={props.showBrackets}
+        showPlusMinus={props.showPlusMinus}
+        showColors={props.showColors}
         size={SizeTypes.NORMAL}
         value={props.numberValue}
       />

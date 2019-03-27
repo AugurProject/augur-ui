@@ -1,6 +1,9 @@
 import { createSelector } from "reselect";
 import { formatEther } from "utils/format-number";
-import { selectLoginAccount } from "modules/auth/selectors/login-account";
+import {
+  selectLoginAccount,
+  selectAccountFunds
+} from "modules/auth/selectors/login-account";
 
 export const selectOutcomeLastPrice = (marketOutcomeData, outcomeId) => {
   if (!marketOutcomeData || !outcomeId) return null;
@@ -9,30 +12,26 @@ export const selectOutcomeLastPrice = (marketOutcomeData, outcomeId) => {
 
 export const selectCoreStats = createSelector(
   selectLoginAccount,
-  loginAccount => [
-    // Group 1
+  selectAccountFunds,
+  (loginAccount, accountFunds) => [
     {
-      totalRealEth: {
-        label: "ETH",
-        title: "Ether -- pays transaction gas fees",
-        value: { ...loginAccount.eth, denomination: null }
+      availableFunds: {
+        label: "Available Funds",
+        value: formatEther(accountFunds.totalAvailableTradingBalance).formatted
       },
-      totalRep: {
-        label: "REP",
-        title: "Reputation -- event voting currency",
-        value: { ...loginAccount.rep, denomination: null }
+      frozenFunds: {
+        label: "Frozen Funds",
+        value: formatEther(accountFunds.totalFrozenFunds).formatted
+      },
+      totalFunds: {
+        label: "Total Funds",
+        value: formatEther(accountFunds.totalAccountValue).formatted
       }
     },
     {
-      totalPLMonth: {
-        label: "30 Day P/L",
-        title: "Profit/Loss -- net of all trades over the last 30 days",
-        value: formatEther(loginAccount.totalPLMonth)
-      },
-      totalPLDay: {
-        label: "1 Day P/L",
-        title: "Profit/Loss -- net of all trades over the last day",
-        value: formatEther(loginAccount.totalPLDay)
+      realizedPL: {
+        label: "Realized P/L",
+        value: formatEther(loginAccount.realizedPL).formatted
       }
     }
   ]
