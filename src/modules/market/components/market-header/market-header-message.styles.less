@@ -10,30 +10,28 @@
   margin-bottom: 1rem;
   padding: 1rem;
 
-  > span {
-    > span {
-      &.bolden {
-        font-weight: bold;
-      }
-    }
-  }
+  > button {
+    align-self: flex-start;
+    display: block;
+    padding-left: 0.5rem;
 
-  &:last-of-type {
     > svg {
-      height: 1rem;
-      width: 1rem;
+      height: 0.75rem;
+      width: 0.75rem;
+      vertical-align: 0.5rem;
     }
   }
 }
 
 .MarketHeaderMessage__tooltip__location {
-  margin-bottom: 0;
-  margin-right: 0.25rem;
-  margin-top: 1rem;
-  width: 0.75rem;
+  margin-left: 0.25rem;
+  vertical-align: -0.2rem;
 }
 
-.MarketHeaderMessage__tooltip {
-  height: 153px;
-  width: 220px
+.MarketHeaderMessage__bolding {
+  > span {
+    &.bolden {
+      font-weight: bold;
+    }
+  }
 }

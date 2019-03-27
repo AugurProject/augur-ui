@@ -1,23 +1,25 @@
 import React from "react";
 import classNames from "classnames";
-import { Close, Info } from "modules/common/components/icons";
+import { SmallClose, Info } from "modules/common/components/icons";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import Styles from "modules/market/components/market-header/market-header-message.styles";
 
-export const MarketHeaderMessage = () => (
+export const MarketHeaderMessage = ({dismiss}) => (
   <div className={Styles.MarketHeaderMessage}>
-    <span>{Close}</span>
     <div style={{ display: "inline-block" }}>
-      <span>
-        Always make sure that the <span className={Styles.bolden}>title</span>,
+      <span className={Styles.MarketHeaderMessage__bolding}>
+        Always make sure that the <span className={Styles.bolden}>title</span>,{" "}
         <span className={Styles.bolden}>details</span>,{" "}
         <span className={Styles.bolden}>reporting start time</span>,{" "}
         <span className={Styles.bolden}>resolution source</span> and{" "}
         <span className={Styles.bolden}>outcomes</span> are not in direct
         conflict with each other{" "}
         <span
-          className={TooltipStyles.TooltipHint}
+          className={classNames(
+            TooltipStyles.TooltipHint,
+            Styles.MarketHeaderMessage__tooltip__location
+          )}
           data-tip
           data-for="tooltip--message"
         >
@@ -25,10 +27,7 @@ export const MarketHeaderMessage = () => (
         </span>
         <ReactTooltip
           id="tooltip--message"
-          className={classNames(
-            TooltipStyles.Tooltip,
-            Styles.MarketHeaderMessage__tooltip
-          )}
+          className={TooltipStyles.Tooltip}
           effect="solid"
           place="top"
           type="light"
@@ -54,5 +53,6 @@ export const MarketHeaderMessage = () => (
         </ReactTooltip>
       </span>
     </div>
+    <button onClick={dismiss}>{SmallClose}</button>
   </div>
 );
