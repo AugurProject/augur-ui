@@ -5,7 +5,7 @@ import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import Styles from "modules/market/components/market-header/market-header-message.styles";
 
-export const MarketHeaderMessage = ({dismiss}) => (
+export const MarketHeaderMessage = ({ dismiss }) => (
   <div className={Styles.MarketHeaderMessage}>
     <div style={{ display: "inline-block" }}>
       <span className={Styles.MarketHeaderMessage__bolding}>
@@ -56,3 +56,7 @@ export const MarketHeaderMessage = ({dismiss}) => (
     <button onClick={dismiss}>{SmallClose}</button>
   </div>
 );
+
+MarketHeaderMessage.propTypes = {
+  dismiss: PropTypes.func.isRequired
+};
