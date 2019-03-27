@@ -27,12 +27,9 @@ const OpenOrdersTable = ({
         {(orphanedOrders || []).map(order => (
           <MarketPositionsListOrphanedOrder
             key={order.orderId}
-            outcomeName={order.outcomeName || order.outcome}
             order={order}
-            pending={false}
-            isExtendedDisplay={false}
-            outcome={order}
             cancelOrphanedOrder={cancelOrphanedOrder}
+            isMobile={isMobile}
           />
         ))}
         {(openOrders.length > 0 || orphanedOrders.length > 0) && (

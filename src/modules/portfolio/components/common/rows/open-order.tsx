@@ -32,6 +32,8 @@ const OpenOrder = (props: OpenOrderProps) => {
   const tokensEscrowed = getValue(openOrder, "tokensEscrowed");
   const sharesEscrowed = getValue(openOrder, "sharesEscrowed");
   const creationTime = getValue(openOrder, "creationTime.formattedShort");
+  const avgPrice = getValue(openOrder, "avgPrice");
+  const unmatchedShares = getValue(openOrder, "unmatchedShares");
 
   const rowContent = (
     <ul
@@ -40,7 +42,9 @@ const OpenOrder = (props: OpenOrderProps) => {
         [Styles.Order__extendedView]: extendedView
       })}
     >
-      <li>{openOrder.description || openOrder.name}</li>
+      <li>
+        {openOrder.description || openOrder.name || openOrder.outcomeName}
+      </li>
       <li>
         <PositionTypeLabel type={openOrder.type} />
         {(openOrder.pending || openOrder.pendingOrder) && (
@@ -53,7 +57,7 @@ const OpenOrder = (props: OpenOrderProps) => {
         {openOrder.unmatchedShares && (
           <ValueLabel
             keyId={"openOrder-unmatchedShares-" + openOrder.id}
-            value={openOrder.unmatchedShares}
+            value={unmatchedShares}
           />
         )}
       </li>
@@ -61,7 +65,7 @@ const OpenOrder = (props: OpenOrderProps) => {
         {openOrder.avgPrice && (
           <ValueLabel
             keyId={"openOrder-price-" + openOrder.id}
-            value={openOrder.avgPrice}
+            value={avgPrice}
           />
         )}
       </li>
