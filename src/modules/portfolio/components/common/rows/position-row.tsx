@@ -28,17 +28,20 @@ const PositionRow = (props: PositionRowProps) => {
       <div className={Styles.Position__info}>
         {isMobile && (
           <LinearPropertyLabelPercent
+            highlightFirst
             label="Total Returns"
             value={`${position.totalReturns.formatted}`}
             numberValue={`${position.totalPercent.formatted}`}
           />
         )}
         <LinearPropertyLabelPercent
+          highlightFirst
           label="Realized P/L"
           value={`${position.realizedNet.formatted}`}
           numberValue={`${position.realizedPercent.formatted}`}
         />
         <LinearPropertyLabelPercent
+          highlightFirst
           label="Unrealized P/L"
           value={`${position.unrealizedNet.formatted}`}
           numberValue={`${position.unrealizedPercent.formatted}`}
