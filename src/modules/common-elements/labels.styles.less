@@ -147,7 +147,7 @@
     }
   }
 
-  &.Large {
+  &.HighglightAlternate {
     > span:first-of-type {
       .mono-10;
 
@@ -155,9 +155,13 @@
     }
 
     > span:last-of-type {
-      .mono-14-bold;
+      color: @color-tertiary-text;
+    }
+  }
 
-      color: @color-secondary-text;
+  &.HighlightAlternateBolded {
+    > span:last-of-type {
+      font-weight: bold;
     }
   }
 

@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 
 import {
-  LinearPropertyLabelPercent,
+  LinearPropertyLabelMovement,
   PositionTypeLabel,
   MovementLabel,
   ValueLabel
@@ -29,6 +29,10 @@ const PositionRow = (props: PositionRowProps) => {
         {isMobile && (
           <LinearPropertyLabelPercent
             highlightFirst
+            showPercent
+            showBrackets
+            showPlusMinus
+            showColors
             label="Total Returns"
             value={`${position.totalReturns.formatted}`}
             numberValue={`${position.totalPercent.formatted}`}
@@ -36,12 +40,20 @@ const PositionRow = (props: PositionRowProps) => {
         )}
         <LinearPropertyLabelPercent
           highlightFirst
+          showPercent
+          showBrackets
+          showPlusMinus
+          showColors
           label="Realized P/L"
           value={`${position.realizedNet.formatted}`}
           numberValue={`${position.realizedPercent.formatted}`}
         />
         <LinearPropertyLabelPercent
           highlightFirst
+          showPercent
+          showBrackets
+          showPlusMinus
+          showColors
           label="Unrealized P/L"
           value={`${position.unrealizedNet.formatted}`}
           numberValue={`${position.unrealizedPercent.formatted}`}
