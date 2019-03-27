@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { ChevronDown, ChevronUp } from "modules/common/components/icons";
+import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import Styles from "modules/common/components/input-dropdown/input-dropdown.styles";
 
 class InputDropdown extends Component {
@@ -126,9 +126,7 @@ class InputDropdown extends Component {
           ))}
         </select>
         <span className={Styles.InputDropdown__icon}>
-          {!this.state.showList
-            ? ChevronDown({ stroke: "#FFFFFF" })
-            : ChevronUp()}
+          <ChevronFlip pointDown={!this.state.showList} stroke="white" />
         </span>
       </div>
     );
