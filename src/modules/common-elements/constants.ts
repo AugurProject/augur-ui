@@ -375,6 +375,7 @@ export const MODAL_GAS_PRICE = "MODAL_GAS_PRICE";
 export const MODAL_REP_FAUCET = "MODAL_REP_FAUCET";
 export const MODAL_DEPOSIT = "MODAL_DEPOSIT";
 export const MODAL_WITHDRAW = "MODAL_WITHDRAW";
+export const MODAL_UNSIGNED_ORDERS = "MODAL_UNSIGNED_ORDERS";
 export const MODAL_CLAIM_TRADING_PROCEEDS = "MODAL_CLAIM_TRADING_PROCEEDS";
 export const MODAL_CLAIM_PROCEEDS = "MODAL_CLAIM_PROCEEDS";
 export const MODAL_TRADING_OVERLAY = "MODAL_TRADING_OVERLAY";
@@ -493,6 +494,7 @@ export const TWO = createBigNumber(2, 10);
 export const TEN = createBigNumber(10, 10);
 export const TEN_TO_THE_EIGHTEENTH_POWER = TEN.exponentiatedBy(18);
 export const MIN_QUANTITY = createBigNumber("0.00000001");
+export const NEW_ORDER_GAS_ESTIMATE = createBigNumber(700000);
 
 // # Positions
 export const LONG = "long";
