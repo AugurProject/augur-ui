@@ -207,8 +207,8 @@ export default class CoreProperties extends Component {
             currentTimestamp,
             getValue(market, "endTime.timestamp")
           )
-            ? "Reporting Started"
-            : "Reporting Starts",
+            ? "Event Ended & Reporting Started"
+            : "Event Ends & Reporting Starts",
           value: getValue(
             market,
             isMobileSmall
