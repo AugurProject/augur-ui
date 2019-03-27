@@ -1,0 +1,39 @@
+@import (reference) "~assets/styles/shared";
+@import (reference) "~modules/market/components/market-view/market-view.styles";
+
+.MarketHeaderMessage {
+  background-color: @color-yellowish-alert;
+  border-radius: 4px;
+  color: @color-darkpurple;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+  padding: 1rem;
+
+  > span {
+    > span {
+      &.bolden {
+        font-weight: bold;
+      }
+    }
+  }
+
+  &:last-of-type {
+    > svg {
+      height: 1rem;
+      width: 1rem;
+    }
+  }
+}
+
+.MarketHeaderMessage__tooltip__location {
+  margin-bottom: 0;
+  margin-right: 0.25rem;
+  margin-top: 1rem;
+  width: 0.75rem;
+}
+
+.MarketHeaderMessage__tooltip {
+  height: 153px;
+  width: 220px
+}
