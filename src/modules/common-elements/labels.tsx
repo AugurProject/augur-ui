@@ -66,7 +66,8 @@ export interface LinearPropertyLabelProps {
   value: string | FormattedValue;
   accentValue?: boolean;
   highlight?: boolean;
-  large?: boolean;
+  highglightAlternate?: boolean;
+  highlightAlternateBolded?: boolean;
   useValueLabel?: boolean;
   showDenomination?: boolean;
 }
@@ -280,8 +281,9 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   <div className={classNames(Styles.LinearPropertyLabel, {
-    [Styles.Large]: props.large,
-    [Styles.Highlight]: props.highlight
+    [Styles.HighlightAlternate]: props.highlightAlternate || props.highlightAlternateBolded,
+    [Styles.Highlight]: props.highlight,
+    [Styles.HighlightAlternateBolded]: props.highlightAlternateBolded
     })}>
     <span>{props.label}</span>
     <DashlineNormal />
@@ -484,6 +486,7 @@ export const LinearPropertyLabelMovement = (props: LinearPropertyLabelPercentMov
       <LinearPropertyLabel
         label={props.label}
         value={props.value}
+        highlightAlternate
       />
       <MovementLabel
         showIcon={props.showIcon}
