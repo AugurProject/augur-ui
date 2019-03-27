@@ -11,6 +11,7 @@ import * as constants from "modules/common-elements/constants";
 const MarketHeaderBar = ({
   addToFavorites,
   isLogged,
+  isMobile,
   isFavorite,
   collapsedView,
   description,
@@ -40,8 +41,16 @@ const MarketHeaderBar = ({
         currentAugurTimestamp={currentAugurTimestamp}
         reportingWindowStatsEndTime={reportingWindowStatsEndTime}
       />
-      <MarketTypeLabel marketType={marketType} />
-      {addToFavorites && (
+      {!isMobile && <MarketTypeLabel marketType={marketType} /> }
+
+      {isMobile && <FavoritesButton
+        action={() => addToFavorites()}
+        isFavorite={isFavorite}
+        disabled={!isLogged}
+        hideText
+      />}
+
+      {!isMobile && addToFavorites && (
         <div className={Styles.MarketHeaderBar__watchlist__container}>
           <FavoritesButton
             action={() => addToFavorites()}
@@ -62,9 +71,9 @@ MarketHeaderBar.propTypes = {
   collapsedView: PropTypes.bool,
   description: PropTypes.string.isRequired,
   marketType: PropTypes.string.isRequired,
-  reportingState: PropTypes.string.isRequired,
+  reportingState: PropTypes.string,
   disputeInfo: PropTypes.object,
-  endTime: PropTypes.object.isRequired,
+  endTime: PropTypes.object,
   currentAugurTimestamp: PropTypes.number,
   reportingWindowStatsEndTime: PropTypes.number
 };
@@ -74,8 +83,10 @@ MarketHeaderBar.defaultProps = {
   isFavorite: false,
   collapsedView: false,
   marketStatus: constants.MARKET_OPEN,
+  reportingState: null,
   disputeInfo: {},
   currentAugurTimestamp: null,
+  endTime: null,
   reportingWindowStatsEndTime: null
 };
 
