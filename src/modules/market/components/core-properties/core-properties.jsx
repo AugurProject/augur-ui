@@ -18,7 +18,7 @@ import {
   TYPE_REPORT,
   TYPE_DISPUTE
 } from "modules/markets/constants/link-types";
-import { MarketHeaderMessage } from "modules/market/components/market-header/market-header-message";
+import MarketHeaderMessage from "modules/market/containers/market-header-message";
 
 const Property = ({ numRow, property }) => (
   <div
@@ -207,8 +207,8 @@ export default class CoreProperties extends Component {
             currentTimestamp,
             getValue(market, "endTime.timestamp")
           )
-            ? "expired"
-            : "expires",
+            ? "Reporting Started"
+            : "Reporting Starts",
           value: getValue(
             market,
             isMobileSmall
@@ -452,7 +452,7 @@ export default class CoreProperties extends Component {
             </div>
           </div>
         )}
-        <MarketHeaderMessage />
+        <MarketHeaderMessage marketId={market.id} />
         {renderedProperties}
       </div>
     );
