@@ -197,6 +197,8 @@ export default class MarketHeader extends Component {
           }
         )}
       >
+        {isMobile && <h1>{description}</h1>}
+
         <div className={Styles.MarketHeader__topContainer}>
           {!isMobile && (
             <button

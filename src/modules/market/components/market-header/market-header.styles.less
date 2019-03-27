@@ -277,18 +277,29 @@
 }
 
 @media @breakpoint-mobile {
+  .MarketHeader {
+    > h1 {
+      color: @color-secondary-text;
+      font-weight: bold;
+      margin-left: @size-8;
+    }
+  }
+
+  .MarketHeader__topContainer {
+    margin-left: @size-8;
+  }
+
   .MarketHeader__properties__core {
     flex-direction: column;
     padding: 1rem 0 0;
   }
 
   .MarketHeader__description {
-    font-size: @size-18;
+    display: none;
   }
 
   .MarketHeader__descContainer {
-    margin-bottom: 1.25rem;
-    margin-right: 0;
+    margin: 1.5625rem 0 1.25rem @size-8;
     max-width: unset;
   }
 
