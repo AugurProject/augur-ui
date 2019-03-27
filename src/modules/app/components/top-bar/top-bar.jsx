@@ -66,39 +66,41 @@ const TopBar = props => (
         </div>
       </div>
     )}
-    <BlockInfoData />
-    {props.isLogged && (
-      <GasPriceEdit className={Styles.TopBar__hideForSmallScreens} />
-    )}
-    <ConnectAccount
-      className={classNames({
-        [Styles.TopBar__hideForSmallScreens]: props.isLogged
-      })}
-    />
-    <div
-      className={classNames(Styles.TopBar__alerts, {
-        [Styles.TopBar__alertsDark]: props.alertsVisible,
-        [Styles.TopBar__alertsDisabled]: !props.isLogged
-      })}
-      onClick={e => {
-        props.toggleAlerts();
-      }}
-      role="button"
-      tabIndex="-1"
-    >
-      <div className={Styles["TopBar__alerts-container"]}>
-        <div className={Styles["TopBar__alert-icon"]}>
-          {props.unseenCount > 99
-            ? Alerts(
-                "99+",
-                "7.4591451",
-                props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
-              )
-            : Alerts(
-                props.unseenCount,
-                "6.4591451",
-                props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
-              )}
+    <div className={Styles.TopBar__rightContent}>
+      <BlockInfoData />
+      {props.isLogged && (
+        <GasPriceEdit className={Styles.TopBar__hideForSmallScreens} />
+      )}
+      <ConnectAccount
+        className={classNames({
+          [Styles.TopBar__hideForSmallScreens]: props.isLogged
+        })}
+      />
+      <div
+        className={classNames(Styles.TopBar__alerts, {
+          [Styles.TopBar__alertsDark]: props.alertsVisible,
+          [Styles.TopBar__alertsDisabled]: !props.isLogged
+        })}
+        onClick={e => {
+          props.toggleAlerts();
+        }}
+        role="button"
+        tabIndex="-1"
+      >
+        <div className={Styles["TopBar__alerts-container"]}>
+          <div className={Styles["TopBar__alert-icon"]}>
+            {props.unseenCount > 99
+              ? Alerts(
+                  "99+",
+                  "7.4591451",
+                  props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
+                )
+              : Alerts(
+                  props.unseenCount,
+                  "6.4591451",
+                  props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
+                )}
+          </div>
         </div>
       </div>
     </div>
