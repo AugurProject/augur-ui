@@ -174,6 +174,15 @@ export const MARKET_OPEN = "open";
 export const MARKET_REPORTING = "reporting";
 export const MARKET_CLOSED = "closed";
 
+// InReporting Labels
+export const IN_REPORTING = "In-reporting";
+export const WAITING_ON_REPORTER = "Waiting on reporter";
+export const OPEN_REPORTING = "Open reporting";
+export const AWAITING_NEXT_DISPUTE = "Awaiting next dispute";
+export const DISPUTE_ROUND = "Dispute round";
+export const REPORTING_ENDS = "Reporting Ends";
+export const DISPUTE_ENDS = "Dispute Ends";
+
 // # Market Status Messages
 export const MARKET_STATUS_MESSAGES = {
   OPEN: "Open",
