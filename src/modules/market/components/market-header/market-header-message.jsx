@@ -33,7 +33,7 @@ export const MarketHeaderMessage = ({ dismiss }) => (
           place="top"
           type="light"
         >
-          <div style={{ color: "#372e4b" }}>
+          <div style={{ color: "#372e4b" }} className={Styles.MarketHeaderMessage__tooltip}>
             {
               <div>
                 <p>
