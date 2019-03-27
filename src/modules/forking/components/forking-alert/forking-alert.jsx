@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ForkingContent from "modules/forking/components/forking-content/forking-content";
-import { ChevronDown, ChevronUp } from "modules/common/components/icons";
+import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import Styles from "modules/forking/components/forking-alert/forking-alert.styles";
 
 class ForkingAlert extends Component {
@@ -72,9 +72,10 @@ class ForkingAlert extends Component {
               >
                 Additional details
                 <span className={Styles.ForkingAlert__arrow}>
-                  {this.state.isExpanded
-                    ? ChevronDown({ stroke: "#FFFFFF" })
-                    : ChevronUp()}
+                  <ChevronFlip
+                    pointDown={!this.state.isExpanded}
+                    stroke="white"
+                  />
                 </span>
               </button>
             </div>
