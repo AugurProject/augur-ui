@@ -110,7 +110,7 @@ const selectOrderBooksStateMarket = (state, marketId) =>
   selectOrderBooksState(state)[marketId];
 
 const selectOrderCancellationStateMarket = (state, marketId) =>
-  selectOrderCancellationState(state)[marketId] || {};
+  selectOrderCancellationState(state) || {};
 
 const selectAccountShareBalanceMarket = (state, marketId) =>
   selectAccountShareBalance(state)[marketId];
