@@ -6,19 +6,21 @@ import Styles from "modules/modal/components/common/common.styles";
 import ModalActions from "modules/modal/components/common/modal-actions";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 
-
 export default class ModalMarketReview extends Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
     markModalAsSeen: PropTypes.func.isRequired,
-    handleAction: PropTypes.func.isRequired
+    unmarkModalAsSeen: PropTypes.func.isRequired,
+    handleAction: PropTypes.func.isRequired,
+    market: PropTypes.object.isRequired
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      didCheck: false
+      didCheck: false,
+      readMore: false
     };
 
     this.checkCheckbox = this.checkCheckbox.bind(this);
@@ -28,57 +30,80 @@ export default class ModalMarketReview extends Component {
     this.setState({ didCheck: !this.state.didCheck }, () => {
       if (this.state.didCheck) {
         this.props.markModalAsSeen();
-      }
-      else {
+      } else {
         this.props.unmarkModalAsSeen();
       }
     });
   }
 
   render() {
-    const { closeModal, handleAction, marketDetails } = this.props;
+    const { closeModal, handleAction, market } = this.props;
     const { didCheck } = this.state;
+
+    const showReadMore = market.details && market.details.length > 126;
+    const readMore = showReadMore && (
+      <div>
+        {`${market.details.substr(0, 126)}...`}{" "}
+        <button
+          onClick={() => this.setState({ readMore: true })}
+          className={Styles.ModalMarketReview__ReadMore}
+        >
+          Read more
+        </button>
+      </div>
+    );
 
     return (
       <section className={Styles.ModalMarketReview}>
         <h1>Review market details</h1>
         <div className={Styles.ModalMarketReview__Header}>
           <p>
-            Review the markets details to confirm that there are <span>no conflicts</span>, in particular between the Markets Question, Additional Details and Reporting Start Time.
+            Review the markets details to confirm that there are{" "}
+            <span>no conflicts</span>, in particular between the Markets
+            Question, Additional Details and Reporting Start Time.
           </p>
 
           <p>
-            If the reporting start time doesn’t match up to the title or description, the market might resolve as invalid.
+            If the reporting start time doesn’t match up to the title or
+            description, the market might resolve as invalid.
           </p>
         </div>
-        <div
-          ref="containerText"
-          className={Styles.ModalMarketReview__TextBox}
-        >
+        <div ref="containerText" className={Styles.ModalMarketReview__TextBox}>
           <div>
             <p>Market Question</p>
-            {marketDetails.description}
+            {market.description}
           </div>
 
-          { marketDetails.details && <div>
+          {market.details && (
+            <div>
               <p>Additional details</p>
-              <div>{marketDetails.details}</div>
-          </div> }
+              {showReadMore && !this.state.readMore && readMore}
+              {(!showReadMore || this.state.readMore) && (
+                <div>{market.details}</div>
+              )}
+            </div>
+          )}
 
-          <div>
-            <p>Reporting starts (UTC)</p>
-            {(new Date(marketDetails.endTime.timestamp * 1000)).toUTCString()}
-          </div>
+          {market.endTime &&
+            market.endTime.timestamp && (
+              <div>
+                <p>Reporting starts (UTC)</p>
+                {new Date(market.endTime.timestamp * 1000).toUTCString()}
+              </div>
+            )}
 
           <div>
             <p>Resolution source</p>
-            {marketDetails.resolutionSource ? marketDetails.resolutionSource : 'General knowledge'}
+            {market.resolutionSource
+              ? market.resolutionSource
+              : "General knowledge"}
           </div>
-
         </div>
 
         <div
           className={Styles.ModalMarketReview__checkbox}
+          role="button"
+          tabIndex="0"
           onClick={e => {
             e.preventDefault();
             this.checkCheckbox();

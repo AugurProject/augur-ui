@@ -31,10 +31,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mergeProps = (sP, dP, oP) => {
   const { marketId } = sP.modal;
-
   const market = selectMarket(marketId);
-  const { description, details, endTime, resolutionSource } = market;
-
 
   return {
     modal: sP.modal,
@@ -44,16 +41,10 @@ const mergeProps = (sP, dP, oP) => {
     handleAction: () => {
       if (sP.modal.cb) {
         sP.modal.cb();
-
       }
-      dP.closeModal()
+      dP.closeModal();
     },
-    marketDetails: {
-      description,
-      details,
-      endTime,
-      resolutionSource
-    }
+    market
   };
 };
 

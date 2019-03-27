@@ -24,12 +24,12 @@ const mapDispatchToProps = dispatch => ({
   clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
   handleFilledOnly: trade => dispatch(handleFilledOnly(trade)),
   marketReviewModal: modal =>
-  dispatch(
-    updateModal({
-      type: MODAL_MARKET_REVIEW,
-      ...modal
-    })
-  ),
+    dispatch(
+      updateModal({
+        type: MODAL_MARKET_REVIEW,
+        ...modal
+      })
+    )
 });
 
 const mergeProps = (sP, dP, oP) => {
@@ -44,7 +44,7 @@ const mergeProps = (sP, dP, oP) => {
     ...dP,
     ...oP,
     market,
-    marketReviewSeen: marketReviewSeen ? true : false
+    marketReviewSeen: !!marketReviewSeen
   };
 };
 
