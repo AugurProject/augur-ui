@@ -4,8 +4,7 @@ import { updateTimeframeData } from "modules/account/actions/update-timeframe-da
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 
 const mapStateToProps = (state: any) => ({
-  currentAugurTimestamp: selectCurrentTimestampInSeconds(state),
-  isMobile: state.appStatus.isMobile
+  currentAugurTimestamp: selectCurrentTimestampInSeconds(state)
 });
 
 const mapDispatchToProps = dispatch => ({

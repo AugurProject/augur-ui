@@ -14,7 +14,6 @@ interface AccountOverviewState {
   selected: number;
   updateTimeSelection: Function;
   currentAugurTimestamp: number;
-  isMobile: Boolean;
 }
 
 export default class AccountOverview extends React.Component<
@@ -43,7 +42,6 @@ export default class AccountOverview extends React.Component<
     return (
       <QuadBox
         title={constants.YOUR_OVERVIEW_TITLE}
-        isMobile={this.props.isMobile}
         content={
           <div className={Styles.AccountOverview}>
             <div className={Styles.AccountOverview__pillSelector}>
