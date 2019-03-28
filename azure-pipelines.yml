@@ -16,11 +16,11 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: 10.15
-      - script: |
-          yarn lint && yarn test
+      - script: yarn
+      - script: yarn lint && yarn test
           # This is here to confirm the build works.
           # Nothing is done with the resulting artifacts.
-          yarn build --dev
+      - script: yarn build --dev
         displayName: 'lint and test'
       - task: PublishTestResults@2
         inputs:
