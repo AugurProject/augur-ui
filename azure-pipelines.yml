@@ -56,10 +56,10 @@ jobs:
         inputs:
           command: custom
           customCommand: $(COMMAND)
-      condition: |
-        and
-        (
-            succeeded(),
-            eq(variables['Build.SourceBranch'], 'refs/heads/master')
-        )
+        condition: |
+          and
+          (
+              succeeded(),
+              eq(variables['Build.SourceBranch'], 'refs/heads/master')
+          )
 
