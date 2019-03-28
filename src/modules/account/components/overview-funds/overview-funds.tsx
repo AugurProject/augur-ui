@@ -22,6 +22,7 @@ export interface OverviewFundsProps {
   totalFrozenFunds: string;
   totalAvailableTradingBalance: string;
   totalAccountValue: string;
+  realizedPL: string;
 }
 
 const OverviewFunds = (props: OverviewFundsProps) => {
@@ -30,7 +31,8 @@ const OverviewFunds = (props: OverviewFundsProps) => {
     totalAvailableTradingBalance,
     totalAccountValue,
     repBalance,
-    repStaked
+    repStaked,
+    realizedPL
   } = props;
 
   const tradingBalanceFrozenFunds = [
@@ -64,7 +66,7 @@ const OverviewFunds = (props: OverviewFundsProps) => {
         showPlusMinus
         showPercent
         showIcon
-        value={0} // TODO Account P/L (time range)
+        value={realizedPL}
       />
       <div>
         {totalAccountValue}
