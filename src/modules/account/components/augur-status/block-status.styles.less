@@ -28,3 +28,24 @@
     }
   }
 }
+
+.ShowOnMobile {
+  display: none;
+}
+
+.HideOnMobile {
+  display: flex;
+  padding-bottom: 1.5rem;
+}
+
+@media @breakpoint-mobile {
+  .ShowOnMobile {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+  }
+
+  .HideOnMobile {
+    display: none;
+  }
+}
