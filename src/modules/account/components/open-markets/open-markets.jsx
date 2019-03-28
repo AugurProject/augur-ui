@@ -14,8 +14,7 @@ function filterComp(input, market) {
 export default class OpenMarkets extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    marketsObj: PropTypes.object.isRequired,
-    isMobile: PropTypes.bool
+    marketsObj: PropTypes.object.isRequired
   };
 
   constructor(props) {
