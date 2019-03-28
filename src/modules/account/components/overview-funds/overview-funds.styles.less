@@ -7,15 +7,16 @@
   flex-direction: column;
   justify-content: space-between;
   margin: 0 0 1rem;
+  text-transform: uppercase;
 
   > div:first-of-type {
-    .text-12;
+    .mono-11;
 
     color: @color-secondary-text;
   }
 
   > div:nth-of-type(2) {
-    margin: 0.5rem 0 0.25rem;
+    margin: 10px 0 3px;
   }
 
   > div:nth-of-type(3) {
@@ -37,12 +38,13 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   text-align: center;
   width: 100%;
 
   > div {
     flex: 1;
+    flex-direction: column;
 
     > div:first-of-type {
       .mono-10;
@@ -52,7 +54,7 @@
     }
 
     > div:nth-of-type(2) {
-      .text-14;
+      .mono-14;
 
       color: @color-secondary-text;
       margin: 0.25rem 0 0;
@@ -70,12 +72,12 @@
 
 .RepBalanceStaked {
   align-items: center;
-  background: @color-tertiary-background;
+  border: 2px solid @color-tertiary-background;
   border-radius: 3px;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin: 1rem 1.5rem;
+  margin: 1rem 1.5rem 0;
   text-align: center;
   width: 100%;
 
@@ -96,12 +98,81 @@
     }
 
     > div:nth-of-type(2) {
-      .text-12;
+      .mono-12;
 
       color: @color-secondary-text;
       margin: 0 0 1rem;
       text-align: center;
     }
+  }
+}
+
+.ShowOnMobile {
+  display: none;
+}
+
+.HideOnMobile {
+  display: flex;
+}
+
+.RepBalanceStaked__container {
+  display: flex;
+  width: 100%;
+}
+
+@media @breakpoint-mobile {
+  .RepBalanceStaked {
+    background: unset;
+    margin: 1.5rem 2rem;
+
+    > div {
+      > div:nth-of-type(2) {
+        color: @color-tertiary-text;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .OverviewFunds__changeForMobile {
+    flex-direction: column;
+  }
+
+  .BalanceFrozenFunds {
+    > div:first-of-type {
+      flex-direction: row;
+    }
+
+    > div:last-of-type {
+      flex-grow: unset;
+
+      > svg {
+        fill: @color-secondary-text;
+        height: 0.75rem;
+        margin: 0 0 0 0.25rem;
+        width: 0.5rem;
+      }
+    }
+  }
+
+  .OverviewFundsContent {
+    background: unset;
+
+    > div:first-of-type {
+      .mono-10;
+    }
+
+    > div:nth-of-type(3) {
+      margin-bottom: @size-18;
+    }
+  }
+
+  .ShowOnMobile {
+    display: flex;
+    margin-top: 0;
+  }
+
+  .HideOnMobile {
+    display: none;
   }
 }
 

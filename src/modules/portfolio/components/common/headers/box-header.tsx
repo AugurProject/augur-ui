@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import classNames from "classnames";
 
 import Styles from "modules/portfolio/components/common/headers/box-header.styles";
 
@@ -8,32 +9,32 @@ export interface BoxHeaderProps {
   rows?: ReactNode;
   bottomBarContent?: ReactNode;
   bottomRightBarContent?: ReactNode;
-  isMobile?: Boolean;
 }
 
-const BoxHeader = (props: BoxHeaderProps) => {
-  if (props.isMobile) {
-    return (
-      <div className={Styles.BoxHeader__headerContainer}>
-        <div className={Styles["BoxHeader__rightContent--mobile"]}>
-          {props.rightContent}
-        </div>
-        <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
-          {props.mostRightContent}
-        </div>
-        <div className={Styles["BoxHeader__bottomContent--mobile"]}>
-          {props.bottomBarContent}
-        </div>
-        {props.bottomRightBarContent && (
-          <div className={Styles["BoxHeader__bottomRightContent--mobile"]}>
-            {props.bottomRightBarContent}
-          </div>
-        )}
+const BoxHeader = (props: BoxHeaderProps) => (
+  <>
+    <div
+      className={classNames(
+        Styles.BoxHeader__headerContainer,
+        Styles.ShowOnMobile
+      )}
+    >
+      <div className={Styles["BoxHeader__rightContent--mobile"]}>
+        {props.rightContent}
       </div>
-    );
-  }
-  return (
-    <div>
+      <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
+        {props.mostRightContent}
+      </div>
+      <div className={Styles["BoxHeader__bottomContent--mobile"]}>
+        {props.bottomBarContent}
+      </div>
+      {props.bottomRightBarContent && (
+        <div className={Styles["BoxHeader__bottomRightContent--mobile"]}>
+          {props.bottomRightBarContent}
+        </div>
+      )}
+    </div>
+    <div className={Styles.HideOnMobile}>
       <div className={Styles["BoxHeader__header--top-row"]}>
         <div className={Styles.BoxHeader__title}>{props.title}</div>
         <div className={Styles.BoxHeader__right}>
@@ -48,7 +49,7 @@ const BoxHeader = (props: BoxHeaderProps) => {
         </div>
       )}
     </div>
-  );
-};
+  </>
+);
 
 export default BoxHeader;

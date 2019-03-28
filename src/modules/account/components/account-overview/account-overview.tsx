@@ -42,15 +42,15 @@ export default class AccountOverview extends React.Component<
     return (
       <QuadBox
         title={constants.YOUR_OVERVIEW_TITLE}
-        rightContent={
-          <PillSelection
-            options={constants.TIMEFRAME_OPTIONS}
-            defaultSelection={constants.TIMEFRAME_OPTIONS[0].id}
-            onChange={this.updateTimeSelection}
-          />
-        }
         content={
           <div className={Styles.AccountOverview}>
+            <div className={Styles.AccountOverview__pillSelector}>
+              <PillSelection
+                options={constants.TIMEFRAME_OPTIONS}
+                defaultSelection={constants.TIMEFRAME_OPTIONS[0].id}
+                onChange={this.updateTimeSelection}
+              />
+            </div>
             <AccountOverviewFunds />
             <AccountOverviewStats timeframe={selected} />
             <AccountOverviewChart timeframe={selected} />
