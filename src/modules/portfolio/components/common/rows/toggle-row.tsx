@@ -74,6 +74,7 @@ export default class ToggleRow extends React.Component<
                   stroke="#999999"
                   quick
                   filledInIcon
+                  hover
                 />
               </span>
             </div>
