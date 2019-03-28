@@ -33,7 +33,8 @@ class TradingWrapper extends Component {
     toggleMobileView: PropTypes.func.isRequired,
     updateTradeCost: PropTypes.func.isRequired,
     updateTradeShares: PropTypes.func.isRequired,
-    showSelectOutcome: PropTypes.func.isRequired
+    showSelectOutcome: PropTypes.func.isRequired,
+    onSubmitPlaceTrade: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -287,7 +288,8 @@ class TradingWrapper extends Component {
       handleFilledOnly,
       updateSelectedOutcome,
       toggleMobileView,
-      showSelectOutcome
+      showSelectOutcome,
+      onSubmitPlaceTrade
     } = this.props;
     const s = this.state;
     const {
@@ -425,9 +427,11 @@ class TradingWrapper extends Component {
             type={selectedNav}
             action={e => {
               e.preventDefault();
-              market.onSubmitPlaceTrade(
-                s.trade,
+              onSubmitPlaceTrade(
+                market.id,
                 selectedOutcome.id,
+                s.trade,
+                s.doNotCreateOrders,
                 (err, tradeGroupID) => {
                   // onSent/onFailed CB
                   if (!err) {
@@ -438,8 +442,7 @@ class TradingWrapper extends Component {
                   if (s.doNotCreateOrders && res.res !== res.sharesToFill)
                     handleFilledOnly(res.tradeInProgress);
                   // onComplete CB
-                },
-                s.doNotCreateOrders
+                }
               );
             }}
             disabled={!s.trade || !s.trade.limitPrice}

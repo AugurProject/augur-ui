@@ -21,7 +21,8 @@ export default class MarketsHeader extends Component {
     maxFee: PropTypes.string.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     updateFilter: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    isSearchingMarkets: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -71,7 +72,8 @@ export default class MarketsHeader extends Component {
       maxFee,
       hasOrders,
       updateFilter,
-      history
+      history,
+      isSearchingMarkets
     } = this.props;
     const s = this.state;
 
@@ -91,7 +93,7 @@ export default class MarketsHeader extends Component {
             />
           </div>
           <div className={Styles.MarketsHeader__search}>
-            <FilterSearch />
+            <FilterSearch isSearchingMarkets={isSearchingMarkets} />
           </div>
         </div>
       </article>

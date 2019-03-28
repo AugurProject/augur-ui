@@ -5,7 +5,9 @@ import MarketHeaderBar from "modules/market/components/market-header/market-head
 import { toggleFavorite } from "modules/markets/actions/update-favorites";
 
 const mapStateToProps = (state, ownProps) => ({
-  isLogged: state.authStatus.isLogged
+  isLogged: state.authStatus.isLogged,
+  currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
+  reportingWindowStatsEndTime: state.reportingWindowStats.endTime
 });
 
 const mapDispatchToProps = dispatch => ({

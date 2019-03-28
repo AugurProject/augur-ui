@@ -16,8 +16,6 @@ export const selectEdgeLoadingState = state => state.authStatus.edgeLoading;
 export const selectEnvState = state => state.env;
 export const selectFavoritesState = state => state.favorites;
 export const selectGasPriceInfo = state => state.gasPriceInfo;
-export const selectHasLoadedMarketsState = state =>
-  state.appStatus.hasLoadedMarkets;
 export const selectReportingWindowStats = state => state.reportingWindowStats;
 export const selectInitialReporters = state => state.initialReporters;
 export const selectIsLogged = state => state.authStatus.isLogged;
@@ -53,6 +51,7 @@ export const selectUniverseState = state => state.universe;
 export const selectUrlState = state => state.url;
 export const selectPendingLiquidityOrders = state =>
   state.pendingLiquidityOrders;
+export const selectAccountShareBalance = state => state.accountShareBalances;
 
 export const selectCurrentTimestamp = createSelector(
   selectBlockchainState,

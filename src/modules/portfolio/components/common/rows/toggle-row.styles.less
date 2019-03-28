@@ -25,6 +25,8 @@
 div.ToggleRow__rowActive {
   background-color: fade(@color-primary-alternate, 40%);
   border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .ToggleRow__rowContent {
@@ -47,6 +49,14 @@ div.ToggleRow__rowActive {
 
   &:hover {
     background-color: fade(@color-primary-alternate, 40%);
+  }
+}
+
+.ToggleRow__row:hover .ToggleRow__arrow {
+  > svg {
+    > path {
+      stroke: @color-white;
+    }
   }
 }
 

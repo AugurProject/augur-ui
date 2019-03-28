@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import ForkingContent from "modules/forking/components/forking-content/forking-content";
-
+import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import Styles from "modules/forking/components/forking-alert/forking-alert.styles";
 
 class ForkingAlert extends Component {
@@ -72,13 +71,12 @@ class ForkingAlert extends Component {
                 onClick={this.expand}
               >
                 Additional details
-                <i
-                  className={classNames(
-                    Styles.ForkingAlert__arrow,
-                    "fa",
-                    this.state.isExpanded ? "fa-angle-up" : "fa-angle-down"
-                  )}
-                />
+                <span className={Styles.ForkingAlert__arrow}>
+                  <ChevronFlip
+                    pointDown={!this.state.isExpanded}
+                    stroke="white"
+                  />
+                </span>
               </button>
             </div>
           </section>

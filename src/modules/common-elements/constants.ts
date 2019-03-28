@@ -174,6 +174,15 @@ export const MARKET_OPEN = "open";
 export const MARKET_REPORTING = "reporting";
 export const MARKET_CLOSED = "closed";
 
+// InReporting Labels
+export const IN_REPORTING = "In-reporting";
+export const WAITING_ON_REPORTER = "Waiting on reporter";
+export const OPEN_REPORTING = "Open reporting";
+export const AWAITING_NEXT_DISPUTE = "Awaiting next dispute";
+export const DISPUTE_ROUND = "Dispute round";
+export const REPORTING_ENDS = "Reporting Ends";
+export const DISPUTE_ENDS = "Dispute Ends";
+
 // # Market Status Messages
 export const MARKET_STATUS_MESSAGES = {
   OPEN: "Open",
@@ -375,6 +384,7 @@ export const MODAL_GAS_PRICE = "MODAL_GAS_PRICE";
 export const MODAL_REP_FAUCET = "MODAL_REP_FAUCET";
 export const MODAL_DEPOSIT = "MODAL_DEPOSIT";
 export const MODAL_WITHDRAW = "MODAL_WITHDRAW";
+export const MODAL_UNSIGNED_ORDERS = "MODAL_UNSIGNED_ORDERS";
 export const MODAL_CLAIM_TRADING_PROCEEDS = "MODAL_CLAIM_TRADING_PROCEEDS";
 export const MODAL_CLAIM_PROCEEDS = "MODAL_CLAIM_PROCEEDS";
 export const MODAL_TRADING_OVERLAY = "MODAL_TRADING_OVERLAY";
@@ -493,6 +503,7 @@ export const TWO = createBigNumber(2, 10);
 export const TEN = createBigNumber(10, 10);
 export const TEN_TO_THE_EIGHTEENTH_POWER = TEN.exponentiatedBy(18);
 export const MIN_QUANTITY = createBigNumber("0.00000001");
+export const NEW_ORDER_GAS_ESTIMATE = createBigNumber(700000);
 
 // # Positions
 export const LONG = "long";

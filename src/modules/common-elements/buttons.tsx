@@ -138,6 +138,17 @@ export const CancelTextButton = (props: DefaultButtonProps) => (
   </button>
 );
 
+export const SubmitTextButton = (props: DefaultButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={Styles.SubmitTextButton}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {props.text}
+  </button>
+);
+
 export const DepositButton = (props: CurrencyActionButtonProps) => (
   <button
     onClick={e => props.action(e)}

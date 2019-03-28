@@ -57,14 +57,17 @@ const FilledOrdersTable = (props: FilledOrdersTableProps) => {
         {filledOrder.trades.map((trade: FilledOrder, i: number) => (
           <div key={i}>
             <LinearPropertyLabel
+              highlightFirst
               label="Filled"
               value={formatShares(trade.amount).formatted}
             />
             <LinearPropertyLabel
+              highlightFirst
               label="Timestamp"
               value={trade.timestamp.formattedShort}
             />
             <LinearPropertyViewTransaction
+              highlightFirst
               transactionHash={trade.transactionHash}
             />
           </div>
