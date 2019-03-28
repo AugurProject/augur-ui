@@ -82,8 +82,10 @@ export default class MarketsView extends Component {
       { category, search, filter, sort, maxFee, hasOrders },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
-        if (this.componentWrapper)
-          this.setState({ filterSortedMarkets, isSearchingMarkets: false });
+        if (this.componentWrapper) {
+          this.setState({ filterSortedMarkets });
+          setTimeout(() => this.setState({ isSearchingMarkets: false }), 500);
+        }
       }
     );
   }
