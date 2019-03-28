@@ -16,12 +16,12 @@ export default class FilterSearch extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    hasLoadedMarkets: PropTypes.bool,
+    isSearchingMarkets: PropTypes.bool,
     isMobileSmall: PropTypes.bool
   };
 
   static defaultProps = {
-    hasLoadedMarkets: false,
+    isSearchingMarkets: false,
     isMobileSmall: false
   };
 
@@ -103,7 +103,7 @@ export default class FilterSearch extends Component {
   }
 
   render() {
-    const { hasLoadedMarkets } = this.props;
+    const { isSearchingMarkets } = this.props;
     const { width, placeholder, search } = this.state;
 
     return (
@@ -174,7 +174,7 @@ export default class FilterSearch extends Component {
             onChange={this.onChange}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
-            isLoading={Boolean(!hasLoadedMarkets && search && search !== "")}
+            isLoading={Boolean(isSearchingMarkets && search && search !== "")}
           />
         </div>
       </article>
