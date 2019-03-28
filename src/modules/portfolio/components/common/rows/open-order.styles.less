@@ -8,6 +8,7 @@
 
   > li {
     align-items: center;
+    color: @color-less-neutral;
     display: flex;
     flex-grow: 1;
     font-family: @roboto-mono;
@@ -21,7 +22,6 @@
     &:first-child {
       .text-12-bold;
 
-      color: @color-less-neutral;
       display: block;
       font-family: @roboto;
       font-weight: 500;
@@ -336,7 +336,8 @@ div.OpenOrder__labels {
 
       > button {
         justify-content: flex-end;
-        margin-top: 1.125rem;
+        margin-top: 1rem;
+        padding-bottom: 0.5rem;
       }
     }
   }
@@ -345,6 +346,8 @@ div.OpenOrder__labels {
     border: 1px solid @color-primary-alternate;
     border-radius: 3px;
     border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
     padding-left: 1rem;
   }
 }

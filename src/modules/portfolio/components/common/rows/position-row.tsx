@@ -28,6 +28,7 @@ const PositionRow = (props: PositionRowProps) => {
       <div className={Styles.Position__info}>
         {isMobile && (
           <LinearPropertyLabelMovement
+            highlightFirst
             showPercent
             showBrackets
             showPlusMinus
@@ -38,6 +39,7 @@ const PositionRow = (props: PositionRowProps) => {
           />
         )}
         <LinearPropertyLabelMovement
+          highlightFirst
           showPercent
           showBrackets
           showPlusMinus
@@ -47,6 +49,7 @@ const PositionRow = (props: PositionRowProps) => {
           numberValue={`${position.realizedPercent.formatted}`}
         />
         <LinearPropertyLabelMovement
+          highlightFirst
           showPercent
           showBrackets
           showPlusMinus

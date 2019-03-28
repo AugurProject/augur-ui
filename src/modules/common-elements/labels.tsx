@@ -77,6 +77,7 @@ export interface LinearPropertyLabelProps {
   label: string;
   value: string | FormattedValue;
   accentValue?: boolean;
+  highlightFirst?: boolean;
   highlight?: boolean;
   highglightAlternate?: boolean;
   highlightAlternateBolded?: boolean;
@@ -89,6 +90,7 @@ export interface LinearPropertyLabelPercentProps {
   value: string;
   accentValue?: boolean;
   numberValue: number;
+  highlightFirst?: boolean;
 }
 
 
@@ -115,6 +117,7 @@ export interface PositionTypeLabelProps {
 
 export interface LinearPropertyLabelViewTransactionProps {
   transactionHash: string;
+  highlightFirst?: boolean;
 }
 
 export interface FormattedValue {
@@ -295,7 +298,8 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   <div className={classNames(Styles.LinearPropertyLabel, {
     [Styles.HighlightAlternate]: props.highlightAlternate || props.highlightAlternateBolded,
     [Styles.Highlight]: props.highlight,
-    [Styles.HighlightAlternateBolded]: props.highlightAlternateBolded
+    [Styles.HighlightAlternateBolded]: props.highlightAlternateBolded,
+    [Styles.HighlightFirst]: props.highlightFirst,
     })}>
     <span>{props.label}</span>
     <DashlineNormal />
@@ -566,6 +570,7 @@ export const LinearPropertyLabelMovement = (props: LinearPropertyLabelPercentMov
       <LinearPropertyLabel
         label={props.label}
         value={props.value}
+        highlightFirst={props.highlightFirst}
         highlightAlternate
       />
       <MovementLabel
@@ -585,6 +590,7 @@ export const LinearPropertyViewTransaction = (props: LinearPropertyLabelViewTran
       <LinearPropertyLabel
         label={"Transaction Details"}
         value={""}
+        highlightFirst={props.highlightFirst}
       />
       <ViewTransactionDetailsButton transactionHash={props.transactionHash}/>
     </div>
