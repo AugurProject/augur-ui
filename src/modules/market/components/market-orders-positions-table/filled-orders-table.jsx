@@ -19,9 +19,9 @@ const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
         {filledOrders.length > 0 && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {filledOrders.map((order, i) => (
-              <FilledOrder 
-                key={i} 
-                filledOrder={order}  
+              <FilledOrder
+                key={i}
+                filledOrder={order}
                 extendedView={!isMobile}
                 isSingle={isMobile}
               />
