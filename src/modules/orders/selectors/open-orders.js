@@ -8,8 +8,5 @@ export default function() {
 
 export const selectOpenOrdersMarkets = createSelector(
   selectAllMarkets,
-  markets =>
-    markets.filter(
-      market => market.userOpenOrders && market.userOpenOrders.length
-    )
+  markets => markets.filter(market => market.userOpenOrders.length)
 );

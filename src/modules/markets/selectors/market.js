@@ -109,9 +109,6 @@ const selectAccountTradesStateMarket = (state, marketId) =>
 const selectOrderBooksStateMarket = (state, marketId) =>
   selectOrderBooksState(state)[marketId];
 
-const selectOrderCancellationStateMarket = (state, marketId) =>
-  selectOrderCancellationState(state) || {};
-
 const selectAccountShareBalanceMarket = (state, marketId) =>
   selectAccountShareBalance(state)[marketId];
 
@@ -125,7 +122,7 @@ const getMarketSelector = createSelector(
   selectAccountPositionsStateMarket,
   selectAccountTradesStateMarket,
   selectOrderBooksStateMarket,
-  selectOrderCancellationStateMarket,
+  selectOrderCancellationState,
   selectLoginAccountState,
   selectAccountShareBalanceMarket,
   selectPendingOrdersStateMarket,
