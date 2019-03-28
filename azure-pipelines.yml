@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- azure-pipelines
 
 
 jobs:
