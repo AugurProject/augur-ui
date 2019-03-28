@@ -79,7 +79,6 @@ export interface LinearPropertyLabelProps {
   accentValue?: boolean;
   highlightFirst?: boolean;
   highlight?: boolean;
-  highglightAlternate?: boolean;
   highlightAlternateBolded?: boolean;
   useValueLabel?: boolean;
   showDenomination?: boolean;
