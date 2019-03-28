@@ -2,15 +2,12 @@ import { createSelector } from "reselect";
 import store from "src/store";
 import {
   selectMarketsDataState,
-  selectFavoritesState,
   selectReportsState,
   selectOutcomesDataState,
   selectAccountTradesState,
   selectUniverseState,
-  selectMarketTradingHistoryState,
   selectOrderBooksState,
   selectOrderCancellationState,
-  selectSmallestPositionsState,
   selectLoginAccountState
 } from "src/select-state";
 import selectAccountPositions from "modules/orders/selectors/positions-plus-asks";
@@ -23,30 +20,23 @@ export default function() {
 
 export const selectMarkets = createSelector(
   selectMarketsDataState,
-  selectFavoritesState,
   selectReportsState,
   selectOutcomesDataState,
   selectAccountPositions,
   selectAccountTradesState,
   selectUniverseState,
-  selectMarketTradingHistoryState,
   selectOrderBooksState,
   selectOrderCancellationState,
-  selectSmallestPositionsState,
   selectLoginAccountState,
   (
     marketsData,
-    favorites,
     reports,
     outcomesData,
     accountPositions,
     accountTrades,
     universe,
-    selectedFilterSort,
-    marketTradingHistory,
     orderBooks,
     orderCancellation,
-    smallestPositions,
     loginAccount
   ) => {
     if (!marketsData) return [];

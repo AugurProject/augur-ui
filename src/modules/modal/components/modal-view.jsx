@@ -9,6 +9,7 @@ import ModalRepFaucet from "modules/modal/containers/modal-rep-faucet";
 import ModalDeposit from "modules/modal/containers/modal-deposit";
 import ModalWithdraw from "modules/modal/containers/modal-withdraw";
 import ModalNetworkDisabled from "modules/modal/containers/modal-network-disabled";
+import ModalUnsignedOrders from "modules/modal/containers/modal-unsigned-orders";
 import ModalNetworkMismatch from "modules/modal/containers/modal-mismatch";
 import ModalNetworkDisconnected from "modules/modal/containers/modal-network-disconnected";
 import ModalApproval from "modules/modal/containers/modal-approval";
@@ -88,6 +89,9 @@ export default class ModalView extends Component {
           )}
           {modal.type === TYPES.MODAL_GAS_PRICE && (
             <ModalGasPrice {...this.props} />
+          )}
+          {modal.type === TYPES.MODAL_UNSIGNED_ORDERS && (
+            <ModalUnsignedOrders />
           )}
           {modal.type === TYPES.MODAL_REP_FAUCET && <ModalRepFaucet />}
           {modal.type === TYPES.MODAL_DEPOSIT && <ModalDeposit />}

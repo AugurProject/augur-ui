@@ -543,7 +543,6 @@ export default class AppView extends Component {
               mobileShow={s.mobileMenuState === mobileMenuStates.SIDEBAR_OPEN}
               menuScalar={subMenu.scalar}
               menuData={this.sideNavMenuData}
-              stats={coreStats}
               currentBasePath={this.state.currentBasePath}
             />
           </section>

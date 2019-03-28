@@ -58,7 +58,7 @@ h6 {
 
   @media @breakpoint-mobile {
     /* topbar mobile height */
-    grid-template-rows: 3rem auto;
+    grid-template-rows: @top-bar-height-mobile auto;
   }
 }
 
@@ -112,7 +112,7 @@ h6 {
   background: @color-light-purple;
   border-bottom: 1px solid @color-almost-black;
   display: none;
-  height: 3.125rem;
+  height: @top-bar-height-mobile;
   outline: none;
   padding: 1rem;
   position: absolute;
@@ -149,7 +149,7 @@ svg.SideBar__mobile-bars-unseen {
   z-index: @mask-above;
 
   @media @breakpoint-mobile {
-    height: 50px;
+    height: @top-bar-height-mobile;
   }
 }
 

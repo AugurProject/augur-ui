@@ -80,6 +80,24 @@
   }
 }
 
+.LinearPropertyLabelPercent {
+  align-items: flex-start;
+  display: flex;
+  margin-bottom: 0;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.375rem;
+  }
+
+  > div:first-of-type {
+    margin-right: 0.25rem;
+  }
+
+  > div {
+    margin-bottom: 0 !important;
+  }
+}
+
 .LinearPropertyLabel {
   align-items: center;
   display: flex;
@@ -110,6 +128,7 @@
     display: flex;
     flex-grow: 1;
     margin: 0.5rem 0 0 0.5rem;
+    min-width: 0.625rem;
 
     > line {
       stroke: fade(@color-white, 40%);
@@ -128,7 +147,7 @@
     }
   }
 
-  &.Large {
+  &.HighglightAlternate {
     > span:first-of-type {
       .mono-10;
 
@@ -136,9 +155,21 @@
     }
 
     > span:last-of-type {
-      .mono-14-bold;
+      color: @color-tertiary-text;
+    }
+  }
 
-      color: @color-secondary-text;
+  &.HighlightAlternateBolded {
+    > span:last-of-type {
+      font-weight: bold;
+    }
+  }
+
+  &.HighlightFirst {
+    > span:first-of-type {
+      .mono-10;
+
+      color: @color-shadow-text;
     }
   }
 
@@ -155,17 +186,6 @@
 
       color: @color-secondary-text;
     }
-  }
-}
-
-.LinearPropertyLabelPercent {
-  .LinearPropertyLabel;
-
-  align-items: flex-start;
-  margin-bottom: 0;
-
-  > div:first-of-type {
-    margin-right: 0.25rem;
   }
 }
 
@@ -221,6 +241,30 @@ div.LinearPropertyViewTransaction {
     position: absolute;
     right: 0;
   }
+
+  .InReporting_reportingDetails {
+    &::before {
+      background-color: @color-tertiary-text;
+      border-radius: 50%;
+      content: '';
+      display: inline-block;
+      height: 0.125rem;
+      margin: 0 0.25rem 0.0625rem;
+      width: 0.125rem;
+    }
+  }
+
+  .InReporting_reportingDetails__countdown {
+    > span {
+      > span:first-of-type {
+        font-size: 0.5625rem;
+      }
+
+      > span:last-of-type {
+        font-size: 0.5625rem;
+      }
+    }
+  }
 }
 
 .MarketStatus_alternate {
@@ -237,6 +281,41 @@ div.LinearPropertyViewTransaction {
 .MarketStatus_reporting {
   &::after {
     background: @color-in-reporting;
+  }
+}
+
+.InReporting_reportingDetails {
+  color: @color-tertiary-text;
+  font-weight: normal;
+
+  &::before {
+    background-color: @color-tertiary-text;
+    border-radius: 50%;
+    content: '';
+    display: inline-block;
+    height: 0.1875rem;
+    margin: 0 0.25rem 0.0625rem;
+    width: 0.1875rem;
+  }
+}
+
+.InReporting_reportingDetails__countdown {
+  > span {
+    > span:first-of-type {
+      .mono-10;
+
+      color: @color-shadow-text;
+      line-height: normal;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    > span:last-of-type {
+      .mono-10;
+
+      color: @color-secondary-text;
+      line-height: normal;
+    }
   }
 }
 

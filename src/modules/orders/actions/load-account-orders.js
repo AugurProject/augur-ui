@@ -6,6 +6,7 @@ import { addOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import { updateOrderBook } from "modules/orders/actions/update-order-book";
 import { OPEN } from "modules/common-elements/constants";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
+import { formatEther, formatShares } from "utils/format-number";
 
 export const loadAccountOrders = (options = {}, callback = logError) => (
   dispatch,
@@ -85,7 +86,19 @@ const loadAccountOrphanedOrders = (options = {}, callback = logError) => (
 
       ungroupBy(orders, ["marketId", "outcome", "orderTypeLabel", "orderId"])
         .filter(it => it.orderState === OPEN)
-        .forEach(it => dispatch(addOrphanedOrder(it)));
+        .forEach(it =>
+          dispatch(
+            addOrphanedOrder({
+              ...it,
+              type: it.orderTypeLabel,
+              description: it.description || it.outcomeName,
+              sharesEscrowed: formatEther(it.sharesEscrowed),
+              tokensEscrowed: formatEther(it.tokensEscrowed),
+              avgPrice: formatEther(it.fullPrecisionPrice),
+              unmatchedShares: formatShares(it.fullPrecisionAmount)
+            })
+          )
+        );
 
       const marketIds = Object.keys(orders);
       dispatch(

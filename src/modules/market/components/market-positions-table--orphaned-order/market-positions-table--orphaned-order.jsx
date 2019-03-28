@@ -1,27 +1,20 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */ // needed because <button> cannot take the place <ul> in the table structure
-
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import classNames from "classnames";
 
-import getValue from "utils/get-value";
-import { SELL } from "modules/common-elements/constants";
+import OpenOrder from "modules/portfolio/containers/open-order";
 
-import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
-import OrphanedStyles from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order.styles";
-import { formatEther, formatShares } from "utils/format-number";
-import Styles from "modules/market/components/market-orders-positions-table/open-orders-table--orders.style";
+import Styles from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order.styles";
 
 export default class OrphanedOrder extends Component {
   static propTypes = {
-    outcomeName: PropTypes.string,
     order: PropTypes.object.isRequired,
-    pending: PropTypes.bool.isRequired,
-    cancelOrphanedOrder: PropTypes.func.isRequired
+    cancelOrphanedOrder: PropTypes.func.isRequired,
+    isMobile: PropTypes.bool
   };
 
   static defaultProps = {
-    outcomeName: null
+    isMobile: false
   };
 
   constructor(props) {
@@ -42,53 +35,25 @@ export default class OrphanedOrder extends Component {
   }
 
   render() {
-    const { outcomeName, order, pending } = this.props;
-    const orderPrice = formatEther(getValue(order, "fullPrecisionPrice"))
-      .formatted;
-    const orderShares = formatShares(getValue(order, "amount")).formatted;
-    const orderType = getValue(order, "orderTypeLabel");
+    const { order, isMobile } = this.props;
+    order.pending = this.state.disableCancel;
+    order.cancelOrder = this.cancelOrder;
 
     return (
-      <ul
+      <div
         ref={order => {
           this.order = order;
         }}
-        className={classNames(SharedStyles.Order, OrphanedStyles.Order, {
-          [SharedStyles.Negative]: orderType === SELL
-        })}
+        className={Styles.OrphanedOrder}
       >
-        <li>{outcomeName || orderPrice}</li>
-        <li
-          className={classNames(SharedStyles.Order__type, {
-            [SharedStyles.Order__typeSell]: orderType === SELL
-          })}
-          style={{ textTransform: "capitalize" }}
-        >
-          {orderType}
-        </li>
-        <li>{orderShares}</li>
-        <li>{orderPrice}</li>
-        <li />
-        <li />
-        <li>
-          {pending || this.state.disableCancel ? (
-            <button className={Styles.Order__cancel} disabled>
-              PENDING
-            </button>
-          ) : (
-            <button
-              className={Styles.Order__cancel}
-              onClick={e => {
-                this.cancelOrder(order);
-              }}
-            >
-              Cancel
-            </button>
-          )}
-        </li>
-        <div className={classNames(OrphanedStyles.Order__learnMore)}>
+        <OpenOrder
+          openOrder={order}
+          extendedView={!isMobile}
+          isSingle={isMobile}
+        />
+        <div className={classNames(Styles.Order__learnMore)}>
           This is an orphaned order. Please cancel it.{" "}
-          <span className={OrphanedStyles.Order__link}>
+          <span className={Styles.Order__link}>
             <a
               href="http://docs.augur.net/#orphaned-order"
               target="_blank"
@@ -98,7 +63,7 @@ export default class OrphanedOrder extends Component {
             </a>
           </span>
         </div>
-      </ul>
+      </div>
     );
   }
 }
