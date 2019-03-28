@@ -41,6 +41,9 @@ jobs:
         dev-optimized:
           COMMAND: run docker:release -- dev-optimized
     steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.6.5'
       - task: NodeTool@0
         inputs:
           versionSpec: 10.15
@@ -71,6 +74,9 @@ jobs:
     dependsOn:
       - test_ui
     steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.6.5'
       - task: NodeTool@0
         inputs:
           versionSpec: 10.15
