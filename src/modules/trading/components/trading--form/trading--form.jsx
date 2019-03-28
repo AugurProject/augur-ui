@@ -415,10 +415,14 @@ class TradingForm extends Component {
               property === this.INPUT_TYPES.PRICE &&
               validationResults.errors[this.INPUT_TYPES.PRICE].length === 0
             ) {
-              if (this.state.lastInputModified === this.INPUT_TYPES.QUANTITY) {
+              if (
+                this.state.lastInputModified === this.INPUT_TYPES.QUANTITY &&
+                validationResults.errors[this.INPUT_TYPES.QUANTITY].length === 0
+              ) {
                 updateTradeTotalCost(order);
               } else if (
-                this.state.lastInputModified === this.INPUT_TYPES.EST_ETH
+                this.state.lastInputModified === this.INPUT_TYPES.EST_ETH &&
+                validationResults.errors[this.INPUT_TYPES.EST_ETH].length === 0
               ) {
                 updateTradeNumShares(order);
               }

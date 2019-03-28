@@ -32,7 +32,7 @@ export default class AccountOverview extends React.Component<
     this.setState({ selected: id });
     const period = constants.TIMEFRAME_OPTIONS[id].periodInterval;
     const startTime =
-      period === 0 ? 0 : this.props.currentAugurTimestamp - period;
+      period === 0 ? null : this.props.currentAugurTimestamp - period;
     this.props.updateTimeframeData({ startTime });
   };
 
