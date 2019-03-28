@@ -17,10 +17,10 @@ jobs:
         inputs:
           versionSpec: 10.15
       - script: |
-      - yarn lint && yarn test;
-      # This is here to confirm the build works.
-      # Nothing is done with the resulting artifacts.
-      - yarn build --dev
+        yarn lint && yarn test
+        # This is here to confirm the build works.
+        # Nothing is done with the resulting artifacts.
+        yarn build --dev
         displayName: 'lint and test'
       - task: PublishTestResults@2
         inputs:
