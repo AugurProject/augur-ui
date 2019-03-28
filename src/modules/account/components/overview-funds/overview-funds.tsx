@@ -1,6 +1,10 @@
 import React from "react";
+import classNames from "classnames";
 
-import { MovementLabel } from "modules/common-elements/labels";
+import {
+  MovementLabel,
+  LinearPropertyLabel
+} from "modules/common-elements/labels";
 import { EthIcon, RepLogoIcon } from "modules/common-elements/icons";
 import {
   AVAILABLE_TRADING_BALANCE,
@@ -74,13 +78,16 @@ const OverviewFunds = (props: OverviewFundsProps) => {
         columns={tradingBalanceFrozenFunds}
         showRepLogo={false}
         showEthLogo
+        changeForMobile
       />
-      <FundDataRow
-        className={Styles.RepBalanceStaked}
-        columns={repBalanceStaked}
-        showRepLogo
-        showEthLogo={false}
-      />
+      <div className={Styles.RepBalanceStaked__container}>
+        <FundDataRow
+          className={Styles.RepBalanceStaked}
+          columns={repBalanceStaked}
+          showRepLogo
+          showEthLogo={false}
+        />
+      </div>
     </div>
   );
 };
@@ -90,23 +97,40 @@ export interface FundDataRowProps {
   columns: Array<any>;
   showRepLogo: boolean;
   showEthLogo: boolean;
+  changeForMobile: boolean;
 }
 
 const FundDataRow = (props: FundDataRowProps) => {
-  const { columns, showRepLogo, showEthLogo } = props;
+  const { columns, showRepLogo, showEthLogo, changeForMobile } = props;
 
   const rows = columns.map((value: any) => (
-    <div>
-      <div>{value.title}</div>
-      <div>
-        {value.value}
-        {showEthLogo ? EthIcon : null}
+    <>
+      {changeForMobile && (
+        <span className={classNames(props.className, Styles.ShowOnMobile)}>
+          <LinearPropertyLabel
+            value={value.value}
+            label={value.title}
+            highlight
+          />
+          <div>{showEthLogo ? EthIcon : null}</div>
+        </span>
+      )}
+      <div className={classNames({ [Styles.HideOnMobile]: changeForMobile })}>
+        <div>{value.title}</div>
+        <div>
+          {value.value}
+          {showEthLogo ? EthIcon : null}
+        </div>
       </div>
-    </div>
+    </>
   ));
 
   return (
-    <div className={props.className}>
+    <div
+      className={classNames(props.className, {
+        [Styles.OverviewFunds__changeForMobile]: changeForMobile
+      })}
+    >
       {rows[0]}
       {showRepLogo ? <div>{RepLogoIcon}</div> : null}
       {rows[1]}

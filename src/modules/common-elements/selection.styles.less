@@ -211,11 +211,11 @@
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
-  height: @size-24;
+  height: @size-32;
 
   > li {
     background: transparent;
-    border: 1px solid @color-primary-light;
+    border: 1px solid fade(@color-primary-alternate-two, 20%);
     border-right: 0;
     box-sizing: border-box;
     display: flex;
@@ -225,8 +225,8 @@
     white-space: nowrap;
 
     &.Selected {
-      background: @color-primary-alternate-two;
-      border-color: @color-primary-alternate-two;
+      background: @color-theme-primary;
+      border-color: @color-theme-primary;
 
       & + li {
         border-left: 0;
@@ -235,12 +235,12 @@
 
       &:last-of-type {
         border-bottom-right-radius: @border-radius-full-round;
-        border-right: 1px solid @color-primary-alternate-two;
+        border-right: 1px solid @color-theme-primary;
         border-top-right-radius: @border-radius-full-round;
       }
 
       > button {
-        .mono-10-bold;
+        .mono-10;
 
         color: @color-secondary-text;
         line-height: @size-14;
@@ -254,7 +254,7 @@
 
     &:last-of-type {
       border-bottom-right-radius: @border-radius-full-round;
-      border-right: 1px solid @color-primary-light;
+      border-right: 1px solid fade(@color-primary-alternate-two, 20%);
       border-top-right-radius: @border-radius-full-round;
     }
 
@@ -262,9 +262,9 @@
       .mono-10;
 
       background: transparent;
-      color: @color-alternate-text;
-      line-height: @size-14;
-      padding: 0.3125rem 0.5rem;
+      color: @color-primary-alternate-two;
+      line-height: normal;
+      padding: 10px 22px;
     }
   }
 }
