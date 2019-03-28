@@ -20,7 +20,8 @@ const mapStateToProps = (state: any) => {
   return {
     notifications,
     currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
-    reportingWindowStatsEndTime: state.reportingWindowStats.endTime
+    reportingWindowStatsEndTime: state.reportingWindowStats.endTime,
+    isMobile: state.appStatus.isMobile
   };
 };
 

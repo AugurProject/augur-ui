@@ -13,6 +13,13 @@ export interface BoxHeaderProps {
 
 const BoxHeader = (props: BoxHeaderProps) => {
   if (props.isMobile) {
+    if (
+      !props.rightContent &&
+      !props.mostRightContent &&
+      !props.bottomBarContent &&
+      !props.bottomRightBarContent
+    )
+      return null;
     return (
       <div className={Styles.BoxHeader__headerContainer}>
         <div className={Styles["BoxHeader__rightContent--mobile"]}>

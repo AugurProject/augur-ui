@@ -201,7 +201,11 @@ class Notifications extends React.Component<
   }
 
   render() {
-    const { currentAugurTimestamp, reportingWindowStatsEndTime } = this.props;
+    const {
+      currentAugurTimestamp,
+      reportingWindowStatsEndTime,
+      isMobile
+    } = this.props;
     const notifications = this.props.notifications.map(notification =>
       this.getButtonAction(notification)
     );
@@ -295,7 +299,11 @@ class Notifications extends React.Component<
 
     return (
       <div className={Styles.NotificationBox}>
-        <BoxHeader title="Notifications" rightContent={labelContent} />
+        <BoxHeader
+          title="Notifications"
+          rightContent={labelContent}
+          isMobile={isMobile}
+        />
         <div className={Styles.NotificationBox__content}>
           {notificationCount === 0 ? (
             <EmptyDisplay selectedTab="" filterLabel="notifications" />
