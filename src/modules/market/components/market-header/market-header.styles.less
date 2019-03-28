@@ -149,13 +149,13 @@
 }
 
 .MarketHeader__readMoreButton {
+  .mono-14;
+
   color: @color-white;
   cursor: pointer;
-  font-size: @font-size-small;
   font-weight: 700;
   padding-bottom: 1rem;
   padding-top: 0.3rem;
-  text-transform: none;
 
   svg {
     height: 1em;
@@ -163,6 +163,7 @@
 
     polyline {
       stroke: @color-white;
+      stroke-width: 3;
     }
   }
 }
@@ -277,18 +278,37 @@
 }
 
 @media @breakpoint-mobile {
+  .MarketHeader {
+    > h1 {
+      color: @color-secondary-text;
+      font-weight: bold;
+      margin-left: @size-8;
+    }
+  }
+
+  .MarketHeader__topContainer {
+    margin-left: @size-8;
+  }
+
   .MarketHeader__properties__core {
     flex-direction: column;
     padding: 1rem 0 0;
   }
 
+  .MarketHeader__readMoreButton {
+    display: flex;
+
+    > span {
+      text-transform: uppercase;
+    }
+  }
+
   .MarketHeader__description {
-    font-size: @size-18;
+    display: none;
   }
 
   .MarketHeader__descContainer {
-    margin-bottom: 1.25rem;
-    margin-right: 0;
+    margin: 1.5625rem 0 1.25rem @size-8;
     max-width: unset;
   }
 
@@ -315,8 +335,8 @@
 
   .MarketHeader__timeStuff {
     align-items: normal;
-    background-color: @color-theme-primary;
-    margin-bottom: 1.5rem;
-    padding: 0 1rem;
+    background-color: @color-secondary-action;
+    margin: @size-8 0;
+    padding: @size-16;
   }
 }

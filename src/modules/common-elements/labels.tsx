@@ -316,11 +316,17 @@ export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
   </div>
 );
 
-export const MarketTypeLabel = (props: MarketTypeProps) => (
-  <span className={Styles.MarketTypeLabel}>
-    {props.marketType === constants.YES_NO ? "Yes/No" : props.marketType}
-  </span>
-);
+export const MarketTypeLabel = (props: MarketTypeProps) => {
+  if (!props.marketType) {
+    return null;
+  }
+
+  return (
+    <span className={Styles.MarketTypeLabel}>
+      {props.marketType === constants.YES_NO ? "Yes/No" : props.marketType}
+    </span>
+  );
+}
 
 export const MarketStatusLabel = (props: MarketStatusProps) => {
   const { marketStatus, mini, alternate } = props;
