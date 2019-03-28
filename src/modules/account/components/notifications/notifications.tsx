@@ -56,6 +56,7 @@ export interface NotificationsProps extends RouteComponentProps {
   finalizeMarketModal: Function;
   claimTradingProceeds: Function;
   claimReportingFees: Function;
+  unsignedOrdersModal: Function;
 }
 
 export interface NotificationsState {
@@ -136,6 +137,10 @@ class Notifications extends React.Component<
       case NOTIFICATION_TYPES.unsignedOrders:
         buttonAction = () => {
           this.markAsRead(notification);
+          this.disableNotification(notification.id, true);
+          this.props.unsignedOrdersModal(notification.market.id, () =>
+            this.disableNotification(notification.id, false)
+          );
         };
         break;
 
