@@ -1,7 +1,6 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+variables:
+  AWS_ACCESS_KEY_ID: $(aws_access_key_id)
+  AWS_SECRET_ACCESS_KEY: $(aws_secret_access_key)
 
 trigger:
 - master
