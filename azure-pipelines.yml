@@ -40,7 +40,6 @@ jobs:
           COMMAND: run docker:release -- kovan
         dev-optimized:
           COMMAND: run docker:release -- dev-optimized
-
     steps:
       - task: NodeTool@0
         inputs:
@@ -61,12 +60,12 @@ jobs:
           command: logout
           containerRegistryType: Container Registry
           dockerRegistryEndpoint: dockerhub-augurproject
-        condition: |
-          and
-          (
-              succeeded(),
-              eq(variables['Build.SourceBranch'], 'refs/heads/master')
-          )
+    condition: |
+      and
+      (
+          succeeded(),
+          eq(variables['Build.SourceBranch'], 'refs/heads/master')
+      )
 
   - job: deploy_ui_on_sneakpreview
     dependsOn:
@@ -91,10 +90,10 @@ jobs:
           command: logout
           containerRegistryType: Container Registry
           dockerRegistryEndpoint: dockerhub-augurproject
-        condition: |
-          and
-          (
-              succeeded(),
-              eq(variables['Build.SourceBranch'], 'refs/heads/sneakpeak')
-          )
+    condition: |
+      and
+      (
+          succeeded(),
+          eq(variables['Build.SourceBranch'], 'refs/heads/sneakpeak')
+      )
 
