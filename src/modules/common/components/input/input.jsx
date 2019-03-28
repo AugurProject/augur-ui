@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import { BigNumber, createBigNumber } from "utils/create-big-number";
 import { PulseLoader } from "react-spinners";
 
 import { IconSearch, CloseDark } from "modules/common/components/icons";
@@ -20,7 +21,13 @@ export default class Input extends Component {
     isMultiline: PropTypes.bool,
     isClearable: PropTypes.bool,
     onChange: PropTypes.func.isRequired,
+    updateValue: PropTypes.func,
     onBlur: PropTypes.func,
+    isIncrementable: PropTypes.bool,
+    incrementAmount: PropTypes.number,
+    canToggleVisibility: PropTypes.bool,
+    shouldMatchValue: PropTypes.bool,
+    comparisonValue: PropTypes.string,
     isSearch: PropTypes.bool,
     placeholder: PropTypes.string,
     maxButton: PropTypes.bool,
@@ -39,14 +46,20 @@ export default class Input extends Component {
     max: null,
     isMultiline: false,
     isClearable: false,
+    isIncrementable: false,
+    canToggleVisibility: false,
+    shouldMatchValue: false,
     isSearch: false,
     maxButton: false,
     noFocus: false,
     isLoading: false,
     lightBorder: false,
+    updateValue: null,
     onBlur: null,
     onMaxButtonClick: null,
     onFocus: null,
+    incrementAmount: null,
+    comparisonValue: null,
     placeholder: null,
     darkMaxBtn: false
   };
@@ -84,7 +97,11 @@ export default class Input extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if (!nextState.value && nextState.isHiddenContentVisible) {
+    if (
+      nextProps.canToggleVisibility &&
+      !nextState.value &&
+      nextState.isHiddenContentVisible
+    ) {
       this.updateIsHiddenContentVisible(false);
     }
 
@@ -142,7 +159,15 @@ export default class Input extends Component {
   render() {
     const {
       isClearable,
+      isIncrementable,
+      incrementAmount,
+      updateValue,
+      canToggleVisibility,
+      shouldMatchValue,
+      comparisonValue,
       isSearch,
+      min,
+      max,
       maxButton,
       onMaxButtonClick,
       noFocus,
@@ -159,12 +184,17 @@ export default class Input extends Component {
 
     return (
       <div
-        className={classNames(className, {
-          [Styles.focusBorder]: focused && !noFocus && !lightBorder,
-          [`${Styles.noFocus}`]: noFocus,
-          [`${Styles.lightBorder}`]: lightBorder,
-          [Styles.setWidth]: darkMaxBtn
-        })}
+        className={classNames(
+          isIncrementable ? Styles.Input__Incremental : Styles.Input,
+          className,
+          {
+            "can-toggle-visibility": canToggleVisibility,
+            [Styles.focusBorder]: focused && !noFocus && !lightBorder,
+            [`${Styles.noFocus}`]: noFocus,
+            [`${Styles.lightBorder}`]: lightBorder,
+            [Styles.setWidth]: darkMaxBtn
+          }
+        )}
         ref={inputHandler => {
           this.inputHandler = inputHandler;
         }}
@@ -221,6 +251,22 @@ export default class Input extends Component {
             </button>
           )}
 
+        {canToggleVisibility &&
+          value && (
+            <button
+              type="button"
+              className="button--text-only"
+              onClick={this.handleToggleVisibility}
+              tabIndex="-1"
+            >
+              {isHiddenContentVisible ? (
+                <i className="fa fa-eye-slash" />
+              ) : (
+                <i className="fa fa-eye" />
+              )}
+            </button>
+          )}
+
         {maxButton && (
           <button
             type="button"
@@ -232,7 +278,93 @@ export default class Input extends Component {
             max
           </button>
         )}
+
+        {shouldMatchValue &&
+          value && (
+            <div className="input-value-comparison">
+              {value === comparisonValue ? (
+                <i className="fa fa-check-circle input-does-match" />
+              ) : (
+                <i className="fa fa-times-circle input-does-not-match" />
+              )}
+            </div>
+          )}
+
+        {isIncrementable && (
+          <div className={Styles.value__incrementers}>
+            <button
+              type="button"
+              tabIndex="-1"
+              className={classNames(Styles["increment-value"], "unstyled")}
+              onClick={e => {
+                e.currentTarget.blur();
+
+                if ((!isNaN(parseFloat(value)) && isFinite(value)) || !value) {
+                  const bnMax = sanitizeBound(max);
+                  const bnMin = sanitizeBound(min);
+
+                  let newValue = createBigNumber(value || 0);
+
+                  if (bnMax !== null && newValue.greaterThan(bnMax)) {
+                    newValue = bnMax;
+                  } else if (bnMin !== null && newValue.lessThan(bnMin)) {
+                    newValue = bnMin.plus(createBigNumber(incrementAmount));
+                  } else {
+                    newValue = newValue.plus(createBigNumber(incrementAmount));
+                    if (bnMax !== null && newValue.greaterThan(bnMax)) {
+                      newValue = bnMax;
+                    }
+                  }
+
+                  updateValue(newValue);
+                }
+              }}
+            >
+              <i className="fa fa-angle-up" />
+            </button>
+            <button
+              type="button"
+              tabIndex="-1"
+              className="decrement-value unstyled"
+              onClick={e => {
+                e.currentTarget.blur();
+
+                if ((!isNaN(parseFloat(value)) && isFinite(value)) || !value) {
+                  const bnMax = sanitizeBound(max);
+                  const bnMin = sanitizeBound(min);
+
+                  let newValue = createBigNumber(value || 0);
+
+                  if (bnMax !== null && newValue.greaterThan(bnMax)) {
+                    newValue = bnMax.minus(createBigNumber(incrementAmount));
+                  } else if (bnMin !== null && newValue.lessThan(bnMin)) {
+                    newValue = bnMin;
+                  } else {
+                    newValue = newValue.minus(createBigNumber(incrementAmount));
+                    if (bnMin !== null && newValue.lessThan(bnMin)) {
+                      newValue = bnMin;
+                    }
+                  }
+
+                  updateValue(newValue);
+                }
+              }}
+            >
+              <i className="fa fa-angle-down" />
+            </button>
+          </div>
+        )}
       </div>
     );
   }
+}
+
+function sanitizeBound(value) {
+  if (value == null) {
+    return null;
+  } else if (!BigNumber.isBigNumber(value)) {
+    return createBigNumber(value);
+  }
+
+  return value;
 }
