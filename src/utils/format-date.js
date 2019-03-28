@@ -89,7 +89,7 @@ export function formatDate(d) {
       months[date.getMonth()]
     } ${date.getDate()}, ${date.getFullYear()}`,
     formattedTimezone: `${
-      shortMonths[date.getMonth()]
+      months[date.getMonth()]
     } ${date.getDate()}, ${date.getFullYear()} ${localTimeTwelve.join(
       ":"
     )} ${localAMPM} ${timezone} (Your timezone)`,
