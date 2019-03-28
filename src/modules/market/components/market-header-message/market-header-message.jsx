@@ -50,7 +50,7 @@ const MarketHeaderMessage = ({ marketId, dismiss, show, loggedIn }) => (
                       that errors are can be made in the creation of a market,
                       which can result in the market being resolved as invalid.
                       If a market resolves as invalid, each share is refunded to
-                      traders in equally amounts.
+                      traders in equal amounts.
                     </p>
                     <p>
                       If the reporting start time (UTC) isn’t after the actual
