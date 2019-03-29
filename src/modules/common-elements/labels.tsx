@@ -185,7 +185,7 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision = fa
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
-  if (!props.value || props.value === null) return (props.showEmptyDash ? <span>-</span>: <span />);
+  if (!props.value || props.value === null) return (props.showEmptyDash ? <span>&#8212;</span>: <span />);
 
   const expandedValues = formatExpandedValue(props.value, props.showDenomination);
 
