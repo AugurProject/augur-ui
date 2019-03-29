@@ -23,7 +23,8 @@ export const updateTopBarPL = (options = {}, callback = logError) => (
       if (err) return callback(err);
       dispatch(
         updateLoginAccount({
-          realizedPL: data[data.length - 1].realized
+          realizedPL: data[data.length - 1].realized,
+          realizedPLPercent: data[data.length - 1].realizedPercent
         })
       );
     }
