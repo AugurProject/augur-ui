@@ -30,7 +30,7 @@ const AccountView = (props: AccountViewProps) => (
         <ModulePane label="Watchlist">
           <Favorites />
         </ModulePane>
-        <ModulePane label="Open Markets">
+        <ModulePane label="Active Markets">
           <OpenMarkets />
         </ModulePane>
         <ModulePane label={constants.AUGUR_STATUS_TITLE}>
