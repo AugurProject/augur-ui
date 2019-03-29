@@ -6,7 +6,7 @@ export const updateTimeframeData = (options = {}, callback = logError) => (
   dispatch,
   getState
 ) => {
-  const { universe, loginAccount, blockchain } = getState();
+  const { universe, loginAccount } = getState();
   if (loginAccount.address == null || universe.id == null)
     return callback(null);
 
@@ -16,7 +16,7 @@ export const updateTimeframeData = (options = {}, callback = logError) => (
       account: loginAccount.address,
       universe: universe.id,
       startTime: options.startTime || null,
-      endTime: blockchain.currentAugurTimestamp
+      endTime: null
     },
     (err, timeframeData) => {
       if (err) return callback(err);
