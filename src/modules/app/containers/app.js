@@ -13,7 +13,6 @@ import {
   IS_MOBILE_SMALL,
   updateAppStatus
 } from "modules/app/actions/update-app-status";
-import getAllMarkets from "modules/markets/selectors/markets-all";
 import { initAugur } from "modules/app/actions/init-augur";
 import { updateModal } from "modules/modal/actions/update-modal";
 import {
@@ -46,7 +45,6 @@ const mapStateToProps = state => ({
   isMobileSmall: selectIsMobileSmall(state),
   isAnimating: selectIsAnimating(state),
   loginAccount: selectLoginAccountState(state),
-  markets: getAllMarkets(),
   modal: selectModal(state),
   alerts: selectInfoAlertsAndSeenCount(state),
   universe: selectUniverseState(state),

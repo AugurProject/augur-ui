@@ -99,7 +99,6 @@ export default class AppView extends Component {
     isMobileSmall: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     loginAccount: PropTypes.object.isRequired,
-    markets: PropTypes.array.isRequired,
     modal: PropTypes.object.isRequired,
     universe: PropTypes.object.isRequired,
     updateIsMobile: PropTypes.func.isRequired,
@@ -477,7 +476,6 @@ export default class AppView extends Component {
       isMobile,
       location,
       loginAccount,
-      markets,
       modal,
       universe,
       finalizeMarket,
@@ -593,7 +591,6 @@ export default class AppView extends Component {
                   mobileMenuState={s.mobileMenuState}
                   mobileMenuClick={innerNavMenuMobileClick}
                   subMenuScalar={subMenu.scalar}
-                  markets={markets}
                   openSubMenu={this.openSubMenu}
                 />
               )}
