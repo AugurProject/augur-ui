@@ -18,7 +18,6 @@ export interface FilterBoxProps {
   filterComp: Function;
   showFilterSearch?: Boolean;
   switchView: Function;
-  label: string;
   noSwitch?: Boolean;
   renderRows: Function;
   filterLabel: String;
@@ -79,7 +78,6 @@ export default class FilterSwitchBox extends React.Component<
       bottomBarContent,
       sortByOptions,
       showFilterSearch,
-      label,
       noSwitch,
       isMobile,
       renderRows,
@@ -113,7 +111,6 @@ export default class FilterSwitchBox extends React.Component<
           </div>
         }
         isMobile={isMobile}
-        label={filteredData.length + " " + label}
       />
     );
   }

@@ -105,7 +105,6 @@ export default class Positions extends Component {
         sortByOptions={sortByOptions}
         markets={markets}
         filterComp={filterComp}
-        label="Markets"
         bottomRightContent={
           <CompactButton
             text={showCurrentValue ? "Current Value (ETH)" : "Total Returns"}

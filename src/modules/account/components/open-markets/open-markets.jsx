@@ -72,7 +72,6 @@ export default class OpenMarkets extends Component {
         data={markets}
         filterComp={filterComp}
         bottomBarContent={<div className={Styles.BottomBar}>24hr Change</div>}
-        label="Active Markets"
         noSwitch
         renderRows={this.renderRows}
         isMobile={isMobile}
