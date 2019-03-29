@@ -62,9 +62,10 @@ export default class AccountOverviewChart extends React.Component<
   getChartData = (timeRangeDataConfig: TimeFrameOption) => {
     const { universe, currentAugurTimestamp } = this.props;
     const endTime = currentAugurTimestamp;
-    let startTime = currentAugurTimestamp - timeRangeDataConfig.periodInterval;
+    let startTime: number | null =
+      currentAugurTimestamp - timeRangeDataConfig.periodInterval;
     if (timeRangeDataConfig.periodInterval === 0) {
-      startTime = 0;
+      startTime = null;
     }
     this.props.getProfitLoss(
       universe,

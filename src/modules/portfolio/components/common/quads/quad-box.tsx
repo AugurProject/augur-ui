@@ -27,7 +27,6 @@ const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
     <BoxHeader
       title={props.title}
-      isMobile={props.isMobile}
       mostRightContent={
         props.sortByOptions && (
           <SquareDropdown

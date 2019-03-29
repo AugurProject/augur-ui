@@ -14,7 +14,8 @@ function filterComp(input, market) {
 export default class OpenMarkets extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
-    marketsObj: PropTypes.object.isRequired
+    marketsObj: PropTypes.object.isRequired,
+    isMobile: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -61,7 +62,7 @@ export default class OpenMarkets extends Component {
   }
 
   render() {
-    const { markets } = this.props;
+    const { markets, isMobile } = this.props;
 
     return (
       <FilterSwitchBox
@@ -74,6 +75,7 @@ export default class OpenMarkets extends Component {
         label="Open Markets"
         noSwitch
         renderRows={this.renderRows}
+        isMobile={isMobile}
       />
     );
   }

@@ -42,13 +42,6 @@ const AugurStatus = (props: AugurStatusProps) => {
             highestBlockBn={highestBlockBn}
             lastProcessedBlockBn={lastProcessedBlockBn}
           />
-          <a
-            href="https://docs.augur.net/#augur-node-functions"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {constants.LEARN_MORE_ABOUT_SYNCING}
-          </a>
           <Activity />
         </div>
       }

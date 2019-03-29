@@ -19,6 +19,7 @@ import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import { DashlineLong } from "modules/common/components/dashline/dashline";
 import getPrecision from "utils/get-number-precision";
+import convertExponentialToDecimal from "utils/convert-exponential";
 
 class TradingForm extends Component {
   static propTypes = {
@@ -316,8 +317,8 @@ class TradingForm extends Component {
       selectedNav,
       clearOrderForm
     } = this.props;
-    const value = rawValue.toString();
 
+    const value = convertExponentialToDecimal(rawValue);
     const updatedState = {
       ...this.state,
       [property]: value
@@ -415,10 +416,14 @@ class TradingForm extends Component {
               property === this.INPUT_TYPES.PRICE &&
               validationResults.errors[this.INPUT_TYPES.PRICE].length === 0
             ) {
-              if (this.state.lastInputModified === this.INPUT_TYPES.QUANTITY) {
+              if (
+                this.state.lastInputModified === this.INPUT_TYPES.QUANTITY &&
+                validationResults.errors[this.INPUT_TYPES.QUANTITY].length === 0
+              ) {
                 updateTradeTotalCost(order);
               } else if (
-                this.state.lastInputModified === this.INPUT_TYPES.EST_ETH
+                this.state.lastInputModified === this.INPUT_TYPES.EST_ETH &&
+                validationResults.errors[this.INPUT_TYPES.EST_ETH].length === 0
               ) {
                 updateTradeNumShares(order);
               }
