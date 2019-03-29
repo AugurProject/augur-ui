@@ -4,6 +4,10 @@ import classNames from "classnames";
 import Styles from "modules/common-elements/selection.styles";
 import { Chevron, TwoArrows } from "modules/common-elements/icons";
 
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+import { SingleDatePicker } from "react-dates";
+
 export interface NameValuePair {
   label: string;
   value: string;
@@ -11,7 +15,7 @@ export interface NameValuePair {
 
 export interface DropdownProps {
   onChange(value: string): void;
-  defaultValue: string | undefined;
+  defaultValue?: string;
   options: Array<NameValuePair>;
   large?: boolean;
   staticLabel?: string;
@@ -38,6 +42,35 @@ interface PillSelectionProps {
 interface PillSelectionState {
   selected: number;
 }
+interface DatePickerProps {
+  id?: string;
+  date: any;
+  placeholder?: string;
+  onDateChange: Function;
+  isOutsideRange?: Function;
+  focused?: boolean;
+  onFocusChange?: Function;
+  displayFormat: string;
+  numberOfMonths: number;
+  navPrev?: any;
+  navNext?: any;
+}
+
+export const DatePicker = (props: DatePickerProps) => (
+  <SingleDatePicker
+    id={props.id}
+    date={props.date}
+    placeholder={props.placeholder || "Date (D MMM YYYY)"}
+    onDateChange={props.onDateChange}
+    isOutsideRange={props.isOutsideRange || (() => false)}
+    focused={props.focused}
+    onFocusChange={props.onFocusChange}
+    displayFormat={props.displayFormat || "D MMM YYYY"}
+    numberOfMonths={props.numberOfMonths}
+    navPrev={props.navPrev || Chevron}
+    navNext={props.navNext || Chevron}
+  />
+);
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
   state: DropdownState = {

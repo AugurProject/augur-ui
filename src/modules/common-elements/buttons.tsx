@@ -9,7 +9,8 @@ import {
   PaperAirplaneIcon,
   DoubleArrowIcon,
   RepLogoIcon,
-  ViewIcon
+  ViewIcon,
+  DownloadIcon
 } from "modules/common-elements/icons";
 import classNames from "classnames";
 import EtherscanLink from "modules/common/containers/etherscan-link";
@@ -195,6 +196,18 @@ export const REPFaucetButton = (props: CurrencyActionButtonProps) => (
     {RepLogoIcon}
     <span>REP Faucet</span>
   </button>
+);
+
+export const ExportButton = (props: CurrencyActionButtonProps) => (
+  <button
+  onClick={e => props.action(e)}
+  className={Styles.ExportButton}
+  disabled={props.disabled}
+  title={props.title || "Export Complete History"}
+>
+  {DownloadIcon}
+  Export Complete History
+</button>
 );
 
 export const ViewTransactionDetailsButton = (
