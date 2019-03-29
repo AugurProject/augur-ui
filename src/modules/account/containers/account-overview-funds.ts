@@ -26,7 +26,8 @@ const mapStateToProps = (state: any) => {
     totalAvailableTradingBalance: formatEther(totalAvailableTradingBalance)
       .formatted,
     totalAccountValue: formatEther(totalAccountValue).formatted,
-    realizedPLPercent: formatPercent(loginAccount.realizedPLPercent).formattedValue
+    realizedPLPercent: formatPercent(loginAccount.realizedPLPercent)
+      .formattedValue
   };
 };
 
