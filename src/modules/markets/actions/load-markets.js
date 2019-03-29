@@ -100,7 +100,8 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
         REPORTING_STATE.DESIGNATED_REPORTING,
         REPORTING_STATE.OPEN_REPORTING,
         REPORTING_STATE.CROWDSOURCING_DISPUTE,
-        REPORTING_STATE.AWAITING_NEXT_WINDOW
+        REPORTING_STATE.AWAITING_NEXT_WINDOW,
+        REPORTING_STATE.AWAITING_FORK_MIGRATION
       ]);
       filter.forEach(filterType => {
         parallelParams[filterType] = next =>
