@@ -56,16 +56,16 @@ const Outcome = ({
         )}
       </li>
       <li>
-        <ValueLabel value={topBidShares} />
+        <ValueLabel value={topBidShares} showEmptyDash />
       </li>
       <li>
-        <ValueLabel value={topBidPrice} />
+        <ValueLabel value={topBidPrice} showEmptyDash />
       </li>
       <li>
-        <ValueLabel value={topAskPrice} />
+        <ValueLabel value={topAskPrice} showEmptyDash />
       </li>
       <li>
-        <ValueLabel value={topAskShares} />
+        <ValueLabel value={topAskShares} showEmptyDash />
       </li>
       <li style={{ position: "relative" }}>
         <ValueLabel value={lastPrice} />

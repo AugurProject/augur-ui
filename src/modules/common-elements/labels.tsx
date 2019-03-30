@@ -139,6 +139,7 @@ export interface ValueLabelProps {
   value: FormattedValue;
   showDenomination: boolean;
   keyId: string;
+  showEmptyDash: boolean;
 }
 
 interface HoverValueLabelState {
@@ -203,7 +204,7 @@ export function formatExpandedValue(
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
-  if (!props.value || props.value === null) return <span />;
+  if (!props.value || props.value === null) return (props.showEmptyDash ? <span>&#8212;</span>: <span />);
 
   const expandedValues = formatExpandedValue(
     props.value,
