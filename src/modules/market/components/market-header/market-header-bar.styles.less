@@ -9,6 +9,10 @@
   > span {
     margin-right: 1rem;
   }
+
+  > button {
+    margin-left: auto;
+  }
 }
 
 .MarketHeaderBar__container__collapsed {
@@ -44,8 +48,10 @@
 
 @media @breakpoint-mobile {
   .MarketHeaderBar {
+    border-top: 1px solid @color-primary-alternate;
     display: flex;
-    padding-bottom: 2rem;
+    margin-left: @size-8;
+    padding-top: @size-18;
   }
 
   .MarketHeaderBar__container {

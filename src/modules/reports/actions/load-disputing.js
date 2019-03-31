@@ -20,7 +20,10 @@ export const loadDisputing = (callback = logError) => (dispatch, getState) => {
         augur.augurNode.submitRequest(
           "getMarkets",
           {
-            reportingState: constants.REPORTING_STATE.CROWDSOURCING_DISPUTE,
+            reportingState: [
+              constants.REPORTING_STATE.CROWDSOURCING_DISPUTE,
+              constants.REPORTING_STATE.AWAITING_FORK_MIGRATION
+            ],
             ...args
           },
           (err, result) => {

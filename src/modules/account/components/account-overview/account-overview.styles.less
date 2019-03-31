@@ -2,5 +2,25 @@
 
 .AccountOverview {
   background: @color-secondary-action;
-  padding: 1.5rem 1.5rem 1rem;
+  padding: 1rem 1.5rem 1.5rem;
+}
+
+.AccountOverview__pillSelector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+@media @breakpoint-mobile {
+  .AccountOverview {
+    background: unset;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 150px);
+    padding: 0 0.5rem;
+  }
+
+  .AccountOverview__pillSelector {
+    margin-bottom: 1.5rem;
+  }
 }

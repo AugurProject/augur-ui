@@ -597,7 +597,6 @@ export const SYNC_MESSAGE_BLOCKSBEHIND =
   "Market data such as price and orderbooks may be considerably out of date.";
 export const SYNC_BENIND = "Blocks behind";
 export const SYNC_PROCESSED = "Blocks Processed";
-export const LEARN_MORE_ABOUT_SYNCING = "Learn more about syncing";
 
 // Account Summary - Notifications
 export const NEW = "New";

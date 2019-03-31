@@ -2,20 +2,20 @@
 
 .AccountOverviewChart {
   align-items: center;
-  background-color: @color-theme-primary;
   display: flex;
   flex-direction: column;
   margin-top: 1.125rem;
   padding: 1rem 0.25rem;
 
   > div:first-of-type {
-    .text-12;
+    .mono-11;
 
-    padding-bottom: 0.375rem;
+    padding-bottom: 0.625rem;
+    text-transform: uppercase;
   }
 
   > div:nth-of-type(2) {
-    .text-11;
+    .mono-11;
   }
 
   > div:nth-of-type(3) {
@@ -38,6 +38,12 @@
     color: @color-shadow-text;
     padding: 1rem 0 0.5rem;
   }
+
+  @media @breakpoint-mobile {
+    flex: 1;
+    justify-content: flex-end;
+    padding-bottom: 0;
+  }
 }
 
 .AccountOverviewChart_chart {
@@ -47,7 +53,11 @@
   svg {
     :global {
       .highcharts-background {
-        fill: @color-theme-primary;
+        fill: @color-secondary-action;
+
+        @media @breakpoint-mobile {
+          fill: @color-almost-black;
+        }
       }
 
       g.highcharts-axis-labels > text,

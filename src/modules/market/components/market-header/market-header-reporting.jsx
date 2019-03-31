@@ -145,6 +145,7 @@ export default class MarketHeaderReporting extends Component {
       ];
     } else if (
       reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE ||
+      reportingState === constants.REPORTING_STATE.AWAITING_FORK_MIGRATION ||
       reportingState === constants.REPORTING_STATE.AWAITING_NEXT_WINDOW
     ) {
       content = [

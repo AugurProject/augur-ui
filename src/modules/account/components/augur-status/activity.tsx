@@ -3,12 +3,13 @@ import React from "react";
 import { PillSelection } from "modules/common-elements/selection";
 import PlatformOverviewStats from "modules/account/containers/platform-overview-stats";
 import * as constants from "modules/common-elements/constants";
-
+import { LinearPropertyLabel } from "modules/common-elements/labels";
 import Styles from "modules/account/components/augur-status/activity.styles";
 
 export interface ActivityProps {
   updatePlatformTimeframeData: Function;
   currentAugurTimestamp: number;
+  openInterest: string;
 }
 
 interface ActivityState {
@@ -39,6 +40,12 @@ export default class Activity extends React.Component<
     return (
       <div className={Styles.Activity}>
         <span>Activity</span>
+        <LinearPropertyLabel
+          highlight
+          key="openInterest"
+          label="Open Interest"
+          value={this.props.openInterest}
+        />
         <PillSelection
           options={constants.TIMEFRAME_OPTIONS}
           defaultSelection={constants.TIMEFRAME_OPTIONS[0].id}

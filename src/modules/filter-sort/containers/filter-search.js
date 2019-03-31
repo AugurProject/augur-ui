@@ -16,8 +16,7 @@ const mapStateToProps = (state, { location }) => {
     isMobileSmall,
     category: selectedCategoryName,
     tags: selectedTagNames,
-    keywords,
-    hasLoadedMarkets: state.appStatus.hasLoadedMarkets
+    keywords
   };
 };
 

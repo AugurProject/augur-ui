@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+
+  @media @breakpoint-mobile {
+    min-height: unset;
+  }
 }
 
 .AccountView__container {
@@ -55,12 +59,5 @@
       flex: 0;
       min-height: fit-content;
     }
-  }
-}
-
-@media @breakpoint-mobile {
-  .AccountView__container {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
   }
 }

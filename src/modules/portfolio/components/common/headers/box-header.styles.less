@@ -67,3 +67,22 @@
   margin-top: 0.75rem;
   padding: 0 0.5rem;
 }
+
+.ShowOnMobile {
+  display: none;
+}
+
+.HideOnMobile {
+  display: block;
+}
+
+@media @breakpoint-mobile {
+  .ShowOnMobile {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .HideOnMobile {
+    display: none;
+  }
+}

@@ -13,7 +13,7 @@ const OverviewStats = (props: OverviewStatsProps) => (
   <div className={Styles.OverviewStats}>
     {props.properties.map(property => (
       <LinearPropertyLabel
-        large
+        highlight
         key={property.key}
         label={property.label}
         value={

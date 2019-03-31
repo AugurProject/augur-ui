@@ -9,7 +9,8 @@ import {
   MODAL_FINALIZE_MARKET,
   MODAL_SELL_COMPLETE_SETS,
   MODAL_CLAIM_PROCEEDS,
-  MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS
+  MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS,
+  MODAL_UNSIGNED_ORDERS
 } from "modules/common-elements/constants";
 
 // TODO create state Interface
@@ -44,6 +45,14 @@ const mapDispatchToProps = (dispatch: Function) => ({
         type: MODAL_SELL_COMPLETE_SETS,
         marketId,
         numCompleteSets,
+        cb
+      })
+    ),
+  unsignedOrdersModal: (marketId: string, cb: Function) =>
+    dispatch(
+      updateModal({
+        type: MODAL_UNSIGNED_ORDERS,
+        marketId,
         cb
       })
     )

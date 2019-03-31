@@ -4,4 +4,13 @@
   display: grid;
   grid-column-gap: 1.25rem;
   grid-template-columns: repeat(2, 1fr);
+
+  > div {
+    margin-bottom: 0.375rem;
+  }
+
+  @media @breakpoint-mobile {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
+

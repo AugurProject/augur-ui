@@ -60,13 +60,13 @@
         width: @size-18;
 
         > circle {
-          fill: @color-tertiary-one;
-          stroke: @color-primary-alternate;
-          stroke-width: 2;
+          fill: @color-theme-primary;
+          stroke: @color-highlight;
+          stroke-width: 1.5;
         }
 
         > path {
-          fill: @color-secondary-text;
+          fill: @color-neutral;
         }
       }
     }
@@ -77,6 +77,24 @@
 
     color: @color-secondary-text;
     line-height: @size-16;
+  }
+}
+
+.LinearPropertyLabelPercent {
+  align-items: flex-start;
+  display: flex;
+  margin-bottom: 0;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.375rem;
+  }
+
+  > div:first-of-type {
+    margin-right: 0.25rem;
+  }
+
+  > div {
+    margin-bottom: 0 !important;
   }
 }
 
@@ -109,7 +127,8 @@
   > svg {
     display: flex;
     flex-grow: 1;
-    margin: 0.5rem 0 0 0.5rem;
+    margin: @size-8 0 0 @size-8;
+    min-width: 0.625rem;
 
     > line {
       stroke: fade(@color-white, 40%);
@@ -121,24 +140,24 @@
 
     color: @color-secondary-text;
     line-height: @size-16;
-    padding-left: 0.5rem;
+    padding-left: @size-8;
 
     &.isAccented {
       color: @color-error-text;
     }
   }
 
-  &.Large {
+  &.HighlightAlternateBolded {
+    > span:last-of-type {
+      font-weight: bold;
+    }
+  }
+
+  &.HighlightFirst {
     > span:first-of-type {
       .mono-10;
 
       color: @color-shadow-text;
-    }
-
-    > span:last-of-type {
-      .mono-14-bold;
-
-      color: @color-secondary-text;
     }
   }
 
@@ -158,17 +177,6 @@
   }
 }
 
-.LinearPropertyLabelPercent {
-  .LinearPropertyLabel;
-
-  align-items: flex-start;
-  margin-bottom: 0;
-
-  > div:first-of-type {
-    margin-right: 0.25rem;
-  }
-}
-
 div.LinearPropertyViewTransaction {
   > div {
     margin-bottom: 0;
@@ -184,6 +192,10 @@ div.LinearPropertyViewTransaction {
   height: @size-24;
   padding: 0.3125rem @size-8;
   text-transform: capitalize;
+
+  @media @breakpoint-mobile {
+    margin: 0 @size-8 0 0;
+  }
 }
 
 .MarketStatus {
@@ -282,7 +294,7 @@ div.LinearPropertyViewTransaction {
 .InReporting_reportingDetails__countdown {
   > span {
     > span:first-of-type {
-      .mono-10;
+      .mono-11;
 
       color: @color-shadow-text;
       line-height: normal;
@@ -291,10 +303,22 @@ div.LinearPropertyViewTransaction {
     }
 
     > span:last-of-type {
-      .mono-10;
+      .mono-12;
 
       color: @color-secondary-text;
       line-height: normal;
+    }
+  }
+
+  @media @breakpoint-mobile {
+    > span {
+      > span:first-of-type {
+        .mono-11;
+      }
+
+      > span:last-of-type {
+        .mono-12;
+      }
     }
   }
 }
@@ -354,7 +378,7 @@ div.LinearPropertyViewTransaction {
 }
 
 .MovementLabel_Icon {
-  margin: 0 0.5rem 0 0;
+  margin: 0 @size-8 0 0;
 
   > svg {
     fill: none;

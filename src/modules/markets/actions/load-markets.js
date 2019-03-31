@@ -12,10 +12,6 @@ import {
   MARKET_CLOSED
 } from "modules/common-elements/constants";
 import { updateMarketsData } from "modules/markets/actions/update-markets-data";
-import {
-  updateAppStatus,
-  HAS_LOADED_MARKETS
-} from "modules/app/actions/update-app-status";
 
 const { REPORTING_STATE } = constants;
 
@@ -39,7 +35,6 @@ export const loadMarkets = (type, callback = logError) => (
       {}
     );
 
-    dispatch(updateAppStatus(HAS_LOADED_MARKETS, true));
     dispatch(updateMarketsData(marketsData));
     callback(null, marketsArray);
   });
@@ -90,8 +85,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     }
   }
 
-  dispatch(updateAppStatus(HAS_LOADED_MARKETS, false));
-
   const params = {
     universe: universe.id,
     category: filterOptions.category,
@@ -107,7 +100,8 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
         REPORTING_STATE.DESIGNATED_REPORTING,
         REPORTING_STATE.OPEN_REPORTING,
         REPORTING_STATE.CROWDSOURCING_DISPUTE,
-        REPORTING_STATE.AWAITING_NEXT_WINDOW
+        REPORTING_STATE.AWAITING_NEXT_WINDOW,
+        REPORTING_STATE.AWAITING_FORK_MIGRATION
       ]);
       filter.forEach(filterType => {
         parallelParams[filterType] = next =>
@@ -160,9 +154,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
       }
     });
 
-    setTimeout(() => {
-      dispatch(updateAppStatus(HAS_LOADED_MARKETS, true));
-    }, 2000);
     return cb(null, finalizedMarketList);
   });
 };

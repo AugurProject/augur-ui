@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 
 import OverviewFunds from "modules/account/components/overview-funds/overview-funds";
-import { formatEther, formatAttoRep } from "utils/format-number";
+import { formatEther, formatAttoRep, formatPercent } from "utils/format-number";
 import {
   selectLoginAccount,
   selectAccountFunds
@@ -25,7 +25,9 @@ const mapStateToProps = (state: any) => {
     totalFrozenFunds: formatEther(totalFrozenFunds).formatted,
     totalAvailableTradingBalance: formatEther(totalAvailableTradingBalance)
       .formatted,
-    totalAccountValue: formatEther(totalAccountValue).formatted
+    totalAccountValue: formatEther(totalAccountValue).formatted,
+    realizedPLPercent: formatPercent(loginAccount.realizedPLPercent)
+      .formattedValue
   };
 };
 
