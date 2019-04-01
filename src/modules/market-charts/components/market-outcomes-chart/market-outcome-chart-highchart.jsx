@@ -32,13 +32,14 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   constructor(props) {
     super(props);
+    this.ethLabel = null;
     this.state = {
       containerHeight: 0,
       containerWidth: 0,
       options: {
         title: {
           text: "",
-          y: 50
+          y: 0
         },
         lang: {
           noData: "No Completed Trades"
@@ -47,7 +48,18 @@ export default class MarketOutcomesChartHighchart extends Component {
           type: "line",
           styledMode: false,
           animation: false,
-          marginTop: 12
+          marginTop: 40,
+          events: {
+            load() {
+              const { width } = this.renderer;
+              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+            },
+            redraw() {
+              const { width } = this.renderer;
+              this.ethLabel.destroy();
+              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+            }
+          }
         },
         credits: {
           enabled: false
@@ -87,13 +99,14 @@ export default class MarketOutcomesChartHighchart extends Component {
         },
         yAxis: {
           showEmpty: true,
-          opposite: false,
+          opposite: true,
           max: createBigNumber(props.maxPrice).toFixed(props.pricePrecision),
           min: createBigNumber(props.minPrice).toFixed(props.pricePrecision),
           showFirstLabel: true,
           showLastLabel: true,
           labels: {
-            format: "{value:.4f} <span class='eth-label'>ETH</span>"
+            format: "{value:.4f}",
+            style: Styles.MarketOutcomeChartsHighcharts__yLabels
           },
           title: {
             text: ""

@@ -1,34 +1,46 @@
 import React, { ReactNode } from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
-import { SquareDropdown } from "modules/common-elements/selection";
-import { SearchBar } from "modules/common-elements/search";
 import { NameValuePair } from "modules/portfolio/types";
+import { SearchSort } from "modules/common-elements/search-sort";
+import { SquareDropdown } from "modules/common-elements/selection";
 
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
 export interface QuadBoxProps {
   title: string;
   showFilterSearch: Boolean;
-  search: string;
   sortByOptions: Array<NameValuePair>;
   updateDropdown: Function;
   onSearchChange: Function;
   content?: ReactNode;
   bottomBarContent: ReactNode;
-  label?: string;
   isMobile?: Boolean;
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
   sortByStyles?: Object;
+  switchHeaders?: Boolean;
 }
 
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
     <BoxHeader
       title={props.title}
+      switchHeaders={props.switchHeaders}
+      rightContent={
+        (props.showFilterSearch && (
+          <SearchSort
+            sortByOptions={!props.switchHeaders && props.sortByOptions}
+            updateDropdown={props.updateDropdown}
+            sortByStyles={props.sortByStyles}
+            onChange={props.onSearchChange}
+            isMobile={props.isMobile}
+          />
+        )) ||
+        props.rightContent
+      }
       mostRightContent={
-        props.sortByOptions && (
+        props.switchHeaders && (
           <SquareDropdown
             options={props.sortByOptions}
             onChange={props.updateDropdown}
@@ -37,16 +49,12 @@ const QuadBox = (props: QuadBoxProps) => (
           />
         )
       }
-      rightContent={
-        (props.showFilterSearch && (
-          <SearchBar onChange={props.onSearchChange} label={props.label} />
-        )) ||
-        props.rightContent
-      }
       bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent}
     />
-    <div className={Styles.FilterBox__content}>{props.content}</div>
+    <div className={Styles.FilterBox__content}>
+      <div className={Styles.FilterBox__container}>{props.content}</div>
+    </div>
   </div>
 );
 

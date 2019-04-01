@@ -20,7 +20,7 @@ export const positionSummary = memoize(
       outcome: outcomeId,
       total,
       totalPercent,
-      currentValue,
+      unrealizedRevenue,
       totalCost
     } = adjustedPosition;
 
@@ -44,7 +44,7 @@ export const positionSummary = memoize(
       realizedPercent: formatPercent(realizedPercent || ZERO),
       unrealizedPercent: formatPercent(unrealizedPercent || ZERO),
       totalCost: formatEther(totalCost),
-      totalValue: formatEther(currentValue),
+      totalValue: formatEther(unrealizedRevenue),
       lastPrice: formatEther(outcome.price),
       totalReturns: formatEther(total || ZERO),
       totalPercent: formatPercent(totalPercent || ZERO),
