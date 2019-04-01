@@ -72,7 +72,7 @@ export default class ModuleTabs extends Component {
                   this.state.selected === index && this.props.noBorder,
                 [Styles.ModuleTabs__activeBorderBetween]:
                   this.state.selected === index && this.props.borderBetween,
-                [Styles.ModuleTabs__activeIsNew]: child.props.isNew
+                [Styles.ModuleTabs__isNew]: child.props.isNew
               })}
             >
               {child.props.label}

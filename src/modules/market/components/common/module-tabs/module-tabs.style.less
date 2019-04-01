@@ -28,15 +28,26 @@
 .ModuleTabs__activeTab {
   background-color: @color-light-purple;
   color: white !important;
+
+  .ModuleTabs__isNew::before {
+    background: @color-outcome-four;
+    border-radius: @border-radius-default;
+    content: ' ';
+    height: @size-4;
+    position: absolute;
+    right: -0.25rem;
+    top: -0.25rem;
+    width: @size-4;
+  }
 }
 
-.ModuleTabs__activeIsNew::after {
-  background: #fd6266;
+.ModuleTabs__isNew::before {
+  background: @color-outcome-four;
   border-radius: @border-radius-default;
   content: ' ';
   height: @size-4;
   position: absolute;
-  right: 0.1875rem;
+  right: 0.25rem;
   top: 0.6875rem;
   width: @size-4;
 }
