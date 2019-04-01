@@ -166,15 +166,12 @@ export default class MarketProperties extends Component {
               />
             </li>
             <li>
-              <span>
-                {endTime && dateHasPassed(currentTimestamp, endTime.timestamp)
-                  ? "Reporting Started"
-                  : "Reporting Starts"}
-              </span>
-              <span className="value_expires">
+              <span>Reporting Start Time</span>
+              <span className="value_expires">{endTime.formattedUtc}</span>
+              <span className={Styles.MarketProperties_value_small}>
                 {isMobile
                   ? endTime.formattedLocalShort
-                  : endTime.formattedLocalShortTime}
+                  : endTime.formattedTimezone}
               </span>
             </li>
             {showResolution && (
