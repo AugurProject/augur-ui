@@ -49,7 +49,7 @@ export default class MarketOutcomesChartHighchart extends Component {
           animation: false,
           marginTop: 40,
           events: {
-            load: function () {
+            load() {
               const { width } = this.renderer;
               this.renderer.label("ETH", width - 35, 0).add();
             }
