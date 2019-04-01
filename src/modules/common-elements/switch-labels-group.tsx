@@ -35,7 +35,9 @@ export const SwitchLabelsGroup = (props: SwitchLabelsGroupProps) => (
           props.selectTab(tab.key);
         }}
       >
-        {tab.label} <span>({tab.num})</span>
+        <span>
+          {tab.label} <span>({tab.num})</span>
+        </span>
       </button>
     ))}
   </div>

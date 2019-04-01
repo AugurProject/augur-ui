@@ -55,4 +55,25 @@
       margin: auto;
     }
   }
+
+  @media @breakpoint-mobile {
+    background: unset;
+
+    > button:first-of-type {
+      flex: 1;
+    }
+
+    > button:nth-of-type(2) {
+      flex: 1;
+    }
+
+    > button:nth-of-type(3) {
+      flex: 1;
+    }
+
+    > div > button {
+      flex: 1;
+      margin: unset;
+    }
+  }
 }

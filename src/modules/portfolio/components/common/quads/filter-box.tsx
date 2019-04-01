@@ -10,8 +10,6 @@ import EmptyDisplay from "modules/portfolio/components/common/tables/empty-displ
 import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { isEqual } from "lodash";
 
-import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
-
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
 }
@@ -149,6 +147,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     return (
       <QuadBox
         title={title}
+        switchHeaders={isMobile}
         isMobile={isMobile}
         showFilterSearch={true}
         onSearchChange={this.onSearchChange}
@@ -160,7 +159,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
           <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
         }
         content={
-          <div className={Styles.FilterBox__container}>
+          <>
             {filteredData.length === 0 && (
               <EmptyDisplay selectedTab={selectedTab !== ALL_MARKETS ? selectedLabel + " " : ""} filterLabel={filterLabel} search={search} />
             )}
@@ -177,7 +176,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
                       />
                     ) : null
                )}
-          </div>
+          </>
         }
         search={search}
       />

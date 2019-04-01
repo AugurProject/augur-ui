@@ -4,8 +4,6 @@ import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import { NameValuePair, Market } from "modules/portfolio/types";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 
-import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
-
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
 }
@@ -98,7 +96,7 @@ export default class FilterSwitchBox extends React.Component<
         updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
         content={
-          <div className={Styles.FilterBox__container}>
+          <>
             {filteredData.length === 0 && (
               <EmptyDisplay
                 selectedTab=""
@@ -108,7 +106,7 @@ export default class FilterSwitchBox extends React.Component<
             )}
             {filteredData.length > 0 &&
               filteredData.map(data => renderRows(data))}
-          </div>
+          </>
         }
         isMobile={isMobile}
       />
