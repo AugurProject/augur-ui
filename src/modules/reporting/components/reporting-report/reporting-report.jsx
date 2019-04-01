@@ -35,8 +35,7 @@ export default class ReportingReport extends Component {
     submitInitialReport: PropTypes.func.isRequired,
     universe: PropTypes.string.isRequired,
     availableRep: PropTypes.string.isRequired,
-    gasPrice: PropTypes.number.isRequired,
-    getUniverseInitialReporterStake: PropTypes.func.isRequired
+    gasPrice: PropTypes.number.isRequired
   };
 
   constructor(props) {
@@ -104,10 +103,9 @@ export default class ReportingReport extends Component {
       isOpenReporting,
       universe,
       market,
-      isDRMarketCreator,
-      getUniverseInitialReporterStake
+      isDRMarketCreator
     } = this.props;
-    getUniverseInitialReporterStake(universe, (err, initialReporterStake) => {
+    augur.api.Universe.getOrCacheDesignatedReportStake(universe, (err, initialReporterStake) => {
       if (err) return console.error(err);
 
       const { designatedReportStake } = market;
