@@ -130,8 +130,21 @@ export const ImmediateImportance = (
 
 export const DownloadIcon = (
   <svg viewBox="0 0 10 14">
-    <path d="M8 6.46143L5 9.69219L2 6.46143" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
-    <rect x="4" y="10.7693" width="10.7692" height="2" rx="1" transform="rotate(-90 4 10.7693)" />
+    <path
+      d="M8 6.46143L5 9.69219L2 6.46143"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <rect
+      x="4"
+      y="10.7693"
+      width="10.7692"
+      height="2"
+      rx="1"
+      transform="rotate(-90 4 10.7693)"
+    />
   </svg>
 );
 

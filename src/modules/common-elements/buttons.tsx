@@ -200,14 +200,14 @@ export const REPFaucetButton = (props: CurrencyActionButtonProps) => (
 
 export const ExportButton = (props: CurrencyActionButtonProps) => (
   <button
-  onClick={e => props.action(e)}
-  className={Styles.ExportButton}
-  disabled={props.disabled}
-  title={props.title || "Export Complete History"}
->
-  {DownloadIcon}
-  Export Complete History
-</button>
+    onClick={e => props.action(e)}
+    className={Styles.ExportButton}
+    disabled={props.disabled}
+    title={props.title || "Export Complete History"}
+  >
+    {DownloadIcon}
+    Export Complete History
+  </button>
 );
 
 export const ViewTransactionDetailsButton = (

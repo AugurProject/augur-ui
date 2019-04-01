@@ -1,6 +1,5 @@
 @import (reference) "~assets/styles/shared";
 
-
 :global {
   .SingleDatePicker_1 {
     display: block;
@@ -9,9 +8,9 @@
   }
 
   .SingleDatePickerInput {
+    background: none !important;
     border: none;
     border-radius: @border-radius-default !important;
-    background: none !important;
   }
 
   .DateInput {
@@ -38,19 +37,19 @@
 
   .DateInput__openDown_3::before,
   .DateInput__openDown_3::after {
-    display: none;
     content: none;
+    display: none;
   }
 
   .DateInput__withCaret::before,
   .DateInput__withCaret::after {
-    display: none;
     content: none;
+    display: none;
   }
 
   .DateInput.DateInput_1.DateInput__withCaret.DateInput__withCaret_2.DateInput__openDown.DateInput__openDown_3 {
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       content: none;
       display: none;
     }
@@ -139,19 +138,20 @@
     background: none;
     border: none;
   }
+
   .DayPickerNavigation_leftButton__horizontal_3 {
     > svg {
       height: 1rem;
-      width: 1rem;
       transform: rotate(90deg);
+      width: 1rem;
     }
   }
 
   .DayPickerNavigation_rightButton__horizontal_3 {
     > svg {
       height: 1rem;
-      width: 1rem;
       transform: rotate(-90deg);
+      width: 1rem;
     }
   }
 
@@ -246,7 +246,7 @@
     display: none;
     position: absolute;
     right: 0;
-    top: 105%;
+    top: 106%;
     z-index: @mask;
 
     &.active {
@@ -285,7 +285,7 @@
 
   height: 3rem;
 
-  > .Dropdown__label {
+  > button {
     .text-16-medium;
 
     line-height: @size-18;
@@ -303,30 +303,16 @@
     }
   }
 
-  > .Dropdown__list {
-    background-color: @color-secondary-text;
-    border-radius: @border-radius-default;
-    display: none;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 105%;
+  > div > button {
+    .text-14;
 
-    &.active {
-      display: block;
-    }
+    height: 3rem;
+    line-height: @size-16;
+    padding: @size-12 @size-24;
 
-    > button {
-      .text-14;
-
-      height: 3rem;
-      line-height: @size-16;
-      padding: @size-12 @size-24;
-
-      &::before {
-        left: @size-24;
-        right: @size-24;
-      }
+    &::before {
+      left: @size-24;
+      right: @size-24;
     }
   }
 }
@@ -342,7 +328,7 @@
     outline: none;
   }
 
-  > .Dropdown__label {
+  > button {
     .text-10;
 
     line-height: @size-12;
@@ -359,34 +345,21 @@
     }
   }
 
-  > .Dropdown__list {
-    background-color: @color-secondary-text;
-    border-radius: @border-radius-default;
-    display: none;
-    position: absolute;
-    right: 0;
-    top: 105%;
+  > div > button {
+    .text-10;
 
-    &.active {
-      display: block;
-    }
+    height: 2rem;
+    line-height: @size-12;
+    padding: @size-10 @size-12;
 
-    > button {
-      .text-10;
-
-      height: 2rem;
-      line-height: @size-12;
-      padding: @size-10 @size-12;
-
-      &::before {
-        left: @size-12;
-        right: @size-12;
-      }
+    &::before {
+      left: @size-12;
+      right: @size-12;
     }
   }
 }
 
-.Dropdown__stretchOut {
+.Dropdown_stretchOut {
   max-width: unset;
 
   > div {
@@ -394,13 +367,20 @@
   }
 }
 
-.Dropdown__isOpen {
+.Dropdown_isOpen {
   > button {
     background: fade(@color-highlight, 30%);
 
     > svg > path {
       stroke: @color-secondary-text;
     }
+  }
+}
+
+.Dropdown_openTop {
+  > div {
+    bottom: 106%;
+    top: unset;
   }
 }
 

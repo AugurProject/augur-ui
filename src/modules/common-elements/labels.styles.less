@@ -12,6 +12,25 @@
   }
 }
 
+.TextLabel {
+  color: inherit;
+  z-index: 2;
+
+  > label {
+    color: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  > div {
+    .text-12;
+
+    max-width: 320px;
+    padding: @size-12 @size-12 @size-8;
+  }
+}
+
 .HoverValueLabel {
   color: inherit;
   cursor: pointer;

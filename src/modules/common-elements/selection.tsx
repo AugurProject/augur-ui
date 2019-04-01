@@ -21,6 +21,7 @@ export interface DropdownProps {
   staticLabel?: string;
   stretchOut?: boolean;
   sortByStyles?: Object;
+  openTop?: boolean;
 }
 
 interface DropdownState {
@@ -120,7 +121,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   };
 
   render() {
-    const { sortByStyles, options, large, stretchOut } = this.props;
+    const { sortByStyles, options, large, stretchOut, openTop } = this.props;
     const { selected, showList } = this.state;
     return (
       <div
@@ -128,8 +129,9 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         className={classNames({
           [Styles.Dropdown_Large]: large,
           [Styles.Dropdown_Normal]: !large,
-          [Styles.Dropdown__stretchOut]: stretchOut,
-          [Styles.Dropdown__isOpen]: showList
+          [Styles.Dropdown_stretchOut]: stretchOut,
+          [Styles.Dropdown_isOpen]: showList,
+          [Styles.Dropdown_openTop]: openTop
         })}
         ref={dropdown => {
           this.refDropdown = dropdown;
@@ -138,11 +140,11 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         tabIndex={0}
         onClick={this.toggleList}
       >
-        <button className={Styles.Dropdown__label}>
+        <button className={Styles.Dropdown_label}>
           {selected.label} {large ? TwoArrows : Chevron}
         </button>
         <div
-          className={classNames(Styles.Dropdown__list, {
+          className={classNames(Styles.Dropdown_list, {
             [`${Styles.active}`]: showList
           })}
         >
@@ -173,16 +175,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   }
 }
 
-export const SquareDropdown = (props: DropdownProps) => (
-  <Dropdown
-    defaultValue={props.defaultValue}
-    onChange={props.onChange}
-    options={props.options}
-    large={props.large}
-    stretchOut={props.stretchOut}
-    sortByStyles={props.sortByStyles}
-  />
-);
+export const SquareDropdown = (props: DropdownProps) => <Dropdown {...props} />;
 
 export class StaticLabelDropdown extends Dropdown {
   render() {
@@ -203,13 +196,13 @@ export class StaticLabelDropdown extends Dropdown {
         tabIndex={0}
         onClick={this.toggleList}
       >
-        <button className={Styles.Dropdown__label}>
+        <button>
           {staticLabel}
           &nbsp;
           <b>{selected.label}</b> {large ? TwoArrows : Chevron}
         </button>
         <div
-          className={classNames(Styles.Dropdown__list, {
+          className={classNames({
             [`${Styles.active}`]: showList
           })}
         >

@@ -146,6 +146,11 @@ interface HoverValueLabelState {
   hover: boolean;
 }
 
+export interface TextLabelProps {
+  text: string;
+  keyId: string;
+}
+
 const maxHoverDecimals = 8;
 const minHoverDecimals = 4;
 
@@ -204,7 +209,8 @@ export function formatExpandedValue(
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
-  if (!props.value || props.value === null) return (props.showEmptyDash ? <span>&#8212;</span>: <span />);
+  if (!props.value || props.value === null)
+    return props.showEmptyDash ? <span>&#8212;</span> : <span />;
 
   const expandedValues = formatExpandedValue(
     props.value,
@@ -244,6 +250,39 @@ export const ValueLabel = (props: ValueLabelProps) => {
     </span>
   );
 };
+
+export class TextLabel extends React.Component<TextLabelProps> {
+  labelRef: any = null;
+  render() {
+    const { text, keyId } = this.props;
+    const isDisabled = !(
+      this.labelRef && this.labelRef.scrollWidth > this.labelRef.clientWidth
+    );
+    return (
+      <span className={Styles.TextLabel}>
+        <label
+          ref={label => (this.labelRef = label)}
+          data-tip
+          data-for={`${keyId}-${text.replace(" ", "-")}`}
+        >
+          {text}
+        </label>
+        <ReactTooltip
+          id={`${keyId}-${text.replace(" ", "-")}`}
+          className={TooltipStyles.Tooltip}
+          effect="solid"
+          place="top"
+          type="light"
+          data-event="mouseover"
+          data-event-off="blur scroll"
+          disable={isDisabled}
+        >
+          {text}
+        </ReactTooltip>
+      </span>
+    );
+  }
+}
 
 export class HoverValueLabel extends React.Component<
   ValueLabelProps,
