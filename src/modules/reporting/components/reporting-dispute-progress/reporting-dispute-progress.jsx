@@ -91,7 +91,7 @@ const ReportingDisputeProgress = ({
             <div
               className={Styles["ReportingDisputeProgress__dispute-tentative"]}
             >
-              Bond Filled
+              New Tentative
             </div>
           )}
       </section>
