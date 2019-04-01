@@ -67,12 +67,13 @@ export default class OpenMarkets extends Component {
     return (
       <FilterSwitchBox
         filterLabel="markets"
-        title="Open Markets"
+        title="Active Markets"
         showFilterSearch
         data={markets}
         filterComp={filterComp}
-        bottomBarContent={<div className={Styles.BottomBar}>24hr Change</div>}
-        label="Open Markets"
+        bottomBarContent={
+          !isMobile && <div className={Styles.BottomBar}>24hr Change</div>
+        }
         noSwitch
         renderRows={this.renderRows}
         isMobile={isMobile}

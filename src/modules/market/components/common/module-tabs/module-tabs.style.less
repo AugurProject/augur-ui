@@ -100,7 +100,7 @@
   > li {
     > button {
       font-size: @size-12;
-      padding: 0.875rem 0.5rem;
+      padding: 1rem 0.5rem;
       text-transform: uppercase;
     }
   }
@@ -131,5 +131,18 @@
 }
 
 .ModuleTabs__activeNoBorder {
-  border-bottom: 1px solid @color-underline;
+  border: 0;
+  padding-bottom: 0.25rem;
+  position: relative;
+
+  &::after {
+    background-color: @color-underline;
+    border-radius: @size-9;
+    bottom: -0.25rem;
+    content: "";
+    height: 2px;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
 }

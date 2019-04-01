@@ -8,7 +8,7 @@ import { isEqual } from "lodash";
 import { ZERO } from "src/modules/common-elements/constants";
 
 const HIGHLIGHTED_LINE_WIDTH = 2;
-const NUM_YAXIS_PLOT_LINES = 2;
+const NUM_YAXIS_PLOT_LINES = 1;
 
 interface PlotData {
   timestamp: number;
@@ -130,12 +130,14 @@ export default class AccountProfitLossChart extends Component<
     if (bnMin.eq(ZERO) && bnMax.gt(ZERO))
       bnMin = createBigNumber(bnMax.times(-1));
 
+    const tick = bnMax
+      .minus(bnMin)
+      .dividedBy(NUM_YAXIS_PLOT_LINES)
+      .abs();
     return {
-      tickInterval: bnMax
-        .minus(bnMin)
-        .dividedBy(NUM_YAXIS_PLOT_LINES)
-        .abs()
-        .toNumber(),
+      tickInterval: tick.gt(ZERO)
+        ? Math.floor(tick.toNumber())
+        : tick.toNumber(),
       max: bnMax.eq(ZERO) ? 1 : bnMax.plus(bnMax.times(1.1)).toNumber(),
       min: bnMin.eq(ZERO) ? -1 : bnMin.minus(bnMin.times(0.1).abs()).toNumber()
     };

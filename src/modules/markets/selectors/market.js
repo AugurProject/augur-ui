@@ -418,7 +418,7 @@ const assembleMarket = (
     }
     if (market.userPositions.length > 0) {
       market.myPositionsSummary.currentValue = formatEther(
-        marketPositions.currentValue || ZERO
+        marketPositions.unrealizedRevenue || ZERO
       );
 
       market.myPositionsSummary.totalReturns = formatEther(

@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
-import { constants as  serviceConstants } from "services/constants";
+import { constants as serviceConstants } from "services/constants";
 import Styles from "modules/common-elements/labels.styles";
 import { ClipLoader } from "react-spinners";
 import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
@@ -9,10 +9,15 @@ import { MarketProgress } from "modules/common-elements/progress";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { createBigNumber } from "utils/create-big-number";
+import { DashlineNormal } from "modules/common/components/dashline/dashline";
 import {
-  DashlineNormal
-} from "modules/common/components/dashline/dashline";
-import { SELL, BOUGHT, SOLD, CLOSED, SHORT, ZERO } from "modules/common-elements/constants";
+  SELL,
+  BOUGHT,
+  SOLD,
+  CLOSED,
+  SHORT,
+  ZERO
+} from "modules/common-elements/constants";
 import { ViewTransactionDetailsButton } from "modules/common-elements/buttons";
 import { formatNumber } from "utils/format-number";
 
@@ -35,10 +40,10 @@ export interface MarketStatusProps {
 }
 
 export interface InReportingLabelProps extends MarketStatusProps {
-  reportingState: string,
-  disputeInfo: any,
-  endTime: object,
-  reportingWindowStatsEndTime: number,
+  reportingState: string;
+  disputeInfo: any;
+  endTime: object;
+  reportingWindowStatsEndTime: number;
   currentAugurTimestamp: number;
 }
 
@@ -92,7 +97,6 @@ export interface LinearPropertyLabelPercentProps {
   highlightFirst?: boolean;
 }
 
-
 export interface LinearPropertyLabelPercentMovementProps {
   label: string;
   value: string;
@@ -135,6 +139,7 @@ export interface ValueLabelProps {
   value: FormattedValue;
   showDenomination: boolean;
   keyId: string;
+  showEmptyDash: boolean;
 }
 
 interface HoverValueLabelState {
@@ -144,13 +149,25 @@ interface HoverValueLabelState {
 const maxHoverDecimals = 8;
 const minHoverDecimals = 4;
 
-export function formatExpandedValue(value, showDenomination, fixedPrecision = false, max = "1000", min = "0.0001") {
-  const { fullPrecision, roundedFormatted, denomination, formattedValue, minimized } = value;
+export function formatExpandedValue(
+  value,
+  showDenomination,
+  fixedPrecision = false,
+  max = "1000",
+  min = "0.0001"
+) {
+  const {
+    fullPrecision,
+    roundedFormatted,
+    denomination,
+    formattedValue,
+    minimized
+  } = value;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan = testValue.abs().gt(max);
   const isLessThan = testValue.abs().lt(min) && !testValue.eq(ZERO);
-  let postfix = (isGreaterThan || isLessThan) ? String.fromCodePoint(0x2026) : "";
+  let postfix = isGreaterThan || isLessThan ? String.fromCodePoint(0x2026) : "";
   let frontFacingLabel = isGreaterThan ? fullWithoutDecimals : roundedFormatted;
   const denominationLabel = showDenomination ? `${denomination}` : "";
 
@@ -158,7 +175,10 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision = fa
   if (fixedPrecision) {
     const decimals = fullValue.toString().split(".")[1];
     if (decimals && decimals.length > maxHoverDecimals) {
-      const round = formatNumber(fullPrecision, {decimals: maxHoverDecimals, decimalsRounded: maxHoverDecimals});
+      const round = formatNumber(fullPrecision, {
+        decimals: maxHoverDecimals,
+        decimalsRounded: maxHoverDecimals
+      });
       fullValue = round.formatted;
     }
 
@@ -180,13 +200,16 @@ export function formatExpandedValue(value, showDenomination, fixedPrecision = fa
     postfix,
     frontFacingLabel,
     denominationLabel
-  }
+  };
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
-  if (!props.value || props.value === null) return (<span />);
+  if (!props.value || props.value === null) return (props.showEmptyDash ? <span>&#8212;</span>: <span />);
 
-  const expandedValues = formatExpandedValue(props.value, props.showDenomination);
+  const expandedValues = formatExpandedValue(
+    props.value,
+    props.showDenomination
+  );
 
   const {
     fullPrecision,
@@ -197,7 +220,13 @@ export const ValueLabel = (props: ValueLabelProps) => {
 
   return (
     <span className={Styles.ValueLabel}>
-      <label data-tip data-for={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`} data-iscapture="true">
+      <label
+        data-tip
+        data-for={`valueLabel-${fullPrecision}-${denominationLabel}-${
+          props.keyId
+        }`}
+        data-iscapture="true"
+      >
         {`${frontFacingLabel}${postfix}${denominationLabel}`}
       </label>
       <ReactTooltip
@@ -224,20 +253,21 @@ export class HoverValueLabel extends React.Component<
     hover: false
   };
   render() {
-    if (!this.props.value || this.props.value === null) return (<span />);
+    if (!this.props.value || this.props.value === null) return <span />;
 
-    const expandedValues = formatExpandedValue(this.props.value, this.props.showDenomination, true, "99999");
-    const {
-      fullPrecision,
-      postfix,
-      frontFacingLabel,
-    } = expandedValues;
+    const expandedValues = formatExpandedValue(
+      this.props.value,
+      this.props.showDenomination,
+      true,
+      "99999"
+    );
+    const { fullPrecision, postfix, frontFacingLabel } = expandedValues;
 
-    const frontFacingLabelSplit = frontFacingLabel.toString().split('.');
+    const frontFacingLabelSplit = frontFacingLabel.toString().split(".");
     const firstHalf = frontFacingLabelSplit[0];
     const secondHalf = frontFacingLabelSplit[1];
 
-    const fullPrecisionSplit = fullPrecision.toString().split('.');
+    const fullPrecisionSplit = fullPrecision.toString().split(".");
     const firstHalfFull = fullPrecisionSplit[0];
     const secondHalfFull = fullPrecisionSplit[1];
 
@@ -255,10 +285,26 @@ export class HoverValueLabel extends React.Component<
           });
         }}
       >
-      {this.state.hover && postfix.length !== 0 ?
-        <span><span>{firstHalfFull}{secondHalfFull && "."}</span><span>{secondHalfFull}</span></span> :
-        <span><span>{firstHalf}{secondHalf && "."}</span><span>{secondHalf}{postfix}</span></span>
-      }
+        {this.state.hover && postfix.length !== 0 ? (
+          <span>
+            <span>
+              {firstHalfFull}
+              {secondHalfFull && "."}
+            </span>
+            <span>{secondHalfFull}</span>
+          </span>
+        ) : (
+          <span>
+            <span>
+              {firstHalf}
+              {secondHalf && "."}
+            </span>
+            <span>
+              {secondHalf}
+              {postfix}
+            </span>
+          </span>
+        )}
       </span>
     );
   }
@@ -294,25 +340,35 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
 );
 
 export const LinearPropertyLabel = (props: LinearPropertyLabelProps) => (
-  <div className={classNames(Styles.LinearPropertyLabel, {
-    [Styles.HighlightAlternate]: props.highlightAlternate || props.highlightAlternateBolded,
-    [Styles.Highlight]: props.highlight,
-    [Styles.HighlightAlternateBolded]: props.highlightAlternateBolded,
-    [Styles.HighlightFirst]: props.highlightFirst,
-    })}>
+  <div
+    className={classNames(Styles.LinearPropertyLabel, {
+      [Styles.HighlightAlternate]:
+        props.highlightAlternate || props.highlightAlternateBolded,
+      [Styles.Highlight]: props.highlight,
+      [Styles.HighlightAlternateBolded]: props.highlightAlternateBolded,
+      [Styles.HighlightFirst]: props.highlightFirst
+    })}
+  >
     <span>{props.label}</span>
     <DashlineNormal />
-    {props.useValueLabel ? <ValueLabel value={props.value} showDenomination={props.showDenomination} /> :
+    {props.useValueLabel ? (
+      <ValueLabel
+        value={props.value}
+        showDenomination={props.showDenomination}
+      />
+    ) : (
       <span
-        className={
-          (classNames({
-            [Styles.isAccented]: props.accentValue
-          }))
-        }
+        className={classNames({
+          [Styles.isAccented]: props.accentValue
+        })}
       >
-        {props.value && props.value.formatted ? `${props.value.formatted} ${props.showDenomination ? props.value.denomination : ""}`: props.value}
+        {props.value && props.value.formatted
+          ? `${props.value.formatted} ${
+              props.showDenomination ? props.value.denomination : ""
+            }`
+          : props.value}
       </span>
-    }
+    )}
   </div>
 );
 
@@ -326,7 +382,7 @@ export const MarketTypeLabel = (props: MarketTypeProps) => {
       {props.marketType === constants.YES_NO ? "Yes/No" : props.marketType}
     </span>
   );
-}
+};
 
 export const MarketStatusLabel = (props: MarketStatusProps) => {
   const { marketStatus, mini, alternate } = props;
@@ -364,7 +420,15 @@ export const MarketStatusLabel = (props: MarketStatusProps) => {
 };
 
 export const InReportingLabel = (props: InReportingLabelProps) => {
-  const { mini, alternate, reportingState, disputeInfo, endTime, reportingWindowStatsEndTime, currentAugurTimestamp } = props;
+  const {
+    mini,
+    alternate,
+    reportingState,
+    disputeInfo,
+    endTime,
+    reportingWindowStatsEndTime,
+    currentAugurTimestamp
+  } = props;
 
   const reportingStates = [
     REPORTING_STATE.DESIGNATED_REPORTING,
@@ -374,47 +438,57 @@ export const InReportingLabel = (props: InReportingLabelProps) => {
   ];
 
   if (!reportingStates.includes(reportingState)) {
-    return <MarketStatusLabel {...props} />
+    return <MarketStatusLabel {...props} />;
   }
 
   let reportingCountdown: boolean = false;
   let reportingExtraText: string | null;
-  let text: string = constants.IN_REPORTING;
+  const text: string = constants.IN_REPORTING;
   let customLabel: string | null = null;
 
-  if (reportingState === REPORTING_STATE.DESIGNATED_REPORTING)  {
+  if (reportingState === REPORTING_STATE.DESIGNATED_REPORTING) {
     reportingExtraText = constants.WAITING_ON_REPORTER;
     reportingCountdown = true;
     customLabel = constants.REPORTING_ENDS;
-  }
-  else if (reportingState === REPORTING_STATE.OPEN_REPORTING)  {
+  } else if (reportingState === REPORTING_STATE.OPEN_REPORTING) {
     reportingExtraText = constants.OPEN_REPORTING;
-  }
-  else if (reportingState === REPORTING_STATE.AWAITING_NEXT_WINDOW)  {
+  } else if (reportingState === REPORTING_STATE.AWAITING_NEXT_WINDOW) {
     reportingExtraText = constants.AWAITING_NEXT_DISPUTE;
     reportingCountdown = true;
-  }
-  else if (reportingState === REPORTING_STATE.CROWDSOURCING_DISPUTE)  {
-    reportingExtraText = disputeInfo && disputeInfo.disputeRound ? `${constants.DISPUTE_ROUND} ${disputeInfo.disputeRound}` : constants.DISPUTE_ROUND;
+  } else if (
+    reportingState === REPORTING_STATE.CROWDSOURCING_DISPUTE ||
+    reportingState === REPORTING_STATE.AWAITING_FORK_MIGRATION
+  ) {
+    reportingExtraText =
+      disputeInfo && disputeInfo.disputeRound
+        ? `${constants.DISPUTE_ROUND} ${disputeInfo.disputeRound}`
+        : constants.DISPUTE_ROUND;
     reportingCountdown = true;
     customLabel = constants.DISPUTE_ENDS;
-  }
-  else {
+  } else {
     reportingExtraText = null;
   }
 
   return (
     <>
       <span
-        className={classNames(Styles.MarketStatus, Styles.MarketStatus_reporting, {
-          [Styles.MarketStatus_alternate]: alternate,
-          [Styles.MarketStatus_mini]: mini,
-        })}
+        className={classNames(
+          Styles.MarketStatus,
+          Styles.MarketStatus_reporting,
+          {
+            [Styles.MarketStatus_alternate]: alternate,
+            [Styles.MarketStatus_mini]: mini
+          }
+        )}
       >
         {text}
-        { reportingExtraText && <span className={Styles.InReporting_reportingDetails}>{reportingExtraText}</span>}
+        {reportingExtraText && (
+          <span className={Styles.InReporting_reportingDetails}>
+            {reportingExtraText}
+          </span>
+        )}
       </span>
-      { reportingCountdown &&
+      {reportingCountdown && (
         <span className={classNames({ [Styles.MarketStatus_mini]: mini })}>
           <span className={Styles.InReporting_reportingDetails__countdown}>
             <MarketProgress
@@ -426,7 +500,7 @@ export const InReportingLabel = (props: InReportingLabelProps) => {
             />
           </span>
         </span>
-      }
+      )}
     </>
   );
 };
@@ -561,43 +635,53 @@ export const PositionTypeLabel = (props: PositionTypeLabelProps) => {
   if (props.pastTense) type = props.type !== SELL ? BOUGHT : SOLD;
 
   return (
-    <span className={classNames(Styles.PositionTypeLabel, {
-          [Styles.Sell]: props.type === SHORT || props.type === SELL,
-          [Styles.Closed]: props.type === CLOSED,
-        })}>
-       {type}
+    <span
+      className={classNames(Styles.PositionTypeLabel, {
+        [Styles.Sell]: props.type === SHORT || props.type === SELL,
+        [Styles.Closed]: props.type === CLOSED
+      })}
+    >
+      {type}
     </span>
   );
-}
+};
 
-export const LinearPropertyLabelMovement = (props: LinearPropertyLabelPercentMovementProps) => (
-    <span className={Styles.LinearPropertyLabelPercent}>
-      <LinearPropertyLabel
-        label={props.label}
-        value={props.value}
-        highlightFirst={props.highlightFirst}
-        highlightAlternate
-      />
-      <MovementLabel
-        showIcon={props.showIcon}
-        showPercent={props.showPercent}
-        showBrackets={props.showBrackets}
-        showPlusMinus={props.showPlusMinus}
-        showColors={props.showColors}
-        size={SizeTypes.NORMAL}
-        value={props.numberValue}
-      />
-    </span>
+export const LinearPropertyLabelMovement = (
+  props: LinearPropertyLabelPercentMovementProps
+) => (
+  <span className={Styles.LinearPropertyLabelPercent}>
+    <LinearPropertyLabel
+      label={props.label}
+      value={props.value}
+      highlightFirst={props.highlightFirst}
+      highlightAlternate
+    />
+    <MovementLabel
+      showIcon={props.showIcon}
+      showPercent={props.showPercent}
+      showBrackets={props.showBrackets}
+      showPlusMinus={props.showPlusMinus}
+      showColors={props.showColors}
+      size={SizeTypes.NORMAL}
+      value={props.numberValue}
+    />
+  </span>
 );
 
-export const LinearPropertyViewTransaction = (props: LinearPropertyLabelViewTransactionProps) => (
-    <div className={classNames(Styles.LinearPropertyLabel, Styles.LinearPropertyViewTransaction)}>
-      <LinearPropertyLabel
-        label={"Transaction Details"}
-        value={""}
-        highlightFirst={props.highlightFirst}
-      />
-      <ViewTransactionDetailsButton transactionHash={props.transactionHash}/>
-    </div>
+export const LinearPropertyViewTransaction = (
+  props: LinearPropertyLabelViewTransactionProps
+) => (
+  <div
+    className={classNames(
+      Styles.LinearPropertyLabel,
+      Styles.LinearPropertyViewTransaction
+    )}
+  >
+    <LinearPropertyLabel
+      label="Transaction Details"
+      value=""
+      highlightFirst={props.highlightFirst}
+    />
+    <ViewTransactionDetailsButton transactionHash={props.transactionHash} />
+  </div>
 );
-
