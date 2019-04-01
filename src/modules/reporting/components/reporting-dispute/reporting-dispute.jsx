@@ -15,7 +15,7 @@ import { TYPE_VIEW } from "modules/markets/constants/link-types";
 import { isEmpty } from "lodash";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-report/reporting-report.styles";
-import InvaildMessage from "modules/reporting/components/common/invalid-message";
+import InvalidMessage from "modules/reporting/components/common/invalid-message";
 
 export default class ReportingDispute extends Component {
   static propTypes = {
@@ -155,7 +155,7 @@ export default class ReportingDispute extends Component {
                     stakeInfo={s.stakeInfo}
                     availableRep={availableRep}
                   />
-                  <InvaildMessage />
+                  <InvalidMessage />
                 </div>
               </div>
             )}

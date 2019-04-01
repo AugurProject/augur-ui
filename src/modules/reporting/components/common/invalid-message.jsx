@@ -1,8 +1,8 @@
 import React from "react";
-import Styles from "modules/reporting/components/common/invaild-message.styles";
+import Styles from "modules/reporting/components/common/invalid-message.styles";
 
-const InvaildMessage = () => (
-  <div className={Styles.InvaildMessage}>
+const InvalidMessage = () => (
+  <div className={Styles.InvalidMessage}>
     <div>
       If a timezone isn’t provided in the Market Question and/or Additional
       Details, use the{" "}
@@ -39,4 +39,4 @@ const InvaildMessage = () => (
   </div>
 );
 
-export default InvaildMessage;
+export default InvalidMessage;

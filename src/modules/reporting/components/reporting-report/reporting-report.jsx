@@ -17,7 +17,7 @@ import ReportingReportConfirm from "modules/reporting/components/reporting-repor
 import { TYPE_VIEW } from "modules/markets/constants/link-types";
 import { isEmpty } from "lodash";
 import FormStyles from "modules/common/less/form";
-import InvaildMessage from "modules/reporting/components/common/invalid-message";
+import InvalidMessage from "modules/reporting/components/common/invalid-message";
 import Styles from "modules/reporting/components/reporting-report/reporting-report.styles";
 
 export default class ReportingReport extends Component {
@@ -205,7 +205,7 @@ export default class ReportingReport extends Component {
                     insufficientRep={insufficientRep}
                     isDesignatedReporter={isDesignatedReporter}
                   />
-                  <InvaildMessage />
+                  <InvalidMessage />
                 </div>
               </div>
             )}
