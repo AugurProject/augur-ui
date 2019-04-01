@@ -1,13 +1,22 @@
 import React from "react";
+import Styles from "modules/reporting/components/common/invaild-message.styles";
 
 const InvaildMessage = () => (
-  <>
+  <div className={Styles.InvaildMessage}>
     <div>
       If a timezone isn’t provided in the Market Question and/or Additional
-      Details, use the Official Reporting Start Time in UTC-0
+      Details, use the{" "}
+      <span className={Styles.bolden}>
+        Official Reporting Start Time in{" "}
+        <a href="https://en.wikipedia.org/wiki/Coordinated_Universal_Time">
+          UTC-0
+        </a>
+      </span>
     </div>
     <div>
-      Guidelines for spotting markets that resolve as invalid:
+      <span className={Styles.bolden}>
+        Guidelines for spotting markets that resolve as invalid:
+      </span>
       <ul>
         <li>The question is subjective in nature</li>
         <li>The outcome was not known at market end time</li>
@@ -24,11 +33,10 @@ const InvaildMessage = () => (
         </li>
         <li>
           The resolution source provides different answers to different viewers.
-          a
         </li>
       </ul>
     </div>
-  </>
+  </div>
 );
 
 export default InvaildMessage;
