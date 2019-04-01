@@ -32,10 +32,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   refSearch: any = null;
 
   handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (this.refContainer && !this.refContainer.contains(event.target)) {
-      this.setState({ isFocused: false });
-      this.props.onFocus(true);
-    } else if (this.refContainer && this.refContainer.contains(event.target)) {
+    if (this.refContainer && this.refContainer.contains(event.target)) {
       this.refSearch.focus();
     }
   };
