@@ -9,6 +9,7 @@ export interface BoxHeaderProps {
   rows?: ReactNode;
   bottomBarContent?: ReactNode;
   bottomRightBarContent?: ReactNode;
+  switchHeaders?: boolean;
 }
 
 const BoxHeader = (props: BoxHeaderProps) => (
@@ -22,12 +23,26 @@ const BoxHeader = (props: BoxHeaderProps) => (
       <div className={Styles["BoxHeader__rightContent--mobile"]}>
         {props.rightContent}
       </div>
-      <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
-        {props.mostRightContent}
-      </div>
-      <div className={Styles["BoxHeader__bottomContent--mobile"]}>
-        {props.bottomBarContent}
-      </div>
+      {props.switchHeaders && (
+        <>
+          <div className={Styles["BoxHeader__bottomContent--mobile"]}>
+            {props.bottomBarContent}
+          </div>
+          <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
+            {props.mostRightContent}
+          </div>
+        </>
+      )}
+      {!props.switchHeaders && (
+        <>
+          <div className={Styles["BoxHeader__bottomContent--mobile"]}>
+            {props.bottomBarContent}
+          </div>
+          <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
+            {props.mostRightContent}
+          </div>
+        </>
+      )}
       {props.bottomRightBarContent && (
         <div className={Styles["BoxHeader__bottomRightContent--mobile"]}>
           {props.bottomRightBarContent}

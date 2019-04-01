@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
 import { NameValuePair } from "modules/portfolio/types";
 import { SearchSort } from "modules/common-elements/search-sort";
+import { SquareDropdown } from "modules/common-elements/selection";
 
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
@@ -18,17 +19,18 @@ export interface QuadBoxProps {
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
   sortByStyles?: Object;
+  switchHeaders?: Boolean;
 }
 
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
     <BoxHeader
       title={props.title}
-      mostRightContent={
+      switchHeaders={props.switchHeaders}
+      rightContent={
         (props.showFilterSearch && (
           <SearchSort
-            sortByOptions={props.sortByOptions}
-            options={props.sortByOptions}
+            sortByOptions={!props.switchHeaders && props.sortByOptions}
             updateDropdown={props.updateDropdown}
             sortByStyles={props.sortByStyles}
             onChange={props.onSearchChange}
@@ -36,6 +38,16 @@ const QuadBox = (props: QuadBoxProps) => (
           />
         )) ||
         props.rightContent
+      }
+      mostRightContent={
+        props.switchHeaders && (
+          <SquareDropdown
+            options={props.sortByOptions}
+            onChange={props.updateDropdown}
+            stretchOut={props.isMobile}
+            sortByStyles={props.sortByStyles}
+          />
+        )
       }
       bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent}
