@@ -207,7 +207,7 @@ export default class ReportingReportForm extends Component {
         <li>
           <div className={Styles.ReportingReport__outcome_selection_msg}>
             Please choose an outcome below based on the resolution source when
-            the market ends.
+            the event ends.
           </div>
         </li>
         <li>
