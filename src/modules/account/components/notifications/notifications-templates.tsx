@@ -6,9 +6,13 @@ import {
   MarketProgress,
   formatTime
 } from "modules/common-elements/progress";
-import { MARKET_STATUS_MESSAGES } from "modules/common-elements/constants";
+import { SubmitTextButton } from "modules/common-elements/buttons";
+
+import * as constants from "modules/common-elements/constants";
 
 import Styles from "modules/account/components/notifications/notification-card.styles";
+
+const { NOTIFICATION_TYPES } = constants;
 
 export interface DisputeInfo {
   disputeRound: number;
@@ -31,28 +35,33 @@ export interface Market {
   myPositionsSummary?: MyPositionsSummary;
   outstandingReturns?: string;
   finalizationTimeWithHold?: number;
+  orphanOrdersPerMarket?: number;
 }
 
 export interface TemplateProps {
-  message: string;
-  claimReportingFees: any;
-  totalProceeds: number;
-  markets: Array<string> | null;
-  market: Market;
-  currentTime: Date;
-  reportingWindowStatsEndTime: number;
-}
-
-export interface TemplateProps2 {
+  type: string;
   message: string;
   market: Market;
-  currentTime: Date;
-  reportingWindowStatsEndTime: number | null;
+  isDisabled: boolean;
+  buttonAction: Function;
+  buttonLabel: string;
+  markets?: Array<string>;
+  currentTime?: Date;
+  reportingWindowStatsEndTime?: number;
+  claimReportingFees?: any;
+  totalProceeds?: number;
 }
 
 export interface TemplateBodyProps {
   market?: Market;
   message: string;
+}
+
+export interface CounterProps {
+  type: string;
+  market?: Market;
+  currentTime?: Date;
+  reportingWindowStatsEndTime?: number;
 }
 
 const TemplateBody = (props: TemplateBodyProps) => {
@@ -61,7 +70,7 @@ const TemplateBody = (props: TemplateBodyProps) => {
   }
 
   const { description, id } = props.market;
-  const parts: Array<string> = props.message.split(description);
+  const parts: Array<string> = props.message.split(`"${description}"`);
 
   if (parts.length > 1) {
     return (
@@ -76,39 +85,78 @@ const TemplateBody = (props: TemplateBodyProps) => {
   return <span>{props.message}</span>;
 };
 
-export const Template = (props: TemplateProps2) => {
-  if (!props.market) {
-    return <TemplateBody market={props.market} message={props.message} />;
-  }
+const Counter = (props: CounterProps) => {
+  let counter = null;
+  const notificationsWithCountdown = [
+    NOTIFICATION_TYPES.marketsInDispute,
+    NOTIFICATION_TYPES.reportOnMarkets,
+    NOTIFICATION_TYPES.proceedsToClaimOnHold
+  ];
 
-  const { marketStatus, endTime, reportingState } = props.market;
+  if (props.market && notificationsWithCountdown.includes(props.type)) {
+    const { endTime, reportingState, finalizationTimeWithHold } = props.market;
+    const label = constants.MARKET_STATUS_MESSAGES.WAITING_PERIOD_ENDS;
+
+    if (props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold) {
+      counter = (
+        <div className={Styles.NotificationCard__countdown}>
+          <CountdownProgress
+            label={label}
+            time={formatTime(finalizationTimeWithHold)}
+            currentTime={formatTime(props.currentTime)}
+          />
+        </div>
+      );
+    }
+    else {
+      counter = (
+        <div className={Styles.NotificationCard__countdown}>
+          <MarketProgress
+            reportingState={reportingState}
+            currentTime={props.currentTime}
+            endTime={endTime}
+            reportingWindowEndtime={props.reportingWindowStatsEndTime}
+            customLabel="reporting ends"
+          />
+        </div>
+      );
+    }
+  }
+  return counter;
+}
+
+const Template = (props: TemplateProps) => {
+
   return (
     <React.Fragment>
       <TemplateBody market={props.market} message={props.message} />
-      {marketStatus === "reporting" &&
-        props.reportingWindowStatsEndTime && (
-          <div className={Styles.NotificationCard__countdown}>
-            <MarketProgress
-              reportingState={reportingState}
-              currentTime={props.currentTime}
-              endTime={endTime}
-              reportingWindowEndtime={props.reportingWindowStatsEndTime}
-            />
-          </div>
-        )}
+      <div className={Styles.NotificationCard_bottomRow}>
+        <Counter
+          type={props.type}
+          market={props.market || null}
+          reportingWindowStatsEndTime={props.reportingWindowStatsEndTime}
+          currentTime={props.currentTime}
+        />
+
+        <SubmitTextButton
+          text={props.buttonLabel}
+          action={() => props.buttonAction()}
+          disabled={props.isDisabled}
+        />
+      </div>
     </React.Fragment>
   );
 };
 
+
+// Notifications Tempalates
 export const OpenOrdersResolvedMarketsTemplate = (props: TemplateProps) => {
   const { description } = props.market;
 
   return (
     <Template
-      message={`You have open orders in this resolved market: ${description} Please review and cancel these orders to release your ETH.`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={null}
+      message={`You have open orders in this resolved market: "${description}"`}
+      {...props}
     />
   );
 };
@@ -118,10 +166,30 @@ export const FinalizeTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`The following market is resolved and ready to be finalized: ${description} Please finalize this market.`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={null}
+      message={`The market: "${description}" is resolved and is ready to be finalized.`}
+      {...props}
+    />
+  );
+};
+
+export const UnsignedOrdersTemplate = (props: TemplateProps) => {
+  const { description } = props.market;
+
+  return (
+    <Template
+      message={`You have unsigned orders pending for the following markets initial liquidity: "${description}"`}
+      {...props}
+    />
+  );
+};
+
+export const OrphanOrdersTemplate = (props: TemplateProps) => {
+  const { description } = props.market;
+
+  return (
+    <Template
+      message={`You have orphaned orders in this market: "${description}"`}
+      {...props}
     />
   );
 };
@@ -131,10 +199,8 @@ export const ReportEndingSoonTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`Reporting ends Soon for this market: ${description} Please submit a report.`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={props.reportingWindowStatsEndTime}
+      message={`Reporting ends soon for: "${description}"`}
+      {...props}
     />
   );
 };
@@ -148,12 +214,8 @@ export const DisputeTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`Dispute round ${
-        disputeInfo.disputeRound
-      } for the market ${description} is ending soon.`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={props.reportingWindowStatsEndTime}
+      message={`Dispute round ${disputeInfo.disputeRound} for the market: "${description}" is ending soon.`}
+      {...props}
     />
   );
 };
@@ -169,25 +231,8 @@ export const SellCompleteSetTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`You currently have ${
-        numCompleteSets.full
-      } of all outcomes in the market: ${description}. Please sell these complete sets.`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={null}
-    />
-  );
-};
-
-export const UnsignedOrdersTemplate = (props: TemplateProps) => {
-  const { description } = props.market;
-
-  return (
-    <Template
-      message={`You have unsigned orders pending for the following market’s initial liquidity: ${description} Please submit or cancel these orders.`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={null}
+      message={`You currently have ${ numCompleteSets.full } of all outcomes in: "${description}"`}
+      {...props}
     />
   );
 };
@@ -199,10 +244,8 @@ export const ClaimReportingFeesTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`You have ${unclaimedREP} REP available to claim back from your Reporting Stake and ${unclaimedETH} ETH of available Reporting Fees to collect from markets that have resolved. Please collect your Stake and Fees`}
-      market={props.market}
-      currentTime={props.currentTime}
-      reportingWindowStatsEndTime={null}
+      message={`You have ${unclaimedREP} REP available to be claimed from your reporting stake and ${unclaimedETH} ETH of reporting fees to collect.`}
+      {...props}
     />
   );
 };
@@ -211,37 +254,26 @@ export const ProceedsToClaimTemplate = (props: TemplateProps) => {
   const { totalProceeds } = props;
 
   return (
-    <TemplateBody
-      message={`You have ${totalProceeds} ETH available to be claimed. Please review and claim your winnings.`}
+    <Template
+      message={`You have ${totalProceeds} ETH available to be claimed from multiple markets.`}
+      {...props}
     />
   );
 };
 
 export const ProceedsToClaimOnHoldTemplate = (props: TemplateProps) => {
-  const { market, currentTime } = props;
-  const { finalizationTimeWithHold, outstandingReturns, description } = market;
-  const label = MARKET_STATUS_MESSAGES.WAITING_PERIOD_ENDS;
+  const { market } = props;
+  const { outstandingReturns, description } = market;
 
   return (
     <React.Fragment>
-      <TemplateBody
-        market={market}
-        message={`${outstandingReturns} ETH will be available to claim when the waiting period ends for market: ${description}.`}
+      <Template
+        message={`You have ${outstandingReturns} ETH available to claim when the waiting period ends for: "${description}"`}
+        {...props}
       />
-      <div className={Styles.NotificationCard__countdown}>
-        <CountdownProgress
-          label={label}
-          time={formatTime(finalizationTimeWithHold)}
-          currentTime={formatTime(currentTime)}
-        />
-      </div>
     </React.Fragment>
   );
 };
 
 // Helper
-const wrapMarketName = (marketName: string) => (
-  <span className={Styles.NotificationCard__MarketName}>
-    {`"${marketName}"`}
-  </span>
-);
+const wrapMarketName = (marketName: string) => <span>{`"${marketName}"`}</span>;

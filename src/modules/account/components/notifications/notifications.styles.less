@@ -9,6 +9,16 @@
   max-height: 50%;
   min-height: 50%;
   padding-bottom: 1.5rem;
+
+  @media @breakpoint-mobile {
+    border: 0;
+    margin: @size-16 @size-8;
+    padding: 0;
+
+    > div:first-of-type {
+      display: none;
+    }
+  }
 }
 
 .NotificationBox__header {
@@ -17,15 +27,16 @@
   align-items: center;
   display: flex;
 
-  > :first-child {
-    color: @color-highlight;
-    margin: 0 4px 0 0;
+  > span {
+    color: @color-secondary-text;
+    min-height: 16px;
+    min-width: 43px;
   }
 }
 
 .NotificationBox__content {
-  background: @color-secondary-background;
-  border-bottom: 1px solid @color-secondary-background;
+  background: @color-secondary-action;
+  border-bottom: @size-4 solid @color-secondary-background;
   flex: 1;
   height: calc(100% - 3.75rem);
   overflow-x: hidden;

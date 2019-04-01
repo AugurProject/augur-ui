@@ -15,6 +15,7 @@ import Styles from "modules/account/components/account-view/account-view.styles"
 
 export interface AccountViewProps {
   isMobile?: Boolean;
+  newNotifications?: Boolean;
 }
 
 const AccountView = (props: AccountViewProps) => (
@@ -24,7 +25,7 @@ const AccountView = (props: AccountViewProps) => (
         <ModulePane label={constants.YOUR_OVERVIEW_TITLE}>
           <AccountOverview />
         </ModulePane>
-        <ModulePane label="Notifications">
+        <ModulePane label="Notifications" isNew={props.newNotifications}>
           <Notifications />
         </ModulePane>
         <ModulePane label="Watchlist">

@@ -4,26 +4,22 @@ import classNames from "classnames";
 import * as constants from "modules/common-elements/constants";
 import { ImmediateImportance } from "modules/common-elements/icons";
 import { PillLabel } from "modules/common-elements/labels";
-import { CompactButton } from "modules/common-elements/buttons";
 
 import Styles from "modules/account/components/notifications/notification-card.styles";
 
 export interface NotificationProps {
-  id: string;
-  type: string;
   isImportant: boolean;
   isNew: boolean;
   title: string;
-  buttonLabel: string;
-  buttonAction: Function;
-  isDisabled: boolean;
   children: React.StatelessComponent;
 }
 
-const { NOTIFICATION_TYPES } = constants;
-
 export const NotificationCard = (props: NotificationProps) => (
-  <div className={Styles.NotificationCard}>
+  <div
+    className={classNames(Styles.NotificationCard, {
+      [Styles.new]: props.isNew
+    })}
+  >
     <div className={Styles.NotificationCard__content}>
       <div className={Styles.NotificationCard__content__titleBar}>
         {props.isImportant && (
@@ -48,13 +44,5 @@ export const NotificationCard = (props: NotificationProps) => (
         {props.children}
       </div>
     </div>
-
-    {props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? null : (
-      <CompactButton
-        text={props.buttonLabel}
-        action={() => props.buttonAction()}
-        disabled={props.isDisabled}
-      />
-    )}
   </div>
 );

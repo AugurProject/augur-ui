@@ -1,42 +1,45 @@
 @import (reference) '~assets/styles/shared';
 
 .NotificationCard {
-  align-items: center;
-  background: @color-tertiary-background;
-  border: 1px solid fade(@color-highlight, 50%);
+  background: @color-theme-primary;
+  border-radius: @border-radius-default;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 4px;
-  padding: 16px 24px 13px 12px;
+  flex-direction: column;
+  margin: 0.125rem;
+  padding: @size-16;
 
   & > button:disabled {
     opacity: 0.5;
   }
 }
 
-.NotificationCard__content {
-  margin: 0 1rem 0 0;
+.NotificationCard.new {
+  border: 1px solid fade(@color-highlight, 50%);
 }
 
 .NotificationCard__content__titleBar {
   align-items: center;
   display: flex;
-  margin: 0 0 4px;
+  margin: 0 0 @size-8;
+
+  > span:last-of-type {
+    min-height: 16px;
+    min-width: 31px;
+  }
 }
 
 .NotificationCard__content__Importance {
   align-items: center;
   display: flex;
   justify-content: center;
-  margin: 0 8px 0 0;
+  margin: 0 @size-8 0 0;
 
   > svg {
-    height: 16px;
-    width: 16px;
+    height: 12px;
+    width: 12px;
 
     > circle {
-      opacity: 0.5;
+      fill: none;
       stroke: @color-outcome-four;
     }
 
@@ -51,46 +54,85 @@
 }
 
 .NotificationCard__content__title {
-  .text-12-bold;
+  .mono-11-bold;
 
-  color: @color-tertiary-text;
-  margin: 0 9px 0 0;
-  text-transform: capitalize;
+  color: @color-shadow-text;
+  margin: 0 @size-9 0 0;
+  text-transform: uppercase;
+
+  @media @breakpoint-mobile {
+    .mono-10-bold;
+  }
+}
+
+.NotificationCard__content__message {
+  .text-11;
+
+  color: @color-shadow-text;
+  line-height: 0.9375rem;
+
+  @media @breakpoint-mobile {
+    .text-10;
+
+    line-height: @size-14;
+  }
 }
 
 .NotificationCard__content__title__new {
   color: @color-secondary-text;
 }
 
-.NotificationCard__content__message {
-  .text-11;
-
-  color: fade(@color-tertiary-text, 50%);
-}
-
 .NotificationCard__content__message__new {
-  color: @color-secondary-text;
+  color: @color-tertiary-text;
+
+  > span {
+    > span {
+      font-weight: bold;
+    }
+  }
 }
 
 .NotificationCard button {
-  min-height: 32px;
-  text-transform: capitalize;
+  .mono-11;
+
+  border-radius: @size-9;
+  color: @color-secondary-text;
+  line-height: normal;
+  margin-left: auto;
+  margin-top: @size-8;
+  text-align: right;
+  text-transform: uppercase;
+
+  @media @breakpoint-mobile {
+    .text-10;
+  }
+}
+
+.NotificationCard_bottomRow {
+  align-items: flex-end;
+  display: flex;
 }
 
 .NotificationCard__countdown {
-  margin: 12px 0 0;
+  margin: @size-12 0 0;
 
   > span {
     > span {
       width: max-content !important;
     }
+
+    > span:first-of-type {
+      .mono-10;
+
+      color: @color-shadow-text;
+      line-height: normal;
+      text-transform: uppercase;
+    }
+
+    > span:last-of-type {
+      .mono-12;
+
+      line-height: normal;
+    }
   }
-}
-
-.NotificationCard__countdown__title {
-  .text-10;
-}
-
-.NotificationCard__MarketName {
-  font-weight: @weight-bold;
 }
