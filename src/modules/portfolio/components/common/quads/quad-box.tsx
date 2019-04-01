@@ -52,7 +52,9 @@ const QuadBox = (props: QuadBoxProps) => (
       bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent}
     />
-    <div className={Styles.FilterBox__content}>{props.content}</div>
+    <div className={Styles.FilterBox__content}>
+      <div className={Styles.FilterBox__container}>{props.content}</div>
+    </div>
   </div>
 );
 

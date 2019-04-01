@@ -25,9 +25,11 @@ const BoxHeader = (props: BoxHeaderProps) => (
       </div>
       {props.switchHeaders && (
         <>
-          <div className={Styles["BoxHeader__bottomContent--mobile"]}>
-            {props.bottomBarContent}
-          </div>
+          {props.bottomBarContent && (
+            <div className={Styles["BoxHeader__bottomContent--mobile"]}>
+              {props.bottomBarContent}
+            </div>
+          )}
           <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
             {props.mostRightContent}
           </div>
@@ -35,9 +37,11 @@ const BoxHeader = (props: BoxHeaderProps) => (
       )}
       {!props.switchHeaders && (
         <>
-          <div className={Styles["BoxHeader__bottomContent--mobile"]}>
-            {props.bottomBarContent}
-          </div>
+          {props.bottomBarContent && (
+            <div className={Styles["BoxHeader__bottomContent--mobile"]}>
+              {props.bottomBarContent}
+            </div>
+          )}
           <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
             {props.mostRightContent}
           </div>
