@@ -95,20 +95,18 @@ const Counter = (props: CounterProps) => {
 
   if (props.market && notificationsWithCountdown.includes(props.type)) {
     const { endTime, reportingState, finalizationTimeWithHold } = props.market;
-    const label = constants.MARKET_STATUS_MESSAGES.WAITING_PERIOD_ENDS;
 
     if (props.type === NOTIFICATION_TYPES.proceedsToClaimOnHold) {
       counter = (
         <div className={Styles.NotificationCard__countdown}>
           <CountdownProgress
-            label={label}
+            label={constants.MARKET_STATUS_MESSAGES.WAITING_PERIOD_ENDS}
             time={formatTime(finalizationTimeWithHold)}
             currentTime={formatTime(props.currentTime)}
           />
         </div>
       );
-    }
-    else {
+    } else {
       counter = (
         <div className={Styles.NotificationCard__countdown}>
           <MarketProgress
@@ -116,38 +114,34 @@ const Counter = (props: CounterProps) => {
             currentTime={props.currentTime}
             endTime={endTime}
             reportingWindowEndtime={props.reportingWindowStatsEndTime}
-            customLabel="reporting ends"
+            customLabel={constants.REPORTING_ENDS}
           />
         </div>
       );
     }
   }
   return counter;
-}
-
-const Template = (props: TemplateProps) => {
-
-  return (
-    <React.Fragment>
-      <TemplateBody market={props.market} message={props.message} />
-      <div className={Styles.NotificationCard_bottomRow}>
-        <Counter
-          type={props.type}
-          market={props.market || null}
-          reportingWindowStatsEndTime={props.reportingWindowStatsEndTime}
-          currentTime={props.currentTime}
-        />
-
-        <SubmitTextButton
-          text={props.buttonLabel}
-          action={() => props.buttonAction()}
-          disabled={props.isDisabled}
-        />
-      </div>
-    </React.Fragment>
-  );
 };
 
+const Template = (props: TemplateProps) => (
+  <React.Fragment>
+    <TemplateBody market={props.market} message={props.message} />
+    <div className={Styles.NotificationCard_bottomRow}>
+      <Counter
+        type={props.type}
+        market={props.market || null}
+        reportingWindowStatsEndTime={props.reportingWindowStatsEndTime}
+        currentTime={props.currentTime}
+      />
+
+      <SubmitTextButton
+        text={props.buttonLabel}
+        action={() => props.buttonAction()}
+        disabled={props.isDisabled}
+      />
+    </div>
+  </React.Fragment>
+);
 
 // Notifications Tempalates
 export const OpenOrdersResolvedMarketsTemplate = (props: TemplateProps) => {
@@ -214,7 +208,9 @@ export const DisputeTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`Dispute round ${disputeInfo.disputeRound} for the market: "${description}" is ending soon.`}
+      message={`Dispute round ${
+        disputeInfo.disputeRound
+      } for the market: "${description}" is ending soon.`}
       {...props}
     />
   );
@@ -231,7 +227,9 @@ export const SellCompleteSetTemplate = (props: TemplateProps) => {
 
   return (
     <Template
-      message={`You currently have ${ numCompleteSets.full } of all outcomes in: "${description}"`}
+      message={`You currently have ${
+        numCompleteSets.full
+      } of all outcomes in: "${description}"`}
       {...props}
     />
   );

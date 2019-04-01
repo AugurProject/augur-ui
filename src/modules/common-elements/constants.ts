@@ -608,8 +608,7 @@ export const REPORTING_ENDS_SOON_TITLE = "Reporting Ends Soon";
 export const FINALIZE_MARKET_TITLE = "Finalize Market";
 export const SELL_COMPLETE_SETS_TITLE = "Sell Complete Sets";
 export const UNSIGNED_ORDERS_TITLE = "Unsigned Orders";
-export const CLAIM_REPORTING_FEES_TITLE =
-  "Claim Available Stake and Reporting Fees";
+export const CLAIM_REPORTING_FEES_TITLE = "Claim Stake and Fees";
 export const PROCEEDS_TO_CLAIM_TITLE = "Claim Proceeds";
 export const ORPHAN_ORDERS_TITLE = "Orphaned Orders";
 export const OPEN_ORDERS_RESOLVED_MARKET = "resolvedMarketsOpenOrders";
