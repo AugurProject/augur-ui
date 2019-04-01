@@ -32,6 +32,7 @@ export default class MarketOutcomesChartHighchart extends Component {
 
   constructor(props) {
     super(props);
+    this.ethLabel = null;
     this.state = {
       containerHeight: 0,
       containerWidth: 0,
@@ -51,7 +52,12 @@ export default class MarketOutcomesChartHighchart extends Component {
           events: {
             load() {
               const { width } = this.renderer;
-              this.renderer.label("ETH", width - 35, 0).add();
+              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+            },
+            redraw() {
+              const { width } = this.renderer;
+              this.ethLabel.destroy();
+              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
             }
           }
         },
