@@ -48,6 +48,8 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   deFocus = e => {
     this.setState({ isFocused: false });
     this.props.onFocus(true);
+    this.refSearch.value = "";
+    this.props.onChange("");
     e.stopPropagation();
   };
 
