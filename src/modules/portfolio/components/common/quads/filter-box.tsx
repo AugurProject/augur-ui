@@ -25,7 +25,6 @@ export interface FilterBoxProps {
   filteredData: Array<Market>;
   data: MarketsByReportingState;
   filterComp: Function;
-  label: string;
   bottomRightContent?: ReactNode;
   rightContent?: Function;
   dataObj: MarketsObj;
@@ -133,7 +132,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       sortByOptions,
       data,
       filterComp,
-      label,
       bottomRightContent,
       noToggle,
       renderRightContent,
@@ -157,7 +155,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
         sortByOptions={sortByOptions}
         sortByStyles={sortByStyles}
         updateDropdown={this.updateSortBy}
-        label={filteredData.length + " " + label}
         bottomRightBarContent={bottomRightContent && bottomRightContent}
         bottomBarContent={
           <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>

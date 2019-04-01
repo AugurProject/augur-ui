@@ -120,7 +120,6 @@ class MyMarkets extends Component {
         sortByStyles={{ minWidth: "10.8125rem" }}
         markets={myMarkets}
         filterComp={filterComp}
-        label="My Created Markets"
         renderRightContent={this.renderRightContent}
         renderToggleContent={renderToggleContent}
         filterLabel="markets"

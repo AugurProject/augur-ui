@@ -1,12 +1,14 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */ // can't have button within a button
+
 import * as React from "react";
 import classNames from "classnames";
 import Styles from "modules/common-elements/search.styles";
 import { SearchIcon } from "modules/common-elements/icons";
 
 export interface SearchBarProps {
-  label?: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  onFocus: Function;
 }
 
 export interface SearchBarState {
@@ -30,36 +32,56 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   refSearch: any = null;
 
   handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (this.refContainer && !this.refContainer.contains(event.target)) {
-      this.setState({ isFocused: false });
-    } else if (this.refContainer && this.refContainer.contains(event.target)) {
-      this.setState({ isFocused: true });
+    if (this.refContainer && this.refContainer.contains(event.target)) {
       this.refSearch.focus();
     }
   };
 
+  handlerClicked = () => {
+    this.setState({ isFocused: true });
+    this.props.onFocus(false);
+  };
+
+  deFocus = e => {
+    this.setState({ isFocused: false });
+    this.props.onFocus(true);
+    this.refSearch.value = "";
+    this.props.onChange("");
+    e.stopPropagation();
+  };
+
   render() {
-    const { label, onChange, placeholder } = this.props;
+    const { onChange, placeholder } = this.props;
     const placeholderText = placeholder || "Search";
+    const { isFocused } = this.state;
+
     return (
       <div
-        className={classNames(Styles.SearchBar, {
-          [Styles.isFocused]: this.state.isFocused
+        className={classNames(Styles.SearchBar__container, {
+          [Styles.SearchBar__containerFocused]: isFocused
         })}
-        ref={container => {
-          this.refContainer = container;
-        }}
       >
-        <span>{`(${label && label.length ? label : placeholderText})`}</span>
-        {SearchIcon}
-        <input
-          ref={search => {
-            this.refSearch = search;
+        <div
+          className={classNames(Styles.SearchBar, {
+            [Styles.isFocused]: isFocused
+          })}
+          ref={container => {
+            this.refContainer = container;
           }}
-          type="search"
-          onChange={e => onChange(e.target.value)}
-          placeholder={placeholderText}
-        />
+          onClick={this.handlerClicked}
+        >
+          <input
+            ref={search => {
+              this.refSearch = search;
+            }}
+            onChange={e => onChange(e.target.value)}
+            placeholder={placeholderText}
+          />
+          <div>Search</div>
+          {SearchIcon}
+        </div>
+
+        <button onClick={this.deFocus}>cancel</button>
       </div>
     );
   }

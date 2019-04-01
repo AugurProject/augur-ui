@@ -1,22 +1,19 @@
 import React, { ReactNode } from "react";
 
 import BoxHeader from "modules/portfolio/components/common/headers/box-header";
-import { SquareDropdown } from "modules/common-elements/selection";
-import { SearchBar } from "modules/common-elements/search";
 import { NameValuePair } from "modules/portfolio/types";
+import { SearchSort } from "modules/common-elements/search-sort";
 
 import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
 
 export interface QuadBoxProps {
   title: string;
   showFilterSearch: Boolean;
-  search: string;
   sortByOptions: Array<NameValuePair>;
   updateDropdown: Function;
   onSearchChange: Function;
   content?: ReactNode;
   bottomBarContent: ReactNode;
-  label?: string;
   isMobile?: Boolean;
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
@@ -28,18 +25,15 @@ const QuadBox = (props: QuadBoxProps) => (
     <BoxHeader
       title={props.title}
       mostRightContent={
-        props.sortByOptions && (
-          <SquareDropdown
-            options={props.sortByOptions}
-            onChange={props.updateDropdown}
-            stretchOut={props.isMobile}
-            sortByStyles={props.sortByStyles}
-          />
-        )
-      }
-      rightContent={
         (props.showFilterSearch && (
-          <SearchBar onChange={props.onSearchChange} label={props.label} />
+          <SearchSort
+            sortByOptions={props.sortByOptions}
+            options={props.sortByOptions}
+            updateDropdown={props.updateDropdown}
+            sortByStyles={props.sortByStyles}
+            onChange={props.onSearchChange}
+            isMobile={props.isMobile}
+          />
         )) ||
         props.rightContent
       }
