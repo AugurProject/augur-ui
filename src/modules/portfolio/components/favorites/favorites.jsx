@@ -84,7 +84,6 @@ export default class Favorites extends Component {
         sortByStyles={{ minWidth: "10.625rem" }}
         markets={markets}
         filterComp={filterComp}
-        label="Watched Markets"
         renderRightContent={this.renderRightContent}
         noToggle
         filterLabel="markets"

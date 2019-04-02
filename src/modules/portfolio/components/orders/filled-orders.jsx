@@ -92,7 +92,6 @@ export default class FilledOrders extends Component {
         filterComp={this.filterComp}
         switchView={this.switchView}
         bottomBarContent={<FilledOrdersHeader />}
-        label={viewByMarkets ? "Markets" : "Filled Orders"}
         renderRows={this.renderRows}
       />
     );

@@ -90,7 +90,6 @@ export default class OpenOrders extends Component {
         filterComp={this.filterComp}
         switchView={this.switchView}
         bottomBarContent={<OpenOrdersHeader />}
-        label={viewByMarkets ? "Markets" : "Open Orders"}
         renderRows={this.renderRows}
       />
     );

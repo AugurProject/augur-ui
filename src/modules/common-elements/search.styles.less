@@ -47,6 +47,33 @@
       color: @color-primary-alternate-two;
     }
   }
+
+  > div {
+    display: none;
+  }
+}
+
+.SearchBar__container {
+  display: flex;
+
+  > button {
+    .mono-12;
+
+    color: @color-white;
+    display: none;
+    margin-left: 1rem;
+    margin-right: -0.5rem;
+    text-transform: uppercase;
+  }
+}
+
+.SearchBar__containerFocused {
+  flex: 1;
+  width: 100%;
+
+  > button {
+    display: flex;
+  }
 }
 
 .isFocused {
@@ -64,5 +91,47 @@
 
   > svg {
     margin-right: 0.75rem;
+  }
+
+  > div {
+    display: none;
+  }
+}
+
+@media @breakpoint-mobile {
+  .SearchBar {
+    flex: 1;
+    justify-content: flex-end;
+    width: 100%;
+
+    > div {
+      .mono-12;
+
+      color: @color-primary-alternate-two;
+      display: flex;
+      margin-right: 0.5rem;
+    }
+  }
+
+  .isFocused {
+    > div {
+      display: none;
+    }
+  }
+
+  .SearchBar__container {
+    flex: 1;
+    padding-left: 0.5rem;
+    width: 100%;
+  }
+
+  .SearchBar__cancel {
+    padding-right: 0.5rem;
+  }
+
+  .SearchBar__containerFocused {
+    > button {
+      padding-right: 1rem;
+    }
   }
 }

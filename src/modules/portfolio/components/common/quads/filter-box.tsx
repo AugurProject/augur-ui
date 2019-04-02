@@ -10,8 +10,6 @@ import EmptyDisplay from "modules/portfolio/components/common/tables/empty-displ
 import { createTabsInfo } from "modules/portfolio/helpers/create-tabs-info";
 import { isEqual } from "lodash";
 
-import Styles from "modules/portfolio/components/common/quads/filter-box.styles";
-
 export interface MarketsByReportingState {
   [type: string]: Array<Market>;
 }
@@ -25,7 +23,6 @@ export interface FilterBoxProps {
   filteredData: Array<Market>;
   data: MarketsByReportingState;
   filterComp: Function;
-  label: string;
   bottomRightContent?: ReactNode;
   rightContent?: Function;
   dataObj: MarketsObj;
@@ -133,7 +130,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       sortByOptions,
       data,
       filterComp,
-      label,
       bottomRightContent,
       noToggle,
       renderRightContent,
@@ -151,19 +147,19 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     return (
       <QuadBox
         title={title}
+        switchHeaders={isMobile}
         isMobile={isMobile}
         showFilterSearch={true}
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}
         sortByStyles={sortByStyles}
         updateDropdown={this.updateSortBy}
-        label={filteredData.length + " " + label}
         bottomRightBarContent={bottomRightContent && bottomRightContent}
         bottomBarContent={
           <SwitchLabelsGroup tabs={tabs} selectedTab={selectedTab} selectTab={this.selectTab}/>
         }
         content={
-          <div className={Styles.FilterBox__container}>
+          <>
             {filteredData.length === 0 && (
               <EmptyDisplay selectedTab={selectedTab !== ALL_MARKETS ? selectedLabel + " " : ""} filterLabel={filterLabel} search={search} />
             )}
@@ -180,7 +176,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
                       />
                     ) : null
                )}
-          </div>
+          </>
         }
         search={search}
       />
