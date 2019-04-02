@@ -10,6 +10,7 @@ export interface BoxHeaderProps {
   bottomBarContent?: ReactNode;
   bottomRightBarContent?: ReactNode;
   switchHeaders?: boolean;
+  noBackgroundBottom?: boolean;
 }
 
 const BoxHeader = (props: BoxHeaderProps) => (
@@ -29,7 +30,11 @@ const BoxHeader = (props: BoxHeaderProps) => (
         })}
       >
         {props.bottomBarContent && (
-          <div className={Styles["BoxHeader__bottomContent--mobile"]}>
+          <div
+            className={classNames(Styles["BoxHeader__bottomContent--mobile"], {
+              [Styles.noBackground]: props.noBackgroundBottom
+            })}
+          >
             {props.bottomBarContent}
           </div>
         )}

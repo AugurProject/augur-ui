@@ -20,6 +20,7 @@ export interface FilterBoxProps {
   renderRows: Function;
   filterLabel: String;
   sortByStyles?: Object;
+  noBackgroundBottom?: Boolean;
 }
 
 interface FilterBoxState {
@@ -80,7 +81,8 @@ export default class FilterSwitchBox extends React.Component<
       isMobile,
       renderRows,
       filterLabel,
-      sortByStyles
+      sortByStyles,
+      noBackgroundBottom
     } = this.props;
 
     const { search, filteredData } = this.state;
@@ -95,6 +97,7 @@ export default class FilterSwitchBox extends React.Component<
         sortByStyles={sortByStyles}
         updateDropdown={!noSwitch && this.updateView}
         bottomBarContent={bottomBarContent}
+        noBackgroundBottom={noBackgroundBottom}
         content={
           <>
             {filteredData.length === 0 && (
