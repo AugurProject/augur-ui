@@ -601,6 +601,8 @@ export const SYNC_BENIND = "Blocks behind";
 export const SYNC_PROCESSED = "Blocks Processed";
 
 // Account Summary - Notifications
+export const NOTIFICATIONS_TITLE = "Notifications";
+export const NOTIFICATIONS_LABEL = "notifications";
 export const NEW = "New";
 export const RESOLVED_MARKETS_OPEN_ORDERS_TITLE =
   "Open Orders in Resolved Market";

@@ -19,6 +19,7 @@ const mapStateToProps = (state: any) => {
 
   return {
     notifications,
+    isMobile: state.appStatus.isMobile,
     currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
     reportingWindowStatsEndTime: state.reportingWindowStats.endTime
   };
