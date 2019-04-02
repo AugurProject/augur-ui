@@ -291,7 +291,7 @@ export function formatNumber(
   if (isNaN(parseFloat(num))) {
     o.value = 0;
     o.formattedValue = 0;
-    o.formatted = constants.PRECISION.zero.toFixed(decimalsRounded);
+    o.formatted = "0";
     o.roundedValue = 0;
     o.rounded = "0";
     o.roundedFormatted = "0";
@@ -383,13 +383,12 @@ export function formatNumber(
     o.formatted = o.minimized;
   }
 
-  if (o.formatted === "0") {
-    o.formatted = constants.PRECISION.zero.toFixed(decimalsRounded);
-  }
-
   o.denomination = denomination;
   o.full = makeFull(o.formatted, o.denomination); // should this use this?
-
+  
+  if (isNaN(parseFloat(num)) || o.formatted === "0") {
+    o.formatted = constants.PRECISION.zero.toFixed(decimalsRounded);
+  }
   return o;
 }
 
