@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
+import { CheckMark } from "modules/common-elements/icons";
 import Styles from "modules/common/components/checkbox/checkbox.styles";
 
 const Checkbox = ({ id, small, isChecked, value, onClick, disabled }) => (
@@ -23,7 +24,9 @@ const Checkbox = ({ id, small, isChecked, value, onClick, disabled }) => (
       className={classNames(Styles.Checkbox__checkmark, {
         [Styles.Checkbox__checkmark__small]: small
       })}
-    />
+    >
+      {CheckMark}
+    </span>
   </div>
 );
 

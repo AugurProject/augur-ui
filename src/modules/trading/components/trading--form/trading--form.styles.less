@@ -24,8 +24,8 @@
       flex-direction: row;
 
       > label {
-        padding: 0;
-        padding-left: 1.5rem;
+        color: @color-secondary-text;
+        padding: 0.125rem 0 0 @size-24;
       }
     }
 
@@ -42,16 +42,21 @@
         padding-top: 0.5rem;
 
         > svg {
+          height: 12px;
+          width: 12px;
+
           > circle {
+            fill: @color-theme-primary;
             opacity: 1;
+            stroke: @color-highlight;
           }
 
           > rect {
-            fill: @color-secondary-text;
+            fill: @color-neutral;
           }
 
           > path {
-            fill: @color-secondary-text;
+            fill: @color-neutral;
           }
         }
       }
@@ -70,10 +75,12 @@
 }
 
 .TradingForm__button__clear {
-  &:extend(.button--mediumgray all);
+  .mono-12;
 
+  color: @color-secondary-text;
   display: inline-block;
-  padding: 4px 12px;
+  padding: @size-4 @size-12;
+  text-transform: uppercase;
 }
 
 .TradingForm__error_message_container {
