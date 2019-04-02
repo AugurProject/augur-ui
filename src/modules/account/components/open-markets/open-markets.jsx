@@ -35,6 +35,7 @@ export default class OpenMarkets extends Component {
         rightContent={
           <MovementLabel
             showColors
+            showPercent
             showIcon
             value={
               marketsObj[market.id].myPositionsSummary.valueChange.formatted
@@ -49,6 +50,7 @@ export default class OpenMarkets extends Component {
                 <span>{position.outcomeName}</span>
                 <MovementLabel
                   showColors
+                  showPercent
                   showIcon
                   value={position.valueChange.formatted}
                   size="small"
@@ -72,7 +74,7 @@ export default class OpenMarkets extends Component {
         data={markets}
         filterComp={filterComp}
         bottomBarContent={
-          !isMobile && <div className={Styles.BottomBar}>24hr Change</div>
+          !isMobile && <div className={Styles.BottomBar}>24hr % Change</div>
         }
         noSwitch
         renderRows={this.renderRows}
