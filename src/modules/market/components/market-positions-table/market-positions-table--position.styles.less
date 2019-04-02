@@ -1,16 +1,13 @@
 @import (reference) '~assets/styles/shared';
 
-.FilledOrder,
-.Outcome,
-.Order,
-.Position {
+.Outcome {
+  .mono-12;
+
   background-color: @color-tertiary-background;
   border-bottom: 0.0625rem solid @color-primary-background;
   display: grid;
   flex-direction: row;
   flex-grow: 1;
-  font-family: "Roboto Mono", monospace;
-  font-size: 12px;
   grid-template-columns: repeat(6, 1fr);
   max-height: 40px;
   position: relative;
@@ -21,25 +18,25 @@
   }
 
   > li {
+    display: flex;
     flex-grow: 1;
+    justify-content: flex-end;
     max-height: 40px;
     overflow: hidden;
-    padding: 10px 0;
+    padding: @size-10 0;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
 
     &:first-child {
-      font-family: @roboto;
-      font-size: 14px;
+      .text-14;
+
+      justify-content: flex-start;
       max-width: 160px;
+      min-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
-
-      > .Order__pending {
-        justify-content: flex-start;
-      }
     }
 
     &:last-of-type {
@@ -47,7 +44,7 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-end;
-      padding-right: 1rem;
+      padding-right: 2rem;
 
       > button {
         font-weight: 500;
@@ -55,31 +52,6 @@
     }
   }
 
-  .NotActive {
-    color: @color-lightgray;
-  }
-}
-
-.Position {
-  > li {
-    &:last-of-type {
-      padding-right: 1.5rem;
-    }
-  }
-}
-
-div.TableItemDark,
-ul.TableItemDark {
-  background-color: @color-dark-grayish-purple;
-
-  &:nth-child(even) {
-    background-color: @color-grayish-purple;
-  }
-}
-
-.Outcome,
-.Order,
-.Position {
   &::before {
     background-color: @color-positive;
     bottom: 0;
@@ -94,96 +66,39 @@ ul.TableItemDark {
   }
 }
 
-.Outcome {
-  > li {
-    &:first-child {
-      min-width: 160px;
-    }
-
-    &:last-of-type {
-      padding-right: 2rem;
-    }
-  }
-}
-
-.FilledOrder {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.Order__Extended {
-  grid-template-columns: repeat(7, 1fr);
-}
-
-.Negative {
-  &::before {
-    background-color: @color-negative2;
-  }
-}
-
-.Order__typeIndicator,
-.Position__typeIndicator {
-  background-color: @color-positive;
-  bottom: 1px;
-  left: 0;
-  position: absolute;
-  top: 1px;
-  width: 1px;
-}
-
-.Order__type,
-.Position__type {
-  color: @color-positive;
-  text-transform: capitalize;
-}
-
-.Order__typeSell,
-.Position__typeSell {
-  color: @color-negative2;
-}
-
-.Order__typeIndicatorSell,
-.Position__typeIndicatorSell {
-  background-color: @color-negative2;
-}
-
-.Order__not_extended,
-.Position-not_extended {
-  > li {
-    &:first-child {
-      padding-left: 0.5rem;
-    }
-  }
-}
-
 @media @breakpoint-mobile {
-  .FilledOrder {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .Outcome,
-  .Order,
-  .Position {
+  .Outcome {
     grid-template-columns: repeat(5, 1fr);
     max-height: 64px;
     position: relative;
 
+    > div {
+      display: inline-block;
+      min-width: 20px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+    }
+
     > li {
       max-height: 64px;
-      padding: 34px 0 16px;
+      padding: 34px 0 1rem;
 
       &:first-child {
         bottom: 0;
         font-weight: 500;
-        left: 16px;
+        left: 1rem;
+        min-width: 100px;
         padding: 0;
         position: absolute;
-        top: 12px;
+        top: @size-12;
       }
 
       &:nth-child(2) {
         flex-grow: unset;
+        justify-content: flex-start;
         max-width: 160px;
-        padding-left: 16px;
+        padding-left: 1rem;
         position: relative;
         text-align: left;
       }
@@ -192,37 +107,8 @@ ul.TableItemDark {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        padding-right: 2rem;
-      }
-    }
-  }
-
-  .Order,
-  .Outcome {
-    > div {
-      display: inline-block;
-      min-width: 20px;
-      position: absolute;
-      right: 0;
-      top: 50%;
-    }
-  }
-
-  .Outcome {
-    > li {
-      &:first-child {
-        min-width: 100px;
-      }
-
-      &:last-of-type {
         padding-right: 1.5rem;
       }
-    }
-  }
-
-  .Order {
-    > div {
-      top: 25%;
     }
   }
 }
@@ -236,22 +122,6 @@ ul.TableItemDark {
 
       &:last-of-type {
         padding-right: 1.5rem;
-      }
-    }
-  }
-
-  .Order {
-    > li {
-      &:last-of-type {
-        padding-right: 2rem;
-      }
-    }
-  }
-
-  .Position {
-    > li {
-      &:last-of-type {
-        padding-right: 1rem;
       }
     }
   }
