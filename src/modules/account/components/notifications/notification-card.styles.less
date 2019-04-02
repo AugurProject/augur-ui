@@ -23,8 +23,8 @@
   margin: 0 0 @size-8;
 
   > span:last-of-type {
-    min-height: 16px;
-    min-width: 31px;
+    min-height: 1rem;
+    min-width: 1.9375rem;
   }
 }
 
@@ -85,10 +85,8 @@
 .NotificationCard__content__message__new {
   color: @color-tertiary-text;
 
-  > span {
-    > span {
-      font-weight: bold;
-    }
+  > span > span {
+    font-weight: bold;
   }
 }
 
@@ -104,7 +102,7 @@
   text-transform: uppercase;
 
   @media @breakpoint-mobile {
-    .text-10;
+    .mono-10;
   }
 }
 

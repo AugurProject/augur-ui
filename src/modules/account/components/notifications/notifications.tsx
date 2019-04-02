@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { orderBy } from "lodash";
 
-import BoxHeader from "modules/portfolio/components/common/headers/box-header";
+import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 import makePath from "modules/routes/helpers/make-path";
 import makeQuery from "modules/routes/helpers/make-query";
@@ -30,8 +30,6 @@ import {
 
 import * as constants from "modules/common-elements/constants";
 
-import Styles from "modules/account/components/notifications/notifications.styles";
-
 export interface INotifications {
   id: string;
   type: string;
@@ -49,6 +47,7 @@ export interface INotifications {
 
 export interface NotificationsProps extends RouteComponentProps {
   notifications: Array<INotifications>;
+  isMobile: boolean;
   updateReadNotifications: Function;
   getReportingFees: Function;
   currentAugurTimestamp: number;
@@ -349,26 +348,29 @@ class Notifications extends React.Component<
     });
 
     const labelContent = (
-      <div className={Styles.NotificationBox__header}>
-        {newNotificationCount > 0 && (
-          <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
-        )}
+      <div>
+        {!this.props.isMobile &&
+          newNotificationCount > 0 && (
+            <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
+          )}
       </div>
     );
 
     return (
-      <div className={Styles.NotificationBox}>
-        <BoxHeader title="Notifications" rightContent={labelContent} />
-        <div className={Styles.NotificationBox__content}>
-          {notificationCount === 0 ? (
-            <div className={Styles.NotificationBox__emptyState}>
-              <EmptyDisplay selectedTab="" filterLabel="notifications" />
-            </div>
+      <QuadBox
+        title={constants.NOTIFICATIONS_TITLE}
+        rightContent={labelContent}
+        content={
+          notificationCount === 0 ? (
+            <EmptyDisplay
+              selectedTab=""
+              filterLabel={constants.NOTIFICATIONS_LABEL}
+            />
           ) : (
             rows
-          )}
-        </div>
-      </div>
+          )
+        }
+      />
     );
   }
 }
