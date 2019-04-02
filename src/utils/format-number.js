@@ -291,7 +291,7 @@ export function formatNumber(
   if (isNaN(parseFloat(num))) {
     o.value = 0;
     o.formattedValue = 0;
-    o.formatted = "0";
+    o.formatted = constants.PRECISION.zero.toFixed(decimalsRounded);
     o.roundedValue = 0;
     o.rounded = "0";
     o.roundedFormatted = "0";
@@ -381,6 +381,10 @@ export function formatNumber(
 
   if (minimized) {
     o.formatted = o.minimized;
+  }
+
+  if (o.formatted === "0") {
+    o.formatted = constants.PRECISION.zero.toFixed(decimalsRounded);
   }
 
   o.denomination = denomination;

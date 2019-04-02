@@ -35,6 +35,7 @@ export default class OpenMarkets extends Component {
         rightContent={
           <MovementLabel
             showColors
+            showBrackets
             showPercent
             showIcon
             value={
@@ -51,6 +52,7 @@ export default class OpenMarkets extends Component {
                 <MovementLabel
                   showColors
                   showPercent
+                  showBrackets
                   showIcon
                   value={position.valueChange.formatted}
                   size="small"

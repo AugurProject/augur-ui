@@ -46,6 +46,7 @@
 .BoxHeader__mostRightContent--mobile {
   .BoxHeader__topContent--mobile;
 
+  margin-bottom: 0.75rem;
   margin-top: 0.75rem;
 }
 
@@ -68,6 +69,16 @@
 
 .HideOnMobile {
   display: block;
+}
+
+.BoxHeader_middleContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column-reverse;
+}
+
+.isSwitched {
+  flex-direction: column;
 }
 
 @media @breakpoint-mobile {

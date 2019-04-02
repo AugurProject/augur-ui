@@ -430,7 +430,8 @@ const assembleMarket = (
       );
 
       market.myPositionsSummary.valueChange = formatPercent(
-        marketPositions.totalValue || ZERO
+        marketPositions.totalValue || ZERO,
+        { decimalsRounded: 2 }
       );
     }
   }
