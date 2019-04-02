@@ -2,14 +2,14 @@ import React, { ReactNode } from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { orderBy } from "lodash";
 
-import BoxHeader from "modules/portfolio/components/common/headers/box-header";
+import QuadBox from "modules/portfolio/components/common/quads/quad-box";
 import EmptyDisplay from "modules/portfolio/components/common/tables/empty-display";
 import makePath from "modules/routes/helpers/make-path";
 import makeQuery from "modules/routes/helpers/make-query";
 
 import { NotificationCard } from "modules/account/components/notifications/notification-card";
 import { PillLabel } from "modules/common-elements/labels";
-import { REPORT, DISPUTE } from "modules/routes/constants/views";
+import { MARKET, REPORT, DISPUTE } from "modules/routes/constants/views";
 import {
   MARKET_ID_PARAM_NAME,
   RETURN_PARAM_NAME
@@ -24,12 +24,11 @@ import {
   ClaimReportingFeesTemplate,
   UnsignedOrdersTemplate,
   ProceedsToClaimTemplate,
-  ProceedsToClaimOnHoldTemplate
+  ProceedsToClaimOnHoldTemplate,
+  OrphanOrdersTemplate
 } from "modules/account/components/notifications/notifications-templates";
 
 import * as constants from "modules/common-elements/constants";
-
-import Styles from "modules/account/components/notifications/notifications.styles";
 
 export interface INotifications {
   id: string;
@@ -48,6 +47,7 @@ export interface INotifications {
 
 export interface NotificationsProps extends RouteComponentProps {
   notifications: Array<INotifications>;
+  isMobile: boolean;
   updateReadNotifications: Function;
   getReportingFees: Function;
   currentAugurTimestamp: number;
@@ -81,6 +81,14 @@ class Notifications extends React.Component<
       case NOTIFICATION_TYPES.resolvedMarketsOpenOrders:
         buttonAction = () => {
           this.markAsRead(notification);
+          const queryLink = {
+            [MARKET_ID_PARAM_NAME]: notification.market.id,
+            [RETURN_PARAM_NAME]: location.hash
+          };
+          history.push({
+            pathname: makePath(MARKET),
+            search: makeQuery(queryLink)
+          });
         };
         break;
 
@@ -164,6 +172,34 @@ class Notifications extends React.Component<
         };
         break;
 
+      case NOTIFICATION_TYPES.proceedsToClaimOnHold:
+        buttonAction = () => {
+          this.markAsRead(notification);
+          const queryLink = {
+            [MARKET_ID_PARAM_NAME]: notification.market.id,
+            [RETURN_PARAM_NAME]: location.hash
+          };
+          history.push({
+            pathname: makePath(MARKET),
+            search: makeQuery(queryLink)
+          });
+        };
+        break;
+
+      case NOTIFICATION_TYPES.orphanOrders:
+        buttonAction = () => {
+          this.markAsRead(notification);
+          const queryLink = {
+            [MARKET_ID_PARAM_NAME]: notification.market.id,
+            [RETURN_PARAM_NAME]: location.hash
+          };
+          history.push({
+            pathname: makePath(MARKET),
+            search: makeQuery(queryLink)
+          });
+        };
+        break;
+
       default:
         buttonAction = () => {
           this.markAsRead(notification);
@@ -230,7 +266,10 @@ class Notifications extends React.Component<
         markets,
         market,
         currentTime: currentAugurTimestamp,
-        reportingWindowStatsEndTime
+        reportingWindowStatsEndTime,
+        buttonAction,
+        buttonLabel,
+        type
       };
 
       const notificationCardProps = {
@@ -254,58 +293,84 @@ class Notifications extends React.Component<
           isDisabled={isDisabled}
         >
           {type === NOTIFICATION_TYPES.resolvedMarketsOpenOrders ? (
-            <OpenOrdersResolvedMarketsTemplate {...templateProps} />
+            <OpenOrdersResolvedMarketsTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
           ) : null}
           {type === NOTIFICATION_TYPES.reportOnMarkets ? (
-            <ReportEndingSoonTemplate {...templateProps} />
+            <ReportEndingSoonTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
           ) : null}
           {type === NOTIFICATION_TYPES.finalizeMarkets ? (
-            <FinalizeTemplate {...templateProps} />
+            <FinalizeTemplate isDisabled={isDisabled} {...templateProps} />
           ) : null}
           {type === NOTIFICATION_TYPES.marketsInDispute ? (
-            <DisputeTemplate {...templateProps} />
+            <DisputeTemplate isDisabled={isDisabled} {...templateProps} />
           ) : null}
           {type === NOTIFICATION_TYPES.completeSetPositions ? (
-            <SellCompleteSetTemplate {...templateProps} />
+            <SellCompleteSetTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
           ) : null}
           {type === NOTIFICATION_TYPES.unsignedOrders ? (
-            <UnsignedOrdersTemplate {...templateProps} />
+            <UnsignedOrdersTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
           ) : null}
           {type === NOTIFICATION_TYPES.claimReportingFees ? (
-            <ClaimReportingFeesTemplate {...templateProps} />
+            <ClaimReportingFeesTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
           ) : null}
           {type === NOTIFICATION_TYPES.proceedsToClaimOnHold ? (
-            <ProceedsToClaimOnHoldTemplate {...templateProps} />
+            <ProceedsToClaimOnHoldTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
           ) : null}
           {type === NOTIFICATION_TYPES.proceedsToClaim ? (
-            <ProceedsToClaimTemplate {...templateProps} />
+            <ProceedsToClaimTemplate
+              isDisabled={isDisabled}
+              {...templateProps}
+            />
+          ) : null}
+          {type === NOTIFICATION_TYPES.orphanOrders ? (
+            <OrphanOrdersTemplate isDisabled={isDisabled} {...templateProps} />
           ) : null}
         </NotificationCard>
       );
     });
 
     const labelContent = (
-      <div className={Styles.NotificationBox__header}>
-        <span>{`(${notificationCount} Notifications)`}</span>
-        {newNotificationCount > 0 && (
-          <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
-        )}
+      <div>
+        {!this.props.isMobile &&
+          newNotificationCount > 0 && (
+            <PillLabel label={`${newNotificationCount} ${constants.NEW}`} />
+          )}
       </div>
     );
 
     return (
-      <div className={Styles.NotificationBox}>
-        <BoxHeader title="Notifications" rightContent={labelContent} />
-        <div className={Styles.NotificationBox__content}>
-          {notificationCount === 0 ? (
-            <div className={Styles.NotificationBox__emptyState}>
-              <EmptyDisplay selectedTab="" filterLabel="notifications" />
-            </div>
+      <QuadBox
+        title={constants.NOTIFICATIONS_TITLE}
+        rightContent={labelContent}
+        content={
+          notificationCount === 0 ? (
+            <EmptyDisplay
+              selectedTab=""
+              filterLabel={constants.NOTIFICATIONS_LABEL}
+            />
           ) : (
             rows
-          )}
-        </div>
-      </div>
+          )
+        }
+      />
     );
   }
 }
