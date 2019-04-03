@@ -41,13 +41,20 @@ export const positionSummary = memoize(
       purchasePrice: formatEther(averagePrice),
       realizedNet: formatEther(realized),
       unrealizedNet: formatEther(unrealized),
-      realizedPercent: formatPercent(realizedPercent || ZERO),
-      unrealizedPercent: formatPercent(unrealizedPercent || ZERO),
+      realizedPercent: formatPercent(timesHundred(realizedPercent || ZERO), {
+        decimalsRounded: 2
+      }),
+      unrealizedPercent: formatPercent(
+        timesHundred(unrealizedPercent || ZERO),
+        { decimalsRounded: 2 }
+      ),
       totalCost: formatEther(totalCost),
       totalValue: formatEther(unrealizedRevenue),
       lastPrice: formatEther(outcome.price),
       totalReturns: formatEther(total || ZERO),
-      totalPercent: formatPercent(totalPercent || ZERO),
+      totalPercent: formatPercent(timesHundred(totalPercent || ZERO), {
+        decimalsRounded: 2
+      }),
       valueChange: formatPercent(ZERO)
     };
   },
@@ -55,3 +62,5 @@ export const positionSummary = memoize(
     max: 50
   }
 );
+
+const timesHundred = value => createBigNumber(value).times(100);
