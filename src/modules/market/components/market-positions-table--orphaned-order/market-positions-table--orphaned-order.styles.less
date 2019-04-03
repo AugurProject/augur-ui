@@ -2,6 +2,7 @@
 
 .OrphanedOrder {
   margin-bottom: 45px;
+  position: relative;
 }
 
 .Order {
@@ -11,37 +12,72 @@
 
 .Order__learnMore {
   background-color: @color-dark-gray;
+  border: 1px solid @color-outcome-four;
   color: @color-white;
+  display: flex;
   font-family: @roboto;
   font-size: @font-size-small;
   left: 0;
-  padding: 1rem 0.5rem;
+  padding: @size-10 1.5rem;
   position: absolute;
   right: 0;
+
+  &::before {
+    content: '';
+    display: block;  
+    position: absolute;
+    left: 18px;
+    bottom: 100%;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-bottom-color: @color-outcome-four;
+  }
+
+  &::after {
+    border: solid transparent;
+    border-bottom-color: @color-dark-gray;
+    bottom: 100%;
+    border-width: 8px;
+    content: " ";
+    height: 0;
+    left: 20px;
+    pointer-events: none;
+    position: absolute;
+    width: 0;
+  }
+
+  > span:first-of-type {
+    .mono-11-bold;
+
+    text-transform: uppercase;
+  }
+
+  > svg {
+    margin-right: 0.5rem;
+
+    > circle {
+      opacity: 1;
+      stroke: @color-outcome-four;
+    }
+
+    > rect {
+      fill: @color-outcome-four;
+    }
+
+    > path {
+      fill: @color-outcome-four;
+    }
+  }
 }
 
 .Order__link {
+  .mono-12;
+
   color: @color-white;
-  font-size: @font-size-small;
-  font-weight: 700;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
   margin-left: 0.5rem;
-  text-decoration: underline;
-}
-
-.Order__learnMore::after {
-  border: solid transparent;
-  border-bottom-color: @color-dark-gray;
-  border-width: 0.4875rem;
-  bottom: 100%;
-  content: " ";
-  height: 0;
-  left: 3.1%;
-  margin-left: -@size-11;
-  pointer-events: none;
-  position: absolute;
-  width: 0;
-}
-
-.Order__learnMore-extended::after {
-  left: 3.4%;
+  text-transform: uppercase;
 }
