@@ -54,7 +54,7 @@ export default class OrphanedOrder extends Component {
         />
         <div className={classNames(Styles.Order__learnMore)}>
           {darkBgExclamationCircle}
-          <span>This is an orphaned order. Please cancel it.{" "}</span>
+          <span>This is an orphaned order. Please cancel it. </span>
           <span className={Styles.Order__link}>
             <a
               href="http://docs.augur.net/#orphaned-order"

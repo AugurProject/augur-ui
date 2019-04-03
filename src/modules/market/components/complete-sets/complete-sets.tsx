@@ -34,7 +34,7 @@ const CompleteSets = (props: EmptyDisplayProps) => {
       completeSetButtonText = "Sell Complete Sets";
       break;
   }
-  //if (!numCompleteSets || numCompleteSets.value <= 0) return null;
+  // if (!numCompleteSets || numCompleteSets.value <= 0) return null;
 
   return (
     <div className={Styles.CompleteSets}>
