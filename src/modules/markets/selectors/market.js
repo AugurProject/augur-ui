@@ -431,7 +431,8 @@ const assembleMarket = (
       );
 
       market.myPositionsSummary.valueChange = formatEther(
-        marketPositions.totalValue || ZERO
+        marketPositions.totalValue || ZERO,
+        { decimalsRounded: 2 }
       );
     }
   }

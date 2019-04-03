@@ -10,6 +10,7 @@ export interface BoxHeaderProps {
   bottomBarContent?: ReactNode;
   bottomRightBarContent?: ReactNode;
   switchHeaders?: boolean;
+  noBackgroundBottom?: boolean;
 }
 
 const BoxHeader = (props: BoxHeaderProps) => (
@@ -23,30 +24,26 @@ const BoxHeader = (props: BoxHeaderProps) => (
       <div className={Styles["BoxHeader__rightContent--mobile"]}>
         {props.rightContent}
       </div>
-      {props.switchHeaders && (
-        <>
-          {props.bottomBarContent && (
-            <div className={Styles["BoxHeader__bottomContent--mobile"]}>
-              {props.bottomBarContent}
-            </div>
-          )}
+      <div
+        className={classNames(Styles.BoxHeader_middleContainer, {
+          [Styles.isSwitched]: props.switchHeaders
+        })}
+      >
+        {props.bottomBarContent && (
+          <div
+            className={classNames(Styles["BoxHeader__bottomContent--mobile"], {
+              [Styles.noBackground]: props.noBackgroundBottom
+            })}
+          >
+            {props.bottomBarContent}
+          </div>
+        )}
+        {props.mostRightContent && (
           <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
             {props.mostRightContent}
           </div>
-        </>
-      )}
-      {!props.switchHeaders && (
-        <>
-          {props.bottomBarContent && (
-            <div className={Styles["BoxHeader__bottomContent--mobile"]}>
-              {props.bottomBarContent}
-            </div>
-          )}
-          <div className={Styles["BoxHeader__mostRightContent--mobile"]}>
-            {props.mostRightContent}
-          </div>
-        </>
-      )}
+        )}
+      </div>
       {props.bottomRightBarContent && (
         <div className={Styles["BoxHeader__bottomRightContent--mobile"]}>
           {props.bottomRightBarContent}
