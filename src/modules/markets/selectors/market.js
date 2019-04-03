@@ -426,10 +426,11 @@ const assembleMarket = (
       );
 
       market.myPositionsSummary.totalPercent = formatPercent(
-        marketPositions.totalPercent || ZERO
+        createBigNumber(marketPositions.totalPercent || ZERO).times(100),
+        { decimalsRounded: 2 }
       );
 
-      market.myPositionsSummary.valueChange = formatPercent(
+      market.myPositionsSummary.valueChange = formatEther(
         marketPositions.totalValue || ZERO,
         { decimalsRounded: 2 }
       );
