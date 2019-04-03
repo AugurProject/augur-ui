@@ -385,7 +385,7 @@ export function formatNumber(
 
   o.denomination = denomination;
   o.full = makeFull(o.formatted, o.denomination); // should this use this?
-  
+
   if (isNaN(parseFloat(num)) || o.formatted === "0") {
     o.formatted = constants.PRECISION.zero.toFixed(decimalsRounded);
   }
