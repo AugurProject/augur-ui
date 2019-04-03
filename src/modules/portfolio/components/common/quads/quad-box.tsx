@@ -20,6 +20,7 @@ export interface QuadBoxProps {
   rightContent?: ReactNode;
   sortByStyles?: Object;
   switchHeaders?: Boolean;
+  noBackgroundBottom?: Boolean;
 }
 
 const QuadBox = (props: QuadBoxProps) => (
@@ -51,6 +52,7 @@ const QuadBox = (props: QuadBoxProps) => (
       }
       bottomRightBarContent={props.bottomRightBarContent}
       bottomBarContent={props.bottomBarContent}
+      noBackgroundBottom={props.noBackgroundBottom}
     />
     <div className={Styles.FilterBox__content}>
       <div className={Styles.FilterBox__container}>{props.content}</div>

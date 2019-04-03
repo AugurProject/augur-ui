@@ -215,3 +215,13 @@ export const LeftChevron = (
     />
   </svg>
 );
+
+export const CheckMark = (
+  <svg viewBox="0 0 11 9" fill="none">
+    <path
+      d="M0.658203 5.6L2.75096 8L9.50721 1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

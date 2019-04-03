@@ -180,6 +180,9 @@ export function formatExpandedValue(
         decimalsRounded: maxHoverDecimals
       });
       fullValue = round.formatted;
+      if (fullValue.split(".")[1] && fullValue.split(".")[1].length > maxHoverDecimals) {
+        fullValue = round.rounded;
+      }
     }
 
     if (testValue.gte("1000") && fixedPrecision) {

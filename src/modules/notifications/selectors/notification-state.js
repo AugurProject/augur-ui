@@ -5,7 +5,8 @@ import {
   selectReportingWindowStats,
   selectPendingLiquidityOrders,
   selectCurrentTimestampInSeconds,
-  selectReadNotificationState
+  selectReadNotificationState,
+  selectOrphanOrders
 } from "src/select-state";
 
 import { createBigNumber } from "utils/create-big-number";
@@ -14,7 +15,9 @@ import { constants } from "services/constants";
 import {
   NOTIFICATION_TYPES,
   TYPE_DISPUTE,
-  TYPE_VIEW,
+  TYPE_VIEW_ORDERS,
+  TYPE_VIEW_SETS,
+  TYPE_VIEW_DETAILS,
   RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
   REPORTING_ENDS_SOON_TITLE,
   FINALIZE_MARKET_TITLE,
@@ -22,6 +25,7 @@ import {
   CLAIM_REPORTING_FEES_TITLE,
   UNSIGNED_ORDERS_TITLE,
   PROCEEDS_TO_CLAIM_TITLE,
+  ORPHAN_ORDERS_TITLE,
   MARKET_CLOSED
 } from "modules/common-elements/constants";
 
@@ -226,6 +230,27 @@ export const selectUnsignedOrders = createSelector(
   }
 );
 
+// Get all orphan orders state
+export const selectAllOrphanOrders = createSelector(
+  selectOrphanOrders,
+  selectMarkets,
+  (orphanOrders, markets) => {
+    if (orphanOrders) {
+      return markets
+        .filter(market =>
+          orphanOrders.find(order => order.marketId === market.id)
+        )
+        .map(getRequiredMarketData)
+        .map(notification => ({
+          ...notification,
+          orphanOrdersPerMarket: orphanOrders.filter(orders => notification.id)
+            .length
+        }));
+    }
+    return [];
+  }
+);
+
 // Returns all notifications currently relevant to the user.
 export const selectNotifications = createSelector(
   selectReportOnMarkets,
@@ -238,6 +263,7 @@ export const selectNotifications = createSelector(
   selectProceedsToClaim,
   selectProceedsToClaimOnHold,
   selectReadNotificationState,
+  selectAllOrphanOrders,
   (
     reportOnMarkets,
     resolvedMarketsOpenOrder,
@@ -248,7 +274,8 @@ export const selectNotifications = createSelector(
     unsignedOrders,
     proceedsToClaim,
     proceedsToClaimOnHold,
-    readNotifications
+    readNotifications,
+    orphanOrders
   ) => {
     // Generate non-unquie notifications
     const reportOnMarketsNotifications = generateCards(
@@ -280,6 +307,11 @@ export const selectNotifications = createSelector(
       NOTIFICATION_TYPES.proceedsToClaimOnHold
     );
 
+    const orphanOrdersNotifications = generateCards(
+      orphanOrders,
+      NOTIFICATION_TYPES.orphanOrders
+    );
+
     // Add non unquie notifications
     let notifications = [
       ...reportOnMarketsNotifications,
@@ -288,7 +320,8 @@ export const selectNotifications = createSelector(
       ...completeSetPositionsNotifications,
       ...marketsInDisputeNotifications,
       ...unsignedOrdersNotifications,
-      ...proceedsToClaimOnHoldNotifications
+      ...proceedsToClaimOnHoldNotifications,
+      ...orphanOrdersNotifications
     ];
 
     // Add unquie notifications
@@ -301,7 +334,7 @@ export const selectNotifications = createSelector(
         isImportant: false,
         isNew: true,
         title: CLAIM_REPORTING_FEES_TITLE,
-        buttonLabel: TYPE_VIEW,
+        buttonLabel: TYPE_VIEW_DETAILS,
         market: null,
         claimReportingFees,
         id: NOTIFICATION_TYPES.claimReportingFees
@@ -324,7 +357,7 @@ export const selectNotifications = createSelector(
           isImportant: false,
           isNew: true,
           title: PROCEEDS_TO_CLAIM_TITLE,
-          buttonLabel: TYPE_VIEW,
+          buttonLabel: TYPE_VIEW_DETAILS,
           market: null,
           marketes: marketIds,
           totalProceeds: totalEth.toNumber(),
@@ -373,7 +406,7 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: true,
       title: RESOLVED_MARKETS_OPEN_ORDERS_TITLE,
-      buttonLabel: TYPE_VIEW
+      buttonLabel: TYPE_VIEW_ORDERS
     };
   } else if (type === NOTIFICATION_TYPES.reportOnMarkets) {
     defaults = {
@@ -381,7 +414,7 @@ const generateCards = (markets, type) => {
       isImportant: true,
       isNew: true,
       title: REPORTING_ENDS_SOON_TITLE,
-      buttonLabel: TYPE_VIEW
+      buttonLabel: TYPE_VIEW_DETAILS
     };
   } else if (type === NOTIFICATION_TYPES.finalizeMarkets) {
     defaults = {
@@ -389,7 +422,7 @@ const generateCards = (markets, type) => {
       isImportant: true,
       isNew: true,
       title: FINALIZE_MARKET_TITLE,
-      buttonLabel: TYPE_VIEW
+      buttonLabel: TYPE_VIEW_DETAILS
     };
   } else if (type === NOTIFICATION_TYPES.marketsInDispute) {
     defaults = {
@@ -405,7 +438,7 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: true,
       title: SELL_COMPLETE_SETS_TITLE,
-      buttonLabel: TYPE_VIEW
+      buttonLabel: TYPE_VIEW_SETS
     };
   } else if (type === NOTIFICATION_TYPES.unsignedOrders) {
     defaults = {
@@ -413,7 +446,7 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: true,
       title: UNSIGNED_ORDERS_TITLE,
-      buttonLabel: TYPE_VIEW
+      buttonLabel: TYPE_VIEW_ORDERS
     };
   } else if (type === NOTIFICATION_TYPES.proceedsToClaimOnHold) {
     defaults = {
@@ -421,7 +454,15 @@ const generateCards = (markets, type) => {
       isImportant: false,
       isNew: true,
       title: PROCEEDS_TO_CLAIM_TITLE,
-      buttonLabel: TYPE_VIEW
+      buttonLabel: TYPE_VIEW_DETAILS
+    };
+  } else if (type === NOTIFICATION_TYPES.orphanOrders) {
+    defaults = {
+      type,
+      isImportant: false,
+      isNew: true,
+      title: ORPHAN_ORDERS_TITLE,
+      buttonLabel: TYPE_VIEW_ORDERS
     };
   }
 
