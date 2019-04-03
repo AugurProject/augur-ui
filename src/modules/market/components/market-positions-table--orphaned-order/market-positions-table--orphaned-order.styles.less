@@ -47,26 +47,30 @@
     width: 0;
   }
 
-  > span:first-of-type {
-    .mono-11-bold;
+  > div {
+    display: flex;
 
-    text-transform: uppercase;
-  }
+    > svg {
+      margin-right: 0.5rem;
 
-  > svg {
-    margin-right: 0.5rem;
+      > circle {
+        opacity: 1;
+        stroke: @color-outcome-four;
+      }
 
-    > circle {
-      opacity: 1;
-      stroke: @color-outcome-four;
+      > rect {
+        fill: @color-outcome-four;
+      }
+
+      > path {
+        fill: @color-outcome-four;
+      }
     }
 
-    > rect {
-      fill: @color-outcome-four;
-    }
+    > span {
+      .mono-11-bold;
 
-    > path {
-      fill: @color-outcome-four;
+      text-transform: uppercase;
     }
   }
 }
@@ -80,4 +84,19 @@
   justify-content: flex-end;
   margin-left: 0.5rem;
   text-transform: uppercase;
+}
+
+@media @breakpoint-mobile {
+  .OrphanedOrder {
+    margin-bottom: 67px;
+  }
+
+  .Order__learnMore {
+    flex-direction: column;
+    padding: @size-10 1rem;
+  }
+
+  .Order__link {
+    margin-top: @size-10;
+  }
 }
