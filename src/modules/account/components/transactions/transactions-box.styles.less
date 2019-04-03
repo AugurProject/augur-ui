@@ -58,6 +58,7 @@
 
   @media @breakpoint-mobile {
     background: unset;
+    padding-top: 0;
 
     > button:first-of-type {
       flex: 1;
@@ -71,9 +72,13 @@
       flex: 1;
     }
 
-    > div > button {
-      flex: 1;
-      margin: unset;
+    > div {
+      margin-top: 0;
+
+      > button {
+        flex: 1;
+        margin: unset;
+      }
     }
   }
 }

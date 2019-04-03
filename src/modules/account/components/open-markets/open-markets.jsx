@@ -5,7 +5,7 @@ import FilterSwitchBox from "modules/portfolio/components/common/quads/filter-sw
 import MarketRow from "modules/portfolio/components/common/rows/market-row";
 import { MovementLabel } from "modules/common-elements/labels";
 
-import Styles from "modules/portfolio/components/common/quads/quad.styles";
+import Styles from "modules/account/components/open-markets/open-markets.styles";
 
 function filterComp(input, market) {
   return market.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -35,8 +35,10 @@ export default class OpenMarkets extends Component {
         rightContent={
           <MovementLabel
             showColors
+            showBrackets
             showPercent
             showIcon
+            showPlusMinus
             value={
               marketsObj[market.id].myPositionsSummary.valueChange.formatted
             }
@@ -44,14 +46,16 @@ export default class OpenMarkets extends Component {
           />
         }
         toggleContent={
-          <div className={Styles.ExpandedContent}>
+          <div className={Styles.OpenMarkets__expandedContent}>
             {marketsObj[market.id].userPositions.map(position => (
               <div key={position.outcomeId}>
                 <span>{position.outcomeName}</span>
                 <MovementLabel
                   showColors
                   showPercent
+                  showBrackets
                   showIcon
+                  showPlusMinus
                   value={position.valueChange.formatted}
                   size="small"
                 />
@@ -73,8 +77,21 @@ export default class OpenMarkets extends Component {
         showFilterSearch
         data={markets}
         filterComp={filterComp}
+        noBackgroundBottom
         bottomBarContent={
-          !isMobile && <div className={Styles.BottomBar}>24hr % Change</div>
+          <div className={Styles.OpenMarkets__bottomBar}>
+            <div>
+              <span>24hr</span>
+              <MovementLabel
+                showColors
+                showPercent
+                showIcon
+                showPlusMinus
+                value="1.00"
+                size="large"
+              />
+            </div>
+          </div>
         }
         noSwitch
         renderRows={this.renderRows}
