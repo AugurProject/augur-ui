@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import classNames from "classnames";
 
 import OpenOrder from "modules/portfolio/containers/open-order";
+import { darkBgExclamationCircle } from "modules/common/components/icons";
 
 import Styles from "modules/market/components/market-positions-table--orphaned-order/market-positions-table--orphaned-order.styles";
 
@@ -52,7 +53,10 @@ export default class OrphanedOrder extends Component {
           isSingle={isMobile}
         />
         <div className={classNames(Styles.Order__learnMore)}>
-          This is an orphaned order. Please cancel it.{" "}
+          <div>
+            {darkBgExclamationCircle}
+            <span>This is an orphaned order. Please cancel it. </span>
+          </div>
           <span className={Styles.Order__link}>
             <a
               href="http://docs.augur.net/#orphaned-order"
