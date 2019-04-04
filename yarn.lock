@@ -3185,6 +3185,14 @@ buffer-xor@^1.0.3:
   resolved "https://registry.yarnpkg.com/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
   integrity sha1-JuYe0UIvtw3ULm42cp7VHYVf6Nk=
 
+buffer@5.2.1, buffer@^5.0.2, buffer@^5.0.5:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.2.1.tgz#dd57fa0f109ac59c602479044dca7b8b3d0b71d6"
+  integrity sha512-c+Ko0loDaFfuPWiL02ls9Xd3GO3cPVmUobQ6t3rXNUk304u6hGq+8N/kFi+QEIKhzK3uwolVhLzszmfLmMLnqg==
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+
 buffer@^4.3.0:
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
@@ -3193,14 +3201,6 @@ buffer@^4.3.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
     isarray "^1.0.0"
-
-buffer@^5.0.2, buffer@^5.0.5:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.2.1.tgz#dd57fa0f109ac59c602479044dca7b8b3d0b71d6"
-  integrity sha512-c+Ko0loDaFfuPWiL02ls9Xd3GO3cPVmUobQ6t3rXNUk304u6hGq+8N/kFi+QEIKhzK3uwolVhLzszmfLmMLnqg==
-  dependencies:
-    base64-js "^1.0.2"
-    ieee754 "^1.1.4"
 
 builtin-modules@^1.1.1:
   version "1.1.1"
@@ -9385,7 +9385,7 @@ jsx-ast-utils@^2.0.0, jsx-ast-utils@^2.0.1:
 
 keccak@1.2.0, keccak@^1.0.2, keccak@brianosaurus/keccak:
   version "2.0.0-brianosaurus.0"
-  resolved "https://codeload.github.com/brianosaurus/keccak/tar.gz/0343d5c36de3fb4355e872ea2bf9425e12d3ff46"
+  resolved "https://codeload.github.com/brianosaurus/keccak/tar.gz/0f8ab75bb7482fcdb02c30246664b9e066ce6fce"
   dependencies:
     inherits "^2.0.3"
     nan "^2.2.1"
@@ -10423,11 +10423,6 @@ mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"
   integrity sha1-MHXOk7whuPq0PhvE2n6BFe0ee6s=
-
-nan@2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
-  integrity sha512-bAdJv7fBLhWC+/Bls0Oza+mvTaNQtP+1RyhhhvD95pgUJz6XM5IzgmxOkItJ9tkoCiplvAnXI1tNmmUD/eScyA==
 
 nan@^2.2.1, nan@^2.3.3, nan@^2.9.2:
   version "2.13.2"
@@ -13539,7 +13534,7 @@ scrypt-js@^2.0.3:
 
 secp256k1@3.2.5, secp256k1@3.5.0, secp256k1@^3.0.1, secp256k1@brianosaurus/secp256k1-node:
   version "3.6.2-brianosaurus.0"
-  resolved "https://codeload.github.com/brianosaurus/secp256k1-node/tar.gz/f32a4815aaafe8dacaccfafc68796a75213ef118"
+  resolved "https://codeload.github.com/brianosaurus/secp256k1-node/tar.gz/1d6e9042a80ba006e1260b22b1395a0895a9a291"
   dependencies:
     bip66 "^1.1.3"
     bn.js "^4.11.3"
@@ -13651,12 +13646,12 @@ sha.js@^2.4.0, sha.js@^2.4.8, sha.js@~2.4.4:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-sha3@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/sha3/-/sha3-1.2.2.tgz#a66c5098de4c25bc88336ec8b4817d005bca7ba9"
-  integrity sha1-pmxQmN5MJbyIM27ItIF9AFvKe6k=
+sha3@2.0.1, sha3@^1.2.2:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/sha3/-/sha3-2.0.1.tgz#8b111766d26994ab27a659af0dd73326fa19965d"
+  integrity sha512-jFxj019H14keifhzBnwjydSjQyipKuNah4wUeq0RwKePlGUg2ye/gm92qswWuy26qYk0dDiiOKOA/oVp1jSucQ==
   dependencies:
-    nan "2.10.0"
+    buffer "5.2.1"
 
 shallow-clone@^0.1.2:
   version "0.1.2"
