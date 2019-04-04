@@ -1,0 +1,46 @@
+@import (reference) '~assets/styles/shared';
+
+.Pagination {
+  align-content: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  max-width: 350px;
+  width: 100%;
+
+  > span {
+    color: @color-tertiary-text;
+    display: none;
+    margin: auto;
+    white-space: nowrap;
+  }
+
+  > button {
+    color: @color-tertiary-text;
+    height: @size-32;
+    width: @size-32;
+  }
+
+  @media @breakpoint-mobile {
+
+    > button {
+      display: none;
+    }
+
+    > button:first-of-type,
+    > button:last-of-type {
+      display: block;
+      width: calc(@size-32 * 3);
+    }
+
+    > span {
+      display: block;
+      padding: 0 @size-4;
+    }
+  }
+}
+
+.Active {
+  color: @color-secondary-text;
+  border-bottom: 1px solid @color-secondary-text;
+}

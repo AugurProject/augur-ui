@@ -151,9 +151,6 @@ export interface TextLabelProps {
   keyId: string;
 }
 
-const maxHoverDecimals = 8;
-const minHoverDecimals = 4;
-
 export function formatExpandedValue(
   value,
   showDenomination,
@@ -165,9 +162,10 @@ export function formatExpandedValue(
     fullPrecision,
     roundedFormatted,
     denomination,
-    formattedValue,
-    minimized
+    formatted
   } = value;
+  const maxHoverDecimals = 8;
+  const minHoverDecimals = 4;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan = testValue.abs().gt(max);
@@ -188,7 +186,7 @@ export function formatExpandedValue(
     }
 
     if (testValue.gte("1000") && fixedPrecision) {
-      frontFacingLabel = formattedValue.toFixed(minHoverDecimals);
+      frontFacingLabel = formatted.toFixed(minHoverDecimals);
     }
   }
 

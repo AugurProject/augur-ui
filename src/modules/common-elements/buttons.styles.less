@@ -398,6 +398,40 @@
   }
 }
 
+.DirectionButton {
+  .Button;
+
+  align-items: center;
+  border-color: @color-highlight;
+  background: @color-theme-primary;
+  display: flex;
+  padding: @size-8;
+  height: @size-32;
+  width: @size-32;
+
+  > svg {
+    height: @size-16;
+    width: @size-16;
+    margin: auto;
+
+    > path {
+      stroke: @color-neutral;
+    }
+  }
+
+  &:hover {
+    > svg > path {
+      stroke: @color-secondary-text;
+    }
+  }
+}
+
+.left {
+  > svg {
+    transform: rotate(180deg);
+  }
+}
+
 .ExportButton {
   .CurrenyActionButton;
 

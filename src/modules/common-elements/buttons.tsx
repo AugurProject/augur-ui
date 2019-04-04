@@ -10,7 +10,8 @@ import {
   DoubleArrowIcon,
   RepLogoIcon,
   ViewIcon,
-  DownloadIcon
+  DownloadIcon,
+  RotatableChevron
 } from "modules/common-elements/icons";
 import classNames from "classnames";
 import EtherscanLink from "modules/common/containers/etherscan-link";
@@ -22,6 +23,13 @@ export interface DefaultButtonProps {
   action: Function;
   disabled?: boolean;
   title?: string;
+}
+
+export interface DirectionButtonProps {
+  action: Function;
+  disabled?: boolean;
+  title?: string;
+  left?: boolean;
 }
 
 export interface CurrencyActionButtonProps {
@@ -210,11 +218,28 @@ export const ExportButton = (props: CurrencyActionButtonProps) => (
   </button>
 );
 
+export const DirectionButton = (props: DirectionButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={classNames(Styles.DirectionButton, {
+      [Styles.left]: props.left
+    })}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {RotatableChevron}
+  </button>
+)
+
 export const ViewTransactionDetailsButton = (
   props: ViewTransactionDetailsButtonProps
 ) => (
   <div className={Styles.ViewTransactionDetailsButton}>
     {ViewIcon}
-    <EtherscanLink showNonLink txhash={props.transactionHash} label="View" />
+    <EtherscanLink 
+      showNonLink
+      txhash={props.transactionHash}
+      label="View"
+    />
   </div>
 );

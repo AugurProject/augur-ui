@@ -188,6 +188,18 @@ export const Syncing = (
   </svg>
 );
 
+export const RotatableChevron = (
+  <svg viewBox="0 0 16 16">
+    <path 
+      d="M6 12L10 8L6 4"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const LeftChevron = (
   <svg viewBox="0 0 6 10" fill="none">
     <path

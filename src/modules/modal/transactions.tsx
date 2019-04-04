@@ -8,31 +8,44 @@ import {
   ExportButton,
   ViewTransactionDetailsButton
 } from "modules/common-elements/buttons";
+import { Pagination } from "modules/common-elements/pagination";
 import { ValueLabel, TextLabel } from "modules/common-elements/labels";
 import { SquareDropdown, DatePicker } from "modules/common-elements/selection";
 import { Title } from "modules/modal/common";
-import { ETH } from "modules/common-elements/constants";
-import { formatEther, formatShares, formatREP } from "utils/format-number";
+import { formatEther, formatShares } from "utils/format-number";
 import Styles from "modules/modal/modal.styles";
 
 interface TransactionsProps {
   closeAction: Function;
   title: string;
   currentTimestamp: any;
-  transactions: Array<any>;
+  transactions: Array<TransactionInfo>;
+}
+
+interface TransactionInfo {
+  transactionHash: string;
+  timestamp: number;
+  marketDescription: string;
+  outcome: number | null;
+  outcomeDescription: string | null;
+  action: string;
+  price: string;
+  quantity: string;
+  coin: string;
+  fee: string;
+  total: string;
+  details: string;
 }
 
 interface TransactionsState {
   coin: string;
   action: string;
-  pageAmount: string;
+  itemsPerPage: number;
+  page: number;
   startDate: Date | any;
   endDate: Date | any;
   startFocused: boolean;
   endFocused: boolean;
-  // hours: Array<number>;
-  // minutes: Array<any>;
-  // ampm: Array<string>;
 }
 
 const coinOptions = [
@@ -96,23 +109,23 @@ const actionOptions = [
 const paginationOptions = [
   {
     label: "10 per page",
-    value: "10"
+    value: 10
   },
   {
     label: "20 per page",
-    value: "20"
+    value: 20
   },
   {
     label: "30 per page",
-    value: "30"
+    value: 30
   },
   {
     label: "40 per page",
-    value: "40"
+    value: 40
   },
   {
     label: "50 per page",
-    value: "50"
+    value: 50
   }
 ];
 
@@ -123,42 +136,61 @@ export class Transactions extends React.Component<
   state: TransactionsState = {
     coin: "ALL",
     action: "ALL",
-    pageAmount: "20",
+    itemsPerPage: 20,
     startDate: moment(this.props.currentTimestamp * 1000).subtract(6, "M"),
     endDate: moment(this.props.currentTimestamp * 1000),
     startFocused: false,
-    endFocused: false
+    endFocused: false,
+    page: 2
   };
 
-  addTransactionRow = (tx: any) => {
-    const timestamp = moment(tx.timestamp).format("D MMM YYYY HH:mm:ss");
-    const quantity =
-      tx.coin === ETH ? formatShares(tx.quantity) : formatREP(tx.quantity);
+  tableHeaderRef: any = null;
+  tableBodyRef: any = null;
+
+  triggerTransactionsExport = () => {
+    const { transactions } = this.props;
+    const transactionsDataString =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(transactions));
+    const a = document.createElement("a");
+
+    a.setAttribute("href", transactionsDataString);
+    a.setAttribute("download", "AugurTransactions.json");
+    a.click();
+  }
+
+  addTransactionRow = (tx: TransactionInfo) => {
+    const timestamp = moment(tx.timestamp * 1000).format("D MMM YYYY HH:mm:ss");
+    const key = `${tx.transactionHash}-${tx.timestamp}-${tx.outcome}-${tx.quantity}-${tx.price}-${tx.total}-${tx.action}`;
+    // we never show the coin type outside of tx.coin so we can just format by shares always here.
+    const quantity = formatShares(tx.quantity);
     return (
-      <React.Fragment key={`${tx.txHash}`}>
+      <React.Fragment key={key}>
         <span>{timestamp}</span>
         <span>
-          <TextLabel keyId={tx.txHash} text={tx.market} />
+          <TextLabel keyId={`${key}-marketDescription`} text={tx.marketDescription} />
         </span>
         <span>
-          <TextLabel keyId={tx.txHash} text={tx.outcome} />
+          <TextLabel keyId={`${key}-outcomeDescription`} text={tx.outcomeDescription || ""} />
         </span>
-        <span>{tx.action}</span>
+        <span>
+          <TextLabel keyId={`${key}-action`} text={tx.action.replace(/_/g, " ").toLowerCase()} />
+        </span>
         <ValueLabel
-          keyId={`${tx.txHash}_${tx.price}`}
+          keyId={`${key}-${tx.price}`}
           value={formatEther(tx.price)}
         />
-        <ValueLabel keyId={`${tx.txHash}_${tx.quantity}`} value={quantity} />
-        <span key={`${tx.txHash}_${tx.coin}`}>{tx.coin}</span>
+        <ValueLabel keyId={`${key}-${tx.quantity}`} value={quantity} />
+        <span key={`${key}-${tx.coin}`}>{tx.coin}</span>
         <ValueLabel
-          keyId={`${tx.txHash}_${tx.fee}`}
+          keyId={`${key}-${tx.fee}`}
           value={formatEther(tx.fee)}
         />
         <ValueLabel
-          keyId={`${tx.txHash}_${tx.total}`}
+          keyId={`${key}-${tx.total}`}
           value={formatEther(tx.total)}
         />
-        <ViewTransactionDetailsButton transactionHash={tx.txHash} />
+        <ViewTransactionDetailsButton transactionHash={tx.transactionHash} />
       </React.Fragment>
     );
   };
@@ -172,13 +204,22 @@ export class Transactions extends React.Component<
       startFocused,
       endDate,
       endFocused,
-      pageAmount
+      itemsPerPage,
+      page
     } = this.state;
+    const pageInfo = {
+      page,
+      itemsPerPage,
+      itemCount: transactions.length,
+      action: (page: number) => this.setState({ page })
+    };
+    const pageTransactions = transactions.slice((page * itemsPerPage) - itemsPerPage, page * itemsPerPage);
+    const headerAdjustment = (this.tableHeaderRef && this.tableBodyRef && this.tableBodyRef.clientHeight < this.tableBodyRef.scrollHeight) ? { paddingRight: "17px" } : {};
     const startDatePicker = {
       id: "startDatePicker",
       date: startDate,
       placeholder: "Start Date",
-      onDateChange: startDate => this.setState({ startDate }),
+      onDateChange: (startDate: number) => this.setState({ startDate }),
       onFocusChange: ({ focused }) => {
         if (this.state.startDate == null) {
           const startDate = moment(currentTimestamp * 1000);
@@ -197,7 +238,7 @@ export class Transactions extends React.Component<
       id: "endDatePicker",
       date: endDate,
       placeholder: "End Date",
-      onDateChange: endDate => this.setState({ endDate }),
+      onDateChange: (endDate: number) => this.setState({ endDate }),
       onFocusChange: ({ focused }) => {
         if (this.state.endDate == null) {
           const endDate = moment(currentTimestamp * 1000);
@@ -244,9 +285,12 @@ export class Transactions extends React.Component<
             />
             <PrimaryButton action={() => console.log("seach")} text="Search" />
           </div>
-          <ExportButton action={() => console.log("export all")} />
+          <ExportButton action={this.triggerTransactionsExport} />
         </section>
-        <div>
+        <div
+          ref={tableHeader => this.tableHeaderRef = tableHeader}
+          style={headerAdjustment}
+        >
           <span>Date</span>
           <span>Market</span>
           <span>Outcome</span>
@@ -258,18 +302,18 @@ export class Transactions extends React.Component<
           <span>Total</span>
           <span>Etherscan</span>
         </div>
-        <section>
-          {transactions.map((transaction: any) =>
+        <section ref={tableBody => this.tableBodyRef = tableBody}>
+          {pageTransactions.map((transaction: TransactionInfo) =>
             this.addTransactionRow(transaction)
           )}
         </section>
         <div>
-          <div>Pagination Placeholder</div>
+          <Pagination {...pageInfo} /> 
           <span>Show</span>
           <SquareDropdown
             options={paginationOptions}
-            defaultValue={pageAmount}
-            onChange={(pageAmount: string) => this.setState({ pageAmount })}
+            defaultValue={itemsPerPage}
+            onChange={(itemsPerPage: number) => this.setState({ itemsPerPage })}
             openTop
           />
         </div>
