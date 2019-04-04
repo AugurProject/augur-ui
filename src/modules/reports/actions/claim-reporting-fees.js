@@ -36,3 +36,28 @@ export function claimReportingFeesNonforkedMarkets(
     );
   };
 }
+
+export function redeemStake(
+  options,
+  callback = logError
+) {
+  return (dispatch, getState) => {
+    const { loginAccount, universe } = getState();
+    const payload = {
+        ...options,
+        _reportingParticipants: [loginAccount.address],
+        tx: {
+          to: loginAccount.address,
+          estimateGas: false
+        },
+        meta: loginAccount.meta,
+      };
+      augur.api.Universe.redeemStake(
+        payload,
+        (err, result) => {
+          if (err) return callback(err);
+          callback(null, result);
+        }
+      );
+  };
+}

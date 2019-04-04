@@ -14,7 +14,7 @@ import {
   DefaultButtonProps,
   PrimaryButton,
   SecondaryButton,
-  CompactButton
+  SubmitTextButton
 } from "modules/common-elements/buttons";
 import {
   LinearPropertyLabel,
@@ -40,6 +40,10 @@ interface AlertMessageProps {
   preText: string;
   boldText?: string;
   postText?: string;
+}
+
+interface DescriptionMessageProps {
+  messages: Array<AlertMessageProps>;
 }
 
 interface CallToActionProps {
@@ -117,6 +121,24 @@ export const ButtonsRow = (props: ButtonsRowProps) => (
   </div>
 );
 
+export const DescriptionMessage = (props: DescriptionMessageProps) => (
+  <div className={Styles.DescriptionMessage}>
+    {props.messages.map(message =>
+       <>
+        {message.preText}
+        {message.boldText && (
+          <b>
+            &nbsp;
+            {message.boldText}
+            &nbsp;
+          </b>
+        )}
+        {message.postText}
+      </>
+    )}
+  </div>
+);
+
 export const AlertMessage = (props: AlertMessageProps) => (
   <div className={Styles.AlertMessage}>
     {props.preText}
@@ -168,9 +190,13 @@ export const ActionRows = (props: ActionRowsProps) =>
     <section key={row.title} className={Styles.ActionRow}>
       <section>
         <MarketTitle title={row.title} />
-        <PropertyLabel label={row.label} value={row.value} />
+        <div>
+          {row.properties.map(property => 
+            <LinearPropertyLabel label={property.label} value={property.value} />
+          )}
+        </div>
       </section>
-      <CompactButton text={row.text} action={row.action} />
+      <SubmitTextButton text={row.text} action={row.action} />
     </section>
   ));
 
