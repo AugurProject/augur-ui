@@ -188,8 +188,6 @@
     "webpack-merge": "4.1.4"
   },
   "resolutions": {
-    "keccak": "brianosaurus/keccak",
-    "secp256k1": "brianosaurus/secp256k1-node",
     "**/sha3": "2.0.1"
   }
 }
