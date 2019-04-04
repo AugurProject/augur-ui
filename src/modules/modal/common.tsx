@@ -123,8 +123,8 @@ export const ButtonsRow = (props: ButtonsRowProps) => (
 
 export const DescriptionMessage = (props: DescriptionMessageProps) => (
   <div className={Styles.DescriptionMessage}>
-    {props.messages.map(message =>
-       <>
+    {props.messages.map(message => (
+      <>
         {message.preText}
         {message.boldText && (
           <b>
@@ -135,7 +135,7 @@ export const DescriptionMessage = (props: DescriptionMessageProps) => (
         )}
         {message.postText}
       </>
-    )}
+    ))}
   </div>
 );
 
@@ -191,9 +191,12 @@ export const ActionRows = (props: ActionRowsProps) =>
       <section>
         <MarketTitle title={row.title} />
         <div>
-          {row.properties.map(property => 
-            <LinearPropertyLabel label={property.label} value={property.value} />
-          )}
+          {row.properties.map(property => (
+            <LinearPropertyLabel
+              label={property.label}
+              value={property.value}
+            />
+          ))}
         </div>
       </section>
       <SubmitTextButton text={row.text} action={row.action} />

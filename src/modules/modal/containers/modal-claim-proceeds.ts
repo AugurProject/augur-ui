@@ -62,8 +62,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           properties: [
             {
               label: "Proceeds",
-              value: winningOutcomeShares.full,
-
+              value: winningOutcomeShares.full
             }
           ],
           text: "Claim Proceeds",

@@ -17,7 +17,7 @@ export const getReportingFees = (callback = logError) => (
       reporter: loginAccount.address
     },
     (err, result) => {
-      console.log(result)
+      console.log(result);
       if (err) return callback(err);
 
       const unclaimedRepTotal = createBigNumber(result.total.unclaimedRepStaked)

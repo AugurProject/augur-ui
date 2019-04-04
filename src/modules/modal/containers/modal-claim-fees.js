@@ -10,7 +10,10 @@ import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { constants } from "services/augurjs";
 import { ActionRowsProps } from "modules/modal/common";
-import { claimReportingFeesNonforkedMarkets, redeemStake } from "modules/reports/actions/claim-reporting-fees";
+import {
+  claimReportingFeesNonforkedMarkets,
+  redeemStake
+} from "modules/reports/actions/claim-reporting-fees";
 
 import { formatAttoRep, formatAttoEth } from "utils/format-number";
 
@@ -29,8 +32,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
   claimReportingFeesNonforkedMarkets: (options, callback) =>
     dispatch(claimReportingFeesNonforkedMarkets(options, callback)),
-  redeemStake: (options, callback) =>
-    dispatch(redeemStake(options, callback))
+  redeemStake: (options, callback) => dispatch(redeemStake(options, callback))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
@@ -40,30 +42,34 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   marketIdsToTest.forEach(marketObj => {
     const market = selectMarket(marketObj.marketId);
     if (market) {
-	    markets.push({
-	      title: market.description,
-	      text: "Claim Stake & Fees",
-	      properties: [
-            {
-              label: "reporting stake",
-              value: formatAttoRep(marketObj.unclaimedRepTotal, {
-                decimals: 4,
-                decimalsRounded: 4,
-                zeroStyled: true
-              }),
-            },
-            {
-              label: "est gas cost",
-              value: 0,
-            },
-            {
-              label: "total",
-              value: 0,
-            }
-          ],
-	      action: () => {
-          const market = sP.reportingFees.nonforkedMarkets.find(market => market.marketId === marketObj.marketId);
-          console.log(market)
+      markets.push({
+        title: market.description,
+        text: "Claim Stake & Fees",
+        properties: [
+          {
+            label: "reporting stake",
+            value: marketObj.unclaimedRepTotal
+              ? formatAttoRep(marketObj.unclaimedRepTotal, {
+                  decimals: 4,
+                  decimalsRounded: 4,
+                  zeroStyled: true
+                })
+              : 0
+          },
+          {
+            label: "est gas cost",
+            value: 0
+          },
+          {
+            label: "total",
+            value: 0
+          }
+        ],
+        action: () => {
+          const market = sP.reportingFees.nonforkedMarkets.find(
+            market => market.marketId === marketObj.marketId
+          );
+          console.log(market);
           const ClaimReportingFeesNonforkedMarketsOptions = {
             feeWindows: [], // fee windows is empty here because we are just claiming by markets
             forkedMarket: sP.reportingFees.forkedMarket,
@@ -76,10 +82,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
               }
             }
           };
-          dP.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
+          dP.claimReportingFeesNonforkedMarkets(
+            ClaimReportingFeesNonforkedMarketsOptions
+          );
         }
-	    });
-	    marketIds.push(marketObj.marketId);
+      });
+      marketIds.push(marketObj.marketId);
     }
   });
   const totalGas = formatEther(
@@ -101,7 +109,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     ],
     rows: markets,
     breakdown: [
-    	{
+      {
         label: "Reporting Stake",
         value: sP.reportingFees.unclaimedRep.full
       },
@@ -128,7 +136,9 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       {
         text: "Claim All Stake & Fees",
         action: () => {
-          const reportingParticipants = sP.nonforkedMarkets.map(nonforkedMarket => nonforkedMarket.initialReporter);
+          const reportingParticipants = sP.nonforkedMarkets.map(
+            nonforkedMarket => nonforkedMarket.initialReporter
+          );
           console.log(reportingParticipants);
           const ClaimReportingFeesNonforkedMarketsOptions = {
             _feeWindows: sP.reportingFees.feeWindows,

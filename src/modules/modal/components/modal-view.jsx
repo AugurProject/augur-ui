@@ -121,8 +121,7 @@ export default class ModalView extends Component {
           {modal.type === TYPES.MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET && (
             <ModalClaimReportingFeesForkedMarket {...modal} />
           )}
-          {modal.type ===
-            TYPES.MODAL_CLAIM_FEES && (
+          {modal.type === TYPES.MODAL_CLAIM_FEES && (
             <ModalClaimFees {...modal} />
           )}
           {modal.type === TYPES.MODAL_MIGRATE_MARKET && (
