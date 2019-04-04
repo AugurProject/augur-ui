@@ -1,5 +1,6 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
+import { UNIVERSE_ID } from "modules/common-elements/constants";
 
 export function claimReportingFeesForkedMarket(options, callback = logError) {
   return (dispatch, getState) => {
@@ -43,12 +44,12 @@ export function redeemStake(
 ) {
   return (dispatch, getState) => {
     const { loginAccount, universe } = getState();
+    const universeID = universe.id || UNIVERSE_ID;
     const payload = {
         ...options,
-        _reportingParticipants: [loginAccount.address],
         tx: {
-          to: loginAccount.address,
-          estimateGas: false
+          to: universeID,
+          estimateGas: false,
         },
         meta: loginAccount.meta,
       };

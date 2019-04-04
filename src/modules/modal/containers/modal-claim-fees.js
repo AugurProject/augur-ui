@@ -12,6 +12,8 @@ import { constants } from "services/augurjs";
 import { ActionRowsProps } from "modules/modal/common";
 import { claimReportingFeesNonforkedMarkets, redeemStake } from "modules/reports/actions/claim-reporting-fees";
 
+import { formatAttoRep, formatAttoEth } from "utils/format-number";
+
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
   gasCost: formatGasCostToEther(
@@ -44,11 +46,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
 	      properties: [
             {
               label: "reporting stake",
-              value: 0,
-            },
-            {
-              label: "reporting fees",
-              value: 0,
+              value: formatAttoRep(marketObj.unclaimedRepTotal, {
+                decimals: 4,
+                decimalsRounded: 4,
+                zeroStyled: true
+              }),
             },
             {
               label: "est gas cost",
@@ -63,7 +65,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           const market = sP.reportingFees.nonforkedMarkets.find(market => market.marketId === marketObj.marketId);
           console.log(market)
           const ClaimReportingFeesNonforkedMarketsOptions = {
-            feeWindows: sP.reportingFees.feeWindows,
+            feeWindows: [], // fee windows is empty here because we are just claiming by markets
             forkedMarket: sP.reportingFees.forkedMarket,
             nonforkedMarkets: [market],
             estimateGas: false,
@@ -72,7 +74,6 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
               if (sP.modal.cb) {
                 sP.modal.cb();
               }
-             // dP.closeModal();
             }
           };
           dP.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
@@ -94,7 +95,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       },
       {
         preText: " and",
-        boldText: `${sP.reportingFees.unclaimedEth.full} REP`,
+        boldText: `${sP.reportingFees.unclaimedEth.full} ETH`,
         postText: "of reporting fees to collect from the following markets:"
       }
     ],
@@ -127,18 +128,20 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       {
         text: "Claim All Stake & Fees",
         action: () => {
-          //dP.closeModal();
+          const reportingParticipants = sP.nonforkedMarkets.map(nonforkedMarket => nonforkedMarket.initialReporter);
+          console.log(reportingParticipants);
           const ClaimReportingFeesNonforkedMarketsOptions = {
             _feeWindows: sP.reportingFees.feeWindows,
+            _reportingParticipants: reportingParticipants,
             onSent: () => {},
+            onFailed: () => {},
             onSuccess: result => {
               if (sP.modal.cb) {
                 sP.modal.cb();
               }
-              //dP.closeModal();
+              dP.closeModal();
             }
           };
-          // dP.claimReportingFeesNonforkedMarkets(ClaimReportingFeesNonforkedMarketsOptions)
           dP.redeemStake(ClaimReportingFeesNonforkedMarketsOptions);
         }
       },

@@ -26,7 +26,7 @@ export const Proceeds = (props: ProceedsProps) => (
   <div className={Styles.Proceeds}>
     <Title title={props.title} closeAction={props.closeAction} />
     {props.descriptionMessage && <DescriptionMessage messages={props.descriptionMessage} />}
-    {props.rows && <ActionRows rows={props.rows} />}
+    {props.rows && <div><ActionRows rows={props.rows} /></div>}
     {props.breakdown && <Breakdown short rows={props.breakdown} />}
     <ButtonsRow buttons={props.buttons} />
   </div>
