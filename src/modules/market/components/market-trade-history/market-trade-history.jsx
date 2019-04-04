@@ -63,7 +63,7 @@ export default class MarketTradeHistory extends Component {
                 <div className={Styles.MarketTradeHistory__table}>
                   <ul className={Styles.MarketTradeHistory__table__header__day}>
                     <li>{groupedTradeHistoryVolume[date]} Shares</li>
-                    <li />
+                    <li>|</li>
                     <li>{date}</li>
                   </ul>
                 </div>

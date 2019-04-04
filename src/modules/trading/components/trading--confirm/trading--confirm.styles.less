@@ -34,12 +34,12 @@
 }
 
 .TradingConfirm__position__properties {
-  color: @color-white;
+  color: @color-tertiary-text;
   display: flex;
   flex-direction: row;
   font-size: @font-size-extra-small;
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: @size-8;
 }
 
 .TradingConfirm__position__tooltipContainer {
@@ -50,7 +50,7 @@
 
 .TradingConfirm__agg_position {
   color: @color-white;
-  font-size: @font-size-small;
+  font-size: @size-11;
   padding-bottom: 0.1875rem;
 
   span:first-child {
@@ -135,6 +135,21 @@
 .TradingConfirm__TooltipHint {
   margin-bottom: 0;
   width: 0.9rem;
+
+  > svg {
+    height: @size-12;
+    width: @size-12;
+
+    > circle {
+      fill: @color-theme-primary;
+      stroke: @color-highlight;
+      stroke-width: 1.5;
+    }
+
+    > path {
+      fill: @color-neutral;
+    }
+  }
 }
 
 .TradingConfirm__error_message_container {
@@ -236,11 +251,6 @@ span.negative__profit > * {
 }
 
 @media @breakpoint-mobile {
-  .TradingConfirm {
-    margin-bottom: 80px;
-    min-height: 200px;
-  }
-
   .TradingConfirmation__actions {
     min-height: 6.25rem;
     padding: 0;
@@ -276,6 +286,17 @@ span.negative__profit > * {
   .TradingConfirm__total > li > span,
   .TradingConfirm__total > li > span:first-child {
     color: @color-white;
+  }
+
+  .TradingConfirm__TooltipHint {
+    > svg {
+      height: @size-16;
+      width: @size-16;
+    }
+  }
+
+  .TradingConfirm__error_message_container {
+    background: @color-secondary-action;
   }
 }
 

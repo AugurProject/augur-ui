@@ -89,10 +89,11 @@
 }
 
 .MarketTradeHistory__table__header__day {
-  background-color: @color-dark-grayish-purple;
-  color: @color-light-gray;
-  display: table-header-group;
+  background-color: fade(@color-primary-alternate, 70%);
+  color: @color-shadow-text;
+  display: flex;
   font-size: @font-size-extra-small;
+  justify-content: center;
   width: 100%;
 
   > li {
@@ -104,6 +105,11 @@
     &:first-child {
       padding-left: 32px;
       text-align: left;
+      text-transform: uppercase;
+    }
+
+    &:nth-of-type(2) {
+      margin: 0 0.5rem;
     }
 
     &:last-child {
@@ -152,13 +158,13 @@
 }
 
 .MarketTradeHistory__trade__indicatorUp {
-  border-bottom-color: @color-light-gray;
+  border-bottom-color: fade(@color-positive, 50%);
   border-width: 0 3.5px 6px;
   top: -0.65rem;
 }
 
 .MarketTradeHistory__trade__indicatorDown {
-  border-top-color: @color-light-gray;
+  border-top-color: fade(@color-negative, 50%);
   border-width: 6px 3.5px 0;
   top: 0.75rem;
 }

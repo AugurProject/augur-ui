@@ -139,12 +139,25 @@
 }
 
 .MarketOutcomeOrderBook__Midmarket {
-  background-color: @color-dark-grayish-purple;
-  color: white;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 14px;
-  margin: 1px 0;
-  padding: 10px 39px;
+  .mono-10;
+
+  background-color: fade(@color-primary-alternate, 70%);
+  color: @color-neutral;
+  margin: 0.0625rem 0;
+  padding: @size-10 @size-12;
+
+  > div {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+
+    > span:first-of-type {
+      .mono-10;
+
+      margin-right: @size-8;
+      text-transform: uppercase;
+    }
+  }
 }
 
 .MarketOutcomeOrderBook__MidmarketSpread {
@@ -162,10 +175,7 @@
 
 @media @breakpoint-mobile {
   .MarketOutcomeOrderBook__trading {
-    height: 300px;
-    margin: 0 1rem;
-    margin-bottom: 1.5rem;
-    max-height: 300px;
+    display: none;
   }
 
   .MarketOutcomeOrderBook__row__trading {

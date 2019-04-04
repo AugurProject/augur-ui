@@ -497,19 +497,20 @@ class TradingForm extends Component {
 
     return (
       <div className={Styles.TradingForm__form__container}>
-        {market.marketType === CATEGORICAL && (
-          <div className={Styles.TradingForm__outcome__container}>
-            <SquareDropdown
-              defaultValue={defaultOutcome}
-              onChange={this.changeOutcomeDropdown}
-              options={market.outcomes.map(outcome => ({
-                label: outcome.name,
-                value: outcome.id
-              }))}
-              large
-            />
-          </div>
-        )}
+        {market.marketType === CATEGORICAL &&
+          (!isMobile && (
+            <div className={Styles.TradingForm__outcome__container}>
+              <SquareDropdown
+                defaultValue={defaultOutcome}
+                onChange={this.changeOutcomeDropdown}
+                options={market.outcomes.map(outcome => ({
+                  label: outcome.name,
+                  value: outcome.id
+                }))}
+                large
+              />
+            </div>
+          ))}
         {market.marketType === YES_NO &&
           !isMobile && (
             <div className={Styles.TradingForm__outcome__container}>
@@ -666,7 +667,8 @@ class TradingForm extends Component {
               type="checkbox"
               isChecked={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
               value={s[this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]}
-              small
+              large={!!isMobile}
+              small={!isMobile}
               onClick={e =>
                 updateState({
                   [this.INPUT_TYPES.DO_NOT_CREATE_ORDERS]: !s[
