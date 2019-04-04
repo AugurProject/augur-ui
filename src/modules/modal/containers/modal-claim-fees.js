@@ -137,10 +137,15 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       {
         text: "Claim All Stake & Fees",
         action: () => {
-          const reportingParticipants = sP.nonforkedMarkets.map(
-            nonforkedMarket => nonforkedMarket.initialReporter
+          const reportingParticipants = [];
+          sP.nonforkedMarkets.forEach(
+            nonforkedMarket => {
+              reportingParticipants.push(nonforkedMarket.initialReporter);
+              nonforkedMarket.crowdsourcers.forEach(crowdsourcer => {
+                reportingParticipants.push(crowdsourcer);
+              });
+            }
           );
-          console.log(reportingParticipants);
           const ClaimReportingFeesNonforkedMarketsOptions = {
             _feeWindows: sP.reportingFees.feeWindows,
             _reportingParticipants: reportingParticipants,
