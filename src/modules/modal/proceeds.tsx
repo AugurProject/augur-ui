@@ -18,7 +18,7 @@ interface ProceedsProps {
   title: string;
   buttons: Array<DefaultButtonProps>;
   rows: ActionRowsProps;
-  description?: DescriptionProps;
+  description?: DescriptionMessageProps;
   breakdown?: Array<LinearPropertyLabelProps>;
 }
 

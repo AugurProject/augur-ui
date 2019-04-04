@@ -5,17 +5,18 @@ import { selectMarket } from "modules/markets/selectors/market";
 import { CLAIM_SHARES_GAS_COST } from "modules/positions/actions/claim-trading-proceeds";
 import { createBigNumber } from "utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import { formatGasCostToEther, formatEther } from "utils/format-number";
+import {
+  formatGasCostToEther,
+  formatEther,
+  formatAttoRep
+} from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
-import { constants } from "services/augurjs";
 import { ActionRowsProps } from "modules/modal/common";
 import {
   claimReportingFeesNonforkedMarkets,
   redeemStake
 } from "modules/reports/actions/claim-reporting-fees";
-
-import { formatAttoRep, formatAttoEth } from "utils/format-number";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,

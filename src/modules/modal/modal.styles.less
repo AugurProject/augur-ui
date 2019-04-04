@@ -405,6 +405,16 @@
   > div:last-of-type {
     margin-top: 1.5rem;
   }
+
+  @media @breakpoint-mobile {
+    padding: 1rem;
+
+    > h1,
+    > div:first-of-type,
+    > button {
+      padding: 0 0.5rem;
+    }
+  }
 }
 
 .DescriptionMessage {
@@ -437,7 +447,7 @@
 
   margin-left: auto;
   max-width: 15rem;
-  
+
   @media @breakpoint-mobile {
     margin-left: 0;
     max-width: 100%;
@@ -546,8 +556,8 @@
 
     > div:first-of-type {
       align-items: center;
-      flex-flow: row nowrap;
       flex: 0 0 auto;
+      flex-flow: row nowrap;
       margin-left: 50px;
       max-width: 250px;
 
@@ -563,6 +573,19 @@
       flex: 1 auto;
       font-weight: @weight-medium;
       line-height: 15px;
+    }
+
+    @media @breakpoint-mobile {
+      flex-direction: column;
+
+      > h2 {
+        margin-bottom: 1rem;
+      }
+
+      > div:first-of-type {
+        margin-left: 0;
+        max-width: unset;
+      }
     }
   }
 

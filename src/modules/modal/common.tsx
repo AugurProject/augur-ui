@@ -18,8 +18,7 @@ import {
 } from "modules/common-elements/buttons";
 import {
   LinearPropertyLabel,
-  LinearPropertyLabelProps,
-  PropertyLabel
+  LinearPropertyLabelProps
 } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
 
