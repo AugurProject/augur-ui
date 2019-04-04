@@ -21,7 +21,7 @@ export const positionSummary = memoize(
       total,
       totalPercent,
       unrealizedRevenue,
-      totalCost
+      unrealizedCost
     } = adjustedPosition;
 
     const quantity = createBigNumber(netPosition).abs();
@@ -48,7 +48,7 @@ export const positionSummary = memoize(
         timesHundred(unrealizedPercent || ZERO),
         { decimalsRounded: 2 }
       ),
-      totalCost: formatEther(totalCost),
+      totalCost: formatEther(unrealizedCost),
       totalValue: formatEther(unrealizedRevenue),
       lastPrice: formatEther(outcome.price),
       totalReturns: formatEther(total || ZERO),

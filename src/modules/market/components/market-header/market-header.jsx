@@ -29,7 +29,7 @@ import { MarketTimeline } from "modules/common-elements/progress";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
-const MIN_COLLAPSED_MARKET_HEADER = 100;
+const MIN_COLLAPSED_MARKET_HEADER = 136;
 export default class MarketHeader extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
@@ -315,7 +315,11 @@ export default class MarketHeader extends Component {
           </div>
         )}
         {!isMobile && (
-          <div className={Styles.MarketHeader__buttonContainer}>
+          <div
+            className={classNames(Styles.MarketHeader__buttonContainer, {
+              [Styles.MarketHeader__buttonContainer__collapsed]: headerCollapsed
+            })}
+          >
             <button
               className={classNames(Styles.MarketHeader__button, {
                 [Styles.MarketHeader__button__collapsed]: headerCollapsed
