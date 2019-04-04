@@ -186,5 +186,9 @@
     "webpack-deadcode-plugin": "^0.1.9",
     "webpack-hot-middleware": "2.24.2",
     "webpack-merge": "4.1.4"
+  },
+  "resolutions": {
+    "keccak": "brianosaurus/keccak",
+    "secp256k1": "brianosaurus/secp256k1-node"
   }
 }
