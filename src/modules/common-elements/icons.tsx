@@ -190,7 +190,7 @@ export const Syncing = (
 
 export const RotatableChevron = (
   <svg viewBox="0 0 16 16">
-    <path 
+    <path
       d="M6 12L10 8L6 4"
       strokeWidth="2"
       strokeMiterlimit="10"

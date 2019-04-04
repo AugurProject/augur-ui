@@ -229,17 +229,13 @@ export const DirectionButton = (props: DirectionButtonProps) => (
   >
     {RotatableChevron}
   </button>
-)
+);
 
 export const ViewTransactionDetailsButton = (
   props: ViewTransactionDetailsButtonProps
 ) => (
   <div className={Styles.ViewTransactionDetailsButton}>
     {ViewIcon}
-    <EtherscanLink 
-      showNonLink
-      txhash={props.transactionHash}
-      label="View"
-    />
+    <EtherscanLink showNonLink txhash={props.transactionHash} label="View" />
   </div>
 );

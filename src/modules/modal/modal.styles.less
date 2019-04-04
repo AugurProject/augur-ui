@@ -410,7 +410,7 @@
   > section:first-of-type {
     display: grid;
     grid-gap: 0.25rem 0.5rem;
-    grid-template-columns: 108px 108px 150px 108px 200px 1fr;
+    grid-template-columns: 108px 108px 205px 108px 200px 1fr;
     grid-template-rows: 1fr 2fr;
 
     > span {
@@ -534,11 +534,15 @@
     flex-flow: row nowrap;
     margin: @size-32 0 0;
 
+    > div:first-of-type {
+      margin: 0 auto;
+    }
+
     > span {
       .text-12;
 
       color: @color-neutral;
-      margin: 0 @size-8 0 auto;
+      margin: 0 @size-8;
     }
   }
 }
