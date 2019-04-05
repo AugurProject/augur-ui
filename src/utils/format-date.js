@@ -98,9 +98,7 @@ export function formatDate(d) {
     formattedUtcShortDate: `${
       shortMonths[date.getUTCMonth()]
     } ${date.getUTCDate()}, ${date.getUTCFullYear()}`,
-    clockTimeUtc: `${utcTimeTwelve.join(
-      ":"
-    )} ${utcAMPM} - UTC+1`,
+    clockTimeUtc: `${utcTimeTwelve.join(":")} ${utcAMPM} - UTC+1`
   };
 }
 

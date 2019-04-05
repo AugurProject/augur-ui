@@ -80,19 +80,19 @@
   width: 100%;
 
   > span:first-of-type {
-    height: 1px;
-    width: var(--percent-done);
     background: @color-primary-action;
+    height: 1px;
     position: relative;
     top: 0;
+    width: var(--percent-done);
   }
 
   > span:last-of-type {
-    height: 1px;
-    width: var(--percent-to-go);
     background: @color-neutral;
+    height: 1px;
     position: relative;
     top: 0;
+    width: var(--percent-to-go);
   }
 
   @media @breakpoint-mobile {
@@ -113,7 +113,7 @@
   }
 }
 
-.MarketTimeline{
+.MarketTimeline {
   height: 100%;
   width: 100%;
 
@@ -123,8 +123,7 @@
   }
 
   > div:last-of-type {
-
-    > span  > span {
+    > span > span {
       .mono-10;
 
       color: @color-secondary-text;
@@ -140,13 +139,14 @@
 .MarketTimeline_reported {
   .mono-10;
 
-  text-transform: uppercase;
   color: @color-shadow-text;
+  text-transform: uppercase;
 }
 
 .MarketTimeline_open {
-  color :@color-shadow-text;
+  color: @color-shadow-text;
 }
+
 .MarketTimeline_reported {
   color: @color-primary-action;
 

@@ -21,10 +21,10 @@
 
 .MarketHeader__button {
   background: @color-theme-primary;
+  border: 1px solid @color-highlight;
   border-radius: 4.6875rem;
   height: @size-24;
   width: 4rem;
-  border: 1px solid @color-highlight;
 
   &:hover {
     background-color: @color-bright-gray-purple;
@@ -223,11 +223,11 @@
   h4 {
     .mono-10;
 
-    text-transform: uppercase;
-    color: #76737E;
+    color: @color-shadow-text;
     display: block;
     padding-bottom: 0.125rem;
     padding-right: 0.5em;
+    text-transform: uppercase;
   }
 
   > span,
@@ -236,7 +236,7 @@
   > label {
     .text-12;
 
-    color: #CED7D8;
+    color: @color-tertiary-text;
 
     @media @breakpoint-mobile-small {
       display: block;

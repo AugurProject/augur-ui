@@ -98,7 +98,7 @@
   text-align: right;
   text-transform: uppercase;
 
-  &:not(disabled):hover {
+  &:not(:disabled):hover {
     color: @color-highlight;
   }
 
@@ -107,10 +107,10 @@
 
     &:hover {
       color: fade(@color-highlight, 70%);
-      font-weight: normal;
       cursor: wait;
+      font-weight: normal;
     }
- }
+  }
 
   @media @breakpoint-mobile {
     .mono-10;

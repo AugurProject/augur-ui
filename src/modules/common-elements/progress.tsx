@@ -210,7 +210,7 @@ export const TimeLabel = (props: TimeLabelProps) => {
         [Styles.TimeLabel__fade]: fade
       })}
     >
-      { label && <span>{label}</span> }
+      {label && <span>{label}</span>}
       <span>{formattedTime.formattedUtcShortDate}</span>
       <span>{formattedTime.clockTimeUtc}</span>
     </span>
@@ -274,10 +274,12 @@ export const MarketTimeline = (props: TimeProgressBarProps) => {
   const endLabel = hasPassed ? "BEGAN" : "STARTS";
   return (
     <div className={Styles.MarketTimeline}>
-      <div className={classNames({
-        [Styles.MarketTimeline_reported]: hasPassed,
-        [Styles.MarketTimeline_open]: !hasPassed
-      })}>
+      <div
+        className={classNames({
+          [Styles.MarketTimeline_reported]: hasPassed,
+          [Styles.MarketTimeline_open]: !hasPassed
+        })}
+      >
         <div>DATE Created</div>
         <div>{`Reporting ${endLabel}`}</div>
       </div>
