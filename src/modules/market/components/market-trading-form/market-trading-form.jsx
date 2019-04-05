@@ -9,7 +9,6 @@ import { ACCOUNT_DEPOSIT } from "modules/routes/constants/views";
 import { BigNumber } from "utils/create-big-number";
 import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/market/components/market-trading-form/market-trading-form.styles";
-import { Close } from "modules/common/components/icons";
 
 import { PrimaryButton } from "modules/common-elements/buttons";
 
@@ -26,7 +25,6 @@ class MarketTradingForm extends Component {
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    toggleMobileView: PropTypes.func.isRequired,
     updateTradeCost: PropTypes.func.isRequired,
     updateTradeShares: PropTypes.func.isRequired,
     showSelectOutcome: PropTypes.func.isRequired,
@@ -88,7 +86,6 @@ class MarketTradingForm extends Component {
       gasPrice,
       handleFilledOnly,
       updateSelectedOutcome,
-      toggleMobileView,
       updateTradeCost,
       updateTradeShares,
       showSelectOutcome,
@@ -132,7 +129,6 @@ class MarketTradingForm extends Component {
           gasPrice={gasPrice}
           handleFilledOnly={handleFilledOnly}
           updateSelectedOutcome={updateSelectedOutcome}
-          toggleMobileView={toggleMobileView}
           updateTradeCost={updateTradeCost}
           updateTradeShares={updateTradeShares}
           showSelectOutcome={showSelectOutcome}
@@ -140,16 +136,6 @@ class MarketTradingForm extends Component {
         />
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>
-            {isMobile && (
-              <span
-                role="button"
-                tabIndex="-1"
-                onClick={toggleMobileView}
-                className={Styles.MarketTradingForm__close}
-              >
-                {Close}
-              </span>
-            )}
             {initialMessage && <p>{initialMessage}</p>}
             {!isLogged && (
               <PrimaryButton

@@ -5,7 +5,6 @@ import { BigNumber, createBigNumber } from "utils/create-big-number";
 
 import TradingForm from "modules/trading/components/trading--form/trading--form";
 import TradingConfirm from "modules/trading/components/trading--confirm/trading--confirm";
-import { downChevron } from "modules/common/components/icons";
 import { generateTrade } from "modules/trades/helpers/generate-trade";
 import getValue from "utils/get-value";
 import { isEqual, keys, pick } from "lodash";
@@ -30,7 +29,6 @@ class TradingWrapper extends Component {
     handleFilledOnly: PropTypes.func.isRequired,
     gasPrice: PropTypes.number.isRequired,
     updateSelectedOutcome: PropTypes.func.isRequired,
-    toggleMobileView: PropTypes.func.isRequired,
     updateTradeCost: PropTypes.func.isRequired,
     updateTradeShares: PropTypes.func.isRequired,
     showSelectOutcome: PropTypes.func.isRequired,
@@ -287,7 +285,6 @@ class TradingWrapper extends Component {
       gasPrice,
       handleFilledOnly,
       updateSelectedOutcome,
-      toggleMobileView,
       showSelectOutcome,
       onSubmitPlaceTrade
     } = this.props;
@@ -305,16 +302,6 @@ class TradingWrapper extends Component {
       <section className={Styles.TradingWrapper}>
         <div className={Styles.TradingWrapper__container}>
           <section className={Styles.TradingWrapper__darkbg}>
-            {isMobile && (
-              <span
-                role="button"
-                tabIndex="-1"
-                onClick={toggleMobileView}
-                className={Styles.TradingWrapper__close}
-              >
-                {downChevron(2)}
-              </span>
-            )}
             <ul
               className={classNames({
                 [Styles.TradingWrapper__header_buy]: selectedNav === BUY,
