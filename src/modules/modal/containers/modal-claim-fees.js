@@ -58,6 +58,10 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
               : 0
           },
           {
+            label: "Reporting Fees",
+            value: 0
+          },
+          {
             label: "est gas cost",
             value: 0
           },
