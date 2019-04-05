@@ -45,6 +45,14 @@ export const getReportingFees = (callback = logError) => (
               result.total.unclaimedForkRepStaked,
               { decimals: 4, decimalsRounded: 4, zeroStyled: true }
             ),
+            participationTokenRepStaked: formatAttoRep(
+              result.total.participationTokenRepStaked,
+              { decimals: 4, decimalsRounded: 4, zeroStyled: true }
+            ),
+            unclaimedParticipationTokenEthFees: formatAttoRep(
+              result.total.unclaimedParticipationTokenEthFees,
+              { decimals: 4, decimalsRounded: 4, zeroStyled: true }
+            ),
             feeWindows: result.feeWindows,
             forkedMarket: result.forkedMarket,
             nonforkedMarkets: result.nonforkedMarkets
