@@ -29,9 +29,7 @@ const TIME_FIELDNAMES = [
   "setEndTime",
   "hour",
   "minute",
-  "meridiem",
-  "delayDays",
-  "delayHours"
+  "meridiem"
 ];
 
 export default class CreateMarketForm extends Component {
