@@ -36,7 +36,6 @@ export interface CountdownProgressProps {
 export interface TimeLabelProps {
   time: DateFormattedObject | number;
   label?: string;
-  fade?: boolean;
 }
 
 export interface TimeProgressBarProps {
@@ -199,17 +198,13 @@ export const CountdownProgress = (props: CountdownProgressProps) => {
 };
 
 export const TimeLabel = (props: TimeLabelProps) => {
-  const { label, fade, time } = props;
+  const { label, time } = props;
   let formattedTime: DateFormattedObject | number = time;
   if (typeof time !== "object") {
     formattedTime = format.convertUnixToFormattedDate(time);
   }
   return (
-    <span
-      className={classNames(Styles.TimeLabel, {
-        [Styles.TimeLabel__fade]: fade
-      })}
-    >
+    <span className={Styles.TimeLabel}>
       {label && <span>{label}</span>}
       <span>{formattedTime.formattedUtcShortDate}</span>
       <span>{formattedTime.clockTimeUtc}</span>
@@ -284,8 +279,12 @@ export const MarketTimeline = (props: TimeProgressBarProps) => {
         <div>{`Reporting ${endLabel}`}</div>
       </div>
       <TimeProgressBar {...props} />
-      <div>
-        <TimeLabel fade={hasPassed} time={startTime} />
+      <div
+        className={classNames({
+          [Styles.TimeLabel__fade]: hasPassed
+        })}
+      >
+        <TimeLabel time={startTime} />
         <TimeLabel time={endTime} />
       </div>
     </div>

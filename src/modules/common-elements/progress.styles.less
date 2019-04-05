@@ -67,10 +67,6 @@
   }
 }
 
-.TimeLabel__fade {
-  color: @color-shadow-text;
-}
-
 .TimeProgressBar {
   align-items: center;
   display: flex;
@@ -131,6 +127,14 @@
 
     > span:last-of-type {
       text-align: right;
+    }
+  }
+
+  > div.TimeLabel__fade:last-of-type {
+    > span:first-of-type {
+      > span {
+        color: @color-shadow-text;
+      }
     }
   }
 }
