@@ -69,7 +69,6 @@ export default class ModalTradingOverlay extends Component {
             selectedOutcome={selectedOutcome}
             updateSelectedOutcome={updateSelectedOutcome}
             updateSelectedOrderProperties={updateSelectedOrderProperties}
-            toggleMobileView={closeModal}
             showSelectOutcome={showSelectOutcome}
           />
         )}

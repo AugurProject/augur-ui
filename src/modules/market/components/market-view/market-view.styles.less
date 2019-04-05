@@ -30,35 +30,18 @@
 
 .MarketView__paneContainer--mobile {
   flex: 1;
-  margin-bottom: 70px;
-  padding: 15px;
-}
+  padding: @size-16 @size-8;
 
-.MarketView__buySellButton--button {
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  right: 0;
-  z-index: 10;
+  > div:first-of-type {
+    margin-bottom: @size-8;
+  }
 
-  > div {
-    align-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    justify-content: center;
-    margin-bottom: 16px;
+  > div:nth-of-type(2) {
+    margin-bottom: @size-8;
+  }
 
-    > button {
-      &:extend(.button--transparent--rounded all);
-
-      background: rgba(27, 21, 40, 0.9);
-      border: solid 2px white;
-      font-size: 14px;
-      margin-right: 0;
-      padding: 18px 80px;
-    }
+  > div:last-of-type {
+    margin-top: @size-8;
   }
 }
 
@@ -218,8 +201,13 @@
     width: auto;
   }
 
+  .MarketView__orders {
+    margin-bottom: 0;
+  }
+
   .MarketView__history {
     background: @color-grayish-purple;
+    margin-bottom: 0;
     max-height: unset;
   }
 
