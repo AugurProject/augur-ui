@@ -20,6 +20,8 @@ export interface DateFormattedObject {
   utcLocalOffset: string;
   clockTimeLocal: string;
   formattedSimpleData: string;
+  formattedUtcShortDate: string;
+  clockTimeUtc: string;
 }
 
 export interface CountdownProgressProps {
@@ -33,7 +35,8 @@ export interface CountdownProgressProps {
 
 export interface TimeLabelProps {
   time: DateFormattedObject | number;
-  label: string;
+  label?: string;
+  fade?: boolean;
 }
 
 export interface TimeProgressBarProps {
@@ -196,16 +199,20 @@ export const CountdownProgress = (props: CountdownProgressProps) => {
 };
 
 export const TimeLabel = (props: TimeLabelProps) => {
-  const { label, time } = props;
+  const { label, fade, time } = props;
   let formattedTime: DateFormattedObject | number = time;
   if (typeof time !== "object") {
     formattedTime = format.convertUnixToFormattedDate(time);
   }
   return (
-    <span className={Styles.TimeLabel}>
-      <span>{label}</span>
-      <span>{formattedTime.formattedLocalShortDate}</span>
-      <span>{formattedTime.clockTimeLocal}</span>
+    <span
+      className={classNames(Styles.TimeLabel, {
+        [Styles.TimeLabel__fade]: fade
+      })}
+    >
+      { label && <span>{label}</span> }
+      <span>{formattedTime.formattedUtcShortDate}</span>
+      <span>{formattedTime.clockTimeUtc}</span>
     </span>
   );
 };
@@ -241,7 +248,6 @@ export const TimeProgressBar = (props: TimeProgressBarProps) => {
   return (
     <span className={Styles.TimeProgressBar}>
       <span style={percentDone} />
-      <span />
       <span style={percentToGo} />
     </span>
   );
@@ -251,6 +257,11 @@ export const MarketTimeline = (props: TimeProgressBarProps) => {
   const { startTime, endTime, currentTime } = props;
   let formattedEndTime: DateFormattedObject | number = endTime;
   let formattedCurrentTime: DateFormattedObject | number = currentTime;
+
+  if (!currentTime || !endTime) {
+    return null;
+  }
+
   if (typeof endTime !== "object") {
     formattedEndTime = format.convertUnixToFormattedDate(endTime);
   }
@@ -260,14 +271,20 @@ export const MarketTimeline = (props: TimeProgressBarProps) => {
   const currentTimestamp = formattedCurrentTime.timestamp;
   const endTimestamp = formattedEndTime.timestamp;
   const hasPassed = currentTimestamp > endTimestamp;
-  const endLabel = hasPassed ? "Expired" : "Expires";
+  const endLabel = hasPassed ? "BEGAN" : "STARTS";
   return (
     <div className={Styles.MarketTimeline}>
-      <div data-start-label="Created" data-end-label={endLabel} />
+      <div className={classNames({
+        [Styles.MarketTimeline_reported]: hasPassed,
+        [Styles.MarketTimeline_open]: !hasPassed
+      })}>
+        <div>DATE Created</div>
+        <div>{`Reporting ${endLabel}`}</div>
+      </div>
       <TimeProgressBar {...props} />
       <div>
-        <TimeLabel label="Created" time={startTime} />
-        <TimeLabel label={endLabel} time={endTime} />
+        <TimeLabel fade={hasPassed} time={startTime} />
+        <TimeLabel time={endTime} />
       </div>
     </div>
   );

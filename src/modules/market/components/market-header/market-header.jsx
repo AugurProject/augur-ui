@@ -206,7 +206,9 @@ export default class MarketHeader extends Component {
               {BackArrow}
             </button>
           )}
-          {isMobile && <MarketTypeLabel marketType={marketType} />}
+
+          <MarketTypeLabel marketType={marketType} />
+
           <CategoryTagTrail
             categories={categoriesWithClick}
             tags={tagsWithClick}

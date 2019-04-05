@@ -94,7 +94,13 @@ export function formatDate(d) {
     )} ${localAMPM} (UTC ${localOffsetFormatted})`,
     formattedSimpleData: `${
       months[date.getMonth()]
-    } ${date.getDate()}, ${date.getFullYear()}`
+    } ${date.getDate()}, ${date.getFullYear()}`,
+    formattedUtcShortDate: `${
+      shortMonths[date.getUTCMonth()]
+    } ${date.getUTCDate()}, ${date.getUTCFullYear()}`,
+    clockTimeUtc: `${utcTimeTwelve.join(
+      ":"
+    )} ${utcAMPM} - UTC+1`,
   };
 }
 

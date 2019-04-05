@@ -20,10 +20,11 @@
 }
 
 .MarketHeader__button {
-  background: @color-dark-gray;
-  border-radius: 6rem;
-  height: 1.5rem;
+  background: @color-theme-primary;
+  border-radius: 4.6875rem;
+  height: @size-24;
   width: 4rem;
+  border: 1px solid @color-highlight;
 
   &:hover {
     background-color: @color-bright-gray-purple;
@@ -48,13 +49,11 @@
 .MarketHeader__AdditionalDetails-text:disabled {
   background: none;
   border: 0;
-  color: @color-white;
   margin: 0;
   margin-top: -10px;
   max-height: 89px;
   overflow: hidden;
-  padding: 0.25rem 0;
-  padding-top: 0;
+  padding: 0 0 @size-8 0;
   resize: none;
   text-transform: none;
   transition: max-height @animation-speed-normal @animation-default-type;
@@ -66,7 +65,7 @@
 }
 
 .MarketHeader__AdditionalDetails-fade {
-  background: linear-gradient(@color-white, rgba(0, 0, 0, 0));
+  background: linear-gradient(@color-secondary-text, rgba(0, 0, 0, 0));
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -106,16 +105,16 @@
 
   &:hover {
     span {
-      color: @color-white;
+      color: @color-secondary-text;
     }
 
     svg {
       rect {
-        fill: @color-white;
+        fill: @color-secondary-text;
       }
 
       path {
-        stroke: @color-white;
+        stroke: @color-secondary-text;
       }
     }
   }
@@ -126,7 +125,7 @@
 }
 
 .MarketHeader__description {
-  color: @color-white;
+  color: @color-secondary-text;
   flex-grow: 1;
   font-size: @font-size-rather-large;
   font-weight: bold;
@@ -152,20 +151,21 @@
 }
 
 .MarketHeader__readMoreButton {
-  .mono-14;
+  .mono-12;
 
-  color: @color-white;
+  color: @color-secondary-text;
   cursor: pointer;
-  font-weight: 700;
-  padding-bottom: 1rem;
-  padding-top: 0.3rem;
+
+  > span {
+    text-transform: uppercase;
+  }
 
   svg {
     height: 1em;
     margin-right: 0.5em;
 
     polyline {
-      stroke: @color-white;
+      stroke: @color-secondary-text;
       stroke-width: 3;
     }
   }
@@ -211,27 +211,32 @@
 
 .MarketHeader__topContainer {
   display: flex;
+
+  > span {
+    margin: 0 @size-8 0 0;
+  }
 }
 
 .MarketHeader__details {
-  color: @color-light-gray;
-  font-size: @font-size-small;
-  font-weight: 400;
-  line-height: @font-size-small;
   padding: 0;
 
   h4 {
+    .mono-10;
+
+    text-transform: uppercase;
+    color: #76737E;
     display: block;
     padding-bottom: 0.125rem;
     padding-right: 0.5em;
   }
 
-  span,
-  p,
-  textarea {
-    color: @color-white !important;
-    font-size: @font-size-small;
-    text-transform: none;
+  > span,
+  > p,
+  > textarea,
+  > label {
+    .text-12;
+
+    color: #CED7D8;
 
     @media @breakpoint-mobile-small {
       display: block;
@@ -239,14 +244,10 @@
       text-overflow: ellipsis;
     }
   }
-
-  span {
-    font-size: @font-size-medium;
-  }
 }
 
 .Marketheader__resolutionSource {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Roboto Mono', monospace; // todo
   line-height: normal;
 }
 
@@ -260,13 +261,6 @@
   padding-left: 0.5rem;
 }
 
-.MarketHeader__timeStuff {
-  align-items: flex-end;
-  display: flex;
-  flex: 1;
-  flex-flow: column nowrap;
-}
-
 .MarketHeader__resolution-source--empty_details {
   margin-bottom: 1.2rem;
 }
@@ -277,7 +271,11 @@
 
 .MarketHeader__properties__core {
   display: flex;
-  padding: 1.5rem 0 0 0.5rem;
+  padding: 1.125rem 0 0;
+
+  > div {
+    flex: 1;
+  }
 }
 
 @media @breakpoint-mobile {
@@ -291,6 +289,10 @@
 
   .MarketHeader__topContainer {
     margin-left: @size-8;
+
+    > span {
+      margin: 0 @size-8 0 0;
+    }
   }
 
   .MarketHeader__properties__core {
@@ -300,10 +302,6 @@
 
   .MarketHeader__readMoreButton {
     display: flex;
-
-    > span {
-      text-transform: uppercase;
-    }
   }
 
   .MarketHeader__description {

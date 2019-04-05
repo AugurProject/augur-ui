@@ -1,19 +1,16 @@
 @import (reference) '~assets/styles/shared';
 
 .NotificationCard {
-  background: @color-theme-primary;
+  background: @color-tertiary-background;
   border-radius: @border-radius-default;
   display: flex;
   flex-direction: column;
   margin: 0.125rem;
   padding: @size-16;
-
-  & > button:disabled {
-    opacity: 0.5;
-  }
 }
 
 .NotificationCard.new {
+  background: @color-theme-primary;
   border: 1px solid fade(@color-highlight, 50%);
 }
 
@@ -100,6 +97,20 @@
   margin-top: @size-8;
   text-align: right;
   text-transform: uppercase;
+
+  &:not(disabled):hover {
+    color: @color-highlight;
+  }
+
+  &:disabled {
+    color: fade(@color-highlight, 70%);
+
+    &:hover {
+      color: fade(@color-highlight, 70%);
+      font-weight: normal;
+      cursor: wait;
+    }
+ }
 
   @media @breakpoint-mobile {
     .mono-10;
