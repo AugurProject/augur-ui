@@ -29,6 +29,7 @@
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
+      padding-left: 0.5rem;
     }
 
     &:nth-of-type(2) {
@@ -71,7 +72,7 @@
 }
 
 .Order__single {
-  padding: 0.5rem 1.75rem 0.5rem 1.5rem;
+  padding: 0.5rem 1.75rem 0.5rem 1rem;
 }
 
 .Order__arrow {
@@ -119,7 +120,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 0.5rem 1.625rem 0.5rem 1.5rem;
+  padding: 0.5rem 1.625rem 0.5rem 2rem;
 
   > div {
     display: flex;
@@ -134,6 +135,10 @@
     font-weight: 500;
     margin-bottom: 0.625rem;
   }
+}
+
+.OpenOrder__infoSingle {
+  padding-left: 0.5rem;
 }
 
 div.OpenOrder__labels {
@@ -164,6 +169,10 @@ div.OpenOrder__labels {
   grid-template-columns: repeat(8, 1fr);
 
   > li {
+    &:first-child {
+      padding-left: 0;
+    }
+
     &:last-child {
       position: relative;
 
@@ -224,6 +233,7 @@ div.OpenOrder__labels {
       &:first-child {
         grid-column: 1 / span 6;
         margin-bottom: 6px;
+        padding-left: 0;
       }
 
       &:nth-of-type(2) {
@@ -255,6 +265,7 @@ div.OpenOrder__labels {
 
   .Order__group {
     padding-right: 1.25rem;
+    padding-left: 1rem;
   }
 
   .FilledOrder {
@@ -329,7 +340,7 @@ div.OpenOrder__labels {
 
   .OpenOrder__info {
     background-color: fade(@color-primary-alternate, 40%);
-    padding: 0.5rem 1rem 0.5rem 1.5rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
 
     > div {
       flex-direction: column;
