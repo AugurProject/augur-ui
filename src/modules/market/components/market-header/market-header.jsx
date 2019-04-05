@@ -195,17 +195,15 @@ export default class MarketHeader extends Component {
           }
         )}
       >
-        {isMobile && <h1>{description}</h1>}
+        <h1 className={Styles.MarketHeaderMobile_description}>{description}</h1>
 
         <div className={Styles.MarketHeader__topContainer}>
-          {!isMobile && (
-            <button
-              className={Styles[`MarketHeader__back-button`]}
-              onClick={() => history.goBack()}
-            >
-              {BackArrow}
-            </button>
-          )}
+          <button
+            className={Styles.MarketHeader__backButton}
+            onClick={() => history.goBack()}
+          >
+            {BackArrow}
+          </button>
 
           <MarketTypeLabel marketType={marketType} />
 
@@ -214,6 +212,7 @@ export default class MarketHeader extends Component {
             tags={tagsWithClick}
           />
         </div>
+
         {headerCollapsed && (
           <MarketHeaderCollapsed
             description={description}
@@ -224,6 +223,7 @@ export default class MarketHeader extends Component {
             isFavorite={isFavorite}
           />
         )}
+
         {!headerCollapsed && (
           <div className={Styles[`MarketHeader__main-values`]}>
             <div
@@ -236,14 +236,9 @@ export default class MarketHeader extends Component {
               </h1>
 
               <div className={Styles.MarketHeader__descriptionContainer}>
-                <div
-                  className={Styles.MarketHeader__details}
-                  style={{ paddingBottom: "1rem" }}
-                >
+                <div className={Styles.MarketHeader__details}>
                   <h4>Resolution Source</h4>
-                  <span className={Styles.Marketheader__resolutionSource}>
-                    {resolutionSource}
-                  </span>
+                  <span>{resolutionSource}</span>
                 </div>
                 {details.length > 0 && (
                   <div className={Styles.MarketHeader__details}>
@@ -316,22 +311,15 @@ export default class MarketHeader extends Component {
             </div>
           </div>
         )}
-        {!isMobile && (
-          <div
-            className={classNames(Styles.MarketHeader__buttonContainer, {
-              [Styles.MarketHeader__buttonContainer__collapsed]: headerCollapsed
-            })}
-          >
-            <button
-              className={classNames(Styles.MarketHeader__button, {
-                [Styles.MarketHeader__button__collapsed]: headerCollapsed
-              })}
-              onClick={() => this.toggleMarketHeader()}
-            >
-              <ChevronFlip pointDown={headerCollapsed} stroke="white" />
-            </button>
-          </div>
-        )}
+        <div
+          className={classNames(Styles.MarketHeader_toggleContainer, {
+            [Styles.MarketHeader_toggleContainer_collapsed]: headerCollapsed
+          })}
+        >
+          <button onClick={() => this.toggleMarketHeader()}>
+            <ChevronFlip pointDown={headerCollapsed} stroke="white" />
+          </button>
+        </div>
       </section>
     );
   }

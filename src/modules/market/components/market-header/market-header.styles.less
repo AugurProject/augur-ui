@@ -9,40 +9,32 @@
   flex-direction: column;
 }
 
-.MarketHeader__buttonContainer {
+.MarketHeader_toggleContainer {
   display: flex;
   justify-content: center;
   margin-top: 1.85rem;
+
+  > button {
+    background: @color-theme-primary;
+    border: 1px solid @color-highlight;
+    border-radius: 4.6875rem;
+    height: @size-24;
+    width: 4rem;
+
+    &:hover {
+      background-color: @color-bright-gray-purple;
+    }
+
+    > span {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 
-.MarketHeader__buttonContainer__collapsed {
+.MarketHeader_toggleContainer_collapsed {
   margin-top: 0;
-}
-
-.MarketHeader__button {
-  background: @color-theme-primary;
-  border: 1px solid @color-highlight;
-  border-radius: 4.6875rem;
-  height: @size-24;
-  width: 4rem;
-
-  &:hover {
-    background-color: @color-bright-gray-purple;
-  }
-
-  > span {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.MarketHeader__property__header {
-  color: @color-light-gray;
-  font-size: @font-size-small;
-  font-weight: 500;
-  margin-right: 24px;
-  max-height: 0.75rem;
 }
 
 .MarketHeader__AdditionalDetails-text,
@@ -75,11 +67,7 @@
   overflow-y: auto;
 }
 
-.MarketHeader__nav {
-  margin: 0 0 0.25rem;
-}
-
-.MarketHeader__back-button {
+.MarketHeader__backButton {
   .caps--small();
 
   display: flex;
@@ -131,6 +119,10 @@
   font-weight: bold;
   line-height: normal;
   margin: 1rem 0;
+}
+
+.MarketHeaderMobile_description {
+  display: none;
 }
 
 .MarketHeader__descriptionContainer {
@@ -203,18 +195,16 @@
   }
 }
 
-.MarketHeader__details-container {
-  font-size: @font-size-small;
-  line-height: @font-size-medium;
-  overflow: auto;
-}
-
 .MarketHeader__topContainer {
   display: flex;
 
   > span {
     margin: 0 @size-8 0 0;
   }
+}
+
+.MarketHeader__details:first-of-type {
+  padding: 0 0 @size-16 0;
 }
 
 .MarketHeader__details {
@@ -246,11 +236,6 @@
   }
 }
 
-.Marketheader__resolutionSource {
-  font-family: 'Roboto Mono', monospace; // todo
-  line-height: normal;
-}
-
 .MarketHeader__properties {
   display: flex;
   flex: 1;
@@ -259,14 +244,6 @@
   min-height: fit-content;
   min-width: 370px;
   padding-left: 0.5rem;
-}
-
-.MarketHeader__resolution-source--empty_details {
-  margin-bottom: 1.2rem;
-}
-
-.MarketHeader__nav-isForking {
-  margin-top: 1.4rem;
 }
 
 .MarketHeader__properties__core {
@@ -304,8 +281,17 @@
     display: flex;
   }
 
-  .MarketHeader__description {
+  .MarketHeader__description,
+  .MarketHeader_toggleContainer,
+  .MarketHeader__backButton {
     display: none;
+  }
+
+  .MarketHeaderMobile_description {
+    .text-18-bold;
+
+    color: @color-secondary-text;
+    display: flex;
   }
 
   .MarketHeader__descContainer {
@@ -324,14 +310,6 @@
     margin-left: 0;
     min-width: unset;
     padding-left: 0;
-  }
-
-  .MarketHeader__property {
-    margin-bottom: 1rem;
-  }
-
-  .MarketHeader__nav-isForking {
-    margin-top: 0;
   }
 
   .MarketHeader__timeStuff {

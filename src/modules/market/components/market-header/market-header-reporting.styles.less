@@ -1,12 +1,15 @@
 @import (reference) "~assets/styles/shared";
 
-.MarketHeaderReporting__finalization {
+.MarketHeaderReporting__finalization,
+.MarketHeaderReporting__claimOnHold {
   background: @color-theme-primary;
   border: 1px solid fade(@color-highlight, 50%);
   border-radius: @border-radius-default;
   margin-bottom: @size-16;
   padding: @size-16;
+}
 
+.MarketHeaderReporting__finalization {
   > div:first-of-type {
     .mono-11-bold;
 
@@ -24,14 +27,9 @@
 
 .MarketHeaderReporting__claimOnHold {
   align-items: center;
-  background: @color-theme-primary;
-  border: 1px solid fade(@color-highlight, 50%);
-  border-radius: @border-radius-default;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: @size-16;
-  padding: @size-16;
 
   > div:first-of-type {
     > div:first-of-type {
