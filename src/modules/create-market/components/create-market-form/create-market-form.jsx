@@ -25,12 +25,7 @@ const STEP_NAME = {
   1: "Add initial market liquidity",
   2: "Review"
 };
-const TIME_FIELDNAMES = [
-  "setEndTime",
-  "hour",
-  "minute",
-  "meridiem"
-];
+const TIME_FIELDNAMES = ["setEndTime", "hour", "minute", "meridiem"];
 
 export default class CreateMarketForm extends Component {
   static processEndTime(newMarket) {

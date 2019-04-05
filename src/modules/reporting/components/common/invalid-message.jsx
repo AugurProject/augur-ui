@@ -21,8 +21,8 @@ const InvalidMessage = () => (
         <li>The question is subjective in nature</li>
         <li>The outcome was not known at reporting start time</li>
         <li>
-          The title, details, reporting start time, resolution source, and outcomes are in
-          direct conflict
+          The title, details, reporting start time, resolution source, and
+          outcomes are in direct conflict
         </li>
         <li>
           There are strong arguments for the market resolving as multiple
