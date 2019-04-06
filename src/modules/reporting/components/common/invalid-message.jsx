@@ -1,8 +1,8 @@
 import React from "react";
-import Styles from "modules/reporting/components/common/invalid-message.styles";
+import Styles from "modules/reporting/components/common/highlighted-message.styles";
 
 const InvalidMessage = () => (
-  <div className={Styles.InvalidMessage}>
+  <div className={Styles.HighlightedMessage}>
     <div>
       If a timezone isn’t provided in the Market Question and/or Additional
       Details, use the{" "}
@@ -19,10 +19,9 @@ const InvalidMessage = () => (
       </span>
       <ul>
         <li>The question is subjective in nature</li>
-        <li>The outcome was not known at market end time</li>
         <li>
-          The title, details, end time, resolution source, and outcomes are in
-          direct conflict
+          The title, details, reporting start time, resolution source, and
+          outcomes are in direct conflict
         </li>
         <li>
           There are strong arguments for the market resolving as multiple

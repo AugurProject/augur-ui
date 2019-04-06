@@ -1,24 +1,45 @@
-@import (reference) '~assets/styles/shared';
+@import (reference) "~assets/styles/shared";
 
 .CreateMarketForm {
   padding: 3.75rem 0 0;
 }
 
 .CreateMarketForm__button-outer-wrapper,
-.CreateMarketForm__form-outer-wrapper {
+.CreateMarketForm_form_outer_wrapper {
   display: flex;
   flex-flow: column nowrap;
   max-width: 81.25rem;
 }
 
 .CreateMarketForm__button-inner-wrapper,
-.CreateMarketForm__form-inner-wrapper,
+.CreateMarketForm_form_inner_wrapper,
 .CreateMarketForm__submit-wrapper {
   flex: 1 100%;
   margin: auto;
   max-width: 65.75rem;
   padding: 0 2rem;
   width: 100%;
+}
+
+.CreateMarketForm_form_inner_wrapper {
+  > div {
+    color: @color-text-light;
+    display: flex;
+    flex-direction: column;
+    font-size: @font-size-kinda-large;
+
+    > span:first-of-type {
+      font-size: @font-size-extra-large;
+      font-weight: 500;
+      padding-bottom: 0.5rem;
+    }
+
+    > span:last-of-type {
+      border-bottom: 1px solid rgba(206, 215, 216, 0.3);
+      color: @color-offwhite-2;
+      padding-bottom: 1rem;
+    }
+  }
 }
 
 .CreateMarketForm__submit-wrapper {
@@ -113,10 +134,11 @@
 
 .CreateMarketForm__fields {
   align-content: flex-start;
+  border-bottom: 1px solid rgba(206, 215, 216, 0.3);
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  min-height: 28.75rem;
+  padding-top: 2rem;
 
   > li {
     margin-bottom: 3.7rem;
@@ -129,6 +151,7 @@
 
     > label {
       display: inline-block;
+      padding-top: 0.5rem;
       position: relative;
 
       > span:first-child {
@@ -137,9 +160,6 @@
     }
 
     p {
-      color: @color-lightgray;
-      margin: 0;
-
       &.error {
         color: @color-red;
         font-size: 0.875rem;
@@ -152,6 +172,7 @@
       background-color: @color-lightergray;
       font-size: 1.125rem;
       line-height: 1.5rem;
+      margin-bottom: 0;
 
       &.error {
         border-color: @color-red;
@@ -159,26 +180,41 @@
 
       &::placeholder {
         color: @color-lightgray;
+        font-weight: 400;
         line-height: 1.5rem;
       }
     }
 
     textarea {
-      height: 9.5rem;
+      height: 83px;
       padding-top: 1rem;
     }
 
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
       appearance: none;
       margin: 0;
     }
   }
 }
 
+.CreateMarketForm_textarea_footer {
+  background-color: @color-gray2;
+  color: @color-almostblack;
+  font-size: @font-size-extra-small;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0.5rem;
+  width: 100%;
+
+  > span {
+    font-weight: bold;
+  }
+}
+
 .CreateMarketForm__navigation {
   display: flex;
   justify-content: space-between;
+  padding-top: 1rem;
 }
 
 .CreateMarketForm__next,
@@ -276,11 +312,11 @@
     order: 3;
   }
 
-  .CreateMarketForm__form-outer-wrapper {
+  .CreateMarketForm_form_outer_wrapper {
     order: 1;
   }
 
-  .CreateMarketForm__form-outer-wrapper:nth-of-type(2) {
+  .CreateMarketForm_form_outer_wrapper:nth-of-type(2) {
     order: 2;
   }
 
@@ -341,7 +377,7 @@
 }
 
 @media @breakpoint-mobile-medium {
-  .CreateMarketForm__form-inner-wrapper {
+  .CreateMarketForm_form_inner_wrapper {
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -393,7 +429,7 @@
 
 @media @breakpoint-mobile-small {
   .CreateMarketForm__fields > li textarea {
-    height: 6.5rem;
+    height: 83px;
   }
 
   .CreateMarketForm__navigation {

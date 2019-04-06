@@ -9,11 +9,14 @@ import {
   DESCRIPTION_MAX_LENGTH,
   TAGS_MAX_LENGTH
 } from "modules/markets/constants/new-market-constraints";
+import moment from "moment";
 
 import { ExclamationCircle as InputErrorIcon } from "modules/common/components/icons";
-
+import { MarketCreateFormTime } from "modules/create-market/components/create-market-form-time/create-market-form-time";
+import { MarketCreationTimeDisplay } from "modules/create-market/components/create-market-form-time/market-create-time-display";
 import Styles from "modules/create-market/components/create-market-form-define/create-market-form-define.styles";
 import StylesForm from "modules/create-market/components/create-market-form/create-market-form.styles";
+import HighlightedStyles from "modules/reporting/components/common/highlighted-message.styles";
 
 export default class CreateMarketDefine extends Component {
   static propTypes = {
@@ -22,7 +25,10 @@ export default class CreateMarketDefine extends Component {
     isValid: PropTypes.func.isRequired,
     keyPressed: PropTypes.func.isRequired,
     updateNewMarket: PropTypes.func.isRequired,
-    validateField: PropTypes.func.isRequired
+    validateField: PropTypes.func.isRequired,
+    validateNumber: PropTypes.func.isRequired,
+    isMobileSmall: PropTypes.bool.isRequired,
+    currentTimestamp: PropTypes.number.isRequired
   };
 
   constructor(props) {
@@ -35,11 +41,22 @@ export default class CreateMarketDefine extends Component {
     this.state = {
       suggestedCategories: this.filterCategories(this.props.newMarket.category),
       shownSuggestions: 2,
-      localValues
+      localValues,
+      date: Object.keys(this.props.newMarket.endTime).length
+        ? moment(this.props.newMarket.endTime.timestamp * 1000)
+        : null,
+      focused: false,
+      hours: Array.from(new Array(12), (val, index) => index + 1),
+      minutes: [
+        ...Array.from(Array(10).keys(), (val, index) => "0" + index),
+        ...Array.from(Array(50).keys(), (val, index) => index + 10)
+      ],
+      ampm: ["AM", "PM"]
     };
     this.filterCategories = this.filterCategories.bind(this);
     this.updateFilteredCategories = this.updateFilteredCategories.bind(this);
     this.validateTag = this.validateTag.bind(this);
+    this.updateState = this.updateState.bind(this);
   }
 
   filterCategories(category) {
@@ -117,8 +134,20 @@ export default class CreateMarketDefine extends Component {
     updateNewMarket(updatedMarket);
   }
 
+  updateState(state) {
+    this.setState(state);
+  }
+
   render() {
-    const { newMarket, validateField, keyPressed } = this.props;
+    const {
+      newMarket,
+      validateField,
+      keyPressed,
+      currentTimestamp,
+      isMobileSmall,
+      validateNumber,
+      updateNewMarket
+    } = this.props;
     const s = this.state;
 
     let tagMessage = null;
@@ -130,40 +159,129 @@ export default class CreateMarketDefine extends Component {
 
     return (
       <ul className={StylesForm.CreateMarketForm__fields}>
-        <li className={Styles.CreateMarketDefine__question}>
-          <label htmlFor="cm__input--desc">
-            <span>Market Question</span>
-            {newMarket.validations[newMarket.currentStep].description && (
-              <span className={StylesForm.CreateMarketForm__error}>
-                {InputErrorIcon}
-                {newMarket.validations[newMarket.currentStep].description}
-              </span>
-            )}
-          </label>
-          <input
-            id="cm__input--desc"
-            type="text"
-            className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
-                .validations[newMarket.currentStep].description
-            })}
-            value={newMarket.description}
-            maxLength={DESCRIPTION_MAX_LENGTH}
-            placeholder="What question do you want the world to predict?"
-            onChange={e =>
-              validateField(
-                "description",
-                e.target.value,
-                DESCRIPTION_MAX_LENGTH
-              )
-            }
-            onKeyPress={e => keyPressed(e)}
+        <li className={Styles.CreateMarketDefine_block}>
+          <MarketCreateFormTime
+            date={s.date}
+            hours={s.hours}
+            minutes={s.minutes}
+            ampm={s.ampm}
+            isMobileSmall={isMobileSmall}
+            validateNumber={validateNumber}
+            currentTimestamp={currentTimestamp}
+            newMarket={newMarket}
+            keyPressed={keyPressed}
+            validateField={validateField}
+            updateState={this.updateState}
+            focused={s.focused}
           />
-          <div className={Styles["CreateMarketDefine__question-disclaimer"]}>
-            The Augur platform does not work well for markets that are
-            subjective or ambiguous. If you&#39;re not sure that the
-            market&#39;s outcome will be known beyond a reasonable doubt by the
-            expiration date, you should not create this market.
+          <div className={Styles.CreateMarketDefine_message}>
+            <div>
+              Choose a{" "}
+              <span className={Styles.CreateMarketDefine_bolden}>
+                Reporting Start Date and Time
+              </span>{" "}
+              that is sufficiently after the end of the event. If reporting
+              starts before the event end time the market will likely be
+              reported as{" "}
+              <span className={Styles.CreateMarketDefine_bolden}>invalid</span>.
+            </div>
+            <div>
+              Make sure to factor in{" "}
+              <span className={Styles.CreateMarketDefine_bolden}>
+                potential delays
+              </span>{" "}
+              that can impact the event end time. Reporting should start only
+              when the event outcome is known beyond a doubt.
+            </div>
+            <MarketCreationTimeDisplay endTime={newMarket.endTime} />
+          </div>
+        </li>
+        <li className={Styles.CreateMarketDefine_block}>
+          <div>
+            <label htmlFor="cm__input--desc">
+              <span>Market Question</span>
+              {newMarket.validations[newMarket.currentStep].description && (
+                <span className={StylesForm.CreateMarketForm__error}>
+                  {InputErrorIcon}
+                  {newMarket.validations[newMarket.currentStep].description}
+                </span>
+              )}
+            </label>
+            <textarea
+              id="cm__input--desc"
+              className={classNames({
+                [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                  .validations[newMarket.currentStep].description
+              })}
+              value={newMarket.description}
+              maxLength={DESCRIPTION_MAX_LENGTH}
+              placeholder="What question do you want the world to predict?"
+              onChange={e =>
+                validateField(
+                  "description",
+                  e.target.value,
+                  DESCRIPTION_MAX_LENGTH
+                )
+              }
+              onKeyPress={e => keyPressed(e)}
+            />
+            <div className={StylesForm.CreateMarketForm_textarea_footer}>
+              Official Reporting Start Time{" "}
+              <span>{(newMarket.endTime || {}).formattedUtc}</span>
+            </div>
+
+            <div
+              className={classNames(
+                StylesForm["field--50"],
+                Styles.CreateMarketFormOutcome__details
+              )}
+            >
+              <label htmlFor="cm__input--details">
+                <span>Additional Details</span>
+              </label>
+              <textarea
+                id="cm__input--details"
+                value={newMarket.detailsText}
+                placeholder="Add any additional details traders and reporters should know about this market (optional)"
+                onChange={e => {
+                  updateNewMarket({ detailsText: e.target.value });
+                }}
+                className={Styles.CreateMarketForm__textArea}
+              />
+              <div className={StylesForm.CreateMarketForm_textarea_footer}>
+                Official Reporting Start Time{" "}
+                <span>{(newMarket.endTime || {}).formattedUtc}</span>
+              </div>
+            </div>
+          </div>
+          <div className={Styles.CreateMarketDefine_message}>
+            <div>
+              Create markets that will have an{" "}
+              <span className={Styles.CreateMarketDefine_bolden}>
+                objective outcome
+              </span>{" "}
+              by the events end time. Avoid creating markets that have
+              subjective or ambiguous outcomes. If you&#39;re not sure that the
+              market&#39;s outcome will be known beyond a reasonable doubt by
+              the reporting start time, you should not create this market.
+            </div>
+            <div
+              className={classNames(
+                HighlightedStyles.HighlightedMessage,
+                Styles.blockit
+              )}
+            >
+              <div>
+                If entering a date and time in the Market Question and/or
+                Additional Details, use the Official Reporting Start Time in
+                UTC-0
+              </div>
+              <div>
+                Reporting Start Time must not conflict with the Market Question
+                or Additional Details. If they don’t match up there is a high
+                probability that the market will resolve as invalid.
+              </div>
+            </div>
           </div>
         </li>
         <li className={StylesForm["field--50"]}>
@@ -240,55 +358,63 @@ export default class CreateMarketDefine extends Component {
           </ul>
         </li>
         <li className={Styles.CreateMarketDefine__tags}>
-          <label
-            className={classNames({
-              [StylesForm["CreateMarketForm__error--label"]]: tagMessage
-            })}
-            htmlFor="cm__input--tag1"
-          >
-            <span>Tags</span>
-            {tagMessage && (
-              <span
-                className={classNames(
-                  StylesForm["CreateMarketForm__error--abs"],
-                  StylesForm["CreateMarketForm__error--lessSpace"]
-                )}
-              >
-                {InputErrorIcon}
-                {tagMessage}
-              </span>
-            )}
-          </label>
-          <input
-            id="cm__input--tag1"
-            type="text"
-            className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
-                .validations[newMarket.currentStep].tag1
-            })}
-            value={s.localValues.tag1}
-            maxLength={TAGS_MAX_LENGTH}
-            placeholder="Tag 1"
-            onChange={e =>
-              this.validateTag("tag1", e.target.value, TAGS_MAX_LENGTH, false)
-            }
-            onKeyPress={e => keyPressed(e)}
-          />
-          <input
-            id="cm__input--tag2"
-            type="text"
-            className={classNames({
-              [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
-                .validations[newMarket.currentStep].tag2
-            })}
-            value={s.localValues.tag2}
-            maxLength={TAGS_MAX_LENGTH}
-            placeholder="Tag 2"
-            onChange={e =>
-              this.validateTag("tag2", e.target.value, TAGS_MAX_LENGTH, false)
-            }
-            onKeyPress={e => keyPressed(e)}
-          />
+          <div>
+            <label
+              className={classNames({
+                [StylesForm["CreateMarketForm__error--label"]]: tagMessage
+              })}
+              htmlFor="cm__input--tag1"
+            >
+              <span>Tags</span>
+              {tagMessage && (
+                <span
+                  className={classNames(
+                    StylesForm["CreateMarketForm__error--abs"],
+                    StylesForm["CreateMarketForm__error--lessSpace"]
+                  )}
+                >
+                  {InputErrorIcon}
+                  {tagMessage}
+                </span>
+              )}
+            </label>
+            <input
+              id="cm__input--tag1"
+              type="text"
+              className={classNames({
+                [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                  .validations[newMarket.currentStep].tag1
+              })}
+              value={s.localValues.tag1}
+              maxLength={TAGS_MAX_LENGTH}
+              placeholder="Tag 1"
+              onChange={e =>
+                this.validateTag("tag1", e.target.value, TAGS_MAX_LENGTH, false)
+              }
+              onKeyPress={e => keyPressed(e)}
+            />
+            <input
+              id="cm__input--tag2"
+              type="text"
+              className={classNames({
+                [`${StylesForm["CreateMarketForm__error--field"]}`]: newMarket
+                  .validations[newMarket.currentStep].tag2
+              })}
+              value={s.localValues.tag2}
+              maxLength={TAGS_MAX_LENGTH}
+              placeholder="Tag 2"
+              onChange={e =>
+                this.validateTag("tag2", e.target.value, TAGS_MAX_LENGTH, false)
+              }
+              onKeyPress={e => keyPressed(e)}
+            />
+          </div>
+          <div className={Styles.CreateMarketDefine_message}>
+            <div>
+              Tags help users find your market on Augur, for example if your
+              category is “Sports”, your tag might be “Baseball”
+            </div>
+          </div>
         </li>
       </ul>
     );

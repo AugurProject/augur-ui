@@ -24,6 +24,7 @@ export default class ReportingReportForm extends Component {
     selectedOutcome: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
       .isRequired,
     stake: PropTypes.string.isRequired,
+    stakeLabel: PropTypes.string.isRequired,
     isOpenReporting: PropTypes.bool.isRequired,
     isDesignatedReporter: PropTypes.bool.isRequired,
     isMarketInValid: PropTypes.bool,
@@ -179,6 +180,7 @@ export default class ReportingReportForm extends Component {
       market,
       selectedOutcome,
       stake,
+      stakeLabel,
       validations,
       insufficientRep,
       isDesignatedReporter
@@ -238,7 +240,7 @@ export default class ReportingReportForm extends Component {
               ))}
               <li className={FormStyles["Form__radio-buttons--per-line"]}>
                 <button
-                  className={classNames({
+                  className={classNames(FormStyles.isInvalidField, {
                     [`${FormStyles.active}`]: isMarketInValid === true
                   })}
                   onClick={e => {
@@ -256,7 +258,7 @@ export default class ReportingReportForm extends Component {
             <ul className={FormStyles["Form__radio-buttons--per-line"]}>
               <li className={FormStyles["Form__radio-buttons--per-line"]}>
                 <button
-                  className={classNames({
+                  className={classNames(FormStyles.isInvalidField, {
                     [`${FormStyles.active}`]:
                       s.activeButton ===
                       ReportingReportForm.BUTTONS.MARKET_IS_INVALID
@@ -337,10 +339,10 @@ export default class ReportingReportForm extends Component {
             </span>
           </label>
         )}
-        {!isOpenReporting && (
+        {(!isOpenReporting || isDesignatedReporter) && (
           <li>
             <label htmlFor="sr__input--stake">
-              <span>Required Stake</span>
+              <span>{stakeLabel}</span>
             </label>
             <p>{stake} REP</p>
           </li>
