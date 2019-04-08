@@ -58,19 +58,21 @@ interface DatePickerProps {
 }
 
 export const DatePicker = (props: DatePickerProps) => (
-  <SingleDatePicker
-    id={props.id}
-    date={props.date}
-    placeholder={props.placeholder || "Date (D MMM YYYY)"}
-    onDateChange={props.onDateChange}
-    isOutsideRange={props.isOutsideRange || (() => false)}
-    focused={props.focused}
-    onFocusChange={props.onFocusChange}
-    displayFormat={props.displayFormat || "D MMM YYYY"}
-    numberOfMonths={props.numberOfMonths}
-    navPrev={props.navPrev || Chevron}
-    navNext={props.navNext || Chevron}
-  />
+  <div className={Styles.DatePicker}>
+    <SingleDatePicker
+      id={props.id}
+      date={props.date}
+      placeholder={props.placeholder || "Date (D MMM YYYY)"}
+      onDateChange={props.onDateChange}
+      isOutsideRange={props.isOutsideRange || (() => false)}
+      focused={props.focused}
+      onFocusChange={props.onFocusChange}
+      displayFormat={props.displayFormat || "D MMM YYYY"}
+      numberOfMonths={props.numberOfMonths}
+      navPrev={props.navPrev || Chevron}
+      navNext={props.navNext || Chevron}
+    />
+  </div>
 );
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {

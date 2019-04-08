@@ -18,6 +18,14 @@ interface PagesArrayObject {
 const NullPage = { page: null, active: false };
 
 export const createPagesArray = (page: number, totalPages: number) => {
+  if (totalPages <= 1) {
+    return [
+      {
+        page: 1,
+        active: true
+      }
+    ];
+  }
   let ArrayToShow: Array<PagesArrayObject> = [];
   const PagesArray: Array<PagesArrayObject> = [];
   const SevenBefore: Array<PagesArrayObject> = [];

@@ -398,8 +398,13 @@
   align-items: center;
   border: 1px solid @color-primary-background;
   display: grid;
-  grid-template-columns: 200px minmax(320px, 2fr) minmax(125px, 1fr) 125px repeat(2, 100px) 50px repeat(2, 100px) 80px;
+  grid-template-columns: 200px minmax(320px, 2fr) minmax(125px, 1fr) minmax(125px, 150px) repeat(2, 100px) 50px repeat(2, 100px) 80px;
   grid-template-rows: auto;
+}
+
+.NullTransactionsRow {
+  grid-column: span 10;
+  text-align: center;
 }
 
 .Transactions {

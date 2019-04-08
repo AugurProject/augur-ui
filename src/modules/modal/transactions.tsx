@@ -19,7 +19,7 @@ interface TransactionsProps {
   closeAction: Function;
   title: string;
   currentTimestamp: any;
-  transactions: Array<TransactionInfo>;
+  getTransactionsHistory: Function;
 }
 
 interface TransactionInfo {
@@ -35,7 +35,6 @@ interface TransactionInfo {
   fee: string;
   total: string;
   details: string;
-  getTransactionsHistory: Function;
 }
 
 interface TransactionsState {
@@ -47,7 +46,8 @@ interface TransactionsState {
   endDate: Date | any;
   startFocused: boolean;
   endFocused: boolean;
-  hasLoadedTransactions: boolean;
+  AllTransactions: Array<TransactionInfo>;
+  filteredTransactions: Array<TransactionInfo>;
 }
 
 const coinOptions = [
@@ -135,27 +135,70 @@ const paginationOptions = [
   }
 ];
 
+const DEFAULT_STATE = {
+  coin: "ALL",
+  action: "ALL",
+  itemsPerPage: 20,
+  page: 1
+};
+
 export class Transactions extends React.Component<
   TransactionsProps,
   TransactionsState
 > {
   state: TransactionsState = {
-    coin: "ALL",
-    action: "ALL",
-    itemsPerPage: 20,
+    ...DEFAULT_STATE,
     startDate: moment(this.props.currentTimestamp * 1000).subtract(6, "M"),
     endDate: moment(this.props.currentTimestamp * 1000),
     startFocused: false,
     endFocused: false,
-    page: 1,
-    hasLoadedTransactions: false
+    AllTransactions: [],
+    filteredTransactions: []
+  };
+
+  componentWillMount = () => {
+    this.triggerSearch();
   };
 
   tableHeaderRef: any = null;
   tableBodyRef: any = null;
 
-  filterTransactions = (transactions: Array<TransactionInfo>) => {
-    const { coin, action } = this.state;
+  triggerSearch = () => {
+    const { getTransactionsHistory } = this.props;
+    const { startDate, endDate, coin, action } = this.state;
+    getTransactionsHistory(
+      startDate.unix().valueOf(),
+      endDate.unix().valueOf(),
+      coin,
+      action,
+      (err: any, AllTransactions: Array<TransactionInfo>) => {
+        if (!err) {
+          const filteredTransactions = this.filterTransactions(
+            AllTransactions,
+            coin,
+            action
+          );
+          if (this.tableHeaderRef)
+            this.setState({ AllTransactions, filteredTransactions });
+        }
+      }
+    );
+  };
+
+  resetSearch = () => {
+    this.setState({
+      ...DEFAULT_STATE,
+      startDate: moment(this.props.currentTimestamp * 1000).subtract(6, "M"),
+      endDate: moment(this.props.currentTimestamp * 1000),
+      filteredTransactions: this.state.AllTransactions
+    });
+  };
+
+  filterTransactions = (
+    transactions: Array<TransactionInfo>,
+    coin: string,
+    action: string
+  ) => {
     const filteredTransactions = transactions.filter(
       (Transaction: TransactionInfo) => {
         let addTransaction = true;
@@ -168,15 +211,14 @@ export class Transactions extends React.Component<
         return addTransaction;
       }
     );
-
     return filteredTransactions;
   };
 
   triggerTransactionsExport = () => {
-    const { transactions } = this.props;
+    const { AllTransactions } = this.state;
     const transactionsDataString =
       "data:text/json;charset=utf-8," +
-      encodeURIComponent(JSON.stringify(transactions));
+      encodeURIComponent(JSON.stringify(AllTransactions));
     const a = document.createElement("a");
 
     a.setAttribute("href", transactionsDataString);
@@ -214,13 +256,7 @@ export class Transactions extends React.Component<
   };
 
   render() {
-    const {
-      title,
-      closeAction,
-      currentTimestamp,
-      transactions,
-      getTransactionsHistory
-    } = this.props;
+    const { title, closeAction, currentTimestamp } = this.props;
     const {
       coin,
       action,
@@ -230,23 +266,8 @@ export class Transactions extends React.Component<
       endFocused,
       itemsPerPage,
       page,
-      hasLoadedTransactions
+      filteredTransactions
     } = this.state;
-    // console.log(startDate, startDate.utc());
-    if (!hasLoadedTransactions) {
-      getTransactionsHistory(
-        startDate.valueOf(),
-        endDate.valueOf(),
-        coin,
-        action,
-        (err, transactions) => {
-          console.log("loaded:", err);
-          console.log(transactions);
-          this.setState({ hasLoadedTransactions: true });
-        }
-      );
-    }
-    const filteredTransactions = this.filterTransactions(transactions);
     const pageInfo = {
       page,
       itemsPerPage,
@@ -267,7 +288,8 @@ export class Transactions extends React.Component<
       id: "startDatePicker",
       date: startDate,
       placeholder: "Start Date",
-      onDateChange: (startDate: number) => this.setState({ startDate }),
+      onDateChange: (startDate: number) =>
+        this.setState({ startDate }, () => this.triggerSearch()),
       onFocusChange: ({ focused }) => {
         if (this.state.startDate == null) {
           const startDate = moment(currentTimestamp * 1000);
@@ -286,7 +308,8 @@ export class Transactions extends React.Component<
       id: "endDatePicker",
       date: endDate,
       placeholder: "End Date",
-      onDateChange: (endDate: number) => this.setState({ endDate }),
+      onDateChange: (endDate: number) =>
+        this.setState({ endDate }, () => this.triggerSearch()),
       onFocusChange: ({ focused }) => {
         if (this.state.endDate == null) {
           const endDate = moment(currentTimestamp * 1000);
@@ -319,19 +342,34 @@ export class Transactions extends React.Component<
           <SquareDropdown
             options={actionOptions}
             defaultValue={action}
-            onChange={(action: string) => this.setState({ action })}
+            onChange={(action: string) =>
+              this.setState(state => {
+                const filteredTransactions = this.filterTransactions(
+                  state.AllTransactions,
+                  state.coin,
+                  action
+                );
+                return { filteredTransactions, action };
+              })
+            }
           />
           <SquareDropdown
             options={coinOptions}
             defaultValue={coin}
-            onChange={(coin: string) => this.setState({ coin })}
+            onChange={(coin: string) =>
+              this.setState(state => {
+                const filteredTransactions = this.filterTransactions(
+                  state.AllTransactions,
+                  coin,
+                  state.action
+                );
+                return { filteredTransactions, coin };
+              })
+            }
           />
           <div>
-            <SecondaryButton
-              action={() => console.log("second")}
-              text="Reset"
-            />
-            <PrimaryButton action={() => console.log("seach")} text="Search" />
+            <SecondaryButton action={this.resetSearch} text="Reset" />
+            <PrimaryButton action={this.triggerSearch} text="Search" />
           </div>
           <ExportButton action={this.triggerTransactionsExport} />
         </section>
@@ -357,6 +395,9 @@ export class Transactions extends React.Component<
             this.tableBodyRef = tableBody;
           }}
         >
+          {pageTransactions.length === 0 && (
+            <span className={Styles.NullTransactionsRow}>No Transactions</span>
+          )}
           {pageTransactions.map((transaction: TransactionInfo) =>
             this.addTransactionRow(transaction)
           )}
