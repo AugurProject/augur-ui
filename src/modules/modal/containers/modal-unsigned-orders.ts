@@ -40,6 +40,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
 const mergeProps = (sP, dP, oP) => {
   let numberOfTransactions = 0;
   let totalCost = createBigNumber(0);
+
   sP.market.outcomes.forEach((outcome: any) => {
     const target =
       sP.market.marketType === CATEGORICAL ? outcome.name : outcome.id;

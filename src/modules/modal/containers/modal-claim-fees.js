@@ -46,11 +46,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           {
             label: "reporting stake",
             value: `${
-              formatAttoRep(marketObj.unclaimedRepTotal || 0, {
+              formatAttoRep(marketObj.unclaimedRepTotal, {
                 decimals: 4,
                 decimalsRounded: 4,
                 zeroStyled: true
-              }).formatted
+              }).formatted || 0
             } REP`
           },
           {
