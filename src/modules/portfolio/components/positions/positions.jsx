@@ -107,7 +107,7 @@ export default class Positions extends Component {
         filterComp={filterComp}
         bottomRightContent={
           <CompactButton
-            text={showCurrentValue ? "Current Value (ETH)" : "Total Returns"}
+            text={showCurrentValue ? "Current Value" : "Total Returns"}
             action={this.updateRightContentValue}
           />
         }

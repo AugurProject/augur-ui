@@ -39,7 +39,7 @@ export default class MarketOutcomesChartHighchart extends Component {
       options: {
         title: {
           text: "",
-          y: 0
+          y: 5
         },
         lang: {
           noData: "No Completed Trades"

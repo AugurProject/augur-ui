@@ -44,6 +44,7 @@ export default class AccountOverview extends React.Component<
         title={constants.YOUR_OVERVIEW_TITLE}
         content={
           <div className={Styles.AccountOverview}>
+            <AccountOverviewFunds />
             <div className={Styles.AccountOverview__pillSelector}>
               <PillSelection
                 options={constants.TIMEFRAME_OPTIONS}
@@ -51,7 +52,6 @@ export default class AccountOverview extends React.Component<
                 onChange={this.updateTimeSelection}
               />
             </div>
-            <AccountOverviewFunds />
             <AccountOverviewStats timeframe={selected} />
             <AccountOverviewChart timeframe={selected} />
           </div>
