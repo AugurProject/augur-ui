@@ -104,6 +104,7 @@ export default class MarketOutcomesList extends Component {
                     selectedOutcome={selectedOutcome}
                     updateSelectedOutcome={updateSelectedOutcome}
                     isMobile={isMobile}
+                    marketType={marketType}
                     scalarDenomination={
                       marketType === SCALAR && scalarDenomination
                     }
