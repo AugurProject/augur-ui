@@ -35,7 +35,7 @@ const PositionRow = (props: PositionRowProps) => {
             showColors
             label="Total Returns"
             value={`${position.totalReturns.formatted}`}
-            numberValue={`${position.totalPercent.formatted}`}
+            numberValue={`${position.totalPercent.roundedFormatted}`}
           />
         )}
         <LinearPropertyLabelMovement
@@ -46,7 +46,7 @@ const PositionRow = (props: PositionRowProps) => {
           showColors
           label="Realized P/L"
           value={`${position.realizedNet.formatted}`}
-          numberValue={`${position.realizedPercent.formatted}`}
+          numberValue={`${position.realizedPercent.roundedFormatted}`}
         />
         <LinearPropertyLabelMovement
           highlightFirst
@@ -56,7 +56,7 @@ const PositionRow = (props: PositionRowProps) => {
           showColors
           label="Unrealized P/L"
           value={`${position.unrealizedNet.formatted}`}
-          numberValue={`${position.unrealizedPercent.formatted}`}
+          numberValue={`${position.unrealizedPercent.roundedFormatted}`}
         />
       </div>
     </div>
@@ -102,7 +102,7 @@ const PositionRow = (props: PositionRowProps) => {
               showPlusMinus
               showColors
               size="medium"
-              value={position.totalPercent.formatted}
+              value={position.totalPercent.roundedFormatted}
             />
           ) : (
             position.totalReturns.formatted
