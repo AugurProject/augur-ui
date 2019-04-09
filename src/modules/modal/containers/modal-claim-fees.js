@@ -14,7 +14,11 @@ import {
   redeemStake,
   CLAIM_FEES_GAS_COST
 } from "modules/reports/actions/claim-reporting-fees";
-import { updateReportingWindowStats } from "modules/reports/actions/update-reporting-window-stats";
+import { addPendingData, removePendingData } from "modules/pending-queue/actions/pending-queue-management";
+import { CLAIM_STAKE_FEES } from "modules/common-elements/constants";
+import { isEqual } from "lodash";
+
+const CLAIM_FEE_WINDOWS = 'CLAIM_FEE_WINDOWS';
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -23,6 +27,7 @@ const mapStateToProps = (state: any) => ({
     { decimalsRounded: 4 },
     getGasPrice(state)
   ),
+  pendingQueue: state.pendingQueue.CLAIM_STAKE_FEES || [],
   reportingFees: state.reportingWindowStats.reportingFees,
   feeWindows: state.reportingWindowStats.reportingFees.feeWindows,
   nonforkedMarkets: state.reportingWindowStats.reportingFees.nonforkedMarkets
@@ -33,7 +38,8 @@ const mapDispatchToProps = (dispatch: Function) => ({
   claimReportingFeesNonforkedMarkets: (options, callback) =>
     dispatch(claimReportingFeesNonforkedMarkets(options, callback)),
   redeemStake: (options, callback) => dispatch(redeemStake(options, callback)),
-  updateReportingWindowStats: (windowStats) => dispatch(updateReportingWindowStats(windowStats))
+  addPendingData: (pendingId, queueName) => dispatch(addPendingData(pendingId, queueName)),
+  removePendingData: (pendingId, queueName) => dispatch(removePendingData(pendingId, queueName))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
@@ -49,9 +55,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     const total = createBigNumber(ethFees.fullPrecision).minus(createBigNumber(sP.gasCost))
 
     if (market) {
+      const pending = sP.pendingQueue.find(pendingData => pendingData === marketObj.marketId);
+
       markets.push({
         title: market.description,
-        text: (marketObj.status === "PENDING" ? 'P ' : "") + "Claim Proceeds",
+        text: "Claim Proceeds",
+        status: pending && 'PENDING',
         properties: [
           {
             label: "reporting stake",
@@ -83,36 +92,43 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
             market => market.marketId === marketObj.marketId
           );
 
-       
+          const reportingParticipants = [];
+          const market = sP.nonforkedMarkets[marketIndex];
+            
+          reportingParticipants.push(market.initialReporter);
+          market.crowdsourcers.forEach(crowdsourcer => {
+            reportingParticipants.push(crowdsourcer);
+          });
+
+          dP.addPendingData(sP.nonforkedMarkets[marketIndex].marketId, CLAIM_STAKE_FEES)
 
           const ClaimReportingFeesNonforkedMarketsOptions = {
-            feeWindows: [], // fee windows is empty here because we are just claiming by markets
-            marketIndex: marketIndex,
-            forkedMarket: sP.reportingFees.forkedMarket,
-            nonforkedMarkets: [sP.nonforkedMarkets[marketIndex]],
-            estimateGas: false,
-            onSent: () => {
-             
+            _feeWindows: [],
+            _reportingParticipants: reportingParticipants,
+            onSent: () => {},
+            onFailed: () => {
+              dP.removePendingData(market.marketId, CLAIM_STAKE_FEES)
             },
             onSuccess: result => {
               if (sP.modal.cb) {
                 sP.modal.cb();
               }
+              dP.removePendingData(market.marketId, CLAIM_STAKE_FEES)
             }
           };
-          dP.claimReportingFeesNonforkedMarkets(
-            ClaimReportingFeesNonforkedMarketsOptions
-          );
+          dP.redeemStake(ClaimReportingFeesNonforkedMarketsOptions);
         }
       });
     }
   });
   if (sP.feeWindows.length > 0) {
     const totalGas = createBigNumber(sP.gasCost).times(createBigNumber(sP.feeWindows.length))
+    const pending = sP.pendingQueue.find(pendingData => pendingData === CLAIM_FEE_WINDOWS);
 
     markets.push({
       title: "Reedeem all participation tokens",
       text: "Claim",
+      status: pending && 'PENDING',
       properties: [
         {
           label: "Total REP",
@@ -130,21 +146,22 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         }
       ],
       action: () => {
+        dP.addPendingData(CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES);
         const ClaimReportingFeesNonforkedMarketsOptions = {
-          feeWindows: sP.feeWindows,
-          forkedMarket: sP.reportingFees.forkedMarket,
-          nonforkedMarkets: [],
-          estimateGas: false,
+          _feeWindows: sp.feeWindows,
+          _reportingParticipants: [],
           onSent: () => {},
+          onFailed: () => {
+            dP.removePendingData(CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES)
+          },
           onSuccess: result => {
             if (sP.modal.cb) {
               sP.modal.cb();
             }
+            dP.removePendingData(CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES)
           }
         };
-        dP.claimReportingFeesNonforkedMarkets(
-          ClaimReportingFeesNonforkedMarketsOptions
-        );
+        dP.redeemStake(ClaimReportingFeesNonforkedMarketsOptions);
       }
     });
   }
@@ -236,7 +253,7 @@ export default withRouter(
     mergeProps,
     {
       areStatePropsEqual: (next, prev) => {
-        return JSON.stringify(next.nonforkedMarkets) !== JSON.stringify(prev.nonforkedMarkets)
+        return !isEqual(next.pendingQueue, prev.pendingQueue)
       }
     }
   )(Proceeds)

@@ -1,7 +1,6 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { UNIVERSE_ID } from "modules/common-elements/constants";
-import { updateReportingWindowStats } from "modules/reports/actions/update-reporting-window-stats";
 
 export const CLAIM_FEES_GAS_COST = 3000000;
 
@@ -13,8 +12,6 @@ export function claimReportingFeesForkedMarket(options, callback = logError) {
       meta: loginAccount.meta,
       redeemer: loginAccount.address
     };
-
-     
 
     augur.reporting.claimReportingFeesForkedMarket(payload, (err, result) => {
       if (err) return callback(err);
@@ -34,13 +31,6 @@ export function claimReportingFeesNonforkedMarkets(
       meta: loginAccount.meta,
       redeemer: loginAccount.address
     };
-
-    delete payload.marketIndex;
-    const { reportingFees } = reportingWindowStats;
-    const nonforkedMarkets = reportingFees.nonforkedMarkets;
-    nonforkedMarkets[options.marketIndex].status = "PENDING";
-    reportingFees.nonforkedMarkets = nonforkedMarkets;
-    dispatch(updateReportingWindowStats({reportingFees}));
 
     augur.reporting.claimReportingFeesNonforkedMarkets(
       payload,

@@ -18,7 +18,8 @@ import {
 } from "modules/common-elements/buttons";
 import {
   LinearPropertyLabel,
-  LinearPropertyLabelProps
+  LinearPropertyLabelProps,
+  PendingLabel
 } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
 
@@ -75,6 +76,7 @@ interface ActionRow {
   label: string;
   value: string;
   action: Function;
+  status?: boolean;
 }
 
 interface ActionRowsProps {
@@ -198,7 +200,10 @@ export const ActionRows = (props: ActionRowsProps) =>
           ))}
         </div>
       </section>
-      <SubmitTextButton text={row.text} action={row.action} />
+      <div>
+        {row.status === "PENDING" && <PendingLabel />} 
+        <SubmitTextButton disabled={row.status === "PENDING"} text={row.text} action={row.action} />
+      </div>
     </section>
   ));
 

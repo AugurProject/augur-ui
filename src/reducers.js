@@ -43,6 +43,7 @@ import pendingOrders from "modules/orders/reducers/pending-orders";
 import filledOrders from "modules/orders/reducers/filled-orders";
 import accountShareBalances from "modules/positions/reducers/account-share-balances";
 import readNotifications from "modules/notifications/reducers/read-notifications";
+import pendingQueue from "modules/pending-queue/reducers/pending-queue";
 
 export function createReducer() {
   return {
@@ -81,6 +82,7 @@ export function createReducer() {
     participationTokens,
     pendingLiquidityOrders,
     pendingOrders,
+    pendingQueue,
     filledOrders,
     reportingWindowStats,
     reports,

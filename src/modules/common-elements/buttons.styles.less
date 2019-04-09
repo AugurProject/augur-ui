@@ -208,7 +208,7 @@
   .mono-10;
 
   align-items: center;
-  color: @color-secondary-button-text;
+  color: @color-primary-action;
   display: flex;
   flex-flow: row nowrap;
   line-height: @size-10;
@@ -216,6 +216,10 @@
 
   &:hover {
     font-weight: bold;
+  }
+
+  &:disabled {
+    color: fade(@color-white, 20%);
   }
 }
 

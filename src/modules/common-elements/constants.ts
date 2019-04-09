@@ -651,3 +651,7 @@ export const TIMEFRAME_OPTIONS = [
   { label: TIMEFRAMES.MONTH, periodInterval: 2592000, id: 2 },
   { label: TIMEFRAMES.ALL, periodInterval: 0, id: 3 }
 ];
+
+// Pending Queue Types
+export const CLAIM_STAKE_FEES = "CLAIM_STAKE_FEES"
+export const CLAIM_PROCEEDS = "CLAIM_PROCEEDS"

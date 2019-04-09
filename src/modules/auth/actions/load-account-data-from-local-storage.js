@@ -10,6 +10,7 @@ import { registerUserDefinedGasPriceFunction } from "modules/app/actions/registe
 import { loadUniverse } from "modules/app/actions/load-universe";
 import { isNewFavoritesStyle } from "modules/markets/helpers/favorites-processor";
 import { setSelectedUniverse } from "./selected-universe-management";
+import { loadPendingQueue } from "modules/pending-queue/actions/pending-queue-management";
 
 export const loadAccountDataFromLocalStorage = address => (
   dispatch,
@@ -80,6 +81,12 @@ export const loadAccountDataFromLocalStorage = address => (
         Object.keys(storedAccountData.pendingOrders).length
       ) {
         dispatch(loadPendingOrders(storedAccountData.pendingOrders));
+      }
+      if (
+        storedAccountData.pendingQueue &&
+        Object.keys(storedAccountData.pendingQueue).length
+      ) {
+        dispatch(loadPendingQueue(storedAccountData.pendingQueue));
       }
       if (
         storedAccountData.gasPriceInfo &&
