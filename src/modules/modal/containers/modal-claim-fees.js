@@ -3,9 +3,9 @@ import { withRouter } from "react-router-dom";
 
 import { selectMarket } from "modules/markets/selectors/market";
 import { CLAIM_SHARES_GAS_COST } from "modules/positions/actions/claim-trading-proceeds";
-// import { createBigNumber } from "utils/create-big-number";
+import { createBigNumber } from "utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import { formatGasCostToEther, formatAttoRep, formatAttoEth } from "utils/format-number";
+import { formatGasCostToEther, formatAttoRep, formatAttoEth, formatEther } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
@@ -14,6 +14,7 @@ import {
   redeemStake,
   CLAIM_FEES_GAS_COST
 } from "modules/reports/actions/claim-reporting-fees";
+import { updateReportingWindowStats } from "modules/reports/actions/update-reporting-window-stats";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -31,7 +32,8 @@ const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
   claimReportingFeesNonforkedMarkets: (options, callback) =>
     dispatch(claimReportingFeesNonforkedMarkets(options, callback)),
-  redeemStake: (options, callback) => dispatch(redeemStake(options, callback))
+  redeemStake: (options, callback) => dispatch(redeemStake(options, callback)),
+  updateReportingWindowStats: (windowStats) => dispatch(updateReportingWindowStats(windowStats))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
@@ -39,10 +41,17 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   const markets: Array<ActionRowsProps> = [];
   marketIdsToTest.forEach(marketObj => {
     const market = selectMarket(marketObj.marketId);
+    const ethFees = formatAttoEth(marketObj.unclaimedEthFees, {
+      decimals: 4,
+      decimalsRounded: 4,
+      zeroStyled: true
+    });
+    const total = createBigNumber(ethFees.fullPrecision).minus(createBigNumber(sP.gasCost))
+
     if (market) {
       markets.push({
         title: market.description,
-        text: "Claim Proceeds",
+        text: (marketObj.status === "PENDING" ? 'P ' : "") + "Claim Proceeds",
         properties: [
           {
             label: "reporting stake",
@@ -57,32 +66,34 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           {
             label: "Reporting Fees",
             value: `${
-              formatAttoEth(marketObj.unclaimedEthFees, {
-                decimals: 4,
-                decimalsRounded: 4,
-                zeroStyled: true
-              }).formatted || 0
+              ethFees.formatted || 0
             } ETH`
           },
           {
             label: "est gas cost",
-            value: `${0} ETH`
+            value: `${sP.gasCost} ETH`
           },
           {
             label: "total",
-            value: `${0} ETH`
+            value: `${formatEther(total).formatted} ETH`
           }
         ],
         action: () => {
-          const market = sP.reportingFees.nonforkedMarkets.find(
+          const marketIndex = sP.reportingFees.nonforkedMarkets.findIndex(
             market => market.marketId === marketObj.marketId
           );
+
+       
+
           const ClaimReportingFeesNonforkedMarketsOptions = {
             feeWindows: [], // fee windows is empty here because we are just claiming by markets
-            forkedMarket: [],
-            nonforkedMarkets: [market],
+            marketIndex: marketIndex,
+            forkedMarket: sP.reportingFees.forkedMarket,
+            nonforkedMarkets: [sP.nonforkedMarkets[marketIndex]],
             estimateGas: false,
-            onSent: () => {},
+            onSent: () => {
+             
+            },
             onSuccess: result => {
               if (sP.modal.cb) {
                 sP.modal.cb();
@@ -97,33 +108,31 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     }
   });
   if (sP.feeWindows.length > 0) {
+    const totalGas = createBigNumber(sP.gasCost).times(createBigNumber(sP.feeWindows.length))
+
     markets.push({
       title: "Reedeem all participation tokens",
       text: "Claim",
       properties: [
         {
-          label: "reporting stake",
+          label: "Total REP",
           value: `${sP.reportingFees.participationTokenRepStaked.formatted} REP`
         },
         {
-          label: "Reporting Fees",
+          label: "Total ETH",
           value: `${
             sP.reportingFees.unclaimedParticipationTokenEthFees.formatted
           } ETH`
         },
         {
-          label: "est gas cost",
-          value: `${0} ETH`
-        },
-        {
-          label: "total",
-          value: `${0} ETH`
+          label: "Total Gas Cost (ETH)",
+          value: `${formatEther(totalGas).formatted} ETH`
         }
       ],
       action: () => {
         const ClaimReportingFeesNonforkedMarketsOptions = {
           feeWindows: sP.feeWindows,
-          forkedMarket: [],
+          forkedMarket: sP.reportingFees.forkedMarket,
           nonforkedMarkets: [],
           estimateGas: false,
           onSent: () => {},
@@ -139,6 +148,8 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       }
     });
   }
+
+  const total = createBigNumber(sP.reportingFees.unclaimedEth.fullPrecision).minus(createBigNumber(sP.gasCost))
 
   return {
     title: "Claim Stake & Fees",
@@ -166,11 +177,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       },
       {
         label: "Estimated Gas",
-        value: `${0} ETH`
+        value: `${sP.gasCost} ETH`
       },
       {
         label: "Total",
-        value: `${0} ETH`
+        value: `${formatEther(total).formatted} ETH`
       }
     ],
     closeAction: () => {
@@ -222,6 +233,11 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-    mergeProps
+    mergeProps,
+    {
+      areStatePropsEqual: (next, prev) => {
+        return JSON.stringify(next.nonforkedMarkets) !== JSON.stringify(prev.nonforkedMarkets)
+      }
+    }
   )(Proceeds)
 );
