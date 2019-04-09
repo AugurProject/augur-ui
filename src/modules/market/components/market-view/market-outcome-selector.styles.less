@@ -11,13 +11,33 @@
   padding-left: 16px;
 
   > span {
+    align-items: center;
     display: flex;
     flex-grow: 1;
     justify-content: flex-end;
   }
 
   > div {
-    padding: 18px 0;
+    padding: @size-18 0;
+  }
+
+  @media @breakpoint-mobile {
+    .text-12-bold;
+
+    margin: 0 0 @size-16;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: @above-all-content;
+
+    > div {
+      padding: @size-12 0;
+    }
+
+    > span > svg {
+      height: 38px;
+      transform: scale(1.25);
+    }
   }
 }
 

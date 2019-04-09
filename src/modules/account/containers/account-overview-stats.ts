@@ -20,22 +20,22 @@ const mergeProps = (sP, dP, oP) => {
     {
       key: 1,
       label: "Number of Trades",
-      value: getValue(sP.timeframeData, "marketsTraded")
+      value: getValue(sP.timeframeData, "numberOfTrades")
     },
     {
       key: 2,
       label: "Markets Traded",
-      value: getValue(sP.timeframeData, "successfulDisputes")
+      value: getValue(sP.timeframeData, "marketsTraded")
     },
     {
       key: 3,
       label: "Markets Created",
-      value: getValue(sP.timeframeData, "numberOfTrades")
+      value: getValue(sP.timeframeData, "marketsCreated")
     },
     {
       key: 4,
       label: "Successful Disputes",
-      value: getValue(sP.timeframeData, "marketsCreated")
+      value: getValue(sP.timeframeData, "successfulDisputes")
     },
     {
       key: 5,

@@ -341,20 +341,6 @@ export default class MarketView extends Component {
                     selectOutcome={this.showSelectOutcome}
                   />
                 )}
-                <div style={{ marginBottom: "1rem" }}>
-                  <MarketChartsPane
-                    marketId={marketId}
-                    selectedOutcome={s.selectedOutcome}
-                    currentTimestamp={currentTimestamp}
-                    maxPrice={maxPrice}
-                    minPrice={minPrice}
-                    updateSelectedOrderProperties={
-                      this.updateSelectedOrderProperties
-                    }
-                    isMobile={isMobile}
-                    daysPassed={daysPassed}
-                  />
-                </div>
                 <ModuleTabs selected={0} fillForMobile>
                   <ModulePane label="Order Book">
                     <div className={Styles.MarketView__orders}>
@@ -394,6 +380,32 @@ export default class MarketView extends Component {
                     </div>
                   </ModulePane>
                 </ModuleTabs>
+
+                <MarketTradingForm
+                  market={market}
+                  selectedOrderProperties={s.selectedOrderProperties}
+                  selectedOutcome={s.selectedOutcome}
+                  toggleForm={this.toggleForm}
+                  updateSelectedOutcome={this.updateSelectedOutcome}
+                  updateSelectedOrderProperties={
+                    this.updateSelectedOrderProperties
+                  }
+                  toggleMobileView
+                  showSelectOutcome={this.showSelectOutcome}
+                />
+
+                <MarketChartsPane
+                  marketId={marketId}
+                  selectedOutcome={s.selectedOutcome}
+                  currentTimestamp={currentTimestamp}
+                  maxPrice={maxPrice}
+                  minPrice={minPrice}
+                  updateSelectedOrderProperties={
+                    this.updateSelectedOrderProperties
+                  }
+                  isMobile={isMobile}
+                  daysPassed={daysPassed}
+                />
               </div>
             </ModulePane>
             <ModulePane label="Orders">
@@ -407,11 +419,6 @@ export default class MarketView extends Component {
               </div>
             </ModulePane>
           </ModuleTabs>
-          <div className={Styles["MarketView__buySellButton--button"]}>
-            <div>
-              <button onClick={this.toggleTradingForm}>Buy / Sell</button>
-            </div>
-          </div>
         </section>
       );
     }

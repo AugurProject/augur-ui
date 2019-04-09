@@ -48,14 +48,15 @@
     }
 
     > button {
-      align-content: center;
+      .mono-12;
+
       align-items: center;
       display: flex;
       flex-direction: column;
       height: 56px;
-      justify-content: center;
       padding: 1.125rem 0;
       position: relative;
+      text-transform: uppercase;
       width: 100%;
     }
   }
@@ -68,6 +69,15 @@
   margin-bottom: 8px;
   margin-top: 0.75rem;
   padding: 0 1rem;
+
+  > button {
+    .mono-14-bold;
+
+    border-width: 2px;
+    padding: 0;
+    text-transform: uppercase;
+    width: 100%;
+  }
 }
 
 .TradingWrapper__fullActions {
@@ -145,87 +155,4 @@
 
 .TradingWrapper__mobile-header-last {
   color: @color-lightgray;
-}
-
-@media @breakpoint-mobile {
-  .TradingWrapper {
-    bottom: 0;
-    height: 100vh;
-    min-height: 1000px;
-    overflow-y: auto;
-    top: 0;
-    width: 100vw;
-    z-index: 30;
-  }
-
-  .TradingWrapper__darkbg {
-    background: @color-light-purple;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    min-height: 68px;
-    padding: 1rem;
-    position: relative;
-  }
-
-  .TradingWrapper__actions {
-    bottom: 0;
-    left: 0;
-    margin-top: 50px;
-    min-height: 50px;
-    padding-bottom: 10px;
-    position: fixed;
-    right: 0;
-
-    > button {
-      width: 100%;
-    }
-  }
-
-  .TradingWrapper__header_buy,
-  .TradingWrapper__header_sell,
-  .TradingWrapper__header {
-    background: @color-dark-grayish-purple;
-    border-radius: 625rem;
-    margin: 0 auto;
-    max-height: 2.25rem;
-    width: 14.5rem;
-
-    > li {
-      border: 1px solid @color-dark-grayish-purple;
-      border-radius: 625rem;
-      color: @color-light-gray;
-      font-size: 1rem;
-      font-weight: 400;
-      text-align: center;
-      white-space: nowrap;
-      width: 7.25rem;
-
-      &.active_buy,
-      &.active_sell {
-        background: @color-light-purple;
-        color: @color-white;
-      }
-
-      > button {
-        &:extend(.caps--large);
-
-        font-weight: 400;
-        max-height: 2.25rem;
-        padding: 11px 0;
-        width: 100%;
-      }
-    }
-  }
-
-  .TradingWrapper__underline__sell,
-  .TradingWrapper__underline__buy,
-  .TradingWrapper__underline {
-    display: none;
-  }
-
-  .TradingWrapper__container {
-    display: contents;
-    position: relative;
-  }
 }

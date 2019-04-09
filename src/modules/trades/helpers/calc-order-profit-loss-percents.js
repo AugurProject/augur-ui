@@ -166,7 +166,7 @@ export const calcOrderShareProfitLoss = (
   if (reversal) {
     const quantity = createBigNumber(Math.min(shareCost, reversal.quantity));
     if (side === BUY) {
-      const normalizedPrice = max.minus(reversal.price).dividedBy(marketRange);
+      const normalizedPrice = max.minus(reversal.price);
       potentialEthProfit = shortETH
         .minus(createBigNumber(normalizedPrice).times(quantity))
         .minus(winningSettlementCost);

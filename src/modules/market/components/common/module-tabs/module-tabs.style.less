@@ -15,7 +15,13 @@
     > button {
       font-size: 1rem;
       padding: 0.875rem 3rem;
+      position: relative;
       white-space: nowrap;
+      width: 100%;
+
+      @media @breakpoint-mobile {
+        font-size: 0.875rem;
+      }
     }
   }
 }
@@ -27,6 +33,28 @@
 .ModuleTabs__activeTab {
   background-color: @color-light-purple;
   color: white !important;
+
+  .ModuleTabs__isNew::before {
+    background: @color-outcome-four;
+    border-radius: @border-radius-default;
+    content: ' ';
+    height: @size-4;
+    position: absolute;
+    right: -0.25rem;
+    top: -0.25rem;
+    width: @size-4;
+  }
+}
+
+.ModuleTabs__isNew::before {
+  background: @color-outcome-four;
+  border-radius: @border-radius-default;
+  content: ' ';
+  height: @size-4;
+  position: absolute;
+  right: 0.2rem;
+  top: 1.2rem;
+  width: @size-4;
 }
 
 .ModuleTabs {
@@ -34,6 +62,10 @@
   flex: 1 auto;
   flex-flow: column nowrap;
   height: 100%;
+
+  @media @breakpoint-mobile {
+    height: fit-content;
+  }
 }
 
 .ModuleTabs__scrollOver {
@@ -100,10 +132,14 @@
   > li {
     > button {
       font-size: @size-12;
-      padding: 1rem 0.5rem;
+      padding: 1.5rem 0.5rem;
       text-transform: uppercase;
     }
   }
+}
+
+.ModuleTabs__noBorder::-webkit-scrollbar {
+  display: none;
 }
 
 .ModuleTabs__borderBetween {
@@ -138,7 +174,7 @@
   &::after {
     background-color: @color-underline;
     border-radius: @size-9;
-    bottom: -0.25rem;
+    bottom: 0;
     content: "";
     height: 2px;
     left: 0;
