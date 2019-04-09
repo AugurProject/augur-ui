@@ -129,11 +129,6 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-    mergeProps,
-    {
-      areStatePropsEqual: (next, prev) => {
-        return isEqual(next.pendingQueue, prev.pendingQueue)
-      }
-    }
+    mergeProps
   )(Proceeds)
 );
