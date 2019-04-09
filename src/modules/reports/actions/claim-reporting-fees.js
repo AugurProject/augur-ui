@@ -14,8 +14,6 @@ export function claimReportingFeesForkedMarket(options, callback = logError) {
       redeemer: loginAccount.address
     };
 
-     
-
     augur.reporting.claimReportingFeesForkedMarket(payload, (err, result) => {
       if (err) return callback(err);
       callback(null, result);
@@ -60,7 +58,7 @@ export function redeemStake(options, callback = logError) {
       ...options,
       tx: {
         to: universeID,
-        estimateGas: false
+        estimateGas: !!options.estimateGas
       },
       meta: loginAccount.meta
     };
