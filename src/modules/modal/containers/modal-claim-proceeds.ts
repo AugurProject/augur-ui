@@ -132,7 +132,7 @@ export default withRouter(
     mergeProps,
     {
       areStatePropsEqual: (next, prev) => {
-        return !isEqual(next.pendingQueue, prev.pendingQueue)
+        return isEqual(next.pendingQueue, prev.pendingQueue)
       }
     }
   )(Proceeds)

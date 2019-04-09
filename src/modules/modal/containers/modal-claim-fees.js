@@ -10,15 +10,11 @@ import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
 import {
-  claimReportingFeesNonforkedMarkets,
   redeemStake,
   CLAIM_FEES_GAS_COST
 } from "modules/reports/actions/claim-reporting-fees";
-import { addPendingData, removePendingData } from "modules/pending-queue/actions/pending-queue-management";
-import { CLAIM_STAKE_FEES } from "modules/common-elements/constants";
+import { CLAIM_FEE_WINDOWS } from "modules/common-elements/constants";
 import { isEqual } from "lodash";
-
-const CLAIM_FEE_WINDOWS = 'CLAIM_FEE_WINDOWS';
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -35,8 +31,6 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
-  claimReportingFeesNonforkedMarkets: (options, callback) =>
-    dispatch(claimReportingFeesNonforkedMarkets(options, callback)),
   redeemStake: (options, callback) => dispatch(redeemStake(options, callback)),
   addPendingData: (pendingId, queueName) => dispatch(addPendingData(pendingId, queueName)),
   removePendingData: (pendingId, queueName) => dispatch(removePendingData(pendingId, queueName))
@@ -91,32 +85,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           const marketIndex = sP.reportingFees.nonforkedMarkets.findIndex(
             market => market.marketId === marketObj.marketId
           );
-
-          const reportingParticipants = [];
-          const market = sP.nonforkedMarkets[marketIndex];
-            
-          reportingParticipants.push(market.initialReporter);
-          market.crowdsourcers.forEach(crowdsourcer => {
-            reportingParticipants.push(crowdsourcer);
-          });
-
-          dP.addPendingData(sP.nonforkedMarkets[marketIndex].marketId, CLAIM_STAKE_FEES)
-
-          const ClaimReportingFeesNonforkedMarketsOptions = {
-            _feeWindows: [],
-            _reportingParticipants: reportingParticipants,
-            onSent: () => {},
-            onFailed: () => {
-              dP.removePendingData(market.marketId, CLAIM_STAKE_FEES)
-            },
-            onSuccess: result => {
-              if (sP.modal.cb) {
-                sP.modal.cb();
-              }
-              dP.removePendingData(market.marketId, CLAIM_STAKE_FEES)
-            }
+          const RedeemStakeOptions = {
+            feeWindows: [],
+            nonforkedMarkets: [sP.nonforkedMarkets[marketIndex]],
+            pendingId: sP.nonforkedMarkets[marketIndex].marketId
           };
-          dP.redeemStake(ClaimReportingFeesNonforkedMarketsOptions);
+          dP.redeemStake(RedeemStakeOptions);
         }
       });
     }
@@ -131,37 +105,29 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       status: pending && 'PENDING',
       properties: [
         {
-          label: "Total REP",
+          label: "Reporting Stake",
           value: `${sP.reportingFees.participationTokenRepStaked.formatted} REP`
         },
         {
-          label: "Total ETH",
-          value: `${
-            sP.reportingFees.unclaimedParticipationTokenEthFees.formatted
-          } ETH`
+          label: "Reporting Fees",
+          value: `${sP.reportingFees.unclaimedParticipationTokenEthFees.formatted} ETH`
         },
         {
-          label: "Total Gas Cost (ETH)",
+          label: "Est Gas cost",
+          value: `${formatEther(totalGas).formatted} ETH`
+        },
+        {
+          label: "Total",
           value: `${formatEther(totalGas).formatted} ETH`
         }
       ],
       action: () => {
-        dP.addPendingData(CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES);
-        const ClaimReportingFeesNonforkedMarketsOptions = {
-          _feeWindows: sp.feeWindows,
-          _reportingParticipants: [],
-          onSent: () => {},
-          onFailed: () => {
-            dP.removePendingData(CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES)
-          },
-          onSuccess: result => {
-            if (sP.modal.cb) {
-              sP.modal.cb();
-            }
-            dP.removePendingData(CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES)
-          }
+        const RedeemStakeOptions = {
+          feeWindows: sP.feeWindows,
+          nonforkedMarkets: [],
+          pendingId: CLAIM_FEE_WINDOWS
         };
-        dP.redeemStake(ClaimReportingFeesNonforkedMarketsOptions);
+        dP.redeemStake(RedeemStakeOptions);
       }
     });
   }
@@ -185,61 +151,38 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     rows: markets,
     breakdown: [
       {
-        label: "Reporting Stake",
+        label: "Total REP",
         value: `${sP.reportingFees.unclaimedRep.full} REP`
       },
       {
-        label: "Reporting Fees",
+        label: "Total Fees",
         value: `${sP.reportingFees.unclaimedEth.full} ETH`
       },
       {
-        label: "Estimated Gas",
+        label: "Total Gas Cost (ETH)",
         value: `${sP.gasCost} ETH`
-      },
-      {
-        label: "Total",
-        value: `${formatEther(total).formatted} ETH`
       }
     ],
-    closeAction: () => {
-      dP.closeModal();
-      if (sP.modal.cb) {
-        sP.modal.cb();
-      }
-    },
+    closeAction: () => dP.closeModal(),
     buttons: [
       {
         text: "Claim All Stake & Fees",
         action: () => {
-          const reportingParticipants = [];
-          sP.nonforkedMarkets.forEach(nonforkedMarket => {
-            reportingParticipants.push(nonforkedMarket.initialReporter);
-            nonforkedMarket.crowdsourcers.forEach(crowdsourcer => {
-              reportingParticipants.push(crowdsourcer);
-            });
-          });
-          const ClaimReportingFeesNonforkedMarketsOptions = {
-            _feeWindows: sP.reportingFees.feeWindows,
-            _reportingParticipants: reportingParticipants,
-            onSent: () => {},
-            onFailed: () => {},
-            onSuccess: result => {
-              if (sP.modal.cb) {
-                sP.modal.cb();
-              }
+         
+          const RedeemStakeOptions = {
+            feeWindows: sP.reportingFees.feeWindows,
+            nonforkedMarkets: sP.nonforkedMarkets,
+            onSent: () => {
               dP.closeModal();
             }
           };
-          dP.redeemStake(ClaimReportingFeesNonforkedMarketsOptions);
+          dP.redeemStake(RedeemStakeOptions);
         }
       },
       {
         text: "Close",
         action: () => {
           dP.closeModal();
-          if (sP.modal.cb) {
-            sP.modal.cb();
-          }
         }
       }
     ]
@@ -253,7 +196,7 @@ export default withRouter(
     mergeProps,
     {
       areStatePropsEqual: (next, prev) => {
-        return !isEqual(next.pendingQueue, prev.pendingQueue)
+        return isEqual(next.pendingQueue, prev.pendingQueue)
       }
     }
   )(Proceeds)
