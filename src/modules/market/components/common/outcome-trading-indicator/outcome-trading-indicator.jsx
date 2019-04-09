@@ -40,31 +40,20 @@ export default function OutcomeTradingIndicator({
           return { position: "absolute" };
         case "outcomes|down":
           return { top: "1.5rem", position: "absolute" };
-        case "positions|up":
-          return {
-            position: "absolute",
-            bottom: "1rem"
-          };
-        case "positions|down":
-          return { position: "absolute", top: "1.3rem" };
-        case "modileTradingForm|down":
-          return { top: "1rem" };
-        case "modileTradingForm|up":
-          return { bottom: "1rem" };
         case "tradingPage|up":
           return {
             position: "absolute",
             marginLeft: "1rem",
-            borderWidth: "5px",
+            borderWidth: "0 4px 5px",
             opacity: "1"
           };
         case "tradingPage|down":
           return {
             position: "absolute",
             marginLeft: "1rem",
-            borderWidth: "5px",
+            borderWidth: "5px 4px 0",
             opacity: "1",
-            marginBottom: "-8px"
+            marginBottom: "-2px"
           };
         case "scalarScale|up":
           return {

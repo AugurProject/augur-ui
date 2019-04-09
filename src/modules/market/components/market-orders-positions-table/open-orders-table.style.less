@@ -14,27 +14,26 @@ div.MarketOpenOrdersList__table {
   .mono-10;
 
   background-color: @color-light-purple;
+  border-bottom: 0.0625rem solid @color-primary-background;
   color: @color-shadow-text;
   display: grid;
   flex-direction: row;
   flex-grow: 1;
-  grid-template-columns: repeat(6, 1fr);
-  max-height: 40px;
+  grid-template-columns: 25% 70px repeat(4, 1fr);
   text-transform: uppercase;
   transition: background-color 0.15s ease;
 
   &:first-child > li {
     border-top-width: 0;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem;
   }
 
   > li {
     flex-grow: 1;
     overflow: hidden;
-    padding: 11px 0;
+    padding: 0.75rem 0;
     text-align: right;
-    white-space: pre-wrap;
 
     &:first-child {
       max-width: 160px;
