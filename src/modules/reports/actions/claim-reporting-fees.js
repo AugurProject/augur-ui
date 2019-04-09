@@ -50,7 +50,7 @@ export function redeemStake(options, callback = logError) {
       ...options,
       tx: {
         to: universeID,
-        estimateGas: false
+        estimateGas: !!options.estimateGas
       },
       meta: loginAccount.meta
     };
