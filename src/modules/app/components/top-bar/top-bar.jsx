@@ -92,17 +92,7 @@ const TopBar = props => (
       >
         <div className={Styles["TopBar__alerts-container"]}>
           <div className={Styles["TopBar__alert-icon"]}>
-            {props.unseenCount > 99
-              ? Alerts(
-                  "99+",
-                  "7.4591451",
-                  props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
-                )
-              : Alerts(
-                  props.unseenCount,
-                  "6.4591451",
-                  props.isLogged ? "#FFFFFF" : "rgba(255,255,255,.125)"
-                )}
+            {props.unseenCount > 99 ? Alerts("99+") : Alerts(props.unseenCount)}
           </div>
         </div>
       </div>

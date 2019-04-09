@@ -395,7 +395,7 @@ export const MODAL_SELL_COMPLETE_SETS = "MODAL_SELL_COMPLETE_SETS";
 export const MODAL_FINALIZE_MARKET = "MODAL_FINALIZE_MARKET";
 export const DISCLAIMER_SEEN = "disclaimerSeen";
 
-// # Alerts (soon to be alerts)
+// # Alerts
 export const CRITICAL = "CRITICAL";
 export const INFO = "INFO";
 export const CREATEGENESISUNIVERSE = "CREATEGENESISUNIVERSE";
