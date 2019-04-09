@@ -1,5 +1,3 @@
-/* eslint react/no-array-index-key: 0 */
-
 import React, { Component } from "react";
 import classNames from "classnames";
 
@@ -7,12 +5,18 @@ import PropTypes from "prop-types";
 import Styles from "modules/market/components/market-header/market-header-reporting.styles";
 import { constants } from "services/constants";
 import MarketLink from "modules/market/components/market-link/market-link";
-import MarketHeaderStyles from "modules/market/components/market-header/market-header.styles";
 import {
   CATEGORICAL,
   TYPE_DISPUTE,
-  TYPE_REPORT
+  TYPE_REPORT,
+  MARKET_STATUS_MESSAGES
 } from "modules/common-elements/constants";
+import {
+  CountdownProgress,
+  formatTime
+} from "modules/common-elements/progress";
+import { createBigNumber } from "utils/create-big-number";
+
 import canClaimProceeds from "utils/can-claim-proceeds";
 
 export default class MarketHeaderReporting extends Component {
@@ -76,9 +80,8 @@ export default class MarketHeaderReporting extends Component {
     }
     let content = null;
     if (consensus && (consensus.winningOutcome || consensus.isInvalid)) {
-      content = [
+      content = (
         <div
-          key="consensus"
           className={classNames(
             Styles.MarketHeaderReporting__winner__container,
             Styles.MarketHeaderReporting__winner__container__set,
@@ -88,13 +91,7 @@ export default class MarketHeaderReporting extends Component {
           )}
         >
           <div className={Styles.MarketHeaderReporting__outcomeContainer}>
-            <span
-              className={classNames(
-                MarketHeaderStyles.MarketHeader__property__header,
-                Styles.MarketHeader__winning
-              )}
-              style={{ marginRight: "0px" }}
-            >
+            <span className={Styles.MarketHeader__winning}>
               Winning Outcome
             </span>
             <span className={Styles.MarketHeaderReporting__winner__row}>
@@ -124,42 +121,31 @@ export default class MarketHeaderReporting extends Component {
               </button>
             </div>
           )}
-          {canClaim &&
+          {outstandingReturns &&
             reportingState === constants.REPORTING_STATE.FINALIZED && (
-              <div
-                key="claim"
-                className={Styles.MarketHeaderReporting__buttonContainer}
-              >
+              <div className={Styles.MarketHeaderReporting__buttonContainer}>
                 <button
                   className={Styles.MarketHeaderReporting__button}
                   onClick={() => {
                     claimTradingProceeds(id);
                   }}
-                  disabled={!isLogged}
+                  disabled={!isLogged || !canClaim}
                 >
                   Claim Proceeds
                 </button>
               </div>
             )}
         </div>
-      ];
+      );
     } else if (
       reportingState === constants.REPORTING_STATE.CROWDSOURCING_DISPUTE ||
       reportingState === constants.REPORTING_STATE.AWAITING_FORK_MIGRATION ||
       reportingState === constants.REPORTING_STATE.AWAITING_NEXT_WINDOW
     ) {
-      content = [
-        <div
-          key="dispute"
-          className={Styles.MarketHeaderReporting__winner__container}
-        >
+      content = (
+        <div className={Styles.MarketHeaderReporting__winner__container}>
           <div>
-            <span
-              className={classNames(
-                MarketHeaderStyles.MarketHeader__property__header,
-                Styles.MarketHeader__tentative
-              )}
-            >
+            <span className={Styles.MarketHeader__tentative}>
               Tentative Winning Outcome
             </span>
             <span className={Styles.MarketHeaderReporting__winner__row}>
@@ -183,7 +169,6 @@ export default class MarketHeaderReporting extends Component {
                   Styles.MarketHeaderReporting__winner,
                   Styles.MarketHeaderReporting__buttonContainer
                 )}
-                style={{ marginTop: "0.5rem" }}
               >
                 <MarketLink
                   className={Styles.MarketHeaderReporting__button}
@@ -207,28 +192,16 @@ export default class MarketHeaderReporting extends Component {
               </div>
             )}
         </div>
-      ];
-    } else if (
-      (reportingState === constants.REPORTING_STATE.DESIGNATED_REPORTING &&
-        isDesignatedReporter) ||
-      reportingState === constants.REPORTING_STATE.OPEN_REPORTING
-    ) {
-      content = [
-        <div
-          key="winner"
-          className={Styles.MarketHeaderReporting__winner__container}
-        >
+      );
+    } else if (reportingState === constants.REPORTING_STATE.OPEN_REPORTING) {
+      content = (
+        <div className={Styles.MarketHeaderReporting__winner__container}>
           <div className={Styles.MarketHeaderReporting__info}>
-            <span
-              className={classNames(
-                MarketHeaderStyles.MarketHeader__property__header,
-                Styles.MarketHeader__reporting
-              )}
-            >
-              Reporting has started
+            <span className={Styles.MarketHeader__reporting}>
+              Tentative Winning Outcome
             </span>
             <span className={Styles.MarketHeaderReporting__reporting__row}>
-              Go to the reporting form to decide on an outcome
+              Designated Reporter Failed to show. Please submit a report.
             </span>
           </div>
           <div className={Styles.MarketHeaderReporting__buttonContainer}>
@@ -240,7 +213,7 @@ export default class MarketHeaderReporting extends Component {
                 disabled={!isLogged}
                 linkType={TYPE_REPORT}
               >
-                Report
+                Submit Report
               </MarketLink>
             ) : (
               <button
@@ -252,17 +225,92 @@ export default class MarketHeaderReporting extends Component {
             )}
           </div>
         </div>
-      ];
+      );
+    } else if (
+      reportingState === constants.REPORTING_STATE.DESIGNATED_REPORTING
+    ) {
+      content = (
+        <div className={Styles.MarketHeaderReporting__winner__container}>
+          <div className={Styles.MarketHeaderReporting__info}>
+            <span className={Styles.MarketHeader__reporting}>
+              Reporting has started
+            </span>
+            <span className={Styles.MarketHeaderReporting__reporting__row}>
+              {isDesignatedReporter
+                ? "Please Submit a report"
+                : "Awaiting the Market’s Designated Reporter"}
+            </span>
+          </div>
+          <div className={Styles.MarketHeaderReporting__buttonContainer}>
+            {isLogged && isDesignatedReporter ? (
+              <MarketLink
+                className={Styles.MarketHeaderReporting__buttonNoMargin}
+                id={id}
+                location={location}
+                disabled={!isLogged}
+                linkType={TYPE_REPORT}
+              >
+                Submit Report
+              </MarketLink>
+            ) : null}
+          </div>
+        </div>
+      );
     }
 
     if (!content) {
       return <div className={Styles.MarketHeaderReporting__break} />;
     }
 
+    let finalizationTimeWithHold = null;
+    if (finalizationTime) {
+      finalizationTimeWithHold = createBigNumber(finalizationTime)
+        .plus(
+          createBigNumber(constants.CONTRACT_INTERVAL.CLAIM_PROCEEDS_WAIT_TIME)
+        )
+        .toNumber();
+    }
+
     return (
-      <div key="content" className={Styles.MarketHeaderReporting__container}>
-        {content}
-      </div>
+      <>
+        {reportingState === constants.REPORTING_STATE.AWAITING_FINALIZATION && (
+          <div className={Styles.MarketHeaderReporting__finalization}>
+            <div>Awaiting market finalization</div>
+            {!isLogged && (
+              <div>
+                Please Login to Finalize the market and start the three day
+                waiting period in order to claim your proceeds.
+              </div>
+            )}
+            {isLogged && (
+              <div>
+                Finalize the market to start the three day waiting period in
+                order to claim your proceeds.
+              </div>
+            )}
+          </div>
+        )}
+        {outstandingReturns &&
+          !canClaim && (
+            <div className={Styles.MarketHeaderReporting__claimOnHold}>
+              <div>
+                <div>3 day waiting period in progress</div>
+                <div>
+                  Your proceeds will be available to claim once the 3 day period
+                  has ended.
+                </div>
+              </div>
+              <div>
+                <CountdownProgress
+                  label={MARKET_STATUS_MESSAGES.WAITING_PERIOD_ENDS}
+                  time={formatTime(finalizationTimeWithHold)}
+                  currentTime={formatTime(currentTimestamp)}
+                />
+              </div>
+            </div>
+          )}
+        <div className={Styles.MarketHeaderReporting__container}>{content}</div>
+      </>
     );
   }
 }

@@ -11,13 +11,15 @@ import MarketOutcomeTradingIndicator from "modules/market/containers/market-outc
 import Styles from "modules/market/components/market-outcomes-list--outcome/market-outcomes-list--outcome.styles";
 import SharedStyles from "modules/market/components/market-positions-table/market-positions-table--position.styles";
 import { ValueLabel } from "modules/common-elements/labels";
+import { CATEGORICAL } from "modules/common-elements/constants";
 
 const Outcome = ({
   outcome,
   selectedOutcome,
   updateSelectedOutcome,
   scalarDenomination,
-  isMobile
+  isMobile,
+  marketType
 }) => {
   const outcomeName = getValue(outcome, "name");
 
@@ -32,14 +34,11 @@ const Outcome = ({
 
   return (
     <ul
-      className={classNames(
-        SharedStyles.Outcome,
-        Styles.Outcome,
-        Styles[`Outcome-${outcome.id}`],
-        {
-          [`${Styles.active}`]: selectedOutcome === outcome.id
-        }
-      )}
+      className={classNames(SharedStyles.Outcome, Styles.Outcome, {
+        [`${Styles[`Outcome-${outcome.id}`]}`]: marketType === CATEGORICAL,
+        [`${Styles.active}`]:
+          marketType === CATEGORICAL && selectedOutcome === outcome.id
+      })}
       onClick={e => updateSelectedOutcome(outcome.id)}
       role="menu"
     >
@@ -98,13 +97,15 @@ Outcome.propTypes = {
   selectedOutcome: PropTypes.string,
   updateSelectedOutcome: PropTypes.func.isRequired,
   scalarDenomination: PropTypes.any,
-  isMobile: PropTypes.bool
+  isMobile: PropTypes.bool,
+  marketType: PropTypes.string
 };
 
 Outcome.defaultProps = {
   selectedOutcome: null,
   scalarDenomination: null,
-  isMobile: false
+  isMobile: false,
+  marketType: null
 };
 
 export default Outcome;

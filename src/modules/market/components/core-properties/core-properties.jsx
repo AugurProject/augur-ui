@@ -1,12 +1,9 @@
-/* eslint react/no-array-index-key: 0 */
-
 import React from "react";
 import PropTypes from "prop-types";
 import { SCALAR } from "modules/common-elements/constants";
 import Styles from "modules/market/components/core-properties/core-properties.styles";
 import getValue from "utils/get-value";
 import { PropertyLabel } from "modules/common-elements/labels";
-import { DashlineLong } from "modules/common/components/dashline/dashline";
 
 const CoreProperties = ({ market }) => (
   <div className={Styles.CoreProperties}>
@@ -44,17 +41,10 @@ const CoreProperties = ({ market }) => (
       />
     )}
     {getValue(market, "marketType") === SCALAR && (
-      <div
-        className={
-          market.minPrice.toString().length === 1
-            ? Styles.CoreProperties_minMax__long
-            : Styles.CoreProperties_minMax
-        }
-      >
-        <PropertyLabel label="Min" value={`${market.minPrice}`} />
-        <DashlineLong />
-        <PropertyLabel label="Max" value={`${market.maxPrice}`} />
-      </div>
+      <PropertyLabel
+        label="Min"
+        value={`${market.minPrice} — ${market.maxPrice}`}
+      />
     )}
   </div>
 );

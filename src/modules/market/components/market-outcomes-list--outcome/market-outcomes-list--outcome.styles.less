@@ -3,6 +3,7 @@
 .Outcome {
   .generate-indexed-color-outcome-classes({
     &.Outcome-@{newIndex} {
+      cursor: pointer;
       &:hover {
         box-shadow: inset 0 0 0 1000px fade(@value, 5%);
       };
@@ -16,7 +17,6 @@
   });
 
   background-color: @color-tertiary-background;
-  cursor: pointer;
   position: relative;
   transition: background-color 0.15s ease;
 
@@ -30,6 +30,7 @@
   }
 
   &::before {
+    background-color: none;
     bottom: 0;
     content: "";
     display: block;
@@ -42,7 +43,7 @@
   }
 
   > li {
-    margin: auto 0;
+    align-items: center;
 
     &:first-child {
       display: flex;
@@ -57,14 +58,16 @@
     }
 
     > div {
-      display: inline-block;
+      display: flex;
+    }
+
+    > div:first-of-type {
+      max-width: calc(100% - 50px);
     }
   }
 }
 
 .Outcome__name {
-  display: inline-block;
-  max-width: 70px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -80,6 +83,10 @@
   .Outcome {
     &::before {
       width: 2px;
+    }
+
+    > li > div:first-of-type {
+      max-width: unset;
     }
   }
 

@@ -40,13 +40,12 @@
   flex-flow: column nowrap;
 
   > span:first-of-type {
-    .text-12;
+    .text-10;
 
     align-items: center;
-    color: @color-neutral;
+    color: @color-shadow-text;
     display: flex;
     flex-flow: row nowrap;
-    line-height: @size-16;
     text-transform: uppercase;
 
     > label {
@@ -56,12 +55,12 @@
 
       > svg {
         fill: none;
-        height: @size-18;
-        width: @size-18;
+        height: @size-12;
+        width: @size-12;
 
         @media @breakpoint-mobile {
-          height: @size-12;
-          width: @size-12;
+          height: @size-16;
+          width: @size-16;
         }
 
         > circle {
@@ -78,10 +77,9 @@
   }
 
   > span:last-of-type {
-    .mono-14-bold;
+    .mono-14;
 
-    color: @color-secondary-text;
-    line-height: @size-16;
+    color: @color-tertiary-text;
   }
 }
 
@@ -197,10 +195,6 @@ div.LinearPropertyViewTransaction {
   height: @size-24;
   padding: 0.3125rem @size-8;
   text-transform: capitalize;
-
-  @media @breakpoint-mobile {
-    margin: 0 @size-8 0 0;
-  }
 }
 
 .MarketStatus {

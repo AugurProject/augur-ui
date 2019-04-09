@@ -8,7 +8,7 @@
   display: grid;
   flex-direction: row;
   flex-grow: 1;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 25% 70px repeat(4, 1fr);
   max-height: 40px;
   position: relative;
   transition: background-color 0.15s ease;
@@ -18,22 +18,28 @@
   }
 
   > li {
+    .mono-11;
+
+    color: @color-tertiary-text;
     display: flex;
     flex-grow: 1;
     justify-content: flex-end;
     max-height: 40px;
     overflow: hidden;
-    padding: @size-10 0;
+    padding: 0.5rem 0;
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    &:first-child {
-      .text-14;
+    > span > label {
+      font-size: @size-11;
+    }
 
+    &:first-child {
+      .text-11;
+
+      font-weight: 500;
       justify-content: flex-start;
-      max-width: 160px;
-      min-width: 160px;
       padding-left: 2rem;
       position: relative;
       text-align: left;
@@ -50,19 +56,6 @@
         font-weight: 500;
       }
     }
-  }
-
-  &::before {
-    background-color: @color-positive;
-    bottom: 0;
-    content: "";
-    display: block;
-    height: 96%;
-    left: 1px;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 1px;
   }
 }
 
@@ -91,7 +84,7 @@
         min-width: 100px;
         padding: 0;
         position: absolute;
-        top: @size-12;
+        top: -0.5rem;
       }
 
       &:nth-child(2) {
