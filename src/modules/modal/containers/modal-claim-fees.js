@@ -5,7 +5,7 @@ import { selectMarket } from "modules/markets/selectors/market";
 import { CLAIM_SHARES_GAS_COST } from "modules/positions/actions/claim-trading-proceeds";
 // import { createBigNumber } from "utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import { formatGasCostToEther, formatAttoRep } from "utils/format-number";
+import { formatGasCostToEther, formatAttoRep, formatAttoEth } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
@@ -56,7 +56,13 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           },
           {
             label: "Reporting Fees",
-            value: `${0} ETH`
+            value: `${
+              formatAttoEth(marketObj.unclaimedEthFees, {
+                decimals: 4,
+                decimalsRounded: 4,
+                zeroStyled: true
+              }).formatted || 0
+            } ETH`
           },
           {
             label: "est gas cost",
@@ -92,8 +98,8 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   });
   if (sP.feeWindows.length > 0) {
     markets.push({
-      title: "Fees from all fee windows",
-      text: "Claim Fees",
+      title: "Reedeem all participation tokens",
+      text: "Claim",
       properties: [
         {
           label: "reporting stake",

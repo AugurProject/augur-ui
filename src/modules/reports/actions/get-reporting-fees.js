@@ -18,6 +18,7 @@ export const getReportingFees = (callback = logError) => (
     },
     (err, result) => {
       if (err) return callback(err);
+      console.log(result);
 
       const unclaimedRepTotal = createBigNumber(result.total.unclaimedRepStaked)
         .plus(createBigNumber(result.total.unclaimedRepEarned))
