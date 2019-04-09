@@ -148,6 +148,11 @@ export const MAX_FEE_10_PERCENT = "0.1";
 export const MAX_FEE_05_PERCENT = "0.05";
 export const MAX_FEE_02_PERCENT = "0.02";
 
+// # Sorting Options
+export const NEUTRAL = "neutral";
+export const ASCENDING = "ascending";
+export const DESCENDING = "descending";
+
 // # Market Sort Params
 export const MARKET_VOLUME = "volume";
 export const MARKET_CREATION_TIME = "creationTime";

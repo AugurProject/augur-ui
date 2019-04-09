@@ -27,10 +27,10 @@ export interface DefaultButtonProps {
 }
 
 export interface SortButtonProps {
+  text: string;
   action: Function;
   disabled?: boolean;
-  asc?: boolean;
-  desc?: boolean;
+  sortOption: constants.NEUTRAL | constants.ASCENDING | constants.DESCENDING;
 }
 
 export interface DirectionButtonProps {
@@ -252,11 +252,12 @@ export const SortButton = (props: SortButtonProps) => (
   <button
     onClick={e => props.action(e)}
     className={classNames(Styles.SortButton, {
-      [Styles.Ascending]: props.asc,
-      [Styles.Descending]: props.desc
+      [Styles.Ascending]: props.sortOption === constants.ASCENDING,
+      [Styles.Descending]: props.sortOption === constants.DESCENDING
     })}
     disabled={props.disabled}
   >
     {SortIcon}
+    {props.text}
   </button>
 );

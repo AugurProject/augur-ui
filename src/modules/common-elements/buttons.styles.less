@@ -456,8 +456,14 @@
 }
 
 .SortButton {
+  align-items: center;
+  display: flex;
+  flex-flow: row-reverse nowrap;
+
   > svg {
+    flex: 0 0 @size-6;
     height: @size-8;
+    margin-left: @size-4;
     width: @size-6;
 
     > path {

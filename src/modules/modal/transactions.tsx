@@ -7,8 +7,14 @@ import {
   SecondaryButton,
   ExportButton,
   ViewTransactionDetailsButton,
-  SortButton
+  SortButton,
+  SortOptions
 } from "modules/common-elements/buttons";
+import {
+  ASCENDING,
+  DESCENDING,
+  NEUTRAL
+} from "modules/common-elements/constants";
 import { Pagination } from "modules/common-elements/pagination";
 import { ValueLabel, TextLabel } from "modules/common-elements/labels";
 import { SquareDropdown, DatePicker } from "modules/common-elements/selection";
@@ -38,11 +44,6 @@ interface TransactionInfo {
   details: string;
 }
 
-interface SortState {
-  asc: boolean;
-  desc: boolean;
-}
-
 interface TransactionsState {
   coin: string;
   action: string;
@@ -54,8 +55,8 @@ interface TransactionsState {
   endFocused: boolean;
   AllTransactions: Array<TransactionInfo>;
   filteredTransactions: Array<TransactionInfo>;
-  priceSort: SortState;
-  quantitySort: SortState;
+  priceSort: SortOptions;
+  quantitySort: SortOptions;
 }
 
 const coinOptions = [
@@ -148,8 +149,8 @@ const DEFAULT_STATE = {
   action: "ALL",
   itemsPerPage: 20,
   page: 1,
-  priceSort: { asc: false, desc: false },
-  quantitySort: { asc: false, desc: false }
+  priceSort: NEUTRAL,
+  quantitySort: NEUTRAL
 };
 
 export class Transactions extends React.Component<
@@ -173,44 +174,54 @@ export class Transactions extends React.Component<
   tableHeaderRef: any = null;
   tableBodyRef: any = null;
 
-  cyclePriceSort = () => {
-    const { priceSort, filteredTransactions } = this.state;
-    const updatedPriceSort = { ...priceSort };
-    if (priceSort.asc && !priceSort.desc) {
-      updatedPriceSort.asc = false;
-      updatedPriceSort.desc = true;
-      filteredTransactions.sort(
-        (a, b) => parseFloat(b.price) - parseFloat(a.price)
-      );
-    } else if (priceSort.desc && !priceSort.asc) {
-      updatedPriceSort.desc = false;
-      filteredTransactions.sort((a, b) => b.timestamp - a.timestamp);
-    } else {
-      updatedPriceSort.asc = true;
-      filteredTransactions.sort(
-        (a, b) => parseFloat(a.price) - parseFloat(b.price)
-      );
+  cyclePriceSort = (e: any) => {
+    const { filteredTransactions, priceSort } = this.state;
+    let updatedPriceSort = NEUTRAL;
+    switch (priceSort) {
+      case ASCENDING:
+        // if ascending cycle to descending
+        updatedPriceSort = DESCENDING;
+        filteredTransactions.sort(
+          (a, b) => parseFloat(b.price) - parseFloat(a.price)
+        );
+        break;
+      case NEUTRAL:
+        // if neutral cycle to ascending
+        updatedPriceSort = ASCENDING;
+        filteredTransactions.sort(
+          (a, b) => parseFloat(a.price) - parseFloat(b.price)
+        );
+        break;
+      default:
+        // if descending cycle to neutral;
+        filteredTransactions.sort((a, b) => b.timestamp - a.timestamp);
+        break;
     }
     this.setState({ priceSort: updatedPriceSort, filteredTransactions });
   };
 
-  cycleQuantitySort = () => {
-    const { quantitySort, filteredTransactions } = this.state;
-    const updatedQuantitySort = { ...quantitySort };
-    if (quantitySort.asc && !quantitySort.desc) {
-      updatedQuantitySort.asc = false;
-      updatedQuantitySort.desc = true;
-      filteredTransactions.sort(
-        (a, b) => parseFloat(b.quantity) - parseFloat(a.quantity)
-      );
-    } else if (quantitySort.desc && !quantitySort.asc) {
-      updatedQuantitySort.desc = false;
-      filteredTransactions.sort((a, b) => b.timestamp - a.timestamp);
-    } else {
-      updatedQuantitySort.asc = true;
-      filteredTransactions.sort(
-        (a, b) => parseFloat(a.quantity) - parseFloat(b.quantity)
-      );
+  cycleQuantitySort = (e: any) => {
+    const { filteredTransactions, quantitySort } = this.state;
+    let updatedQuantitySort = NEUTRAL;
+    switch (quantitySort) {
+      case ASCENDING:
+        // if ascending cycle to descending
+        updatedQuantitySort = DESCENDING;
+        filteredTransactions.sort(
+          (a, b) => parseFloat(b.quantity) - parseFloat(a.quantity)
+        );
+        break;
+      case NEUTRAL:
+        // if neutral cycle to ascending
+        updatedQuantitySort = ASCENDING;
+        filteredTransactions.sort(
+          (a, b) => parseFloat(a.quantity) - parseFloat(b.quantity)
+        );
+        break;
+      default:
+        // if descending cycle to neutral;
+        filteredTransactions.sort((a, b) => b.timestamp - a.timestamp);
+        break;
     }
     this.setState({ quantitySort: updatedQuantitySort, filteredTransactions });
   };
@@ -438,14 +449,17 @@ export class Transactions extends React.Component<
           <span>Outcome</span>
           <span>Action</span>
           <span>
-            Price
-            <SortButton {...priceSort} action={() => this.cyclePriceSort()} />
+            <SortButton
+              text="Price"
+              sortOption={priceSort}
+              action={(e: any) => this.cyclePriceSort(e)}
+            />
           </span>
           <span>
-            Quantity
             <SortButton
-              {...quantitySort}
-              action={() => this.cycleQuantitySort()}
+              text="Quantity"
+              sortOption={quantitySort}
+              action={(e: any) => this.cycleQuantitySort(e)}
             />
           </span>
           <span>Coin</span>
