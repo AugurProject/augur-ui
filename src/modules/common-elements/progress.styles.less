@@ -70,38 +70,31 @@
 .TimeProgressBar {
   align-items: center;
   display: flex;
-  flex-flow: column nowrap;
-  height: 100%;
+  flex: 1;
+  flex-flow: row nowrap;
+  height: @size-8;
   width: 100%;
 
   > span:first-of-type {
     background: @color-primary-action;
-    height: var(--percent-done);
+    height: 1px;
     position: relative;
     top: 0;
-    width: 1px;
-  }
-
-  > span {
-    background: @color-primary-action;
-    border-radius: @border-radius-default;
-    height: 5px;
-    transform: matrix(-1, 0, 0, 1, 0, 0);
-    width: 5px;
+    width: var(--percent-done);
   }
 
   > span:last-of-type {
     background: @color-neutral;
-    height: var(--percent-to-go);
+    height: 1px;
     position: relative;
     top: 0;
-    width: 1px;
+    width: var(--percent-to-go);
   }
 
   @media @breakpoint-mobile {
     flex: 1;
     flex-flow: row nowrap;
-    height: 0.5rem;
+    height: @size-8;
     width: 100%;
 
     > span:first-of-type {
@@ -117,56 +110,52 @@
 }
 
 .MarketTimeline {
-  display: flex;
-  flex-flow: row nowrap;
-  height: 8.3125rem; // 133px
-
-  > span {
-    flex: 0;
-  }
-
-  > div:first-of-type {
-    .mono-12;
-
-    color: @color-neutral;
-    display: none;
-    text-transform: capitalize;
-
-    &::before {
-      content: attr(data-start-label);
-    }
-
-    &::after {
-      content: attr(data-end-label);
-    }
-  }
+  height: 100%;
+  width: 100%;
 
   > div {
     display: flex;
-    flex-flow: column nowrap;
     justify-content: space-between;
-    margin-left: @size-14;
   }
 
-  @media @breakpoint-mobile {
-    flex-flow: column nowrap;
-    height: 100%;
-    margin: 0;
-    width: 100%;
+  > div:last-of-type {
+    > span > span {
+      .mono-10;
 
-    > div:first-of-type {
-      display: flex;
-      height: 1rem;
-      margin: 0;
+      color: @color-secondary-text;
     }
 
-    > div {
-      flex-flow: row nowrap;
-      margin: 0;
+    > span:last-of-type {
+      text-align: right;
+    }
+  }
 
-      > span > span:first-of-type {
-        display: none;
+  > div.TimeLabel__fade:last-of-type {
+    > span:first-of-type {
+      > span {
+        color: @color-shadow-text;
       }
     }
   }
 }
+
+.MarketTimeline_open,
+.MarketTimeline_reported {
+  .mono-10;
+
+  color: @color-shadow-text;
+  text-transform: uppercase;
+}
+
+.MarketTimeline_open {
+  color: @color-shadow-text;
+}
+
+.MarketTimeline_reported {
+  color: @color-primary-action;
+
+  > div:first-of-type {
+    color: @color-shadow-text;
+  }
+}
+

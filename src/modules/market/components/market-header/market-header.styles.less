@@ -9,52 +9,43 @@
   flex-direction: column;
 }
 
-.MarketHeader__buttonContainer {
+.MarketHeader_toggleContainer {
   display: flex;
   justify-content: center;
   margin-top: 1.85rem;
+
+  > button {
+    background: @color-theme-primary;
+    border: 1px solid @color-highlight;
+    border-radius: 4.6875rem;
+    height: @size-24;
+    width: 4rem;
+
+    &:hover {
+      background-color: @color-bright-gray-purple;
+    }
+
+    > span {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }
 
-.MarketHeader__buttonContainer__collapsed {
+.MarketHeader_toggleContainer_collapsed {
   margin-top: 0;
-}
-
-.MarketHeader__button {
-  background: @color-dark-gray;
-  border-radius: 6rem;
-  height: 1.5rem;
-  width: 4rem;
-
-  &:hover {
-    background-color: @color-bright-gray-purple;
-  }
-
-  > span {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
-}
-
-.MarketHeader__property__header {
-  color: @color-light-gray;
-  font-size: @font-size-small;
-  font-weight: 500;
-  margin-right: 24px;
-  max-height: 0.75rem;
 }
 
 .MarketHeader__AdditionalDetails-text,
 .MarketHeader__AdditionalDetails-text:disabled {
   background: none;
   border: 0;
-  color: @color-white;
   margin: 0;
   margin-top: -10px;
   max-height: 89px;
   overflow: hidden;
-  padding: 0.25rem 0;
-  padding-top: 0;
+  padding: 0 0 @size-8 0;
   resize: none;
   text-transform: none;
   transition: max-height @animation-speed-normal @animation-default-type;
@@ -66,7 +57,7 @@
 }
 
 .MarketHeader__AdditionalDetails-fade {
-  background: linear-gradient(@color-white, rgba(0, 0, 0, 0));
+  background: linear-gradient(@color-secondary-text, rgba(0, 0, 0, 0));
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -76,11 +67,7 @@
   overflow-y: auto;
 }
 
-.MarketHeader__nav {
-  margin: 0 0 0.25rem;
-}
-
-.MarketHeader__back-button {
+.MarketHeader__backButton {
   .caps--small();
 
   display: flex;
@@ -106,16 +93,16 @@
 
   &:hover {
     span {
-      color: @color-white;
+      color: @color-secondary-text;
     }
 
     svg {
       rect {
-        fill: @color-white;
+        fill: @color-secondary-text;
       }
 
       path {
-        stroke: @color-white;
+        stroke: @color-secondary-text;
       }
     }
   }
@@ -126,12 +113,16 @@
 }
 
 .MarketHeader__description {
-  color: @color-white;
+  color: @color-secondary-text;
   flex-grow: 1;
   font-size: @font-size-rather-large;
   font-weight: bold;
   line-height: normal;
   margin: 1rem 0;
+}
+
+.MarketHeaderMobile_description {
+  display: none;
 }
 
 .MarketHeader__descriptionContainer {
@@ -152,20 +143,21 @@
 }
 
 .MarketHeader__readMoreButton {
-  .mono-14;
+  .mono-12;
 
-  color: @color-white;
+  color: @color-secondary-text;
   cursor: pointer;
-  font-weight: 700;
-  padding-bottom: 1rem;
-  padding-top: 0.3rem;
+
+  > span {
+    text-transform: uppercase;
+  }
 
   svg {
     height: 1em;
     margin-right: 0.5em;
 
     polyline {
-      stroke: @color-white;
+      stroke: @color-secondary-text;
       stroke-width: 3;
     }
   }
@@ -203,35 +195,38 @@
   }
 }
 
-.MarketHeader__details-container {
-  font-size: @font-size-small;
-  line-height: @font-size-medium;
-  overflow: auto;
-}
-
 .MarketHeader__topContainer {
   display: flex;
+
+  > span {
+    margin: 0 @size-8 0 0;
+  }
+}
+
+.MarketHeader__details:first-of-type {
+  padding: 0 0 @size-16 0;
 }
 
 .MarketHeader__details {
-  color: @color-light-gray;
-  font-size: @font-size-small;
-  font-weight: 400;
-  line-height: @font-size-small;
   padding: 0;
 
   h4 {
+    .mono-10;
+
+    color: @color-shadow-text;
     display: block;
     padding-bottom: 0.125rem;
     padding-right: 0.5em;
+    text-transform: uppercase;
   }
 
-  span,
-  p,
-  textarea {
-    color: @color-white !important;
-    font-size: @font-size-small;
-    text-transform: none;
+  > span,
+  > p,
+  > textarea,
+  > label {
+    .text-12;
+
+    color: @color-tertiary-text;
 
     @media @breakpoint-mobile-small {
       display: block;
@@ -239,15 +234,6 @@
       text-overflow: ellipsis;
     }
   }
-
-  span {
-    font-size: @font-size-medium;
-  }
-}
-
-.Marketheader__resolutionSource {
-  font-family: 'Roboto Mono', monospace;
-  line-height: normal;
 }
 
 .MarketHeader__properties {
@@ -260,24 +246,13 @@
   padding-left: 0.5rem;
 }
 
-.MarketHeader__timeStuff {
-  align-items: flex-end;
-  display: flex;
-  flex: 1;
-  flex-flow: column nowrap;
-}
-
-.MarketHeader__resolution-source--empty_details {
-  margin-bottom: 1.2rem;
-}
-
-.MarketHeader__nav-isForking {
-  margin-top: 1.4rem;
-}
-
 .MarketHeader__properties__core {
   display: flex;
-  padding: 1.5rem 0 0 0.5rem;
+  padding: 1.125rem 0 0;
+
+  > div {
+    flex: 1;
+  }
 }
 
 @media @breakpoint-mobile {
@@ -291,6 +266,10 @@
 
   .MarketHeader__topContainer {
     margin-left: @size-8;
+
+    > span {
+      margin: 0 @size-8 0 0;
+    }
   }
 
   .MarketHeader__properties__core {
@@ -300,14 +279,19 @@
 
   .MarketHeader__readMoreButton {
     display: flex;
-
-    > span {
-      text-transform: uppercase;
-    }
   }
 
-  .MarketHeader__description {
+  .MarketHeader__description,
+  .MarketHeader_toggleContainer,
+  .MarketHeader__backButton {
     display: none;
+  }
+
+  .MarketHeaderMobile_description {
+    .text-18-bold;
+
+    color: @color-secondary-text;
+    display: flex;
   }
 
   .MarketHeader__descContainer {
@@ -326,14 +310,6 @@
     margin-left: 0;
     min-width: unset;
     padding-left: 0;
-  }
-
-  .MarketHeader__property {
-    margin-bottom: 1rem;
-  }
-
-  .MarketHeader__nav-isForking {
-    margin-top: 0;
   }
 
   .MarketHeader__timeStuff {

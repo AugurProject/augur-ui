@@ -2,10 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Styles from "modules/market/components/market-header/market-header-bar.styles";
 import { FavoritesButton } from "modules/common-elements/buttons";
-import {
-  InReportingLabel,
-  MarketTypeLabel
-} from "modules/common-elements/labels";
+import { InReportingLabel } from "modules/common-elements/labels";
 import * as constants from "modules/common-elements/constants";
 
 const MarketHeaderBar = ({
@@ -15,7 +12,6 @@ const MarketHeaderBar = ({
   isFavorite,
   collapsedView,
   description,
-  marketType,
   marketStatus,
   reportingState,
   disputeInfo,
@@ -41,7 +37,6 @@ const MarketHeaderBar = ({
         currentAugurTimestamp={currentAugurTimestamp}
         reportingWindowStatsEndTime={reportingWindowStatsEndTime}
       />
-      {!isMobile && <MarketTypeLabel marketType={marketType} />}
 
       {isMobile && (
         <FavoritesButton
@@ -74,7 +69,6 @@ MarketHeaderBar.propTypes = {
   addToFavorites: PropTypes.func.isRequired,
   collapsedView: PropTypes.bool,
   description: PropTypes.string.isRequired,
-  marketType: PropTypes.string.isRequired,
   reportingState: PropTypes.string,
   disputeInfo: PropTypes.object,
   endTime: PropTypes.object,
