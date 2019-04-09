@@ -11,13 +11,14 @@ import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
 import {
   claimReportingFeesNonforkedMarkets,
-  redeemStake
+  redeemStake,
+  CLAIM_FEES_GAS_COST
 } from "modules/reports/actions/claim-reporting-fees";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
   gasCost: formatGasCostToEther(
-    CLAIM_SHARES_GAS_COST,
+    CLAIM_FEES_GAS_COST,
     { decimalsRounded: 4 },
     getGasPrice(state)
   ),

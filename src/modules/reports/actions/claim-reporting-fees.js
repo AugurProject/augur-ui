@@ -2,6 +2,8 @@ import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { UNIVERSE_ID } from "modules/common-elements/constants";
 
+export const CLAIM_FEES_GAS_COST = 3000000;
+
 export function claimReportingFeesForkedMarket(options, callback = logError) {
   return (dispatch, getState) => {
     const { loginAccount } = getState();
