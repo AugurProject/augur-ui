@@ -356,7 +356,7 @@
 }
 
 .ViewTransactionDetailsButton {
-  color: @color-neutral;
+  color: @color-primary-action;
   cursor: pointer;
   display: flex;
   font-size: @size-11;
@@ -369,16 +369,16 @@
     width: @size-10;
 
     > path:nth-child(odd) {
-      fill: @color-neutral;
+      fill: @color-primary-action;
     }
 
     > path:nth-child(even) {
-      stroke: @color-neutral;
+      stroke: @color-primary-action;
     }
   }
 
   > span > a {
-    color: @color-neutral;
+    color: @color-primary-action;
   }
 
   &:hover {
@@ -452,5 +452,32 @@
     > rect {
       fill: @color-secondary-text;
     }
+  }
+}
+
+.SortButton {
+  > svg {
+    height: @size-8;
+    width: @size-6;
+
+    > path {
+      fill: @color-neutral;
+
+      &:hover {
+        fill: @color-secondary-text;
+      }
+    }
+  }
+}
+
+.Descending {
+  > svg > path:first-of-type {
+    fill: @color-secondary-text;
+  }
+}
+
+.Ascending {
+  > svg > path:last-of-type {
+    fill: @color-secondary-text;
   }
 }

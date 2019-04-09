@@ -212,3 +212,10 @@ export const LeftChevron = (
     />
   </svg>
 );
+
+export const SortIcon = (
+  <svg viewBox="0 0 6 8">
+    <path d="M3 8L5.59808 5H0.401924L3 8Z" />
+    <path d="M3 0L5.59808 3H0.401924L3 0Z" />
+  </svg>
+);

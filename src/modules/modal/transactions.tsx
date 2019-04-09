@@ -6,7 +6,8 @@ import {
   PrimaryButton,
   SecondaryButton,
   ExportButton,
-  ViewTransactionDetailsButton
+  ViewTransactionDetailsButton,
+  SortButton
 } from "modules/common-elements/buttons";
 import { Pagination } from "modules/common-elements/pagination";
 import { ValueLabel, TextLabel } from "modules/common-elements/labels";
@@ -37,6 +38,11 @@ interface TransactionInfo {
   details: string;
 }
 
+interface SortState {
+  asc: boolean;
+  desc: boolean;
+}
+
 interface TransactionsState {
   coin: string;
   action: string;
@@ -48,6 +54,8 @@ interface TransactionsState {
   endFocused: boolean;
   AllTransactions: Array<TransactionInfo>;
   filteredTransactions: Array<TransactionInfo>;
+  priceSort: SortState;
+  quantitySort: SortState;
 }
 
 const coinOptions = [
@@ -139,7 +147,9 @@ const DEFAULT_STATE = {
   coin: "ALL",
   action: "ALL",
   itemsPerPage: 20,
-  page: 1
+  page: 1,
+  priceSort: { asc: false, desc: false },
+  quantitySort: { asc: false, desc: false }
 };
 
 export class Transactions extends React.Component<
@@ -162,6 +172,48 @@ export class Transactions extends React.Component<
 
   tableHeaderRef: any = null;
   tableBodyRef: any = null;
+
+  cyclePriceSort = () => {
+    const { priceSort, filteredTransactions } = this.state;
+    const updatedPriceSort = { ...priceSort };
+    if (priceSort.asc && !priceSort.desc) {
+      updatedPriceSort.asc = false;
+      updatedPriceSort.desc = true;
+      filteredTransactions.sort(
+        (a, b) => parseFloat(b.price) - parseFloat(a.price)
+      );
+    } else if (priceSort.desc && !priceSort.asc) {
+      updatedPriceSort.desc = false;
+      filteredTransactions.sort((a, b) => b.timestamp - a.timestamp);
+    } else {
+      updatedPriceSort.asc = true;
+      filteredTransactions.sort(
+        (a, b) => parseFloat(a.price) - parseFloat(b.price)
+      );
+    }
+    this.setState({ priceSort: updatedPriceSort, filteredTransactions });
+  };
+
+  cycleQuantitySort = () => {
+    const { quantitySort, filteredTransactions } = this.state;
+    const updatedQuantitySort = { ...quantitySort };
+    if (quantitySort.asc && !quantitySort.desc) {
+      updatedQuantitySort.asc = false;
+      updatedQuantitySort.desc = true;
+      filteredTransactions.sort(
+        (a, b) => parseFloat(b.quantity) - parseFloat(a.quantity)
+      );
+    } else if (quantitySort.desc && !quantitySort.asc) {
+      updatedQuantitySort.desc = false;
+      filteredTransactions.sort((a, b) => b.timestamp - a.timestamp);
+    } else {
+      updatedQuantitySort.asc = true;
+      filteredTransactions.sort(
+        (a, b) => parseFloat(a.quantity) - parseFloat(b.quantity)
+      );
+    }
+    this.setState({ quantitySort: updatedQuantitySort, filteredTransactions });
+  };
 
   triggerSearch = () => {
     const { getTransactionsHistory } = this.props;
@@ -266,7 +318,9 @@ export class Transactions extends React.Component<
       endFocused,
       itemsPerPage,
       page,
-      filteredTransactions
+      filteredTransactions,
+      priceSort,
+      quantitySort
     } = this.state;
     const pageInfo = {
       page,
@@ -383,8 +437,17 @@ export class Transactions extends React.Component<
           <span>Market</span>
           <span>Outcome</span>
           <span>Action</span>
-          <span>Price</span>
-          <span>Quantity</span>
+          <span>
+            Price
+            <SortButton {...priceSort} action={() => this.cyclePriceSort()} />
+          </span>
+          <span>
+            Quantity
+            <SortButton
+              {...quantitySort}
+              action={() => this.cycleQuantitySort()}
+            />
+          </span>
           <span>Coin</span>
           <span>Fee</span>
           <span>Total</span>

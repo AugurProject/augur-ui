@@ -3,6 +3,7 @@ import * as constants from "modules/common-elements/constants";
 import {
   StarIcon,
   XIcon,
+  SortIcon,
   EthIcon,
   PercentIcon,
   QRCodeIcon,
@@ -23,6 +24,13 @@ export interface DefaultButtonProps {
   action: Function;
   disabled?: boolean;
   title?: string;
+}
+
+export interface SortButtonProps {
+  action: Function;
+  disabled?: boolean;
+  asc?: boolean;
+  desc?: boolean;
 }
 
 export interface DirectionButtonProps {
@@ -238,4 +246,17 @@ export const ViewTransactionDetailsButton = (
     {ViewIcon}
     <EtherscanLink showNonLink txhash={props.transactionHash} label="View" />
   </div>
+);
+
+export const SortButton = (props: SortButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={classNames(Styles.SortButton, {
+      [Styles.Ascending]: props.asc,
+      [Styles.Descending]: props.desc
+    })}
+    disabled={props.disabled}
+  >
+    {SortIcon}
+  </button>
 );
