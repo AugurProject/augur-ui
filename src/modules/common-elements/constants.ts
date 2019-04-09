@@ -194,6 +194,10 @@ export const MARKET_STATUS_MESSAGES = {
   WAITING_PERIOD_ENDS: "Waiting period ends"
 };
 
+// Market Header
+export const COPY_MARKET_ID = "Copy Market ID";
+export const COPY_AURTHOR = "Copy Market Creator ID";
+
 // # Search/Filter Param Names
 export const FILTER_SEARCH_PARAM = "keywords";
 export const TAGS_PARAM_NAME = "tags";

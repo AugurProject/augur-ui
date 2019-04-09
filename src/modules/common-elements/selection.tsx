@@ -2,7 +2,7 @@ import * as React from "react";
 import { head, find } from "lodash";
 import classNames from "classnames";
 import Styles from "modules/common-elements/selection.styles";
-import { Chevron, TwoArrows } from "modules/common-elements/icons";
+import { Chevron, DotDotDot, TwoArrows } from "modules/common-elements/icons";
 
 export interface NameValuePair {
   label: string;
@@ -37,6 +37,10 @@ interface PillSelectionProps {
 
 interface PillSelectionState {
   selected: number;
+}
+
+interface DotSelectionProps {
+  children: React.StatelessComponent;
 }
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
@@ -250,3 +254,10 @@ export class PillSelection extends React.Component<
     );
   }
 }
+
+export const DotSelection = (props: DotSelectionProps) => (
+  <div className={Styles.DotSelection_Menu}>
+    <button>{DotDotDot}</button>
+    <div className={Styles.DotSelection_MenuItems}>{props.children}</div>
+  </div>
+);
