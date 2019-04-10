@@ -80,11 +80,13 @@ export class WithdrawForm extends Component<
     const { loginAccount, GasCosts } = this.props;
     const { currency } = this.state;
     const fullAmount = createBigNumber(loginAccount[currency.toLowerCase()]);
+    const valueMinusGas = fullAmount.minus(GasCosts.eth.fullPrecision);
+    const resolvedValue = valueMinusGas.lt(ZERO) ? ZERO : valueMinusGas;
     this.amountChange({
       target: {
         value:
           currency === ETH
-            ? fullAmount.minus(GasCosts.eth.fullPrecision).toFixed()
+            ? resolvedValue.toFixed()
             : fullAmount.toFixed()
       }
     });
@@ -109,27 +111,28 @@ export class WithdrawForm extends Component<
     if (newAmount === "" || newAmount === undefined) {
       updatedErrors.amount = `Quantity is required.`;
       return this.setState({ amount: newAmount, errors: updatedErrors });
-    } else {
-      if (isNaN(parseFloat(newAmount))) {
-        updatedErrors.amount = `Quantity isn't a number.`;
-      }
-
-      if (!isFinite(newAmount)) {
-        updatedErrors.amount = `Quantity isn't finite.`;
-      }
-
-      if (bnNewAmount.gt(loginAccount[currency.toLowerCase()])) {
-        updatedErrors.amount = `Quantity is greater than available funds.`;
-      }
-
-      if (bnNewAmount.lte(ZERO)) {
-        updatedErrors.amount = `Quantity must be greater than zero.`;
-      }
-
-      if (amountMinusGas.lte(ZERO)) {
-        updatedErrors.amount = `Not enough ETH available to pay gas cost.`;
-      }
     }
+
+    if (isNaN(parseFloat(newAmount))) {
+      updatedErrors.amount = `Quantity isn't a number.`;
+    }
+
+    if (!isFinite(newAmount)) {
+      updatedErrors.amount = `Quantity isn't finite.`;
+    }
+
+    if (bnNewAmount.gt(loginAccount[currency.toLowerCase()])) {
+      updatedErrors.amount = `Quantity is greater than available funds.`;
+    }
+
+    if (bnNewAmount.lte(ZERO)) {
+      updatedErrors.amount = `Quantity must be greater than zero.`;
+    }
+
+    if (amountMinusGas.lt(ZERO)) {
+      updatedErrors.amount = `Not enough ETH available to pay gas cost.`;
+    }
+
     this.setState({ amount: newAmount, errors: updatedErrors });
   };
 
