@@ -545,9 +545,25 @@ export const InReportingLabel = (props: InReportingLabelProps) => {
   );
 };
 
+
 export const PendingLabel = () => (
-  <span className={Styles.PendingLabel}>
-    Pending <ClipLoader size={8} color="#ffffff" />
+  <span 
+    className={Styles.PendingLabel}
+    data-tip
+    data-for={'processing'}
+  >
+    Processing <ClipLoader size={8} color="#ffffff" />
+    <ReactTooltip
+      id={'processing'}
+      className={TooltipStyles.Tooltip}
+      effect="solid"
+      place="top"
+      type="light"
+      data-event="mouseover"
+      data-event-off="blur scroll"
+    >
+      You will receive an alert when the transaction has finalized. 
+    </ReactTooltip>
   </span>
 );
 

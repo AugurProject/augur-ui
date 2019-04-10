@@ -59,9 +59,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       decimalsRounded: 4,
       zeroStyled: true
     });
-    const total = createBigNumber(ethFees.fullPrecision).minus(
-      createBigNumber(sP.gasCost)
-    );
+    const total = createBigNumber(ethFees.fullPrecision);
 
     if (market) {
       const pending =
@@ -93,7 +91,9 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
             label: "total",
             value: `${
               formatEther(
-                createBigNumber(total).minus(createBigNumber(marketObj.gasCost))
+                createBigNumber(total)
+                  .minus(createBigNumber(marketObj.gasCost))
+                  .abs()
               ).formatted
             } ETH`
           }
@@ -115,7 +115,9 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   if (sP.feeWindows.length > 0) {
     const totalMinusGas = createBigNumber(
       sP.reportingFees.unclaimedParticipationTokenEthFees.fullPrecision
-    ).minus(createBigNumber(sP.reportingFees.gasCosts[CLAIM_FEE_WINDOWS]));
+    )
+      .minus(createBigNumber(sP.reportingFees.gasCosts[CLAIM_FEE_WINDOWS]))
+      .abs();
 
     const pending =
       sP.pendingQueue[CLAIM_STAKE_FEES] &&
@@ -158,6 +160,24 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     });
   }
 
+  const breakdown =
+    markets.length > 1
+      ? [
+          {
+            label: "Total REP",
+            value: `${sP.reportingFees.unclaimedRep.full} REP`
+          },
+          {
+            label: "Total Fees",
+            value: `${sP.reportingFees.unclaimedEth.full} ETH`
+          },
+          {
+            label: "Total Gas Cost (ETH)",
+            value: `${sP.reportingFees.gasCosts[ALL]} ETH`
+          }
+        ]
+      : null;
+
   return {
     title: "Claim Stake & Fees",
     descriptionMessage: [
@@ -173,20 +193,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       }
     ],
     rows: markets,
-    breakdown: [
-      {
-        label: "Total REP",
-        value: `${sP.reportingFees.unclaimedRep.full} REP`
-      },
-      {
-        label: "Total Fees",
-        value: `${sP.reportingFees.unclaimedEth.full} ETH`
-      },
-      {
-        label: "Total Gas Cost (ETH)",
-        value: `${sP.reportingFees.gasCosts[ALL]} ETH`
-      }
-    ],
+    breakdown,
     closeAction: () => dP.closeModal(),
     buttons: [
       {
