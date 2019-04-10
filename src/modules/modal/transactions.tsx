@@ -115,10 +115,10 @@ const actionOptions = [
     label: "Initial Report",
     value: "INITIAL_REPORT"
   },
-  {
-    label: "Finalize Market",
-    value: "FINALIZE_MARKET"
-  },
+  // { // Removed until V2
+  //   label: "Finalize Market",
+  //   value: "FINALIZE_MARKET"
+  // },
   {
     label: "Market Creation",
     value: "MARKET_CREATION"
