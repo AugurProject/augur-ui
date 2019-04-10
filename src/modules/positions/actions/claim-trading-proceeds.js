@@ -5,8 +5,15 @@ import { eachOfLimit } from "async";
 import noop from "utils/noop";
 import logError from "utils/log-error";
 // Note: the returns: "null" is due to this geth bug: https://github.com/ethereum/go-ethereum/issues/16999. By including this and a hardcoded gas estimate we bypass any eth_call usage and avoid sprurious failures
-import { addPendingData, removePendingData } from "modules/pending-queue/actions/pending-queue-management";
-import { CLAIM_PROCEEDS, PENDING, SUCCESS } from "modules/common-elements/constants";
+import {
+  addPendingData,
+  removePendingData
+} from "modules/pending-queue/actions/pending-queue-management";
+import {
+  CLAIM_PROCEEDS,
+  PENDING,
+  SUCCESS
+} from "modules/common-elements/constants";
 
 export const CLAIM_SHARES_GAS_COST = 3000000;
 
@@ -17,7 +24,7 @@ const claimTradingProceeds = (marketId, callback = logError) => (
   const { loginAccount } = getState();
   if (!loginAccount.address || !marketId) return callback(null);
   dispatch(addPendingData(marketId, CLAIM_PROCEEDS, PENDING));
-  
+
   augur.api.ClaimTradingProceeds.claimTradingProceeds({
     tx: { gas: CLAIM_SHARES_GAS_COST, returns: "null" },
     meta: loginAccount.meta,
@@ -32,7 +39,7 @@ const claimTradingProceeds = (marketId, callback = logError) => (
     },
     onFailed: err => {
       dispatch(removePendingData(marketId, CLAIM_PROCEEDS));
-      callback(err)
+      callback(err);
     }
   });
 };

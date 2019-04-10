@@ -5,15 +5,20 @@ import { selectMarket } from "modules/markets/selectors/market";
 import { CLAIM_SHARES_GAS_COST } from "modules/positions/actions/claim-trading-proceeds";
 import { createBigNumber } from "utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import { formatGasCostToEther, formatAttoRep, formatAttoEth, formatEther } from "utils/format-number";
+import {
+  formatGasCostToEther,
+  formatAttoRep,
+  formatAttoEth,
+  formatEther
+} from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
+import { redeemStake } from "modules/reports/actions/claim-reporting-fees";
 import {
-  redeemStake,
-  CLAIM_FEES_GAS_COST
-} from "modules/reports/actions/claim-reporting-fees";
-import { CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES } from "modules/common-elements/constants";
+  CLAIM_FEE_WINDOWS,
+  CLAIM_STAKE_FEES
+} from "modules/common-elements/constants";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -30,9 +35,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
-  redeemStake: (options, callback) => dispatch(redeemStake(options, callback)),
-  addPendingData: (pendingId, queueName) => dispatch(addPendingData(pendingId, queueName)),
-  removePendingData: (pendingId, queueName) => dispatch(removePendingData(pendingId, queueName))
+  redeemStake: (options, callback) => dispatch(redeemStake(options, callback))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
@@ -45,10 +48,14 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       decimalsRounded: 4,
       zeroStyled: true
     });
-    const total = createBigNumber(ethFees.fullPrecision).minus(createBigNumber(sP.gasCost))
+    const total = createBigNumber(ethFees.fullPrecision).minus(
+      createBigNumber(sP.gasCost)
+    );
 
     if (market) {
-      const pending = sP.pendingQueue[CLAIM_STAKE_FEES] && sP.pendingQueue[CLAIM_STAKE_FEES][marketObj.marketId];
+      const pending =
+        sP.pendingQueue[CLAIM_STAKE_FEES] &&
+        sP.pendingQueue[CLAIM_STAKE_FEES][marketObj.marketId];
 
       markets.push({
         title: market.description,
@@ -57,19 +64,15 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         properties: [
           {
             label: "reporting stake",
-            value: `${
-              formatAttoRep(marketObj.unclaimedRepTotal, {
-                decimals: 4,
-                decimalsRounded: 4,
-                zeroStyled: true
-              }).formatted || 0
-            } REP`
+            value: `${formatAttoRep(marketObj.unclaimedRepTotal, {
+              decimals: 4,
+              decimalsRounded: 4,
+              zeroStyled: true
+            }).formatted || 0} REP`
           },
           {
             label: "Reporting Fees",
-            value: `${
-              ethFees.formatted || 0
-            } ETH`
+            value: `${ethFees.formatted || 0} ETH`
           },
           {
             label: "est gas cost",
@@ -95,8 +98,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     }
   });
   if (sP.feeWindows.length > 0) {
-    const totalGas = createBigNumber(sP.gasCost).times(createBigNumber(sP.feeWindows.length))
-    const pending = sP.pendingQueue[CLAIM_STAKE_FEES] && sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
+    const totalGas = createBigNumber(sP.gasCost).times(
+      createBigNumber(sP.feeWindows.length)
+    );
+    const pending =
+      sP.pendingQueue[CLAIM_STAKE_FEES] &&
+      sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
 
     markets.push({
       title: "Reedeem all participation tokens",
@@ -109,7 +116,9 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         },
         {
           label: "Reporting Fees",
-          value: `${sP.reportingFees.unclaimedParticipationTokenEthFees.formatted} ETH`
+          value: `${
+            sP.reportingFees.unclaimedParticipationTokenEthFees.formatted
+          } ETH`
         },
         {
           label: "Est Gas cost",
@@ -130,8 +139,6 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       }
     });
   }
-
-  const total = createBigNumber(sP.reportingFees.unclaimedEth.fullPrecision).minus(createBigNumber(sP.gasCost))
 
   return {
     title: "Claim Stake & Fees",
@@ -167,7 +174,6 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       {
         text: "Claim All Stake & Fees",
         action: () => {
-         
           const RedeemStakeOptions = {
             feeWindows: sP.reportingFees.feeWindows,
             nonforkedMarkets: sP.nonforkedMarkets,

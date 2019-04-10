@@ -86,7 +86,7 @@ export const loadAccountDataFromLocalStorage = address => (
         storedAccountData.pendingQueue &&
         Object.keys(storedAccountData.pendingQueue).length
       ) {
-        //dispatch(loadPendingQueue(storedAccountData.pendingQueue));
+        dispatch(loadPendingQueue(storedAccountData.pendingQueue));
       }
       if (
         storedAccountData.gasPriceInfo &&

@@ -12,13 +12,13 @@ export default function(pendingQueue = DEFAULT_STATE(), { type, data }) {
       const { pendingId, queueName, status } = data;
       if (pendingQueue[queueName]) {
         pendingQueue[queueName][pendingId] = {
-          status: status
-        }
+          status
+        };
       } else {
         pendingQueue[queueName] = [];
         pendingQueue[queueName][pendingId] = {
-          status: status
-        }
+          status
+        };
       }
 
       return {
@@ -27,8 +27,8 @@ export default function(pendingQueue = DEFAULT_STATE(), { type, data }) {
     }
     case REMOVE_PENDING_DATA: {
       const { pendingId, queueName } = data;
-      let queueData = pendingQueue[queueName] || [];
-      delete queueData[queueName];
+      const queueData = pendingQueue[queueName] || [];
+      delete queueData[queueName][pendingId];
       if (queueData.length > 0) {
         return {
           ...pendingQueue,
