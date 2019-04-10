@@ -21,11 +21,11 @@ export default class Activity extends React.Component<
   ActivityState
 > {
   state: ActivityState = {
-    selected: constants.TIMEFRAME_OPTIONS[0].id
+    selected: constants.TIMEFRAME_OPTIONS[3].id
   };
 
   componentDidMount() {
-    this.updateTimeSelection(constants.TIMEFRAME_OPTIONS[0].id);
+    this.updateTimeSelection(constants.TIMEFRAME_OPTIONS[3].id);
   }
 
   updateTimeSelection = (id: number) => {
@@ -48,7 +48,7 @@ export default class Activity extends React.Component<
         />
         <PillSelection
           options={constants.TIMEFRAME_OPTIONS}
-          defaultSelection={constants.TIMEFRAME_OPTIONS[0].id}
+          defaultSelection={constants.TIMEFRAME_OPTIONS[3].id}
           onChange={this.updateTimeSelection}
         />
         <PlatformOverviewStats timeframe={this.state.selected} />

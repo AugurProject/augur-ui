@@ -21,11 +21,11 @@ export default class AccountOverview extends React.Component<
   AccountOverviewState
 > {
   state: AccountOverviewState = {
-    selected: constants.TIMEFRAME_OPTIONS[0].id
+    selected: constants.TIMEFRAME_OPTIONS[3].id
   };
 
   componentDidMount() {
-    this.updateTimeSelection(constants.TIMEFRAME_OPTIONS[0].id);
+    this.updateTimeSelection(constants.TIMEFRAME_OPTIONS[3].id);
   }
 
   updateTimeSelection = id => {
@@ -48,7 +48,7 @@ export default class AccountOverview extends React.Component<
             <div className={Styles.AccountOverview__pillSelector}>
               <PillSelection
                 options={constants.TIMEFRAME_OPTIONS}
-                defaultSelection={constants.TIMEFRAME_OPTIONS[0].id}
+                defaultSelection={constants.TIMEFRAME_OPTIONS[3].id}
                 onChange={this.updateTimeSelection}
               />
             </div>
