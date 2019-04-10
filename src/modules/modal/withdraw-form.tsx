@@ -84,10 +84,7 @@ export class WithdrawForm extends Component<
     const resolvedValue = valueMinusGas.lt(ZERO) ? ZERO : valueMinusGas;
     this.amountChange({
       target: {
-        value:
-          currency === ETH
-            ? resolvedValue.toFixed()
-            : fullAmount.toFixed()
+        value: currency === ETH ? resolvedValue.toFixed() : fullAmount.toFixed()
       }
     });
   };
