@@ -96,6 +96,6 @@ describe(`modules/positions/actions/claim-trading-proceeds.js`, () => {
       augur.api.ClaimTradingProceeds.claimTradingProceeds
     ).toHaveBeenCalledTimes(1);
 
-    expect(store.getActions()).toEqual([]);
+    expect(store.getActions()).toHaveLength(2);
   });
 });
