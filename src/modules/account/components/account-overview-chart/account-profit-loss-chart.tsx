@@ -34,14 +34,14 @@ export default class AccountProfitLossChart extends Component<
         text: ""
       },
       chart: {
-        type: "area",
+        type: "areaspline",
         height: 100
       },
       credits: {
         enabled: false
       },
       plotOptions: {
-        area: {
+        areaspline: {
           threshold: null,
           color: "#09CFE1",
           dataGrouping: {
@@ -181,7 +181,7 @@ export default class AccountProfitLossChart extends Component<
 
     const series = [
       {
-        type: "area",
+        type: "areaspline",
         lineWidth: HIGHLIGHTED_LINE_WIDTH,
         data
       }
