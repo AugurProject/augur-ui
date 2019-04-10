@@ -259,12 +259,15 @@ export class Transactions extends React.Component<
   resetSearch = () => {
     const { currentTimestamp } = this.props;
     const { AllTransactions } = this.state;
-    this.setState({
-      ...DEFAULT_STATE,
-      startDate: moment(currentTimestamp * 1000).subtract(6, "M"),
-      endDate: moment(currentTimestamp * 1000),
-      filteredTransactions: AllTransactions
-    }, () => this.triggerSearch());
+    this.setState(
+      {
+        ...DEFAULT_STATE,
+        startDate: moment(currentTimestamp * 1000).subtract(6, "M"),
+        endDate: moment(currentTimestamp * 1000),
+        filteredTransactions: AllTransactions
+      },
+      () => this.triggerSearch()
+    );
   };
 
   filterTransactions = (
