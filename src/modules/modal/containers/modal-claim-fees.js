@@ -14,7 +14,10 @@ import {
 import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
-import { redeemStake } from "modules/reports/actions/claim-reporting-fees";
+import {
+  CLAIM_FEES_GAS_COST,
+  redeemStake
+} from "modules/reports/actions/claim-reporting-fees";
 import {
   CLAIM_FEE_WINDOWS,
   CLAIM_STAKE_FEES

@@ -9,8 +9,9 @@ import { updateGasPriceInfo } from "modules/app/actions/update-gas-price-info";
 import { registerUserDefinedGasPriceFunction } from "modules/app/actions/register-user-defined-gasPrice-function";
 import { loadUniverse } from "modules/app/actions/load-universe";
 import { isNewFavoritesStyle } from "modules/markets/helpers/favorites-processor";
-import { setSelectedUniverse } from "./selected-universe-management";
 import { loadPendingQueue } from "modules/pending-queue/actions/pending-queue-management";
+
+import { setSelectedUniverse } from "./selected-universe-management";
 
 export const loadAccountDataFromLocalStorage = address => (
   dispatch,

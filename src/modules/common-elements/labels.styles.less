@@ -1,0 +1,471 @@
+@import (reference) "~assets/styles/shared";
+
+.ValueLabel {
+  color: inherit;
+  cursor: pointer;
+  z-index: 2;
+
+  > label {
+    color: inherit;
+    cursor: pointer;
+    margin: 0;
+  }
+}
+
+.HoverValueLabel {
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+
+  > span {
+    display: grid;
+    flex: 1;
+    grid-template-columns: minmax(0.625rem, 2.8125rem) 1fr;
+
+    > span:first-of-type {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    > span:last-of-type {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
+}
+
+.PropertyLabel {
+  display: flex;
+  flex-flow: column nowrap;
+
+  > span:first-of-type {
+    .text-12;
+
+    align-items: center;
+    color: @color-neutral;
+    display: flex;
+    flex-flow: row nowrap;
+    line-height: @size-16;
+    text-transform: uppercase;
+
+    > label {
+      display: inline-block;
+      margin: 0 0 0 @size-4;
+      width: @size-12;
+
+      > svg {
+        fill: none;
+        height: @size-18;
+        width: @size-18;
+
+        @media @breakpoint-mobile {
+          height: @size-12;
+          width: @size-12;
+        }
+
+        > circle {
+          fill: @color-theme-primary;
+          stroke: @color-highlight;
+          stroke-width: 1.5;
+        }
+
+        > path {
+          fill: @color-neutral;
+        }
+      }
+    }
+  }
+
+  > span:last-of-type {
+    .mono-14-bold;
+
+    color: @color-secondary-text;
+    line-height: @size-16;
+  }
+}
+
+.LinearPropertyLabelPercent {
+  align-items: flex-start;
+  display: flex;
+  margin-bottom: 0;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.375rem;
+  }
+
+  > div:first-of-type {
+    margin-right: 0.25rem;
+  }
+
+  > div {
+    margin-bottom: 0 !important;
+  }
+}
+
+.LinearPropertyLabel {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  white-space: nowrap;
+
+  &:not(:last-of-type) {
+    margin-bottom: 0.375rem;
+  }
+
+  > span:first-of-type {
+    .text-10;
+
+    align-items: center;
+    color: @color-less-neutral;
+    flex-flow: row nowrap;
+    line-height: @size-16;
+    text-transform: uppercase;
+
+    > label {
+      margin: 0 0 0 0.25rem;
+      width: @size-10;
+    }
+  }
+
+  > svg {
+    display: flex;
+    flex-grow: 1;
+    margin: @size-8 0 0 @size-8;
+    min-width: 0.625rem;
+
+    > line {
+      stroke: fade(@color-white, 40%);
+    }
+  }
+
+  > span:last-of-type {
+    .mono-11;
+
+    color: @color-secondary-text;
+    line-height: @size-16;
+    padding-left: @size-8;
+
+    &.isAccented {
+      color: @color-error-text;
+    }
+  }
+
+  &.HighlightAlternateBolded {
+    > span:last-of-type {
+      font-weight: bold;
+    }
+  }
+
+  &.HighlightFirst {
+    > span:first-of-type {
+      .mono-10;
+
+      color: @color-shadow-text;
+    }
+  }
+
+  &.Highlight {
+    > span:first-of-type {
+      .mono-10;
+
+      color: @color-secondary-text;
+    }
+
+    > span:last-of-type,
+    > span:last-of-type > label {
+      .mono-12-bold;
+
+      color: @color-secondary-text;
+    }
+  }
+}
+
+div.LinearPropertyViewTransaction {
+  > div {
+    margin-bottom: 0;
+  }
+}
+
+.MarketTypeLabel {
+  .mono-10;
+
+  background: @color-primary-light;
+  border-radius: @border-radius-rounded;
+  color: @color-secondary-text;
+  height: @size-24;
+  padding: 0.3125rem @size-8;
+  text-transform: capitalize;
+
+  @media @breakpoint-mobile {
+    margin: 0 @size-8 0 0;
+  }
+}
+
+.MarketStatus {
+  .text-12-bold;
+
+  color: @color-secondary-text;
+  line-height: @size-14;
+  padding-bottom: 0.375rem;
+  position: relative;
+
+  &::after {
+    border-radius: 0.125rem;
+    bottom: 0;
+    content: "";
+    height: 0.125rem;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+}
+
+.MarketStatus_mini {
+  .mono-9;
+
+  line-height: @size-12;
+  padding-bottom: 0.125rem; // 2px
+  position: relative;
+
+  &::after {
+    border-radius: 0.125rem;
+    bottom: 0;
+    content: "";
+    height: 1px;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+
+  .InReporting_reportingDetails {
+    &::before {
+      background-color: @color-tertiary-text;
+      border-radius: 50%;
+      content: '';
+      display: inline-block;
+      height: 0.125rem;
+      margin: 0 0.25rem 0.0625rem;
+      width: 0.125rem;
+    }
+  }
+
+  .InReporting_reportingDetails__countdown {
+    > span {
+      > span:first-of-type {
+        font-size: 0.5625rem;
+      }
+
+      > span:last-of-type {
+        font-size: 0.5625rem;
+      }
+    }
+  }
+}
+
+.MarketStatus_alternate {
+  font-family: @roboto-mono;
+  max-width: fit-content;
+}
+
+.MarketStatus_open {
+  &::after {
+    background: @color-open;
+  }
+}
+
+.MarketStatus_reporting {
+  &::after {
+    background: @color-in-reporting;
+  }
+}
+
+.InReporting_reportingDetails {
+  color: @color-tertiary-text;
+  font-weight: normal;
+
+  &::before {
+    background-color: @color-tertiary-text;
+    border-radius: 50%;
+    content: '';
+    display: inline-block;
+    height: 0.1875rem;
+    margin: 0 0.25rem 0.0625rem;
+    width: 0.1875rem;
+  }
+}
+
+.InReporting_reportingDetails__countdown {
+  > span {
+    > span:first-of-type {
+      .mono-11;
+
+      color: @color-shadow-text;
+      line-height: normal;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    > span:last-of-type {
+      .mono-12;
+
+      color: @color-secondary-text;
+      line-height: normal;
+    }
+  }
+
+  @media @breakpoint-mobile {
+    > span {
+      > span:first-of-type {
+        .mono-11;
+      }
+
+      > span:last-of-type {
+        .mono-12;
+      }
+    }
+  }
+}
+
+.MarketStatus_resolved {
+  &::after {
+    background: @color-resolved;
+  }
+}
+
+.PendingLabel {
+  .mono-10;
+
+  align-items: center;
+  background: @color-primary-light;
+  border-radius: @border-radius-rounded;
+  color: @color-secondary-text;
+  display: flex;
+  flex-flow: row nowrap;
+  height: @size-16;
+  line-height: @size-10;
+  padding: 1px 0.375rem;
+
+  > div {
+    border-width: 1px;
+    margin-left: 0.3125rem;
+  }
+}
+
+.ConfirmedLabel {
+  .PendingLabel;
+
+  background: fade(@color-open, 40%);
+
+  > svg {
+    fill: @color-white;
+    height: @size-10;
+    margin-left: 0.3125rem;
+    width: @size-10;
+
+    > path {
+      fill: @color-white;
+    }
+  }
+}
+
+.MovementLabel {
+  align-items: center;
+  color: @color-less-neutral;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.MovementLabel_Text {
+  &_small {
+    .mono-9;
+  }
+
+  &_normal {
+    .mono-11;
+  }
+
+  &_large {
+    .mono-12;
+  }
+
+  &_positive {
+    color: @color-positive;
+  }
+
+  &_negative {
+    color: @color-negative;
+  }
+}
+
+.MovementLabel_Icon {
+  margin: 0 @size-8 0 0;
+
+  > svg {
+    fill: none;
+    height: @size-9;
+    width: @size-14;
+  }
+
+  &_small {
+    transform: scale(0.8);
+  }
+
+  &_normal {
+    transform: scale(0.9);
+  }
+
+  &_large {
+    transform: scale(1);
+  }
+
+  &_positive {
+    > svg > path:nth-child(1) {
+      fill: @color-positive;
+    }
+
+    > svg > path:nth-child(2) {
+      stroke: @color-positive;
+    }
+  }
+
+  &_negative {
+    > svg {
+      transform: rotateX(180deg);
+    }
+
+    > svg > path:nth-child(1) {
+      fill: @color-negative;
+    }
+
+    > svg > path:nth-child(2) {
+      stroke: @color-negative;
+    }
+  }
+}
+
+.PillLabel {
+  .mono-10;
+
+  align-items: center;
+  background: @color-primary-light;
+  border-radius: 0.375rem;
+  display: flex;
+  justify-content: center;
+  padding: 0 0.375rem;
+}
+
+.PositionTypeLabel {
+  color: @color-positive;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  &.Sell {
+    color: @color-negative2;
+  }
+
+  &.Closed {
+    color: unset;
+  }
+}
