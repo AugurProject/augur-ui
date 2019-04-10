@@ -91,7 +91,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           },
           {
             label: "total",
-            value: `${formatEther(total).formatted} ETH`
+            value: `${
+              formatEther(
+                createBigNumber(total).minus(createBigNumber(marketObj.gasCost))
+              ).formatted
+            } ETH`
           }
         ],
         action: () => {
@@ -109,9 +113,10 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     }
   });
   if (sP.feeWindows.length > 0) {
-    const totalGas = createBigNumber(sP.gasCost).times(
-      createBigNumber(sP.feeWindows.length)
-    );
+    const totalMinusGas = createBigNumber(
+      sP.reportingFees.unclaimedParticipationTokenEthFees.fullPrecision
+    ).minus(createBigNumber(sP.reportingFees.gasCosts[CLAIM_FEE_WINDOWS]));
+
     const pending =
       sP.pendingQueue[CLAIM_STAKE_FEES] &&
       sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
@@ -139,7 +144,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         },
         {
           label: "Total",
-          value: `${formatEther(totalGas).formatted} ETH`
+          value: `${formatEther(totalMinusGas).formatted} ETH`
         }
       ],
       action: () => {
