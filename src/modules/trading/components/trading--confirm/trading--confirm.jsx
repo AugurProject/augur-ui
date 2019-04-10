@@ -80,7 +80,7 @@ class MarketTradingConfirm extends Component {
     const { trade, numOutcomes, gasPrice, availableFunds } =
       props || this.props;
 
-    const { totalCost } = trade;
+    const { totalCost, selfTrade } = trade;
 
     let messages = null;
     const gasValues = {
@@ -96,6 +96,14 @@ class MarketTradingConfirm extends Component {
         : gasValues.fillGasLimit;
     const gasCost = formatGasCostToEther(gas, { decimalsRounded: 4 }, gasPrice);
     const tradeTotalCost = createBigNumber(totalCost.fullPrecision, 10);
+
+    if (selfTrade) {
+      messages = {
+        header: "Self Trade",
+        type: WARNING,
+        message: "You are about to trade with yourself"
+      };
+    }
 
     if (
       tradeTotalCost.gt(ZERO) &&
