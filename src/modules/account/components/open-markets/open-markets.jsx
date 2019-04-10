@@ -15,7 +15,8 @@ export default class OpenMarkets extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
     marketsObj: PropTypes.object.isRequired,
-    isMobile: PropTypes.bool.isRequired
+    isMobile: PropTypes.bool.isRequired,
+    totalPercentage: PropTypes.string.isRequired
   };
 
   constructor(props) {
@@ -68,7 +69,7 @@ export default class OpenMarkets extends Component {
   }
 
   render() {
-    const { markets, isMobile } = this.props;
+    const { markets, isMobile, totalPercentage } = this.props;
 
     return (
       <FilterSwitchBox
@@ -87,7 +88,7 @@ export default class OpenMarkets extends Component {
                 showPercent
                 showIcon
                 showPlusMinus
-                value="1.00"
+                value={totalPercentage}
                 size="large"
               />
             </div>

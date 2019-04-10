@@ -430,8 +430,10 @@ const assembleMarket = (
         { decimalsRounded: 2 }
       );
 
-      market.myPositionsSummary.valueChange = formatEther(
-        marketPositions.totalValue || ZERO,
+      market.myPositionsSummary.valueChange = formatPercent(
+        createBigNumber(
+          marketPositions.unrealizedRevenue24hChangePercent || ZERO
+        ).times(100),
         { decimalsRounded: 2 }
       );
     }
