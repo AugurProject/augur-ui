@@ -92,12 +92,20 @@ const actionOptions = [
     value: "CANCEL"
   },
   {
-    label: "Claim Trade Proceeds",
-    value: "CLAIM_TRADING_PROCEEDS"
+    label: "Claim Market Creator Fees",
+    value: "CLAIM_MARKET_CREATOR_FEES"
   },
   {
-    label: "Claim Winning Proceeds",
+    label: "Claim Participation Tokens",
+    value: "CLAIM_PARTICIPATION_TOKENS"
+  },
+  {
+    label: "Claim Staked REP & Reporting Fees",
     value: "CLAIM_WINNING_CROWDSOURCERS"
+  },
+  {
+    label: "Claim Trading Proceeds",
+    value: "CLAIM_TRADING_PROCEEDS"
   },
   {
     label: "Dispute",
@@ -120,6 +128,19 @@ const actionOptions = [
     value: "COMPLETE_SETS"
   }
 ];
+
+ALL = "ALL",
+BUY = "BUY",
+SELL = "SELL",
+CANCEL = "CANCEL",
+CLAIM_MARKET_CREATOR_FEES = "CLAIM_MARKET_CREATOR_FEES",
+CLAIM_PARTICIPATION_TOKENS = "CLAIM_PARTICIPATION_TOKENS",
+CLAIM_TRADING_PROCEEDS = "CLAIM_TRADING_PROCEEDS",
+CLAIM_WINNING_CROWDSOURCERS = "CLAIM_WINNING_CROWDSOURCERS",
+DISPUTE = "DISPUTE",
+INITIAL_REPORT = "INITIAL_REPORT",
+MARKET_CREATION = "MARKET_CREATION",
+COMPLETE_SETS = "COMPLETE_SETS",
 
 const paginationOptions = [
   {
