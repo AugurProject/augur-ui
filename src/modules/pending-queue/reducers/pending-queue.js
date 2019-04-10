@@ -9,19 +9,26 @@ const DEFAULT_STATE = () => ({});
 export default function(pendingQueue = DEFAULT_STATE(), { type, data }) {
   switch (type) {
     case ADD_PENDING_DATA: {
-      const { pendingId, queueName } = data;
-      const queueData = pendingQueue[queueName] || [];
-      if (pendingId) queueData.push(pendingId);
+      const { pendingId, queueName, status } = data;
+      if (pendingQueue[queueName]) {
+        pendingQueue[queueName][pendingId] = {
+          status: status
+        }
+      } else {
+        pendingQueue[queueName] = [];
+        pendingQueue[queueName][pendingId] = {
+          status: status
+        }
+      }
 
       return {
-        ...pendingQueue,
-        [queueName]: queueData
+        ...pendingQueue
       };
     }
     case REMOVE_PENDING_DATA: {
       const { pendingId, queueName } = data;
       let queueData = pendingQueue[queueName] || [];
-      queueData = queueData.filter(obj => obj !== pendingId);
+      delete queueData[queueName];
       if (queueData.length > 0) {
         return {
           ...pendingQueue,

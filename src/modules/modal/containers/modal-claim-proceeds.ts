@@ -19,7 +19,7 @@ import { isEqual } from "lodash";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
-  pendingQueue: state.pendingQueue.CLAIM_PROCEEDS || [],
+  pendingQueue: state.pendingQueue || [],
   gasCost: formatGasCostToEther(
     CLAIM_SHARES_GAS_COST,
     { decimalsRounded: 4 },
@@ -60,10 +60,10 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         ) &&
         winningOutcomeShares.value > 0
       ) {
-        const pending = sP.pendingQueue.find(pendingData => pendingData === marketId);
+        const pending = sP.pendingQueue[CLAIM_PROCEEDS] && sP.pendingQueue[CLAIM_PROCEEDS][marketId]
         markets.push({
           title: market.description,
-          status: pending && 'PENDING',
+          status: pending && pending.status,
           properties: [
             {
               label: "Proceeds",
@@ -129,11 +129,6 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-    mergeProps,
-    {
-      areStatePropsEqual: (next, prev) => {
-        return isEqual(next.pendingQueue, prev.pendingQueue)
-      }
-    }
+    mergeProps
   )(Proceeds)
 );

@@ -1,6 +1,7 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { UNIVERSE_ID } from "modules/common-elements/constants";
+<<<<<<< HEAD
 import { CLAIM_STAKE_FEES } from "modules/common-elements/constants";
 import {
   addPendingData,
@@ -8,6 +9,10 @@ import {
 } from "modules/pending-queue/actions/pending-queue-management";
 import { formatGasCostToEther } from "utils/format-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
+=======
+import { CLAIM_STAKE_FEES, PENDING, SUCCESS } from "modules/common-elements/constants";
+import { addPendingData, removePendingData } from "modules/pending-queue/actions/pending-queue-management";
+>>>>>>> 78c1385ac51f356c0a337fad8c49fc56d57179cc
 
 export const CLAIM_FEES_GAS_COST = 3000000;
 
@@ -41,7 +46,7 @@ export function redeemStake(options, callback = logError) {
       feeWindows
     } = options;
 
-    pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES));
+    pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, PENDING));
 
     const reportingParticipants = [];
     nonforkedMarkets.forEach(nonforkedMarket => {
@@ -68,7 +73,7 @@ export function redeemStake(options, callback = logError) {
           );
           return onSuccess(gasCost);
         }
-        pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES));
+        pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, SUCCESS));
         onSuccess && onSuccess();
       },
       onFailed: () => {

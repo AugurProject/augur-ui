@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { selectMarket } from "modules/markets/selectors/market";
-import { CLAIM_SHARES_GAS_COST } from "modules/positions/actions/claim-trading-proceeds";
 import { createBigNumber } from "utils/create-big-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import {
@@ -22,8 +21,10 @@ import {
   addPendingData,
   removePendingData
 } from "modules/pending-queue/actions/pending-queue-management";
-import { CLAIM_FEE_WINDOWS } from "modules/common-elements/constants";
-import { isEqual } from "lodash";
+import {
+  CLAIM_FEE_WINDOWS,
+  CLAIM_STAKE_FEES
+} from "modules/common-elements/constants";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -32,7 +33,7 @@ const mapStateToProps = (state: any) => ({
     { decimalsRounded: 4 },
     getGasPrice(state)
   ),
-  pendingQueue: state.pendingQueue.CLAIM_STAKE_FEES || [],
+  pendingQueue: state.pendingQueue || [],
   reportingFees: state.reportingWindowStats.reportingFees,
   feeWindows: state.reportingWindowStats.reportingFees.feeWindows,
   nonforkedMarkets: state.reportingWindowStats.reportingFees.nonforkedMarkets
@@ -62,14 +63,13 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     );
 
     if (market) {
-      const pending = sP.pendingQueue.find(
-        pendingData => pendingData === marketObj.marketId
-      );
-
+      const pending =
+        sP.pendingQueue[CLAIM_STAKE_FEES] &&
+        sP.pendingQueue[CLAIM_STAKE_FEES][marketObj.marketId];
       markets.push({
         title: market.description,
         text: "Claim Proceeds",
-        status: pending && "PENDING",
+        status: pending && pending.status,
         properties: [
           {
             label: "reporting stake",
@@ -110,14 +110,13 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     const totalGas = createBigNumber(sP.gasCost).times(
       createBigNumber(sP.feeWindows.length)
     );
-    const pending = sP.pendingQueue.find(
-      pendingData => pendingData === CLAIM_FEE_WINDOWS
-    );
-
+    const pending =
+      sP.pendingQueue[CLAIM_STAKE_FEES] &&
+      sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
     markets.push({
       title: "Reedeem all participation tokens",
       text: "Claim",
-      status: pending && "PENDING",
+      status: pending && pending.status,
       properties: [
         {
           label: "Reporting Stake",
@@ -207,10 +206,6 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-    mergeProps,
-    {
-      areStatePropsEqual: (next, prev) =>
-        isEqual(next.pendingQueue, prev.pendingQueue)
-    }
+    mergeProps
   )(Proceeds)
 );
