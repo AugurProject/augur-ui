@@ -41,7 +41,7 @@ export default class MarketHeader extends Component {
     marketType: PropTypes.string,
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
-    isMobile: PropTypes.bool,
+    isLogged: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
     history: PropTypes.object.isRequired
@@ -53,8 +53,8 @@ export default class MarketHeader extends Component {
     marketType: null,
     currentTime: 0,
     isFavorite: false,
-    toggleFavorite: () => {},
-    isMobile: false
+    isLogged: false,
+    toggleFavorite: () => {}
   };
 
   constructor(props) {
@@ -148,7 +148,7 @@ export default class MarketHeader extends Component {
       scalarDenomination,
       market,
       currentTime,
-      isMobile,
+      isLogged,
       isFavorite,
       history
     } = this.props;
@@ -283,9 +283,9 @@ export default class MarketHeader extends Component {
               {market.id && (
                 <MarketHeaderBar
                   marketId={market.id}
+                  author={market.author}
                   marketStatus={market.marketStatus}
                   addToFavorites={this.addToFavorites}
-                  isMobile={isMobile}
                   isFavorite={isFavorite}
                   collapsedView={headerCollapsed}
                   marketType={marketType}
@@ -293,6 +293,7 @@ export default class MarketHeader extends Component {
                   reportingState={market.reportingState}
                   disputeInfo={market.disputeInfo}
                   endTime={market.endTime}
+                  isLogged={isLogged}
                 />
               )}
               <div className={Styles.MarketHeader__properties__reporting}>

@@ -2,7 +2,7 @@ import * as React from "react";
 import { head, find } from "lodash";
 import classNames from "classnames";
 import Styles from "modules/common-elements/selection.styles";
-import { Chevron, TwoArrows } from "modules/common-elements/icons";
+import { Chevron, DotDotDot, TwoArrows } from "modules/common-elements/icons";
 
 import "react-dates/initialize";
 import "react-dates/lib/css/_datepicker.css";
@@ -74,6 +74,10 @@ export const DatePicker = (props: DatePickerProps) => (
     />
   </div>
 );
+
+interface DotSelectionProps {
+  children: React.StatelessComponent;
+}
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
   state: DropdownState = {
@@ -278,3 +282,10 @@ export class PillSelection extends React.Component<
     );
   }
 }
+
+export const DotSelection = (props: DotSelectionProps) => (
+  <div className={Styles.DotSelection_Menu}>
+    <button>{DotDotDot}</button>
+    <div className={Styles.DotSelection_MenuItems}>{props.children}</div>
+  </div>
+);
