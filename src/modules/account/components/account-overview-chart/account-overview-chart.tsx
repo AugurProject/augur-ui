@@ -25,6 +25,7 @@ export interface UserTimeRangeData {
   timestamp: number;
   realized: number;
   realizedPercent: number;
+  totalCost: number;
 }
 
 interface AccountOverviewChartState {
@@ -32,6 +33,7 @@ interface AccountOverviewChartState {
   profitLossChange: string | null;
   profitLossValue: string | null;
   profitLossChangeHasValue: boolean;
+  noTrades: boolean;
 }
 
 export default class AccountOverviewChart extends React.Component<
@@ -42,7 +44,8 @@ export default class AccountOverviewChart extends React.Component<
     profitLossData: [],
     profitLossChange: null,
     profitLossValue: null,
-    profitLossChangeHasValue: false
+    profitLossChangeHasValue: false,
+    noTrades: true
   };
 
   componentDidMount = () => {
@@ -75,6 +78,7 @@ export default class AccountOverviewChart extends React.Component<
       null,
       (err: string, data: Array<UserTimeRangeData>) => {
         if (err) return console.log("Error:", err);
+        const noTrades = data.reduce((p, d) => createBigNumber(d.totalCost || constants.ZERO).plus(p), constants.ZERO).eq(constants.ZERO);
         let profitLossData: Array<Array<number>> = [];
         const lastData =
           data.length > 0
@@ -95,6 +99,7 @@ export default class AccountOverviewChart extends React.Component<
             []
           )
         );
+
         profitLossData.push([
           currentAugurTimestamp * 1000,
           createBigNumber(data[data.length - 1].realized).toNumber(4)
@@ -107,7 +112,8 @@ export default class AccountOverviewChart extends React.Component<
           profitLossChangeHasValue: !createBigNumber(
             lastData.realizedPercent || 0
           ).eq(constants.ZERO),
-          profitLossValue: formatEther(lastData.realized).formatted
+          profitLossValue: formatEther(lastData.realized).formatted,
+          noTrades
         });
       }
     );
@@ -120,11 +126,12 @@ export default class AccountOverviewChart extends React.Component<
       profitLossData,
       profitLossChange,
       profitLossValue,
-      profitLossChangeHasValue
+      profitLossChangeHasValue,
+      noTrades
     } = this.state;
     let content = null;
 
-    if (profitLossData.length === 0) {
+    if (noTrades) {
       content = (
         <React.Fragment>
           <div>{constants.PROFIT_LOSS_CHART_TITLE}</div>
