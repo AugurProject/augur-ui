@@ -138,7 +138,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     updateSelectedOrderProperties({
                       orderPrice: order.price.value.toString(),
                       orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: BUY
+                      selectedNav: BUY,
+                      selfTrade: order.mySize !== null
                     })
                   }
                 >
@@ -152,7 +153,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     updateSelectedOrderProperties({
                       orderPrice: order.price.value.toString(),
                       orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: BUY
+                      selectedNav: BUY,
+                      selfTrade: order.mySize !== null
                     })
                   }
                 >
@@ -171,7 +173,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     updateSelectedOrderProperties({
                       orderPrice: order.price.value.toString(),
                       orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: BUY
+                      selectedNav: BUY,
+                      selfTrade: order.mySize !== null
                     })
                   }
                 >
@@ -237,7 +240,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     updateSelectedOrderProperties({
                       orderPrice: order.price.value.toString(),
                       orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: SELL
+                      selectedNav: SELL,
+                      selfTrade: order.mySize !== null
                     })
                   }
                 >
@@ -251,7 +255,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     updateSelectedOrderProperties({
                       orderPrice: order.price.value.toString(),
                       orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: SELL
+                      selectedNav: SELL,
+                      selfTrade: order.mySize !== null
                     })
                   }
                 >
@@ -270,7 +275,8 @@ export default class MarketOutcomeChartsOrders extends Component {
                     updateSelectedOrderProperties({
                       orderPrice: order.price.value.toString(),
                       orderQuantity: order.cumulativeShares.toString(),
-                      selectedNav: SELL
+                      selectedNav: SELL,
+                      selfTrade: order.mySize !== null
                     })
                   }
                 >

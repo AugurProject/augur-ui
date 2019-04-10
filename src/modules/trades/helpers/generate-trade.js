@@ -1,24 +1,15 @@
 import { createBigNumber } from "utils/create-big-number";
 import memoize from "memoizee";
-import { formatPercent, formatShares, formatEther } from "utils/format-number";
+import { formatEther } from "utils/format-number";
 import {
   calcOrderProfitLossPercents,
   calcOrderShareProfitLoss,
   calculateTotalOrderValue
 } from "modules/trades/helpers/calc-order-profit-loss-percents";
 import * as constants from "modules/common-elements/constants";
-import { selectAggregateOrderBook } from "modules/orders/helpers/select-order-book";
-import store from "src/store";
 
-/**
- * @param {Object} market
- * @param {Object} outcome
- * @param {Object} outcomeTradeInProgress
- * @param {Object} loginAccount
- * @param {Object} orderBooks Orders for market
- */
 export const generateTrade = memoize(
-  (market, outcome, outcomeTradeInProgress, orderBooks) => {
+  (market, outcomeTradeInProgress) => {
     const { settlementFee } = market;
     const side =
       (outcomeTradeInProgress && outcomeTradeInProgress.side) || constants.BUY;
@@ -91,6 +82,7 @@ export const generateTrade = memoize(
       numShares,
       limitPrice,
       sharesFilled,
+      selfTrade: !!outcomeTradeInProgress.selfTrade,
       totalOrderValue: totalOrderValue
         ? formatEtherValue(totalOrderValue)
         : null,
@@ -112,7 +104,6 @@ export const generateTrade = memoize(
       potentialProfitPercent: preOrderProfitLoss
         ? formatEtherValue(preOrderProfitLoss.potentialProfitPercent)
         : null,
-
       tradingFees: preOrderProfitLoss
         ? formatEtherValue(preOrderProfitLoss.tradingFees)
         : null,
@@ -123,15 +114,7 @@ export const generateTrade = memoize(
       }),
       shareCost: formatEtherValue(shareCost.abs().toFixed(), {
         blankZero: false
-      }), // These are actually shares, but they can be formatted like ETH
-
-      tradeTypeOptions: [
-        { label: constants.BUY, value: constants.BUY },
-        { label: constants.SELL, value: constants.SELL }
-      ],
-
-      totalSharesUpToOrder: (orderIndex, side) =>
-        totalSharesUpToOrder(outcome.id, side, orderIndex, orderBooks)
+      }) // These are actually shares, but they can be formatted like ETH
     };
   },
   { max: 5 }
@@ -145,65 +128,3 @@ const formatEtherValue = (value, options = {}) =>
       options
     )
   );
-
-const totalSharesUpToOrder = memoize(
-  (outcomeId, side, orderIndex, orderBooks) => {
-    const { orderCancellation } = store.getState();
-
-    const sideOrders = selectAggregateOrderBook(
-      outcomeId,
-      orderBooks,
-      orderCancellation
-    )[side === constants.BUY ? constants.BIDS : constants.ASKS];
-
-    return sideOrders
-      .filter((order, i) => i <= orderIndex)
-      .reduce((p, order) => p + order.shares.value, 0);
-  },
-  { max: 5 }
-);
-
-export const generateTradeOrders = memoize(
-  (market, outcome, outcomeTradeInProgress) => {
-    const tradeActions =
-      outcomeTradeInProgress && outcomeTradeInProgress.tradeActions;
-    if (
-      !market ||
-      !outcome ||
-      !outcomeTradeInProgress ||
-      !tradeActions ||
-      !tradeActions.length
-    ) {
-      return [];
-    }
-    const { description, marketType, id: marketId } = market;
-    const { id: outcomeId, name: outcomeName } = outcome;
-    return tradeActions.map(tradeAction => {
-      const numShares = createBigNumber(tradeAction.shares, 10);
-      const costEth = createBigNumber(tradeAction.costEth, 10).abs();
-      const avgPrice = createBigNumber(costEth, 10).dividedBy(
-        createBigNumber(numShares, 10)
-      );
-      const noFeePrice =
-        marketType === "scalar"
-          ? outcomeTradeInProgress.limitPrice
-          : tradeAction.noFeePrice;
-      return {
-        type: constants[tradeAction.action],
-        data: {
-          marketId,
-          outcomeId,
-          marketType,
-          outcomeName
-        },
-        description,
-        numShares: formatShares(tradeAction.shares),
-        avgPrice: formatEther(avgPrice),
-        noFeePrice: formatEther(noFeePrice),
-        tradingFees: formatEther(tradeAction.feeEth),
-        feePercent: formatPercent(tradeAction.feePercent)
-      };
-    });
-  },
-  { max: 5 }
-);
