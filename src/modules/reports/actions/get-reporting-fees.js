@@ -4,6 +4,7 @@ import { createBigNumber } from "utils/create-big-number";
 import { formatAttoRep, formatAttoEth } from "utils/format-number";
 import { updateReportingWindowStats } from "modules/reports/actions/update-reporting-window-stats";
 import { redeemStake } from "modules/reports/actions/claim-reporting-fees";
+import { ALL, CLAIM_FEE_WINDOWS } from "modules/common-elements/constants";
 
 export const getReportingFees = (callback = logError) => (
   dispatch,
@@ -34,7 +35,7 @@ export const getReportingFees = (callback = logError) => (
               nonforkedMarkets: result.nonforkedMarkets,
               estimateGas: true,
               onSuccess: gasCost => {
-                resolve({ type: "all", gasCost });
+                resolve({ type: ALL, gasCost });
               }
             })
           )
@@ -49,7 +50,7 @@ export const getReportingFees = (callback = logError) => (
               nonforkedMarkets: [],
               estimateGas: true,
               onSuccess: gasCost => {
-                resolve({ type: "feeWindows", gasCost });
+                resolve({ type: CLAIM_FEE_WINDOWS, gasCost });
               }
             })
           )

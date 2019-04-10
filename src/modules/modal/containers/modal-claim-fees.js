@@ -22,6 +22,7 @@ import {
   removePendingData
 } from "modules/pending-queue/actions/pending-queue-management";
 import {
+  ALL,
   CLAIM_FEE_WINDOWS,
   CLAIM_STAKE_FEES
 } from "modules/common-elements/constants";
@@ -86,7 +87,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           },
           {
             label: "est gas cost",
-            value: `${sP.gasCost} ETH`
+            value: `${marketObj.gasCost} ETH`
           },
           {
             label: "total",
@@ -132,7 +133,9 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         },
         {
           label: "Est Gas cost",
-          value: `${formatEther(totalGas).formatted} ETH`
+          value: `${
+            formatEther(sP.reportingFees.gasCosts[CLAIM_FEE_WINDOWS]).formatted
+          } ETH`
         },
         {
           label: "Total",
@@ -176,7 +179,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       },
       {
         label: "Total Gas Cost (ETH)",
-        value: `${sP.gasCost} ETH`
+        value: `${sP.reportingFees.gasCosts[ALL]} ETH`
       }
     ],
     closeAction: () => dP.closeModal(),
