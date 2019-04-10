@@ -34,11 +34,14 @@
     text-transform: uppercase;
   }
 
+  > p:first-of-type {
+    margin: 0 auto @size-12;
+  }
+
   > div {
     display: flex;
     flex: 1 100%;
     flex-flow: column nowrap;
-    margin-top: @size-24;
 
     > p {
       .mono-11;
