@@ -125,7 +125,7 @@ export const ButtonsRow = (props: ButtonsRowProps) => (
 export const DescriptionMessage = (props: DescriptionMessageProps) => (
   <div className={Styles.DescriptionMessage}>
     {props.messages.map(message => (
-      <>
+      <span key={message.boldText}>
         {message.preText}
         {message.boldText && (
           <b>
@@ -135,7 +135,7 @@ export const DescriptionMessage = (props: DescriptionMessageProps) => (
           </b>
         )}
         {message.postText}
-      </>
+      </span>
     ))}
   </div>
 );
@@ -194,6 +194,7 @@ export const ActionRows = (props: ActionRowsProps) =>
         <div>
           {row.properties.map(property => (
             <LinearPropertyLabel
+              key={property.label}
               label={property.label}
               value={property.value}
             />
