@@ -402,6 +402,28 @@
   }
 }
 
+.ExternalLinkButton {
+  .ViewTransactionDetailsButton;
+
+  color: @color-primary-action;
+  display: inline-flex;
+
+  &:hover {
+    color: @color-secondary-text;
+  }
+
+  > svg > path {
+    &:nth-child(odd) {
+      fill: @color-primary-action;
+      stroke: none;
+    }
+
+    &:nth-child(even) {
+      stroke: @color-primary-action;
+    }
+  }
+}
+
 .DirectionButton {
   .Button;
 

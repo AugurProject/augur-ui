@@ -819,3 +819,26 @@ div.ButtonsRow:last-of-type {
     }
   }
 }
+
+.DepositInfo {
+  border-top: 1px solid @color-primary-alternate;
+  color: @color-secondary-text;
+
+  > h3 {
+    .text-12-bold;
+
+    margin: @size-24 0 @size-12;
+  }
+
+  > ul {
+    .text-12;
+
+    color: @color-secondary-text;
+    list-style-type: decimal;
+    margin-left: @size-12;
+
+    > li {
+      margin: @size-4 0;
+    }
+  }
+}
