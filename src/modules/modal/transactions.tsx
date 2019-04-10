@@ -264,7 +264,7 @@ export class Transactions extends React.Component<
       startDate: moment(currentTimestamp * 1000).subtract(6, "M"),
       endDate: moment(currentTimestamp * 1000),
       filteredTransactions: AllTransactions
-    });
+    }, () => this.triggerSearch());
   };
 
   filterTransactions = (
