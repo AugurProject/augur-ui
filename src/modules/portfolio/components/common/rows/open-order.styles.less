@@ -231,7 +231,13 @@ div.OpenOrder__labels {
     position: relative;
 
     > li {
+      > span > label {
+        font-size: @size-10;
+      }
+
       &:first-child {
+        .text-11-bold;
+
         grid-column: 1 / span 6;
         margin-bottom: 6px;
         padding-left: 0;
@@ -254,6 +260,7 @@ div.OpenOrder__labels {
   .Order__single {
     border: 1px solid @color-primary-alternate;
     border-radius: 3px;
+    padding-bottom: @size-12;
     padding-left: 1rem;
     padding-right: 1.25rem;
   }
@@ -279,11 +286,7 @@ div.OpenOrder__labels {
       }
 
       &:nth-of-type(6) {
-        .mono-9;
-
-        color: @color-shadow-text;
-        position: absolute;
-        right: 0;
+        display: none;
       }
     }
   }
@@ -341,6 +344,8 @@ div.OpenOrder__labels {
 
   .OpenOrder__info {
     padding: 0.5rem 1rem;
+    // background-color: fade(@color-primary-alternate, 40%);
+    // padding: 0 1rem 0.5rem 1.5rem;
 
     > div {
       flex-direction: column;

@@ -334,6 +334,7 @@ export default class MarketView extends Component {
             </ModulePane>
             <ModulePane label="Trade">
               <div className={Styles["MarketView__paneContainer--mobile"]}>
+                <h1>{description}</h1>
                 {marketType === CATEGORICAL && (
                   <MarketOutcomeSelector
                     outcome={s.selectedOutcome}
@@ -415,6 +416,7 @@ export default class MarketView extends Component {
                   Styles.MarketView__orderPositionsTable
                 )}
               >
+                <h1>{description}</h1>
                 <MarketOrdersPositionsTable marketId={marketId} />
               </div>
             </ModulePane>
