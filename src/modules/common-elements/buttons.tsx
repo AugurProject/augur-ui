@@ -50,6 +50,13 @@ export interface ViewTransactionDetailsButtonProps {
   transactionHash: string;
 }
 
+export interface ExternalLinkButtonProps {
+  label: string;
+  showNonLink?: boolean;
+  action?: Function;
+  URL?: string;
+}
+
 export const PrimaryButton = (props: DefaultButtonProps) => (
   <button
     onClick={e => props.action(e)}
@@ -204,4 +211,19 @@ export const ViewTransactionDetailsButton = (
     {ViewIcon}
     <EtherscanLink showNonLink txhash={props.transactionHash} label="View" />
   </div>
+);
+
+export const ExternalLinkButton = (props: ExternalLinkButtonProps) => (
+  <button
+    className={Styles.ExternalLinkButton}
+    onClick={e => props.action && props.action(e)}
+  >
+    {!props.showNonLink && ViewIcon}
+    {props.URL && (
+      <a href={props.URL} target="blank">
+        {props.label}
+      </a>
+    )}
+    {!props.URL && <span>{props.label}</span>}
+  </button>
 );

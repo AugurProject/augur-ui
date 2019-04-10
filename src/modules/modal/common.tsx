@@ -14,7 +14,8 @@ import {
   DefaultButtonProps,
   PrimaryButton,
   SecondaryButton,
-  SubmitTextButton
+  SubmitTextButton,
+  ExternalLinkButton
 } from "modules/common-elements/buttons";
 import {
   LinearPropertyLabel,
@@ -99,6 +100,13 @@ interface AccountAddressDisplayProps {
 
 interface AccountAddressDisplayState {
   isCopied: boolean;
+}
+
+export interface DepositInfoProps {
+  openZeroExInstant: Function;
+  airSwapOnClick: Function;
+  show0xInstant: boolean;
+  showAirSwap: boolean;
 }
 
 export const Title = (props: TitleProps) => (
@@ -226,6 +234,47 @@ export const ReadableAddress = (props: ReadableAddressProps) => (
     )}
     <AccountAddressDisplay address={props.address} copyable={props.copyable} />
   </div>
+);
+
+// for 1.13 we don't need the help section because we haven't written it up in the docs yet.
+// <h3>Need Help?</h3>
+// <p>Read our help articles on "How to buy eth and rep"</p>
+export const DepositInfo = (props: DepositInfoProps) => (
+  <section className={Styles.DepositInfo}>
+    <h3>How to (ETH):</h3>
+    <ul>
+      <li>
+        Buy ETH using{" "}
+        <ExternalLinkButton
+          label="Coinbase"
+          URL="https://www.coinbase.com/buy/ETH"
+        />{" "}
+        or <ExternalLinkButton label="WYRE" URL="http://www.sendwyre.com/" /> or
+        another provider
+      </li>
+      <li>Copy your connected wallet address shown here</li>
+      <li>Transfer the ETH purchased to the copied address</li>
+    </ul>
+    <h3>How to (REP):</h3>
+    <ul>
+      <li>
+        Buy REP using{" "}
+        {props.show0xInstant && (
+          <ExternalLinkButton
+            label="0x Instant"
+            action={props.openZeroExInstant}
+          />
+        )}
+        {props.show0xInstant && props.showAirSwap && " or "}
+        {props.showAirSwap && (
+          <ExternalLinkButton label="AirSwap" action={props.airSwapOnClick} />
+        )}
+      </li>
+      <li>
+        Your purchased REP will automatically appear in your connected wallet
+      </li>
+    </ul>
+  </section>
 );
 
 export class AccountAddressDisplay extends Component<
