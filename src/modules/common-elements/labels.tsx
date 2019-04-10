@@ -189,7 +189,7 @@ export function formatExpandedValue(
     }
 
     if (testValue.gte("1000") && fixedPrecision) {
-      frontFacingLabel = formatted.toFixed(minHoverDecimals);
+      frontFacingLabel = testValue.toFixed(minHoverDecimals);
     }
   }
 
