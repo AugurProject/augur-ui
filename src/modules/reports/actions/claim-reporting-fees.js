@@ -49,7 +49,9 @@ export function redeemStake(options, callback = logError) {
 
     const reportingParticipants = [];
     nonforkedMarkets.forEach(nonforkedMarket => {
-      reportingParticipants.push(nonforkedMarket.initialReporter);
+      if (nonforkedMarket.initialReporter) {
+        reportingParticipants.push(nonforkedMarket.initialReporter);
+      }
       nonforkedMarket.crowdsourcers.forEach(crowdsourcer => {
         reportingParticipants.push(crowdsourcer);
       });
