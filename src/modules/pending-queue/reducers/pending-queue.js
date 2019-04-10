@@ -26,6 +26,7 @@ export default function(pendingQueue = DEFAULT_STATE(), { type, data }) {
       };
     }
     case REMOVE_PENDING_DATA: {
+<<<<<<< HEAD
       const { queueName } = data;
       const queueData = pendingQueue[queueName] || [];
       delete queueData[queueName];
@@ -36,6 +37,10 @@ export default function(pendingQueue = DEFAULT_STATE(), { type, data }) {
         };
       }
       delete pendingQueue[queueName];
+=======
+      const { pendingId, queueName } = data;
+      delete pendingQueue[queueName][pendingId];
+>>>>>>> 8ab80c8613ddff289f2a4c64f7ae8e9b04149e0a
       return {
         ...pendingQueue
       };

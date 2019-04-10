@@ -14,8 +14,8 @@ import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { ActionRowsProps } from "modules/modal/common";
 import {
-  redeemStake,
-  CLAIM_FEES_GAS_COST
+  CLAIM_FEES_GAS_COST,
+  redeemStake
 } from "modules/reports/actions/claim-reporting-fees";
 import {
   addPendingData,
@@ -66,6 +66,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       const pending =
         sP.pendingQueue[CLAIM_STAKE_FEES] &&
         sP.pendingQueue[CLAIM_STAKE_FEES][marketObj.marketId];
+
       markets.push({
         title: market.description,
         text: "Claim Proceeds",
@@ -113,6 +114,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     const pending =
       sP.pendingQueue[CLAIM_STAKE_FEES] &&
       sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
+
     markets.push({
       title: "Reedeem all participation tokens",
       text: "Claim",

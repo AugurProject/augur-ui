@@ -1,17 +1,17 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
+import { formatGasCostToEther } from "utils/format-number";
+import { getGasPrice } from "modules/auth/selectors/get-gas-price";
+import {
+  CLAIM_STAKE_FEES,
+  PENDING,
+  SUCCESS,
+  UNIVERSE_ID
+} from "modules/common-elements/constants";
 import {
   addPendingData,
   removePendingData
 } from "modules/pending-queue/actions/pending-queue-management";
-import { formatGasCostToEther } from "utils/format-number";
-import { getGasPrice } from "modules/auth/selectors/get-gas-price";
-import {
-  UNIVERSE_ID,
-  CLAIM_STAKE_FEES,
-  PENDING,
-  SUCCESS
-} from "modules/common-elements/constants";
 
 export const CLAIM_FEES_GAS_COST = 3000000;
 
