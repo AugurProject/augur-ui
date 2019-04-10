@@ -1,7 +1,7 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { UNIVERSE_ID } from "modules/common-elements/constants";
-import { CLAIM_STAKE_FEES } from "modules/common-elements/constants";
+import { CLAIM_STAKE_FEES, PENDING, SUCCESS } from "modules/common-elements/constants";
 import { addPendingData, removePendingData } from "modules/pending-queue/actions/pending-queue-management";
 
 export const CLAIM_FEES_GAS_COST = 3000000;
@@ -29,7 +29,7 @@ export function redeemStake(options, callback = logError) {
 
     const { pendingId, onSent, onSuccess, onFailed, nonforkedMarkets, feeWindows} = options;
 
-    pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES));
+    pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, PENDING));
 
     const reportingParticipants = [];
     nonforkedMarkets.forEach(nonforkedMarket => {
@@ -46,7 +46,7 @@ export function redeemStake(options, callback = logError) {
         onSent && onSent();
       },
       onSuccess: () => {
-        pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES))
+        pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, SUCCESS));
         onSuccess && onSuccess();
       },
       onFailed: () => {

@@ -19,9 +19,11 @@ import {
 import {
   LinearPropertyLabel,
   LinearPropertyLabelProps,
-  PendingLabel
+  PendingLabel,
+  ConfirmedLabel
 } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
+import { PENDING, SUCCESS } from "modules/common-elements/constants";
 
 interface TitleProps {
   title: string;
@@ -202,8 +204,9 @@ export const ActionRows = (props: ActionRowsProps) =>
         </div>
       </section>
       <div>
-        {row.status === "PENDING" && <PendingLabel />} 
-        <SubmitTextButton disabled={row.status === "PENDING"} text={row.text} action={row.action} />
+        {row.status === PENDING && <PendingLabel />} 
+        {row.status === SUCCESS && <ConfirmedLabel />} 
+        <SubmitTextButton disabled={row.status === SUCCESS || row.status === PENDING } text={row.text} action={row.action} />
       </div>
     </section>
   ));

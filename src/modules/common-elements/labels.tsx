@@ -4,7 +4,7 @@ import * as constants from "modules/common-elements/constants";
 import { constants as serviceConstants } from "services/constants";
 import Styles from "modules/common-elements/labels.styles";
 import { ClipLoader } from "react-spinners";
-import { MarketIcon, InfoIcon } from "modules/common-elements/icons";
+import { MarketIcon, InfoIcon, CheckCircleIcon } from "modules/common-elements/icons";
 import { MarketProgress } from "modules/common-elements/progress";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
@@ -511,6 +511,12 @@ export const InReportingLabel = (props: InReportingLabelProps) => {
 export const PendingLabel = () => (
   <span className={Styles.PendingLabel}>
     Pending <ClipLoader size={8} color="#ffffff" />
+  </span>
+);
+
+export const ConfirmedLabel = () => (
+  <span className={Styles.ConfirmedLabel}>
+    Confirmed {CheckCircleIcon}
   </span>
 );
 

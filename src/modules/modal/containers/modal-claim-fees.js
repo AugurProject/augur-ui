@@ -13,8 +13,7 @@ import {
   redeemStake,
   CLAIM_FEES_GAS_COST
 } from "modules/reports/actions/claim-reporting-fees";
-import { CLAIM_FEE_WINDOWS } from "modules/common-elements/constants";
-import { isEqual } from "lodash";
+import { CLAIM_FEE_WINDOWS, CLAIM_STAKE_FEES } from "modules/common-elements/constants";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
@@ -23,7 +22,7 @@ const mapStateToProps = (state: any) => ({
     { decimalsRounded: 4 },
     getGasPrice(state)
   ),
-  pendingQueue: state.pendingQueue.CLAIM_STAKE_FEES || [],
+  pendingQueue: state.pendingQueue || [],
   reportingFees: state.reportingWindowStats.reportingFees,
   feeWindows: state.reportingWindowStats.reportingFees.feeWindows,
   nonforkedMarkets: state.reportingWindowStats.reportingFees.nonforkedMarkets
@@ -49,12 +48,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     const total = createBigNumber(ethFees.fullPrecision).minus(createBigNumber(sP.gasCost))
 
     if (market) {
-      const pending = sP.pendingQueue.find(pendingData => pendingData === marketObj.marketId);
+      const pending = sP.pendingQueue[CLAIM_STAKE_FEES] && sP.pendingQueue[CLAIM_STAKE_FEES][marketObj.marketId];
 
       markets.push({
         title: market.description,
         text: "Claim Proceeds",
-        status: pending && 'PENDING',
+        status: pending && pending.status,
         properties: [
           {
             label: "reporting stake",
@@ -97,12 +96,12 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   });
   if (sP.feeWindows.length > 0) {
     const totalGas = createBigNumber(sP.gasCost).times(createBigNumber(sP.feeWindows.length))
-    const pending = sP.pendingQueue.find(pendingData => pendingData === CLAIM_FEE_WINDOWS);
+    const pending = sP.pendingQueue[CLAIM_STAKE_FEES] && sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
 
     markets.push({
       title: "Reedeem all participation tokens",
       text: "Claim",
-      status: pending && 'PENDING',
+      status: pending && pending.status,
       properties: [
         {
           label: "Reporting Stake",

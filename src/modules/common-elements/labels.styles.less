@@ -353,6 +353,23 @@ div.LinearPropertyViewTransaction {
   }
 }
 
+.ConfirmedLabel {
+  .PendingLabel;
+
+  background: fade(@color-open, 40%);
+
+  > svg {
+    margin-left: 0.3125rem;
+    fill: @color-white;
+    height: @size-10;
+    width: @size-10;
+
+    > path {
+      fill: @color-white;
+    }
+  }
+}
+
 .MovementLabel {
   align-items: center;
   color: @color-less-neutral;
