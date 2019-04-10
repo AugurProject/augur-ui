@@ -129,19 +129,6 @@ const actionOptions = [
   }
 ];
 
-ALL = "ALL",
-BUY = "BUY",
-SELL = "SELL",
-CANCEL = "CANCEL",
-CLAIM_MARKET_CREATOR_FEES = "CLAIM_MARKET_CREATOR_FEES",
-CLAIM_PARTICIPATION_TOKENS = "CLAIM_PARTICIPATION_TOKENS",
-CLAIM_TRADING_PROCEEDS = "CLAIM_TRADING_PROCEEDS",
-CLAIM_WINNING_CROWDSOURCERS = "CLAIM_WINNING_CROWDSOURCERS",
-DISPUTE = "DISPUTE",
-INITIAL_REPORT = "INITIAL_REPORT",
-MARKET_CREATION = "MARKET_CREATION",
-COMPLETE_SETS = "COMPLETE_SETS",
-
 const paginationOptions = [
   {
     label: "10 per page",
@@ -270,11 +257,13 @@ export class Transactions extends React.Component<
   };
 
   resetSearch = () => {
+    const { currentTimestamp } = this.props;
+    const { AllTransactions } = this.state;
     this.setState({
       ...DEFAULT_STATE,
-      startDate: moment(this.props.currentTimestamp * 1000).subtract(6, "M"),
-      endDate: moment(this.props.currentTimestamp * 1000),
-      filteredTransactions: this.state.AllTransactions
+      startDate: moment(currentTimestamp * 1000).subtract(6, "M"),
+      endDate: moment(currentTimestamp * 1000),
+      filteredTransactions: AllTransactions
     });
   };
 
