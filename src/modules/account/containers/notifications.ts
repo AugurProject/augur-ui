@@ -9,7 +9,7 @@ import {
   MODAL_FINALIZE_MARKET,
   MODAL_SELL_COMPLETE_SETS,
   MODAL_CLAIM_PROCEEDS,
-  MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS,
+  MODAL_CLAIM_FEES,
   MODAL_UNSIGNED_ORDERS
 } from "modules/common-elements/constants";
 
@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch: Function) => ({
   claimReportingFees: (reportingFees: any, cb: Function) =>
     dispatch(
       updateModal({
-        type: MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS,
+        type: MODAL_CLAIM_FEES,
         modalCallback: cb,
         ...reportingFees
       })

@@ -4,8 +4,8 @@ import { DefaultButtonProps } from "modules/common-elements/buttons";
 import {
   Title,
   ButtonsRow,
-  AlertMessageProps,
-  AlertMessage,
+  DescriptionMessageProps,
+  DescriptionMessage,
   ActionRowsProps,
   ActionRows,
   LinearPropertyLabelProps,
@@ -18,15 +18,21 @@ interface ProceedsProps {
   title: string;
   buttons: Array<DefaultButtonProps>;
   rows: ActionRowsProps;
-  alertMessage?: AlertMessageProps;
+  description?: DescriptionMessageProps;
   breakdown?: Array<LinearPropertyLabelProps>;
 }
 
 export const Proceeds = (props: ProceedsProps) => (
   <div className={Styles.Proceeds}>
     <Title title={props.title} closeAction={props.closeAction} />
-    {props.alertMessage && <AlertMessage {...props.alertMessage} />}
-    {props.rows && <ActionRows rows={props.rows} />}
+    {props.descriptionMessage && (
+      <DescriptionMessage messages={props.descriptionMessage} />
+    )}
+    {props.rows && (
+      <div>
+        <ActionRows rows={props.rows} />
+      </div>
+    )}
     {props.breakdown && <Breakdown short rows={props.breakdown} />}
     <ButtonsRow buttons={props.buttons} />
   </div>

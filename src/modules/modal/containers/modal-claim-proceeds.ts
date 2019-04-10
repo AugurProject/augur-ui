@@ -14,9 +14,11 @@ import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
 import { constants } from "services/augurjs";
 import { ActionRowsProps } from "modules/modal/common";
+import { CLAIM_PROCEEDS } from "modules/common-elements/constants";
 
 const mapStateToProps = (state: any) => ({
   modal: state.modal,
+  pendingQueue: state.pendingQueue || [],
   gasCost: formatGasCostToEther(
     CLAIM_SHARES_GAS_COST,
     { decimalsRounded: 4 },
@@ -57,11 +59,19 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         ) &&
         winningOutcomeShares.value > 0
       ) {
+        const pending =
+          sP.pendingQueue[CLAIM_PROCEEDS] &&
+          sP.pendingQueue[CLAIM_PROCEEDS][marketId];
         markets.push({
           title: market.description,
-          label: "Proceeds",
+          status: pending && pending.status,
+          properties: [
+            {
+              label: "Proceeds",
+              value: winningOutcomeShares.full
+            }
+          ],
           text: "Claim Proceeds",
-          value: winningOutcomeShares.full,
           action: () => dP.claimTradingProceeds(marketId, () => {})
         });
         marketIds.push(marketId);
@@ -76,11 +86,13 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
   totalProceeds = formatEther(totalProceeds);
   return {
     title: "Claim Proceeds",
-    alertMessage: {
-      preText: "You currently have a total of",
-      boldText: totalProceeds.full,
-      postText: `to be claimed in the following market${multiMarket}:`
-    },
+    descriptionMessage: [
+      {
+        preText: "You currently have a total of",
+        boldText: totalProceeds.full,
+        postText: `to be claimed in the following market${multiMarket}:`
+      }
+    ],
     rows: markets,
     breakdown: [
       {

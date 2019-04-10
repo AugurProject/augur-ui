@@ -237,7 +237,7 @@ div.LinearPropertyViewTransaction {
     &::before {
       background-color: @color-tertiary-text;
       border-radius: 50%;
-      content: '';
+      content: "";
       display: inline-block;
       height: 0.125rem;
       margin: 0 0.25rem 0.0625rem;
@@ -282,7 +282,7 @@ div.LinearPropertyViewTransaction {
   &::before {
     background-color: @color-tertiary-text;
     border-radius: 50%;
-    content: '';
+    content: "";
     display: inline-block;
     height: 0.1875rem;
     margin: 0 0.25rem 0.0625rem;
@@ -344,6 +344,23 @@ div.LinearPropertyViewTransaction {
   > div {
     border-width: 1px;
     margin-left: 0.3125rem;
+  }
+}
+
+.ConfirmedLabel {
+  .PendingLabel;
+
+  background: fade(@color-open, 40%);
+
+  > svg {
+    fill: @color-white;
+    height: @size-10;
+    margin-left: 0.3125rem;
+    width: @size-10;
+
+    > path {
+      fill: @color-white;
+    }
   }
 }
 

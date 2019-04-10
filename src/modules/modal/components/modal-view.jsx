@@ -16,7 +16,7 @@ import ModalApproval from "modules/modal/containers/modal-approval";
 import ModalFinalize from "modules/modal/containers/modal-finalize";
 import ModalSellCompleteSets from "modules/modal/containers/modal-sell-complete-sets";
 import ModalClaimReportingFeesForkedMarket from "modules/modal/containers/modal-claim-reporting-fees-forked-market";
-import ModalClaimReportingFeesNonforkedMarkets from "modules/modal/containers/modal-claim-reporting-fees-nonforked-markets";
+import ModalClaimFees from "modules/modal/containers/modal-claim-fees";
 import ModalParticipate from "modules/modal/containers/modal-participate";
 import ModalMigrateMarket from "modules/modal/containers/modal-migrate-market";
 import ModalNetworkConnect from "modules/modal/containers/modal-network-connect";
@@ -121,9 +121,8 @@ export default class ModalView extends Component {
           {modal.type === TYPES.MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET && (
             <ModalClaimReportingFeesForkedMarket {...modal} />
           )}
-          {modal.type ===
-            TYPES.MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS && (
-            <ModalClaimReportingFeesNonforkedMarkets {...modal} />
+          {modal.type === TYPES.MODAL_CLAIM_FEES && (
+            <ModalClaimFees {...modal} />
           )}
           {modal.type === TYPES.MODAL_MIGRATE_MARKET && (
             <ModalMigrateMarket {...modal} closeModal={closeModal} />

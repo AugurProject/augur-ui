@@ -6,7 +6,7 @@ import PortfolioReportsForkedMarketCard from "modules/portfolio/components/portf
 import {
   TYPE_CLAIM_PROCEEDS,
   MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET,
-  MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS
+  MODAL_CLAIM_FEES
 } from "modules/common-elements/constants";
 import Styles from "modules/portfolio/components/portfolio-reports/portfolio-reports.styles";
 import DisputingMarkets from "modules/reporting/components/common/disputing-markets";
@@ -70,7 +70,7 @@ export default class PortfolioReports extends Component {
 
   handleClaimReportingFeesNonforkedMarkets() {
     this.props.updateModal({
-      type: MODAL_CLAIM_REPORTING_FEES_NONFORKED_MARKETS,
+      type: MODAL_CLAIM_FEES,
       ...this.props.reportingFees,
       modalCallback: this.modalCallback
     });

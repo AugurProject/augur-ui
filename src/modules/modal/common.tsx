@@ -14,14 +14,16 @@ import {
   DefaultButtonProps,
   PrimaryButton,
   SecondaryButton,
-  CompactButton
+  SubmitTextButton
 } from "modules/common-elements/buttons";
 import {
   LinearPropertyLabel,
   LinearPropertyLabelProps,
-  PropertyLabel
+  PendingLabel,
+  ConfirmedLabel
 } from "modules/common-elements/labels";
 import Styles from "modules/modal/modal.styles";
+import { PENDING, SUCCESS } from "modules/common-elements/constants";
 
 interface TitleProps {
   title: string;
@@ -40,6 +42,10 @@ interface AlertMessageProps {
   preText: string;
   boldText?: string;
   postText?: string;
+}
+
+interface DescriptionMessageProps {
+  messages: Array<AlertMessageProps>;
 }
 
 interface CallToActionProps {
@@ -72,6 +78,7 @@ interface ActionRow {
   label: string;
   value: string;
   action: Function;
+  status?: boolean;
 }
 
 interface ActionRowsProps {
@@ -114,6 +121,24 @@ export const ButtonsRow = (props: ButtonsRowProps) => (
       if (index === 0) return <PrimaryButton key={Button.text} {...Button} />;
       return <SecondaryButton key={Button.text} {...Button} />;
     })}
+  </div>
+);
+
+export const DescriptionMessage = (props: DescriptionMessageProps) => (
+  <div className={Styles.DescriptionMessage}>
+    {props.messages.map(message => (
+      <span key={message.boldText}>
+        {message.preText}
+        {message.boldText && (
+          <b>
+            &nbsp;
+            {message.boldText}
+            &nbsp;
+          </b>
+        )}
+        {message.postText}
+      </span>
+    ))}
   </div>
 );
 
@@ -168,9 +193,25 @@ export const ActionRows = (props: ActionRowsProps) =>
     <section key={row.title} className={Styles.ActionRow}>
       <section>
         <MarketTitle title={row.title} />
-        <PropertyLabel label={row.label} value={row.value} />
+        <div>
+          {row.properties.map(property => (
+            <LinearPropertyLabel
+              key={property.label}
+              label={property.label}
+              value={property.value}
+            />
+          ))}
+        </div>
       </section>
-      <CompactButton text={row.text} action={row.action} />
+      <div>
+        {row.status === PENDING && <PendingLabel />}
+        {row.status === SUCCESS && <ConfirmedLabel />}
+        <SubmitTextButton
+          disabled={row.status === SUCCESS || row.status === PENDING}
+          text={row.text}
+          action={row.action}
+        />
+      </div>
     </section>
   ));
 

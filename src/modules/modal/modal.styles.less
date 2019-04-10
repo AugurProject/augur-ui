@@ -384,6 +384,10 @@
 .Proceeds {
   .Container;
 
+  background: @color-secondary-action;
+  max-height: 80vh;
+  max-width: 842px;
+
   > section:first-of-type {
     margin-top: @size-16;
   }
@@ -392,6 +396,33 @@
     border-bottom: 1px solid @color-primary-background;
     margin-bottom: @size-24;
   }
+
+  > div:nth-of-type(2) {
+    margin: 1rem 0 1.5rem;
+    overflow-y: auto;
+  }
+
+  > div:last-of-type {
+    margin-top: 1.5rem;
+  }
+
+  @media @breakpoint-mobile {
+    padding: 1rem;
+
+    > h1,
+    > div:first-of-type,
+    > button {
+      padding: 0 0.5rem;
+    }
+  }
+}
+
+.DescriptionMessage {
+  .text-12;
+
+  color: @color-tertiary-text;
+  line-height: 20px;
+  margin: 0;
 }
 
 .AlertMessage {
@@ -504,10 +535,15 @@
 
 .ActionRow {
   align-items: center;
-  border-top: 1px solid @color-primary-background;
+  background: @color-tertiary-background;
+  border-bottom: 1px solid @color-primary-background;
   display: flex;
   flex-flow: column nowrap;
-  padding: @size-16 0 @size-20;
+  padding: @size-16;
+
+  &:not(:first-of-type) {
+    margin-top: 0.25rem;
+  }
 
   > section {
     align-content: center;
@@ -518,10 +554,12 @@
     margin-bottom: @size-16;
     width: 100%;
 
-    > div {
+    > div:first-of-type {
       align-items: center;
       flex: 0 0 auto;
       flex-flow: row nowrap;
+      margin-left: 50px;
+      max-width: 250px;
 
       > span:last-of-type {
         margin-left: @size-8;
@@ -529,18 +567,41 @@
     }
 
     > h2 {
-      .text-16;
+      .text-12;
 
       color: @color-secondary-text;
       flex: 1 auto;
       font-weight: @weight-medium;
-      line-height: @size-20;
+      line-height: 15px;
+    }
+
+    @media @breakpoint-mobile {
+      flex-direction: column;
+
+      > h2 {
+        margin-bottom: 1rem;
+      }
+
+      > div:first-of-type {
+        margin-left: 0;
+        max-width: unset;
+      }
     }
   }
 
   > button {
-    height: 44px;
     margin-left: auto;
+  }
+
+  > div {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    width: 100%;
+
+    > span {
+      margin-right: 0.75rem;
+    }
   }
 }
 
