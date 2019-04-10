@@ -78,7 +78,12 @@ export default class AccountOverviewChart extends React.Component<
       null,
       (err: string, data: Array<UserTimeRangeData>) => {
         if (err) return console.log("Error:", err);
-        const noTrades = data.reduce((p, d) => createBigNumber(d.totalCost || constants.ZERO).plus(p), constants.ZERO).eq(constants.ZERO);
+        const noTrades = data
+          .reduce(
+            (p, d) => createBigNumber(d.totalCost || constants.ZERO).plus(p),
+            constants.ZERO
+          )
+          .eq(constants.ZERO);
         let profitLossData: Array<Array<number>> = [];
         const lastData =
           data.length > 0
