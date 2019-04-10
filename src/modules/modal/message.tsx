@@ -13,7 +13,9 @@ import {
   LinearPropertyLabelProps,
   Breakdown,
   ReadableAddress,
-  ReadableAddressProps
+  ReadableAddressProps,
+  DepositInfo,
+  DepositInfoProps
 } from "modules/modal/common";
 import Styles from "modules/modal/modal.styles";
 
@@ -27,6 +29,7 @@ interface MessageProps {
   description?: DescriptionProps;
   breakdown?: Array<LinearPropertyLabelProps>;
   readableAddress?: ReadableAddressProps;
+  depositInfo?: DepositInfoProps;
 }
 
 export const Message = (props: MessageProps) => (
@@ -38,6 +41,7 @@ export const Message = (props: MessageProps) => (
     {props.description && <Description description={props.description} />}
     {props.breakdown && <Breakdown rows={props.breakdown} />}
     {props.readableAddress && <ReadableAddress {...props.readableAddress} />}
+    {props.depositInfo && <DepositInfo {...props.depositInfo} />}
     <ButtonsRow buttons={props.buttons} />
   </div>
 );
