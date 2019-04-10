@@ -128,7 +128,7 @@ export const ImmediateImportance = (
   </svg>
 );
 
-export const DepositIcon = (
+export const DownloadIcon = (
   <svg viewBox="0 0 10 14">
     <path
       d="M8 6.46143L5 9.69219L2 6.46143"
@@ -145,21 +145,6 @@ export const DepositIcon = (
       rx="1"
       transform="rotate(-90 4 10.7693)"
     />
-    <rect y="11.8462" width="10" height="2.15385" rx="1.07692" />
-  </svg>
-);
-
-export const WithdrawIcon = (
-  <svg viewBox="0 0 10 14">
-    <path
-      d="M8 4.30786L5 1.07709L2 4.30786"
-      strokeWidth="2"
-      strokeMiterlimit="10"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-    <rect width="10.7692" height="2" rx="1" transform="matrix(0 1 1 0 4 0)" />
-    <rect y="11.8462" width="10" height="2.15385" rx="1.07692" />
   </svg>
 );
 
@@ -203,6 +188,18 @@ export const Syncing = (
   </svg>
 );
 
+export const RotatableChevron = (
+  <svg viewBox="0 0 16 16">
+    <path
+      d="M6 12L10 8L6 4"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
 export const LeftChevron = (
   <svg viewBox="0 0 6 10" fill="none">
     <path
@@ -213,6 +210,13 @@ export const LeftChevron = (
       strokeLinecap="round"
       strokeLinejoin="round"
     />
+  </svg>
+);
+
+export const SortIcon = (
+  <svg viewBox="0 0 6 8">
+    <path d="M3 8L5.59808 5H0.401924L3 8Z" />
+    <path d="M3 0L5.59808 3H0.401924L3 0Z" />
   </svg>
 );
 

@@ -146,8 +146,10 @@ interface HoverValueLabelState {
   hover: boolean;
 }
 
-const maxHoverDecimals = 8;
-const minHoverDecimals = 4;
+export interface TextLabelProps {
+  text: string;
+  keyId: string;
+}
 
 export function formatExpandedValue(
   value,
@@ -160,9 +162,10 @@ export function formatExpandedValue(
     fullPrecision,
     roundedFormatted,
     denomination,
-    formattedValue,
-    minimized
+    formatted
   } = value;
+  const maxHoverDecimals = 8;
+  const minHoverDecimals = 4;
   const fullWithoutDecimals = fullPrecision.split(".")[0];
   const testValue = createBigNumber(fullPrecision);
   const isGreaterThan = testValue.abs().gt(max);
@@ -186,7 +189,7 @@ export function formatExpandedValue(
     }
 
     if (testValue.gte("1000") && fixedPrecision) {
-      frontFacingLabel = formattedValue.toFixed(minHoverDecimals);
+      frontFacingLabel = formatted.toFixed(minHoverDecimals);
     }
   }
 
@@ -207,7 +210,8 @@ export function formatExpandedValue(
 }
 
 export const ValueLabel = (props: ValueLabelProps) => {
-  if (!props.value || props.value === null) return (props.showEmptyDash ? <span>&#8212;</span>: <span />);
+  if (!props.value || props.value === null)
+    return props.showEmptyDash ? <span>&#8212;</span> : <span />;
 
   const expandedValues = formatExpandedValue(
     props.value,
@@ -247,6 +251,39 @@ export const ValueLabel = (props: ValueLabelProps) => {
     </span>
   );
 };
+
+export class TextLabel extends React.Component<TextLabelProps> {
+  labelRef: any = null;
+  render() {
+    const { text, keyId } = this.props;
+    const isDisabled = !(
+      this.labelRef && this.labelRef.scrollWidth > this.labelRef.clientWidth
+    );
+    return (
+      <span className={Styles.TextLabel}>
+        <label
+          ref={label => (this.labelRef = label)}
+          data-tip
+          data-for={`${keyId}-${text.replace(" ", "-")}`}
+        >
+          {text}
+        </label>
+        <ReactTooltip
+          id={`${keyId}-${text.replace(" ", "-")}`}
+          className={TooltipStyles.Tooltip}
+          effect="solid"
+          place="top"
+          type="light"
+          data-event="mouseover"
+          data-event-off="blur scroll"
+          disable={isDisabled}
+        >
+          {text}
+        </ReactTooltip>
+      </span>
+    );
+  }
+}
 
 export class HoverValueLabel extends React.Component<
   ValueLabelProps,

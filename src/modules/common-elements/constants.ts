@@ -148,6 +148,11 @@ export const MAX_FEE_10_PERCENT = "0.1";
 export const MAX_FEE_05_PERCENT = "0.05";
 export const MAX_FEE_02_PERCENT = "0.02";
 
+// # Sorting Options
+export const NEUTRAL = "neutral";
+export const ASCENDING = "ascending";
+export const DESCENDING = "descending";
+
 // # Market Sort Params
 export const MARKET_VOLUME = "volume";
 export const MARKET_CREATION_TIME = "creationTime";
@@ -386,6 +391,7 @@ export const MODAL_GAS_PRICE = "MODAL_GAS_PRICE";
 export const MODAL_REP_FAUCET = "MODAL_REP_FAUCET";
 export const MODAL_DEPOSIT = "MODAL_DEPOSIT";
 export const MODAL_WITHDRAW = "MODAL_WITHDRAW";
+export const MODAL_TRANSACTIONS = "MODAL_TRANSACTIONS";
 export const MODAL_UNSIGNED_ORDERS = "MODAL_UNSIGNED_ORDERS";
 export const MODAL_CLAIM_TRADING_PROCEEDS = "MODAL_CLAIM_TRADING_PROCEEDS";
 export const MODAL_CLAIM_PROCEEDS = "MODAL_CLAIM_PROCEEDS";
