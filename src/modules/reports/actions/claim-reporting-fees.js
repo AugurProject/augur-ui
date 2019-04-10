@@ -2,7 +2,12 @@ import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { UNIVERSE_ID } from "modules/common-elements/constants";
 import { CLAIM_STAKE_FEES } from "modules/common-elements/constants";
-import { addPendingData, removePendingData } from "modules/pending-queue/actions/pending-queue-management";
+import {
+  addPendingData,
+  removePendingData
+} from "modules/pending-queue/actions/pending-queue-management";
+import { formatGasCostToEther } from "utils/format-number";
+import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 
 export const CLAIM_FEES_GAS_COST = 3000000;
 
@@ -27,7 +32,14 @@ export function redeemStake(options, callback = logError) {
     const { loginAccount, universe } = getState();
     const universeID = universe.id || UNIVERSE_ID;
 
-    const { pendingId, onSent, onSuccess, onFailed, nonforkedMarkets, feeWindows} = options;
+    const {
+      pendingId,
+      onSent,
+      onSuccess,
+      onFailed,
+      nonforkedMarkets,
+      feeWindows
+    } = options;
 
     pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES));
 
@@ -45,12 +57,22 @@ export function redeemStake(options, callback = logError) {
       onSent: () => {
         onSent && onSent();
       },
-      onSuccess: () => {
-        pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES))
+      onSuccess: gas => {
+        if (!!options.estimateGas && onSuccess) {
+          const gasValue = gas || CLAIM_FEES_GAS_COST;
+          const gasPrice = getGasPrice(getState());
+          const gasCost = formatGasCostToEther(
+            gasValue,
+            { decimalsRounded: 4 },
+            gasPrice
+          );
+          return onSuccess(gasCost);
+        }
+        pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES));
         onSuccess && onSuccess();
       },
       onFailed: () => {
-        pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES))
+        pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES));
         onFailed && onFailed();
       },
       tx: {
