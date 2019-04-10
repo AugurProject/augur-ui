@@ -14,6 +14,7 @@ import { formatEther, formatRep } from "utils/format-number";
 import isAddress from "modules/auth/helpers/is-address";
 import Styles from "modules/modal/modal.styles";
 import { createBigNumber } from "utils/create-big-number";
+import convertExponentialToDecimal from "utils/convert-exponential";
 
 interface WithdrawFormProps {
   closeAction: Function;
@@ -91,21 +92,23 @@ export class WithdrawForm extends Component<
 
   amountChange = (e: Event) => {
     const { loginAccount, GasCosts } = this.props;
-    const newAmount = createBigNumber(sanitizeArg(e.target.value));
+    const newAmount = convertExponentialToDecimal(sanitizeArg(e.target.value));
+    const bnNewAmount = createBigNumber(newAmount || "0");
     const { errors: updatedErrors, currency } = this.state;
     updatedErrors.amount = "";
     const availableEth = createBigNumber(loginAccount.eth);
     let amountMinusGas = createBigNumber(0);
-    if (currency === ETH) {
+    if (currency === ETH && newAmount) {
       amountMinusGas = availableEth
-        .minus(newAmount)
+        .minus(bnNewAmount)
         .minus(GasCosts.eth.fullPrecision);
     } else {
       amountMinusGas = availableEth.minus(GasCosts.rep.fullPrecision);
     }
     // validation...
-    if (newAmount === "") {
+    if (newAmount === "" || newAmount === undefined) {
       updatedErrors.amount = `Quantity is required.`;
+      return this.setState({ amount: newAmount, errors: updatedErrors });
     } else {
       if (isNaN(parseFloat(newAmount))) {
         updatedErrors.amount = `Quantity isn't a number.`;
@@ -115,11 +118,11 @@ export class WithdrawForm extends Component<
         updatedErrors.amount = `Quantity isn't finite.`;
       }
 
-      if (newAmount.gt(loginAccount[currency.toLowerCase()])) {
+      if (bnNewAmount.gt(loginAccount[currency.toLowerCase()])) {
         updatedErrors.amount = `Quantity is greater than available funds.`;
       }
 
-      if (newAmount.lte(ZERO)) {
+      if (bnNewAmount.lte(ZERO)) {
         updatedErrors.amount = `Quantity must be greater than zero.`;
       }
 
@@ -127,8 +130,7 @@ export class WithdrawForm extends Component<
         updatedErrors.amount = `Not enough ETH available to pay gas cost.`;
       }
     }
-
-    this.setState({ amount: newAmount.toFixed(), errors: updatedErrors });
+    this.setState({ amount: newAmount, errors: updatedErrors });
   };
 
   addressChange = (e: Event) => {
