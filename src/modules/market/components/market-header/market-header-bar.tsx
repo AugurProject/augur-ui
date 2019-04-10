@@ -24,20 +24,8 @@ export interface MarketHeaderBarProps {
 }
 
 class MarketHeaderBar extends Component<MarketHeaderBarProps> {
-  // public static defaultProps = {
-  //   isLogged: false,
-  //   isFavorite: false,
-  //   collapsedView: false,
-  //   marketStatus: constants.MARKET_OPEN,
-  //   reportingState: null,
-  //   disputeInfo: {},
-  //   currentAugurTimestamp: null,
-  //   endTime: null,
-  //   reportingWindowStatsEndTime: null
-  // };
-
-  clipboard1: any = new Clipboard("#copy_marketId");
-  clipboard2: any = new Clipboard("#copy_author");
+  clipboardMarketId: any = new Clipboard("#copy_marketId");
+  clipboardAuthor: any = new Clipboard("#copy_author");
 
   render() {
     const {
