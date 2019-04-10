@@ -7,7 +7,8 @@ import {
   NETWORK_IDS,
   MODAL_WITHDRAW,
   MODAL_REP_FAUCET,
-  MODAL_DEPOSIT
+  MODAL_DEPOSIT,
+  MODAL_TRANSACTIONS
 } from "modules/common-elements/constants";
 // made state an ANY for now.
 const mapStateToProps = (state: any) => {
@@ -24,7 +25,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: Function) => ({
   repFaucet: () => dispatch(updateModal({ type: MODAL_REP_FAUCET })),
   deposit: () => dispatch(updateModal({ type: MODAL_DEPOSIT })),
-  withdraw: () => dispatch(updateModal({ type: MODAL_WITHDRAW }))
+  withdraw: () => dispatch(updateModal({ type: MODAL_WITHDRAW })),
+  transactions: () => dispatch(updateModal({ type: MODAL_TRANSACTIONS }))
 });
 
 const TransactionsBoxContainer = connect(

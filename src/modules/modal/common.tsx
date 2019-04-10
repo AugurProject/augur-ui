@@ -124,7 +124,7 @@ export const Description = (props: DescriptionProps) =>
   ));
 
 export const ButtonsRow = (props: ButtonsRowProps) => (
-  <div>
+  <div className={Styles.ButtonsRow}>
     {props.buttons.map((Button: DefaultButtonProps, index: number) => {
       if (index === 0) return <PrimaryButton key={Button.text} {...Button} />;
       return <SecondaryButton key={Button.text} {...Button} />;

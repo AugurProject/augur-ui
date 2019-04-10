@@ -17,6 +17,7 @@ interface TransactionsBoxProps {
   repFaucet: Function;
   deposit: Function;
   withdraw: Function;
+  transactions: Function;
 }
 
 export const TransactionsBox = (props: TransactionsBoxProps) => (
@@ -25,7 +26,7 @@ export const TransactionsBox = (props: TransactionsBoxProps) => (
     content={
       <div className={Styles.TransactionsBoxContent}>
         <p>Your transactions history</p>
-        <ViewTransactionsButton action={console.log} />
+        <ViewTransactionsButton action={props.transactions} />
         <p>Your wallet</p>
         <DepositButton action={props.deposit} />
         <WithdrawButton action={props.withdraw} />

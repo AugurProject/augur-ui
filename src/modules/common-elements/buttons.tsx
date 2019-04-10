@@ -3,13 +3,16 @@ import * as constants from "modules/common-elements/constants";
 import {
   StarIcon,
   XIcon,
+  SortIcon,
   EthIcon,
   PercentIcon,
   QRCodeIcon,
   PaperAirplaneIcon,
   DoubleArrowIcon,
   RepLogoIcon,
-  ViewIcon
+  ViewIcon,
+  DownloadIcon,
+  RotatableChevron
 } from "modules/common-elements/icons";
 import classNames from "classnames";
 import EtherscanLink from "modules/common/containers/etherscan-link";
@@ -21,6 +24,20 @@ export interface DefaultButtonProps {
   action: Function;
   disabled?: boolean;
   title?: string;
+}
+
+export interface SortButtonProps {
+  text: string;
+  action: Function;
+  disabled?: boolean;
+  sortOption: constants.NEUTRAL | constants.ASCENDING | constants.DESCENDING;
+}
+
+export interface DirectionButtonProps {
+  action: Function;
+  disabled?: boolean;
+  title?: string;
+  left?: boolean;
 }
 
 export interface CurrencyActionButtonProps {
@@ -204,6 +221,31 @@ export const REPFaucetButton = (props: CurrencyActionButtonProps) => (
   </button>
 );
 
+export const ExportButton = (props: CurrencyActionButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={Styles.ExportButton}
+    disabled={props.disabled}
+    title={props.title || "Export Complete History"}
+  >
+    {DownloadIcon}
+    Export Complete History
+  </button>
+);
+
+export const DirectionButton = (props: DirectionButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={classNames(Styles.DirectionButton, {
+      [Styles.left]: props.left
+    })}
+    disabled={props.disabled}
+    title={props.title}
+  >
+    {RotatableChevron}
+  </button>
+);
+
 export const ViewTransactionDetailsButton = (
   props: ViewTransactionDetailsButtonProps
 ) => (
@@ -225,5 +267,19 @@ export const ExternalLinkButton = (props: ExternalLinkButtonProps) => (
       </a>
     )}
     {!props.URL && <span>{props.label}</span>}
+  </button>
+);
+
+export const SortButton = (props: SortButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={classNames(Styles.SortButton, {
+      [Styles.Ascending]: props.sortOption === constants.ASCENDING,
+      [Styles.Descending]: props.sortOption === constants.DESCENDING
+    })}
+    disabled={props.disabled}
+  >
+    {SortIcon}
+    {props.text}
   </button>
 );

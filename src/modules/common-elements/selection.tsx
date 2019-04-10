@@ -2,7 +2,11 @@ import * as React from "react";
 import { head, find } from "lodash";
 import classNames from "classnames";
 import Styles from "modules/common-elements/selection.styles";
-import { Chevron, TwoArrows } from "modules/common-elements/icons";
+import { Chevron, DotDotDot, TwoArrows } from "modules/common-elements/icons";
+
+import "react-dates/initialize";
+import "react-dates/lib/css/_datepicker.css";
+import { SingleDatePicker } from "react-dates";
 
 export interface NameValuePair {
   label: string;
@@ -11,12 +15,13 @@ export interface NameValuePair {
 
 export interface DropdownProps {
   onChange(value: string): void;
-  defaultValue: string | undefined;
+  defaultValue?: string;
   options: Array<NameValuePair>;
   large?: boolean;
   staticLabel?: string;
   stretchOut?: boolean;
   sortByStyles?: Object;
+  openTop?: boolean;
 }
 
 interface DropdownState {
@@ -37,6 +42,41 @@ interface PillSelectionProps {
 
 interface PillSelectionState {
   selected: number;
+}
+interface DatePickerProps {
+  id?: string;
+  date: any;
+  placeholder?: string;
+  onDateChange: Function;
+  isOutsideRange?: Function;
+  focused?: boolean;
+  onFocusChange?: Function;
+  displayFormat: string;
+  numberOfMonths: number;
+  navPrev?: any;
+  navNext?: any;
+}
+
+export const DatePicker = (props: DatePickerProps) => (
+  <div className={Styles.DatePicker}>
+    <SingleDatePicker
+      id={props.id}
+      date={props.date}
+      placeholder={props.placeholder || "Date (D MMM YYYY)"}
+      onDateChange={props.onDateChange}
+      isOutsideRange={props.isOutsideRange || (() => false)}
+      focused={props.focused}
+      onFocusChange={props.onFocusChange}
+      displayFormat={props.displayFormat || "D MMM YYYY"}
+      numberOfMonths={props.numberOfMonths}
+      navPrev={props.navPrev || Chevron}
+      navNext={props.navNext || Chevron}
+    />
+  </div>
+);
+
+interface DotSelectionProps {
+  children: React.StatelessComponent;
 }
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
@@ -87,7 +127,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   };
 
   render() {
-    const { sortByStyles, options, large, stretchOut } = this.props;
+    const { sortByStyles, options, large, stretchOut, openTop } = this.props;
     const { selected, showList } = this.state;
     return (
       <div
@@ -95,8 +135,9 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         className={classNames({
           [Styles.Dropdown_Large]: large,
           [Styles.Dropdown_Normal]: !large,
-          [Styles.Dropdown__stretchOut]: stretchOut,
-          [Styles.Dropdown__isOpen]: showList
+          [Styles.Dropdown_stretchOut]: stretchOut,
+          [Styles.Dropdown_isOpen]: showList,
+          [Styles.Dropdown_openTop]: openTop
         })}
         ref={dropdown => {
           this.refDropdown = dropdown;
@@ -105,11 +146,11 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         tabIndex={0}
         onClick={this.toggleList}
       >
-        <button className={Styles.Dropdown__label}>
+        <button className={Styles.Dropdown_label}>
           {selected.label} {large ? TwoArrows : Chevron}
         </button>
         <div
-          className={classNames(Styles.Dropdown__list, {
+          className={classNames(Styles.Dropdown_list, {
             [`${Styles.active}`]: showList
           })}
         >
@@ -140,16 +181,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   }
 }
 
-export const SquareDropdown = (props: DropdownProps) => (
-  <Dropdown
-    defaultValue={props.defaultValue}
-    onChange={props.onChange}
-    options={props.options}
-    large={props.large}
-    stretchOut={props.stretchOut}
-    sortByStyles={props.sortByStyles}
-  />
-);
+export const SquareDropdown = (props: DropdownProps) => <Dropdown {...props} />;
 
 export class StaticLabelDropdown extends Dropdown {
   render() {
@@ -170,13 +202,13 @@ export class StaticLabelDropdown extends Dropdown {
         tabIndex={0}
         onClick={this.toggleList}
       >
-        <button className={Styles.Dropdown__label}>
+        <button>
           {staticLabel}
           &nbsp;
           <b>{selected.label}</b> {large ? TwoArrows : Chevron}
         </button>
         <div
-          className={classNames(Styles.Dropdown__list, {
+          className={classNames({
             [`${Styles.active}`]: showList
           })}
         >
@@ -250,3 +282,10 @@ export class PillSelection extends React.Component<
     );
   }
 }
+
+export const DotSelection = (props: DotSelectionProps) => (
+  <div className={Styles.DotSelection_Menu}>
+    <button>{DotDotDot}</button>
+    <div className={Styles.DotSelection_MenuItems}>{props.children}</div>
+  </div>
+);

@@ -360,7 +360,7 @@
 }
 
 .ViewTransactionDetailsButton {
-  color: @color-neutral;
+  color: @color-primary-action;
   cursor: pointer;
   display: flex;
   font-size: @size-11;
@@ -373,16 +373,16 @@
     width: @size-10;
 
     > path:nth-child(odd) {
-      fill: @color-neutral;
+      fill: @color-primary-action;
     }
 
     > path:nth-child(even) {
-      stroke: @color-neutral;
+      stroke: @color-primary-action;
     }
   }
 
   > span > a {
-    color: @color-neutral;
+    color: @color-primary-action;
   }
 
   &:hover {
@@ -421,5 +421,95 @@
     &:nth-child(even) {
       stroke: @color-primary-action;
     }
+  }
+}
+
+.DirectionButton {
+  .Button;
+
+  align-items: center;
+  background: @color-theme-primary;
+  border-color: @color-highlight;
+  display: flex;
+  height: @size-32;
+  padding: @size-8;
+  width: @size-32;
+
+  > svg {
+    height: @size-16;
+    margin: auto;
+    width: @size-16;
+
+    > path {
+      stroke: @color-neutral;
+    }
+  }
+
+  &:hover {
+    > svg > path {
+      stroke: @color-secondary-text;
+    }
+  }
+}
+
+.left {
+  > svg {
+    transform: rotate(180deg);
+  }
+}
+
+.ExportButton {
+  .CurrenyActionButton;
+
+  align-items: center;
+  line-height: @size-15;
+  min-width: 9rem;
+  white-space: nowrap;
+
+  > svg {
+    fill: none;
+    height: @size-14;
+    width: @size-10;
+
+    > path {
+      stroke: @color-secondary-text;
+    }
+
+    > rect {
+      fill: @color-secondary-text;
+    }
+  }
+}
+
+.SortButton {
+  align-items: center;
+  display: flex;
+  flex-flow: row-reverse nowrap;
+
+  > svg {
+    flex: 0 0 @size-6;
+    height: @size-8;
+    margin-left: @size-4;
+    width: @size-6;
+
+    > path {
+      fill: @color-neutral;
+
+      &:hover {
+        fill: @color-secondary-text;
+      }
+    }
+  }
+}
+
+.Descending {
+  > svg > path:first-of-type {
+    fill: @color-secondary-text;
+  }
+}
+
+.Ascending {
+  > svg > path:last-of-type {
+    fill: @color-secondary-text;
   }
 }

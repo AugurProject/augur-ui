@@ -425,11 +425,177 @@
   margin: 0;
 }
 
+.TransactionsTable {
+  align-items: center;
+  border: 1px solid @color-primary-background;
+  display: grid;
+  grid-template-columns: 200px minmax(320px, 2fr) minmax(125px, 1fr) minmax(125px, 150px) repeat(2, 100px) 50px repeat(2, 100px) 80px;
+  grid-template-rows: auto;
+}
+
+.NullTransactionsRow {
+  grid-column: span 10;
+  text-align: center;
+}
+
+.Transactions {
+  .Container;
+
+  max-width: 95vw;
+
+  > section:first-of-type {
+    display: grid;
+    grid-gap: 0.25rem 0.5rem;
+    grid-template-columns: 108px 108px 205px 108px 200px 1fr;
+    grid-template-rows: 1fr 2fr;
+
+    > span {
+      .mono-10;
+
+      color: @color-shadow-text;
+      text-transform: uppercase;
+    }
+
+    > div[role="button"] {
+      height: @size-40;
+      max-width: 100%;
+
+      > div > button,
+      > button {
+        .mono-12;
+      }
+    }
+
+    > div:last-of-type {
+      > button:last-of-type {
+        margin-left: 0.5rem;
+      }
+    }
+
+    > button:last-of-type {
+      margin-left: auto;
+    }
+  }
+
+  > div:first-of-type {
+    .TransactionsTable;
+    .text-12;
+
+    background: @color-theme-primary;
+    border-bottom: 0;
+    color: @color-neutral;
+    height: @size-40;
+    margin: @size-40 0 0;
+
+    > span {
+      padding: 0 @size-12;
+    }
+
+    > span:first-of-type {
+      padding-left: @size-24;
+    }
+
+    > span:nth-of-type(5),
+    > span:nth-of-type(6),
+    > span:nth-of-type(8),
+    > span:nth-of-type(9) {
+      text-align: right;
+
+      > button {
+        width: 100%;
+      }
+    }
+
+    > span:last-of-type {
+      padding-right: @size-24;
+    }
+  }
+
+  > section:last-of-type {
+    .TransactionsTable;
+
+    border-top: 0;
+    color: @color-tertiary-text;
+    max-height: 650px;
+    overflow: auto;
+
+    > span {
+      .mono-11;
+
+      border-top: 1px solid @color-primary-background;
+      height: @size-32;
+      line-height: @size-13;
+      overflow: hidden;
+      padding: @size-10 @size-12;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    > span:nth-of-type(9n + 1) {
+      .mono-12;
+
+      line-height: @size-15;
+      padding: @size-8 @size-12 @size-8 @size-24;
+    }
+
+    > span:nth-of-type(9n + 2),
+    > span:nth-of-type(9n + 3) {
+      .text-11;
+    }
+
+    > span:nth-of-type(9n + 4) {
+      .mono-11-bold;
+
+      text-transform: capitalize;
+    }
+
+    > span:nth-of-type(9n + 5),
+    > span:nth-of-type(9n + 6),
+    > span:nth-of-type(9n + 8),
+    > span:nth-of-type(9n + 9) {
+      text-align: right;
+    }
+
+    > div:nth-of-type(1n) {
+      border-top: 1px solid @color-primary-background;
+      display: flex;
+      height: @size-32;
+      justify-content: flex-end;
+      padding: @size-12 @size-24 @size-10 0;
+
+      &:hover {
+        color: @color-secondary-text;
+      }
+    }
+  }
+
+  > div:last-of-type {
+    align-items: center;
+    flex-flow: row nowrap;
+    margin: @size-32 0 0;
+
+    > div:first-of-type {
+      margin: 0 auto;
+    }
+
+    > span {
+      .text-12;
+
+      color: @color-neutral;
+      margin: 0 @size-8;
+    }
+  }
+}
+
 .AlertMessage {
   .text-12;
 
   color: @color-outcome-four;
   margin: 0 0 @size-8;
+}
+
+div.ButtonsRow:last-of-type {
+  margin-top: @size-24;
 }
 
 .Breakdown {
