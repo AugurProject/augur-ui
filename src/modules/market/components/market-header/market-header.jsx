@@ -42,7 +42,6 @@ export default class MarketHeader extends Component {
     scalarDenomination: PropTypes.string,
     resolutionSource: PropTypes.any,
     isLogged: PropTypes.bool,
-    isMobile: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
     history: PropTypes.object.isRequired
@@ -55,8 +54,7 @@ export default class MarketHeader extends Component {
     currentTime: 0,
     isFavorite: false,
     isLogged: false,
-    toggleFavorite: () => {},
-    isMobile: false
+    toggleFavorite: () => {}
   };
 
   constructor(props) {
@@ -151,7 +149,6 @@ export default class MarketHeader extends Component {
       market,
       currentTime,
       isLogged,
-      isMobile,
       isFavorite,
       history
     } = this.props;
