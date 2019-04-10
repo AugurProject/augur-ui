@@ -52,11 +52,6 @@ class TradingWrapper extends Component {
         cumulativeScale: props.market.cumulativeScale,
         makerFee: props.market.makerFee
       },
-      {
-        id: props.selectedOutcome.id,
-        name: props.selectedOutcome.name
-      },
-      {},
       {}
     );
   }
@@ -199,7 +194,8 @@ class TradingWrapper extends Component {
           {
             limitPrice: order.orderPrice,
             side: order.selectedNav,
-            numShares: order.orderQuantity
+            numShares: order.orderQuantity,
+            selfTrade: order.selfTrade
           },
           (err, newOrder) => {
             if (err) {

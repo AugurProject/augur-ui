@@ -12,6 +12,7 @@ export function updateTradeCost({
   side,
   numShares,
   limitPrice,
+  selfTrade,
   callback = logError
 }) {
   return (dispatch, getState) => {
@@ -35,7 +36,8 @@ export function updateTradeCost({
       numShares,
       limitPrice,
       totalFee: "0",
-      totalCost: "0"
+      totalCost: "0",
+      selfTrade
     };
 
     return runSimulateTrade(
@@ -215,17 +217,15 @@ function runSimulateTrade(
     reversal
   };
 
-  const order = generateTrade(market, outcome, tradeInfo, orderBooks);
+  const order = generateTrade(market, tradeInfo);
 
   // build display values for order form confirmation
   const displayTrade = generateTrade(
     market,
-    outcome,
     buildDisplayTrade({
       ...tradeInfo,
       outcomeId
-    }),
-    orderBooks
+    })
   );
 
   if (callback) callback(null, { ...order, ...simulatedTrade, displayTrade });
