@@ -54,6 +54,7 @@ export default class MarketHeader extends Component {
     marketType: null,
     currentTime: 0,
     isFavorite: false,
+    isLogged: false,
     toggleFavorite: () => {},
     isMobile: false
   };
