@@ -17,8 +17,20 @@ const OpenOrdersHeader = (props: OpenOrdersHeaderProps) => (
     <li>Type</li>
     <li>Quantity</li>
     <li>Price</li>
-    {props.extendedView && <li>Total Cost (Eth)</li>}
-    {props.extendedView && <li>Total Cost (Shares)</li>}
+    {props.extendedView && (
+      <li>
+        Total Cost
+        <br />
+        (Eth)
+      </li>
+    )}
+    {props.extendedView && (
+      <li>
+        Total Cost
+        <br />
+        (Shares)
+      </li>
+    )}
     <li />
   </ul>
 );
