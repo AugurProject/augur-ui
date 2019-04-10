@@ -492,7 +492,9 @@ class TradingForm extends Component {
       ])
     );
 
-    const quantityValue = s[this.INPUT_TYPES.QUANTITY];
+    const quantityValue = convertExponentialToDecimal(
+      s[this.INPUT_TYPES.QUANTITY]
+    );
     const defaultOutcome = selectedOutcome ? selectedOutcome.id : "Outcome";
 
     return (
