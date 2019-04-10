@@ -64,7 +64,7 @@ export default class Positions extends Component {
     super(props);
 
     this.state = {
-      showCurrentValue: true
+      showCurrentValue: false
     };
 
     this.updateRightContentValue = this.updateRightContentValue.bind(this);
