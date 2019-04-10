@@ -198,13 +198,10 @@ div.OpenOrder__labels {
 
 .Position__info {
   align-items: flex-end;
-  display: flex;
   flex: 1;
   flex-direction: column;
-
-  > span > div > svg {
-    max-width: 2rem;
-  }
+  grid-template-rows: repeat(2, 1fr);
+  max-width: 250px;
 }
 
 .Position__border {
@@ -321,10 +318,6 @@ div.OpenOrder__labels {
 
   .Position__info {
     max-width: unset;
-
-    > span > div > svg {
-      max-width: unset;
-    }
   }
 
   div.OpenOrder__labels {
