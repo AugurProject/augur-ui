@@ -47,7 +47,20 @@ export default class AccountProfitLossChart extends Component<
           dataGrouping: {
             units: [["hour", [1]], ["day", [1]]]
           },
-          marker: false
+          marker: false,
+          // figure out how to not hardcode values here
+          fillColor: {
+            linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+            },
+            stops: [
+                [0, "#09CFE1"],
+                [1, "#211A32"]
+            ]
+          }
         }
       },
       scrollbar: { enabled: false },
