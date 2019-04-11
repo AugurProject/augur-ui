@@ -11,7 +11,7 @@ import Styles from "modules/market/components/market-orders-positions-table/open
 const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
-      <FilledOrdersHeader extendedView />
+      <FilledOrdersHeader extendedView={!isMobile} />
       {filledOrders.length === 0 && (
         <div className={Styles.MarketOpenOrdersList__empty} />
       )}

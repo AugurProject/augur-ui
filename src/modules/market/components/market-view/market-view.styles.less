@@ -43,6 +43,10 @@
   > div:last-of-type {
     margin-top: @size-8;
   }
+
+  > h1 {
+    display: none;
+  }
 }
 
 .MarketView__body {
@@ -199,6 +203,17 @@
 
   .Market__details-trading {
     width: auto;
+  }
+
+  .MarketView__paneContainer--mobile {
+    > h1 {
+      .text-12-bold;
+
+      color: @color-secondary-text;
+      display: block;
+      margin: 0;
+      padding: 0.75rem 1rem;
+    }
   }
 
   .MarketView__orders {

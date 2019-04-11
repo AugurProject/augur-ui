@@ -78,6 +78,9 @@
     padding-right: 3.86rem;
 
     > li {
+      color: @color-shadow-text;
+      font-size: @size-9;
+
       &:first-child {
         display: none;
       }
@@ -98,9 +101,14 @@
   }
 
   .FilledOrdersHeader {
+    background: @color-theme-primary;
     grid-template-columns: repeat(5, 1fr);
 
     > li {
+      &:nth-of-type(5) {
+        display: flex;
+      }
+
       &:nth-of-type(6) {
         display: none;
       }
