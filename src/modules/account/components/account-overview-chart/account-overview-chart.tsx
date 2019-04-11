@@ -74,7 +74,7 @@ export default class AccountOverviewChart extends React.Component<
       universe,
       startTime,
       endTime,
-      null,
+      timeRangeDataConfig.periodInterval,
       null,
       (err: string, data: Array<UserTimeRangeData>) => {
         if (err) return console.log("Error:", err);

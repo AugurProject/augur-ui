@@ -74,6 +74,11 @@ export default class AccountProfitLossChart extends Component<
         showLastLabel: true,
         labels: {
           format: "{value:.4f} <span class='eth-label'>ETH</span>",
+          formatter() {
+            if (this.value === 0) return "0 <span class='eth-label'>ETH</span>";
+              return Highcharts.format("{value:.4f}", this.value);
+            }
+          },
           align: "left",
           x: 0,
           y: -2
@@ -113,6 +118,7 @@ export default class AccountProfitLossChart extends Component<
 
   calculateTickInterval = (data: UserTimeRangeData) => {
     const values = data.map(d => d[1]);
+
     let bnMin = createBigNumber(
       values.reduce(
         (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
@@ -126,20 +132,18 @@ export default class AccountProfitLossChart extends Component<
       )
     );
 
-    if (bnMax.eq(ZERO) && bnMin.lt(ZERO)) bnMax = createBigNumber(bnMin.abs());
-    if (bnMin.eq(ZERO) && bnMax.gt(ZERO))
-      bnMin = createBigNumber(bnMax.times(-1));
+    let max = bnMax.toNumber();
+    let min = bnMin.toNumber();
 
     const tick = bnMax
       .minus(bnMin)
-      .dividedBy(NUM_YAXIS_PLOT_LINES)
       .abs();
     return {
       tickInterval: tick.gt(ZERO)
         ? Math.floor(tick.toNumber())
         : tick.toNumber(),
-      max: bnMax.eq(ZERO) ? 1 : bnMax.plus(bnMax.times(1.1)).toNumber(),
-      min: bnMin.eq(ZERO) ? -1 : bnMin.minus(bnMin.times(0.1).abs()).toNumber()
+      max,
+      min
     };
   };
 
