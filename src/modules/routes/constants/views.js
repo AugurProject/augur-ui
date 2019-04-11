@@ -19,7 +19,6 @@ export const DEFAULT_VIEW = MARKETS;
 // SUB VIEWS
 //  Portfolio
 export const MY_POSITIONS = "portfolio";
-export const PORTFOLIO_TRANSACTIONS = "transactions";
 
 //  Market (TODO -- These should be params, not routes)
 export const MARKET_DATA_NAV_OUTCOMES = "outcomes";
