@@ -13,10 +13,6 @@ describe("modules/app/constants/views", () => {
     expect(views.CREATE_MARKET).toStrictEqual("create-market");
   });
 
-  test("Returned the expected value 'TRANSACTIONS'", () => {
-    expect(views.TRANSACTIONS).toStrictEqual("transactions");
-  });
-
   test("Returned return the expected value 'ACCOUNT'", () => {
     expect(views.ACCOUNT).toStrictEqual("account");
   });
