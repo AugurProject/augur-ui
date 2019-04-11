@@ -8,7 +8,6 @@ import { isEqual } from "lodash";
 import { ZERO } from "src/modules/common-elements/constants";
 
 const HIGHLIGHTED_LINE_WIDTH = 2;
-const NUM_YAXIS_PLOT_LINES = 1;
 
 interface PlotData {
   timestamp: number;
@@ -48,18 +47,15 @@ export default class AccountProfitLossChart extends Component<
             units: [["hour", [1]], ["day", [1]]]
           },
           marker: false,
-          // figure out how to not hardcode values here
+          // remove these values when migrating to styleMode
           fillColor: {
             linearGradient: {
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 1
+              x1: 0,
+              y1: 0,
+              x2: 0,
+              y2: 1
             },
-            stops: [
-                [0, "#09CFE1"],
-                [1, "#211A32"]
-            ]
+            stops: [[0, "#09CFE1"], [1, "#211A32"]]
           }
         }
       },
