@@ -659,7 +659,7 @@ export const TIMEFRAME_OPTIONS = [
   { label: TIMEFRAMES.DAY, periodInterval: 86400, id: 0 },
   { label: TIMEFRAMES.WEEK, periodInterval: 604800, id: 1 },
   { label: TIMEFRAMES.MONTH, periodInterval: 2592000, id: 2 },
-  { label: TIMEFRAMES.ALL, periodInterval: 0, id: 3 }
+  { label: TIMEFRAMES.ALL, periodInterval: 86400, id: 3 }
 ];
 
 // Pending Queue Types
