@@ -16,12 +16,10 @@ import Modal from "modules/modal/containers/modal-view";
 import TopBar from "modules/app/components/top-bar/top-bar";
 import ForkingAlert from "modules/forking/components/forking-alert/forking-alert";
 import AccountInnerNav from "modules/app/components/inner-nav/account-inner-nav";
-import ReportingInnerNav from "modules/app/components/inner-nav/reporting-inner-nav";
 import SideNav from "modules/app/components/side-nav/side-nav";
 import Logo from "modules/app/components/logo/logo";
 import Routes from "modules/routes/components/routes/routes";
 import AlertsContainer from "modules/alerts/containers/alerts-view";
-import PortfolioInnerNav from "modules/app/components/inner-nav/portfolio-inner-nav";
 
 import MobileNavHamburgerIcon from "modules/common/components/mobile-nav-hamburger-icon";
 import MobileNavCloseIcon from "modules/common/components/mobile-nav-close-icon";
@@ -46,11 +44,9 @@ import {
   ACCOUNT_WITHDRAW,
   ACCOUNT_REP_FAUCET,
   ACCOUNT_UNIVERSES,
-  MY_MARKETS,
   MY_POSITIONS,
-  FAVORITES,
   CREATE_MARKET,
-  PORTFOLIO_REPORTS,
+  REPORTING_REPORTS,
   REPORTING_DISPUTE_MARKETS,
   REPORTING_REPORT_MARKETS,
   REPORTING_RESOLVED_MARKETS,
@@ -63,6 +59,7 @@ import {
 
 import Styles from "modules/app/components/app/app.styles";
 import MarketsInnerNavContainer from "modules/app/containers/markets-inner-nav";
+import ReportingInnerNav from "modules/app/containers/reporting-inner-nav";
 
 export const mobileMenuStates = {
   CLOSED: 0,
@@ -76,8 +73,7 @@ const MAIN_MENU = "mainMenu";
 
 const navTypes = {
   [MARKETS]: MarketsInnerNavContainer,
-  [MY_POSITIONS]: PortfolioInnerNav,
-  [PORTFOLIO_REPORTS]: PortfolioInnerNav,
+  [REPORTING_REPORTS]: ReportingInnerNav,
   [ACCOUNT_DEPOSIT]: AccountInnerNav,
   [ACCOUNT_WITHDRAW]: AccountInnerNav,
   [ACCOUNT_REP_FAUCET]: AccountInnerNav,
@@ -313,9 +309,7 @@ export default class AppView extends Component {
     Promise.all([menuExitPromise, submenuExitPromise]).then(() => {
       switch (nextBasePath) {
         case MARKETS:
-        case MY_MARKETS:
         case MY_POSITIONS:
-        case FAVORITES:
         case REPORTING_DISPUTE_MARKETS:
         case REPORTING_REPORT_MARKETS:
         case REPORTING_RESOLVED_MARKETS:

@@ -5,15 +5,12 @@ import { Helmet } from "react-helmet";
 import PortfolioReportsForkedMarketCard from "modules/portfolio/components/portfolio-reports/portfolio-reports-forked-market-card";
 import {
   TYPE_CLAIM_PROCEEDS,
-  MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET,
-  MODAL_CLAIM_FEES
+  MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET
 } from "modules/common-elements/constants";
 import Styles from "modules/portfolio/components/portfolio-reports/portfolio-reports.styles";
 import DisputingMarkets from "modules/reporting/components/common/disputing-markets";
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";
-
-import { PrimaryButton } from "modules/common-elements/buttons";
 
 export default class PortfolioReports extends Component {
   static propTypes = {
@@ -58,22 +55,11 @@ export default class PortfolioReports extends Component {
     this.handleClaimReportingFeesForkedMarket = this.handleClaimReportingFeesForkedMarket.bind(
       this
     );
-    this.handleClaimReportingFeesNonforkedMarkets = this.handleClaimReportingFeesNonforkedMarkets.bind(
-      this
-    );
     this.modalCallback = this.modalCallback.bind(this);
   }
 
   componentWillMount() {
     this.props.getReportingFees();
-  }
-
-  handleClaimReportingFeesNonforkedMarkets() {
-    this.props.updateModal({
-      type: MODAL_CLAIM_FEES,
-      ...this.props.reportingFees,
-      modalCallback: this.modalCallback
-    });
   }
 
   handleClaimReportingFeesForkedMarket = () => {
@@ -124,17 +110,6 @@ export default class PortfolioReports extends Component {
       upcomingDisputableMarketIds,
       loadDisputingDetails
     } = this.props;
-    let disableClaimReportingFeesNonforkedMarketsButton = "";
-    if (
-      (isNaN(reportingFees.unclaimedEth.value) ||
-        reportingFees.unclaimedEth.formatted === "-" ||
-        reportingFees.unclaimedEth.formatted === "") &&
-      (isNaN(reportingFees.unclaimedRep.value) ||
-        reportingFees.unclaimedRep.formatted === "-" ||
-        reportingFees.unclaimedRep.formatted === "")
-    ) {
-      disableClaimReportingFeesNonforkedMarketsButton = "disabled";
-    }
     const userHasClaimableForkFees =
       reportingFees.forkedMarket &&
       (reportingFees.unclaimedForkEth.value > 0 ||
@@ -146,24 +121,6 @@ export default class PortfolioReports extends Component {
           <Helmet>
             <title>Reporting</title>
           </Helmet>
-          <h4>Claim all available stake and fees</h4>
-          <div className={Styles.PortfolioReports__details}>
-            <ul className={Styles.PortfolioReports__info}>
-              <li>
-                <span>REP</span>
-                <span>{reportingFees.unclaimedRep.formatted}</span>
-              </li>
-              <li>
-                <span>ETH</span>
-                <span>{reportingFees.unclaimedEth.formatted}</span>
-              </li>
-            </ul>
-            <PrimaryButton
-              text="Claim"
-              action={this.handleClaimReportingFeesNonforkedMarkets}
-              disabled={disableClaimReportingFeesNonforkedMarketsButton}
-            />
-          </div>
         </section>
         {userHasClaimableForkFees && (
           <section className={Styles.PortfolioReports}>
