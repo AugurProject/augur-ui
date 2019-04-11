@@ -57,7 +57,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     const ethFees = formatAttoEth(marketObj.unclaimedEthFees, {
       decimals: 4,
       decimalsRounded: 4,
-      zeroStyled: true
+      zeroStyled: false
     });
     const total = createBigNumber(ethFees.fullPrecision);
 
@@ -76,8 +76,9 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
             value: `${formatAttoRep(marketObj.unclaimedRepTotal, {
               decimals: 4,
               decimalsRounded: 4,
-              zeroStyled: true
-            }).formatted || 0} REP`
+              zeroStyled: false
+            }).formatted || 0} REP`,
+            addExtraSpace: true
           },
           {
             label: "Reporting Fees",
@@ -88,7 +89,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
             value: `${marketObj.gasCost} ETH`
           },
           {
-            label: "total",
+            label: "total eth",
             value: `${
               formatEther(
                 createBigNumber(total)
@@ -130,7 +131,10 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       properties: [
         {
           label: "Reporting Stake",
-          value: `${sP.reportingFees.participationTokenRepStaked.formatted} REP`
+          value: `${
+            sP.reportingFees.participationTokenRepStaked.formatted
+          } REP`,
+          addExtraSpace: true
         },
         {
           label: "Reporting Fees",
@@ -145,7 +149,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
           } ETH`
         },
         {
-          label: "Total",
+          label: "Total Eth",
           value: `${formatEther(totalMinusGas).formatted} ETH`
         }
       ],
