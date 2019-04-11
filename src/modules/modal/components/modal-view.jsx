@@ -26,6 +26,7 @@ import ModalGasPrice from "modules/modal/containers/modal-gas-price";
 import ModalClaimTradingProceeds from "modules/modal/containers/modal-claim-trading-proceeds";
 import ModalClaimProceeds from "modules/modal/containers/modal-claim-proceeds";
 import ModalTradingOverlay from "modules/modal/components/modal-trading-overlay";
+import ModalOpenOrders from "modules/modal/containers/modal-open-orders";
 
 import * as TYPES from "modules/common-elements/constants";
 
@@ -94,6 +95,7 @@ export default class ModalView extends Component {
           {modal.type === TYPES.MODAL_UNSIGNED_ORDERS && (
             <ModalUnsignedOrders />
           )}
+          {modal.type === TYPES.MODAL_OPEN_ORDERS && <ModalOpenOrders />}
           {modal.type === TYPES.MODAL_TRANSACTIONS && <ModalTransactions />}
           {modal.type === TYPES.MODAL_REP_FAUCET && <ModalRepFaucet />}
           {modal.type === TYPES.MODAL_DEPOSIT && <ModalDeposit />}

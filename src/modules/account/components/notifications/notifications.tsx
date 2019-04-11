@@ -57,6 +57,7 @@ export interface NotificationsProps extends RouteComponentProps {
   claimTradingProceeds: Function;
   claimReportingFees: Function;
   unsignedOrdersModal: Function;
+  openOrdersModal: Function;
 }
 
 export interface NotificationsState {
@@ -81,14 +82,10 @@ class Notifications extends React.Component<
       case NOTIFICATION_TYPES.resolvedMarketsOpenOrders:
         buttonAction = () => {
           this.markAsRead(notification);
-          const queryLink = {
-            [MARKET_ID_PARAM_NAME]: notification.market.id,
-            [RETURN_PARAM_NAME]: location.hash
-          };
-          history.push({
-            pathname: makePath(MARKET),
-            search: makeQuery(queryLink)
-          });
+          this.disableNotification(notification.id, true);
+          this.props.openOrdersModal(notification.market.id, () =>
+            this.disableNotification(notification.id, false)
+          );
         };
         break;
 
