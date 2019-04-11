@@ -72,6 +72,7 @@ export default class AccountProfitLossChart extends Component<
         opposite: false,
         showFirstLabel: true,
         showLastLabel: true,
+        startOnTick: false,
         labels: {
           format: "{value:.4f} <span class='eth-label'>ETH</span>",
           formatter() {
