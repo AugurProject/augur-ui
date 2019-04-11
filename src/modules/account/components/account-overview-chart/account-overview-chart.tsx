@@ -8,11 +8,13 @@ import { MovementLabel } from "modules/common-elements/labels";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
 import { formatEther } from "utils/format-number";
 
+const ALL_TIME = 3;
 export interface AccountOverviewChartProps {
   universe: string;
   currentAugurTimestamp: number;
   timeframe: number;
   getProfitLoss: Function;
+  allTimeStart: number;
 }
 
 interface TimeFrameOption {
@@ -63,12 +65,12 @@ export default class AccountOverviewChart extends React.Component<
   };
 
   getChartData = (timeRangeDataConfig: TimeFrameOption) => {
-    const { universe, currentAugurTimestamp } = this.props;
+    const { universe, currentAugurTimestamp, allTimeStart } = this.props;
     const endTime = null;
     let startTime: number | null =
       currentAugurTimestamp - timeRangeDataConfig.periodInterval;
-    if (timeRangeDataConfig.periodInterval === 0) {
-      startTime = null;
+    if (timeRangeDataConfig.id === ALL_TIME) {
+      startTime = allTimeStart;
     }
     this.props.getProfitLoss(
       universe,
@@ -78,13 +80,21 @@ export default class AccountOverviewChart extends React.Component<
       null,
       (err: string, data: Array<UserTimeRangeData>) => {
         if (err) return console.log("Error:", err);
+        const allTime = timeRangeDataConfig.id === ALL_TIME;
         const noTrades = data
           .reduce(
             (p, d) => createBigNumber(d.totalCost || constants.ZERO).plus(p),
             constants.ZERO
           )
           .eq(constants.ZERO);
+        let start = null;
         let profitLossData: Array<Array<number>> = [];
+
+        if (allTime) {
+          start = [allTimeStart * 1000, 0];
+          profitLossData = [start];
+        }
+
         const lastData =
           data.length > 0
             ? data[data.length - 1]
