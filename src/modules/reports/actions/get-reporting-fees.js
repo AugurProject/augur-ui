@@ -36,6 +36,9 @@ export const getReportingFees = (callback = logError) => (
               estimateGas: true,
               onSuccess: gasCost => {
                 resolve({ type: ALL, gasCost });
+              },
+              onFailed: gasCost => {
+                resolve({ type: ALL, gasCost });
               }
             })
           )
@@ -50,6 +53,9 @@ export const getReportingFees = (callback = logError) => (
               nonforkedMarkets: [],
               estimateGas: true,
               onSuccess: gasCost => {
+                resolve({ type: CLAIM_FEE_WINDOWS, gasCost });
+              },
+              onFailed: gasCost => {
                 resolve({ type: CLAIM_FEE_WINDOWS, gasCost });
               }
             })
@@ -66,6 +72,10 @@ export const getReportingFees = (callback = logError) => (
                 nonforkedMarkets: [nonforkedMarket],
                 estimateGas: true,
                 onSuccess: gasCost => {
+                  nonforkedMarket.gasCost = gasCost;
+                  resolve();
+                },
+                onFailed: gasCost => {
                   nonforkedMarket.gasCost = gasCost;
                   resolve();
                 }
