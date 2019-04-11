@@ -29,7 +29,7 @@ export const Market = asyncComponent({
 export const Portfolio = asyncComponent({
   moduleName: "Portfolio",
   loader: () =>
-    import(/* webpackChunkName: 'portfolio' */ "modules/portfolio/components/portfolio-view/portfolio-view").then(
+    import(/* webpackChunkName: 'portfolio' */ "modules/portfolio/containers/portfolio-page").then(
       module => module.default
     )
 });

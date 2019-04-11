@@ -4,7 +4,6 @@
 import React from "react";
 
 import { shallow } from "enzyme";
-import { PrimaryButton } from "src/modules/common-elements/buttons";
 
 import PortfolioReports from "src/modules/portfolio/components/portfolio-reports/portfolio-reports";
 
@@ -63,29 +62,6 @@ describe("portfolio-reports", () => {
       describe("getReportingFees function", () => {
         test("Called once with args ", () => {
           expect(getReportingFees).toBeTruthy();
-        });
-      });
-
-      describe("ETH total", () => {
-        test("Displayed as '-'", () => {
-          expect(Cmp.html()).toEqual(
-            expect.stringContaining("<span>ETH</span><span>-</span>")
-          );
-        });
-      });
-
-      describe("REP total", () => {
-        test("Displayed as '-'", () => {
-          expect(Cmp.html()).toEqual(
-            expect.stringContaining("<span>REP</span><span>-</span>")
-          );
-        });
-      });
-
-      describe("claim-reporting-fees-nonforked-markets-button", () => {
-        test("Is disabled", () => {
-          const button = Cmp.find(PrimaryButton);
-          expect(button.html()).toEqual(expect.stringContaining("disabled"));
         });
       });
 

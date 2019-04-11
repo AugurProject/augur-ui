@@ -24,7 +24,11 @@ const BaseInnerNavPure = ({
   }
 
   const DataToItem = item => (
-    <MenuItem isSelected={item.isSelected} visible={item.visible}>
+    <MenuItem
+      isSelected={item.isSelected}
+      visible={item.visible}
+      seperator={item.seperator}
+    >
       {item.link && (
         <Link to={item.link} onClick={item.onClick} title={item.label}>
           {item.label}
