@@ -76,8 +76,7 @@ export default class AccountProfitLossChart extends Component<
           format: "{value:.4f} <span class='eth-label'>ETH</span>",
           formatter() {
             if (this.value === 0) return "0 <span class='eth-label'>ETH</span>";
-              return Highcharts.format("{value:.4f}", this.value);
-            }
+            return this.axis.defaultLabelFormatter.call(this);
           },
           align: "left",
           x: 0,
@@ -119,25 +118,23 @@ export default class AccountProfitLossChart extends Component<
   calculateTickInterval = (data: UserTimeRangeData) => {
     const values = data.map(d => d[1]);
 
-    let bnMin = createBigNumber(
+    const bnMin = createBigNumber(
       values.reduce(
         (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
         0
       )
     );
-    let bnMax = createBigNumber(
+    const bnMax = createBigNumber(
       values.reduce(
         (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
         0
       )
     );
 
-    let max = bnMax.toNumber();
-    let min = bnMin.toNumber();
+    const max = bnMax.toNumber();
+    const min = bnMin.toNumber();
 
-    const tick = bnMax
-      .minus(bnMin)
-      .abs();
+    const tick = bnMax.minus(bnMin).abs();
     return {
       tickInterval: tick.gt(ZERO)
         ? Math.floor(tick.toNumber())
