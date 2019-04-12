@@ -6,8 +6,7 @@ import {
   CLAIM_STAKE_FEES,
   PENDING,
   SUCCESS,
-  UNIVERSE_ID,
-  ZERO
+  UNIVERSE_ID
 } from "modules/common-elements/constants";
 import {
   addPendingData,
@@ -92,11 +91,12 @@ export function redeemStake(options, callback = logError) {
       )
     );
 
-    Promise.all(promises).then(gasCosts => {
+    Promise.all(promises).then((gasCosts, failed = []) => {
       onSuccess &&
         onSuccess(
           sumAndformatGasCostToEther(gasCosts, { decimalsRounded: 4 }, gasPrice)
         );
+      onFailed && failed.forEach(m => onFailed(m));
     });
   };
 
@@ -143,7 +143,6 @@ export function redeemStake(options, callback = logError) {
       reportingParticipants = [],
       onSent,
       onSuccess,
-      gasPrice,
       pendingId,
       dispatch,
       onFailed,
@@ -156,26 +155,12 @@ export function redeemStake(options, callback = logError) {
       onSent: () => {
         onSent && onSent();
       },
-      onSuccess: gas => {
-        if (!!options.estimateGas && onSuccess) {
-          const gasValue = gas || CLAIM_FEES_GAS_COST;
-          const gasCost = formatGasCostToEther(
-            gasValue,
-            { decimalsRounded: 4 },
-            gasPrice
-          );
-          return onSuccess(gasCost);
-        }
+      onSuccess: () => {
         pendingId &&
           dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, SUCCESS));
         onSuccess && onSuccess();
       },
       onFailed: () => {
-        if (!!options.estimateGas && onFailed) {
-          return onFailed(
-            formatGasCostToEther(0, { decimalsRounded: 4 }, gasPrice)
-          );
-        }
         pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES));
         onFailed && onFailed();
       },
