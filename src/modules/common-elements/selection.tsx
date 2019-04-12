@@ -79,6 +79,10 @@ interface DotSelectionProps {
   children: React.StatelessComponent;
 }
 
+interface DotSelectionState {
+  toggleMenu: boolean;
+}
+
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
   state: DropdownState = {
     selected: this.props.defaultValue
@@ -283,9 +287,54 @@ export class PillSelection extends React.Component<
   }
 }
 
-export const DotSelection = (props: DotSelectionProps) => (
-  <div className={Styles.DotSelection_Menu}>
-    <button>{DotDotDot}</button>
-    <div className={Styles.DotSelection_MenuItems}>{props.children}</div>
-  </div>
-);
+export class DotSelection extends React.Component<
+  DotSelectionProps,
+  DotSelectionState
+> {
+  state: DotSelectionState = {
+    toggleMenu: false
+  };
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleWindowOnClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleWindowOnClick);
+  }
+
+  refMenu: any = null;
+
+  handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (this.refMenu && !this.refMenu.contains(event.target)) {
+      this.setState({ toggleMenu: false });
+    }
+  };
+
+  toggleMenu() {
+    this.setState({
+      toggleMenu: !this.state.toggleMenu
+    });
+  }
+
+  render() {
+    return (
+      <div className={Styles.DotSelection_Menu}>
+        <button onClick={() => this.toggleMenu()}>{DotDotDot}</button>
+        {this.state.toggleMenu && (
+          <div
+            role="Menu"
+            ref={menu => {
+              this.refMenu = menu;
+            }}
+            onClick={() => this.toggleMenu()}
+            tabIndex={0}
+            className={Styles.DotSelection_MenuItems}
+          >
+            {this.props.children}
+          </div>
+        )}
+      </div>
+    );
+  }
+}
