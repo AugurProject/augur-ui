@@ -13,8 +13,7 @@ const OpenOrdersTable = ({
   openOrders,
   orphanedOrders,
   cancelOrphanedOrder,
-  isMobile,
-  market
+  isMobile
 }) => (
   <div>
     <div className={Styles.MarketOpenOrdersList__table}>
@@ -24,14 +23,15 @@ const OpenOrdersTable = ({
           <div className={Styles.MarketOpenOrdersList__empty} />
         )}
       <div className={Styles.MarketOpenOrdersList__scrollContainer}>
-        {(orphanedOrders || []).map(order => (
-          <MarketPositionsListOrphanedOrder
-            key={order.orderId}
-            order={order}
-            cancelOrphanedOrder={cancelOrphanedOrder}
-            isMobile={isMobile}
-          />
-        ))}
+        {orphanedOrders &&
+          (orphanedOrders || []).map(order => (
+            <MarketPositionsListOrphanedOrder
+              key={order.orderId}
+              order={order}
+              cancelOrphanedOrder={cancelOrphanedOrder}
+              isMobile={isMobile}
+            />
+          ))}
         {(openOrders.length > 0 || orphanedOrders.length > 0) && (
           <div className={Styles["MarketOpenOrdersList__table-body"]}>
             {openOrders.map((order, i) => (
@@ -51,14 +51,15 @@ const OpenOrdersTable = ({
 
 OpenOrdersTable.propTypes = {
   openOrders: PropTypes.array,
-  orphanedOrders: PropTypes.array.isRequired,
-  cancelOrphanedOrder: PropTypes.func.isRequired,
-  isMobile: PropTypes.bool,
-  market: PropTypes.object.isRequired
+  orphanedOrders: PropTypes.array,
+  cancelOrphanedOrder: PropTypes.func,
+  isMobile: PropTypes.bool
 };
 
 OpenOrdersTable.defaultProps = {
   openOrders: [],
+  orphanedOrders: null,
+  cancelOrphanedOrder: null,
   isMobile: false
 };
 

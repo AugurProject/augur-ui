@@ -18,6 +18,7 @@ import {
 import { BID, CATEGORICAL } from "modules/common-elements/constants";
 import { formatShares, formatEther } from "utils/format-number";
 import Styles from "modules/modal/modal.styles";
+import OpenOrdersTable from "modules/market/components/market-orders-positions-table/open-orders-table";
 
 interface UnsignedOrdersProps {
   closeAction: Function;
@@ -39,6 +40,8 @@ interface UnsignedOrdersProps {
   sendLiquidityOrder: Function;
   removeLiquidityOrder: Function;
   scalarDenomination: string;
+  openOrders: boolean;
+  isMobile: boolean;
 }
 
 interface Order {
@@ -118,18 +121,24 @@ export const UnsignedOrders = (props: UnsignedOrdersProps) => (
     <Title title={props.title} closeAction={props.closeAction} />
     <Description description={props.description} />
     <MarketTitle title={props.marketTitle} />
-    <div>
-      {props.header.map((headerLabel: string) => (
-        <span key={headerLabel}>{headerLabel}</span>
-      ))}
-    </div>
-    <section>
-      {props.outcomes &&
-        props.outcomes.map((outcome: string) =>
+    {props.header && (
+      <div className={Styles.Orders__header}>
+        {props.header.map((headerLabel: string) => (
+          <span key={headerLabel}>{headerLabel}</span>
+        ))}
+      </div>
+    )}
+    {props.outcomes && (
+      <section>
+        {props.outcomes.map((outcome: string) =>
           props.liquidity[outcome].map((order: Order) => orderRow(order, props))
         )}
-    </section>
-    <Breakdown rows={props.breakdown} short />
+      </section>
+    )}
+    {props.openOrders && (
+      <OpenOrdersTable openOrders={props.orders} isMobile={props.isMobile} />
+    )}
+    {props.breakdown && <Breakdown rows={props.breakdown} short />}
     <ButtonsRow buttons={props.buttons} />
   </div>
 );

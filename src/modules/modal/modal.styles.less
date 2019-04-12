@@ -96,8 +96,13 @@
   .Message;
 
   background: @color-secondary-action;
+  min-width: 842px;
 
-  > div:first-of-type {
+  @media @breakpoint-mobile {
+    min-width: 328px;
+  }
+
+  > .Orders__header {
     align-items: center;
     background: @color-theme-primary;
     border-top: 1px solid @color-primary-background;
@@ -222,6 +227,11 @@
         }
       }
     }
+  }
+
+  > div:first-of-type > div > div {
+    background: @color-tertiary-background;
+    min-height: unset;
   }
 
   > div:last-of-type {
