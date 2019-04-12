@@ -3,17 +3,15 @@ import { withRouter } from "react-router-dom";
 
 import OpenMarkets from "modules/account/components/open-markets/open-markets";
 import { pick } from "lodash";
+import { CLOSED } from "modules/common-elements/constants";
 import getLoginAccountPositions from "modules/positions/selectors/login-account-positions";
+import getSelectLoginAccountTotals from "modules/positions/selectors/login-account-totals";
 import memoize from "memoizee";
-import { MARKET_OPEN } from "modules/common-elements/constants";
-import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
 const mapStateToProps = state => {
   const positions = getLoginAccountPositions();
-
+  const totalPercentage = getSelectLoginAccountTotals();
   const markets = getPositionsMarkets(positions);
-
-  const totalPercentage = "0.00";
 
   const marketsObj = markets.reduce((obj, market) => {
     obj[market.id] = market;
@@ -24,12 +22,10 @@ const mapStateToProps = state => {
     market // when these things change then component will re-render/re-sort
   ) => pick(market, ["id", "description", "reportingState"]));
 
-  const marketsByState = createMarketsStateObject(marketsPick);
-
   return {
     isLogged: state.authStatus.isLogged,
     isMobile: state.appStatus.isMobile,
-    markets: marketsByState[MARKET_OPEN],
+    markets: marketsPick,
     marketsObj,
     totalPercentage
   };
@@ -38,7 +34,11 @@ const mapStateToProps = state => {
 const OpenMarketsContainer = withRouter(connect(mapStateToProps)(OpenMarkets));
 
 const getPositionsMarkets = memoize(
-  positions => Array.from(new Set([...positions.markets])),
+  positions =>
+    positions.markets.reduce((p, m) => {
+      const pos = m.userPositions.filter(position => position.type !== CLOSED);
+      return pos.length === 0 ? p : [...p, { ...m, userPositions: pos }];
+    }, []),
   { max: 1 }
 );
 
