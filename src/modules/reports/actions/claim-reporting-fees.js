@@ -15,7 +15,7 @@ import {
 
 export const CLAIM_FEES_GAS_COST = 3000000;
 export const CLAIM_WINDOW_GAS_COST = 210000;
-export const CROWDSOURCER_BATCH_SIZE = 5;
+export const CROWDSOURCER_BATCH_SIZE = 4;
 export const FEE_WINDOW_BATCH_SIZE = 10;
 
 export function claimReportingFeesForkedMarket(options, callback = logError) {
@@ -82,16 +82,19 @@ export function redeemStake(options, callback = logError) {
     payloads.map(payload =>
       promises.push(
         new Promise((resolve, reject) =>
-          runRedeemStakePaylod({
-            ...payload,
-            onSuccess: resolve,
-            onFailed: reject
-          })
+          runRedeemStakePaylod(
+            {
+              ...payload,
+              onSuccess: resolve,
+              onFailed: reject
+            },
+            resolve
+          )
         )
       )
     );
 
-    Promise.all(promises).then((gasCosts, failed = []) => {
+    Promise.all(promises).then((gasCosts = [], failed = []) => {
       onSuccess &&
         onSuccess(
           sumAndformatGasCostToEther(gasCosts, { decimalsRounded: 4 }, gasPrice)

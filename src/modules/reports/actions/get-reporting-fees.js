@@ -32,23 +32,25 @@ export const getReportingFees = (callback = logError) => (
 
       const promises = [];
 
-      promises.push(
-        new Promise(resolve =>
-          dispatch(
-            redeemStake({
-              feeWindows: result.feeWindows,
-              nonforkedMarkets: result.nonforkedMarkets,
-              estimateGas: true,
-              onSuccess: gasCost => {
-                resolve({ type: ALL, gasCost });
-              },
-              onFailed: gasCost => {
-                resolve({ type: ALL, gasCost });
-              }
-            })
+      if (result.feeWindows.length > 0 || result.nonforkedMarkets.length > 0) {
+        promises.push(
+          new Promise(resolve =>
+            dispatch(
+              redeemStake({
+                feeWindows: result.feeWindows,
+                nonforkedMarkets: result.nonforkedMarkets,
+                estimateGas: true,
+                onSuccess: gasCost => {
+                  resolve({ type: ALL, gasCost });
+                },
+                onFailed: gasCost => {
+                  resolve({ type: ALL, gasCost });
+                }
+              })
+            )
           )
-        )
-      );
+        );
+      }
 
       result.nonforkedMarkets.forEach(nonforkedMarket => {
         promises.push(
