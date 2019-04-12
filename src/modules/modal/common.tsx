@@ -203,14 +203,13 @@ export const ActionRows = (props: ActionRowsProps) =>
         <MarketTitle title={row.title} />
         <div>
           {row.properties.map(property => (
-            <>
+            <React.Fragment key={row.title + " " + property.label}>
               <LinearPropertyLabel
-                key={property.label}
                 label={property.label}
                 value={property.value}
               />
               {property.addExtraSpace && <span />}
-            </>
+            </React.Fragment>
           ))}
         </div>
       </section>
