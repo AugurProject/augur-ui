@@ -511,6 +511,7 @@ div.ButtonsRow:last-of-type {
 .Transactions {
   .Container;
 
+  margin: 80px 0;
   max-width: 95vw;
   padding: 0 @size-24 @size-24;
 
@@ -522,17 +523,110 @@ div.ButtonsRow:last-of-type {
     }
   }
 
+  @media @breakpoint-mobile {
+    margin: 0;
+    padding: @size-16;
+  }
+
   > section:first-of-type {
     display: grid;
     grid-gap: 0.25rem 0.5rem;
     grid-template-columns: 108px 108px 205px 108px 200px 1fr;
     grid-template-rows: 1fr 2fr;
 
+    @media @breakpoint-mobile {
+      grid-gap: 0 @size-12;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      height: 280px;
+
+      > span:first-of-type {
+        order: 2;
+      }
+
+      > span:nth-of-type(2) {
+        order: 3;
+      }
+
+      > span:nth-of-type(3) {
+        order: 6;
+      }
+
+      > div[role="button"] {
+        > div {
+          left: 0;
+          max-height: 40vh;
+          overflow: auto;
+          right: 0;
+
+          > button {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+
+      > div:nth-of-type(2) {
+        order: 4;
+      }
+
+      > div:nth-of-type(3) {
+        order: 5;
+      }
+
+      > div:nth-of-type(4) {
+        order: 8;
+      }
+
+      > div:nth-of-type(5) {
+        order: 9;
+      }
+
+      > div:last-of-type {
+        display: flex;
+        flex-flow: row nowrap;
+        order: 11;
+
+        > button {
+          padding: @size-8 @size-16;
+        }
+
+        > button:last-of-type {
+          margin-left: @size-4;
+        }
+      }
+
+      > button {
+        grid-column: span 2;
+        order: 1;
+        width: 100%;
+      }
+    }
+
     > span {
       .mono-10;
 
       color: @color-shadow-text;
       text-transform: uppercase;
+    }
+
+    > span:last-of-type {
+      grid-column: span 3;
+
+      @media @breakpoint-mobile {
+        grid-column: span 1;
+        order: 7;
+      }
+    }
+
+    > div:first-of-type {
+      display: none;
+
+      @media @breakpoint-mobile {
+        display: flex;
+        order: 10;
+      }
     }
 
     > div[role="button"] {
@@ -547,7 +641,7 @@ div.ButtonsRow:last-of-type {
 
     > div:last-of-type {
       > button:last-of-type {
-        margin-left: 0.5rem;
+        margin-left: @size-8;
       }
     }
 
@@ -564,7 +658,12 @@ div.ButtonsRow:last-of-type {
     border-bottom: 0;
     color: @color-neutral;
     height: @size-40;
-    margin: @size-40 0 0;
+    margin: @size-24 0 0;
+    overflow: auto;
+
+    @media @breakpoint-mobile {
+      margin: 0;
+    }
 
     > span {
       padding: 0 @size-12;
@@ -597,6 +696,10 @@ div.ButtonsRow:last-of-type {
     color: @color-tertiary-text;
     max-height: 650px;
     overflow: auto;
+
+    @media @breakpoint-mobile {
+      max-height: 416px;
+    }
 
     > span {
       .mono-11;
@@ -652,6 +755,20 @@ div.ButtonsRow:last-of-type {
     align-items: center;
     flex-flow: row nowrap;
     margin: @size-32 0 0;
+
+    @media @breakpoint-mobile {
+      margin: @size-16 0 0;
+
+      > div:first-of-type {
+        margin: 0;
+        width: 100%;
+      }
+
+      > span,
+      > div:last-of-type {
+        display: none;
+      }
+    }
 
     > div:first-of-type {
       margin: 0 auto;

@@ -101,7 +101,7 @@ export const Pagination = (props: PaginationProps) => {
       </span>
       <DirectionButton
         action={() => action(page + 1)}
-        disabled={page === totalPages}
+        disabled={page === totalPages || totalPages === 0}
       />
     </div>
   );
