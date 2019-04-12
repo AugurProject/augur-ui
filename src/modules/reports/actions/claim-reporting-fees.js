@@ -42,7 +42,7 @@ export function redeemStake(options, callback = logError) {
 
     const {
       pendingId,
-      onSent,
+      onSent = bob => console.log("bob arrived", bob),
       onSuccess,
       onFailed,
       nonforkedMarkets,
@@ -62,34 +62,23 @@ export function redeemStake(options, callback = logError) {
       });
     });
 
-    const batches = batchContractIds(feeWindows, reportingParticipants);
-
-    const payloads = batches.map(batch =>
-      buildPayload({
-        ...batch,
-        pendingId,
-        loginAccount,
-        universeId,
-        estimateGas,
-        gasPrice,
-        onSent,
-        dispatch
-      })
-    );
-
     const promises = [];
 
-    payloads.map(payload =>
+    batchContractIds(feeWindows, reportingParticipants).map(batch =>
       promises.push(
         new Promise((resolve, reject) =>
-          runRedeemStakePaylod(
-            {
-              ...payload,
-              onSuccess: resolve,
-              onFailed: reject
-            },
-            resolve
-          )
+          runPayload({
+            ...batch,
+            pendingId,
+            loginAccount,
+            universeId,
+            estimateGas,
+            gasPrice,
+            onSent,
+            dispatch,
+            onSuccess: resolve,
+            onFailed: reject
+          })
         )
       )
     );
@@ -100,6 +89,7 @@ export function redeemStake(options, callback = logError) {
           sumAndformatGasCostToEther(gasCosts, { decimalsRounded: 4 }, gasPrice)
         );
       onFailed && failed.forEach(m => onFailed(m));
+      callback();
     });
   };
 
@@ -140,7 +130,7 @@ export function redeemStake(options, callback = logError) {
     return batches;
   }
 
-  function buildPayload(options) {
+  function runPayload(options) {
     const {
       feeWindows = [],
       reportingParticipants = [],
@@ -150,35 +140,31 @@ export function redeemStake(options, callback = logError) {
       dispatch,
       onFailed,
       universeId,
-      loginAccount
+      loginAccount,
+      estimateGas
     } = options;
-    return {
+    augur.api.Universe.redeemStake({
+      meta: loginAccount.meta,
+      tx: {
+        to: universeId,
+        estimateGas: !!options.estimateGas
+      },
       _feeWindows: feeWindows,
       _reportingParticipants: reportingParticipants,
       onSent: () => {
         onSent && onSent();
       },
-      onSuccess: () => {
+      onSuccess: gas => {
+        if (!!estimateGas && onSuccess) onSuccess(gas);
         pendingId &&
           dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, SUCCESS));
         onSuccess && onSuccess();
       },
       onFailed: () => {
+        if (!!estimateGas && onFailed) onFailed(0);
         pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES));
         onFailed && onFailed();
-      },
-      tx: {
-        to: universeId,
-        estimateGas: !!options.estimateGas
-      },
-      meta: loginAccount.meta
-    };
+      }
+    });
   }
-}
-
-function runRedeemStakePaylod(payload, callback) {
-  augur.api.Universe.redeemStake(payload, (err, result) => {
-    if (err) return callback(err);
-    callback(null, result);
-  });
 }
