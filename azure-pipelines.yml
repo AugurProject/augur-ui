@@ -2,9 +2,14 @@ variables:
   NODE_JS_VERSION: 10.15.0
 
 trigger:
-- master
-- sneakpeak
-- azure/*
+  branches:
+    include:
+      - master
+      - sneakpeak
+      - azure/*
+  tags:
+    include:
+      - v*
 
 jobs:
   - job: test_ui
