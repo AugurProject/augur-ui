@@ -72,7 +72,12 @@ const FilledOrder = (props: FilledOrderProps) => {
             <li>{filledOrder.trades.length}</li>
           </ul>
         }
-        toggleContent={<FilledOrdersTable filledOrder={filledOrder} />}
+        toggleContent={
+          <FilledOrdersTable
+            filledOrder={filledOrder}
+            showMarketInfo={isSingle}
+          />
+        }
       />
     </div>
   );

@@ -10,6 +10,7 @@ import {
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
 import { CancelTextButton } from "modules/common-elements/buttons";
+import MarketLink from "modules/market/components/market-link/market-link";
 import getValue from "utils/get-value";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
@@ -131,6 +132,17 @@ const OpenOrder = (props: OpenOrderProps) => {
                 [Styles.OpenOrder__infoSingle]: isSingle
               })}
             >
+              {isSingle && (
+                <span>
+                  {openOrder.marketId ? (
+                    <MarketLink id={openOrder.marketId}>
+                      {openOrder.marketDescription}
+                    </MarketLink>
+                  ) : (
+                    openOrder.marketDescription
+                  )}
+                </span>
+              )}
               <div>
                 <div className={Styles.OpenOrder__labels}>
                   <LinearPropertyLabel

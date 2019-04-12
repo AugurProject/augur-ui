@@ -39,7 +39,6 @@ const OpenOrdersTable = ({
                 key={"openOrder_" + i}
                 openOrder={order}
                 extendedView={!isMobile}
-                isSingle={isMobile}
               />
             ))}
           </div>
