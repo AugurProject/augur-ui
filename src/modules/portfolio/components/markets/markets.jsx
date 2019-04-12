@@ -40,7 +40,8 @@ class MyMarkets extends Component {
   };
 
   static defaultProps = {
-    reportingWindowStatsEndTime: 0
+    reportingWindowStatsEndTime: 0,
+    currentAugurTimestamp: 0
   };
 
   constructor(props) {
