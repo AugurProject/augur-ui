@@ -140,7 +140,7 @@ jobs:
             if [[ $current_tag =~ $LATEST_VERSION_REGEX ]]; then
               echo "##vso[task.setvariable variable=npm_tag]latest"
               npm run docker:release -- release
-            elsif [[ $current_tag =~ $DEV_VERSION_REGEX ]]; then
+            elif [[ $current_tag =~ $DEV_VERSION_REGEX ]]; then
               echo "##vso[task.setvariable variable=npm_tag]dev"
             else
               # we should never get here
