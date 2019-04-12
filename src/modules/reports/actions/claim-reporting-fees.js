@@ -14,6 +14,7 @@ import {
 } from "modules/pending-queue/actions/pending-queue-management";
 
 export const CLAIM_FEES_GAS_COST = 3000000;
+export const CLAIM_WINDOW_GAS_COST = 210000;
 
 export function claimReportingFeesForkedMarket(options, callback = logError) {
   return (dispatch, getState) => {
@@ -72,7 +73,7 @@ export function redeemStake(options, callback = logError) {
             { decimalsRounded: 4 },
             gasPrice
           );
-          return onSuccess(gasCost);
+          return onSuccess(gasCost, gas);
         }
         pendingId &&
           dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, SUCCESS));
