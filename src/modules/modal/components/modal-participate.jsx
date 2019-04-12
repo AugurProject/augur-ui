@@ -51,8 +51,8 @@ export default class ModalParticipate extends Component {
 
   submitForm(e, ...args) {
     const { purchaseParticipationTokens } = this.props;
-    purchaseParticipationTokens(this.state.quantity, false, (err, res) => {
-      console.log("onSuccess for purchaseParticipationTokens", err, res);
+    purchaseParticipationTokens(this.state.quantity, false, err => {
+      err && console.log("ERR for purchaseParticipationTokens", err);
     });
   }
 

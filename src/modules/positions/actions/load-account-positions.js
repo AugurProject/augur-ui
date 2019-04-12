@@ -25,7 +25,8 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
       if (options.orderState === "ALL" && !options.marketId) {
         dispatch(
           updateLoginAccount({
-            totalFrozenFunds: positions.frozenFundsTotal.frozenFunds
+            totalFrozenFunds: positions.frozenFundsTotal.frozenFunds,
+            tradingPositionsTotal: positions.tradingPositionsTotal
           })
         );
       }
