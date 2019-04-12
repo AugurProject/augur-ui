@@ -112,7 +112,7 @@ export function redeemStake(options, callback = logError) {
       reportingParticipants.length / CROWDSOURCER_BATCH_SIZE
     );
 
-    // max case, assuming 10 fee windows and 5 crowdsourcers can run in one tx.
+    // max case, assuming FEE_WINDOW_BATCH_SIZE number of fee windows and CROWDSOURCER_BATCH_SIZE number of crowdsourcers can run in one tx.
     if (feeWindowBatchSize < 2 && crowdsourcerBatchSize < 2)
       return [{ feeWindows, reportingParticipants }];
 
