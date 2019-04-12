@@ -199,54 +199,58 @@ export class WithdrawForm extends Component<
     return (
       <div className={Styles.WithdrawForm}>
         <Title title="Send Funds" closeAction={closeAction} />
-        <Description description={["Send funds from your connected wallet"]} />
-        <div className={Styles.GroupedForm}>
-          <div>
-            <label htmlFor="recipient">Recipient Address</label>
-            <input
-              type="text"
-              id="recipient"
-              autoComplete="off"
-              value={address}
-              placeholder="0x..."
-              onChange={this.addressChange}
-            />
-            {errors.address.length && (
-              <span>
-                {ImmediateImportance} {errors.address}
-              </span>
-            )}
-          </div>
-          <div>
-            <label htmlFor="currency">Currency</label>
-            <SquareDropdown
-              id="currency"
-              options={this.options}
-              defaultValue={currency}
-              onChange={this.dropdownChange}
-              stretchOut
-            />
-            <span>Available: {loginAccount[currency.toLowerCase()]}</span>
-          </div>
-          <div>
-            <label htmlFor="amount">Amount</label>
-            <button onClick={this.handleMax}>MAX</button>
-            <input
-              type="number"
-              id="amount"
-              placeholder="0.00"
-              value={amount}
-              onChange={this.amountChange}
-            />
-            {errors.amount &&
-              errors.amount.length && (
+        <main>
+          <Description
+            description={["Send funds from your connected wallet"]}
+          />
+          <div className={Styles.GroupedForm}>
+            <div>
+              <label htmlFor="recipient">Recipient</label>
+              <input
+                type="text"
+                id="recipient"
+                autoComplete="off"
+                value={address}
+                placeholder="0x..."
+                onChange={this.addressChange}
+              />
+              {errors.address.length && (
                 <span>
-                  {ImmediateImportance} {errors.amount}
+                  {ImmediateImportance} {errors.address}
                 </span>
               )}
+            </div>
+            <div>
+              <label htmlFor="currency">Currency</label>
+              <SquareDropdown
+                id="currency"
+                options={this.options}
+                defaultValue={currency}
+                onChange={this.dropdownChange}
+                stretchOut
+              />
+              <span>Available: {loginAccount[currency.toLowerCase()]}</span>
+            </div>
+            <div>
+              <label htmlFor="amount">Amount</label>
+              <button onClick={this.handleMax}>MAX</button>
+              <input
+                type="number"
+                id="amount"
+                placeholder="0.00"
+                value={amount}
+                onChange={this.amountChange}
+              />
+              {errors.amount &&
+                errors.amount.length && (
+                  <span>
+                    {ImmediateImportance} {errors.amount}
+                  </span>
+                )}
+            </div>
           </div>
-        </div>
-        <Breakdown rows={breakdown} />
+          <Breakdown rows={breakdown} />
+        </main>
         <ButtonsRow buttons={buttons} />
       </div>
     );

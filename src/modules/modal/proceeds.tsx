@@ -18,22 +18,24 @@ interface ProceedsProps {
   title: string;
   buttons: Array<DefaultButtonProps>;
   rows: ActionRowsProps;
-  description?: DescriptionMessageProps;
   breakdown?: Array<LinearPropertyLabelProps>;
+  descriptionMessage?: DescriptionMessageProps;
 }
 
 export const Proceeds = (props: ProceedsProps) => (
   <div className={Styles.Proceeds}>
     <Title title={props.title} closeAction={props.closeAction} />
-    {props.descriptionMessage && (
-      <DescriptionMessage messages={props.descriptionMessage} />
-    )}
-    {props.rows && (
-      <div>
-        <ActionRows rows={props.rows} />
-      </div>
-    )}
-    {props.breakdown && <Breakdown short rows={props.breakdown} />}
+    <main>
+      {props.descriptionMessage && (
+        <DescriptionMessage messages={props.descriptionMessage} />
+      )}
+      {props.rows && (
+        <div>
+          <ActionRows rows={props.rows} />
+        </div>
+      )}
+      {props.breakdown && <Breakdown short rows={props.breakdown} />}
+    </main>
     <ButtonsRow buttons={props.buttons} />
   </div>
 );

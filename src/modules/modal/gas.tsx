@@ -74,22 +74,24 @@ export class Gas extends React.Component<GasProps, GasState> {
     return (
       <div className={Styles.Gas}>
         <Title title="Gas Price (gwei)" closeAction={closeAction} />
-        {showLowAlert && (
-          <AlertMessage preText="Transactions are unlikely to be processed at your current gas price." />
-        )}
-        <input
-          id="price"
-          placeholder="price"
-          step={1}
-          type="number"
-          value={this.state.amount}
-          onChange={e => {
-            this.updateAmount(parseFloat(e.target.value));
-          }}
-        />
-        <h2>Recommended Gas Price</h2>
-        <p>(based on current network conditions)</p>
-        <SelectableTable tableData={tableData} />
+        <main>
+          {showLowAlert && (
+            <AlertMessage preText="Transactions are unlikely to be processed at your current gas price." />
+          )}
+          <input
+            id="price"
+            placeholder="price"
+            step={1}
+            type="number"
+            value={this.state.amount}
+            onChange={e => {
+              this.updateAmount(parseFloat(e.target.value));
+            }}
+          />
+          <h2>Recommended Gas Price</h2>
+          <p>(based on current network conditions)</p>
+          <SelectableTable tableData={tableData} />
+        </main>
         <ButtonsRow buttons={buttons} />
       </div>
     );

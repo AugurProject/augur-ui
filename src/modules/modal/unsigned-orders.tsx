@@ -119,26 +119,30 @@ const orderRow = (order: Order, props: UnsignedOrdersProps) => {
 export const UnsignedOrders = (props: UnsignedOrdersProps) => (
   <div className={Styles.Orders}>
     <Title title={props.title} closeAction={props.closeAction} />
-    <Description description={props.description} />
-    <MarketTitle title={props.marketTitle} />
-    {props.header && (
-      <div className={Styles.Orders__header}>
-        {props.header.map((headerLabel: string) => (
-          <span key={headerLabel}>{headerLabel}</span>
-        ))}
-      </div>
-    )}
-    {props.outcomes && (
-      <section>
-        {props.outcomes.map((outcome: string) =>
-          props.liquidity[outcome].map((order: Order) => orderRow(order, props))
-        )}
-      </section>
-    )}
-    {props.openOrders && (
-      <OpenOrdersTable openOrders={props.orders} isMobile={props.isMobile} />
-    )}
-    {props.breakdown && <Breakdown rows={props.breakdown} short />}
+    <main>
+      <Description description={props.description} />
+      <MarketTitle title={props.marketTitle} />
+      {props.header && (
+        <div className={Styles.Orders__header}>
+          {props.header.map((headerLabel: string) => (
+            <span key={headerLabel}>{headerLabel}</span>
+          ))}
+        </div>
+      )}
+      {props.outcomes && (
+        <section>
+          {props.outcomes.map((outcome: string) =>
+            props.liquidity[outcome].map((order: Order) =>
+              orderRow(order, props)
+            )
+          )}
+        </section>
+      )}
+      {props.openOrders && (
+        <OpenOrdersTable openOrders={props.orders} isMobile={props.isMobile} />
+      )}
+      {props.breakdown && <Breakdown rows={props.breakdown} short />}
+    </main>
     <ButtonsRow buttons={props.buttons} />
   </div>
 );

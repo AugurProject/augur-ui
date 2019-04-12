@@ -35,13 +35,15 @@ interface MessageProps {
 export const Message = (props: MessageProps) => (
   <div className={Styles.Message}>
     <Title title={props.title} closeAction={props.closeAction} />
-    {props.alertMessage && <AlertMessage {...props.alertMessage} />}
-    {props.marketTitle && <MarketTitle title={props.marketTitle} />}
-    {props.callToAction && <CallToAction callToAction={props.callToAction} />}
-    {props.description && <Description description={props.description} />}
-    {props.breakdown && <Breakdown rows={props.breakdown} />}
-    {props.readableAddress && <ReadableAddress {...props.readableAddress} />}
-    {props.depositInfo && <DepositInfo {...props.depositInfo} />}
-    <ButtonsRow buttons={props.buttons} />
+    <main>
+      {props.alertMessage && <AlertMessage {...props.alertMessage} />}
+      {props.marketTitle && <MarketTitle title={props.marketTitle} />}
+      {props.callToAction && <CallToAction callToAction={props.callToAction} />}
+      {props.description && <Description description={props.description} />}
+      {props.breakdown && <Breakdown rows={props.breakdown} />}
+      {props.readableAddress && <ReadableAddress {...props.readableAddress} />}
+      {props.depositInfo && <DepositInfo {...props.depositInfo} />}
+    </main>
+    {props.buttons.length && <ButtonsRow buttons={props.buttons} />}
   </div>
 );

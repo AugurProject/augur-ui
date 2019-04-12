@@ -6,11 +6,16 @@
   border-radius: @border-radius-default;
   display: flex;
   flex-flow: column nowrap;
+  max-height: 90vh;
   max-width: 35rem;
   min-height: 13.5rem;
-  padding: @size-24;
   position: relative;
   width: 100%;
+
+  > main {
+    overflow: auto;
+    padding: 0 @size-24;
+  }
 
   > h1 {
     .text-12;
@@ -39,11 +44,43 @@
     margin: 0 0 @size-14;
   }
 
-  > button:first-of-type {
-    position: absolute;
-    right: @size-24;
-    top: @size-24;
+  > div:last-of-type {
+    display: flex;
+    flex-flow: row-reverse nowrap;
+    margin-top: auto;
 
+    > button {
+      margin-left: @size-16;
+    }
+  }
+}
+
+.TitleHeader {
+  align-items: center;
+  border-bottom: 1px solid fade(@color-highlight, 50%);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 0 0 @size-24;
+  padding: @size-24;
+
+  @media @breakpoint-mobile {
+    margin: 0 0 @size-16;
+    padding: @size-16;
+  }
+
+  > h1 {
+    .text-12;
+
+    color: @color-secondary-text;
+    font-weight: @weight-medium;
+    line-height: @size-16;
+    margin-bottom: 0;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  > button:first-of-type {
     > svg {
       height: @size-12;
       width: @size-12;
@@ -53,15 +90,16 @@
       }
     }
   }
+}
 
-  > div:last-of-type {
-    display: flex;
-    flex-flow: row-reverse nowrap;
-    margin-top: auto;
+div.ButtonsRow:last-of-type {
+  border-top: 1px solid fade(@color-highlight, 50%);
+  margin: @size-24 0 0;
+  padding: @size-12 @size-24;
 
-    > button {
-      margin-left: @size-16;
-    }
+  @media @breakpoint-mobile {
+    margin: @size-16 0 0;
+    padding: @size-8 @size-16;
   }
 }
 
@@ -76,7 +114,7 @@
 
   max-width: 35rem;
 
-  > p {
+  > main > p {
     .text-12-paragraph;
 
     color: @color-secondary-text;
@@ -102,150 +140,154 @@
     min-width: 328px;
   }
 
-  > .Orders__header {
-    align-items: center;
-    background: @color-theme-primary;
-    border-top: 1px solid @color-primary-background;
-    display: flex;
-    flex-flow: row nowrap;
-    height: @size-40;
-    justify-content: space-between;
-    padding: @size-12 @size-24;
-
-    > span {
-      .mono-10;
-
-      color: @color-shadow-text;
-      flex: 0 0 5.5rem;
-      text-transform: uppercase;
-    }
-
-    > span:first-of-type {
-      flex: 0 1 15.5rem;
-    }
-
-    > span:last-of-type {
-      flex: 1 0 6.5rem;
-    }
-
-    @media @breakpoint-mobile {
-      border-bottom: 1px solid @color-primary-background;
-      height: @size-32;
-      margin: 0 -@size-16 @size-4;
-      padding: @size-10 @size-16;
-
-      > span {
-        .mono-9;
-
-        flex: 0 0 3.75rem;
-      }
-
-      > span:first-of-type,
-      > span:last-of-type {
-        display: none;
-      }
-    }
-  }
-
-  > section {
-    border-bottom: 1px solid @color-primary-background;
-    color: @color-secondary-text;
-    margin-bottom: @size-24;
-    max-height: 450px;
-    overflow-y: auto;
-
-    > div {
+  > main {
+    > .Orders__header {
       align-items: center;
-      background: @color-tertiary-background;
+      background: @color-theme-primary;
       border-top: 1px solid @color-primary-background;
-      color: @color-tertiary-text;
       display: flex;
       flex-flow: row nowrap;
-      height: @size-32;
+      height: @size-40;
       justify-content: space-between;
-      padding: @size-8 @size-24;
+      padding: @size-12 @size-24;
 
-      > span:first-of-type {
-        .mono-12-bold;
+      > span {
+        .mono-10;
 
-        flex: 0 1 15.5rem;
-        text-transform: capitalize;
-      }
-
-      > span:nth-of-type(2) {
-        .mono-12-bold;
-
+        color: @color-shadow-text;
+        flex: 0 0 5.5rem;
         text-transform: uppercase;
       }
 
-      > span {
-        .mono-12;
-
-        flex: 0 0 5.5rem;
+      > span:first-of-type {
+        flex: 0 1 15.5rem;
       }
+
+      > span:last-of-type {
+        flex: 1 0 6.5rem;
+      }
+
+      @media @breakpoint-mobile {
+        border-bottom: 1px solid @color-primary-background;
+        height: @size-32;
+        margin: 0 -@size-16 @size-4;
+        padding: @size-10 @size-16;
+
+        > span {
+          .mono-9;
+
+          flex: 0 0 3.75rem;
+        }
+
+        > span:first-of-type,
+        > span:last-of-type {
+          display: none;
+        }
+      }
+    }
+
+    > section {
+      border-bottom: 1px solid @color-primary-background;
+      color: @color-secondary-text;
+      margin-bottom: @size-24;
+      max-height: 450px;
+      overflow-y: auto;
 
       > div {
         align-items: center;
+        background: @color-tertiary-background;
+        border-top: 1px solid @color-primary-background;
+        color: @color-tertiary-text;
         display: flex;
-        flex: 1 0 6.5rem;
-
-        > button:first-of-type {
-          margin-left: auto;
-          margin-right: 1rem;
-        }
-      }
-    }
-
-    @media @breakpoint-mobile {
-      margin: 0 -@size-16 @size-24;
-
-      > div {
-        flex-flow: row wrap;
-        height: 7.25rem;
-        padding: @size-12 @size-16;
+        flex-flow: row nowrap;
+        height: @size-32;
+        justify-content: space-between;
+        padding: @size-8 @size-24;
 
         > span:first-of-type {
-          .mono-11;
+          .mono-12-bold;
 
-          flex: 1 100%;
-          margin-bottom: @size-8;
-        }
-
-        > span {
-          .mono-10;
-
-          flex: 0 1 auto;
+          flex: 0 1 15.5rem;
+          text-transform: capitalize;
         }
 
         > span:nth-of-type(2) {
-          .mono-11-bold;
+          .mono-12-bold;
+
+          text-transform: uppercase;
+        }
+
+        > span {
+          .mono-12;
+
+          flex: 0 0 5.5rem;
         }
 
         > div {
-          flex: 1 100%;
-          margin: @size-24 0;
+          align-items: center;
+          display: flex;
+          flex: 1 0 6.5rem;
+
+          > button:first-of-type {
+            margin-left: auto;
+            margin-right: 1rem;
+          }
+        }
+      }
+
+      @media @breakpoint-mobile {
+        margin: 0 -@size-16 @size-24;
+
+        > div {
+          flex-flow: row wrap;
+          height: 7.25rem;
+          padding: @size-12 @size-16;
+
+          > span:first-of-type {
+            .mono-11;
+
+            flex: 1 100%;
+            margin-bottom: @size-8;
+          }
+
+          > span {
+            .mono-10;
+
+            flex: 0 1 auto;
+          }
+
+          > span:nth-of-type(2) {
+            .mono-11-bold;
+          }
+
+          > div {
+            flex: 1 100%;
+            margin: @size-24 0;
+          }
         }
       }
     }
-  }
 
-  > div:first-of-type > div > div {
-    background: @color-tertiary-background;
-    min-height: unset;
-  }
+    > div:first-of-type > div > div {
+      background: @color-tertiary-background;
+      min-height: unset;
+    }
 
-  > div:last-of-type {
-    margin-top: 1rem;
+    > div:last-of-type {
+      margin-top: 1rem;
+    }
   }
 }
 
 .WithdrawForm {
   .Message;
 
-  > p {
-    border-bottom: 1px solid @color-primary-background;
-    margin-bottom: @size-16;
-    padding-bottom: @size-24;
+  > main {
+    > p {
+      border-bottom: 1px solid @color-primary-background;
+      margin-bottom: @size-16;
+      padding-bottom: @size-24;
+    }
   }
 
   > div:last-of-type {
@@ -335,11 +377,15 @@
     > div {
       height: @size-40;
 
+      > button {
+        padding: @size-10 @size-12;
+      }
+
       > button,
       > div > button {
         .text-14;
 
-        line-height: 1rem;
+        line-height: @size-16;
       }
     }
 
@@ -376,18 +422,24 @@
 .Gas {
   .CondensedContainer;
 
-  > h2 {
-    .text-12;
+  > main {
+    > h2 {
+      .text-12;
 
-    color: @color-secondary-text;
-    margin-top: @size-16;
+      color: @color-secondary-text;
+      margin-top: @size-16;
+    }
+
+    > p {
+      .mono-10;
+
+      color: @color-secondary-text;
+      margin: 0 0 @size-16;
+    }
   }
 
-  > p {
-    .mono-10;
-
-    color: @color-secondary-text;
-    margin: 0 0 @size-16;
+  > div:last-of-type {
+    margin-top: @size-24;
   }
 }
 
@@ -398,18 +450,20 @@
   max-height: 80vh;
   max-width: 842px;
 
-  > section:first-of-type {
-    margin-top: @size-16;
-  }
+  > main {
+    > section:first-of-type {
+      margin-top: @size-16;
+    }
 
-  > section:last-of-type {
-    border-bottom: 1px solid @color-primary-background;
-    margin-bottom: @size-24;
-  }
+    > section:last-of-type {
+      border-bottom: 1px solid @color-primary-background;
+      margin-bottom: @size-24;
+    }
 
-  > div:nth-of-type(2) {
-    margin: 1rem 0 1.5rem;
-    overflow-y: auto;
+    > div:nth-of-type(2) {
+      margin: 1rem 0 1.5rem;
+      overflow-y: auto;
+    }
   }
 
   > div:last-of-type {
@@ -419,10 +473,12 @@
   @media @breakpoint-mobile {
     padding: 1rem;
 
-    > h1,
-    > div:first-of-type,
-    > button {
-      padding: 0 0.5rem;
+    > main {
+      > h1,
+      > div:first-of-type,
+      > button {
+        padding: 0 0.5rem;
+      }
     }
   }
 }
@@ -439,7 +495,11 @@
   align-items: center;
   border: 1px solid @color-primary-background;
   display: grid;
-  grid-template-columns: 200px minmax(320px, 2fr) minmax(125px, 1fr) minmax(125px, 150px) repeat(2, 100px) 50px repeat(2, 100px) 80px;
+  grid-template-columns:
+    200px minmax(320px, 2fr) minmax(125px, 1fr) minmax(
+      125px,
+      150px
+    ) repeat(2, 100px) 50px repeat(2, 100px) 80px;
   grid-template-rows: auto;
 }
 
@@ -452,6 +512,15 @@
   .Container;
 
   max-width: 95vw;
+  padding: 0 @size-24 @size-24;
+
+  > header {
+    margin: 0 -@size-24 @size-24;
+
+    @media @breakpoint-mobile {
+      margin: 0 -@size-16 @size-16;
+    }
+  }
 
   > section:first-of-type {
     display: grid;
@@ -602,10 +671,6 @@
 
   color: @color-outcome-four;
   margin: 0 0 @size-8;
-}
-
-div.ButtonsRow:last-of-type {
-  margin-top: @size-24;
 }
 
 .Breakdown {
