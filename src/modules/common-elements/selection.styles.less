@@ -460,10 +460,6 @@
   }
 }
 
-.DotSelection_MenuItems {
-  display: none;
-}
-
 .DotSelection_Menu {
   cursor: pointer;
   position: relative;
@@ -471,58 +467,63 @@
   > button > svg {
     fill: @color-secondary-text;
     height: @size-16;
+    margin-top: 3px;
     width: @size-10;
-  }
-
-  > button:focus ~ .DotSelection_MenuItems,
-  .DotSelection_MenuItems:active {
-    .text-12-bold;
-
-    align-items: flex-start;
-    background: @color-secondary-text;
-    border-radius: @border-radius-default;
-    color: @color-primary-background;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: @size-8 @size-16;
-    position: absolute;
-    right: 0;
-    top: 36px;
-    width: 189px;
-    z-index: @above-all-content;
 
     @media @breakpoint-mobile {
-      padding: @size-16;
+      transform: scale(1.3);
     }
+  }
+}
 
-    > div {
-      align-items: center;
-      border-top: 1px solid fade(@color-primary-alternate, 10%);
-      display: flex;
-      width: 100%;
+.DotSelection_MenuItems {
+  .text-12-bold;
+
+  align-items: flex-start;
+  background: @color-secondary-text;
+  border-radius: @border-radius-default;
+  color: @color-primary-background;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: @size-8 @size-16;
+  position: absolute;
+  right: 0;
+  top: 36px;
+  user-select: none;
+  width: 189px;
+  z-index: @above-all-content;
+
+  @media @breakpoint-mobile {
+    padding: @size-16;
+  }
+
+  > div {
+    align-items: center;
+    border-top: 1px solid fade(@color-primary-alternate, 10%);
+    display: flex;
+    width: 100%;
+  }
+
+  > div:hover {
+    color: @color-shadow-text;
+    opacity: 0.75;
+  }
+
+  > div:first-of-type {
+    border-top: 0;
+    padding-bottom: @size-8;
+
+    @media @breakpoint-mobile {
+      padding-bottom: @size-16;
     }
+  }
 
-    > div:hover {
-      color: @color-shadow-text;
-      opacity: 0.75;
-    }
+  > div:last-of-type {
+    padding-top: @size-8;
 
-    > div:first-of-type {
-      border-top: 0;
-      padding-bottom: @size-8;
-
-      @media @breakpoint-mobile {
-        padding-bottom: @size-16;
-      }
-    }
-
-    > div:last-of-type {
-      padding-top: @size-8;
-
-      @media @breakpoint-mobile {
-        padding-top: @size-16;
-      }
+    @media @breakpoint-mobile {
+      padding-top: @size-16;
     }
   }
 }

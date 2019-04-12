@@ -1,4 +1,5 @@
 import * as React from "react";
+import ReactDOM from "react-dom";
 import { head, find } from "lodash";
 import classNames from "classnames";
 import Styles from "modules/common-elements/selection.styles";
@@ -77,6 +78,10 @@ export const DatePicker = (props: DatePickerProps) => (
 
 interface DotSelectionProps {
   children: React.StatelessComponent;
+}
+
+interface DotSelectionState {
+  toggleMenu: boolean;
 }
 
 class Dropdown extends React.Component<DropdownProps, DropdownState> {
@@ -283,9 +288,52 @@ export class PillSelection extends React.Component<
   }
 }
 
-export const DotSelection = (props: DotSelectionProps) => (
-  <div className={Styles.DotSelection_Menu}>
-    <button>{DotDotDot}</button>
-    <div className={Styles.DotSelection_MenuItems}>{props.children}</div>
-  </div>
-);
+export class DotSelection extends React.Component<
+  DotSelectionProps,
+  DotSelectionState
+> {
+  state: DotSelectionState = {
+    toggleMenu: false
+  };
+
+  refMenu: any = null;
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleWindowOnClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleWindowOnClick);
+  }
+
+  handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (this.refMenu && !this.refMenu.contains(event.target)) {
+      this.setState({ toggleMenu: false });
+    }
+  };
+
+  toggleMenu() {
+    this.setState({
+      toggleMenu: !this.state.toggleMenu
+    });
+  }
+
+  render() {
+    return (
+      <div className={Styles.DotSelection_Menu}>
+        <button onClick={() => this.toggleMenu()}>{DotDotDot}</button>
+        {this.state.toggleMenu && (
+          <div
+            ref={menu => {
+              this.refMenu = menu;
+            }}
+            onClick={() => this.toggleMenu()}
+            className={Styles.DotSelection_MenuItems}
+          >
+            {this.props.children}
+          </div>
+        )}
+      </div>
+    );
+  }
+}
