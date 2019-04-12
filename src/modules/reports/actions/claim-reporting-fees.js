@@ -42,7 +42,7 @@ export function redeemStake(options, callback = logError) {
 
     const {
       pendingId,
-      onSent = bob => console.log("bob arrived", bob),
+      onSent,
       onSuccess,
       onFailed,
       nonforkedMarkets,
