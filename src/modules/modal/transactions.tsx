@@ -179,8 +179,26 @@ export class Transactions extends React.Component<
     this.triggerSearch();
   };
 
+  componentDidMount = () => {
+    this.tableBodyRef.addEventListener("scroll", this.handleScroll);
+    this.tableHeaderRef.addEventListener("scroll", this.handleScroll);
+  };
+
+  componentWillUnmount = () => {
+    this.tableBodyRef.removeEventListener("scroll", this.handleScroll);
+    this.tableHeaderRef.removeEventListener("scroll", this.handleScroll);
+  };
+
   tableHeaderRef: any = null;
   tableBodyRef: any = null;
+
+  handleScroll = () => {
+    const body = this.tableBodyRef.scrollLeft;
+    const head = this.tableHeaderRef.scrollLeft;
+    if (body !== head) {
+      this.tableHeaderRef.scrollTo(body, 0);
+    }
+  };
 
   cyclePriceSort = (e: any) => {
     const { filteredTransactions, priceSort } = this.state;
@@ -356,12 +374,7 @@ export class Transactions extends React.Component<
       page * itemsPerPage - itemsPerPage,
       page * itemsPerPage
     );
-    const headerAdjustment =
-      this.tableHeaderRef &&
-      this.tableBodyRef &&
-      this.tableBodyRef.clientHeight < this.tableBodyRef.scrollHeight
-        ? { paddingRight: "17px" }
-        : {};
+
     const startDatePicker = {
       id: "startDatePicker",
       date: startDate,
@@ -413,8 +426,11 @@ export class Transactions extends React.Component<
           <span>Date To</span>
           <span>Action</span>
           <span>Coin</span>
-          <span />
-          <span />
+          <SquareDropdown
+            options={paginationOptions}
+            defaultValue={itemsPerPage}
+            onChange={(itemsPerPage: number) => this.setState({ itemsPerPage })}
+          />
           <DatePicker {...startDatePicker} />
           <DatePicker {...endDatePicker} />
           <SquareDropdown
@@ -455,7 +471,6 @@ export class Transactions extends React.Component<
           ref={tableHeader => {
             this.tableHeaderRef = tableHeader;
           }}
-          style={headerAdjustment}
         >
           <span>Date</span>
           <span>Market</span>
