@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
 import { head, find } from "lodash";
 import classNames from "classnames";
 import Styles from "modules/common-elements/selection.styles";
@@ -296,8 +295,6 @@ export class DotSelection extends React.Component<
     toggleMenu: false
   };
 
-  refMenu: any = null;
-
   componentDidMount() {
     document.addEventListener("mousedown", this.handleWindowOnClick);
   }
@@ -305,6 +302,8 @@ export class DotSelection extends React.Component<
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleWindowOnClick);
   }
+
+  refMenu: any = null;
 
   handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
     if (this.refMenu && !this.refMenu.contains(event.target)) {
@@ -324,10 +323,12 @@ export class DotSelection extends React.Component<
         <button onClick={() => this.toggleMenu()}>{DotDotDot}</button>
         {this.state.toggleMenu && (
           <div
+            role="Menu"
             ref={menu => {
               this.refMenu = menu;
             }}
             onClick={() => this.toggleMenu()}
+            tabIndex={0}
             className={Styles.DotSelection_MenuItems}
           >
             {this.props.children}
