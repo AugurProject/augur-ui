@@ -110,12 +110,12 @@ export interface DepositInfoProps {
 }
 
 export const Title = (props: TitleProps) => (
-  <>
+  <header className={Styles.TitleHeader}>
     <h1>{props.title}</h1>
     {props.closeAction && (
       <button onClick={() => props.closeAction()}>{XIcon}</button>
     )}
-  </>
+  </header>
 );
 
 export const Description = (props: DescriptionProps) =>
