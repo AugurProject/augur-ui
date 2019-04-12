@@ -1,14 +1,17 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
 import { createBigNumber } from "utils/create-big-number";
-import { formatAttoRep, formatAttoEth } from "utils/format-number";
+import {
+  formatAttoRep,
+  formatAttoEth,
+  formatGasCostToEther
+} from "utils/format-number";
 import { updateReportingWindowStats } from "modules/reports/actions/update-reporting-window-stats";
 import {
   redeemStake,
   CLAIM_WINDOW_GAS_COST
 } from "modules/reports/actions/claim-reporting-fees";
 import { ALL, CLAIM_FEE_WINDOWS } from "modules/common-elements/constants";
-import { formatGasCostToEther } from "utils/format-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 
 export const getReportingFees = (callback = logError) => (
@@ -134,7 +137,7 @@ export const getReportingFees = (callback = logError) => (
                 ...gasCosts
                   .filter(i => i !== undefined)
                   .reduce((p, i) => ({ ...p, [i.type]: i.gasCost }), {}),
-                CLAIM_FEE_WINDOWS: gasCost
+                [CLAIM_FEE_WINDOWS]: gasCost
               }
             }
           })
