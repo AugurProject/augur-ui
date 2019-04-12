@@ -23,7 +23,6 @@ const FilledOrdersTable = ({ filledOrders, isMobile, scalarDenomination }) => (
                 key={i}
                 filledOrder={order}
                 extendedView={!isMobile}
-                isSingle={isMobile}
               />
             ))}
           </div>
