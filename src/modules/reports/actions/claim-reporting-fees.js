@@ -79,6 +79,12 @@ export function redeemStake(options, callback = logError) {
         onSuccess && onSuccess();
       },
       onFailed: () => {
+        if (!!options.estimateGas && onFailed) {
+          const gasPrice = getGasPrice(getState());
+          return onFailed(
+            formatGasCostToEther(0, { decimalsRounded: 4 }, gasPrice)
+          );
+        }
         pendingId && dispatch(removePendingData(pendingId, CLAIM_STAKE_FEES));
         onFailed && onFailed();
       },

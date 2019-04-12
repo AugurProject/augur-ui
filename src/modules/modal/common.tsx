@@ -203,11 +203,14 @@ export const ActionRows = (props: ActionRowsProps) =>
         <MarketTitle title={row.title} />
         <div>
           {row.properties.map(property => (
-            <LinearPropertyLabel
-              key={property.label}
-              label={property.label}
-              value={property.value}
-            />
+            <>
+              <LinearPropertyLabel
+                key={property.label}
+                label={property.label}
+                value={property.value}
+              />
+              {property.addExtraSpace && <span />}
+            </>
           ))}
         </div>
       </section>

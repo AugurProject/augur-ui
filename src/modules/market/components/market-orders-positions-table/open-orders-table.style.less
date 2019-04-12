@@ -19,7 +19,7 @@ div.MarketOpenOrdersList__table {
   display: grid;
   flex-direction: row;
   flex-grow: 1;
-  grid-template-columns: 25% 70px repeat(4, 1fr);
+  grid-template-columns: 2fr repeat(5, 1fr);
   text-transform: uppercase;
   transition: background-color 0.15s ease;
 
@@ -33,7 +33,9 @@ div.MarketOpenOrdersList__table {
     flex-grow: 1;
     overflow: hidden;
     padding: 0.75rem 0;
+    padding-left: 1rem;
     text-align: right;
+    white-space: normal;
 
     &:first-child {
       max-width: 160px;
@@ -93,10 +95,6 @@ div.MarketOpenOrdersList__table {
 
 .MarketOutcomes__table-header {
   > li {
-    &:first-child {
-      min-width: 160px;
-    }
-
     &:last-of-type {
       padding-right: 2rem;
     }
