@@ -189,12 +189,20 @@ export function formatBlank() {
   };
 }
 
-export function formatGasCostToEther(num, opts, gasPrice) {
-  const gas = unfix(num, "number");
-  const estimatedGasCost = createBigNumber(gas).times(
+export function sumAndformatGasCostToEther(gases, opts, gasPrice) {
+  const summedGas = gases.reduce(
+    (p, g) => createBigNumber(unfix(g, "number")).plus(p),
+    ZERO
+  );
+
+  const estimatedGasCost = createBigNumber(summedGas).times(
     createBigNumber(gasPrice)
   );
   return formatGasCost(estimatedGasCost, opts).roundedFormatted;
+}
+
+export function formatGasCostToEther(num, opts, gasPrice) {
+  return sumAndformatGasCostToEther([num], opts, gasPrice);
 }
 
 export function formatAttoRep(num, opts) {

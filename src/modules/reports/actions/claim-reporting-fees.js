@@ -1,12 +1,13 @@
 import { augur } from "services/augurjs";
 import logError from "utils/log-error";
-import { formatGasCostToEther } from "utils/format-number";
+import { sumAndformatGasCostToEther } from "utils/format-number";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import {
   CLAIM_STAKE_FEES,
   PENDING,
   SUCCESS,
-  UNIVERSE_ID
+  UNIVERSE_ID,
+  ZERO
 } from "modules/common-elements/constants";
 import {
   addPendingData,
@@ -15,6 +16,8 @@ import {
 
 export const CLAIM_FEES_GAS_COST = 3000000;
 export const CLAIM_WINDOW_GAS_COST = 210000;
+export const CROWDSOURCER_BATCH_SIZE = 5;
+export const FEE_WINDOW_BATCH_SIZE = 10;
 
 export function claimReportingFeesForkedMarket(options, callback = logError) {
   return (dispatch, getState) => {
@@ -35,7 +38,8 @@ export function claimReportingFeesForkedMarket(options, callback = logError) {
 export function redeemStake(options, callback = logError) {
   return (dispatch, getState) => {
     const { loginAccount, universe } = getState();
-    const universeID = universe.id || UNIVERSE_ID;
+    const universeId = universe.id || UNIVERSE_ID;
+    const gasPrice = getGasPrice(getState());
 
     const {
       pendingId,
@@ -43,7 +47,8 @@ export function redeemStake(options, callback = logError) {
       onSuccess,
       onFailed,
       nonforkedMarkets,
-      feeWindows
+      feeWindows,
+      estimateGas
     } = options;
 
     pendingId && dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, PENDING));
@@ -58,7 +63,94 @@ export function redeemStake(options, callback = logError) {
       });
     });
 
-    const payload = {
+    const batches = batchContractIds(feeWindows, reportingParticipants);
+
+    const payloads = batches.map(batch =>
+      buildPayload({
+        ...batch,
+        pendingId,
+        loginAccount,
+        universeId,
+        estimateGas,
+        gasPrice,
+        onSent,
+        dispatch
+      })
+    );
+
+    const promises = [];
+
+    payloads.map(payload =>
+      promises.push(
+        new Promise((resolve, reject) =>
+          runRedeemStakePaylod({
+            ...payload,
+            onSuccess: resolve,
+            onFailed: reject
+          })
+        )
+      )
+    );
+
+    Promise.all(promises).then(gasCosts => {
+      onSuccess &&
+        onSuccess(
+          sumAndformatGasCostToEther(gasCosts, { decimalsRounded: 4 }, gasPrice)
+        );
+    });
+  };
+
+  function batchContractIds(feeWindows, reportingParticipants) {
+    const batches = [];
+    const feeWindowBatchSize = Math.ceil(
+      feeWindows.length / FEE_WINDOW_BATCH_SIZE
+    );
+    const crowdsourcerBatchSize = Math.ceil(
+      reportingParticipants.length / CROWDSOURCER_BATCH_SIZE
+    );
+
+    // max case, assuming 10 fee windows and 5 crowdsourcers can run in one tx.
+    if (feeWindowBatchSize < 2 && crowdsourcerBatchSize < 2)
+      return [{ feeWindows, reportingParticipants }];
+
+    // fee windows
+    for (let i = 0; i < feeWindowBatchSize; i++) {
+      batches.push({
+        feeWindows: feeWindows.slice(
+          i * FEE_WINDOW_BATCH_SIZE,
+          i * FEE_WINDOW_BATCH_SIZE + FEE_WINDOW_BATCH_SIZE
+        ),
+        reportingParticipants: []
+      });
+    }
+
+    for (let i = 0; i < crowdsourcerBatchSize; i++) {
+      batches.push({
+        feeWindows: [],
+        reportingParticipants: reportingParticipants.slice(
+          i * CROWDSOURCER_BATCH_SIZE,
+          i * CROWDSOURCER_BATCH_SIZE + CROWDSOURCER_BATCH_SIZE
+        )
+      });
+    }
+
+    return batches;
+  }
+
+  function buildPayload(options) {
+    const {
+      feeWindows = [],
+      reportingParticipants = [],
+      onSent,
+      onSuccess,
+      gasPrice,
+      pendingId,
+      dispatch,
+      onFailed,
+      universeId,
+      loginAccount
+    } = options;
+    return {
       _feeWindows: feeWindows,
       _reportingParticipants: reportingParticipants,
       onSent: () => {
@@ -67,13 +159,12 @@ export function redeemStake(options, callback = logError) {
       onSuccess: gas => {
         if (!!options.estimateGas && onSuccess) {
           const gasValue = gas || CLAIM_FEES_GAS_COST;
-          const gasPrice = getGasPrice(getState());
           const gasCost = formatGasCostToEther(
             gasValue,
             { decimalsRounded: 4 },
             gasPrice
           );
-          return onSuccess(gasCost, gas);
+          return onSuccess(gasCost);
         }
         pendingId &&
           dispatch(addPendingData(pendingId, CLAIM_STAKE_FEES, SUCCESS));
@@ -81,7 +172,6 @@ export function redeemStake(options, callback = logError) {
       },
       onFailed: () => {
         if (!!options.estimateGas && onFailed) {
-          const gasPrice = getGasPrice(getState());
           return onFailed(
             formatGasCostToEther(0, { decimalsRounded: 4 }, gasPrice)
           );
@@ -90,14 +180,17 @@ export function redeemStake(options, callback = logError) {
         onFailed && onFailed();
       },
       tx: {
-        to: universeID,
+        to: universeId,
         estimateGas: !!options.estimateGas
       },
       meta: loginAccount.meta
     };
-    augur.api.Universe.redeemStake(payload, (err, result) => {
-      if (err) return callback(err);
-      callback(null, result);
-    });
-  };
+  }
+}
+
+function runRedeemStakePaylod(payload, callback) {
+  augur.api.Universe.redeemStake(payload, (err, result) => {
+    if (err) return callback(err);
+    callback(null, result);
+  });
 }
