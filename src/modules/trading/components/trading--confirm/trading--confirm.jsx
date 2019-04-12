@@ -99,9 +99,9 @@ class MarketTradingConfirm extends Component {
 
     if (selfTrade) {
       messages = {
-        header: "Self Trade",
+        header: "CONSUMING OWN ORDER",
         type: WARNING,
-        message: "You are about to trade with yourself"
+        message: "You are trading against one of your existing orders"
       };
     }
 
