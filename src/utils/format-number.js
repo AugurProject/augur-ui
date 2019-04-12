@@ -212,7 +212,7 @@ export function formatAttoRep(num, opts) {
     createBigNumber(num.toString())
       .dividedBy(ETHER)
       .toNumber(),
-    opts
+    { blankZero: false, ...opts }
   );
 }
 
@@ -224,7 +224,7 @@ export function formatAttoEth(num, opts) {
     createBigNumber(num.toString())
       .dividedBy(ETHER)
       .toNumber(),
-    opts
+    { blankZero: false, ...opts }
   );
 }
 
