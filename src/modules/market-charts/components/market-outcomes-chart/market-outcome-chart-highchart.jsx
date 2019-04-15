@@ -106,7 +106,9 @@ export default class MarketOutcomesChartHighchart extends Component {
           showLastLabel: true,
           labels: {
             format: "{value:.4f}",
-            style: Styles.MarketOutcomeChartsHighcharts__yLabels
+            style: Styles.MarketOutcomeChartsHighcharts__yLabels,
+            x: 0,
+            y: 12
           },
           title: {
             text: ""

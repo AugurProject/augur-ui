@@ -156,6 +156,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
             volumeType={volumeType}
             containerHeight={containerHeight}
             currentTimeInSeconds={currentTimeInSeconds}
+            isMobile={isMobile}
           />
         </div>
       </section>
