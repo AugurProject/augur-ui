@@ -25,7 +25,7 @@ const FilledOrdersHeader = (props: FilledOrdersHeaderProps) => (
     <li>Price</li>
     <li>Fill Date</li>
     <li>
-      No. of
+      {props.extendedView ? "Number " : "No. "} of
       <br />
       Fills
     </li>
