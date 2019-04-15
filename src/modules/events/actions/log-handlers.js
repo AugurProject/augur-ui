@@ -31,6 +31,7 @@ import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { appendCategoryIfNew } from "modules/categories/actions/append-category";
 import { removePendingOrder } from "modules/orders/actions/pending-orders-management";
 import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
+import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 
 const handleAlertUpdate = (log, dispatch, getState) => {
   dispatch(
@@ -178,6 +179,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
   // always reload account positions on trade so we get up to date PL data.
   dispatch(loadAccountTrades({ marketId: log.marketId }));
   dispatch(loadMarketTradingHistory({ marketId: log.marketId }));
+  dispatch(loadUserMarketTradingHistory());
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
 
