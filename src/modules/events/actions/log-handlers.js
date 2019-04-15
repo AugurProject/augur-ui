@@ -25,7 +25,10 @@ import {
 import { loadUnclaimedFees } from "modules/markets/actions/market-creator-fees-management";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { startOrderSending } from "modules/orders/actions/liquidity-management";
-import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
+import {
+  loadMarketTradingHistory,
+  loadUserMarketTradingHistory
+} from "modules/markets/actions/market-trading-history-management";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { appendCategoryIfNew } from "modules/categories/actions/append-category";
@@ -172,6 +175,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
       )
     );
     dispatch(updateOrder(log, false));
+    dispatch(loadUserMarketTradingHistory());
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
   }
