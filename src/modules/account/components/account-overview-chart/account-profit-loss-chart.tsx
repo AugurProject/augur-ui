@@ -6,7 +6,6 @@ import Styles from "modules/account/components/account-overview-chart/account-ov
 import { UserTimeRangeData } from "modules/account/components/account-overview-chart/account-overview-chart";
 import { isEqual } from "lodash";
 import { formatEther } from "utils/format-number";
-import { ZERO } from "modules/common-elements/constants";
 
 const HIGHLIGHTED_LINE_WIDTH = 2;
 
