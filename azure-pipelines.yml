@@ -1,5 +1,5 @@
 variables:
-  NODE_JS_VERSION: 10.15.0
+  NODE_JS_VERSION: 10.15
 
 trigger:
   branches:
