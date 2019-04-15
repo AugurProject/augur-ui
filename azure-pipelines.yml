@@ -18,7 +18,7 @@ jobs:
     steps:
       - task: npmAuthenticate@0
         inputs:
-          workingFile: $(Agent.BuildDirectory)/.npmrc
+          workingFile: $(Build.SourcesDirectory)/.npmrc
           customEndpoint: npmjs-augur-integration
       - task: NodeTool@0
         inputs:
