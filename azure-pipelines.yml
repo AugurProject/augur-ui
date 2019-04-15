@@ -25,6 +25,7 @@ jobs:
           versionSpec: $(NODE_JS_VERSION)
       - bash: |
           ls -la
+          npm whoami
           #          yarn
           #          yarn lint
           #          yarn test
