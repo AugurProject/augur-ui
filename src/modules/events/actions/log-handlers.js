@@ -25,13 +25,15 @@ import {
 import { loadUnclaimedFees } from "modules/markets/actions/market-creator-fees-management";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { startOrderSending } from "modules/orders/actions/liquidity-management";
-import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
+import {
+  loadMarketTradingHistory,
+  loadUserMarketTradingHistory
+} from "modules/markets/actions/market-trading-history-management";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { appendCategoryIfNew } from "modules/categories/actions/append-category";
 import { removePendingOrder } from "modules/orders/actions/pending-orders-management";
 import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
-import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 
 const handleAlertUpdate = (log, dispatch, getState) => {
   dispatch(
