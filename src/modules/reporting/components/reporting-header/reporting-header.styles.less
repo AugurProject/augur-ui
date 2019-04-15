@@ -173,7 +173,10 @@
 }
 
 .ReportingHeader__heading {
+  align-items: center;
   color: @color-lightergray;
+  display: flex;
+  flex-flow: row wrap;
   letter-spacing: 0.125rem;
   margin: 0 0 1rem;
   text-transform: capitalize;
@@ -181,6 +184,20 @@
   > span {
     color: @color-white;
     font-weight: 500;
+
+    @media @breakpoint-mobile {
+      flex: 1 50%;
+    }
+  }
+
+  > div {
+    margin-left: auto;
+
+    @media @breakpoint-mobile {
+      flex: 1 100%;
+      margin-left: 0;
+      margin-top: @size-24;
+    }
   }
 }
 

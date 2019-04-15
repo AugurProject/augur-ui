@@ -11,6 +11,8 @@ import { YES_NO, CATEGORICAL, SCALAR } from "modules/common-elements/constants";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-report-form/reporting-report-form.styles";
 import { ExclamationCircle as InputErrorIcon } from "modules/common/components/icons";
+import { formatRep } from "utils/format-number";
+import { RepBalance } from "modules/common-elements/labels";
 
 export default class ReportingReportForm extends Component {
   static propTypes = {
@@ -23,11 +25,13 @@ export default class ReportingReportForm extends Component {
     isOpenReporting: PropTypes.bool.isRequired,
     isDesignatedReporter: PropTypes.bool.isRequired,
     isMarketInValid: PropTypes.bool,
-    insufficientRep: PropTypes.bool.isRequired
+    insufficientRep: PropTypes.bool.isRequired,
+    availableRep: PropTypes.string
   };
 
   static defaultProps = {
-    isMarketInValid: false
+    isMarketInValid: false,
+    availableRep: "0"
   };
 
   static BUTTONS = {
@@ -175,6 +179,7 @@ export default class ReportingReportForm extends Component {
       market,
       selectedOutcome,
       stake,
+      availableRep,
       validations,
       insufficientRep,
       isDesignatedReporter
@@ -364,11 +369,14 @@ export default class ReportingReportForm extends Component {
           </label>
         )}
         {!isOpenReporting && (
-          <li>
-            <label htmlFor="sr__input--stake">
-              <span>Required Stake</span>
-            </label>
-            <p>{stake} REP</p>
+          <li className={Styles.ReportingReportREP}>
+            <div>
+              <label htmlFor="sr__input--stake">
+                <span>Required Stake</span>
+              </label>
+              <p>{stake} REP</p>
+            </div>
+            <RepBalance rep={formatRep(availableRep).formattedValue} />
           </li>
         )}
         {validations.hasOwnProperty("neverReported") &&

@@ -151,6 +151,10 @@ export interface TextLabelProps {
   keyId: string;
 }
 
+export interface RepBalanceProps {
+  rep: string;
+}
+
 export function formatExpandedValue(
   value,
   showDenomination,
@@ -690,6 +694,14 @@ export const MovementLabel = (props: MovementLabelProps) => {
 
 export const PillLabel = (props: PillLabelProps) => (
   <span className={Styles.PillLabel}>{props.label}</span>
+);
+
+export const RepBalance = (props: RepBalanceProps) => (
+  <div className={Styles.RepBalance}>
+    <span>my rep balance</span>
+    <span>{props.rep}</span>
+    <span>rep</span>
+  </div>
 );
 
 export const PositionTypeLabel = (props: PositionTypeLabelProps) => {

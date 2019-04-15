@@ -65,6 +65,7 @@ const mapStateToProps = state => {
   return {
     currentTimestamp: selectCurrentTimestamp(state),
     forkedMarket,
+    availableRep: state.loginAccount.rep,
     isLogged: state.authStatus.isLogged,
     isMobile: state.appStatus.isMobile,
     isConnected: state.connection.isConnected && state.universe.id != null,
