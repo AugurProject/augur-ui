@@ -180,7 +180,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     handleAlertUpdate(log, dispatch, getState);
   }
   // always reload account positions on trade so we get up to date PL data.
-  dispatch(loadAccountTrades({ marketId: log.marketId }));
+  dispatch(loadAccountTrades());
   dispatch(loadMarketTradingHistory({ marketId: log.marketId }));
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
@@ -190,7 +190,7 @@ export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
-    dispatch(loadAccountTrades({ marketId: log.market }));
+    dispatch(loadAccountTrades());
   }
   if (isCurrentMarket(log.market)) dispatch(loadBidsAsks(log.market));
 };
@@ -320,7 +320,7 @@ export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
     // always reload account positions on trade so we get up to date PL data.
-    dispatch(loadAccountTrades({ marketId: log.marketId }));
+    dispatch(loadAccountTrades());
   }
 };
 
