@@ -21,7 +21,7 @@ jobs:
           versionSpec: $(NODE_JS_VERSION)
       - task: npmAuthenticate@0
         inputs:
-          workingFile: './npmrc'
+          workingFile: './.npmrc'
           customEndpoint: 'e4665737-5f60-4679-9c4c-dac23e168d08'
       - bash: |
           ls -la
