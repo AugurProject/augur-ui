@@ -116,7 +116,13 @@
 }
 
 .FilledOrder__extendedView {
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr) 6rem;
+
+  > li {
+    &:first-child {
+      padding-left: 0;
+    }
+  }
 }
 
 .OpenOrder_infoContainer {
@@ -233,6 +239,12 @@ div.OpenOrder__labels {
 
 .Position__extended {
   grid-template-columns: repeat(6, 1fr);
+
+  > li {
+    &:first-child {
+      padding-left: 0.5rem;
+    }
+  }
 }
 
 @media @breakpoint-mobile {

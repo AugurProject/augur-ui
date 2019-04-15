@@ -1,8 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
 .FilledOrdersTable {
-  background-color: @color-tertiary-background;
-  color: white;
+  background-color: @color-active-hover;
   cursor: default;
   display: flex;
   flex-direction: column;
@@ -12,7 +11,6 @@
 }
 
 .FilledOrdersTable__inner {
-  background-color: fade(@color-primary-alternate, 10%);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -66,9 +64,11 @@
   margin: 0 1.5rem;
 
   > li {
+    .mono-11;
+
     align-items: center;
+    color: @color-tertiary-text;
     display: flex;
-    font-size: @size-11;
     justify-content: flex-end;
     padding: 0.5rem 0;
     text-align: right;
@@ -94,7 +94,6 @@
   }
 
   .FilledOrdersTable__innerMobile {
-    background-color: fade(@color-primary-alternate, 40%);
     display: flex;
     flex-direction: column;
     padding: 0 @size-16;
