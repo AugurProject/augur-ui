@@ -53,6 +53,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         chart: {
           type: "candlestick",
+          panning: props.isMobile,
           styledMode: false,
           animation: false,
           marginTop: props.isMobile ? 20 : 40,
@@ -67,9 +68,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               this.ethLabel.destroy();
               this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
             }
-          },
-          panning: true,
-          followTouchMove: false
+          }
         },
         credits: {
           enabled: false
