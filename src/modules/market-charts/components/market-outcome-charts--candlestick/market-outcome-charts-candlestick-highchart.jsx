@@ -50,7 +50,18 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           type: "candlestick",
           styledMode: false,
           animation: false,
-          marginTop: 20
+          marginTop: 40,
+          events: {
+            load() {
+              const { width } = this.renderer;
+              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+            },
+            redraw() {
+              const { width } = this.renderer;
+              this.ethLabel.destroy();
+              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+            }
+          }
         },
         credits: {
           enabled: false
@@ -85,9 +96,10 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showFirstLabel: true,
             showLastLabel: true,
             labels: {
-              format: "{value:.4f} <span class='eth-label'>ETH</span>",
+              format: "{value:.4f}",
               align: "center",
-              reserveSpace: true
+              reserveSpace: true,
+              style: Styles.MarketOutcomeCharts__highcharts_display_yLables
             },
             title: {
               text: ""
