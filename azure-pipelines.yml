@@ -24,7 +24,7 @@ jobs:
           command: 'custom' # Options: install, publish, custom
           verbose: true
           customCommand: adduser
-          publishEndpoint: npmjs-augur-integration
+          customEndpoint: npmjs-augur-integration
       - bash: |
           ls -la
           #          yarn
