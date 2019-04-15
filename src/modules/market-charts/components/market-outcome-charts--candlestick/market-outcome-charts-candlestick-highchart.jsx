@@ -97,8 +97,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showLastLabel: true,
             labels: {
               format: "{value:.4f}",
-              align: "center",
-              reserveSpace: true,
               style: Styles.MarketOutcomeCharts__highcharts_display_yLables
             },
             title: {
