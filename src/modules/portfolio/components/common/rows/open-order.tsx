@@ -97,6 +97,11 @@ const OpenOrder = (props: OpenOrderProps) => {
               text="Cancel"
             />
           )}
+        {(openOrder.pending || openOrder.pendingOrder) && (
+          <span>
+            <PendingLabel />
+          </span>
+        )}
       </li>
     </ul>
   );

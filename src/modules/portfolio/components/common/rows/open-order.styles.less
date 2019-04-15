@@ -37,8 +37,18 @@
       position: relative;
 
       > span:nth-of-type(2) {
+        display: none;
         left: 0;
         position: absolute;
+      }
+    }
+
+    &:last-of-type {
+      position: relative;
+
+      > span {
+        position: absolute;
+        right: -2px;
       }
     }
 
@@ -85,7 +95,7 @@
 }
 
 .Order__extendedView {
-  grid-template-columns: repeat(6, 1fr) 5rem;
+  grid-template-columns: repeat(6, 1fr) 6.2rem;
 }
 
 .Position,
@@ -249,9 +259,16 @@ div.OpenOrder__labels {
         text-align: left;
 
         > span:nth-of-type(2) {
+          display: block;
           left: unset;
           right: 0;
           top: 0;
+        }
+      }
+
+      &:last-of-type {
+        > span {
+          display: none;
         }
       }
     }
