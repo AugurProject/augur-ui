@@ -12,11 +12,15 @@ import DisputingMarkets from "modules/reporting/components/common/disputing-mark
 import ReportingResolved from "modules/reporting/components/reporting-resolved/reporting-resolved";
 import MarketsHeaderLabel from "modules/markets-list/components/markets-header-label/markets-header-label";
 
+import { formatRep } from "utils/format-number";
+import { RepBalance } from "modules/common-elements/labels";
+
 export default class PortfolioReports extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     markets: PropTypes.array.isRequired,
+    availableRep: PropTypes.string,
     upcomingMarkets: PropTypes.array.isRequired,
     upcomingMarketsCount: PropTypes.number.isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -46,7 +50,8 @@ export default class PortfolioReports extends Component {
 
   static defaultProps = {
     forkedMarket: null,
-    disputableMarketsLength: 0
+    disputableMarketsLength: 0,
+    availableRep: "0"
   };
 
   constructor(props) {
@@ -88,6 +93,7 @@ export default class PortfolioReports extends Component {
       forkedMarket,
       reportingFees,
       history,
+      availableRep,
       isForking,
       isMobile,
       location,
@@ -122,6 +128,9 @@ export default class PortfolioReports extends Component {
             <title>Reporting</title>
           </Helmet>
         </section>
+        <div style={{ padding: "2rem 2rem 0" }}>
+          <RepBalance rep={formatRep(availableRep).formattedValue} />
+        </div>
         {userHasClaimableForkFees && (
           <section className={Styles.PortfolioReports}>
             <h4>Forked Market</h4>

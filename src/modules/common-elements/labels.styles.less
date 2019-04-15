@@ -234,6 +234,55 @@ div.LinearPropertyViewTransaction {
   }
 }
 
+.RepBalance {
+  align-items: baseline;
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 175px;
+  width: fit-content;
+
+  @media @breakpoint-mobile {
+    max-width: 150px;
+  }
+
+  > span {
+    .mono-14-medium;
+
+    color: @color-secondary-text;
+    flex: 0 auto;
+    text-transform: uppercase;
+
+    @media @breakpoint-mobile {
+      .mono-14;
+    }
+  }
+
+  > span:first-of-type {
+    .text-12;
+
+    color: @color-neutral;
+    flex: 1 100%;
+    font-weight: @weight-medium;
+    margin-bottom: @size-4;
+
+    @media @breakpoint-mobile {
+      .text-10;
+    }
+  }
+
+  > span:last-of-type {
+    .text-12;
+
+    flex: 0 auto;
+    font-weight: @weight-medium;
+    margin-left: @size-8;
+
+    @media @breakpoint-mobile {
+      .text-10;
+    }
+  }
+}
+
 .MarketTypeLabel {
   .mono-10;
 

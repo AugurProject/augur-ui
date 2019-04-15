@@ -9,13 +9,14 @@ import {
   MALFORMED_OUTCOME,
   ZERO
 } from "modules/common-elements/constants";
-import { formatAttoRep, formatNumber } from "utils/format-number";
+import { formatAttoRep, formatNumber, formatRep } from "utils/format-number";
 import { augur } from "services/augurjs";
 import { ExclamationCircle as InputErrorIcon } from "modules/common/components/icons";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-dispute-form/reporting-dispute-form.styles";
 import ReportingDisputeProgress from "modules/reporting/components/reporting-dispute-progress/reporting-dispute-progress";
 import Input from "modules/common/components/input/input";
+import { RepBalance } from "modules/common-elements/labels";
 
 const { ETHER } = augur.rpc.constants;
 export default class ReportingDisputeForm extends Component {
@@ -432,7 +433,7 @@ export default class ReportingDisputeForm extends Component {
   }
 
   render() {
-    const { market, stakeInfo, outcomes } = this.props;
+    const { market, stakeInfo, outcomes, availableRep } = this.props;
     const s = this.state;
     const winner = (outcomes && outcomes.find(o => o.tentativeWinning)) || {};
     const disputeRound = market.disputeInfo && market.disputeInfo.disputeRound;
@@ -644,12 +645,12 @@ export default class ReportingDisputeForm extends Component {
             )}
           </ul>
         </li>
-        <li className={FormStyles["field--short"]}>
+        <li>
           <label>
             <span htmlFor="sr__input--stake">Deposit Stake</span>
           </label>
           <ul className={FormStyles["Form__radio-buttons--per-line-inline"]}>
-            <li>
+            <li className={Styles.ReportingDisputeForm_Rep}>
               <Input
                 id="sr__input--stake"
                 type="number"
@@ -669,6 +670,7 @@ export default class ReportingDisputeForm extends Component {
                 onMaxButtonClick={() => this.setMAXStake()}
                 darkMaxBtn
               />
+              <RepBalance rep={formatRep(availableRep).formattedValue} />
             </li>
             <li>
               {s.validations.hasOwnProperty("stake") &&

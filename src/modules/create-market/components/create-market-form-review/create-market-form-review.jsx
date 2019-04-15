@@ -6,11 +6,17 @@ import getValue from "src/utils/get-value";
 import insufficientFunds from "modules/markets/helpers/insufficient-funds";
 
 import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
-import { formatEtherEstimate, formatGasCostToEther } from "utils/format-number";
+import {
+  formatEtherEstimate,
+  formatGasCostToEther,
+  formatRep
+} from "utils/format-number";
 import {
   EXPIRY_SOURCE_GENERIC,
   DESIGNATED_REPORTER_SELF
 } from "modules/common-elements/constants";
+
+import { RepBalance } from "modules/common-elements/labels";
 
 import { ExclamationCircle as InputErrorIcon } from "modules/common/components/icons";
 import Styles from "modules/create-market/components/create-market-form-review/create-market-form-review.styles";
@@ -202,13 +208,16 @@ export default class CreateMarketReview extends Component {
   }
 
   render() {
-    const { newMarket } = this.props;
+    const { newMarket, availableRep } = this.props;
     const s = this.state;
 
     return (
       <article className={StylesForm.CreateMarketForm__fields}>
         <div className={Styles.CreateMarketReview}>
-          <h2 className={Styles.CreateMarketReview__heading}>Confirm Market</h2>
+          <h2 className={Styles.CreateMarketReview__heading}>
+            Confirm Market
+            <RepBalance rep={formatRep(availableRep).formattedValue} />
+          </h2>
           <div className={Styles.CreateMarketReview__wrapper}>
             <div className={Styles.CreateMarketReview__creation}>
               <h3 className={Styles.CreateMarketReview__subheading}>

@@ -26,10 +26,17 @@
 .CreateMarketReview__heading {
   &:extend(.caps--large);
 
+  align-items: flex-end;
   border-bottom: 1px solid @color-input-background;
+  display: flex;
+  flex-flow: row wrap;
   font-weight: 700;
   margin-bottom: 1.375rem;
   padding-bottom: 0.5rem;
+
+  > div {
+    margin-left: auto;
+  }
 }
 
 .CreateMarketReview__list {

@@ -183,6 +183,7 @@ export default class ReportingReport extends Component {
             {s.currentStep === 0 && (
               <ReportingReportForm
                 market={market}
+                availableRep={availableRep}
                 updateState={this.updateState}
                 isMarketInValid={s.isMarketInValid}
                 selectedOutcome={s.selectedOutcome}
