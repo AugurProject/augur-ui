@@ -10,7 +10,8 @@ import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
 NoDataToDisplay(Highcharts);
 
-const ShowNavigator = 350;
+const ShowNavigator = 400;
+
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
     priceTimeSeries: PropTypes.array.isRequired,
@@ -21,10 +22,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     marketMin: CustomPropTypes.bigNumber.isRequired,
     volumeType: PropTypes.string.isRequired,
     containerHeight: PropTypes.number.isRequired,
-    currentTimeInSeconds: PropTypes.number.isRequired
+    currentTimeInSeconds: PropTypes.number.isRequired,
+    isMobile: PropTypes.bool
   };
 
-  static defaultProps = {};
+  static defaultProps = {
+    isMobile: false
+  };
 
   constructor(props) {
     super(props);
@@ -48,9 +52,11 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         chart: {
           type: "candlestick",
+          panning: props.isMobile,
           styledMode: false,
           animation: false,
-          marginTop: 40,
+          marginTop: props.isMobile ? 20 : 40,
+          marginBottom: 0,
           events: {
             load() {
               const { width } = this.renderer;
@@ -72,7 +78,9 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         xAxis: {
           ordinal: false,
           labels: {
-            format: "{value:%b %d}"
+            format: "{value:%b %d}",
+            align: "center",
+            reserveSpace: true
           },
           range: 24 * 3600 * 1000, // day
           crosshair: {
@@ -93,11 +101,13 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showEmpty: true,
             max: props.marketMax.toFixed(props.pricePrecision),
             min: props.marketMin.toFixed(props.pricePrecision),
-            showFirstLabel: true,
+            showFirstLabel: false,
             showLastLabel: true,
             labels: {
               format: "{value:.4f}",
-              style: Styles.MarketOutcomeCharts__highcharts_display_yLables
+              style: Styles.MarketOutcomeCharts__highcharts_display_yLables,
+              x: 0,
+              y: 12
             },
             title: {
               text: ""
@@ -238,6 +248,30 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
   }
 
+  calculateMaxMin = data => {
+    const values = data.map(d => d[2]);
+
+    const bnMin = createBigNumber(
+      values.reduce(
+        (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
+        0
+      )
+    );
+    const bnMax = createBigNumber(
+      values.reduce(
+        (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
+        0
+      )
+    );
+
+    const max = bnMax.toNumber();
+    const min = bnMin.toNumber();
+    return {
+      max,
+      min
+    };
+  };
+
   buidOptions(
     priceTimeSeries,
     selectedPeriod,
@@ -267,7 +301,11 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     });
 
     // add buffer so candlesticks aren't stuck to beginning of chart
-    volume.push([currentTimeInSeconds * 1000, 0]);
+    let intervalInfo = {};
+    if (priceTimeSeries.length > 0) {
+      volume.push([currentTimeInSeconds * 1000, 0]);
+      intervalInfo = this.calculateMaxMin(ohlc);
+    }
 
     options.height = containerHeight;
     if (containerHeight > 0) {
@@ -285,6 +323,18 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       options.xAxis[0].crosshair.label = {
         ...options.xAxis[0].crosshair.label,
         format: crosshair
+      };
+    }
+
+    if (Array.isArray(options.yAxis)) {
+      options.yAxis[0] = {
+        ...options.yAxis[0],
+        ...intervalInfo
+      };
+    } else {
+      options.yAxis = {
+        ...options.yAxis,
+        ...intervalInfo
       };
     }
 

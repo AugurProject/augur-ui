@@ -31,6 +31,10 @@
   display: flex;
   flex-basis: 100%;
   justify-content: flex-end;
+
+  @media @breakpoint-mobile {
+    justify-content: space-between;
+  }
 }
 
 span.MarketOutcomeChartsHeader__stat {
@@ -74,6 +78,10 @@ div.MarketOutcomeChartsHeader__stats {
   min-height: @charts-min-height;
   padding-left: 0.5rem;
   position: relative;
+
+  @media @breakpoint-mobile {
+    padding: 0;
+  }
 }
 
 .MarketOutcomeCandlestick__container {

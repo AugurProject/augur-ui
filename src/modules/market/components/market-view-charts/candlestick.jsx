@@ -18,7 +18,12 @@ export class Candlestick extends React.Component {
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     selectedOutcome: PropTypes.string.isRequired,
-    daysPassed: PropTypes.number.isRequired
+    daysPassed: PropTypes.number.isRequired,
+    isMobile: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isMobile: false
   };
 
   constructor(props) {
@@ -83,14 +88,13 @@ export class Candlestick extends React.Component {
   }
 
   render() {
-    const { maxPrice, minPrice, currentTimeInSeconds } = this.props;
+    const { maxPrice, minPrice, currentTimeInSeconds, isMobile } = this.props;
     const { priceTimeSeries, selectedPeriod } = this.state;
 
     return (
       <MarketOutcomeCandlestick
         priceTimeSeries={priceTimeSeries}
-        isMobile={false}
-        isMobileSmall={false}
+        isMobile={isMobile}
         fixedPrecision={4}
         pricePrecision={4}
         selectedPeriod={selectedPeriod}
