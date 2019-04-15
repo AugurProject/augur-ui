@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import OpenMarkets from "modules/account/components/open-markets/open-markets";
 import { pick } from "lodash";
-import { CLOSED } from "modules/common-elements/constants";
+import { CLOSED, MARKET_CLOSED } from "modules/common-elements/constants";
 import getLoginAccountPositions from "modules/positions/selectors/login-account-positions";
 import getSelectLoginAccountTotals from "modules/positions/selectors/login-account-totals";
 import memoize from "memoizee";
@@ -36,6 +36,7 @@ const OpenMarketsContainer = withRouter(connect(mapStateToProps)(OpenMarkets));
 const getPositionsMarkets = memoize(
   positions =>
     positions.markets.reduce((p, m) => {
+      if (m.marketStatus === MARKET_CLOSED) return p;
       const pos = m.userPositions.filter(position => position.type !== CLOSED);
       return pos.length === 0 ? p : [...p, { ...m, userPositions: pos }];
     }, []),
