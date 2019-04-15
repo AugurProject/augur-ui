@@ -155,15 +155,13 @@ jobs:
           command: logout
           containerRegistryType: Container Registry
           dockerRegistryEndpoint: dockerhub-augurproject
-      - task: npmAuthenticate@0
-        inputs:
-          customEndpoint: npmjs-augur-integration
       - task: Npm@1
         inputs:
           command: 'custom' # Options: install, publish, custom
           verbose: true
           customCommand: publish --tag $(npm_tag)
-          publishEndpoint: npmjs-augur-integration
+          customRegistry: 'useNpmrc'
+          customEndpoint: npmjs-augur-integration
     condition: |
       and
       (
