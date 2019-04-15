@@ -21,7 +21,7 @@ const mapStateToProps = state => {
     isMobile: state.appStatus.isMobile,
     markets: filteredMarkets,
     currentAugurTimestamp: state.blockchain.currentAugurTimestamp,
-    reportingWindowStatsEndTime: state.reportingWindowStats.endTime
+    reportingWindowStatsEndTime: state.reportingWindowStats.endTime || 0
   };
 };
 
