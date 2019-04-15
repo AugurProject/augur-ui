@@ -122,13 +122,13 @@
     height: 100vh;
     left: -12.5rem;
     overflow: auto;
-    padding-top: @top-bar-height-mobile;
     position: absolute;
     transition: left 0.2s ease-in-out;
     width: 12.5rem;
 
     &.mobileShow {
       left: 0;
+      z-index: @mask-above-bar;
     }
   }
 
