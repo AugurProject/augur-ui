@@ -5,7 +5,8 @@ import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/account/components/account-overview-chart/account-overview-chart.styles";
 import { UserTimeRangeData } from "modules/account/components/account-overview-chart/account-overview-chart";
 import { isEqual } from "lodash";
-import { ZERO } from "src/modules/common-elements/constants";
+import { formatEther } from "utils/format-number";
+import { ZERO } from "modules/common-elements/constants";
 
 const HIGHLIGHTED_LINE_WIDTH = 2;
 
@@ -64,7 +65,8 @@ export default class AccountProfitLossChart extends Component<
       xAxis: {
         showFirstLabel: true,
         showLastLabel: true,
-        endOnTick: true,
+        endOnTick: false,
+        startOnTick: false,
         labels: {
           style: Styles.AccountOverviewChart_chart_labels,
           format: "{value:%b %d}",
@@ -82,6 +84,7 @@ export default class AccountProfitLossChart extends Component<
         showFirstLabel: true,
         showLastLabel: true,
         startOnTick: false,
+        endOnTick: false,
         labels: {
           format: "{value:.4f} <span class='eth-label'>ETH</span>",
           formatter() {
@@ -141,14 +144,14 @@ export default class AccountProfitLossChart extends Component<
       )
     );
 
-    const max = bnMax.toNumber();
-    const min = bnMin.toNumber();
+    const max = formatEther(bnMax, { decimalsRounded: 4 }).formattedValue;
+    const min = formatEther(bnMin, { decimalsRounded: 4 }).formattedValue;
+    const tickInterval = bnMax.abs().gt(bnMin.abs())
+      ? formatEther(bnMax.abs()).formattedValue
+      : formatEther(bnMin.abs()).formattedValue;
 
-    const tick = bnMax.minus(bnMin).abs();
     return {
-      tickInterval: tick.gt(ZERO)
-        ? Math.floor(tick.toNumber())
-        : tick.toNumber(),
+      tickInterval,
       max,
       min
     };
