@@ -47,9 +47,7 @@ describe("modules/events/actions/log-handlers.js", () => {
         .spyOn(loadAccountTradesModule, "loadAccountTrades")
         .mockImplementation(options => ({
           type: ACTIONS.LOAD_ACCOUNT_TRADES,
-          data: {
-            marketId: options.marketId
-          }
+          data: {}
         }));
       loadReportingWindowBoundsSpy = jest
         .spyOn(loadReportingWindowBoundsModule, "loadReportingWindowBounds")
@@ -118,9 +116,7 @@ describe("modules/events/actions/log-handlers.js", () => {
         },
         {
           type: ACTIONS.LOAD_ACCOUNT_TRADES,
-          data: {
-            marketId: "0xdeadbeef"
-          }
+          data: {}
         }
       ]);
     });
@@ -216,9 +212,7 @@ describe("modules/events/actions/log-handlers.js", () => {
         },
         {
           type: ACTIONS.LOAD_ACCOUNT_TRADES,
-          data: {
-            marketId: "0xdeadbeef"
-          }
+          data: {}
         }
       ]);
     });
