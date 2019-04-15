@@ -19,13 +19,14 @@ jobs:
       - task: NodeTool@0
         inputs:
           versionSpec: $(NODE_JS_VERSION)
-      - task: npmAuthenticate@0
+      - task: Npm@1
         inputs:
-          workingFile: './.npmrc'
-          customEndpoint: 'e4665737-5f60-4679-9c4c-dac23e168d08'
+          command: 'custom' # Options: install, publish, custom
+          verbose: true
+          customCommand: whoami
+          publishEndpoint: npmjs-augur-integration
       - bash: |
           ls -la
-          npm whoami
           #          yarn
           #          yarn lint
           #          yarn test
