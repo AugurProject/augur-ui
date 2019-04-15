@@ -11,7 +11,6 @@ import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 NoDataToDisplay(Highcharts);
 
 const ShowNavigator = 400;
-const BAR_WIDTH_PX_VALUE = 15;
 
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
