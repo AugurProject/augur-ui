@@ -173,13 +173,13 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
       )
     );
     dispatch(updateOrder(log, false));
+    dispatch(loadUserMarketTradingHistory());
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
   }
   // always reload account positions on trade so we get up to date PL data.
   dispatch(loadAccountTrades({ marketId: log.marketId }));
   dispatch(loadMarketTradingHistory({ marketId: log.marketId }));
-  dispatch(loadUserMarketTradingHistory());
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
 
