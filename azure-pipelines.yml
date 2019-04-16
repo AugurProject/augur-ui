@@ -24,8 +24,8 @@ jobs:
           command: 'custom' # Options: install, publish, custom
           verbose: true
           customCommand: whoami
-          customRegistry: 'useFeed'
-          customFeed: npmjs-augur-integration
+          publishRegistry: 'useExternalRegistry'
+          publishEndpoint: npmjs-augur-integration
       - bash: |
           ls -la
           #          yarn
