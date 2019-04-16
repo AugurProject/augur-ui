@@ -8,6 +8,7 @@ import classNames from "classnames";
 
 import shouldComponentUpdatePure from "utils/should-component-update-pure";
 import debounce from "utils/debounce";
+import isWindows from 'utils/is-windows';
 
 import { tween } from "shifty";
 import { isEqual } from "lodash";
@@ -233,6 +234,10 @@ export default class AppView extends Component {
   componentDidMount() {
     window.addEventListener("resize", this.handleWindowResize);
 
+    // Restyle all scrollbars on windows
+    if (isWindows()) {
+      document.body.classList.add('App--windowsScrollBars');
+    }
     this.checkIsMobile();
   }
 
@@ -510,8 +515,7 @@ export default class AppView extends Component {
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
-            [Styles[`App--blur`]]: Object.keys(modal).length !== 0,
-            [Styles.windowsScrollBars]: navigator.platform.indexOf("Win") > -1 // Windows Machine, restyle scrollbars
+            [Styles[`App--blur`]]: Object.keys(modal).length !== 0
           })}
         >
           <section className={Styles.App__loadingIndicator} />

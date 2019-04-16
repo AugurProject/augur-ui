@@ -45,3 +45,15 @@ body {
   max-width: @max-width;
   min-height: 100%;
 }
+
+:global
+  .App--windowsScrollBars {
+    ::-webkit-scrollbar {
+      width: 0.375rem;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: @color-primary-light;
+      border-radius: @border-radius-full-round;
+    }
+  }
