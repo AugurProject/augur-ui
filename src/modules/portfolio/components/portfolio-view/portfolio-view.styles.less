@@ -24,6 +24,13 @@
       }
     }
   }
+
+  > div:last-of-type {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: fit-content;
+    grid-gap: 1.5rem;
+  }
 }
 
 .Loading__container,
@@ -40,4 +47,36 @@
   color: @color-lightgray;
   margin-left: 0.5rem;
   text-decoration-line: underline;
+}
+
+.ShowOnMobile {
+  display: none;
+}
+
+@media @breakpoint-1-0-0 {
+  .PortfolioView {
+    > div:last-of-type {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin: 1.25rem;
+    }
+  }
+}
+
+@media @breakpoint-smallish-desktop {
+  .PortfolioView {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+}
+
+@media @breakpoint-step-2-255 {
+  .ShowOnMobile {
+    display: flex;
+  }
+
+  .HideOnMobile { 
+    display: none 
+  }
 }
