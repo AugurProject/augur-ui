@@ -3,9 +3,11 @@ import { updateBlockchain } from "modules/app/actions/update-blockchain";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { createBigNumber } from "utils/create-big-number";
 import { loadGasPriceInfo } from "modules/app/actions/load-gas-price-info";
+import debounce from "utils/debounce";
 
 const GET_GAS_BLOCK_LIMIT = 100;
 const MAINNET_ID = "1";
+const EST_BLOCK_TIME = 1000 * 5;
 
 export const syncBlockchain = cb => (dispatch, getState) => {
   const networkId = augur.rpc.getNetworkID();
@@ -38,15 +40,18 @@ export const syncBlockchain = cb => (dispatch, getState) => {
     cb && cb();
   });
 
-  augur.augurNode.getSyncData((err, res) => {
-    if (!err && res) {
-      dispatch(
-        updateBlockchain({
-          highestBlock: res.highestBlock.number,
-          lastProcessedBlock: res.lastProcessedBlock.number
-        })
-      );
-    }
-  });
+  debounce(
+    augur.augurNode.getSyncData((err, res) => {
+      if (!err && res) {
+        dispatch(
+          updateBlockchain({
+            highestBlock: res.highestBlock.number,
+            lastProcessedBlock: res.lastProcessedBlock.number
+          })
+        );
+      }
+    }),
+    EST_BLOCK_TIME
+  );
   dispatch(updateAssets());
 };
