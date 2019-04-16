@@ -7,6 +7,7 @@ import Styles from "modules/market/components/common/module-tabs/module-tabs.sty
 
 export default class ModuleTabs extends Component {
   static propTypes = {
+    className: PropTypes.string,
     selected: PropTypes.number,
     children: PropTypes.arrayOf(ModulePane).isRequired,
     fillWidth: PropTypes.bool,
@@ -20,6 +21,7 @@ export default class ModuleTabs extends Component {
 
   static defaultProps = {
     selected: 0,
+    className: "",
     fillWidth: false,
     fillForMobile: false,
     id: "id",
@@ -111,7 +113,7 @@ export default class ModuleTabs extends Component {
   render() {
     return (
       <div
-        className={classNames(Styles.ModuleTabs, {
+        className={classNames(Styles.ModuleTabs, this.props.className, {
           [Styles.ModuleTabs__scrollOver]: this.props.scrollOver
         })}
         id={"tabs_" + this.props.id}

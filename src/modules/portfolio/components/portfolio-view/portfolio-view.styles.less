@@ -15,7 +15,7 @@
       display: flex;
       flex: 2 1 auto;
       flex-direction: column;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
       max-height: 65vh;
       min-height: 6.25rem;
 
@@ -27,9 +27,10 @@
 
   > div:last-of-type {
     display: grid;
+    grid-gap: 1.5rem;
     grid-template-columns: 1fr 1fr;
     height: fit-content;
-    grid-gap: 1.5rem;
+    margin-left: 4px;
   }
 }
 
@@ -55,6 +56,10 @@
 
 @media @breakpoint-1-0-0 {
   .PortfolioView {
+    > div > div {
+      margin-bottom: 2.5rem;
+    }
+
     > div:last-of-type {
       display: flex;
       flex: 1;
@@ -71,12 +76,12 @@
   }
 }
 
-@media @breakpoint-step-2-255 {
+@media @breakpoint-mobile-mid {
   .ShowOnMobile {
     display: flex;
   }
 
-  .HideOnMobile { 
-    display: none 
+  .HideOnMobile {
+    display: none;
   }
 }

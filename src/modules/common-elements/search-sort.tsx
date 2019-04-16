@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import classNames from "classnames";
 
 import { SquareDropdown } from "modules/common-elements/selection";
 import { SearchBar } from "modules/common-elements/search";
@@ -38,43 +39,38 @@ export class SearchSort extends React.Component<
       updateDropdown,
       sortByStyles,
       onChange,
-      isMobile
     } = this.props;
 
     const { showSortByOptions } = this.state;
 
     return (
-      <div className={Styles.SearchSort}>
-        {isMobile && (
-          <>
-            <SearchBar isMobile onFocus={this.onFocus} onChange={onChange} />
-            {sortByOptions && (
-              <div className={Styles.SearchSort_dropdown}>
-                <SquareDropdown
-                  options={sortByOptions}
-                  onChange={updateDropdown}
-                  stretchOut={isMobile}
-                  sortByStyles={sortByStyles}
-                />
-              </div>
+      <>
+        <div className={classNames(Styles.SearchSort, Styles.ShowOnMobile)}>
+          <SearchBar isMobile onFocus={this.onFocus} onChange={onChange} />
+          {sortByOptions && (
+            <div className={Styles.SearchSort_dropdown}>
+              <SquareDropdown
+                options={sortByOptions}
+                onChange={updateDropdown}
+                stretchOutOnMobile
+                sortByStyles={sortByStyles}
+              />
+            </div>
+          )}
+        </div>
+        <div className={classNames(Styles.SearchSort, Styles.HideOnMobile)}>
+          {sortByOptions &&
+            showSortByOptions && (
+              <SquareDropdown
+                options={sortByOptions}
+                onChange={updateDropdown}
+                stretchOutOnMobile
+                sortByStyles={sortByStyles}
+              />
             )}
-          </>
-        )}
-        {!isMobile && (
-          <>
-            {sortByOptions &&
-              showSortByOptions && (
-                <SquareDropdown
-                  options={sortByOptions}
-                  onChange={updateDropdown}
-                  stretchOut={isMobile}
-                  sortByStyles={sortByStyles}
-                />
-              )}
-            <SearchBar onFocus={this.onFocus} onChange={onChange} />
-          </>
-        )}
-      </div>
+          <SearchBar onFocus={this.onFocus} onChange={onChange} />
+        </div>
+      </>
     );
   }
 }

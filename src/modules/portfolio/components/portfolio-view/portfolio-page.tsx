@@ -14,41 +14,39 @@ export interface PortfolioPageProps {
   isMobileSmall: Boolean;
 }
 
-const PortfolioPage = (props: PortfolioPageProps) => {
+const PortfolioPage = (props: PortfolioPageProps) => (
   // if (props.isMobileSmall) { // need to change at 768
   //   return (
-      
+
   //   );
   // }
 
-  return (
-    <>
-      <section className={classNames(Styles.PortfolioView, Styles.HideOnMobile)}>
-        <div>
-          <MyPositions />
-          <MyMarkets />
-        </div>
-        <div>
-          <OpenOrders />
-          <FilledOrders />
-        </div>
-      </section>
-      <ModuleTabs selected={0} fillWidth noBorder className={Styles.ShowOnMobile}>       
-        <ModulePane label="Positions">
-          <MyPositions />
-        </ModulePane>
-        <ModulePane label="Open Orders">
-          <OpenOrders />
-        </ModulePane>
-        <ModulePane label="Filled Orders">
-          <FilledOrders />
-        </ModulePane>
-        <ModulePane label="My Created Markets">
-          <MyMarkets />
-        </ModulePane>
-      </ModuleTabs>
-    </>
-  );
-};
+  <>
+    <section className={classNames(Styles.PortfolioView, Styles.HideOnMobile)}>
+      <div>
+        <MyPositions />
+        <MyMarkets />
+      </div>
+      <div>
+        <OpenOrders />
+        <FilledOrders />
+      </div>
+    </section>
+    <ModuleTabs selected={0} fillWidth noBorder className={Styles.ShowOnMobile}>
+      <ModulePane label="Positions">
+        <MyPositions />
+      </ModulePane>
+      <ModulePane label="Open Orders">
+        <OpenOrders />
+      </ModulePane>
+      <ModulePane label="Filled Orders">
+        <FilledOrders />
+      </ModulePane>
+      <ModulePane label="My Created Markets">
+        <MyMarkets />
+      </ModulePane>
+    </ModuleTabs>
+  </>
+);
 
 export default PortfolioPage;

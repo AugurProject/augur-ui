@@ -45,7 +45,7 @@ const QuadBox = (props: QuadBoxProps) => (
           <SquareDropdown
             options={props.sortByOptions}
             onChange={props.updateDropdown}
-            stretchOut={props.isMobile}
+            stretchOutOnMobile
             sortByStyles={props.sortByStyles}
           />
         )
