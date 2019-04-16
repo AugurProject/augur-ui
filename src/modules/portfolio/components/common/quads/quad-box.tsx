@@ -23,8 +23,8 @@ export interface QuadBoxProps {
   noBackgroundBottom?: Boolean;
 }
 
-const QuadBox = (props: QuadBoxProps) => (
-  <div className={Styles.FilterBox}>
+const QuadBox = (props: QuadBoxProps) => {
+  const boxHeader = (
     <BoxHeader
       title={props.title}
       switchHeaders={props.switchHeaders}
@@ -54,10 +54,19 @@ const QuadBox = (props: QuadBoxProps) => (
       bottomBarContent={props.bottomBarContent}
       noBackgroundBottom={props.noBackgroundBottom}
     />
-    <div className={Styles.FilterBox__content}>
-      <div className={Styles.FilterBox__container}>{props.content}</div>
+  );
+
+  return (
+    <div className={Styles.FilterBox}>
+      {!props.isMobile && boxHeader}
+      <div className={Styles.FilterBox__content}>
+        <div className={Styles.FilterBox__container}>
+          {props.isMobile && boxHeader}
+          {props.content}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default QuadBox;
