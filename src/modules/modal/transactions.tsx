@@ -294,29 +294,31 @@ export class Transactions extends React.Component<
     action: string
   ) => {
     const filteredTransactions = transactions.filter(
-      (Transaction: TransactionInfo) => {
-        let addTransaction = true;
-        if (coin !== "ALL") {
-          addTransaction = Transaction.coin === coin;
-        }
-        if (action !== "ALL") {
-          addTransaction = Transaction.action === action;
-        }
-        return addTransaction;
-      }
+      (Transaction: TransactionInfo) =>
+        (Transaction.coin === coin || coin === "ALL") &&
+        (Transaction.action === action || action === "ALL")
     );
     return filteredTransactions;
   };
 
   triggerTransactionsExport = () => {
     const { AllTransactions } = this.state;
+    const items = AllTransactions;
+    const replacer = (key: string, value: any) => (value === null ? "" : value);
+    const header = Object.keys(items[0]);
+    const csv = items.map((row: any) =>
+      header
+        .map((fieldName: any) => JSON.stringify(row[fieldName], replacer))
+        .join(",")
+    );
+    csv.unshift(header.join(","));
+    const exportCSV = csv.join("\r\n");
     const transactionsDataString =
-      "data:text/json;charset=utf-8," +
-      encodeURIComponent(JSON.stringify(AllTransactions));
+      "data:text/plain;charset=utf-8," + encodeURIComponent(exportCSV);
     const a = document.createElement("a");
 
     a.setAttribute("href", transactionsDataString);
-    a.setAttribute("download", "AugurTransactions.json");
+    a.setAttribute("download", "AugurTransactions.csv");
     a.click();
   };
 
@@ -324,9 +326,15 @@ export class Transactions extends React.Component<
     const timestamp = moment(tx.timestamp * 1000).format("D MMM YYYY HH:mm:ss");
     const key = `${tx.transactionHash}-${tx.timestamp}-${tx.outcome}-${
       tx.quantity
-    }-${tx.price}-${tx.total}-${tx.action}`;
+    }-${tx.price}-${tx.total}-${tx.action}-${tx.marketDescription}-${
+      tx.outcomeDescription
+    }`;
     // we never show the coin type outside of tx.coin so we can just format by shares always here.
     const quantity = formatShares(tx.quantity);
+    const actionLabel = actionOptions.find((option: any) => {
+      if (option.value === tx.action) return true;
+      return false;
+    });
     return (
       <React.Fragment key={key}>
         <span>{timestamp}</span>
@@ -337,7 +345,11 @@ export class Transactions extends React.Component<
           <TextLabel text={tx.outcomeDescription || ""} />
         </span>
         <span>
-          <TextLabel text={tx.action.replace(/_/g, " ").toLowerCase()} />
+          <TextLabel
+            text={
+              actionLabel.label || tx.action.replace(/_/g, " ").toLowerCase()
+            }
+          />
         </span>
         <ValueLabel value={formatEther(tx.price)} />
         <ValueLabel value={quantity} />

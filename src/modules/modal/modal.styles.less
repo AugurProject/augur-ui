@@ -496,10 +496,8 @@ div.ButtonsRow:last-of-type {
   border: 1px solid @color-primary-background;
   display: grid;
   grid-template-columns:
-    200px minmax(320px, 2fr) minmax(125px, 1fr) minmax(
-      125px,
-      150px
-    ) repeat(2, 100px) 50px repeat(2, 100px) 80px;
+    200px minmax(320px, 2fr) minmax(125px, 1fr) minmax(125px, 150px)
+    repeat(2, 100px) 50px repeat(2, 100px) 80px;
   grid-template-rows: auto;
 }
 
@@ -657,8 +655,8 @@ div.ButtonsRow:last-of-type {
     background: @color-theme-primary;
     border-bottom: 0;
     color: @color-neutral;
-    height: @size-40;
     margin: @size-24 0 0;
+    min-height: @size-40;
     overflow: auto;
 
     @media @breakpoint-mobile {
@@ -753,10 +751,14 @@ div.ButtonsRow:last-of-type {
 
   > div:last-of-type {
     align-items: center;
-    flex-flow: row nowrap;
+    display: grid;
+    grid-gap: @size-8;
+    grid-template-columns: 95px 30px 1fr 30px 95px;
     margin: @size-32 0 0;
 
     @media @breakpoint-mobile {
+      display: flex;
+      flex-flow: row nowrap;
       margin: @size-16 0 0;
 
       > div:first-of-type {
@@ -771,6 +773,7 @@ div.ButtonsRow:last-of-type {
     }
 
     > div:first-of-type {
+      grid-column: 3 / span 1;
       margin: 0 auto;
     }
 
@@ -778,7 +781,6 @@ div.ButtonsRow:last-of-type {
       .text-12;
 
       color: @color-neutral;
-      margin: 0 @size-8;
     }
   }
 }
