@@ -22,71 +22,47 @@ export interface QuadBoxProps {
   noBackgroundBottom?: Boolean;
 }
 
+const BoxHeaderElement = (props: QuadBoxProps) => (
+  <BoxHeader
+    title={props.title}
+    switchHeaders={props.switchHeaders}
+    rightContent={
+      (props.showFilterSearch && (
+        <SearchSort
+          sortByOptions={!props.switchHeaders && props.sortByOptions}
+          updateDropdown={props.updateDropdown}
+          sortByStyles={props.sortByStyles}
+          onChange={props.onSearchChange}
+          isMobile={props.isMobile}
+        />
+      )) ||
+      props.rightContent
+    }
+    mostRightContent={
+      props.switchHeaders && (
+        <SquareDropdown
+          options={props.sortByOptions}
+          onChange={props.updateDropdown}
+          stretchOutOnMobile
+          sortByStyles={props.sortByStyles}
+        />
+      )
+    }
+    bottomRightBarContent={props.bottomRightBarContent}
+    bottomBarContent={props.bottomBarContent}
+    noBackgroundBottom={props.noBackgroundBottom}
+  />
+);
+
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
     <div className={Styles.HideOnMobile}>
-      <BoxHeader
-        title={props.title}
-        switchHeaders={props.switchHeaders}
-        rightContent={
-          (props.showFilterSearch && (
-            <SearchSort
-              sortByOptions={!props.switchHeaders && props.sortByOptions}
-              updateDropdown={props.updateDropdown}
-              sortByStyles={props.sortByStyles}
-              onChange={props.onSearchChange}
-              isMobile={false}
-            />
-          )) ||
-          props.rightContent
-        }
-        mostRightContent={
-          props.switchHeaders && (
-            <SquareDropdown
-              options={props.sortByOptions}
-              onChange={props.updateDropdown}
-              stretchOutOnMobile
-              sortByStyles={props.sortByStyles}
-            />
-          )
-        }
-        bottomRightBarContent={props.bottomRightBarContent}
-        bottomBarContent={props.bottomBarContent}
-        noBackgroundBottom={props.noBackgroundBottom}
-      />
+      <BoxHeaderElement {...props} />
     </div>
     <div className={Styles.FilterBox__content}>
       <div className={Styles.FilterBox__container}>
         <div className={Styles.ShowOnMobile}>
-          <BoxHeader
-            title={props.title}
-            switchHeaders={props.switchHeaders}
-            rightContent={
-              (props.showFilterSearch && (
-                <SearchSort
-                  sortByOptions={!props.switchHeaders && props.sortByOptions}
-                  updateDropdown={props.updateDropdown}
-                  sortByStyles={props.sortByStyles}
-                  onChange={props.onSearchChange}
-                  isMobile
-                />
-              )) ||
-              props.rightContent
-            }
-            mostRightContent={
-              props.switchHeaders && (
-                <SquareDropdown
-                  options={props.sortByOptions}
-                  onChange={props.updateDropdown}
-                  stretchOutOnMobile
-                  sortByStyles={props.sortByStyles}
-                />
-              )
-            }
-            bottomRightBarContent={props.bottomRightBarContent}
-            bottomBarContent={props.bottomBarContent}
-            noBackgroundBottom={props.noBackgroundBottom}
-          />
+          <BoxHeaderElement isMobile {...props} />
         </div>
         {props.content}
       </div>

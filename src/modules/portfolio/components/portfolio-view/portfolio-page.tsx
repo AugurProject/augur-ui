@@ -15,12 +15,6 @@ export interface PortfolioPageProps {
 }
 
 const PortfolioPage = (props: PortfolioPageProps) => (
-  // if (props.isMobileSmall) { // need to change at 768
-  //   return (
-
-  //   );
-  // }
-
   <>
     <section className={classNames(Styles.PortfolioView, Styles.HideOnMobile)}>
       <div>
