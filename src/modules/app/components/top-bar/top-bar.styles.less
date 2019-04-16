@@ -12,10 +12,31 @@
     display: flex;
     height: 100%;
   }
+
+  > .TopBar__augurLogoContainer {
+    display: none;
+
+    > svg {
+      fill: @color-secondary-text;
+      width: 2rem;
+    }
+
+    @media @breakpoint-mobile {
+      display: flex;
+    }
+  }
+
+  @media @breakpoint-mobile {
+    justify-content: space-between;
+  }
 }
 
 .TopBar__statsContainer {
   width: 400px;
+
+  @media @breakpoint-mobile {
+    width: auto;
+  }
 }
 
 .TopBar__rightContent {
@@ -60,6 +81,9 @@ div.TopBar__stats {
     }
 
     @media @breakpoint-mobile {
+      margin: @size-12 @size-16;
+      max-width: 175px;
+
       > span {
         display: flex;
       }
@@ -153,16 +177,6 @@ div.TopBar__alertsDisabled {
   }
 }
 
-.TopBar__logo-text {
-  color: @color-secondary-text;
-  display: none;
-  font-size: @size-14;
-  letter-spacing: 0.0625em;
-  line-height: @size-14;
-  margin: -2px 0.625rem 0 0;
-  text-transform: uppercase;
-}
-
 div.TopBar__tooltip {
   margin-top: -1rem !important;
   padding: 0.75rem 0.75rem 0.5rem !important;
@@ -196,23 +210,12 @@ div.TopBar__tooltip {
     display: none;
   }
 
-  .TopBar__statsContainer {
-    flex: 1;
-    max-width: 300px;
-  }
-
   .TopBar__rightContent {
     flex: unset;
   }
-}
 
-@media @breakpoint-mobile-mid {
   .TopBar__regular-stats {
     border: 0;
-  }
-
-  .TopBar__statsContainer {
-    justify-content: flex-end;
   }
 
   .TopBar__hideForSmallScreens {

@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import classNames from "classnames";
 
 import { Alerts } from "modules/common/components/icons";
@@ -12,13 +11,12 @@ import {
   LinearPropertyLabel,
   LinearPropertyLabelMovement
 } from "modules/common-elements/labels";
-
-import makePath from "modules/routes/helpers/make-path";
-import { MARKETS } from "modules/routes/constants/views";
+import { RepLogoIcon } from "modules/common-elements/icons";
 import Styles from "modules/app/components/top-bar/top-bar.styles";
 
 const TopBar = props => (
   <header className={Styles.TopBar}>
+    <div className={Styles.TopBar__augurLogoContainer}>{RepLogoIcon}</div>
     {props.isLogged && (
       <div className={Styles.TopBar__statsContainer}>
         <div
@@ -35,12 +33,12 @@ const TopBar = props => (
           <LinearPropertyLabel
             label={props.stats[0].frozenFunds.label}
             value={props.stats[0].frozenFunds.value}
-            highlightAlternate
+            highlightAlternateBolded
           />
           <LinearPropertyLabel
             label={props.stats[0].totalFunds.label}
             value={props.stats[0].totalFunds.value}
-            highlightAlternate
+            highlightAlternateBolded
           />
           <LinearPropertyLabelMovement
             showColors
@@ -97,9 +95,6 @@ const TopBar = props => (
         </div>
       </div>
     </div>
-    <span className={Styles["TopBar__logo-text"]}>
-      <Link to={makePath(MARKETS)}>Augur</Link>
-    </span>
   </header>
 );
 

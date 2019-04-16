@@ -103,9 +103,14 @@ h6 {
 
 .Logo {
   background: @color-light-purple;
+  border-bottom: 1px solid @color-almost-black;
   left: 1rem;
   position: absolute;
   top: -1px;
+
+  @media @breakpoint-mobile {
+    border-bottom: 1px solid @color-primary-light;
+  }
 }
 
 .SideBar__mobile-bars {
@@ -125,7 +130,12 @@ h6 {
   }
 
   @media @breakpoint-mobile {
+    border-bottom: 1px solid @color-primary-light;
     display: block;
+
+    > svg > g {
+      stroke-width: 1.5;
+    }
   }
 }
 
@@ -157,6 +167,10 @@ svg.SideBar__mobile-bars-unseen {
   border-bottom: 1px solid @color-almost-black;
   margin-left: 3.15rem;
   z-index: @mask-above;
+
+  @media @breakpoint-mobile {
+    border-bottom: 1px solid @color-primary-light;
+  }
 }
 
 .windowsScrollBars {
