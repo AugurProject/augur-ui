@@ -25,7 +25,7 @@ jobs:
           verbose: true
           customCommand: whoami
           customRegistry: 'useFeed'
-          customEndpoint: npmjs-augur-integration
+          customFeed: npmjs-augur-integration
       - bash: |
           ls -la
           #          yarn
