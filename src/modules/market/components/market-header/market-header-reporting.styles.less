@@ -7,6 +7,10 @@
   border-radius: @border-radius-default;
   margin-bottom: @size-16;
   padding: @size-16;
+
+  @media @breakpoint-mobile {
+    margin-bottom: @size-8;
+  }
 }
 
 .MarketHeaderReporting__finalization {
@@ -48,6 +52,8 @@
   }
 
   > div:last-of-type {
+    margin-bottom: 0;
+
     > span > span:first-of-type {
       .mono-10;
 
@@ -61,6 +67,14 @@
 
       text-align: right;
     }
+
+    @media @breakpoint-1-0 {
+      margin-bottom: @size-24;
+    }
+
+    @media @breakpoint-mobile {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -70,8 +84,12 @@
 }
 
 .MarketHeaderReporting__break {
-  background: @color-grayish-purple;
+  background: @color-theme-primary;
   height: 0.125rem;
+
+  @media @breakpoint-mobile {
+    display: none;
+  }
 }
 
 .MarketHeaderReporting__button {
@@ -89,10 +107,14 @@
 }
 
 .MarketHeaderReporting__winner__container {
-  border-radius: 3px;
+  border-radius: @border-radius-default;
   display: flex;
   flex-direction: row;
-  padding: 16px;
+  padding: @size-16;
+
+  @media @breakpoint-mobile {
+    margin-bottom: @size-8;
+  }
 
   @media @breakpoint-mobile-extra-small {
     flex-direction: column;

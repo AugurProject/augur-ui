@@ -22,7 +22,8 @@ const mapStateToProps = (state, ownProps) => {
     isForking: state.universe.isForking,
     isMobileSmall: state.appStatus.isMobileSmall,
     market,
-    isFavorite: !!state.favorites[ownProps.marketId]
+    isFavorite: !!state.favorites[ownProps.marketId],
+    currentAugurTimestamp: state.blockchain.currentAugurTimestamp
   };
 };
 

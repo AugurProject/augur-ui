@@ -10,12 +10,10 @@ import { DotSelection } from "modules/common-elements/selection";
 export interface MarketHeaderBarProps {
   addToFavorites: Function;
   author: string;
-  description: string;
   marketId: string;
   marketStatus: string;
   isLogged: boolean;
   isFavorite: boolean;
-  collapsedView: boolean;
   reportingState: string;
   disputeInfo: any;
   endTime: number;
@@ -33,8 +31,6 @@ class MarketHeaderBar extends Component<MarketHeaderBarProps> {
       addToFavorites,
       isLogged,
       isFavorite,
-      collapsedView,
-      description,
       marketId,
       marketStatus,
       reportingState,
@@ -43,15 +39,6 @@ class MarketHeaderBar extends Component<MarketHeaderBarProps> {
       currentAugurTimestamp,
       reportingWindowStatsEndTime
     } = this.props;
-
-    if (collapsedView) {
-      return (
-        <section className={Styles.MarketHeaderBar}>
-          <h1 className={Styles.MarketHeaderBar__description}>{description}</h1>
-        </section>
-      );
-    }
-
     return (
       <section className={Styles.MarketHeaderBar}>
         <InReportingLabel

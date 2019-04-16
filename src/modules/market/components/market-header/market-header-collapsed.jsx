@@ -1,69 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import MarketHeaderBar from "modules/market/containers/market-header-bar";
-import Styles from "modules/market/components/market-header/market-header.styles";
-import { createBigNumber } from "utils/create-big-number";
-import { TimeLabel } from "modules/common-elements/progress";
 
-export const MarketHeaderCollapsed = ({
-  description,
-  market,
-  currentTime,
-  marketType,
-  toggleFavorite,
-  isFavorite
-}) => {
-  const endTimestamp = market.endTime ? market.endTime.timestamp : 0;
-  const hasPassed = createBigNumber(currentTime).gt(
-    createBigNumber(endTimestamp)
-  );
+import MarketHeaderReporting from "modules/market/containers/market-header-reporting";
 
-  return (
-    <div className={Styles[`MarketHeader__main-values`]}>
-      <div
-        className={classNames(Styles.MarketHeader__descContainer, {
-          [Styles.MarketHeader__collapsed]: true
-        })}
-      >
-        {market.id && (
-          <MarketHeaderBar
-            marketId={market.id}
-            marketStatus={market.marketStatus}
-            category={market.category}
-            reportingState={market.reportingState}
-            tags={market.tags}
-            addToFavorites={toggleFavorite}
-            isMobile={false}
-            isFavorite={isFavorite}
-            collapsedView
-            marketType={marketType}
-            description={description}
-          />
-        )}
-      </div>
-      <div className={Styles.MarketHeader__timeStuff}>
-        <TimeLabel
-          label={hasPassed ? "Expired" : "Expires"}
-          time={market.endTime}
-        />
-      </div>
+import Styles from "modules/market/components/market-header/market-header-collapsed.styles";
+
+export const MarketHeaderCollapsed = ({ description, market }) => (
+  <div className={Styles.MarketHeaderCollapsed_mainValues}>
+    <div className={classNames(Styles.MarketHeaderCollapsed__descContainer)}>
+      <section>
+        <h1>{description}</h1>
+      </section>
     </div>
-  );
-};
+    <div className={Styles.MarketHeaderCollapsed__marketStatus}>
+      <MarketHeaderReporting marketId={market.id} />
+    </div>
+  </div>
+);
 
 MarketHeaderCollapsed.propTypes = {
   description: PropTypes.string.isRequired,
-  market: PropTypes.object.isRequired,
-  currentTime: PropTypes.number,
-  marketType: PropTypes.string,
-  toggleFavorite: PropTypes.func,
-  isFavorite: PropTypes.bool
-};
-
-MarketHeaderCollapsed.defaultProps = {
-  marketType: null,
-  currentTime: 0,
-  isFavorite: false,
-  toggleFavorite: () => {}
+  market: PropTypes.object.isRequired
 };

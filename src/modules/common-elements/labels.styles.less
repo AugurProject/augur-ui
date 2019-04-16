@@ -96,6 +96,10 @@
     .mono-14;
 
     color: @color-tertiary-text;
+
+    @media @breakpoint-mobile {
+      .mono-12;
+    }
   }
 }
 
@@ -308,6 +312,10 @@ div.LinearPropertyViewTransaction {
     position: absolute;
     right: 0;
   }
+
+  @media @breakpoint-mobile {
+    .text-10-bold;
+  }
 }
 
 .MarketStatus_mini {
@@ -326,30 +334,6 @@ div.LinearPropertyViewTransaction {
     position: absolute;
     right: 0;
   }
-
-  .InReporting_reportingDetails {
-    &::before {
-      background-color: @color-tertiary-text;
-      border-radius: 50%;
-      content: "";
-      display: inline-block;
-      height: 0.125rem;
-      margin: 0 0.25rem 0.0625rem;
-      width: 0.125rem;
-    }
-  }
-
-  .InReporting_reportingDetails__countdown {
-    > span {
-      > span:first-of-type {
-        font-size: 0.5625rem;
-      }
-
-      > span:last-of-type {
-        font-size: 0.5625rem;
-      }
-    }
-  }
 }
 
 .MarketStatus_alternate {
@@ -366,6 +350,12 @@ div.LinearPropertyViewTransaction {
 .MarketStatus_reporting {
   &::after {
     background: @color-in-reporting;
+  }
+}
+
+.MarketStatus_resolved {
+  &::after {
+    background: @color-resolved;
   }
 }
 
@@ -387,7 +377,7 @@ div.LinearPropertyViewTransaction {
 .InReporting_reportingDetails__countdown {
   > span {
     > span:first-of-type {
-      .mono-11;
+      .mono-10;
 
       color: @color-shadow-text;
       line-height: normal;
@@ -406,19 +396,13 @@ div.LinearPropertyViewTransaction {
   @media @breakpoint-mobile {
     > span {
       > span:first-of-type {
-        .mono-11;
+        .mono-9;
       }
 
       > span:last-of-type {
-        .mono-12;
+        .mono-10;
       }
     }
-  }
-}
-
-.MarketStatus_resolved {
-  &::after {
-    background: @color-resolved;
   }
 }
 

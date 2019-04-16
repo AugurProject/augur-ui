@@ -66,16 +66,16 @@
     position: relative;
 
     > div {
-      display: inline-block;
-      min-width: 20px;
-      position: absolute;
-      right: 0;
-      top: 50%;
+      display: none;
     }
 
     > li {
       max-height: 64px;
       padding: 34px 0 1rem;
+
+      > span > label {
+        font-size: @size-10;
+      }
 
       &:first-child {
         bottom: 0;

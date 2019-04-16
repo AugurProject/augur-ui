@@ -12,12 +12,14 @@ import { BigNumber } from "bignumber.js";
 import Styles from "modules/market/components/market-header/market-header.styles";
 import CoreProperties from "modules/market/components/core-properties/core-properties";
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
+import canClaimProceeds from "utils/can-claim-proceeds";
 import { MarketTypeLabel } from "modules/common-elements/labels";
 import { MarketHeaderCollapsed } from "modules/market/components/market-header/market-header-collapsed";
 import toggleHeight from "utils/toggle-height/toggle-height";
 import makeQuery from "modules/routes/helpers/make-query";
 import { CategoryTagTrail } from "src/modules/common/components/category-tag-trail/category-tag-trail";
 import { compact } from "lodash";
+import { constants } from "services/constants";
 import {
   CATEGORY_PARAM_NAME,
   TAGS_PARAM_NAME,
@@ -29,7 +31,6 @@ import { MarketTimeline } from "modules/common-elements/progress";
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
-const MIN_COLLAPSED_MARKET_HEADER = 136;
 export default class MarketHeader extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
@@ -44,7 +45,8 @@ export default class MarketHeader extends Component {
     isLogged: PropTypes.bool,
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    currentAugurTimestamp: PropTypes.number
   };
 
   static defaultProps = {
@@ -52,6 +54,7 @@ export default class MarketHeader extends Component {
     resolutionSource: "General knowledge",
     marketType: null,
     currentTime: 0,
+    currentAugurTimestamp: 0,
     isFavorite: false,
     isLogged: false,
     toggleFavorite: () => {}
@@ -94,7 +97,41 @@ export default class MarketHeader extends Component {
     this.setState({ showReadMore: !this.state.showReadMore });
   }
 
-  toggleMarketHeader() {
+  toggleMarketHeader(currentAugurTimestamp, market) {
+    const {
+      marketStatus,
+      outstandingReturns,
+      finalizationTime,
+      description,
+      reportingState
+    } = market;
+    const canClaim = canClaimProceeds(
+      finalizationTime,
+      outstandingReturns,
+      currentAugurTimestamp
+    );
+
+    let MIN_COLLAPSED_MARKET_HEADER;
+
+    if (marketStatus === "closed") {
+      if (reportingState === constants.REPORTING_STATE.AWAITING_FINALIZATION) {
+        MIN_COLLAPSED_MARKET_HEADER = 260;
+      } else if (!outstandingReturns || canClaim) {
+        MIN_COLLAPSED_MARKET_HEADER = 150;
+      } else {
+        MIN_COLLAPSED_MARKET_HEADER = 260;
+      }
+    } else if (marketStatus === "reporting") {
+      MIN_COLLAPSED_MARKET_HEADER = 150;
+    } else {
+      MIN_COLLAPSED_MARKET_HEADER = 120;
+      if (description.length > 150) {
+        MIN_COLLAPSED_MARKET_HEADER = 170;
+      } else if (description.length > 100) {
+        MIN_COLLAPSED_MARKET_HEADER = 140;
+      }
+    }
+
     if (this.state.headerCollapsed) {
       this.setState({ headerCollapsed: !this.state.headerCollapsed }, () => {
         toggleHeight(
@@ -111,7 +148,7 @@ export default class MarketHeader extends Component {
         () => {
           setTimeout(() => {
             this.setState({ headerCollapsed: !this.state.headerCollapsed });
-          }, 200);
+          }, 50);
         }
       );
     }
@@ -150,7 +187,8 @@ export default class MarketHeader extends Component {
       currentTime,
       isLogged,
       isFavorite,
-      history
+      history,
+      currentAugurTimestamp
     } = this.props;
     let { details } = this.props;
     const { headerCollapsed } = this.state;
@@ -198,30 +236,40 @@ export default class MarketHeader extends Component {
         <h1 className={Styles.MarketHeaderMobile_description}>{description}</h1>
 
         <div className={Styles.MarketHeader__topContainer}>
-          <button
-            className={Styles.MarketHeader__backButton}
-            onClick={() => history.goBack()}
-          >
-            {BackArrow}
-          </button>
+          <div>
+            <button
+              className={Styles.MarketHeader__backButton}
+              onClick={() => history.goBack()}
+            >
+              {BackArrow}
+            </button>
 
-          <MarketTypeLabel marketType={marketType} />
+            <MarketTypeLabel marketType={marketType} />
 
-          <CategoryTagTrail
-            categories={categoriesWithClick}
-            tags={tagsWithClick}
-          />
+            <CategoryTagTrail
+              categories={categoriesWithClick}
+              tags={tagsWithClick}
+            />
+          </div>
+          <div className={Styles.MarketHeader__properties}>
+            {market.id && (
+              <MarketHeaderBar
+                marketId={market.id}
+                author={market.author}
+                marketStatus={market.marketStatus}
+                addToFavorites={this.addToFavorites}
+                isFavorite={isFavorite}
+                reportingState={market.reportingState}
+                disputeInfo={market.disputeInfo}
+                endTime={market.endTime}
+                isLogged={isLogged}
+              />
+            )}
+          </div>
         </div>
 
         {headerCollapsed && (
-          <MarketHeaderCollapsed
-            description={description}
-            market={market}
-            currentTime={currentTime}
-            marketType={marketType}
-            toggleFavorite={this.addToFavorites}
-            isFavorite={isFavorite}
-          />
+          <MarketHeaderCollapsed description={description} market={market} />
         )}
 
         {!headerCollapsed && (
@@ -264,14 +312,20 @@ export default class MarketHeader extends Component {
 
                     {detailsTooLong && (
                       <button
-                        className={Styles.MarketHeader__readMoreButton}
+                        className={classNames(
+                          Styles.MarketHeader__readMoreButton,
+                          {
+                            [Styles["MarketHeader__readMoreButton-less"]]: this
+                              .state.showReadMore
+                          }
+                        )}
                         onClick={this.toggleReadMore}
                       >
                         {!this.state.showReadMore
                           ? ChevronDown({ stroke: "#FFFFFF" })
                           : ChevronUp()}
                         <span>
-                          {!this.state.showReadMore ? "More" : "Less"}
+                          {!this.state.showReadMore ? "More..." : "Less"}
                         </span>
                       </button>
                     )}
@@ -287,9 +341,6 @@ export default class MarketHeader extends Component {
                   marketStatus={market.marketStatus}
                   addToFavorites={this.addToFavorites}
                   isFavorite={isFavorite}
-                  collapsedView={headerCollapsed}
-                  marketType={marketType}
-                  description={description}
                   reportingState={market.reportingState}
                   disputeInfo={market.disputeInfo}
                   endTime={market.endTime}
@@ -317,7 +368,11 @@ export default class MarketHeader extends Component {
             [Styles.MarketHeader_toggleContainer_collapsed]: headerCollapsed
           })}
         >
-          <button onClick={() => this.toggleMarketHeader()}>
+          <button
+            onClick={() =>
+              this.toggleMarketHeader(currentAugurTimestamp, market)
+            }
+          >
             <ChevronFlip pointDown={headerCollapsed} stroke="white" />
           </button>
         </div>
