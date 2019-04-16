@@ -175,12 +175,12 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
       )
     );
     dispatch(updateOrder(log, false));
-    dispatch(loadUserMarketTradingHistory());
+    dispatch(loadUserMarketTradingHistory({ marketId: log.marketId }));
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
   }
   // always reload account positions on trade so we get up to date PL data.
-  dispatch(loadAccountTrades());
+  delayAction(dispatch(loadAccountTrades()));
   dispatch(loadMarketTradingHistory({ marketId: log.marketId }));
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
@@ -190,7 +190,7 @@ export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
-    dispatch(loadAccountTrades());
+    delayAction(dispatch(loadAccountTrades()));
   }
   if (isCurrentMarket(log.market)) dispatch(loadBidsAsks(log.market));
 };
@@ -320,7 +320,7 @@ export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
     // always reload account positions on trade so we get up to date PL data.
-    dispatch(loadAccountTrades());
+    delayAction(dispatch(loadAccountTrades()));
   }
 };
 
@@ -336,4 +336,9 @@ export const handleApprovalLog = log => (dispatch, getState) => {
       })
     );
   }
+};
+
+// delay to avoid race condition with getting server data
+const delayAction = action => {
+  setTimeout(() => action, 2000);
 };

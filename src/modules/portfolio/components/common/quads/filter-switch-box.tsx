@@ -78,7 +78,6 @@ export default class FilterSwitchBox extends React.Component<
       sortByOptions,
       showFilterSearch,
       noSwitch,
-      isMobile,
       renderRows,
       filterLabel,
       sortByStyles,
@@ -111,7 +110,6 @@ export default class FilterSwitchBox extends React.Component<
               filteredData.map(data => renderRows(data))}
           </>
         }
-        isMobile={isMobile}
       />
     );
   }

@@ -15,7 +15,6 @@ export interface QuadBoxProps {
   onSearchChange: Function;
   content?: ReactNode;
   bottomBarContent: ReactNode;
-  isMobile?: Boolean;
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
   sortByStyles?: Object;
@@ -23,39 +22,50 @@ export interface QuadBoxProps {
   noBackgroundBottom?: Boolean;
 }
 
+const BoxHeaderElement = (props: QuadBoxProps) => (
+  <BoxHeader
+    title={props.title}
+    switchHeaders={props.switchHeaders}
+    rightContent={
+      (props.showFilterSearch && (
+        <SearchSort
+          sortByOptions={!props.switchHeaders && props.sortByOptions}
+          updateDropdown={props.updateDropdown}
+          sortByStyles={props.sortByStyles}
+          onChange={props.onSearchChange}
+          isMobile={props.isMobile}
+        />
+      )) ||
+      props.rightContent
+    }
+    mostRightContent={
+      props.switchHeaders && (
+        <SquareDropdown
+          options={props.sortByOptions}
+          onChange={props.updateDropdown}
+          stretchOutOnMobile
+          sortByStyles={props.sortByStyles}
+        />
+      )
+    }
+    bottomRightBarContent={props.bottomRightBarContent}
+    bottomBarContent={props.bottomBarContent}
+    noBackgroundBottom={props.noBackgroundBottom}
+  />
+);
+
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
-    <BoxHeader
-      title={props.title}
-      switchHeaders={props.switchHeaders}
-      rightContent={
-        (props.showFilterSearch && (
-          <SearchSort
-            sortByOptions={!props.switchHeaders && props.sortByOptions}
-            updateDropdown={props.updateDropdown}
-            sortByStyles={props.sortByStyles}
-            onChange={props.onSearchChange}
-            isMobile={props.isMobile}
-          />
-        )) ||
-        props.rightContent
-      }
-      mostRightContent={
-        props.switchHeaders && (
-          <SquareDropdown
-            options={props.sortByOptions}
-            onChange={props.updateDropdown}
-            stretchOut={props.isMobile}
-            sortByStyles={props.sortByStyles}
-          />
-        )
-      }
-      bottomRightBarContent={props.bottomRightBarContent}
-      bottomBarContent={props.bottomBarContent}
-      noBackgroundBottom={props.noBackgroundBottom}
-    />
+    <div className={Styles.HideOnMobile}>
+      <BoxHeaderElement {...props} />
+    </div>
     <div className={Styles.FilterBox__content}>
-      <div className={Styles.FilterBox__container}>{props.content}</div>
+      <div className={Styles.FilterBox__container}>
+        <div className={Styles.ShowOnMobile}>
+          <BoxHeaderElement isMobile {...props} />
+        </div>
+        {props.content}
+      </div>
     </div>
   </div>
 );
