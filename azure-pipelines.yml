@@ -24,7 +24,6 @@ jobs:
           command: 'custom' # Options: install, publish, custom
           verbose: true
           customCommand: whoami
-          customRegistry: 'useNpmrc'
           customEndpoint: npmjs-augur-integration
       - bash: |
           ls -la
