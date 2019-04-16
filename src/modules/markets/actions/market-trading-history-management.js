@@ -51,7 +51,23 @@ export const loadUserMarketTradingHistory = (options, callback = logError) => (
   getTradingHistory(allOptions, (err, tradingHistory) => {
     if (err) return callback(err);
     if (tradingHistory == null) return callback(null, []);
-    dispatch(loadReportingFinal());
+    dispatch(
+      loadReportingFinal((err, finalizedMarkets) => {
+        // ignore err
+        // filter out finalized markets
+        // we need to get markets trading history for all markets user has traded
+        const marketIds = [
+          ...new Set(tradingHistory.reduce((p, t) => [...p, t.marketId], []))
+        ];
+        const filteredMarketIds = [marketIds, finalizedMarkets].reduce((a, b) =>
+          a.filter(c => !b.includes(c))
+        );
+        filteredMarketIds.map(marketId =>
+          dispatch(loadMarketTradingHistory({ marketId }))
+        );
+      })
+    );
+
     dispatch(updateUserTradingHistory(loginAccount.address, tradingHistory));
     callback(null, tradingHistory);
   });

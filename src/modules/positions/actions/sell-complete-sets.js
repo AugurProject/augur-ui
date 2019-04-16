@@ -1,6 +1,5 @@
 import { augur } from "services/augurjs";
 import { createBigNumber } from "utils/create-big-number";
-import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import logError from "utils/log-error";
 import {
   updateTransactionStatus,
@@ -34,7 +33,6 @@ export function sellCompleteSets(
       },
       onSuccess: res => {
         dispatch(clearTransactionStatus(pendingHash));
-        dispatch(loadAccountTrades({ marketId }));
         callback(null, res);
       },
       onFailed: err => {

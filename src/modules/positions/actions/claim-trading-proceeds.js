@@ -1,5 +1,4 @@
 import { augur } from "services/augurjs";
-import { loadMarketsInfo } from "modules/markets/actions/load-markets-info";
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { eachOfLimit } from "async";
 import noop from "utils/noop";
@@ -34,7 +33,6 @@ const claimTradingProceeds = (marketId, callback = logError) => (
     onSuccess: () => {
       dispatch(addPendingData(marketId, CLAIM_PROCEEDS, SUCCESS));
       dispatch(getWinningBalance([marketId]));
-      dispatch(loadMarketsInfo([marketId]));
       callback();
     },
     onFailed: err => {
@@ -64,7 +62,6 @@ export const claimMultipleTradingProceeds = (
         onSent: noop,
         onSuccess: () => {
           dispatch(getWinningBalance([marketId]));
-          dispatch(loadMarketsInfo([marketId]));
           seriesCB(null);
         },
         onFailed: err => seriesCB(err)
