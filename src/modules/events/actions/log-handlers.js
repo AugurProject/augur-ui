@@ -175,7 +175,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
       )
     );
     dispatch(updateOrder(log, false));
-    dispatch(loadUserMarketTradingHistory());
+    dispatch(loadUserMarketTradingHistory({ marketId: log.marketId }));
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
   }
