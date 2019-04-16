@@ -23,7 +23,7 @@ export const loadReportingFinal = (callback = logError) => (
 
       if (!resolvedMarketIds || resolvedMarketIds.length === 0) {
         dispatch(updateResolvedMarkets([]));
-        return callback(null);
+        return callback(null, []);
       }
 
       dispatch(updateResolvedMarkets(resolvedMarketIds));

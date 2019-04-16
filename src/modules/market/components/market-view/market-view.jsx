@@ -38,6 +38,7 @@ export default class MarketView extends Component {
     currentTimestamp: PropTypes.number,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
+    loadMarketTradingHistory: PropTypes.func.isRequired,
     description: PropTypes.string.isRequired,
     location: PropTypes.object.isRequired,
     marketType: PropTypes.string,
@@ -98,9 +99,15 @@ export default class MarketView extends Component {
   }
 
   componentWillMount() {
-    const { isConnected, loadFullMarket, marketId } = this.props;
+    const {
+      isConnected,
+      loadFullMarket,
+      marketId,
+      loadMarketTradingHistory
+    } = this.props;
     if (isConnected && !!marketId) {
       loadFullMarket(marketId);
+      loadMarketTradingHistory(marketId);
     }
   }
 

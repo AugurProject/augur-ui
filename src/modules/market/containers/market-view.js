@@ -9,6 +9,7 @@ import getPrecision from "utils/get-number-precision";
 import { selectCurrentTimestampInSeconds } from "src/select-state";
 import { createBigNumber } from "src/utils/create-big-number";
 import { updateModal } from "modules/modal/actions/update-modal";
+import { loadMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -45,7 +46,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   loadFullMarket: marketId => dispatch(loadFullMarket(marketId)),
-  updateModal: modal => dispatch(updateModal(modal))
+  updateModal: modal => dispatch(updateModal(modal)),
+  loadMarketTradingHistory: marketId =>
+    dispatch(loadMarketTradingHistory(marketId))
 });
 
 const Market = withRouter(
