@@ -8,7 +8,7 @@ import classNames from "classnames";
 
 import shouldComponentUpdatePure from "utils/should-component-update-pure";
 import debounce from "utils/debounce";
-import isWindows from 'utils/is-windows';
+import isWindows from "utils/is-windows";
 
 import { tween } from "shifty";
 import { isEqual } from "lodash";
@@ -236,7 +236,7 @@ export default class AppView extends Component {
 
     // Restyle all scrollbars on windows
     if (isWindows()) {
-      document.body.classList.add('App--windowsScrollBars');
+      document.body.classList.add("App--windowsScrollBars");
     }
     this.checkIsMobile();
   }
