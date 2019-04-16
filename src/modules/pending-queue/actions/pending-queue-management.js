@@ -20,7 +20,3 @@ export const removePendingData = (pendingId, queueName) => ({
   type: REMOVE_PENDING_DATA,
   data: { pendingId, queueName }
 });
-
-// export const clearPendingOrders = () => (dispatch, getState) => {
-//   const { blockchain, pendingOrders } = getState();
-// };
