@@ -44,3 +44,17 @@
   flex-direction: column;
   height: 100%;
 }
+
+.ShowOnMobile {
+  display: none;
+}
+
+@media @breakpoint-mobile-mid {
+  .ShowOnMobile {
+    display: flex;
+  }
+
+  .HideOnMobile {
+    display: none;
+  }
+}

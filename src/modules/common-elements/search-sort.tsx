@@ -38,7 +38,7 @@ export class SearchSort extends React.Component<
       sortByOptions,
       updateDropdown,
       sortByStyles,
-      onChange,
+      onChange
     } = this.props;
 
     const { showSortByOptions } = this.state;

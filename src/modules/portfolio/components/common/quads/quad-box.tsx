@@ -15,7 +15,6 @@ export interface QuadBoxProps {
   onSearchChange: Function;
   content?: ReactNode;
   bottomBarContent: ReactNode;
-  isMobile?: Boolean;
   bottomRightBarContent?: ReactNode;
   rightContent?: ReactNode;
   sortByStyles?: Object;
@@ -23,50 +22,76 @@ export interface QuadBoxProps {
   noBackgroundBottom?: Boolean;
 }
 
-const QuadBox = (props: QuadBoxProps) => {
-  const boxHeader = (
-    <BoxHeader
-      title={props.title}
-      switchHeaders={props.switchHeaders}
-      rightContent={
-        (props.showFilterSearch && (
-          <SearchSort
-            sortByOptions={!props.switchHeaders && props.sortByOptions}
-            updateDropdown={props.updateDropdown}
-            sortByStyles={props.sortByStyles}
-            onChange={props.onSearchChange}
-            isMobile={props.isMobile}
+const QuadBox = (props: QuadBoxProps) => (
+  <div className={Styles.FilterBox}>
+    <div className={Styles.HideOnMobile}>
+      <BoxHeader
+        title={props.title}
+        switchHeaders={props.switchHeaders}
+        rightContent={
+          (props.showFilterSearch && (
+            <SearchSort
+              sortByOptions={!props.switchHeaders && props.sortByOptions}
+              updateDropdown={props.updateDropdown}
+              sortByStyles={props.sortByStyles}
+              onChange={props.onSearchChange}
+              isMobile={false}
+            />
+          )) ||
+          props.rightContent
+        }
+        mostRightContent={
+          props.switchHeaders && (
+            <SquareDropdown
+              options={props.sortByOptions}
+              onChange={props.updateDropdown}
+              stretchOutOnMobile
+              sortByStyles={props.sortByStyles}
+            />
+          )
+        }
+        bottomRightBarContent={props.bottomRightBarContent}
+        bottomBarContent={props.bottomBarContent}
+        noBackgroundBottom={props.noBackgroundBottom}
+      />
+    </div>
+    <div className={Styles.FilterBox__content}>
+      <div className={Styles.FilterBox__container}>
+        <div className={Styles.ShowOnMobile}>
+          <BoxHeader
+            title={props.title}
+            switchHeaders={props.switchHeaders}
+            rightContent={
+              (props.showFilterSearch && (
+                <SearchSort
+                  sortByOptions={!props.switchHeaders && props.sortByOptions}
+                  updateDropdown={props.updateDropdown}
+                  sortByStyles={props.sortByStyles}
+                  onChange={props.onSearchChange}
+                  isMobile
+                />
+              )) ||
+              props.rightContent
+            }
+            mostRightContent={
+              props.switchHeaders && (
+                <SquareDropdown
+                  options={props.sortByOptions}
+                  onChange={props.updateDropdown}
+                  stretchOutOnMobile
+                  sortByStyles={props.sortByStyles}
+                />
+              )
+            }
+            bottomRightBarContent={props.bottomRightBarContent}
+            bottomBarContent={props.bottomBarContent}
+            noBackgroundBottom={props.noBackgroundBottom}
           />
-        )) ||
-        props.rightContent
-      }
-      mostRightContent={
-        props.switchHeaders && (
-          <SquareDropdown
-            options={props.sortByOptions}
-            onChange={props.updateDropdown}
-            stretchOutOnMobile
-            sortByStyles={props.sortByStyles}
-          />
-        )
-      }
-      bottomRightBarContent={props.bottomRightBarContent}
-      bottomBarContent={props.bottomBarContent}
-      noBackgroundBottom={props.noBackgroundBottom}
-    />
-  );
-
-  return (
-    <div className={Styles.FilterBox}>
-      {!props.isMobile && boxHeader}
-      <div className={Styles.FilterBox__content}>
-        <div className={Styles.FilterBox__container}>
-          {props.isMobile && boxHeader}
-          {props.content}
         </div>
+        {props.content}
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default QuadBox;
