@@ -304,9 +304,14 @@ export class DotSelection extends React.Component<
   }
 
   refMenu: any = null;
+  refMenuIcon: any = null;
 
   handleWindowOnClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (this.refMenu && !this.refMenu.contains(event.target)) {
+    if (
+      this.refMenu &&
+      !this.refMenu.contains(event.target) &&
+      !this.refMenuIcon.contains(event.target)
+    ) {
       this.setState({ toggleMenu: false });
     }
   };
@@ -320,7 +325,14 @@ export class DotSelection extends React.Component<
   render() {
     return (
       <div className={Styles.DotSelection_Menu}>
-        <button onClick={() => this.toggleMenu()}>{DotDotDot}</button>
+        <button
+          ref={menuIcon => {
+            this.refMenuIcon = menuIcon;
+          }}
+          onClick={() => this.toggleMenu()}
+        >
+          {DotDotDot}
+        </button>
         {this.state.toggleMenu && (
           <div
             role="Menu"

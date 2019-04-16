@@ -266,7 +266,7 @@ export const MarketTimeline = (props: TimeProgressBarProps) => {
   const currentTimestamp = formattedCurrentTime.timestamp;
   const endTimestamp = formattedEndTime.timestamp;
   const hasPassed = currentTimestamp > endTimestamp;
-  const endLabel = hasPassed ? "BEGAN" : "STARTS";
+  const endLabel = hasPassed ? "STARTED" : "STARTS";
   return (
     <div className={Styles.MarketTimeline}>
       <div
