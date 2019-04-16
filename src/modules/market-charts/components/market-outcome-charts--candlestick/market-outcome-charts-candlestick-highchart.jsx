@@ -107,7 +107,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               format: "{value:.4f}",
               style: Styles.MarketOutcomeCharts__highcharts_display_yLables,
               x: 0,
-              y: 2
+              y: -2
             },
             title: {
               text: ""

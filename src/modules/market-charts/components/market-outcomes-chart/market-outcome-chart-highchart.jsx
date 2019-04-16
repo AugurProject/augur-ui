@@ -108,7 +108,7 @@ export default class MarketOutcomesChartHighchart extends Component {
             format: "{value:.4f}",
             style: Styles.MarketOutcomeChartsHighcharts__yLabels,
             x: 0,
-            y: 2
+            y: -2
           },
           title: {
             text: ""
