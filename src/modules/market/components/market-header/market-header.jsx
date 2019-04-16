@@ -19,6 +19,7 @@ import toggleHeight from "utils/toggle-height/toggle-height";
 import makeQuery from "modules/routes/helpers/make-query";
 import { CategoryTagTrail } from "src/modules/common/components/category-tag-trail/category-tag-trail";
 import { compact } from "lodash";
+import { constants } from "services/constants";
 import {
   CATEGORY_PARAM_NAME,
   TAGS_PARAM_NAME,
@@ -101,7 +102,8 @@ export default class MarketHeader extends Component {
       marketStatus,
       outstandingReturns,
       finalizationTime,
-      description
+      description,
+      reportingState
     } = market;
     const canClaim = canClaimProceeds(
       finalizationTime,
@@ -112,7 +114,9 @@ export default class MarketHeader extends Component {
     let MIN_COLLAPSED_MARKET_HEADER;
 
     if (marketStatus === "closed") {
-      if (!outstandingReturns || canClaim) {
+      if (reportingState === constants.REPORTING_STATE.AWAITING_FINALIZATION) {
+        MIN_COLLAPSED_MARKET_HEADER = 260;
+      } else if (!outstandingReturns || canClaim) {
         MIN_COLLAPSED_MARKET_HEADER = 150;
       } else {
         MIN_COLLAPSED_MARKET_HEADER = 260;
@@ -121,7 +125,7 @@ export default class MarketHeader extends Component {
       MIN_COLLAPSED_MARKET_HEADER = 150;
     } else {
       MIN_COLLAPSED_MARKET_HEADER = 120;
-      if (description.length > 155) {
+      if (description.length > 150) {
         MIN_COLLAPSED_MARKET_HEADER = 170;
       } else if (description.length > 100) {
         MIN_COLLAPSED_MARKET_HEADER = 140;

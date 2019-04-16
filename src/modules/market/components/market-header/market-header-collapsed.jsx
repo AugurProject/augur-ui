@@ -8,9 +8,7 @@ import Styles from "modules/market/components/market-header/market-header-collap
 
 export const MarketHeaderCollapsed = ({ description, market }) => (
   <div className={Styles.MarketHeaderCollapsed_mainValues}>
-    <div
-      className={classNames(Styles.MarketHeaderCollapsed__descContainer)}
-    >
+    <div className={classNames(Styles.MarketHeaderCollapsed__descContainer)}>
       <section>
         <h1>{description}</h1>
       </section>
