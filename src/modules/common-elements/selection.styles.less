@@ -362,22 +362,24 @@
 }
 
 .Dropdown_stretchOut {
-  height: unset;
-  max-width: unset;
-
-  > div {
-    left: 0;
-  }
-
-  > button {
-    .text-12;
-
-    padding: 1rem 0.75rem;
-  }
-
-  > .Dropdown__list > button {
+  @media @breakpoint-mobile-mid {
     height: unset;
-    padding: 1rem 0.75rem;
+    max-width: unset;
+
+    > div {
+      left: 0;
+    }
+
+    > button {
+      .text-12;
+
+      padding: 1rem 0.75rem;
+    }
+
+    > .Dropdown__list > button {
+      height: unset;
+      padding: 1rem 0.75rem;
+    }
   }
 }
 

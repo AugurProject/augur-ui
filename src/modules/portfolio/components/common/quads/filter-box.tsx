@@ -148,7 +148,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       <QuadBox
         title={title}
         switchHeaders={isMobile}
-        isMobile={isMobile}
         showFilterSearch={true}
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}

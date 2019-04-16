@@ -19,7 +19,7 @@ export interface DropdownProps {
   options: Array<NameValuePair>;
   large?: boolean;
   staticLabel?: string;
-  stretchOut?: boolean;
+  stretchOutOnMobile?: boolean;
   sortByStyles?: Object;
   openTop?: boolean;
 }
@@ -131,7 +131,13 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
   };
 
   render() {
-    const { sortByStyles, options, large, stretchOut, openTop } = this.props;
+    const {
+      sortByStyles,
+      options,
+      large,
+      stretchOutOnMobile,
+      openTop
+    } = this.props;
     const { selected, showList } = this.state;
     return (
       <div
@@ -139,7 +145,7 @@ class Dropdown extends React.Component<DropdownProps, DropdownState> {
         className={classNames({
           [Styles.Dropdown_Large]: large,
           [Styles.Dropdown_Normal]: !large,
-          [Styles.Dropdown_stretchOut]: stretchOut,
+          [Styles.Dropdown_stretchOut]: stretchOutOnMobile,
           [Styles.Dropdown_isOpen]: showList,
           [Styles.Dropdown_openTop]: openTop
         })}

@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 
 import MyPositions from "modules/portfolio/containers/positions";
 import MyMarkets from "modules/portfolio/containers/my-markets";
@@ -10,31 +11,12 @@ import ModulePane from "modules/market/components/common/module-tabs/module-pane
 import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 
 export interface PortfolioPageProps {
-  isMobile: Boolean;
+  isMobileSmall: Boolean;
 }
 
-const PortfolioPage = (props: PortfolioPageProps) => {
-  if (props.isMobile) {
-    return (
-      <ModuleTabs selected={0} fillWidth noBorder>
-        <ModulePane label="Positions">
-          <MyPositions />
-        </ModulePane>
-        <ModulePane label="Open Orders">
-          <OpenOrders />
-        </ModulePane>
-        <ModulePane label="Filled Orders">
-          <FilledOrders />
-        </ModulePane>
-        <ModulePane label="My Created Markets">
-          <MyMarkets />
-        </ModulePane>
-      </ModuleTabs>
-    );
-  }
-
-  return (
-    <section className={Styles.PortfolioView}>
+const PortfolioPage = (props: PortfolioPageProps) => (
+  <>
+    <section className={classNames(Styles.PortfolioView, Styles.HideOnMobile)}>
       <div>
         <MyPositions />
         <MyMarkets />
@@ -44,7 +26,21 @@ const PortfolioPage = (props: PortfolioPageProps) => {
         <FilledOrders />
       </div>
     </section>
-  );
-};
+    <ModuleTabs selected={0} fillWidth noBorder className={Styles.ShowOnMobile}>
+      <ModulePane label="Positions">
+        <MyPositions />
+      </ModulePane>
+      <ModulePane label="Open Orders">
+        <OpenOrders />
+      </ModulePane>
+      <ModulePane label="Filled Orders">
+        <FilledOrders />
+      </ModulePane>
+      <ModulePane label="My Created Markets">
+        <MyMarkets />
+      </ModulePane>
+    </ModuleTabs>
+  </>
+);
 
 export default PortfolioPage;

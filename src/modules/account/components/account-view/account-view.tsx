@@ -19,7 +19,7 @@ export interface AccountViewProps {
 }
 
 const AccountView = (props: AccountViewProps) => (
-  <section className={Styles.AccountView}>
+  <>
     {props.isMobile && (
       <ModuleTabs selected={0} fillWidth noBorder>
         <ModulePane label={constants.YOUR_OVERVIEW_TITLE}>
@@ -43,7 +43,7 @@ const AccountView = (props: AccountViewProps) => (
       </ModuleTabs>
     )}
     {!props.isMobile && (
-      <>
+      <section className={Styles.AccountView}>
         <div className={Styles.AccountView__container}>
           <div>
             <Notifications />
@@ -59,9 +59,9 @@ const AccountView = (props: AccountViewProps) => (
           </div>
         </div>
         <TermsAndConditions />
-      </>
+      </section>
     )}
-  </section>
+  </>
 );
 
 export default AccountView;
