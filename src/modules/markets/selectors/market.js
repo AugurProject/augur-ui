@@ -67,7 +67,6 @@ import { selectFilledOrders } from "modules/orders/selectors/filled-orders";
 import {
   selectMarketsDataState,
   selectOutcomesDataState,
-  selectAccountTradesState,
   selectMarketTradingHistoryState,
   selectOrderBooksState,
   selectOrderCancellationState,
@@ -103,9 +102,6 @@ const selectOutcomesDataStateMarket = (state, marketId) =>
 const selectAccountPositionsStateMarket = (state, marketId) =>
   (selectAccountPositions(state) || {})[marketId] || {};
 
-const selectAccountTradesStateMarket = (state, marketId) =>
-  selectAccountTradesState(state)[marketId];
-
 const selectOrderBooksStateMarket = (state, marketId) =>
   selectOrderBooksState(state)[marketId];
 
@@ -120,7 +116,6 @@ const getMarketSelector = createSelector(
   selectMarketTradingHistoryStateMarket,
   selectOutcomesDataStateMarket,
   selectAccountPositionsStateMarket,
-  selectAccountTradesStateMarket,
   selectOrderBooksStateMarket,
   selectOrderCancellationState,
   selectLoginAccountState,
@@ -131,7 +126,6 @@ const getMarketSelector = createSelector(
     marketPriceHistory,
     marketOutcomesData,
     marketAccountPositions,
-    marketAccountTrades,
     orderBooks,
     orderCancellation,
     accountAddress,
@@ -143,7 +137,6 @@ const getMarketSelector = createSelector(
       marketPriceHistory,
       marketOutcomesData,
       marketAccountPositions,
-      marketAccountTrades,
       orderBooks,
       orderCancellation,
       accountAddress,
@@ -157,7 +150,6 @@ const assembleMarket = (
   marketPriceHistory,
   marketOutcomesData,
   marketAccountPositions,
-  marketAccountTrades,
   orderBooks,
   orderCancellation,
   accountAddress,
@@ -407,8 +399,8 @@ const assembleMarket = (
   });
 
   if (
-    marketAccountTrades ||
-    (marketAccountPositions && marketAccountPositions.tradingPositionsPerMarket)
+    marketAccountPositions &&
+    marketAccountPositions.tradingPositionsPerMarket
   ) {
     market.myPositionsSummary = {};
     const marketPositions = marketAccountPositions.tradingPositionsPerMarket;

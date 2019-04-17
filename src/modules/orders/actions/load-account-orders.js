@@ -5,21 +5,27 @@ import { ungroupBy } from "utils/ungroupBy";
 import { addOrphanedOrder } from "modules/orders/actions/orphaned-orders";
 import { updateOrderBook } from "modules/orders/actions/update-order-book";
 import { OPEN } from "modules/common-elements/constants";
-import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 import { formatEther, formatShares } from "utils/format-number";
 
-export const loadAccountOrders = (options = {}, callback = logError) => (
-  dispatch,
-  getState
-) => {
+export const loadAccountOrders = (
+  options = {},
+  callback = logError,
+  marketIdAggregator
+) => (dispatch, getState) => {
   dispatch(
-    loadUserAccountOrders(options, () => {
-      dispatch(loadAccountOrphanedOrders(options, callback));
+    loadUserAccountOrders(options, (err, { marketIds = [], orders = {} }) => {
+      if (!err) postProcessing(marketIds, dispatch, { orders }, callback);
+      dispatch(
+        loadAccountOrphanedOrders(options, (oMarketIds = []) => {
+          const comb = [...new Set([...marketIds, oMarketIds])];
+          if (marketIdAggregator && marketIdAggregator(comb));
+        })
+      );
     })
   );
 };
 
-const loadUserAccountOrders = (options = {}, callback = logError) => (
+const loadUserAccountOrders = (options = {}, callback) => (
   dispatch,
   getState
 ) => {
@@ -31,42 +37,37 @@ const loadUserAccountOrders = (options = {}, callback = logError) => (
     (err, orders) => {
       if (err) return callback(err);
       if (orders == null || Object.keys(orders).length === 0)
-        return callback(null);
-      const marketIds = Object.keys(orders);
-      dispatch(
-        loadMarketsInfoIfNotLoaded(marketIds, err => {
-          if (err) return callback(err);
-          forEach(marketIds, marketId => {
-            forEach(orders[marketId], (outcomeOrder, outcome) => {
-              forEach(outcomeOrder, (orderBook, orderTypeLabel) => {
-                const openOrders = Object.keys(orderBook).reduce((p, key) => {
-                  if (
-                    orderBook[key].orderState ===
-                    augur.constants.ORDER_STATE.OPEN
-                  ) {
-                    p[key] = orderBook[key];
-                  }
-                  return p;
-                }, {});
-                dispatch(
-                  updateOrderBook({
-                    marketId,
-                    outcome,
-                    orderTypeLabel,
-                    orderBook: openOrders
-                  })
-                );
-              });
-            });
-          });
-          callback(null, orders);
-        })
-      );
+        return callback(null, {});
+      callback(null, { marketIds: Object.keys(orders), orders });
     }
   );
 };
 
-const loadAccountOrphanedOrders = (options = {}, callback = logError) => (
+const postProcessing = (marketIds, dispatch, properties, callback) => {
+  forEach(marketIds, marketId => {
+    forEach(properties.orders[marketId], (outcomeOrder, outcome) => {
+      forEach(outcomeOrder, (orderBook, orderTypeLabel) => {
+        const openOrders = Object.keys(orderBook).reduce((p, key) => {
+          if (orderBook[key].orderState === augur.constants.ORDER_STATE.OPEN) {
+            p[key] = orderBook[key];
+          }
+          return p;
+        }, {});
+        dispatch(
+          updateOrderBook({
+            marketId,
+            outcome,
+            orderTypeLabel,
+            orderBook: openOrders
+          })
+        );
+      });
+    });
+  });
+  if (callback) callback(null, properties.orders);
+};
+
+const loadAccountOrphanedOrders = (options = {}, callback) => (
   dispatch,
   getState
 ) => {
@@ -100,13 +101,7 @@ const loadAccountOrphanedOrders = (options = {}, callback = logError) => (
           )
         );
 
-      const marketIds = Object.keys(orders);
-      dispatch(
-        loadMarketsInfoIfNotLoaded(marketIds, err => {
-          if (err) return callback(err);
-          callback(null, orders);
-        })
-      );
+      callback(err, { marketIds: Object.keys(orders) });
     }
   );
 };

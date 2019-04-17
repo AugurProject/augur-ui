@@ -3,7 +3,6 @@ import store from "src/store";
 import {
   selectMarketsDataState,
   selectOutcomesDataState,
-  selectAccountTradesState,
   selectMarketTradingHistoryState,
   selectOrderBooksState,
   selectOrderCancellationState,
@@ -24,7 +23,6 @@ export const selectMarkets = createSelector(
   selectMarketTradingHistoryState,
   selectOutcomesDataState,
   selectAccountPositions,
-  selectAccountTradesState,
   selectOrderBooksState,
   selectOrderCancellationState,
   selectLoginAccountState,
@@ -35,7 +33,6 @@ export const selectMarkets = createSelector(
     marketPriceHistory,
     marketOutcomesData,
     marketAccountPositions,
-    marketAccountTrades,
     orderBooks,
     orderCancellation,
     accountAddress,

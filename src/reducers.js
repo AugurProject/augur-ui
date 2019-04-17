@@ -1,6 +1,5 @@
 import accountDisputes from "modules/reports/reducers/account-disputes-state";
 import accountPositions from "modules/positions/reducers/account-positions";
-import accountTrades from "modules/positions/reducers/account-trades";
 import appStatus from "modules/app/reducers/app-status";
 import authStatus from "modules/auth/reducers/auth-status";
 import blockchain from "modules/app/reducers/blockchain";
@@ -49,7 +48,6 @@ export function createReducer() {
   return {
     accountDisputes,
     accountPositions,
-    accountTrades,
     alerts,
     appStatus,
     authStatus,

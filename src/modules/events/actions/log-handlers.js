@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { addAlert, updateAlert } from "modules/alerts/actions/alerts";
-import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
+import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
 import loadBidsAsks from "modules/orders/actions/load-bids-asks";
 import { loadReportingWindowBounds } from "modules/reports/actions/load-reporting-window-bounds";
 import { updateLoggedTransactions } from "modules/transactions/actions/convert-logs-to-transactions";
@@ -178,9 +178,10 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     dispatch(loadUserMarketTradingHistory({ marketId: log.marketId }));
     handlePendingOrder(log, dispatch, getState);
     handleAlertUpdate(log, dispatch, getState);
+    dispatch(loadAccountOrders({ marketId: log.marketId }));
   }
   // always reload account positions on trade so we get up to date PL data.
-  delayAction(dispatch(loadAccountTrades()));
+  delayAction(dispatch(loadAccountPositions()));
   dispatch(loadMarketTradingHistory({ marketId: log.marketId }));
   if (isCurrentMarket(log.marketId)) dispatch(loadBidsAsks(log.marketId));
 };
@@ -190,7 +191,7 @@ export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
-    delayAction(dispatch(loadAccountTrades()));
+    delayAction(dispatch(loadAccountPositions()));
   }
   if (isCurrentMarket(log.market)) dispatch(loadBidsAsks(log.market));
 };
@@ -319,8 +320,7 @@ export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
-    // always reload account positions on trade so we get up to date PL data.
-    delayAction(dispatch(loadAccountTrades()));
+    delayAction(dispatch(loadAccountPositions()));
   }
 };
 

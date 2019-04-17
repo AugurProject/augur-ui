@@ -3,7 +3,6 @@ import { createSelector } from "reselect";
 export const selectAccountDisputes = state => state.accountDisputes;
 export const selectAccountNameState = state => state.accountName;
 export const selectAccountPositionsState = state => state.accountPositions;
-export const selectAccountTradesState = state => state.accountTrades;
 export const selectActiveViewState = state => state.activeView;
 export const selectAuthState = state => state.auth;
 export const selectBlockchainState = state => state.blockchain;
