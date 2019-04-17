@@ -28,7 +28,6 @@ export interface FilterBoxProps {
   dataObj: MarketsObj;
   noToggle?: Boolean;
   renderToggleContent?: Function;
-  isMobile?: Boolean;
   filterLabel: String;
   sortByStyles?: Object;
 }
@@ -135,7 +134,6 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
       renderRightContent,
       dataObj,
       renderToggleContent,
-      isMobile,
       filterLabel,
       sortByStyles
     } = this.props;
@@ -147,7 +145,7 @@ export default class FilterBox extends React.Component<FilterBoxProps, FilterBox
     return (
       <QuadBox
         title={title}
-        switchHeaders={isMobile}
+        switchHeaders={true}
         showFilterSearch={true}
         onSearchChange={this.onSearchChange}
         sortByOptions={sortByOptions}

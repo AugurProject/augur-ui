@@ -10,9 +10,7 @@ import ModulePane from "modules/market/components/common/module-tabs/module-pane
 
 import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.styles";
 
-export interface PortfolioPageProps {
-  isMobileSmall: Boolean;
-}
+export interface PortfolioPageProps {}
 
 const PortfolioPage = (props: PortfolioPageProps) => (
   <>
