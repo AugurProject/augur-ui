@@ -55,7 +55,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           panning: props.isMobile,
           styledMode: false,
           animation: false,
-          marginTop: props.isMobile ? 20 : 40,
+          marginTop: props.isMobile ? 30 : 40,
           marginBottom: 0,
           events: {
             load() {
@@ -74,7 +74,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         height: props.containerHeight,
         scrollbar: { enabled: false },
-        navigator: { enabled: true },
+        navigator: { enabled: true, margin: 40 },
         xAxis: {
           ordinal: false,
           labels: {
@@ -249,6 +249,17 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
   }
 
+  calculateTickInterval = () => {
+    const { marketMax, marketMin } = this.props;
+    const tickInterval = marketMax
+      .minus(marketMin)
+      .dividedBy(2)
+      .toNumber();
+    return {
+      tickInterval
+    };
+  };
+
   buidOptions(
     priceTimeSeries,
     selectedPeriod,
@@ -256,7 +267,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     containerHeight,
     callback
   ) {
-    const { currentTimeInSeconds } = this.props;
+    const { currentTimeInSeconds, isMobile } = this.props;
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -299,6 +310,21 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         ...options.xAxis[0].crosshair.label,
         format: crosshair
       };
+    }
+
+    const intervalInfo = this.calculateTickInterval();
+    if (isMobile) {
+      if (Array.isArray(options.yAxis)) {
+        options.yAxis[0] = {
+          ...options.yAxis[0],
+          ...intervalInfo
+        };
+      } else {
+        options.yAxis = {
+          ...options.yAxis,
+          ...intervalInfo
+        };
+      }
     }
 
     const newOptions = Object.assign(options, {
