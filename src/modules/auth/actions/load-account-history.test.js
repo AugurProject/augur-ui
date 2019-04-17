@@ -1,7 +1,6 @@
 import thunk from "redux-thunk";
 import configureMockStore from "redux-mock-store";
 import { loadAccountHistory } from "modules/auth/actions/load-account-history";
-import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
 import { loadCreateMarketHistory } from "modules/markets/actions/load-create-market-history";
 import { loadReportingHistory } from "modules/reports/actions/load-reporting-history";
 
@@ -22,10 +21,6 @@ describe(`modules/auth/actions/load-account-history.js`, () => {
   const TRANSACTIONS_LOADING = "transactionsLoading";
 
   beforeEach(() => {
-    loadAccountTrades.mockImplementation(() => ({
-      type: ACTIONS.LOAD_ACCOUNT_TRADES
-    }));
-
     loadCreateMarketHistory.mockImplementation(() => ({
       type: ACTIONS.LOAD_CREATE_MARKET_HISTORY
     }));

@@ -1,5 +1,4 @@
 import { augur } from "services/augurjs";
-import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 import { updateAccountPositionsData } from "modules/positions/actions/update-account-trades-data";
 import logError from "utils/log-error";
 import { updateTopBarPL } from "modules/positions/actions/update-top-bar-pl";
@@ -7,7 +6,23 @@ import { loadUsershareBalances } from "modules/positions/actions/load-user-share
 import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { updateLoginAccount } from "modules/auth/actions/update-login-account";
 
-export const loadAccountPositions = (options = {}, callback = logError) => (
+export const loadAccountPositions = (
+  options = {},
+  callback = logError,
+  marketIdAggregator
+) => (dispatch, getState) => {
+  dispatch(
+    loadAccountPositionsInternal(
+      options,
+      (err, { marketIds = [], positions }) => {
+        if (marketIdAggregator && marketIdAggregator(marketIds));
+        postProcessing(marketIds, dispatch, positions, callback);
+      }
+    )
+  );
+};
+
+const loadAccountPositionsInternal = (options = {}, callback) => (
   dispatch,
   getState
 ) => {
@@ -42,44 +57,39 @@ export const loadAccountPositions = (options = {}, callback = logError) => (
       dispatch(loadUsershareBalances(marketIds));
       dispatch(getWinningBalance(marketIds));
       if (marketIds.length === 0) return callback(null);
-      dispatch(
-        loadMarketsInfoIfNotLoaded(marketIds, err => {
-          if (err) return callback(err);
-          marketIds.forEach(marketId => {
-            const marketPositionData = {};
-            const marketPositions = positions.tradingPositions.filter(
-              position => position.marketId === marketId
-            );
-            const outcomeIds = Array.from(
-              new Set([
-                ...marketPositions.reduce(
-                  (p, position) => [...p, position.outcome],
-                  []
-                )
-              ])
-            );
-            marketPositionData[marketId] = {
-              tradingPositionsPerMarket:
-                (positions.tradingPositionsPerMarket &&
-                  positions.tradingPositionsPerMarket[marketId]) ||
-                {},
-              tradingPositions: {}
-            };
-            outcomeIds.forEach(outcomeId => {
-              marketPositionData[marketId].tradingPositions[
-                outcomeId
-              ] = positions.tradingPositions.filter(
-                position =>
-                  position.marketId === marketId &&
-                  position.outcome === outcomeId
-              )[0];
-            });
-            dispatch(updateAccountPositionsData(marketPositionData, marketId));
-          });
-          dispatch(updateTopBarPL());
-          callback(null, positions);
-        })
-      );
+      callback(err, { marketIds, positions });
     }
   );
+};
+
+const postProcessing = (marketIds, dispatch, positions, callback) => {
+  marketIds.forEach(marketId => {
+    const marketPositionData = {};
+    const marketPositions = positions.tradingPositions.filter(
+      position => position.marketId === marketId
+    );
+    const outcomeIds = Array.from(
+      new Set([
+        ...marketPositions.reduce((p, position) => [...p, position.outcome], [])
+      ])
+    );
+    marketPositionData[marketId] = {
+      tradingPositionsPerMarket:
+        (positions.tradingPositionsPerMarket &&
+          positions.tradingPositionsPerMarket[marketId]) ||
+        {},
+      tradingPositions: {}
+    };
+    outcomeIds.forEach(outcomeId => {
+      marketPositionData[marketId].tradingPositions[
+        outcomeId
+      ] = positions.tradingPositions.filter(
+        position =>
+          position.marketId === marketId && position.outcome === outcomeId
+      )[0];
+    });
+    dispatch(updateAccountPositionsData(marketPositionData, marketId));
+  });
+  dispatch(updateTopBarPL());
+  if (callback) callback(null, positions);
 };

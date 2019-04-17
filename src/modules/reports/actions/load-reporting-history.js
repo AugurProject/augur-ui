@@ -1,12 +1,28 @@
 import { augur } from "services/augurjs";
-import {
-  loadMarketsInfoIfNotLoaded,
-  loadMarketsDisputeInfo
-} from "modules/markets/actions/load-markets-info";
+import { loadMarketsDisputeInfo } from "modules/markets/actions/load-markets-info";
 import { addMarketsReport } from "modules/reports/actions/update-reports";
 import logError from "utils/log-error";
 
-export const loadReportingHistory = (options = {}, callback = logError) => (
+export const loadReportingHistory = (
+  options = {},
+  callback = logError,
+  marketIdAggregator
+) => (dispatch, getState) => {
+  dispatch(
+    loadReportingHistoryInternal(
+      options,
+      (err, { marketIds, universe, reportingHistory }) => {
+        if (marketIdAggregator && marketIdAggregator(marketIds));
+        dispatch(loadMarketsDisputeInfo(marketIds));
+        dispatch(addMarketsReport(universe, marketIds));
+        // TODO update user's reporting history
+        if (callback) callback(err, reportingHistory);
+      }
+    )
+  );
+};
+
+const loadReportingHistoryInternal = (options = {}, callback) => (
   dispatch,
   getState
 ) => {
@@ -21,17 +37,11 @@ export const loadReportingHistory = (options = {}, callback = logError) => (
         Object.keys(reportingHistory).length === 0
       )
         return callback(null);
-      const marketIds = Object.keys(reportingHistory[universe.id]);
-      dispatch(
-        loadMarketsInfoIfNotLoaded(marketIds, err => {
-          if (err) return callback(err);
-
-          dispatch(loadMarketsDisputeInfo(marketIds));
-          dispatch(addMarketsReport(universe.id, marketIds));
-          // TODO update user's reporting history
-          callback(null, reportingHistory);
-        })
-      );
+      callback(null, {
+        marketIds: Object.keys(reportingHistory[universe.id]),
+        universe: universe.id,
+        reportingHistory
+      });
     }
   );
 };

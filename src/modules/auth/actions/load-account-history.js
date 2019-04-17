@@ -1,39 +1,65 @@
-import { parallel } from "async";
-import { loadAccountTrades } from "modules/positions/actions/load-account-trades";
+import { augur } from "services/augurjs";
+import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
+import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 import { loadCreateMarketHistory } from "modules/markets/actions/load-create-market-history";
 import { loadReportingHistory } from "modules/reports/actions/load-reporting-history";
 import {
   TRANSACTIONS_LOADING,
   updateAppStatus
 } from "modules/app/actions/update-app-status";
+import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import { clearTransactions } from "modules/transactions/actions/update-transactions-data";
 import { loadAlerts } from "modules/alerts/actions/alerts";
-import { augur } from "services/augurjs";
+import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 
 export const loadAccountHistory = () => (dispatch, getState) => {
-  const options = {};
+  dispatch(updateAppStatus(TRANSACTIONS_LOADING, true));
+  dispatch(clearTransactions());
 
-  loadTransactions(dispatch, getState, options, () => {
+  loadTransactions(dispatch, () => {
     dispatch(updateAppStatus(TRANSACTIONS_LOADING, false));
     dispatch(loadAlerts());
   });
 };
 
-function loadTransactions(dispatch, getState, options, cb) {
-  const allOptions = Object.assign(options, {
-    orderState: augur.constants.ORDER_STATE.ALL
-  });
-  dispatch(updateAppStatus(TRANSACTIONS_LOADING, true));
-  dispatch(clearTransactions());
-  parallel(
-    [
-      next => dispatch(loadAccountTrades(allOptions, next)),
-      next => dispatch(loadCreateMarketHistory(options, next)),
-      next => dispatch(loadReportingHistory(options, next))
-    ],
-    err => {
-      if (err) return console.error("ERROR loadTransactions: ", err);
-      cb();
-    }
+function loadTransactions(dispatch, callback) {
+  const options = {};
+  const promises = [];
+  promises.push(
+    new Promise(resolve =>
+      dispatch(loadAccountPositions(options, null, resolve))
+    )
   );
+  promises.push(
+    new Promise(resolve =>
+      dispatch(
+        loadAccountOrders(
+          { ...options, orderState: augur.constants.ORDER_STATE.ALL },
+          null,
+          resolve
+        )
+      )
+    )
+  );
+  promises.push(
+    new Promise(resolve =>
+      dispatch(loadCreateMarketHistory(options, null, resolve))
+    )
+  );
+  promises.push(
+    new Promise(resolve =>
+      dispatch(loadReportingHistory(options, null, resolve))
+    )
+  );
+
+  Promise.all(promises).then(marketIds => {
+    const uniqMarketIds = Array.from(
+      new Set(marketIds.reduce((p, mids) => p.concat(mids), []))
+    );
+    console.log("got all promises", uniqMarketIds);
+    dispatch(loadMarketsInfoIfNotLoaded(uniqMarketIds), () => {
+      dispatch(loadUserMarketTradingHistory(options));
+      callback();
+    });
+  });
 }

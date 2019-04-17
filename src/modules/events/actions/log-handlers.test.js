@@ -43,12 +43,6 @@ describe("modules/events/actions/log-handlers.js", () => {
             log
           }
         }));
-      loadAccountTradesSpy = jest
-        .spyOn(loadAccountTradesModule, "loadAccountTrades")
-        .mockImplementation(options => ({
-          type: ACTIONS.LOAD_ACCOUNT_TRADES,
-          data: {}
-        }));
       loadReportingWindowBoundsSpy = jest
         .spyOn(loadReportingWindowBoundsModule, "loadReportingWindowBounds")
         .mockImplementation(() => ({
