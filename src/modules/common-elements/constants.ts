@@ -669,6 +669,5 @@ export const CLAIM_PROCEEDS = "CLAIM_PROCEEDS";
 // Pending Queue SINGLE TYPE
 export const CLAIM_FEE_WINDOWS = "CLAIM_FEE_WINDOWS";
 
-
-// Media Queries 
+// Media Queries
 export const SMALL_MOBILE = "(max-width: 768px)";
