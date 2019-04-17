@@ -9,11 +9,11 @@ import {
 
 import * as isCurrentMarketModule from "modules/trades/helpers/is-current-market";
 import * as convertLogsToTransactionsModule from "modules/transactions/actions/convert-logs-to-transactions";
-import * as loadAccountTradesModule from "modules/positions/actions/load-account-trades";
 import * as loadReportingWindowBoundsModule from "modules/reports/actions/load-reporting-window-bounds";
 import * as getWinningBalanceModule from "modules/reports/actions/get-winning-balance";
 import * as loadBidsAsksModule from "modules/orders/actions/load-bids-asks";
 import * as updateAssetsModule from "modules/auth/actions/update-assets";
+import * as loadAccountPositionsModule from "modules/positions/actions/load-account-positions";
 
 describe("modules/events/actions/log-handlers.js", () => {
   describe("log handlers", () => {
@@ -24,14 +24,15 @@ describe("modules/events/actions/log-handlers.js", () => {
     let loadReportingWindowBoundsSpy;
     let getWinningBalanceSpy;
     let loadBidsAsksSpy;
+    let loadAccountPositions;
     let updateAssetsSpy;
     const ACTIONS = {
-      LOAD_ACCOUNT_TRADES: "LOAD_ACCOUNT_TRADES",
       UPDATE_LOGGED_TRANSACTIONS: "UPDATE_LOGGED_TRANSACTIONS",
       UPDATE_ASSETS: "UPDATE_ASSETS",
       LOAD_REPORTING_WINDOW: "LOAD_REPORTING_WINDOW",
       GET_WINNING_BALANCE: "GET_WINNING_BALANCE",
-      LOAD_BID_ASKS: "LOAD_BID_ASKS"
+      LOAD_BID_ASKS: "LOAD_BID_ASKS",
+      LOAD_ACCOUNT_POSITIONS: "LOAD_ACCOUNT_POSITIONS"
     };
 
     beforeAll(() => {
@@ -64,6 +65,11 @@ describe("modules/events/actions/log-handlers.js", () => {
             marketId: options.marketId
           }
         }));
+      loadAccountPositions = jest
+        .spyOn(loadAccountPositionsModule, "loadAccountPositions")
+        .mockImplementation(() => ({
+          type: ACTIONS.LOAD_ACCOUNT_POSITIONS
+        }));
       updateAssetsSpy = jest
         .spyOn(updateAssetsModule, "updateAssets")
         .mockImplementation(() => ({
@@ -78,6 +84,7 @@ describe("modules/events/actions/log-handlers.js", () => {
       loadAccountTradesSpy.mockReset();
       getWinningBalanceSpy.mockReset();
       loadBidsAsksSpy.mockReset();
+      loadAccountPositions.mockReset();
       updateAssetsSpy.mockReset();
     });
 
@@ -109,8 +116,7 @@ describe("modules/events/actions/log-handlers.js", () => {
           }
         },
         {
-          type: ACTIONS.LOAD_ACCOUNT_TRADES,
-          data: {}
+          type: ACTIONS.LOAD_ACCOUNT_POSITIONS
         }
       ]);
     });
@@ -205,8 +211,7 @@ describe("modules/events/actions/log-handlers.js", () => {
           }
         },
         {
-          type: ACTIONS.LOAD_ACCOUNT_TRADES,
-          data: {}
+          type: ACTIONS.LOAD_ACCOUNT_POSITIONS
         }
       ]);
     });
