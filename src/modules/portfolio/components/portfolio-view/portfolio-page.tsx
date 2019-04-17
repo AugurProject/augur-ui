@@ -1,5 +1,5 @@
 import React from "react";
-import classNames from "classnames";
+import Media from "react-media";
 
 import MyPositions from "modules/portfolio/containers/positions";
 import MyMarkets from "modules/portfolio/containers/my-markets";
@@ -13,32 +13,39 @@ import Styles from "modules/portfolio/components/portfolio-view/portfolio-view.s
 export interface PortfolioPageProps {}
 
 const PortfolioPage = (props: PortfolioPageProps) => (
-  <>
-    <section className={classNames(Styles.PortfolioView, Styles.HideOnMobile)}>
-      <div>
-        <MyPositions />
-        <MyMarkets />
-      </div>
-      <div>
-        <OpenOrders />
-        <FilledOrders />
-      </div>
-    </section>
-    <ModuleTabs selected={0} fillWidth noBorder className={Styles.ShowOnMobile}>
-      <ModulePane label="Positions">
-        <MyPositions />
-      </ModulePane>
-      <ModulePane label="Open Orders">
-        <OpenOrders />
-      </ModulePane>
-      <ModulePane label="Filled Orders">
-        <FilledOrders />
-      </ModulePane>
-      <ModulePane label="My Created Markets">
-        <MyMarkets />
-      </ModulePane>
-    </ModuleTabs>
-  </>
+  <div>
+    <Media query="(max-width: 768px)">
+      {matches =>
+        matches ? (
+          <ModuleTabs selected={0} fillWidth noBorder>
+            <ModulePane label="Positions">
+              <MyPositions />
+            </ModulePane>
+            <ModulePane label="Open Orders">
+              <OpenOrders />
+            </ModulePane>
+            <ModulePane label="Filled Orders">
+              <FilledOrders />
+            </ModulePane>
+            <ModulePane label="My Created Markets">
+              <MyMarkets />
+            </ModulePane>
+          </ModuleTabs>
+        ) : (
+          <section className={Styles.PortfolioView}>
+            <div>
+              <MyPositions />
+              <MyMarkets />
+            </div>
+            <div>
+              <OpenOrders />
+              <FilledOrders />
+            </div>
+          </section>
+        )
+      }
+    </Media>
+  </div>
 );
 
 export default PortfolioPage;
