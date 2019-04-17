@@ -14,6 +14,7 @@ import { TYPE_VIEW, ZERO } from "modules/common-elements/constants";
 import { isEmpty } from "lodash";
 import FormStyles from "modules/common/less/form";
 import Styles from "modules/reporting/components/reporting-report/reporting-report.styles";
+import InvalidMessage from "modules/reporting/components/invalid-message/invalid-message";
 
 export default class ReportingDispute extends Component {
   static propTypes = {
@@ -145,12 +146,15 @@ export default class ReportingDispute extends Component {
         {!isEmpty(market) && (
           <article className={FormStyles.Form}>
             {s.currentStep === 0 && (
-              <ReportingDisputeForm
-                market={market}
-                updateState={this.updateState}
-                stakeInfo={s.stakeInfo}
-                availableRep={availableRep}
-              />
+              <div className={Styles.ReportingReport_form_message}>
+                <ReportingDisputeForm
+                  market={market}
+                  updateState={this.updateState}
+                  stakeInfo={s.stakeInfo}
+                  availableRep={availableRep}
+                />
+                <InvalidMessage />
+              </div>
             )}
             {s.currentStep === 1 && (
               <ReportingDisputeConfirm
