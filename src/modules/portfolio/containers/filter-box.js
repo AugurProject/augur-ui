@@ -6,9 +6,7 @@ import { pick } from "lodash";
 
 import { createMarketsStateObject } from "modules/portfolio/helpers/create-markets-state-object";
 
-const mapStateToProps = state => ({
-  isMobile: state.appStatus.isMobile
-});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({});
 
