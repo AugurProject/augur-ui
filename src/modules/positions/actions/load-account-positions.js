@@ -3,8 +3,8 @@ import { updateAccountPositionsData } from "modules/positions/actions/update-acc
 import logError from "utils/log-error";
 import { updateTopBarPL } from "modules/positions/actions/update-top-bar-pl";
 import { loadUsershareBalances } from "modules/positions/actions/load-user-share-balances";
-import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { updateLoginAccount } from "modules/auth/actions/update-login-account";
+import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 
 export const loadAccountPositions = (
   options = {},
@@ -16,7 +16,7 @@ export const loadAccountPositions = (
       options,
       (err, { marketIds = [], positions }) => {
         if (marketIdAggregator && marketIdAggregator(marketIds));
-        postProcessing(marketIds, dispatch, positions, callback);
+        if (!err) postProcessing(marketIds, dispatch, positions, callback);
       }
     )
   );
@@ -54,9 +54,10 @@ const loadAccountPositionsInternal = (options = {}, callback) => (
           )
         ])
       );
+
+      if (marketIds.length === 0) return callback(null);
       dispatch(loadUsershareBalances(marketIds));
       dispatch(getWinningBalance(marketIds));
-      if (marketIds.length === 0) return callback(null);
       callback(err, { marketIds, positions });
     }
   );

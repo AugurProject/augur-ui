@@ -40,6 +40,8 @@ export const syncBlockchain = cb => (dispatch, getState) => {
     cb && cb();
   });
 
+  console.log("calling getSyncData");
+
   debounce(
     augur.augurNode.getSyncData((err, res) => {
       if (!err && res) {

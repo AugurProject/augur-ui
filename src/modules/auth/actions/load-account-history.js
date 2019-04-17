@@ -15,7 +15,6 @@ import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets
 export const loadAccountHistory = () => (dispatch, getState) => {
   dispatch(updateAppStatus(TRANSACTIONS_LOADING, true));
   dispatch(clearTransactions());
-
   loadTransactions(dispatch, () => {
     dispatch(updateAppStatus(TRANSACTIONS_LOADING, false));
     dispatch(loadAlerts());
@@ -24,6 +23,7 @@ export const loadAccountHistory = () => (dispatch, getState) => {
 
 function loadTransactions(dispatch, callback) {
   const options = {};
+  dispatch(loadUserMarketTradingHistory(options));
   const promises = [];
   promises.push(
     new Promise(resolve =>
@@ -56,9 +56,8 @@ function loadTransactions(dispatch, callback) {
     const uniqMarketIds = Array.from(
       new Set(marketIds.reduce((p, mids) => p.concat(mids), []))
     );
-    console.log("got all promises", uniqMarketIds);
+
     dispatch(loadMarketsInfoIfNotLoaded(uniqMarketIds), () => {
-      dispatch(loadUserMarketTradingHistory(options));
       callback();
     });
   });

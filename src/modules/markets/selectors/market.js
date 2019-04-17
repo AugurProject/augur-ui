@@ -399,7 +399,8 @@ const assembleMarket = (
   });
 
   if (
-    marketAccountPositions && marketAccountPositions.tradingPositionsPerMarket
+    marketAccountPositions &&
+    marketAccountPositions.tradingPositionsPerMarket
   ) {
     market.myPositionsSummary = {};
     const marketPositions = marketAccountPositions.tradingPositionsPerMarket;

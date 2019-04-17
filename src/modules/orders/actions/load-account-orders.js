@@ -13,8 +13,8 @@ export const loadAccountOrders = (
   marketIdAggregator
 ) => (dispatch, getState) => {
   dispatch(
-    loadUserAccountOrders(options, (err, { marketIds = [], orders }) => {
-      postProcessing(marketIds, dispatch, { orders }, callback);
+    loadUserAccountOrders(options, (err, { marketIds = [], orders = {} }) => {
+      if (!err) postProcessing(marketIds, dispatch, { orders }, callback);
       dispatch(
         loadAccountOrphanedOrders(options, (oMarketIds = []) => {
           const comb = [...new Set([...marketIds, oMarketIds])];
@@ -37,7 +37,7 @@ const loadUserAccountOrders = (options = {}, callback) => (
     (err, orders) => {
       if (err) return callback(err);
       if (orders == null || Object.keys(orders).length === 0)
-        return callback(null);
+        return callback(null, {});
       callback(null, { marketIds: Object.keys(orders), orders });
     }
   );
