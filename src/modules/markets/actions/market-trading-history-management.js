@@ -75,7 +75,7 @@ export const loadUserMarketTradingHistory = (options, callback = logError) => (
             const marketIds = [userTradedMarketIds, finalizedMarkets].reduce(
               (a, b) => a.filter(c => !b.includes(c))
             );
-            // getTradingHistory `marketId` can be an
+            // getTradingHistory `marketId` can be an array
             getTradingHistory(
               { marketId: marketIds, universe: universe.id },
               (err, marketTradingHistories) => {
