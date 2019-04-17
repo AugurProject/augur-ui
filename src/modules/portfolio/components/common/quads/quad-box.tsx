@@ -57,12 +57,16 @@ const BoxHeaderElement = (props: QuadBoxProps) => (
 const QuadBox = (props: QuadBoxProps) => (
   <div className={Styles.FilterBox}>
     <div className={Styles.HideOnMobile}>
-      <BoxHeaderElement {...props} switchHeaders={false}/>
+      <BoxHeaderElement {...props} switchHeaders={false} />
     </div>
     <div className={Styles.FilterBox__content}>
       <div className={Styles.FilterBox__container}>
         <div className={Styles.ShowOnMobile}>
-          <BoxHeaderElement {...props} isMobile switchHeaders={props.switchHeaders}/>
+          <BoxHeaderElement
+            {...props}
+            isMobile
+            switchHeaders={props.switchHeaders}
+          />
         </div>
         {props.content}
       </div>
