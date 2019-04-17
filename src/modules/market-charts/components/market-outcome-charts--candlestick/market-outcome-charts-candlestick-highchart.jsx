@@ -101,6 +101,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showEmpty: true,
             max: props.marketMax.toFixed(props.pricePrecision),
             min: props.marketMin.toFixed(props.pricePrecision),
+            tickInterval: props.isMobile
+              ? props.marketMax
+                  .minus(props.marketMin)
+                  .dividedBy(2)
+                  .toNumber()
+              : undefined,
             showFirstLabel: true,
             showLastLabel: true,
             labels: {
@@ -249,17 +255,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
   }
 
-  calculateTickInterval = () => {
-    const { marketMax, marketMin } = this.props;
-    const tickInterval = marketMax
-      .minus(marketMin)
-      .dividedBy(2)
-      .toNumber();
-    return {
-      tickInterval
-    };
-  };
-
   buidOptions(
     priceTimeSeries,
     selectedPeriod,
@@ -267,7 +262,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     containerHeight,
     callback
   ) {
-    const { currentTimeInSeconds, isMobile } = this.props;
+    const { currentTimeInSeconds } = this.props;
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -310,21 +305,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         ...options.xAxis[0].crosshair.label,
         format: crosshair
       };
-    }
-
-    const intervalInfo = this.calculateTickInterval();
-    if (isMobile) {
-      if (Array.isArray(options.yAxis)) {
-        options.yAxis[0] = {
-          ...options.yAxis[0],
-          ...intervalInfo
-        };
-      } else {
-        options.yAxis = {
-          ...options.yAxis,
-          ...intervalInfo
-        };
-      }
     }
 
     const newOptions = Object.assign(options, {
