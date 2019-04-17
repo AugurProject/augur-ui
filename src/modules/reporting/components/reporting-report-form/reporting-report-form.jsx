@@ -25,7 +25,8 @@ export default class ReportingReportForm extends Component {
     isDesignatedReporter: PropTypes.bool.isRequired,
     isMarketInValid: PropTypes.bool,
     insufficientRep: PropTypes.bool.isRequired,
-    availableRep: PropTypes.string
+    availableRep: PropTypes.string,
+    stakeLabel: PropTypes.string.isRequired
   };
 
   static defaultProps = {
@@ -181,7 +182,8 @@ export default class ReportingReportForm extends Component {
       availableRep,
       validations,
       insufficientRep,
-      isDesignatedReporter
+      isDesignatedReporter,
+      stakeLabel
     } = this.props;
 
     const { reportingState } = market;
@@ -337,11 +339,11 @@ export default class ReportingReportForm extends Component {
             </span>
           </label>
         )}
-        {!isOpenReporting && (
+        {(!isOpenReporting || isDesignatedReporter) && (
           <li className={Styles.ReportingReportREP}>
             <div>
               <label htmlFor="sr__input--stake">
-                <span>Required Stake</span>
+                <span>{stakeLabel}</span>
               </label>
               <p>{stake} REP</p>
             </div>
