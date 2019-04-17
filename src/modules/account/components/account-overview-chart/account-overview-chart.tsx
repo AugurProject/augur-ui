@@ -70,7 +70,7 @@ export default class AccountOverviewChart extends React.Component<
     let startTime: number | null =
       currentAugurTimestamp - timeRangeDataConfig.periodInterval;
     if (timeRangeDataConfig.id === ALL_TIME) {
-      startTime = allTimeStart;
+      startTime = null;
     }
     this.props.getProfitLoss(
       universe,
