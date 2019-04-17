@@ -10,7 +10,7 @@ import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
 NoDataToDisplay(Highcharts);
 
-const ShowNavigator = 400;
+const ShowNavigator = 350;
 
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
@@ -101,11 +101,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showEmpty: true,
             max: props.marketMax.toFixed(props.pricePrecision),
             min: props.marketMin.toFixed(props.pricePrecision),
-            showFirstLabel: false,
+            showFirstLabel: true,
             showLastLabel: true,
             labels: {
               format: "{value:.4f}",
               style: Styles.MarketOutcomeCharts__highcharts_display_yLables,
+              align: "center",
               x: 0,
               y: -2
             },
@@ -248,30 +249,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     }
   }
 
-  calculateMaxMin = data => {
-    const values = data.map(d => d[2]);
-
-    const bnMin = createBigNumber(
-      values.reduce(
-        (a, b) => (createBigNumber(a).lte(createBigNumber(b)) ? a : b),
-        0
-      )
-    );
-    const bnMax = createBigNumber(
-      values.reduce(
-        (a, b) => (createBigNumber(a).gte(createBigNumber(b)) ? a : b),
-        0
-      )
-    );
-
-    const max = bnMax.toNumber();
-    const min = bnMin.toNumber();
-    return {
-      max,
-      min
-    };
-  };
-
   buidOptions(
     priceTimeSeries,
     selectedPeriod,
@@ -301,10 +278,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     });
 
     // add buffer so candlesticks aren't stuck to beginning of chart
-    let intervalInfo = {};
     if (priceTimeSeries.length > 0) {
       volume.push([currentTimeInSeconds * 1000, 0]);
-      intervalInfo = this.calculateMaxMin(ohlc);
     }
 
     options.height = containerHeight;
@@ -323,18 +298,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       options.xAxis[0].crosshair.label = {
         ...options.xAxis[0].crosshair.label,
         format: crosshair
-      };
-    }
-
-    if (Array.isArray(options.yAxis)) {
-      options.yAxis[0] = {
-        ...options.yAxis[0],
-        ...intervalInfo
-      };
-    } else {
-      options.yAxis = {
-        ...options.yAxis,
-        ...intervalInfo
       };
     }
 
