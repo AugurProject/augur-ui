@@ -670,4 +670,7 @@ export const CLAIM_PROCEEDS = "CLAIM_PROCEEDS";
 export const CLAIM_FEE_WINDOWS = "CLAIM_FEE_WINDOWS";
 
 // Media Queries
-export const SMALL_MOBILE = "(max-width: 768px)";
+export const SMALL_MOBILE = "(max-width: 768px)"; // matches @breakpoint-mobile-mid
+export const TABLET = "(min-width: 768px) and (max-width: 1200px)";
+export const DESKTOP = "(min-width:1201px) and (max-width: 2000px)";
+export const LARGE_DESKTOP = "(min-width: 2001px)";
