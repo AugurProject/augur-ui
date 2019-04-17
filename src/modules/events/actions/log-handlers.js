@@ -35,6 +35,8 @@ import { appendCategoryIfNew } from "modules/categories/actions/append-category"
 import { removePendingOrder } from "modules/orders/actions/pending-orders-management";
 import { loadAccountOrders } from "modules/orders/actions/load-account-orders";
 
+const ACTION_WAIT_TIME = 1000 * 5;
+
 const handleAlertUpdate = (log, dispatch, getState) => {
   dispatch(
     updateAlert(log.transactionHash, {
@@ -340,5 +342,5 @@ export const handleApprovalLog = log => (dispatch, getState) => {
 
 // delay to avoid race condition with getting server data
 const delayAction = action => {
-  setTimeout(() => action, 2000);
+  setTimeout(() => action, ACTION_WAIT_TIME);
 };
