@@ -35,6 +35,8 @@ export default class MarketView extends Component {
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     marketId: PropTypes.string.isRequired,
+    marketReviewSeen: PropTypes.bool.isRequired,
+    marketReviewModal: PropTypes.func.isRequired,
     currentTimestamp: PropTypes.number,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
@@ -113,6 +115,10 @@ export default class MarketView extends Component {
 
   componentDidMount() {
     this.node.scrollIntoView();
+
+    if (!this.props.marketReviewSeen) {
+      this.props.marketReviewModal();
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {
