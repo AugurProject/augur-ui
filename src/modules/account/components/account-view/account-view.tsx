@@ -47,18 +47,12 @@ const AccountView = (props: AccountViewProps) => (
       ) : (
         <section className={Styles.AccountView}>
           <div className={Styles.AccountView__container}>
-            <div>
-              <Notifications />
-              <OpenMarkets />
-            </div>
-            <div>
-              <AccountOverview />
-              <AugurStatus />
-            </div>
-            <div>
-              <Favorites />
-              <TransactionsBoxContainer />
-            </div>
+            <Notifications />
+            <AccountOverview />
+            <Favorites />
+            <OpenMarkets />
+            <AugurStatus />
+            <TransactionsBoxContainer />
           </div>
           <TermsAndConditions />
         </section>
