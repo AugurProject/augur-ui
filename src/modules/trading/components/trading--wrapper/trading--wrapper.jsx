@@ -230,6 +230,27 @@ class TradingWrapper extends Component {
     );
   }
 
+  placeTrade(market, selectedOutcome, s) {
+    this.props.onSubmitPlaceTrade(
+      market.id,
+      selectedOutcome.id,
+      s.trade,
+      s.doNotCreateOrders,
+      (err, tradeGroupID) => {
+        // onSent/onFailed CB
+        if (!err) {
+          this.clearOrderForm();
+        }
+      },
+      res => {
+        if (s.doNotCreateOrders && res.res !== res.sharesToFill) {
+          this.props.handleFilledOnly(res.tradeInProgress);
+          // onComplete CB
+        }
+      }
+    );
+  }
+
   updateTradeNumShares(order) {
     const { updateTradeShares, selectedOutcome, market } = this.props;
     this.updateState(
@@ -281,10 +302,8 @@ class TradingWrapper extends Component {
       market,
       selectedOutcome,
       gasPrice,
-      handleFilledOnly,
       updateSelectedOutcome,
       showSelectOutcome,
-      onSubmitPlaceTrade,
       marketReviewTradeSeen,
       marketReviewTradeModal
     } = this.props;
@@ -417,44 +436,10 @@ class TradingWrapper extends Component {
               if (!marketReviewTradeSeen) {
                 marketReviewTradeModal({
                   marketId: market.id,
-                  cb: () => {
-                    onSubmitPlaceTrade(
-                      market.id,
-                      selectedOutcome.id,
-                      s.trade,
-                      s.doNotCreateOrders,
-                      (err, tradeGroupID) => {
-                        // onSent/onFailed CB
-                        if (!err) {
-                          this.clearOrderForm();
-                        }
-                      },
-                      res => {
-                        if (s.doNotCreateOrders && res.res !== res.sharesToFill)
-                          handleFilledOnly(res.tradeInProgress);
-                        // onComplete CB
-                      }
-                    );
-                  }
+                  cb: () => this.placeTrade(market, selectedOutcome, s)
                 });
               } else {
-                onSubmitPlaceTrade(
-                  market.id,
-                  selectedOutcome.id,
-                  s.trade,
-                  s.doNotCreateOrders,
-                  (err, tradeGroupID) => {
-                    // onSent/onFailed CB
-                    if (!err) {
-                      this.clearOrderForm();
-                    }
-                  },
-                  res => {
-                    if (s.doNotCreateOrders && res.res !== res.sharesToFill)
-                      handleFilledOnly(res.tradeInProgress);
-                    // onComplete CB
-                  }
-                );
+                this.placeTrade(market, selectedOutcome, s);
               }
             }}
             disabled={!s.trade || !s.trade.limitPrice}
