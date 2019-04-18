@@ -47,20 +47,39 @@
     > div {
       max-height: unset;
     }
+
+    > div:last-of-type {
+      flex: 0;
+      min-height: fit-content;
+    }
   }
 
   > div:last-of-type {
+    flex-direction: row;
+    height: fit-content;
+
     > div:first-of-type {
       flex: unset;
       max-height: 70vh;
     }
-  }
 
-  > div:nth-of-type(2),
-  > div:last-of-type {
     > div:last-of-type {
-      flex: 0;
-      min-height: fit-content;
+      flex: 1;
+      margin-left: 1.5rem;
+    }
+  }
+}
+
+@media @breakpoint-1-0-0 {
+  .AccountView__container {
+    > div:last-of-type {
+      flex-direction: column;
+      height: unset;
+
+      > div:last-of-type {
+        flex: unset;
+        margin-left: 0;
+      }
     }
   }
 }
