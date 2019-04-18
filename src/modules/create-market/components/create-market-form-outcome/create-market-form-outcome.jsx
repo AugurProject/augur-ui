@@ -17,7 +17,6 @@ import {
   CATEGORICAL_OUTCOME_MAX_LENGTH,
   ZERO
 } from "modules/common-elements/constants";
-import MarkdownRenderer from "modules/common/components/markdown-renderer/markdown-renderer";
 
 import {
   ExclamationCircle as InputErrorIcon,
@@ -363,7 +362,7 @@ export default class CreateMarketOutcome extends Component {
   }
 
   render() {
-    const { newMarket, updateNewMarket, keyPressed } = this.props;
+    const { newMarket, keyPressed } = this.props;
     const s = this.state;
     const cleanedOutcomes = newMarket.outcomes.filter(
       outcome => outcome !== ""
@@ -414,17 +413,21 @@ export default class CreateMarketOutcome extends Component {
           </ul>
         </li>
         {newMarket.type === CATEGORICAL && (
-          <li>
+          <li
+            className={classNames(
+              StylesForm.Categorical,
+              StylesForm.CreateMarketForm_block
+            )}
+          >
             <label htmlFor="cm__input--outcome1">
               <span>Potential Outcomes</span>
               {validation.outcomes && (
-                <span className={StylesForm.CreateMarketForm__error}>
-                  {InputErrorIcon()}
-                  {validation.outcomes}
+                <span>
+                  {InputErrorIcon} {validation.outcomes}
                 </span>
               )}
             </label>
-            <p style={{ marginBottom: "0.5rem" }}>
+            <p className={StylesForm.Message}>
               To reduce ambiguity, categorical markets should cover all possible
               outcomes. This can be done by including an outcome such as
               &quot;Other&quot;
@@ -564,11 +567,11 @@ export default class CreateMarketOutcome extends Component {
                       id="tooltip--market-fees"
                       className={TooltipStyles.Tooltip}
                       effect="solid"
-                      place="right"
+                      place="top"
                       type="light"
                     >
                       <h4>Enter a denomination for your scalar market</h4>
-                      <p style={{ color: "white" }}>
+                      <p>
                         {
                           'The denomination specifies what units your market is measured in. For example, a market predicting the temperature on a certain day might be denominated in "Degrees Fahrenheit".'
                         }
@@ -624,43 +627,6 @@ export default class CreateMarketOutcome extends Component {
                 )}
               </div>
             </div>
-          </li>
-        )}
-        {newMarket.type && (
-          <li
-            className={classNames(
-              StylesForm["field--50"],
-              Styles.CreateMarketFormOutcome__details
-            )}
-          >
-            <label htmlFor="cm__input--details">
-              <span>Additional Details</span>
-            </label>
-            <textarea
-              id="cm__input--details"
-              value={newMarket.detailsText}
-              placeholder="Optional - Include any additional information that traders should know about this market."
-              onChange={e => {
-                updateNewMarket({ detailsText: e.target.value });
-              }}
-              className={Styles.CreateMarketForm__textArea}
-            />
-          </li>
-        )}
-        {newMarket.type && (
-          <li
-            className={classNames(
-              StylesForm["field--50"],
-              Styles.CreateMarketFormOutcome__detailsPreview
-            )}
-          >
-            <label htmlFor="cm__input--details">
-              <span>Additional Details Preview</span>
-            </label>
-            <MarkdownRenderer
-              text={newMarket.detailsText}
-              className={StylesForm.CreateMarketForm__additionalDetailsRendered}
-            />
           </li>
         )}
       </ul>
