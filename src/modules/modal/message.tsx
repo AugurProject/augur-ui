@@ -15,7 +15,11 @@ import {
   ReadableAddress,
   ReadableAddressProps,
   DepositInfo,
-  DepositInfoProps
+  DepositInfoProps,
+  MarketReview,
+  MarketReviewProps,
+  CheckboxCTA,
+  CheckboxCTAProps
 } from "modules/modal/common";
 import Styles from "modules/modal/modal.styles";
 
@@ -30,6 +34,8 @@ interface MessageProps {
   breakdown?: Array<LinearPropertyLabelProps>;
   readableAddress?: ReadableAddressProps;
   depositInfo?: DepositInfoProps;
+  marketReview?: MarketReviewProps;
+  checkboxCTA?: CheckboxCTAProps;
 }
 
 export const Message = (props: MessageProps) => (
@@ -43,6 +49,8 @@ export const Message = (props: MessageProps) => (
       {props.breakdown && <Breakdown rows={props.breakdown} />}
       {props.readableAddress && <ReadableAddress {...props.readableAddress} />}
       {props.depositInfo && <DepositInfo {...props.depositInfo} />}
+      {props.marketReview && <MarketReview {...props.marketReview} />}
+      {props.checkboxCTA && <CheckboxCTA {...props.checkboxCTA} />}
     </main>
     {props.buttons.length && <ButtonsRow buttons={props.buttons} />}
   </div>

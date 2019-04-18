@@ -5,6 +5,7 @@ import QRCode from "qrcode.react";
 import Clipboard from "clipboard";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
+import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import {
   XIcon,
   CopyIcon,
@@ -100,6 +101,26 @@ interface AccountAddressDisplayProps {
 
 interface AccountAddressDisplayState {
   isCopied: boolean;
+}
+
+interface MarketReviewProps {
+  description: string;
+  details: string;
+  endTime: any;
+  resolutionSource: string;
+}
+
+interface MarketReviewState {
+  readMore: boolean;
+}
+
+interface CheckboxCTAProps {
+  markModalAsSeen: Function;
+  unmarkModalAsSeen: Function;
+}
+
+interface CheckboxCTAState {
+  didCheck: boolean;
 }
 
 export interface DepositInfoProps {
@@ -336,6 +357,114 @@ export class AccountAddressDisplay extends Component<
           </>
         )}
       </span>
+    );
+  }
+}
+
+export class MarketReview extends Component<
+  MarketReviewProps,
+  MarketReviewState
+> {
+  state = {
+    readMore: false
+  };
+
+  render() {
+    const { description, details, endTime, resolutionSource } = this.props;
+
+    const showReadMore = details && details.length > 126;
+    const readMore = showReadMore && (
+      <div>
+        {`${details.substr(0, 126)}...`}{" "}
+        <button
+          onClick={() => this.setState({ readMore: true })}
+          className={Styles.ModalMarketReview__ReadMore}
+        >
+          Read more
+        </button>
+      </div>
+    );
+
+    return (
+      <section className={Styles.ModalMarketReview}>
+        <div className={Styles.ModalMarketReview__TextBox}>
+          <div>
+            <p>Market Question</p>
+            {description}
+          </div>
+
+          {details && (
+            <div>
+              <p>Additional details</p>
+              {showReadMore && !this.state.readMore && readMore}
+              {(!showReadMore || this.state.readMore) && <div>{details}</div>}
+            </div>
+          )}
+
+          {endTime && (
+            <div>
+              <p>Reporting starts</p>
+              <div>{endTime.formattedUtc}</div>
+              <div>{endTime.formattedTimezone}</div>
+            </div>
+          )}
+
+          <div>
+            <p>Resolution source</p>
+            {resolutionSource || "General knowledge"}
+          </div>
+        </div>
+      </section>
+    );
+  }
+}
+
+export class CheckboxCTA extends Component<CheckboxCTAProps, CheckboxCTAState> {
+  constructor(props: CheckboxCTAProps) {
+    super(props);
+
+    this.state = {
+      didCheck: false
+    };
+
+    this.checkCheckbox = this.checkCheckbox.bind(this);
+  }
+
+  checkCheckbox() {
+    this.setState({ didCheck: !this.state.didCheck }, () => {
+      if (this.state.didCheck) {
+        this.props.markModalAsSeen();
+      } else {
+        this.props.unmarkModalAsSeen();
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div
+        className={Styles.CheckboxCTA__checkbox}
+        role="button"
+        tabIndex={0}
+        onClick={(e: React.SyntheticEvent) => {
+          e.preventDefault();
+          this.checkCheckbox();
+        }}
+      >
+        <label htmlFor="marketReview">
+          <Checkbox
+            id="marketReview"
+            type="checkbox"
+            value={this.state.didCheck}
+            isChecked={this.state.didCheck}
+            onClick={(e: React.SyntheticEvent) => {
+              e.preventDefault();
+              this.checkCheckbox();
+            }}
+          />
+          Don’t show this message on any more markets
+        </label>
+      </div>
     );
   }
 }

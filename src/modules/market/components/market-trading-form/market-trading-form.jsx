@@ -19,6 +19,8 @@ class MarketTradingForm extends Component {
     isMobile: PropTypes.bool.isRequired,
     isConnectionTrayOpen: PropTypes.bool.isRequired,
     market: PropTypes.object.isRequired,
+    marketReviewTradeSeen: PropTypes.bool.isRequired,
+    marketReviewTradeModal: PropTypes.func.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     selectedOutcome: PropTypes.string,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
@@ -90,7 +92,9 @@ class MarketTradingForm extends Component {
       updateTradeShares,
       showSelectOutcome,
       toggleConnectionTray,
-      onSubmitPlaceTrade
+      onSubmitPlaceTrade,
+      marketReviewTradeSeen,
+      marketReviewTradeModal
     } = this.props;
     const s = this.state;
 
@@ -133,6 +137,8 @@ class MarketTradingForm extends Component {
           updateTradeShares={updateTradeShares}
           showSelectOutcome={showSelectOutcome}
           onSubmitPlaceTrade={onSubmitPlaceTrade}
+          marketReviewTradeModal={marketReviewTradeModal}
+          marketReviewTradeSeen={marketReviewTradeSeen}
         />
         {initialMessage && (
           <div className={Styles["MarketTradingForm__initial-message"]}>

@@ -414,6 +414,12 @@ export const MODAL_TRADING_OVERLAY = "MODAL_TRADING_OVERLAY";
 export const MODAL_SELL_COMPLETE_SETS = "MODAL_SELL_COMPLETE_SETS";
 export const MODAL_FINALIZE_MARKET = "MODAL_FINALIZE_MARKET";
 export const DISCLAIMER_SEEN = "disclaimerSeen";
+export const MARKET_REVIEW_SEEN = "marketReviewSeen";
+export const MARKET_REVIEWS = "marketReviews";
+export const MARKET_REVIEW_TRADE_SEEN = "marketReviewTradeSeen";
+export const MARKET_REVIEWS_TRADE = "marketReviewsTrade";
+export const MODAL_MARKET_REVIEW = "MODAL_MARKET_REVIEW";
+export const MODAL_MARKET_REVIEW_TRADE = "MODAL_MARKET_REVIEW_TRADE";
 export const MODAL_OPEN_ORDERS = "MODAL_OPEN_ORDERS";
 
 // # Alerts
@@ -679,3 +685,9 @@ export const CLAIM_STAKE_FEES = "CLAIM_STAKE_FEES";
 export const CLAIM_PROCEEDS = "CLAIM_PROCEEDS";
 // Pending Queue SINGLE TYPE
 export const CLAIM_FEE_WINDOWS = "CLAIM_FEE_WINDOWS";
+
+// Media Queries
+export const SMALL_MOBILE = "(max-width: 768px)"; // matches @breakpoint-mobile-mid
+export const TABLET = "(min-width: 769px) and (max-width: 1200px)";
+export const DESKTOP = "(min-width:1201px) and (max-width: 2000px)";
+export const LARGE_DESKTOP = "(min-width: 2001px)";

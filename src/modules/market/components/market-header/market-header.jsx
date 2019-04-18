@@ -373,7 +373,7 @@ export default class MarketHeader extends Component {
               this.toggleMarketHeader(currentAugurTimestamp, market)
             }
           >
-            <ChevronFlip pointDown={headerCollapsed} stroke="white" />
+            <ChevronFlip quick pointDown={headerCollapsed} stroke="white" />
           </button>
         </div>
       </section>

@@ -15,6 +15,8 @@ import ModalNetworkMismatch from "modules/modal/containers/modal-mismatch";
 import ModalNetworkDisconnected from "modules/modal/containers/modal-network-disconnected";
 import ModalApproval from "modules/modal/containers/modal-approval";
 import ModalFinalize from "modules/modal/containers/modal-finalize";
+import ModalMarketReview from "modules/modal/containers/modal-market-review";
+import ModalMarketReviewTrade from "modules/modal/containers/modal-market-review-trade";
 import ModalSellCompleteSets from "modules/modal/containers/modal-sell-complete-sets";
 import ModalClaimReportingFeesForkedMarket from "modules/modal/containers/modal-claim-reporting-fees-forked-market";
 import ModalClaimFees from "modules/modal/containers/modal-claim-fees";
@@ -121,6 +123,12 @@ export default class ModalView extends Component {
             <ModalNetworkDisconnected {...this.props} />
           )}
           {modal.type === TYPES.MODAL_FINALIZE_MARKET && <ModalFinalize />}
+          {modal.type === TYPES.MODAL_MARKET_REVIEW && (
+            <ModalMarketReview {...modal} />
+          )}
+          {modal.type === TYPES.MODAL_MARKET_REVIEW_TRADE && (
+            <ModalMarketReviewTrade {...modal} />
+          )}
           {modal.type === TYPES.MODAL_ACCOUNT_APPROVAL && <ModalApproval />}
           {modal.type === TYPES.MODAL_CLAIM_REPORTING_FEES_FORKED_MARKET && (
             <ModalClaimReportingFeesForkedMarket {...modal} />

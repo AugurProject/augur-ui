@@ -15,7 +15,6 @@ export default class OpenMarkets extends Component {
   static propTypes = {
     markets: PropTypes.array.isRequired,
     marketsObj: PropTypes.object.isRequired,
-    isMobile: PropTypes.bool.isRequired,
     totalPercentage: PropTypes.string.isRequired
   };
 
@@ -69,7 +68,7 @@ export default class OpenMarkets extends Component {
   }
 
   render() {
-    const { markets, isMobile, totalPercentage } = this.props;
+    const { markets, totalPercentage } = this.props;
 
     return (
       <FilterSwitchBox
@@ -96,7 +95,6 @@ export default class OpenMarkets extends Component {
         }
         noSwitch
         renderRows={this.renderRows}
-        isMobile={isMobile}
       />
     );
   }

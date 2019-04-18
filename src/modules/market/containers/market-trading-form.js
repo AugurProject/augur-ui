@@ -2,6 +2,12 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import MarketTradingForm from "modules/market/components/market-trading-form/market-trading-form";
 import { createBigNumber } from "src/utils/create-big-number";
+import { windowRef } from "utils/window-ref";
+import {
+  MARKET_REVIEW_TRADE_SEEN,
+  MODAL_MARKET_REVIEW_TRADE
+} from "modules/common-elements/constants";
+import { updateModal } from "modules/modal/actions/update-modal";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
 import { handleFilledOnly } from "modules/alerts/actions/alerts";
 import {
@@ -34,6 +40,13 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     dispatch(updateTradeCost({ marketId, outcomeId, ...order, callback })),
   updateTradeShares: (marketId, outcomeId, order, callback) =>
     dispatch(updateTradeShares({ marketId, outcomeId, ...order, callback })),
+  marketReviewTradeModal: modal =>
+    dispatch(
+      updateModal({
+        type: MODAL_MARKET_REVIEW_TRADE,
+        ...modal
+      })
+    ),
   onSubmitPlaceTrade: (
     marketId,
     outcomeId,
@@ -54,11 +67,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     )
 });
 
-const mergeProps = (sP, dP, oP) => ({
-  ...oP,
-  ...sP,
-  ...dP
-});
+const mergeProps = (sP, dP, oP) => {
+  const marketReviewTradeSeen =
+    windowRef &&
+    windowRef.localStorage &&
+    windowRef.localStorage.getItem(MARKET_REVIEW_TRADE_SEEN);
+
+  return {
+    ...oP,
+    ...sP,
+    ...dP,
+    marketReviewTradeSeen: !!marketReviewTradeSeen
+  };
+};
 
 const MarketTradingFormContainer = withRouter(
   connect(

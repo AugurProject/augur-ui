@@ -244,15 +244,17 @@ const assembleMarket = (
       Math.min.apply(null, accountShareBalances).toString()) ||
     "0";
 
-  market.userPositions = Object.values(
-    marketAccountPositions.tradingPositions || []
-  ).map(position => {
-    const outcome = market.outcomes[position.outcome];
-    return {
-      ...positionSummary(position, outcome),
-      outcomeName: getOutcomeName(market, outcome)
-    };
-  });
+  if (market.outcomes) {
+    market.userPositions = Object.values(
+      marketAccountPositions.tradingPositions || []
+    ).map(position => {
+      const outcome = market.outcomes[position.outcome];
+      return {
+        ...positionSummary(position, outcome),
+        outcomeName: getOutcomeName(market, outcome)
+      };
+    });
+  }
 
   if (createBigNumber(numCompleteSets).gt(ZERO)) {
     // need to remove all 0 positions

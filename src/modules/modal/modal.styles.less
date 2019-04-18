@@ -17,7 +17,7 @@
     padding: @size-16 @size-24;
   }
 
-  > h1 {
+  > main > h1 {
     .text-12;
 
     color: @color-secondary-text;
@@ -28,7 +28,7 @@
     text-transform: uppercase;
   }
 
-  > h2 {
+  > main > h2 {
     .text-16;
 
     color: @color-secondary-text;
@@ -36,7 +36,7 @@
     margin: @size-8 0 @size-24;
   }
 
-  > h3 {
+  > main > h3 {
     .text-12-bold;
 
     color: @color-secondary-text;
@@ -117,7 +117,7 @@ div.ButtonsRow:last-of-type {
     .text-12-paragraph;
 
     color: @color-secondary-text;
-    margin: 0 0 @size-8 0;
+    margin: 0 0 @size-16 0;
   }
 }
 
@@ -1034,5 +1034,68 @@ div.ButtonsRow:last-of-type {
     > li {
       margin: @size-4 0;
     }
+  }
+}
+
+.ModalMarketReview {
+  padding: @size-16 0 0;
+}
+
+.ModalMarketReview__ReadMore {
+  .text-12;
+
+  color: @color-primary-action;
+  cursor: pointer;
+}
+
+.ModalMarketReview__TextBox {
+  background-color: @color-theme-primary;
+  margin: 0 0 @size-24;
+  padding: @size-16;
+
+  > div {
+    > p {
+      .mono-10;
+
+      color: @color-shadow-text;
+      margin: @size-4 0;
+      text-transform: uppercase;
+    }
+
+    .text-12;
+
+    color: @color-secondary-text;
+    line-height: normal;
+    margin: 0 0 @size-16;
+  }
+
+  > div:last-of-type {
+    margin: 0;
+  }
+}
+
+.CheckboxCTA__checkbox {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100%;
+
+  > label {
+    .text-14-bold;
+
+    align-items: center;
+    color: @color-secondary-text;
+    display: flex;
+    font-weight: 500;
+    text-transform: none;
+    user-select: none;
+
+    > div {
+      margin-right: 2.5rem;
+    }
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
   }
 }
