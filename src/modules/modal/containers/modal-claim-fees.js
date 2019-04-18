@@ -8,7 +8,8 @@ import {
   formatGasCostToEther,
   formatAttoRep,
   formatAttoEth,
-  formatEther
+  formatEther,
+  formatRep
 } from "utils/format-number";
 import { closeModal } from "modules/modal/actions/close-modal";
 import { Proceeds } from "modules/modal/proceeds";
@@ -52,6 +53,13 @@ const mapDispatchToProps = (dispatch: Function) => ({
 const mergeProps = (sP: any, dP: any, oP: any) => {
   const marketIdsToTest = sP.nonforkedMarkets;
   const markets: Array<ActionRowsProps> = [];
+  const claimableMarkets = [];
+  let unclaimedRep = createBigNumber(
+    sP.reportingFees.unclaimedRep.fullPrecision
+  );
+  let unclaimedEth = createBigNumber(
+    sP.reportingFees.unclaimedEth.fullPrecision
+  );
   marketIdsToTest.forEach(marketObj => {
     const market = selectMarket(marketObj.marketId);
     const ethFees = formatAttoEth(marketObj.unclaimedEthFees, {
@@ -62,9 +70,25 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     const total = createBigNumber(ethFees.fullPrecision);
 
     if (market) {
+      const marketRep = formatAttoRep(marketObj.unclaimedRepTotal, {
+        decimals: 4,
+        decimalsRounded: 4,
+        zeroStyled: false
+      });
+
       const pending =
         sP.pendingQueue[CLAIM_STAKE_FEES] &&
         sP.pendingQueue[CLAIM_STAKE_FEES][marketObj.marketId];
+      if (!pending) {
+        claimableMarkets.push(marketObj);
+      } else {
+        unclaimedRep = unclaimedRep.minus(
+          createBigNumber(marketRep.fullPrecision)
+        );
+        unclaimedEth = unclaimedEth.minus(
+          createBigNumber(ethFees.fullPrecision)
+        );
+      }
 
       markets.push({
         title: market.description,
@@ -73,11 +97,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         properties: [
           {
             label: "reporting stake",
-            value: `${formatAttoRep(marketObj.unclaimedRepTotal, {
-              decimals: 4,
-              decimalsRounded: 4,
-              zeroStyled: false
-            }).formatted || 0} REP`,
+            value: `${marketRep.formatted || 0} REP`,
             addExtraSpace: true
           },
           {
@@ -113,6 +133,7 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       });
     }
   });
+  let feeWindowsPending = false;
   if (sP.feeWindows.length > 0) {
     const totalMinusGas = createBigNumber(
       sP.reportingFees.unclaimedParticipationTokenEthFees.fullPrecision
@@ -120,14 +141,27 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       .minus(createBigNumber(sP.reportingFees.gasCosts[CLAIM_FEE_WINDOWS]))
       .abs();
 
-    const pending =
+    feeWindowsPending =
       sP.pendingQueue[CLAIM_STAKE_FEES] &&
       sP.pendingQueue[CLAIM_STAKE_FEES][CLAIM_FEE_WINDOWS];
+
+    if (feeWindowsPending) {
+      unclaimedRep = unclaimedRep.minus(
+        createBigNumber(
+          sP.reportingFees.participationTokenRepStaked.fullPrecision
+        )
+      );
+      unclaimedEth = unclaimedEth.minus(
+        createBigNumber(
+          sP.reportingFees.unclaimedParticipationTokenEthFees.fullPrecision
+        )
+      );
+    }
 
     markets.push({
       title: "Reedeem all participation tokens",
       text: "Claim",
-      status: pending && pending.status,
+      status: feeWindowsPending && feeWindowsPending.status,
       properties: [
         {
           label: "Reporting Stake",
@@ -169,11 +203,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       ? [
           {
             label: "Total REP",
-            value: `${sP.reportingFees.unclaimedRep.full} REP`
+            value: `${formatRep(unclaimedRep.toNumber()).full} REP`
           },
           {
             label: "Total Fees",
-            value: `${sP.reportingFees.unclaimedEth.full} ETH`
+            value: `${formatEther(unclaimedEth.toNumber()).full} ETH`
           },
           {
             label: "Total Gas Cost (ETH)",
@@ -204,8 +238,8 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
         text: "Claim All Stake & Fees",
         action: () => {
           const RedeemStakeOptions = {
-            feeWindows: sP.reportingFees.feeWindows,
-            nonforkedMarkets: sP.nonforkedMarkets,
+            feeWindows: feeWindowsPending ? [] : sP.reportingFees.feeWindows,
+            nonforkedMarkets: claimableMarkets,
             onSent: () => {
               dP.closeModal();
             }
