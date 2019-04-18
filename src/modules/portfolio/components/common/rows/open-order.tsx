@@ -19,11 +19,10 @@ export interface OpenOrderProps {
   openOrder: Order;
   isSingle?: Boolean;
   extendedView?: Boolean;
-  isMobile?: Boolean;
 }
 
 const OpenOrder = (props: OpenOrderProps) => {
-  const { openOrder, isSingle, isMobile, extendedView } = props;
+  const { openOrder, isSingle, extendedView } = props;
 
   if (!openOrder) {
     return null;
@@ -86,17 +85,16 @@ const OpenOrder = (props: OpenOrderProps) => {
         </li>
       )}
       <li>
-        {!isMobile &&
-          openOrder.cancelOrder && (
-            <CancelTextButton
-              disabled={openOrder.pending}
-              action={e => {
-                e.stopPropagation();
-                openOrder.cancelOrder(openOrder);
-              }}
-              text="Cancel"
-            />
-          )}
+        {openOrder.cancelOrder && (
+          <CancelTextButton
+            disabled={openOrder.pending}
+            action={e => {
+              e.stopPropagation();
+              openOrder.cancelOrder(openOrder);
+            }}
+            text="Cancel"
+          />
+        )}
         {(openOrder.pending || openOrder.pendingOrder) && (
           <span>
             <PendingLabel />
@@ -169,17 +167,16 @@ const OpenOrder = (props: OpenOrderProps) => {
                 <div className={Styles.OpenOrder__timestamp}>
                   {creationTime}
                 </div>
-                {isMobile &&
-                  openOrder.cancelOrder && (
-                    <CancelTextButton
-                      disabled={openOrder.pending}
-                      action={e => {
-                        e.stopPropagation();
-                        openOrder.cancelOrder(openOrder);
-                      }}
-                      text="Cancel"
-                    />
-                  )}
+                {openOrder.cancelOrder && (
+                  <CancelTextButton
+                    disabled={openOrder.pending}
+                    action={e => {
+                      e.stopPropagation();
+                      openOrder.cancelOrder(openOrder);
+                    }}
+                    text="Cancel"
+                  />
+                )}
               </div>
             </div>
           </div>

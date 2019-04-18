@@ -71,7 +71,7 @@
   padding-right: 4rem;
 }
 
-@media @breakpoint-mobile {
+@media @breakpoint-mobile-mid {
   .DataTableHeader {
     grid-template-columns: repeat(3, 1fr);
     padding-left: 1rem;
@@ -111,6 +111,14 @@
 
       &:nth-of-type(6) {
         display: none;
+      }
+    }
+  }
+
+  .FilledOrdersHeader__extended {
+    > li {
+      &:nth-of-type(6) {
+        display: flex;
       }
     }
   }

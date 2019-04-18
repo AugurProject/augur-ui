@@ -10,7 +10,6 @@ import SharedStyles from "modules/market/components/market-orders-positions-tabl
 import Styles from "modules/portfolio/components/common/tables/market-positions-table.styles";
 
 export interface MarketPositionsTableProps {
-  isMobile: Boolean;
   positions: Array<Position>;
   numCompleteSets: any;
   transactionsStatus: any;
@@ -41,7 +40,6 @@ export class MarketPositionsTable extends React.Component<
       transactionsStatus,
       sellCompleteSets,
       marketId,
-      isMobile,
       extendedView
     } = this.props;
     const { showPercent } = this.state;
@@ -68,9 +66,8 @@ export class MarketPositionsTable extends React.Component<
               isFirst={index === 0}
               position={position}
               showPercent={showPercent}
-              isMobile={isMobile}
               extendedView={extendedView}
-              isSingle={isMobile}
+              isSingle={extendedView} // was isMobile
             />
           ))}
         </div>

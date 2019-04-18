@@ -44,7 +44,6 @@ const MarketOrdersPositionsTable = ({
       <FilledOrdersTable
         filledOrders={filledOrders}
         scalarDenomination={market.scalarDenomination}
-        isMobile={isMobile}
       />
     </ModulePane>
     <ModulePane label="Positions">
