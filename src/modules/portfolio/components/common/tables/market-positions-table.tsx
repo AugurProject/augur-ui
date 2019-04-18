@@ -53,7 +53,7 @@ export class MarketPositionsTable extends React.Component<
         <PositionsHeader
           showPercent={showPercent}
           updateShowPercent={this.updateShowPercent}
-          extendedView={extendedView && !isMobile}
+          extendedView={extendedView}
         />
         <div
           className={classNames({
@@ -67,7 +67,7 @@ export class MarketPositionsTable extends React.Component<
               position={position}
               showPercent={showPercent}
               extendedView={extendedView}
-              isSingle={extendedView} // was isMobile
+              isSingle={extendedView}
             />
           ))}
         </div>
