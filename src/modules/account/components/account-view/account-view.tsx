@@ -23,7 +23,7 @@ const AccountView = (props: AccountViewProps) => (
   <>
     <Media query={constants.SMALL_MOBILE}>
       {matches =>
-        matches && (
+        matches ? (
           <ModuleTabs selected={0} fillWidth noBorder>
             <ModulePane label={constants.YOUR_OVERVIEW_TITLE}>
               <AccountOverview />
@@ -44,70 +44,67 @@ const AccountView = (props: AccountViewProps) => (
               <TransactionsBoxContainer />
             </ModulePane>
           </ModuleTabs>
-        )
-      }
-    </Media>
-    <Media query={constants.TABLET}>
-      {matches =>
-        matches && (
+        ) : (
           <section className={Styles.AccountView}>
             <div className={Styles.AccountView__container}>
-              <div>
-                <Notifications />
-                <OpenMarkets />
-                <AugurStatus />
-              </div>
-              <div>
-                <AccountOverview />
-                <Favorites />
-                <TransactionsBoxContainer />
-              </div>
-            </div>
-            <TermsAndConditions />
-          </section>
-        )
-      }
-    </Media>
-    <Media query={constants.DESKTOP}>
-      {matches =>
-        matches && (
-          <section className={Styles.AccountView}>
-            <div className={Styles.AccountView__container}>
-              <div>
-                <Notifications />
-                <OpenMarkets />
-              </div>
-              <div>
-                <AccountOverview />
-                <AugurStatus />
-              </div>
-              <div>
-                <Favorites />
-                <TransactionsBoxContainer />
-              </div>
-            </div>
-            <TermsAndConditions />
-          </section>
-        )
-      }
-    </Media>
-    <Media query={constants.LARGE_DESKTOP}>
-      {matches =>
-        matches && (
-          <section className={Styles.AccountView}>
-            <div className={Styles.AccountView__container}>
-              <div>
-                <Notifications />
-                <AugurStatus />
-              </div>
-              <div>
-                <AccountOverview />
-                <TransactionsBoxContainer />
-              </div>
-              <div>
-                <Favorites />
-                <OpenMarkets />
-              </div>
+              <Media query={constants.TABLET}>
+                {matches =>
+                  matches && (
+                    <>
+                      <div>
+                        <Notifications />
+                        <OpenMarkets />
+                        <AugurStatus />
+                      </div>
+                      <div>
+                        <AccountOverview />
+                        <Favorites />
+                        <TransactionsBoxContainer />
+                      </div>
+                    </>
+                  )
+                }
+              </Media>
+              <Media query={constants.DESKTOP}>
+                {matches =>
+                  matches && (
+                    <>
+                      <div>
+                        <Notifications />
+                        <OpenMarkets />
+                      </div>
+                      <div>
+                        <AccountOverview />
+                        <AugurStatus />
+                      </div>
+                      <div>
+                        <Favorites />
+                        <TransactionsBoxContainer />
+                      </div>
+                    </>
+                  )
+                }
+              </Media>
+              <Media query={constants.LARGE_DESKTOP}>
+                {matches =>
+                  matches && (
+                    <>
+                      <div>
+                        <Notifications />
+                        <AugurStatus />
+                      </div>
+                      <div>
+                        <AccountOverview />
+                        <TransactionsBoxContainer />
+                      </div>
+                      <div>
+                        <Favorites />
+                        <OpenMarkets />
+                      </div>
+                    </>
+                  )
+                }
+              </Media>
             </div>
             <TermsAndConditions />
           </section>
