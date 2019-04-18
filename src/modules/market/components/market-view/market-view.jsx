@@ -17,7 +17,8 @@ import MarketTradeHistory from "modules/market/containers/market-trade-history";
 import {
   CATEGORICAL,
   BUY,
-  MODAL_TRADING_OVERLAY
+  MODAL_TRADING_OVERLAY,
+  MARKET_REVIEWS
 } from "modules/common-elements/constants";
 import ModuleTabs from "modules/market/components/common/module-tabs/module-tabs";
 import ModulePane from "modules/market/components/common/module-tabs/module-pane";
@@ -35,6 +36,8 @@ export default class MarketView extends Component {
     maxPrice: PropTypes.instanceOf(BigNumber).isRequired,
     minPrice: PropTypes.instanceOf(BigNumber).isRequired,
     marketId: PropTypes.string.isRequired,
+    marketReviewSeen: PropTypes.bool.isRequired,
+    marketReviewModal: PropTypes.func.isRequired,
     currentTimestamp: PropTypes.number,
     isConnected: PropTypes.bool.isRequired,
     loadFullMarket: PropTypes.func.isRequired,
@@ -113,6 +116,17 @@ export default class MarketView extends Component {
 
   componentDidMount() {
     this.node.scrollIntoView();
+
+    if (!this.props.marketReviewSeen) {
+      this.props.marketReviewModal();
+      const localStorageRef =
+        typeof window !== "undefined" && window.localStorage;
+      if (localStorageRef && localStorageRef.setItem) {
+        let markets = JSON.parse(localStorageRef.getItem(MARKET_REVIEWS)) || [];
+        markets = markets.concat(this.props.marketId);
+        localStorageRef.setItem(MARKET_REVIEWS, JSON.stringify(markets));
+      }
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {

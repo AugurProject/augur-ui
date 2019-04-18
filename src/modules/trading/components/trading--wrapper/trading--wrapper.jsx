@@ -21,6 +21,8 @@ import { formatShares } from "utils/format-number";
 class TradingWrapper extends Component {
   static propTypes = {
     market: PropTypes.object.isRequired,
+    marketReviewTradeSeen: PropTypes.bool.isRequired,
+    marketReviewTradeModal: PropTypes.func.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     availableFunds: PropTypes.instanceOf(BigNumber).isRequired,
     isMobile: PropTypes.bool.isRequired,
@@ -228,6 +230,27 @@ class TradingWrapper extends Component {
     );
   }
 
+  placeTrade(market, selectedOutcome, s) {
+    this.props.onSubmitPlaceTrade(
+      market.id,
+      selectedOutcome.id,
+      s.trade,
+      s.doNotCreateOrders,
+      (err, tradeGroupID) => {
+        // onSent/onFailed CB
+        if (!err) {
+          this.clearOrderForm();
+        }
+      },
+      res => {
+        if (s.doNotCreateOrders && res.res !== res.sharesToFill) {
+          this.props.handleFilledOnly(res.tradeInProgress);
+          // onComplete CB
+        }
+      }
+    );
+  }
+
   updateTradeNumShares(order) {
     const { updateTradeShares, selectedOutcome, market } = this.props;
     this.updateState(
@@ -279,10 +302,10 @@ class TradingWrapper extends Component {
       market,
       selectedOutcome,
       gasPrice,
-      handleFilledOnly,
       updateSelectedOutcome,
       showSelectOutcome,
-      onSubmitPlaceTrade
+      marketReviewTradeSeen,
+      marketReviewTradeModal
     } = this.props;
     const s = this.state;
     const {
@@ -410,23 +433,14 @@ class TradingWrapper extends Component {
             type={selectedNav}
             action={e => {
               e.preventDefault();
-              onSubmitPlaceTrade(
-                market.id,
-                selectedOutcome.id,
-                s.trade,
-                s.doNotCreateOrders,
-                (err, tradeGroupID) => {
-                  // onSent/onFailed CB
-                  if (!err) {
-                    this.clearOrderForm();
-                  }
-                },
-                res => {
-                  if (s.doNotCreateOrders && res.res !== res.sharesToFill)
-                    handleFilledOnly(res.tradeInProgress);
-                  // onComplete CB
-                }
-              );
+              if (!marketReviewTradeSeen) {
+                marketReviewTradeModal({
+                  marketId: market.id,
+                  cb: () => this.placeTrade(market, selectedOutcome, s)
+                });
+              } else {
+                this.placeTrade(market, selectedOutcome, s);
+              }
             }}
             disabled={!s.trade || !s.trade.limitPrice}
           />
