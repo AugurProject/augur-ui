@@ -203,11 +203,11 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
       ? [
           {
             label: "Total REP",
-            value: `${formatRep(unclaimedRep.toNumber()).full} REP`
+            value: `${formatRep(unclaimedRep.toNumber()).full}`
           },
           {
             label: "Total Fees",
-            value: `${formatEther(unclaimedEth.toNumber()).full} ETH`
+            value: `${formatEther(unclaimedEth.toNumber()).full}`
           },
           {
             label: "Total Gas Cost (ETH)",
