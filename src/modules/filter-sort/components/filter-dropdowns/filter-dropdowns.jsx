@@ -16,7 +16,8 @@ import {
   MAX_FEE_10_PERCENT,
   MAX_FEE_20_PERCENT,
   MAX_FEE_30_PERCENT,
-  MAX_FEE_40_PERCENT
+  MAX_FEE_40_PERCENT,
+  MOBILE_MENU_STATES
 } from "modules/common-elements/constants";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import Styles from "modules/filter-sort/components/filter-dropdowns/filter-dropdowns.styles";
@@ -24,6 +25,7 @@ import parseQuery from "modules/routes/helpers/parse-query";
 import makeQuery from "modules/routes/helpers/make-query";
 import { PAGINATION_PARAM_NAME } from "modules/routes/constants/param-names";
 import { SquareDropdown } from "modules/common-elements/selection";
+import { FilterButton } from "modules/common-elements/buttons";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },
@@ -64,6 +66,7 @@ export default class FilterSearch extends Component {
     updateSortOption: PropTypes.func.isRequired,
     updateMaxFee: PropTypes.func.isRequired,
     updateHasOpenOrders: PropTypes.func.isRequired,
+    updateMobileMenuState: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired
   };
@@ -145,41 +148,45 @@ export default class FilterSearch extends Component {
   }
 
   render() {
-    const { defaultFilter, defaultSort, defaultMaxFee, hasOrders } = this.props;
+    const {
+      defaultFilter,
+      defaultSort,
+      defaultMaxFee,
+      hasOrders,
+      updateMobileMenuState
+    } = this.props;
 
     return (
-      <div className={Styles.FilterDropdowns__container}>
-        <div className={Styles.FilterDropdowns}>
-          <SquareDropdown
-            defaultValue={defaultFilter}
-            onChange={this.changeFilterDropdown}
-            options={filterOptions}
-            sortByStyles={{ minWidth: "6rem" }}
-          />
-          <SquareDropdown
-            defaultValue={defaultSort}
-            onChange={this.changeSortDropdown}
-            options={sortOptions}
-            sortByStyles={{ minWidth: "7.125rem" }}
-          />
-          <SquareDropdown
-            defaultValue={defaultMaxFee}
-            onChange={this.changeMaxFees}
-            options={maxFeesOptions}
-            sortByStyles={{ minWidth: "5.8125rem" }}
-          />
-        </div>
-        <div className={Styles.FilterDropdowns__hasOrders}>
-          <Checkbox
-            id="has-orders"
-            type="checkbox"
-            name="hasOrders"
-            isChecked={hasOrders}
-            value={hasOrders}
-            onClick={this.changeHasOrders}
-          />{" "}
-          <label htmlFor="has-orders">has open orders</label>
-        </div>
+      <div className={Styles.FilterDropdowns}>
+        <SquareDropdown
+          defaultValue={defaultFilter}
+          onChange={this.changeFilterDropdown}
+          options={filterOptions}
+        />
+        <SquareDropdown
+          defaultValue={defaultSort}
+          onChange={this.changeSortDropdown}
+          options={sortOptions}
+        />
+        <SquareDropdown
+          defaultValue={defaultMaxFee}
+          onChange={this.changeMaxFees}
+          options={maxFeesOptions}
+        />
+        <FilterButton
+          action={() =>
+            updateMobileMenuState(MOBILE_MENU_STATES.FIRSTMENU_OPEN)
+          }
+        />
+        <Checkbox
+          id="has-orders"
+          type="checkbox"
+          name="hasOrders"
+          isChecked={hasOrders}
+          value={hasOrders}
+          onClick={this.changeHasOrders}
+        />
+        <label htmlFor="has-orders">has open orders</label>
       </div>
     );
   }

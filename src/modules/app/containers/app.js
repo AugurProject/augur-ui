@@ -27,12 +27,20 @@ import {
   selectLoginAccountState,
   selectModal,
   selectUniverseState,
-  selectUrlState
+  selectUrlState,
+  selectSidebarStatus
 } from "src/select-state";
 import { RewriteUrlParams } from "src/modules/app/hocs/rewrite-url-params";
 import { windowRef } from "src/utils/window-ref";
 import isGlobalWeb3 from "modules/auth/helpers/is-global-web3";
 import { logout } from "modules/auth/actions/logout";
+import {
+  updateCurrentBasePath,
+  updateCurrentInnerNavType,
+  updateMobileMenuState,
+  updateIsAlertVisible,
+  updateSidebarStatus
+} from "modules/app/actions/update-sidebar-status";
 
 const mapStateToProps = state => ({
   blockchain: selectBlockchainState(state),
@@ -49,7 +57,8 @@ const mapStateToProps = state => ({
   alerts: selectInfoAlertsAndSeenCount(state),
   universe: selectUniverseState(state),
   url: selectUrlState(state),
-  useWeb3Transport: isGlobalWeb3()
+  useWeb3Transport: isGlobalWeb3(),
+  sidebarStatus: selectSidebarStatus(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -62,7 +71,12 @@ const mapDispatchToProps = dispatch => ({
     dispatch(updateAppStatus(IS_ANIMATING, isAnimating)),
   updateModal: modal => dispatch(updateModal(modal)),
   finalizeMarket: marketId => dispatch(sendFinalizeMarket(marketId)),
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
+  updateCurrentBasePath: data => dispatch(updateCurrentBasePath(data)),
+  updateCurrentInnerNavType: data => dispatch(updateCurrentInnerNavType(data)),
+  updateMobileMenuState: data => dispatch(updateMobileMenuState(data)),
+  updateIsAlertVisible: data => dispatch(updateIsAlertVisible(data)),
+  updateSidebarStatus: data => dispatch(updateSidebarStatus(data))
 });
 
 const AppContainer = compose(

@@ -10,10 +10,8 @@ const mapStateToProps = (state, { location }) => {
     selectedTagNames,
     keywords
   } = getSelectedTagsAndCategoriesFromLocation(location);
-  const { isMobileSmall } = state.appStatus;
 
   return {
-    isMobileSmall,
     category: selectedCategoryName,
     tags: selectedTagNames,
     keywords

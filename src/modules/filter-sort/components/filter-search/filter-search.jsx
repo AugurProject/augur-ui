@@ -16,13 +16,11 @@ export default class FilterSearch extends Component {
   static propTypes = {
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    isSearchingMarkets: PropTypes.bool,
-    isMobileSmall: PropTypes.bool
+    isSearchingMarkets: PropTypes.bool
   };
 
   static defaultProps = {
-    isSearchingMarkets: false,
-    isMobileSmall: false
+    isSearchingMarkets: false
   };
 
   constructor(props) {
@@ -30,8 +28,7 @@ export default class FilterSearch extends Component {
 
     this.state = {
       search: "",
-      placeholder: "Search",
-      width: "250px"
+      placeholder: "Search"
     };
 
     this.updateQuery = this.updateQuery.bind(this);
@@ -62,12 +59,11 @@ export default class FilterSearch extends Component {
   }
 
   onFocus() {
-    const width = this.props.isMobileSmall ? "85vw" : "400px";
-    this.setState({ placeholder: "", width });
+    this.setState({ placeholder: "" });
   }
 
   onBlur() {
-    this.setState({ placeholder: "Search", width: "250px" });
+    this.setState({ placeholder: "Search" });
   }
 
   onChange(search) {
@@ -104,7 +100,7 @@ export default class FilterSearch extends Component {
 
   render() {
     const { isSearchingMarkets } = this.props;
-    const { width, placeholder, search } = this.state;
+    const { placeholder, search } = this.state;
 
     return (
       <article
@@ -113,11 +109,20 @@ export default class FilterSearch extends Component {
           this.parent = parent;
         }}
       >
+        <Input
+          className={Styles.Search}
+          isSearch
+          isClearable
+          noFocus
+          placeholder={placeholder}
+          value={search}
+          onChange={this.onChange}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          isLoading={Boolean(isSearchingMarkets && search && search !== "")}
+        />
         <label
-          className={classNames(
-            TooltipStyles.TooltipHint,
-            Styles.FilterSearch__tooltip
-          )}
+          className={classNames(TooltipStyles.TooltipHint, Styles.Tooltip)}
           data-tip
           data-for="tooltip--search-input"
         >
@@ -160,23 +165,6 @@ export default class FilterSearch extends Component {
             Example: <b>bitcoin ethereum litecoin</b>
           </p>
         </ReactTooltip>
-        <div
-          className={Styles.FilterSearch__transition}
-          style={{ minWidth: width }}
-        >
-          <Input
-            className={Styles.FilterSearch__input}
-            isSearch
-            isClearable
-            noFocus
-            placeholder={placeholder}
-            value={search}
-            onChange={this.onChange}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            isLoading={Boolean(isSearchingMarkets && search && search !== "")}
-          />
-        </div>
       </article>
     );
   }

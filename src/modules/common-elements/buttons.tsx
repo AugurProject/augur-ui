@@ -12,7 +12,8 @@ import {
   RepLogoIcon,
   ViewIcon,
   DownloadIcon,
-  RotatableChevron
+  RotatableChevron,
+  Filter
 } from "modules/common-elements/icons";
 import classNames from "classnames";
 import EtherscanLink from "modules/common/containers/etherscan-link";
@@ -40,7 +41,7 @@ export interface DirectionButtonProps {
   left?: boolean;
 }
 
-export interface CurrencyActionButtonProps {
+export interface DefaultActionButtonProps {
   action: Function;
   disabled?: boolean;
   title?: string;
@@ -173,7 +174,7 @@ export const SubmitTextButton = (props: DefaultButtonProps) => (
   </button>
 );
 
-export const DepositButton = (props: CurrencyActionButtonProps) => (
+export const DepositButton = (props: DefaultActionButtonProps) => (
   <button
     onClick={e => props.action(e)}
     className={Styles.CurrenyActionButton}
@@ -185,7 +186,7 @@ export const DepositButton = (props: CurrencyActionButtonProps) => (
   </button>
 );
 
-export const WithdrawButton = (props: CurrencyActionButtonProps) => (
+export const WithdrawButton = (props: DefaultActionButtonProps) => (
   <button
     onClick={e => props.action(e)}
     className={Styles.CurrenyActionButton}
@@ -197,7 +198,7 @@ export const WithdrawButton = (props: CurrencyActionButtonProps) => (
   </button>
 );
 
-export const ViewTransactionsButton = (props: CurrencyActionButtonProps) => (
+export const ViewTransactionsButton = (props: DefaultActionButtonProps) => (
   <button
     onClick={e => props.action(e)}
     className={Styles.ViewTransactionsButton}
@@ -209,7 +210,7 @@ export const ViewTransactionsButton = (props: CurrencyActionButtonProps) => (
   </button>
 );
 
-export const REPFaucetButton = (props: CurrencyActionButtonProps) => (
+export const REPFaucetButton = (props: DefaultActionButtonProps) => (
   <button
     onClick={e => props.action(e)}
     className={Styles.REPFaucetButton}
@@ -221,7 +222,7 @@ export const REPFaucetButton = (props: CurrencyActionButtonProps) => (
   </button>
 );
 
-export const ExportButton = (props: CurrencyActionButtonProps) => (
+export const ExportButton = (props: DefaultActionButtonProps) => (
   <button
     onClick={e => props.action(e)}
     className={Styles.ExportButton}
@@ -281,5 +282,16 @@ export const SortButton = (props: SortButtonProps) => (
   >
     {SortIcon}
     {props.text}
+  </button>
+);
+
+export const FilterButton = (props: DefaultActionButtonProps) => (
+  <button
+    onClick={e => props.action(e)}
+    className={Styles.FilterButton}
+    disabled={props.disabled}
+  >
+    Filter Topics
+    {Filter}
   </button>
 );

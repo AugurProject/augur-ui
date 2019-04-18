@@ -116,6 +116,59 @@
 
     &.mobileShow {
       left: 0;
+
+      > div {
+        align-items: center;
+        background: @color-light-purple;
+        border-bottom: 1px solid @color-primary-background;
+        color: white;
+        display: flex;
+        flex-flow: row nowrap;
+        height: 50px;
+        padding: @size-16;
+        position: fixed;
+        width: 200px;
+        z-index: @mask-above;
+
+        > button {
+          height: @size-24;
+          width: @size-24;
+        }
+
+        > button > svg > path {
+          stroke: @color-secondary-text;
+        }
+
+        > button:first-of-type {
+          display: none;
+          height: @size-24;
+          width: @size-24;
+
+          > svg {
+            transform: rotate(180deg);
+          }
+        }
+
+        > button:last-of-type {
+          height: @size-16;
+          margin-left: auto;
+          width: @size-16;
+        }
+
+        &.SubMenuShow {
+          background: @color-medium-gray;
+
+          > button:first-of-type {
+            display: block;
+          }
+        }
+      }
+    }
+
+    &.AddMargin {
+      > ul {
+        margin: 50px 0;
+      }
     }
   }
 
