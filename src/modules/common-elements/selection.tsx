@@ -330,7 +330,11 @@ export class DotSelection extends React.Component<
 
   render() {
     return (
-      <div className={Styles.DotSelection_Menu}>
+      <div
+        className={classNames(Styles.DotSelection_Menu, {
+          [Styles["DotSelection_Menu-open"]]: this.state.toggleMenu
+        })}
+      >
         <button
           ref={menuIcon => {
             this.refMenuIcon = menuIcon;

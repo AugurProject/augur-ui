@@ -56,7 +56,7 @@
   padding: 0 0 @size-8 0;
   resize: none;
   text-transform: none;
-  transition: max-height 100ms ease-out;
+  transition: max-height 0.15s ease-out;
   white-space: pre-wrap;
 
   > p {
@@ -67,6 +67,7 @@
 .MarketHeader__AdditionalDetails-tall {
   max-height: 1000px;
   overflow-y: auto;
+  transition: max-height 0.15s ease-in;
 }
 
 .MarketHeader__backButton {
@@ -154,6 +155,7 @@
   color: @color-secondary-text;
   cursor: pointer;
   margin-top: @size-12;
+  text-transform: uppercase;
 
   svg {
     height: 1em;
@@ -288,7 +290,7 @@
     }
 
     > div:nth-of-type(3) {
-      margin-top: @size-16;
+      padding-top: 1px;
     }
   }
 
