@@ -30,7 +30,7 @@ import { MarketTimeline } from "modules/common-elements/progress";
 
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
-const MAX_DETAILS_LENGTH = 500; // Show MORE for details when greater than 500 char length
+const OVERFLOW_DETAILS_LENGTH = 89; // in px, overflow limit to trigger MORE details
 
 export default class MarketHeader extends Component {
   static propTypes = {
@@ -65,13 +65,31 @@ export default class MarketHeader extends Component {
     super(props);
     this.state = {
       showReadMore: false,
+      detailsHeight: 0,
       headerCollapsed: false
     };
 
     this.gotoFilter = this.gotoFilter.bind(this);
     this.toggleReadMore = this.toggleReadMore.bind(this);
+    this.updateDetailsHeight = this.updateDetailsHeight.bind(this);
     this.toggleMarketHeader = this.toggleMarketHeader.bind(this);
     this.addToFavorites = this.addToFavorites.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateDetailsHeight();
+  }
+
+   componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) this.updateDetailsHeight();
+  }
+
+   updateDetailsHeight() {
+    if (this.detailsContainer) {
+      this.setState({
+        detailsHeight: this.detailsContainer.scrollHeight
+      });
+    }
   }
 
   toggleReadMore() {
@@ -174,7 +192,7 @@ export default class MarketHeader extends Component {
     let { details } = this.props;
     const { headerCollapsed } = this.state;
     const detailsTooLong =
-      market.details && market.details.length > MAX_DETAILS_LENGTH;
+      market.details && market.details.length > OVERFLOW_DETAILS_LENGTH;
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -286,11 +304,7 @@ export default class MarketHeader extends Component {
                       )}
                     >
                       <MarkdownRenderer
-                        text={
-                          this.state.showReadMore
-                            ? details
-                            : `${details.substr(0, MAX_DETAILS_LENGTH)}...`
-                        }
+                        text={details}
                         hideLabel
                       />
                     </label>
