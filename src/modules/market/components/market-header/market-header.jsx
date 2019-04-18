@@ -80,11 +80,11 @@ export default class MarketHeader extends Component {
     this.updateDetailsHeight();
   }
 
-   componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
     if (this.props !== prevProps) this.updateDetailsHeight();
   }
 
-   updateDetailsHeight() {
+  updateDetailsHeight() {
     if (this.detailsContainer) {
       this.setState({
         detailsHeight: this.detailsContainer.scrollHeight
@@ -192,7 +192,7 @@ export default class MarketHeader extends Component {
     let { details } = this.props;
     const { headerCollapsed } = this.state;
     const detailsTooLong =
-      market.details && market.details.length > OVERFLOW_DETAILS_LENGTH;
+      market.details && this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -303,10 +303,7 @@ export default class MarketHeader extends Component {
                         }
                       )}
                     >
-                      <MarkdownRenderer
-                        text={details}
-                        hideLabel
-                      />
+                      <MarkdownRenderer text={details} hideLabel />
                     </label>
 
                     {detailsTooLong && (
