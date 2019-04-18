@@ -125,4 +125,18 @@
       }
     }
   }
+
+  .PositionHeader__extended {
+    grid-template-columns: repeat(5, 1fr);
+
+    > li {
+      padding-left: @size-10;
+      white-space: pre-line;
+
+      &:nth-of-type(5),
+      &:last-child {
+        display: flex;
+      }
+    }
+  }
 }

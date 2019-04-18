@@ -352,6 +352,16 @@ div.OpenOrder__labels {
     max-width: unset;
   }
 
+  .Position__extended {
+    grid-template-columns: repeat(5, 1fr);
+
+    > li {
+      &:last-child {
+        display: flex;
+      }
+    }
+  }
+
   div.OpenOrder__labels {
     display: flex;
     flex: 1;
@@ -392,5 +402,10 @@ div.OpenOrder__labels {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     padding-left: 1rem;
+  }
+
+  .Order__border {
+    border: 0;
+    border-bottom: 0.0625rem solid @color-primary-background;
   }
 }

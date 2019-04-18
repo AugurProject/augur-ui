@@ -69,7 +69,7 @@ export class MarketPositionsTable extends React.Component<
               position={position}
               showPercent={showPercent}
               isMobile={isMobile}
-              extendedView={extendedView && !isMobile}
+              extendedView={extendedView}
               isSingle={isMobile}
             />
           ))}
