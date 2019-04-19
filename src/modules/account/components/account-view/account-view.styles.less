@@ -55,11 +55,12 @@
   }
 
   > div:last-of-type {
+    flex: 2;
     flex-direction: row;
     height: fit-content;
 
     > div:first-of-type {
-      flex: unset;
+      flex: 1;
       max-height: 70vh;
     }
 
@@ -73,8 +74,13 @@
 @media @breakpoint-1-0-0 {
   .AccountView__container {
     > div:last-of-type {
+      flex: 1;
       flex-direction: column;
       height: unset;
+
+      > div:first-of-type {
+        flex: unset;
+      }
 
       > div:last-of-type {
         flex: unset;

@@ -27,6 +27,7 @@
 
   > div:last-of-type {
     display: grid;
+    flex: 2;
     grid-gap: 1.5rem;
     grid-template-columns: 1fr 1fr;
     height: fit-content;
@@ -48,10 +49,6 @@
   color: @color-lightgray;
   margin-left: 0.5rem;
   text-decoration-line: underline;
-}
-
-.ShowOnMobile {
-  display: none;
 }
 
 @media @breakpoint-1-0-0 {
@@ -77,15 +74,5 @@
     > div:last-of-type {
       margin-top: 0;
     }
-  }
-}
-
-@media @breakpoint-mobile-mid {
-  .ShowOnMobile {
-    display: flex;
-  }
-
-  .HideOnMobile {
-    display: none;
   }
 }

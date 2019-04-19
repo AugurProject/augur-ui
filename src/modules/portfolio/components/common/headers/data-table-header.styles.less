@@ -71,11 +71,11 @@
   padding-right: 4rem;
 }
 
-@media @breakpoint-mobile {
+@media @breakpoint-mobile-mid {
   .DataTableHeader {
     grid-template-columns: repeat(3, 1fr);
     padding-left: 1rem;
-    padding-right: 3.86rem;
+    padding-right: 3rem;
 
     > li {
       color: @color-shadow-text;
@@ -115,6 +115,14 @@
     }
   }
 
+  .FilledOrdersHeader__extended {
+    > li {
+      &:nth-of-type(6) {
+        display: flex;
+      }
+    }
+  }
+
   .PositionHeader {
     grid-template-columns: repeat(6, 1fr);
     padding: 0.5rem 1.5rem 0.5rem 1rem;
@@ -122,6 +130,20 @@
     > li {
       &:last-child {
         display: none;
+      }
+    }
+  }
+
+  .PositionHeader__extended {
+    grid-template-columns: repeat(5, 1fr);
+
+    > li {
+      padding-left: @size-10;
+      white-space: pre-line;
+
+      &:nth-of-type(5),
+      &:last-child {
+        display: flex;
       }
     }
   }

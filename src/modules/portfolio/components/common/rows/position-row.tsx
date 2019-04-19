@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import Media from "react-media";
 
 import {
   LinearPropertyLabelMovement,
@@ -9,6 +10,7 @@ import {
 } from "modules/common-elements/labels";
 import ToggleRow from "modules/portfolio/components/common/rows/toggle-row";
 import { Order } from "modules/portfolio/types";
+import { SMALL_MOBILE } from "modules/common-elements/constants";
 
 import Styles from "modules/portfolio/components/common/rows/open-order.styles";
 
@@ -16,28 +18,25 @@ export interface PositionRowProps {
   position: Order;
   isFirst: Boolean;
   showPercent: Boolean;
-  isMobile: Boolean;
   extendedView?: Boolean;
 }
 
 const PositionRow = (props: PositionRowProps) => {
-  const { position, isFirst, showPercent, isMobile, extendedView } = props;
+  const { position, isFirst, showPercent, extendedView } = props;
 
   const expandedContent = (
     <div className={Styles.Position_infoContainer}>
       <div className={Styles.Position__info}>
-        {isMobile && (
-          <LinearPropertyLabelMovement
-            highlightFirst
-            showPercent
-            showBrackets
-            showPlusMinus
-            showColors
-            label="Total Returns"
-            value={`${position.totalReturns.formatted}`}
-            numberValue={`${position.totalPercent.roundedFormatted}`}
-          />
-        )}
+        <LinearPropertyLabelMovement
+          highlightFirst
+          showPercent
+          showBrackets
+          showPlusMinus
+          showColors
+          label="Total Returns"
+          value={`${position.totalReturns.formatted}`}
+          numberValue={`${position.totalPercent.roundedFormatted}`}
+        />
         <LinearPropertyLabelMovement
           highlightFirst
           showPercent
@@ -122,34 +121,42 @@ const PositionRow = (props: PositionRowProps) => {
     );
   }
 
-  if (isMobile) {
-    return (
-      <div
-        className={classNames(Styles.Order__single, Styles.Position__single)}
-      >
-        <div
-          className={classNames(
-            Styles.Position__innerSingle,
-            Styles.Position__border
-          )}
-        >
-          {rowContent}
-        </div>
-        {expandedContent}
-      </div>
-    );
-  }
-
   return (
-    <ToggleRow
-      className={classNames(Styles.Order__single, Styles.Position__single)}
-      innerClassName={classNames(Styles.Position__innerSingle, {
-        [Styles.Position__border]: !isFirst
-      })}
-      arrowClassName={Styles.Position__arrow}
-      rowContent={rowContent}
-      toggleContent={expandedContent}
-    />
+    <Media query={SMALL_MOBILE}>
+      {matches =>
+        matches ? (
+          <div
+            className={classNames(
+              Styles.Order__single,
+              Styles.Position__single
+            )}
+          >
+            <div
+              className={classNames(
+                Styles.Position__innerSingle,
+                Styles.Position__border
+              )}
+            >
+              {rowContent}
+            </div>
+            {expandedContent}
+          </div>
+        ) : (
+          <ToggleRow
+            className={classNames(
+              Styles.Order__single,
+              Styles.Position__single
+            )}
+            innerClassName={classNames(Styles.Position__innerSingle, {
+              [Styles.Position__border]: !isFirst
+            })}
+            arrowClassName={Styles.Position__arrow}
+            rowContent={rowContent}
+            toggleContent={expandedContent}
+          />
+        )
+      }
+    </Media>
   );
 };
 
