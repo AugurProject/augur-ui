@@ -467,7 +467,7 @@
   position: relative;
 
   > button > svg {
-    fill: @color-secondary-text;
+    fill: @color-shadow-text;
     height: @size-16;
     margin-top: 0.1875rem;
     width: @size-10;
@@ -475,6 +475,19 @@
     @media @breakpoint-mobile {
       transform: scale(1.3);
     }
+  }
+
+  > button:hover,
+  > button:active {
+    > svg {
+      fill: @color-secondary-text;
+    }
+  }
+}
+
+.DotSelection_Menu-open {
+  > button > svg {
+    fill: @color-secondary-text;
   }
 }
 

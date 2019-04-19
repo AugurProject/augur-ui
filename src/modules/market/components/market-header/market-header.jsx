@@ -30,7 +30,8 @@ import { MarketTimeline } from "modules/common-elements/progress";
 
 import ToggleHeightStyles from "utils/toggle-height/toggle-height.styles";
 
-const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
+const OVERFLOW_DETAILS_LENGTH = 89; // in px, overflow limit to trigger MORE details
+
 export default class MarketHeader extends Component {
   static propTypes = {
     description: PropTypes.string.isRequired,
@@ -84,16 +85,14 @@ export default class MarketHeader extends Component {
   }
 
   updateDetailsHeight() {
-    if (this.detailsContainer)
+    if (this.detailsContainer) {
       this.setState({
         detailsHeight: this.detailsContainer.scrollHeight
       });
+    }
   }
 
   toggleReadMore() {
-    if (this.state.showReadMore && this.detailsContainer) {
-      this.detailsContainer.scrollTop = 0;
-    }
     this.setState({ showReadMore: !this.state.showReadMore });
   }
 
@@ -192,7 +191,8 @@ export default class MarketHeader extends Component {
     } = this.props;
     let { details } = this.props;
     const { headerCollapsed } = this.state;
-    const detailsTooLong = this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
+    const detailsTooLong =
+      market.details && this.state.detailsHeight > OVERFLOW_DETAILS_LENGTH;
 
     if (marketType === SCALAR) {
       const denomination = scalarDenomination ? ` ${scalarDenomination}` : "";
@@ -300,10 +300,6 @@ export default class MarketHeader extends Component {
                         {
                           [Styles["MarketHeader__AdditionalDetails-tall"]]:
                             detailsTooLong && this.state.showReadMore
-                        },
-                        {
-                          [Styles["MarketHeader__AdditionalDetails-fade"]]:
-                            detailsTooLong && !this.state.showReadMore
                         }
                       )}
                     >
@@ -325,7 +321,7 @@ export default class MarketHeader extends Component {
                           ? ChevronDown({ stroke: "#FFFFFF" })
                           : ChevronUp()}
                         <span>
-                          {!this.state.showReadMore ? "More..." : "Less"}
+                          {!this.state.showReadMore ? "More" : "Less"}
                         </span>
                       </button>
                     )}
@@ -373,7 +369,12 @@ export default class MarketHeader extends Component {
               this.toggleMarketHeader(currentAugurTimestamp, market)
             }
           >
-            <ChevronFlip quick pointDown={headerCollapsed} stroke="white" />
+            <ChevronFlip
+              stroke="#999999"
+              quick
+              filledInIcon
+              pointDown={!headerCollapsed}
+            />
           </button>
         </div>
       </section>
