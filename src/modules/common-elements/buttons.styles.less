@@ -516,3 +516,30 @@
     fill: @color-secondary-text;
   }
 }
+
+.FilterButton {
+  .Button;
+  .text-12;
+
+  align-items: center;
+  border: 2px solid @color-primary-alternate;
+  border-radius: @border-radius-default;
+  color: @color-secondary-text;
+  display: flex;
+  flex-flow: row nowrap;
+  height: @size-40;
+  justify-content: center;
+  max-height: @size-40;
+  max-width: 130px;
+  width: 130px;
+
+  > svg {
+    height: @size-24;
+    margin-left: @size-12;
+    width: @size-24;
+
+    > path {
+      fill: @color-secondary-text;
+    }
+  }
+}

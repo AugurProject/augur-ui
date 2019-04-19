@@ -130,6 +130,17 @@ if (!process.env.AUGUR_HOSTED) {
 }
 ITEMS[DEFAULT_ITEM_INDEX].default = true;
 
+// sidebar related constants
+export const MOBILE_MENU_STATES = {
+  CLOSED: 0,
+  SIDEBAR_OPEN: 1,
+  FIRSTMENU_OPEN: 2,
+  SUBMENU_OPEN: 3
+};
+
+export const SUB_MENU = "subMenu";
+export const MAIN_MENU = "mainMenu";
+
 // # Ledger Related Constants
 export const ATTEMPTING_CONNECTION = "ATTEMPTING_CONNECTION";
 export const CONNECT_LEDGER = "CONNECT_LEDGER";

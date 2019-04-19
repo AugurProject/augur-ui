@@ -1,6 +1,7 @@
 import accountDisputes from "modules/reports/reducers/account-disputes-state";
 import accountPositions from "modules/positions/reducers/account-positions";
 import appStatus from "modules/app/reducers/app-status";
+import sidebarStatus from "modules/app/reducers/sidebar-status";
 import authStatus from "modules/auth/reducers/auth-status";
 import blockchain from "modules/app/reducers/blockchain";
 import categories from "modules/categories/reducers/categories-data";
@@ -86,6 +87,7 @@ export function createReducer() {
     reports,
     scalarMarketsShareDenomination,
     selectedMarketId,
+    sidebarStatus,
     transactionsData,
     transactionsStatus,
     universe,
