@@ -7,12 +7,9 @@ version=$(date -u +%Y-%m-%d-%H%M)
 build_environment="dev"
 
 aws_preconfigure () {
-    # we need aws cli tools to deploy
-    if [[ ${TRAVIS} = true ]]; then
-        python --version
-        sudo apt-get install libssl-dev python-pyasn1 python3-pyasn1
-        sudo pip install awscli
-    fi
+    python --version
+    sudo apt-get install libssl-dev python-pyasn1 python3-pyasn1
+    sudo pip install awscli
 }
 
 aws_deploy () {
