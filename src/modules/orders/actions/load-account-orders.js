@@ -35,7 +35,7 @@ const loadUserAccountOrders = (options = {}, callback) => (
   augur.trading.getOrders(
     { ...options, creator: loginAccount.address, universe: universe.id },
     (err, orders) => {
-      if (err) return callback(err);
+      if (err) return callback(err, {});
       if (orders == null || Object.keys(orders).length === 0)
         return callback(null, {});
       callback(null, { marketIds: Object.keys(orders), orders });

@@ -14,7 +14,7 @@ export const loadAccountPositions = (
   dispatch(
     loadAccountPositionsInternal(
       options,
-      (err, { marketIds = [], positions }) => {
+      (err, { marketIds = [], positions = {} }) => {
         if (marketIdAggregator && marketIdAggregator(marketIds));
         if (!err) postProcessing(marketIds, dispatch, positions, callback);
       }
