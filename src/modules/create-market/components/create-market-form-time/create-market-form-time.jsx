@@ -65,13 +65,13 @@ export const MarketCreateFormTime = ({
       <span>Reporting Starts Time (UTC -0)</span>
       {newMarket.validations[newMarket.currentStep].hour && (
         <span className={StylesForm.CreateMarketForm__error}>
-          {InputErrorIcon}
+          {InputErrorIcon()}
           {newMarket.validations[newMarket.currentStep].hour}
         </span>
       )}
       {newMarket.validations[newMarket.currentStep].minute && (
         <span className={StylesForm.CreateMarketForm__error}>
-          {InputErrorIcon}
+          {InputErrorIcon()}
           {newMarket.validations[newMarket.currentStep].minute}
         </span>
       )}

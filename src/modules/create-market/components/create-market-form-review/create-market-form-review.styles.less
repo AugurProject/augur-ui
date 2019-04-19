@@ -5,12 +5,16 @@
   display: flex;
   min-width: 100%;
 
-  > div.div {
-    margin: 1rem 0;
+  > div:nth-of-type(2) {
+    margin-left: 3rem;
 
-    &.blockit {
-      margin-left: 1rem;
-      padding: 0.5rem 0 1rem;
+    > div {
+      margin: 1rem 0;
+
+      &.blockit {
+        margin-left: 1rem;
+        padding: 0.5rem 0 1rem;
+      }
     }
   }
 }
@@ -43,6 +47,7 @@
   display: flex;
   flex-direction: column;
   margin: 0;
+  padding-bottom: 2rem;
 
   > span:first-of-type {
     font-size: @font-size-small;
@@ -61,7 +66,7 @@
 }
 
 .CreateMarketReview_line {
-  border-bottom: 1px solid rgba(206, 215, 216, 0.3);
+  border-bottom: 1px solid @color-primary-light;
   min-width: 50%;
   padding: 1rem 0;
 }

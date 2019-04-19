@@ -375,7 +375,7 @@ export default class CreateMarketReview extends Component {
                   StylesForm["CreateMarketForm__error--insufficient-funds"]
                 }
               >
-                {InputErrorIcon}
+                {InputErrorIcon()}
                 You have insufficient {s.insufficientFundsString} to create this
                 market.
               </span>

@@ -202,7 +202,7 @@ export default class CreateMarketDefine extends Component {
               <span>Market Question</span>
               {newMarket.validations[newMarket.currentStep].description && (
                 <span>
-                  {InputErrorIcon}
+                  {InputErrorIcon()}
                   {newMarket.validations[newMarket.currentStep].description}
                 </span>
               )}
@@ -309,7 +309,7 @@ export default class CreateMarketDefine extends Component {
               <span>Category</span>
               {newMarket.validations[newMarket.currentStep].category && (
                 <span>
-                  {InputErrorIcon}
+                  {InputErrorIcon()}
                   {newMarket.validations[newMarket.currentStep].category}
                 </span>
               )}
@@ -379,7 +379,7 @@ export default class CreateMarketDefine extends Component {
               <span>Tags</span>
               {tagMessage && (
                 <span>
-                  {InputErrorIcon}
+                  {InputErrorIcon()}
                   {tagMessage}
                 </span>
               )}

@@ -423,7 +423,7 @@ export default class CreateMarketOutcome extends Component {
               <span>Potential Outcomes</span>
               {validation.outcomes && (
                 <span>
-                  {InputErrorIcon} {validation.outcomes}
+                  {InputErrorIcon()} {validation.outcomes}
                 </span>
               )}
             </label>

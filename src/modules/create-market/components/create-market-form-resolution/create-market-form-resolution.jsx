@@ -153,7 +153,7 @@ export default class CreateMarketResolution extends Component {
                     <span
                       className={StylesForm["CreateMarketForm__error--bottom"]}
                     >
-                      {InputErrorIcon}{" "}
+                      {InputErrorIcon()}
                       {
                         newMarket.validations[newMarket.currentStep]
                           .expirySource
