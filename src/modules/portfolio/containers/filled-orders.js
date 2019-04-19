@@ -36,7 +36,9 @@ const mapStateToProps = state => {
         filledOrders: selectMarket(item.id).filledOrders
       };
     })
-    .filter(market => market && market.marketStatus !== constants.MARKET_CLOSED);
+    .filter(
+      market => market && market.marketStatus !== constants.MARKET_CLOSED
+    );
 
   /* eslint-disable */
   let allFilledOrders = [];
