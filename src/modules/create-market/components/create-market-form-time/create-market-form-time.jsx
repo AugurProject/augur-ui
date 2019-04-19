@@ -76,7 +76,7 @@ export const MarketCreateFormTime = ({
         </span>
       )}
     </label>
-    <div id="cm__input--time" className={Styles.CreateMarketDefine__time}>
+    <div id="cm__input--time" className={Styles.CreateMarketDefine_time}>
       <InputDropdown
         label="Hour"
         options={hours}

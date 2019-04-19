@@ -396,31 +396,33 @@ export default class CreateMarketReview extends Component {
                 Styles.blockit
               )}
             >
-              <div>
-                Review the markets details to confirm that there are{" "}
-                <span className={InvalidMessageStyles.bolden}>
-                  no conflicts
-                </span>{" "}
-                between the{" "}
-                <span className={InvalidMessageStyles.bolden}>
-                  Market Question
-                </span>
-                ,{" "}
-                <span className={InvalidMessageStyles.bolden}>
-                  Additional Details
-                </span>{" "}
-                and{" "}
-                <span className={InvalidMessageStyles.bolden}>
-                  Reporting Start Time
-                </span>
-                .
-              </div>
-              <div>
-                If they don’t match up, or there are any conflicts between them,
-                there is a high probability that the market will{" "}
-                <span className={InvalidMessageStyles.bolden}>
-                  resolve as invalid
-                </span>
+              <div className={InvalidMessageStyles.textFlow}>
+                <div>
+                  Review the markets details to confirm that there are{" "}
+                  <span className={InvalidMessageStyles.bolden}>
+                    no conflicts
+                  </span>{" "}
+                  between the{" "}
+                  <span className={InvalidMessageStyles.bolden}>
+                    Market Question
+                  </span>
+                  ,{" "}
+                  <span className={InvalidMessageStyles.bolden}>
+                    Additional Details
+                  </span>{" "}
+                  and{" "}
+                  <span className={InvalidMessageStyles.bolden}>
+                    Reporting Start Time
+                  </span>
+                  .
+                </div>
+                <div>
+                  If they don’t match up, or there are any conflicts between
+                  them, there is a high probability that the market will{" "}
+                  <span className={InvalidMessageStyles.bolden}>
+                    resolve as invalid
+                  </span>
+                </div>
               </div>
             </div>
           </div>

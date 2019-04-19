@@ -18,10 +18,10 @@ const CreateMarketLiquidityOrders = props => {
 
   return (
     <div className={StylesForm.CreateMarketForm_form_inner_wrapper}>
+      <h1 className={Styles.LiquidityOrders__Header}>
+        Initial Liquidity Orders
+      </h1>
       <div className={Styles.LiquidityOrders__Container}>
-        <h1 className={Styles.LiquidityOrders__Header}>
-          Initial Liquidity Orders
-        </h1>
         {isNullState && (
           <div className={Styles.LiquidityOrders__NullState}>
             It appears you have not created any orders for this outcome. You

@@ -2,26 +2,23 @@
 
 .CreateMarketReview {
   color: @color-secondary-text;
+  display: flex;
   min-width: 100%;
 
-  > div.blockit {
-    margin-left: 1rem;
-    padding: 0.5rem 0 1rem;
-  }
-
-  > div {
-    display: flex;
+  > div.div {
     margin: 1rem 0;
+
+    &.blockit {
+      margin-left: 1rem;
+      padding: 0.5rem 0 1rem;
+    }
   }
 }
 
 .CreateMarketReview__explainer {
-  color: #a7a2b2;
-  font-family: Roboto;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
+  .text-16;
+
+  color: @color-lightgray;
   margin-bottom: 56px;
   margin-top: 1.5rem;
 }
@@ -30,13 +27,14 @@
   display: flex;
   flex-direction: row;
   margin-top: 32px;
+  text-transform: uppercase;
 
   > div {
     flex: 1;
   }
 
   > div:first-of-type {
-    margin-right: 144px;
+    margin-right: 104px;
   }
 }
 
@@ -111,7 +109,6 @@
   flex-direction: column;
   justify-content: space-between;
   margin-top: 2rem;
-  max-width: 50%;
   text-transform: uppercase;
 
   > span:last-of-type {
@@ -213,6 +210,7 @@
 
   font-size: 1rem;
   margin-bottom: 1.875rem;
+  text-transform: uppercase;
 }
 
 .CreateMarketReview__wrapper {
@@ -220,11 +218,8 @@
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 3rem;
+  max-width: 50%;
   min-width: 50%;
-
-  > div {
-    width: 14.375rem;
-  }
 }
 
 .CreateMarketReview__smallheading {

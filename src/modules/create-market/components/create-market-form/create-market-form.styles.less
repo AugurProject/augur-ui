@@ -23,12 +23,10 @@
 
 .CreateMarketForm_form_inner_wrapper {
   > div {
-    border-bottom: 1px solid rgba(206, 215, 216, 0.3);
     color: @color-text-light;
     display: flex;
-    justify-content: space-between;
     font-size: @font-size-kinda-large;
-    padding-bottom: 1rem;
+    justify-content: space-between;
 
     > div:first-of-type {
       display: flex;
@@ -53,6 +51,7 @@
 
   display: flex;
   flex-direction: row;
+  min-height: 5rem;
 
   &.Categorical {
     display: flex;
@@ -80,6 +79,12 @@
         color: @color-error-text;
         padding-left: 1rem;
       }
+    }
+
+    input[type="text"],
+    input[type="number"],
+    > input {
+      margin: 0.5rem 0;
     }
   }
 
