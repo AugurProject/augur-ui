@@ -28,13 +28,13 @@ const loadAccountPositionsInternal = (options = {}, callback) => (
 ) => {
   const { universe, loginAccount } = getState();
   if (loginAccount.address == null || universe.id == null)
-    return callback(null);
+    return callback(null, {});
   augur.trading.getUserTradingPositions(
     { ...options, account: loginAccount.address, universe: universe.id },
     (err, positions) => {
-      if (err) return callback(err);
+      if (err) return callback(err, {});
       if (positions == null || positions.tradingPositions == null) {
-        return callback(null);
+        return callback(null, {});
       }
 
       if (!options.marketId) {
@@ -55,7 +55,7 @@ const loadAccountPositionsInternal = (options = {}, callback) => (
         ])
       );
 
-      if (marketIds.length === 0) return callback(null);
+      if (marketIds.length === 0) return callback(null, {});
       dispatch(loadUsershareBalances(marketIds));
       dispatch(getWinningBalance(marketIds));
       callback(err, { marketIds, positions });
