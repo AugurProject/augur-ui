@@ -55,19 +55,13 @@ import {
 } from "modules/routes/constants/views";
 import {
   MODAL_NETWORK_CONNECT,
-  CATEGORY_PARAM_NAME
+  CATEGORY_PARAM_NAME,
+  MOBILE_MENU_STATES
 } from "modules/common-elements/constants";
 
 import Styles from "modules/app/components/app/app.styles";
 import MarketsInnerNavContainer from "modules/app/containers/markets-inner-nav";
 import ReportingInnerNav from "modules/app/containers/reporting-inner-nav";
-
-export const mobileMenuStates = {
-  CLOSED: 0,
-  SIDEBAR_OPEN: 1,
-  FIRSTMENU_OPEN: 2,
-  SUBMENU_OPEN: 3
-};
 
 const SUB_MENU = "subMenu";
 const MAIN_MENU = "mainMenu";
@@ -107,7 +101,13 @@ export default class AppView extends Component {
     ethereumNodeHttp: PropTypes.string,
     ethereumNodeWs: PropTypes.string,
     useWeb3Transport: PropTypes.bool,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    sidebarStatus: PropTypes.object.isRequired,
+    updateCurrentBasePath: PropTypes.func.isRequired,
+    updateCurrentInnerNavType: PropTypes.func.isRequired,
+    updateMobileMenuState: PropTypes.func.isRequired,
+    updateIsAlertVisible: PropTypes.func.isRequired,
+    updateSidebarStatus: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -122,19 +122,13 @@ export default class AppView extends Component {
 
     this.state = {
       mainMenu: { scalar: 0, open: false, currentTween: null },
-      subMenu: { scalar: 0, open: false, currentTween: null },
-      mobileMenuState: mobileMenuStates.CLOSED,
-      currentBasePath: MARKETS,
-      currentInnerNavType: null,
-      isAlertsVisible: false
+      subMenu: { scalar: 0, open: false, currentTween: null }
     };
 
     this.sideNavMenuData = [
       {
         title: "Markets",
         icon: NavMarketsIcon,
-        mobileClick: () =>
-          this.setState({ mobileMenuState: mobileMenuStates.FIRSTMENU_OPEN }),
         route: MARKETS
       },
       {
@@ -149,8 +143,6 @@ export default class AppView extends Component {
         title: "Portfolio",
         iconName: "nav-portfolio-icon",
         icon: NavPortfolioIcon,
-        mobileClick: () =>
-          this.setState({ mobileMenuState: mobileMenuStates.FIRSTMENU_OPEN }),
         route: MY_POSITIONS,
         requireLogin: true
       },
@@ -159,7 +151,7 @@ export default class AppView extends Component {
         iconName: "nav-reporting-icon",
         icon: NavReportingIcon,
         mobileClick: () =>
-          this.setState({ mobileMenuState: mobileMenuStates.FIRSTMENU_OPEN }),
+          props.updateMobileMenuState(MOBILE_MENU_STATES.FIRSTMENU_OPEN),
         route: REPORTING_DISPUTE_MARKETS
       },
       {
@@ -200,7 +192,8 @@ export default class AppView extends Component {
       initAugur,
       location,
       updateModal,
-      useWeb3Transport
+      useWeb3Transport,
+      updateCurrentBasePath
     } = this.props;
     initAugur(
       history,
@@ -222,7 +215,7 @@ export default class AppView extends Component {
     );
 
     const currentPath = parsePath(location.pathname)[0];
-    this.setState({ currentBasePath: currentPath });
+    updateCurrentBasePath(currentPath);
 
     this.changeMenu(currentPath);
     if (currentPath === MARKETS) {
@@ -242,11 +235,15 @@ export default class AppView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isMobile, location, universe } = this.props;
+    const {
+      isMobile,
+      location,
+      universe,
+      updateCurrentBasePath,
+      updateMobileMenuState
+    } = this.props;
     if (isMobile !== nextProps.isMobile) {
-      this.setState({
-        mobileMenuState: mobileMenuStates.CLOSED
-      });
+      updateMobileMenuState(MOBILE_MENU_STATES.CLOSED);
     }
 
     if (!isEqual(universe.isForking, nextProps.universe.isForking)) {
@@ -262,7 +259,7 @@ export default class AppView extends Component {
       ];
 
       if (lastBasePath !== nextBasePath) {
-        this.setState({ currentBasePath: nextBasePath });
+        updateCurrentBasePath(nextBasePath);
         this.changeMenu(nextBasePath);
       }
 
@@ -273,14 +270,14 @@ export default class AppView extends Component {
   }
 
   openSubMenu() {
-    this.setState({ mobileMenuState: mobileMenuStates.SUBMENU_OPEN });
+    this.props.updateMobileMenuState(MOBILE_MENU_STATES.SUBMENU_OPEN);
   }
 
   changeMenu(nextBasePath) {
-    const { isLogged } = this.props;
-    const oldType = this.state.currentInnerNavType
-      ? navTypes[this.state.currentBasePath]
-      : this.state.currentInnerNavType;
+    const { isLogged, sidebarStatus, updateCurrentInnerNavType } = this.props;
+    const oldType = sidebarStatus.currentInnerNavType
+      ? navTypes[sidebarStatus.currentBasePath]
+      : sidebarStatus.currentInnerNavType;
     const newType = navTypes[nextBasePath];
 
     // Don't show mainMenu/subMenu for Account Summary
@@ -295,7 +292,7 @@ export default class AppView extends Component {
     }
 
     const openNewMenu = () => {
-      this.setState({ currentInnerNavType: newType });
+      updateCurrentInnerNavType(newType);
       if (newType) this.toggleMenuTween(MAIN_MENU, true);
     };
 
@@ -321,7 +318,7 @@ export default class AppView extends Component {
           openNewMenu();
           break;
         default:
-          this.setState({ currentInnerNavType: newType });
+          updateCurrentInnerNavType(newType);
           openNewMenu();
       }
     });
@@ -353,10 +350,9 @@ export default class AppView extends Component {
   }
 
   toggleAlerts() {
-    if (this.props.isLogged) {
-      this.setState({
-        isAlertsVisible: !this.state.isAlertsVisible
-      });
+    const { isLogged, sidebarStatus, updateIsAlertVisible } = this.props;
+    if (isLogged) {
+      updateIsAlertVisible(!sidebarStatus.isAlertsVisible);
     }
   }
 
@@ -405,56 +401,64 @@ export default class AppView extends Component {
   }
 
   mobileMenuButtonClick() {
-    const menuState = this.state.mobileMenuState;
+    const { sidebarStatus, updateMobileMenuState } = this.props;
+    const { mobileMenuState: menuState } = sidebarStatus;
 
     switch (menuState) {
-      case mobileMenuStates.CLOSED:
-        this.setState({ mobileMenuState: mobileMenuStates.SIDEBAR_OPEN });
+      case MOBILE_MENU_STATES.CLOSED:
+        updateMobileMenuState(MOBILE_MENU_STATES.SIDEBAR_OPEN);
         break;
       default:
-        this.setState({ mobileMenuState: menuState - 1 });
+        updateMobileMenuState(menuState - 1);
         break;
     }
   }
 
   mainSectionClickHandler = (e, testSideNav = true) => {
     const stateUpdate = {};
-    const { isMobile } = this.props;
+    const { isMobile, sidebarStatus, updateSidebarStatus } = this.props;
     let updateState = false;
 
     if (
       testSideNav &&
       isMobile &&
-      this.state.mobileMenuState !== mobileMenuStates.CLOSED
+      sidebarStatus.mobileMenuState !== MOBILE_MENU_STATES.CLOSED
     ) {
-      stateUpdate.mobileMenuState = mobileMenuStates.CLOSED;
+      stateUpdate.mobileMenuState = MOBILE_MENU_STATES.CLOSED;
       updateState = true;
     }
 
-    if (this.state.isAlertsVisible) {
+    if (sidebarStatus.isAlertsVisible) {
       stateUpdate.isAlertsVisible = false;
       updateState = true;
     }
 
     if (updateState) {
-      this.setState(stateUpdate);
+      updateSidebarStatus(stateUpdate);
     }
   };
 
   innerNavMenuMobileClick() {
-    this.setState({ mobileMenuState: mobileMenuStates.SUBMENU_OPEN });
+    this.props.updateMobileMenuState(MOBILE_MENU_STATES.SUBMENU_OPEN);
   }
 
   renderMobileMenuButton(unseenCount) {
-    const menuState = this.state.mobileMenuState;
+    const { sidebarStatus } = this.props;
+    const { mobileMenuState: menuState } = sidebarStatus;
 
     let icon = null;
-    if (menuState === mobileMenuStates.CLOSED)
+    if (menuState === MOBILE_MENU_STATES.CLOSED)
       icon = <MobileNavHamburgerIcon />;
-    else if (menuState === mobileMenuStates.SIDEBAR_OPEN)
+    else if (menuState === MOBILE_MENU_STATES.SIDEBAR_OPEN)
       icon = <MobileNavCloseIcon />;
-    else if (menuState >= mobileMenuStates.FIRSTMENU_OPEN)
+    else if (menuState >= MOBILE_MENU_STATES.FIRSTMENU_OPEN)
       icon = <MobileNavBackIcon />;
+    // remove back icon for markets on mobile
+    if (
+      sidebarStatus.currentBasePath === MARKETS &&
+      menuState !== MOBILE_MENU_STATES.CLOSED
+    )
+      icon = <MobileNavCloseIcon />;
 
     return (
       <button
@@ -478,15 +482,15 @@ export default class AppView extends Component {
       modal,
       universe,
       finalizeMarket,
-      isMobileSmall
+      isMobileSmall,
+      sidebarStatus,
+      updateMobileMenuState
     } = this.props;
-    const s = this.state;
 
     const { mainMenu, subMenu } = this.state;
     const unseenCount = getValue(this.props, "alerts.unseenCount");
     const currentPath = parsePath(location.pathname)[0];
-
-    const InnerNav = this.state.currentInnerNavType;
+    const InnerNav = sidebarStatus.currentInnerNavType;
     let innerNavMenuMobileClick;
     if (InnerNav === MarketsInnerNavContainer) {
       innerNavMenuMobileClick = this.innerNavMenuMobileClick; // eslint-disable-line prefer-destructuring
@@ -532,14 +536,17 @@ export default class AppView extends Component {
             {this.renderMobileMenuButton(unseenCount)}
             <SideNav
               defaultMobileClick={() =>
-                this.setState({ mobileMenuState: mobileMenuStates.CLOSED })
+                updateMobileMenuState(MOBILE_MENU_STATES.CLOSED)
               }
               isMobile={isMobile}
               isLogged={isLogged}
-              mobileShow={s.mobileMenuState === mobileMenuStates.SIDEBAR_OPEN}
+              mobileShow={
+                sidebarStatus.mobileMenuState ===
+                MOBILE_MENU_STATES.SIDEBAR_OPEN
+              }
               menuScalar={subMenu.scalar}
               menuData={this.sideNavMenuData}
-              currentBasePath={this.state.currentBasePath}
+              currentBasePath={sidebarStatus.currentBasePath}
             />
           </section>
           <section className={Styles.Main}>
@@ -554,11 +561,11 @@ export default class AppView extends Component {
                 stats={coreStats}
                 unseenCount={unseenCount}
                 toggleAlerts={this.toggleAlerts}
-                alertsVisible={isLogged && s.isAlertsVisible}
+                alertsVisible={isLogged && sidebarStatus.isAlertsVisible}
               />
             </section>
             <AlertsContainer
-              alertsVisible={isLogged && s.isAlertsVisible}
+              alertsVisible={isLogged && sidebarStatus.isAlertsVisible}
               toggleAlerts={() => this.toggleAlerts()}
             />
             {universe.forkEndTime &&
@@ -582,11 +589,11 @@ export default class AppView extends Component {
             >
               {InnerNav && (
                 <InnerNav
-                  currentBasePath={this.state.currentBasePath}
+                  currentBasePath={sidebarStatus.currentBasePath}
                   isMobile={isMobile}
                   location={location}
                   history={history}
-                  mobileMenuState={s.mobileMenuState}
+                  mobileMenuState={sidebarStatus.mobileMenuState}
                   mobileMenuClick={innerNavMenuMobileClick}
                   subMenuScalar={subMenu.scalar}
                   openSubMenu={this.openSubMenu}

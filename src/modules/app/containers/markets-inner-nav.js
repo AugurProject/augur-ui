@@ -17,6 +17,7 @@ import makeQuery from "modules/routes/helpers/make-query";
 import makePath from "modules/routes/helpers/make-path";
 import { MARKETS } from "modules/routes/constants/views";
 import BaseInnerNavPure from "modules/app/components/inner-nav/base-inner-nav-pure";
+import { updateMobileMenuState } from "modules/app/actions/update-sidebar-status";
 import { getSelectedTagsAndCategoriesFromLocation } from "modules/markets/helpers/get-selected-tags-and-categories-from-location";
 import noop from "src/utils/noop";
 
@@ -110,9 +111,15 @@ const mapStateToProps = (
   };
 };
 
+const mapDispatchToProps = dispatch => ({
+  updateMobileMenuState: data => dispatch(updateMobileMenuState(data))
+});
 const MarketsInnerNavContainer = compose(
   withRouter,
-  connect(mapStateToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(BaseInnerNavPure);
 
 export default MarketsInnerNavContainer;
