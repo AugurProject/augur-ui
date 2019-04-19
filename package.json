@@ -1,6 +1,6 @@
 {
   "name": "augur-ui",
-  "version": "6.4.0-0",
+  "version": "6.6.0-0",
   "description": "Augur UI",
   "author": "The Augur Developers <team@augur.net>",
   "license": "AAL",
@@ -91,7 +91,7 @@
     "react-html-parser": "^2.0.2",
     "react-media": "1.9.2",
     "react-redux": "5.0.6",
-    "react-router-dom": "^4.2.2",
+    "react-router-dom": "4.2.2",
     "react-spinners": "0.4.8",
     "react-textfit": "1.1.0",
     "react-tooltip": "3.4.0",
@@ -190,8 +190,12 @@
     "typescript": "^2.9.2",
     "uglifyjs-webpack-plugin": "1.2.2",
     "watchify": "3.11.0",
+    "webpack": "4.19.1",
     "webpack-deadcode-plugin": "^0.1.9",
     "webpack-hot-middleware": "2.24.2",
     "webpack-merge": "4.1.4"
+  },
+  "resolutions": {
+    "**/sha3": "2.0.1"
   }
 }
