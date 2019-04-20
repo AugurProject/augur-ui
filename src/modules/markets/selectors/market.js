@@ -1,5 +1,4 @@
 import createCachedSelector from "re-reselect";
-import { createSelector } from "reselect";
 import { createBigNumber } from "utils/create-big-number";
 import {
   formatShares,

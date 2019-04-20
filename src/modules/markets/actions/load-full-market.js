@@ -2,7 +2,7 @@ import {
   loadMarketsInfo,
   loadMarketsDisputeInfo
 } from "modules/markets/actions/load-markets-info";
-import loadMarketOpenOrders from "modules/orders/actions/load-market-open-orders";
+import { loadMarketOpenOrders } from "modules/orders/actions/load-market-open-orders";
 import logError from "utils/log-error";
 
 export const loadFullMarket = (marketId, callback = logError) => dispatch => {

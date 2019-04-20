@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { addAlert, updateAlert } from "modules/alerts/actions/alerts";
 import { loadAccountPositions } from "modules/positions/actions/load-account-positions";
-import loadMarketOpenOrders from "modules/orders/actions/load-market-open-orders";
+import { loadMarketOpenOrders } from "modules/orders/actions/load-market-open-orders";
 import { loadReportingWindowBounds } from "modules/reports/actions/load-reporting-window-bounds";
 import { updateLoggedTransactions } from "modules/transactions/actions/convert-logs-to-transactions";
 import { removeMarket } from "modules/markets/actions/update-markets-data";
