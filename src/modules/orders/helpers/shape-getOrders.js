@@ -1,5 +1,6 @@
 export const shapeGetOrders = (orders, marketId, orderState) => {
   const processedOrders = [];
+  if (Object.keys(orders).length === 0) return processedOrders;
   Object.keys(orders[marketId]).forEach(outcome => {
     Object.keys(orders[marketId][outcome]).forEach(orderTypeLabel => {
       const orderBook = orders[marketId][outcome][orderTypeLabel];

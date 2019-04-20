@@ -148,7 +148,6 @@ const assembleMarket = (
   pendingOrders
 ) => {
   const marketId = marketData.id;
-  console.log("marketId", marketId);
   const market = {
     ...marketData,
     description: marketData.description || "",
