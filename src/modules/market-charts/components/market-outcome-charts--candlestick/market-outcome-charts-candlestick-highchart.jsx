@@ -4,7 +4,7 @@ import { createBigNumber } from "utils/create-big-number";
 import CustomPropTypes from "utils/custom-prop-types";
 import Highcharts from "highcharts/highstock";
 import NoDataToDisplay from "highcharts/modules/no-data-to-display";
-import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart.styles";
+import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/candlestick.styles";
 import { each, isEqual, cloneDeep } from "lodash";
 import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
@@ -48,6 +48,10 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
                 mouseOut: evt => this.clearCandleInfoAndPlotViz(evt)
               }
             }
+          },
+          candlestick: {
+            borderRadius: 5,
+            className: Styles.Candlestick_candlestick
           }
         },
         chart: {
@@ -111,7 +115,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             showLastLabel: true,
             labels: {
               format: "{value:.4f}",
-              style: Styles.MarketOutcomeCharts__highcharts_display_yLables,
+              style: Styles.Candlestick_display_yLables,
               align: "center",
               x: 0,
               y: -2
@@ -136,7 +140,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             top: "85%",
             height: "15%",
             opposite: true,
-            className: Styles.MarketOutcomeCharts__highcharts_display_none,
+            className: Styles.Candlestick_display_none,
             labels: {
               enabled: false
             }
@@ -314,6 +318,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           name: "ohlc",
           data: ohlc,
           yAxis: 0,
+          zIndex: 1,
           dataGrouping: {
             units: groupingUnits
           },
@@ -348,7 +353,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   render() {
     return (
       <div
-        className={Styles.MarketOutcomeChartsCandlestickHighcharts}
+        className={Styles.Candlestick}
         ref={container => {
           this.container = container;
         }}

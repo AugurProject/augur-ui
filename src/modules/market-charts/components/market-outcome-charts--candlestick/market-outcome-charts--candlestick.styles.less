@@ -1,30 +1,21 @@
 @import (reference) "~assets/styles/shared";
 
 .MarketOutcomeChartsHeader__chart__interaction {
-  align-items: center;
   display: flex;
-  justify-content: space-around;
-  margin: 0.875rem;
+  flex-direction: column;
+  margin: 0.875rem 0.875rem 0 0.875rem;
   padding: 0 0.5rem;
+
+  > div:first-of-type {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
   @media @breakpoint-mobile {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     margin: 0 0.875rem;
-  }
-}
-
-.MarketOutcomeChartsHeader__label_hover {
-  > div {
-    background-color: @color-highlight;
-  }
-}
-
-.MarketOutcomeChartsHeader__label_container {
-  @media @breakpoint-mobile {
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
   }
 }
 
@@ -62,7 +53,9 @@ span.MarketOutcomeChartsHeader__stat {
 }
 
 div.MarketOutcomeChartsHeader__stats {
-  justify-content: center;
+  justify-content: flex-start;
+  min-height: 2rem;
+  padding-top: 1rem;
 
   @media @breakpoint-mobile {
     justify-content: space-between;

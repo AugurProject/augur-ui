@@ -17,16 +17,16 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         Styles.MarketOutcomeChartsHeader__stat
       )}
     >
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
-        o:
-      </span>
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
-        {hoveredPeriod.open ? (
-          hoveredPeriod.open.toFixed(pricePrecision).toString()
-        ) : (
-          <span>-</span>
-        )}
-      </span>
+      {hoveredPeriod.open && (
+        <>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
+            o:
+          </span>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
+            {hoveredPeriod.open.toFixed(pricePrecision).toString()}
+          </span>
+        </>
+      )}
     </span>
     <span
       className={classNames(
@@ -34,16 +34,16 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         Styles.MarketOutcomeChartsHeader__stat
       )}
     >
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
-        c:
-      </span>
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
-        {hoveredPeriod.close ? (
-          hoveredPeriod.close.toFixed(pricePrecision).toString()
-        ) : (
-          <span>-</span>
-        )}
-      </span>
+      {hoveredPeriod.close && (
+        <>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
+            c:
+          </span>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
+            {hoveredPeriod.close.toFixed(pricePrecision).toString()}
+          </span>
+        </>
+      )}
     </span>
     <span
       className={classNames(
@@ -51,16 +51,16 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         Styles.MarketOutcomeChartsHeader__stat
       )}
     >
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
-        h:
-      </span>
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
-        {hoveredPeriod.high ? (
-          hoveredPeriod.high.toFixed(pricePrecision).toString()
-        ) : (
-          <span>-</span>
-        )}
-      </span>
+      {hoveredPeriod.high && (
+        <>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
+            h:
+          </span>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
+            {hoveredPeriod.high.toFixed(pricePrecision).toString()}
+          </span>
+        </>
+      )}
     </span>
     <span
       className={classNames(
@@ -68,16 +68,16 @@ export const CandlestickOchl = ({ hoveredPeriod, pricePrecision }) => (
         Styles.MarketOutcomeChartsHeader__stat
       )}
     >
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
-        l:
-      </span>
-      <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
-        {hoveredPeriod.low ? (
-          hoveredPeriod.low.toFixed(pricePrecision).toString()
-        ) : (
-          <span>-</span>
-        )}
-      </span>
+      {hoveredPeriod.low && (
+        <>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-title`]}>
+            l:
+          </span>
+          <span className={Styles[`MarketOutcomeChartsHeader__stat-value`]}>
+            {hoveredPeriod.low.toFixed(pricePrecision).toString()}
+          </span>
+        </>
+      )}
     </span>
   </div>
 );
