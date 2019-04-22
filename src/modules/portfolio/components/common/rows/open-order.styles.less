@@ -86,7 +86,6 @@
 }
 
 .Order__arrow {
-  margin-left: 1.5rem;
   padding-right: 0;
 }
 
@@ -251,6 +250,12 @@ div.OpenOrder__labels {
   }
 }
 
+@media @breakpoint-2-25-min {
+  .Order__arrow {
+    margin-left: 1.25rem;
+  }
+}
+
 @media @breakpoint-mobile-mid {
   .Order {
     grid-template-columns: repeat(3, 1fr);
@@ -308,10 +313,6 @@ div.OpenOrder__labels {
   .Order__group {
     padding-left: @size-16;
     padding-right: @size-20;
-  }
-
-  .Order__arrow {
-    margin-left: 1.25rem;
   }
 
   .FilledOrder {
@@ -416,6 +417,12 @@ div.OpenOrder__labels {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     padding-left: 1rem;
+  }
+
+  .Order__arrow {
+    flex: 0 0 1.75rem;
+    justify-content: flex-end;
+    margin-left: unset;
   }
 
   .Order__border {
