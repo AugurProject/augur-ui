@@ -17,6 +17,7 @@ import {
 import Styles from "modules/trading/components/trading--wrapper/trading--wrapper.styles";
 import { OrderButton } from "modules/common-elements/buttons";
 import { formatShares } from "utils/format-number";
+import convertExponentialToDecimal from "utils/convert-exponential";
 
 class TradingWrapper extends Component {
   static propTypes = {
@@ -104,9 +105,20 @@ class TradingWrapper extends Component {
         ) {
           return this.clearOrderForm();
         }
-
+        console.log(
+          "nextProps.selectedOrderProperties.orderQuantity",
+          nextProps.selectedOrderProperties.orderQuantity,
+          convertExponentialToDecimal(
+            nextProps.selectedOrderProperties.orderQuantity
+          )
+        );
         this.updateTradeTotalCost(
-          { ...nextProps.selectedOrderProperties },
+          {
+            ...nextProps.selectedOrderProperties,
+            orderQuantity: convertExponentialToDecimal(
+              nextProps.selectedOrderProperties.orderQuantity
+            )
+          },
           true
         );
       }
