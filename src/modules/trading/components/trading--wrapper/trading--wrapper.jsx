@@ -105,13 +105,7 @@ class TradingWrapper extends Component {
         ) {
           return this.clearOrderForm();
         }
-        console.log(
-          "nextProps.selectedOrderProperties.orderQuantity",
-          nextProps.selectedOrderProperties.orderQuantity,
-          convertExponentialToDecimal(
-            nextProps.selectedOrderProperties.orderQuantity
-          )
-        );
+
         this.updateTradeTotalCost(
           {
             ...nextProps.selectedOrderProperties,
