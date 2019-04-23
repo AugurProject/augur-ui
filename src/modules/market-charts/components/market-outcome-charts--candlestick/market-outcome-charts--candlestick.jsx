@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React from "react";
 import PropTypes from "prop-types";
 import CustomPropTypes from "utils/custom-prop-types";
@@ -98,6 +97,8 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       containerHeight,
       defaultCandlePeriod
     } = this.state;
+
+    console.log("hoveredPeriod", hoveredPeriod);
 
     return (
       <section className={Styles.MarketOutcomeCandlestick}>

@@ -1,5 +1,19 @@
 @import (reference) "~assets/styles/shared";
 
+.MarketOutcomeCandlestick {
+  background: @color-light-purple;
+  display: flex;
+  flex: 1 100%;
+  flex-direction: column;
+  min-height: @charts-min-height;
+  padding: 0.5rem 0.5rem;
+  position: relative;
+
+  @media @breakpoint-mobile {
+    padding-bottom: 0;
+  }
+}
+
 .MarketOutcomeChartsHeader__chart__interaction {
   display: flex;
   flex-direction: column;
@@ -9,11 +23,16 @@
     flex-direction: row;
     justify-content: space-between;
   }
+}
 
-  @media @breakpoint-mobile {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    margin: 0 0.875rem;
+.MarketOutcomeCandlestick__container {
+  cursor: cell;
+  display: flex;
+  flex: 1;
+
+  & > div {
+    display: flex;
+    flex-grow: 1;
   }
 }
 
@@ -36,53 +55,40 @@ span.MarketOutcomeChartsHeader__stat {
   }
 }
 
-.MarketOutcomeChartsHeader__stat-value,
-.MarketOutcomeChartsHeader__stat-title {
-  color: #ffffff;
-  font-family: "Roboto Mono", monospace;
-  font-size: 10px;
-  font-style: normal;
-  font-weight: normal;
-  line-height: normal;
-}
+.MarketOutcomeChartsHeader__stats {
+  .mono-10;
 
-.MarketOutcomeChartsHeader__stat-value {
-  margin-left: 3px;
-}
-
-div.MarketOutcomeChartsHeader__stats {
-  justify-content: flex-start;
+  display: flex;
   min-height: 2rem;
   padding-top: 1rem;
+  width: 100%;
+
+  > span {
+    color: @color-secondary-text;
+
+    > span:first-of-type {
+      color: @color-shadow-text;
+      padding-right: 0.5rem;
+    }
+
+    > span:nth-of-type(2) {
+      font-weight: bold;
+      padding-right: 1rem;
+    }
+  }
+
+  > span:last-of-type {
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: 0;
+  }
 
   @media @breakpoint-mobile {
-    justify-content: space-between;
-    margin-top: 1rem;
-    width: 100%;
-  }
-}
-
-.MarketOutcomeCandlestick {
-  background: @color-light-purple;
-  display: flex;
-  flex: 1 100%;
-  flex-direction: column;
-  min-height: @charts-min-height;
-  padding: 0.5rem 0.5rem;
-  position: relative;
-
-  @media @breakpoint-mobile {
-    padding-bottom: 0;
-  }
-}
-
-.MarketOutcomeCandlestick__container {
-  cursor: cell;
-  display: flex;
-  flex: 1;
-
-  & > div {
     display: flex;
-    flex-grow: 1;
+    justify-content: space-between;
+
+    > span:last-of-type {
+      display: none;
+    }
   }
 }

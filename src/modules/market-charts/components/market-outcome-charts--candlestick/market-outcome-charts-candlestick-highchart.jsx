@@ -10,7 +10,13 @@ import { PERIOD_RANGES, ETH } from "modules/common-elements/constants";
 
 NoDataToDisplay(Highcharts);
 
-const ShowNavigator = 350;
+const HighConfig = {
+  ShowNavigator: 350,
+  YLableXposition: -35,
+  YLableYposition: -2,
+  MobileEthlabelX: 20,
+  MobileMargin: [30, 0, 0, 0]
+};
 
 export default class MarketOutcomeChartsCandlestickHighchart extends Component {
   static propTypes = {
@@ -56,20 +62,23 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
         },
         chart: {
           type: "candlestick",
+          followTouchMove: false,
           panning: props.isMobile,
           styledMode: false,
           animation: false,
-          marginTop: props.isMobile ? 30 : 40,
+          margin: props.isMobile ? HighConfig.MobileMargin : [20, 0, 0, 0],
           marginBottom: 0,
           events: {
             load() {
+              if (!props.isMobile) return;
               const { width } = this.renderer;
-              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+              this.ethLabel = this.renderer.label("ETH", width - HighConfig.MobileEthlabelX, 0).add();
             },
             redraw() {
+              if (!props.isMobile) return;
               const { width } = this.renderer;
               this.ethLabel.destroy();
-              this.ethLabel = this.renderer.label("ETH", width - 35, 0).add();
+              this.ethLabel = this.renderer.label("ETH", width - HighConfig.MobileEthlabelX, 0).add();
             }
           }
         },
@@ -95,7 +104,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               format: "{value:%b %d, %H:%M}",
               align: "center",
               y: 0,
-              x: 0
+              x: -5
             }
           },
           plotBands: []
@@ -117,8 +126,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               format: "{value:.4f}",
               style: Styles.Candlestick_display_yLables,
               align: "center",
-              x: 0,
-              y: -2
+              x: HighConfig.YLableXposition,
+              y: HighConfig.YLableYposition
             },
             title: {
               text: ""
@@ -131,7 +140,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
               snap: false,
               label: {
                 enabled: true,
-                format: "{value:.4f} <span class='eth-label'>ETH</span>"
+                format: "{value:.4f}"
               }
             }
           },
@@ -202,11 +211,12 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
   displayCandleInfoAndPlotViz(evt) {
     const { updateHoveredPeriod, priceTimeSeries, volumeType } = this.props;
-    const { x: timestamp, open, close, high, low } = evt.target;
+    const { x: timestamp } = evt.target;
     const xRangeTo = this.chart.xAxis[0].toValue(20, true);
     const xRangeFrom = this.chart.xAxis[0].toValue(0, true);
     const range = Math.abs((xRangeFrom - xRangeTo) * 0.6);
     const pts = priceTimeSeries.find(p => p.period === timestamp);
+    const { open, close, high, low } = pts;
 
     updateHoveredPeriod({
       open: open ? createBigNumber(open) : "",
@@ -287,17 +297,20 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       ]);
     });
 
-    // add buffer so candlesticks aren't stuck to beginning of chart
+    const { range, format, step, crosshair } = PERIOD_RANGES[selectedPeriod];
+    // add day buffer so candlesticks aren't stuck to beginning of chart
     if (priceTimeSeries.length > 0) {
-      volume.push([currentTimeInSeconds * 1000, 0]);
+      const lastCandle = priceTimeSeries[priceTimeSeries.length - 1];
+      const currentTime = PERIOD_RANGES[3600].range + lastCandle.period;
+      ohlc.push([lastCandle.period, 0, 0, 0, 0]);
+      volume.push([currentTime, 0]);
     }
 
     options.height = containerHeight;
     if (containerHeight > 0) {
-      options.navigator.enabled = containerHeight > ShowNavigator;
+      options.navigator.enabled = containerHeight > HighConfig.ShowNavigator;
     }
 
-    const { range, format, step, crosshair } = PERIOD_RANGES[selectedPeriod];
     options.xAxis.labels = {
       ...options.xAxis.labels,
       format,
