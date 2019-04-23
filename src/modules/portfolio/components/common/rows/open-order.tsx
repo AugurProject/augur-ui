@@ -167,7 +167,7 @@ const OpenOrder = (props: OpenOrderProps) => {
                 <div className={Styles.OpenOrder__timestamp}>
                   {creationTime}
                 </div>
-                {openOrder.cancelOrder && (
+                {openOrder.cancelOrder && !openOrder.pending && !openOrder.pendingOrder && (
                   <CancelTextButton
                     disabled={openOrder.pending}
                     action={e => {
