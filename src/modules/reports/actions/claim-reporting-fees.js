@@ -83,14 +83,22 @@ export function redeemStake(options, callback = logError) {
       )
     );
 
-    Promise.all(promises).then((gasCosts = [], failed = []) => {
-      onSuccess &&
-        onSuccess(
-          sumAndformatGasCostToEther(gasCosts, { decimalsRounded: 4 }, gasPrice)
-        );
-      onFailed && failed.forEach(m => onFailed(m));
-      callback();
-    });
+    Promise.all(promises)
+      .then((gasCosts = [], failed = []) => {
+        onSuccess &&
+          onSuccess(
+            sumAndformatGasCostToEther(
+              gasCosts,
+              { decimalsRounded: 4 },
+              gasPrice
+            )
+          );
+        onFailed && failed.forEach(m => onFailed(m));
+        callback();
+      })
+      .catch(() => {
+        callback();
+      });
   };
 
   function batchContractIds(feeWindows, reportingParticipants) {

@@ -232,24 +232,40 @@ const mergeProps = (sP: any, dP: any, oP: any) => {
     ],
     rows: markets,
     breakdown,
-    closeAction: () => dP.closeModal(),
+    closeAction: () => {
+      if (sP.modal.cb) {
+        sP.modal.cb();
+      }
+      dP.closeModal();
+    },
     buttons: [
       {
         text: "Claim All Stake & Fees",
+        disabled: markets.find(market => market.status === "pending"),
         action: () => {
           const RedeemStakeOptions = {
             feeWindows: feeWindowsPending ? [] : sP.reportingFees.feeWindows,
             nonforkedMarkets: claimableMarkets,
             onSent: () => {
-              dP.closeModal();
+              if (sP.modal.cb) {
+                sP.modal.cb();
+              }
             }
           };
-          dP.redeemStake(RedeemStakeOptions);
+          dP.redeemStake(RedeemStakeOptions, () => {
+            if (sP.modal.cb) {
+              sP.modal.cb();
+            }
+          });
+          dP.closeModal();
         }
       },
       {
         text: "Close",
         action: () => {
+          if (sP.modal.cb) {
+            sP.modal.cb();
+          }
           dP.closeModal();
         }
       }
