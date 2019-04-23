@@ -19,10 +19,6 @@ import {
   redeemStake
 } from "modules/reports/actions/claim-reporting-fees";
 import {
-  addPendingData,
-  removePendingData
-} from "modules/pending-queue/actions/pending-queue-management";
-import {
   ALL,
   CLAIM_FEE_WINDOWS,
   CLAIM_STAKE_FEES
@@ -43,11 +39,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: Function) => ({
   closeModal: () => dispatch(closeModal()),
-  redeemStake: (options, callback) => dispatch(redeemStake(options, callback)),
-  addPendingData: (pendingId, queueName) =>
-    dispatch(addPendingData(pendingId, queueName)),
-  removePendingData: (pendingId, queueName) =>
-    dispatch(removePendingData(pendingId, queueName))
+  redeemStake: (options, callback) => dispatch(redeemStake(options, callback))
 });
 
 const mergeProps = (sP: any, dP: any, oP: any) => {
