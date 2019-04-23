@@ -28,7 +28,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     marketMin: CustomPropTypes.bigNumber.isRequired,
     volumeType: PropTypes.string.isRequired,
     containerHeight: PropTypes.number.isRequired,
-    currentTimeInSeconds: PropTypes.number.isRequired,
     isMobile: PropTypes.bool
   };
 
@@ -72,13 +71,17 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
             load() {
               if (!props.isMobile) return;
               const { width } = this.renderer;
-              this.ethLabel = this.renderer.label("ETH", width - HighConfig.MobileEthlabelX, 0).add();
+              this.ethLabel = this.renderer
+                .label("ETH", width - HighConfig.MobileEthlabelX, 0)
+                .add();
             },
             redraw() {
               if (!props.isMobile) return;
               const { width } = this.renderer;
               this.ethLabel.destroy();
-              this.ethLabel = this.renderer.label("ETH", width - HighConfig.MobileEthlabelX, 0).add();
+              this.ethLabel = this.renderer
+                .label("ETH", width - HighConfig.MobileEthlabelX, 0)
+                .add();
             }
           }
         },
@@ -276,7 +279,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     containerHeight,
     callback
   ) {
-    const { currentTimeInSeconds } = this.props;
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -297,7 +299,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
       ]);
     });
 
-    const { range, format, step, crosshair } = PERIOD_RANGES[selectedPeriod];
+    const { range, format, crosshair } = PERIOD_RANGES[selectedPeriod];
     // add day buffer so candlesticks aren't stuck to beginning of chart
     if (priceTimeSeries.length > 0) {
       const lastCandle = priceTimeSeries[priceTimeSeries.length - 1];
@@ -313,8 +315,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
 
     options.xAxis.labels = {
       ...options.xAxis.labels,
-      format,
-      step
+      format
     };
 
     if (options.xAxis.length > 0) {
@@ -345,9 +346,6 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           color: "#161022",
           data: volume,
           yAxis: 1,
-          dataGrouping: {
-            units: groupingUnits
-          },
           maxPointWidth: 20,
           minPointWidth: 10,
           range

@@ -23,8 +23,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
     priceTimeSeries: PropTypes.array.isRequired,
     selectedPeriod: PropTypes.number.isRequired,
     updateSelectedPeriod: PropTypes.func.isRequired,
-    pricePrecision: PropTypes.number.isRequired,
-    currentTimeInSeconds: PropTypes.number.isRequired
+    pricePrecision: PropTypes.number.isRequired
   };
 
   static defaultProps = {
@@ -87,8 +86,7 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       selectedPeriod,
       updateSelectedPeriod,
       marketMin,
-      marketMax,
-      currentTimeInSeconds
+      marketMax
     } = this.props;
 
     const {
@@ -97,8 +95,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
       containerHeight,
       defaultCandlePeriod
     } = this.state;
-
-    console.log("hoveredPeriod", hoveredPeriod);
 
     return (
       <section className={Styles.MarketOutcomeCandlestick}>
@@ -144,7 +140,6 @@ class MarketOutcomeCandlestick extends React.PureComponent {
             marketMax={marketMax}
             volumeType={volumeType}
             containerHeight={containerHeight}
-            currentTimeInSeconds={currentTimeInSeconds}
             isMobile={isMobile}
           />
         </div>
