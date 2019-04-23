@@ -102,6 +102,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
           crosshair: {
             width: 0,
             snap: true,
+            className: Styles.Candlestick_display_none,
             label: {
               enabled: true,
               format: "{value:%b %d, %H:%M}",
