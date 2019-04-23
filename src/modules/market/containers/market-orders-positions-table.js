@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
 
   const { filledOrders } = market;
 
-  const hasPending = openOrders.find(order => order.pending);
+  const hasPending = Boolean(openOrders.find(order => order.pending));
 
   return {
     hasClaimableReturns: market.outstandingReturns && canClaim,
