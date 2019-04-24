@@ -11,7 +11,7 @@ import {
   StaticLabelDropdown
 } from "modules/common-elements/selection";
 import Styles from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts--candlestick.styles";
-import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/components/market-outcome-charts--candlestick/market-outcome-charts-candlestick-highchart";
+import MarketOutcomeChartsCandlestickHighchart from "modules/market-charts/containers/market-candlestick";
 import { CandlestickOchl } from "modules/market-charts/components/market-outcome-charts--candlestick/candlestick-ochl";
 
 class MarketOutcomeCandlestick extends React.PureComponent {

@@ -28,7 +28,8 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     marketMin: CustomPropTypes.bigNumber.isRequired,
     volumeType: PropTypes.string.isRequired,
     containerHeight: PropTypes.number.isRequired,
-    isMobile: PropTypes.bool
+    isMobile: PropTypes.bool,
+    currentTimeInSeconds: PropTypes.number.isRequired
   };
 
   static defaultProps = {
@@ -280,6 +281,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     containerHeight,
     callback
   ) {
+    const { currentTimeInSeconds } = this.props;
     const { options } = this.state;
     const groupingUnits = [
       ["minute", [1]],
@@ -303,10 +305,7 @@ export default class MarketOutcomeChartsCandlestickHighchart extends Component {
     const { range, format, crosshair } = PERIOD_RANGES[selectedPeriod];
     // add day buffer so candlesticks aren't stuck to beginning of chart
     if (priceTimeSeries.length > 0) {
-      const lastCandle = priceTimeSeries[priceTimeSeries.length - 1];
-      const currentTime = PERIOD_RANGES[3600].range + lastCandle.period;
-      ohlc.push([lastCandle.period, 0, 0, 0, 0]);
-      volume.push([currentTime, 0]);
+      volume.push([currentTimeInSeconds * 1000, 0]);
     }
 
     options.height = containerHeight;
