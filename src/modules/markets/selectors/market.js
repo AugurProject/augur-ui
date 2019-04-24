@@ -50,8 +50,8 @@ import {
   selectOrderBooksState,
   selectOrderCancellationState,
   selectPendingOrdersState,
-  selectLoginAccountState,
-  selectAccountShareBalance
+  selectAccountShareBalance,
+  selectLoginAccountAddress
 } from "src/select-state";
 
 export const selectMarket = marketId => {
@@ -90,10 +90,6 @@ function selectOrderBooksStateMarket(state, marketId) {
   return selectOrderBooksState(state)[marketId];
 }
 
-function selectLoginAccountStateAddress(state) {
-  return selectLoginAccountState(state).address;
-}
-
 function selectAccountShareBalanceMarket(state, marketId) {
   return selectAccountShareBalance(state)[marketId];
 }
@@ -109,7 +105,7 @@ const getMarketSelector = createCachedSelector(
   selectAccountPositionsStateMarket,
   selectOrderBooksStateMarket,
   selectOrderCancellationState,
-  selectLoginAccountStateAddress,
+  selectLoginAccountAddress,
   selectAccountShareBalanceMarket,
   selectPendingOrdersStateMarket,
   (
@@ -148,6 +144,7 @@ const assembleMarket = (
   pendingOrders
 ) => {
   const marketId = marketData.id;
+  console.log("market selector", marketId);
   const market = {
     ...marketData,
     description: marketData.description || "",
