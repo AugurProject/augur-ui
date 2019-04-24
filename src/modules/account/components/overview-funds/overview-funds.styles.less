@@ -16,7 +16,7 @@
   }
 
   > div:nth-of-type(2) {
-    margin: 10px 0 3px;
+    margin-top: @size-8;
   }
 
   > div:nth-of-type(3) {
@@ -123,7 +123,7 @@
 @media @breakpoint-mobile {
   .RepBalanceStaked {
     background: unset;
-    margin: 1.5rem 2rem;
+    margin: 1rem 2rem 1.5rem;
 
     > div {
       > div:nth-of-type(2) {
@@ -138,6 +138,23 @@
   }
 
   .BalanceFrozenFunds {
+    > span {
+      > div:first-of-type {
+        > span {
+          font-size: @size-10;
+        }
+
+        > span:last-of-type {
+          font-size: @size-14;
+          font-weight: bold;
+        }
+      }
+
+      > div:last-of-type {
+        margin: 0 0 3px;
+      }
+    }
+
     > div:first-of-type {
       flex-direction: row;
     }
@@ -156,13 +173,15 @@
 
   .OverviewFundsContent {
     background: unset;
+    margin: 0;
 
     > div:first-of-type {
-      .mono-10;
+      .mono-12-bold;
     }
 
     > div:nth-of-type(3) {
-      margin-bottom: @size-18;
+      color: @color-tertiary-text;
+      margin-bottom: @size-12;
     }
   }
 
