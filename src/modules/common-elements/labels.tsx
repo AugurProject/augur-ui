@@ -240,18 +240,6 @@ export const ValueLabel = (props: ValueLabelProps) => {
       >
         {`${frontFacingLabel}${postfix}${denominationLabel}`}
       </label>
-      <ReactTooltip
-        id={`valueLabel-${fullPrecision}-${denominationLabel}-${props.keyId}`}
-        className={TooltipStyles.Tooltip}
-        effect="solid"
-        place="top"
-        type="light"
-        data-event="mouseover"
-        data-event-off="blur scroll"
-        disable={postfix.length === 0}
-      >
-        {`${fullPrecision} ${denominationLabel}`}
-      </ReactTooltip>
     </span>
   );
 };
@@ -272,18 +260,6 @@ export class TextLabel extends React.Component<TextLabelProps> {
         >
           {text}
         </label>
-        <ReactTooltip
-          id={`${keyId}-${text.replace(" ", "-")}`}
-          className={TooltipStyles.Tooltip}
-          effect="solid"
-          place="top"
-          type="light"
-          data-event="mouseover"
-          data-event-off="blur scroll"
-          disable={isDisabled}
-        >
-          {text}
-        </ReactTooltip>
       </span>
     );
   }
@@ -367,15 +343,6 @@ export const PropertyLabel = (props: PropertyLabelProps) => (
           >
             {InfoIcon}
           </label>
-          <ReactTooltip
-            id={`tooltip-${props.label.replace(" ", "-")}`}
-            className={TooltipStyles.Tooltip}
-            effect="solid"
-            place="right"
-            type="light"
-          >
-            {props.hint}
-          </ReactTooltip>
         </>
       )}
     </span>
@@ -557,17 +524,6 @@ export const PendingLabel = () => (
     data-for={'processing'}
   >
     Processing <ClipLoader size={8} color="#ffffff" />
-    <ReactTooltip
-      id={'processing'}
-      className={TooltipStyles.Tooltip}
-      effect="solid"
-      place="top"
-      type="light"
-      data-event="mouseover"
-      data-event-off="blur scroll"
-    >
-      You will receive an alert when the transaction has finalized. 
-    </ReactTooltip>
   </span>
 );
 

@@ -29,18 +29,6 @@ export const MarketCreationTimeDisplay = ({ simple, endTime }) => (
           >
             {Hint}
           </label>
-          <ReactTooltip
-            id="tooltip--market-fees"
-            className={TooltipStyles.Tooltip}
-            effect="solid"
-            place="top"
-            type="light"
-          >
-            <p>
-              Augur uses UTC standard date time. Users will see UTC when trading
-              or reporting on your market.
-            </p>
-          </ReactTooltip>
         </div>
       )}
     </span>

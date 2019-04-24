@@ -254,15 +254,6 @@ class MarketTradingConfirm extends Component {
                   >
                     {infoIcon}
                   </label>
-                  <ReactTooltip
-                    id="tooltip--confirm"
-                    className={TooltipStyles.Tooltip}
-                    effect="solid"
-                    place="top"
-                    type="light"
-                  >
-                    <p>{tooltip}</p>
-                  </ReactTooltip>
                 </span>
               </div>
               <div className={Styles.TradingConfirm__agg_position}>

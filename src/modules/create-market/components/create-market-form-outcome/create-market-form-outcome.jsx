@@ -563,20 +563,6 @@ export default class CreateMarketOutcome extends Component {
                     >
                       {Hint}
                     </label>
-                    <ReactTooltip
-                      id="tooltip--market-fees"
-                      className={TooltipStyles.Tooltip}
-                      effect="solid"
-                      place="top"
-                      type="light"
-                    >
-                      <h4>Enter a denomination for your scalar market</h4>
-                      <p>
-                        {
-                          'The denomination specifies what units your market is measured in. For example, a market predicting the temperature on a certain day might be denominated in "Degrees Fahrenheit".'
-                        }
-                      </p>
-                    </ReactTooltip>
                   </div>
                 </label>
                 <input

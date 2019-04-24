@@ -341,19 +341,6 @@ export class AccountAddressDisplay extends Component<
             >
               {isCopied ? CheckCircleIcon : CopyIcon}
             </button>
-            {isCopied && (
-              <ReactTooltip
-                id="AccountAddressDisplay_copy_tooltip"
-                className={TooltipStyles.Tooltip}
-                effect="solid"
-                place="top"
-                type="light"
-                event="mouseover"
-                eventOff="mouseleave"
-              >
-                Copied
-              </ReactTooltip>
-            )}
           </>
         )}
       </span>

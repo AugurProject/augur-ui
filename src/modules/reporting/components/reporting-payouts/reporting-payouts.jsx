@@ -45,19 +45,6 @@ const Outcome = ({ className, outcome, marketId }) => {
             >
               {ExclamationCircle()}
             </div>
-            <ReactTooltip
-              id="tooltip--potential-fork"
-              className={TooltipStyles.Tooltip}
-              effect="solid"
-              place="top"
-              type="light"
-            >
-              <h4>Potential Fork</h4>
-              <p>
-                A fork will be initiated if the dispute bond for this outcome is
-                filled.
-              </p>
-            </ReactTooltip>
           </span>
         )}
         <span className={Styles["MarketReportingPayouts__outcome-name-text"]}>
@@ -122,16 +109,6 @@ const Outcome = ({ className, outcome, marketId }) => {
               {totalBondSizeCurrent} REP
             </span>
           </div>
-          <ReactTooltip
-            id={"tooltip--rep-progress-" + outcome.id + marketId}
-            className={TooltipStyles.Tooltip}
-            effect="solid"
-            place="top"
-            offset={{ left: 0, top: 6 }}
-            type="light"
-          >
-            <p>{currentAccountStake} REP Staked</p>
-          </ReactTooltip>
         </div>
       )}
     </div>
