@@ -85,7 +85,7 @@
 .TradingForm__button__clear {
   .mono-12;
 
-  color: @color-primary-action;
+  color: @color-secondary-text;
   display: inline-block;
   padding: @size-4 @size-12;
   text-transform: uppercase;
@@ -99,16 +99,15 @@
   display: block;
   font-size: @font-size-small;
   line-height: @font-size-medium;
-  margin: @size-16;
-  padding: @size-13 @size-8;
+  margin: 1rem;
+  padding: 0.75rem;
 }
 
 .TradingForm__error_message {
-  .mono-10-bold;
+  .text-12-bold;
 
   color: @color-secondary-text;
-  margin-bottom: @size-4;
-  text-transform: uppercase;
+  margin-bottom: 0.25rem;
   white-space: nowrap;
 
   &:last-of-type {
@@ -116,9 +115,11 @@
   }
 
   > svg {
-    height: @size-12;
+    margin: 0 0.2rem;
+    min-height: 1rem;
+    min-width: 1rem;
     vertical-align: text-bottom;
-    width: @size-12;
+    width: 1.75em;
 
     > circle {
       fill: @color-error-message-fade;
@@ -141,22 +142,27 @@
 }
 
 .TradingForm__outcome__container {
-  padding: @size-8 @size-16 0;
+  padding: 0.5rem 1rem 0;
 }
 
 .TradingForm__outcome__container__yes {
-  background-color: @color-theme-primary;
-  border: 1px solid @color-primary-alternate;
-  border-radius: @border-radius-default;
-  font-size: @size-14;
+  background-color: fade(@color-dark-grayish-purple, 40%);
   font-weight: 500;
   padding: 0.625rem 0.625rem 0.625rem 1rem;
+  position: relative;
+  width: 100%;
 
   > span {
-    .mono-11;
+    bottom: 0;
+    height: 14px;
+    left: 0.0625rem;
+    position: absolute;
 
-    color: @color-shadow-text;
-    text-transform: uppercase;
+    > svg {
+      > line {
+        stroke: fade(@color-white, 40%);
+      }
+    }
   }
 }
 
@@ -168,7 +174,6 @@
   display: flex;
   flex-grow: 1;
   padding: 0.4375rem 1rem;
-  width: auto;
 }
 
 .TradingForm__input__container {
@@ -205,7 +210,6 @@
   > span {
     background: @color-grayish-purple;
     border-left: 0.0625rem solid @color-dark-gray;
-    color: @color-tertiary-text;
     font-size: @font-size-small;
     min-width: 4.28rem;
     overflow: hidden;
@@ -216,7 +220,7 @@
     white-space: nowrap;
 
     &.isScalar {
-      font-size: @size-9;
+      max-width: 10rem;
     }
 
     &.error {
@@ -460,13 +464,6 @@
 
   .TradingForm__static-field {
     color: @color-white;
-  }
-
-  .TradingForm__error_message {
-    > svg {
-      height: @size-16;
-      width: @size-16;
-    }
   }
 }
 
