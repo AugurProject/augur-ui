@@ -19,8 +19,6 @@ export const marketsFilledOrders = createSelector(
   selectLoginAccountAddress,
   selectFilledOrders,
   (marketReportState, loginAccountAddress, filledOrders) => {
-
-    console.log("select markets filled orders");
     const resolvedMarkets = marketReportState.resolved;
     const account = loginAccountAddress;
     const userFilledOrders = filledOrders[account] || [];

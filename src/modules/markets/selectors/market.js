@@ -25,7 +25,6 @@ import { getOutcomeName } from "utils/get-outcome";
 
 import store from "src/store";
 
-import selectAccountPositions from "modules/orders/selectors/positions-plus-asks";
 import { selectUserOpenOrders } from "modules/orders/selectors/user-open-orders";
 
 import { selectPriceTimeSeries } from "modules/markets/selectors/price-time-series";
@@ -82,10 +81,6 @@ function selectOutcomesDataStateMarket(state, marketId) {
   return selectOutcomesDataState(state)[marketId];
 }
 
-function selectAccountPositionsStateMarket(state, marketId) {
-  return selectAccountPositions(state)[marketId];
-}
-
 function selectOrderBooksStateMarket(state, marketId) {
   return selectOrderBooksState(state)[marketId];
 }
@@ -102,7 +97,6 @@ const getMarketSelector = createCachedSelector(
   selectMarketsDataStateMarket,
   selectMarketTradingHistoryStateMarket,
   selectOutcomesDataStateMarket,
-  selectAccountPositionsStateMarket,
   selectOrderBooksStateMarket,
   selectOrderCancellationState,
   selectLoginAccountAddress,
@@ -112,7 +106,6 @@ const getMarketSelector = createCachedSelector(
     marketData,
     marketPriceHistory,
     marketOutcomesData,
-    marketAccountPositions,
     orderBooks,
     orderCancellation,
     accountAddress,
@@ -123,7 +116,6 @@ const getMarketSelector = createCachedSelector(
       marketData,
       marketPriceHistory,
       marketOutcomesData,
-      marketAccountPositions,
       orderBooks,
       orderCancellation,
       accountAddress,
@@ -136,7 +128,6 @@ const assembleMarket = (
   marketData,
   marketPriceHistory,
   marketOutcomesData,
-  marketAccountPositions,
   orderBooks,
   orderCancellation,
   accountAddress,
@@ -144,7 +135,6 @@ const assembleMarket = (
   pendingOrders
 ) => {
   const marketId = marketData.id;
-  console.log("market selector", marketId);
   const market = {
     ...marketData,
     description: marketData.description || "",
@@ -232,7 +222,7 @@ const assembleMarket = (
       Math.min.apply(null, accountShareBalances).toString()) ||
     "0";
 
-  const userTradingPositions = marketAccountPositions || {};
+  const userTradingPositions = {};
   if (market.outcomes) {
     market.userPositions = Object.values(
       userTradingPositions.tradingPositions || []

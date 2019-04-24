@@ -8,9 +8,6 @@ export default function() {
 }
 
 export const marketsOpenOrders = createSelector(getOpenOrders, openOrders => {
-
-  console.log("select markets Open Orders");
-
   const markets = openOrders.filter(
     market => market.marketStatus !== constants.MARKET_CLOSED
   );
