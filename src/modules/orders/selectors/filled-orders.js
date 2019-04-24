@@ -20,7 +20,7 @@ function findOrders(
   // BUY or SELL) of the self-fill. The fake order is created by first creating
   // a fake trade here which then automatically creates the fake order below. A
   // fake order is never reused, it's only used for the single self-filled trade.
-  const tradesCreatedOrFilledByThisAccountIncludingFakeTradesForSelfFills = tradesCreatedOrFilledByThisAccount.concat(
+  const tradesIncludingSelfTrades = tradesCreatedOrFilledByThisAccount.concat(
     tradesCreatedOrFilledByThisAccount
       .filter(trade => trade.creator === trade.filler)
       .map(selfFilledTrade =>
@@ -33,7 +33,7 @@ function findOrders(
       )
   );
 
-  const orders = tradesCreatedOrFilledByThisAccountIncludingFakeTradesForSelfFills.reduce(
+  const orders = tradesIncludingSelfTrades.reduce(
     (
       order,
       {
