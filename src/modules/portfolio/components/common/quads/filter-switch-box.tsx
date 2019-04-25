@@ -25,6 +25,8 @@ export interface FilterBoxProps {
 
 interface FilterBoxState {
   search: string;
+  filteredData: Array<Market>;
+  view: boolean;
 }
 
 export default class FilterSwitchBox extends React.Component<
@@ -33,7 +35,8 @@ export default class FilterSwitchBox extends React.Component<
 > {
   state: FilterBoxState = {
     search: "",
-    filteredData: this.props.data
+    filteredData: this.props.data,
+    view: false,
   };
 
   componentDidMount() {
@@ -41,8 +44,8 @@ export default class FilterSwitchBox extends React.Component<
     this.updateFilteredData(filteredData);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextProps.data.length !== this.props.data.length) {
+  componentWillUpdate(nextProps: FilterBoxProps, nextState: FilterBoxState) {
+    if (nextProps.data.length !== this.props.data.length || this.state.view !== nextState.view) {
       let filteredData = nextProps.data;
       if (this.state.search !== nextState.search) {
         filteredData = this.applySearch(nextState.search, nextProps.data);
@@ -68,9 +71,10 @@ export default class FilterSwitchBox extends React.Component<
 
   updateView = () => {
     this.props.switchView();
+    this.setState({view: !this.state.view});
   };
 
-  updateFilteredData = filteredData => {
+  updateFilteredData = (filteredData: Array<Market>)  => {
     this.setState({ filteredData });
   };
 
