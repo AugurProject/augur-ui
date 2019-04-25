@@ -74,8 +74,10 @@ export const loadMarketsDisputeInfo = (marketIds, callback = logError) => (
         }),
         {}
       );
-      dispatch(updateMarketsDisputeInfo(marketsDisputeInfo));
-      callback(null);
+      loadMarketsInfoIfNotLoaded(marketIds, () => {
+        dispatch(updateMarketsDisputeInfo(marketsDisputeInfo));
+        callback(null);
+      });
     })
   );
 };
