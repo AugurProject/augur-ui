@@ -28,40 +28,6 @@ describe(`modules/markets/actions/update-markets-data.js`, () => {
     expect(actual).toEqual(expected);
   });
 
-  test("`updateMarketCategory` should return the expected object", () => {
-    const actual = updateMarketsDataReducer.updateMarketCategory(
-      "0xMarket1",
-      "cat1"
-    );
-
-    const expected = {
-      type: updateMarketsDataReducer.UPDATE_MARKET_CATEGORY,
-      data: {
-        marketId: "0xMarket1",
-        category: "cat1"
-      }
-    };
-
-    expect(actual).toEqual(expected);
-  });
-
-  test("`updateMarketsData wither number updaet rep balance` should return the expected object", () => {
-    const actual = updateMarketsDataReducer.updateMarketRepBalance(
-      "0xMarket1",
-      10
-    );
-
-    const expected = {
-      type: updateMarketsDataReducer.UPDATE_MARKET_REP_BALANCE,
-      data: {
-        marketId: "0xMarket1",
-        repBalance: 10
-      }
-    };
-
-    expect(actual).toEqual(expected);
-  });
-
   test("`updateMarketFrozenSharesValue` should return the expected object", () => {
     const actual = updateMarketsDataReducer.updateMarketFrozenSharesValue(
       "0xMarket1",

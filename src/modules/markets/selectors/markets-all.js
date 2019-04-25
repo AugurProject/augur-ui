@@ -39,9 +39,12 @@ export const selectMarkets = createSelector(
     accountPositions
   ) => {
     if (!marketsData) return [];
-    return Object.keys(marketsData).map(marketId => {
-      if (!marketId || !marketsData[marketId]) return {};
-      return selectMarket(marketId);
-    });
+    return Object.keys(marketsData).reduce((p, marketId) => {
+      if (!marketId || !marketsData[marketId]) {
+        console.log("market id not found in marketsData, weird", marketId);
+        return p;
+      }
+      return [...p, selectMarket(marketId)];
+    }, []);
   }
 );

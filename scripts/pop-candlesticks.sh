@@ -52,12 +52,12 @@ do
       npx flash push-timestamp -s -c 600;
     fi
 
-    sleep 30
+    sleep 45
   done
 
   if [ "$PUSH_TIME" = true ] ; then
     echo "Push time";
     npx flash push-timestamp -s -c 3600;
   fi
-  sleep 30
+  sleep 60
 done

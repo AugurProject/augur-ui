@@ -2,12 +2,9 @@ import immutableDelete from "immutable-delete";
 import {
   UPDATE_MARKETS_DATA,
   CLEAR_MARKETS_DATA,
-  UPDATE_MARKET_CATEGORY,
-  UPDATE_MARKET_REP_BALANCE,
   UPDATE_MARKET_FROZEN_SHARES_VALUE,
   UPDATE_MARKETS_DISPUTE_INFO,
-  REMOVE_MARKET,
-  UPDATE_MARKET_ETH_BALANCE
+  REMOVE_MARKET
 } from "modules/markets/actions/update-markets-data";
 import { CLEAR_LOGIN_ACCOUNT } from "modules/auth/actions/update-login-account";
 import { RESET_STATE } from "modules/app/actions/reset-state";
@@ -29,39 +26,6 @@ export default function(marketsData = DEFAULT_STATE, action) {
           marketsData
         )
       };
-    case UPDATE_MARKET_CATEGORY: {
-      const { marketId, category } = action.data;
-      if (!marketId) return marketsData;
-      return {
-        ...marketsData,
-        [marketId]: {
-          ...marketsData[marketId],
-          category
-        }
-      };
-    }
-    case UPDATE_MARKET_REP_BALANCE: {
-      const { marketId, repBalance } = action.data;
-      if (!marketId) return marketsData;
-      return {
-        ...marketsData,
-        [marketId]: {
-          ...marketsData[marketId],
-          repBalance
-        }
-      };
-    }
-    case UPDATE_MARKET_ETH_BALANCE: {
-      const { marketId, ethBalance } = action.data;
-      if (!marketId) return marketsData;
-      return {
-        ...marketsData,
-        [marketId]: {
-          ...marketsData[marketId],
-          ethBalance
-        }
-      };
-    }
     case UPDATE_MARKET_FROZEN_SHARES_VALUE: {
       const { marketId, frozenSharesValue } = action.data;
       if (!marketId) return marketsData;
