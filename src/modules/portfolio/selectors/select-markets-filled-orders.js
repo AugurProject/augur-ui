@@ -18,11 +18,10 @@ export const marketsFilledOrders = createSelector(
   selectLoginAccountAddress,
   selectFilledOrders,
   (marketReportState, loginAccountAddress, filledOrders) => {
-    const resolvedMarkets = marketReportState.resolved;
-    const account = loginAccountAddress;
-    const userFilledOrders = filledOrders[account] || [];
-
-    const marketIds = filterMarketIds(userFilledOrders, resolvedMarkets);
+    const marketIds = filterMarketIds(
+      filledOrders[loginAccountAddress] || [],
+      marketReportState.resolved
+    );
     const markets = filterMarketsByStatus(marketIds);
 
     const allFilledOrders = marketIds.reduce(
