@@ -7,7 +7,6 @@ import {
   selectFilledOrders
 } from "src/select-state";
 import { selectMarket } from "modules/markets/selectors/market";
-import { differenceBy } from "lodash";
 import { keyArrayBy } from "utils/key-by";
 
 export default function() {
@@ -22,18 +21,18 @@ export const marketsFilledOrders = createSelector(
     const resolvedMarkets = marketReportState.resolved;
     const account = loginAccountAddress;
     const userFilledOrders = filledOrders[account] || [];
-    const nonFinalizedMarketFilledOrders = differenceBy(
-      userFilledOrders,
-      resolvedMarkets,
-      "marketId"
+
+    const marketIds = Object.keys(
+      keyArrayBy(
+        userFilledOrders.reduce(
+          (p, m) =>
+            resolvedMarkets.indexOf(m.marketId) === -1 ? [...p, m] : p,
+          []
+        ),
+        "marketId"
+      )
     );
 
-    const groupedFilledOrders = keyArrayBy(
-      nonFinalizedMarketFilledOrders,
-      "marketId"
-    );
-
-    const marketIds = Object.keys(groupedFilledOrders);
     const markets = marketIds
       .map(m => selectMarket(m))
       .map(item => {
@@ -45,24 +44,20 @@ export const marketsFilledOrders = createSelector(
       );
 
     const allFilledOrders = marketIds.reduce(
-      (p, marketId) => [...p, selectMarket(marketId).filledOrders],
+      (p, marketId) => [...p, ...selectMarket(marketId).filledOrders],
       []
     );
 
-    const marketsObj = markets.reduce((obj, market) => {
-      obj[market.id] = market;
-      return obj;
-    }, {});
-
-    const ordersObj = allFilledOrders.reduce((obj, order) => {
-      obj[order.id] = order;
-      return obj;
-    }, {});
-
     return {
       markets,
-      marketsObj,
-      ordersObj,
+      marketsObj: markets.reduce((obj, market) => {
+        obj[market.id] = market;
+        return obj;
+      }, {}),
+      ordersObj: allFilledOrders.reduce((obj, order) => {
+        obj[order.id] = order;
+        return obj;
+      }, {}),
       filledOrders: allFilledOrders
     };
   }
