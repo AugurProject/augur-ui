@@ -49,6 +49,12 @@
     }
   }
 
+  // TODO: Circle back and remove this when SIDE NAV is removed
+  // Temporary quick fix for sizing issues between 1281 - 1420
+  @media (min-width: 1281px) and (max-width: 1420px) {
+    font-size: @size-9;
+  }
+
   @media @breakpoint-mobile-mid {
     flex: 1;
     padding-bottom: @size-18;
