@@ -36,7 +36,7 @@ export default class FilterSwitchBox extends React.Component<
   state: FilterBoxState = {
     search: "",
     filteredData: this.props.data,
-    view: false,
+    view: false
   };
 
   componentDidMount() {
@@ -45,9 +45,12 @@ export default class FilterSwitchBox extends React.Component<
   }
 
   componentWillUpdate(nextProps: FilterBoxProps, nextState: FilterBoxState) {
-    if (nextProps.data.length !== this.props.data.length || this.state.view !== nextState.view) {
+    if (
+      nextProps.data.length !== this.props.data.length ||
+      this.state.view !== nextState.view
+    ) {
       let filteredData = nextProps.data;
-      if (this.state.search !== nextState.search) {
+      if (nextState.search !== "") {
         filteredData = this.applySearch(nextState.search, nextProps.data);
       }
       this.updateFilteredData(filteredData);
@@ -71,10 +74,10 @@ export default class FilterSwitchBox extends React.Component<
 
   updateView = () => {
     this.props.switchView();
-    this.setState({view: !this.state.view});
+    this.setState({ view: !this.state.view });
   };
 
-  updateFilteredData = (filteredData: Array<Market>)  => {
+  updateFilteredData = (filteredData: Array<Market>) => {
     this.setState({ filteredData });
   };
 
