@@ -22,26 +22,8 @@ export const marketsFilledOrders = createSelector(
     const account = loginAccountAddress;
     const userFilledOrders = filledOrders[account] || [];
 
-    const marketIds = Object.keys(
-      keyArrayBy(
-        userFilledOrders.reduce(
-          (p, m) =>
-            resolvedMarkets.indexOf(m.marketId) === -1 ? [...p, m] : p,
-          []
-        ),
-        "marketId"
-      )
-    );
-
-    const markets = marketIds
-      .map(m => selectMarket(m))
-      .map(item => {
-        if (Object.keys(item).length === 0) return null;
-        return item;
-      })
-      .filter(
-        market => market && market.marketStatus !== constants.MARKET_CLOSED
-      );
+    const marketIds = filterMarketIds(userFilledOrders, resolvedMarkets);
+    const markets = filterMarketsByStatus(marketIds);
 
     const allFilledOrders = marketIds.reduce(
       (p, marketId) => [...p, ...selectMarket(marketId).filledOrders],
@@ -50,15 +32,37 @@ export const marketsFilledOrders = createSelector(
 
     return {
       markets,
-      marketsObj: markets.reduce((obj, market) => {
-        obj[market.id] = market;
-        return obj;
-      }, {}),
-      ordersObj: allFilledOrders.reduce((obj, order) => {
-        obj[order.id] = order;
-        return obj;
-      }, {}),
+      marketsObj: keyObjectsById(markets),
+      ordersObj: keyObjectsById(allFilledOrders),
       filledOrders: allFilledOrders
     };
   }
 );
+
+const filterMarketIds = (userFilledOrders, resolvedMarkets) =>
+  Object.keys(
+    keyArrayBy(
+      userFilledOrders.reduce(
+        (p, m) => (resolvedMarkets.indexOf(m.marketId) === -1 ? [...p, m] : p),
+        []
+      ),
+      "marketId"
+    )
+  );
+
+const filterMarketsByStatus = marketIds => {
+  const mappedMarkets = marketIds.map(m => selectMarket(m)).map(item => {
+    if (Object.keys(item).length === 0) return null;
+    return item;
+  });
+
+  return mappedMarkets.filter(
+    market => market && market.marketStatus !== constants.MARKET_CLOSED
+  );
+};
+
+const keyObjectsById = array =>
+  array.reduce((obj, o) => {
+    obj[o.id] = o;
+    return obj;
+  }, {});
