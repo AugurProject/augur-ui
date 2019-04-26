@@ -48,6 +48,7 @@ export default class ConnectDropdown extends Component {
     this.setShowAdvancedButton = this.setShowAdvancedButton.bind(this);
     this.selectOption = this.selectOption.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.closeMenu = this.closeMenu.bind(this);
     this.hideError = this.hideError.bind(this);
     this.showError = this.showError.bind(this);
   }
@@ -77,6 +78,11 @@ export default class ConnectDropdown extends Component {
     });
   }
 
+  closeMenu() {
+    this.props.toggleDropdown();
+    this.clearState();
+  }
+
   showAdvanced(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -97,8 +103,7 @@ export default class ConnectDropdown extends Component {
       });
     } else if (param === PARAMS.EDGE) {
       edgeLoginLink(history);
-      this.props.toggleDropdown();
-      this.clearState();
+      this.closeMenu();
     }
   }
 
@@ -250,10 +255,7 @@ export default class ConnectDropdown extends Component {
                     showError={this.showError}
                     hideError={this.hideError}
                     setIsLoading={this.setIsTrezorLoading}
-                    onSuccess={() => {
-                      this.props.toggleDropdown();
-                      this.clearState();
-                    }}
+                    onSuccess={() => this.closeMenu()}
                     isClicked={s.selectedOption === item.param}
                     isLoading={s.isTrezorLoading}
                     setShowAdvancedButton={this.setShowAdvancedButton}
