@@ -97,6 +97,8 @@ export default class ConnectDropdown extends Component {
       });
     } else if (param === PARAMS.EDGE) {
       edgeLoginLink(history);
+      this.props.toggleDropdown();
+      this.clearState();
     }
   }
 
@@ -248,6 +250,10 @@ export default class ConnectDropdown extends Component {
                     showError={this.showError}
                     hideError={this.hideError}
                     setIsLoading={this.setIsTrezorLoading}
+                    onSuccess={() => {
+                      this.props.toggleDropdown();
+                      this.clearState();
+                    }}
                     isClicked={s.selectedOption === item.param}
                     isLoading={s.isTrezorLoading}
                     setShowAdvancedButton={this.setShowAdvancedButton}
