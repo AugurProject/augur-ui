@@ -9,6 +9,8 @@ import {
 import { loadUserMarketTradingHistory } from "modules/markets/actions/market-trading-history-management";
 import { clearTransactions } from "modules/transactions/actions/update-transactions-data";
 import { loadAlerts } from "modules/alerts/actions/alerts";
+import { loadUsershareBalances } from "modules/positions/actions/load-user-share-balances";
+import { getWinningBalance } from "modules/reports/actions/get-winning-balance";
 import { loadMarketsInfoIfNotLoaded } from "modules/markets/actions/load-markets-info";
 
 export const loadAccountHistory = () => (dispatch, getState) => {
@@ -50,6 +52,8 @@ function loadTransactions(dispatch, callback) {
       new Set(marketIds.reduce((p, mids) => p.concat(mids), []))
     );
 
+    dispatch(loadUsershareBalances(uniqMarketIds));
+    dispatch(getWinningBalance(uniqMarketIds));
     dispatch(loadMarketsInfoIfNotLoaded(uniqMarketIds), () => {
       callback();
     });

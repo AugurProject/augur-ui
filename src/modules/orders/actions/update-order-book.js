@@ -17,25 +17,3 @@ export const updateOrderBook = ({
     orderBook
   }
 });
-export const clearOrderBook = (marketId, outcome, orderTypeLabel) => ({
-  type: CLEAR_ORDER_BOOK,
-  data: {
-    marketId,
-    outcome,
-    orderTypeLabel
-  }
-});
-export const updateIsFirstOrderBookChunkLoaded = ({
-  marketId,
-  outcome,
-  orderTypeLabel,
-  isLoaded
-}) => ({
-  type: UPDATE_IS_FIRST_ORDER_BOOK_CHUNK_LOADED,
-  data: {
-    marketId,
-    outcome,
-    orderTypeLabel,
-    isLoaded
-  }
-});

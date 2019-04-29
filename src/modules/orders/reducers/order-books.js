@@ -1,7 +1,4 @@
-import {
-  UPDATE_ORDER_BOOK,
-  CLEAR_ORDER_BOOK
-} from "modules/orders/actions/update-order-book";
+import { UPDATE_ORDER_BOOK } from "modules/orders/actions/update-order-book";
 import { RESET_STATE } from "modules/app/actions/reset-state";
 
 const DEFAULT_STATE = {};
@@ -22,24 +19,8 @@ export default function(orderBooks = DEFAULT_STATE, { type, data }) {
           [outcome]: {
             ...outcomeOrderBook,
             [orderTypeLabel]: {
-              ...(outcomeOrderBook[orderTypeLabel] || {}),
               ...orderBook
             }
-          }
-        }
-      };
-    }
-    case CLEAR_ORDER_BOOK: {
-      const { marketId, outcome, orderTypeLabel } = data;
-      const marketOrderBook = orderBooks[marketId] || {};
-      const outcomeOrderBook = marketOrderBook[outcome] || {};
-      return {
-        ...orderBooks,
-        [marketId]: {
-          ...marketOrderBook,
-          [outcome]: {
-            ...outcomeOrderBook,
-            [orderTypeLabel]: {}
           }
         }
       };
