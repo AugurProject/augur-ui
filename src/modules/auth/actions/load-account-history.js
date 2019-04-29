@@ -24,8 +24,12 @@ export const loadAccountHistory = () => (dispatch, getState) => {
 
 function loadTransactions(dispatch, callback) {
   const options = {};
-  dispatch(loadUserMarketTradingHistory(options));
   const promises = [];
+  promises.push(
+    new Promise(resolve =>
+      dispatch(loadUserMarketTradingHistory(options, null, resolve))
+    )
+  );
   promises.push(
     new Promise(resolve =>
       dispatch(loadAccountPositions(options, null, resolve))
@@ -49,7 +53,12 @@ function loadTransactions(dispatch, callback) {
 
   Promise.all(promises).then(marketIds => {
     const uniqMarketIds = Array.from(
-      new Set(marketIds.reduce((p, mids) => p.concat(mids), []))
+      new Set(
+        marketIds.reduce(
+          (p, mids) => p.concat(mids.filter(m => m !== null)),
+          []
+        )
+      )
     );
 
     dispatch(loadUsershareBalances(uniqMarketIds));
