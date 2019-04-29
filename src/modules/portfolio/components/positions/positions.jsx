@@ -8,45 +8,6 @@ import PositionsTable from "modules/market/containers/positions-table";
 
 import Styles from "modules/portfolio/components/common/quads/quad.styles";
 
-const sortByOptions = [
-  {
-    label: "Sort by Most Recently Traded",
-    value: "recentlyTraded",
-    comp(marketA, marketB) {
-      return (
-        marketB.recentlyTraded.timestamp - marketA.recentlyTraded.timestamp
-      );
-    }
-  },
-  {
-    label: "Sort by Current Value",
-    value: "currentValue",
-    comp(marketA, marketB) {
-      return (
-        marketB.myPositionsSummary.currentValue.formatted -
-        marketA.myPositionsSummary.currentValue.formatted
-      );
-    }
-  },
-  {
-    label: "Sort by Total Returns",
-    value: "totalReturns",
-    comp(marketA, marketB) {
-      return (
-        marketB.myPositionsSummary.totalReturns.formatted -
-        marketA.myPositionsSummary.totalReturns.formatted
-      );
-    }
-  },
-  {
-    label: "Sort by Expiring Soonest",
-    value: "endTime",
-    comp(marketA, marketB) {
-      return marketA.endTime.timestamp - marketB.endTime.timestamp;
-    }
-  }
-];
-
 function filterComp(input, market) {
   return market.description.toLowerCase().indexOf(input.toLowerCase()) >= 0;
 }
@@ -57,7 +18,8 @@ function renderToggleContent(market) {
 
 export default class Positions extends Component {
   static propTypes = {
-    markets: PropTypes.array.isRequired
+    markets: PropTypes.array.isRequired,
+    currentAugurTimestamp: PropTypes.number.isRequired
   };
 
   constructor(props) {
@@ -69,6 +31,63 @@ export default class Positions extends Component {
 
     this.updateRightContentValue = this.updateRightContentValue.bind(this);
     this.renderRightContent = this.renderRightContent.bind(this);
+    this.createSortByOptions = this.createSortByOptions.bind(this);
+  }
+
+  createSortByOptions() {
+    const { currentAugurTimestamp } = this.props;
+    const sortByOptions = [
+      {
+        label: "Sort by Most Recently Traded",
+        value: "recentlyTraded",
+        comp(marketA, marketB) {
+          return (
+            marketB.recentlyTraded.timestamp - marketA.recentlyTraded.timestamp
+          );
+        }
+      },
+      {
+        label: "Sort by Current Value",
+        value: "currentValue",
+        comp(marketA, marketB) {
+          return (
+            marketB.myPositionsSummary.currentValue.formatted -
+            marketA.myPositionsSummary.currentValue.formatted
+          );
+        }
+      },
+      {
+        label: "Sort by Total Returns",
+        value: "totalReturns",
+        comp(marketA, marketB) {
+          return (
+            marketB.myPositionsSummary.totalReturns.formatted -
+            marketA.myPositionsSummary.totalReturns.formatted
+          );
+        }
+      },
+      {
+        label: "Sort by Expiring Soonest",
+        value: "endTime",
+        comp(marketA, marketB) {
+          if (
+            marketA.endTime.timestamp < currentAugurTimestamp &&
+            marketB.endTime.timestamp < currentAugurTimestamp
+          ) {
+            return marketB.endTime.timestamp - marketA.endTime.timestamp;
+          }
+          if (marketA.endTime.timestamp < currentAugurTimestamp) {
+            return 1;
+          }
+          if (marketB.endTime.timestamp < currentAugurTimestamp) {
+            return -1;
+          }
+          return marketA.endTime.timestamp - marketB.endTime.timestamp;
+        }
+      }
+    ];
+
+    return sortByOptions;
   }
 
   updateRightContentValue() {
@@ -97,6 +116,8 @@ export default class Positions extends Component {
   render() {
     const { markets } = this.props;
     const { showCurrentValue } = this.state;
+
+    const sortByOptions = this.createSortByOptions();
 
     return (
       <FilterBox

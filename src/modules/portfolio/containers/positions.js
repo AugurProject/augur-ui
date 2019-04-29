@@ -12,7 +12,8 @@ const mapStateToProps = state => {
   const markets = getPositionsMarkets(timestamps, positions);
 
   return {
-    markets
+    markets,
+    currentAugurTimestamp: state.blockchain.currentAugurTimestamp
   };
 };
 
