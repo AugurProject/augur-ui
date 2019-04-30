@@ -90,6 +90,7 @@
 
       &:nth-of-type(2) {
         justify-content: flex-start;
+        min-height: 22px;
       }
     }
   }
@@ -138,11 +139,19 @@
   }
 
   .PositionHeader__extended {
+    border-bottom: 0.0625rem solid @color-primary-background;
     grid-template-columns: repeat(5, 1fr);
+    padding-bottom: 0.375rem;
+    padding-left: 1rem;
+    padding-top: 0.375rem;
 
     > li {
       padding-left: @size-10;
       white-space: pre-line;
+
+      &:nth-of-type(2) {
+        padding: 0;
+      }
 
       &:nth-of-type(5),
       &:last-child {
