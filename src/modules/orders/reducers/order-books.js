@@ -10,7 +10,6 @@ export default function(orderBooks = DEFAULT_STATE, { type, data }) {
   switch (type) {
     case UPDATE_ORDER_BOOK: {
       const { marketId, orderBook } = data;
-      console.log("order book", marketId, orderBook);
       const newOrderBooks = Object.keys(orderBooks).reduce(
         (p, m) => (m !== marketId ? { ...p, [m]: orderBooks[m] } : p),
         {}
