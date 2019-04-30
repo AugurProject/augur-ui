@@ -264,6 +264,7 @@ export const ValueLabel = (props: ValueLabelProps) => {
 };
 
 export class TextLabel extends React.Component<TextLabelProps, TextLabelState> {
+  labelRef: any = null;
   state: TextLabelState = {
     scrollWidth: null,
     clientWidth: null,
@@ -271,7 +272,7 @@ export class TextLabel extends React.Component<TextLabelProps, TextLabelState> {
   }
 
   measure() {
-    const { clientWidth, scrollWidth } = this.labelRef
+    const { clientWidth, scrollWidth } = this.labelRef;
 
     this.setState({
       scrollWidth,
@@ -288,7 +289,7 @@ export class TextLabel extends React.Component<TextLabelProps, TextLabelState> {
     this.measure()
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: any, nextState: any) {
     return (
       this.state.scrollWidth !== nextState.scrollWidth ||
       this.state.clientWidth !== nextState.clientWidth
@@ -296,12 +297,12 @@ export class TextLabel extends React.Component<TextLabelProps, TextLabelState> {
   }
   render() {
     const { text, keyId } = this.props;
-    const { scrollWidth, clientWidth, isDisabled } = this.state;
+    const { isDisabled } = this.state;
 
     return (
       <span className={Styles.TextLabel}>
         <label
-          ref={ref => this.labelRef = ref}
+          ref={ref => (this.labelRef = ref)}
           data-tip
           data-for={`${keyId}-${text.replace(/\s+/g, "-")}`}
         >
