@@ -45,12 +45,13 @@ class BlockInfoData extends Component<BlockInfoDataProps, BlockInfoDataState> {
   }
 
   handleWindowOnClick(event: SyntheticEvent) {
+    const { dropdownOpen } = this.state;
     if (
-      this.state.dropdownOpen &&
+      dropdownOpen &&
       this.blockInfoData &&
       !this.blockInfoData.contains(event.target)
     ) {
-      this.setState({ dropdownOpen: !this.state.dropdownOpen });
+      this.setState({ dropdownOpen: !dropdownOpen });
     }
   }
 
