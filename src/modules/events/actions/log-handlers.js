@@ -166,9 +166,10 @@ export const handleOrderCanceledLog = log => (dispatch, getState) => {
     handleAlertUpdate(log, dispatch, getState);
     dispatch(updateAssets());
     dispatch(loadAccountOpenOrders({ marketId: log.marketId }));
+    dispatch(loadMarketOpenOrders(log.marketId));
     dispatch(loadAccountPositionsTotals());
   }
-  if (isCurrentMarket(log.marketId))
+  if (isCurrentMarket(log.marketId) && !isStoredTransaction)
     dispatch(loadMarketOpenOrders(log.marketId));
 };
 
