@@ -56,7 +56,8 @@ const handlePendingOrder = (log, dispatch, getState) => {
   dispatch(removePendingOrder(log.transactionHash, log.marketId));
 };
 
-const loadUserPositionsAndBalances = marketId => dispatch => {
+const loadUserPositionsAndBalances = (marketId, account) => dispatch => {
+  if (!account) return;
   dispatch(loadMarketAccountPositions(marketId));
   dispatch(loadUsershareBalances([marketId]));
   dispatch(getWinningBalance([marketId]));
@@ -191,18 +192,19 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
     dispatch(loadAccountOpenOrders({ marketId: log.marketId }));
   }
   // always reload account positions on trade so we get up to date PL data.
-  dispatch(loadUserPositionsAndBalances(log.marketId));
+  dispatch(loadUserPositionsAndBalances(log.marketId, address));
   dispatch(loadMarketTradingHistory({ marketId: log.marketId }));
   if (isCurrentMarket(log.marketId))
     dispatch(loadMarketOpenOrders(log.marketId));
 };
 
 export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
-  const isStoredTransaction = log.sender === getState().loginAccount.address;
+  const address = getState().loginAccount.address;
+  const isStoredTransaction = log.sender === address;
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
-    dispatch(loadUserPositionsAndBalances(log.market));
+    dispatch(loadUserPositionsAndBalances(log.market, address));
   }
   if (isCurrentMarket(log.market)) dispatch(loadMarketOpenOrders(log.market));
 };
@@ -327,11 +329,12 @@ export const handleFeeWindowRedeemedLog = log => dispatch => {
 };
 
 export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
-  const isStoredTransaction = log.account === getState().loginAccount.address;
+  const address = getState().loginAccount.address;
+  const isStoredTransaction = log.account === address;
   if (isStoredTransaction) {
     dispatch(updateAssets());
     dispatch(updateLoggedTransactions(log));
-    dispatch(loadUserPositionsAndBalances(log.marketId));
+    dispatch(loadUserPositionsAndBalances(log.marketId, address));
   }
 };
 
