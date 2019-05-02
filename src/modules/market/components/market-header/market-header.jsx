@@ -300,7 +300,7 @@ export default class MarketHeader extends Component {
           >
             <ChevronFlip
               stroke="#999999"
-              quick
+              quicker
               filledInIcon
               pointDown={!headerCollapsed}
             />
