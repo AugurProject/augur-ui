@@ -28,6 +28,8 @@ function selectMarketTradingHistoryStateMarket(state, marketId) {
 }
 
 export default function(marketId) {
+  if (!marketId) return [];
+
   return bucketedPriceTimeSeries(store.getState(), marketId);
 }
 
