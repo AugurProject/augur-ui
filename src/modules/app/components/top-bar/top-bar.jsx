@@ -28,17 +28,14 @@ const TopBar = props => (
           <LinearPropertyLabel
             label={props.stats[0].availableFunds.label}
             value={props.stats[0].availableFunds.value}
-            highlightAlternateBolded
           />
           <LinearPropertyLabel
             label={props.stats[0].frozenFunds.label}
             value={props.stats[0].frozenFunds.value}
-            highlightAlternateBolded
           />
           <LinearPropertyLabel
             label={props.stats[0].totalFunds.label}
             value={props.stats[0].totalFunds.value}
-            highlightAlternateBolded
           />
           <LinearPropertyLabelMovement
             showColors

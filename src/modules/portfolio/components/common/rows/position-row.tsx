@@ -29,7 +29,6 @@ const PositionRow = (props: PositionRowProps) => {
     <div className={Styles.Position_infoContainer}>
       <div className={Styles.Position__info}>
         <LinearPropertyLabelMovement
-          highlightFirst
           showPercent
           showBrackets
           showPlusMinus
@@ -39,7 +38,6 @@ const PositionRow = (props: PositionRowProps) => {
           numberValue={`${position.totalPercent.roundedFormatted}`}
         />
         <LinearPropertyLabelMovement
-          highlightFirst
           showPercent
           showBrackets
           showPlusMinus
@@ -49,7 +47,6 @@ const PositionRow = (props: PositionRowProps) => {
           numberValue={`${position.realizedPercent.roundedFormatted}`}
         />
         <LinearPropertyLabelMovement
-          highlightFirst
           showPercent
           showBrackets
           showPlusMinus

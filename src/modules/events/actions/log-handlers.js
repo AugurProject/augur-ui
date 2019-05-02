@@ -199,7 +199,7 @@ export const handleOrderFilledLog = log => (dispatch, getState) => {
 };
 
 export const handleTradingProceedsClaimedLog = log => (dispatch, getState) => {
-  const address = getState().loginAccount.address;
+  const { address } = getState().loginAccount;
   const isStoredTransaction = log.sender === address;
   if (isStoredTransaction) {
     dispatch(updateAssets());
@@ -329,7 +329,7 @@ export const handleFeeWindowRedeemedLog = log => dispatch => {
 };
 
 export const handleCompleteSetsSoldLog = log => (dispatch, getState) => {
-  const address = getState().loginAccount.address;
+  const { address } = getState().loginAccount;
   const isStoredTransaction = log.account === address;
   if (isStoredTransaction) {
     dispatch(updateAssets());

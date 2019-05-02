@@ -45,12 +45,10 @@ function renderToggleContent(market) {
         <div className={Styles.Quad__info}>
           <LinearPropertyLabel
             label="Volume"
-            highlightFirst
             value={`${market.volume.formatted} ETH`}
           />
           <LinearPropertyLabel
             label="Open Interest"
-            highlightFirst
             value={`${market.openInterest.formatted} ETH`}
           />
         </div>

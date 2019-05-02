@@ -41,7 +41,6 @@ export default class Activity extends React.Component<
       <div className={Styles.Activity}>
         <span>Activity</span>
         <LinearPropertyLabel
-          highlight
           key="openInterest"
           label="Open Interest"
           value={this.props.openInterest}

@@ -145,12 +145,12 @@
   }
 
   > span:first-of-type {
-    .text-10;
+    .mono-10;
 
     align-items: center;
     color: @color-shadow-text;
     flex-flow: row nowrap;
-    line-height: @size-16;
+    line-height: @size-12;
     text-transform: uppercase;
 
     > label {
@@ -166,15 +166,15 @@
     min-width: 0.625rem;
 
     > line {
-      stroke: fade(@color-white, 40%);
+      stroke: @color-shadow-text;
     }
   }
 
   > span:last-of-type {
-    .mono-11;
+    .mono-12-bold;
 
-    color: @color-secondary-text;
-    line-height: @size-16;
+    color: @color-tertiary-text;
+    line-height: @size-14;
     padding-left: @size-8;
 
     &.isAccented {
@@ -182,57 +182,17 @@
     }
   }
 
-  &.HighlightAlternateBolded {
-    > span:last-of-type {
-      font-weight: bold;
-    }
-  }
-
-  &.HighlightFirst {
-    > span:first-of-type {
-      .mono-10;
-
-      color: @color-shadow-text;
-    }
-  }
-
-  &.Highlight {
-    > span:first-of-type {
-      .mono-10;
-
-      color: @color-secondary-text;
-    }
-
-    > span:last-of-type,
-    > span:last-of-type > label {
-      .mono-12-bold;
-
-      color: @color-secondary-text;
-    }
-  }
-
   @media @breakpoint-mobile {
-    &.HighlightFirst,
-    &.Highlight {
-      > span:first-of-type {
-        .mono-9;
-      }
-
-      > span:last-of-type {
-        .mono-10;
-
-        color: @color-tertiary-text;
-      }
-    }
-
     > span:first-of-type {
       .mono-9;
+
+      line-height: @size-11;
     }
 
     > span:last-of-type {
-      .mono-10;
+      .mono-10-bold;
 
-      color: @color-tertiary-text;
+      line-height: @size-12;
     }
   }
 }
