@@ -2,17 +2,16 @@
 
 .Order {
   display: grid;
-  flex-direction: row;
-  flex-grow: 1;
+  grid-gap: 1rem;
   grid-template-columns: repeat(5, 1fr);
 
   > li {
+    .mono-11;
+
     align-items: center;
     color: @color-less-neutral;
     display: flex;
     flex-grow: 1;
-    font-family: @roboto-mono;
-    font-size: @size-11;
     white-space: nowrap;
 
     > span > label {
@@ -22,11 +21,9 @@
     }
 
     &:first-child {
-      .text-12-bold;
+      .text-12-medium;
 
       display: block;
-      font-family: @roboto;
-      font-weight: 500;
       margin: auto 0;
       max-width: 100%;
       overflow: hidden;
@@ -97,6 +94,7 @@
 }
 
 .Order__extendedView {
+  grid-gap: 1rem;
   grid-template-columns: repeat(6, 1fr) 6.2rem;
 }
 
@@ -110,10 +108,12 @@
 }
 
 .FilledOrder {
+  grid-gap: 1rem;
   grid-template-columns: repeat(5, 1fr) minmax(5rem, 1fr) 3.2rem;
 }
 
 .FilledOrder__extendedView {
+  grid-gap: 1rem;
   grid-template-columns: repeat(5, 1fr) 6rem;
 
   > li {
@@ -184,6 +184,7 @@ div.OpenOrder__labels {
 }
 
 .Position {
+  grid-gap: 1rem;
   grid-template-columns: repeat(8, 1fr);
 
   > li {
@@ -245,6 +246,7 @@ div.OpenOrder__labels {
 }
 
 .Position__extended {
+  grid-gap: 1rem;
   grid-template-columns: repeat(6, 1fr);
 
   > li {
@@ -256,6 +258,7 @@ div.OpenOrder__labels {
 
 @media @breakpoint-mobile-mid {
   .Order {
+    grid-gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     position: relative;
 
@@ -318,6 +321,7 @@ div.OpenOrder__labels {
   }
 
   .FilledOrder {
+    grid-gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
     position: relative;
 
@@ -333,6 +337,7 @@ div.OpenOrder__labels {
   }
 
   .Position {
+    grid-gap: 1rem;
     grid-template-columns: repeat(6, 1fr);
 
     > li {
@@ -369,6 +374,7 @@ div.OpenOrder__labels {
   }
 
   .Position__extended {
+    grid-gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
 
     > li {

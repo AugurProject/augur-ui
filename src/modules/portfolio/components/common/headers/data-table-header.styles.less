@@ -2,7 +2,7 @@
 
 .DataTableHeader {
   display: grid;
-  flex-direction: row;
+  grid-gap: 1rem;
   grid-template-columns: repeat(5, 1fr);
   min-height: 2rem;
   padding: 0.75rem 2.8rem 0.75rem 0;
@@ -33,6 +33,7 @@
 }
 
 .FilledOrdersHeader {
+  grid-gap: 1rem;
   grid-template-columns: repeat(5, 1fr) minmax(5rem, 1fr) 3.2rem;
   padding-bottom: 0.375rem;
   padding-top: 0.375rem;
@@ -44,6 +45,7 @@
 
 .PositionHeader {
   background: fade(@color-primary-alternate, 40%);
+  grid-gap: 1rem;
   grid-template-columns: repeat(8, 1fr);
   padding-left: 1.5rem;
   padding-right: 4rem;
@@ -51,12 +53,14 @@
 
 .DataTableHeader__extended {
   background: @color-theme-primary;
+  grid-gap: 1rem;
   grid-template-columns: repeat(6, 1fr) 6.2rem;
   padding: 0.375rem 1.75rem 0.375rem 1.5rem;
 }
 
 .PositionHeader__extended {
   background: @color-theme-primary;
+  grid-gap: 1rem;
   grid-template-columns: repeat(6, 1fr);
   padding-bottom: 0.75rem;
   padding-right: 1.75rem;
@@ -64,6 +68,7 @@
 }
 
 .FilledOrdersHeader__extended {
+  grid-gap: 1rem;
   grid-template-columns: repeat(5, 1fr) 6rem;
   padding-right: 4rem;
 
@@ -76,6 +81,7 @@
 
 @media @breakpoint-mobile-mid {
   .DataTableHeader {
+    grid-gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     padding-left: 1rem;
     padding-right: 3rem;
@@ -109,6 +115,7 @@
 
   .FilledOrdersHeader {
     background: @color-theme-primary;
+    grid-gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
 
     > li {
@@ -131,6 +138,7 @@
   }
 
   .PositionHeader {
+    grid-gap: 1rem;
     grid-template-columns: repeat(6, 1fr);
     padding: 0.5rem 1.5rem 0.5rem 1rem;
 
@@ -143,6 +151,7 @@
 
   .PositionHeader__extended {
     border-bottom: 0.0625rem solid @color-primary-background;
+    grid-gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
     padding-bottom: @size-6;
     padding-left: @size-16;

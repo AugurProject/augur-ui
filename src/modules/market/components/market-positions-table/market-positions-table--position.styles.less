@@ -6,8 +6,7 @@
   background-color: @color-tertiary-background;
   border-bottom: 0.0625rem solid @color-primary-background;
   display: grid;
-  flex-direction: row;
-  flex-grow: 1;
+  grid-gap: 1rem;
   grid-template-columns: 2fr repeat(5, 1fr);
   max-height: 40px;
   position: relative;
@@ -36,8 +35,9 @@
     }
 
     &.Null {
+      color: @color-alternate-text;
       padding-left: 1rem;
-      padding-right: 2rem;
+      padding-right: 1rem;
     }
 
     &:first-child {
@@ -66,6 +66,7 @@
 
 @media @breakpoint-mobile {
   .Outcome {
+    grid-gap: 1rem;
     grid-template-columns: repeat(5, 1fr);
     max-height: 64px;
     position: relative;
