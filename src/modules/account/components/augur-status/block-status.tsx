@@ -33,12 +33,10 @@ const BlockStatus = (props: BlockStatusProps) => {
       </div>
       <div className={Styles.ShowOnMobile}>
         <LinearPropertyLabel
-          highlight
           label={constants.SYNC_BENIND}
           value={blocksBehind}
         />
         <LinearPropertyLabel
-          highlight
           label={constants.SYNC_PROCESSED}
           value={
             formatNumber(lastProcessedBlockBn.toString()).formatted +
