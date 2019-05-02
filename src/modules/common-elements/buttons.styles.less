@@ -226,14 +226,22 @@
   text-transform: uppercase;
 
   &:hover {
-    font-weight: bold;
+    color: multiply(@hover, @color-primary-action);
+  }
+
+  &:focus {
+    color: multiply(@focus, @color-primary-action);
+  }
+
+  &:active {
+    color: multiply(@active, @color-primary-action);
   }
 
   &:disabled {
-    color: fade(@color-white, 20%);
+    color: multiply(@disable, @color-primary-action);
 
     &:hover {
-      color: fade(@color-white, 20%);
+      color: multiply(@disable, @color-primary-action);
     }
   }
 }

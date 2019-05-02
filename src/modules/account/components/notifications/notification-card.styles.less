@@ -98,20 +98,6 @@
   text-align: right;
   text-transform: uppercase;
 
-  &:not(:disabled):hover {
-    color: fade(@color-primary-action, 90%);
-  }
-
-  &:disabled {
-    color: fade(@color-primary-action, 40%);
-
-    &:hover {
-      color: fade(@color-primary-action, 40%);
-      cursor: wait;
-      font-weight: normal;
-    }
-  }
-
   @media @breakpoint-mobile {
     .mono-10;
   }
