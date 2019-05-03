@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import { Flag } from "modules/common/components/icons";
-import { CUTOFF } from "modules/markets/constants/cutoff-date";
+import { CUTOFF, CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
+
 import Styles from "modules/market/components/cutoff-flag/cutoff-flag.styles";
 
-// todo: add cut off date, add link to read more
+// add link to read more
 const CutoffFlag = ({ endTime }) => (
   <>
     {endTime >= CUTOFF && (
@@ -26,7 +27,7 @@ const CutoffFlag = ({ endTime }) => (
         >
           <p>
             This market has an end-time after the cutoff date for the Augur v2
-            release phase. Markets ending after [CUTOFF DATE] cannot be
+            release phase. Markets ending after {CUTOFF_READABLE} cannot be
             guaranteed to resolve correctly.
             <br />
             <a
