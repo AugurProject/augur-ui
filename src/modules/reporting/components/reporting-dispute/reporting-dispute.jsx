@@ -142,6 +142,7 @@ export default class ReportingDispute extends Component {
             buttonText="View"
             showAdditionalDetailsToggle
             showDisputeRound
+            hideCutoff
           />
         )}
         {!isEmpty(market) && (

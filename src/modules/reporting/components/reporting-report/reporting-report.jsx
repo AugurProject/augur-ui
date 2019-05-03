@@ -196,6 +196,7 @@ export default class ReportingReport extends Component {
             linkType={TYPE_VIEW}
             buttonText="View"
             showAdditionalDetailsToggle
+            hideCutoff
           />
         )}
         {!isEmpty(market) && (

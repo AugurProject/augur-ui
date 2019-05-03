@@ -7,6 +7,7 @@ import MarketProperties from "modules/market/containers/market-properties";
 import ForkMigrationTotals from "modules/forking/containers/fork-migration-totals";
 import MarketReportingPayouts from "modules/reporting/containers/reporting-payouts";
 import Styles from "modules/reporting/components/dispute-market-card/dispute-market-card.style";
+import CutoffFlag from "modules/market/components/cutoff-flag/cutoff-flag";
 
 import { MARKETS } from "modules/routes/constants/views";
 import makePath from "modules/routes/helpers/make-path";
@@ -55,10 +56,13 @@ const DisputeMarketCard = ({
     >
       <div className={CommonStyles.MarketCommon__topcontent}>
         <div className={CommonStyles.MarketCommon__header}>
-          <CategoryTagTrail
-            categories={categoriesWithClick}
-            tags={tagsWithClick}
-          />
+          <div>
+            <CategoryTagTrail
+              categories={categoriesWithClick}
+              tags={tagsWithClick}
+            />
+            <CutoffFlag endTime={market.endTime.timestamp} />
+          </div>
           <div className={Styles["DisputeMarket__round-number"]}>
             {potentialFork && (
               <span className={Styles["DisputeMarket__fork-label"]}>
