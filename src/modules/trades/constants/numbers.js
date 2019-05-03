@@ -6,6 +6,3 @@ export const TWO = createBigNumber(2, 10);
 export const TEN = createBigNumber(10, 10);
 export const TEN_TO_THE_EIGHTEENTH_POWER = TEN.exponentiatedBy(18);
 export const MIN_QUANTITY = createBigNumber("0.00000001");
-
-// End Date
-export const CUTOFF = 1620075447;

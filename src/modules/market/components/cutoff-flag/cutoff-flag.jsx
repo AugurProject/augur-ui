@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import { Flag } from "modules/common/components/icons";
-import { CUTOFF } from "modules/trades/constants/numbers";
+import { CUTOFF } from "modules/markets/constants/cutoff-date";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import Styles from "modules/market/components/cutoff-flag/cutoff-flag.styles";
