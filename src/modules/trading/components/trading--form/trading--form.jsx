@@ -15,6 +15,7 @@ import FormStyles from "modules/common/less/form";
 import Styles from "modules/trading/components/trading--form/trading--form.styles";
 import { darkBgExclamationCircle } from "modules/common/components/icons";
 import { SquareDropdown } from "modules/common-elements/selection";
+import { SubmitTextButton } from "modules/common-elements/buttons";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import MarketOutcomeOrders from "modules/market-charts/containers/market-outcome--orders";
 import getPrecision from "utils/get-number-precision";
@@ -697,12 +698,10 @@ class TradingForm extends Component {
             <label htmlFor="tr__input--do-no-create-orders">
               Fill Orders Only
             </label>
-            <button
-              className={Styles.TradingForm__button__clear}
-              onClick={() => this.clearOrderFormProperties()}
-            >
-              Clear
-            </button>
+            <SubmitTextButton
+              text="Clear"
+              action={() => this.clearOrderFormProperties()}
+            />
           </li>
         </ul>
         {errors.length > 0 && (
