@@ -7,6 +7,7 @@ import classNames from "classnames";
 import MarketOutcomesBinaryScalar from "modules/market/components/market-outcomes-yes-no-scalar/market-outcomes-yes-no-scalar";
 import MarketOutcomesCategorical from "modules/market/components/market-outcomes-categorical/market-outcomes-categorical";
 import MarketLink from "modules/market/components/market-link/market-link";
+import CutoffFlag from "modules/market/components/cutoff-flag/cutoff-flag";
 
 import toggleTag from "modules/routes/helpers/toggle-tag";
 import toggleCategory from "modules/routes/helpers/toggle-category";
@@ -35,6 +36,7 @@ const MarketBasics = ({
   location,
   history,
   marketType,
+  hideCutoff,
   ...p
 }) => {
   let ReportEndingIndicator = () => null;
@@ -92,10 +94,13 @@ const MarketBasics = ({
         })}
       >
         <div className={Styles.MarketBasics__header}>
-          <CategoryTagTrail
-            categories={categoriesWithClick}
-            tags={tagsWithClick}
-          />
+          <div>
+            <CategoryTagTrail
+              categories={categoriesWithClick}
+              tags={tagsWithClick}
+            />
+            {!hideCutoff && <CutoffFlag endTime={p.endTime.timestamp} />}
+          </div>
           {p.showDisputeRound && (
             <div className={Styles["MarketBasics__round-number"]}>
               <span className={Styles["MarketBasics__round-label"]}>
@@ -155,7 +160,8 @@ MarketBasics.propTypes = {
   hideReportEndingIndicator: PropTypes.bool,
   showDisputeRound: PropTypes.bool,
   tags: PropTypes.arrayOf(PropTypes.string),
-  isMobileSmall: PropTypes.bool
+  isMobileSmall: PropTypes.bool,
+  hideCutoff: PropTypes.bool
 };
 
 MarketBasics.defaultProps = {
@@ -170,7 +176,8 @@ MarketBasics.defaultProps = {
   minPrice: null,
   maxPrice: null,
   marketType: null,
-  category: null
+  category: null,
+  hideCutoff: false
 };
 
 export default MarketBasics;

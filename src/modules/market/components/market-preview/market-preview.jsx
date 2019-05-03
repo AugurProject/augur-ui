@@ -34,7 +34,8 @@ export default class MarketPreview extends Component {
     hideReportEndingIndicator: PropTypes.bool,
     linkType: PropTypes.string,
     collectMarketCreatorFees: PropTypes.func.isRequired,
-    showOutstandingReturns: PropTypes.bool
+    showOutstandingReturns: PropTypes.bool,
+    hideCutoff: PropTypes.bool
   };
 
   static defaultProps = {
@@ -50,7 +51,8 @@ export default class MarketPreview extends Component {
     testid: null,
     outcomes: [],
     settlementFeePercent: null,
-    showOutstandingReturns: false
+    showOutstandingReturns: false,
+    hideCutoff: false
   };
 
   constructor(props) {

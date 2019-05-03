@@ -17,6 +17,24 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.625rem;
+
+  > div:first-of-type {
+    align-items: center;
+    display: flex;
+
+    > div:first-of-type > div:last-of-type {
+      margin-right: 1.125rem;
+    }
+
+    @media @breakpoint-mobile {
+      align-items: flex-start;
+      flex-direction: column;
+
+      > div:last-of-type {
+        margin-top: 1rem;
+      }
+    }
+  }
 }
 
 .MarketCommon__small-label {
