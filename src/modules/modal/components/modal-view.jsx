@@ -56,7 +56,7 @@ export default class ModalView extends Component {
             <ModalConfirm {...modal} closeModal={closeModal} />
           )}
           {modal.type === TYPES.MODAL_REVIEW && <ModalReview {...modal} />}
-          {modal.type === (TYPES.MODAL_LEDGER || TYPES.MODAL_TREZOR) && (
+          {modal.type === TYPES.MODAL_LEDGER || modal.type === TYPES.MODAL_TREZOR && (
             <ModalSignTransaction {...modal} />
           )}
           {modal.type === TYPES.MODAL_PARTICIPATE && <ModalParticipate />}
