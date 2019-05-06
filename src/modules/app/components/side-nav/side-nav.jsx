@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import makePath from "modules/routes/helpers/make-path";
 import ConnectAccount from "modules/auth/containers/connect-account";
 import GasPriceEdit from "modules/app/containers/gas-price-edit";
+import ReactTooltip from "react-tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
 
 import { MARKETS } from "modules/routes/constants/views";
 import Styles from "modules/app/components/side-nav/side-nav.styles";
@@ -124,6 +126,8 @@ export default class SideNav extends Component {
                   )}
                   key={item.title}
                   id="side-nav-items"
+                  data-tip={item.showCutoffTooltip}
+                  data-for="tooltip--cutoff"
                 >
                   <Link
                     to={item.route ? makePath(item.route) : null}
@@ -133,6 +137,29 @@ export default class SideNav extends Component {
                     <Icon />
                     <span className={Styles["item-title"]}>{item.title}</span>
                   </Link>
+                  {item.showCutoffTooltip &&
+                    <ReactTooltip
+                      id="tooltip--cutoff"
+                      className={TooltipStyles.Tooltip}
+                      effect="solid"
+                      place="right"
+                      type="light"
+                    >
+                      <p className={Styles.InnerTooltip}>
+                        No new markets can be created due to the Augur v2 release phase. 
+                        <span>
+                          <a
+                            href="http://docs.augur.net"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={Styles.ReadMore}
+                          >
+                            Read more
+                          </a>
+                        </span>
+                      </p>
+                    </ReactTooltip>
+                  }
                 </li>
               );
             })}

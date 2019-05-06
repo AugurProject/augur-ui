@@ -12,7 +12,7 @@ import Styles from "modules/market/components/cutoff-flag/cutoff-flag.styles";
 // add link to read more
 const CutoffFlag = ({ endTime }) => (
   <>
-    {endTime >= CUTOFF && (
+    {endTime * 1000 >= CUTOFF && (
       <div className={Styles.CutoffFlag}>
         <span data-tip data-for="tooltip-cutoff-flag">
           {Flag}

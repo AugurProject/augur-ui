@@ -131,7 +131,16 @@ export default class AppView extends Component {
   constructor(props) {
     super(props);
 
-    const sideNavMenuData = [
+    this.state = {
+      mainMenu: { scalar: 0, open: false, currentTween: null },
+      subMenu: { scalar: 0, open: false, currentTween: null },
+      mobileMenuState: mobileMenuStates.CLOSED,
+      currentBasePath: MARKETS,
+      currentInnerNavType: null,
+      isNotificationsVisible: false
+    };
+
+    this.sideNavMenuData = [
       {
         title: "Markets",
         icon: NavMarketsIcon,
@@ -183,16 +192,6 @@ export default class AppView extends Component {
         onlyForMobile: true
       }
     ];
-
-    this.state = {
-      mainMenu: { scalar: 0, open: false, currentTween: null },
-      subMenu: { scalar: 0, open: false, currentTween: null },
-      mobileMenuState: mobileMenuStates.CLOSED,
-      currentBasePath: MARKETS,
-      currentInnerNavType: null,
-      isNotificationsVisible: false,
-      sideNavMenuData: sideNavMenuData,
-    };
 
     this.shouldComponentUpdate = shouldComponentUpdatePure;
 
@@ -283,19 +282,9 @@ export default class AppView extends Component {
       });
     }
 
-    if (!isEqual(universe.isForking, nextProps.universe.isForking)) {
-      const sideNavMenuData = this.state.sideNavMenuData;
-      sideNavMenuData[1].disabled = nextProps.universe.isForking;
-
-      this.setState({sideNavMenuData })
-    }
-
-    if (!isEqual(blockchain.pastCutoff, nextProps.blockchain.pastCutoff)) {
-      console.log(nextProps.blockchain.pastCutoff);
-      const sideNavMenuData = this.state.sideNavMenuData;
-
-      sideNavMenuData[1].disabled = nextProps.blockchain.pastCutoff;
-      this.setState({sideNavMenuData});
+    if ((!isEqual(universe.isForking, nextProps.universe.isForking) || !isEqual(blockchain.pastCutoff, nextProps.blockchain.pastCutoff)) && !this.sideNavMenuData[1].disabled) {
+      this.sideNavMenuData[1].disabled = nextProps.universe.isForking || nextProps.blockchain.pastCutoff;
+      this.sideNavMenuData[1].showCutoffTooltip = nextProps.blockchain.pastCutoff;
     }
 
     if (!isEqual(location, nextProps.location)) {
@@ -580,7 +569,7 @@ export default class AppView extends Component {
               isLogged={isLogged}
               mobileShow={s.mobileMenuState === mobileMenuStates.SIDEBAR_OPEN}
               menuScalar={subMenu.scalar}
-              menuData={this.state.sideNavMenuData}
+              menuData={this.sideNavMenuData}
               stats={coreStats}
               currentBasePath={this.state.currentBasePath}
             />
