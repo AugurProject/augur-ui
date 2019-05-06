@@ -20,8 +20,8 @@ export const syncBlockchain = () => (dispatch, getState) => {
           augur.rpc.getCurrentBlock().timestamp,
           16
         ),
-        currentAugurTimestamp: currentAugurTimestamp,
-        pastCutoff: (currentAugurTimestamp * 1000) > CUTOFF
+        currentAugurTimestamp,
+        pastCutoff: currentAugurTimestamp * 1000 > CUTOFF
       })
     );
 
