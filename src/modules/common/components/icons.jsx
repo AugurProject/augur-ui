@@ -1,5 +1,28 @@
 import React from "react";
 
+export const AlertIcon = (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M9.40605 1.39093C9.67005 0.869689 10.3301 0.869689 10.5933 1.39093L14.7506 9.6086L18.9071 17.8255C19.1711 18.3475 18.8411 19 18.3131 19H10H1.68702C1.15827 19 0.829014 18.3475 1.09302 17.8255L5.24953 9.6086L9.40605 1.39093Z"
+      stroke="#010101"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M10.3091 14.2614H9.69159L9.59106 8.71436H10.4187L10.3091 14.2614ZM9.57141 16.4286H10.4286V15.5185H9.57141V16.4286Z"
+      fill="#010101"
+    />
+  </svg>
+);
+
 export const Flag = (
   <svg
     width="20"
