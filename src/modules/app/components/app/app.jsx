@@ -16,7 +16,6 @@ import {
 import { tween } from "shifty";
 import { isEqual } from "lodash";
 
-import { CUTOFF, CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
 import Modal from "modules/modal/containers/modal-view";
 import TopBar from "modules/app/components/top-bar/top-bar";
 import ForkingNotification from "modules/forking/components/forking-notification/forking-notification";
@@ -158,7 +157,8 @@ export default class AppView extends Component {
         icon: NavCreateIcon,
         route: CREATE_MARKET,
         requireLogin: true,
-        disabled: this.props.universe.isForking || this.props.blockchain.pastCutoff
+        disabled:
+          this.props.universe.isForking || this.props.blockchain.pastCutoff
       },
       {
         title: "Portfolio",
@@ -286,9 +286,15 @@ export default class AppView extends Component {
       });
     }
 
-    if ((!isEqual(universe.isForking, nextProps.universe.isForking) || !isEqual(blockchain.pastCutoff, nextProps.blockchain.pastCutoff)) && !this.sideNavMenuData[1].disabled) {
-      this.sideNavMenuData[1].disabled = nextProps.universe.isForking || nextProps.blockchain.pastCutoff;
-      this.sideNavMenuData[1].showCutoffTooltip = nextProps.blockchain.pastCutoff;
+    if (
+      (!isEqual(universe.isForking, nextProps.universe.isForking) ||
+        !isEqual(blockchain.pastCutoff, nextProps.blockchain.pastCutoff)) &&
+      !this.sideNavMenuData[1].disabled
+    ) {
+      this.sideNavMenuData[1].disabled =
+        nextProps.universe.isForking || nextProps.blockchain.pastCutoff;
+      this.sideNavMenuData[1].showCutoffTooltip =
+        nextProps.blockchain.pastCutoff;
     }
 
     if (!isEqual(location, nextProps.location)) {

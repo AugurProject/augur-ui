@@ -23,7 +23,6 @@ const CutoffFlag = ({ endTime }) => (
           effect="solid"
           place="top"
           type="light"
-          offset={{ right: 8 }}
         >
           <p>
             This market has an end-time after the cutoff date for the Augur v2

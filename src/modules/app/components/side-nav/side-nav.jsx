@@ -137,7 +137,7 @@ export default class SideNav extends Component {
                     <Icon />
                     <span className={Styles["item-title"]}>{item.title}</span>
                   </Link>
-                  {item.showCutoffTooltip &&
+                  {item.showCutoffTooltip && (
                     <ReactTooltip
                       id="tooltip--cutoff"
                       className={TooltipStyles.Tooltip}
@@ -146,20 +146,19 @@ export default class SideNav extends Component {
                       type="light"
                     >
                       <p className={Styles.InnerTooltip}>
-                        No new markets can be created due to the Augur v2 release phase. 
-                        <span>
-                          <a
-                            href="http://docs.augur.net"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={Styles.ReadMore}
-                          >
-                            Read more
-                          </a>
-                        </span>
+                        No new markets can be created due to the Augur v2
+                        release phase.{" "}
+                        <a
+                          href="http://docs.augur.net"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={Styles.ReadMore}
+                        >
+                          Read more
+                        </a>
                       </p>
                     </ReactTooltip>
-                  }
+                  )}
                 </li>
               );
             })}
