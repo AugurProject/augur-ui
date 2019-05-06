@@ -3,6 +3,7 @@ import { updateBlockchain } from "modules/app/actions/update-blockchain";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { createBigNumber } from "utils/create-big-number";
 import { loadGasPriceInfo } from "modules/app/actions/load-gas-price-info";
+import { CUTOFF } from "modules/markets/constants/cutoff-date";
 
 const GET_GAS_BLOCK_LIMIT = 100;
 
@@ -18,7 +19,8 @@ export const syncBlockchain = () => (dispatch, getState) => {
           augur.rpc.getCurrentBlock().timestamp,
           16
         ),
-        currentAugurTimestamp: parseInt(augurTimestamp, 10)
+        currentAugurTimestamp: parseInt(augurTimestamp, 10),
+        pastCutoff: parseInt(augurTimestamp, 10) > CUTOFF
       })
     );
 

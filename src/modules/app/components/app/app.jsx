@@ -16,6 +16,7 @@ import {
 import { tween } from "shifty";
 import { isEqual } from "lodash";
 
+import { CUTOFF, CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
 import Modal from "modules/modal/containers/modal-view";
 import TopBar from "modules/app/components/top-bar/top-bar";
 import ForkingNotification from "modules/forking/components/forking-notification/forking-notification";
@@ -134,16 +135,7 @@ export default class AppView extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      mainMenu: { scalar: 0, open: false, currentTween: null },
-      subMenu: { scalar: 0, open: false, currentTween: null },
-      mobileMenuState: mobileMenuStates.CLOSED,
-      currentBasePath: MARKETS,
-      currentInnerNavType: null,
-      isNotificationsVisible: false
-    };
-
-    this.sideNavMenuData = [
+    const sideNavMenuData = [
       {
         title: "Markets",
         icon: NavMarketsIcon,
@@ -157,7 +149,7 @@ export default class AppView extends Component {
         icon: NavCreateIcon,
         route: CREATE_MARKET,
         requireLogin: true,
-        disabled: this.props.universe.isForking
+        disabled: this.props.universe.isForking || this.props.blockchain.pastCutoff
       },
       {
         title: "Portfolio",
@@ -195,6 +187,16 @@ export default class AppView extends Component {
         onlyForMobile: true
       }
     ];
+
+    this.state = {
+      mainMenu: { scalar: 0, open: false, currentTween: null },
+      subMenu: { scalar: 0, open: false, currentTween: null },
+      mobileMenuState: mobileMenuStates.CLOSED,
+      currentBasePath: MARKETS,
+      currentInnerNavType: null,
+      isNotificationsVisible: false,
+      sideNavMenuData: sideNavMenuData,
+    };
 
     this.shouldComponentUpdate = shouldComponentUpdatePure;
 
@@ -278,7 +280,7 @@ export default class AppView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isMobile, location, universe } = this.props;
+    const { isMobile, location, universe, blockchain } = this.props;
     if (isMobile !== nextProps.isMobile) {
       this.setState({
         mobileMenuState: mobileMenuStates.CLOSED
@@ -286,7 +288,18 @@ export default class AppView extends Component {
     }
 
     if (!isEqual(universe.isForking, nextProps.universe.isForking)) {
-      this.sideNavMenuData[1].disabled = nextProps.universe.isForking;
+      const sideNavMenuData = this.state.sideNavMenuData;
+      sideNavMenuData[1].disabled = nextProps.universe.isForking;
+
+      this.setState({sideNavMenuData })
+    }
+
+    if (!isEqual(blockchain.pastCutoff, nextProps.blockchain.pastCutoff)) {
+      console.log(nextProps.blockchain.pastCutoff);
+      const sideNavMenuData = this.state.sideNavMenuData;
+
+      sideNavMenuData[1].disabled = nextProps.blockchain.pastCutoff;
+      this.setState({sideNavMenuData});
     }
 
     if (!isEqual(location, nextProps.location)) {
@@ -577,7 +590,7 @@ export default class AppView extends Component {
               isLogged={isLogged}
               mobileShow={s.mobileMenuState === mobileMenuStates.SIDEBAR_OPEN}
               menuScalar={subMenu.scalar}
-              menuData={this.sideNavMenuData}
+              menuData={this.state.sideNavMenuData}
               stats={coreStats}
               currentBasePath={this.state.currentBasePath}
             />
