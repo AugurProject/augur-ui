@@ -84,9 +84,17 @@ h6 {
   overflow-x: hidden;
   overflow-y: auto;
 
+  &.MoveDown {
+    padding-top: @inner-banner-height;
+  }
+
   @media @breakpoint-mobile {
     height: calc(~"100vh - @{top-bar-height-mobile}");
     width: 100vw;
+
+    &.MoveDown {
+      padding-top: @inner-banner-height-mobile;
+    }
   }
 }
 
@@ -140,7 +148,7 @@ svg.SideBar__mobile-bars-unseen {
   z-index: @above-all-content-above;
 
   @media @breakpoint-mobile {
-    height: 50px;
+    height: @top-bar-height-mobile;
   }
 }
 

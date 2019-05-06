@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 import makePath from "modules/routes/helpers/make-path";
 import Styles from "modules/notifications/components/notification-bar/notification-bar.styles";
@@ -14,10 +15,16 @@ export const NotificationBar = ({
   notifications,
   market,
   marketsNumber,
-  isMobileSmall
+  isMobileSmall,
+  moveDown
 }) =>
   notifications.map(notification => (
-    <div key={notification.orderId} className={Styles.notificationBar}>
+    <div
+      key={notification.orderId}
+      className={classNames(Styles.notificationBar, {
+        [Styles.moveDown]: moveDown
+      })}
+    >
       <div className={Styles.notificationBar__row}>
         <div className={Styles.notificationBar_textContainer}>
           <span className={Styles.notificationBar_text}>
@@ -88,10 +95,12 @@ NotificationBar.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object),
   market: PropTypes.object,
   marketsNumber: PropTypes.number.isRequired,
-  isMobileSmall: PropTypes.bool.isRequired
+  isMobileSmall: PropTypes.bool.isRequired,
+  moveDown: PropTypes.bool
 };
 
 NotificationBar.defaultProps = {
   market: null,
-  notifications: []
+  notifications: [],
+  moveDown: false
 };

@@ -13,6 +13,7 @@ import Styles from "modules/create-market/components/create-market-form-define/c
 import moment from "moment";
 import { formatDate } from "utils/format-date";
 import StylesForm from "modules/create-market/components/create-market-form/create-market-form.styles";
+import { CUTOFF } from "modules/markets/constants/cutoff-date";
 
 export const MarketCreateFormTime = ({
   validateField,
@@ -42,8 +43,7 @@ export const MarketCreateFormTime = ({
         validateField("setEndTime", formatDate(date.toDate()));
       }}
       isOutsideRange={day =>
-        day.isAfter(moment(currentTimestamp).add(6, "M")) ||
-        day.isBefore(moment(currentTimestamp))
+        day.isAfter(moment(CUTOFF)) || day.isBefore(moment(currentTimestamp))
       }
       focused={focused}
       onFocusChange={({ focused }) => {
