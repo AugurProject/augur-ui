@@ -12,6 +12,7 @@ export const syncBlockchain = () => (dispatch, getState) => {
   const blockNumber = parseInt(augur.rpc.getCurrentBlock().number, 16);
   augur.api.Controller.getTimestamp((err, augurTimestamp) => {
     if (err) console.error(err);
+    const currentAugurTimestamp = parseInt(augurTimestamp, 10);
     dispatch(
       updateBlockchain({
         currentBlockNumber: blockNumber,
@@ -19,8 +20,8 @@ export const syncBlockchain = () => (dispatch, getState) => {
           augur.rpc.getCurrentBlock().timestamp,
           16
         ),
-        currentAugurTimestamp: parseInt(augurTimestamp, 10),
-        pastCutoff: parseInt(augurTimestamp, 10) > CUTOFF
+        currentAugurTimestamp: currentAugurTimestamp,
+        pastCutoff: (currentAugurTimestamp * 1000) > CUTOFF
       })
     );
 

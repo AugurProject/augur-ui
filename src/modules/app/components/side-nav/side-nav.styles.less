@@ -21,7 +21,13 @@
   }
 
   .disabled {
-    pointer-events: none;
+
+    > a {
+      &:hover {
+        cursor: default;
+        background: none;
+      }
+    }
 
     > li,
     > a,
@@ -112,6 +118,14 @@
   flex-direction: column;
   flex-grow: 1;
   justify-content: flex-end;
+}
+
+.InnerTooltip {
+  > span > a {
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0;
+  }
 }
 
 @media @breakpoint-mobile {
