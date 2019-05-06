@@ -27,6 +27,7 @@ import SideNav from "modules/app/components/side-nav/side-nav";
 import Logo from "modules/app/components/logo/logo";
 import Routes from "modules/routes/components/routes/routes";
 import NotificationsContainer from "modules/notifications/containers/notifications-view";
+import InnerBanner from "modules/app/components/inner-banner/inner-banner";
 
 import MobileNavHamburgerIcon from "modules/common/components/mobile-nav-hamburger-icon";
 import MobileNavCloseIcon from "modules/common/components/mobile-nav-close-icon";
@@ -45,6 +46,9 @@ import parseQuery from "modules/routes/helpers/parse-query";
 import getValue from "utils/get-value";
 
 import {
+  // MARKET,
+  // REPORT,
+  // DISPUTE,
   MARKETS,
   ACCOUNT_DEPOSIT,
   ACCOUNT_WITHDRAW,
@@ -540,13 +544,19 @@ export default class AppView extends Component {
       tagsMargin = 110 * subMenu.scalar;
     }
 
+    const showBanner = currentPath === CREATE_MARKET;
+    // currentPath === MARKET ||
+    // currentPath === DISPUTE ||
+    // currentPath === REPORT;
+
     return (
       <main>
         <Helmet
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-        <NotificationBarContainer />
+        {showBanner && <InnerBanner currentPath={currentPath} />}
+        <NotificationBarContainer moveDown={showBanner} />
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
@@ -609,6 +619,7 @@ export default class AppView extends Component {
                   />
                 </section>
               )}
+
             <section
               className={Styles.Main__wrap}
               style={{ marginLeft: categoriesMargin }}
@@ -628,7 +639,9 @@ export default class AppView extends Component {
               )}
               {!InnerNav && <div className="no-nav-placehold" />}
               <section
-                className={Styles.Main__content}
+                className={classNames(Styles.Main__content, {
+                  [Styles.MoveDown]: showBanner
+                })}
                 style={{
                   marginLeft: tagsMargin
                 }}

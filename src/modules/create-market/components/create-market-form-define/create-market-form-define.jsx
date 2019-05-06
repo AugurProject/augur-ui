@@ -17,6 +17,7 @@ import { MarketCreationTimeDisplay } from "modules/create-market/components/crea
 import Styles from "modules/create-market/components/create-market-form-define/create-market-form-define.styles";
 import StylesForm from "modules/create-market/components/create-market-form/create-market-form.styles";
 import HighlightedStyles from "modules/reporting/components/common/highlighted-message.styles";
+import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
 
 export default class CreateMarketDefine extends Component {
   static propTypes = {
@@ -174,7 +175,25 @@ export default class CreateMarketDefine extends Component {
             updateState={this.updateState}
             focused={s.focused}
           />
-          <div className={Styles.CreateMarketDefine_message}>
+          <div
+            className={classNames(
+              Styles.CreateMarketDefine_message,
+              Styles.CutoffMessage
+            )}
+          >
+            <div>
+              No new markets can be created that end after{" "}
+              <span>{CUTOFF_READABLE}</span>. Any markets that end after this
+              date cannot be guaranteed to resolve correctly.{" "}
+              <a
+                href="http://docs.augur.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={Styles.ReadMore}
+              >
+                Read more
+              </a>
+            </div>
             <div>
               Choose a{" "}
               <span className={Styles.CreateMarketDefine_bolden}>
