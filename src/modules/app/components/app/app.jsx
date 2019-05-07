@@ -38,6 +38,7 @@ import NavCreateIcon from "modules/common/components/nav-create-icon";
 import NavMarketsIcon from "modules/common/components/nav-markets-icon";
 import NavPortfolioIcon from "modules/common/components/nav-portfolio-icon";
 import { NavReportingIcon } from "modules/common/components/icons";
+import { CUTOFF } from "modules/markets/constants/cutoff-date";
 
 import parsePath from "modules/routes/helpers/parse-path";
 import parseQuery from "modules/routes/helpers/parse-query";
@@ -45,9 +46,9 @@ import parseQuery from "modules/routes/helpers/parse-query";
 import getValue from "utils/get-value";
 
 import {
-  // MARKET,
-  // REPORT,
-  // DISPUTE,
+  MARKET,
+  REPORT,
+  DISPUTE,
   MARKETS,
   ACCOUNT_DEPOSIT,
   ACCOUNT_WITHDRAW,
@@ -121,14 +122,16 @@ export default class AppView extends Component {
     ethereumNodeHttp: PropTypes.string,
     ethereumNodeWs: PropTypes.string,
     useWeb3Transport: PropTypes.bool,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    market: PropTypes.object
   };
 
   static defaultProps = {
     augurNode: null,
     ethereumNodeHttp: null,
     ethereumNodeWs: null,
-    useWeb3Transport: false
+    useWeb3Transport: false,
+    market: null
   };
 
   constructor(props) {
@@ -522,7 +525,8 @@ export default class AppView extends Component {
       universe,
       isLoading,
       finalizeMarket,
-      isMobileSmall
+      isMobileSmall,
+      market
     } = this.props;
     const s = this.state;
 
@@ -550,10 +554,13 @@ export default class AppView extends Component {
       tagsMargin = 110 * subMenu.scalar;
     }
 
-    const showBanner = currentPath === CREATE_MARKET;
-    // currentPath === MARKET ||
-    // currentPath === DISPUTE ||
-    // currentPath === REPORT;
+    const showBanner =
+      currentPath === CREATE_MARKET ||
+      ((currentPath === MARKET ||
+        currentPath === DISPUTE ||
+        currentPath === REPORT) &&
+        market &&
+        market.endTime * 1000 > CUTOFF);
 
     return (
       <main>
