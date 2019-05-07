@@ -622,6 +622,7 @@ export default class AppView extends Component {
                     doesUserHaveRep={loginAccount.rep > 0}
                     marginLeft={tagsMargin}
                     finalizeMarket={finalizeMarket}
+                    pastCutoff={blockchain.pastCutoff}
                   />
                 </section>
               )}
