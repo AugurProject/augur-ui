@@ -16,14 +16,12 @@ export const NotificationBar = ({
   market,
   marketsNumber,
   isMobileSmall,
-  moveDown
+  className
 }) =>
   notifications.map(notification => (
     <div
       key={notification.orderId}
-      className={classNames(Styles.notificationBar, {
-        [Styles.moveDown]: moveDown
-      })}
+      className={classNames(Styles.notificationBar, className)}
     >
       <div className={Styles.notificationBar__row}>
         <div className={Styles.notificationBar_textContainer}>
@@ -96,11 +94,11 @@ NotificationBar.propTypes = {
   market: PropTypes.object,
   marketsNumber: PropTypes.number.isRequired,
   isMobileSmall: PropTypes.bool.isRequired,
-  moveDown: PropTypes.bool
+  className: PropTypes.string
 };
 
 NotificationBar.defaultProps = {
   market: null,
   notifications: [],
-  moveDown: false
+  className: ""
 };

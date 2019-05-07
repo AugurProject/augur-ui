@@ -562,21 +562,47 @@ export default class AppView extends Component {
         market &&
         market.endTime * 1000 > CUTOFF);
 
+    const showForkBanner = true;
+    // (universe.forkEndTime &&
+    //           universe.forkEndTime !== "0" &&
+    //           blockchain &&
+    //           blockchain.currentAugurTimestamp)
+
+    const singleTopBanner = showForkBanner || blockchain.pastCutoff;
+    const doubleTopBanner = showForkBanner || blockchain.pastCutoff;
+
     return (
       <main>
         <Helmet
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-        {showBanner && <InnerBanner currentPath={currentPath} />}
-        <NotificationBarContainer moveDown={showBanner} />
+        
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
-            [Styles[`App--blur`]]: Object.keys(modal).length !== 0
+            [Styles[`App--blur`]]: Object.keys(modal).length !== 0,
+            [Styles.topBanner]: singleTopBanner,
+            [Styles.doubleTopBanner]: doubleTopBanner
           })}
         >
-          <section className={Styles.App__loadingIndicator} />
+          {showForkBanner && (
+            <section className={Styles.Forking}>
+              <ForkingNotification
+                location={location}
+                universe={universe}
+                currentTime={blockchain.currentAugurTimestamp}
+                doesUserHaveRep={loginAccount.rep > 0}
+                finalizeMarket={finalizeMarket}
+                pastCutoff={blockchain.pastCutoff}
+              />
+            </section>
+          )}
+          {blockchain.pastCutoff && 
+            <section className={Styles.Forking}>
+              hi
+            </section>
+          }
           <section
             className={Styles.SideBar}
             onClick={e => this.mainSectionClickHandler(e, false)}
@@ -598,6 +624,7 @@ export default class AppView extends Component {
             />
           </section>
           <section className={Styles.Main}>
+
             <section
               className={classNames(Styles.TopBar, Styles.TopBar__floatAbove)}
               onClick={this.mainSectionClickHandler}
@@ -617,22 +644,7 @@ export default class AppView extends Component {
               notificationsVisible={isLogged && s.isNotificationsVisible}
               toggleNotifications={() => this.toggleNotifications()}
             />
-            {universe.forkEndTime &&
-              universe.forkEndTime !== "0" &&
-              blockchain &&
-              blockchain.currentAugurTimestamp && (
-                <section className={Styles.TopBar}>
-                  <ForkingNotification
-                    location={location}
-                    universe={universe}
-                    currentTime={blockchain.currentAugurTimestamp}
-                    doesUserHaveRep={loginAccount.rep > 0}
-                    marginLeft={tagsMargin}
-                    finalizeMarket={finalizeMarket}
-                    pastCutoff={blockchain.pastCutoff}
-                  />
-                </section>
-              )}
+            
 
             <section
               className={Styles.Main__wrap}
@@ -662,6 +674,12 @@ export default class AppView extends Component {
                 onClick={this.mainSectionClickHandler}
                 role="presentation"
               >
+                {showBanner && <InnerBanner currentPath={currentPath} className={classNames(Styles.innerBanner, {[Styles.topBanner_innerBanner]: singleTopBanner,
+                  [Styles.doubleTopBanner_innerBanner]: doubleTopBanner})} />}
+                <NotificationBarContainer 
+                  className={classNames({[Styles.topBanner]: singleTopBanner,
+                    [Styles.doubleTopBanner]: doubleTopBanner, [Styles.showInnerBanner]: showBanner})} 
+                />
                 <Routes />
               </section>
             </section>

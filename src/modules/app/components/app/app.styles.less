@@ -8,6 +8,7 @@ html,
 
 body {
   background: @color-almostblack;
+  overflow-y: hidden; 
 
   @media @breakpoint-mobile {
     --is-mobile: true;
@@ -35,12 +36,24 @@ h6 {
   display: grid;
 
   /* sidebar width */
-  grid-template-columns: @top-bar-height auto;
-  height: 100%;
+  grid-template-columns: [left] 4.5rem [right] 1fr;
 
   @media @breakpoint-mobile {
     /* disable sidebar mobile grid width */
     grid-template-columns: 0 auto;
+  }
+
+
+  &.topBanner {
+    grid-auto-flow: column;
+    grid-auto-rows: auto;
+    grid-template-rows: @outer-banner-height auto;
+  }
+
+  &.doubleTopBanner {
+    grid-auto-flow: column;
+    grid-auto-rows: auto;
+    grid-template-rows: @outer-banner-height @outer-banner-height auto;
   }
 }
 
@@ -83,9 +96,10 @@ h6 {
   -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
   overflow-y: auto;
+  position: relative;
 
   &.MoveDown {
-    padding-top: @inner-banner-height;
+    //padding-top: @inner-banner-height;
   }
 
   @media @breakpoint-mobile {
@@ -93,7 +107,7 @@ h6 {
     width: 100vw;
 
     &.MoveDown {
-      padding-top: @inner-banner-height-mobile;
+     //padding-top: @inner-banner-height-mobile;
     }
   }
 }
@@ -128,16 +142,6 @@ h6 {
   }
 }
 
-.App__loadingIndicator {
-  background: @color-lighter-purple;
-  display: none;
-  height: 0.25rem;
-  left: 0;
-  position: absolute;
-  right: 0;
-  z-index: 100;
-}
-
 svg.SideBar__mobile-bars-unseen {
   bottom: 1.4rem;
   position: relative;
@@ -155,3 +159,53 @@ svg.SideBar__mobile-bars-unseen {
 .TopBar__floatAbove {
   z-index: @above-all-content-top-layer;
 }
+
+.Forking {
+  grid-column: 1 / span 1000;
+  z-index: 50;
+}
+
+.innerBanner {
+  top: 0;
+  left: 0;
+  position: sticky;
+
+  @media @breakpoint-mobile {
+    top: 1.5rem;
+  }
+}
+
+// .topBanner_innerBanner {
+//   top: calc(~"@{outer-banner-height} + @{top-bar-height}");
+
+//   @media @breakpoint-mobile {
+//     top: calc(~"@{outer-banner-height} + @{top-bar-height-mobile}");
+//   }
+// }
+
+// .doubleTopBanner_innerBanner {
+//   top: calc(~"@{outer-banner-height} + @{outer-banner-height} + @{top-bar-height}");
+
+//   @media @breakpoint-mobile {
+//     top: calc(~"@{outer-banner-height} + @{outer-banner-height} + @{top-bar-height-mobile}");
+//   }
+// }
+
+.showInnerBanner {
+
+}
+
+  // &.moveDown {
+  //   top: calc(~"@{top-bar-height} + @{inner-banner-height} + 12px");
+  // }
+
+
+  // @media @breakpoint-mobile {
+  //   left: 5%;
+  //   right: 5%;
+  //   top: 3rem;
+
+  //   &.moveDown {
+  //     top: calc(~"@{top-bar-height} + @{inner-banner-height-mobile} + 6px");
+  //   }
+
