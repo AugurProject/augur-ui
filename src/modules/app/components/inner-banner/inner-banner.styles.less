@@ -1,6 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
 .InnerBanner {
+  align-items: center;
   background: @color-cuttoff-red;
   color: black;
   display: flex;
@@ -8,7 +9,7 @@
   height: @inner-banner-height;
   left: 4.5rem;
   line-height: 21px;
-  padding: 1rem 2rem;
+  padding: 0 2rem;
   position: absolute;
   right: 0;
   top: @top-bar-height; // have to be under core stats bar
@@ -17,11 +18,13 @@
   > div {
     align-items: center;
     display: flex;
+
+    > svg > path {
+      fill: black;
+    }
   }
 
   > span {
-    align-items: center;
-    display: flex;
     margin-left: 1.75rem;
     margin-right: 100px;
   }
@@ -36,6 +39,7 @@
   }
 
   @media @breakpoint-mobile {
+    align-items: flex-start;
     display: grid;
     font-size: @font-size-small;
     grid-auto-flow: column;
