@@ -22,6 +22,7 @@ export default class MarketsView extends Component {
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
+    defaultMaxSpread: PropTypes.string.isRequired,
     defaultHasOrders: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
@@ -39,6 +40,7 @@ export default class MarketsView extends Component {
       filter: props.defaultFilter,
       sort: props.defaultSort,
       maxFee: props.defaultMaxFee,
+      maxSpreadPercent: props.defaultMaxSpread,
       hasOrders: props.defaultHasOrders,
       filterSortedMarkets: []
     };
@@ -66,18 +68,18 @@ export default class MarketsView extends Component {
   }
 
   updateFilter(params) {
-    const { filter, sort, maxFee, hasOrders } = params;
+    const { filter, sort, maxFee, maxSpreadPercent, hasOrders } = params;
     this.setState(
-      { filter, sort, maxFee, hasOrders },
+      { filter, sort, maxFee, maxSpreadPercent, hasOrders },
       this.updateFilteredMarkets
     );
   }
 
   updateFilteredMarkets() {
     const { search, category, loadMarketsByFilter } = this.props;
-    const { filter, sort, maxFee, hasOrders } = this.state;
+    const { filter, sort, maxFee, maxSpreadPercent, hasOrders } = this.state;
     loadMarketsByFilter(
-      { category, search, filter, sort, maxFee, hasOrders },
+      { category, search, filter, sort, maxFee, maxSpreadPercent, hasOrders },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
         if (this.componentWrapper) this.setState({ filterSortedMarkets });
@@ -95,7 +97,14 @@ export default class MarketsView extends Component {
       markets,
       toggleFavorite
     } = this.props;
-    const { filter, sort, maxFee, hasOrders, filterSortedMarkets } = this.state;
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hasOrders,
+      filterSortedMarkets
+    } = this.state;
 
     return (
       <section
@@ -113,6 +122,7 @@ export default class MarketsView extends Component {
           filter={filter}
           sort={sort}
           maxFee={maxFee}
+          maxSpreadPercent={maxSpreadPercent}
           hasOrders={hasOrders}
           updateFilter={this.updateFilter}
           history={history}

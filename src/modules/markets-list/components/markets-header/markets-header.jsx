@@ -19,6 +19,7 @@ export default class MarketsHeader extends Component {
     filter: PropTypes.string.isRequired,
     sort: PropTypes.string.isRequired,
     maxFee: PropTypes.string.isRequired,
+    maxSpreadPercent: PropTypes.string.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     updateFilter: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired
@@ -69,6 +70,7 @@ export default class MarketsHeader extends Component {
       filter,
       sort,
       maxFee,
+      maxSpreadPercent,
       hasOrders,
       updateFilter,
       history
@@ -84,6 +86,7 @@ export default class MarketsHeader extends Component {
               filter={filter}
               sort={sort}
               maxFee={maxFee}
+              maxSpreadPercent={maxSpreadPercent}
               hasOrders={hasOrders}
               updateFilter={updateFilter}
               history={history}

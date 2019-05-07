@@ -124,9 +124,11 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     category: filterOptions.category,
     search: filterOptions.search,
     maxFee: parseFloat(filterOptions.maxFee),
+    maxSpreadPercent: parseFloat(filterOptions.maxSpreadPercent),
     hasOrders: filterOptions.hasOrders,
     ...sort
   };
+
   switch (filterOptions.filter) {
     case MARKET_REPORTING: {
       // reporting markets only:

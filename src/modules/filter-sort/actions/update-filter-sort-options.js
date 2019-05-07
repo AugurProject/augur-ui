@@ -2,6 +2,7 @@ export const UPDATE_FILTER_SORT_OPTIONS = "UPDATE_FILTER_SORT_OPTIONS";
 export const MARKET_FILTER = "marketFilter";
 export const MARKET_SORT = "marketSort";
 export const MARKET_MAX_FEES = "maxFee";
+export const MARKET_MAX_SPREAD = "maxSpreadPercent";
 export const TRANSACTION_PERIOD = "transactionPeriod";
 export const HAS_OPEN_ORDERS = "hasOrders";
 

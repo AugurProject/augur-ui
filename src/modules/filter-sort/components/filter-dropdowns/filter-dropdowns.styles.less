@@ -2,10 +2,11 @@
 
 .FilterDropdowns__container {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
 
-  @media @breakpoint-mobile-small {
+  @media @breakpoint-mobile {
     flex-direction: column;
+    margin-bottom: 0.75rem;
   }
 }
 
@@ -13,12 +14,23 @@
   display: flex;
   flex-flow: row nowrap;
 
+  @media @breakpoint-mobile {
+    align-items: center;
+    flex-flow: row wrap;
+  }
+
   > div > button:first-child {
-    &:extend(.caps--small);
+    &:extend(.caps--medium);
 
     color: @color-white;
-    font-size: @font-size-medium;
-    white-space: nowrap;
+  }
+
+  > div > i {
+    font-size: 1.5rem;
+  }
+
+  > div {
+    margin-right: 1.5rem;
   }
 }
 
@@ -27,16 +39,20 @@
   color: @color-white;
   display: flex;
   flex-direction: row;
-  padding-left: 1rem;
+  padding-left: 0.5rem;
 
   > label {
+    font-size: @font-size-medium;
+    font-weight: 400;
     margin-bottom: 0;
     padding: 0.4rem 2rem;
     white-space: nowrap;
   }
 
-  @media @breakpoint-mobile-small {
-    padding-bottom: 0.8rem;
+  @media @breakpoint-mobile {
+    margin-bottom: 1rem;
+    margin-right: 0;
+    margin-top: 0.75rem;
     padding-left: 0;
   }
 }

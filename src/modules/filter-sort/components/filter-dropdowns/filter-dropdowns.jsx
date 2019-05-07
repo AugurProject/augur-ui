@@ -28,6 +28,12 @@ import {
   MAX_FEE_30_PERCENT,
   MAX_FEE_40_PERCENT
 } from "src/modules/filter-sort/constants/market-max-fees";
+import {
+  MAX_SPREAD_05_PERCENT,
+  MAX_SPREAD_100_PERCENT,
+  MAX_SPREAD_10_PERCENT,
+  MAX_SPREAD_20_PERCENT
+} from "src/modules/filter-sort/constants/market-max-spread";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },
@@ -54,19 +60,29 @@ const maxFeesOptions = [
   { label: "Fees < 40%", value: MAX_FEE_40_PERCENT }
 ];
 
+const maxSpreadOptions = [
+  { label: "All Spreads", value: MAX_SPREAD_100_PERCENT },
+  { label: "Spreads < 5%", value: MAX_SPREAD_05_PERCENT },
+  { label: "Spreads < 10%", value: MAX_SPREAD_10_PERCENT },
+  { label: "Spreads < 20%", value: MAX_SPREAD_20_PERCENT }
+];
+
 export default class FilterSearch extends Component {
   static propTypes = {
     filter: PropTypes.string.isRequired,
     sort: PropTypes.string.isRequired,
     maxFee: PropTypes.string.isRequired,
+    maxSpreadPercent: PropTypes.string.isRequired,
     updateFilter: PropTypes.func.isRequired,
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
+    defaultMaxSpread: PropTypes.string.isRequired,
     hasOrders: PropTypes.bool.isRequired,
     updateFilterOption: PropTypes.func.isRequired,
     updateSortOption: PropTypes.func.isRequired,
     updateMaxFee: PropTypes.func.isRequired,
+    updateMaxSpread: PropTypes.func.isRequired,
     updateHasOpenOrders: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired
@@ -77,6 +93,7 @@ export default class FilterSearch extends Component {
     this.changeSortDropdown = this.changeSortDropdown.bind(this);
     this.changeFilterDropdown = this.changeFilterDropdown.bind(this);
     this.changeMaxFees = this.changeMaxFees.bind(this);
+    this.changeMaxSpread = this.changeMaxSpread.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
     this.changeHasOrders = this.changeHasOrders.bind(this);
   }
@@ -99,12 +116,13 @@ export default class FilterSearch extends Component {
       updateSortOption,
       updateFilter,
       maxFee,
+      maxSpreadPercent,
       hasOrders
     } = this.props;
 
     this.goToPageOne();
     updateSortOption(value);
-    updateFilter({ filter, sort: value, maxFee, hasOrders });
+    updateFilter({ filter, sort: value, maxFee, maxSpreadPercent, hasOrders });
   }
 
   changeFilterDropdown(value) {
@@ -113,20 +131,43 @@ export default class FilterSearch extends Component {
       updateFilterOption,
       updateFilter,
       maxFee,
+      maxSpreadPercent,
       hasOrders
     } = this.props;
 
     this.goToPageOne();
     updateFilterOption(value);
-    updateFilter({ filter: value, sort, maxFee, hasOrders });
+    updateFilter({ filter: value, sort, maxFee, maxSpreadPercent, hasOrders });
   }
 
   changeMaxFees(maxFee) {
-    const { sort, filter, updateMaxFee, hasOrders, updateFilter } = this.props;
+    const {
+      sort,
+      filter,
+      updateMaxFee,
+      maxSpreadPercent,
+      hasOrders,
+      updateFilter
+    } = this.props;
 
     this.goToPageOne();
     updateMaxFee(maxFee);
-    updateFilter({ filter, sort, maxFee, hasOrders });
+    updateFilter({ filter, sort, maxFee, maxSpreadPercent, hasOrders });
+  }
+
+  changeMaxSpread(maxSpreadPercent) {
+    const {
+      sort,
+      filter,
+      maxFee,
+      updateMaxSpread,
+      hasOrders,
+      updateFilter
+    } = this.props;
+
+    this.goToPageOne();
+    updateMaxSpread(maxSpreadPercent);
+    updateFilter({ filter, sort, maxFee, maxSpreadPercent, hasOrders });
   }
 
   changeHasOrders(event) {
@@ -134,6 +175,7 @@ export default class FilterSearch extends Component {
       filter,
       sort,
       maxFee,
+      maxSpreadPercent,
       updateFilter,
       hasOrders,
       updateHasOpenOrders
@@ -144,12 +186,19 @@ export default class FilterSearch extends Component {
       filter,
       sort,
       maxFee,
+      maxSpreadPercent,
       hasOrders: hasOpenOrders
     });
   }
 
   render() {
-    const { defaultFilter, defaultSort, defaultMaxFee, hasOrders } = this.props;
+    const {
+      defaultFilter,
+      defaultSort,
+      defaultMaxFee,
+      defaultMaxSpread,
+      hasOrders
+    } = this.props;
 
     return (
       <div className={Styles.FilterDropdowns__container}>
@@ -170,17 +219,22 @@ export default class FilterSearch extends Component {
             onChange={this.changeMaxFees}
             options={maxFeesOptions}
           />
-        </div>
-        <div className={Styles.FilterDropdowns__hasOrders}>
-          <Checkbox
-            id="has-orders"
-            type="checkbox"
-            name="hasOrders"
-            isChecked={hasOrders}
-            value={hasOrders}
-            onClick={this.changeHasOrders}
-          />{" "}
-          <label htmlFor="has-orders">has open orders</label>
+          <Dropdown
+            default={defaultMaxSpread}
+            onChange={this.changeMaxSpread}
+            options={maxSpreadOptions}
+          />
+          <div className={Styles.FilterDropdowns__hasOrders}>
+            <Checkbox
+              id="has-orders"
+              type="checkbox"
+              name="hasOrders"
+              isChecked={hasOrders}
+              value={hasOrders}
+              onClick={this.changeHasOrders}
+            />{" "}
+            <label htmlFor="has-orders">has open orders</label>
+          </div>
         </div>
       </div>
     );
