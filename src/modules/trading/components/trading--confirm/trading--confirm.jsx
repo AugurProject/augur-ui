@@ -41,7 +41,7 @@ const MarketTradingConfirm = ({
   } = trade;
   const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
 
-  const isMarketPastCutoff = market.endTime.timestamp * 1000 >= CUTOFF;
+  const isMarketPastCutoff = market.endTime.timestamp * 1000 > CUTOFF;
 
   const placeTrade = e => {
     market.onSubmitPlaceTrade(
