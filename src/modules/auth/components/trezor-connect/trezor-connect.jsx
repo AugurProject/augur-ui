@@ -4,10 +4,14 @@ import PropTypes from "prop-types";
 import DerivationPath, {
   NUM_DERIVATION_PATHS_TO_DISPLAY
 } from "modules/auth/helpers/derivation-path";
-import TrezorConnectImport, { DEVICE_EVENT, DEVICE } from "trezor-connect";
+import TrezorConnect, { DEVICE_EVENT, DEVICE } from "trezor-connect";
 import HardwareWallet from "modules/auth/components/common/hardware-wallet";
+import {
+  TREZOR_MANIFEST_EMAIL,
+  TREZOR_MANIFEST_APP
+} from "modules/auth/constants/trezor-manifest";
 
-export default class TrezorConnect extends Component {
+export default class TrezorConnectWrapper extends Component {
   static propTypes = {
     loginWithTrezor: PropTypes.func.isRequired,
     showAdvanced: PropTypes.bool.isRequired,
@@ -42,7 +46,7 @@ export default class TrezorConnect extends Component {
       showOnTrezor: false
     }));
 
-    const response = await TrezorConnectImport.ethereumGetAddress({
+    const response = await TrezorConnect.ethereumGetAddress({
       bundle
     }).catch(err => {
       console.log("Error:", err);
@@ -72,15 +76,20 @@ export default class TrezorConnect extends Component {
     super(props);
 
     this.connectWallet = this.connectWallet.bind(this);
+
+    TrezorConnect.manifest({
+      email: TREZOR_MANIFEST_EMAIL,
+      appUrl: TREZOR_MANIFEST_APP
+    });
   }
 
   async connectWallet(derivationPath) {
     const { loginWithTrezor, logout } = this.props;
-    const result = await TrezorConnectImport.ethereumGetAddress({
+    const result = await TrezorConnect.ethereumGetAddress({
       path: derivationPath
     });
 
-    TrezorConnectImport.on(DEVICE_EVENT, event => {
+    TrezorConnect.on(DEVICE_EVENT, event => {
       switch (event.type) {
         case DEVICE.DISCONNECT: {
           logout();
@@ -97,12 +106,12 @@ export default class TrezorConnect extends Component {
       if (address) {
         return loginWithTrezor(
           address.toLowerCase(),
-          TrezorConnectImport,
+          TrezorConnect,
           derivationPath
         );
       }
     } else {
-      console.error("Could not connect to Trezor");
+      console.error("Could not connect to Trezor", result);
     }
   }
 
@@ -111,7 +120,7 @@ export default class TrezorConnect extends Component {
       <HardwareWallet
         loginWithWallet={this.connectWallet}
         walletName="trezor"
-        onDerivationPathChange={TrezorConnect.onDerivationPathChange}
+        onDerivationPathChange={TrezorConnectWrapper.onDerivationPathChange}
         validation={() => true}
         {...this.props}
       />
