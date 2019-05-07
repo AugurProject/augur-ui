@@ -6,7 +6,11 @@ import { windowRef } from "utils/window-ref";
 
 import { selectMarket } from "modules/markets/selectors/market";
 import MarketTrading from "modules/trading/components/trading/trading";
-import { MODAL_MARKET_REVIEW } from "modules/modal/constants/modal-types";
+import {
+  MODAL_MARKET_REVIEW,
+  MODAL_MARKET_CUTOFF_NOTICE
+} from "modules/modal/constants/modal-types";
+import { closeModal } from "modules/modal/actions/close-modal";
 import { clearTradeInProgress } from "modules/trades/actions/update-trades-in-progress";
 import { updateModal } from "modules/modal/actions/update-modal";
 import { getGasPrice } from "modules/auth/selectors/get-gas-price";
@@ -23,13 +27,21 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   clearTradeInProgress: marketId => dispatch(clearTradeInProgress(marketId)),
   handleFilledOnly: trade => dispatch(handleFilledOnly(trade)),
+  marketCutoffModal: modal =>
+    dispatch(
+      updateModal({
+        type: MODAL_MARKET_CUTOFF_NOTICE,
+        ...modal
+      })
+    ),
   marketReviewModal: modal =>
     dispatch(
       updateModal({
         type: MODAL_MARKET_REVIEW,
         ...modal
       })
-    )
+    ),
+  closeModal: () => dispatch(closeModal())
 });
 
 const mergeProps = (sP, dP, oP) => {

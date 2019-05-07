@@ -25,6 +25,7 @@ class MarketTradingWrapper extends Component {
     market: PropTypes.object.isRequired,
     marketReviewSeen: PropTypes.bool.isRequired,
     marketReviewModal: PropTypes.func.isRequired,
+    marketCutoffModal: PropTypes.func.isRequired,
     isLogged: PropTypes.bool.isRequired,
     selectedOrderProperties: PropTypes.object.isRequired,
     initialMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
@@ -34,6 +35,7 @@ class MarketTradingWrapper extends Component {
     toggleForm: PropTypes.func.isRequired,
     showOrderPlaced: PropTypes.func.isRequired,
     clearTradeInProgress: PropTypes.func.isRequired,
+    closeModal: PropTypes.func.isRequired,
     selectedOutcome: PropTypes.object,
     updateSelectedOrderProperties: PropTypes.func.isRequired,
     handleFilledOnly: PropTypes.func.isRequired,
@@ -191,7 +193,9 @@ class MarketTradingWrapper extends Component {
       gasPrice,
       handleFilledOnly,
       marketReviewModal,
-      marketReviewSeen
+      marketCutoffModal,
+      marketReviewSeen,
+      closeModal
     } = this.props;
     const s = this.state;
 
@@ -331,6 +335,8 @@ class MarketTradingWrapper extends Component {
               showOrderPlaced={showOrderPlaced}
               handleFilledOnly={handleFilledOnly}
               marketReviewModal={marketReviewModal}
+              marketCutoffModal={marketCutoffModal}
+              closeModal={closeModal}
               marketReviewSeen={marketReviewSeen}
             />
           )}
