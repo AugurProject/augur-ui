@@ -62,9 +62,9 @@ const maxFeesOptions = [
 
 const maxSpreadOptions = [
   { label: "All Spreads", value: MAX_SPREAD_100_PERCENT },
-  { label: "Spreads < 5%", value: MAX_SPREAD_05_PERCENT },
-  { label: "Spreads < 10%", value: MAX_SPREAD_10_PERCENT },
-  { label: "Spreads < 20%", value: MAX_SPREAD_20_PERCENT }
+  { label: "Spread < 5%", value: MAX_SPREAD_05_PERCENT },
+  { label: "Spread < 10%", value: MAX_SPREAD_10_PERCENT },
+  { label: "Spread < 20%", value: MAX_SPREAD_20_PERCENT }
 ];
 
 export default class FilterSearch extends Component {
