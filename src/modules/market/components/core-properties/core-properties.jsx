@@ -19,6 +19,7 @@ import {
   TYPE_DISPUTE
 } from "modules/markets/constants/link-types";
 import MarketHeaderMessage from "modules/market/containers/market-header-message";
+import { CUTOFF } from "modules/markets/constants/cutoff-date";
 
 const Property = ({ numRow, property }) => (
   <div
@@ -463,7 +464,10 @@ export default class CoreProperties extends Component {
             </div>
           </div>
         )}
-        <MarketHeaderMessage marketId={market.id} />
+        <MarketHeaderMessage
+          marketId={market.id}
+          show={getValue(market, "endTime.timestamp") * 1000 <= CUTOFF}
+        />
         {renderedProperties}
       </div>
     );

@@ -90,6 +90,9 @@ export default class ModalView extends Component {
           {modal.type === TYPES.MODAL_MARKET_REVIEW && (
             <ModalMarketReview {...modal} />
           )}
+          {modal.type === TYPES.MODAL_MARKET_CUTOFF_NOTICE && (
+            <ModalConfirm {...modal} closeModal={closeModal} />
+          )}
         </div>
       </section>
     );
