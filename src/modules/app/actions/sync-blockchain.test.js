@@ -51,7 +51,8 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
     blockchain: {
       currentBlockTimestamp: 4886718335,
       currentBlockNumber: 9999,
-      currentAugurTimestamp: 42
+      currentAugurTimestamp: 42,
+      pastCutoff: false
     },
     gasPriceInfo: {
       blockNumber: undefined
@@ -60,7 +61,8 @@ describe(`modules/app/actions/sync-blockchain.js`, () => {
   const dataReturned = {
     currentBlockNumber: 0x10000,
     currentBlockTimestamp: 0x4886718345,
-    currentAugurTimestamp: 42
+    currentAugurTimestamp: 42,
+    pastCutoff: false
   };
   const store = mockStore(state);
 
