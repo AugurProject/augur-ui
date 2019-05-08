@@ -27,6 +27,7 @@ import Logo from "modules/app/components/logo/logo";
 import Routes from "modules/routes/components/routes/routes";
 import NotificationsContainer from "modules/notifications/containers/notifications-view";
 import InnerBanner from "modules/app/components/inner-banner/inner-banner";
+import GlobalCutoffBanner from "modules/app/components/global-cutoff-banner/global-cutoff-banner";
 
 import MobileNavHamburgerIcon from "modules/common/components/mobile-nav-hamburger-icon";
 import MobileNavCloseIcon from "modules/common/components/mobile-nav-close-icon";
@@ -568,13 +569,16 @@ export default class AppView extends Component {
       blockchain.currentAugurTimestamp;
     const showCutoffBanner = blockchain.pastCutoff;
 
-    let top = !showForkingBanner && !showCutoffBanner ? "0" : "42px"; // @lobal-banner-height
+    const globalBannerHeight = isMobile ? 75 : 42; // @global-banner-height-mobile and @global-banner-height
+
+    let top =
+      !showForkingBanner && !showCutoffBanner ? "0" : globalBannerHeight;
     if (showForkingBanner && showCutoffBanner) {
-      top = "84px"; // @global-banner-height + @global-banner-height
+      top = globalBannerHeight + globalBannerHeight;
     }
 
     const innerStyle = {
-      top
+      top: top + "px"
     };
 
     return (
@@ -597,7 +601,7 @@ export default class AppView extends Component {
               [Styles.MoveDown]: showForkingBanner
             })}
           >
-            hi
+            <GlobalCutoffBanner />
           </section>
         )}
         <Helmet
