@@ -667,7 +667,6 @@ export default class AppView extends Component {
               notificationsVisible={isLogged && s.isNotificationsVisible}
               toggleNotifications={() => this.toggleNotifications()}
             />
-
             <section
               className={Styles.Main__wrap}
               style={{ marginLeft: categoriesMargin }}
