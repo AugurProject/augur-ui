@@ -3,7 +3,7 @@ import { updateBlockchain } from "modules/app/actions/update-blockchain";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { createBigNumber } from "utils/create-big-number";
 import { loadGasPriceInfo } from "modules/app/actions/load-gas-price-info";
-import { CUTOFF } from "modules/markets/constants/cutoff-date";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 
 const GET_GAS_BLOCK_LIMIT = 100;
 
@@ -21,7 +21,7 @@ export const syncBlockchain = () => (dispatch, getState) => {
           16
         ),
         currentAugurTimestamp,
-        pastCutoff: currentAugurTimestamp * 1000 > CUTOFF
+        pastCutoff: isPastV2Cutoff(currentAugurTimestamp)
       })
     );
 

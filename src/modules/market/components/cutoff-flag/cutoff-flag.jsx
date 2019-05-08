@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 
 import { Flag } from "modules/common/components/icons";
-import { CUTOFF, CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 
@@ -12,7 +13,7 @@ import Styles from "modules/market/components/cutoff-flag/cutoff-flag.styles";
 // add link to read more
 const CutoffFlag = ({ endTime }) => (
   <>
-    {endTime * 1000 >= CUTOFF && (
+    {isPastV2Cutoff(endTime) && (
       <div className={Styles.CutoffFlag}>
         <span data-tip data-for="tooltip-cutoff-flag">
           {Flag}

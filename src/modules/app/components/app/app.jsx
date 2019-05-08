@@ -38,8 +38,7 @@ import NavCreateIcon from "modules/common/components/nav-create-icon";
 import NavMarketsIcon from "modules/common/components/nav-markets-icon";
 import NavPortfolioIcon from "modules/common/components/nav-portfolio-icon";
 import { NavReportingIcon } from "modules/common/components/icons";
-import { CUTOFF } from "modules/markets/constants/cutoff-date";
-
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import parsePath from "modules/routes/helpers/parse-path";
 import parseQuery from "modules/routes/helpers/parse-query";
 
@@ -560,7 +559,7 @@ export default class AppView extends Component {
         currentPath === DISPUTE ||
         currentPath === REPORT) &&
         market &&
-        market.endTime * 1000 > CUTOFF);
+        isPastV2Cutoff(market.endTime));
 
     const showForkingBanner =
       universe.forkEndTime &&
