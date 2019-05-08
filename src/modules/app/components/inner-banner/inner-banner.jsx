@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
 import { AlertIcon, Flag } from "modules/common/components/icons";
@@ -12,8 +13,8 @@ import {
 
 import Styles from "modules/app/components/inner-banner/inner-banner.styles";
 
-const InnerBanner = ({ currentPath }) => (
-  <section className={Styles.InnerBanner}>
+const InnerBanner = ({ currentPath, style, className }) => (
+  <section className={classNames(Styles.InnerBanner, className)} style={style}>
     <div>{currentPath === CREATE_MARKET ? AlertIcon : Flag}</div>
     {currentPath === CREATE_MARKET && (
       <span>
@@ -51,6 +52,14 @@ const InnerBanner = ({ currentPath }) => (
 );
 
 InnerBanner.propTypes = {
-  currentPath: PropTypes.string.isRequired
+  currentPath: PropTypes.string.isRequired,
+  style: PropTypes.object,
+  className: PropTypes.string
 };
+
+InnerBanner.defaultProps = {
+  style: {},
+  className: ""
+};
+
 export default InnerBanner;

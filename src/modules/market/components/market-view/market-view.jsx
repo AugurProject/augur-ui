@@ -69,7 +69,7 @@ export default class MarketView extends Component {
   }
 
   componentDidMount() {
-    this.node.scrollIntoView();
+    window.scrollTo(0, 0);
   }
 
   componentWillUpdate(nextProps, nextState) {

@@ -554,7 +554,7 @@ export default class AppView extends Component {
       tagsMargin = 110 * subMenu.scalar;
     }
 
-    const showBanner =
+    const showInnerBanner =
       currentPath === CREATE_MARKET ||
       ((currentPath === MARKET ||
         currentPath === DISPUTE ||
@@ -562,18 +562,66 @@ export default class AppView extends Component {
         market &&
         market.endTime * 1000 > CUTOFF);
 
+    const showForkingBanner =
+      universe.forkEndTime &&
+      universe.forkEndTime !== "0" &&
+      blockchain &&
+      blockchain.currentAugurTimestamp;
+    const showCutoffBanner = blockchain.pastCutoff;
+
+    let top = !showForkingBanner && !showCutoffBanner ? "0" : "42px"; // 42px
+    if (showForkingBanner && showCutoffBanner) {
+      top = "84px"; // 42px + 42px
+    }
+
+    const innerStyle = {
+      top
+    };
+
     return (
-      <main>
+      <main style={{ position: "relative" }}>
+        {showForkingBanner && (
+          <section className={Styles.GlobalBanner}>
+            <ForkingNotification
+              location={location}
+              universe={universe}
+              currentTime={blockchain.currentAugurTimestamp}
+              doesUserHaveRep={loginAccount.rep > 0}
+              finalizeMarket={finalizeMarket}
+              pastCutoff={blockchain.pastCutoff}
+            />
+          </section>
+        )}
+        {showCutoffBanner && (
+          <section
+            className={classNames(Styles.GlobalBanner, {
+              [Styles.MoveDown]: showForkingBanner
+            })}
+          >
+            hi
+          </section>
+        )}
         <Helmet
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-        {showBanner && <InnerBanner currentPath={currentPath} />}
-        <NotificationBarContainer moveDown={showBanner} />
+        {showInnerBanner && (
+          <InnerBanner
+            currentPath={currentPath}
+            style={innerStyle}
+            className={Styles.InnerBanner}
+          />
+        )}
+        <NotificationBarContainer
+          style={innerStyle}
+          className={classNames(Styles.InnerBanner, { [Styles.NotificationBar]: showInnerBanner })}
+        />
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
-            [Styles[`App--blur`]]: Object.keys(modal).length !== 0
+            [Styles[`App--blur`]]: Object.keys(modal).length !== 0,
+            [Styles.MoveDown]: showForkingBanner || showCutoffBanner,
+            [Styles.MoveDownDouble]: showForkingBanner && showCutoffBanner
           })}
         >
           <section className={Styles.App__loadingIndicator} />
@@ -617,22 +665,6 @@ export default class AppView extends Component {
               notificationsVisible={isLogged && s.isNotificationsVisible}
               toggleNotifications={() => this.toggleNotifications()}
             />
-            {universe.forkEndTime &&
-              universe.forkEndTime !== "0" &&
-              blockchain &&
-              blockchain.currentAugurTimestamp && (
-                <section className={Styles.TopBar}>
-                  <ForkingNotification
-                    location={location}
-                    universe={universe}
-                    currentTime={blockchain.currentAugurTimestamp}
-                    doesUserHaveRep={loginAccount.rep > 0}
-                    marginLeft={tagsMargin}
-                    finalizeMarket={finalizeMarket}
-                    pastCutoff={blockchain.pastCutoff}
-                  />
-                </section>
-              )}
 
             <section
               className={Styles.Main__wrap}
@@ -654,7 +686,7 @@ export default class AppView extends Component {
               {!InnerNav && <div className="no-nav-placehold" />}
               <section
                 className={classNames(Styles.Main__content, {
-                  [Styles.MoveDown]: showBanner
+                  [Styles.MoveDown]: showInnerBanner
                 })}
                 style={{
                   marginLeft: tagsMargin
