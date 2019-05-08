@@ -562,11 +562,10 @@ export default class AppView extends Component {
         market &&
         market.endTime * 1000 > CUTOFF);
 
-    const showForkBanner = true;
-    // (universe.forkEndTime &&
-    //           universe.forkEndTime !== "0" &&
-    //           blockchain &&
-    //           blockchain.currentAugurTimestamp)
+    const showForkBanner = (universe.forkEndTime &&
+              universe.forkEndTime !== "0" &&
+              blockchain &&
+              blockchain.currentAugurTimestamp);
 
     const singleTopBanner = showForkBanner || blockchain.pastCutoff;
     const doubleTopBanner = showForkBanner || blockchain.pastCutoff;

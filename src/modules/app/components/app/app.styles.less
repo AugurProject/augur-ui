@@ -8,7 +8,6 @@ html,
 
 body {
   background: @color-almostblack;
-  overflow-y: hidden; 
 
   @media @breakpoint-mobile {
     --is-mobile: true;
@@ -98,17 +97,9 @@ h6 {
   overflow-y: auto;
   position: relative;
 
-  &.MoveDown {
-    //padding-top: @inner-banner-height;
-  }
-
   @media @breakpoint-mobile {
     height: calc(~"100vh - @{top-bar-height-mobile}");
     width: 100vw;
-
-    &.MoveDown {
-     //padding-top: @inner-banner-height-mobile;
-    }
   }
 }
 
@@ -174,38 +165,4 @@ svg.SideBar__mobile-bars-unseen {
     top: 1.5rem;
   }
 }
-
-// .topBanner_innerBanner {
-//   top: calc(~"@{outer-banner-height} + @{top-bar-height}");
-
-//   @media @breakpoint-mobile {
-//     top: calc(~"@{outer-banner-height} + @{top-bar-height-mobile}");
-//   }
-// }
-
-// .doubleTopBanner_innerBanner {
-//   top: calc(~"@{outer-banner-height} + @{outer-banner-height} + @{top-bar-height}");
-
-//   @media @breakpoint-mobile {
-//     top: calc(~"@{outer-banner-height} + @{outer-banner-height} + @{top-bar-height-mobile}");
-//   }
-// }
-
-.showInnerBanner {
-
-}
-
-  // &.moveDown {
-  //   top: calc(~"@{top-bar-height} + @{inner-banner-height} + 12px");
-  // }
-
-
-  // @media @breakpoint-mobile {
-  //   left: 5%;
-  //   right: 5%;
-  //   top: 3rem;
-
-  //   &.moveDown {
-  //     top: calc(~"@{top-bar-height} + @{inner-banner-height-mobile} + 6px");
-  //   }
 
