@@ -110,12 +110,12 @@ ForkingNotification.propTypes = {
   doesUserHaveRep: PropTypes.bool.isRequired,
   marginLeft: PropTypes.number,
   finalizeMarket: PropTypes.func.isRequired,
-  pastCutoff: PropTypes.bool,
+  pastCutoff: PropTypes.bool
 };
 
 ForkingNotification.defaultProps = {
   marginLeft: 0,
-  pastCutoff: false,
+  pastCutoff: false
 };
 
 export default ForkingNotification;
