@@ -8,6 +8,7 @@ html,
 
 body {
   background: @color-almostblack;
+  overflow-y: hidden;
 
   @media @breakpoint-mobile {
     --is-mobile: true;
@@ -83,6 +84,14 @@ h6 {
   overflow-x: hidden;
   overflow-y: auto;
 
+  &.IncrHeight {
+    height: calc(~"100vh - @{top-bar-height} - @{global-banner-height}");
+  }
+
+  &.IncrHeightDouble {
+    height: calc(~"100vh - @{top-bar-height} - @{global-banner-height} - @{global-banner-height}");
+  }
+
   &.MoveDown {
     padding-top: @inner-banner-height;
   }
@@ -93,6 +102,14 @@ h6 {
 
     &.MoveDown {
       padding-top: @inner-banner-height-mobile;
+    }
+
+    &.IncrHeight {
+      height: calc(~"100vh - @{top-bar-height-mobile} - @{global-banner-height}");
+    }
+
+    &.IncrHeightDouble {
+      height: calc(~"100vh - @{top-bar-height-mobile} - @{global-banner-height} - @{global-banner-height}");
     }
   }
 }

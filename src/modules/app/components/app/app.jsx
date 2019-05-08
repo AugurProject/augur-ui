@@ -569,9 +569,9 @@ export default class AppView extends Component {
       blockchain.currentAugurTimestamp;
     const showCutoffBanner = blockchain.pastCutoff;
 
-    let top = !showForkingBanner && !showCutoffBanner ? "0" : "42px"; // 42px
+    let top = !showForkingBanner && !showCutoffBanner ? "0" : "42px"; // @lobal-banner-height
     if (showForkingBanner && showCutoffBanner) {
-      top = "84px"; // 42px + 42px
+      top = "84px"; // @global-banner-height + @global-banner-height
     }
 
     const innerStyle = {
@@ -614,7 +614,9 @@ export default class AppView extends Component {
         )}
         <NotificationBarContainer
           style={innerStyle}
-          className={classNames(Styles.InnerBanner, { [Styles.NotificationBar]: showInnerBanner })}
+          className={classNames(Styles.InnerBanner, {
+            [Styles.NotificationBar]: showInnerBanner
+          })}
         />
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
@@ -686,7 +688,10 @@ export default class AppView extends Component {
               {!InnerNav && <div className="no-nav-placehold" />}
               <section
                 className={classNames(Styles.Main__content, {
-                  [Styles.MoveDown]: showInnerBanner
+                  [Styles.MoveDown]: showInnerBanner,
+                  [Styles.IncrHeight]: showForkingBanner || showCutoffBanner,
+                  [Styles.IncrHeightDouble]:
+                    showForkingBanner && showCutoffBanner
                 })}
                 style={{
                   marginLeft: tagsMargin
