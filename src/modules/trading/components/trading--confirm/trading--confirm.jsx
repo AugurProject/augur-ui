@@ -5,7 +5,8 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 import classNames from "classnames";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { MARKET, BUY, LIMIT, SELL } from "modules/transactions/constants/types";
-import { CUTOFF, CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { CreateMarketEdit, Hint } from "modules/common/components/icons";
@@ -40,8 +41,6 @@ const MarketTradingConfirm = ({
     shareCost
   } = trade;
   const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
-
-  const isMarketPastCutoff = market.endTime.timestamp * 1000 > CUTOFF;
 
   const placeTrade = e => {
     market.onSubmitPlaceTrade(
@@ -262,7 +261,7 @@ const MarketTradingConfirm = ({
           className={Styles["TradingConfirmation__button--submit"]}
           onClick={e => {
             e.preventDefault();
-            if (isMarketPastCutoff) {
+            if (isPastV2Cutoff(market.endTime.timestamp)) {
               showMarketCutoffModal();
             } else if (!marketReviewSeen) {
               marketReviewModal({
