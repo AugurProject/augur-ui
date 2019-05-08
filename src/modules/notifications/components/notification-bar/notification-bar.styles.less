@@ -14,18 +14,10 @@
   top: @top-bar-height; // have to be under core stats bar
   z-index: 10;
 
-  &.moveDown {
-    top: calc(~"@{top-bar-height} + @{inner-banner-height} + 12px");
-  }
-
   @media @breakpoint-mobile {
     left: 5%;
     right: 5%;
     top: 3rem;
-
-    &.moveDown {
-      top: calc(~"@{top-bar-height} + @{inner-banner-height-mobile} + 6px");
-    }
   }
 
   @media @breakpoint-mobile-medium {

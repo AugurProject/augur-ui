@@ -8,6 +8,7 @@ html,
 
 body {
   background: @color-almostblack;
+  overflow-y: hidden;
 
   @media @breakpoint-mobile {
     --is-mobile: true;
@@ -50,11 +51,10 @@ h6 {
 
 .Main {
   display: grid;
-
-  /* topbar height */
   grid-template-rows: @top-bar-height auto;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 
   @media @breakpoint-mobile {
     /* topbar mobile height */
@@ -84,6 +84,14 @@ h6 {
   overflow-x: hidden;
   overflow-y: auto;
 
+  &.IncrHeight {
+    height: calc(~"100vh - @{top-bar-height} - @{global-banner-height}");
+  }
+
+  &.IncrHeightDouble {
+    height: calc(~"100vh - @{top-bar-height} - @{global-banner-height} - @{global-banner-height}");
+  }
+
   &.MoveDown {
     padding-top: @inner-banner-height;
   }
@@ -94,6 +102,14 @@ h6 {
 
     &.MoveDown {
       padding-top: @inner-banner-height-mobile;
+    }
+
+    &.IncrHeight {
+      height: calc(~"100vh - @{top-bar-height-mobile} - @{global-banner-height}");
+    }
+
+    &.IncrHeightDouble {
+      height: calc(~"100vh - @{top-bar-height-mobile} - @{global-banner-height} - @{global-banner-height}");
     }
   }
 }
@@ -154,4 +170,34 @@ svg.SideBar__mobile-bars-unseen {
 
 .TopBar__floatAbove {
   z-index: @above-all-content-top-layer;
+}
+
+.GlobalBanner {
+  background-color: white;
+  height: @global-banner-height;
+  left: 0;
+  position: static;
+  right: 0;
+  top: 0;
+  z-index: 50;
+
+  &.MoveDown {
+    top: @global-banner-height;
+  }
+}
+
+.InnerBanner {
+  margin-top: @top-bar-height;
+
+  @media @breakpoint-mobile {
+    margin-top: @top-bar-height-mobile;
+  }
+}
+
+.NotificationBar {
+  margin-top: calc(~"@{inner-banner-height} + 12px + @{top-bar-height}");
+
+  @media @breakpoint-mobile {
+    margin-top: calc(~"@{inner-banner-height-mobile} + 6px + @{top-bar-height-mobile}");
+  }
 }
