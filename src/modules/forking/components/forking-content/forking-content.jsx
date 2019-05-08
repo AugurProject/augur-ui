@@ -57,22 +57,63 @@ const ForkingContent = ({
         />
         {pastCutoff && (
           <p>
-          <span>Alert: If you migrate your REP to a child universe, you will never be able to migrate your REP to Augur V2.
-            {" "}
-            <a
-              href="http://docs.augur.net"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "underline" }}
-            >
-              Read more
-            </a>
-          </span>
-          <br/>
-          If you want to migrate to a child universe anyway, collect any outstanding REP on the Portfolio: Reporting page. {" "}
-          {forkWindowActive && 
-            <>
-              Then, migrate your REP to your chosen
+            <span>
+              Alert: If you migrate your REP to a child universe, you will never
+              be able to migrate your REP to Augur V2.{" "}
+              <a
+                href="http://docs.augur.net"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "underline" }}
+              >
+                Read more
+              </a>
+            </span>
+            <br />
+            If you want to migrate to a child universe anyway, collect any
+            outstanding REP on the Portfolio: Reporting page.{" "}
+            {forkWindowActive && (
+              <>
+                Then, migrate your REP to your chosen child universe. All REP
+                migrated during the forking period will receive a 5% bonus. The
+                forking period will end on{" "}
+                {unixFormattedDate.formattedLocalShort} or when at least{" "}
+                {threshold.formatted} REP has been migrated to a single child
+                universe. Read more about the forking process{" "}
+                <a
+                  href="http://docs.augur.net/#fork-state"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "underline" }}
+                >
+                  here
+                </a>
+                .
+              </>
+            )}
+            {!forkWindowActive && (
+              <>
+                Then, migrate to your chosen child universe. The forking period
+                has ended. Read more about the forking process{" "}
+                <a
+                  href="http://docs.augur.net/#fork-state"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "underline" }}
+                >
+                  here
+                </a>
+                .
+              </>
+            )}
+          </p>
+        )}
+
+        {!pastCutoff &&
+          forkWindowActive && (
+            <p>
+              If you are a REP holder, please collect any outstanding REP on the
+              Portfolio: Reporting page. Then, migrate your REP to your chosen
               child universe. All REP migrated during the forking period will
               receive a 5% bonus. The forking period will end on{" "}
               {unixFormattedDate.formattedLocalShort} or when at least{" "}
@@ -87,66 +128,27 @@ const ForkingContent = ({
                 here
               </a>
               .
-              </>
-            }
-            {!forkWindowActive && 
-              <>
-               Then, migrate to your chosen child
-                universe. The forking period has ended. Read more about the forking
-                process{" "}
-                <a
-                  href="http://docs.augur.net/#fork-state"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ textDecoration: "underline" }}
-                >
-                  here
-                </a>
+            </p>
+          )}
+
+        {!pastCutoff &&
+          !forkWindowActive && (
+            <p>
+              If you are a REP holder, please collect any outstanding REP on the
+              Portfolio: Reporting page. Then, migrate to your chosen child
+              universe. The forking period has ended. Read more about the
+              forking process{" "}
+              <a
+                href="http://docs.augur.net/#fork-state"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: "underline" }}
+              >
+                here
+              </a>
               .
-              </>
-
-            }
-          </p>
-        )}
-
-        {!pastCutoff && forkWindowActive && (
-          <p>
-            If you are a REP holder, please collect any outstanding REP on the
-            Portfolio: Reporting page. Then, migrate your REP to your chosen
-            child universe. All REP migrated during the forking period will
-            receive a 5% bonus. The forking period will end on{" "}
-            {unixFormattedDate.formattedLocalShort} or when at least{" "}
-            {threshold.formatted} REP has been migrated to a single child
-            universe. Read more about the forking process{" "}
-            <a
-              href="http://docs.augur.net/#fork-state"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "underline" }}
-            >
-              here
-            </a>
-            .
-          </p>
-        )}
-
-        {!pastCutoff && !forkWindowActive && (
-          <p>
-            If you are a REP holder, please collect any outstanding REP on the
-            Portfolio: Reporting page. Then, migrate to your chosen child
-            universe. The forking period has ended. Read more about the forking
-            process{" "}
-            <a
-              href="http://docs.augur.net/#fork-state"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "underline" }}
-            >
-              here
-            </a>
-            .
-          </p>
-        )}
+            </p>
+          )}
         <div className={Styles.ForkingContent__buttonBar}>
           {!doesUserHaveRep && (
             <button
@@ -190,11 +192,13 @@ ForkingContent.propTypes = {
   doesUserHaveRep: PropTypes.bool.isRequired,
   forkReputationGoal: PropTypes.string.isRequired,
   isForkingMarketFinalized: PropTypes.bool,
-  marginLeft: PropTypes.number.isRequired
+  marginLeft: PropTypes.number.isRequired,
+  pastCutoff: PropTypes.bool
 };
 
 ForkingContent.defaultProps = {
-  isForkingMarketFinalized: false
+  isForkingMarketFinalized: false,
+  pastCutoff: false
 };
 
 export default ForkingContent;
