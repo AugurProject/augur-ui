@@ -112,6 +112,12 @@ h6 {
       height: calc(~"100vh - @{top-bar-height-mobile} - @{global-banner-height} - @{global-banner-height}");
     }
   }
+
+  @media @breakpoint-mobile-small {
+    &.MoveDown {
+      padding-top: @inner-banner-height-mobile-small;
+    }
+  }
 }
 
 .SideBar {
@@ -192,6 +198,14 @@ svg.SideBar__mobile-bars-unseen {
       top: @global-banner-height-mobile;
     }
   }
+
+  @media @breakpoint-mobile-small {
+    height: @global-banner-height-mobile-small;
+
+    &.MoveDown {
+      top: @global-banner-height-mobile-small;
+    }
+  }
 }
 
 .InnerBanner {
@@ -207,5 +221,9 @@ svg.SideBar__mobile-bars-unseen {
 
   @media @breakpoint-mobile {
     margin-top: calc(~"@{inner-banner-height-mobile} + 6px + @{top-bar-height-mobile}");
+  }
+
+  @media @breakpoint-mobile-small {
+    margin-top: calc(~"@{inner-banner-height-mobile-small} + 6px + @{top-bar-height-mobile}");
   }
 }
