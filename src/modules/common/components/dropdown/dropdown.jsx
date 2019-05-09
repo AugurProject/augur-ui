@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-
+import { downArrow } from "modules/common/components/icons";
 import Styles from "modules/common/components/dropdown/dropdown.styles";
 
 class Dropdown extends Component {
@@ -100,13 +100,7 @@ class Dropdown extends Component {
             </option>
           ))}
         </select>
-        <i
-          className={classNames(
-            Styles["Dropdown__angle-down"],
-            "fa",
-            "fa-angle-down"
-          )}
-        />
+        {downArrow}
       </div>
     );
   }

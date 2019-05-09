@@ -2,7 +2,7 @@
 
 .MarketsHeader {
   font-size: 1rem;
-  padding: 3.5rem 2rem 0.5rem;
+  padding: 2.25rem 2rem 0.5rem;
 }
 
 .MarketsHeader__top {
@@ -27,28 +27,27 @@
   margin-bottom: 1rem;
 }
 
-.MarketsHeader__filters {
-  align-self: flex-end;
-  display: flex;
-  flex-grow: 1;
-}
-
 .MarketsHeader__wrapper {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
-  flex-grow: 1;
-  margin-top: 56px;
+  margin-top: 1.125rem;
 }
 
-@media @breakpoint-mobile-medium {
+.MarketsHeader__search {
+  display: flex;
+}
+
+@media @breakpoint-mobile {
   .MarketsHeader {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 3.5rem 1rem 0.5rem;
   }
 }
 
-@media @breakpoint-mobile-small {
+@media @breakpoint-mobile {
   .MarketsHeader__wrapper {
-    display: block;
+    align-items: baseline;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.25rem;
   }
 }

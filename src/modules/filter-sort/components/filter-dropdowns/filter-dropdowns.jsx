@@ -68,8 +68,11 @@ export default class FilterSearch extends Component {
     updateSortOption: PropTypes.func.isRequired,
     updateMaxFee: PropTypes.func.isRequired,
     updateHasOpenOrders: PropTypes.func.isRequired,
+    hidePostV2Markets: PropTypes.bool.isRequired,
+    updateHidePostV2Markets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -79,6 +82,27 @@ export default class FilterSearch extends Component {
     this.changeMaxFees = this.changeMaxFees.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
     this.changeHasOrders = this.changeHasOrders.bind(this);
+    this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
+  }
+
+  componentDidMount() {
+    if (
+      this.props.hasPositionsInCutoffMarkets &&
+      this.props.hidePostV2Markets
+    ) {
+      this.changeHidePastCutoff();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.hasPositionsInCutoffMarkets !==
+        this.props.hasPositionsInCutoffMarkets &&
+      nextProps.hasPositionsInCutoffMarkets &&
+      this.props.hidePostV2Markets
+    ) {
+      this.changeHidePastCutoff();
+    }
   }
 
   goToPageOne() {
@@ -129,12 +153,33 @@ export default class FilterSearch extends Component {
     updateFilter({ filter, sort, maxFee, hasOrders });
   }
 
+  changeHidePastCutoff() {
+    const {
+      filter,
+      sort,
+      maxFee,
+      updateFilter,
+      hasOrders,
+      hidePostV2Markets,
+      updateHidePostV2Markets
+    } = this.props;
+    updateHidePostV2Markets(!hidePostV2Markets);
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      hasOrders,
+      hidePostV2Markets: !hidePostV2Markets
+    });
+  }
+
   changeHasOrders(event) {
     const {
       filter,
       sort,
       maxFee,
       updateFilter,
+      hidePostV2Markets,
       hasOrders,
       updateHasOpenOrders
     } = this.props;
@@ -144,33 +189,38 @@ export default class FilterSearch extends Component {
       filter,
       sort,
       maxFee,
+      hidePostV2Markets,
       hasOrders: hasOpenOrders
     });
   }
 
   render() {
-    const { defaultFilter, defaultSort, defaultMaxFee, hasOrders } = this.props;
+    const {
+      defaultFilter,
+      defaultSort,
+      defaultMaxFee,
+      hasOrders,
+      hidePostV2Markets
+    } = this.props;
 
     return (
-      <div className={Styles.FilterDropdowns__container}>
-        <div className={Styles.FilterDropdowns}>
-          <Dropdown
-            default={defaultFilter}
-            onChange={this.changeFilterDropdown}
-            options={filterOptions}
-            alignLeft
-          />
-          <Dropdown
-            default={defaultSort}
-            onChange={this.changeSortDropdown}
-            options={sortOptions}
-          />
-          <Dropdown
-            default={defaultMaxFee}
-            onChange={this.changeMaxFees}
-            options={maxFeesOptions}
-          />
-        </div>
+      <div className={Styles.FilterDropdowns}>
+        <Dropdown
+          default={defaultFilter}
+          onChange={this.changeFilterDropdown}
+          options={filterOptions}
+          alignLeft
+        />
+        <Dropdown
+          default={defaultSort}
+          onChange={this.changeSortDropdown}
+          options={sortOptions}
+        />
+        <Dropdown
+          default={defaultMaxFee}
+          onChange={this.changeMaxFees}
+          options={maxFeesOptions}
+        />
         <div className={Styles.FilterDropdowns__hasOrders}>
           <Checkbox
             id="has-orders"
@@ -181,6 +231,19 @@ export default class FilterSearch extends Component {
             onClick={this.changeHasOrders}
           />{" "}
           <label htmlFor="has-orders">has open orders</label>
+        </div>
+        <div className={Styles.FilterDropdowns__hidePastCutoff}>
+          <Checkbox
+            id="post-cutoff"
+            type="checkbox"
+            name="hidePostV2Markets"
+            isChecked={hidePostV2Markets}
+            value={hidePostV2Markets}
+            onClick={this.changeHidePastCutoff}
+          />{" "}
+          <label htmlFor="post-cutoff">
+            hide markets ending post v2 cut-off
+          </label>
         </div>
       </div>
     );
