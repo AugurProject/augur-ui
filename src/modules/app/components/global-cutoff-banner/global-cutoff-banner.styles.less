@@ -14,7 +14,7 @@
   right: 0;
   z-index: 10;
 
-  > div {
+  > div:first-of-type {
     align-items: center;
     display: flex;
 
@@ -23,51 +23,54 @@
     }
   }
 
-  > span {
-    margin-left: 1rem;
-    margin-right: 100px;
-  }
-
-  > a {
+  > div:last-of-type {
     align-items: center;
     display: flex;
     flex: 1;
-    font-weight: bold;
-    justify-content: flex-end;
-    text-decoration: underline;
+
+    > span {
+      margin-left: 1rem;
+    }
+
+    > a {
+      align-items: center;
+      display: flex;
+      flex: 1;
+      font-weight: bold;
+      justify-content: flex-end;
+      text-decoration: underline;
+      white-space: nowrap;
+    }
   }
 
   @media @breakpoint-mobile {
-    align-items: flex-start;
-    display: grid;
     font-size: @font-size-small;
-    grid-auto-flow: column;
-    grid-auto-rows: auto;
-    grid-template-columns: [left] 1.125rem [right] 1fr;
-    grid-template-rows: 1fr auto;
     height: @global-banner-height-mobile;
     left: 0;
     line-height: 1rem;
     padding: 1rem 0.75rem;
 
-    > div {
+    > div:first-of-type {
       align-items: flex-start;
-      grid-column: left;
-      grid-row: 1 / span 1000;
     }
 
-    > span {
-      align-items: flex-start;
-      grid-area: auto / right;
-      margin-left: 1.125rem;
-      margin-right: 0;
-    }
+    > div:last-of-type {
+      display: block;
+      margin-left: 1rem;
 
-    > a {
-      grid-area: auto / right;
-      justify-content: flex-start;
-      margin-left: 1.125rem;
-      margin-top: 0.25rem;
+      > span {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      > a {
+        display: inline;
+        margin-left: 0.2rem;
+      }
     }
+  }
+
+  @media @breakpoint-mobile-small {
+    height: @global-banner-height-mobile-small;
   }
 }

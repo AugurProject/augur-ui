@@ -569,7 +569,8 @@ export default class AppView extends Component {
       blockchain.currentAugurTimestamp;
     const showCutoffBanner = blockchain.pastCutoff;
 
-    const globalBannerHeight = isMobile ? 75 : 42; // @global-banner-height-mobile and @global-banner-height
+    let globalBannerHeight = isMobile ? 65 : 42; // @global-banner-height-mobile and @global-banner-height
+    if (isMobileSmall) globalBannerHeight = 75;
 
     let top =
       !showForkingBanner && !showCutoffBanner ? "0" : globalBannerHeight;
