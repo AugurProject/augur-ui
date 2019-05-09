@@ -1,0 +1,73 @@
+@import (reference) '~assets/styles/shared';
+
+.GlobalCutoffBanner {
+  align-items: center;
+  background: @color-cuttoff-red;
+  color: black;
+  display: flex;
+  font-size: @font-size-normal;
+  height: @global-banner-height;
+  left: 0;
+  line-height: 21px;
+  padding: 0 1.5rem 0 1rem;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+
+  > div {
+    align-items: center;
+    display: flex;
+
+    > svg > path:last-of-type {
+      fill: black;
+    }
+  }
+
+  > span {
+    margin-left: 1rem;
+    margin-right: 100px;
+  }
+
+  > a {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    font-weight: bold;
+    justify-content: flex-end;
+    text-decoration: underline;
+  }
+
+  @media @breakpoint-mobile {
+    align-items: flex-start;
+    display: grid;
+    font-size: @font-size-small;
+    grid-auto-flow: column;
+    grid-auto-rows: auto;
+    grid-template-columns: [left] 1.125rem [right] 1fr;
+    grid-template-rows: 1fr auto;
+    height: @global-banner-height-mobile;
+    left: 0;
+    line-height: 1rem;
+    padding: 1rem 0.75rem;
+
+    > div {
+      align-items: flex-start;
+      grid-column: left;
+      grid-row: 1 / span 1000;
+    }
+
+    > span {
+      align-items: flex-start;
+      grid-area: auto / right;
+      margin-left: 1.125rem;
+      margin-right: 0;
+    }
+
+    > a {
+      grid-area: auto / right;
+      justify-content: flex-start;
+      margin-left: 1.125rem;
+      margin-top: 0.25rem;
+    }
+  }
+}

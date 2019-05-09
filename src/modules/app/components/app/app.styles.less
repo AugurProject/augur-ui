@@ -184,6 +184,14 @@ svg.SideBar__mobile-bars-unseen {
   &.MoveDown {
     top: @global-banner-height;
   }
+
+  @media @breakpoint-mobile {
+    height: @global-banner-height-mobile;
+
+    &.MoveDown {
+      top: @global-banner-height-mobile;
+    }
+  }
 }
 
 .InnerBanner {
