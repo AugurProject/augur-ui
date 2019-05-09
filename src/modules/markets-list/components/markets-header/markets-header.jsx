@@ -20,8 +20,10 @@ export default class MarketsHeader extends Component {
     sort: PropTypes.string.isRequired,
     maxFee: PropTypes.string.isRequired,
     hasOrders: PropTypes.bool.isRequired,
+    hidePostV2Markets: PropTypes.bool.isRequired,
     updateFilter: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -70,8 +72,10 @@ export default class MarketsHeader extends Component {
       sort,
       maxFee,
       hasOrders,
+      hidePostV2Markets,
       updateFilter,
-      history
+      history,
+      hasPositionsInCutoffMarkets
     } = this.props;
     const s = this.state;
 
@@ -79,17 +83,17 @@ export default class MarketsHeader extends Component {
       <article className={Styles.MarketsHeader}>
         <h1 className={Styles.MarketsHeader__heading}>{s.headerTitle}</h1>
         <div className={Styles.MarketsHeader__wrapper}>
-          <div className={Styles.MarketsHeader__filters}>
-            <FilterDropDowns
-              filter={filter}
-              sort={sort}
-              maxFee={maxFee}
-              hasOrders={hasOrders}
-              updateFilter={updateFilter}
-              history={history}
-              location={location}
-            />
-          </div>
+          <FilterDropDowns
+            filter={filter}
+            sort={sort}
+            maxFee={maxFee}
+            hasOrders={hasOrders}
+            hidePostV2Markets={hidePostV2Markets}
+            updateFilter={updateFilter}
+            history={history}
+            location={location}
+            hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}
+          />
           <div className={Styles.MarketsHeader__search}>
             <FilterSearch />
           </div>

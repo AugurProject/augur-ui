@@ -1,6 +1,7 @@
 @import (reference) '~assets/styles/shared';
 
 .Dropdown {
+  align-items: center;
   color: @color-lightgray;
   cursor: pointer;
   display: flex;
@@ -24,7 +25,7 @@
 .Dropdown__label {
   &:extend(.caps--medium);
 
-  padding: 0.5rem 1rem 0.5rem 0;
+  padding: 0.5rem 0.5rem 0.5rem 0;
 }
 
 .Dropdown__list {
@@ -76,8 +77,10 @@
   }
 
   .Dropdown__select {
+    color: @color-white;
     display: block;
     font-size: @font-size-medium;
+    text-transform: uppercase;
   }
 }
 

@@ -12,6 +12,7 @@ import { loadMarketsByFilter } from "modules/markets/actions/load-markets";
 import { buildSearchString } from "modules/markets/selectors/build-search-string";
 import debounce from "utils/debounce";
 import { loadDisputing } from "modules/reports/actions/load-disputing";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 
 const mapStateToProps = (state, { location }) => {
   const markets = selectMarkets(state);
@@ -23,6 +24,10 @@ const mapStateToProps = (state, { location }) => {
 
   const searchPhrase = buildSearchString(keywords, selectedTagNames);
 
+  const hasPositionsInCutoffMarkets = markets
+    .filter(market => isPastV2Cutoff(market.endTime.timestamp))
+    .filter(market => market && market.myPositionOutcomes);
+
   return {
     isLogged: state.authStatus.isLogged,
     universe: (state.universe || {}).id,
@@ -30,11 +35,13 @@ const mapStateToProps = (state, { location }) => {
     search: searchPhrase,
     isMobile: state.appStatus.isMobile,
     markets,
+    hasPositionsInCutoffMarkets: hasPositionsInCutoffMarkets.length > 0,
     category: selectedCategoryName,
     defaultFilter: state.filterSortOptions.marketFilter,
     defaultSort: state.filterSortOptions.marketSort,
     defaultMaxFee: state.filterSortOptions.maxFee,
-    defaultHasOrders: state.filterSortOptions.hasOrders
+    defaultHasOrders: state.filterSortOptions.hasOrders,
+    defaultHidePastCutoff: state.filterSortOptions.hidePostV2Markets
   };
 };
 

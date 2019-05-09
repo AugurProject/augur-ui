@@ -10,6 +10,7 @@ export default class MarketsView extends Component {
   static propTypes = {
     isLogged: PropTypes.bool.isRequired,
     markets: PropTypes.array.isRequired,
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     toggleFavorite: PropTypes.func.isRequired,
@@ -23,6 +24,7 @@ export default class MarketsView extends Component {
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
     defaultHasOrders: PropTypes.bool.isRequired,
+    defaultHidePastCutoff: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
 
@@ -40,6 +42,7 @@ export default class MarketsView extends Component {
       sort: props.defaultSort,
       maxFee: props.defaultMaxFee,
       hasOrders: props.defaultHasOrders,
+      hidePostV2Markets: props.defaultHidePastCutoff,
       filterSortedMarkets: []
     };
 
@@ -66,18 +69,18 @@ export default class MarketsView extends Component {
   }
 
   updateFilter(params) {
-    const { filter, sort, maxFee, hasOrders } = params;
+    const { filter, sort, maxFee, hasOrders, hidePostV2Markets } = params;
     this.setState(
-      { filter, sort, maxFee, hasOrders },
+      { filter, sort, maxFee, hasOrders, hidePostV2Markets },
       this.updateFilteredMarkets
     );
   }
 
   updateFilteredMarkets() {
     const { search, category, loadMarketsByFilter } = this.props;
-    const { filter, sort, maxFee, hasOrders } = this.state;
+    const { filter, sort, maxFee, hasOrders, hidePostV2Markets } = this.state;
     loadMarketsByFilter(
-      { category, search, filter, sort, maxFee, hasOrders },
+      { category, search, filter, sort, maxFee, hasOrders, hidePostV2Markets },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
         if (this.componentWrapper) this.setState({ filterSortedMarkets });
@@ -93,9 +96,17 @@ export default class MarketsView extends Component {
       loadMarketsInfoIfNotLoaded,
       location,
       markets,
-      toggleFavorite
+      toggleFavorite,
+      hasPositionsInCutoffMarkets
     } = this.props;
-    const { filter, sort, maxFee, hasOrders, filterSortedMarkets } = this.state;
+    const {
+      filter,
+      sort,
+      maxFee,
+      hasOrders,
+      hidePostV2Markets,
+      filterSortedMarkets
+    } = this.state;
 
     return (
       <section
@@ -114,8 +125,10 @@ export default class MarketsView extends Component {
           sort={sort}
           maxFee={maxFee}
           hasOrders={hasOrders}
+          hidePostV2Markets={hidePostV2Markets}
           updateFilter={this.updateFilter}
           history={history}
+          hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}
         />
         <MarketsList
           testid="markets"
