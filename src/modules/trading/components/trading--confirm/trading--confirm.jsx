@@ -66,7 +66,7 @@ const MarketTradingConfirm = ({
       title: "Market notice",
       description: [
         "ETH staked on this market is at risk. <font color='#EB5757'>Users are advised <strong>not to trade.</strong></font>",
-        `This market expires after the end-time cutoff date for the Augur v2 release phase. Markets ending after ${CUTOFF_READABLE} cannot be guaranteed to resolve correctly.`,
+        `This market expires after the end-time cutoff date for the Augur v2 release phase. Markets ending after ${CUTOFF_READABLE} are at a higher risk of resolving incorrectly.`,
         `<a href="https://docs.augur.net" rel="noopener noreferrer" target="_blank"><u>Read more about the V2 launch plan and how it may affect you</u></a>`
       ],
       cancelButtonText: "Cancel",

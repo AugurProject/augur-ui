@@ -20,8 +20,8 @@ const InnerBanner = ({ currentPath, style, className }) => (
       {currentPath === CREATE_MARKET && (
         <span>
           Due to a planned Augur v2 launch, no new markets can be created that
-          end after {CUTOFF_READABLE}. Any markets that end after this date
-          cannot be guaranteed to resolve correctly.
+          end after {CUTOFF_READABLE}. Any markets that end after this date are
+          at a higher risk of resolving incorrectly.
         </span>
       )}
       {(currentPath === DISPUTE || currentPath === REPORT) && (
@@ -34,8 +34,8 @@ const InnerBanner = ({ currentPath, style, className }) => (
       {currentPath === MARKET && (
         <span>
           This market expires after the cutoff date for the Augur v2 release
-          phase. Markets ending after {CUTOFF_READABLE} cannot be guaranteed to
-          resolve correctly.
+          phase. Markets ending after {CUTOFF_READABLE} are at a higher risk of
+          resolving incorrectly.
         </span>
       )}
       <a
