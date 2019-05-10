@@ -1,22 +1,19 @@
 @import (reference) "~assets/styles/shared";
 
 .FilterDropdowns {
-  display: flex;
-  flex-flow: row wrap;
+  > div {
+    display: flex;
+    flex-flow: row wrap;
+  }
 
-  > div > button:first-child {
+  > div > div > button:first-child {
     &:extend(.caps--medium);
 
     color: @color-white;
     white-space: nowrap;
   }
 
-  @media @breakpoint-mobile {
-    align-items: center;
-    flex-flow: row wrap;
-  }
-
-  > div > svg {
+  > div > div > svg {
     height: 18px;
     width: 17px;
 
@@ -25,8 +22,13 @@
     }
   }
 
-  > div {
+  > div > div {
     margin-right: 1.625rem;
+  }
+
+  @media @breakpoint-mobile {
+    align-items: center;
+    flex-flow: row wrap;
   }
 }
 
@@ -53,7 +55,7 @@
   }
 
   @media @breakpoint-mobile {
-    padding-left: 1rem;
+    padding-left: 0;
     padding-top: 0;
   }
 }
@@ -63,7 +65,7 @@
 
   > label {
     margin-bottom: 0;
-    padding: 0.4rem 2rem;
+    padding: 0.4rem 0 0.4rem 0.25rem;
     white-space: nowrap;
   }
 

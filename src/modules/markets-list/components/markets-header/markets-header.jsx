@@ -94,9 +94,7 @@ export default class MarketsHeader extends Component {
             location={location}
             hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}
           />
-          <div className={Styles.MarketsHeader__search}>
-            <FilterSearch />
-          </div>
+          <FilterSearch />
         </div>
       </article>
     );

@@ -205,32 +205,34 @@ export default class FilterSearch extends Component {
 
     return (
       <div className={Styles.FilterDropdowns}>
-        <Dropdown
-          default={defaultFilter}
-          onChange={this.changeFilterDropdown}
-          options={filterOptions}
-          alignLeft
-        />
-        <Dropdown
-          default={defaultSort}
-          onChange={this.changeSortDropdown}
-          options={sortOptions}
-        />
-        <Dropdown
-          default={defaultMaxFee}
-          onChange={this.changeMaxFees}
-          options={maxFeesOptions}
-        />
-        <div className={Styles.FilterDropdowns__hasOrders}>
-          <Checkbox
-            id="has-orders"
-            type="checkbox"
-            name="hasOrders"
-            isChecked={hasOrders}
-            value={hasOrders}
-            onClick={this.changeHasOrders}
-          />{" "}
-          <label htmlFor="has-orders">has open orders</label>
+        <div>
+          <Dropdown
+            default={defaultFilter}
+            onChange={this.changeFilterDropdown}
+            options={filterOptions}
+            alignLeft
+          />
+          <Dropdown
+            default={defaultSort}
+            onChange={this.changeSortDropdown}
+            options={sortOptions}
+          />
+          <Dropdown
+            default={defaultMaxFee}
+            onChange={this.changeMaxFees}
+            options={maxFeesOptions}
+          />
+          <div className={Styles.FilterDropdowns__hasOrders}>
+            <Checkbox
+              id="has-orders"
+              type="checkbox"
+              name="hasOrders"
+              isChecked={hasOrders}
+              value={hasOrders}
+              onClick={this.changeHasOrders}
+            />{" "}
+            <label htmlFor="has-orders">has open orders</label>
+          </div>
         </div>
         <div className={Styles.FilterDropdowns__hidePastCutoff}>
           <Checkbox
