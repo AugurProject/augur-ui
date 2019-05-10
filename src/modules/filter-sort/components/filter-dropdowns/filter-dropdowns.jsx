@@ -85,15 +85,6 @@ export default class FilterSearch extends Component {
     this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
   }
 
-  componentDidMount() {
-    if (
-      this.props.hasPositionsInCutoffMarkets &&
-      this.props.hidePostV2Markets
-    ) {
-      this.changeHidePastCutoff();
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (
       nextProps.hasPositionsInCutoffMarkets !==
