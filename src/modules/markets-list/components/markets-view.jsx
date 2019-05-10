@@ -71,7 +71,14 @@ export default class MarketsView extends Component {
   }
 
   updateFilter(params) {
-    const { filter, sort, maxFee, maxSpreadPercent, hasOrders, hidePostV2Markets } = params;
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hasOrders,
+      hidePostV2Markets
+    } = params;
     this.setState(
       { filter, sort, maxFee, maxSpreadPercent, hasOrders, hidePostV2Markets },
       this.updateFilteredMarkets
@@ -80,9 +87,25 @@ export default class MarketsView extends Component {
 
   updateFilteredMarkets() {
     const { search, category, loadMarketsByFilter } = this.props;
-    const { filter, sort, maxFee, maxSpreadPercent, hasOrders, hidePostV2Markets } = this.state;
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hasOrders,
+      hidePostV2Markets
+    } = this.state;
     loadMarketsByFilter(
-      { category, search, filter, sort, maxFee, maxSpreadPercent, hasOrders, hidePostV2Markets },
+      {
+        category,
+        search,
+        filter,
+        sort,
+        maxFee,
+        maxSpreadPercent,
+        hasOrders,
+        hidePostV2Markets
+      },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
         if (this.componentWrapper) this.setState({ filterSortedMarkets });

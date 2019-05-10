@@ -96,6 +96,7 @@ export default class MarketsHeader extends Component {
               history={history}
               location={location}
               hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}
+              maxSpreadPercent={maxSpreadPercent}
             />
           </div>
           <div className={Styles.MarketsHeader__search}>

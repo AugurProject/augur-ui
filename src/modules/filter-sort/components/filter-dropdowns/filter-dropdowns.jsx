@@ -132,12 +132,20 @@ export default class FilterSearch extends Component {
       updateFilter,
       maxFee,
       maxSpreadPercent,
-      hasOrders
+      hasOrders,
+      hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateSortOption(value);
-    updateFilter({ filter, sort: value, maxFee, maxSpreadPercent, hasOrders });
+    updateFilter({
+      filter,
+      sort: value,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets,
+      hasOrders
+    });
   }
 
   changeFilterDropdown(value) {
@@ -147,12 +155,20 @@ export default class FilterSearch extends Component {
       updateFilter,
       maxFee,
       maxSpreadPercent,
-      hasOrders
+      hasOrders,
+      hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateFilterOption(value);
-    updateFilter({ filter: value, sort, maxFee, maxSpreadPercent, hasOrders });
+    updateFilter({
+      filter: value,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets,
+      hasOrders
+    });
   }
 
   changeMaxFees(maxFee) {
@@ -162,12 +178,20 @@ export default class FilterSearch extends Component {
       updateMaxFee,
       maxSpreadPercent,
       hasOrders,
-      updateFilter
+      updateFilter,
+      hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateMaxFee(maxFee);
-    updateFilter({ filter, sort, maxFee, maxSpreadPercent, hasOrders });
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets,
+      hasOrders
+    });
   }
 
   changeMaxSpread(maxSpreadPercent) {
@@ -177,12 +201,20 @@ export default class FilterSearch extends Component {
       maxFee,
       updateMaxSpread,
       hasOrders,
-      updateFilter
+      updateFilter,
+      hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateMaxSpread(maxSpreadPercent);
-    updateFilter({ filter, sort, maxFee, maxSpreadPercent, hasOrders });
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets,
+      hasOrders
+    });
   }
 
   changeHidePastCutoff() {

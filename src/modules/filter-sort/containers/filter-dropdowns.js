@@ -8,7 +8,7 @@ import {
   MARKET_SORT,
   MARKET_MAX_FEES,
   MARKET_MAX_SPREAD,
-  HAS_OPEN_ORDERS
+  HAS_OPEN_ORDERS,
   PAST_CUTOFF
 } from "modules/filter-sort/actions/update-filter-sort-options";
 
