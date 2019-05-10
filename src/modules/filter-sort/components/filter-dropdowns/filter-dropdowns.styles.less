@@ -11,8 +11,10 @@
 }
 
 .FilterDropdowns {
-  display: flex;
-  flex-flow: row nowrap;
+  > div {
+    display: flex;
+    flex-flow: row wrap;
+  }
 
   @media @breakpoint-mobile {
     align-items: center;
@@ -32,9 +34,35 @@
   > div {
     margin-right: 1.5rem;
   }
+
+  > div > div > button:first-child {
+    &:extend(.caps--medium);
+
+    color: @color-white;
+    white-space: nowrap;
+  }
+
+  > div > div > svg {
+    height: 18px;
+    width: 17px;
+
+    > path {
+      stroke: @color-lightgray;
+    }
+  }
+
+  > div > div {
+    margin-right: 1.625rem;
+  }
+
+  @media @breakpoint-mobile {
+    align-items: center;
+    flex-flow: row wrap;
+  }
 }
 
-.FilterDropdowns__hasOrders {
+.FilterDropdowns__hasOrders,
+.FilterDropdowns__hidePastCutoff {
   align-items: center;
   color: @color-white;
   display: flex;
@@ -44,8 +72,17 @@
   > label {
     font-size: @font-size-medium;
     font-weight: 400;
+  }
+}
+
+.FilterDropdowns__hasOrders {
+  padding: 0 1.625rem 0 0;
+
+  > label {
+    font-size: @font-size-medium;
+    font-weight: 400;
     margin-bottom: 0;
-    padding: 0.4rem 2rem;
+    padding: 0.4rem 0 0.4rem 2rem;
     white-space: nowrap;
   }
 
@@ -54,5 +91,20 @@
     margin-right: 0;
     margin-top: 0.75rem;
     padding-left: 0;
+    padding-top: 0;
+  }
+}
+
+.FilterDropdowns__hidePastCutoff {
+  margin-top: 0.8125rem;
+
+  > label {
+    margin-bottom: 0;
+    padding: 0.4rem 0 0.4rem 0.25rem;
+    white-space: nowrap;
+  }
+
+  @media @breakpoint-mobile {
+    padding: 0 0 1rem;
   }
 }

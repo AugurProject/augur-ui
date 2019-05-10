@@ -37,8 +37,10 @@ import { RewriteUrlParams } from "src/modules/app/hocs/rewrite-url-params";
 import { windowRef } from "src/utils/window-ref";
 import isGlobalWeb3 from "modules/auth/helpers/is-global-web3";
 import { logout } from "modules/auth/actions/logout";
+import { MARKET_ID_PARAM_NAME } from "modules/routes/constants/param-names";
+import parseQuery from "modules/routes/helpers/parse-query";
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   blockchain: selectBlockchainState(state),
   categories: selectCategoriesState(state),
   connection: selectConnectionState(state),
@@ -57,7 +59,11 @@ const mapStateToProps = state => ({
   portfolio: portfolio(),
   universe: selectUniverseState(state),
   url: selectUrlState(state),
-  useWeb3Transport: isGlobalWeb3()
+  useWeb3Transport: isGlobalWeb3(),
+  market:
+    state.marketsData[
+      parseQuery(ownProps.location.search)[MARKET_ID_PARAM_NAME]
+    ]
 });
 
 const mapDispatchToProps = dispatch => ({

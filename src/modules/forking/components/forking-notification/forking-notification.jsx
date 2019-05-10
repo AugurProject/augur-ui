@@ -37,7 +37,8 @@ class ForkingNotification extends Component {
       doesUserHaveRep,
       marginLeft,
       universe,
-      finalizeMarket
+      finalizeMarket,
+      pastCutoff
     } = this.props;
     const {
       forkEndTime,
@@ -94,6 +95,7 @@ class ForkingNotification extends Component {
             finalizeMarket={finalizeMarket}
             isForkingMarketFinalized={isForkingMarketFinalized}
             marginLeft={marginLeft}
+            pastCutoff={pastCutoff}
           />
         )}
       </section>
@@ -107,11 +109,13 @@ ForkingNotification.propTypes = {
   currentTime: PropTypes.number.isRequired,
   doesUserHaveRep: PropTypes.bool.isRequired,
   marginLeft: PropTypes.number,
-  finalizeMarket: PropTypes.func.isRequired
+  finalizeMarket: PropTypes.func.isRequired,
+  pastCutoff: PropTypes.bool
 };
 
 ForkingNotification.defaultProps = {
-  marginLeft: 0
+  marginLeft: 0,
+  pastCutoff: false
 };
 
 export default ForkingNotification;

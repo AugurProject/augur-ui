@@ -1,18 +1,17 @@
 @import (reference) '~assets/styles/shared';
 
-.InnerBanner {
+.GlobalCutoffBanner {
   align-items: center;
   background: @color-cuttoff-red;
   color: black;
   display: flex;
   font-size: @font-size-normal;
-  height: @inner-banner-height;
-  left: 4.5rem;
+  height: @global-banner-height;
+  left: 0;
   line-height: 21px;
-  padding: 0 2rem;
+  padding: 0 1.5rem 0 1rem;
   position: absolute;
   right: 0;
-  top: @top-bar-height; // have to be under core stats bar
   z-index: 10;
 
   > div:first-of-type {
@@ -25,11 +24,12 @@
   }
 
   > div:last-of-type {
+    align-items: center;
     display: flex;
+    flex: 1;
 
     > span {
-      margin-left: 1.75rem;
-      margin-right: 100px;
+      margin-left: 1rem;
     }
 
     > a {
@@ -44,13 +44,11 @@
   }
 
   @media @breakpoint-mobile {
-    align-items: center;
     font-size: @font-size-small;
-    height: @inner-banner-height-mobile;
+    height: @global-banner-height-mobile;
     left: 0;
     line-height: 1rem;
     padding: 1rem 0.75rem;
-    top: @top-bar-height-mobile;
 
     > div:first-of-type {
       align-items: flex-start;
@@ -73,6 +71,6 @@
   }
 
   @media @breakpoint-mobile-small {
-    height: @inner-banner-height-mobile-small;
+    height: @global-banner-height-mobile-small;
   }
 }

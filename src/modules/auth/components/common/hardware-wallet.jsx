@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { createBigNumber } from "utils/create-big-number";
 import DerivationPath, {
   DEFAULT_DERIVATION_PATH,
-  DERIVATION_PATHS,
+  DERIVATION_PATH_TREZOR,
+  DERIVATION_PATH_LEDGER,
   NUM_DERIVATION_PATHS_TO_DISPLAY
 } from "modules/auth/helpers/derivation-path";
 import classNames from "classnames";
@@ -151,7 +152,7 @@ export default class HardwareWallet extends Component {
   }
 
   async getWalletAddressesWithBalance() {
-    const { validation, setIsLoading } = this.props;
+    const { validation, setIsLoading, walletName } = this.props;
     if (!validation()) {
       this.updateDisplayInstructions(true);
       setIsLoading(false);
@@ -162,8 +163,11 @@ export default class HardwareWallet extends Component {
 
     this.updateDisplayInstructions(false);
 
+    const derivationPath =
+      walletName === "ledger" ? DERIVATION_PATH_LEDGER : DERIVATION_PATH_TREZOR;
+
     const walletAddresses = await this.getBulkWalletAddressesWithBalances(
-      DERIVATION_PATHS,
+      derivationPath,
       1
     );
 

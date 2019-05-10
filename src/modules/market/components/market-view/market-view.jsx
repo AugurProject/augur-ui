@@ -69,7 +69,8 @@ export default class MarketView extends Component {
   }
 
   componentDidMount() {
-    this.node.scrollIntoView();
+    this.node.scrollIntoView(true);
+    window.scrollBy(0, -200);
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -151,11 +152,13 @@ export default class MarketView extends Component {
     const s = this.state;
 
     return (
-      <section
-        ref={node => {
-          this.node = node;
-        }}
-      >
+      <section style={{ position: "relative" }}>
+        <div
+          ref={node => {
+            this.node = node;
+          }}
+          className={Styles.ScrollTarget}
+        />
         <Helmet>
           <title>{parseMarketTitle(description)}</title>
         </Helmet>

@@ -21,8 +21,10 @@ export default class MarketsHeader extends Component {
     maxFee: PropTypes.string.isRequired,
     maxSpreadPercent: PropTypes.string.isRequired,
     hasOrders: PropTypes.bool.isRequired,
+    hidePostV2Markets: PropTypes.bool.isRequired,
     updateFilter: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -72,8 +74,10 @@ export default class MarketsHeader extends Component {
       maxFee,
       maxSpreadPercent,
       hasOrders,
+      hidePostV2Markets,
       updateFilter,
-      history
+      history,
+      hasPositionsInCutoffMarkets
     } = this.props;
     const s = this.state;
 
@@ -86,11 +90,12 @@ export default class MarketsHeader extends Component {
               filter={filter}
               sort={sort}
               maxFee={maxFee}
-              maxSpreadPercent={maxSpreadPercent}
               hasOrders={hasOrders}
+              hidePostV2Markets={hidePostV2Markets}
               updateFilter={updateFilter}
               history={history}
               location={location}
+              hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}
             />
           </div>
           <div className={Styles.MarketsHeader__search}>

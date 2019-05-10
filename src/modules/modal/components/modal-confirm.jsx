@@ -15,7 +15,7 @@ const ModalConfirm = ({
   submitButtonText,
   cancelAction
 }) => (
-  <section className={Styles.ModalContainer}>
+  <section className={`${Styles.ModalContainer} ${Styles.ModalConfirm}`}>
     <h1>{title}</h1>
     {description.map(text => (
       <ModalDescription text={text} key={text} />

@@ -5,6 +5,8 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 import classNames from "classnames";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { MARKET, BUY, LIMIT, SELL } from "modules/transactions/constants/types";
+import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 import { CreateMarketEdit, Hint } from "modules/common/components/icons";
@@ -23,7 +25,9 @@ const MarketTradingConfirm = ({
   marketQuantity,
   handleFilledOnly,
   marketReviewModal,
-  marketReviewSeen
+  marketCutoffModal,
+  marketReviewSeen,
+  closeModal
 }) => {
   const {
     numShares,
@@ -37,6 +41,43 @@ const MarketTradingConfirm = ({
     shareCost
   } = trade;
   const negativeProfit = potentialEthProfit && potentialEthProfit.value <= 0;
+
+  const placeTrade = e => {
+    market.onSubmitPlaceTrade(
+      selectedOutcome.id,
+      (err, tradeGroupID) => {
+        // onSent/onFailed CB
+        if (!err) {
+          showOrderPlaced();
+        }
+      },
+      res => {
+        if (doNotCreateOrders && res.res !== res.sharesToFill)
+          handleFilledOnly(res.tradeInProgress);
+        // onComplete CB
+      },
+      doNotCreateOrders
+    );
+    prevPage(e, true);
+  };
+
+  const showMarketCutoffModal = () => {
+    marketCutoffModal({
+      title: "Market notice",
+      description: [
+        "ETH staked on this market is at risk. <font color='#EB5757'>Users are advised <strong>not to trade.</strong></font>",
+        `This market expires after the end-time cutoff date for the Augur v2 release phase. Markets ending after ${CUTOFF_READABLE} cannot be guaranteed to resolve correctly.`,
+        `<a href="https://docs.augur.net" rel="noopener noreferrer" target="_blank"><u>Read more about the V2 launch plan and how it may affect you</u></a>`
+      ],
+      cancelButtonText: "Cancel",
+      submitAction: () => {
+        placeTrade();
+        closeModal();
+      },
+      submitButtonText: "Proceed Anyway"
+    });
+  };
+
   return (
     <section className={Styles.TradingConfirm}>
       <div className={Styles.TradingConfirm__header}>
@@ -220,45 +261,18 @@ const MarketTradingConfirm = ({
           className={Styles["TradingConfirmation__button--submit"]}
           onClick={e => {
             e.preventDefault();
-            if (!marketReviewSeen) {
+            if (isPastV2Cutoff(market.endTime.timestamp)) {
+              showMarketCutoffModal();
+            } else if (!marketReviewSeen) {
               marketReviewModal({
                 marketId: market.id,
                 cb: () => {
-                  market.onSubmitPlaceTrade(
-                    selectedOutcome.id,
-                    (err, tradeGroupID) => {
-                      // onSent/onFailed CB
-                      if (!err) {
-                        showOrderPlaced();
-                      }
-                    },
-                    res => {
-                      if (doNotCreateOrders && res.res !== res.sharesToFill)
-                        handleFilledOnly(res.tradeInProgress);
-                      // onComplete CB
-                    },
-                    doNotCreateOrders
-                  );
-                  prevPage(e, true);
+                  closeModal();
+                  placeTrade(e);
                 }
               });
             } else {
-              market.onSubmitPlaceTrade(
-                selectedOutcome.id,
-                (err, tradeGroupID) => {
-                  // onSent/onFailed CB
-                  if (!err) {
-                    showOrderPlaced();
-                  }
-                },
-                res => {
-                  if (doNotCreateOrders && res.res !== res.sharesToFill)
-                    handleFilledOnly(res.tradeInProgress);
-                  // onComplete CB
-                },
-                doNotCreateOrders
-              );
-              prevPage(e, true);
+              placeTrade(e);
             }
           }}
         >
@@ -292,7 +306,9 @@ MarketTradingConfirm.propTypes = {
   isMobile: PropTypes.bool.isRequired,
   showOrderPlaced: PropTypes.func.isRequired,
   handleFilledOnly: PropTypes.func.isRequired,
-  marketReviewModal: PropTypes.func.isRequired
+  marketReviewModal: PropTypes.func.isRequired,
+  marketCutoffModal: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired
 };
 
 export default MarketTradingConfirm;

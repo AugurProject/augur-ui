@@ -84,8 +84,11 @@ export default class FilterSearch extends Component {
     updateMaxFee: PropTypes.func.isRequired,
     updateMaxSpread: PropTypes.func.isRequired,
     updateHasOpenOrders: PropTypes.func.isRequired,
+    hidePostV2Markets: PropTypes.bool.isRequired,
+    updateHidePostV2Markets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -96,6 +99,18 @@ export default class FilterSearch extends Component {
     this.changeMaxSpread = this.changeMaxSpread.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
     this.changeHasOrders = this.changeHasOrders.bind(this);
+    this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.hasPositionsInCutoffMarkets !==
+        this.props.hasPositionsInCutoffMarkets &&
+      nextProps.hasPositionsInCutoffMarkets &&
+      this.props.hidePostV2Markets
+    ) {
+      this.changeHidePastCutoff();
+    }
   }
 
   goToPageOne() {
@@ -170,6 +185,26 @@ export default class FilterSearch extends Component {
     updateFilter({ filter, sort, maxFee, maxSpreadPercent, hasOrders });
   }
 
+  changeHidePastCutoff() {
+    const {
+      filter,
+      sort,
+      maxFee,
+      updateFilter,
+      hasOrders,
+      hidePostV2Markets,
+      updateHidePostV2Markets
+    } = this.props;
+    updateHidePostV2Markets(!hidePostV2Markets);
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      hasOrders,
+      hidePostV2Markets: !hidePostV2Markets
+    });
+  }
+
   changeHasOrders(event) {
     const {
       filter,
@@ -177,6 +212,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       updateFilter,
+      hidePostV2Markets,
       hasOrders,
       updateHasOpenOrders
     } = this.props;
@@ -187,6 +223,7 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
+      hidePostV2Markets,
       hasOrders: hasOpenOrders
     });
   }
@@ -197,12 +234,13 @@ export default class FilterSearch extends Component {
       defaultSort,
       defaultMaxFee,
       defaultMaxSpread,
-      hasOrders
+      hasOrders,
+      hidePostV2Markets
     } = this.props;
 
     return (
-      <div className={Styles.FilterDropdowns__container}>
-        <div className={Styles.FilterDropdowns}>
+      <div className={Styles.FilterDropdowns}>
+        <div>
           <Dropdown
             default={defaultFilter}
             onChange={this.changeFilterDropdown}
@@ -235,6 +273,19 @@ export default class FilterSearch extends Component {
             />{" "}
             <label htmlFor="has-orders">has open orders</label>
           </div>
+        </div>
+        <div className={Styles.FilterDropdowns__hidePastCutoff}>
+          <Checkbox
+            id="post-cutoff"
+            type="checkbox"
+            name="hidePostV2Markets"
+            isChecked={hidePostV2Markets}
+            value={hidePostV2Markets}
+            onClick={this.changeHidePastCutoff}
+          />{" "}
+          <label htmlFor="post-cutoff">
+            hide markets ending post v2 cut-off
+          </label>
         </div>
       </div>
     );

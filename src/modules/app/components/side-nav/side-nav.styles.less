@@ -21,7 +21,16 @@
   }
 
   .disabled {
-    pointer-events: none;
+    > a {
+      &:hover {
+        background: none;
+        cursor: default;
+      }
+
+      &:active {
+        pointer-events: none;
+      }
+    }
 
     > li,
     > a,
@@ -229,6 +238,22 @@
       a {
         padding: 0.75rem;
       }
+    }
+  }
+}
+
+p.InnerTooltip {
+  > a {
+    display: inline;
+    font-weight: bold;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    text-decoration: underline;
+
+    &:hover {
+      background: none;
     }
   }
 }

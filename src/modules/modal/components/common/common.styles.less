@@ -4,6 +4,7 @@
   background-color: @color-modal-veil;
   height: 100vh;
   position: fixed;
+  top: 0;
   width: 100vw;
   z-index: @mask-modal;
 }
@@ -640,6 +641,19 @@ div.ErrorField:focus {
     border: 0;
     margin: 0;
     padding: 0;
+  }
+}
+
+.ModalConfirm {
+  > p {
+    font-size: @font-size-medium;
+    margin-bottom: 1.25rem;
+    padding: 0 2rem;
+    text-align: left;
+  }
+
+  > p:last-of-type {
+    margin-bottom: 2.25rem;
   }
 }
 

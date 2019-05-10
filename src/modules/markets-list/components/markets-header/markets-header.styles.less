@@ -27,17 +27,17 @@
   margin-bottom: 1rem;
 }
 
-.MarketsHeader__filters {
-  align-self: flex-end;
-  display: flex;
-  flex-grow: 1;
-}
-
 .MarketsHeader__wrapper {
-  align-items: center;
+  align-items: flex-end;
   display: flex;
   flex-grow: 1;
   margin-top: 1.125rem;
+
+  > article {
+    display: flex;
+    flex: 2;
+    justify-content: flex-end;
+  }
 }
 
 @media @breakpoint-mobile {
@@ -48,7 +48,9 @@
 
 @media @breakpoint-mobile {
   .MarketsHeader__wrapper {
-    display: block;
+    //display: block;
+    align-items: baseline;
+    display: flex;
     flex-direction: column;
     margin-top: 2.25rem;
   }

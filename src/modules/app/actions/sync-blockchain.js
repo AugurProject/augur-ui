@@ -3,6 +3,7 @@ import { updateBlockchain } from "modules/app/actions/update-blockchain";
 import { updateAssets } from "modules/auth/actions/update-assets";
 import { createBigNumber } from "utils/create-big-number";
 import { loadGasPriceInfo } from "modules/app/actions/load-gas-price-info";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 
 const GET_GAS_BLOCK_LIMIT = 100;
 
@@ -11,6 +12,7 @@ export const syncBlockchain = () => (dispatch, getState) => {
   const blockNumber = parseInt(augur.rpc.getCurrentBlock().number, 16);
   augur.api.Controller.getTimestamp((err, augurTimestamp) => {
     if (err) console.error(err);
+    const currentAugurTimestamp = parseInt(augurTimestamp, 10);
     dispatch(
       updateBlockchain({
         currentBlockNumber: blockNumber,
@@ -18,7 +20,8 @@ export const syncBlockchain = () => (dispatch, getState) => {
           augur.rpc.getCurrentBlock().timestamp,
           16
         ),
-        currentAugurTimestamp: parseInt(augurTimestamp, 10)
+        currentAugurTimestamp,
+        pastCutoff: isPastV2Cutoff(currentAugurTimestamp)
       })
     );
 

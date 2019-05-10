@@ -1829,3 +1829,9 @@ export const Info = (
     />
   </svg>
 );
+
+export const downArrow = (
+  <svg viewBox="0 0 17 18" fill="none">
+    <path d="M14.5208 7.15686L8.15685 13.5208L1.79289 7.15686" />
+  </svg>
+);

@@ -27,6 +27,7 @@ import Logo from "modules/app/components/logo/logo";
 import Routes from "modules/routes/components/routes/routes";
 import NotificationsContainer from "modules/notifications/containers/notifications-view";
 import InnerBanner from "modules/app/components/inner-banner/inner-banner";
+import GlobalCutoffBanner from "modules/app/components/global-cutoff-banner/global-cutoff-banner";
 
 import MobileNavHamburgerIcon from "modules/common/components/mobile-nav-hamburger-icon";
 import MobileNavCloseIcon from "modules/common/components/mobile-nav-close-icon";
@@ -38,16 +39,16 @@ import NavCreateIcon from "modules/common/components/nav-create-icon";
 import NavMarketsIcon from "modules/common/components/nav-markets-icon";
 import NavPortfolioIcon from "modules/common/components/nav-portfolio-icon";
 import { NavReportingIcon } from "modules/common/components/icons";
-
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import parsePath from "modules/routes/helpers/parse-path";
 import parseQuery from "modules/routes/helpers/parse-query";
 
 import getValue from "utils/get-value";
 
 import {
-  // MARKET,
-  // REPORT,
-  // DISPUTE,
+  MARKET,
+  REPORT,
+  DISPUTE,
   MARKETS,
   ACCOUNT_DEPOSIT,
   ACCOUNT_WITHDRAW,
@@ -121,14 +122,16 @@ export default class AppView extends Component {
     ethereumNodeHttp: PropTypes.string,
     ethereumNodeWs: PropTypes.string,
     useWeb3Transport: PropTypes.bool,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    market: PropTypes.object
   };
 
   static defaultProps = {
     augurNode: null,
     ethereumNodeHttp: null,
     ethereumNodeWs: null,
-    useWeb3Transport: false
+    useWeb3Transport: false,
+    market: null
   };
 
   constructor(props) {
@@ -157,7 +160,8 @@ export default class AppView extends Component {
         icon: NavCreateIcon,
         route: CREATE_MARKET,
         requireLogin: true,
-        disabled: this.props.universe.isForking
+        disabled:
+          this.props.universe.isForking || this.props.blockchain.pastCutoff
       },
       {
         title: "Portfolio",
@@ -278,15 +282,22 @@ export default class AppView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { isMobile, location, universe } = this.props;
+    const { isMobile, location, universe, blockchain } = this.props;
     if (isMobile !== nextProps.isMobile) {
       this.setState({
         mobileMenuState: mobileMenuStates.CLOSED
       });
     }
 
-    if (!isEqual(universe.isForking, nextProps.universe.isForking)) {
-      this.sideNavMenuData[1].disabled = nextProps.universe.isForking;
+    if (
+      (!isEqual(universe.isForking, nextProps.universe.isForking) ||
+        !isEqual(blockchain.pastCutoff, nextProps.blockchain.pastCutoff)) &&
+      !this.sideNavMenuData[1].disabled
+    ) {
+      this.sideNavMenuData[1].disabled =
+        nextProps.universe.isForking || nextProps.blockchain.pastCutoff;
+      this.sideNavMenuData[1].showCutoffTooltip =
+        nextProps.blockchain.pastCutoff;
     }
 
     if (!isEqual(location, nextProps.location)) {
@@ -514,7 +525,8 @@ export default class AppView extends Component {
       universe,
       isLoading,
       finalizeMarket,
-      isMobileSmall
+      isMobileSmall,
+      market
     } = this.props;
     const s = this.state;
 
@@ -542,23 +554,80 @@ export default class AppView extends Component {
       tagsMargin = 110 * subMenu.scalar;
     }
 
-    const showBanner = currentPath === CREATE_MARKET;
-    // currentPath === MARKET ||
-    // currentPath === DISPUTE ||
-    // currentPath === REPORT;
+    const showInnerBanner =
+      currentPath === CREATE_MARKET ||
+      ((currentPath === MARKET ||
+        currentPath === DISPUTE ||
+        currentPath === REPORT) &&
+        market &&
+        isPastV2Cutoff(market.endTime));
+
+    const showForkingBanner =
+      universe.forkEndTime &&
+      universe.forkEndTime !== "0" &&
+      blockchain &&
+      blockchain.currentAugurTimestamp;
+    const showCutoffBanner = blockchain.pastCutoff;
+
+    let globalBannerHeight = isMobile ? 65 : 42; // @global-banner-height-mobile and @global-banner-height
+    if (isMobileSmall) globalBannerHeight = 75;
+
+    let top =
+      !showForkingBanner && !showCutoffBanner ? "0" : globalBannerHeight;
+    if (showForkingBanner && showCutoffBanner) {
+      top = globalBannerHeight + globalBannerHeight;
+    }
+
+    const innerStyle = {
+      top: top + "px"
+    };
 
     return (
-      <main>
+      <main style={{ position: "relative" }}>
+        {showForkingBanner && (
+          <section className={Styles.GlobalBanner}>
+            <ForkingNotification
+              location={location}
+              universe={universe}
+              currentTime={blockchain.currentAugurTimestamp}
+              doesUserHaveRep={loginAccount.rep > 0}
+              finalizeMarket={finalizeMarket}
+              pastCutoff={blockchain.pastCutoff}
+            />
+          </section>
+        )}
+        {showCutoffBanner && (
+          <section
+            className={classNames(Styles.GlobalBanner, {
+              [Styles.MoveDown]: showForkingBanner
+            })}
+          >
+            <GlobalCutoffBanner />
+          </section>
+        )}
         <Helmet
           defaultTitle="Decentralized Prediction Markets | Augur"
           titleTemplate="%s | Augur"
         />
-        {showBanner && <InnerBanner currentPath={currentPath} />}
-        <NotificationBarContainer moveDown={showBanner} />
+        {showInnerBanner && (
+          <InnerBanner
+            currentPath={currentPath}
+            style={innerStyle}
+            className={Styles.InnerBanner}
+          />
+        )}
+        <NotificationBarContainer
+          style={innerStyle}
+          className={classNames(Styles.InnerBanner, {
+            [Styles.NotificationBar]: showInnerBanner
+          })}
+        />
         {Object.keys(modal).length !== 0 && <Modal />}
         <div
           className={classNames(Styles.App, {
-            [Styles[`App--blur`]]: Object.keys(modal).length !== 0
+            [Styles[`App--blur`]]: Object.keys(modal).length !== 0,
+            [Styles.MoveDown]: showForkingBanner || showCutoffBanner,
+            [Styles.MoveDownDouble]: showForkingBanner && showCutoffBanner
           })}
         >
           <section className={Styles.App__loadingIndicator} />
@@ -602,22 +671,6 @@ export default class AppView extends Component {
               notificationsVisible={isLogged && s.isNotificationsVisible}
               toggleNotifications={() => this.toggleNotifications()}
             />
-            {universe.forkEndTime &&
-              universe.forkEndTime !== "0" &&
-              blockchain &&
-              blockchain.currentAugurTimestamp && (
-                <section className={Styles.TopBar}>
-                  <ForkingNotification
-                    location={location}
-                    universe={universe}
-                    currentTime={blockchain.currentAugurTimestamp}
-                    doesUserHaveRep={loginAccount.rep > 0}
-                    marginLeft={tagsMargin}
-                    finalizeMarket={finalizeMarket}
-                  />
-                </section>
-              )}
-
             <section
               className={Styles.Main__wrap}
               style={{ marginLeft: categoriesMargin }}
@@ -638,7 +691,10 @@ export default class AppView extends Component {
               {!InnerNav && <div className="no-nav-placehold" />}
               <section
                 className={classNames(Styles.Main__content, {
-                  [Styles.MoveDown]: showBanner
+                  [Styles.MoveDown]: showInnerBanner,
+                  [Styles.IncrHeight]: showForkingBanner || showCutoffBanner,
+                  [Styles.IncrHeightDouble]:
+                    showForkingBanner && showCutoffBanner
                 })}
                 style={{
                   marginLeft: tagsMargin

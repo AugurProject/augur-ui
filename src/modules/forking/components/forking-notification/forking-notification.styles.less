@@ -7,12 +7,51 @@
 }
 
 .ForkingNotification {
-  background: @color-pink;
+  background: @color-clay-red;
   height: 100%;
-  padding-left: 13.6rem;
+  padding-left: 1rem;
 
   section {
     display: flex;
+
+    @media @breakpoint-mobile {
+      align-items: flex-start;
+      display: grid;
+      font-size: @font-size-small;
+      grid-auto-flow: column;
+      grid-auto-rows: auto;
+      grid-template-columns: [left] 1.125rem [right] 1fr;
+      grid-template-rows: 1fr auto;
+      height: @global-banner-height-mobile;
+      left: 0;
+      line-height: 1rem;
+      padding: 1rem 0.75rem;
+
+      > img {
+        align-items: flex-start;
+        grid-column: left;
+        grid-row: 1 / span 1000;
+        margin: 0;
+      }
+
+      > div:first-of-type {
+        align-items: flex-start;
+        grid-area: auto / right;
+        margin-left: 1.125rem;
+        margin-right: 0;
+      }
+
+      > div:last-of-type {
+        grid-area: auto / right;
+        justify-content: flex-start;
+        margin-left: 1.125rem;
+        margin-top: 0.25rem;
+      }
+    }
+
+    @media @breakpoint-mobile-small {
+      height: @global-banner-height-mobile-small;
+    }
   }
 }
 
@@ -20,8 +59,8 @@
   color: white;
   font-size: 0.875rem;
   line-height: 2.65rem;
-  margin-left: 1em;
-  text-transform: uppercase;
+  margin-left: 1.25rem;
+  text-transform: capitalize;
 }
 
 .ForkingNotification__AlertIcon {
@@ -42,7 +81,7 @@
 
 .ForkingNotification__addition_details_button {
   margin-bottom: auto;
-  margin-right: 6em;
+  margin-right: 1.5rem;
   margin-top: auto;
   text-transform: uppercase;
 }
@@ -53,7 +92,7 @@
 
 @media @breakpoint-mobile {
   .ForkingNotification {
-    padding: 2rem 1.5em 0.5em;
+    padding: 0;
   }
 
   .ForkingNotification__SubContainer {
@@ -70,6 +109,7 @@
   }
 
   .ForkingNotification__addition_details_button {
+    font-weight: bold;
     margin-bottom: auto;
     margin-right: 0.5em;
     margin-top: auto;

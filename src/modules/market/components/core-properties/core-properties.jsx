@@ -19,6 +19,7 @@ import {
   TYPE_DISPUTE
 } from "modules/markets/constants/link-types";
 import MarketHeaderMessage from "modules/market/containers/market-header-message";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 
 const Property = ({ numRow, property }) => (
   <div
@@ -463,7 +464,10 @@ export default class CoreProperties extends Component {
             </div>
           </div>
         )}
-        <MarketHeaderMessage marketId={market.id} />
+        <MarketHeaderMessage
+          marketId={market.id}
+          show={!isPastV2Cutoff(getValue(market, "endTime.timestamp"))}
+        />
         {renderedProperties}
       </div>
     );

@@ -9,6 +9,7 @@ import {
   MARKET_MAX_FEES,
   MARKET_MAX_SPREAD,
   HAS_OPEN_ORDERS
+  PAST_CUTOFF
 } from "modules/filter-sort/actions/update-filter-sort-options";
 
 const mapStateToProps = state => ({
@@ -28,7 +29,9 @@ const mapDispatchToProps = dispatch => ({
   updateMaxSpread: maxSpreadPercent =>
     dispatch(updateFilterSortOptions(MARKET_MAX_SPREAD, maxSpreadPercent)),
   updateHasOpenOrders: hasOpenOrders =>
-    dispatch(updateFilterSortOptions(HAS_OPEN_ORDERS, hasOpenOrders))
+    dispatch(updateFilterSortOptions(HAS_OPEN_ORDERS, hasOpenOrders)),
+  updateHidePostV2Markets: hidePostV2Markets =>
+    dispatch(updateFilterSortOptions(PAST_CUTOFF, hidePostV2Markets))
 });
 
 const FilterDropdownsContainer = withRouter(
