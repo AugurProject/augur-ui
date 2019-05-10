@@ -22,6 +22,7 @@ import {
   AWAITING_SIGNATURE,
   PENDING
 } from "modules/transactions/constants/statuses";
+import CutoffFlag from "modules/market/components/cutoff-flag/cutoff-flag";
 
 export default class MarketPortfolioCard extends Component {
   static propTypes = {
@@ -151,6 +152,9 @@ export default class MarketPortfolioCard extends Component {
             )}
           >
             <div className={Styles.MarketCard__headertext}>
+              <span>
+                <CutoffFlag endTime={market.endTime.timestamp} />
+              </span>
               <span className={Styles["MarketCard__expiration--mobile"]}>
                 {dateHasPassed(
                   currentTimestamp,
