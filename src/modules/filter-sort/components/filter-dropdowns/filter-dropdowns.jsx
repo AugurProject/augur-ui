@@ -63,11 +63,9 @@ export default class FilterSearch extends Component {
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
-    hasOrders: PropTypes.bool.isRequired,
     updateFilterOption: PropTypes.func.isRequired,
     updateSortOption: PropTypes.func.isRequired,
     updateMaxFee: PropTypes.func.isRequired,
-    updateHasOpenOrders: PropTypes.func.isRequired,
     hidePostV2Markets: PropTypes.bool.isRequired,
     updateHidePostV2Markets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -81,7 +79,6 @@ export default class FilterSearch extends Component {
     this.changeFilterDropdown = this.changeFilterDropdown.bind(this);
     this.changeMaxFees = this.changeMaxFees.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
-    this.changeHasOrders = this.changeHasOrders.bind(this);
     this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
   }
 
@@ -114,13 +111,12 @@ export default class FilterSearch extends Component {
       updateSortOption,
       updateFilter,
       maxFee,
-      hasOrders,
       hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateSortOption(value);
-    updateFilter({ filter, sort: value, maxFee, hasOrders, hidePostV2Markets });
+    updateFilter({ filter, sort: value, maxFee, hidePostV2Markets });
   }
 
   changeFilterDropdown(value) {
@@ -129,13 +125,12 @@ export default class FilterSearch extends Component {
       updateFilterOption,
       updateFilter,
       maxFee,
-      hasOrders,
       hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateFilterOption(value);
-    updateFilter({ filter: value, sort, maxFee, hasOrders, hidePostV2Markets });
+    updateFilter({ filter: value, sort, maxFee, hidePostV2Markets });
   }
 
   changeMaxFees(maxFee) {
@@ -143,14 +138,13 @@ export default class FilterSearch extends Component {
       sort,
       filter,
       updateMaxFee,
-      hasOrders,
       updateFilter,
       hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateMaxFee(maxFee);
-    updateFilter({ filter, sort, maxFee, hasOrders, hidePostV2Markets });
+    updateFilter({ filter, sort, maxFee, hidePostV2Markets });
   }
 
   changeHidePastCutoff() {
@@ -159,7 +153,6 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       updateFilter,
-      hasOrders,
       hidePostV2Markets,
       updateHidePostV2Markets
     } = this.props;
@@ -168,29 +161,7 @@ export default class FilterSearch extends Component {
       filter,
       sort,
       maxFee,
-      hasOrders,
       hidePostV2Markets: !hidePostV2Markets
-    });
-  }
-
-  changeHasOrders(event) {
-    const {
-      filter,
-      sort,
-      maxFee,
-      updateFilter,
-      hidePostV2Markets,
-      hasOrders,
-      updateHasOpenOrders
-    } = this.props;
-    const hasOpenOrders = !hasOrders;
-    updateHasOpenOrders(hasOpenOrders);
-    updateFilter({
-      filter,
-      sort,
-      maxFee,
-      hidePostV2Markets,
-      hasOrders: hasOpenOrders
     });
   }
 
@@ -199,7 +170,6 @@ export default class FilterSearch extends Component {
       defaultFilter,
       defaultSort,
       defaultMaxFee,
-      hasOrders,
       hidePostV2Markets
     } = this.props;
 
@@ -222,17 +192,6 @@ export default class FilterSearch extends Component {
             onChange={this.changeMaxFees}
             options={maxFeesOptions}
           />
-          <div className={Styles.FilterDropdowns__hasOrders}>
-            <Checkbox
-              id="has-orders"
-              type="checkbox"
-              name="hasOrders"
-              isChecked={hasOrders}
-              value={hasOrders}
-              onClick={this.changeHasOrders}
-            />{" "}
-            <label htmlFor="has-orders">has open orders</label>
-          </div>
         </div>
         <div className={Styles.FilterDropdowns__hidePastCutoff}>
           <Checkbox

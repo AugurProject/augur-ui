@@ -23,7 +23,6 @@ export default class MarketsView extends Component {
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
-    defaultHasOrders: PropTypes.bool.isRequired,
     defaultHidePastCutoff: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
@@ -41,7 +40,6 @@ export default class MarketsView extends Component {
       filter: props.defaultFilter,
       sort: props.defaultSort,
       maxFee: props.defaultMaxFee,
-      hasOrders: props.defaultHasOrders,
       hidePostV2Markets: props.defaultHidePastCutoff,
       filterSortedMarkets: []
     };
@@ -69,18 +67,18 @@ export default class MarketsView extends Component {
   }
 
   updateFilter(params) {
-    const { filter, sort, maxFee, hasOrders, hidePostV2Markets } = params;
+    const { filter, sort, maxFee, hidePostV2Markets } = params;
     this.setState(
-      { filter, sort, maxFee, hasOrders, hidePostV2Markets },
+      { filter, sort, maxFee, hidePostV2Markets },
       this.updateFilteredMarkets
     );
   }
 
   updateFilteredMarkets() {
     const { search, category, loadMarketsByFilter } = this.props;
-    const { filter, sort, maxFee, hasOrders, hidePostV2Markets } = this.state;
+    const { filter, sort, maxFee, hidePostV2Markets } = this.state;
     loadMarketsByFilter(
-      { category, search, filter, sort, maxFee, hasOrders, hidePostV2Markets },
+      { category, search, filter, sort, maxFee, hidePostV2Markets },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
         if (this.componentWrapper) this.setState({ filterSortedMarkets });
@@ -103,7 +101,6 @@ export default class MarketsView extends Component {
       filter,
       sort,
       maxFee,
-      hasOrders,
       hidePostV2Markets,
       filterSortedMarkets
     } = this.state;
@@ -124,7 +121,6 @@ export default class MarketsView extends Component {
           filter={filter}
           sort={sort}
           maxFee={maxFee}
-          hasOrders={hasOrders}
           hidePostV2Markets={hidePostV2Markets}
           updateFilter={this.updateFilter}
           history={history}
