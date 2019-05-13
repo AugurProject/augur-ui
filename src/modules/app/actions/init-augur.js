@@ -14,6 +14,7 @@ import {
 import { useUnlockedAccount } from "modules/auth/actions/use-unlocked-account";
 import { logout } from "modules/auth/actions/logout";
 import { verifyMatchingNetworkIds } from "modules/app/actions/verify-matching-network-ids";
+import { setMarketsAtRiskModalAsSeen } from "modules/modal/actions/update-markets-at-risk-seen-modal";
 import { checkIfMainnet } from "modules/app/actions/check-if-mainnet";
 import { loadUniverse } from "modules/app/actions/load-universe";
 import { registerTransactionRelay } from "modules/transactions/actions/register-transaction-relay";
@@ -31,15 +32,22 @@ import {
   MODAL_NETWORK_MISMATCH,
   MODAL_NETWORK_DISCONNECTED,
   MODAL_DISCLAIMER,
+  MODAL_V2_MARKETS_ALERT,
   MODAL_NETWORK_DISABLED
 } from "modules/modal/constants/modal-types";
-import { DISCLAIMER_SEEN } from "modules/modal/constants/local-storage-keys";
+import {
+  V2_MARKETS_REVIEW_SEEN,
+  DISCLAIMER_SEEN
+} from "modules/modal/constants/local-storage-keys";
 import { windowRef } from "utils/window-ref";
 import { setSelectedUniverse } from "modules/auth/actions/selected-universe-management";
+import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
+import { selectMarkets } from "src/modules/markets/selectors/markets-all";
 
 const { ACCOUNT_TYPES } = AugurJS.augur.rpc.constants;
 const ACCOUNTS_POLL_INTERVAL_DURATION = 10000;
 const NETWORK_ID_POLL_INTERVAL_DURATION = 10000;
+const ONE_DAY_IN_MS = 1000 * 60 * 60 * 24;
 
 function pollForAccount(dispatch, getState, callback) {
   const { loginAccount } = getState();
@@ -53,7 +61,11 @@ function pollForAccount(dispatch, getState, callback) {
     }
     let account = loadedAccount;
     setInterval(() => {
-      const { authStatus, loginAccount } = getState();
+      const {
+        authStatus,
+        loginAccount,
+        marketsAtRiskModalSeenThisSession
+      } = getState();
       accountType =
         loginAccount && loginAccount.meta && loginAccount.meta.accountType;
 
@@ -63,18 +75,56 @@ function pollForAccount(dispatch, getState, callback) {
           account = loadedAccount;
         });
       }
+
+      // Disclaimer Check
       const disclaimerSeen =
         windowRef &&
         windowRef.localStorage &&
         windowRef.localStorage.getItem(DISCLAIMER_SEEN);
+
+      const showDisclaimer = () => {
+        if (!disclaimerSeen) {
+          dispatch(
+            updateModal({
+              type: MODAL_DISCLAIMER
+            })
+          );
+        }
+      };
+
+      // V2 Markets At Risk Check
+      const markets = selectMarkets(getState());
+      const hasPositionsInCutoffMarkets = markets
+        .filter(market => isPastV2Cutoff(market.endTime.timestamp))
+        .filter(market => market && market.myPositionOutcomes);
+
+      const v2MarketAlertSeen =
+        (windowRef &&
+          windowRef.localStorage &&
+          JSON.parse(windowRef.localStorage.getItem(V2_MARKETS_REVIEW_SEEN))) ||
+        {};
+
       if (!disclaimerSeen) {
+        showDisclaimer();
+      } else if (
+        loginAccount.address &&
+        !marketsAtRiskModalSeenThisSession &&
+        hasPositionsInCutoffMarkets &&
+        hasPositionsInCutoffMarkets.length > 0 &&
+        !v2MarketAlertSeen[loginAccount.address]
+      ) {
+        dispatch(setMarketsAtRiskModalAsSeen(true));
         dispatch(
           updateModal({
-            type: MODAL_DISCLAIMER
+            type: MODAL_V2_MARKETS_ALERT
           })
         );
       }
     }, ACCOUNTS_POLL_INTERVAL_DURATION);
+
+    setInterval(() => {
+      dispatch(setMarketsAtRiskModalAsSeen(false));
+    }, ONE_DAY_IN_MS);
   });
 }
 
