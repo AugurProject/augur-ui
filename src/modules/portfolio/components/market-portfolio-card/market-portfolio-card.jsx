@@ -153,7 +153,7 @@ export default class MarketPortfolioCard extends Component {
           >
             <div className={Styles.MarketCard__headertext}>
               <span>
-                <CutoffFlag endTime={market.endTime.timestamp} />
+                <CutoffFlag endTime={market.endTime && market.endTime.timestamp} />
               </span>
               <span className={Styles["MarketCard__expiration--mobile"]}>
                 {dateHasPassed(
