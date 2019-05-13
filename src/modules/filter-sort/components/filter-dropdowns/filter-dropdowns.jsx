@@ -114,12 +114,13 @@ export default class FilterSearch extends Component {
       updateSortOption,
       updateFilter,
       maxFee,
-      hasOrders
+      hasOrders,
+      hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateSortOption(value);
-    updateFilter({ filter, sort: value, maxFee, hasOrders });
+    updateFilter({ filter, sort: value, maxFee, hasOrders, hidePostV2Markets });
   }
 
   changeFilterDropdown(value) {
@@ -128,20 +129,28 @@ export default class FilterSearch extends Component {
       updateFilterOption,
       updateFilter,
       maxFee,
-      hasOrders
+      hasOrders,
+      hidePostV2Markets
     } = this.props;
 
     this.goToPageOne();
     updateFilterOption(value);
-    updateFilter({ filter: value, sort, maxFee, hasOrders });
+    updateFilter({ filter: value, sort, maxFee, hasOrders, hidePostV2Markets });
   }
 
   changeMaxFees(maxFee) {
-    const { sort, filter, updateMaxFee, hasOrders, updateFilter } = this.props;
+    const {
+      sort,
+      filter,
+      updateMaxFee,
+      hasOrders,
+      updateFilter,
+      hidePostV2Markets
+    } = this.props;
 
     this.goToPageOne();
     updateMaxFee(maxFee);
-    updateFilter({ filter, sort, maxFee, hasOrders });
+    updateFilter({ filter, sort, maxFee, hasOrders, hidePostV2Markets });
   }
 
   changeHidePastCutoff() {
