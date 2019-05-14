@@ -184,7 +184,7 @@ export default class CreateMarketDefine extends Component {
             <div>
               No new markets can be created that end after{" "}
               <span>{CUTOFF_READABLE}</span>. Any markets that end after this
-              date cannot be guaranteed to resolve correctly.{" "}
+              date are at a higher risk of resolving incorrectly.{" "}
               <a
                 href="http://docs.augur.net"
                 target="_blank"

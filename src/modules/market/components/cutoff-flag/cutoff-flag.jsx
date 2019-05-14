@@ -27,8 +27,8 @@ const CutoffFlag = ({ endTime }) => (
         >
           <p>
             This market has an end-time after the cutoff date for the Augur v2
-            release phase. Markets ending after {CUTOFF_READABLE} cannot be
-            guaranteed to resolve correctly.
+            release phase. Markets ending after {CUTOFF_READABLE} are at a
+            higher risk of resolving incorrectly.
             <br />
             <a
               href="http://docs.augur.net"

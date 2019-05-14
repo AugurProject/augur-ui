@@ -21,7 +21,7 @@ import {
   RETURN_PARAM_NAME
 } from "modules/routes/constants/param-names";
 
-const MarketLink = ({ linkType, className, id, children }) => {
+const MarketLink = ({ linkType, className, id, children, newTab = false }) => {
   let path;
 
   switch (linkType) {
@@ -52,6 +52,7 @@ const MarketLink = ({ linkType, className, id, children }) => {
         <Link
           data-testid={"link-" + id}
           className={className}
+          target={newTab ? "_blank" : "_self"}
           to={{
             pathname: path,
             search: makeQuery(queryLink)
@@ -70,13 +71,15 @@ MarketLink.propTypes = {
   id: PropTypes.string.isRequired,
   linkType: PropTypes.string,
   className: PropTypes.string,
-  children: PropTypes.any
+  children: PropTypes.any,
+  newTab: PropTypes.bool
 };
 
 MarketLink.defaultProps = {
   linkType: null,
   className: "",
-  children: null
+  children: null,
+  newTab: false
 };
 
 export default MarketLink;

@@ -11,7 +11,11 @@
 }
 
 .MarketCard__headertext {
-  display: inline-block;
+  display: inline-block !important;
+
+  > span:first-of-type > div {
+    margin-bottom: 1.25rem;
+  }
 }
 
 .MarketCard__headertext h1 {

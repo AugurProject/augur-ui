@@ -4,7 +4,6 @@ export const MARKET_SORT = "marketSort";
 export const MARKET_MAX_FEES = "maxFee";
 export const MARKET_MAX_SPREAD = "maxSpreadPercent";
 export const TRANSACTION_PERIOD = "transactionPeriod";
-export const HAS_OPEN_ORDERS = "hasOrders";
 export const PAST_CUTOFF = "hidePostV2Markets";
 
 export function updateFilterSortOptions(optionKey, optionValue) {

@@ -23,6 +23,7 @@ import marketTradingHistory from "modules/markets/reducers/market-trading-histor
 import marketReportState from "modules/reports/reducers/market-report-state";
 import marketsData from "modules/markets/reducers/markets-data";
 import marketsWithAccountReport from "modules/reports/reducers/markets-with-account-report";
+import marketsAtRiskModalSeenThisSession from "modules/modal/reducers/markets-at-risk-seen-this-session";
 import modal from "modules/modal/reducers/modal";
 import newMarket from "modules/markets/reducers/new-market";
 import notifications from "modules/notifications/reducers/notifications";
@@ -71,6 +72,7 @@ export function createReducer() {
     marketTradingHistory,
     marketsData,
     marketsWithAccountReport,
+    marketsAtRiskModalSeenThisSession,
     modal,
     newMarket,
     notifications,

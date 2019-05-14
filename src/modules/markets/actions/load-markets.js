@@ -126,7 +126,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     search: filterOptions.search,
     maxFee: parseFloat(filterOptions.maxFee),
     maxSpreadPercent: parseFloat(filterOptions.maxSpreadPercent),
-    hasOrders: filterOptions.hasOrders,
+    hasOrders: false,
     ...sort
   };
 

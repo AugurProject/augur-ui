@@ -41,7 +41,6 @@ const mapStateToProps = (state, { location }) => {
     defaultSort: state.filterSortOptions.marketSort,
     defaultMaxFee: state.filterSortOptions.maxFee,
     defaultMaxSpread: state.filterSortOptions.maxSpreadPercent,
-    defaultHasOrders: state.filterSortOptions.hasOrders,
     defaultHidePastCutoff: state.filterSortOptions.hidePostV2Markets
   };
 };

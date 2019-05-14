@@ -24,7 +24,6 @@ export default class MarketsView extends Component {
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
     defaultMaxSpread: PropTypes.string.isRequired,
-    defaultHasOrders: PropTypes.bool.isRequired,
     defaultHidePastCutoff: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
@@ -43,7 +42,6 @@ export default class MarketsView extends Component {
       sort: props.defaultSort,
       maxFee: props.defaultMaxFee,
       maxSpreadPercent: props.defaultMaxSpread,
-      hasOrders: props.defaultHasOrders,
       hidePostV2Markets: props.defaultHidePastCutoff,
       filterSortedMarkets: []
     };
@@ -76,11 +74,10 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hasOrders,
       hidePostV2Markets
     } = params;
     this.setState(
-      { filter, sort, maxFee, maxSpreadPercent, hasOrders, hidePostV2Markets },
+      { filter, sort, maxFee, maxSpreadPercent, hidePostV2Markets },
       this.updateFilteredMarkets
     );
   }
@@ -92,7 +89,6 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hasOrders,
       hidePostV2Markets
     } = this.state;
     loadMarketsByFilter(
@@ -103,7 +99,6 @@ export default class MarketsView extends Component {
         sort,
         maxFee,
         maxSpreadPercent,
-        hasOrders,
         hidePostV2Markets
       },
       (err, filterSortedMarkets) => {
@@ -129,7 +124,6 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hasOrders,
       hidePostV2Markets,
       filterSortedMarkets
     } = this.state;
@@ -151,7 +145,6 @@ export default class MarketsView extends Component {
           sort={sort}
           maxFee={maxFee}
           maxSpreadPercent={maxSpreadPercent}
-          hasOrders={hasOrders}
           hidePostV2Markets={hidePostV2Markets}
           updateFilter={this.updateFilter}
           history={history}

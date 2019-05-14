@@ -534,7 +534,8 @@ div.ErrorField:focus {
   }
 }
 
-.ModalMarketReview {
+.ModalMarketReview,
+.ModalMarketsV2Alert {
   background-color: @color-white;
   border-radius: 0.32rem;
   color: @color-almostblack;
@@ -576,7 +577,8 @@ div.ErrorField:focus {
   font-weight: bold;
 }
 
-.ModalMarketReview__TextBox {
+.ModalMarketReview__TextBox,
+.ModalMarketsV2Alert__Markets {
   background-color: @color-offwhite;
   color: @color-almostblack;
   margin: 0 2rem 1.5rem;
@@ -641,6 +643,69 @@ div.ErrorField:focus {
     border: 0;
     margin: 0;
     padding: 0;
+  }
+}
+
+.ModalMarketsV2Alert {
+  padding: 2.125rem 0 1.5rem;
+
+  > h1 {
+    color: @color-cuttoff-red;
+    margin: 0;
+  }
+}
+
+.ModalMarketsV2Alert__Header,
+.ModalMarketsV2Alert__Warning {
+  color: @color-almostblack;
+  font-size: 0.875rem;
+  font-weight: normal;
+  padding: 0 2rem 1rem;
+  text-align: left;
+
+  a {
+    text-decoration: underline;
+  }
+
+  > p {
+    line-height: 18px;
+    margin: 1rem 0;
+  }
+
+  > p:last-of-type {
+    font-weight: bold;
+    margin: 1rem 0 0;
+  }
+}
+
+.ModalMarketsV2Alert__Warning {
+  color: @color-cuttoff-red;
+  padding: 0 2rem 1rem;
+
+  > p {
+    margin: 0;
+  }
+}
+
+.ModalMarketsV2Alert__Markets {
+  background-color: @color-offwhite;
+  color: @color-almostblack;
+  margin: 0 2rem;
+  overflow: auto;
+  overflow-wrap: break-word;
+  padding: 1.5rem;
+  text-align: left;
+  text-decoration-line: underline;
+  width: 89%;
+
+  > div {
+    font-size: 0.875rem;
+    font-weight: normal;
+    margin: 0 0 1rem;
+  }
+
+  > div:last-of-type {
+    margin: 0;
   }
 }
 

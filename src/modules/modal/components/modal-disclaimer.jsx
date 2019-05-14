@@ -35,7 +35,9 @@ export default class ModalDisclaimer extends Component {
   }
 
   checkCheckbox(didCheck) {
-    if (this.state.didScroll) this.setState({ didCheck });
+    setTimeout(() => {
+      if (this.state.didScroll) this.setState({ didCheck });
+    });
   }
 
   render() {
