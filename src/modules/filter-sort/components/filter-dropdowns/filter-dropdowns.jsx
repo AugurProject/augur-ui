@@ -211,6 +211,7 @@ export default class FilterSearch extends Component {
       filter,
       sort,
       maxFee,
+      maxSpreadPercent,
       updateFilter,
       hidePostV2Markets,
       updateHidePostV2Markets
@@ -220,6 +221,7 @@ export default class FilterSearch extends Component {
       filter,
       sort,
       maxFee,
+      maxSpreadPercent,
       hidePostV2Markets: !hidePostV2Markets
     });
   }
