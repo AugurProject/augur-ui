@@ -139,7 +139,7 @@ export default class FilterSearch extends Component {
       sort: value,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
+      hidePostV2Markets
     });
   }
 
@@ -160,7 +160,7 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
+      hidePostV2Markets
     });
   }
 
@@ -181,7 +181,7 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
+      hidePostV2Markets
     });
   }
 
@@ -191,7 +191,6 @@ export default class FilterSearch extends Component {
       filter,
       maxFee,
       updateMaxSpread,
-      hasOrders,
       updateFilter,
       hidePostV2Markets
     } = this.props;
@@ -252,6 +251,11 @@ export default class FilterSearch extends Component {
             default={defaultMaxFee}
             onChange={this.changeMaxFees}
             options={maxFeesOptions}
+          />
+          <Dropdown
+            default={defaultMaxSpread}
+            onChange={this.changeMaxSpread}
+            options={maxSpreadOptions}
           />
         </div>
         <div className={Styles.FilterDropdowns__hidePastCutoff}>
