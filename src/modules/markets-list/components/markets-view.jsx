@@ -23,6 +23,7 @@ export default class MarketsView extends Component {
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
+    defaultMaxSpread: PropTypes.string.isRequired,
     defaultHidePastCutoff: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
@@ -40,6 +41,7 @@ export default class MarketsView extends Component {
       filter: props.defaultFilter,
       sort: props.defaultSort,
       maxFee: props.defaultMaxFee,
+      maxSpreadPercent: props.defaultMaxSpread,
       hidePostV2Markets: props.defaultHidePastCutoff,
       filterSortedMarkets: []
     };
@@ -67,18 +69,38 @@ export default class MarketsView extends Component {
   }
 
   updateFilter(params) {
-    const { filter, sort, maxFee, hidePostV2Markets } = params;
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets
+    } = params;
     this.setState(
-      { filter, sort, maxFee, hidePostV2Markets },
+      { filter, sort, maxFee, maxSpreadPercent, hidePostV2Markets },
       this.updateFilteredMarkets
     );
   }
 
   updateFilteredMarkets() {
     const { search, category, loadMarketsByFilter } = this.props;
-    const { filter, sort, maxFee, hidePostV2Markets } = this.state;
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets
+    } = this.state;
     loadMarketsByFilter(
-      { category, search, filter, sort, maxFee, hidePostV2Markets },
+      {
+        category,
+        search,
+        filter,
+        sort,
+        maxFee,
+        maxSpreadPercent,
+        hidePostV2Markets
+      },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
         if (this.componentWrapper) this.setState({ filterSortedMarkets });
@@ -101,6 +123,7 @@ export default class MarketsView extends Component {
       filter,
       sort,
       maxFee,
+      maxSpreadPercent,
       hidePostV2Markets,
       filterSortedMarkets
     } = this.state;
@@ -121,6 +144,7 @@ export default class MarketsView extends Component {
           filter={filter}
           sort={sort}
           maxFee={maxFee}
+          maxSpreadPercent={maxSpreadPercent}
           hidePostV2Markets={hidePostV2Markets}
           updateFilter={this.updateFilter}
           history={history}
