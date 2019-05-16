@@ -25,6 +25,7 @@ export default class MarketsView extends Component {
     defaultMaxFee: PropTypes.string.isRequired,
     defaultMaxSpread: PropTypes.string.isRequired,
     defaultHidePastCutoff: PropTypes.bool.isRequired,
+    defaultExperimentalInvalid: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
 
@@ -43,6 +44,7 @@ export default class MarketsView extends Component {
       maxFee: props.defaultMaxFee,
       maxSpreadPercent: props.defaultMaxSpread,
       hidePostV2Markets: props.defaultHidePastCutoff,
+      experimentalInvalid: props.defaultExperimentalInvalid,
       filterSortedMarkets: []
     };
 
@@ -74,10 +76,18 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = params;
     this.setState(
-      { filter, sort, maxFee, maxSpreadPercent, hidePostV2Markets },
+      {
+        filter,
+        sort,
+        maxFee,
+        maxSpreadPercent,
+        hidePostV2Markets,
+        experimentalInvalid
+      },
       this.updateFilteredMarkets
     );
   }
@@ -89,7 +99,8 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = this.state;
     loadMarketsByFilter(
       {
@@ -99,7 +110,8 @@ export default class MarketsView extends Component {
         sort,
         maxFee,
         maxSpreadPercent,
-        hidePostV2Markets
+        hidePostV2Markets,
+        experimentalInvalid
       },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
@@ -125,6 +137,7 @@ export default class MarketsView extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      experimentalInvalid,
       filterSortedMarkets
     } = this.state;
 
@@ -146,6 +159,7 @@ export default class MarketsView extends Component {
           maxFee={maxFee}
           maxSpreadPercent={maxSpreadPercent}
           hidePostV2Markets={hidePostV2Markets}
+          experimentalInvalid={experimentalInvalid}
           updateFilter={this.updateFilter}
           history={history}
           hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}

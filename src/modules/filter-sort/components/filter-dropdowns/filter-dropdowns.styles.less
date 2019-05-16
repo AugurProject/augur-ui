@@ -59,7 +59,7 @@
   }
 }
 
-.FilterDropdowns__hidePastCutoff {
+.FilterDropdowns__checkboxes {
   align-items: center;
   color: @color-white;
   display: flex;
@@ -67,15 +67,35 @@
   margin-top: 0.8125rem;
   padding-left: 0.5rem;
 
-  > label {
-    font-size: @font-size-medium;
-    font-weight: 400;
-    margin-bottom: 0;
-    padding: 0.4rem 0 0.4rem 0.25rem;
-    white-space: nowrap;
+  > div {
+    align-items: center;
+    display: flex;
+
+    > div {
+      width: 25px;
+    }
+
+    > label {
+      font-size: @font-size-medium;
+      font-weight: 400;
+      margin-bottom: 0;
+      padding-left: 0.25rem;
+      white-space: nowrap;
+    }
+
+    > label:nth-of-type(2) {
+      margin-top: -10px;
+      width: 30px;
+    }
   }
 
   @media @breakpoint-mobile {
     padding: 0 0 1rem;
+  }
+
+  @media @breakpoint-mobile-small {
+    > div:last-of-type {
+      margin-top: 0.5rem;
+    }
   }
 }
