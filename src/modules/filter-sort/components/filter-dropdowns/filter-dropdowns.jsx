@@ -34,6 +34,9 @@ import {
   MAX_SPREAD_10_PERCENT,
   MAX_SPREAD_20_PERCENT
 } from "src/modules/filter-sort/constants/market-max-spread";
+import ReactTooltip from "react-tooltip";
+import TooltipStyles from "modules/common/less/tooltip.styles";
+import { Hint } from "modules/common/components/icons";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },
@@ -86,7 +89,9 @@ export default class FilterSearch extends Component {
     updateHidePostV2Markets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
+    experimentalInvalid: PropTypes.bool.isRequired,
+    updateExperimentalInvalid: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -97,6 +102,7 @@ export default class FilterSearch extends Component {
     this.changeMaxSpread = this.changeMaxSpread.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
     this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
+    this.changeExperimentalInvalid = this.changeExperimentalInvalid.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -129,7 +135,8 @@ export default class FilterSearch extends Component {
       updateFilter,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = this.props;
 
     this.goToPageOne();
@@ -139,7 +146,8 @@ export default class FilterSearch extends Component {
       sort: value,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     });
   }
 
@@ -150,7 +158,8 @@ export default class FilterSearch extends Component {
       updateFilter,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = this.props;
 
     this.goToPageOne();
@@ -160,7 +169,8 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     });
   }
 
@@ -171,7 +181,8 @@ export default class FilterSearch extends Component {
       updateMaxFee,
       maxSpreadPercent,
       updateFilter,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = this.props;
 
     this.goToPageOne();
@@ -181,7 +192,8 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     });
   }
 
@@ -192,7 +204,8 @@ export default class FilterSearch extends Component {
       maxFee,
       updateMaxSpread,
       updateFilter,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = this.props;
 
     this.goToPageOne();
@@ -202,7 +215,8 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     });
   }
 
@@ -214,7 +228,8 @@ export default class FilterSearch extends Component {
       maxSpreadPercent,
       updateFilter,
       hidePostV2Markets,
-      updateHidePostV2Markets
+      updateHidePostV2Markets,
+      experimentalInvalid
     } = this.props;
     updateHidePostV2Markets(!hidePostV2Markets);
     updateFilter({
@@ -222,7 +237,30 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets: !hidePostV2Markets
+      hidePostV2Markets: !hidePostV2Markets,
+      experimentalInvalid
+    });
+  }
+
+  changeExperimentalInvalid() {
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      updateFilter,
+      hidePostV2Markets,
+      updateExperimentalInvalid,
+      experimentalInvalid
+    } = this.props;
+    updateExperimentalInvalid(!experimentalInvalid);
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets,
+      experimentalInvalid: !experimentalInvalid
     });
   }
 
@@ -232,7 +270,8 @@ export default class FilterSearch extends Component {
       defaultSort,
       defaultMaxFee,
       defaultMaxSpread,
-      hidePostV2Markets
+      hidePostV2Markets,
+      experimentalInvalid
     } = this.props;
 
     return (
@@ -260,18 +299,53 @@ export default class FilterSearch extends Component {
             options={maxSpreadOptions}
           />
         </div>
-        <div className={Styles.FilterDropdowns__hidePastCutoff}>
-          <Checkbox
-            id="post-cutoff"
-            type="checkbox"
-            name="hidePostV2Markets"
-            isChecked={hidePostV2Markets}
-            value={hidePostV2Markets}
-            onClick={this.changeHidePastCutoff}
-          />{" "}
-          <label htmlFor="post-cutoff">
-            hide markets ending post v2 cut-off
-          </label>
+        <div className={Styles.FilterDropdowns__checkboxes}>
+          <div>
+            <Checkbox
+              id="post-cutoff"
+              type="checkbox"
+              name="hidePostV2Markets"
+              isChecked={hidePostV2Markets}
+              value={hidePostV2Markets}
+              onClick={this.changeHidePastCutoff}
+            />{" "}
+            <label htmlFor="post-cutoff">
+              hide markets ending post v2 cut-off
+            </label>
+          </div>
+          <div>
+            <Checkbox
+              id="experimental-invalid"
+              type="checkbox"
+              name="experimentalInvalid"
+              isChecked={experimentalInvalid}
+              value={experimentalInvalid}
+              onClick={this.changeExperimentalInvalid}
+            />{" "}
+            <label htmlFor="experimental-invalid">
+              Experimental Invalid Filter
+            </label>
+            <label
+              className={TooltipStyles.TooltipHint}
+              data-tip
+              data-for="tooltip--invalid"
+            >
+              {Hint}
+              <ReactTooltip
+                id="tooltip--invalid"
+                className={TooltipStyles.Tooltip}
+                effect="solid"
+                place="right"
+                type="light"
+              >
+                <p>
+                  Any Market where the current best bid/offer would profit as a
+                  result of a market resolving as invalid, will be filtered out,
+                  if checked.
+                </p>
+              </ReactTooltip>
+            </label>
+          </div>
         </div>
       </div>
     );

@@ -23,7 +23,8 @@ export default class MarketsHeader extends Component {
     hidePostV2Markets: PropTypes.bool.isRequired,
     updateFilter: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
-    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired
+    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
+    experimentalInvalid: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -73,6 +74,7 @@ export default class MarketsHeader extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      experimentalInvalid,
       updateFilter,
       history,
       hasPositionsInCutoffMarkets
@@ -89,6 +91,7 @@ export default class MarketsHeader extends Component {
               sort={sort}
               maxFee={maxFee}
               hidePostV2Markets={hidePostV2Markets}
+              experimentalInvalid={experimentalInvalid}
               updateFilter={updateFilter}
               history={history}
               location={location}
