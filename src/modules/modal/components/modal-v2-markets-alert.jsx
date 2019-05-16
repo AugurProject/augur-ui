@@ -8,7 +8,6 @@ import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import { MY_POSITIONS } from "modules/routes/constants/views";
 import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
 import makePath from "modules/routes/helpers/make-path";
-import MarketLink from "modules/market/components/market-link/market-link";
 
 export default class ModalMarketsV2Alert extends Component {
   static propTypes = {
@@ -46,11 +45,7 @@ export default class ModalMarketsV2Alert extends Component {
 
     const { didCheck } = this.state;
     const marketsRows = markets.map(market => (
-      <div key={market.id}>
-        <MarketLink id={market.id} newTab>
-          {market.description}
-        </MarketLink>
-      </div>
+      <div key={market.id}>{market.description}</div>
     ));
 
     return (
