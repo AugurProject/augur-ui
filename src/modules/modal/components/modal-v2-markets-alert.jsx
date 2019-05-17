@@ -6,7 +6,10 @@ import Styles from "modules/modal/components/common/common.styles";
 import ModalActions from "modules/modal/components/common/modal-actions";
 import Checkbox from "src/modules/common/components/checkbox/checkbox";
 import { MY_POSITIONS } from "modules/routes/constants/views";
-import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import {
+  CUTOFF_READABLE,
+  CUTOFF_URL
+} from "modules/markets/constants/cutoff-date";
 import makePath from "modules/routes/helpers/make-path";
 
 export default class ModalMarketsV2Alert extends Component {
@@ -56,11 +59,7 @@ export default class ModalMarketsV2Alert extends Component {
             You have open orders and/or positions on markets that expire after
             the cutoff date for the Augur v2 release phase. Markets ending after{" "}
             {CUTOFF_READABLE} are at a higher risk of resolving incorrectly.{" "}
-            <a
-              href="http://docs.augur.net"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={CUTOFF_URL} target="_blank" rel="noopener noreferrer">
               Read more
             </a>
           </p>

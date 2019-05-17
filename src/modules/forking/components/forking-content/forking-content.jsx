@@ -9,6 +9,7 @@ import { TYPE_MIGRATE_REP } from "modules/markets/constants/link-types";
 import MarketLink from "modules/market/components/market-link/market-link";
 import { createBigNumber } from "utils/create-big-number";
 import Styles from "modules/forking/components/forking-content/forking-content.styles";
+import { CUTOFF_URL } from "modules/markets/constants/cutoff-date";
 
 const ForkingContent = ({
   forkingMarket,
@@ -61,7 +62,7 @@ const ForkingContent = ({
               Alert: If you migrate your REP to a child universe, you will never
               be able to migrate your REP to Augur V2.{" "}
               <a
-                href="http://docs.augur.net"
+                href={CUTOFF_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: "underline" }}

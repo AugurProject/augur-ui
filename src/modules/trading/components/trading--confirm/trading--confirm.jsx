@@ -5,7 +5,10 @@ import ValueDenomination from "modules/common/components/value-denomination/valu
 import classNames from "classnames";
 import { CATEGORICAL } from "modules/markets/constants/market-types";
 import { MARKET, BUY, LIMIT, SELL } from "modules/transactions/constants/types";
-import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import {
+  CUTOFF_READABLE,
+  CUTOFF_URL
+} from "modules/markets/constants/cutoff-date";
 import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
@@ -67,7 +70,7 @@ const MarketTradingConfirm = ({
       description: [
         "ETH staked on this market is at risk. <font color='#EB5757'>Users are advised <strong>not to trade.</strong></font>",
         `This market expires after the end-time cutoff date for the Augur v2 release phase. Markets ending after ${CUTOFF_READABLE} are at a higher risk of resolving incorrectly.`,
-        `<a href="https://docs.augur.net" rel="noopener noreferrer" target="_blank"><u>Read more about the V2 launch plan and how it may affect you</u></a>`
+        `<a href=${CUTOFF_URL} rel="noopener noreferrer" target="_blank"><u>Read more about the V2 launch plan and how it may affect you</u></a>`
       ],
       cancelButtonText: "Cancel",
       submitAction: () => {
