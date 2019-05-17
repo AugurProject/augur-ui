@@ -17,7 +17,10 @@ import { MarketCreationTimeDisplay } from "modules/create-market/components/crea
 import Styles from "modules/create-market/components/create-market-form-define/create-market-form-define.styles";
 import StylesForm from "modules/create-market/components/create-market-form/create-market-form.styles";
 import HighlightedStyles from "modules/reporting/components/common/highlighted-message.styles";
-import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import {
+  CUTOFF_READABLE,
+  CUTOFF_URL
+} from "modules/markets/constants/cutoff-date";
 
 export default class CreateMarketDefine extends Component {
   static propTypes = {
@@ -186,7 +189,7 @@ export default class CreateMarketDefine extends Component {
               <span>{CUTOFF_READABLE}</span>. Any markets that end after this
               date are at a higher risk of resolving incorrectly.{" "}
               <a
-                href="http://docs.augur.net"
+                href={CUTOFF_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={Styles.ReadMore}

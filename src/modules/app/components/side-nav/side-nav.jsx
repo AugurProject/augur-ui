@@ -8,6 +8,7 @@ import ConnectAccount from "modules/auth/containers/connect-account";
 import GasPriceEdit from "modules/app/containers/gas-price-edit";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
+import { CUTOFF_URL } from "modules/markets/constants/cutoff-date";
 
 import { MARKETS } from "modules/routes/constants/views";
 import Styles from "modules/app/components/side-nav/side-nav.styles";
@@ -149,7 +150,7 @@ export default class SideNav extends Component {
                         No new markets can be created due to the Augur v2
                         release phase.{" "}
                         <a
-                          href="http://docs.augur.net"
+                          href={CUTOFF_URL}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={Styles.ReadMore}

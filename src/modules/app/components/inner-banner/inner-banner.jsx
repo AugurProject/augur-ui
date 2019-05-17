@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-import { CUTOFF_READABLE } from "modules/markets/constants/cutoff-date";
+import {
+  CUTOFF_READABLE,
+  CUTOFF_URL
+} from "modules/markets/constants/cutoff-date";
 import { AlertIcon, Flag } from "modules/common/components/icons";
 import {
   CREATE_MARKET,
@@ -39,7 +42,7 @@ const InnerBanner = ({ currentPath, style, className }) => (
         </span>
       )}
       <a
-        href="http://docs.augur.net"
+        href={CUTOFF_URL}
         target="_blank"
         rel="noopener noreferrer"
         className={Styles.ReadMore}
