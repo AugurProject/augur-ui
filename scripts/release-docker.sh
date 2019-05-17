@@ -44,11 +44,11 @@ case ${augur_env} in
         cluster="sneakpeak-augur-net"
         augur_service="sneakpeak-ui"
         ;;
-    release)
+    latest)
         network="rinkeby"
         cluster=""
         augur_service=""
-        build_environment="release"
+        build_environment="latest"
         version="$(node scripts/get-version.js)"
         ;;
     *)
