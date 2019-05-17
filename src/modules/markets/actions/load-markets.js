@@ -127,9 +127,12 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     maxFee: parseFloat(filterOptions.maxFee),
     maxSpreadPercent: parseFloat(filterOptions.maxSpreadPercent),
     hasOrders: false,
-    maxInvalidROIPercent: filterOptions.experimentalInvalid ? 0 : 1,
     ...sort
   };
+
+  if (filterOptions.experimentalInvalid) {
+    params.maxInvalidROIPercent = 0;
+  }
 
   if (filterOptions.hidePostV2Markets) {
     params = Object.assign({}, params, { maxEndTime: CUTOFF / 1000 });
