@@ -139,7 +139,7 @@ jobs:
             DEV_VERSION_REGEX="^[vV]?(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(\\-[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?(\\+[0-9A-Za-z-]+(\\.[0-9A-Za-z-]+)*)?$"
             if [[ $current_tag =~ $LATEST_VERSION_REGEX ]]; then
               echo "##vso[task.setvariable variable=npm_tag]latest"
-              npm run docker:release -- release
+              npm run docker:release -- latest
             elif [[ $current_tag =~ $DEV_VERSION_REGEX ]]; then
               echo "##vso[task.setvariable variable=npm_tag]dev"
             else
