@@ -41,7 +41,7 @@ RUN set -ex; \
         ETHEREUM_NETWORK=$ethereum_network yarn build --dev --augur-hosted --disableMainnet; \
     elif [ "$BUILD_ENVIRONMENT" = "dev-optimized" ]; then \
         ETHEREUM_NETWORK=$ethereum_network yarn build --production --augur-hosted --disableMainnet; \
-    elif [ "$BUILD_ENVIRONMENT" = "release" ]; then \
+    elif [ "$BUILD_ENVIRONMENT" = "latest" ]; then \
         ETHEREUM_NETWORK=$ethereum_network yarn build --production --augur-hosted; \
     fi;
 
