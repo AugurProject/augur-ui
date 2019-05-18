@@ -19,9 +19,7 @@ import {
   updateAppStatus,
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
-import {
-  MAX_FEE_100_PERCENT
-} from "src/modules/filter-sort/constants/market-max-fees";
+import { MAX_FEE_100_PERCENT } from "src/modules/filter-sort/constants/market-max-fees";
 
 const { REPORTING_STATE } = constants;
 
