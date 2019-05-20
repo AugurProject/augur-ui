@@ -163,7 +163,10 @@ export default class CreateMarketDefine extends Component {
 
     return (
       <ul className={StylesForm.CreateMarketForm__fields}>
-        <li className={Styles.CreateMarketDefine_block}>
+        <li
+          className={Styles.CreateMarketDefine_block}
+          style={{ marginBottom: "0" }}
+        >
           <MarketCreateFormTime
             date={s.date}
             hours={s.hours}
@@ -216,6 +219,22 @@ export default class CreateMarketDefine extends Component {
               when the event outcome is known beyond a doubt.
             </div>
             <MarketCreationTimeDisplay endTime={newMarket.endTime} />
+
+            <div
+              className={classNames(
+                HighlightedStyles.HighlightedMessage,
+                Styles.blockit,
+                Styles.ReportingDateInfo
+              )}
+            >
+              <div>
+                <strong>Reporting Start Date and Time</strong> must not conflict
+                with the <strong>Market Question </strong>
+                or <strong>Additional Details.</strong> If they don’t match up
+                there is a high probability that the market will{" "}
+                <strong>resolve as invalid.</strong>
+              </div>
+            </div>
           </div>
         </li>
         <li className={Styles.CreateMarketDefine_block}>
@@ -251,7 +270,6 @@ export default class CreateMarketDefine extends Component {
               Official Reporting Start Time{" "}
               <span>{(newMarket.endTime || {}).formattedUtc}</span>
             </div>
-
             <div
               className={classNames(
                 StylesForm["field--50"],
@@ -295,13 +313,16 @@ export default class CreateMarketDefine extends Component {
             >
               <div>
                 If entering a date and time in the Market Question and/or
-                Additional Details, use the Official Reporting Start Time in
-                UTC-0
+                Additional Details, use the{" "}
+                <strong>Official Reporting Start Time</strong> in
+                <strong> UTC-0.</strong>
               </div>
               <div>
-                Reporting Start Time must not conflict with the Market Question
-                or Additional Details. If they don’t match up there is a high
-                probability that the market will resolve as invalid.
+                If you use a <strong>currency symbol</strong> like {"¥"} or{" "}
+                {"$"} in your market, make sure to specify which dollar (USD,
+                HKD, CAD, etc
+                {".)."} If you don
+                {"'t,"} the market will be invalid.
               </div>
             </div>
           </div>

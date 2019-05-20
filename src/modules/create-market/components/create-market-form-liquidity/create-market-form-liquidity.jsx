@@ -568,7 +568,14 @@ export default class CreateMarketLiquidity extends Component {
           <label>
             <span>Add Order for Initial Liquidity</span>
           </label>
-          <p>Recommended for adding liquidity to market.</p>
+          <p className={Styles.LiquidityExplainer}>
+            It is essential to add initial liquidity to your market so users see
+            it. For each outcome, you should aim to place orders such that the
+            difference between the ask and bid is less than 10% of the range of
+            the market. So in a binary or categorical market an ask of .65 and
+            bid of .57 would be 8% and show up, an ask of .65 and bid of .55
+            would be 10% and not show up, and so on.
+          </p>
         </li>
         <li className={Styles.CreateMarketLiquidity__order}>
           <div className={Styles["CreateMarketLiquidity__order-form"]}>
