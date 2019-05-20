@@ -322,7 +322,8 @@ export default class CreateMarketDefine extends Component {
                 {"$"} in your market, make sure to specify which dollar (USD,
                 HKD, CAD, etc
                 {".)."} If you don
-                {"'t,"} the market will be invalid.
+                {"'t,"} the market will have a high probablility of resolving
+                invalid.
               </div>
             </div>
           </div>
