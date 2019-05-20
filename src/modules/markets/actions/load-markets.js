@@ -19,7 +19,6 @@ import {
   updateAppStatus,
   HAS_LOADED_MARKETS
 } from "modules/app/actions/update-app-status";
-import { MAX_FEE_100_PERCENT } from "src/modules/filter-sort/constants/market-max-fees";
 
 const { REPORTING_STATE } = constants;
 
@@ -126,13 +125,10 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     category: filterOptions.category,
     search: filterOptions.search,
     maxFee: parseFloat(filterOptions.maxFee),
+    maxSpreadPercent: parseFloat(filterOptions.maxSpreadPercent),
     hasOrders: false,
     ...sort
   };
-
-  if (filterOptions.maxSpreadPercent !== MAX_FEE_100_PERCENT) {
-    params.maxSpreadPercent = parseFloat(filterOptions.maxSpreadPercent);
-  }
 
   if (filterOptions.hidePostV2Markets) {
     params = Object.assign({}, params, { maxEndTime: CUTOFF / 1000 });
