@@ -158,7 +158,7 @@ jobs:
       - bash: |
           set -euo pipefail
           yarn
-          yarn build:mainnet
+          yarn build
       - task: Npm@1
         inputs:
           command: 'custom' # Options: install, publish, custom
