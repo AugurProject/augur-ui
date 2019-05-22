@@ -28,12 +28,12 @@ import {
   MAX_FEE_30_PERCENT,
   MAX_FEE_40_PERCENT
 } from "src/modules/filter-sort/constants/market-max-fees";
-import {
-  MAX_SPREAD_05_PERCENT,
-  MAX_SPREAD_100_PERCENT,
-  MAX_SPREAD_10_PERCENT,
-  MAX_SPREAD_20_PERCENT
-} from "src/modules/filter-sort/constants/market-max-spread";
+// import {
+//   MAX_SPREAD_05_PERCENT,
+//   MAX_SPREAD_100_PERCENT,
+//   MAX_SPREAD_10_PERCENT,
+//   MAX_SPREAD_20_PERCENT
+// } from "src/modules/filter-sort/constants/market-max-spread";
 
 const sortOptions = [
   { value: MARKET_CREATION_TIME, label: "Creation Time" },
@@ -60,12 +60,12 @@ const maxFeesOptions = [
   { label: "Fees < 40%", value: MAX_FEE_40_PERCENT }
 ];
 
-const maxSpreadOptions = [
-  { label: "All Spreads", value: MAX_SPREAD_100_PERCENT },
-  { label: "Spread < 5%", value: MAX_SPREAD_05_PERCENT },
-  { label: "Spread < 10%", value: MAX_SPREAD_10_PERCENT },
-  { label: "Spread < 20%", value: MAX_SPREAD_20_PERCENT }
-];
+// const maxSpreadOptions = [
+//   { label: "All Spreads", value: MAX_SPREAD_100_PERCENT },
+//   { label: "Spread < 5%", value: MAX_SPREAD_05_PERCENT },
+//   { label: "Spread < 10%", value: MAX_SPREAD_10_PERCENT },
+//   { label: "Spread < 20%", value: MAX_SPREAD_20_PERCENT }
+// ];
 
 export default class FilterSearch extends Component {
   static propTypes = {
@@ -77,7 +77,7 @@ export default class FilterSearch extends Component {
     defaultFilter: PropTypes.string.isRequired,
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
-    defaultMaxSpread: PropTypes.string.isRequired,
+    // defaultMaxSpread: PropTypes.string.isRequired,
     updateMaxSpread: PropTypes.func.isRequired,
     updateFilterOption: PropTypes.func.isRequired,
     updateSortOption: PropTypes.func.isRequired,
@@ -231,7 +231,6 @@ export default class FilterSearch extends Component {
       defaultFilter,
       defaultSort,
       defaultMaxFee,
-      defaultMaxSpread,
       hidePostV2Markets
     } = this.props;
 
@@ -253,11 +252,6 @@ export default class FilterSearch extends Component {
             default={defaultMaxFee}
             onChange={this.changeMaxFees}
             options={maxFeesOptions}
-          />
-          <Dropdown
-            default={defaultMaxSpread}
-            onChange={this.changeMaxSpread}
-            options={maxSpreadOptions}
           />
         </div>
         <div className={Styles.FilterDropdowns__hidePastCutoff}>
