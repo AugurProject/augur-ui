@@ -102,7 +102,7 @@ export default class AccountDeposit extends Component {
               ETH is used for Trading
             </h3>
             <div className={Styles.AccountDeposit__0xInstantButton}>
-              <button onClick={() => window.open("http://www.sendwyre.com/")}>
+              <button onClick={() => window.open("https://dash.sendwyre.com/sign-up")}>
                 Buy ETH using Wyre
               </button>
             </div>
