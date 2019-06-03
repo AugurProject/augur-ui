@@ -288,10 +288,7 @@ export function updateNotification(id, notification) {
           ) {
             return dispatch(
               addNotification({
-                id:
-                  notification.log.transactionHash +
-                  "-" +
-                  notification.log.orderId,
+                id: notification.log.transactionHash,
                 timestamp: notification.timestamp,
                 blockNumber: notification.log.blockNumber,
                 log: notification.log,
