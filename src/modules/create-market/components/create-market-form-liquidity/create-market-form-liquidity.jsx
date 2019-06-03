@@ -565,16 +565,51 @@ export default class CreateMarketLiquidity extends Component {
           )}
         </li>
         <li>
-          <label>
-            <span>Add Order for Initial Liquidity</span>
+          <label
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "1.16em"
+            }}
+          >
+            <span>Important: Add Order for Initial Liquidity</span>
           </label>
-          <p className={Styles.LiquidityExplainer}>
+          <p
+            className={Styles.LiquidityExplainer}
+            style={{
+              lineHeight: "140%",
+              maxWidth: "80%",
+              color: "white"
+              // fontWeight: "bold"
+              // fontSize: "1.05em"
+            }}
+          >
             It is essential to add initial liquidity to your market so users see
             it. For each outcome, you should aim to place orders such that the
-            difference between the ask and bid is less than 10% of the range of
-            the market. So in a binary or categorical market an ask of .65 and
-            bid of .57 would be 8% and show up, an ask of .65 and bid of .55
-            would be 10% and not show up, and so on.
+            difference between the ask and bid is less than 10% of the range
+            (max minus min) of the market. So in a binary or categorical market
+            an ask of .65 and bid of .57 would be 8% and show up, an ask of .66
+            and bid of .55 would be 11% and not show up to users, and so on.
+          </p>
+          <p
+            className={Styles.LiquidityExplainer}
+            style={{
+              lineHeight: "140%",
+              maxWidth: "80%",
+              color: "white"
+              // fontWeight: "bold"
+              // fontSize: "1.05em"
+            }}
+          >
+            Additionally, for your market to appear on the default markets page
+            you must have a bid above the number of outcomes in the market
+            divided by the range, or an ask below the number of outcomes in the
+            market divided by the range for at least one outcome, after
+            accounting for fees. In Augur V1 until a better solution can be
+            implemented in V2, this means avoiding creating markets with true
+            even odds, and instead creating ones with a slight (or large)
+            underdog to ensure they&#39;re not accidentally caught by the
+            invalid market filter.
           </p>
         </li>
         <li className={Styles.CreateMarketLiquidity__order}>

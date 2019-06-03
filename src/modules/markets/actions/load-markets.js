@@ -8,7 +8,11 @@ import {
   MARKET_END_DATE,
   MARKET_RECENTLY_TRADED,
   MARKET_FEE,
-  MARKET_OPEN_INTEREST
+  MARKET_OPEN_INTEREST,
+  MARKET_LIQUIDITY_10,
+  MARKET_LIQUIDITY_15,
+  MARKET_LIQUIDITY_20,
+  MARKET_LIQUIDITY_100
 } from "modules/filter-sort/constants/market-sort-params";
 import {
   MARKET_REPORTING,
@@ -111,6 +115,30 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
       sort.isSortDescending = true;
       break;
     }
+    case MARKET_LIQUIDITY_10: {
+      sort.sortBy = "liquidityTokens";
+      sort.isSortDescending = true;
+      sort.liquiditySortSpreadPercent = 0.1;
+      break;
+    }
+    case MARKET_LIQUIDITY_15: {
+      sort.sortBy = "liquidityTokens";
+      sort.isSortDescending = true;
+      sort.liquiditySortSpreadPercent = 0.15;
+      break;
+    }
+    case MARKET_LIQUIDITY_20: {
+      sort.sortBy = "liquidityTokens";
+      sort.isSortDescending = true;
+      sort.liquiditySortSpreadPercent = 0.2;
+      break;
+    }
+    case MARKET_LIQUIDITY_100: {
+      sort.sortBy = "liquidityTokens";
+      sort.isSortDescending = true;
+      sort.liquiditySortSpreadPercent = 0.99; // WARNING this is 99% instead of 100% because extremely large quantity orders with small prices are effectively a denial of service attack against the augur-node liquidity algorithm
+      break;
+    }
     default: {
       // Sort By Volume:
       // leave defaults
@@ -130,7 +158,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   };
 
   if (filterOptions.experimentalInvalid) {
-    params.maxInvalidROIPercent = 0;
+    params.enableInvalidFilter = true;
   }
 
   if (filterOptions.hidePostV2Markets) {
