@@ -572,7 +572,7 @@ export default class CreateMarketLiquidity extends Component {
               fontSize: "1.16em"
             }}
           >
-            <span>Important: Add Order for Initial Liquidity</span>
+            <span>Important: Add Orders for Initial Liquidity</span>
           </label>
           <p
             className={Styles.LiquidityExplainer}
@@ -584,12 +584,14 @@ export default class CreateMarketLiquidity extends Component {
               // fontSize: "1.05em"
             }}
           >
-            It is essential to add initial liquidity to your market so users see
-            it. For each outcome, you should aim to place orders such that the
-            difference between the ask and bid is less than 10% of the range
-            (max minus min) of the market. So in a binary or categorical market
-            an ask of .65 and bid of .57 would be 8% and show up, an ask of .66
-            and bid of .55 would be 11% and not show up to users, and so on.
+            Liquidity ranking: It is essential to add initial liquidity to your
+            market so users see it. It&#39;s required that at least one outcome
+            have orders such that the difference between the ask and bid is less
+            than 15% of the range (max minus min), inclusive of fees, of the
+            market. So in a binary or categorical market an ask of .65 and bid
+            of .57 would be 8% and show up, an ask of .76 and bid of .55 would
+            be 21% and not show up to users, and so on. If you do this for more
+            outcomes and add more liquidity, your market will rank higher.
           </p>
           <p
             className={Styles.LiquidityExplainer}
@@ -601,15 +603,17 @@ export default class CreateMarketLiquidity extends Component {
               // fontSize: "1.05em"
             }}
           >
-            Additionally, for your market to appear on the default markets page
-            you must have a bid above the number of outcomes in the market
-            divided by the range, or an ask below the number of outcomes in the
-            market divided by the range for at least one outcome, after
-            accounting for fees. In Augur V1 until a better solution can be
-            implemented in V2, this means avoiding creating markets with true
-            even odds, and instead creating ones with a slight (or large)
-            underdog to ensure they&#39;re not accidentally caught by the
-            invalid market filter.
+            Invalid filter: Additionally, for your market to appear on the
+            default markets page you must have (on at least one outcome) a bid
+            above the number of outcomes in the market divided by the range, or
+            an ask below the number of outcomes in the market divided by the
+            range, after accounting for fees. In Augur V1, until a better
+            solution can be implemented in V2, this means avoiding creating
+            markets with true even odds, and instead creating ones with a slight
+            (or large) underdog to ensure they&#39;re not accidentally caught by
+            the invalid market filter. For instance, a market with a bid of 48
+            and ask of 52 would be filtered out, one with a bid of 52 and ask of
+            55 wouldn&#39;t.
           </p>
         </li>
         <li className={Styles.CreateMarketLiquidity__order}>

@@ -1,6 +1,6 @@
 import { RESET_STATE } from "modules/app/actions/reset-state";
 import { MARKET_OPEN } from "modules/filter-sort/constants/market-states";
-import { MARKET_LIQUIDITY_10 } from "modules/filter-sort/constants/market-sort-params";
+import { MARKET_LIQUIDITY_15 } from "modules/filter-sort/constants/market-sort-params";
 import { DAY } from "modules/transactions/constants/transaction-periods";
 import {
   UPDATE_FILTER_SORT_OPTIONS,
@@ -26,7 +26,7 @@ if (localStorageRef && localStorageRef.getItem) {
 
 const DEFAULT_STATE = {
   [MARKET_FILTER]: MARKET_OPEN,
-  [MARKET_SORT]: MARKET_LIQUIDITY_10,
+  [MARKET_SORT]: MARKET_LIQUIDITY_15,
   [MARKET_MAX_FEES]: MAX_FEE_05_PERCENT,
   [MARKET_MAX_SPREAD]: maxSpreadSelection || MAX_SPREAD_10_PERCENT,
   [TRANSACTION_PERIOD]: DAY,
