@@ -87,7 +87,7 @@
   "kovan": {
     "augur-node": "wss://kovan.augur.net/augur-node",
     "ethereum-node": {
-      "http": "https://kovan.augur.net/ethereum-http",
+      "http": "https://eth-kovan.alchemyapi.io/jsonrpc/Kd37_uEmJGwU6pYq6jrXaJXXi8u9IoOM",
       "ws": null,
       "pollingIntervalMilliseconds": 500,
       "blockRetention": 100,
