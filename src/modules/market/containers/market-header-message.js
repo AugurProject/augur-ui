@@ -12,9 +12,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mergeProps = (sP, dP, oP) => {
-  const { marketId } = oP;
+  const { marketId, isPastV2Cutoff } = oP;
 
-  const hasSeen = sP.marketBanners.indexOf(marketId) !== -1;
+  const hasSeen = sP.marketBanners.indexOf(marketId) !== -1 || isPastV2Cutoff;
 
   return {
     show: !hasSeen,
