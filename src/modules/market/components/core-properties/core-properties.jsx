@@ -464,10 +464,7 @@ export default class CoreProperties extends Component {
             </div>
           </div>
         )}
-        <MarketHeaderMessage
-          marketId={market.id}
-          show={!isPastV2Cutoff(getValue(market, "endTime.timestamp"))}
-        />
+        <MarketHeaderMessage marketId={market.id} />
         {renderedProperties}
       </div>
     );
