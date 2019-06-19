@@ -18,16 +18,8 @@ const loadCategories = (params = {}, callback = logError) => (
       if (categories == null) return callback(null);
       dispatch(clearCategories());
 
-      // Categories currently don't allow the user to specify how they should be
-      // sorted; to enable users to discover interesting markets, sort categories
-      // and their nested tags by non-finalized open interest. Do this here
-      // because this sort is expensive and we only want to do it once, upstream
-      // of redux store. Possibly this could be done in augur-node instead,
-      // such that the UI would just rely on categories already being sorted.
-      categories.sort(sortByNonFinalizedOpenInterestDescending);
-      categories.forEach(c =>
-        c.tags.sort(sortByNonFinalizedOpenInterestDescending)
-      );
+      categories.sort(sortByLiquidityTokensDescending);
+      categories.forEach(c => c.tags.sort(sortByLiquidityTokensDescending));
 
       dispatch(updateCategories(categories));
       callback(null, categories);
@@ -37,11 +29,11 @@ const loadCategories = (params = {}, callback = logError) => (
 
 export default loadCategories;
 
-function sortByNonFinalizedOpenInterestDescending(a, b) {
+function sortByLiquidityTokensDescending(a, b) {
   // If optimization needed, parseFloat for each object up
   // front instead of redundantly doing it each comparison.
-  const oiA = parseFloat(a.nonFinalizedOpenInterest);
-  const oiB = parseFloat(b.nonFinalizedOpenInterest);
+  const oiA = parseFloat(a.liquidityTokens);
+  const oiB = parseFloat(b.liquidityTokens);
   if (isNaN(oiA)) {
     return -1;
   }
