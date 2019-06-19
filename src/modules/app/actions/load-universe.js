@@ -53,7 +53,6 @@ export const loadUniverse = (universeId, history, callback = logError) => (
           callback(null);
         })
       );
-      dispatch(loadCategories());
       dispatch(loadMarketsToReportOn());
     }
   );
