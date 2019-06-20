@@ -1,7 +1,7 @@
 import { augur } from "services/augurjs";
 import { constants } from "services/constants";
 import logError from "utils/log-error";
-import { parallel } from "async";
+import loadCategories from "modules/categories/actions/load-categories";
 import { CUTOFF } from "modules/markets/constants/cutoff-date";
 import {
   MARKET_CREATION_TIME,
@@ -82,9 +82,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   getState
 ) => {
   const { universe } = getState();
-  const filter = [];
   const sort = {};
-  const parallelParams = {};
   switch (filterOptions.sort) {
     case MARKET_RECENTLY_TRADED: {
       // Sort By Recently Traded:
@@ -136,7 +134,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     case MARKET_LIQUIDITY_100: {
       sort.sortBy = "liquidityTokens";
       sort.isSortDescending = true;
-      sort.liquiditySortSpreadPercent = 0.99; // WARNING this is 99% instead of 100% because extremely large quantity orders with small prices are effectively a denial of service attack against the augur-node liquidity algorithm
+      sort.liquiditySortSpreadPercent = 1.0;
       break;
     }
     default: {
@@ -168,66 +166,38 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   switch (filterOptions.filter) {
     case MARKET_REPORTING: {
       // reporting markets only:
-      filter.push([
+      params.reportingState = [
         REPORTING_STATE.DESIGNATED_REPORTING,
         REPORTING_STATE.OPEN_REPORTING,
         REPORTING_STATE.CROWDSOURCING_DISPUTE,
         REPORTING_STATE.AWAITING_NEXT_WINDOW
-      ]);
-      filter.forEach(filterType => {
-        parallelParams[filterType] = next =>
-          augur.markets.getMarkets(
-            { ...params, reportingState: filterType },
-            next
-          );
-      });
+      ];
       break;
     }
     case MARKET_CLOSED: {
       // resolved markets only:
-      filter.push([
+      params.reportingState = [
         REPORTING_STATE.AWAITING_FINALIZATION,
         REPORTING_STATE.FINALIZED
-      ]);
-      filter.forEach(filterType => {
-        parallelParams[filterType] = next =>
-          augur.markets.getMarkets(
-            { ...params, reportingState: filterType },
-            next
-          );
-      });
+      ];
       break;
     }
     default: {
       // open markets only:
-      filter.push(REPORTING_STATE.PRE_REPORTING);
-      filter.forEach(filterType => {
-        parallelParams[filterType] = next =>
-          augur.markets.getMarkets(
-            { ...params, reportingState: filterType },
-            next
-          );
-      });
+      params.reportingState = [REPORTING_STATE.PRE_REPORTING];
       break;
     }
   }
-  parallel(parallelParams, (err, filteredMarkets) => {
-    let finalizedMarketList = [];
+
+  augur.markets.getMarkets(params, (err, filteredMarkets) => {
     if (err) return cb(err);
-    filter.forEach(filterType => {
-      if (
-        filteredMarkets[filterType] &&
-        filteredMarkets[filterType].length > 0
-      ) {
-        finalizedMarketList = finalizedMarketList.concat(
-          filteredMarkets[filterType]
-        );
-      }
-    });
 
     setTimeout(() => {
       dispatch(updateAppStatus(HAS_LOADED_MARKETS, true));
     }, 2000);
-    return cb(null, finalizedMarketList);
+
+    // load categories here
+    dispatch(loadCategories(params));
+    return cb(null, filteredMarkets);
   });
 };

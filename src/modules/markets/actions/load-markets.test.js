@@ -10,6 +10,7 @@ describe(`modules/markets/actions/load-markets`, () => {
   const { REPORTING_STATE } = constants;
   augur.markets = jest.fn(() => {});
   augur.markets.getMarkets = jest.fn(() => {});
+  augur.markets.getCategories = jest.fn(() => {});
 
   const {
     loadMarketsByFilter
