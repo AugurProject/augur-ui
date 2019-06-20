@@ -134,7 +134,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     case MARKET_LIQUIDITY_100: {
       sort.sortBy = "liquidityTokens";
       sort.isSortDescending = true;
-      sort.liquiditySortSpreadPercent = 0.99; // WARNING this is 99% instead of 100% because extremely large quantity orders with small prices are effectively a denial of service attack against the augur-node liquidity algorithm
+      sort.liquiditySortSpreadPercent = 1.0;
       break;
     }
     default: {
