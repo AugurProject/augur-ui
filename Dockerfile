@@ -19,22 +19,19 @@ RUN apk --no-cache add \
 
 
 # begin create caching layer
-COPY package.json /augur/package.json
+COPY package.json yarn.lock /augur/
 ADD https://nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-headers.tar.gz /augur/node-v${NODE_VERSION}-headers.tar.gz
 WORKDIR /augur
-RUN git init \
-  && yarn add require-from-string \
-  && yarn \
-  && rm -rf .git \
-  && rm package.json \
-  && rm yarn.lock
+RUN yarn
 # end create caching layer
 
 COPY . /augur
 COPY support/local-run.sh /augur/local-run.sh
 
+WORKDIR /augur
 # workaround a bug when running inside an alpine docker image
-RUN rm -f /augur/yarn.lock
+
+RUN yarn install --frozen-lockfile
 
 RUN set -ex; \
     if [ "$BUILD_ENVIRONMENT" = "dev" ]; then \
