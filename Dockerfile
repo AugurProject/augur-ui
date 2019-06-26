@@ -6,35 +6,15 @@ ARG ethereum_network=rinkeby
 ENV ETHEREUM_NETWORK=$ethereum_network
 ARG build_environment=dev
 ENV BUILD_ENVIRONMENT=$build_environment
-RUN apk --no-cache add \
-    bash \
-    binutils \
-    eudev-dev \
-    g++ \
-    git \
-    libusb-dev \
-    linux-headers \
-    make \
-    python
-
+RUN apk --no-cache add git
 
 # begin create caching layer
-COPY package.json /augur/package.json
-ADD https://nodejs.org/download/release/v${NODE_VERSION}/node-v${NODE_VERSION}-headers.tar.gz /augur/node-v${NODE_VERSION}-headers.tar.gz
+COPY package.json yarn.lock /augur/
 WORKDIR /augur
-RUN git init \
-  && yarn add require-from-string \
-  && yarn \
-  && rm -rf .git \
-  && rm package.json \
-  && rm yarn.lock
+RUN yarn install --frozen-lockfile
 # end create caching layer
 
 COPY . /augur
-COPY support/local-run.sh /augur/local-run.sh
-
-# workaround a bug when running inside an alpine docker image
-RUN rm -f /augur/yarn.lock
 
 RUN set -ex; \
     if [ "$BUILD_ENVIRONMENT" = "dev" ]; then \
@@ -47,33 +27,8 @@ RUN set -ex; \
 
 # need arg to pass in for augur-ui (production) and augur-dev (dev)
 RUN git rev-parse HEAD > /augur/build/git-hash.txt \
-  && git log -1 > /augur/build/git-commit.txt \
-  && chmod 755 /augur/local-run.sh \
-  && cd /augur
+  && git log -1 > /augur/build/git-commit.txt
 
-RUN rm -rf node_modules && \
-    npm config set loglevel silly && \
-    npm config set tarball /augur/node-v${NODE_VERSION}-headers.tar.gz && \
-    yarn install --production
+FROM nginx
 
-FROM node:10.15.0-alpine
-
-RUN apk --no-cache add \
-    bash \
-    binutils \
-    nginx \
-    && echo "daemon off;" >> /etc/nginx/nginx.conf
-
-# nginx logs
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
-
-WORKDIR /augur
-
-COPY --from=builder /augur /augur
-
-# Vhost to serve files
-COPY support/nginx-default.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["bash", "/augur/local-run.sh"]
+COPY --from=builder /augur/build/ /usr/share/nginx/html
