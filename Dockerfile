@@ -29,6 +29,7 @@ RUN set -ex; \
 RUN git rev-parse HEAD > /augur/build/git-hash.txt \
   && git log -1 > /augur/build/git-commit.txt
 
-FROM nginx
+FROM nginx:alpine
 
-COPY --from=builder /augur/build/ /usr/share/nginx/html
+COPY --from=builder /augur/build/ /augur/build
+COPY support/nginx-default.conf /etc/nginx/conf.d/default.conf
