@@ -197,7 +197,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     }, 2000);
 
     // load categories here
-    dispatch(loadCategories(params));
+    dispatch(loadCategories(params, !params.category));
     return cb(null, filteredMarkets);
   });
 };
