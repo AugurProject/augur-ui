@@ -10,7 +10,17 @@ const DEFAULT_STATE = [];
 export default function(categories = DEFAULT_STATE, { type, data }) {
   switch (type) {
     case UPDATE_CATEGORIES:
-      return data.categories; // NB we ignore pre-existing categories and so UPDATE_CATEGORIES replaces any previous categories. This is consistent with augur.getCategories() which always returns all categories and has no natural support for incrementally updating categories
+      return Array.from(
+        new Set([
+          ...categories.map(c => c.categoryName),
+          ...data.categories.map(c => c.categoryName)
+        ])
+      ).map(
+        k =>
+          data.categories.find(d => d.categoryName === k)
+            ? data.categories.find(d => d.categoryName === k)
+            : categories.find(d => d.categoryName === k)
+      );
     case RESET_STATE:
     case CLEAR_CATEGORIES:
       return DEFAULT_STATE;

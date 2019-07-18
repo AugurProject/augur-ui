@@ -5,10 +5,11 @@ import {
 } from "modules/categories/actions/update-categories";
 import logError from "utils/log-error";
 
-const loadCategories = (params = {}, callback = logError) => (
-  dispatch,
-  getState
-) => {
+const loadCategories = (
+  params = {},
+  refreshCategories,
+  callback = logError
+) => (dispatch, getState) => {
   const { universe } = getState();
   if (!universe.id) return callback(null);
   augur.markets.getCategories(
@@ -16,7 +17,7 @@ const loadCategories = (params = {}, callback = logError) => (
     (err, categories) => {
       if (err) return callback(err);
       if (categories == null) return callback(null);
-      dispatch(clearCategories());
+      if (refreshCategories) dispatch(clearCategories());
 
       categories.sort(sortByLiquidityTokensDescending);
       categories.forEach(c => c.tags.sort(sortByLiquidityTokensDescending));
