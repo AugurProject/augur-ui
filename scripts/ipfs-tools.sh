@@ -4,7 +4,7 @@
 command -v ipfs >/dev/null 2>&1 || { echo >&2 "IPFS is required to run this command.  Aborting."; exit 1; }
 
 # run init just in case ipfs has never been run
-ipfs init 2> /dev/null
+ipfs init > /dev/null 2>&1
 
 if [ $# -lt 1 ]
 then
