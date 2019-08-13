@@ -1,0 +1,38 @@
+Overview:
+
+## Join Discord <http://invite.augur.net/>
+
+# Connect using Augur.js
+Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
+Practice on Rinkeby
+```
+  const Augur = require('augur.js');
+  const augur = new Augur();
+
+  const augurNode = "wss://dev.augur.net/augur-node";
+  const ethereumNode = {
+    "http": "https://eth-rinkeby.alchemyapi.io/jsonrpc/xWkVwAbM7Qr-p8j-Zu_PPwldZJKmaKjx",
+    "ws": "",
+    "pollingIntervalMilliseconds": 10000,
+    "blockRetention": 100,
+    "connectionTimeout": 60000
+  }
+  
+  augur.connect({ ethereumNode, augurNode }, function (err, connectionInfo) {
+    ...
+  });
+
+```
+
+## Create Market
+Augur API docs: <https://docs.augur.net/#create-market-functions> 
+ * talk about signing transactions here
+
+* Show how to create various market types using augur.js
+* Show how to pull market data using augur.js
+
+* Glance at V1 API docs on trading (publictrade, create order)
+* show how to pull orders using augur.js
+
+* Just mention reporting in terms of market resolution and user's claiming winnings.
+* add in some resolution tips.
