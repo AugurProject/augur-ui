@@ -34,16 +34,9 @@ Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
 ## Create Market
 Augur API docs: <https://docs.augur.net/#create-market-functions> 
  * YesNo, Categorical, and Scalar markets
- * Signing transactions here
-
- * Show how to create various market types using augur.js
- * Show how to pull market data using augur.js
-
- * Glance at V1 API docs on trading (publictrade, create order)
- * show how to pull orders using augur.js
-
- * Just mention reporting in terms of market resolution and user's claiming winnings.
- * add in some resolution tips.
+ * Outcomes
+   - 0 is No
+   - 1 is Yes
 
 ## Orders
 <https://docs.augur.net/#trading-functions>
