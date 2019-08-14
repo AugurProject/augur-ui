@@ -7,7 +7,7 @@ Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
  * Augur as a protocol
  * What is augur.js?
  * Market creation
- * 
+ * Orders
  * Practice on Rinkeby
 
 # Augur.js
@@ -43,3 +43,19 @@ Augur API docs: <https://docs.augur.net/#create-market-functions>
 
  * Just mention reporting in terms of market resolution and user's claiming winnings.
  * add in some resolution tips.
+
+## Orders
+<https://docs.augur.net/#trading-functions>
+ * Order Creation
+ * list orders
+
+```
+  const orderTypes = ["buy", "sell"];
+  augur.trading.getOrders({ marketId: marketId, outcome: outcomeId }, function (err, orderBook) {
+  ...
+  });
+```
+
+
+ 
+ 
