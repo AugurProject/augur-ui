@@ -4,7 +4,13 @@ Overview:
 
 # Connect using Augur.js
 Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
-Practice on Rinkeby
+ * Augur as a protocol
+ * What is augur.js?
+ * Market creation
+ * 
+ * Practice on Rinkeby
+
+# Augur.js
 ```
   const Augur = require('augur.js');
   const augur = new Augur();
@@ -26,13 +32,14 @@ Practice on Rinkeby
 
 ## Create Market
 Augur API docs: <https://docs.augur.net/#create-market-functions> 
- * talk about signing transactions here
+ * YesNo, Categorical, and Scalar markets
+ * Signing transactions here
 
-* Show how to create various market types using augur.js
-* Show how to pull market data using augur.js
+ * Show how to create various market types using augur.js
+ * Show how to pull market data using augur.js
 
-* Glance at V1 API docs on trading (publictrade, create order)
-* show how to pull orders using augur.js
+ * Glance at V1 API docs on trading (publictrade, create order)
+ * show how to pull orders using augur.js
 
-* Just mention reporting in terms of market resolution and user's claiming winnings.
-* add in some resolution tips.
+ * Just mention reporting in terms of market resolution and user's claiming winnings.
+ * add in some resolution tips.
