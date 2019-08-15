@@ -24,8 +24,8 @@ Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
     "blockRetention": 100,
     "connectionTimeout": 60000
   }
-  
-  augur.connect({ ethereumNode, augurNode }, function (err, connectionInfo) {
+  const useWeb3Transport = true; // needed for meta mask signing
+  augur.connect({ ethereumNode, augurNode, useWeb3Transport }, function (err, connectionInfo) {
     ...
   });
 
