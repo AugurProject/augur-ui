@@ -6,13 +6,9 @@ Overview:
 Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
 Glitch: <https://military-meteoroid.glitch.me>
  * Augur as a protocol <https://www.augur.net/>
- * What is augur.js?
- * Market creation
- * Orders
- * Reporting / market lifecycle
  * Practice on Rinkeby
 
-# Augur.js
+# Augur.js more details in glitch and docs
 ```
   const Augur = require('augur.js');
   const augur = new Augur();
@@ -32,17 +28,20 @@ Glitch: <https://military-meteoroid.glitch.me>
 
 ```
 
-## Create Market
+## Key points
 Augur API docs: <https://docs.augur.net/#create-market-functions> 
- * YesNo, Categorical, and Scalar markets
- * Outcomes
+ * YesNo, Categorical and Scalar markets
+ * YesNo market Outcomes
    - 0 is No
    - 1 is Yes
+ * Categorical markets
+   - max 8 outcomes
+ * Scalar markets
+   - behave like bounded futures markets
 
 ## Orders
-<https://docs.augur.net/#trading-functions>
- * Order Creation
- * list orders
+ * only limit orders are supported (need quantity and price)
+ * price time priority matching algo
 
 ```
   const orderTypes = ["buy", "sell"];
