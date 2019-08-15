@@ -1,0 +1,56 @@
+Overview:
+
+## Join Discord <http://invite.augur.net/>
+
+# Connect using Augur.js
+Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
+Glitch: <https://military-meteoroid.glitch.me>
+ * Augur as a protocol
+ * What is augur.js?
+ * Market creation
+ * Orders
+ * Reporting / market lifecycle
+ * Practice on Rinkeby
+
+# Augur.js
+```
+  const Augur = require('augur.js');
+  const augur = new Augur();
+
+  const augurNode = "wss://dev.augur.net/augur-node";
+  const ethereumNode = {
+    "http": "https://eth-rinkeby.alchemyapi.io/jsonrpc/xWkVwAbM7Qr-p8j-Zu_PPwldZJKmaKjx",
+    "ws": "",
+    "pollingIntervalMilliseconds": 10000,
+    "blockRetention": 100,
+    "connectionTimeout": 60000
+  }
+  const useWeb3Transport = true; // needed for meta mask signing
+  augur.connect({ ethereumNode, augurNode, useWeb3Transport }, function (err, connectionInfo) {
+    ...
+  });
+
+```
+
+## Create Market
+Augur API docs: <https://docs.augur.net/#create-market-functions> 
+ * YesNo, Categorical, and Scalar markets
+ * Outcomes
+   - 0 is No
+   - 1 is Yes
+
+## Orders
+<https://docs.augur.net/#trading-functions>
+ * Order Creation
+ * list orders
+
+```
+  const orderTypes = ["buy", "sell"];
+  augur.trading.getOrders({ marketId: marketId, outcome: outcomeId }, function (err, orderBook) {
+  ...
+  });
+```
+
+
+ 
+ 
