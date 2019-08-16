@@ -1,9 +1,9 @@
 Overview:
 
-## Join Discord <http://invite.augur.net/>
+## Join Discord <http://invite.augur.net/> special channel #cheeze-hack-a-thon
 
 # Connect using Augur.js
-Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js> special channel #cheeze-hack-a-thon
+Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js> 
  * Glitch: <https://military-meteoroid.glitch.me>
  * Augur as a protocol <https://www.augur.net/>
  * Practice on Rinkeby
