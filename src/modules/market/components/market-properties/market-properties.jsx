@@ -19,6 +19,7 @@ import Styles from "modules/market/components/market-properties/market-propertie
 import ChevronFlip from "modules/common/components/chevron-flip/chevron-flip";
 import { MODAL_MIGRATE_MARKET } from "modules/modal/constants/modal-types";
 import { constants } from "services/augurjs";
+import { formatAttoRep } from "utils/format-number";
 
 const {
   DESIGNATED_REPORTING,
@@ -59,7 +60,10 @@ export default class MarketProperties extends Component {
     toggleFavorite: PropTypes.func,
     isFavorite: PropTypes.bool,
     finalizeMarket: PropTypes.func,
-    description: PropTypes.string
+    description: PropTypes.string,
+    totalInitialREPStake: PropTypes.number,
+    initialReporterAddress: PropTypes.string,
+    author: PropTypes.string
   };
 
   static defaultProps = {
@@ -85,7 +89,10 @@ export default class MarketProperties extends Component {
     toggleFavorite: () => {},
     isFavorite: false,
     finalizeMarket: () => {},
-    description: null
+    description: null,
+    totalInitialREPStake: 0,
+    author: null,
+    initialReporterAddress: null
   };
 
   constructor(props) {
@@ -121,9 +128,16 @@ export default class MarketProperties extends Component {
       showAdditionalDetailsToggle,
       showingDetails,
       finalizationTime,
-      toggleDetails
+      toggleDetails,
+      author,
+      totalInitialREPStake,
+      initialReporterAddress
     } = this.props;
-
+    const isOwner = (loginAccount || {}).address === author;
+    const initialStake = formatAttoRep(totalInitialREPStake, {
+      decimals: 4,
+      denomination: " REP"
+    });
     const isScalar = marketType === SCALAR;
     let consensus = getValue(
       p,
@@ -172,25 +186,33 @@ export default class MarketProperties extends Component {
                   : endTime.formattedTimezone}
               </span>
             </li>
-            {showResolution && (
-              <li className={Styles.MarketProperties__resolutionSource}>
-                <span>Resolution Source</span>
-                <span
-                  className={classNames(
-                    Styles.MarketProperties__resolutionSource,
-                    {
-                      [Styles.MarketProperties__resolutionSourceDoubleButtons]:
-                        isForking &&
-                        isForkingMarketFinalized &&
-                        forkingMarket !== id &&
-                        !finalizationTime
-                    }
-                  )}
-                >
-                  {resolutionSource}
-                </span>
+            {isOwner && (
+              <li>
+                <span>Initial Reporter Info</span>
+                <span>{initialReporterAddress}</span>
+                <ValueDenomination {...initialStake} />
               </li>
             )}
+            {showResolution &&
+              !isOwner && (
+                <li className={Styles.MarketProperties__resolutionSource}>
+                  <span>Resolution Source</span>
+                  <span
+                    className={classNames(
+                      Styles.MarketProperties__resolutionSource,
+                      {
+                        [Styles.MarketProperties__resolutionSourceDoubleButtons]:
+                          isForking &&
+                          isForkingMarketFinalized &&
+                          forkingMarket !== id &&
+                          !finalizationTime
+                      }
+                    )}
+                  >
+                    {resolutionSource}
+                  </span>
+                </li>
+              )}
             {consensus && (
               <li>
                 <span>Winning Outcome</span>
