@@ -1,8 +1,10 @@
 import { augur } from "services/augurjs";
+import { createBigNumber } from "utils/create-big-number";
 import { constants } from "services/constants";
 import logError from "utils/log-error";
 import loadCategories from "modules/categories/actions/load-categories";
 import { CUTOFF } from "modules/markets/constants/cutoff-date";
+import { numberOfWeeksUntilDate } from "utils/format-date";
 import {
   MARKET_CREATION_TIME,
   MARKET_END_DATE,
@@ -81,7 +83,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   dispatch,
   getState
 ) => {
-  const { universe } = getState();
+  const { universe, blockchain } = getState();
   const sort = {};
   switch (filterOptions.sort) {
     case MARKET_RECENTLY_TRADED: {
@@ -159,6 +161,12 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     params.enableInvalidFilter = true;
   }
 
+  if (filterOptions.hideInsecureMarkets) {
+    // here is the algo to determin min rep needed on initial reporter contract
+    const currentTime = (blockchain.currentAugurTimestamp || 0) * 1000;
+    params.minInitialRep = neededInitialReporterRep(currentTime);
+  }
+
   if (filterOptions.hidePostV2Markets) {
     params = Object.assign({}, params, { maxEndTime: CUTOFF / 1000 });
   }
@@ -201,3 +209,14 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     return cb(null, filteredMarkets);
   });
 };
+
+function neededInitialReporterRep(currentTime) {
+  const { ETHER } = augur.rpc.constants;
+  const TOPSTAKE = 5000;
+  const weeks = numberOfWeeksUntilDate(currentTime, CUTOFF);
+
+  return createBigNumber(TOPSTAKE)
+    .dividedBy(weeks)
+    .times(ETHER)
+    .toNumber();
+}

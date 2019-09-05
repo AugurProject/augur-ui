@@ -26,6 +26,7 @@ export default class MarketsView extends Component {
     defaultMaxSpread: PropTypes.string.isRequired,
     defaultHidePastCutoff: PropTypes.bool.isRequired,
     defaultExperimentalInvalid: PropTypes.bool.isRequired,
+    defaultHideInscureMarkets: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
   };
 
@@ -45,6 +46,7 @@ export default class MarketsView extends Component {
       maxSpreadPercent: props.defaultMaxSpread,
       hidePostV2Markets: props.defaultHidePastCutoff,
       experimentalInvalid: props.defaultExperimentalInvalid,
+      hideInsecureMarkets: props.defaultHideInscureMarkets,
       filterSortedMarkets: []
     };
 
@@ -77,7 +79,8 @@ export default class MarketsView extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
-      experimentalInvalid
+      experimentalInvalid,
+      hideInsecureMarkets
     } = params;
     this.setState(
       {
@@ -86,7 +89,8 @@ export default class MarketsView extends Component {
         maxFee,
         maxSpreadPercent,
         hidePostV2Markets,
-        experimentalInvalid
+        experimentalInvalid,
+        hideInsecureMarkets
       },
       this.updateFilteredMarkets
     );
@@ -100,7 +104,8 @@ export default class MarketsView extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
-      experimentalInvalid
+      experimentalInvalid,
+      hideInsecureMarkets
     } = this.state;
     loadMarketsByFilter(
       {
@@ -111,7 +116,8 @@ export default class MarketsView extends Component {
         maxFee,
         maxSpreadPercent,
         hidePostV2Markets,
-        experimentalInvalid
+        experimentalInvalid,
+        hideInsecureMarkets
       },
       (err, filterSortedMarkets) => {
         if (err) return console.log("Error loadMarketsFilter:", err);
@@ -138,7 +144,8 @@ export default class MarketsView extends Component {
       maxSpreadPercent,
       hidePostV2Markets,
       experimentalInvalid,
-      filterSortedMarkets
+      filterSortedMarkets,
+      hideInsecureMarkets
     } = this.state;
 
     return (
@@ -160,6 +167,7 @@ export default class MarketsView extends Component {
           maxSpreadPercent={maxSpreadPercent}
           hidePostV2Markets={hidePostV2Markets}
           experimentalInvalid={experimentalInvalid}
+          hideInsecureMarkets={hideInsecureMarkets}
           updateFilter={this.updateFilter}
           history={history}
           hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}

@@ -6,6 +6,7 @@ export const MARKET_MAX_SPREAD = "maxSpreadPercent";
 export const TRANSACTION_PERIOD = "transactionPeriod";
 export const PAST_CUTOFF = "hidePostV2Markets";
 export const EXPERIMENTAL_INVALID = "experimentalInvalid";
+export const INSECURE_MARKETS = "hideInsecureMarkets";
 
 export function updateFilterSortOptions(optionKey, optionValue) {
   return {
