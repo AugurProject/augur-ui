@@ -9,7 +9,8 @@ import {
   MARKET_MAX_FEES,
   MARKET_MAX_SPREAD,
   PAST_CUTOFF,
-  EXPERIMENTAL_INVALID
+  EXPERIMENTAL_INVALID,
+  INSECURE_MARKETS
 } from "modules/filter-sort/actions/update-filter-sort-options";
 
 const mapStateToProps = state => ({
@@ -31,7 +32,11 @@ const mapDispatchToProps = dispatch => ({
   updateHidePostV2Markets: hidePostV2Markets =>
     dispatch(updateFilterSortOptions(PAST_CUTOFF, hidePostV2Markets)),
   updateExperimentalInvalid: experimentalInvalid =>
-    dispatch(updateFilterSortOptions(EXPERIMENTAL_INVALID, experimentalInvalid))
+    dispatch(
+      updateFilterSortOptions(EXPERIMENTAL_INVALID, experimentalInvalid)
+    ),
+  updateHideInsecureMarkets: hideInsecureMarkets =>
+    dispatch(updateFilterSortOptions(INSECURE_MARKETS, hideInsecureMarkets))
 });
 
 const FilterDropdownsContainer = withRouter(

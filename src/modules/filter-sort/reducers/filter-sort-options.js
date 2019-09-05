@@ -10,7 +10,8 @@ import {
   MARKET_MAX_SPREAD,
   TRANSACTION_PERIOD,
   PAST_CUTOFF,
-  EXPERIMENTAL_INVALID
+  EXPERIMENTAL_INVALID,
+  INSECURE_MARKETS
 } from "modules/filter-sort/actions/update-filter-sort-options";
 import { MAX_FEE_05_PERCENT } from "src/modules/filter-sort/constants/market-max-fees";
 import {
@@ -31,7 +32,8 @@ const DEFAULT_STATE = {
   [MARKET_MAX_SPREAD]: maxSpreadSelection || MAX_SPREAD_10_PERCENT,
   [TRANSACTION_PERIOD]: DAY,
   [PAST_CUTOFF]: true,
-  [EXPERIMENTAL_INVALID]: true
+  [EXPERIMENTAL_INVALID]: true,
+  [INSECURE_MARKETS]: true
 };
 
 const KEYS = Object.keys(DEFAULT_STATE);

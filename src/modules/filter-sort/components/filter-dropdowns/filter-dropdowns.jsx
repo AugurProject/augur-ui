@@ -95,6 +95,8 @@ export default class FilterSearch extends Component {
     updateMaxFee: PropTypes.func.isRequired,
     hidePostV2Markets: PropTypes.bool.isRequired,
     updateHidePostV2Markets: PropTypes.func.isRequired,
+    hideInsecureMarkets: PropTypes.bool.isRequired,
+    updateHideInsecureMarkets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
@@ -111,6 +113,7 @@ export default class FilterSearch extends Component {
     this.goToPageOne = this.goToPageOne.bind(this);
     this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
     this.changeExperimentalInvalid = this.changeExperimentalInvalid.bind(this);
+    this.changeHideInsureMarkets = this.changeHideInsureMarkets.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,6 +147,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
 
@@ -155,6 +159,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     });
   }
@@ -167,6 +172,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
 
@@ -178,6 +184,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     });
   }
@@ -190,6 +197,7 @@ export default class FilterSearch extends Component {
       maxSpreadPercent,
       updateFilter,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
 
@@ -201,6 +209,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     });
   }
@@ -213,6 +222,7 @@ export default class FilterSearch extends Component {
       updateMaxSpread,
       updateFilter,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
 
@@ -224,6 +234,31 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
+      experimentalInvalid
+    });
+  }
+
+  changeHideInsureMarkets() {
+    const {
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      updateFilter,
+      hidePostV2Markets,
+      hideInsecureMarkets,
+      experimentalInvalid,
+      updateHideInsecureMarkets
+    } = this.props;
+    updateHideInsecureMarkets(!hideInsecureMarkets);
+    updateFilter({
+      filter,
+      sort,
+      maxFee,
+      maxSpreadPercent,
+      hidePostV2Markets,
+      hideInsecureMarkets: !hideInsecureMarkets,
       experimentalInvalid
     });
   }
@@ -237,6 +272,7 @@ export default class FilterSearch extends Component {
       updateFilter,
       hidePostV2Markets,
       updateHidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
     updateHidePostV2Markets(!hidePostV2Markets);
@@ -246,6 +282,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets: !hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     });
   }
@@ -258,6 +295,7 @@ export default class FilterSearch extends Component {
       maxSpreadPercent,
       updateFilter,
       hidePostV2Markets,
+      hideInsecureMarkets,
       updateExperimentalInvalid,
       experimentalInvalid
     } = this.props;
@@ -268,6 +306,7 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid: !experimentalInvalid
     });
   }
@@ -278,6 +317,7 @@ export default class FilterSearch extends Component {
       defaultSort,
       defaultMaxFee,
       hidePostV2Markets,
+      hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
 
@@ -347,6 +387,17 @@ export default class FilterSearch extends Component {
                 </p>
               </ReactTooltip>
             </label>
+          </div>
+          <div>
+            <Checkbox
+              id="insure-markets"
+              type="checkbox"
+              name="hideInsecureMarkets"
+              isChecked={hideInsecureMarkets}
+              value={hideInsecureMarkets}
+              onClick={this.changeHideInsureMarkets}
+            />{" "}
+            <label htmlFor="post-cutoff">hide insecure markets</label>
           </div>
         </div>
       </div>

@@ -24,7 +24,8 @@ export default class MarketsHeader extends Component {
     updateFilter: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
-    experimentalInvalid: PropTypes.bool.isRequired
+    experimentalInvalid: PropTypes.bool.isRequired,
+    hideInsecureMarkets: PropTypes.bool.isRequired
   };
 
   constructor(props) {
@@ -77,7 +78,8 @@ export default class MarketsHeader extends Component {
       experimentalInvalid,
       updateFilter,
       history,
-      hasPositionsInCutoffMarkets
+      hasPositionsInCutoffMarkets,
+      hideInsecureMarkets
     } = this.props;
     const s = this.state;
 
@@ -97,6 +99,7 @@ export default class MarketsHeader extends Component {
               location={location}
               hasPositionsInCutoffMarkets={hasPositionsInCutoffMarkets}
               maxSpreadPercent={maxSpreadPercent}
+              hideInsecureMarkets={hideInsecureMarkets}
             />
           </div>
           <div className={Styles.MarketsHeader__search}>
