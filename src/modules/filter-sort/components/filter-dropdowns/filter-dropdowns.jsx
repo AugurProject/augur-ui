@@ -398,6 +398,26 @@ export default class FilterSearch extends Component {
               onClick={this.changeHideInsureMarkets}
             />{" "}
             <label htmlFor="post-cutoff">hide insecure markets</label>
+            <label
+              className={TooltipStyles.TooltipHint}
+              data-tip
+              data-for="tooltip--insecure"
+            >
+              {Hint}
+              <ReactTooltip
+                id="tooltip--insecure"
+                className={TooltipStyles.Tooltip}
+                effect="solid"
+                place="right"
+                type="light"
+              >
+                <p>
+                  This filter excludes markets at high risk of resolving
+                  incorrectly. Markets with sufficient Initial Reporter stake
+                  have a higher probability of resolving before V2 launch.
+                </p>
+              </ReactTooltip>
+            </label>
           </div>
         </div>
       </div>
