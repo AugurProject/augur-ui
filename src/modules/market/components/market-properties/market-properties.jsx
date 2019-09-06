@@ -61,7 +61,7 @@ export default class MarketProperties extends Component {
     isFavorite: PropTypes.bool,
     finalizeMarket: PropTypes.func,
     description: PropTypes.string,
-    totalInitialREPStake: PropTypes.number,
+    totalInitialREPStake: PropTypes.string,
     initialReporterAddress: PropTypes.string,
     author: PropTypes.string
   };
@@ -90,7 +90,7 @@ export default class MarketProperties extends Component {
     isFavorite: false,
     finalizeMarket: () => {},
     description: null,
-    totalInitialREPStake: 0,
+    totalInitialREPStake: "0",
     author: null,
     initialReporterAddress: null
   };
