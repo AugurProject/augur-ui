@@ -219,7 +219,7 @@ const STAKE_SCHEDULE = {
   5: 104,
   6: 52,
   7: 26,
-  8: 13,
+  8: 12,
   9: 6,
   10: 3,
   11: 1
@@ -231,7 +231,7 @@ function neededInitialReporterRep(currentTime) {
   if (hasPast) return 0;
 
   const weeks = numberOfWeeksUntilDate(currentTime, CUTOFF);
-  const stake = STAKE_SCHEDULE[weeks];
+  const stake = STAKE_SCHEDULE[weeks] || 0;
 
   return createBigNumber(stake)
     .times(ETHER)
