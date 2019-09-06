@@ -414,7 +414,8 @@ export default class FilterSearch extends Component {
                 <p>
                   This filter excludes markets at high risk of resolving
                   incorrectly. Markets with sufficient Initial Reporter stake
-                  have a higher probability of resolving before V2 launch.
+                  will be have a higher probablity of resolving before v2 is
+                  launch.
                 </p>
               </ReactTooltip>
             </label>

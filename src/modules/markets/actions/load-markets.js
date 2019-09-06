@@ -4,7 +4,7 @@ import { constants } from "services/constants";
 import logError from "utils/log-error";
 import loadCategories from "modules/categories/actions/load-categories";
 import { CUTOFF } from "modules/markets/constants/cutoff-date";
-import { numberOfWeeksUntilDate } from "utils/format-date";
+import { numberOfWeeksUntilDate, dateHasPassed } from "utils/format-date";
 import {
   MARKET_CREATION_TIME,
   MARKET_END_DATE,
@@ -210,13 +210,30 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   });
 };
 
+const STAKE_SCHEDULE = {
+  0: 2500,
+  1: 1667,
+  2: 833,
+  3: 417,
+  4: 208,
+  5: 104,
+  6: 52,
+  7: 26,
+  8: 13,
+  9: 6,
+  10: 3,
+  11: 1
+};
+
 function neededInitialReporterRep(currentTime) {
   const { ETHER } = augur.rpc.constants;
-  const TOPSTAKE = 5000;
-  const weeks = numberOfWeeksUntilDate(currentTime, CUTOFF);
+  const hasPast = dateHasPassed(currentTime, CUTOFF / 1000);
+  if (hasPast) return 0;
 
-  return createBigNumber(TOPSTAKE)
-    .dividedBy(weeks)
+  const weeks = numberOfWeeksUntilDate(currentTime, CUTOFF);
+  const stake = STAKE_SCHEDULE[weeks];
+
+  return createBigNumber(stake)
     .times(ETHER)
     .toNumber();
 }
