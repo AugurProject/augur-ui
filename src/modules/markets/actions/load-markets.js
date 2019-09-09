@@ -81,7 +81,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   dispatch,
   getState
 ) => {
-  const { universe, blockchain } = getState();
+  const { universe } = getState();
   const sort = {};
   switch (filterOptions.sort) {
     case MARKET_RECENTLY_TRADED: {
