@@ -160,7 +160,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
   }
 
   if (filterOptions.hideInsecureMarkets) {
-    params.minInitialRep = true;
+    params.enableInitialRepFilter = true;
   }
 
   if (filterOptions.hidePostV2Markets) {
