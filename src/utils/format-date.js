@@ -187,8 +187,3 @@ export function getMinutesMinusHoursRemaining(
   const hours = getHours * 60;
   return getMinutesRemaining(endUnixTimestamp, startUnixTimestamp) - hours;
 }
-
-export function numberOfWeeksUntilDate(timestamp, cutoff) {
-  const weeks = moment(timestamp).diff(cutoff, "week");
-  return Math.abs(weeks);
-}
