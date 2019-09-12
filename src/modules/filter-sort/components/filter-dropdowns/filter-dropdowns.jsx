@@ -397,7 +397,7 @@ export default class FilterSearch extends Component {
               value={hideInsecureMarkets}
               onClick={this.changeHideInsureMarkets}
             />{" "}
-            <label htmlFor="post-cutoff">hide insecure markets</label>
+            <label htmlFor="insure-markets">hide insecure markets</label>
             <label
               className={TooltipStyles.TooltipHint}
               data-tip
