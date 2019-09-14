@@ -14,7 +14,7 @@ const GlobalCutoffBanner = () => (
     <div>
       <span>
         Due to a planned Augur v2 launch, users are advised not to trade or
-        report on any markets that end after {CUTOFF_READABLE}.
+        report on any markets that end after {CUTOFF_READABLE} or that lack a sufficient Initial Reporter Stake.
       </span>
       <a href={CUTOFF_URL} target="_blank" rel="noopener noreferrer">
         Read more
