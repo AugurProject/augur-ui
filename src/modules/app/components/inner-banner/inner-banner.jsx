@@ -25,21 +25,21 @@ const InnerBanner = ({ currentPath, style, className }) => (
           Due to a planned Augur v2 launch, no new markets can be created that
           end after {CUTOFF_READABLE}. Any markets that end after this date are
           at a higher risk of resolving incorrectly. Markets that end earlier
-          still need to meet an Initial Reporter Stake threshold in order to
+          still must meet an Initial Reporter Stake threshold in order to
           securely resolve and be visible to traders.
         </span>
       )}
-      {(currentPath === DISPUTE || currentPath === REPORT) && (
+      {(currentPath === DISPUTE) && (
         <span>
-          Users are advised <b>not to report on or dispute</b> this market
-          because it expires after {CUTOFF_READABLE} for the Augur v2 release
-          phase. Doing so may put your REP at risk of getting stuck in Augur v1.
+          Users are advised <b>not to dispute or report on</b> this market
+          because it entered reporting after {CUTOFF_READABLE} for the Augur v2 release
+          phase or lacked a sufficient Intitial Reporter stake. Doing so may put your REP at risk of getting stuck in Augur v1.
         </span>
       )}
       {currentPath === MARKET && (
         <span>
-          This market expires after the cutoff date for the Augur v2 release
-          phase. Markets ending after {CUTOFF_READABLE} are at a higher risk of
+          This market ends after the cutoff date for the Augur v2 release
+          phase or has an insufficient Intitial Reporter stake. Markets that end after {CUTOFF_READABLE} or that lack a sufficient Initial Reporter stake are at a higher risk of
           resolving incorrectly.
         </span>
       )}
