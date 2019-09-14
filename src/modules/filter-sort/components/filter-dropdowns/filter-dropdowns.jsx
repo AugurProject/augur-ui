@@ -97,7 +97,6 @@ export default class FilterSearch extends Component {
     updateHideInsecureMarkets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
     experimentalInvalid: PropTypes.bool.isRequired,
     updateExperimentalInvalid: PropTypes.func.isRequired
   };
