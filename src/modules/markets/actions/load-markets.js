@@ -2,7 +2,6 @@ import { augur } from "services/augurjs";
 import { constants } from "services/constants";
 import logError from "utils/log-error";
 import loadCategories from "modules/categories/actions/load-categories";
-import { CUTOFF } from "modules/markets/constants/cutoff-date";
 import {
   MARKET_CREATION_TIME,
   MARKET_END_DATE,
@@ -146,7 +145,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
 
   dispatch(updateAppStatus(HAS_LOADED_MARKETS, false));
 
-  let params = {
+  const params = {
     universe: universe.id,
     category: filterOptions.category,
     search: filterOptions.search,
@@ -161,10 +160,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
 
   if (filterOptions.hideInsecureMarkets) {
     params.enableInitialRepFilter = true;
-  }
-
-  if (filterOptions.hidePostV2Markets) {
-    params = Object.assign({}, params, { maxEndTime: CUTOFF / 1000 });
   }
 
   switch (filterOptions.filter) {

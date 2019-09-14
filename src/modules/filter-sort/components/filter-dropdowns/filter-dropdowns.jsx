@@ -93,13 +93,10 @@ export default class FilterSearch extends Component {
     updateFilterOption: PropTypes.func.isRequired,
     updateSortOption: PropTypes.func.isRequired,
     updateMaxFee: PropTypes.func.isRequired,
-    hidePostV2Markets: PropTypes.bool.isRequired,
-    updateHidePostV2Markets: PropTypes.func.isRequired,
     hideInsecureMarkets: PropTypes.bool.isRequired,
     updateHideInsecureMarkets: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    hasPositionsInCutoffMarkets: PropTypes.bool.isRequired,
     experimentalInvalid: PropTypes.bool.isRequired,
     updateExperimentalInvalid: PropTypes.func.isRequired
   };
@@ -111,20 +108,8 @@ export default class FilterSearch extends Component {
     this.changeMaxFees = this.changeMaxFees.bind(this);
     this.changeMaxSpread = this.changeMaxSpread.bind(this);
     this.goToPageOne = this.goToPageOne.bind(this);
-    this.changeHidePastCutoff = this.changeHidePastCutoff.bind(this);
     this.changeExperimentalInvalid = this.changeExperimentalInvalid.bind(this);
     this.changeHideInsureMarkets = this.changeHideInsureMarkets.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.hasPositionsInCutoffMarkets !==
-        this.props.hasPositionsInCutoffMarkets &&
-      nextProps.hasPositionsInCutoffMarkets &&
-      this.props.hidePostV2Markets
-    ) {
-      this.changeHidePastCutoff();
-    }
   }
 
   goToPageOne() {
@@ -146,7 +131,6 @@ export default class FilterSearch extends Component {
       updateFilter,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
@@ -158,7 +142,6 @@ export default class FilterSearch extends Component {
       sort: value,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     });
@@ -171,7 +154,6 @@ export default class FilterSearch extends Component {
       updateFilter,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
@@ -183,7 +165,6 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     });
@@ -196,7 +177,6 @@ export default class FilterSearch extends Component {
       updateMaxFee,
       maxSpreadPercent,
       updateFilter,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
@@ -208,7 +188,6 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     });
@@ -221,7 +200,6 @@ export default class FilterSearch extends Component {
       maxFee,
       updateMaxSpread,
       updateFilter,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
@@ -233,7 +211,6 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     });
@@ -246,7 +223,6 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       updateFilter,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid,
       updateHideInsecureMarkets
@@ -257,32 +233,7 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets: !hideInsecureMarkets,
-      experimentalInvalid
-    });
-  }
-
-  changeHidePastCutoff() {
-    const {
-      filter,
-      sort,
-      maxFee,
-      maxSpreadPercent,
-      updateFilter,
-      hidePostV2Markets,
-      updateHidePostV2Markets,
-      hideInsecureMarkets,
-      experimentalInvalid
-    } = this.props;
-    updateHidePostV2Markets(!hidePostV2Markets);
-    updateFilter({
-      filter,
-      sort,
-      maxFee,
-      maxSpreadPercent,
-      hidePostV2Markets: !hidePostV2Markets,
-      hideInsecureMarkets,
       experimentalInvalid
     });
   }
@@ -294,7 +245,6 @@ export default class FilterSearch extends Component {
       maxFee,
       maxSpreadPercent,
       updateFilter,
-      hidePostV2Markets,
       hideInsecureMarkets,
       updateExperimentalInvalid,
       experimentalInvalid
@@ -305,7 +255,6 @@ export default class FilterSearch extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid: !experimentalInvalid
     });
@@ -316,7 +265,6 @@ export default class FilterSearch extends Component {
       defaultFilter,
       defaultSort,
       defaultMaxFee,
-      hidePostV2Markets,
       hideInsecureMarkets,
       experimentalInvalid
     } = this.props;
@@ -342,19 +290,6 @@ export default class FilterSearch extends Component {
           />
         </div>
         <div className={Styles.FilterDropdowns__checkboxes}>
-          <div>
-            <Checkbox
-              id="post-cutoff"
-              type="checkbox"
-              name="hidePostV2Markets"
-              isChecked={hidePostV2Markets}
-              value={hidePostV2Markets}
-              onClick={this.changeHidePastCutoff}
-            />{" "}
-            <label htmlFor="post-cutoff">
-              hide markets ending post v2 cut-off
-            </label>
-          </div>
           <div>
             <Checkbox
               id="experimental-invalid"
