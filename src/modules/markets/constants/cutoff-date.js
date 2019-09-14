@@ -6,4 +6,4 @@ import { formatDate } from "utils/format-date";
 
 export const CUTOFF = 1577836800000;
 export const CUTOFF_READABLE = formatDate(new Date(CUTOFF)).formattedUtc;
-export const CUTOFF_URL = "https://augur.net/blog/v1-cutoff";
+export const CUTOFF_URL = "https://www.augur.net/blog/v1-cutoff-update/";
