@@ -24,7 +24,9 @@ const InnerBanner = ({ currentPath, style, className }) => (
         <span>
           Due to a planned Augur v2 launch, no new markets can be created that
           end after {CUTOFF_READABLE}. Any markets that end after this date are
-          at a higher risk of resolving incorrectly.
+          at a higher risk of resolving incorrectly. Markets that end earlier
+          still need to meet an Initial Reporter Stake threshold in order to
+          securely resolve and be visible to traders.
         </span>
       )}
       {(currentPath === DISPUTE || currentPath === REPORT) && (
