@@ -145,7 +145,7 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
 
   dispatch(updateAppStatus(HAS_LOADED_MARKETS, false));
 
-  let params = {
+  const params = {
     universe: universe.id,
     category: filterOptions.category,
     search: filterOptions.search,
