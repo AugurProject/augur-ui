@@ -163,10 +163,6 @@ export const loadMarketsByFilter = (filterOptions, cb = () => {}) => (
     params.enableInitialRepFilter = true;
   }
 
-  if (filterOptions.hidePostV2Markets) {
-    params = Object.assign({}, params, { maxEndTime: CUTOFF / 1000 });
-  }
-
   switch (filterOptions.filter) {
     case MARKET_REPORTING: {
       // reporting markets only:

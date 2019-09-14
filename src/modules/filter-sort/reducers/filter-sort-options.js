@@ -9,7 +9,6 @@ import {
   MARKET_MAX_FEES,
   MARKET_MAX_SPREAD,
   TRANSACTION_PERIOD,
-  PAST_CUTOFF,
   EXPERIMENTAL_INVALID,
   INSECURE_MARKETS
 } from "modules/filter-sort/actions/update-filter-sort-options";
@@ -31,7 +30,6 @@ const DEFAULT_STATE = {
   [MARKET_MAX_FEES]: MAX_FEE_05_PERCENT,
   [MARKET_MAX_SPREAD]: maxSpreadSelection || MAX_SPREAD_10_PERCENT,
   [TRANSACTION_PERIOD]: DAY,
-  [PAST_CUTOFF]: true,
   [EXPERIMENTAL_INVALID]: true,
   [INSECURE_MARKETS]: true
 };

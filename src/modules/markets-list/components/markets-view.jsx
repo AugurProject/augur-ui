@@ -24,7 +24,6 @@ export default class MarketsView extends Component {
     defaultSort: PropTypes.string.isRequired,
     defaultMaxFee: PropTypes.string.isRequired,
     defaultMaxSpread: PropTypes.string.isRequired,
-    defaultHidePastCutoff: PropTypes.bool.isRequired,
     defaultExperimentalInvalid: PropTypes.bool.isRequired,
     defaultHideInscureMarkets: PropTypes.bool.isRequired,
     loadDisputing: PropTypes.func.isRequired
@@ -44,7 +43,6 @@ export default class MarketsView extends Component {
       sort: props.defaultSort,
       maxFee: props.defaultMaxFee,
       maxSpreadPercent: props.defaultMaxSpread,
-      hidePostV2Markets: props.defaultHidePastCutoff,
       experimentalInvalid: props.defaultExperimentalInvalid,
       hideInsecureMarkets: props.defaultHideInscureMarkets,
       filterSortedMarkets: []
@@ -78,7 +76,6 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       experimentalInvalid,
       hideInsecureMarkets
     } = params;
@@ -88,7 +85,6 @@ export default class MarketsView extends Component {
         sort,
         maxFee,
         maxSpreadPercent,
-        hidePostV2Markets,
         experimentalInvalid,
         hideInsecureMarkets
       },
@@ -103,7 +99,6 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       experimentalInvalid,
       hideInsecureMarkets
     } = this.state;
@@ -115,7 +110,6 @@ export default class MarketsView extends Component {
         sort,
         maxFee,
         maxSpreadPercent,
-        hidePostV2Markets,
         experimentalInvalid,
         hideInsecureMarkets
       },
@@ -142,7 +136,6 @@ export default class MarketsView extends Component {
       sort,
       maxFee,
       maxSpreadPercent,
-      hidePostV2Markets,
       experimentalInvalid,
       filterSortedMarkets,
       hideInsecureMarkets
@@ -165,7 +158,6 @@ export default class MarketsView extends Component {
           sort={sort}
           maxFee={maxFee}
           maxSpreadPercent={maxSpreadPercent}
-          hidePostV2Markets={hidePostV2Markets}
           experimentalInvalid={experimentalInvalid}
           hideInsecureMarkets={hideInsecureMarkets}
           updateFilter={this.updateFilter}
