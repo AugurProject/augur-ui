@@ -13,7 +13,6 @@ import Styles from "modules/create-market/components/create-market-form-define/c
 import moment from "moment";
 import { formatDate } from "utils/format-date";
 import StylesForm from "modules/create-market/components/create-market-form/create-market-form.styles";
-import { CUTOFF } from "modules/markets/constants/cutoff-date";
 
 export const MarketCreateFormTime = ({
   validateField,

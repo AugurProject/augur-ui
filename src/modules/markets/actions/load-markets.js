@@ -2,7 +2,6 @@ import { augur } from "services/augurjs";
 import { constants } from "services/constants";
 import logError from "utils/log-error";
 import loadCategories from "modules/categories/actions/load-categories";
-import { CUTOFF } from "modules/markets/constants/cutoff-date";
 import {
   MARKET_CREATION_TIME,
   MARKET_END_DATE,
