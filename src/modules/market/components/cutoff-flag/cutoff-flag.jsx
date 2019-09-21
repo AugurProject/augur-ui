@@ -7,16 +7,15 @@ import {
   CUTOFF_READABLE,
   CUTOFF_URL
 } from "modules/markets/constants/cutoff-date";
-import { isPastV2Cutoff } from "modules/markets/helpers/is-market-past-v2-cutoff";
 import ReactTooltip from "react-tooltip";
 import TooltipStyles from "modules/common/less/tooltip.styles";
 
 import Styles from "modules/market/components/cutoff-flag/cutoff-flag.styles";
 
 // add link to read more
-const CutoffFlag = ({ endTime }) => (
+const CutoffFlag = ({ passesInitialREPFilter }) => (
   <>
-    {isPastV2Cutoff(endTime) && (
+    {!passesInitialREPFilter && (
       <div className={Styles.CutoffFlag}>
         <span data-tip data-for="tooltip-cutoff-flag">
           {Flag}
@@ -29,9 +28,9 @@ const CutoffFlag = ({ endTime }) => (
           type="light"
         >
           <p>
-            This market has an end-time after the cutoff date for the Augur v2
-            release phase. Markets ending after {CUTOFF_READABLE} are at a
-            higher risk of resolving incorrectly.
+            This market has insufficient Initial Reporter Stake or market ends
+            after {CUTOFF_READABLE}. This market is at a higher risk of
+            resolving incorrectly.
             <br />
             <a
               href={CUTOFF_URL}
@@ -49,7 +48,11 @@ const CutoffFlag = ({ endTime }) => (
 );
 
 CutoffFlag.propTypes = {
-  endTime: PropTypes.number.isRequired
+  passesInitialREPFilter: PropTypes.bool
+};
+
+CutoffFlag.defaultProps = {
+  passesInitialREPFilter: false
 };
 
 export default CutoffFlag;
