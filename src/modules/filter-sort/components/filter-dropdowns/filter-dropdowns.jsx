@@ -348,7 +348,8 @@ export default class FilterSearch extends Component {
               >
                 <p>
                   This filter excludes markets at high risk of resolving
-                  incorrectly. The excluded markets enter reporting after the v1 Cutoff OR have an insufficient Initial Reporter Stake.
+                  incorrectly. The excluded markets enter reporting after the v1
+                  Cutoff OR have an insufficient Initial Reporter Stake.
                 </p>
               </ReactTooltip>
             </label>

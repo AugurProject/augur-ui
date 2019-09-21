@@ -36,7 +36,7 @@ export default class MarketPreview extends Component {
     collectMarketCreatorFees: PropTypes.func.isRequired,
     showOutstandingReturns: PropTypes.bool,
     hideCutoff: PropTypes.bool,
-    passesInitialREPFilter: PropTypes.bool,
+    passesInitialREPFilter: PropTypes.bool
   };
 
   static defaultProps = {
