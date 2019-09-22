@@ -61,7 +61,9 @@ const DisputeMarketCard = ({
               categories={categoriesWithClick}
               tags={tagsWithClick}
             />
-            <CutoffFlag endTime={market.endTime.timestamp} />
+            <CutoffFlag
+              passesInitialREPFilter={market.passesInitialREPFilter}
+            />
           </div>
           <div className={Styles["DisputeMarket__round-number"]}>
             {potentialFork && (

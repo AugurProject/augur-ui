@@ -35,7 +35,8 @@ export default class MarketPreview extends Component {
     linkType: PropTypes.string,
     collectMarketCreatorFees: PropTypes.func.isRequired,
     showOutstandingReturns: PropTypes.bool,
-    hideCutoff: PropTypes.bool
+    hideCutoff: PropTypes.bool,
+    passesInitialREPFilter: PropTypes.bool
   };
 
   static defaultProps = {
@@ -52,7 +53,8 @@ export default class MarketPreview extends Component {
     outcomes: [],
     settlementFeePercent: null,
     showOutstandingReturns: false,
-    hideCutoff: false
+    hideCutoff: false,
+    passesInitialREPFilter: false
   };
 
   constructor(props) {

@@ -7,12 +7,7 @@ import {
   CUTOFF_URL
 } from "modules/markets/constants/cutoff-date";
 import { AlertIcon, Flag } from "modules/common/components/icons";
-import {
-  CREATE_MARKET,
-  MARKET,
-  REPORT,
-  DISPUTE
-} from "modules/routes/constants/views";
+import { CREATE_MARKET, MARKET, DISPUTE } from "modules/routes/constants/views";
 
 import Styles from "modules/app/components/inner-banner/inner-banner.styles";
 
@@ -29,18 +24,20 @@ const InnerBanner = ({ currentPath, style, className }) => (
           securely resolve and be visible to traders.
         </span>
       )}
-      {(currentPath === DISPUTE) && (
+      {currentPath === DISPUTE && (
         <span>
           Users are advised <b>not to dispute or report on</b> this market
-          because it entered reporting after {CUTOFF_READABLE} for the Augur v2 release
-          phase or lacked a sufficient Intitial Reporter stake. Doing so may put your REP at risk of getting stuck in Augur v1.
+          because it entered reporting after {CUTOFF_READABLE} for the Augur v2
+          release phase or lacked a sufficient Intitial Reporter stake. Doing so
+          may put your REP at risk of getting stuck in Augur v1.
         </span>
       )}
       {currentPath === MARKET && (
         <span>
-          This market ends after the cutoff date for the Augur v2 release
-          phase or has an insufficient Intitial Reporter stake. Markets that end after {CUTOFF_READABLE} or that lack a sufficient Initial Reporter stake are at a higher risk of
-          resolving incorrectly.
+          This market ends after the cutoff date for the Augur v2 release phase
+          or has an insufficient Intitial Reporter stake. Markets that end after{" "}
+          {CUTOFF_READABLE} or that lack a sufficient Initial Reporter stake are
+          at a higher risk of resolving incorrectly.
         </span>
       )}
       <a

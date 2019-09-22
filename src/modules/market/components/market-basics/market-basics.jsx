@@ -99,7 +99,9 @@ const MarketBasics = ({
               categories={categoriesWithClick}
               tags={tagsWithClick}
             />
-            {!hideCutoff && <CutoffFlag endTime={p.endTime.timestamp} />}
+            {!hideCutoff && (
+              <CutoffFlag passesInitialREPFilter={p.passesInitialREPFilter} />
+            )}
           </div>
           {p.showDisputeRound && (
             <div className={Styles["MarketBasics__round-number"]}>
