@@ -34,8 +34,8 @@ const InvalidMessage = () => (
           The resolution source provides different answers to different viewers.
         </li>
         <li>
-          If the resolution source is different than General Knowledge, it must
-          be specified in resolution source field.
+          If a resolution source is referenced, it must be specified in
+          resolution source field.
         </li>
       </ul>
     </div>
