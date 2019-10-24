@@ -11,7 +11,7 @@ import Styles from "modules/market/components/market-header/market-header.styles
 import CoreProperties from "modules/market/components/core-properties/core-properties";
 
 const OVERFLOW_DETAILS_LENGTH = 89; // in px, matches additional details label max-height
-
+const GENERAL_KNOWLEDGE = "General knowledge";
 export default class MarketHeader extends Component {
   static propTypes = {
     clearSelectedOutcome: PropTypes.func.isRequired,
@@ -40,7 +40,7 @@ export default class MarketHeader extends Component {
     isDesignatedReporter: false,
     tentativeWinner: null,
     scalarDenomination: null,
-    resolutionSource: "General knowledge",
+    resolutionSource: GENERAL_KNOWLEDGE,
     selectedOutcome: null,
     marketType: null,
     isForking: false
