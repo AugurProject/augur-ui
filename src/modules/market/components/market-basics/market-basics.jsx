@@ -86,6 +86,11 @@ const MarketBasics = ({
     onClick: toggleTag(tag, path, history)
   }));
 
+  let marketDescription = p.description;
+  if (p.resolutionSource) {
+    marketDescription = `${p.description} According to ${p.resolutionSource}`;
+  }
+
   return (
     <article className={Styles.MarketBasics}>
       <div
@@ -117,7 +122,7 @@ const MarketBasics = ({
         </div>
         <h1 className={CommonStyles.MarketCommon__description}>
           <MarketLink id={p.id} className="market-link">
-            {p.description}
+            {marketDescription}
           </MarketLink>
         </h1>
 
