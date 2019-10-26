@@ -9,5 +9,4 @@ export const ETHEREUM_NODE_WS = "ethereum_node_ws";
 
 // hostedFallbacks
 export const HOSTED_AUGUR_NODE = "wss://augur-node.augur.casino";
-export const HOSTED_ETHEREUM_NODE =
-  "https://cloudflare-eth.com/";
+export const HOSTED_ETHEREUM_NODE = "https://cloudflare-eth.com/";
