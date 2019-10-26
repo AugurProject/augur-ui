@@ -15,7 +15,7 @@ Augur API docs: <https://docs.augur.net/#getting-started-with-augur-js>
 
   const augurNode = "wss://dev.augur.net/augur-node";
   const ethereumNode = {
-    "http": "https://eth-rinkeby.alchemyapi.io/jsonrpc/xWkVwAbM7Qr-p8j-Zu_PPwldZJKmaKjx",
+    "http": "https://cloudflare-eth.com/",
     "ws": "",
     "pollingIntervalMilliseconds": 10000,
     "blockRetention": 100,
