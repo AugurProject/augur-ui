@@ -155,7 +155,7 @@ describe("Create market page", () => {
 
     // Verify that the Designated Reporter is required
     await expect(page).toClick("button", {
-      text: "Outcome will be detailed on a public website"
+      text: "Outcome will be determined by an explicit source"
     });
     await expect(page).toFill(
       ".create-market-form-styles_CreateMarketForm__fields li:nth-child(1) ul li div input",
@@ -699,7 +699,7 @@ describe("Create market page", () => {
 
     // Fill out Resolution page
     await expect(page).toClick("button", {
-      text: "Outcome will be detailed on a public website"
+      text: "Outcome will be determined by an explicit source"
     });
     await expect(page).toFill(
       ".create-market-form-styles_CreateMarketForm__fields li:nth-child(1) ul li div input",
@@ -989,7 +989,7 @@ describe("Create market page", () => {
 
     // Fill out Resolution page
     await expect(page).toClick("button", {
-      text: "Outcome will be detailed on a public website"
+      text: "Outcome will be determined by an explicit source"
     });
     await expect(page).toFill(
       ".create-market-form-styles_CreateMarketForm__fields li:nth-child(1) ul li div input",
