@@ -134,14 +134,14 @@ export default class CreateMarketResolution extends Component {
                 onClick={() => this.validateExpiryType(EXPIRY_SOURCE_SPECIFIC)}
                 onKeyPress={e => keyPressed(e)}
               >
-                Outcome will be determined by an explicit source 
+                Outcome will be determined by an explicit source
               </button>
               {newMarket.expirySourceType === EXPIRY_SOURCE_SPECIFIC && (
                 <div>
                   <input
                     type="text"
                     value={newMarket.expirySource}
-                    placeholder="Define URL"
+                    placeholder="Define Resolution Source"
                     onChange={e =>
                       validateField("expirySource", e.target.value)
                     }
