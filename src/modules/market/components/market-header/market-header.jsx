@@ -110,6 +110,11 @@ export default class MarketHeader extends Component {
       details += warningText;
     }
 
+    let marketDescription = market.description;
+    if (market.resolutionSource) {
+      marketDescription = `${description} According to
+      ${market.resolutionSource}`;
+    }
     return (
       <section className={Styles.MarketHeader}>
         <div
@@ -137,7 +142,9 @@ export default class MarketHeader extends Component {
         </div>
         <div className={Styles[`MarketHeader__main-values`]}>
           <div className={Styles.MarketHeader__descContainer}>
-            <h1 className={Styles.MarketHeader__description}>{description}</h1>
+            <h1 className={Styles.MarketHeader__description}>
+              {marketDescription}
+            </h1>
             <div className={Styles.MarketHeader__descriptionContainer}>
               <div
                 className={Styles.MarketHeader__details}
