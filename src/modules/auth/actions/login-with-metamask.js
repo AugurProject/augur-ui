@@ -12,15 +12,32 @@ export const loginWithMetaMask = (callback = logError) => dispatch => {
     dispatch(useUnlockedAccount(account));
     callback(null, account);
   };
+
+  if (!windowRef.ethereum || !windowRef.ethereum.isMetaMask) {
+    throw new Error("Please install MetaMask.");
+  }
+
+  windowRef.ethereum.on("accountsChanged", account => success(first(account)));
+
   augur.rpc.eth.accounts((err, accounts) => {
     const account = first(accounts);
     if (err) return failure();
     if (account) {
       success(account);
     } else {
+      // Handle connecting, per EIP 1102 */
       windowRef.ethereum
-        .enable()
-        .then(resolve => success(first(resolve)), failure);
+        .send("eth_requestAccounts")
+        .then(account => success(first(account)))
+        .catch(err => {
+          if (err.code === 4001) {
+            // EIP 1193 userRejectedRequest error
+            console.log("Please connect to MetaMask.");
+          } else {
+            console.error(err);
+          }
+          failure();
+        });
     }
   });
 };
