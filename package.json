@@ -54,7 +54,7 @@
     "@babel/polyfill": "7.2.5",
     "@ledgerhq/hw-app-eth": "4.48.0",
     "@ledgerhq/hw-transport-u2f": "4.48.0",
-    "async": "^2.6.1",
+    "async": "^3.2.2",
     "augur.js": "6.7.3",
     "bignumber.js": "6.0.0",
     "bs58": "^4.0.1",
